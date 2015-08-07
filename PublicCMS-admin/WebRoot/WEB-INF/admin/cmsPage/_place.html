@@ -1,0 +1,28 @@
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="templateData/add.html?path=${(queryPlacePath!)?url}&navTabId=cmsPage" target="navTab" rel="templateData" ><span><@t.m 'button.add'/></span></a></li>
+			<li><a class="edit" href="templateData/add.html?path=${(queryPlacePath!)?url}&navTabId=cmsPage&createDate={sid}" target="navTab" rel="templateData" ><span><@t.m 'button.edit'/></span></a></li>
+			<li><a class="delete" href="templateData/delete.do?createDate={sid}&path=${(queryPlacePath!)?url}&rel=templateBox" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+			<li><a class="icon" href="cmsTemplate/staticPlace.do?path=${(queryPlacePath!)?url}&rel=templateBox" target="ajaxTodo"><span>发布</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="56" rel="templateBox">
+		<thead>
+			<tr>
+				<th><@t.m 'field.title'/></th>
+				<th><@t.m 'button.add'/>时间</th>
+			</tr>
+		</thead>
+		<tbody>
+<@_templateDataList path=queryPlacePath>
+	<#list list?reverse as a>
+			<tr target="sid" rel="${a.createDate}">
+				<td>${a.title}</td>
+				<td>${a.createDate?number_to_datetime}</td>
+			</tr>
+	</#list>
+</@_templateDataList>
+		</tbody>
+	</table>
+</div>

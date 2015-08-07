@@ -1,0 +1,63 @@
+<#include "include_page/templateTree.html"/>
+<#macro categoryTree file rel queryCategoryId='' queryParentId='' target='navtab'>
+	<@_categoryList parentId=queryParentId disabled=false>
+		<#list page.list as a>
+			<li>
+				<a href="${file}?queryCategoryId=${a.id}&queryNavTabId=${rel}" <#if queryCategoryId??&&a.id?string=queryCategoryId>class="selected"</#if> target="${target}" rel="${rel}">${a.name!}</a>
+			<#if a.childIds?has_content>
+				<ul>
+					<@categoryTree file rel queryCategoryId a.id target/>
+				</ul>
+			</#if>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_categoryList>
+</#macro>
+<div class="accordion">
+<@_systemMoudleList parentId=parentId>
+	<#include "include_page/meger.html"/>
+	<#list page.list as a>
+		<@meger 'moudleIds' a.id!/>
+	</#list>
+	<@_systemRoleMoudle roleIds=admin.roles moudleIds=moudleIds!><#assign roleMoudleMap=map/></@_systemRoleMoudle>
+	
+	<#list page.list as a>
+		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
+	<div class="accordionHeader">
+		<h2><span>Folder</span>${a.name?html}</h2>
+	</div>
+	<div class="accordionContent">
+		<ul class="tree treeFolder">
+	<#switch a.url>
+		<#case 'cmsContent/list'>
+			<#assign name="<@t.m 'moudle.content'/>"/>
+		<#case 'cmsCategory/list'>
+			<#assign name='分类'/>
+			<#assign navTabId=a.url?substring(0,a.url?index_of('/'))?html>
+			<li><a href="${a.url?html}?queryNavTabId=${navTabId}" target="navtab" rel="${navTabId}">${name}</a>
+				<ul>
+					<@categoryTree '${a.url?html}' '${navTabId}' queryCategoryId/>
+				</ul>
+			</li>
+			<#break>
+		<#case 'cmsPage/list'>
+			<@templateTree 'cmsPage' '' 'true'/>
+			<#break>
+		<#case 'cmsTemplate/list'>
+			<@templateTree 'cmsPage' ''/>
+			<#break>
+		<#default>
+			<@_systemMoudleList parentId=a.id>
+				<#list page.list as a>
+			<li><a href="${a.url?html}" target="navTab" rel="${a.url?substring(0,a.url?index_of('/'))?html}">${a.name?html}</a></li>
+				</#list>
+			</@_systemMoudleList>
+	</#switch>
+		</ul>
+	</div>
+		</#if>
+	</#list>
+</@_systemMoudleList>
+</div>

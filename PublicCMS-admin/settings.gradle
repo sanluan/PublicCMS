@@ -1,0 +1,2 @@
+include 'PublicCMS-core'
+project(':PublicCMS-core').projectDir=new File(settingsDir,'../PublicCMS-core')

@@ -1,0 +1,81 @@
+<@_contentList modelExtend3=queryModelExtend3 modelExtend4=queryModelExtend4 
+			extend1=queryExtend1 categoryId=queryCategoryId 
+			extend3=queryExtend3 extend2=queryExtend2 extend4=queryExtend4 
+			modelId=queryModelId title=queryTitle 
+			userId=queryUserId modelExtend2=queryModelExtend2 startPublishDate=queryStartPublishDate endPublishDate=.now 
+			modelExtend1=queryModelExtend1 orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" method="post" action="cmsContent/lookup.html">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form rel="pagerForm" onsubmit="return dwzSearch(this,'dialog');" action="cmsContent/lookup.html" method="post">
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					<label><@t.m 'moudle.model'/>：</label>
+					<#include "../include_page/queryModelId.html"/>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label><@t.m 'field.title'/>：</label>
+					<input type="text" size="40" name="queryTitle" value="${queryTitle!}" />
+				</td>
+			</tr>
+		</table>
+		<#include "../include_page/searchBar.html"/>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="100%" layoutH="114" targetType="dialog">
+		<thead>
+			<tr>
+				<th><@t.m 'field.title'/></th>
+				<th><@t.m 'field.publishUser'/></th>
+				<th>分类</th>
+				<th><@t.m 'moudle.model'/></th>
+				<th>分数</th>
+				<th>评论数</th>
+				<th>点击数</th>
+				<th><@t.m 'field.publishDate'/></th>
+				<th><@t.m 'field.createDate'/></th>
+				<th><@t.m 'field.status'/></th>
+				<th><@t.m 'field.operate'/></th>
+			</tr>
+		</thead>
+		<tbody>
+			<#include "../include_page/meger.html"/>
+			<#list page.list as a>
+				<@meger 'userIds' a.userId!/>
+				<@meger 'categoryIds' a.categoryId!/>
+				<@meger 'modelIds' a.modelId!/>
+			</#list>
+			
+			<@_systemUser ids=userIds!><#assign userMap=map/></@_systemUser>
+			<@_category ids=categoryIds!><#assign categoryMap=map/></@_category>
+			<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+			
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${(a.isCopied?then('[转载]',''))!}${a.title!}</td>
+				<td>${(userMap[a.userId?string].nickName)!}</td>
+				<td>${(categoryMap[a.categoryId?string].name)!}</td>
+				<td>${(modelMap[a.modelId?string].name)!}</td>
+				<td>${a.scores!}</td>
+				<td>${a.comments!}</td>
+				<td>${a.clicks!}</td>
+				<td>${a.publishDate!}</td>
+				<td>${a.createDate!}</td>
+				<td><@t.m 'status.content.'+a.status/></td>
+				<td>
+					<a class="btnSelect" href="javascript:;" onclick="$.bringBack({id:'1', url:'${a.url}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}',cover:'${(a.cover!)?js_string}'}); return false;" title="选择">选择</a>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/pageDialog.html"/>
+</div>
+</@_contentList>

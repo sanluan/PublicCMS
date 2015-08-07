@@ -1,0 +1,31 @@
+<#include "../include_page/meger.html"/>
+<@_contentTagList tagId=tagId>
+	<#list page.list as a>
+		<@_tag id=a.id>
+			<@meger 'contentIds' a.contentId/>
+		</@_tag>
+	</#list>
+</@_contentTagList>
+<@_content ids=contentIds>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageContent">
+	<table class="table" width="100%" layoutH="21">
+		<thead>
+			<tr>
+				<th>标题</th>
+				<th>内容</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list map?keys as a>
+			<tr target="sid" rel="${map[a].id}">
+				<td>${map[a].title!}</td>
+				<td><@_content id=map[a].contentId>${object.title!}</@_content></td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+</div>
+</@_content>

@@ -1,0 +1,19 @@
+<#macro templateTree dir filepath exclude='false'>
+	<@_templateList path=filepath exclude=exclude>
+		<#if list?has_content>
+		<#list list as a>
+		<li>
+			<#local queryPath=filepath+'/'+a.fileName>
+			<a href="${dir}/list.html?queryPath=${queryPath?url}<#if !a.directory>&isFile=true</#if>" target="navTab" rel="${dir}">${a.fileName}${(a.alias?has_content)?then('(${a.alias!})','')}</a>
+		<#if a.directory>
+			<ul>
+				<@templateTree dir queryPath/>
+			</ul>
+		</#if>
+		</li>
+		</#list>
+		<#else>
+			<li><a>空目录</a></li>
+		</#if>
+	</@_templateList>
+</#macro>

@@ -1,0 +1,148 @@
+<@_contentList status=queryStatus categoryId=queryCategoryId containChild=true
+			disabled=queryDisabled modelId=queryModelId parentId=queryParentId title=queryTitle userId=queryUserId 
+			extend1=queryExtend1 extend2=queryExtend2 extend3=queryExtend3 extend4=queryExtend4 
+			modelExtend1=queryModelExtend1 modelExtend2=queryModelExtend2 modelExtend3=queryModelExtend3 modelExtend4=queryModelExtend4 
+			startPublishDate=queryStartPublishDate endPublishDate=queryEndPublishDate 
+			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" action="cmsContent/list.html" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+	<div class="searchBar">
+		<ul class="searchContent two">
+			<li>
+				<label><@t.m 'status.deleted'/>：</label>
+				<#include "../include_page/queryDisabled.html"/>
+			</li>
+			<li>
+				<label>分类：</label>
+				<input name="queryCategoryId" type="hidden" value="${queryCategoryId!}"/>
+				<#if queryCategoryId?has_content><@_category id=queryCategoryId!><#assign categoryName=object.name/></@_category></#if>
+				<input readonly="readonly" name="queryCategoryName" type="text" size="10" value="${categoryName!}"/>
+				<a class="btnLook" href="cmsCategory/lookup.html" width="920" warn="请选择分类" lookupGroup="">选择分类</a>
+			</li>
+			<li>
+				<label><@t.m 'field.publishUser'/>：</label>
+				<#include "../include_page/queryUserId.html"/>
+			</li>
+			<li class="colspan">
+				<label><@t.m 'field.status'/>：</label>
+				<#include "../include_page/queryStatus.html"/>
+			</li>
+			<li style="width:auto">
+				<label><@t.m 'moudle.model'/>：</label>
+				<#include "../include_page/queryModelId.html"/>
+			</li>
+			<li class="colspan">
+				<label><@t.m 'field.title'/>：</label><input type="text" size="30" name="queryTitle" value="${queryTitle!}" />
+			</li>
+			<li class="colspan">
+				<label><@t.m 'field.publishDate'/>：</label>
+				<input type="text" name="queryStartPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${queryStartPublishDate!}" />
+				<span>-</span>
+				<input type="text" name="queryEndPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${queryEndPublishDate!}" />
+			</li>
+		</ul>
+		<#include "../include_page/searchBar.html"/>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+<#include "../include_page/meger.html"/>
+<#if queryCategoryId?has_content>
+	<@_categoryModelList categoryId=queryCategoryId>
+		<#list page.list as a>
+			<@meger 'modelIds' a.modelId/>
+		</#list>
+		<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+		<#list page.list as a>
+			<#if modelMap[a.modelId?string]??><li><a class="add" href="cmsContent/add.html?categoryId=${queryCategoryId}&modelId=${a.modelId}&queryNavTabId=${queryNavTabId!}" rel="cmsContentAdd" target="navTab"><span><@t.m 'button.add'/>${(modelMap[a.modelId?string].name)!}</span></a></li></#if>
+		</#list>
+	</@_categoryModelList>
+</#if>
+			<li><a class="edit" href="cmsContent/add.html?id={sid}&queryNavTabId=${queryNavTabId!}" target="navTab" rel="cmsContentAdd" title="<@t.m 'button.edit'/><@t.m 'moudle.content'/>"><span><@t.m 'button.edit'/></span></a></li>
+			<li><a class="delete" href="cmsContent/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="146">
+		<thead>
+			<tr>
+				<th><@t.m 'field.title'/></th>
+				<th><@t.m 'field.publishUser'/></th>
+				<th>分类</th>
+				<th><@t.m 'moudle.model'/></th>
+				<th orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
+				<th orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
+				<th orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
+				<th orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.m 'field.publishDate'/></th>
+				<th><@t.m 'field.createDate'/></th>
+				<th><@t.m 'field.status'/></th>
+				<th><@t.m 'field.operate'/></th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@meger 'userIds' a.userId!/>
+				<@meger 'deptIds' a.deptId!/>
+				<@meger 'categoryIds' a.categoryId!/>
+				<@meger 'modelIds' a.modelId!/>
+			</#list>
+			
+			<@_systemUser ids=userIds!><#assign userMap=map/></@_systemUser>
+			<@_category ids=categoryIds!><#assign categoryMap=map/></@_category>
+			<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+			<@_systemDept ids=deptIds!><#assign deptMap=map/></@_systemDept>
+			
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>
+					<a href="${getSitePath(a.url)}" target="_blank">
+						${(a.isCopied?then('[转载]',''))!}${a.title!}${(a.disabled?then("[<@t.m 'status.deleted'/>]",''))!}
+					</a>
+				</td>
+				<td>
+					<a href="cmsContent/list.html?queryUserId=${a.userId}&queryNavTabId=${queryNavTabId!}" target="navtab" rel="${queryNavTabId!}">
+						${(userMap[a.userId?string].nickName)!}
+					</a>
+				</td>
+				<td>
+					<a href="cmsContent/list.html?queryCategoryId=${a.categoryId}&queryNavTabId=${queryNavTabId!}" target="navtab" rel="${queryNavTabId!}">
+						${(categoryMap[a.categoryId?string].name)!}
+					</a>
+				</td>
+				<td>
+					<a href="cmsContent/list.html?queryModelId=${a.modelId}&queryNavTabId=${queryNavTabId!}" target="navtab" rel="${queryNavTabId!}">
+						${(modelMap[a.modelId?string].name)!}
+					</a>
+				</td>
+				<td>${a.scores!}</td>
+				<td>${a.comments!}</td>
+				<td>${a.clicks!}</td>
+				<td>${a.publishDate!}</td>
+				<td>${a.createDate!}</td>
+				<td>
+					<@t.m 'status.content.'+a.status/>
+				</td>
+				<td>
+					<#if 2==a.status>
+						<#if (deptMap[a.deptId?string])?has_content && deptMap[a.deptId?string].userId=admin.id || !(deptMap[a.deptId?string])?has_content && a.userId=admin.id>
+							<a href="cmsContent/check.do?id=${a.id}" title="确定要审核该<@t.m 'moudle.content'/>吗?" target="ajaxTodo">审核</a>
+						</#if>
+					</#if>
+					<#if !modelMap[a.modelId?string].isUrl>
+						<a href="cmsContent/static.do?id=${a.id}" target="ajaxTodo">生成</a>
+					</#if>
+					<#if modelMap[a.modelId?string].hasChild&&!modelMap[a.modelId?string].isImages>
+						<a href="cmsContent/childList.html?queryParentId=${a.id}&queryNavTabId=cmsContentChild" target="navTab" rel="cmsContentChild"><@t.m 'moudle.child'/><@t.m 'moudle.content'/><@t.m 'moudle.manager'/></a>
+					</#if>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_contentList>
