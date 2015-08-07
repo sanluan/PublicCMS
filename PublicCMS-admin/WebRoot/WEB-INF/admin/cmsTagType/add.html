@@ -1,0 +1,18 @@
+<@_tagType id=id!><#assign a=object/></@_tagType>
+<div class="pageContent">
+	<form method="post" action="cmsTagType/save.do?callbackType=closeCurrent&navTabId=cmsTagType" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl class="nowrap">
+				<dt><@t.m 'field.name'/>：</dt>
+				<dd><input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/></dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

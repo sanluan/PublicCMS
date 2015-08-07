@@ -1,0 +1,9 @@
+<div>
+<h3>编辑推荐</h3>
+<ul>
+<#include "/ftl/cut.ftl"/>
+<#list dataList as a>
+	<li><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a></li>
+</#list>
+</ul>
+</div>

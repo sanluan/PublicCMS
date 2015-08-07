@@ -1,0 +1,7 @@
+[
+<@_tagList name=name categoryId=categoryId count=10>
+	<#list page.list as a>
+		{"tagId":"${a.id}","tagTitle":"${a.name}","tagType":"<@_tagType id=a.typeId>${object.name!}</@_tagType>"}<#if a?has_next>,</#if>
+	</#list>
+</@_tagList>
+]

@@ -1,0 +1,36 @@
+<#macro templateTree field value filepath>
+	<@_templateList path=filepath exclude='true'>
+		<#if list?has_content>
+		<#list list as a>
+		<li>
+			<#local queryPath=filepath+'/'+a.fileName>
+			<a href="javascript:;" data="${queryPath?url}" onclick="$.bringBack({'${field}':'${queryPath}'});return false;">
+				${a.fileName}${(a.alias?has_content)?then('(${a.alias!})','')}
+			</a>
+		<#if a.directory>			
+			<ul>
+				<@templateTree field value queryPath/>
+			</ul>
+		</#if>
+		</li>
+		</#list>
+		<#else>
+			<li><a>空目录</a></li>
+		</#if>
+	</@_templateList>
+</#macro>
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="58">
+		<ul class="tree treeFolder">
+			<@templateTree field value ""/>
+		</ul>
+		<script>
+			$('a[data="${(value!)?url?js_string}"]',$.pdialog.getCurrent()).parent().addClass('selected');
+		</script>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button"><@t.m 'button.close'/></button></div></div></li>
+		</ul>
+	</div>
+</div>

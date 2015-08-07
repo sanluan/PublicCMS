@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>PublicCMS开源版管理后台</title>
+	<link href="${res}/admin/themes/azure/style.css" rel="stylesheet" media="screen"/>
+	<link href="${res}/admin/themes/css/core.css" rel="stylesheet" media="screen"/>
+	<link href="${res}/admin/themes/css/print.css" rel="stylesheet" media="print"/>
+	<!--[if lte IE 9]>
+		<link href="${res}/admin/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
+	    <script src="${res}/admin/js/html5shiv.min.js"></script>
+	    <script src="${res}/admin/js/respond.min.js"></script>
+	<![endif]-->
+	<script src="http://libs.useso.com/js/jquery/1.9.1/jquery.min.js"></script>
+	<script src="${res}/admin/js/jquery.cookie.js"></script>
+	<script src="${res}/admin/js/jquery.validate.js"></script>
+	<script src="${res}/admin/js/jquery.bgiframe.js"></script>
+	
+	<script>var base="${base}/admin";</script>
+	<script src="${res}/admin/ueditor/ueditor.config.js"></script>
+	<script src="${res}/admin/ueditor/ueditor.all.js"></script>
+	<script src="${res}/admin/ueditor/lang/zh-cn/zh-cn.js"></script>
+	
+	<script src="${res}/admin/js/dwz.min.js"></script>
+	<script src="${res}/admin/js/dwz.regional.zh.js"></script>
+	<script>
+$(function(){
+	DWZ.init("${res}/admin/dwz.frag.xml", {
+		loginUrl:"login.html",
+		statusCode:{ok:200, error:300, timeout:301}, //【可选】
+		pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"}, //【可选】
+		debug:false,	// 调试模式 【true|false】
+		callback:function(){
+			initEnv();
+			$("#themeList").theme({themeBase:"${res}/admin/themes"}); // themeBase 相对于index页面的主题base路径
+		}
+	});
+});
+var ueditor_loader={};
+function editorSyn(ename){
+	$.each(ueditor_loader[ename],function(i){
+		this.sync();
+	});
+}
+	</script>
+</head>
+<body scroll="no">
+<header>
+	<a class="logo" href="./"></a>
+	<ul class="nav">
+		<li>${(admin.nickName?html)!}</li>
+		<li><a href="logout.do">退出</a></li>
+	</ul>
+	<ul id="navMenu">
+<@_systemMoudleList>
+	<#include "include_page/meger.html"/>
+	<#list page.list as a>
+		<@meger 'moudleIds' a.id!/>
+	</#list>
+	<@_systemRoleMoudle roleIds=admin.roles moudleIds=moudleIds!><#assign roleMoudleMap=map/></@_systemRoleMoudle>
+
+	<#list page.list as a>
+		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
+			<#if !parentId?has_content><#assign parentId=a.id/></#if>
+			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)?html}"><span>${a.name?html}</span></a></li>
+		</#if>
+	</#list>
+</@_systemMoudleList>
+	</ul>
+	<script>$('#navMenu li:eq(0)').addClass("selected");</script>
+</header>
+<main>
+	<div id="leftside">
+		<div id="sidebar_s">
+			<div class="collapse">
+				<div class="toggleCollapse"><div></div></div>
+			</div>
+		</div>
+		<div id="sidebar">
+			<div class="toggleCollapse"><div></div></div>
+			<div id="menu">
+<#include "menus.html"/>
+			</div>
+		</div>
+	</div>
+	<div id="navTab" class="tabsPage">
+		<div class="tabsPageHeader">
+			<div class="tabsPageHeaderContent">
+				<ul class="navTab-tab">
+					<li tabid="main" class="main"><a href="javascript:;"><span><span class="home_icon">工作台</span></span></a></li>
+				</ul>
+			</div>
+			<div class="tabsLeft">left</div>
+			<div class="tabsRight">right</div>
+			<div class="tabsMore">more</div>
+		</div>
+		<ul class="tabsMoreList">
+			<li><a href="javascript:;">工作台</a></li>
+		</ul>
+		<div class="navTab-panel tabsPageContent layoutBox">
+			<div class="page unitBox">
+<#include "include_page/main.html"/>
+			</div>
+		</div>
+	</div>
+</main>
+<footer>
+	Copyright &copy; ${.now?string('yyyy')}
+	<ul class="themeList" id="themeList">
+		<li theme="azure"><div class="selected">天蓝</div></li>
+		<li theme="default"><div>淡青</div></li>
+		<li theme="green"><div>绿色</div></li>
+		<li theme="purple"><div>紫色</div></li>
+		<li theme="silver"><div>银色</div></li>
+	</ul>
+</footer>
+</body>
+</html>

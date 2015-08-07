@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>${tempUser.nickName},请验证您的邮箱地址【sanluan】</title>
+</head>
+<body>
+	<div style="border:1px #f0f0f0 solid;margin:10px;padding:0px 10px;height:auto;">
+		<h2>${tempUser.nickName}:</h2>
+		<p>您刚刚在<a href="http://wwww.sanluan.com/">【sanluan】</a>发起了验证邮箱请求</p>
+		<p>请通过访问下面的链接地址，验证您的邮箱地址</p>
+		<p>链接地址:<a href="http://www.sanluan.com/verifyEmail.do?code=${emailCheckCode}">http://www.sanluan.com/verifyEmail.do?code=${emailCheckCode}</a></p>
+		<p>若链接无法直接点击，请拷贝粘贴到浏览器地址栏处即可打开</p>
+		<p>验证邮箱后，您可以同时使用邮箱地址${email}或用户名${tempUser.name}登录</p>
+		<p>如非您本人操作，请忽略此邮件，并为此给您带来的打扰表示道歉</p>
+	</div>
+</body>
+</html>

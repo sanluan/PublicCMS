@@ -1,0 +1,51 @@
+<div class="pageContent">
+	<form method="post" action="templateData/save.do?callbackType=closeCurrent&navTabId=${navTabId!}" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+		<input name="path" type="hidden" value="${path!}" />
+		<input name="createDate" type="hidden" value="${createDate!}" />
+		<#if path?has_content>
+			<#if createDate?has_content>
+				<#assign data=getTemplateDataList(path,createDate)/>
+			<#elseif contentId?has_content>
+				<@_content id=contentId><#assign data=object/></@_content>
+			</#if>
+		</#if>
+		<div class="pageFormContent" layoutH="57">
+			<dl class="nowrap">
+				<dt><@t.m 'field.title'/>：</dt>
+				<dd>
+					<input class="required" name="title" type="text"  maxlength="255" size="60" value="${(data.title?html)!}"/>
+					<a class="btnLook" href="cmsContent/lookup.html" lookupGroup="" width="1200" >选择</a>	
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>地址：</dt>
+				<dd><input class="required" name="url" type="text" maxlength="255" style="width: 100%;" value="${(data.url)!}"/></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>描述：</dt>
+				<dd><textarea name="description" style="width:500px" rows="4">${(data.description?html)!}</textarea></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>封面：</dt>
+				<dd>
+					<input name="cover" value="${cover!(data.cover)!}" maxlength="300" size="40" type="text"/>
+					<a class="btnAttach" href="file/upload.html?field=cover" lookupGroup="" width="560" height="300" title="<@t.m 'field.attach'/>"><@t.m 'field.attach'/></a>
+					<div id="preview" style="position:relative;"><div style="position:absolute;top:24px;left:0;z-index:1000;"><img style="max-height:400px;max-width:500px;"/></div></div>
+					<script>
+						$('input[name=cover]',navTab.getCurrentPanel()).hover(function(){
+							$('#preview',navTab.getCurrentPanel()).show().find('img').attr('src','${getUploadPath("")}'+$(this).val());
+						},function(){
+							$('#preview',navTab.getCurrentPanel()).hide();
+						});
+					</script>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

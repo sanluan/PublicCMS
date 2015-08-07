@@ -1,0 +1,28 @@
+<#macro lookupTree queryParentId=''>
+	<@_categoryList parentId=queryParentId disabled=false>
+		<#list page.list as a>
+			<li>
+				<a href="javascript:;" onclick="$.bringBack({parentId:'${a.id}',categoryId:'${a.id}',queryCategoryId:'${a.id}', categoryName:'${a.name}', queryCategoryName:'${a.name}'});return false;">${a.name!}</a>
+			<#if a.childIds?has_content>
+				<ul>
+					<@lookupTree a.id/>
+				</ul>
+			</#if>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_categoryList>
+</#macro>
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="58">
+		<ul class="tree expand">
+			<@lookupTree/>
+		</ul>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button"><@t.m 'button.close'/></button></div></div></li>
+		</ul>
+	</div>
+</div>

@@ -1,0 +1,66 @@
+<@_systemDeptList parentId=queryParentId userId=queryUserId name=queryName 
+			pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>父部门：</label>
+					<input name="queryParentId" type="hidden" value="${queryParentId!}"/>
+					<#if queryParentId?has_content><@_systemMoudle id=queryParentId!><#assign parentName=object.name/></@_systemMoudle></#if>
+					<input readonly="readonly" name="queryParentName" type="text" size="10" value="${parentName!}"/>
+					<a class="btnLook" href="systemDept/lookup.html" width="920" warn="请选择部门" lookupGroup="">选择部门</a>
+				</li>
+				<li>
+					<label>负责人：</label>
+					<#include "../include_page/queryUserId.html"/>
+				</li>
+				<li>
+					<label><@t.m 'field.name'/>：</label>
+					<input type="text" name="queryName" value="${queryName!}" />
+				</li>
+			</ul>
+			<#include "../include_page/searchBar.html"/>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="systemDept/add.html" target="navtab" rel="systemDeptAdd"><span><@t.m 'button.add'/></span></a></li>
+			<li><a class="edit" href="systemDept/add.html?navTabId=${navTabId!}&id={sid}" target="navtab" rel="systemDeptAdd"><span><@t.m 'button.edit'/></span></a></li>
+			<li><a class="delete" href="systemDept/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="119">
+		<thead>
+			<tr>
+				<th><@t.m 'field.name'/></th>
+				<th>父部门</th>
+				<th>描述</th>
+				<th>负责人</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#include "../include_page/meger.html"/>
+			<#list page.list as a>
+				<@meger 'userIds' a.userId!/>
+			</#list>
+			<@_systemUser ids=userIds!><#assign userMap=map/></@_systemUser>
+			
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.name!}</td>
+				<td>${a.parentId!}</td>
+				<td>${a.description!}</td>
+				<td>${(userMap[a.userId?string].nickName)!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_systemDeptList>

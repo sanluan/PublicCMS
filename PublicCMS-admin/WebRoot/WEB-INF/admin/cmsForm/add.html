@@ -1,0 +1,30 @@
+<@_form id=id><#assign a=object/></@_form>
+<div class="pageContent">
+	<form method="post" action="cmsForm/save.do?callbackType=closeCurrent&navTabId=cmsForm" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl>
+				<dt><@t.m 'field.title'/>：</dt>
+				<dd><input class="required" name="title" type="text" size="30" value="${(a.title)!}"/></dd>
+			</dl>
+			<dl>
+				<dt>数据：</dt>
+				<dd><input class="required" name="data" type="text" size="30" value="${(a.data)!}"/></dd>
+			</dl>
+			<dl>
+				<dt><@t.m 'field.title'/>：</dt>
+				<dd><input class="required date" name="createDate" type="text" size="30" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.createDate)!}"/></dd>
+			</dl>
+			<dl>
+				<dt>禁用：</dt>
+				<dd><input class="required" name="disabled" type="text" size="30" value="${(a.disabled)!}"/></dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

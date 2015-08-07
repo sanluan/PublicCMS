@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>${content.title} - PublicCMS</title>
+	<meta name="keywords" content="${content.title}"/>
+	<meta name="description" content="${content.description}"/>
+<!--#include virtual="/include/header.html"-->
+	<style>
+#gallery .owl-item div{ padding:5px;}
+#gallery .owl-item img{ display:block;width:100%;height:auto;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
+#gallery .owl-buttons{ position:absolute;top:50%;width:100%;height:50px;margin-top:-25px;line-height:25px;}
+#gallery .owl-buttons .owl-prev,#gallery .owl-buttons .owl-next{ display: block;float: left;}
+#gallery .owl-buttons .owl-next{ float:right;}
+	</style>
+</head>
+<body>
+<!--#include virtual="/include/nav.html"-->
+<main>
+	<div class="container bread">
+		<#include "/ftl/bread_echoParent.ftl"/>
+		<@echoParent category.parentId!/>
+		<a href="${getSitePath(category.url)}">${category.name}</a>
+	</div>
+	<div class="container">
+		<article>
+			<h1><a href="${getSitePath(url)}">${content.title}</a></h1>
+			<p class="author"><#if content.isCopied>来源：<a href="${content.sourceUrl!}" target="_blank">${content.source!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate} 阅读:<em>loading...</em></p>
+			<div id="content">
+				<@_contentList parentId=content.id>
+					<div id="gallery" class="owl-carousel owl-theme">
+					<#list page.list as a>
+						<#if a.cover?has_content><div class="item"><img class="lazyOwl" data-src="${getUploadPath(a.cover)}" alt="${a.title!}"><h3>${a.title!content.title!}</h3><p>${a.description!content.description!}</p></div></#if>
+					</#list>
+					</div>
+				</@_contentList>
+			</div>
+			<#if content.tags?has_content>
+				<div class="tags">
+					标签：
+					<@_tag ids=content.tags>
+						<#list map?keys as key>
+							<a href="${getCmsPath()}tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
+						</#list>
+					</@_tag>
+				</div>
+			</#if>
+<script>
+$("#gallery").owlCarousel({
+	autoPlay : 5000,
+	stopOnHover : true,
+	paginationSpeed : 1000,
+	goToFirstSpeed : 2000,
+	navigation : true,
+	navigationText:["上一副","下一副"],
+	singleItem : true,
+	transitionStyle:"fade",
+	lazyLoad:true
+});
+$.getJSON('${getCmsPath()}content/clicks.json?id=${content.id}&callback=?', function(data){
+	$('article .author em').text(data.clicks);
+});
+</script>
+			<div id="SOHUCS" class="comment" sid="${content.id}"></div>
+			<script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js" ></script>
+			<script type="text/javascript">
+				window.changyan.api.config({
+					appid: 'cyrUsl0PT',
+					conf: 'prod_64e213c0c1210c839584707e2d5e7cd7'
+				});
+			</script>
+		</article>
+	</div>
+</main>
+<!--#include virtual="/include/footer.html"-->
+</body>
+</html>
