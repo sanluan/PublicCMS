@@ -16,7 +16,7 @@ PublicCMS-core/Database Init.sql为PublicCMS项目数据库初始化脚本，请
 
 PublicCMS-core\Code Formatters 目录中包含eclipse开发工具的js和java代码格式化文件
 
-gradle的使用请借助搜索引擎
+gradle的使用请借助搜索引擎,如果您没有使用过gradle，并且不打算使用它，也可以在https://github.com/sanluan/PublicCMS-lib 这里下载PublicCMS依赖的库，其中PublicCMS-core-1.0.jar是PublicCMS-core工程编译发布的
 
 官方演示站点：http://www.publiccms.com
 
