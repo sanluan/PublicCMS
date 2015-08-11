@@ -29,14 +29,7 @@ public class CmsTemplateDataController extends BaseController {
 
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	public String save(String path, Long createDate, HttpServletRequest request) throws IllegalStateException, IOException {
-		Map<String, Object> data = new HashMap<String, Object>();
-		Enumeration<String> parameters = request.getParameterNames();
-		while (parameters.hasMoreElements()) {
-			String paramterName = parameters.nextElement();
-			data.put(paramterName, request.getParameter(paramterName));
-		}
-		data.remove("path");
-		data.remove("callbackType");
+		Map<String, Object> data = getData(request);
 		if (null == createDate) {
 			synchronized (this) {
 				data.put("createDate", System.currentTimeMillis());
@@ -57,6 +50,18 @@ public class CmsTemplateDataController extends BaseController {
 		return "common/ajaxDone";
 	}
 
+	@RequestMapping(value = "update", method = RequestMethod.POST)
+	public String update(String path, Long createDate, HttpServletRequest request) throws IllegalStateException, IOException {
+		Map<String, Object> data = getData(request);
+		data.put("createDate", System.currentTimeMillis());
+		fileComponent.saveMapData(path, data);
+		if (notEmpty(path)) {
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.template.data",
+					RequestUtils.getIp(request), getDate(), path));
+		}
+		return "common/ajaxDone";
+	}
+
 	@RequestMapping("delete")
 	public String delete(String path, Long createDate, HttpServletRequest request) {
 		try {
@@ -68,5 +73,17 @@ public class CmsTemplateDataController extends BaseController {
 		} catch (IOException e) {
 		}
 		return "common/ajaxDone";
+	}
+
+	private Map<String, Object> getData(HttpServletRequest request) {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Enumeration<String> parameters = request.getParameterNames();
+		while (parameters.hasMoreElements()) {
+			String paramterName = parameters.nextElement();
+			data.put(paramterName, request.getParameter(paramterName));
+		}
+		data.remove("path");
+		data.remove("callbackType");
+		return data;
 	}
 }

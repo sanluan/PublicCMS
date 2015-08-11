@@ -38,7 +38,8 @@
 				</#list>
 				<@_content ids=contentIds>
 					<#list page.list as a>
-						<#assign content = map[a.contentId?string]/>
+						<#assign content = map[a.contentId?string]!/>
+						<#if content?has_content>
 						<dl>
 							<#if content.cover?has_content><dd><a href="${getSitePath(content.url)}" target="_blank"><img src="${getUploadPath(getThumb(content.cover,200,160))}"/></a></dd></#if>
 							<dt<#if content.cover?has_content> class="image"</#if>>
@@ -46,6 +47,7 @@
 								<p><@t.cut content.description 65 '...'/><a href="${getSitePath(content.url)}" target="_blank"> 详细 &gt;&gt;</a> </p>
 							</dt>
 						</dl>
+						</#if>
 					</#list>
 				</@_content>
 				

@@ -291,6 +291,15 @@ public class FileComponent {
 		saveData(filePath, dataList);
 	}
 
+	public void saveMapData(String filePath, Map<String, Object> data) throws JsonGenerationException, JsonMappingException,
+			IOException {
+		File file = new File(getDataFilePath(filePath));
+		if (!file.exists()) {
+			file.getParentFile().mkdirs();
+		}
+		objectMapper.writeValue(file, data);
+	}
+
 	public void updateData(String filePath, Long createDate, Map<String, Object> data) throws IOException {
 		if (null != createDate) {
 			List<Map<String, Object>> dataList = getListData(filePath);
@@ -606,7 +615,7 @@ public class FileComponent {
 	public void setUploadPath(String uploadPath) {
 		this.uploadPath = uploadPath;
 	}
-	
+
 	public String getCmsPath() {
 		return cmsPath;
 	}

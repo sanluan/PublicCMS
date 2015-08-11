@@ -24,6 +24,7 @@ public class CommonConstants {
 			+ VALID_CHARS + ")*)";
 
 	public static final int DEFAULT_PAGE_SIZE = 20;
+	public static final int MAX_PAGE_SIZE = 100;
 
 	public static final DateFormat FULL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	public static final int FULL_DATE_LENGTH = 19;

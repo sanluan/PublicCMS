@@ -1,5 +1,6 @@
 package com.publiccms.admin.views.controller.cms;
 
+import static com.sanluan.common.tools.RequestUtils.getValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.util.Arrays;
@@ -75,7 +76,7 @@ public class CmsCategoryController extends BaseController {
 		@SuppressWarnings("unchecked")
 		List<CmsModel> modelList = (List<CmsModel>) modelService.getPage(null, null, null, null, false, null, null).getList();
 		for (CmsModel cmsmodel : modelList) {
-			categoryModelService.updateCategoryModel(entity.getId(), cmsmodel, parameterMap);
+			categoryModelService.updateCategoryModel(notEmpty(getValue(parameterMap, "model_" + cmsmodel.getId())),entity.getId(), cmsmodel, parameterMap);
 		}
 
 		extendComponent.updateExtend(ExtendComponent.ITEM_TYPE_CATEGORY, entity.getId(), ExtendComponent.EXTEND_TYPE_CATEGORY,

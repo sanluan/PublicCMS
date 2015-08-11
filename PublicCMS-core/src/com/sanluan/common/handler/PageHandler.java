@@ -1,6 +1,7 @@
 package com.sanluan.common.handler;
 
 import static com.sanluan.common.constants.CommonConstants.DEFAULT_PAGE_SIZE;
+import static com.sanluan.common.constants.CommonConstants.MAX_PAGE_SIZE;
 import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public class PageHandler implements java.io.Serializable {
 	}
 
 	public void init() {
-		pageSize = 1 > pageSize ? DEFAULT_PAGE_SIZE : pageSize;
+		pageSize = 1 > pageSize ? DEFAULT_PAGE_SIZE : MAX_PAGE_SIZE < pageSize ? MAX_PAGE_SIZE : pageSize;
 		totalCount = 0 > totalCount ? 0 : totalCount;
 		pageIndex = 1 > pageIndex ? 1 : pageIndex > getTotalPage() ? getTotalPage() : pageIndex;
 	}

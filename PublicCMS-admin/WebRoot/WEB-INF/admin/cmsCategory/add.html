@@ -5,6 +5,22 @@
 	<#if categoryAttr??&&categoryAttr.data?has_content><#assign extendData=categoryAttr.data?eval/></#if>
 </@_category>
 <@_category id=parentId!><#assign category=object/></@_category>
+<#macro childModel parent index=1>
+<#if parent.hasChild&&!parent.isImages&&!parent.isUrl>
+	<@_modelList parentId=parent.id disabled=queryDisabled>
+	<ul>
+		<#list page.list as a>
+		<li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
+			<label>${a.name!}<@t.m 'moudle.template'/><@t.m 'moudle.path'/>：</label>
+			<input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+			<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}&value=${(a.templatePath)!}" lookupGroup="">选择</a>
+			<@childModel a index+1/>
+		</li>
+		</#list>
+	</ul>
+	</@_modelList>
+</#if>
+</#macro>
 <script>
 var ca_i=1;
 function appendExtend($box,replaceStr){
@@ -98,16 +114,10 @@ $(function(){
 						<input name="model_${a.id}" type="checkbox"/>
 						${a.name!}:
 					</dt>
-					<dd>
-						<p<#if a.isUrl> style="display:none"</#if>>
-							<label>${a.name!}<@t.m 'moudle.template'/><@t.m 'moudle.path'/>：</label><input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-							<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}&value=${(a.templatePath)!}" lookupGroup="">选择</a>
-						</p>
-						<#if a.hasChild&&!a.isImages>
-							<p>
-								
-							</p>
-						</#if>
+					<dd<#if a.isUrl> style="display:none"</#if>>
+						<label>${a.name!}<@t.m 'moudle.template'/><@t.m 'moudle.path'/>：</label><input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}&value=${(a.templatePath)!}" lookupGroup="">选择</a>
+						<@childModel a/>
 					</dd>
 				</dl>
 			</#list>
