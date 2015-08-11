@@ -20,12 +20,13 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="delete" href="logTask/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+			<li><a class="delete" href="logTask/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
 		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="121">
 		<thead>
 			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th>任务</th>
 				<th>开始时间</th>
 				<th>结束时间</th>
@@ -40,6 +41,7 @@
 			<@_systemTask ids=taskIds!><#assign taskMap=map/></@_systemTask>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td><a href="logTask/list.html?queryTaskId=${a.taskId}" target="navTab" rel="logTask">${(taskMap[a.taskId?string].name)!}</a></td>
 				<td>${a.begintime!}</td>
 				<td>${a.endtime!}</td>

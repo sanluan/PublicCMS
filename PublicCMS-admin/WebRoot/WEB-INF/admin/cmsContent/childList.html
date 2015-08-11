@@ -79,12 +79,16 @@
 	</@_modelList>
 </#if>
 			<li><a class="edit" href="cmsContent/add.html?id={sid}&queryNavTabId=${queryNavTabId!}" target="navTab" rel="cmsContentAdd"  title="<@t.m 'button.edit'/><@t.m 'moudle.content'/>"><span><@t.m 'button.edit'/></span></a></li>
-			<li><a class="delete" href="cmsContent/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+			<li><a class="delete" href="cmsContent/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
+			<li class="line">line</li>
+			<li><a class="icon" href="cmsContent/check.do" title="<@t.m 'button.check.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.check'/></span></a></li>
+			<li><a class="icon" href="cmsContent/static.do" title="<@t.m 'button.static.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.static'/></span></a></li>
 		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="146">
 		<thead>
 			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th><@t.m 'field.title'/></th>
 				<th><@t.m 'field.publishUser'/></th>
 				<th>分类</th>
@@ -114,6 +118,7 @@
 			
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>
 					<a href="${getSitePath(a.url)}" target="_blank">
 						${(a.isCopied?then('[转载]',''))!}${a.title!}${(a.disabled?then("[<@t.m 'status.deleted'/>]",''))!}
@@ -143,11 +148,11 @@
 				<td>
 					<#if 2==a.status>
 						<#if (deptMap[a.deptId?string])?has_content && deptMap[a.deptId?string].userId=admin.id || !(deptMap[a.deptId?string])?has_content && a.userId=admin.id>
-							<a href="cmsContent/check.do?id=${a.id}" title="确定要审核该<@t.m 'moudle.content'/>吗?" target="ajaxTodo">审核</a>
+							<a href="cmsContent/check.do?ids=${a.id}" title="确定要审核该<@t.m 'moudle.content'/>吗?" target="ajaxTodo">审核</a>
 						</#if>
 					</#if>
 					<#if !modelMap[a.modelId?string].isUrl>
-						<a href="cmsContent/static.do?id=${a.id}" target="ajaxTodo">生成</a>
+						<a href="cmsContent/static.do?ids=${a.id}" target="ajaxTodo">生成</a>
 					</#if>
 					<#if modelMap[a.modelId?string].hasChild&&!modelMap[a.modelId?string].isImages>
 						<a href="cmsContent/childList.html?queryParentId=${a.id}&queryCategoryId=${a.categoryId}&queryNavTabId=cmsContentChild" target="navTab" rel="cmsContentChild"><@t.m 'moudle.child'/><@t.m 'moudle.content'/><@t.m 'moudle.manager'/></a>

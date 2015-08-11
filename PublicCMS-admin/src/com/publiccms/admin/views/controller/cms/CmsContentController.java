@@ -2,6 +2,7 @@ package com.publiccms.admin.views.controller.cms;
 
 import static org.apache.commons.lang3.ArrayUtils.addAll;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.StringUtils.join;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import java.util.Date;
@@ -112,60 +113,71 @@ public class CmsContentController extends BaseController {
 		String data = extendComponent.dealExtent(ExtendComponent.EXTEND_TYPE_CONTENT, entity.getCategoryId(),
 				entity.getModelId(), parameterMap);
 		attributeService.dealAttribute(entity.getId(), txt, data);
-		publish(entity.getId(), request, model);
+		publish(new Integer[] { entity.getId() }, request, model);
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "static" })
-	public String publish(Integer id, HttpServletRequest request, ModelMap model) {
-		CmsContent entity = service.getEntity(id);
-		if (notEmpty(entity)) {
-			CmsCategoryModel categoryModel = categoryModelService.getEntity(entity.getModelId(), entity.getCategoryId());
-			CmsModel cmsModel = modelService.getEntity(entity.getModelId());
-			CmsCategory category = categoryService.getEntity(entity.getCategoryId());
-			if (notEmpty(cmsModel) && notEmpty(categoryModel) && notEmpty(category) && !cmsModel.isIsUrl()) {
-				StaticResult result = fileComponent
-						.createContentHtml(entity, category, cmsModel, categoryModel.getTemplatePath());
-				if (virifyCustom("static", !result.getResult(), model)) {
-					return "common/ajaxError";
-				} else {
-					entity = service.updateUrl(id, result.getFilePath());
-					logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "static", RequestUtils
-							.getIp(request), getDate(), entity.getUrl()));
+	public String publish(Integer[] ids, HttpServletRequest request, ModelMap model) {
+		if (notEmpty(ids)) {
+			for (Integer id : ids) {
+				CmsContent entity = service.getEntity(id);
+				if (notEmpty(entity)) {
+					CmsCategoryModel categoryModel = categoryModelService.getEntity(entity.getModelId(), entity.getCategoryId());
+					CmsModel cmsModel = modelService.getEntity(entity.getModelId());
+					CmsCategory category = categoryService.getEntity(entity.getCategoryId());
+					if (notEmpty(cmsModel) && notEmpty(categoryModel) && notEmpty(category) && !cmsModel.isIsUrl()) {
+						StaticResult result = fileComponent.createContentHtml(entity, category, cmsModel,
+								categoryModel.getTemplatePath());
+						if (virifyCustom("static", !result.getResult(), model)) {
+							return "common/ajaxError";
+						} else {
+							entity = service.updateUrl(id, result.getFilePath());
+						}
+					}
+				}
+			}
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "static", RequestUtils
+					.getIp(request), getDate(), join(ids, ',')));
+		}
+		return "common/ajaxDone";
+	}
+
+	@RequestMapping(value = { "check" })
+	public String check(Integer[] ids, HttpServletRequest request, ModelMap model) {
+		if (notEmpty(ids)) {
+			for (Integer id : ids) {
+				CmsContent entity = service.check(id);
+				if (notEmpty(entity)) {
+					if (notEmpty(entity.getParentId())) {
+						publish(new Integer[] { entity.getParentId() }, request, model);
+					}
+					CmsCategory category = categoryService.getEntity(entity.getCategoryId());
+					if (isNotBlank(category.getPath())) {
+						fileComponent.createCategoryHtml(category, category.getTemplatePath(), category.getPath());
+					}
+					logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "check.content",
+							RequestUtils.getIp(request), getDate(), join(ids, ',')));
 				}
 			}
 		}
 		return "common/ajaxDone";
 	}
 
-	@RequestMapping(value = { "check" })
-	public String check(Integer id, HttpServletRequest request, ModelMap model) {
-		CmsContent entity = service.check(id);
-		if (notEmpty(entity)) {
-			if (notEmpty(entity.getParentId())) {
-				publish(entity.getParentId(), request, model);
-			}
-			CmsCategory category = categoryService.getEntity(entity.getCategoryId());
-			if (isNotBlank(category.getPath())) {
-				fileComponent.createCategoryHtml(category, category.getTemplatePath(), category.getPath());
-			}
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "check.content", RequestUtils
-					.getIp(request), getDate(), id + ":" + entity.getTitle()));
-		}
-		return "common/ajaxDone";
-	}
-
 	@RequestMapping("delete")
-	public String delete(Integer id, HttpServletRequest request) {
-		CmsContent entity = service.delete(id);
-		if (notEmpty(entity.getParentId())) {
-			service.updateChilds(entity.getParentId(), -1);
-		} else {
-			categoryService.updateContents(entity.getCategoryId(), -1);
-		}
-		if (notEmpty(entity)) {
+	public String delete(Integer[] ids, HttpServletRequest request) {
+		if (notEmpty(ids)) {
+			for (Integer id : ids) {
+				CmsContent entity = service.delete(id);
+				contentTagService.delete(null, id);
+				if (notEmpty(entity.getParentId())) {
+					service.updateChilds(entity.getParentId(), -1);
+				} else {
+					categoryService.updateContents(entity.getCategoryId(), -1);
+				}
+			}
 			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.content", RequestUtils
-					.getIp(request), getDate(), id + ":" + entity.getTitle()));
+					.getIp(request), getDate(), join(ids, ',')));
 		}
 		return "common/ajaxDone";
 	}

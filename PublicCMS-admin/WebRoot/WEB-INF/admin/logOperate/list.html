@@ -34,12 +34,13 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="delete" href="logOperate/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+			<li><a class="delete" href="logOperate/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
 		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="121">
 		<thead>
 			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th><@t.m 'moudle.user'/></th>
 				<th><@t.m 'field.operate'/></th>
 				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">操作日期</th>
@@ -55,6 +56,7 @@
 			
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>${(userMap[a.userId?string].nickName)!}</td>
 				<td><@t.m 'operate.'+a.operate/></td>
 				<td>${a.createDate!}</td>

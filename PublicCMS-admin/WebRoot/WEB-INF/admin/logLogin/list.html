@@ -42,12 +42,13 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="delete" href="logLogin/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+			<li><a class="delete" href="logLogin/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
 		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="121">
 		<thead>
 			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th>用户名</th>
 				<th>用户ID</th>
 				<th>IP</th>
@@ -59,6 +60,7 @@
 		<tbody>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>${a.name!}</td>
 				<td>${a.userId!}</td>
 				<td>${a.ip!}</td>
