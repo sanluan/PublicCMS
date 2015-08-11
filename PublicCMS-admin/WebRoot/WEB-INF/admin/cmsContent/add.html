@@ -112,7 +112,7 @@ function addTag($id,$name){
 	</#if>
 			<dl class="nowrap">
 				<dt>描述：</dt>
-				<dd><textarea name="description" class="required" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea></dd>
+				<dd><textarea name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea></dd>
 			</dl>
 		<#if model??&&!model.isUrl&&!model.isImages>
 			<dl class="nowrap">
