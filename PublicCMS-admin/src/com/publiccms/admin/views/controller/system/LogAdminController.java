@@ -22,26 +22,42 @@ public class LogAdminController extends BaseController {
 	private LogTaskService logTaskService;
 
 	@RequestMapping(value = { "logEmailCheck/delete" })
-	public String logEmailCheckDelete(Integer id) {
-		logEmailCheckService.delete(id);
+	public String logEmailCheckDelete(Integer[] ids) {
+		if (notEmpty(ids)) {
+			for (Integer id : ids) {
+				logEmailCheckService.delete(id);
+			}
+		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "logLogin/delete" })
-	public String logLoginDelete(Integer id) {
-		logLoginService.delete(id);
+	public String logLoginDelete(Integer[] ids) {
+		if (notEmpty(ids)) {
+			for (Integer id : ids) {
+				logLoginService.delete(id);
+			}
+		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "logOperate/delete" })
-	public String logOperateDelete(Integer id) {
-		logOperateService.delete(id);
+	public String logOperateDelete(Integer[] ids) {
+		if (notEmpty(ids)) {
+			for (Integer id : ids) {
+				logOperateService.delete(id);
+			}
+		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "logTask/delete" })
-	public String logTaskDelete(Integer id) {
-		logTaskService.delete(id);
+	public String logTaskDelete(Integer[] ids) {
+		if (notEmpty(ids)) {
+			for (Integer id : ids) {
+				logTaskService.delete(id);
+			}
+		}
 		return "common/ajaxDone";
 	}
 }

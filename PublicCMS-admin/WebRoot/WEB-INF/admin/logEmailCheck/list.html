@@ -34,12 +34,13 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="delete" href="logEmailCheck/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+			<li><a class="delete" href="logEmailCheck/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
 		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="121">
 		<thead>
 			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th><@t.m 'moudle.user'/></th>
 				<th>邮件地址</th>
 				<th>验证码</th>
@@ -50,6 +51,7 @@
 		<tbody>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>${a.userId!}</td>
 				<td>${a.email!}</td>
 				<td>${a.code!}</td>
