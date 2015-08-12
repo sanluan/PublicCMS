@@ -1,4 +1,4 @@
-PublicCMS 使用了FreeMarker 2.3.23,SpringMVC 4.1.7.RELEASE,Hibernate 4.3.10.Final,hibernate-search5.3.0.Final等技术及框架,工程编译等工作由Gradle处理，运行部署需要jdk1.7+,tomcat7.0+/jetty8.0+,nginx/apache,mysql5.0+
+PublicCMS 使用了FreeMarker 2.3.23,SpringMVC 4.2.0.RELEASE,Hibernate 4.3.11.Final,hibernate-search5.3.0.Final等技术及框架,工程编译等工作由Gradle处理，运行部署需要jdk1.7+,tomcat7.0+/jetty8.0+,nginx/apache,mysql5.0+
 
 该软件永久开源免费(MIT 授权协议)，授权协议请阅读 PublicCMS-admin/readme.txt
 
