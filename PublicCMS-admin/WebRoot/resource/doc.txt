@@ -33,18 +33,6 @@ menu项:
 			id为空且ids不为空时：t_map:{key:id,value:bean}其中bean属性参考字段列表
 -- CmsCategory end --
 
--- CmsCategoryAttribute begin 2015-5-11 21:56:48---
-字段列表：
-menu项:
-	<li><a href="cmsCategoryAttribute/list.html" target="navTab" rel="cmsCategoryAttribute">管理</a></li>
-自定义指令：
-	单条记录查询：
-		<@_categoryAttribute id=id ids=ids></@_categoryAttribute>
-		结果：
-			id不为空时：object:属性参考字段列表
-			id为空且ids不为空时：t_map:{key:id,value:bean}其中bean属性参考字段列表
--- CmsCategoryAttribute end --
-
 -- CmsCategoryModel begin 2015-5-11 21:56:48---
 字段列表：
 	categoryId:分类
@@ -114,58 +102,6 @@ menu项:
 			id不为空时：object:属性参考字段列表
 			id为空且ids不为空时：t_map:{key:id,value:bean}其中bean属性参考字段列表
 -- CmsContent end --
-
--- CmsContentAttribute begin 2015-5-11 21:56:48---
-字段列表：
-menu项:
-	<li><a href="cmsContentAttribute/list.html" target="navTab" rel="cmsContentAttribute">管理</a></li>
-自定义指令：
-	单条记录查询：
-		<@_contentAttribute id=id ids=ids></@_contentAttribute>
-		结果：
-			id不为空时：object:属性参考字段列表
-			id为空且ids不为空时：t_map:{key:id,value:bean}其中bean属性参考字段列表
--- CmsContentAttribute end --
-
--- CmsDictionary begin 2015-5-11 21:56:48---
-字段列表：
-	name:名称
-	description:描述
-menu项:
-	<li><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary">管理</a></li>
-自定义指令：
-	分页列表查询：
-		<@_dictionaryList pageIndex=pageNum count=numPerPage></@_dictionaryList>
-		结果：
-			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
-			page.list: List<CmsDictionary>对象 使用<#list t_list as a></#list> 遍历数据
-	单条记录查询：
-		<@_dictionary id=id ids=ids></@_dictionary>
-		结果：
-			id不为空时：object:属性参考字段列表
-			id为空且ids不为空时：t_map:{key:id,value:bean}其中bean属性参考字段列表
--- CmsDictionary end --
-
--- CmsDictionaryData begin 2015-5-11 21:56:48---
-字段列表：
-	dictionaryId:字典
-	name:名称
-	value:值
-menu项:
-	<li><a href="cmsDictionaryData/list.html" target="navTab" rel="cmsDictionaryData">管理</a></li>
-自定义指令：
-	分页列表查询：
-		<@_dictionaryDataList name=queryName dictionaryId=queryDictionaryId 
-			pageIndex=pageNum count=numPerPage></@_dictionaryDataList>
-		结果：
-			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
-			page.list: List<CmsDictionaryData>对象 使用<#list t_list as a></#list> 遍历数据
-	单条记录查询：
-		<@_dictionaryData id=id ids=ids></@_dictionaryData>
-		结果：
-			id不为空时：object:属性参考字段列表
-			id为空且ids不为空时：t_map:{key:id,value:bean}其中bean属性参考字段列表
--- CmsDictionaryData end --
 
 -- CmsExtend begin 2015-5-11 21:56:48---
 字段列表：
