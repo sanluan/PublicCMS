@@ -2,8 +2,6 @@ package com.publiccms.logic.dao.cms;
 
 // Generated 2015-5-8 16:50:23 by SourceMaker
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -138,19 +136,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 			queryHandler.append("order by bean.id " + orderType);
 		}
 		return getPage(queryHandler, pageIndex, pageSize);
-	}
-
-	@SuppressWarnings("unchecked")
-	@Override
-	public List<CmsContent> getEntitys(Serializable[] ids, String pk) {
-		if (notEmpty(ids)) {
-			QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
-			queryHandler.condition("bean." + pk).append("in (:ids)").setParameter("ids", ids);
-			queryHandler.condition("bean.status = 1");
-			queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate", getDate());
-			return (List<CmsContent>) getList(queryHandler);
-		}
-		return new ArrayList<CmsContent>();
 	}
 
 	@Override

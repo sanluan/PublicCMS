@@ -33,6 +33,10 @@ public class CmsContentTagService extends BaseService<CmsContentTag, CmsContentT
 			Integer pageSize) {
 		return dao.getPage(tagId, contentId, tagIds, contentIds, pageIndex, pageSize);
 	}
+	
+	public int delete(Integer tagId, Integer contentId) {
+		return dao.delete(tagId, contentId);
+	}
 
 	public Integer[] updateContentTags(Integer contentId, Integer[] tagIds, String[] tagNames) {
 		Integer[] newTagIds = null;

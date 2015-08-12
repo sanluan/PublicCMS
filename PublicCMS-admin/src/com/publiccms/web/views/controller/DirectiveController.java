@@ -25,7 +25,8 @@ import com.sanluan.common.servlet.HttpServletDirective;
 
 @Controller
 public class DirectiveController extends BaseController {
-	private List<String> excludeList = Arrays.asList(new String[] { "systemUserList" });
+	private List<String> excludeList = Arrays.asList(new String[] { "systemUserList", "logOperateList", "logLoginList",
+			"logEmailCheckList", "logTaskList", "clearLog", "indexContent", "staticContent", "staticCategory", "staticPage" });
 	private Map<String, HttpServletDirective> actionMap = new HashMap<String, HttpServletDirective>();
 	private MediaType mediaType = new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
 	@Autowired

@@ -30,6 +30,20 @@ public class CmsContentTagDao extends BaseDao<CmsContentTag> {
 		return getPage(queryHandler, pageIndex, pageSize);
 	}
 
+	public int delete(Integer tagId, Integer contentId) {
+		if (!notEmpty(tagId) || !notEmpty(contentId)) {
+			QueryHandler queryHandler = getDeleteQueryHandler("from CmsContentTag bean");
+			if (notEmpty(tagId)) {
+				queryHandler.condition("bean.tagId = :tagId").setParameter("tagId", tagId);
+			}
+			if (notEmpty(contentId)) {
+				queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
+			}
+			return delete(queryHandler);
+		}
+		return 0;
+	}
+
 	@Override
 	protected CmsContentTag init(CmsContentTag entity) {
 		return entity;

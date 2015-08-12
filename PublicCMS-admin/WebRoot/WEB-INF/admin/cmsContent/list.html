@@ -51,17 +51,16 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-<#include "../include_page/meger.html"/>
 <#if queryCategoryId?has_content>
-	<@_categoryModelList categoryId=queryCategoryId>
+	<@_modelList>
 		<#list page.list as a>
-			<@meger 'modelIds' a.modelId/>
+			<@_categoryModelList modelId=a.id categoryId=queryCategoryId>
+				<#if page.totalCount gt 0>
+					<li><a class="add" href="cmsContent/add.html?categoryId=${queryCategoryId}&modelId=${a.id}&queryNavTabId=${queryNavTabId!}" rel="cmsContentAdd" target="navTab"><span><@t.m 'button.add'/>${(a.name)!}</span></a></li>
+				</#if>
+			</@_categoryModelList>
 		</#list>
-		<@_model ids=modelIds!><#assign modelMap=map/></@_model>
-		<#list page.list as a>
-			<#if modelMap[a.modelId?string]??><li><a class="add" href="cmsContent/add.html?categoryId=${queryCategoryId}&modelId=${a.modelId}&queryNavTabId=${queryNavTabId!}" rel="cmsContentAdd" target="navTab"><span><@t.m 'button.add'/>${(modelMap[a.modelId?string].name)!}</span></a></li></#if>
-		</#list>
-	</@_categoryModelList>
+	</@_modelList>
 </#if>
 			<li><a class="edit" href="cmsContent/add.html?id={sid}&queryNavTabId=${queryNavTabId!}" target="navTab" rel="cmsContentAdd" title="<@t.m 'button.edit'/><@t.m 'moudle.content'/>"><span><@t.m 'button.edit'/></span></a></li>
 			<li><a class="delete" href="cmsContent/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
@@ -88,6 +87,7 @@
 			</tr>
 		</thead>
 		<tbody>
+			<#include "../include_page/meger.html"/>
 			<#list page.list as a>
 				<@meger 'userIds' a.userId!/>
 				<@meger 'deptIds' a.deptId!/>
