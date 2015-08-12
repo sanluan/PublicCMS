@@ -24,20 +24,20 @@ gradle的使用请借助搜索引擎,如果您没有使用过gradle，并且不�
 
 作者根据地：http://www.sanluan.com
 
-![](https://github.com/sanluan/PublicCMS/preview/1.jpg)
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/1.jpg)
 工作台
-![](https://github.com/sanluan/PublicCMS/preview/2.jpg)
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/2.jpg)
 内容列表
-![](https://github.com/sanluan/PublicCMS/preview/3.jpg)
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/3.jpg)
 内容编辑页
 编辑器为百度编辑器，支持定时发布等功能
-![](https://github.com/sanluan/PublicCMS/preview/4.jpg)
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/4.jpg)
 栏目分类编辑
-![](https://github.com/sanluan/PublicCMS/preview/5.jpg)
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/5.jpg)
 页面推荐位管理
-![](https://github.com/sanluan/PublicCMS/preview/6.jpg)
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/6.jpg)
 模板在线编辑页面
-![](https://github.com/sanluan/PublicCMS/preview/7.jpg)
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/7.jpg)
 任务计划在线编辑编排页面
-![](https://github.com/sanluan/PublicCMS/preview/8.jpg)
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/8.jpg)
 角色权限管理页面
