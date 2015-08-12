@@ -41,3 +41,5 @@ gradle的使用请借助搜索引擎,如果您没有使用过gradle，并且不�
 任务计划在线编辑编排页面
 ![](https://github.com/sanluan/PublicCMS/raw/master/preview/8.jpg)
 角色权限管理页面
+![](https://github.com/sanluan/PublicCMS/raw/master/preview/9.jpg)
+图集编辑页
