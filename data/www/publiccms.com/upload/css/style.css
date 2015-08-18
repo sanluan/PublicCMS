@@ -10,33 +10,40 @@ a{ text-decoration:none;color:#333;}
 header nav ul li:hover ul { display:block;}
 .container{ width:1200px;}
 main .left-content{ float:left;width:800px;}
-main .data-list dl dt.image{ margin-left:215px;}
 main .data-list dl dd{ float:left;}
+main .data-list dl dd img{ width: 200px;}
+main .data-list dl dt.image{ margin-left:210px;}
 main aside{ float:right;width:380px;}
-main aside ul li a{ display: block;float:left;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
 main aside ul.rank li a{ width:300px;}
-main aside ul li a{ width:350px;}
+main aside ul li a{ width:350px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
 }
 
-@media screen and (max-width :1250px){
+@media screen and (min-width :480px) and (max-width :1249px){
 .container{ padding:0 10px;}
+main .data-list dl dd{ float:left;}
+main .data-list dl dd img{ width: 200px;}
+main .data-list dl dt.image{ margin-left:210px;}
+}
+
+@media screen and (max-width :479px){
+.container{ padding:0 10px;}
+main .data-list dl dd img{ width: 100%;}
 }
 
 .container{ margin:0 auto;clear:both;overflow:hidden;}
-header{ width:100%; background:url(../image/header_background.jpg) repeat-x 0 bottom;padding:0px;}
+header{ width:100%;border-bottom:2px solid #a4a4a4;padding:0px;}
 header .logo{ float:left;}
 header .search{ text-align:right;height:45px;}
 header .search form{ margin-top:20px;}
 header .search form input{ height:20px;padding:0px;line-height:20px;}
 header nav{ float:right;margin-top:20px; margin-right:-2px;}
-header nav ul li{ float:left;display:inline;font-size:16px;font-weight:bold;color:#333;line-height:35px;height:50px; }
+header nav ul li{ float:left;display:inline;font-size:16px;font-weight:bold;color:#333;line-height:35px;height:50px;}
+header nav ul li.selected a{ background-color:#333;color:#fff;}
 header nav ul li a{ padding:0 25px;display:block; border-right:1px solid #d4d4d4;}
-header nav ul li a:hover{ color:#a7f;}
-header nav ul li.selected{ border-bottom:3px solid #a7f;border-left:1px solid #fff; border-right:1px solid #fff;}
+header nav ul li a:hover,header nav ul li.selected a:hover{ color:#a7f;}
 header nav ul li ul { width:120px;line-height:30px;list-style-type:none;text-align:left;position:absolute;display:none;z-index:999;}
 header nav ul li ul li{ float:left;width:100%;height:30px;margin:0 0 3px 0;font-size:14px;}
 header nav ul li ul li a{ display:block;height:30px;background-color:#000;color:#fff;line-height:30px;text-align:center;display:block;font-size:15px;margin:3px auto 0;padding:0;border:0;}
-header nav ul li ul li a:hover{ height:30px;line-height:30px;}
 
 main {padding-bottom:40px;}
 main .bread{ line-height:60px;border-bottom:1px solid #eee;margin-bottom:10px;}
@@ -44,37 +51,35 @@ main .bread span,main .bread a{ padding:3px 8px;font-size:14px;font-weight:bold;
 main .nav{ line-height:60px;border-bottom:1px solid #eee;text-align:right;}
 main .nav .selected{ border:1px solid;}
 main .nav a{ padding:3px 8px;font-size:14px;font-weight:bold;color:#a7f}
-
+main ul li{ padding:5px 0;border-bottom:1px dashed #eee;}
 main article h1{ font-size:24px;padding-bottom:24px;margin-bottom:24px;border-bottom:1px solid #eee;line-height:1.5;font-weight:600;word-break:break-word;}
 main article .author{ font-size:14px;text-align:center;color:#99;}
 main article .author em{ color:#f00;}
 main article #content{ padding-bottom:20px;}
+main article #content img{ max-width:100%;}
 main .data-list dl{ clear:both; overflow:hidden; margin-bottom:10px;border:1px solid #eee;padding:10px;}
-main .data-list dl dd img{ width:200px;height:160px;}
+main .data-list dl dd img{ height: 200px;background-repeat: no-repeat;background-size: contain;background-position: center center;}
 main .data-list dl dt{ font-size:14px; color:#666; line-height:22px;}
-main .data-list dl dt h3{ color:#333;}
+main .data-list dl dt h3{ color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 main .data-list dl dt a{ color:#58a; text-decoration:none; }
 main .data-list dl dt p{ text-indent:2em;}
-
 main .search{ line-height:50px;text-align:center;margin-bottom:10px;}
 main .tags{ color:#333;line-height:30px;}
 main .tags em{ background-color:#dff; border:1px solid #cbe7ec; padding:2px 5px; color:#58a;}
 main .tags span{ float:right;}
-
-main ul li{ padding:5px 0;border-bottom:1px dashed #eee;}
 main .page{ padding:20px 0;text-align:center;line-height:30px;}
 main .page a,main .page span{ padding:2px 10px;border:1px solid #aaa;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;margin-right:5px;}
 main .page span,main .page .selected{ color:#cacaca;}
 main .page .selected{ border-color:#a7f;}
 main .comment{ min-height:320px;}
-
 main aside ul{ border:1px solid #eee;padding:10px;}
 main aside ul li span{ float:right;color:#aaa;}
 main aside ul li:after{ display:block;content:".";height:0;clear:both;visibility:hidden;}
+main aside ul li a{ display: block;float:left;}
 
 footer{ background-color:#ebebeb;border-top:2px solid #a4a4a4;width:100%;color:#999;font-size:13px;clear:both;overflow:hidden;padding:30px 0;line-height:24px}
 footer .info{ float:left; padding:0px 50px 20px 0px;}
 footer .info h3{ color:#333;border-bottom:2px solid #333;margin:0 0 6px;padding-bottom:6px;font-weight:600;}
 footer .info ul li a{ padding-right:9px; display:block;color:#999;}
 footer .info ul li a:hover{ color:#a7f;}
-footer .copyright{ float:right;;}
+footer .copyright{ float:right;}

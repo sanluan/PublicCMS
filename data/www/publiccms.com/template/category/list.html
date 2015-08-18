@@ -25,14 +25,14 @@
 		<a href="${getSitePath(category.url)}">${category.name}</a>
 	</div>
 	<div class="container">
-<@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now pageIndex=pageIndex count=category.pageSize>
+<@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderField='publishDate' orderType='desc' pageIndex=pageIndex count=category.pageSize>
 		<div class="data-list left-content">
 	<#include "/ftl/cut.ftl"/>
 	<#list page.list as a>
 			<dl>
-				<#if a.cover?has_content><dd><a href="${getSitePath(a.url)}" target="_blank"><img src="${getUploadPath(getThumb(a.cover,200,160))}"/></a></dd></#if>
+				<#if a.cover?has_content><dd><a href="${getSitePath(a.url)}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd></#if>
 				<dt<#if a.cover?has_content> class="image"</#if>>
-					<h3><a href="${getSitePath(a.url)}" target="_blank"><@cut a.title 36 '...'/></a></h3>
+					<h3><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a></h3>
 					<div class="tags">
 						<#if a.tags?has_content>标签：
 							<@_tag ids=a.tags>
@@ -43,7 +43,7 @@
 						</#if>
 						<span>${a.publishDate?date}</span>
 					</div>
-					<p><@cut a.description 65 '...'/><a href="${getSitePath(a.url)}" target="_blank"> 详细 &gt;&gt;</a> </p>
+					<p><@cut a.description 130 '...'/><a href="${getSitePath(a.url)}" target="_blank"> 详细 &gt;&gt;</a> </p>
 				</dt>
 			</dl>
 	</#list>

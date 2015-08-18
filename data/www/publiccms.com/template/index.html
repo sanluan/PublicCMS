@@ -16,13 +16,15 @@
 		<!--#include virtual="/include/index.html/1.html"--><#-- 焦点图 -->
 		<div class="data-list left-content">
 			<h3>最新文章</h3>
-<@_contentList status=1 endPublishDate=.now count=5>
+<@_contentList status=1 endPublishDate=.now orderField='publishDate' orderType='desc' count=10>
 	<#include "/ftl/cut.ftl"/>
 	<#list page.list as a>
 			<dl>
-				<#if a.cover?has_content><dd><a href="${getSitePath(a.url)}" target="_blank"><img src="${getUploadPath(getThumb(a.cover,200,160))}"/></a></dd></#if>
+		<#if a.cover?has_content>
+				<dd><a href="${getSitePath(a.url)}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd>
+		</#if>
 				<dt<#if a.cover?has_content> class="image"</#if>>
-					<h3><a href="${getSitePath(a.url)}" target="_blank"><@cut a.title 36 '...'/></a></h3>
+					<h3><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a></h3>
 					<div class="tags">
 						<#if a.tags?has_content>标签：
 							<@_tag ids=a.tags>
@@ -33,14 +35,14 @@
 						</#if>
 						<span>${a.publishDate?date}</span>
 					</div>
-					<p><@cut a.description 65 '...'/><a href="${getSitePath(a.url)}" target="_blank"> 详细 &gt;&gt;</a> </p>
+					<p><@cut a.description 100 '...'/><a href="${getSitePath(a.url)}" target="_blank"> 详细 &gt;&gt;</a> </p>
 				</dt>
 			</dl>
 	</#list>
 </@_contentList>
 		</div>
 		<aside>
-			<!--#include virtual="/include/category/list.html/2.html"--><#-- 精彩图集 -->
+			<!--#include virtual="/include/index_html/1.html"--><#-- 开源中国 -->
 			<div>
 				<h3>热门排行</h3>
 				<ul class="rank">
@@ -51,6 +53,7 @@
 </@_contentList>
 				</ul>
 			</div>
+			<!--#include virtual="/include/category/list.html/2.html"--><#-- 精彩图集 -->
 		</aside>
 	</div>
 </main>

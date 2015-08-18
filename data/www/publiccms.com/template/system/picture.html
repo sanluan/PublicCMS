@@ -5,12 +5,11 @@
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
 <!--#include virtual="/include/header.html"-->
+	<link href="${getUploadPath()}gallery/style.css" rel="stylesheet"/>
+	<script src="${getUploadPath()}gallery/gallery.js"></script>
 	<style>
-#gallery .owl-item div{ padding:5px;}
-#gallery .owl-item img{ display:block;width:100%;height:auto;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
-#gallery .owl-buttons{ position:absolute;top:50%;width:100%;height:50px;margin-top:-25px;line-height:25px;}
-#gallery .owl-buttons .owl-prev,#gallery .owl-buttons .owl-next{ display: block;float: left;}
-#gallery .owl-buttons .owl-next{ float:right;}
+#content{ background:#000;padding:5px;}
+#content,#content a{ color:#fff;}
 	</style>
 </head>
 <body>
@@ -23,17 +22,156 @@
 	</div>
 	<div class="container">
 		<article>
-			<h1><a href="${getSitePath(url)}">${content.title}</a></h1>
-			<p class="author"><#if content.isCopied>来源：<a href="${content.sourceUrl!}" target="_blank">${content.source!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate} 阅读:<em>loading...</em></p>
 			<div id="content">
-				<@_contentList parentId=content.id>
-					<div id="gallery" class="owl-carousel owl-theme">
-					<#list page.list as a>
-						<#if a.cover?has_content><div class="item"><img class="lazyOwl" data-src="${getUploadPath(a.cover)}" alt="${a.title!}"><h3>${a.title!content.title!}</h3><p>${a.description!content.description!}</p></div></#if>
-					</#list>
+				<div class="mod-gallery">
+					<div class="gallery-title">
+						<h2><a href="${getSitePath(url)}">${content.title}</a></h2>
+						<span class="gallery-counter">
+							<i class="gallery-counter-now" data-gallery="counter-now">?</i>/<i class="gallery-counter-total" data-gallery="counter-total">?</i>
+						</span>
+						<span class="gallery-info"><#if content.isCopied>来源：<a href="${content.sourceUrl!}" target="_blank">${content.source!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate} 阅读:<em>loading...</em></span>
 					</div>
-				</@_contentList>
+					<div class="gallery-description">
+						<p>
+						${content.description!}
+						</p>
+					</div>
+					<div class="gallery-content" data-gallery="content">
+						<div class="gallery-toolbar">
+							<span style="float: right;">
+								<a data-gallery="view-origin" class="gallery-view-origin" href="javascript:void(0);" hideFocus="true" target="_blank">查看原图</a>
+								<a data-gallery="view-list" class="gallery-view-list" href="javascript:void(0);" hideFocus="true">全部图片</a>
+							</span>
+							<span style="float: left;">
+								<a data-gallery="auto-play" class="gallery-auto-play" href="javascript:void(0);" hideFocus="true">幻灯播放</a>
+								<a data-gallery="auto-stop" class="gallery-auto-stop" href="javascript:void(0);" hideFocus="true">停止播放</a>
+							</span>
+						</div>
+						<div class="gallery-photo">
+							<div class="gallery-photo-items" data-gallery="photo-items">${(content.cover?has_content)?then("<img src='"+getUploadPath(content.cover)+"'/>","")}</div>
+							<div class="gallery-photo-prev" data-gallery="photo-prev">
+								<a title="点击浏览上一张图片，支持'←'翻页" href="javascript:void(0);" hideFocus="true">上一页</a>
+							</div>
+							<div class="gallery-photo-next" data-gallery="photo-next">
+								<a title="点击浏览下一张图片，支持'→'翻页" href="javascript:void(0);" hideFocus="true">下一页</a>
+							</div>
+							<div class="gallery-loading" data-gallery="loading"><img src="${getUploadPath()}gallery/images/loading.gif" /></div>
+							<div class="gallery-end" data-gallery="end">
+<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
+	<#list page.list as a>
+									<a href="${getSitePath(a.url)}">
+										<img<#if a.cover?has_content> src="${getUploadPath(getThumb(a.cover,200,150))}"</#if> style="margin-top:20px;" alt="${a.title!}">
+										<span>下一图集 &gt;</span>
+									</a>
+	</#list>
+</@_contentList>
+							</div>
+						</div>
+						<div class="gallery-photo-description">
+							<p data-gallery="photo-description">
+							</p>
+						</div>
+						<div class="gallery-footer">
+							<div class="clearfix">
+
+<@_contentList modelId=content.modelId endPublishDate=content.publishDate pageIndex=2 count=1>
+	<#if 2=page.pageIndex>
+		<#list page.list as a>
+								<span class="gallery-prev">
+									<a href="${getSitePath(a.url)}">
+										<img<#if a.cover?has_content> src="${getUploadPath(getThumb(a.cover,100,75))}"</#if> alt="${a.title!}">
+										<span>&lt; 上一图集</span>
+									</a>
+								</span>
+		</#list>
+	</#if>
+</@_contentList>
+<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
+	<#list page.list as a>
+								<span class="gallery-next">
+									<a href="${getSitePath(a.url)}">
+										<img<#if a.cover?has_content> src="${getUploadPath(getThumb(a.cover,100,75))}"</#if> alt="${a.title!}">
+										<span>下一图集 &gt;</span>
+									</a>
+								</span>
+	</#list>
+</@_contentList>
+								<div class="gallery-thumb" data-gallery="slider">
+									<span class="gallery-thumb-prev">
+										<a href="javascript:void(0);" hideFocus="true" data-slider="items-left"></a>
+									</span>
+									<span class="gallery-thumb-next">
+										<a href="javascript:void(0);" hideFocus="true" data-slider="items-right"></a>
+									</span>
+									<div class="gallery-thumbs" data-slider="control">
+										<div class="gallery-thumb-list">
+											<ul class="gallery-thumb-items" data-slider="items">
+											</ul>
+										</div>
+										<div class="gallery-thumb-bar mod-bar" data-slider="bar">
+											<span class="bar-left"></span>
+											<span class="bar-right"></span>
+											<div class="bar-body">
+												<div class="bar-content">
+													<a class="bar-btn" href="javascript:void(0);" hideFocus="true" data-slider="btn">
+														<b class="bar-btn-left"></b>
+														<b class="bar-btn-right"></b>
+														<span class="bar-btn-body">
+															<span>
+																<b class="bar-btn-content"></b>
+															</span>
+														</span>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="gallery-photolist" data-gallery="photolist">
+							<ul class="clearfix gallery-photolist-items" data-photolist="items">
+							</ul>
+							<div class="gallery-photo-page mod-page" data-photolist="pager">
+								<span class="page-prev" data-pager="prev"><a href="javascript:void(0);" hideFocus="true">上一页</a></span>
+								<ul class="page-items" data-pager="items">
+								</ul>
+								<span class="page-next" data-pager="next"><a href="javascript:void(0);" hideFocus="true">下一页</a></span>
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
+<script>
+$(function(){
+	var gallery = new Gallery({
+		element: '#content .mod-gallery',
+		photos: [
+<@_contentList parentId=content.id>
+	<#list page.list as a>
+		<#if a.cover?has_content>
+			{
+				big: '${getUploadPath(a.cover)}',
+				small: '${getUploadPath(getThumb(a.cover,100,75))}',
+				thumb: '${getUploadPath(getThumb(a.cover,100,75))}',
+				note: '${(a.title!)?js_string} ${(a.description!content.description!)?js_string}'
+			}<#if a?has_next>,</#if>
+		</#if>
+	</#list>
+</@_contentList>
+		],
+		preload: 3,
+		minHeight: 100,
+		scrollIntoView: false,
+		templatePhotoBig: '',
+		templatePhotoSmall: '',
+		templatePhotoThumb: ''
+	});
+});
+$.getJSON('${getCmsPath()}content/clicks.json?id=${content.id}&callback=?', function(data){
+	$('.gallery-info em').text(data.clicks);
+});
+</script>
 			<#if content.tags?has_content>
 				<div class="tags">
 					标签：
@@ -44,22 +182,6 @@
 					</@_tag>
 				</div>
 			</#if>
-<script>
-$("#gallery").owlCarousel({
-	autoPlay : 5000,
-	stopOnHover : true,
-	paginationSpeed : 1000,
-	goToFirstSpeed : 2000,
-	navigation : true,
-	navigationText:["上一副","下一副"],
-	singleItem : true,
-	transitionStyle:"fade",
-	lazyLoad:true
-});
-$.getJSON('${getCmsPath()}content/clicks.json?id=${content.id}&callback=?', function(data){
-	$('article .author em').text(data.clicks);
-});
-</script>
 			<div id="SOHUCS" class="comment" sid="${content.id}"></div>
 			<script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js" ></script>
 			<script type="text/javascript">

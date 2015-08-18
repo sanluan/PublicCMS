@@ -165,9 +165,9 @@ public class Maker {
 					model, overwrite);
 			FreeMarkerUtils.makeFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite, true);
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		} catch (TemplateException e) {
-			e.printStackTrace();
+			System.out.println(e.getMessage());
 		}
 		System.out.println("-------------------------------");
 	}

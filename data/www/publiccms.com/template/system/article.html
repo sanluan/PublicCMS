@@ -67,7 +67,7 @@
 		<@_content ids=contentIds>
 			<#list map?keys as k>
 				<#assign a=map[k]!/>
-				<#if a?has_content><li><a href="${getSitePath(map[a.contentId?string].url)}" target="_blank" title="${map[a.contentId?string].title}"><@cut map[a.contentId?string].title 20 '...'/></a></li></#if>
+				<#if a?has_content><li><a href="${getSitePath(a.url)}" target="_blank" title="${a.title}"><@cut a.title 20 '...'/></a></li></#if>
 			</#list>
 		</@_content>
 				</ul>

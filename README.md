@@ -1,5 +1,7 @@
 #PublicCMS
 
+<a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=8a633f84fb2475068182d3c447319977faca6a14dc3acf8017a160d65962a175"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Public CMS" title="Public CMS"/></a>
+
 PublicCMS 使用了FreeMarker 2.3.23,SpringMVC 4.2.0.RELEASE,Hibernate 4.3.11.Final,hibernate-search5.3.0.Final等技术及框架,工程编译等工作由Gradle处理，运行部署需要jdk1.7+,tomcat7.0+/jetty8.0+,nginx/apache,mysql5.0+
 
 该软件永久开源免费(MIT 授权协议)，授权协议请阅读 PublicCMS-admin/readme.txt
@@ -24,22 +26,22 @@ gradle的使用请借助搜索引擎,如果您没有使用过gradle，并且不�
 
 作者根据地：http://www.sanluan.com
 
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/1.jpg)
+![](preview/1.jpg)
 工作台
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/2.jpg)
+![](preview/2.jpg)
 内容列表
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/3.jpg)
+![](preview/3.jpg)
 内容编辑页
 编辑器为百度编辑器，支持定时发布等功能
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/4.jpg)
+![](preview/4.jpg)
 栏目分类编辑
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/5.jpg)
+![](preview/5.jpg)
 页面推荐位管理
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/6.jpg)
+![](preview/6.jpg)
 模板在线编辑页面
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/7.jpg)
+![](preview/7.jpg)
 任务计划在线编辑编排页面
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/8.jpg)
+![](preview/8.jpg)
 角色权限管理页面
-![](https://github.com/sanluan/PublicCMS/raw/master/preview/9.jpg)
+![](preview/9.jpg)
 图集编辑页
