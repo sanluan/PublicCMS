@@ -25,8 +25,7 @@ public class GetCategoryAttrMethod extends BaseMethod {
 		Integer id = getInteger(0, arguments);
 		if (null != id) {
 			CmsCategoryAttribute bean = service.getEntity(id);
-			if (null != bean)
-				return bean;
+			return bean;
 		}
 		return null;
 	}

@@ -24,13 +24,14 @@ public class GetCmsPathMethod extends BaseMethod {
 	@Override
 	public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
 		String path = getString(0, arguments);
-		if (isNotEmpty(path))
-			if (path.indexOf("://") >= 0)
+		if (isNotEmpty(path)) {
+			if (path.indexOf("://") >= 0) {
 				return path;
-			else
+			} else {
 				return fileComponent.getCmsPath() + path;
-		else
-			return fileComponent.getCmsPath();
+			}
+		}
+		return fileComponent.getCmsPath();
 
 	}
 

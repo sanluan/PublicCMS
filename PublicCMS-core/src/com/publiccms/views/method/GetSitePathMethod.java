@@ -24,13 +24,14 @@ public class GetSitePathMethod extends BaseMethod {
 	@Override
 	public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
 		String path = getString(0, arguments);
-		if (isNotEmpty(path))
-			if (path.indexOf("://") >= 0)
+		if (isNotEmpty(path)) {
+			if (path.indexOf("://") >= 0) {
 				return path;
-			else
+			} else {
 				return fileComponent.getSitePath() + path;
-		else
-			return fileComponent.getSitePath();
+			}
+		}
+		return fileComponent.getSitePath();
 
 	}
 

@@ -15,7 +15,9 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetDateMethod extends BaseMethod {
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see freemarker.template.TemplateMethodModelEx#exec(java.util.List)
 	 */
 	@SuppressWarnings("unchecked")
@@ -29,14 +31,20 @@ public class GetDateMethod extends BaseMethod {
 		}
 		if (arguments.size() >= 1) {
 			String type = getString(0, arguments);
-			if ("thisSunday".equalsIgnoreCase(type))
+			switch (type) {
+			case "thisSunday":
 				date = getThisSunday(date);
-			else if ("thisMonday".equalsIgnoreCase(type))
+				break;
+			case "thisMonday":
 				date = getThisMonday(date);
-			else if ("lastMonday".equalsIgnoreCase(type))
+				break;
+			case "lastMonday":
 				date = getLastMonday(date);
-			else if ("lastSunday".equalsIgnoreCase(type))
+				break;
+			case "lastSunday":
 				date = getLastSunday(date);
+				break;
+			}
 		}
 		return date;
 	}
