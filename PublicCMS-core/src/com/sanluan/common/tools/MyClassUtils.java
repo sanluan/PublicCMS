@@ -1,25 +1,26 @@
 package com.sanluan.common.tools;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.io.File;
 import java.io.IOException;
-import java.net.JarURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.List;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
+import java.util.Set;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
+import org.springframework.core.type.classreading.MetadataReader;
+import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 
 public class MyClassUtils {
-	public static ClassLoader classLoader = ClassUtils.getDefaultClassLoader();
+	private static final String RESOURCE_PATTERN = "/**/*.class";
+	private static final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
-	public static List<Class<?>> getAllAssignedClass(Class<?> cls, String basePackage) {
+	public static List<Class<?>> getAllAssignedClass(Class<?> cls, String[] packages) {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
-		for (Class<?> c : getClasses(basePackage)) {
+		for (Class<?> c : getClasses(packages)) {
 			if (cls.isAssignableFrom(c) && !cls.equals(c)) {
 				classes.add(c);
 			}
@@ -27,63 +28,29 @@ public class MyClassUtils {
 		return classes;
 	}
 
-	public static List<Class<?>> getClasses(String basePackage) {
-		File dir = null;
-		List<Class<?>> classes = new ArrayList<Class<?>>();
-		if (isNotBlank(basePackage)) {
-			String path = basePackage.replace('.', '/');
-			URL url = classLoader.getResource(path);
-			if (null != url) {
-				if ("jar".equalsIgnoreCase(url.getProtocol())) {
-					try {
-						classes.addAll(getClasses(((JarURLConnection) url.openConnection()).getJarFile(), basePackage));
-					} catch (IOException e) {
+	public static Set<Class<?>> getClasses(String[] packagesToScan) {
+		Set<Class<?>> classSet = new HashSet<Class<?>>();
+		if (null != packagesToScan) {
+			for (String pkg : packagesToScan) {
+				String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
+						+ ClassUtils.convertClassNameToResourcePath(pkg) + RESOURCE_PATTERN;
+				try {
+					Resource[] resources = resourcePatternResolver.getResources(pattern);
+					MetadataReaderFactory readerFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
+					for (Resource resource : resources) {
+						if (resource.isReadable()) {
+							MetadataReader reader = readerFactory.getMetadataReader(resource);
+							String className = reader.getClassMetadata().getClassName();
+							try {
+								classSet.add(Class.forName(className));
+							} catch (ClassNotFoundException e) {
+							}
+						}
 					}
-				}
-				dir = new File(url.getFile());
-				classes.addAll(getClasses(dir, basePackage));
-			}
-		}
-		return classes;
-	}
-
-	private static List<Class<?>> getClasses(File dir, String currentPackage) {
-		List<Class<?>> classes = new ArrayList<Class<?>>();
-		if (null == dir || !dir.exists()) {
-			return classes;
-		}
-		for (File f : dir.listFiles()) {
-			if (f.isDirectory()) {
-				classes.addAll(getClasses(f, currentPackage + "." + f.getName()));
-			}
-			String name = f.getName();
-			if (name.endsWith(".class")) {
-				try {
-					classes.add(Class.forName(currentPackage + "." + name.substring(0, name.length() - 6)));
-				} catch (ClassNotFoundException e) {
+				} catch (IOException e) {
 				}
 			}
 		}
-		return classes;
-	}
-
-	private static List<Class<?>> getClasses(JarFile jar, String packageName) {
-		List<Class<?>> classes = new ArrayList<Class<?>>();
-		String packageDirName = packageName.replace('.', '/');
-		Enumeration<JarEntry> entries = jar.entries();
-		while (entries.hasMoreElements()) {
-			JarEntry entry = entries.nextElement();
-			String name = entry.getName();
-			if ('/' == name.charAt(0)) {
-				name = name.substring(1);
-			}
-			if (name.startsWith(packageDirName) && name.endsWith(".class") && !entry.isDirectory()) {
-				try {
-					classes.add(Class.forName(name.substring(0, name.length() - 6).replace('/', '.')));
-				} catch (ClassNotFoundException e) {
-				}
-			}
-		}
-		return classes;
+		return classSet;
 	}
 }
