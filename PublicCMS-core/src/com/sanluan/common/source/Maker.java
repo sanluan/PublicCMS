@@ -46,7 +46,7 @@ public class Maker {
 
 	public void make(String basePackage, boolean overwrite) {
 		String entitiesFullPackage = basePackage + "." + ENTITY_BASE_PACKAGE;
-		for (Class<?> c : MyClassUtils.getClasses(entitiesFullPackage)) {
+		for (Class<?> c : MyClassUtils.getClasses(new String[]{entitiesFullPackage})) {
 			make(c, basePackage, overwrite);
 		}
 	}
@@ -57,7 +57,7 @@ public class Maker {
 
 	public void make(String basePackage, String entityPackage, boolean overwrite) {
 		String entitiesFullPackage = basePackage + "." + ENTITY_BASE_PACKAGE + "." + entityPackage;
-		for (Class<?> c : MyClassUtils.getClasses(entitiesFullPackage)) {
+		for (Class<?> c : MyClassUtils.getClasses(new String[]{entitiesFullPackage})) {
 			make(c, basePackage, overwrite);
 		}
 	}
