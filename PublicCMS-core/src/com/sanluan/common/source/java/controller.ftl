@@ -1,5 +1,7 @@
 package ${base}.${controllerPack};
 
+// Generated ${.now} by SourceMaker
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;

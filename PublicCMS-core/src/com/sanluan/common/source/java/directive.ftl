@@ -1,6 +1,7 @@
 package ${base}.${directivePack};
 
 // Generated ${.now} by SourceMaker
+
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 
 import java.io.IOException;
