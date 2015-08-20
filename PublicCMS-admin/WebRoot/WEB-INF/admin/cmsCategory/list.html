@@ -5,26 +5,24 @@
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);" method="post">
 	<div class="searchBar">
-		<table class="searchContent">
-			<tr>
-			<#if queryCategoryId?has_content>
-				<#if !parentName?has_content><@_category id=queryCategoryId><#assign parentName=object.name/></@_category></#if>
-				<td>
-					<label>父分类：</label>
-					<input name="queryCategoryId" type="hidden" value="${queryCategoryId!}"/>
-					<input readonly="readonly" name="parentName" type="text" value="${parentName!}" />
-				</td>
-			</#if>
-				<td>
-					<label><@t.m 'field.name'/>：</label>
-					<input type="text" name="queryName" value="${queryName!}" />
-				</td>
-				<td>
-					<label><@t.m 'status.deleted'/>：</label>
-					<#include "../include_page/queryDisabled.html"/>
-				</td>
-			</tr>
-		</table>
+		<ul class="searchContent">
+		<#if queryCategoryId?has_content>
+			<#if !parentName?has_content><@_category id=queryCategoryId><#assign parentName=object.name/></@_category></#if>
+			<li>
+				<label>父分类：</label>
+				<input name="queryCategoryId" type="hidden" value="${queryCategoryId!}"/>
+				<input readonly="readonly" name="parentName" type="text" value="${parentName!}" />
+			</li>
+		</#if>
+			<li>
+				<label><@t.m 'field.name'/>：</label>
+				<input type="text" name="queryName" value="${queryName!}" />
+			</li>
+			<li>
+				<label><@t.m 'status.deleted'/>：</label>
+				<#include "../include_page/queryDisabled.html"/>
+			</li>
+		</ul>
 		<#include "../include_page/searchBar.html"/>
 	</div>
 	</form>

@@ -416,7 +416,7 @@ label.alt{ display:block;overflow:hidden;position:absolute;line-height:20px}
 #leftside{ position:relative;}
 #sidebar{ width:200px;position:absolute;top:0;left:0px;z-index:20;overflow:hidden;}
 #sidebar #menu{ overflow:auto;}
-#sidebar_s{ display:none;width:24px;position:absolute;top:0;left:0;z-index:21;}
+#sidebar_s{ display:none;width:25px;position:absolute;top:0;left:0;z-index:21;}
 #splitBar{ display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:35px;left:200px;z-index:20;}
 #splitBarProxy{ display:none;overflow:hidden;width:1px;border-style:solid;border-color:#c0c0c0;background:#CCC;border-width:1px;cursor:col-resize;position:absolute;top:35px;left:200px;z-index:20;}
 
@@ -457,7 +457,7 @@ header .nav li{ float:left;padding:0 5px;line-height:34px;position:relative;}
 
 /* Pages default */
 .page{ display:block;overflow:hidden;float:left;width:100%;}
-.pageHeader{ display:block;overflow:hidden;margin-bottom:1px;padding:5px;border-style:solid;border-width:0 0 1px 0;position:relative;}
+.pageHeader{ display:block;overflow:hidden;padding:5px;position:relative;}
 .searchBar ul.searchContent{ display:block;overflow:hidden;height:25px;margin-right:50px}
 .searchBar ul.two{ height:50px}
 .searchBar input,.searchBar span{ float:left;}

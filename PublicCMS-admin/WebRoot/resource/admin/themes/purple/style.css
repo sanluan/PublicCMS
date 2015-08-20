@@ -166,7 +166,6 @@ input.disabled, textarea.disabled { border-color:#9eabb3 #d5dbdf #d5dbdf #9eabb3
 .dialog .pageContent .pageFormContent { border-color:#E29DE2; background:#FFF;}
 
 /* Pages default */
-.page .pageHeader, .formBar { border-color:#E29DE2; background:#ebf0f5 url(../default/images/pageHeader_bg.png) repeat-x;}
 .page .searchBar label { color:#183152;}
 
 /* Pages Form */
