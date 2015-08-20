@@ -96,19 +96,13 @@ function addTag($id,$name){
 				</dd>
 			</dl>
 	<#if a??>
-	<@_contentTagList contentId=id>
-		<#include "../include_page/meger.html"/>
-		<#list page.list as a>
-			<@meger 'tagIds' a.tagId/>
-		</#list>
-		<@_tag ids=tagIds!>
+		<@_tag ids=a.tagIds!>
 		<script>
 			<#list map?keys as k>
 				addTag('${k}','${map[k].name}');
 			</#list>
 		</script>
 		</@_tag>
-	</@_contentTagList>
 	</#if>
 			<dl class="nowrap">
 				<dt>描述：</dt>
