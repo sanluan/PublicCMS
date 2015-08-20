@@ -22,6 +22,9 @@
 .tabs .tabsHeader li span { color:#2d3f00;}
 .tabs .tabsContent { border-color:#8abb12; background:#e3fda7;}
 
+/* Header */
+header { border-color:#8abb12;}
+
 /* NavMenu */
 #navMenu li{ background:#A4DF15;border:1px solid #8abb12;}
 #navMenu li a{ color:#2d3f00;}
