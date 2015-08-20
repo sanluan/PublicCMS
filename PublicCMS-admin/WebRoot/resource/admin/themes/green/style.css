@@ -22,6 +22,12 @@
 .tabs .tabsHeader li span { color:#2d3f00;}
 .tabs .tabsContent { border-color:#8abb12; background:#e3fda7;}
 
+/* NavMenu */
+#navMenu li{ background:#A4DF15;border:1px solid #8abb12;}
+#navMenu li a{ color:#2d3f00;}
+#navMenu li.selected{ background:#FFF;}
+#navMenu li a:hover,#navMenu li.selected a, #navMenu li.selected a:hover{ color:#000;}
+
 /* TabsPage */
 .tabsPage .tabsPageHeader { background-color:#A4DF15;}
 .tabsPage .tabsPageHeader { border-color:#8abb12;}
@@ -136,7 +142,6 @@ input.disabled, textarea.disabled { border-color:#9eabb3 #d5dbdf #d5dbdf #9eabb3
 
 /* ----------------------------------------------------------------- Pages */
 /* Layout */
-body { background:#fafafa;}
 #splitBar { background:#cdef7d;}
 
 .toggleCollapse, .toggleCollapse div { background:url(./images/layout/toggleSidebar.png) no-repeat; background-color:#cdef7d;}
@@ -147,22 +152,8 @@ body { background:#fafafa;}
 #taskbar li .taskbutton span { color:#FFF;}
 #taskbar .taskbarLeft, #taskbar .taskbarRight { background:url(../default/images/layout/taskbar_control.png) no-repeat;}
 
-/* Menu */
-header, #navMenu li, #navMenu li.selected a, #navMenu li.selected span { background:url(../default/images/menu/menu.png) no-repeat;}
-#navMenu li a, #navMenu li span { color:#FFF;}
-#navMenu li.selected span { color:#000;}
-header .logo { background:url(../default/images/logo.png) no-repeat;}
-header .nav li a { color:#FFF;}
-
 /* Homepage */
 .sidebarContent { display:block; overflow:auto; height:500px; border:solid 1px #86B4EC; background:#FFF;}
-.accountInfo { display:block; overflow:hidden; height:60px; padding:0 10px; background:url(../default/images/account_info_bg.png) repeat-x}
-.accountInfo p { padding:8px 0 0 0; line-height:19px;}
-.accountInfo p span { font-size:14px; font-weight:bold;}
-.accountInfo .right { float:right; padding-right:10px; text-align:right;}
-.accountInfo .alertInfo { float:right; width:300px; height:60px; padding-left:10px; border-left:solid 1px #accdf4;}
-.accountInfo .alertInfo h2 { padding:8px 0; line-height:17px;}
-.accountInfo .alertInfo a { padding:6px 0 0 0; line-height:21px;}
 
 /* Pages */
 .pageForm .inputInfo { color:#999;}

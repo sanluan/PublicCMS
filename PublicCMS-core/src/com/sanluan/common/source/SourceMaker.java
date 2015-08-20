@@ -22,7 +22,7 @@ import com.sanluan.common.tools.MyClassUtils;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
-public class Maker {
+public class SourceMaker {
 	public static final String ENTITY_BASE_PACKAGE = "entities";
 	public static final String DAO_BASE_PACKAGE = "logic.dao";
 	public static final String DAO_SUFFIX = "Dao";
@@ -35,7 +35,7 @@ public class Maker {
 	public static final String WEB_BASE_PATH = "template/";
 
 	public static void main(String[] args) {
-		Maker sourceMaker = new Maker();
+		SourceMaker sourceMaker = new SourceMaker();
 		boolean overwrite = false;
 		sourceMaker.make("com.publiccms", "aaa", overwrite);
 	}
@@ -174,7 +174,7 @@ public class Maker {
 
 	private Configuration config;
 
-	public Maker() {
+	public SourceMaker() {
 		config = new freemarker.template.Configuration(Configuration.getVersion());
 		config.setClassForTemplateLoading(this.getClass(), "");
 		config.setDefaultEncoding("utf-8");
