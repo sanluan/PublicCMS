@@ -2,7 +2,7 @@ package com.publiccms.logic.component;
 
 import static com.publiccms.common.constants.FreeMakerConstants.CACHE_VAR;
 import static com.publiccms.common.constants.FreeMakerConstants.CONTEXT_BASE;
-import static com.publiccms.common.constants.FreeMakerConstants.CONTEXT_INCLUDE;
+import static freemarker.ext.servlet.FreemarkerServlet.KEY_INCLUDE;
 import static com.publiccms.common.constants.FreeMakerConstants.TEMPLATE_SUFFIX;
 import static com.sanluan.common.constants.CommonConstants.NUMBER_PATTERN;
 import static org.apache.commons.lang3.time.DateUtils.addSeconds;
@@ -77,7 +77,7 @@ public class CacheComponent {
 			}
 		}
 		path += sb.toString();
-		model.put(CONTEXT_INCLUDE, new IncludePage(request, response));
+		model.put(KEY_INCLUDE, new IncludePage(request, response));
 		model.put(CACHE_VAR, true);
 		model.put(CONTEXT_BASE, request.getContextPath());
 		return createCache(templatePath, path, model, response);

@@ -298,7 +298,7 @@ CREATE TABLE IF NOT EXISTS `system_moudle` (
   PRIMARY KEY  (`id`),
   KEY `url` (`url`),
   KEY `parent_id` (`parent_id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=38;
 
 INSERT INTO `system_moudle` (`id`, `name`, `url`, `authorized_url`, `parent_id`) VALUES
 (1, '我的', '', 'menus,index,include_page/main', NULL),
