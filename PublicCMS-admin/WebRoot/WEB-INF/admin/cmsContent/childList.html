@@ -121,7 +121,7 @@
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>
 					<a href="${getSitePath(a.url)}" target="_blank">
-						${(a.isCopied?then('[转载]',''))!}${a.title!}${(a.disabled?then("[<@t.m 'status.deleted'/>]",''))!}
+						${(a.isCopied?then('[转载]',''))!}${a.title!}<#if a.disabled>[<@t.m 'status.deleted'/>]</#if>
 					</a>
 				</td>
 				<td>

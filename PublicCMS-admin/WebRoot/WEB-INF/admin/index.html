@@ -3,7 +3,6 @@
 <head>
 	<meta charset="utf-8">
 	<title>PublicCMS开源版管理后台</title>
-	<link href="${res}/admin/themes/azure/style.css" rel="stylesheet" media="screen"/>
 	<link href="${res}/admin/themes/css/core.css" rel="stylesheet" media="screen"/>
 	<link href="${res}/admin/themes/css/print.css" rel="stylesheet" media="print"/>
 	<!--[if lte IE 9]>
@@ -21,7 +20,7 @@
 	<script src="${res}/admin/ueditor/ueditor.all.min.js"></script>
 	<script src="${res}/admin/ueditor/lang/zh-cn/zh-cn.js"></script>
 	
-	<script src="${res}/admin/js/dwz.min.js"></script>
+	<script src="${res}/admin/js/dwz.min.js?1"></script>
 	<script src="${res}/admin/js/dwz.regional.zh.js"></script>
 	<script>
 $(function(){
@@ -32,7 +31,7 @@ $(function(){
 		debug:false,	// 调试模式 【true|false】
 		callback:function(){
 			initEnv();
-			$("#themeList").theme({themeBase:"${res}/admin/themes"}); // themeBase 相对于index页面的主题base路径
+			$("#themeList").theme({themeBase:"${res}/admin/themes",defaultTheme:"azure"}); // themeBase 相对于index页面的主题base路径
 		}
 	});
 });

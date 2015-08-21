@@ -1,7 +1,7 @@
 package com.publiccms.common.view;
 
 import static com.publiccms.common.constants.FreeMakerConstants.CONTEXT_BASE;
-import static com.publiccms.common.constants.FreeMakerConstants.CONTEXT_INCLUDE;
+import static freemarker.ext.servlet.FreemarkerServlet.KEY_INCLUDE;
 import static org.apache.commons.lang3.ArrayUtils.contains;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
@@ -27,7 +27,7 @@ public class InitializeFreeMarkerView extends FreeMarkerView {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	protected void doRender(Map model, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		model.put(CONTEXT_INCLUDE, new IncludePage(request, response));
+		model.put(KEY_INCLUDE, new IncludePage(request, response));
 		super.doRender(model, request, response);
 	}
 
