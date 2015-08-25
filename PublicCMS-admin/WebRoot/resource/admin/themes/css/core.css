@@ -30,7 +30,7 @@ a:hover{ text-decoration:underline;}
 
 header{ display:block;overflow:hidden;height:34px;position:relative;border-bottom-width:1px;border-bottom-style:solid;}
 main{ overflow:hidden;}
-footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;z-index:-1;position:absolute;}
+footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;z-index:-1;border-top-width:1px;border-top-style:solid;position:absolute;}
 
 /* Panel */
 .panel{ display:block;background-position:0 100%;background-repeat:repeat-x;}
@@ -70,7 +70,7 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 .tabsPage .tabsPageHeaderContent{ display:block;overflow:hidden;height:27px;margin-right:19px;position:relative;}
 .tabsPage .tabsPageHeaderMargin{ margin:0 34px 0 17px;}
 .tabsPage .tabsPageHeader ul{ display:block;width:10000px;height:26px;z-index:1;margin-top:1px;position:absolute;}
-.tabsPage .tabsPageHeader li{ float:left;display:block;height:26px;margin-left:-1px;margin-right:3px;border-style:solid;border-width:1px 1px 0 1px;border-color:#aaaaaa;border-radius:3px 3px 0 0;position:relative;cursor:pointer;}
+.tabsPage .tabsPageHeader li{ float:left;display:block;height:26px;margin-left:2px;border-style:solid;border-width:1px 1px 0 1px;border-color:#aaaaaa;border-radius:3px 3px 0 0;position:relative;cursor:pointer;}
 .tabsPage .tabsPageHeader li a{ float:left;display:block;overflow:hidden;height:26px;padding-left:5px;padding-right:10px;line-height:26px;background-position:0 0;}
 .tabsPage .tabsPageHeader li a:hover{ text-decoration:none;}
 .tabsPage .tabsPageHeader li span{ float:left;display:block;overflow:hidden;width:112px;height:24px;line-height:24px;cursor:pointer;}
@@ -100,7 +100,7 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 .tabsPage .tabsMoreList li a{ display:block;width:148px;height:21px;padding:0 10px;border:solid 1px #FFF;white-space:nowrap;line-height:21px;}
 .tabsPage .tabsMoreList li a:hover{ border-color:#ececec;text-decoration:none;background:#f5f5f5;}
 .tabsPage .tabsMoreList li.selected a{ font-weight:bold;border-color:#dfe5ed;background:#e8edf3;}
-.tabsPage .tabsPageContent{ display:block;overflow:hidden;border-style:solid;border-width:0 0 1px 1px;position:relative;}
+.tabsPage .tabsPageContent,footer{ display:block;overflow:hidden;border-left-style:solid;border-left-width:1px;position:relative;}
 
 /* Alert */
 .alert{ overflow:hidden;z-index:1011;display:block;width:300px;margin-left:-150px;position:absolute;top:0;left:50%;}
@@ -308,24 +308,9 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 .grid .right{ text-align:right;}
 .grid .center{ text-align:center;}
 
-/* CSS Table */
-table.list{ border-collapse:collapse;border:solid 1px #ededed;}
-table.list thead tr{ background:url("../default/images/grid/tableth.png") repeat-x scroll 0 0 #F0EFF0;}
-table.list th{ padding:1px 2px;line-height:21px;border-right:solid 1px #D0D0D0;border-bottom:solid 1px #D0D0D0;font-weight:bolder;}
-table.list td{ padding:1px 2px;line-height:21px;border-right:solid 1px #ededed;}
-table.list th.order, .grid .gridHeader th.order{ background-position:100% 0;background:url(../default/images/order.gif) no-repeat right;cursor:pointer;}
-table.list th.asc, .grid .gridHeader th.asc{ background-position:100% 0;background:url(../default/images/order_up.gif) no-repeat right;cursor:pointer;}
-table.list th.desc, .grid .gridHeader th.desc{ background-position:100% 0;background:url(../default/images/order_down.gif) no-repeat right;cursor:pointer;}
-table.list tbody{ background-color:#fff;}
-table.list .right{ text-align:right;}
-table.list .trbg{ background-color:#F8F8F8;}
-table.list .hot{ background-color:#fff5c0;}
-table.list .hover{ background-color:#e4f5ff;}
-table.list .selected{ background-color:#7cc5e5;border-color:#b8d0d6;}
-table.list a{ color:#3C7FB1;font-size:11px;line-height:20px;}
-table.list a:hover{ text-decoration:underline;line-height:20px;}
-table.list td span.error{ z-index:-1}
-table.nowrap tbody tr{ border-bottom:solid 1px #ededed;}
+.grid .gridHeader th.order{ background-position:100% 0;background:url(../default/images/order.gif) no-repeat right;cursor:pointer;}
+.grid .gridHeader th.asc{ background-position:100% 0;background:url(../default/images/order_up.gif) no-repeat right;cursor:pointer;}
+.grid .gridHeader th.desc{ background-position:100% 0;background:url(../default/images/order_down.gif) no-repeat right;cursor:pointer;}
 
 /* Taskbar */
 #taskbar{ overflow:hidden;height:26px;border-style:solid;border-width:0;border-color:#0f3255;background-color:#112746;background-repeat:repeat-x;position:absolute;z-index:30;}
