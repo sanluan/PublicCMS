@@ -6,14 +6,14 @@
 	<form onsubmit="return navTabSearch(this);" method="post">
 	<div class="searchBar">
 		<ul class="searchContent">
-		<#if queryCategoryId?has_content>
-			<#if !parentName?has_content><@_category id=queryCategoryId><#assign parentName=object.name/></@_category></#if>
+<#if queryCategoryId?has_content>
+	<#if !parentName?has_content><@_category id=queryCategoryId><#assign parentName=object.name/></@_category></#if>
 			<li>
 				<label>父分类：</label>
 				<input name="queryCategoryId" type="hidden" value="${queryCategoryId!}"/>
 				<input readonly="readonly" name="parentName" type="text" value="${parentName!}" />
 			</li>
-		</#if>
+</#if>
 			<li>
 				<label><@t.m 'field.name'/>：</label>
 				<input type="text" name="queryName" value="${queryName!}" />
