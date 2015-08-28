@@ -1,0 +1,87 @@
+h2 {
+    font-size:2em;font-weight:        normal;
+    text-shadow:        0 1px 0 #fff;
+    padding:  10px 0 10px 3px;
+    color:    #777;
+}
+
+th {
+    font-weight:        bold;
+    color:    #000000;
+    background:         #f3f3f3;
+background: -webkit-gradient(linear, left top, left bottom, from(#ffffff), to(#cccccc));
+background: -webkit-linear-gradient(top, #ffffff, #cccccc);
+background: -moz-linear-gradient(top, #ffffff, #cccccc);
+background: -ms-linear-gradient(top, #ffffff, #cccccc);
+background: -o-linear-gradient(top, #ffffff, #cccccc);}
+
+a img {
+    border:   0;
+}
+
+hr {
+    color:    #000000;
+    background-color:   #000000;
+    border:   0;
+    height:   1px;
+}
+
+table caption,
+table th,
+table td {
+    padding:  0.3em;
+    margin:   0.1em;
+    vertical-align:     top;
+    text-shadow:0 1px 0 #FFFFFF;
+}
+
+/* 3.4 */
+table{border-collapse:collapse;}
+th{border-right:1px solid #fff; text-align:left;}
+
+/* odd items 1,3,5,7,... */
+table tr.odd th,
+.odd {
+    background: #fff;
+    }
+
+/* even items 2,4,6,8,... */
+/* (tested on CRTs and ACLs) */
+table tr.even th,
+.even {
+    background: #DFDFDF;
+    }
+
+/* odd table rows 1,3,5,7,... */
+table tr.odd th,
+table tr.odd,
+table tr.even th,
+table tr.even {
+    text-align:         left;
+}
+
+/* marked table rows */
+td.marked,
+table tr.marked td,
+table tr.marked th,
+table tr.marked {
+    background:  url(./themes/pmahomme/img/marked_bg.png) repeat-x #b6c6d7;
+    color:   #000000;
+}
+
+/* hovered items */
+.odd:hover,
+.even:hover,
+.hover,
+.structure_actions_dropdown {
+    background:  url(./themes/pmahomme/img/marked_bg.png) repeat-x #b6c6d7; /* 3.4 */
+    color: #000000;
+}
+
+/* hovered table rows */
+table tr.odd:hover th,
+table tr.even:hover th,
+table tr.hover th {
+    background:  url(./themes/pmahomme/img/marked_bg.png) repeat-x #b6c6d7; /* 3.4 */
+    color:   #000000;
+}

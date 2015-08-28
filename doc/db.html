@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<title>Public CMS数据字典</title>
+	<link rel="stylesheet" type="text/css" href="./css/db.css">
+</head>
+<body>
+	<div>
+		<h2>cms_category</h2>
+		表注释: 分类 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>名称</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">parent_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>父分类ID</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">child_ids</td>
+					<td nowrap="nowrap">text</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>所有子分类ID</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">english_name</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>英文名</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">template_path</td>
+					<td nowrap="nowrap">varchar(255)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>模板路径</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">path</td>
+					<td nowrap="nowrap">varchar(500)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>首页路径</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">url</td>
+					<td nowrap="nowrap">varchar(255)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>首页地址</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">content_path</td>
+					<td nowrap="nowrap">varchar(500)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>内容路径</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">page_size</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>每页数据条数</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">disabled</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>是否删除</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">contents</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap">0</td>
+					<td>内容数</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">extend1</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">extend2</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">extend3</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">extend4</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_category_attribute</h2>
+		表注释: 分类扩展 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">category_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">data</td>
+					<td nowrap="nowrap">text</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>数据JSON</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_category_model</h2>
+		表注释: 分类模型映射 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">category_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>分类ID</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">model_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>模型ID</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">template_path</td>
+					<td nowrap="nowrap">varchar(200)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>内容模板路径</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_content</h2>
+		表注释: 内容 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">title</td>
+					<td nowrap="nowrap">varchar(255)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">user_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>发表用户</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">dept_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>部门ID</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">category_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>分类</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">model_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>模型</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">parent_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>父内容ID</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">is_copied</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>是否转载</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">source</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>来源</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">source_url</td>
+					<td nowrap="nowrap">varchar(255)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>来源地址</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">author</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>作者</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">editor</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>编辑</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">url</td>
+					<td nowrap="nowrap">varchar(255)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>地址</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">description</td>
+					<td nowrap="nowrap">varchar(300)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>简介</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">tags</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>标签</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">cover</td>
+					<td nowrap="nowrap">varchar(255)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>封面</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">childs</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>内容页数</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">scores</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>分数</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">comments</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>评论数</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">clicks</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>点击数</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">publish_date</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>发布日期</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">create_date</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>创建日期</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">status</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>状态：0、草稿 1、已发布 2、待审核</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">disabled</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>是否删除</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">extend1</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">extend2</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">extend3</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">extend4</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">model_extend1</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">model_extend2</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">model_extend3</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">model_extend4</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_content_attribute</h2>
+		表注释: 内容扩展 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">content_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">data</td>
+					<td nowrap="nowrap">text</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>数据JSON</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">text</td>
+					<td nowrap="nowrap">text</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>内容</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">word_count</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>字数</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_content_tag</h2>
+		表注释: 内容标签关联 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">tag_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">content_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_extend</h2>
+		表注释: 扩展字段 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">item_type</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>扩展项目类型,1为模型,2为分类</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">item_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>扩展项目ID</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">extend_type</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>扩展类型：1内容，2分类</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">is_custom</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap">0</td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">is_required</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(20)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>名称</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">description</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>解释</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">code</td>
+					<td nowrap="nowrap">varchar(20)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>编码</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">input_type</td>
+					<td nowrap="nowrap">varchar(20)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>表单类型</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">default_value</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>默认值</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_form</h2>
+		表注释: 自定义表单 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">title</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">data</td>
+					<td nowrap="nowrap">text</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">create_date</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">disabled</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_model</h2>
+		表注释: 模型 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">parent_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>父模型</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(20)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>内容模型名称</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">template_path</td>
+					<td nowrap="nowrap">varchar(200)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>默认内容模板路径</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">has_child</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap">0</td>
+					<td>拥有章节</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">is_url</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap">0</td>
+					<td>是链接</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">is_images</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap">0</td>
+					<td>是图集</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">disabled</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>是否删除</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_tag</h2>
+		表注释: 标签 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">category_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">type_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>cms_tag_type</h2>
+		表注释: 标签分类 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">count</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>log_email_check</h2>
+		表注释: 邮件验证日志 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">user_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">email</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">code</td>
+					<td nowrap="nowrap">varchar(40)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">create_date</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">checked</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>log_login</h2>
+		表注释: 登陆日志 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(45)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">user_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">ip</td>
+					<td nowrap="nowrap">varchar(20)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">result</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">create_date</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">error_password</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>log_operate</h2>
+		表注释: 操作日志 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">user_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">operate</td>
+					<td nowrap="nowrap">varchar(20)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">ip</td>
+					<td nowrap="nowrap">varchar(20)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">create_date</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">content</td>
+					<td nowrap="nowrap">varchar(500)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>log_task</h2>
+		表注释: 任务计划日志 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">task_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">begintime</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">endtime</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">result</td>
+					<td nowrap="nowrap">varchar(500)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>system_dept</h2>
+		表注释: 部门 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>名称</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">parent_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>父部门ID</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">description</td>
+					<td nowrap="nowrap">varchar(300)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>描述</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">user_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>负责人</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>system_moudle</h2>
+		表注释: 模块 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">url</td>
+					<td nowrap="nowrap">varchar(255)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">authorized_url</td>
+					<td nowrap="nowrap">text</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>授权地址</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">parent_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>system_role</h2>
+		表注释: 角色 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>名称</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">owns_all_right</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>拥有全部权限</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>system_role_authorized</h2>
+		表注释: 角色授权 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">role_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">authorized_url</td>
+					<td nowrap="nowrap">varchar(255)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>system_role_moudle</h2>
+		表注释: 角色模块关联 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">role_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">moudle_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>system_role_user</h2>
+		表注释: 角色用户关联 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">role_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">user_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>system_task</h2>
+		表注释: 任务计划 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">status</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">cron_expression</td>
+					<td nowrap="nowrap">varchar(50)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">description</td>
+					<td nowrap="nowrap">varchar(300)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">content</td>
+					<td nowrap="nowrap">varchar(500)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<h2>system_user</h2>
+		表注释: 用户 <br>
+		<br>
+		<table width="100%">
+			<tbody>
+				<tr>
+					<th width="50">字段</th>
+					<th width="80">类型</th>
+					<th width="40">空</th>
+					<th width="70">默认</th>
+					<th>注释</th>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td></td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">name</td>
+					<td nowrap="nowrap">varchar(45)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>用户名</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">password</td>
+					<td nowrap="nowrap">varchar(32)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>密码</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">nick_name</td>
+					<td nowrap="nowrap">varchar(45)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>昵称</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">dept_id</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>部门</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">roles</td>
+					<td nowrap="nowrap">text</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>角色</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">email</td>
+					<td nowrap="nowrap">varchar(100)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>邮箱地址</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">email_checked</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>已验证邮箱</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">superuser_access</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>是否管理员</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">disabled</td>
+					<td nowrap="nowrap">tinyint(1)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>是否禁用</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">auth_token</td>
+					<td nowrap="nowrap">varchar(40)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>登录授权码</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">last_login_date</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>最后登录日期</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">last_login_ip</td>
+					<td nowrap="nowrap">varchar(20)</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>最后登录ip</td>
+				</tr>
+				<tr class="even">
+					<td nowrap="nowrap">login_count</td>
+					<td nowrap="nowrap">int(11)</td>
+					<td>否</td>
+					<td nowrap="nowrap"></td>
+					<td>登录次数</td>
+				</tr>
+				<tr class="odd">
+					<td nowrap="nowrap">date_registered</td>
+					<td nowrap="nowrap">datetime</td>
+					<td>是</td>
+					<td nowrap="nowrap"><i>NULL</i></td>
+					<td>注册日期</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
