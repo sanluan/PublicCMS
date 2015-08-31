@@ -100,7 +100,7 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 .tabsPage .tabsMoreList li a{ display:block;width:148px;height:21px;padding:0 10px;border:solid 1px #FFF;white-space:nowrap;line-height:21px;}
 .tabsPage .tabsMoreList li a:hover{ border-color:#ececec;text-decoration:none;background:#f5f5f5;}
 .tabsPage .tabsMoreList li.selected a{ font-weight:bold;border-color:#dfe5ed;background:#e8edf3;}
-.tabsPage .tabsPageContent,footer{ display:block;overflow:hidden;border-left-style:solid;border-left-width:1px;position:relative;}
+.tabsPage .tabsPageContent{ display:block;overflow:hidden;border-left-style:solid;border-left-width:1px;position:relative;}
 
 /* Alert */
 .alert{ overflow:hidden;z-index:1011;display:block;width:300px;margin-left:-150px;position:absolute;top:0;left:50%;}

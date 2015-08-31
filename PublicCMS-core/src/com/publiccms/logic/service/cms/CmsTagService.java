@@ -23,6 +23,21 @@ public class CmsTagService extends BaseService<CmsTag, CmsTagDao> {
 		return dao.getPage(name, categoryId, typeId, pageIndex, pageSize);
 	}
 
+	public Integer[] saveTags(Integer contentId, String[] tagNames) {
+		Integer[] newTagIds = null;
+		if (notEmpty(contentId)) {
+			if (notEmpty(tagNames)) {
+				newTagIds = new Integer[tagNames.length];
+				int i = 0;
+				for (String tagName : tagNames) {
+					CmsTag tag = save(new CmsTag(tagName));
+					newTagIds[i++] = tag.getId();
+				}
+			}
+		}
+		return newTagIds;
+	}
+
 	@Override
 	protected CmsTagDao getDao() {
 		return dao;

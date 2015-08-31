@@ -88,7 +88,8 @@ public class CmsContentController extends BaseController {
 				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.content",
 						RequestUtils.getIp(request), getDate(), entity.getId() + ":" + entity.getTitle()));
 			}
-			newTagIds = contentTagService.updateContentTags(entity.getId(), tagIds, tagTitles);
+			contentTagService.delete(null, entity.getId());
+			newTagIds = tagService.saveTags(entity.getId(), tagTitles);
 			if (notEmpty(cmsModel) && cmsModel.isIsImages()) {
 				service.updateImages(entity, parameterMap);
 			}
@@ -104,7 +105,7 @@ public class CmsContentController extends BaseController {
 			}
 			logOperateService.save(new LogOperate(user.getId(), "save.content", RequestUtils.getIp(request), getDate(), entity
 					.getId() + ":" + entity.getTitle()));
-			newTagIds = contentTagService.saveContentTags(entity.getId(), tagIds, tagTitles);
+			newTagIds = tagService.saveTags(entity.getId(), tagTitles);
 			if (notEmpty(cmsModel) && cmsModel.isIsImages()) {
 				service.saveImages(entity, parameterMap);
 			}
@@ -149,6 +150,7 @@ public class CmsContentController extends BaseController {
 			for (Integer id : ids) {
 				CmsContent entity = service.check(id);
 				if (notEmpty(entity)) {
+					contentTagService.updateContentTags(id, entity.getTags());
 					if (notEmpty(entity.getParentId())) {
 						publish(new Integer[] { entity.getParentId() }, request, model);
 					}

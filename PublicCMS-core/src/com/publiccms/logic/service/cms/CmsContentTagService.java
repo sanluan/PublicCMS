@@ -4,6 +4,7 @@ package com.publiccms.logic.service.cms;
 
 import static org.apache.commons.lang3.ArrayUtils.contains;
 import static org.apache.commons.lang3.ArrayUtils.removeElement;
+import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
 
 import java.util.List;
 
@@ -12,9 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.entities.cms.CmsContentTag;
-import com.publiccms.entities.cms.CmsTag;
 import com.publiccms.logic.dao.cms.CmsContentTagDao;
-import com.publiccms.logic.dao.cms.CmsTagDao;
 import com.sanluan.common.base.BaseService;
 import com.sanluan.common.handler.PageHandler;
 
@@ -25,55 +24,38 @@ public class CmsContentTagService extends BaseService<CmsContentTag, CmsContentT
 	@Autowired
 	private CmsContentTagDao dao;
 
-	@Autowired
-	private CmsTagDao tagDao;
-
 	@Transactional(readOnly = true)
 	public PageHandler getPage(Integer tagId, Integer contentId, Integer[] tagIds, Integer[] contentIds, Integer pageIndex,
 			Integer pageSize) {
 		return dao.getPage(tagId, contentId, tagIds, contentIds, pageIndex, pageSize);
 	}
-	
+
 	public int delete(Integer tagId, Integer contentId) {
 		return dao.delete(tagId, contentId);
 	}
 
-	public Integer[] updateContentTags(Integer contentId, Integer[] tagIds, String[] tagNames) {
-		Integer[] newTagIds = null;
+	public void updateContentTags(Integer contentId, String tagIds) {
+		String[] categoryStringIds = splitByWholeSeparator(tagIds, ",");
+		Integer[] tagIdsArray = new Integer[categoryStringIds.length + 1];
+		for (int i = 0; i < categoryStringIds.length; i++) {
+			tagIdsArray[i] = Integer.parseInt(categoryStringIds[i]);
+		}
 		if (notEmpty(contentId)) {
 			@SuppressWarnings("unchecked")
 			List<CmsContentTag> list = (List<CmsContentTag>) getPage(null, contentId, null, null, null, null).getList();
 			for (CmsContentTag contentTag : list) {
-				if (contains(tagIds, contentTag.getId())) {
-					tagIds = removeElement(tagIds, contentTag.getId());
+				if (contains(tagIdsArray, contentTag.getId())) {
+					tagIdsArray = removeElement(tagIdsArray, contentTag.getId());
 				} else {
 					delete(contentTag.getId());
 				}
 			}
-			newTagIds = saveContentTags(contentId, tagIds, tagNames);
-		}
-		return newTagIds;
-	}
-
-	public Integer[] saveContentTags(Integer contentId, Integer[] tagIds, String[] tagNames) {
-		Integer[] newTagIds = null;
-		if (notEmpty(contentId)) {
-			if (notEmpty(tagIds)) {
-				for (int tagid : tagIds) {
+			if (notEmpty(tagIdsArray)) {
+				for (int tagid : tagIdsArray) {
 					save(new CmsContentTag(tagid, contentId));
 				}
 			}
-			if (notEmpty(tagNames)) {
-				newTagIds = new Integer[tagNames.length];
-				int i = 0;
-				for (String tagName : tagNames) {
-					CmsTag tag = tagDao.save(new CmsTag(tagName));
-					save(new CmsContentTag(tag.getId(), contentId));
-					newTagIds[i++] = tag.getId();
-				}
-			}
 		}
-		return newTagIds;
 	}
 
 	@Override
