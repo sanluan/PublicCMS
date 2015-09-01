@@ -28,8 +28,8 @@ public class CmsModelController extends BaseController {
 	@Autowired
 	private LogOperateService logOperateService;
 
-	private List<String> systemExtendList = Arrays.asList(new String[] { "modelExtend1", "modelExtend1", "modelExtend1",
-			"modelExtend1" });
+	private List<String> systemExtendList = Arrays.asList(new String[] { "modelExtend1", "modelExtend2", "modelExtend3",
+			"modelExtend4" });
 
 	@RequestMapping("save")
 	public String save(CmsModel entity, HttpServletRequest request) {

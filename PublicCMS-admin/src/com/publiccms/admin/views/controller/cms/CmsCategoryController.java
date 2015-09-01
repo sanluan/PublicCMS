@@ -47,7 +47,7 @@ public class CmsCategoryController extends BaseController {
 	@Autowired
 	private LogOperateService logOperateService;
 
-	private List<String> systemExtendList = Arrays.asList(new String[] { "extend1", "extend1", "extend1", "extend1" });
+	private List<String> systemExtendList = Arrays.asList(new String[] { "extend1", "extend2", "extend3", "extend4" });
 
 	@RequestMapping("save")
 	public String save(CmsCategory entity, HttpServletRequest request, ModelMap model) {
