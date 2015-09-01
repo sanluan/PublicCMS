@@ -35,24 +35,26 @@ public class CmsContentTagService extends BaseService<CmsContentTag, CmsContentT
 	}
 
 	public void updateContentTags(Integer contentId, String tagIds) {
-		String[] categoryStringIds = splitByWholeSeparator(tagIds, ",");
-		Integer[] tagIdsArray = new Integer[categoryStringIds.length + 1];
-		for (int i = 0; i < categoryStringIds.length; i++) {
-			tagIdsArray[i] = Integer.parseInt(categoryStringIds[i]);
-		}
-		if (notEmpty(contentId)) {
-			@SuppressWarnings("unchecked")
-			List<CmsContentTag> list = (List<CmsContentTag>) getPage(null, contentId, null, null, null, null).getList();
-			for (CmsContentTag contentTag : list) {
-				if (contains(tagIdsArray, contentTag.getId())) {
-					tagIdsArray = removeElement(tagIdsArray, contentTag.getId());
-				} else {
-					delete(contentTag.getId());
+		if (notEmpty(tagIds) && notEmpty(contentId)) {
+			String[] categoryStringIds = splitByWholeSeparator(tagIds, ",");
+			if (notEmpty(categoryStringIds)) {
+				Integer[] tagIdsArray = new Integer[categoryStringIds.length];
+				for (int i = 0; i < categoryStringIds.length; i++) {
+					tagIdsArray[i] = Integer.parseInt(categoryStringIds[i]);
 				}
-			}
-			if (notEmpty(tagIdsArray)) {
-				for (int tagid : tagIdsArray) {
-					save(new CmsContentTag(tagid, contentId));
+				@SuppressWarnings("unchecked")
+				List<CmsContentTag> list = (List<CmsContentTag>) getPage(null, contentId, null, null, null, null).getList();
+				for (CmsContentTag contentTag : list) {
+					if (contains(tagIdsArray, contentTag.getId())) {
+						tagIdsArray = removeElement(tagIdsArray, contentTag.getId());
+					} else {
+						delete(contentTag.getId());
+					}
+				}
+				if (notEmpty(tagIdsArray)) {
+					for (int tagid : tagIdsArray) {
+						save(new CmsContentTag(tagid, contentId));
+					}
 				}
 			}
 		}
