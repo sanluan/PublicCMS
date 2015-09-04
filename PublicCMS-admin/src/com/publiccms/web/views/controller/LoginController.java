@@ -36,7 +36,7 @@ public class LoginController extends BaseController {
 	@Autowired
 	private LogEmailCheckService logEmailCheckService;
 
-	@RequestMapping(value = { "login" })
+	@RequestMapping(value = { "login" }, method = RequestMethod.POST)
 	public String login(String username, String password, String returnUrl, HttpServletRequest request,
 			HttpServletResponse response, ModelMap model) {
 		if (virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {

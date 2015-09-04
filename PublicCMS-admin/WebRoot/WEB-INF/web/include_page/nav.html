@@ -1,0 +1,42 @@
+<header>
+	<div class="container search">
+		<form action="${getCmsPath('search.html')}">
+			<input name="word" type="text" placeholder="这里输入关键词"/>
+			<input type="submit" value="搜索"/>
+			<@_noCache>
+				<#if user?has_content>
+					<span>${user.nickName}</span>
+					<span><a href="logout.do">注销</a></span>
+				<#else>
+					<span><a href="login.html">登陆</a></span>
+				</#if>
+			</@_noCache>
+		</form>
+	</div>
+	<div class="container">
+		<div class="logo"><a href="${getCmsPath()}"><img src="${getUploadPath()}image/logo.png"/></a></div>
+		<nav>
+			<ul>
+				<li><a href="${getCmsPath()}">首页</a></li>
+<@_categoryList>
+	<#list page.list as a>
+				<li>
+					<a href="${getCmsPath('list.html')}?id=${a.id}">${a.name}</a>
+		<#if a.childIds?has_content>
+					<ul>
+			<@_categoryList parentId=a.id>
+				<#list page.list as a>
+						<li><a href="${getCmsPath('list.html')}?id=${a.id}">${a.name}</a></li>
+				</#list>
+			</@_categoryList>
+					</ul>
+		</#if>
+				</li>
+	</#list>
+</@_categoryList>
+				<li><a href="${getCmsPath('interface.html')}">接口测试</a></li>
+				<li><a href="${getCmsPath()}admin/">管理后台</a></li>
+			</ul>
+		</nav>
+	</div>
+</header>

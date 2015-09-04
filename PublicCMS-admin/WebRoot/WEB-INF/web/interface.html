@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh">
 <head>
 	<title>接口列表</title>
+	<!--#include virtual="/include/header.html"-->
 	<script src="http://libs.useso.com/js/jquery/1.9.1/jquery.min.js"></script>
 	<script src="${res}/code-formatter.js" type="text/javascript"></script>
 	<link href="${res}/code-formatter.css" type="text/css" rel="stylesheet"></link>
@@ -40,22 +41,29 @@ $.ajax({
 </script>
 </head>
 <body>
-<div>
-	<fieldset>
-		<legend>接口测试</legend>
-	  	<p>
-	  		地址：directive.json?
-	  		<textarea id="sendData"></textarea>
-	  	</p>
-		<p><input type="button" value="发送请求" onclick="change()"/> <a href="${res}/doc.txt" target="_blank">接口使用参考自定义指令使用规则</a></p>
-		<p id="interfaes">接口列表：</p>
-	</fieldset>
-	<fieldset>
-		<legend>返回报文</legend>
-		<textarea id="rawJson"></textarea>
-		<p><input type="button" value="格式化" onclick="process($('#rawJson'),$('.canvas'))"/></p>
-		<div class="canvas"></div>
-	</fieldset>
-</div>
+<#include "include_page/nav.html">
+<script>
+	$("header nav ul li a:contains('接口测试')").parent().addClass('selected');
+</script>
+<main>
+	<div class="container">
+		<fieldset>
+			<legend>接口测试</legend>
+		  	<p>
+		  		地址：directive.json?
+		  		<textarea id="sendData">action=contentList&count=3</textarea>
+		  	</p>
+			<p><input type="button" value="发送请求" onclick="change()"/> <a href="${res}/doc.txt" target="_blank">接口使用参考自定义指令使用规则</a></p>
+			<p id="interfaes">接口列表：</p>
+		</fieldset>
+		<fieldset>
+			<legend>返回报文</legend>
+			<textarea id="rawJson"></textarea>
+			<p><input type="button" value="格式化" onclick="process($('#rawJson'),$('.canvas'))"/></p>
+			<div class="canvas"></div>
+		</fieldset>
+	</div>
+</main>
+<!--#include virtual="/include/footer.html"-->
 </body>
 </html>

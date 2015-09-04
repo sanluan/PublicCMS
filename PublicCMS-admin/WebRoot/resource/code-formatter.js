@@ -1,4 +1,4 @@
-window.TAB = "	";
+window.TAB = "  ";
 window.QuoteKeys = true;
 function checkArray(obj) {
 	return obj && typeof obj === 'object' && typeof obj.length === 'number'

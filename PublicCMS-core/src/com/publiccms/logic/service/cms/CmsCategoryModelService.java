@@ -36,8 +36,8 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel, CmsCa
 		CmsCategoryModel categoryModel = getEntity(model.getId(), categoryId);
 		if (!model.isIsUrl() && !model.isIsImages()) {
 			@SuppressWarnings("unchecked")
-			List<CmsModel> modelList = (List<CmsModel>) modelDao.getPage(model.getId(), null, null, null, false, null, null)
-					.getList();
+			List<CmsModel> modelList = (List<CmsModel>) modelDao
+					.getPage(model.getId(), null, null, null, null, false, null, null).getList();
 			for (CmsModel child : modelList) {
 				updateCategoryModel(true, categoryId, child, parameterMap);
 			}

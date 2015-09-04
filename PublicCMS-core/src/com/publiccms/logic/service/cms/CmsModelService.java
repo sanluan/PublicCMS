@@ -21,9 +21,9 @@ public class CmsModelService extends BaseService<CmsModel, CmsModelDao> {
 	private CmsModelDao dao;
 
 	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer parentId, Boolean hasChild, Boolean isUrl, Boolean isImages, Boolean disabled,
+	public PageHandler getPage(Integer parentId, Boolean hasChild, Boolean isUrl, Boolean isImages,Boolean isPart, Boolean disabled,
 			Integer pageIndex, Integer pageSize) {
-		return dao.getPage(parentId, hasChild, isUrl, isImages, disabled, pageIndex, pageSize);
+		return dao.getPage(parentId, hasChild, isUrl, isImages, isPart, disabled, pageIndex, pageSize);
 	}
 
 	@Override

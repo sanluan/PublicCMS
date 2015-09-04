@@ -1,8 +1,8 @@
 @charset "utf-8";
-/* CSS Document */
 
+/* CSS Document */
 div.canvas {
-font-family: Lucida Console, Georgia; font-size: 13px; background-color: #ECECEC; color: #000000;
+font-family: Lucida Console, Georgia; font-size: 12px; background-color: #ECECEC; color: #000000;
 border: solid 1px #CECECE;
 }
 
@@ -43,5 +43,5 @@ color: #000000; font-weight: bold;
 }
 
 PRE.CodeContainer {
-margin-top: 0px; margin-bottom: 0px;
+margin-top: 0px; margin-bottom: 0px;word-break: break-all; white-space: pre-wrap;
 }

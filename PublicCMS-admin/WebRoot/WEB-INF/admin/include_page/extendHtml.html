@@ -1,6 +1,6 @@
 <#macro inputType name value>
 <select class="combox" name="${name!'inputType'}">
-	<#local inputTypes={'text':'输入框','number':'数字','file':'文件','password':'密码','editor':'编辑器','textarea':'文本域'}/>
+	<#local inputTypes={'text':'输入框','number':'数字','file':'文件','password':'密码','editor':'编辑器','textarea':'文本域','date':'日期'}/>
 	<#list inputTypes?keys as a>
 	<option value="${a}" ${(value??&&a=value)?then(' selected="true"','')}>${inputTypes[a]}</option>
 	</#list>

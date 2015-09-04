@@ -1,8 +1,9 @@
 package com.publiccms.logic.component;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static com.sanluan.common.tools.RequestUtils.getValue;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,13 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsExtend;
 import com.publiccms.logic.service.cms.CmsExtendService;
 
 @Component
 public class ExtendComponent {
-	public static final int ITEM_TYPE_MODEL = 1, ITEM_TYPE_CATEGORY = 2, EXTEND_TYPE_CONTENT = 1,EXTEND_TYPE_CATEGORY = 2;
+	public static final int ITEM_TYPE_MODEL = 1, ITEM_TYPE_CATEGORY = 2, EXTEND_TYPE_CONTENT = 1, EXTEND_TYPE_CATEGORY = 2;
 	private static final String PARAMETER_PREFIX = "ex_";
 
 	@Autowired
@@ -37,6 +39,41 @@ public class ExtendComponent {
 			}
 		}
 		return "";
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Map<String, String>> getContentExtent(CmsContentAttribute cmsContentAttribute) {
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		if (null != cmsContentAttribute) {
+			try {
+				if (null != cmsContentAttribute.getText())
+					return (List<Map<String, String>>) objectMapper.readValue(cmsContentAttribute.getText(), List.class);
+			} catch (Exception e) {
+			}
+		}
+		return list;
+	}
+
+	public String contentExtent(CmsContentAttribute cmsContentAttribute, Map<String, String[]> parameterMap) {
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		if (null != cmsContentAttribute) {
+			try {
+				Set<String> parameterSet = parameterMap.keySet();
+				for (String paramterName : parameterSet) {
+					if (paramterName.startsWith("ex_c_") && paramterName.endsWith("_name")
+							&& isNotBlank(getValue(parameterMap, paramterName))) {
+						String pre = paramterName.substring(0, paramterName.length() - 5);
+						Map<String, String> map = new HashMap<String, String>();
+						map.put("name", getValue(parameterMap, paramterName));
+						map.put("text", getValue(parameterMap, pre + "_text"));
+						list.add(map);
+					}
+				}
+				return objectMapper.writeValueAsString(list);
+			} catch (JsonProcessingException e) {
+			}
+		}
+		return "[]";
 	}
 
 	@SuppressWarnings("unchecked")

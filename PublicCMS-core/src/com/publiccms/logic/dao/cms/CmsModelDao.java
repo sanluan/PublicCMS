@@ -11,7 +11,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsModelDao extends BaseDao<CmsModel> {
-	public PageHandler getPage(Integer parentId, Boolean hasChild, Boolean isUrl, Boolean isImages, Boolean disabled,
+	public PageHandler getPage(Integer parentId, Boolean hasChild, Boolean isUrl, Boolean isImages,Boolean isPart, Boolean disabled,
 			Integer pageIndex, Integer pageSize) {
 		QueryHandler queryHandler = getQueryHandler("from CmsModel bean");
 		if (notEmpty(parentId)) {
@@ -27,6 +27,9 @@ public class CmsModelDao extends BaseDao<CmsModel> {
 		}
 		if (notEmpty(isImages)) {
 			queryHandler.condition("bean.isImages = :isImages").setParameter("isImages", isImages);
+		}
+		if (notEmpty(isPart)) {
+			queryHandler.condition("bean.isPart = :isPart").setParameter("isPart", isPart);
 		}
 		if (notEmpty(disabled)) {
 			queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
