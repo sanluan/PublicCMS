@@ -49,8 +49,9 @@ $(function(){
 							<input name="isUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.isUrl').hide();$('.isUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.isUrl').show();}"/>
 							链接
 						</label>
-						<label><input name="isImages" type="checkbox" onclick="if($(this).is(':checked')){$('input[name=hasChild]',navTab.getCurrentPanel()).parent().hide();}else{$('input[name=hasChild]',navTab.getCurrentPanel()).parent().show();}"/>图集</label>
-						<label><input name="hasChild" type="checkbox"/>拥有<@t.m 'moudle.child'/><@t.m 'moudle.model'/></label>
+						<label class="isUrl"><input name="isImages" type="checkbox" onclick="if($(this).is(':checked')){$('.isImages',navTab.getCurrentPanel()).hide();}else{$('.isImages',navTab.getCurrentPanel()).show();}"/>图集</label>
+						<label class="isImages isUrl"><input name="isPart" type="checkbox"/>片段</label>
+						<label class="isImages isUrl"><input name="hasChild" type="checkbox"/>拥有<@t.m 'moudle.child'/><@t.m 'moudle.model'/></label>
 					</dd>
 				</dl>
 			<#if a??>
@@ -58,6 +59,9 @@ $(function(){
 				<#if a.isImages>
 					$('input[name=isImages]',navTab.getCurrentPanel()).click();
 				<#else>
+					<#if a.isPart>
+					$('input[name=isPart]',navTab.getCurrentPanel()).click();
+					</#if>
 					<#if a.hasChild>
 					$('input[name=hasChild]',navTab.getCurrentPanel()).click();
 					</#if>

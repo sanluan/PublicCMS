@@ -51,7 +51,6 @@ main .bread span,main .bread a{ padding:3px 8px;font-size:14px;font-weight:bold;
 main .nav{ line-height:60px;border-bottom:1px solid #eee;text-align:right;}
 main .nav .selected{ border:1px solid;}
 main .nav a{ padding:3px 8px;font-size:14px;font-weight:bold;color:#a7f}
-main ul li{ padding:5px 0;border-bottom:1px dashed #eee;}
 main article h1{ font-size:24px;padding-bottom:24px;margin-bottom:24px;border-bottom:1px solid #eee;line-height:1.5;font-weight:600;word-break:break-word;}
 main article .author{ font-size:14px;text-align:center;color:#99;}
 main article .author em{ color:#f00;}
@@ -73,6 +72,7 @@ main .page span,main .page .selected{ color:#cacaca;}
 main .page .selected{ border-color:#a7f;}
 main .comment{ min-height:320px;}
 main aside ul{ border:1px solid #eee;padding:10px;}
+main aside ul li{ padding:5px 0;border-bottom:1px dashed #eee;}
 main aside ul li span{ float:right;color:#aaa;}
 main aside ul li:after{ display:block;content:".";height:0;clear:both;visibility:hidden;}
 main aside ul li a{ display: block;float:left;}

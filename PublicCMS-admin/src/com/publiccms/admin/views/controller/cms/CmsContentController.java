@@ -111,6 +111,9 @@ public class CmsContentController extends BaseController {
 			}
 		}
 		service.updateTags(entity.getId(), arrayToCommaDelimitedString(addAll(tagIds, newTagIds)));
+		if(cmsModel.isIsPart()){
+			txt = extendComponent.contentExtent(attributeService.getEntity(entity.getId()), parameterMap);
+		}
 		String data = extendComponent.dealExtent(ExtendComponent.EXTEND_TYPE_CONTENT, entity.getCategoryId(),
 				entity.getModelId(), parameterMap);
 		attributeService.dealAttribute(entity.getId(), txt, data);

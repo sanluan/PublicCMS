@@ -24,6 +24,10 @@
 	<#case 'editor'>
 		<textarea name="${code}" class="editor<#if extend.isRequired> required</#if>" ${append}style="width: 100%;" rows="20">${value!}</textarea>
 		<#break>
+	<#case 'date'>
+		<input class="date" name="${code}" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${value!}"/>
+		<a class="inputDateButton" href="javascript:;">选择</a>
+		<#break>
 	<#default>
 		<input name="${code}" class="<#if extend.isRequired> required</#if>" type="text" ${append}size="30" value="${value!}"/>
 </#switch>

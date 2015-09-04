@@ -1,3 +1,8 @@
+<@_content id=id>
+	<#assign content=object/>
+	<@_category id=object.categoryId><#assign category=object/></@_category>
+	<#assign text=(getContentAttr(object.id).text)!/>
+</@_content>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -9,10 +14,10 @@
 	<script src="${getUploadPath()}gallery/gallery.js"></script>
 </head>
 <body>
-<!--#include virtual="/include/nav.html"-->
+<#include "include_page/nav.html">
 <main>
 	<div class="container bread">
-		<#include "/ftl/echoBread.ftl"/>
+		<#include "ftl/echoBread.ftl"/>
 		<@echoBread category.id/>
 	</div>
 	<div class="container">

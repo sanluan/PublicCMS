@@ -1,3 +1,6 @@
+<@_category id=id><#assign category=object/></@_category>
+<#if !pageIndex?has_content><#assign pageIndex='1'/></#if>
+<#assign pageIndex=pageIndex?number/>
 <!DOCTYPE html>
 <html lang="zh">
 <head>
@@ -7,31 +10,39 @@
 <!--#include virtual="/include/header.html"-->
 </head>
 <body>
-<!--#include virtual="/include/nav.html"-->
+<#include "include_page/nav.html">
 <script>
 	$("header nav ul li a:contains('${category.name}')").parent().addClass('selected');
 </script>
 <main>
 	<div class="container nav">
-		<@_categoryList parentId=category.parentId>
+		<@_categoryList parentId=category.id>
 			<#list page.list as a>
-				<a href="${getSitePath(a.url)}"<#if category.id=a.id> class="selected"</#if>>${a.name}</a>
+				<a href="${getCmsPath('list.html')}?id=${a.id}">${a.name}</a>
 			</#list>
 		</@_categoryList>
 	</div>
 	<div class="container bread">
-		<#include "/ftl/echoBread.ftl"/>
+		<#include "ftl/echoBread.ftl"/>
 		<@echoBread category.id/>
 	</div>
 	<div class="container">
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderField='publishDate' orderType='desc' pageIndex=pageIndex count=category.pageSize>
 		<div class="data-list left-content">
-	<#include "/ftl/cut.ftl"/>
+			<#if 1=pageIndex>
+				<h3>最新文章</h3>
+			</#if>
+	<#include "ftl/meger.ftl"/>
+	<#include "ftl/cut.ftl"/>
+	<#list page.list as a>
+		<@meger 'categoryIds' a.categoryId!/>
+	</#list>
+	<@_category ids=categoryIds!><#assign categoryMap=map/></@_category>
 	<#list page.list as a>
 			<dl>
-				<#if a.cover?has_content><dd><a href="${getSitePath(a.url)}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd></#if>
+				<#if a.cover?has_content><dd><a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd></#if>
 				<dt<#if a.cover?has_content> class="image"</#if>>
-					<h3><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a></h3>
+					<h3>[<a href="${getSitePath(categoryMap[a.categoryId?string].url)}">${categoryMap[a.categoryId?string].name}</a>]<a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" target="_blank" title="${a.title}">${a.title}</a></h3>
 					<div class="tags">
 						<#if a.tags?has_content>标签：
 							<@_tag ids=a.tags>
@@ -42,7 +53,7 @@
 						</#if>
 						<span>${a.publishDate?date}</span>
 					</div>
-					<p><@cut a.description 130 '...'/><a href="${getSitePath(a.url)}" target="_blank"> 详细 &gt;&gt;</a> </p>
+					<p><@cut a.description 130 '...'/><a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" title="${a.title}" target="_blank"> 详细 &gt;&gt;</a> </p>
 				</dt>
 			</dl>
 	</#list>
@@ -55,7 +66,7 @@
 					</#if>
 				</div>
 			<#else>
-				<#include "/ftl/category_page.ftl"/>
+				<#include "ftl/category_page.ftl"/>
 			</#if>
 		</div>
 		<aside>
@@ -66,7 +77,7 @@
 				<ul class="rank">
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderType='desc' orderField='clicks' count=10>
 	<#list page.list as a>
-					<li><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+					<li><a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>
 </@_contentList>
 				</ul>

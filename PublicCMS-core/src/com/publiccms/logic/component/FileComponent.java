@@ -70,6 +70,8 @@ public class FileComponent {
 	@Autowired
 	private CmsCategoryAttributeService categoryAttributeService;
 	@Autowired
+	private ExtendComponent extendComponent;
+	@Autowired
 	private FreeMarkerExtendHandler freeMarkerExtendHandler;
 	private Configuration configuration;
 
@@ -93,32 +95,36 @@ public class FileComponent {
 					} catch (IOException e) {
 					}
 				if (isNotBlank(attribute.getText()) && !cmsModel.isIsImages()) {
-					String[] texts = splitByWholeSeparator(attribute.getText(), DEFAULT_PAGE_BREAK_TAG);
-					String filePath = category.getContentPath();
-					try {
-						filePath = FreeMarkerUtils.makeStringByString(filePath, configuration, model);
-						if (isNotBlank(filePath) && 0 < filePath.lastIndexOf('.')) {
-							String prefixFilePath = filePath.substring(0, filePath.lastIndexOf('.'));
-							String suffixFilePath = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
-							List<String> urlList = new ArrayList<String>();
-							urlList.add(filePath);
-							for (int i = 2; i <= texts.length; i++) {
-								urlList.add(prefixFilePath + '_' + i + suffixFilePath);
-							}
-							for (int i = 1; i < texts.length; i++) {
-								model.put("text", texts[i]);
-								PageHandler page = new PageHandler(i + 1, 1, texts.length, null);
+					if (cmsModel.isIsPart()) {
+						model.put("contentList", extendComponent.getContentExtent(attribute));
+					} else {
+						String[] texts = splitByWholeSeparator(attribute.getText(), DEFAULT_PAGE_BREAK_TAG);
+						String filePath = category.getContentPath();
+						try {
+							filePath = FreeMarkerUtils.makeStringByString(filePath, configuration, model);
+							if (isNotBlank(filePath) && 0 < filePath.lastIndexOf('.')) {
+								String prefixFilePath = filePath.substring(0, filePath.lastIndexOf('.'));
+								String suffixFilePath = filePath.substring(filePath.lastIndexOf('.'), filePath.length());
+								List<String> urlList = new ArrayList<String>();
+								urlList.add(filePath);
+								for (int i = 2; i <= texts.length; i++) {
+									urlList.add(prefixFilePath + '_' + i + suffixFilePath);
+								}
+								for (int i = 1; i < texts.length; i++) {
+									model.put("text", texts[i]);
+									PageHandler page = new PageHandler(i + 1, 1, texts.length, null);
+									page.setList(urlList);
+									model.put("page", page);
+									createStaticFile(templatePath, urlList.get(i), model);
+								}
+								model.put("text", texts[0]);
+								PageHandler page = new PageHandler(1, 1, texts.length, null);
 								page.setList(urlList);
 								model.put("page", page);
-								createStaticFile(templatePath, urlList.get(i), model);
 							}
-							model.put("text", texts[0]);
-							PageHandler page = new PageHandler(1, 1, texts.length, null);
-							page.setList(urlList);
-							model.put("page", page);
+						} catch (IOException e) {
+						} catch (TemplateException e) {
 						}
-					} catch (IOException e) {
-					} catch (TemplateException e) {
 					}
 				}
 			}

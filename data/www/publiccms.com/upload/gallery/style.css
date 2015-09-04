@@ -79,7 +79,7 @@ html {
 .mod-gallery .gallery-photo-description {
     margin: 30px 20px;
     line-height: 21px;
-    color: #C6C6C6;
+    color: #666;
 }
 .mod-gallery .gallery-end {
     background: #333;
@@ -91,6 +91,9 @@ html {
     margin-top: -101px;
     border: solid 1px #CCC;
     box-shadow: 0 0 5px #FFF;
+}
+.mod-gallery .gallery-end,.mod-gallery .gallery-end a {
+	color:#fff;
 }
 .mod-gallery .gallery-thumb {
 	margin: 0 110px;

@@ -1,1 +1,1 @@
-{"index.html":{"alias":"首页模板","path":"index.html","keywords":"开源CMS,免费CMS,JAVA CMS,FreeMarker,静态化","description":"PublicCMS是一款基于SpringMVC4.1.7,Hibernate4.3.10,FreeMarker2.3.23开发的永久免费开源CMS系统，支持全站静态化，SSI技术。"},"ftl":{"alias":"包含模板"}}
+{"index.html":{"alias":"首页模板","path":"index.html","keywords":"开源CMS,免费CMS,JAVA CMS,FreeMarker,静态化","description":"PublicCMS是一款基于SpringMVC4.2.0,Hibernate4.3.11,FreeMarker2.3.23,hibernate-search5.3.0开发的永久免费开源CMS系统，支持全站静态化，SSI技术。"},"ftl":{"alias":"包含模板"}}

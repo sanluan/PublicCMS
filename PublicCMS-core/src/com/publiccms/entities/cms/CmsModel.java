@@ -37,29 +37,32 @@ public class CmsModel implements java.io.Serializable {
 	private boolean isUrl;
 	@MyColumn(title = "是图集", condition = true)
 	private boolean isImages;
+	@MyColumn(title = "是片段", condition = true)
+	private boolean isPart;
 	@MyColumn(title = "已删除", condition = true)
 	private boolean disabled;
 
 	public CmsModel() {
 	}
 
-	public CmsModel(String name, boolean hasChild, boolean isUrl, boolean isImages,
-			boolean disabled) {
+	public CmsModel(String name, boolean hasChild, boolean isUrl, boolean isImages, boolean isPart, boolean disabled) {
 		this.name = name;
 		this.hasChild = hasChild;
 		this.isUrl = isUrl;
 		this.isImages = isImages;
+		this.isPart = isPart;
 		this.disabled = disabled;
 	}
 
-	public CmsModel(Integer parentId, String name, String templatePath, 
-			boolean hasChild, boolean isUrl, boolean isImages, boolean disabled) {
+	public CmsModel(Integer parentId, String name, String templatePath, boolean hasChild, boolean isUrl, boolean isImages,
+			boolean isPart, boolean disabled) {
 		this.parentId = parentId;
 		this.name = name;
 		this.templatePath = templatePath;
 		this.hasChild = hasChild;
 		this.isUrl = isUrl;
 		this.isImages = isImages;
+		this.isPart = isPart;
 		this.disabled = disabled;
 	}
 
@@ -82,7 +85,7 @@ public class CmsModel implements java.io.Serializable {
 	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
 	}
-	
+
 	@Column(name = "name", nullable = false, length = 20)
 	public String getName() {
 		return this.name;
@@ -126,6 +129,15 @@ public class CmsModel implements java.io.Serializable {
 
 	public void setIsImages(boolean isImages) {
 		this.isImages = isImages;
+	}
+
+	@Column(name = "is_part", nullable = false)
+	public boolean isIsPart() {
+		return this.isPart;
+	}
+
+	public void setIsPart(boolean isPart) {
+		this.isPart = isPart;
 	}
 
 	@Column(name = "disabled", nullable = false)

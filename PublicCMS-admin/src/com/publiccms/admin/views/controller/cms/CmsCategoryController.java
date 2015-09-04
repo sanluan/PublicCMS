@@ -74,9 +74,11 @@ public class CmsCategoryController extends BaseController {
 		Map<String, String[]> parameterMap = request.getParameterMap();
 
 		@SuppressWarnings("unchecked")
-		List<CmsModel> modelList = (List<CmsModel>) modelService.getPage(null, null, null, null, false, null, null).getList();
+		List<CmsModel> modelList = (List<CmsModel>) modelService.getPage(null, null, null, null, null, false, null, null)
+				.getList();
 		for (CmsModel cmsmodel : modelList) {
-			categoryModelService.updateCategoryModel(notEmpty(getValue(parameterMap, "model_" + cmsmodel.getId())),entity.getId(), cmsmodel, parameterMap);
+			categoryModelService.updateCategoryModel(notEmpty(getValue(parameterMap, "model_" + cmsmodel.getId())),
+					entity.getId(), cmsmodel, parameterMap);
 		}
 
 		extendComponent.updateExtend(ExtendComponent.ITEM_TYPE_CATEGORY, entity.getId(), ExtendComponent.EXTEND_TYPE_CATEGORY,

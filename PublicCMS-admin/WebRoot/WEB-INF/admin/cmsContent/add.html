@@ -108,7 +108,34 @@ function addTag($id,$name){
 				<dt>描述：</dt>
 				<dd><textarea name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea></dd>
 			</dl>
-		<#if model??&&!model.isUrl&&!model.isImages>
+	<#if model??&&!model.isUrl&&!model.isImages>
+		<#if model.isPart>
+			<dl class="nowrap">
+				<dt>内容片段</dt>
+				<dd>
+					<a class="buttonActive" href="javascript:prependExtend($('#ex_content',navTab.getCurrentPanel()),'_c_'+(content_i++)+'_').initUI();"><span>增加片段</span></a>
+					<div id="ex_content"></div>
+				</dd>
+			</dl>
+			<script>
+			var content_i=1;
+			function appendExtend($box,replaceStr){
+				return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).appendTo($box);
+			}
+			function prependExtend($box,replaceStr){
+				return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).prependTo($box);
+			}
+			<#if (contentAttr?has_content&&contentAttr.text?has_content)>
+			<#list contentAttr.text?eval as a>
+				$temp=appendExtend($('#ex_content',navTab.getCurrentPanel()),'_c_'+(content_i++)+'_');
+				$('input',$temp).val('${(a.name?js_string)!}');
+				$('textarea',$temp).val('${(a.text?js_string)!}');
+				$temp.initUI();
+			</#list>
+			</#if>
+			</script>
+			<textarea id="ex_new" style="display:none"><#include "../include_page/contentExtend.html"/></textarea>
+		<#else>
 			<dl class="nowrap">
 				<dt>正文：</dt>
 				<dd style="width:80%">
@@ -116,6 +143,7 @@ function addTag($id,$name){
 				</dd>
 			</dl>
 		</#if>
+	</#if>
 			<dl>
 				<dt>定时发布：</dt>
 				<dd>

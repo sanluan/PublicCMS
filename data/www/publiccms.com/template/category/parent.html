@@ -20,9 +20,8 @@
 		</@_categoryList>
 	</div>
 	<div class="container bread">
-		<#include "/ftl/bread_echoParent.ftl"/>
-		<@echoParent category.parentId!/>
-		<a href="${getSitePath(category.url)}">${category.name}</a>
+		<#include "/ftl/echoBread.ftl"/>
+		<@echoBread category.id/>
 	</div>
 	<div class="container">
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderField='publishDate' orderType='desc' pageIndex=pageIndex count=category.pageSize>
