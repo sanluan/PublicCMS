@@ -26,9 +26,9 @@
 			</div>
 			<script>
 				uParse('#content',{rootPath: '${getUploadPath()}ueditor'});
-				$.getJSON('${getCmsPath()}content/clicks.json?id=${content.id}&callback=?', function(data){});
+				$.getJSON('content/clicks.json?id=${content.id}&callback=?', function(data){});
 <@_content id=content.parentId>
-				$.getJSON('${getCmsPath()}content/clicks.json?id=${object.parentId}&callback=?', function(data){});
+				$.getJSON('content/clicks.json?id=${object.parentId}&callback=?', function(data){});
 </@_content>
 			</script>
 			<div class="page">

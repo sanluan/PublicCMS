@@ -168,7 +168,7 @@ $(function(){
 		templatePhotoThumb: ''
 	});
 });
-$.getJSON('${getCmsPath()}content/clicks.json?id=${content.id}&callback=?', function(data){
+$.getJSON('content/clicks.json?id=${content.id}&callback=?', function(data){
 	$('.gallery-info em').text(data.clicks);
 });
 </script>
@@ -177,7 +177,7 @@ $.getJSON('${getCmsPath()}content/clicks.json?id=${content.id}&callback=?', func
 					标签：
 					<@_tag ids=content.tags>
 						<#list map?keys as key>
-							<a href="${getCmsPath()}tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
+							<a href="tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
 						</#list>
 					</@_tag>
 				</div>
