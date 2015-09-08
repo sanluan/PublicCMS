@@ -28,7 +28,7 @@
 					标签：
 					<@_tag ids=content.tags>
 						<#list map?keys as key>
-							<a href="${getCmsPath('tags.html')}?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
+							<a href="tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
 						</#list>
 					</@_tag>
 				</div>
@@ -42,7 +42,7 @@
 						$(this).wrapAll("<a href=\"" + link + "\" title=\"点击查看下一页\"></a>");
 					});
 				}
-				$.getJSON('${getCmsPath()}content/clicks.json?id=${content.id}&callback=?', function(data){
+				$.getJSON('content/clicks.json?id=${content.id}&callback=?', function(data){
 					$('article .author em').text(data.clicks);
 				});
 			</script>
@@ -71,7 +71,7 @@
 		<@_content ids=contentIds>
 			<#list map?keys as k>
 				<#assign a=map[k]!/>
-				<#if a?has_content><li><a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" target="_blank" title="${a.title}"><@cut a.title 20 '...'/></a></li></#if>
+				<#if a?has_content><li><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank" title="${a.title}"><@cut a.title 20 '...'/></a></li></#if>
 			</#list>
 		</@_content>
 				</ul>

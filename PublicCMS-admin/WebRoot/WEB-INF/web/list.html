@@ -18,7 +18,7 @@
 	<div class="container nav">
 		<@_categoryList parentId=category.parentId>
 			<#list page.list as a>
-				<a href="${getCmsPath('list.html')}?id=${a.id}"<#if category.id=a.id> class="selected"</#if>>${a.name}</a>
+				<a href="list.html?id=${a.id}"<#if category.id=a.id> class="selected"</#if>>${a.name}</a>
 			</#list>
 		</@_categoryList>
 	</div>
@@ -32,27 +32,27 @@
 	<#include "ftl/cut.ftl"/>
 	<#list page.list as a>
 			<dl>
-				<#if a.cover?has_content><dd><a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd></#if>
+				<#if a.cover?has_content><dd><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd></#if>
 				<dt<#if a.cover?has_content> class="image"</#if>>
-					<h3><a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" target="_blank">${a.title}</a></h3>
+					<h3><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank">${a.title}</a></h3>
 					<div class="tags">
 						<#if a.tags?has_content>标签：
 							<@_tag ids=a.tags>
 								<#list map?keys as key>
-									<a href="${getCmsPath()}tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
+									<a href="tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
 								</#list>
 							</@_tag>
 						</#if>
 						<span>${a.publishDate?date}</span>
 					</div>
-					<p><@cut a.description 130 '...'/><a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" target="_blank"> 详细 &gt;&gt;</a> </p>
+					<p><@cut a.description 130 '...'/><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank"> 详细 &gt;&gt;</a> </p>
 				</dt>
 			</dl>
 	</#list>
 			<#if 1=pageIndex>
 				<div class="page">
 					<#if !page.lastPage>
-						<a href="${getSitePath(getPage(category.url,page.nextPage))}">查看更多</a>
+						<a href="list.html?id=${id}&pageIndex=${page.nextPage}">查看更多</a>
 					<#else>
 						<span>查看更多</span>
 					</#if>
@@ -69,7 +69,7 @@
 				<ul class="rank">
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderType='desc' orderField='clicks' count=10>
 	<#list page.list as a>
-					<li><a href="${getCmsPath(a.modelId?switch(3,'picture.html',4,'book.html','article.html'))}?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+					<li><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>
 </@_contentList>
 				</ul>
