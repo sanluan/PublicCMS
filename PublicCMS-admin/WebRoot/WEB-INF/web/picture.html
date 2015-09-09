@@ -147,18 +147,16 @@ $(function(){
 	var gallery = new Gallery({
 		element: '#content .mod-gallery',
 		photos: [
-<@_contentList parentId=content.id>
-	<#list page.list as a>
-		<#if a.cover?has_content>
+<#list text?eval as a>
+	<#if a.image?has_content>
 			{
-				big: '${getUploadPath(a.cover)}',
-				small: '${getUploadPath(getThumb(a.cover,100,75))}',
-				thumb: '${getUploadPath(getThumb(a.cover,100,75))}',
+				big: '${getUploadPath(a.image)}',
+				small: '${getUploadPath(getThumb(a.image,100,75))}',
+				thumb: '${getUploadPath(getThumb(a.image,100,75))}',
 				note: '${(a.title!)?js_string} ${(a.description!content.description!)?js_string}'
 			}<#if a?has_next>,</#if>
-		</#if>
-	</#list>
-</@_contentList>
+	</#if>
+</#list>
 		],
 		preload: 3,
 		minHeight: 100,

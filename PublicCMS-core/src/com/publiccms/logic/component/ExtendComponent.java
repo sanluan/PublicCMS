@@ -53,6 +53,28 @@ public class ExtendComponent {
 		}
 		return list;
 	}
+	
+	public String contentImages(CmsContentAttribute cmsContentAttribute, Map<String, String[]> parameterMap) {
+		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
+		if (null != cmsContentAttribute) {
+			try {
+				Set<String> parameterSet = parameterMap.keySet();
+				for (String paramterName : parameterSet) {
+					if (paramterName.startsWith("images_") && paramterName.endsWith("_image")
+							&& isNotBlank(getValue(parameterMap, paramterName))) {
+						String pre = paramterName.substring(0, paramterName.length() - 6);
+						Map<String, String> map = new HashMap<String, String>();
+						map.put("image", getValue(parameterMap, paramterName));
+						map.put("description", getValue(parameterMap, pre + "_description"));
+						list.add(map);
+					}
+				}
+				return objectMapper.writeValueAsString(list);
+			} catch (JsonProcessingException e) {
+			}
+		}
+		return "[]";
+	}
 
 	public String contentExtent(CmsContentAttribute cmsContentAttribute, Map<String, String[]> parameterMap) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();

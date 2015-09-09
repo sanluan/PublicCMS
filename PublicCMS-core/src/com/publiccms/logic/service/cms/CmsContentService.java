@@ -2,16 +2,11 @@ package com.publiccms.logic.service.cms;
 
 // Generated 2015-5-8 16:50:23 by SourceMaker
 
-import static com.sanluan.common.tools.RequestUtils.getValue;
 import static org.apache.commons.lang3.ArrayUtils.add;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,48 +57,6 @@ public class CmsContentService extends BaseService<CmsContent, CmsContentDao> {
 		return dao.getPage(status, categoryId, getCategoryIds(containChild, categoryId), disabled, modelId, parentId, title,
 				userId, startPublishDate, endPublishDate, extend1, extend2, extend3, extend4, modelExtend1, modelExtend2,
 				modelExtend3, modelExtend4, orderField, orderType, pageIndex, pageSize);
-	}
-
-	public void updateImages(CmsContent entity, Map<String, String[]> parameterMap) {
-		@SuppressWarnings("unchecked")
-		List<CmsContent> childList = (List<CmsContent>) getPage(null, null, null, null, null, entity.getId(), null, null, null,
-				null, null, null, null, null, null, null, null, null, null, null, null, null).getList();
-		for (CmsContent child : childList) {
-			String pre = "images_" + child.getId();
-			String image = getValue(parameterMap, pre + "_image");
-			if (notEmpty(image)) {
-				child.setTitle(getValue(parameterMap, pre + "_title"));
-				child.setCover(image);
-				child.setDescription(getValue(parameterMap, pre + "_description"));
-				update(child.getId(), child, new String[] { "id", "userId", "url", "clicks", "comments", "scores", "childs",
-						"parentId", "categoryId", "modelId", "status", "publishDate", "createDate" });
-			} else {
-				delete(child.getId());
-				updateChilds(entity.getId(), -1);
-			}
-		}
-		saveImages(entity, parameterMap);
-	}
-
-	public void saveImages(CmsContent entity, Map<String, String[]> parameterMap) {
-		Set<String> parameterSet = parameterMap.keySet();
-		for (String paramterName : parameterSet) {
-			if (paramterName.startsWith("images_new_") && paramterName.endsWith("_image")
-					&& isNotBlank(getValue(parameterMap, paramterName))) {
-				String pre = paramterName.substring(0, paramterName.length() - 6);
-				CmsContent child = new CmsContent();
-				child.setModelId(entity.getModelId());
-				child.setCategoryId(entity.getCategoryId());
-				child.setParentId(entity.getId());
-				child.setUserId(entity.getUserId());
-				child.setStatus(CmsContentService.STATUS_NORMAL);
-				child.setTitle(getValue(parameterMap, pre + "_title"));
-				child.setCover(getValue(parameterMap, paramterName));
-				child.setDescription(getValue(parameterMap, pre + "_description"));
-				save(child);
-				updateChilds(entity.getId(), 1);
-			}
-		}
 	}
 
 	public CmsContent check(Serializable id) {

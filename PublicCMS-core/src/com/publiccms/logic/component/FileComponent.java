@@ -87,15 +87,16 @@ public class FileComponent {
 
 			CmsContentAttribute attribute = contentAttributeService.getEntity(entity.getId());
 			if (null != attribute) {
-				if (isNotBlank(attribute.getData()))
+				if (isNotBlank(attribute.getData())) {
 					try {
 						model.put("extend", objectMapper.readValue(attribute.getData(), Map.class));
 					} catch (JsonParseException e) {
 					} catch (JsonMappingException e) {
 					} catch (IOException e) {
 					}
-				if (isNotBlank(attribute.getText()) && !cmsModel.isIsImages()) {
-					if (cmsModel.isIsPart()) {
+				}
+				if (isNotBlank(attribute.getText())) {
+					if (cmsModel.isIsPart() || cmsModel.isIsImages()) {
 						model.put("contentList", extendComponent.getContentExtent(attribute));
 					} else {
 						String[] texts = splitByWholeSeparator(attribute.getText(), DEFAULT_PAGE_BREAK_TAG);

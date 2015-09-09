@@ -1,9 +1,0 @@
-<#assign extendHtml><div style="clear:both">
-	<label>片段<@t.m 'field.name'/>：</label>
-	<input class="required" name="ex_new_name" maxlength="20" type="text" size="10"/>
-	<a class="buttonActive" href="javascript:$('input[name=ex_new_name]',navTab.getCurrentPanel()).parent().remove();"><span><@t.m 'button.delete'/></span></a>
-	<div style="clear:both"></div>
-	<textarea name="ex_new_text" class="required editor" style="width: 100%;" rows="20"></textarea>
-	<hr/>
-</div></#assign>
-${extendHtml?html}

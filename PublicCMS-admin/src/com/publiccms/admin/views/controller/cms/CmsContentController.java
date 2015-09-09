@@ -90,9 +90,6 @@ public class CmsContentController extends BaseController {
 			}
 			contentTagService.delete(null, entity.getId());
 			newTagIds = tagService.saveTags(entity.getId(), tagTitles);
-			if (notEmpty(cmsModel) && cmsModel.isIsImages()) {
-				service.updateImages(entity, parameterMap);
-			}
 		} else {
 			SystemUser user = UserUtils.getAdminFromSession(request);
 			entity.setUserId(user.getId());
@@ -106,13 +103,12 @@ public class CmsContentController extends BaseController {
 			logOperateService.save(new LogOperate(user.getId(), "save.content", RequestUtils.getIp(request), getDate(), entity
 					.getId() + ":" + entity.getTitle()));
 			newTagIds = tagService.saveTags(entity.getId(), tagTitles);
-			if (notEmpty(cmsModel) && cmsModel.isIsImages()) {
-				service.saveImages(entity, parameterMap);
-			}
 		}
 		service.updateTags(entity.getId(), arrayToCommaDelimitedString(addAll(tagIds, newTagIds)));
-		if(cmsModel.isIsPart()){
+		if (cmsModel.isIsPart()) {
 			txt = extendComponent.contentExtent(attributeService.getEntity(entity.getId()), parameterMap);
+		} else if (cmsModel.isIsImages()) {
+			txt = extendComponent.contentImages(attributeService.getEntity(entity.getId()), parameterMap);
 		}
 		String data = extendComponent.dealExtent(ExtendComponent.EXTEND_TYPE_CONTENT, entity.getCategoryId(),
 				entity.getModelId(), parameterMap);
