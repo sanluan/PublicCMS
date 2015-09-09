@@ -26,7 +26,7 @@ public class SystemRoleAuthorizedDao extends BaseDao<SystemRoleAuthorized> {
 	public int count(Integer[] roleIds, String authorizedUrl) {
 		QueryHandler queryHandler = getCountQueryHandler("from SystemRoleAuthorized bean");
 		if (notEmpty(roleIds)) {
-			queryHandler.condition("bean.roleId = :roleIds").setParameter("roleIds", roleIds);
+			queryHandler.condition("bean.roleId in (:roleIds)").setParameter("roleIds", roleIds);
 		}
 		if (notEmpty(authorizedUrl)) {
 			queryHandler.condition("bean.authorizedUrl = :authorizedUrl").setParameter("authorizedUrl", authorizedUrl);

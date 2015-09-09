@@ -11,7 +11,7 @@ public class CommonConstants {
 
 	public static final String UTF8 = "utf-8";
 
-	public static final String MOBILE_PATTERN = "^(13|15|18)\\d{9}$";
+	public static final String MOBILE_PATTERN = "^(13|14|15|17|18|)\\d{9}$";
 	public static final String NUMBER_PATTERN = "^[0-9]*$";
 
 	public static final String USERNAME_PATTERN = "^[A-Za-z_]{1}[0-9A-Za-z_]{3,40}$";
