@@ -1,0 +1,37 @@
+<form action="file/upload.do" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
+	<div class="pageContent">
+		<div class="pageFormContent">
+			<div id="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
+			<dl>
+				<dt><@t.m 'field.attach'/>：</dt>
+				<dd>
+					<input type="hidden" name="field" value="${field!'fileName'}"/>
+					<input type="file" name="file" class="required" size="30" /></dd>
+			</dl>
+			<ul class="tree" style="height:200px">
+			<@_logOperateList operate='uploadfile' userId=admin.id pageIndex=1 count=5>
+				<#list page.list as a>
+					<li><a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${a.content!}'});return false;">${a.content!}</a></li>
+				</#list>
+			</@_logOperateList>
+			</ul>
+			<script>
+				var imagesSuffix=["png","gif","jpg","jpeg","bmp"];
+				var imageBashPath='${getUploadPath("")}';
+				$('ul li a',$.pdialog.getCurrent()).hover(function(){
+					var filenames=$(this).text().toLowerCase().split('.');
+					if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix))
+						$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',imageBashPath+$(this).text());
+				},function(){
+					$('#preview',$.pdialog.getCurrent()).hide();
+				});
+			</script>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">上传</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button class="close" type="button"><@t.m 'button.close'/></button></div></div></li>
+			</ul>
+		</div>
+	</div>
+</form>

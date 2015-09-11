@@ -1,0 +1,4 @@
+<select class="combox" name="queryDisabled">
+	<option value="false"${(!queryDisabled?has_content||"false"==queryDisabled)?then(' selected="true"','')}>正常</option>
+	<option value="true"${(queryDisabled??&&"true"==queryDisabled)?then(' selected="true"','')}><@t.m 'status.deleted'/></option>
+</select>

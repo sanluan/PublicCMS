@@ -1,0 +1,13 @@
+<input type="hidden" name="pageNum" value="${(page.pageIndex)!}" />
+<input type="hidden" name="numPerPage" value="${(page.pageSize)!}" />
+<input type="hidden" name="orderField" value="${orderField!}" />
+<input type="hidden" name="orderType" value="${orderType!}" />
+<#list .data_model?keys as key><#if key?starts_with('query')>
+<#if .data_model[key]?is_sequence>
+	<#list .data_model[key] as data>
+		<input type="hidden" name="${key?html}" value="${data?html}"/>
+	</#list>
+<#else>
+	<input type="hidden" name="${key?html}" value="${.data_model[key]?html}"/>
+</#if>
+</#if></#list>

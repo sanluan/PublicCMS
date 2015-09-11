@@ -1,0 +1,56 @@
+<@_systemTask id=id><#assign a=object/></@_systemTask>
+<div class="pageContent">
+	<form method="post" action="systemTask/save.do?callbackType=closeCurrent&navTabId=systemTask" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl class="nowrap">
+				<dt>任务<@t.m 'field.name'/>：</dt>
+				<dd>
+					<input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>表达式：</dt>
+				<dd>
+					<input class="required" name="cronExpression" type="text" maxlength="50" size="30" value="${(a.cronExpression)!}"/>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>表达式说明：</dt>
+				<dd>
+					<table bordercolor="#cccccc" cellspacing="1" cellpadding="1" border="1">
+						<tbody>
+							<tr><td width="54">位置</td><td width="82">时间域名</td><td width="133">允许值</td><td width="290">允许的特殊字符</td></tr>
+							<tr><td>1</td><td>秒</td><td>0-59</td><td>, - * /</td></tr>
+							<tr><td>2</td><td>分钟</td><td>0-59</td><td>, - * /</td></tr>
+							<tr><td>3</td><td>小时</td><td>0-23</td><td>, - * /</td></tr>
+							<tr><td>4</td><td>日期</td><td>1-31</td><td>, - * ? / L W C </td></tr>
+							<tr><td>5</td><td>月份</td><td>1-12</td><td>, - * /</td></tr>
+							<tr><td>6</td><td>星期</td><td>1-7</td><td>, - * ? / L C #</td></tr>
+							<tr><td>7</td><td>年(可选)</td><td>空值1970-2099</td><td>, - * /</td></tr>
+							<tr><td colspan="4">[*] 表示所有值 [?] 表示不指定值 [-] 表示区间[,] 表示指定多个值[/] 用于递增触发[L] 表示最后的意思[W]表示离指定日期的最近那个工作日[#] 序号(表示每月的第几个周几)</td></tr>
+						</tbody>
+					</table>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>描述：</dt>
+				<dd>
+					<textarea name="description" class="required" maxlength="300" style="width: 100%;" rows="3">${(a.description)!}</textarea>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>任务代码：</dt>
+				<dd>
+					<textarea name="content" class="required" maxlength="500" style="width: 100%;" rows="6">${(a.content)!}</textarea>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

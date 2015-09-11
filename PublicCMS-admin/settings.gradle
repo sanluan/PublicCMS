@@ -1,2 +1,0 @@
-include 'publiccms-core'
-project(':publiccms-core').projectDir=new File(settingsDir,'../publiccms-core')

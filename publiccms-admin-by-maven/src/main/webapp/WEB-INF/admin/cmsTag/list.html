@@ -1,0 +1,42 @@
+<@_tagList pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+			</ul>
+			<#include "../include_page/searchBar.html"/>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="cmsTag/add.html" target="navtab" rel="cmsTagAdd"><span><@t.m 'button.add'/></span></a></li>
+			<li><a class="edit" href="cmsTag/add.html?navTabId=${navTabId!}&id={sid}" target="navtab" rel="cmsTagAdd"><span><@t.m 'button.edit'/></span></a></li>
+			<li><a class="delete" href="cmsTag/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="119">
+		<thead>
+			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th><@t.m 'field.name'/></th>
+				<th><@t.m 'moudle.content'/>数</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
+				<td>${a.name!}</td>
+				<td><a href="cmsContent/tag_list.html?tagId=${a.id}" target="navTab" title="${a.name!}相关<@t.m 'moudle.content'/>" rel="cmsTagContent"><@_contentTagList tagId=a.id>${page.totalCount}</@_contentTagList></a></td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_tagList>

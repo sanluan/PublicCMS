@@ -1,0 +1,12 @@
+header ,main , footer, #splitBar, #splitBarProxy, #alertBackground, #dialogBackground, #background, 
+.comboxop, .shadow, .panelBar{ display:none;}
+#printBox{display:block;}
+
+/* Grid */
+.grid table {border-collapse:collapse; table-layout:fixed;}
+.grid table th {padding:1px 2px; line-height:21px; border: solid 1px #D0D0D0; font-weight:bolder;}
+.grid table td {padding:1px 2px; line-height:21px; border: solid 1px #D0D0D0; line-height: 21px; overflow:hidden;}
+.grid .gridTbody td div { display: block; height: 21px; line-height: 21px; overflow: hidden;}
+.grid .left { text-align:left;}
+.grid .right { text-align:right;}
+.grid .center { text-align:center;}

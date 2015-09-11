@@ -1,0 +1,66 @@
+<@_logEmailCheckList userId=queryUserId startCreateDate=queryStartCreateDate endCreateDate=queryEndCreateDate 
+			checked=queryChecked 
+			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label><@t.m 'moudle.user'/>：</label>
+				<input type="text" name="queryUserId" value="${queryUserId!}" />
+			</li>
+			<li class="colspan">
+				<label><@t.m 'field.createDate'/>：</label>
+				<input type="text" name="queryStartCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryStartCreateDate!}" />
+				<span>-</span>
+				<input type="text" name="queryEndCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryEndCreateDate!}" />
+			</li>
+			<li>
+				<label>验证结果：</label>
+				<select class="combox" name="queryResult">
+					<option value=""${(!queryResult?has_content)?then(' selected="true"','')}>不限</option>
+					<option value="1"${(queryResult?has_content&&"1"==queryResult)?then(' selected="true"','')}>成功</option>
+					<option value="0"${(queryResult?has_content&&"0"==queryResult)?then(' selected="true"','')}>失败</option>
+				</select>
+			</li>
+		</ul>
+		<#include "../include_page/searchBar.html"/>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="delete" href="logEmailCheck/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="119">
+		<thead>
+			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th><@t.m 'moudle.user'/></th>
+				<th>邮件地址</th>
+				<th>验证码</th>
+				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.m 'field.createDate'/></th>
+				<th>验证结果</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
+				<td>${a.userId!}</td>
+				<td>${a.email!}</td>
+				<td>${a.code!}</td>
+				<td>${a.createDate!}</td>
+				<td>${a.checked?then('成功','失败')}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_logEmailCheckList>

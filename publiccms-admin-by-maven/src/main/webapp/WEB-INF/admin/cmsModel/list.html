@@ -1,0 +1,60 @@
+<@_modelList parentId=queryParentId hasChild=queryHasChild isUrl=queryIsUrl
+		 isImages=queryIsImages disabled=queryDisabled pageIndex=pageNum count=numPerPage>
+<#if queryParentId?has_content>
+	<@_model id=queryParentId>
+		<#assign parent=object/>
+	</@_model>
+</#if>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+		<#if parent??>
+			<li>
+				<label>父<@t.m 'moudle.model'/>：</label>${parent.name}
+			</li>
+		</#if>
+			<li>
+				<label><@t.m 'status.deleted'/>：</label><#include "../include_page/queryDisabled.html"/>
+			</li>
+		</ul>
+		<#include "../include_page/searchBar.html"/>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="cmsModel/add.html?parentId=${(parent.id)!}" target="navTab" rel="cmsModelAdd" title="<@t.m 'button.add'/><@t.m 'moudle.model'/>"><span><@t.m 'button.add'/></span></a></li>
+			<li><a class="edit" href="cmsModel/add.html?id={sid}" target="navTab" rel="cmsModelAdd"  title="<@t.m 'button.edit'/><@t.m 'moudle.model'/>"><span><@t.m 'button.edit'/></span></a></li>
+			<li><a class="delete" href="cmsModel/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="119">
+		<thead>
+			<tr>
+				<th><@t.m 'moudle.model'/><@t.m 'field.name'/></th>
+				<th><@t.m 'moudle.content'/><@t.m 'moudle.page'/><@t.m 'moudle.template'/><@t.m 'moudle.path'/></th>
+				<th><@t.m 'field.operate'/></th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.name!}</td>
+				<td>${a.templatePath!}</td>
+				<td>
+					<#if a.hasChild&&!a.isImages>
+						<a href="cmsModel/list.html?queryParentId=${a.id}" target="navTab" rel="cmsModel" title="${a.name!}<@t.m 'moudle.child'/><@t.m 'moudle.model'/>"><@t.m 'moudle.child'/><@t.m 'moudle.model'/><@t.m 'moudle.manager'/></a>
+					</#if>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_modelList>
