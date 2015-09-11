@@ -2,11 +2,13 @@ package config;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.util.HashMap;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
+import org.springframework.beans.factory.FactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -28,6 +30,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.mchange.v2.c3p0.DriverManagerDataSource;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.component.MailComponent;
+import com.sanluan.common.datasource.MultiDataSource;
 import com.sanluan.common.handler.FreeMarkerExtendHandler;
 
 @Configuration
@@ -40,24 +43,28 @@ public class ApplicationConfig {
 	private Environment env;
 	@Autowired
 	private SessionFactory sessionFactory;
-	@Autowired
-	private DataSource dataSource;
-
 	private String dataFilePath;
 	public static String basePath;
 
 	@Bean
 	public DataSource dataSource() {
-		DriverManagerDataSource bean = new DriverManagerDataSource();
-		bean.setDriverClass(env.getProperty("jdbc.driverClassName"));
-		bean.setJdbcUrl(env.getProperty("jdbc.url"));
-		bean.setUser(env.getProperty("jdbc.username"));
-		bean.setPassword(env.getProperty("jdbc.password"));
-		return bean;
+		MultiDataSource dataSource = new MultiDataSource();
+		dataSource.setTargetDataSources(new HashMap<Object, Object>() {
+			private static final long serialVersionUID = 1L;
+			{
+				DriverManagerDataSource database1 = new DriverManagerDataSource();
+				database1.setDriverClass(env.getProperty("jdbc.driverClassName"));
+				database1.setJdbcUrl(env.getProperty("jdbc.url"));
+				database1.setUser(env.getProperty("jdbc.username"));
+				database1.setPassword(env.getProperty("jdbc.password"));
+				put("database1", database1);
+			}
+		});
+		return dataSource;
 	}
 
 	@Bean
-	public LocalSessionFactoryBean sessionFactory() {
+	public FactoryBean<SessionFactory> sessionFactory() {
 		LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
 		bean.setDataSource(dataSource());
 		bean.setPackagesToScan(new String[] { "com.publiccms.entities" });
