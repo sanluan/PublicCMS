@@ -1,2 +1,2 @@
-include 'PublicCMS-core'
-project(':PublicCMS-core').projectDir=new File(settingsDir,'../PublicCMS-core')
+include 'publiccms-core'
+project(':publiccms-core').projectDir=new File(settingsDir,'../publiccms-core')
