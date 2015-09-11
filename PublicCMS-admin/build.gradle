@@ -76,7 +76,6 @@ project(':publiccms-core'){
 	}
 }
 
-
 apply plugin: 'war'
 
 webAppDirName = 'WebRoot'
