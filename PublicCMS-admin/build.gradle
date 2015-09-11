@@ -21,7 +21,7 @@ allprojects {
 	}
 }
 
-project(':PublicCMS-core'){
+project(':publiccms-core'){
 	dependencies {
 		compile (
 				"org.freemarker:freemarker:${freemarkerVersion}",
@@ -92,7 +92,7 @@ war{
 dependencies {
 	compile (
 			)
-	compile project(':PublicCMS-core')
+	compile project(':publiccms-core')
 }
 
 eclipse {
