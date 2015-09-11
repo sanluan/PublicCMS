@@ -1,0 +1,14 @@
+<#list 0..2 as status>
+	<label style="width:auto"><input name="queryStatus" value="${status}" type="checkbox"/><@t.m 'status.content.'+status/></label>
+</#list>
+<#if queryStatus?has_content>
+<script>
+	<#if queryStatus?is_sequence>
+		<#list queryStatus as status>
+			$('input[name=queryStatus][value=${status?js_string}]',navTab.getCurrentPanel()).click();
+		</#list>
+	<#else>
+		$('input[name=queryStatus][value=${queryStatus?js_string}]',navTab.getCurrentPanel()).click();
+	</#if>
+</script>
+</#if>

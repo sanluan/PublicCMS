@@ -1,0 +1,60 @@
+<@_systemMoudleList parentId=queryParentId url=queryUrl 
+			pageIndex=pageNum count=numPerPage>
+<#if !queryDeep?has_content><#assign queryDeep=0/></#if>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>父模块：</label>
+					<input name="queryParentId" type="hidden" value="${queryParentId!}"/>
+					<#if queryParentId?has_content><@_systemMoudle id=queryParentId!><#assign parentName=object.name/></@_systemMoudle></#if>
+					<input readonly="readonly" name="queryParentName" type="text" size="10" value="${parentName!}"/>
+				</li>
+				<li>
+					<label>地址：</label>
+					<input type="text" name="queryUrl" value="${queryUrl!}" />
+				</li>
+			</ul>
+			<#include "../include_page/searchBar.html"/>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<#if queryDeep?number lte 3><li><a class="add" href="systemMoudle/add.html?parentId=${queryParentId!}" target="navtab" rel="systemMoudleAdd"><span><@t.m 'button.add'/><@t.m 'button.moudle.add.'+queryDeep/></span></a></li></#if>
+			<li><a class="edit" href="systemMoudle/add.html?navTabId=${navTabId!}&id={sid}" target="navtab" rel="systemMoudleAdd"><span><@t.m 'button.edit'/></span></a></li>
+			<li><a class="delete" href="systemMoudle/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="119">
+		<thead>
+			<tr>
+				<th><@t.m 'field.name'/></th>
+				<th>地址</th>
+				<th>父模块</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#include "../include_page/meger.html"/>
+			<#list page.list as a>
+				<@meger 'moudleIds' a.parentId!/>
+			</#list>
+			<@_systemMoudle ids=moudleIds!><#assign moudleMap=map/></@_systemMoudle>
+			
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><a href="systemMoudle/list.html?queryParentId=${a.id}&queryDeep=${(queryDeep!'0')?number+1}" target="navTab" rel="systemMoudle" title="${a.name!}<@t.m 'moudle.child'/>模块">${a.name!}</a></td>
+				<td>${a.url!}</td>
+				<td>${(moudleMap[a.parentId?string].name)!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_systemMoudleList>

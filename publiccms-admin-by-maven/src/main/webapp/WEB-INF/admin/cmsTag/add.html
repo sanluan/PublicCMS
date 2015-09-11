@@ -1,0 +1,36 @@
+<@_tag id=id><#assign a=object/></@_tag>
+<div class="pageContent">
+	<form method="post" action="cmsTag/save.do?callbackType=closeCurrent&navTabId=cmsTag" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl>
+				<dt>内容分类：</dt>
+				<dd>
+					<input name="categoryId" type="hidden" value="${(a.categoryId)!}"/>
+					<#if a??&&a.categoryId??><@_category id=a.categoryId><#assign categoryName=object.name/></@_category></#if>
+					<input class="readonly" readonly="readonly" name="categoryName" type="text" size="10" value="${categoryName!}"/>
+					<a class="btnLook" href="cmsCategory/lookup.html?queryCategoryId=${(a.categoryId)!}" width="920" warn="请选择内容分类" lookupGroup="">选择内容分类</a>
+				</dd>
+			</dl>
+			<dl>
+				<dt>标签分类：</dt>
+				<dd>
+					<input name="typeId" type="hidden" value="${(a.typeId)!}"/>
+					<#if a??&&a.typeId??><@_tagType id=a.typeId><#assign typeName=object.name/></@_tagType></#if>
+					<input class="readonly" readonly="readonly" name="typeName" type="text" size="10" value="${typeName!}"/>
+					<a class="btnLook" href="cmsTagType/lookup.html?queryTypeId=${(a.typeId)!}" width="920" warn="请选择标签分类" lookupGroup="">选择标签分类</a>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt><@t.m 'field.name'/>：</dt>
+				<dd><input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/></dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

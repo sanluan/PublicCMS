@@ -1,0 +1,48 @@
+<#macro input extend value>
+<#if !value?has_content><#local value=extend.defaultValue!/></#if>
+<#if extend.isCustom>
+	<#assign code='ex_'+extend.code/>
+	<#assign append=''/>
+<#else>
+	<#assign code=extend.code/>
+	<#assign append='maxlength="100" '/>
+</#if>
+<#switch extend.inputType>
+	<#case 'number'>
+		<input name="${code}" class="number<#if extend.isRequired> required</#if>" type="text" ${append}size="30" value="${value!}"/>
+		<#break>
+	<#case 'file'>
+		<input name="${code}" class="readonly<#if extend.isRequired> required</#if>" value="${value!}" readonly="readonly" type="text"/>
+		<a class="btnAttach" href="file/upload.html?field=${code}" lookupGroup="" width="560" height="300" title="<@t.m 'field.attach'/>"><@t.m 'field.attach'/></a>
+		<#break>
+	<#case 'password'>
+		<input name="${code}" class="<#if extend.isRequired> required</#if>" type="password" ${append}size="30" value="${value!}"/>
+		<#break>
+	<#case 'textarea'>
+		<textarea name="${code}" class="<#if extend.isRequired>required</#if>" cols="80" ${append}rows="8">${value!}</textarea>
+		<#break>
+	<#case 'editor'>
+		<textarea name="${code}" class="editor<#if extend.isRequired> required</#if>" ${append}style="width: 100%;" rows="20">${value!}</textarea>
+		<#break>
+	<#case 'date'>
+		<input class="date<#if extend.isRequired> required</#if>" name="${code}" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${value!}"/>
+		<a class="inputDateButton" href="javascript:;">选择</a>
+		<#break>
+	<#default>
+		<input name="${code}" class="<#if extend.isRequired> required</#if>" type="text" ${append}size="30" value="${value!}"/>
+</#switch>
+</#macro>
+<#list page.list as e>
+	<dl<#if 'textarea'=e.inputType||'editor'=e.inputType> class="nowrap"</#if>>
+		<dt>${e.name}：</dt>
+		<dd<#if 'editor'=e.inputType> style="width:80%;"</#if>>
+			<#if e.isCustom>
+				<#assign value=(extendData[e.code])!/>
+			<#else>
+				<#assign value=(a[e.code])!/>
+			</#if>
+			<@input e value/>
+			<span class="info">${e.description!}</span>
+		</dd>
+	</dl>
+</#list>

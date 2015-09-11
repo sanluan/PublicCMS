@@ -1,0 +1,64 @@
+<@_systemTaskList status=queryStatus pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>任务：</label>
+					<select class="combox" name="queryStatus">
+						<option value=""${(!queryStatus?has_content)?then(' selected="true"','')}>请选择</option>
+						<option value="0"${(queryStatus??&&"0"==queryStatus)?then(' selected="true"','')}><@t.m 'status.task.'+0/></option>
+						<option value="1"${(queryStatus??&&"1"==queryStatus)?then(' selected="true"','')}><@t.m 'status.task.'+1/></option>
+						<option value="2"${(queryStatus??&&"2"==queryStatus)?then(' selected="true"','')}><@t.m 'status.task.'+2/></option>
+					</select>
+				</li>
+			</ul>
+			<#include "../include_page/searchBar.html"/>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="systemTask/add.html" target="navtab" rel="systemTaskAdd"><span><@t.m 'button.add'/></span></a></li>
+			<li><a class="edit" href="systemTask/add.html?navTabId=${navTabId!}&id={sid}" target="navtab" rel="systemTaskAdd"><span><@t.m 'button.edit'/></span></a></li>
+			<li><a class="delete" href="systemTask/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="119">
+		<thead>
+			<tr>
+				<th>任务名</th>
+				<th>表达式</th>
+				<th>说明</th>
+				<th><@t.m 'field.status'/></th>
+				<th><@t.m 'field.operate'/></th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><a href="logTask/list.html?queryTaskId=${a.id}" target="navTab" rel="logTask">${a.name!}</a></td>
+				<td>${a.cronExpression!}</td>
+				<td>${a.description!}</td>
+				<td><@t.m 'status.task.'+a.status/></td>
+				<td>
+					<#if a.status!=1>
+						<a href="systemTask/runOnce.do?id=${a.id}" title="确定要执行吗?" target="ajaxTodo">立刻执行</a>
+					</#if>
+					<#if a.status=2>
+						<a href="systemTask/resume.do?id=${a.id}" title="确定要恢复吗?" target="ajaxTodo">恢复</a>
+					<#elseif a.status!=3>
+						<a href="systemTask/pause.do?id=${a.id}" title="确定要暂停吗?" target="ajaxTodo">暂停</a>
+					</#if>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_systemTaskList>

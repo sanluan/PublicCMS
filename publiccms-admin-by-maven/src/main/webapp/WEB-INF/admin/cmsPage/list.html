@@ -1,0 +1,60 @@
+<div class="pageContent">
+	<div layoutH="0" style="float:left; display:block; overflow:auto; width:240px;border-right:solid 1px #CCC; line-height:21px;background:#ffffff">
+		<ul class="tree treeFolder">
+		<@_templateList path="/include"+queryPath+"/">
+			<#list list as a>
+			<#if !a.directory>
+			<li>
+				<a href="cmsPage/list.html?queryPath=${queryPath?url}&queryPlacePath=${(queryPath+'/'+a.fileName)?url}" target="navTab" rel="cmsPage">${a.fileName}${(a.alias?has_content)?then('(${a.alias!})','')}</a>
+			</li>
+			</#if>
+			</#list>
+		</@_templateList>
+	     </ul>
+	     <script>
+			$('a[href="cmsPage/list.html?queryPath=${queryPath?url}&queryPlacePath=${(queryPlacePath!)?url}"]',navTab.getCurrentPanel()).parent().addClass('selected');
+		</script>
+	</div>
+	<div class="unitBox" style="margin-left:240px;">
+		<#if isFile??>
+			<#assign meta=getTemplateMetadata(queryPath)/>
+			<form method="post" action="cmsTemplate/update.do?rel=templateBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+				<div class="pageFormContent" layoutH="56" style="background:#ffffff;">
+					<dl class="nowrap">
+						<dt><@t.m 'field.operate'/>:</dt>
+						<dd>
+							<input name="path" type="hidden" value="${queryPath?html}"/>
+							<#if meta.path?has_content>
+								<a class="buttonActive" href="cmsTemplate/staticPage.do?path=${queryPath?url}" target="ajaxTodo"><span>生成页面</span></a>
+								<a class="buttonActive" href="${getSitePath(meta.path)}" target="_blank"><span>查看页面</span></a>
+							</#if>
+						</dd>
+					</dl>
+					<dl class="nowrap">
+						<dt>关键词:</dt>
+						<dd>
+							<input name="keywords" type="text" maxlength="200" size="50" value="${(meta.keywords)!}"/>
+						</dd>
+					</dl>
+					<dl class="nowrap">
+						<dt>描述:</dt>
+						<dd>
+							<input name="description" type="text" maxlength="200" size="50" value="${(meta.description)!}"/>
+						</dd>
+					</dl>
+				</div>
+				<div class="formBar">
+					<ul>
+						<li>
+							<div class="buttonActive">
+								<div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</form>
+		<#else>
+			<#include "_place.html"/>
+		</#if>
+	</div>
+</div>

@@ -1,0 +1,1 @@
+<#macro cut string l=50 append=''><#if string?length lt l>${string}<#else>${string[0..l-1]}${append}</#if></#macro>

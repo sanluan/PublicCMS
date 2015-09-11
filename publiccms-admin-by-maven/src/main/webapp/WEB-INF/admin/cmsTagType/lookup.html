@@ -1,0 +1,25 @@
+<#macro typeLookupTree queryTypeId=''>
+	<@_tagTypeList>
+		<#if page.list?has_content>
+		<#list page.list as a>
+		<li>
+			<a href="javascript:;" onclick="$.bringBack({typeId:'${a.id}',typeName:'${a.name}'});return false;"<#if queryTypeId??&&a.id?string=queryTypeId> class="selected"</#if>>${a.name!}</a>
+		</li>
+		</#list>
+		<#else>
+			<li><a>空目录</a></li>
+		</#if>
+	</@_tagTypeList>
+</#macro>
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="58">
+		<ul class="tree expand">
+			<@typeLookupTree queryTypeId/>
+		</ul>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button"><@t.m 'button.close'/></button></div></div></li>
+		</ul>
+	</div>
+</div>

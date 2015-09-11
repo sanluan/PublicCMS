@@ -1,0 +1,4 @@
+<#if queryUserId?has_content><@_systemUser id=queryUserId><#assign nickName=object.nickName/></@_systemUser></#if>
+<input name="queryUserId" value="${queryUserId!}" type="hidden"/>
+<input name="nickName" readonly="readonly" size="10" value="${nickName!}" type="text"/>
+<a class="btnLook" href="systemUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>

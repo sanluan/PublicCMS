@@ -1,0 +1,66 @@
+<h2 class="contentTitle"><@t.m 'moudle.template'/><@t.m 'moudle.content'/></h2>
+<div class="pageContent">
+	<form method="post" action="cmsTemplate/create.do?callbackType=closeCurrent&navTabId=${navTabId!}"
+		class="pageForm required-validate"
+		onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<div class="pageFormContent" layoutH="97">
+			<dl class="nowrap">
+				<dt>文件<@t.m 'moudle.path'/>:</dt>
+				<dd>
+					<input class="required" name="path" type="text" maxlength="50" size="50" value="${queryPath!}"/>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>别名:</dt></dt>
+				<dd>
+					<input name="alias" type="text" maxlength="50" size="50"/>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>发布<@t.m 'moudle.path'/>:</dt>
+				<dd>
+					<input name="targetpath" type="text" maxlength="50" size="50"/>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>关键词:</dt>
+				<dd>
+					<input name="keywords" type="text" maxlength="200" size="50"/>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>描述:</dt>
+				<dd>
+					<input name="description" type="text" maxlength="200" size="50"/>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt><@t.m 'moudle.template'/><@t.m 'moudle.content'/>:</dt>
+				<dd>
+				<textarea name="content" class="required" style="width:100%;height:500px;padding:0px;"><#if userTemplate??><#noparse>
+<aside>
+<#list dataList?reverse as a>
+		<dl>
+			<dt><h3><a href="${getSitePath(a.url)}" target="_blank">${a.title!}</a></h3></dt>
+			<dd>
+				<img src="${getUploadPath(a.cover)}" alt="${a.title!}"/>
+				<p>${a.description!}</p>
+			</dd>
+		</dl>
+</#list>
+</aside>
+</#noparse></#if></textarea>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li>
+					<div class="buttonActive">
+						<div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>

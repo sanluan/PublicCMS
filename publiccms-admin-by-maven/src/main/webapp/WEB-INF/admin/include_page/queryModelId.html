@@ -1,0 +1,16 @@
+<@_modelList>
+<#list page.list as a>
+<label style="width:auto"><input name="queryModelId" value="${a.id}" type="checkbox"/>${a.name?html}</label>
+</#list>
+</@_modelList>
+<#if queryModelId?has_content>
+<script>
+	<#if queryModelId?is_sequence>
+		<#list queryModelId as modelId>
+		$('input[name=queryModelId][value=${modelId?js_string}]',navTab.getCurrentPanel()).click();
+		</#list>
+	<#else>
+	$('input[name=queryModelId][value=${queryModelId?js_string}]',navTab.getCurrentPanel()).click();
+	</#if>
+</script>
+</#if>

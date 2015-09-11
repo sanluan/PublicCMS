@@ -1,0 +1,160 @@
+<@_category id=id>
+	<#assign a=object/>
+	<#if object.parentId??><#assign parentId=object.parentId/></#if>
+	<#assign categoryAttr=getCategoryAttr(id)!/>
+	<#if categoryAttr??&&categoryAttr.data?has_content><#assign extendData=categoryAttr.data?eval/></#if>
+</@_category>
+<@_category id=parentId!><#assign category=object/></@_category>
+<#macro childModel parent index=1>
+<#if parent.hasChild&&!parent.isImages&&!parent.isUrl>
+	<@_modelList parentId=parent.id disabled=queryDisabled>
+	<ul>
+		<#list page.list as a>
+		<li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
+			<label>${a.name!}<@t.m 'moudle.template'/><@t.m 'moudle.path'/>：</label>
+			<input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+			<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}&value=${(a.templatePath)!}" lookupGroup="">选择</a>
+			<@childModel a index+1/>
+		</li>
+		</#list>
+	</ul>
+	</@_modelList>
+</#if>
+</#macro>
+<script>
+var ca_i=1;
+function appendExtend($box,replaceStr){
+	return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).appendTo($box);
+}
+function prependExtend($box,replaceStr){
+	return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).prependTo($box);
+}
+<#if id?has_content||parentId?has_content>
+$(function(){
+<@_extendList itemType=2 itemId=id!parentId>
+	<#list page.list as a>
+		<#if a.extendType=1>
+			<#assign pre='ex_c_'/>
+	$temp=appendExtend($('#ex_content',navTab.getCurrentPanel()),'_c_${a.id!}_');
+		<#else>
+			<#assign pre='ex_ca_'/>
+	$temp=appendExtend($('#ex_catrgory',navTab.getCurrentPanel()),'_ca_${a.id!}_');
+		</#if>
+		<#if a.isRequired>
+	$('input[name=${pre}${a.id!}_required]',$temp).click();
+		</#if>
+	$('input[name=${pre}${a.id!}_name]',$temp).val('${(a.name?js_string)!}');
+	$('select[name=${pre}${a.id!}_inputType]',$temp).val('${(a.inputType?js_string)!}');
+	$('input[name=${pre}${a.id!}_code]',$temp).val('${(a.code?js_string)!}');
+	$('input[name=${pre}${a.id!}_defaultValue]',$temp).val('${(a.defaultValue?js_string)!}');
+	$('textarea[name=${pre}${a.id!}_description]',$temp).val('${(a.description?js_string)!}');
+	$temp.initUI();
+	</#list>
+</@_extendList>
+});
+</#if>
+</script>
+<textarea id="ex_new" style="display:none">
+<#assign extendFieldList=['extend1','extend2','extend3','extend4']/>
+<#include "../include_page/extendHtml.html"/>
+</textarea>
+<div class="pageContent">
+	<form method="post" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<fieldset>
+				<legend>分类属性</legend>
+				<dl class="nowrap">
+					<dt>父分类：</dt>
+					<dd>
+						<input name="parentId" type="hidden" value="${parentId!}" />
+						<input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
+						<a class="btnLook" href="cmsCategory/lookup.html?queryCategoryId=${parentId!}" lookupGroup="">选择</a>
+					</dd>
+				</dl>
+				<dl class="nowrap">
+					<dt><@t.m 'field.name'/>：</dt>
+					<dd><input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/></dd>
+				</dl>
+				<dl class="nowrap">
+					<dt>英文名：</dt>
+					<dd><input class="required" name="englishName" type="text" maxlength="50" size="30" value="${(a.englishName)!}"/></dd>
+				</dl>
+				<dl class="nowrap">
+					<dt><@t.m 'moudle.template'/><@t.m 'moudle.path'/>：</dt>
+					<dd>
+						<input name="templatePath" type="text" maxlength="255" size="80" value="${(a.templatePath)!}"/>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath&value=${(a.templatePath)!}" lookupGroup="">选择</a>
+					</dd>
+				</dl>
+				<dl class="nowrap">
+					<dt><@t.m 'moudle.path'/>：</dt>
+					<dd><input name="path" type="text" maxlength="500" size="80" value="${(a.path)!(category.path)!}"/></dd>
+				</dl>
+				<dl class="nowrap">
+					<dt><@t.m 'moudle.content'/><@t.m 'moudle.path'/>：</dt>
+					<dd><input name="contentPath" type="text" maxlength="500" size="80" value="${(a.contentPath)!(category.contentPath)!}"/></dd>
+				</dl>
+				<dl>
+					<dt>每页数据：</dt>
+					<dd><input class="required number" name="pageSize" type="text" size="4" value="${(a.pageSize)!(category.pageSize)!20}"/></dd>
+				</dl>
+	<#if parentId?has_content>
+		<@_extendList itemType=2 itemId=parentId extendType=3>
+			<#include "../include_page/extend.html"/>
+		</@_extendList>
+	</#if>
+			</fieldset>
+			<fieldset>
+				<legend><@t.m 'moudle.model'/></legend>
+		<@_modelList disabled=queryDisabled>
+			<#list page.list as a>
+				<dl class="nowrap">
+					<dt>
+						<input name="model_${a.id}" type="checkbox"/>
+						${a.name!}:
+					</dt>
+					<dd<#if a.isUrl> style="display:none"</#if>>
+						<label>${a.name!}<@t.m 'moudle.template'/><@t.m 'moudle.path'/>：</label><input name="templatePath_${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath_${a.id}&value=${(a.templatePath)!}" lookupGroup="">选择</a>
+						<@childModel a/>
+					</dd>
+				</dl>
+			</#list>
+		</@_modelList>
+			</fieldset>
+		<#if id?has_content||parentId?has_content>
+			<script>
+		<@_categoryModelList categoryId=id!parentId>
+			<#list page.list as a>
+				$('input[name=model_${a.modelId}]',navTab.getCurrentPanel()).attr('checked','checked'); 
+				$('input[name=templatePath_${a.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
+			</#list>
+		</@_categoryModelList>
+			</script>
+		</#if>
+			<fieldset>
+				<legend><@t.m 'moudle.contentExtend'/></legend>
+				<dl class="nowrap">
+					<dt></dt>
+					<dd><a class="buttonActive" href="javascript:prependExtend($('#ex_content',navTab.getCurrentPanel()),'_new_c_'+(ca_i++)+'_').initUI();"><span>增加字段</span></a></dd>
+				</dl>
+				<div id="ex_content"></div>
+			</fieldset>
+			<fieldset>
+				<legend><@t.m 'moudle.child'/><@t.m 'moudle.categoryExtend'/></legend>
+				<dl class="nowrap">
+					<dt></dt>
+					<dd><a class="buttonActive" href="javascript:prependExtend($('#ex_catrgory',navTab.getCurrentPanel()),'_new_ca_'+(ca_i++)+'_').initUI();"><span>增加字段</span></a></dd>
+				</dl>
+				<div id="ex_catrgory"></div>
+			</fieldset>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

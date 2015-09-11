@@ -1,0 +1,76 @@
+<@_logLoginList result=queryResult userId=queryUserId 
+			name=queryName startCreateDate=queryStartCreateDate endCreateDate=queryEndCreateDate ip=queryIp 
+			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+	<div class="searchBar">
+		<ul class="searchContent">
+			<li>
+				<label>登录结果：</label>
+				<select class="combox" name="queryResult">
+					<option value=""${(!queryResult?has_content)?then(' selected="true"','')}>不限</option>
+					<option value="1"${(queryResult?has_content&&"1"==queryResult)?then(' selected="true"','')}>成功</option>
+					<option value="0"${(queryResult?has_content&&"0"==queryResult)?then(' selected="true"','')}>失败</option>
+				</select>
+			</li>
+			<li>
+				<label><@t.m 'moudle.user'/>：</label>
+				<#include "../include_page/queryUserId.html"/>
+			</li>
+			<li>
+				<label>用户名：</label>
+				<input type="text" name="queryName" value="${queryName!}" />
+			</li>
+			<li class="colspan">
+				<label>登录日期：</label>
+				<input type="text" name="queryStartCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryStartCreateDate!}" />
+				<span>-</span>
+				<input type="text" name="queryEndCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryEndCreateDate!}" />
+			</li>
+			<li>
+				<label>IP：</label>
+				<input type="text" name="queryIp" value="${queryIp!}" />
+			</li>
+		</ul>
+		<#include "../include_page/searchBar.html"/>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="delete" href="logLogin/delete.do" title="<@t.m 'button.delete.batch.ask'/>"  target="selectedTodo" rel="ids"><span><@t.m 'button.delete'/></span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="119">
+		<thead>
+			<tr>
+				<th width="22"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th>用户名</th>
+				<th>用户ID</th>
+				<th>IP</th>
+				<th>登录结果</th>
+				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">登录日期</th>
+				<th>错误密码</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
+				<td>${a.name!}</td>
+				<td>${a.userId!}</td>
+				<td>${a.ip!}</td>
+				<td>${a.result?then('成功','失败')}</td>
+				<td>${a.createDate!}</td>
+				<td>${a.errorPassword!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_logLoginList>
