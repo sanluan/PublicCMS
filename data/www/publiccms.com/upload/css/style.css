@@ -11,7 +11,7 @@ header nav ul li:hover ul { display:block;}
 .container{ width:1200px;}
 main .left-content{ float:left;width:800px;}
 main .data-list dl dd{ float:left;}
-main .data-list dl dd img{ width: 200px;}
+main .data-list dl dd .img{ width: 200px;}
 main .data-list dl dt.image{ margin-left:210px;}
 main aside{ float:right;width:380px;}
 main aside ul.rank li a{ width:300px;}
@@ -21,13 +21,13 @@ main aside ul li a{ width:350px;overflow: hidden;text-overflow:ellipsis;white-sp
 @media screen and (min-width :480px) and (max-width :1249px){
 .container{ padding:0 10px;}
 main .data-list dl dd{ float:left;}
-main .data-list dl dd img{ width: 200px;}
+main .data-list dl dd .img{ width: 200px;}
 main .data-list dl dt.image{ margin-left:210px;}
 }
 
 @media screen and (max-width :479px){
 .container{ padding:0 10px;}
-main .data-list dl dd img{ width: 100%;}
+main .data-list dl dd .img{ width: 100%;}
 }
 
 .container{ margin:0 auto;clear:both;overflow:hidden;}
@@ -41,7 +41,7 @@ header nav ul li{ float:left;display:inline;font-size:16px;font-weight:bold;colo
 header nav ul li.selected a{ background-color:#333;color:#fff;}
 header nav ul li a{ padding:0 25px;display:block; border-right:1px solid #d4d4d4;}
 header nav ul li a:hover,header nav ul li.selected a:hover{ color:#a7f;}
-header nav ul li ul { width:120px;line-height:30px;list-style-type:none;text-align:left;position:absolute;display:none;z-index:999;}
+header nav ul li ul{ width:120px;line-height:30px;list-style-type:none;text-align:left;position:absolute;display:none;z-index:999;}
 header nav ul li ul li{ float:left;width:100%;height:30px;margin:0 0 3px 0;font-size:14px;}
 header nav ul li ul li a{ display:block;height:30px;background-color:#000;color:#fff;line-height:30px;text-align:center;display:block;font-size:15px;margin:3px auto 0;padding:0;border:0;}
 
@@ -57,7 +57,7 @@ main article .author em{ color:#f00;}
 main article #content{ padding-bottom:20px;}
 main article #content img{ max-width:100%;}
 main .data-list dl{ clear:both; overflow:hidden; margin-bottom:10px;border:1px solid #eee;padding:10px;}
-main .data-list dl dd img{ height: 200px;background-repeat: no-repeat;background-size: contain;background-position: center center;}
+main .data-list dl dd .img{ height: 200px;background-repeat: no-repeat;background-size: contain;background-position: center center;}
 main .data-list dl dt{ font-size:14px; color:#666; line-height:22px;}
 main .data-list dl dt h3{ color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 main .data-list dl dt a{ color:#58a; text-decoration:none; }

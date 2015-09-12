@@ -37,7 +37,7 @@
 	<@_category ids=categoryIds!><#assign categoryMap=map/></@_category>
 	<#list page.list as a>
 			<dl>
-				<#if a.cover?has_content><dd><a href="${getSitePath(a.url)}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd></#if>
+				<#if a.cover?has_content><dd><a href="${getSitePath(a.url)}" target="_blank"><div class="img" style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"></div></a></dd></#if>
 				<dt<#if a.cover?has_content> class="image"</#if>>
 					<h3>[<a href="${getSitePath(categoryMap[a.categoryId?string].url)}">${categoryMap[a.categoryId?string].name}</a>]<a href="${getSitePath(a.url)}" target="_blank" title="${a.title}">${a.title}</a></h3>
 					<div class="tags">

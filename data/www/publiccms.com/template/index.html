@@ -5,6 +5,16 @@
 	<meta name="keywords" content="${keywords!}"/>
 	<meta name="description" content="${description!}"/>
 <!--#include virtual="/include/header.html"-->
+<#if .now?date lt '2015-08-19'?date('yyyy-MM-dd')>
+<style>
+html{
+filter: grayscale(100%);
+-moz-filter: grayscale(100%);
+-o-filter: grayscale(100%);
+-webkit-filter: grayscale(1);
+}
+</style>
+</#if>
 </head>
 <body>
 <!--#include virtual="/include/nav.html"-->
@@ -21,7 +31,7 @@
 	<#list page.list as a>
 			<dl>
 		<#if a.cover?has_content>
-				<dd><a href="${getSitePath(a.url)}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd>
+				<dd><a href="${getSitePath(a.url)}" target="_blank"><div class="img" style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"></div></a></dd>
 		</#if>
 				<dt<#if a.cover?has_content> class="image"</#if>>
 					<h3><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a></h3>
