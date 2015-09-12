@@ -32,7 +32,7 @@
 	<#include "ftl/cut.ftl"/>
 	<#list page.list as a>
 			<dl>
-				<#if a.cover?has_content><dd><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank"><img style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"/></a></dd></#if>
+				<#if a.cover?has_content><dd><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank"><div class="img" style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"></div></a></dd></#if>
 				<dt<#if a.cover?has_content> class="image"</#if>>
 					<h3><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank">${a.title}</a></h3>
 					<div class="tags">

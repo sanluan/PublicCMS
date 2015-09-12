@@ -32,18 +32,21 @@ PublicCMS 使用了FreeMarker 2.3.23,SpringMVC 4.2.0.RELEASE,Hibernate 4.3.11.Fi
 * nginx-conf为PublicCMS的nginx配置文件，该文件为本开源项目 http://www.publiccms.com/ 官网使用的配置文件副本
 
 ##编译部署
-* publiccms-admin-by-gradle工程编译(eclipse为例)：选择工程，右键弹出菜单中选择"Run As",在子菜单中选择"Gradle build"，在弹出的对话框中输入"war",点击按钮"Run"。在Console中可以看到编译过程日志，如果编译结束，您可以在工程下面 build/lib 目录下找到编译完成的 war包
-* publiccms-admin-by-maven工程编译(eclipse为例)：选择工程，右键弹出菜单中选择"Run As",在子菜单中选择"Maven install"。在Console中可以看到编译过程日志，如果编译结束，您可以在工程下面 target 目录下找到编译完成的 war包
+* publiccms-admin-by-gradle工程编译(eclipse为例)：选择工程，右键弹出菜单中选择"Run As",在子菜单中选择"Gradle build"，在弹出的对话框中输入"war",点击按钮"Run"。在Console中可以看到编译过程日志，如果编译成功，您可以在工程下面 build/lib 目录下找到编译完成的 war包
+* publiccms-admin-by-maven工程编译(eclipse为例)：选择工程，右键弹出菜单中选择"Run As",在子菜单中选择"Maven install"。在Console中可以看到编译过程日志，如果编译成功，您可以在工程下面 target 目录下找到编译完成的 war包
 * publiccms-admin-by-gradle/Database Init.sql为PublicCMS项目数据库初始化脚本，请根据实际情况修改数据库配置文件publiccms-admin/src/config/properties/dbconfig.properties
 * PublicCMS支持全站静态化，如果您打算使用静态化、SSI技术，推荐您使用nginx发布PublicCMS生成的静态页面，和其他静态资源文件
 * 静态化模板文件路径、静态页面文件路径、静态站点域名等信息需要同时修改 publiccms-admin/src/config/properties/other.properties 和 nginx配置文件
+
 ![](doc/images/rt.jpg)
 
 ##其他
 * publiccms-admin-by-gradle/Code Formatters 目录中包含eclipse开发工具的js和java代码格式化文件
 * 如果您没有使用过gradle或者maven，并且不打算使用它们，也可以在https://github.com/sanluan/PublicCMS-lib 这里下载PublicCMS依赖的库
 
-官方演示站点：http://www.publiccms.com
+演示站点：http://www.publiccms.com
+
+动态站点演示：http://cms.publiccms.com
 
 ##系统后台截图
 ###工作台
