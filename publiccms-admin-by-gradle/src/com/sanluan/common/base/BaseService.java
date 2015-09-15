@@ -4,18 +4,20 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public abstract class BaseService<E, D extends BaseDao<E>> extends Base {
-	protected abstract D getDao();
+	@Autowired  
+    protected BaseDao<E> dao;
 
 	/**
 	 * @param id
 	 * @return
 	 */
 	public E getEntity(Serializable id) {
-		return getDao().getEntity(id);
+		return dao.getEntity(id);
 	}
 
 	/**
@@ -24,7 +26,7 @@ public abstract class BaseService<E, D extends BaseDao<E>> extends Base {
 	 * @return
 	 */
 	public E getEntity(Serializable id, String pk) {
-		return getDao().getEntity(id, pk);
+		return dao.getEntity(id, pk);
 	}
 
 	/**
@@ -32,7 +34,7 @@ public abstract class BaseService<E, D extends BaseDao<E>> extends Base {
 	 * @return
 	 */
 	public List<E> getEntitys(Serializable[] ids, String pk) {
-		return getDao().getEntitys(ids, pk);
+		return dao.getEntitys(ids, pk);
 	}
 
 	/**
@@ -40,7 +42,7 @@ public abstract class BaseService<E, D extends BaseDao<E>> extends Base {
 	 * @return
 	 */
 	public List<E> getEntitys(Serializable[] ids) {
-		return getDao().getEntitys(ids);
+		return dao.getEntitys(ids);
 	}
 
 	/**
@@ -48,7 +50,7 @@ public abstract class BaseService<E, D extends BaseDao<E>> extends Base {
 	 * @return
 	 */
 	public E delete(Serializable id) {
-		return getDao().delete(id);
+		return dao.delete(id);
 	}
 
 	/**
@@ -81,6 +83,6 @@ public abstract class BaseService<E, D extends BaseDao<E>> extends Base {
 	 * @return
 	 */
 	public E save(E entity) {
-		return getDao().save(entity);
+		return dao.save(entity);
 	}
 }

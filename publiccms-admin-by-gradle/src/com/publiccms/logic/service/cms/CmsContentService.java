@@ -124,9 +124,4 @@ public class CmsContentService extends BaseService<CmsContent, CmsContentDao> {
 		}
 		return categoryIds;
 	}
-
-	@Override
-	protected CmsContentDao getDao() {
-		return dao;
-	}
 }

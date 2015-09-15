@@ -14,7 +14,6 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class CmsCategoryAttributeService extends BaseService<CmsCategoryAttribute, CmsCategoryAttributeDao> {
-
 	@Autowired
 	private CmsCategoryAttributeDao dao;
 
@@ -35,10 +34,5 @@ public class CmsCategoryAttributeService extends BaseService<CmsCategoryAttribut
 		} else {
 			save(new CmsCategoryAttribute(categoryId, data));
 		}
-	}
-
-	@Override
-	protected CmsCategoryAttributeDao getDao() {
-		return dao;
 	}
 }

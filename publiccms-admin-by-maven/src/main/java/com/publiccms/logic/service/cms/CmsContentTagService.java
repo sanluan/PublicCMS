@@ -59,9 +59,4 @@ public class CmsContentTagService extends BaseService<CmsContentTag, CmsContentT
 			}
 		}
 	}
-
-	@Override
-	protected CmsContentTagDao getDao() {
-		return dao;
-	}
 }

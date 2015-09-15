@@ -37,9 +37,4 @@ public class CmsTagService extends BaseService<CmsTag, CmsTagDao> {
 		}
 		return newTagIds;
 	}
-
-	@Override
-	protected CmsTagDao getDao() {
-		return dao;
-	}
 }

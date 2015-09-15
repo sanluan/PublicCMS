@@ -34,9 +34,4 @@ public class SystemRoleService extends BaseService<SystemRole, SystemRoleDao> {
 		}
 		return false;
 	}
-
-	@Override
-	protected SystemRoleDao getDao() {
-		return dao;
-	}
 }

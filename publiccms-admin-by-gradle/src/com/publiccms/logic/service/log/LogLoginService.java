@@ -30,9 +30,4 @@ public class LogLoginService extends BaseService<LogLogin, LogLoginDao> {
 	public int delete(Date createDate) {
 		return dao.delete(createDate);
 	}
-
-	@Override
-	protected LogLoginDao getDao() {
-		return dao;
-	}
 }

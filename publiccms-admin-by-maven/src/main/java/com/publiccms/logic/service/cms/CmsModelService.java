@@ -33,9 +33,4 @@ public class CmsModelService extends BaseService<CmsModel, CmsModelDao> {
 			entity.setDisabled(true);
 		return entity;
 	}
-
-	@Override
-	protected CmsModelDao getDao() {
-		return dao;
-	}
 }

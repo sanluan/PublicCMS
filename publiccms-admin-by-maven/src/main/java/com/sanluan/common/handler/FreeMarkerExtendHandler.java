@@ -4,16 +4,15 @@ import static org.apache.commons.logging.LogFactory.getLog;
 import static org.springframework.util.StringUtils.uncapitalize;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
 import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
-
-import com.sanluan.common.tools.MyClassUtils;
 
 import freemarker.template.SimpleHash;
 import freemarker.template.TemplateDirectiveModel;
@@ -21,13 +20,15 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class FreeMarkerExtendHandler implements ApplicationContextAware {
-	private String directiveBasePackage;
-	private String methodBasePackage;
 	private String directivePrefix;
 	private String directiveRemoveRegex;
 	private String methodRemoveRegex;
 	private Map<String, Object> freemarkerVariables = new HashMap<String, Object>();
 	private final Log log = getLog(getClass());
+	@Autowired
+	private Map<String, TemplateDirectiveModel> directiveMap;
+	@Autowired
+	private Map<String, TemplateMethodModelEx> methodMap;
 
 	@Override
 	public void setApplicationContext(ApplicationContext applicationcontext) throws BeansException {
@@ -35,20 +36,18 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
 		FreeMarkerConfigurer freeMarkerConfigurer = applicationcontext.getBean(FreeMarkerConfigurer.class);
 
 		StringBuffer directives = new StringBuffer();
-		List<Class<?>> directiveClasses = MyClassUtils.getAllAssignedClass(TemplateDirectiveModel.class, new String[]{directiveBasePackage});
-		for (Class<?> c : directiveClasses) {
-			String directiveName = directivePrefix + uncapitalize(c.getSimpleName().replaceAll(directiveRemoveRegex, ""));
-			freemarkerVariables.put(directiveName, applicationcontext.getBean(c));
+		for (Entry<String, TemplateDirectiveModel> entry : directiveMap.entrySet()) {
+			String directiveName = directivePrefix + uncapitalize(entry.getKey().replaceAll(directiveRemoveRegex, ""));
+			freemarkerVariables.put(directiveName, entry.getValue());
 			if (0 != directives.length())
 				directives.append(",");
 			directives.append(directiveName);
 		}
 
-		List<Class<?>> methodClasses = MyClassUtils.getAllAssignedClass(TemplateMethodModelEx.class, new String[]{methodBasePackage});
 		StringBuffer methods = new StringBuffer();
-		for (Class<?> c : methodClasses) {
-			String methodName = uncapitalize(c.getSimpleName().replaceAll(methodRemoveRegex, ""));
-			freemarkerVariables.put(methodName, applicationcontext.getBean(c));
+		for (Entry<String, TemplateMethodModelEx> entry : methodMap.entrySet()) {
+			String methodName = uncapitalize(entry.getKey().replaceAll(methodRemoveRegex, ""));
+			freemarkerVariables.put(methodName, entry.getValue());
 			if (0 != methods.length())
 				methods.append(",");
 			methods.append(methodName);
@@ -57,26 +56,10 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
 		try {
 			freeMarkerConfigurer.getConfiguration().setAllSharedVariables(
 					new SimpleHash(freemarkerVariables, freeMarkerConfigurer.getConfiguration().getObjectWrapper()));
-			log.info((directiveClasses.size()) + " directives created:[" + directives.toString() + "];" + methodClasses.size()
+			log.info((directiveMap.size()) + " directives created:[" + directives.toString() + "];" + methodMap.size()
 					+ " methods created:[" + methods.toString() + "]");
 		} catch (TemplateModelException e) {
 		}
-	}
-
-	/**
-	 * @param directiveBasePackage
-	 *            the directiveBasePackage to set
-	 */
-	public void setDirectiveBasePackage(String directiveBasePackage) {
-		this.directiveBasePackage = directiveBasePackage;
-	}
-
-	/**
-	 * @param methodBasePackage
-	 *            the methodBasePackage to set
-	 */
-	public void setMethodBasePackage(String methodBasePackage) {
-		this.methodBasePackage = methodBasePackage;
 	}
 
 	/**
@@ -105,10 +88,6 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
 
 	public Map<String, Object> getFreemarkerVariables() {
 		return freemarkerVariables;
-	}
-
-	public void setFreemarkerVariables(Map<String, Object> freemarkerVariables) {
-		this.freemarkerVariables = freemarkerVariables;
 	}
 
 	public String getDirectivePrefix() {

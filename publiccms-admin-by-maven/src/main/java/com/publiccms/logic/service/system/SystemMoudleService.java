@@ -25,9 +25,4 @@ public class SystemMoudleService extends BaseService<SystemMoudle, SystemMoudleD
 		return dao.getPage(parentId, url, 
 				pageIndex, pageSize);
 	}
-
-	@Override
-	protected SystemMoudleDao getDao() {
-		return dao;
-	}
 }

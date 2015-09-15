@@ -39,9 +39,4 @@ public class SystemDeptService extends BaseService<SystemDept, SystemDeptDao> {
 		}
 		return entity;
 	}
-
-	@Override
-	protected SystemDeptDao getDao() {
-		return dao;
-	}
 }

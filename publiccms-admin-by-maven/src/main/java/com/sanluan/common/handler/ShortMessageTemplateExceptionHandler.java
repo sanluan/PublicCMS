@@ -21,7 +21,14 @@ public class ShortMessageTemplateExceptionHandler implements TemplateExceptionHa
 	public void handleTemplateException(TemplateException templateexception, Environment environment, Writer writer)
 			throws TemplateException {
 		try {
-			writer.write("[SOME ERRORS OCCURRED！]");
+			String code = templateexception.getMessage();
+			if (code.indexOf("Failed at:") > 0 && code.indexOf("[in") > 0) {
+				code = code.substring(code.indexOf("Failed at:") + 10, code.length());
+				code = code.substring(0, code.indexOf("[in"));
+				writer.write(code);
+			} else {
+				writer.write("[SOME ERRORS OCCURRED！]");
+			}
 		} catch (IOException e) {
 		}
 	}

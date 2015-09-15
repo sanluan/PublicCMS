@@ -41,9 +41,4 @@ public class LogEmailCheckService extends BaseService<LogEmailCheck, LogEmailChe
 			entity.setChecked(true);
 		}
 	}
-
-	@Override
-	protected LogEmailCheckDao getDao() {
-		return dao;
-	}
 }

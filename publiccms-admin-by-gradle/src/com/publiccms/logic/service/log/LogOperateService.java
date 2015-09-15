@@ -28,9 +28,4 @@ public class LogOperateService extends BaseService<LogOperate, LogOperateDao> {
 	public int delete(Date createDate) {
 		return dao.delete(createDate);
 	}
-
-	@Override
-	protected LogOperateDao getDao() {
-		return dao;
-	}
 }

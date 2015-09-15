@@ -101,9 +101,4 @@ public class SystemUserService extends BaseService<SystemUser, SystemUserDao> {
 		}
 		return entity;
 	}
-
-	@Override
-	protected SystemUserDao getDao() {
-		return dao;
-	}
 }

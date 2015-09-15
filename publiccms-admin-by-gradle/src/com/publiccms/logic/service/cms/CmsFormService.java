@@ -25,9 +25,4 @@ public class CmsFormService extends BaseService<CmsForm, CmsFormDao> {
 			String orderType, Integer pageIndex, Integer pageSize) {
 		return dao.getPage(title, startCreateDate, endCreateDate, disabled, orderField, orderType, pageIndex, pageSize);
 	}
-
-	@Override
-	protected CmsFormDao getDao() {
-		return dao;
-	}
 }
