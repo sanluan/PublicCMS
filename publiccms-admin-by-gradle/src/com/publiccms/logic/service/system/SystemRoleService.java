@@ -15,7 +15,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class SystemRoleService extends BaseService<SystemRole, SystemRoleDao> {
+public class SystemRoleService extends BaseService<SystemRole> {
 
 	@Autowired
 	private SystemRoleDao dao;

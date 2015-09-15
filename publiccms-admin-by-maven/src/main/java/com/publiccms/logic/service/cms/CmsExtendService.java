@@ -13,7 +13,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class CmsExtendService extends BaseService<CmsExtend, CmsExtendDao> {
+public class CmsExtendService extends BaseService<CmsExtend> {
 
 	@Autowired
 	private CmsExtendDao dao;

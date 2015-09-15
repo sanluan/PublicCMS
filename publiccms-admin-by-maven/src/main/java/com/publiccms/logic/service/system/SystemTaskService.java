@@ -13,7 +13,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class SystemTaskService extends BaseService<SystemTask, SystemTaskDao> {
+public class SystemTaskService extends BaseService<SystemTask> {
 	@Autowired
 	private SystemTaskDao dao;
 

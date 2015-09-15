@@ -16,7 +16,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class SystemDeptService extends BaseService<SystemDept, SystemDeptDao> {
+public class SystemDeptService extends BaseService<SystemDept> {
 
 	@Autowired
 	private SystemDeptDao dao;

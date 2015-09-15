@@ -20,7 +20,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class CmsCategoryModelService extends BaseService<CmsCategoryModel, CmsCategoryModelDao> {
+public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
 
 	@Autowired
 	private CmsCategoryModelDao dao;

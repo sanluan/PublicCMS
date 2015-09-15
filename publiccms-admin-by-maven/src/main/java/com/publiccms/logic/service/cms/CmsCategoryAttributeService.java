@@ -13,7 +13,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class CmsCategoryAttributeService extends BaseService<CmsCategoryAttribute, CmsCategoryAttributeDao> {
+public class CmsCategoryAttributeService extends BaseService<CmsCategoryAttribute> {
 	@Autowired
 	private CmsCategoryAttributeDao dao;
 

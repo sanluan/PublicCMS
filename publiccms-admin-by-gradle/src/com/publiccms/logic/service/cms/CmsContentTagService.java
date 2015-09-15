@@ -19,7 +19,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class CmsContentTagService extends BaseService<CmsContentTag, CmsContentTagDao> {
+public class CmsContentTagService extends BaseService<CmsContentTag> {
 
 	@Autowired
 	private CmsContentTagDao dao;

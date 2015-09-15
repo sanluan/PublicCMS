@@ -19,7 +19,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class SystemUserService extends BaseService<SystemUser, SystemUserDao> {
+public class SystemUserService extends BaseService<SystemUser> {
 	@Autowired
 	private SystemUserDao dao;
 	@Autowired
