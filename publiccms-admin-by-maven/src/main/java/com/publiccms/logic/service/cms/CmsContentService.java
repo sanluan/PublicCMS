@@ -23,7 +23,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class CmsContentService extends BaseService<CmsContent, CmsContentDao> {
+public class CmsContentService extends BaseService<CmsContent> {
 	public static final int STATUS_DRAFT = 0, STATUS_NORMAL = 1, STATUS_PEND = 2;
 
 	@Autowired

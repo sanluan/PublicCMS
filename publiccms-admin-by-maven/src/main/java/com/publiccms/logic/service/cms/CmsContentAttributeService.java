@@ -15,7 +15,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class CmsContentAttributeService extends BaseService<CmsContentAttribute, CmsContentAttributeDao> {
+public class CmsContentAttributeService extends BaseService<CmsContentAttribute> {
 
 	@Autowired
 	private CmsContentAttributeDao dao;

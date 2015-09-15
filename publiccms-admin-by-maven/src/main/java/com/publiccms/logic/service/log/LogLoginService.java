@@ -13,7 +13,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class LogLoginService extends BaseService<LogLogin, LogLoginDao> {
+public class LogLoginService extends BaseService<LogLogin> {
 
 	@Autowired
 	private LogLoginDao dao;

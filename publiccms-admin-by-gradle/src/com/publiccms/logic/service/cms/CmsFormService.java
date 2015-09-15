@@ -15,7 +15,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class CmsFormService extends BaseService<CmsForm, CmsFormDao> {
+public class CmsFormService extends BaseService<CmsForm> {
 
 	@Autowired
 	private CmsFormDao dao;

@@ -13,7 +13,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class LogOperateService extends BaseService<LogOperate, LogOperateDao> {
+public class LogOperateService extends BaseService<LogOperate> {
 	public static final String OPERATE_UPLOADFILE = "uploadfile";
 
 	@Autowired

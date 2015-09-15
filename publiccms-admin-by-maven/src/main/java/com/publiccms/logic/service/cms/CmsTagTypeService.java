@@ -14,7 +14,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class CmsTagTypeService extends BaseService<CmsTagType, CmsTagTypeDao> {
+public class CmsTagTypeService extends BaseService<CmsTagType> {
 
 	@Autowired
 	private CmsTagTypeDao dao;

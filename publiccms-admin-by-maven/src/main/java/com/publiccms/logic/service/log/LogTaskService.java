@@ -15,7 +15,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class LogTaskService extends BaseService<LogTask, LogTaskDao> {
+public class LogTaskService extends BaseService<LogTask> {
 
 	@Autowired
 	private LogTaskDao dao;

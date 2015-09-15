@@ -13,7 +13,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class LogEmailCheckService extends BaseService<LogEmailCheck, LogEmailCheckDao> {
+public class LogEmailCheckService extends BaseService<LogEmailCheck> {
 
 	@Autowired
 	private LogEmailCheckDao dao;

@@ -20,7 +20,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class SystemRoleAuthorizedService extends BaseService<SystemRoleAuthorized, SystemRoleAuthorizedDao> {
+public class SystemRoleAuthorizedService extends BaseService<SystemRoleAuthorized> {
 
 	@Autowired
 	private SystemRoleAuthorizedDao dao;

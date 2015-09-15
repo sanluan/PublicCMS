@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
-public abstract class BaseService<E, D extends BaseDao<E>> extends Base {
+public abstract class BaseService<E> extends Base {
 	@Autowired  
     protected BaseDao<E> dao;
 
