@@ -60,9 +60,4 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel, CmsCa
 	public CmsCategoryModel getEntity(int modelId, int categoryId) {
 		return dao.getEntity(modelId, categoryId);
 	}
-
-	@Override
-	protected CmsCategoryModelDao getDao() {
-		return dao;
-	}
 }

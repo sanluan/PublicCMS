@@ -29,9 +29,4 @@ public class SystemTaskService extends BaseService<SystemTask, SystemTaskDao> {
 		}
 		return entity;
 	}
-
-	@Override
-	protected SystemTaskDao getDao() {
-		return dao;
-	}
 }

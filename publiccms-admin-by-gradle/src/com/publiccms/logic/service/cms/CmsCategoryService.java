@@ -109,9 +109,4 @@ public class CmsCategoryService extends BaseService<CmsCategory, CmsCategoryDao>
 		}
 		return entity;
 	}
-
-	@Override
-	protected CmsCategoryDao getDao() {
-		return dao;
-	}
 }

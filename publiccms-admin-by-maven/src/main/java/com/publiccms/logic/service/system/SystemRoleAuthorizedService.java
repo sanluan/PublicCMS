@@ -81,9 +81,4 @@ public class SystemRoleAuthorizedService extends BaseService<SystemRoleAuthorize
 		}
 		return 0;
 	}
-
-	@Override
-	protected SystemRoleAuthorizedDao getDao() {
-		return dao;
-	}
 }

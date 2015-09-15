@@ -25,9 +25,4 @@ public class CmsTagTypeService extends BaseService<CmsTagType, CmsTagTypeDao> {
 		return dao.getPage(
 				pageIndex, pageSize);
 	}
-
-	@Override
-	protected CmsTagTypeDao getDao() {
-		return dao;
-	}
 }

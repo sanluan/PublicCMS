@@ -22,9 +22,4 @@ public class CmsExtendService extends BaseService<CmsExtend, CmsExtendDao> {
 	public PageHandler getPage(Integer itemType, Integer itemId, Integer extendType, Boolean isCustom, Integer pageIndex, Integer pageSize) {
 		return dao.getPage(itemType, itemId, extendType, isCustom, pageIndex, pageSize);
 	}
-
-	@Override
-	protected CmsExtendDao getDao() {
-		return dao;
-	}
 }

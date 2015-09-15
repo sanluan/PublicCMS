@@ -28,9 +28,4 @@ public class LogTaskService extends BaseService<LogTask, LogTaskDao> {
 	public int delete(Date createDate) {
 		return dao.delete(createDate);
 	}
-
-	@Override
-	protected LogTaskDao getDao() {
-		return dao;
-	}
 }

@@ -53,9 +53,4 @@ public class SystemRoleUserService extends BaseService<SystemRoleUser, SystemRol
 	public int deleteByRole(Integer roleId) {
 		return dao.deleteByRole(roleId);
 	}
-
-	@Override
-	protected SystemRoleUserDao getDao() {
-		return dao;
-	}
 }

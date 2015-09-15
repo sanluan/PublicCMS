@@ -45,9 +45,4 @@ public class CmsContentAttributeService extends BaseService<CmsContentAttribute,
 			save(attribute);
 		}
 	}
-
-	@Override
-	protected CmsContentAttributeDao getDao() {
-		return dao;
-	}
 }

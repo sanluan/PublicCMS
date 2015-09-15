@@ -68,9 +68,4 @@ public class SystemRoleMoudleService extends BaseService<SystemRoleMoudle, Syste
 	public int deleteByMoudleId(Integer moudleId) {
 		return dao.deleteByMoudleId(moudleId);
 	}
-
-	@Override
-	protected SystemRoleMoudleDao getDao() {
-		return dao;
-	}
 }

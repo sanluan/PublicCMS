@@ -170,10 +170,8 @@ public class ApplicationConfig {
 	@Bean
 	public FreeMarkerExtendHandler freeMarkerExtendHandler() {
 		FreeMarkerExtendHandler bean = new FreeMarkerExtendHandler();
-		bean.setDirectiveBasePackage(env.getProperty("freeMarkerExtendHandler.directiveBasePackage"));
 		bean.setDirectivePrefix(env.getProperty("freeMarkerExtendHandler.directivePrefix"));
 		bean.setDirectiveRemoveRegex(env.getProperty("freeMarkerExtendHandler.directiveRemoveRegex"));
-		bean.setMethodBasePackage(env.getProperty("freeMarkerExtendHandler.methodBasePackage"));
 		bean.setMethodRemoveRegex(env.getProperty("freeMarkerExtendHandler.methodRemoveRegex"));
 		return bean;
 	}
