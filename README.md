@@ -37,6 +37,7 @@ PublicCMS 使用了FreeMarker 2.3.23,SpringMVC 4.2.0.RELEASE,Hibernate 4.3.11.Fi
 * publiccms-admin-by-gradle/Database Init.sql为PublicCMS项目数据库初始化脚本，请根据实际情况修改数据库配置文件publiccms-admin/src/config/properties/dbconfig.properties
 * PublicCMS支持全站静态化，如果您打算使用静态化、SSI技术，推荐您使用nginx发布PublicCMS生成的静态页面，和其他静态资源文件
 * 静态化模板文件路径、静态页面文件路径、静态站点域名等信息需要同时修改 publiccms-admin/src/config/properties/other.properties 和 nginx配置文件
+* 内置管理员账号admin，密码admin
 
 ![](doc/images/rt.jpg)
 
@@ -47,6 +48,9 @@ PublicCMS 使用了FreeMarker 2.3.23,SpringMVC 4.2.0.RELEASE,Hibernate 4.3.11.Fi
 演示站点：http://www.publiccms.com
 
 动态站点演示：http://cms.publiccms.com
+
+后台演示：http://cms.publiccms.com/admin/ 账号/密码 test/test
+
 
 ##系统后台截图
 ###工作台
