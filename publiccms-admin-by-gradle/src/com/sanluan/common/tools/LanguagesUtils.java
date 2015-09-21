@@ -22,7 +22,7 @@ public final class LanguagesUtils {
 	 *      Object[], Locale)
 	 */
 	public static String getMessage(HttpServletRequest request, String code, Object... args) {
-		WebApplicationContext messageSource = RequestContextUtils.getWebApplicationContext(request);
+		WebApplicationContext messageSource = RequestContextUtils.findWebApplicationContext(request);
 		if (null == messageSource) {
 			throw new IllegalStateException("WebApplicationContext not found!");
 		}

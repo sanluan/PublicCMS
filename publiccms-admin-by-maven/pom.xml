@@ -11,7 +11,7 @@
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>freemarker</artifactId>
-			<version>2.3.23</version>
+			<version>${freemarkerVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-logging</groupId>
@@ -168,6 +168,16 @@
 			<artifactId>ant</artifactId>
 			<version>1.9.4</version>
 		</dependency>
+		<!--dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.12</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>3.12</version>
+		</dependency-->
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
@@ -190,9 +200,9 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<springVersion>4.2.0.RELEASE</springVersion>
-		<hibernateVersion>4.3.11.Final</hibernateVersion>
-		<hibernateSearchVersion>5.3.0.Final</hibernateSearchVersion>
+		<springVersion>4.2.1.RELEASE</springVersion>
+		<hibernateVersion>5.0.1.Final</hibernateVersion>
+		<hibernateSearchVersion>5.5.0.Final</hibernateSearchVersion>
 		<freemarkerVersion>2.3.23</freemarkerVersion>
 		<httpclientVersion>4.5</httpclientVersion>
 		<jacksonVersion>2.6.1</jacksonVersion>
