@@ -59,7 +59,6 @@ public abstract class BaseDao<E> extends Base {
 	 * @param id
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public E getEntity(Serializable id) {
 		if (notEmpty(id))
 			return (E) getSession().get(getEntityClass(), id);

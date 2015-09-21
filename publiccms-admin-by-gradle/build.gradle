@@ -13,9 +13,9 @@ sourceCompatibility = 1.7
 repositories {  mavenLocal() }
 
 ext {
-	springVersion = '4.2.0.RELEASE'
-	hibernateVersion = '4.3.11.Final'
-	hibernateSearchVersion = '5.3.0.Final'
+	springVersion = '4.2.1.RELEASE'
+	hibernateVersion = '5.0.1.Final'
+	hibernateSearchVersion = '5.5.0.Final'
 	freemarkerVersion = '2.3.23'
 	httpclientVersion = '4.5'
 	jacksonVersion = '2.6.1'
@@ -75,6 +75,9 @@ dependencies {
 			'net.coobird:thumbnailator:0.4.8',
 
 			'org.apache.ant:ant:1.9.4',
+
+			//'org.apache.poi:poi:3.12',
+			//'org.apache.poi:poi-ooxml:3.12',
 
 			'org.quartz-scheduler:quartz:2.2.1',
 

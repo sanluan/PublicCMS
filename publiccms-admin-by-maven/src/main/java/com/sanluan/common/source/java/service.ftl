@@ -17,7 +17,7 @@ import com.sanluan.common.handler.PageHandler;
 
 @Service
 @Transactional
-public class ${entityName}Service extends BaseService<${entityName}, ${entityName}Dao> {
+public class ${entityName}Service extends BaseService<${entityName}> {
 
 	@Autowired
 	private ${entityName}Dao dao;
@@ -25,10 +25,5 @@ public class ${entityName}Service extends BaseService<${entityName}, ${entityNam
 	@Transactional(readOnly = true)
 	public PageHandler getPage(<#include "../include_condition/condition.ftl">) {
 		return dao.getPage(<#include "../include_condition/invoke.ftl">);
-	}
-
-	@Override
-	protected ${entityName}Dao getDao() {
-		return dao;
 	}
 }
