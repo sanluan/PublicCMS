@@ -19,8 +19,8 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
@@ -80,8 +80,8 @@ public class ApplicationConfig {
 		hibernateProperties.setProperty("hibernate.cache.use_second_level_cache",
 				env.getProperty("hibernate.cache.use_second_level_cache"));
 		hibernateProperties.setProperty("hibernate.cache.use_query_cache", env.getProperty("hibernate.cache.use_query_cache"));
-		hibernateProperties.setProperty("hibernate.current_session_context_class",
-				env.getProperty("hibernate.current_session_context_class"));
+		hibernateProperties.setProperty("hibernate.transaction.coordinator_class",
+				env.getProperty("hibernate.transaction.coordinator_class"));
 		hibernateProperties.setProperty("hibernate.cache.provider_configuration_file_resource_path",
 				env.getProperty("hibernate.cache.provider_configuration_file_resource_path"));
 		hibernateProperties.setProperty("hibernate.search.default.directory_provider",
