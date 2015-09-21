@@ -51,7 +51,6 @@ dependencies {
 			"org.hibernate:hibernate-core:${hibernateVersion}",
 
 			"org.hibernate:hibernate-ehcache:${hibernateVersion}",
-			'net.spy:spymemcached:2.12.0',
 
 			"org.hibernate:hibernate-search:${hibernateSearchVersion}",
 
