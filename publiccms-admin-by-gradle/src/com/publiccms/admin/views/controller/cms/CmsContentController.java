@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -62,7 +63,7 @@ public class CmsContentController extends BaseController {
 
 	@RequestMapping("save")
 	public String save(CmsContent entity, Integer[] tagIds, String[] tagTitles, String txt, Boolean timing, Boolean draft,
-			HttpServletRequest request, ModelMap model) {
+			HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (notEmpty(draft) && draft) {
 			entity.setStatus(CmsContentService.STATUS_DRAFT);
 		} else {
@@ -85,13 +86,13 @@ public class CmsContentController extends BaseController {
 				entity = service.updateUrl(entity.getId(), url);
 			}
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.content",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.content",
 						RequestUtils.getIp(request), getDate(), entity.getId() + ":" + entity.getTitle()));
 			}
 			contentTagService.delete(null, entity.getId());
 			newTagIds = tagService.saveTags(entity.getId(), tagTitles);
 		} else {
-			SystemUser user = UserUtils.getAdminFromSession(request);
+			SystemUser user = UserUtils.getAdminFromSession(session);
 			entity.setUserId(user.getId());
 			entity.setDeptId(user.getDeptId());
 			entity = service.save(entity);
@@ -113,12 +114,12 @@ public class CmsContentController extends BaseController {
 		String data = extendComponent.dealExtent(ExtendComponent.EXTEND_TYPE_CONTENT, entity.getCategoryId(),
 				entity.getModelId(), parameterMap);
 		attributeService.dealAttribute(entity.getId(), txt, data);
-		publish(new Integer[] { entity.getId() }, request, model);
+		publish(new Integer[] { entity.getId() }, request, session, model);
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "static" })
-	public String publish(Integer[] ids, HttpServletRequest request, ModelMap model) {
+	public String publish(Integer[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (notEmpty(ids)) {
 			for (Integer id : ids) {
 				CmsContent entity = service.getEntity(id);
@@ -137,27 +138,27 @@ public class CmsContentController extends BaseController {
 					}
 				}
 			}
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "static", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "static", RequestUtils
 					.getIp(request), getDate(), join(ids, ',')));
 		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "check" })
-	public String check(Integer[] ids, HttpServletRequest request, ModelMap model) {
+	public String check(Integer[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (notEmpty(ids)) {
 			for (Integer id : ids) {
 				CmsContent entity = service.check(id);
 				if (notEmpty(entity)) {
 					contentTagService.updateContentTags(id, entity.getTags());
 					if (notEmpty(entity.getParentId())) {
-						publish(new Integer[] { entity.getParentId() }, request, model);
+						publish(new Integer[] { entity.getParentId() }, request, session, model);
 					}
 					CmsCategory category = categoryService.getEntity(entity.getCategoryId());
 					if (isNotBlank(category.getPath())) {
 						fileComponent.createCategoryHtml(category, category.getTemplatePath(), category.getPath());
 					}
-					logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "check.content",
+					logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "check.content",
 							RequestUtils.getIp(request), getDate(), join(ids, ',')));
 				}
 			}
@@ -166,7 +167,7 @@ public class CmsContentController extends BaseController {
 	}
 
 	@RequestMapping("delete")
-	public String delete(Integer[] ids, HttpServletRequest request) {
+	public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
 		if (notEmpty(ids)) {
 			for (Integer id : ids) {
 				CmsContent entity = service.delete(id);
@@ -177,7 +178,7 @@ public class CmsContentController extends BaseController {
 					categoryService.updateContents(entity.getCategoryId(), -1);
 				}
 			}
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.content", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.content", RequestUtils
 					.getIp(request), getDate(), join(ids, ',')));
 		}
 		return "common/ajaxDone";

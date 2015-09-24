@@ -71,7 +71,7 @@
 				<@includeTemplateTree queryPath/>
 			</ul>
 		<#else>
-			<a href="javascript:;" onclick="$('textarea[name=content]',navTab.getCurrentPanel()).insertAtCaret('${('<!--#include virtual="'+queryPath+'"-->')?html?js_string}${(a.alias?has_content)?then('<#-- ${a.alias!} -->','')?html}');">
+			<a href="javascript:;" onclick="$('textarea[name=content]',navTab.getCurrentPanel()).insertAtCaret('${('<!--#include virtual="'+queryPath+'"-->')?html?js_string}${(a.alias?has_content)?then('<#-- ${a.alias!} -->','')?html}');return false;">
 				${a.fileName}${(a.alias?has_content)?then('(${a.alias!})','')}
 			</a>
 		</#if>
@@ -98,7 +98,7 @@
 									<a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${('/include'+(queryPath!)+'/')?url}&userTemplate" target="navTab" rel="cmsTemplateCreate"><span>创建推荐位</span></a>
 									<a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${'/include/'?url}" target="navTab" rel="cmsTemplateCreate"><span>创建代码片段</span></a>
 								</#if>
-								<a class="buttonActive" href="javascript:$('textarea[name=content]',navTab.getCurrentPanel()).insertAtCaret('\t');"><span>插入制表符</span></a>
+								<a class="buttonActive" href="javascript:;" onclick="$('textarea[name=content]',navTab.getCurrentPanel()).insertAtCaret('\t');return false;"><span>插入制表符</span></a>
 							</div>
 							<div style="margin-right:240px;height:100%;">
 								<textarea name="content" class="required" style="width:100%;height:100%;padding:0px;">${(getTemplateContent(queryPath)?html)!}</textarea>

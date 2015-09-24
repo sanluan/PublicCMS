@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,8 +40,8 @@ public class UserController extends BaseController {
 
 	@RequestMapping(value = { "changePassword" })
 	public String changePassword(String oldpassword, String password, String repassword, HttpServletRequest request,
-			HttpServletResponse response, ModelMap model) {
-		SystemUser user = UserUtils.getUserFromSession(request);
+			HttpSession session, HttpServletResponse response, ModelMap model) {
+		SystemUser user = UserUtils.getUserFromSession(session);
 		if (virifyNotEmpty("password", password, model) || virifyNotEquals("repassword", password, repassword, model)) {
 			return passwordPage;
 		} else {
@@ -58,12 +59,12 @@ public class UserController extends BaseController {
 	}
 
 	@RequestMapping(value = { "saveEmail" })
-	public String saveEmail(String email, HttpServletRequest request, ModelMap model) {
+	public String saveEmail(String email, HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (virifyNotEmpty("email", email, model) || virifyNotEMail("email", email, model)
 				|| virifyHasExist("email", service.findByEmail(email), model)) {
 			return "editEmail";
 		}
-		SystemUser user = UserUtils.getUserFromSession(request);
+		SystemUser user = UserUtils.getUserFromSession(session);
 
 		String emailCheckCode = UUID.randomUUID().toString();
 		LogEmailCheck emailCheckLog = new LogEmailCheck();

@@ -39,7 +39,7 @@ $(function(){
 <#assign imagesHtml>
 <div class="images">
 	<div class="image">
-		<a onclick="$(this).parent().parent().remove();" href="javascript:;"><@t.m 'button.delete'/></a>
+		<a onclick="$(this).parent().parent().remove();return false;" href="javascript:;"><@t.m 'button.delete'/></a>
 		<a href="file/upload.html?field=images_new_image" lookupGroup="" width="560" height="300" title="上传图片">上传</a>
 	</div>
 	<input type="hidden" name="images_new_image" onchange="$(this).parent().find('.image').css('background-image','url(${getUploadPath()}'+$(this).val()+')');"/>
@@ -51,7 +51,7 @@ $(function(){
 	<dt>图集：</dt>
 	<dd style="width:80%">
 		<div class="images">
-			<a class="add" href="javascript:prependImages('_new_'+(content_i++)+'_').initUI();"><@t.m 'button.add'/></a>
+			<a class="add" href="javascript:;" onclick="prependImages('_new_'+(content_i++)+'_').initUI();return false;"><@t.m 'button.add'/></a>
 		</div>
 		<div id="imagesBox">
 		</div>

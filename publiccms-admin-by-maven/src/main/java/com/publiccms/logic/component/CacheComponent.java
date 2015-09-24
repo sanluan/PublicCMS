@@ -34,7 +34,7 @@ public class CacheComponent {
 	private String basePath;
 
 	public final static String TEMPLATE_PREFIX = "/web/";
-	private final static String TEMPLATE_LOADER_PATH = "WEB-INF" + TEMPLATE_PREFIX;
+	private final static String TEMPLATE_LOADER_PATH = "/WEB-INF" + TEMPLATE_PREFIX;
 
 	@Autowired
 	private FreeMarkerConfigurer freeMarkerConfigurer;

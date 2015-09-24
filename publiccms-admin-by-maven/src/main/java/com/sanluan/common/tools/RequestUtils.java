@@ -9,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 public class RequestUtils {
 	public static String getIp(HttpServletRequest request) {
@@ -43,10 +42,6 @@ public class RequestUtils {
 
 	public static String getAccept(HttpServletRequest request) {
 		return request.getHeader("Accept");
-	}
-
-	public static HttpSession getSession(HttpServletRequest request) {
-		return request.getSession();
 	}
 
 	public static Cookie getCookie(HttpServletRequest request, String name) {

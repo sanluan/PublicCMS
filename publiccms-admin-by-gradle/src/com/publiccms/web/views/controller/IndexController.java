@@ -34,7 +34,7 @@ public class IndexController extends BaseController {
 		}
 	};
 
-	@RequestMapping("/**")
+	@RequestMapping({ "index.html", "/", "/**" })
 	public String page(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		String path = urlPathHelper.getLookupPathForRequest(request);
 		if (isNotBlank(path)) {

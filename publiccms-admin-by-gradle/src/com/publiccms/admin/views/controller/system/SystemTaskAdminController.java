@@ -1,6 +1,7 @@
 package com.publiccms.admin.views.controller.system;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,17 +28,17 @@ public class SystemTaskAdminController extends BaseController {
 	private LogOperateService logOperateService;
 
 	@RequestMapping("save")
-	public String save(SystemTask entity, HttpServletRequest request, ModelMap model) {
+	public String save(SystemTask entity, HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (notEmpty(entity.getId())) {
 			entity = service.update(entity.getId(), entity, new String[] { "id" });
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.task", RequestUtils
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.task", RequestUtils
 						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		} else {
 			entity = service.save(entity);
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "save.task", RequestUtils
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.task", RequestUtils
 						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 
@@ -47,44 +48,44 @@ public class SystemTaskAdminController extends BaseController {
 	}
 
 	@RequestMapping(value = { "runOnce" })
-	public String runOnce(Integer id, HttpServletRequest request) {
+	public String runOnce(Integer id, HttpServletRequest request, HttpSession session) {
 		SystemTask entity = service.getEntity(id);
 		if (notEmpty(entity)) {
 			scheduledTask.runOnce(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "runOnce.task", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "runOnce.task", RequestUtils
 					.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "pause" })
-	public String pause(Integer id, HttpServletRequest request) {
+	public String pause(Integer id, HttpServletRequest request, HttpSession session) {
 		SystemTask entity = service.updateStatus(id, ScheduledTask.TASK_STATUS_PAUSE);
 		if (notEmpty(entity)) {
 			scheduledTask.pause(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "pause.task", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "pause.task", RequestUtils
 					.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "resume" })
-	public String resume(Integer id, HttpServletRequest request) {
+	public String resume(Integer id, HttpServletRequest request, HttpSession session) {
 		SystemTask entity = service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
 		if (notEmpty(entity)) {
 			scheduledTask.resume(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "resume.task", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "resume.task", RequestUtils
 					.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping("delete")
-	public String delete(Integer id, HttpServletRequest request) {
+	public String delete(Integer id, HttpServletRequest request, HttpSession session) {
 		SystemTask entity = service.delete(id);
 		if (notEmpty(entity)) {
 			scheduledTask.delete(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.task", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.task", RequestUtils
 					.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";

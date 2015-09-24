@@ -137,7 +137,7 @@ $(function(){
 				<legend><@t.m 'moudle.contentExtend'/></legend>
 				<dl class="nowrap">
 					<dt></dt>
-					<dd><a class="buttonActive" href="javascript:prependExtend($('#ex_content',navTab.getCurrentPanel()),'_new_c_'+(ca_i++)+'_').initUI();"><span>增加字段</span></a></dd>
+					<dd><a class="buttonActive" href="javascript:;" onclick="prependExtend($('#ex_content',navTab.getCurrentPanel()),'_new_c_'+(ca_i++)+'_').initUI();return false;"><span>增加字段</span></a></dd>
 				</dl>
 				<div id="ex_content"></div>
 			</fieldset>
@@ -145,7 +145,7 @@ $(function(){
 				<legend><@t.m 'moudle.child'/><@t.m 'moudle.categoryExtend'/></legend>
 				<dl class="nowrap">
 					<dt></dt>
-					<dd><a class="buttonActive" href="javascript:prependExtend($('#ex_catrgory',navTab.getCurrentPanel()),'_new_ca_'+(ca_i++)+'_').initUI();"><span>增加字段</span></a></dd>
+					<dd><a class="buttonActive" href="javascript:;" onclick="prependExtend($('#ex_catrgory',navTab.getCurrentPanel()),'_new_ca_'+(ca_i++)+'_').initUI();return false;"><span>增加字段</span></a></dd>
 				</dl>
 				<div id="ex_catrgory"></div>
 			</fieldset>

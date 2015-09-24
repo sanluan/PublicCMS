@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,7 +29,8 @@ public class CmsTemplateDataController extends BaseController {
 	private LogOperateService logOperateService;
 
 	@RequestMapping(value = "save", method = RequestMethod.POST)
-	public String save(String path, Long createDate, HttpServletRequest request) throws IllegalStateException, IOException {
+	public String save(String path, Long createDate, HttpServletRequest request, HttpSession session)
+			throws IllegalStateException, IOException {
 		Map<String, Object> data = getData(request);
 		if (null == createDate) {
 			synchronized (this) {
@@ -36,14 +38,14 @@ public class CmsTemplateDataController extends BaseController {
 			}
 			fileComponent.saveData(path, data);
 			if (notEmpty(path)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "save.template.data",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.template.data",
 						RequestUtils.getIp(request), getDate(), path));
 			}
 		} else {
 			data.put("createDate", createDate);
 			fileComponent.updateData(path, createDate, data);
 			if (notEmpty(path)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.template.data",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.template.data",
 						RequestUtils.getIp(request), getDate(), path));
 			}
 		}
@@ -51,23 +53,24 @@ public class CmsTemplateDataController extends BaseController {
 	}
 
 	@RequestMapping(value = "update", method = RequestMethod.POST)
-	public String update(String path, Long createDate, HttpServletRequest request) throws IllegalStateException, IOException {
+	public String update(String path, Long createDate, HttpServletRequest request, HttpSession session)
+			throws IllegalStateException, IOException {
 		Map<String, Object> data = getData(request);
 		data.put("createDate", System.currentTimeMillis());
 		fileComponent.saveMapData(path, data);
 		if (notEmpty(path)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.template.data",
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.template.data",
 					RequestUtils.getIp(request), getDate(), path));
 		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping("delete")
-	public String delete(String path, Long createDate, HttpServletRequest request) {
+	public String delete(String path, Long createDate, HttpServletRequest request, HttpSession session) {
 		try {
 			fileComponent.deleteData(path, createDate);
 			if (notEmpty(path)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.template.data",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.template.data",
 						RequestUtils.getIp(request), getDate(), path));
 			}
 		} catch (IOException e) {

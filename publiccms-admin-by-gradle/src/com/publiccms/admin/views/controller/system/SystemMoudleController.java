@@ -1,6 +1,7 @@
 package com.publiccms.admin.views.controller.system;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,17 +24,17 @@ public class SystemMoudleController extends BaseController {
 	private LogOperateService logOperateService;
 
 	@RequestMapping("save")
-	public String save(SystemMoudle entity, HttpServletRequest request) {
+	public String save(SystemMoudle entity, HttpServletRequest request, HttpSession session) {
 		if (notEmpty(entity.getId())) {
 			entity = service.update(entity.getId(), entity, new String[] { "id" });
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.moudle",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.moudle",
 						RequestUtils.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		} else {
 			entity = service.save(entity);
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "save.moudle", RequestUtils
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.moudle", RequestUtils
 						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		}
@@ -41,10 +42,10 @@ public class SystemMoudleController extends BaseController {
 	}
 
 	@RequestMapping("delete")
-	public String delete(Integer id, HttpServletRequest request) {
+	public String delete(Integer id, HttpServletRequest request, HttpSession session) {
 		SystemMoudle entity = service.delete(id);
 		if (notEmpty(entity)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.dept", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.dept", RequestUtils
 					.getIp(request), getDate(), id + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";

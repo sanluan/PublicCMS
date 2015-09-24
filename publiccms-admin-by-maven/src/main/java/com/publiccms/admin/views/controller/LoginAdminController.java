@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -39,7 +40,7 @@ public class LoginAdminController extends BaseController {
 	private LogOperateService logOperateService;
 
 	@RequestMapping(value = { "login" }, method = RequestMethod.POST)
-	public String login(String username, String password, String returnUrl, HttpServletRequest request,
+	public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
 			HttpServletResponse response, ModelMap model) {
 		if (virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {
 			model.addAttribute("username", username);
@@ -59,7 +60,7 @@ public class LoginAdminController extends BaseController {
 			logLoginService.save(log);
 			return "login";
 		}
-		UserUtils.setAdminToSession(request, user);
+		UserUtils.setAdminToSession(session, user);
 
 		String authToken = UUID.randomUUID().toString();
 		UserUtils.addCookie(request, response, COOKIES_USER, authToken, Integer.MAX_VALUE, null);
@@ -75,8 +76,8 @@ public class LoginAdminController extends BaseController {
 	}
 
 	@RequestMapping(value = { "systemUser/changePassword" }, method = RequestMethod.POST)
-	public String changePassword(HttpServletRequest request, Integer id, String oldpassword, String password, String repassword,
-			ModelMap model) {
+	public String changePassword(Integer id, String oldpassword, String password, String repassword, HttpServletRequest request,
+			HttpSession session, ModelMap model) {
 		if (notEmpty(id)) {
 			SystemUser user = service.getEntity(id);
 			if (notEmpty(user)) {
@@ -87,7 +88,7 @@ public class LoginAdminController extends BaseController {
 					return "common/ajaxError";
 				}
 				service.updatePassword(user.getId(), VerificationUtils.encode(password));
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "changepassword",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "changepassword",
 						RequestUtils.getIp(request), getDate(), user.getId() + ":" + user.getPassword()));
 			}
 		}
@@ -95,15 +96,15 @@ public class LoginAdminController extends BaseController {
 	}
 
 	@RequestMapping(value = { "changePassword" }, method = RequestMethod.POST)
-	public String changeMyselfPassword(HttpServletRequest request, Integer id, String oldpassword, String password,
-			String repassword, ModelMap model) {
-		SystemUser user = UserUtils.getAdminFromSession(request);
+	public String changeMyselfPassword(Integer id, String oldpassword, String password, String repassword,
+			HttpServletRequest request, HttpSession session, ModelMap model) {
+		SystemUser user = UserUtils.getAdminFromSession(session);
 		if (virifyNotEquals("password", user.getPassword(), VerificationUtils.encode(oldpassword), model)) {
 			return "common/ajaxError";
 		} else if (virifyNotEmpty("password", password, model) || virifyNotEquals("repassword", password, repassword, model)) {
 			return "common/ajaxError";
 		} else {
-			UserUtils.clearAdminToSession(request);
+			UserUtils.clearAdminToSession(session);
 			model.addAttribute("message", "message.needReLogin");
 		}
 		service.updatePassword(user.getId(), VerificationUtils.encode(password));
@@ -113,8 +114,8 @@ public class LoginAdminController extends BaseController {
 	}
 
 	@RequestMapping(value = { "logout" }, method = RequestMethod.GET)
-	public String logout(HttpServletRequest request) {
-		UserUtils.clearAdminToSession(request);
+	public String logout(HttpSession session) {
+		UserUtils.clearAdminToSession(session);
 		return REDIRECT + "index.html";
 	}
 

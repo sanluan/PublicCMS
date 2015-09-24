@@ -21,7 +21,7 @@ $(function(){
 <div style="clear:both">
 	<label>片段<@t.m 'field.name'/>：</label>
 	<input class="required" name="ex_new_name" maxlength="20" type="text" size="10"/>
-	<a class="buttonActive" href="javascript:$('input[name=ex_new_name]',navTab.getCurrentPanel()).parent().remove();"><span><@t.m 'button.delete'/></span></a>
+	<a class="buttonActive" href="javascript:;" onclick="$('input[name=ex_new_name]',navTab.getCurrentPanel()).parent().remove();return false;"><span><@t.m 'button.delete'/></span></a>
 	<div style="clear:both"></div>
 	<textarea name="ex_new_text" class="required editor" style="width: 100%;" rows="20"></textarea>
 	<hr/>
@@ -31,7 +31,7 @@ $(function(){
 <dl class="nowrap">
 	<dt>内容片段</dt>
 	<dd>
-		<a class="buttonActive" href="javascript:prependExtend($('#ex_content',navTab.getCurrentPanel()),'_c_'+(content_i++)+'_').initUI();"><span>增加片段</span></a>
+		<a class="buttonActive" href="javascript:;" onclick="prependExtend($('#ex_content',navTab.getCurrentPanel()),'_c_'+(content_i++)+'_').initUI();return false;"><span>增加片段</span></a>
 		<div id="ex_content"></div>
 	</dd>
 </dl>

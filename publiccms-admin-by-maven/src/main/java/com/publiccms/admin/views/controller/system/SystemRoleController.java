@@ -3,6 +3,7 @@ package com.publiccms.admin.views.controller.system;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -41,18 +42,18 @@ public class SystemRoleController extends BaseController {
 	private LogOperateService logOperateService;
 
 	@RequestMapping("save")
-	public String save(SystemRole entity, Integer[] moudleIds, HttpServletRequest request) {
+	public String save(SystemRole entity, Integer[] moudleIds, HttpServletRequest request, HttpSession session) {
 		if (notEmpty(entity.getId())) {
 			entity = service.update(entity.getId(), entity, new String[] { "id" });
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.role", RequestUtils
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.role", RequestUtils
 						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 			roleMoudleService.updateRoleMoudles(entity.getId(), moudleIds);
 		} else {
 			entity = service.save(entity);
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "save.role", RequestUtils
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.role", RequestUtils
 						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 			roleMoudleService.saveRoleMoudles(entity.getId(), moudleIds);
@@ -62,7 +63,7 @@ public class SystemRoleController extends BaseController {
 	}
 
 	@RequestMapping("delete")
-	public String delete(Integer id, HttpServletRequest request) {
+	public String delete(Integer id, HttpServletRequest request, HttpSession session) {
 		SystemRole entity = service.delete(id);
 		if (notEmpty(entity)) {
 			@SuppressWarnings("unchecked")
@@ -72,7 +73,7 @@ public class SystemRoleController extends BaseController {
 			}
 			roleUserService.deleteByRole(id);
 			roleMoudleService.deleteByRole(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.role", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.role", RequestUtils
 					.getIp(request), getDate(), id + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";

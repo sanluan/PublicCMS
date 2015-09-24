@@ -76,7 +76,7 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>
-					<a class="btnSelect" href="javascript:$.bringBack({queryUserId:'${a.id}',userId:'${a.id}', nickName:'${a.nickName}'})" title="选择">选择</a>
+					<a class="btnSelect" href="javascript:;" onclick="$.bringBack({queryUserId:'${a.id}',userId:'${a.id}', nickName:'${a.nickName}'});return false;" title="选择">选择</a>
 				</td>
 				<td>${a.name}</td>
 				<td>${a.nickName}${(a.superuserAccess)?then('[<font color="red">超级管理员</font>]','')}</td>

@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -106,13 +107,14 @@ public class UeditorController extends BaseController {
 
 	@RequestMapping(params = "action=" + ACTION_UPLOAD)
 	@ResponseBody
-	public Map<String, Object> upload(MultipartFile file, HttpServletRequest request) throws IllegalStateException, IOException {
+	public Map<String, Object> upload(MultipartFile file, HttpServletRequest request, HttpSession session)
+			throws IllegalStateException, IOException {
 		if (!file.isEmpty()) {
 			String suffix = fileComponent.getSuffix(file.getOriginalFilename());
 			String fileName = fileComponent.getUploadFileName(suffix);
 			try {
 				String name = fileComponent.upload(file, fileName);
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(),
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(),
 						LogOperateService.OPERATE_UPLOADFILE, RequestUtils.getIp(request), getDate(), fileName));
 				Map<String, Object> map = getResultMap(true);
 				map.put("size", file.getSize());
@@ -129,7 +131,8 @@ public class UeditorController extends BaseController {
 
 	@RequestMapping(params = "action=" + ACTION_UPLOAD_SCRAW)
 	@ResponseBody
-	public Map<String, Object> uploadScraw(String file, HttpServletRequest request) throws IllegalStateException, IOException {
+	public Map<String, Object> uploadScraw(String file, HttpServletRequest request, HttpSession session)
+			throws IllegalStateException, IOException {
 		if (null != file) {
 			byte[] data = decodeBase64(file);
 			String fileName = fileComponent.getUploadFileName(SCRAW_TYPE);
@@ -137,7 +140,7 @@ public class UeditorController extends BaseController {
 				File dest = new File(fileComponent.getUploadFilePath(fileName));
 				writeByteArrayToFile(dest, data);
 
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(),
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(),
 						LogOperateService.OPERATE_UPLOADFILE, RequestUtils.getIp(request), getDate(), fileName));
 				Map<String, Object> map = getResultMap(true);
 				map.put("size", data.length);
@@ -154,7 +157,8 @@ public class UeditorController extends BaseController {
 
 	@RequestMapping(params = "action=" + ACTION_CATCHIMAGE)
 	@ResponseBody
-	public Map<String, Object> catchimage(HttpServletRequest request) throws IllegalStateException, IOException {
+	public Map<String, Object> catchimage(HttpServletRequest request, HttpSession session) throws IllegalStateException,
+			IOException {
 		CloseableHttpClient httpclient = HttpClients.createDefault();
 		try {
 			String[] file = request.getParameterValues(FIELD_NAME + "[]");
@@ -173,7 +177,7 @@ public class UeditorController extends BaseController {
 							File dest = new File(fileComponent.getUploadFilePath(fileName));
 							copyInputStreamToFile(entity.getContent(), dest);
 							EntityUtils.consume(entity);
-							logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(),
+							logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(),
 									LogOperateService.OPERATE_UPLOADFILE, RequestUtils.getIp(request), getDate(), fileName));
 							Map<String, Object> map = getResultMap(true);
 							map.put("size", entity.getContentLength());
@@ -207,13 +211,13 @@ public class UeditorController extends BaseController {
 	@SuppressWarnings("unchecked")
 	@RequestMapping(params = "action=" + ACTION_LISTFILE)
 	@ResponseBody
-	public Map<String, Object> listfile(String file, Integer start, HttpServletRequest request) throws IllegalStateException,
+	public Map<String, Object> listfile(String file, Integer start, HttpSession session) throws IllegalStateException,
 			IOException {
 		if (null == start)
 			start = 0;
 
 		PageHandler page = logOperateService.getPage(null, LogOperateService.OPERATE_UPLOADFILE, null, UserUtils
-				.getAdminFromSession(request).getId(), null, null, null, null, start / 20 + 1, 20);
+				.getAdminFromSession(session).getId(), null, null, null, null, start / 20 + 1, 20);
 
 		Map<String, Object> map = getResultMap(true);
 		List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();

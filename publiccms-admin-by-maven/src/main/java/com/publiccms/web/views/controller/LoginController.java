@@ -8,6 +8,7 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -37,7 +38,7 @@ public class LoginController extends BaseController {
 	private LogEmailCheckService logEmailCheckService;
 
 	@RequestMapping(value = { "login" }, method = RequestMethod.POST)
-	public String login(String username, String password, String returnUrl, HttpServletRequest request,
+	public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
 			HttpServletResponse response, ModelMap model) {
 		if (virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {
 			model.addAttribute("username", username);
@@ -62,7 +63,7 @@ public class LoginController extends BaseController {
 			logLoginService.save(log);
 			return "login";
 		}
-		UserUtils.setUserToSession(request, user);
+		UserUtils.setUserToSession(session, user);
 		String authToken = UUID.randomUUID().toString();
 		RequestUtils.addCookie(request, response, COOKIES_USER, authToken, Integer.MAX_VALUE, null);
 		service.updateLoginStatus(user.getId(), username, authToken, RequestUtils.getIp(request));
@@ -81,8 +82,8 @@ public class LoginController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping(value = { "register" })
-	public String register(SystemUser entity, String repassword, HttpServletRequest request, HttpServletResponse response,
-			ModelMap model) {
+	public String register(SystemUser entity, String repassword, HttpServletRequest request, HttpSession session,
+			HttpServletResponse response, ModelMap model) {
 		if (virifyNotEmpty("username", entity.getName(), model) || virifyNotEmpty("nickname", entity.getNickName(), model)
 				|| virifyNotEmpty("password", entity.getPassword(), model)
 				|| virifyNotUserName("username", entity.getName(), model)
@@ -98,21 +99,21 @@ public class LoginController extends BaseController {
 			entity.setAuthToken(authToken);
 			entity = service.save(entity);
 
-			UserUtils.setUserToSession(request, entity);
+			UserUtils.setUserToSession(session, entity);
 			RequestUtils.addCookie(request, response, COOKIES_USER, authToken, Integer.MAX_VALUE, null);
 		}
 		return REDIRECT + "user/";
 	}
 
 	@RequestMapping(value = { "verifyEmail" })
-	public String verifyEmail(String code, HttpServletRequest request, ModelMap model) {
+	public String verifyEmail(String code, HttpSession session, ModelMap model) {
 		LogEmailCheck logEmailCheck = logEmailCheckService.findByCode(code);
 		if (virifyNotEmpty("verifyEmail.code", code, model) || virifyNotExist("verifyEmail.logEmailCheck", logEmailCheck, model)) {
 			return "login";
 		}
 		service.checked(logEmailCheck.getUserId(), logEmailCheck.getEmail());
 		logEmailCheckService.checked(logEmailCheck.getId());
-		UserUtils.clearUserTimeToSession(request);
+		UserUtils.clearUserTimeToSession(session);
 		model.addAttribute("message", "verifyEmail.success");
 		return REDIRECT + "user/";
 	}
