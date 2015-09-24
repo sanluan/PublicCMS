@@ -11,14 +11,14 @@
 		<dt>
 			<label>字段<@t.m 'field.name'/>：</label>
 			<input class="required" name="ex_new_name" maxlength="20" type="text" size="10"/>
-			<a class="buttonActive" href="javascript:$('input[name=ex_new_name]',navTab.getCurrentPanel()).parent().parent().remove();"><span><@t.m 'button.delete'/></span></a>
+			<a class="buttonActive" href="javascript:;" onclick="$('input[name=ex_new_name]',navTab.getCurrentPanel()).parent().parent().remove();return false;"><span><@t.m 'button.delete'/></span></a>
 		</dt>
 		<dd>
 			<p class="nowrap">
 				<label>字段编码：</label>
 				<@inputType 'ex_new_inputType' ''/><input class="required alphanumeric" name="ex_new_code" type="text" maxlength="20" size="20"/>
 				<label><input name="ex_new_required" type="checkbox"/>必填</label>
-				<#if extendFieldList??><span class="info">只能填写字母, 系统字段:<#list extendFieldList as k><a href="javascript:$('input[name=ex_new_code]',navTab.getCurrentPanel()).val('${k}')">${k}</a> </#list></span></#if>
+				<#if extendFieldList??><span class="info">只能填写字母, 系统字段:<#list extendFieldList as k><a href="javascript:;" onclick="$('input[name=ex_new_code]',navTab.getCurrentPanel()).val('${k}');return false;">${k}</a> </#list></span></#if>
 			</p>
 			<p>
 				<label>默认值：</label>

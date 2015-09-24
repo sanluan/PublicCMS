@@ -207,6 +207,7 @@ CREATE TABLE IF NOT EXISTS `cms_model` (
   `has_child` tinyint(1) NOT NULL default '0' COMMENT '拥有章节',
   `is_url` tinyint(1) NOT NULL default '0' COMMENT '是链接',
   `is_images` tinyint(1) NOT NULL default '0' COMMENT '是图集',
+  `is_part` tinyint(1) NOT NULL default '0' COMMENT '是否内容片段',
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`disabled`),

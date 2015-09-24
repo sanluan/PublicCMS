@@ -3,6 +3,7 @@ import org.gradle.plugins.ide.eclipse.model.Facet
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'war'
+apply plugin: 'jetty'
 
 webAppDirName = 'WebContent'
 sourceSets.main.java.srcDir 'src'

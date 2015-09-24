@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,7 +51,7 @@ public class CmsCategoryController extends BaseController {
 	private List<String> systemExtendList = Arrays.asList(new String[] { "extend1", "extend2", "extend3", "extend4" });
 
 	@RequestMapping("save")
-	public String save(CmsCategory entity, HttpServletRequest request, ModelMap model) {
+	public String save(CmsCategory entity, HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (notEmpty(entity.getId())) {
 			CmsCategory oldEntity = service.getEntity(entity.getId());
 			entity = service.update(entity.getId(), entity, new String[] { "childIds", "url", "disabled", "contents" });
@@ -59,14 +60,14 @@ public class CmsCategoryController extends BaseController {
 				service.generateChildIds(entity.getParentId());
 			}
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.category",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.category",
 						RequestUtils.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		} else {
 			entity = service.save(entity);
 			service.addChildIds(entity.getParentId(), entity.getId());
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "save.category",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.category",
 						RequestUtils.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		}
@@ -88,12 +89,12 @@ public class CmsCategoryController extends BaseController {
 		extendComponent.saveExtend(ExtendComponent.ITEM_TYPE_CATEGORY, entity.getId(), systemExtendList, parameterMap);
 
 		attributeService.updateAttribute(entity.getId(), extendComponent.dealCategoryExtent(entity.getId(), parameterMap));
-		publish(entity.getId(), request, model);
+		publish(entity.getId(), request, session, model);
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "static" })
-	public String publish(Integer id, HttpServletRequest request, ModelMap model) {
+	public String publish(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
 		CmsCategory entity = service.getEntity(id);
 		if (notEmpty(entity)) {
 			if (isNotBlank(entity.getPath())) {
@@ -102,7 +103,7 @@ public class CmsCategoryController extends BaseController {
 					return "common/ajaxError";
 				} else {
 					entity = service.updateUrl(entity.getId(), result.getFilePath());
-					logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "static", RequestUtils
+					logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "static", RequestUtils
 							.getIp(request), getDate(), entity.getUrl()));
 				}
 			}
@@ -111,10 +112,10 @@ public class CmsCategoryController extends BaseController {
 	}
 
 	@RequestMapping("delete")
-	public String delete(Integer id, HttpServletRequest request) {
+	public String delete(Integer id, HttpServletRequest request, HttpSession session) {
 		CmsCategory entity = service.delete(id);
 		if (notEmpty(entity)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.category", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.category", RequestUtils
 					.getIp(request), getDate(), id + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";

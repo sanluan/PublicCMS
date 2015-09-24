@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,18 +33,18 @@ public class CmsModelController extends BaseController {
 			"modelExtend4" });
 
 	@RequestMapping("save")
-	public String save(CmsModel entity, HttpServletRequest request) {
+	public String save(CmsModel entity, HttpServletRequest request, HttpSession session) {
 		if (notEmpty(entity.getId())) {
 			entity = service.update(entity.getId(), entity, new String[] { "id", "disabled" });
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.model",
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.model",
 						RequestUtils.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		} else {
 			entity = service.save(entity);
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "save.model",
-						RequestUtils.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.model", RequestUtils
+						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		}
 		extendComponent.updateExtend(ExtendComponent.ITEM_TYPE_MODEL, entity.getId(), ExtendComponent.EXTEND_TYPE_CONTENT,
@@ -53,10 +54,10 @@ public class CmsModelController extends BaseController {
 	}
 
 	@RequestMapping("delete")
-	public String delete(Integer id, HttpServletRequest request) {
+	public String delete(Integer id, HttpServletRequest request, HttpSession session) {
 		CmsModel entity = service.delete(id);
 		if (notEmpty(entity)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.model", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.model", RequestUtils
 					.getIp(request), getDate(), id + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";

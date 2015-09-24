@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,19 +29,19 @@ public class CmsTemplateController extends BaseController {
 	private LogOperateService logOperateService;
 
 	@RequestMapping("save")
-	public String save(String path, String content, HttpServletRequest request, ModelMap model) {
+	public String save(String path, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (virifyCustom("template.save", !fileComponent.saveContent(path, content), model)) {
 			return "common/ajaxError";
 		}
 		if (notEmpty(path)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.template", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.template", RequestUtils
 					.getIp(request), getDate(), path));
 		}
-		return staticPage(path, request);
+		return staticPage(path, request, session);
 	}
 
 	@RequestMapping(value = { "create" })
-	public String create(String path, String content, HttpServletRequest request, ModelMap model) {
+	public String create(String path, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("keywords", request.getParameter("keywords"));
 		map.put("description", request.getParameter("description"));
@@ -51,26 +52,26 @@ public class CmsTemplateController extends BaseController {
 		}
 		fileComponent.updateMetadata(path, map);
 		if (notEmpty(path)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "save.template", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.template", RequestUtils
 					.getIp(request), getDate(), path));
 		}
-		return staticPage(path, request);
+		return staticPage(path, request, session);
 	}
 
 	@RequestMapping("delete")
-	public String delete(String path, HttpServletRequest request, ModelMap model) {
+	public String delete(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (virifyCustom("template.save", !fileComponent.deletePage(path), model)) {
 			return "common/ajaxError";
 		}
 		if (notEmpty(path)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "delete.template", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.template", RequestUtils
 					.getIp(request), getDate(), path));
 		}
-		return staticPage(path, request);
+		return staticPage(path, request, session);
 	}
 
 	@RequestMapping(value = { "update" })
-	public String update(String path, HttpServletRequest request, ModelMap model) {
+	public String update(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
 		Map<String, Object> map = fileComponent.getTemplateMetadata(path);
 		map.put("keywords", request.getParameter("keywords"));
 		map.put("description", request.getParameter("description"));
@@ -80,24 +81,24 @@ public class CmsTemplateController extends BaseController {
 			map.put("path", request.getParameter("targetpath"));
 		fileComponent.updateMetadata(path, map);
 		if (notEmpty(path)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.template.meta",
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.template.meta",
 					RequestUtils.getIp(request), getDate(), path));
 		}
-		return staticPage(path, request);
+		return staticPage(path, request, session);
 	}
 
 	@RequestMapping(value = { "staticPlace" })
-	public String staticPlace(String path, HttpServletRequest request) {
+	public String staticPlace(String path, HttpServletRequest request, HttpSession session) {
 		fileComponent.staticPlace(path);
 		if (notEmpty(path)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "static", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "static", RequestUtils
 					.getIp(request), getDate(), path));
 		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "staticPage" })
-	public String staticPage(String path, HttpServletRequest request) {
+	public String staticPage(String path, HttpServletRequest request, HttpSession session) {
 		List<FileInfo> list = fileComponent.getFileList(path, true);
 		for (FileInfo fileInfo : list) {
 			fileComponent.staticPlace(FileComponent.INCLUDE_DIR + path + "/" + fileInfo.getFileName());
@@ -105,7 +106,7 @@ public class CmsTemplateController extends BaseController {
 		fileComponent.staticPage(path);
 
 		if (notEmpty(path)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "static", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "static", RequestUtils
 					.getIp(request), getDate(), path));
 		}
 		return "common/ajaxDone";

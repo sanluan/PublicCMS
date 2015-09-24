@@ -27,22 +27,22 @@ public class WebContextInterceptor extends BaseInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-		SystemUser user = UserUtils.getUserFromSession(request);
+		SystemUser user = UserUtils.getUserFromSession(request.getSession());
 		if (null == user) {
 			Cookie userCookie = UserUtils.getCookie(request, COOKIES_USER);
 			if (null != userCookie && isNotBlank(userCookie.getValue())) {
 				user = systemUserService.findByAuthToken(userCookie.getValue());
 				if (null != user) {
-					UserUtils.setUserToSession(request, user);
+					UserUtils.setUserToSession(request.getSession(), user);
 				} else {
 					UserUtils.cancleCookie(request, response, COOKIES_USER, null);
 				}
 			}
 		} else {
-			Date date = UserUtils.getUserTimeFromSession(request);
+			Date date = UserUtils.getUserTimeFromSession(request.getSession());
 			if (null == date || date.before(addSeconds(new Date(), -30))) {
 				user = systemUserService.getEntity(user.getId());
-				UserUtils.setUserToSession(request, user);
+				UserUtils.setUserToSession(request.getSession(), user);
 			}
 		}
 

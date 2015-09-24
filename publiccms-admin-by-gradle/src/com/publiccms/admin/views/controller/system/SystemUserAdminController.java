@@ -3,6 +3,7 @@ package com.publiccms.admin.views.controller.system;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,7 +33,8 @@ public class SystemUserAdminController extends BaseController {
 	private LogOperateService logOperateService;
 
 	@RequestMapping("save")
-	public String save(SystemUser entity, String repassword, Integer[] roleIds, HttpServletRequest request, ModelMap model) {
+	public String save(SystemUser entity, String repassword, Integer[] roleIds, HttpServletRequest request, HttpSession session,
+			ModelMap model) {
 		if (virifyNotEmpty("username", entity.getName(), model) || virifyNotEmpty("nickname", entity.getNickName(), model)
 				|| virifyNotUserName("username", entity.getName(), model)
 				|| virifyNotNickName("nickname", entity.getNickName(), model)) {
@@ -70,7 +72,7 @@ public class SystemUserAdminController extends BaseController {
 				roleUserService.dealRoleUsers(entity.getId(), roleIds);
 			}
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "update.user", RequestUtils
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.user", RequestUtils
 						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		} else {
@@ -88,7 +90,7 @@ public class SystemUserAdminController extends BaseController {
 				}
 			}
 			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "save.user", RequestUtils
+				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.user", RequestUtils
 						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
 			}
 		}
@@ -96,26 +98,26 @@ public class SystemUserAdminController extends BaseController {
 	}
 
 	@RequestMapping(value = { "enable" }, method = RequestMethod.POST)
-	public String enable(HttpServletRequest request, Integer id, String repassword, ModelMap model) {
-		if (virifyEquals("admin.operate", UserUtils.getAdminFromSession(request), id, model)) {
+	public String enable(Integer id, String repassword, HttpServletRequest request, HttpSession session, ModelMap model) {
+		if (virifyEquals("admin.operate", UserUtils.getAdminFromSession(session), id, model)) {
 			return "common/ajaxError";
 		}
 		SystemUser entity = service.updateStatus(id, false);
 		if (notEmpty(entity)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "enable.user", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "enable.user", RequestUtils
 					.getIp(request), getDate(), id + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";
 	}
 
 	@RequestMapping(value = { "disable" }, method = RequestMethod.POST)
-	public String disable(HttpServletRequest request, Integer id, String repassword, ModelMap model) {
-		if (virifyEquals("admin.operate", UserUtils.getAdminFromSession(request), id, model)) {
+	public String disable(Integer id, String repassword, HttpServletRequest request, HttpSession session, ModelMap model) {
+		if (virifyEquals("admin.operate", UserUtils.getAdminFromSession(session), id, model)) {
 			return "common/ajaxError";
 		}
 		SystemUser entity = service.updateStatus(id, true);
 		if (notEmpty(entity)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(request).getId(), "disable.user", RequestUtils
+			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "disable.user", RequestUtils
 					.getIp(request), getDate(), id + ":" + entity.getName()));
 		}
 		return "common/ajaxDone";

@@ -10,9 +10,9 @@
 <script>
 function addTag($id,$name){
 	if($id&&$name){
-		$('#tags',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();\">"+$name+"</a><input type=\"hidden\" name=\"tagIds\" value=\""+$id+"\"/></span>");
+		$('#tags',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();return false;\">"+$name+"</a><input type=\"hidden\" name=\"tagIds\" value=\""+$id+"\"/></span>");
 	}else if($name){
-		$('#tags',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();\">"+$name+"</a><input type=\"hidden\" name=\"tagTitles\" value=\""+$name+"\"/></span>");
+		$('#tags',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();return false;\">"+$name+"</a><input type=\"hidden\" name=\"tagTitles\" value=\""+$name+"\"/></span>");
 	}
 	$('input[name=tagId]',navTab.getCurrentPanel()).val('');
 	$('input[name=tagTitle]',navTab.getCurrentPanel()).val('')
@@ -92,7 +92,7 @@ function addTag($id,$name){
 				<dd>
 					<input name="tagId" type="hidden"/>
 					<input name="tagTitle" type="text" size="30" postField="name" suggestfields="tagId,tagTitle,tagType" suggestUrl="cmsTag/suggest.html?categoryId=${categoryId!}"/>
-					<a class="buttonActive" href="javascript:;" onclick="addTag($('input[name=tagId]',navTab.getCurrentPanel()).val(),$('input[name=tagTitle]',navTab.getCurrentPanel()).val());"><span>增加</span></a>
+					<a class="buttonActive" href="javascript:;" onclick="addTag($('input[name=tagId]',navTab.getCurrentPanel()).val(),$('input[name=tagTitle]',navTab.getCurrentPanel()).val());return false;"><span>增加</span></a>
 				</dd>
 			</dl>
 	<#if a??>

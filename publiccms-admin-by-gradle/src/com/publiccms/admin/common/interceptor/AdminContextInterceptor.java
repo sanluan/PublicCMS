@@ -37,7 +37,7 @@ public class AdminContextInterceptor extends BaseInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
 		if (verify(getURL(request))) {
-			SystemUser user = UserUtils.getAdminFromSession(request);
+			SystemUser user = UserUtils.getAdminFromSession(request.getSession());
 			if (null == user) {
 				try {
 					if ("XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {
@@ -51,10 +51,10 @@ public class AdminContextInterceptor extends BaseInterceptor {
 				} catch (IOException e) {
 				}
 			} else {
-				Date date = UserUtils.getUserTimeFromSession(request);
+				Date date = UserUtils.getUserTimeFromSession(request.getSession());
 				if (null == date || date.before(addSeconds(new Date(), -30))) {
 					user = systemUserService.getEntity(user.getId());
-					UserUtils.setUserToSession(request, user);
+					UserUtils.setUserToSession(request.getSession(), user);
 				}
 				if (!user.isDisabled() && !user.isSuperuserAccess()) {
 					try {
