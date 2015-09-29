@@ -4,6 +4,9 @@ package com.publiccms.logic.dao.log;
 
 import java.util.Date;
 
+import static org.apache.commons.lang3.StringUtils.length;
+import static org.apache.commons.lang3.StringUtils.substring;
+
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.entities.log.LogTask;
@@ -30,6 +33,9 @@ public class LogTaskDao extends BaseDao<LogTask> {
 
 	@Override
 	protected LogTask init(LogTask entity) {
+		if (notEmpty(entity) && 500 < length(entity.getResult())) {
+			entity.setResult(substring(entity.getResult(), 0, 500));
+		}
 		return entity;
 	}
 

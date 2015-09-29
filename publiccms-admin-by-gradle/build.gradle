@@ -11,7 +11,10 @@ sourceSets.main.java.srcDir 'src'
 version = '1.0'
 sourceCompatibility = 1.7
 
-repositories {  mavenLocal() }
+repositories {
+	mavenLocal()
+	mavenCentral()
+}
 
 ext {
 	springVersion = '4.2.1.RELEASE'
@@ -28,62 +31,66 @@ war{
 		include "*.xml"
 		into('WEB-INF/classes')
 	}
-	from("$projectDir/src/config/language") { into('WEB-INF/classes/config/language') }
-	from("$projectDir/src/config/properties") { into('WEB-INF/classes/config/properties') }
+	from("$projectDir/src/config/language") {
+		into('WEB-INF/classes/config/language')
+	}
+	from("$projectDir/src/config/properties") {
+		into('WEB-INF/classes/config/properties')
+	}
 }
 
 dependencies {
 	compile (
-			"org.freemarker:freemarker:${freemarkerVersion}",
+	"org.freemarker:freemarker:${freemarkerVersion}",
 
-			'commons-logging:commons-logging:1.2',
-			'commons-io:commons-io:2.4',
-			'commons-fileupload:commons-fileupload:1.3.1',
-			'commons-codec:commons-codec:1.10',
-			'org.apache.commons:commons-collections4:4.0',
-			'org.apache.commons:commons-lang3:3.4',
+	'commons-logging:commons-logging:1.2',
+	'commons-io:commons-io:2.4',
+	'commons-fileupload:commons-fileupload:1.3.1',
+	'commons-codec:commons-codec:1.10',
+	'org.apache.commons:commons-collections4:4.0',
+	'org.apache.commons:commons-lang3:3.4',
 
-			"org.springframework:spring-context-support:${springVersion}",
-			"org.springframework:spring-jdbc:${springVersion}",
-			"org.springframework:spring-orm:${springVersion}",
-			"org.springframework:spring-webmvc:${springVersion}",
+	"org.springframework:spring-context-support:${springVersion}",
+	"org.springframework:spring-jdbc:${springVersion}",
+	"org.springframework:spring-orm:${springVersion}",
+	"org.springframework:spring-webmvc:${springVersion}",
 
-			'org.hibernate.common:hibernate-commons-annotations:5.0.0.Final',
-			"org.hibernate:hibernate-core:${hibernateVersion}",
+	'org.hibernate.common:hibernate-commons-annotations:5.0.0.Final',
+	"org.hibernate:hibernate-core:${hibernateVersion}",
 
-			"org.hibernate:hibernate-ehcache:${hibernateVersion}",
+	"org.hibernate:hibernate-ehcache:${hibernateVersion}",
 
-			"org.hibernate:hibernate-search:${hibernateSearchVersion}",
+	"org.hibernate:hibernate-search:${hibernateSearchVersion}",
 
-			'c3p0:c3p0:0.9.1.2',
-			'mysql:mysql-connector-java:5.1.35',
+	'c3p0:c3p0:0.9.1.2',
+	'mysql:mysql-connector-java:5.1.35',
 
-			"com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
-			"com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
-			"com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
+	"com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
+	"com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+	"com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
 
-			"org.apache.httpcomponents:httpclient:${httpclientVersion}",
-			"org.apache.httpcomponents:httpmime:${httpclientVersion}",
-			"org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
+	"org.apache.httpcomponents:httpclient:${httpclientVersion}",
+	"org.apache.httpcomponents:httpmime:${httpclientVersion}",
+	"org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
 
-			'org.slf4j:slf4j-api:1.7.10',
-			'javax.activation:activation:1.1.1',
-			'javax.mail:mail:1.4.7',
-			'eu.bitwalker:UserAgentUtils:1.15',
-			'antlr:antlr:2.7.7',
-			'dom4j:dom4j:1.6.1',
-			'net.coobird:thumbnailator:0.4.8',
+	'org.slf4j:slf4j-api:1.7.10',
+	'javax.activation:activation:1.1.1',
+	'javax.mail:mail:1.4.7',
+	'eu.bitwalker:UserAgentUtils:1.15',
+	'antlr:antlr:2.7.7',
+	'dom4j:dom4j:1.6.1',
+	'net.coobird:thumbnailator:0.4.8',
 
-			'org.apache.ant:ant:1.9.4',
+	'org.apache.ant:ant:1.9.4',
 
-			//'org.apache.poi:poi:3.12',
-			//'org.apache.poi:poi-ooxml:3.12',
+	//'org.apache.poi:poi:3.12',
+	//'org.apache.poi:poi-ooxml:3.12',
 
-			'org.quartz-scheduler:quartz:2.2.1',
+	'org.quartz-scheduler:quartz:2.2.1',
 
-			'cglib:cglib-nodep:3.1',
-			'dom4j:dom4j:1.6.1'
-			)
+	'cglib:cglib-nodep:3.1',
+	'dom4j:dom4j:1.6.1'
+	)
 	compile('javax.servlet:javax.servlet-api:3.0.1')
 }
 
