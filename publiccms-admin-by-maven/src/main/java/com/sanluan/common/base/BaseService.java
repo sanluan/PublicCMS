@@ -62,7 +62,7 @@ public abstract class BaseService<E> extends Base {
 	public E update(Serializable id, E newEntity, String ignoreProperties[]) {
 		E entity = getEntity(id);
 		if (notEmpty(entity))
-			BeanUtils.copyProperties(newEntity, entity, ignoreProperties);
+			BeanUtils.copyProperties(dao.init(newEntity), entity, ignoreProperties);
 		return entity;
 	}
 
@@ -74,7 +74,7 @@ public abstract class BaseService<E> extends Base {
 	public E update(Serializable id, E newEntity) {
 		E entity = getEntity(id);
 		if (notEmpty(entity))
-			BeanUtils.copyProperties(newEntity, entity);
+			BeanUtils.copyProperties(dao.init(newEntity), entity);
 		return entity;
 	}
 
