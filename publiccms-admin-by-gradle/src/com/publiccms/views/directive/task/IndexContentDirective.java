@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.sanluan.common.base.BaseDirective;
+import com.sanluan.common.base.BaseTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
-public class IndexContentDirective extends BaseDirective {
+public class IndexContentDirective extends BaseTemplateDirective {
 	@Autowired
 	private CmsContentService service;
 
