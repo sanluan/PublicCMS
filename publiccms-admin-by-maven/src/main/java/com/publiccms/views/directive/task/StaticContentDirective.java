@@ -19,11 +19,11 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsModelService;
-import com.sanluan.common.base.BaseDirective;
+import com.sanluan.common.base.BaseTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
-public class StaticContentDirective extends BaseDirective {
+public class StaticContentDirective extends BaseTemplateDirective {
 	@Autowired
 	private FileComponent fileComponent;
 	@Autowired

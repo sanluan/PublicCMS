@@ -14,11 +14,11 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.component.FileComponent.StaticResult;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.sanluan.common.base.BaseDirective;
+import com.sanluan.common.base.BaseTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
-public class StaticCategoryDirective extends BaseDirective {
+public class StaticCategoryDirective extends BaseTemplateDirective {
 	@Autowired
 	private FileComponent fileComponent;
 	@Autowired

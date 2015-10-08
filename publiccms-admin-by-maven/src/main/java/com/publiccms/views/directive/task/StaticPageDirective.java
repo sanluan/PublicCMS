@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.component.FileComponent.FileInfo;
 import com.publiccms.logic.component.FileComponent.StaticResult;
-import com.sanluan.common.base.BaseDirective;
+import com.sanluan.common.base.BaseTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
-public class StaticPageDirective extends BaseDirective {
+public class StaticPageDirective extends BaseTemplateDirective {
 	@Autowired
 	private FileComponent fileComponent;
 

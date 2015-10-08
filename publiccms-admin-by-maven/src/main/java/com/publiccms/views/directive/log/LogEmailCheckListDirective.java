@@ -8,12 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.logic.service.log.LogEmailCheckService;
-import com.sanluan.common.base.BaseDirective;
+import com.sanluan.common.base.BaseTemplateDirective;
 import com.sanluan.common.handler.PageHandler;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
-public class LogEmailCheckListDirective extends BaseDirective {
+public class LogEmailCheckListDirective extends BaseTemplateDirective {
 
 	@Override
 	public void execute(RenderHandler handler) throws IOException, Exception {

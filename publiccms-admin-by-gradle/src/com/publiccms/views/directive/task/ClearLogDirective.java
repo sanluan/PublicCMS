@@ -14,11 +14,11 @@ import com.publiccms.logic.service.log.LogEmailCheckService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
-import com.sanluan.common.base.BaseDirective;
+import com.sanluan.common.base.BaseTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
-public class ClearLogDirective extends BaseDirective {
+public class ClearLogDirective extends BaseTemplateDirective {
 	@Autowired
 	private LogEmailCheckService logEmailCheckService;
 	@Autowired
