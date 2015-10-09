@@ -120,7 +120,7 @@
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>
-					<a href="${getSitePath(a.url)}" target="_blank">
+					<a href="${(categoryMap[a.categoryId?string].templatePath?has_content)?then(getSitePath(a.url),getCmsPath(a.url))}" target="_blank">
 						${(a.isCopied?then('[转载]',''))!}${a.title!}<#if a.disabled>[<@t.m 'status.deleted'/>]</#if>
 					</a>
 				</td>

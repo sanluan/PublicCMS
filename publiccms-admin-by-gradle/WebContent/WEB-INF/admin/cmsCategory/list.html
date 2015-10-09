@@ -50,7 +50,7 @@
 		<tbody>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
-				<td><a href="${getSitePath(a.url)}" target="_blank">${a.name!}${(a.disabled?then("[<@t.m 'status.deleted'/>]",''))!}</a></td>
+				<td><a href="${(a.templatePath?has_content)?then(getSitePath(a.url),getCmsPath(a.url))}" target="_blank">${a.name!}${(a.disabled?then("[<@t.m 'status.deleted'/>]",''))!}</a></td>
 				<td>${a.englishName!}</td>
 				<td>${a.path!}</td>
 				<td>${a.contentPath!}</td>

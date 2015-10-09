@@ -164,12 +164,14 @@ public class FileComponent {
 
 	public StaticResult createStaticFile(String templatePath, String filePath, ModelMap model) {
 		try {
-			if (isNotBlank(templatePath) && isNotBlank(filePath)) {
+			if (isNotBlank(filePath)) {
 				if (null != model)
 					model = (ModelMap) model.clone();
 				filePath = FreeMarkerUtils.makeStringByString(filePath, configuration, model);
-				model.put("url", filePath);
-				FreeMarkerUtils.makeFileByFile(templatePath, getStaticFilePath(filePath), configuration, model);
+				if (isNotBlank(templatePath)) {
+					model.put("url", filePath);
+					FreeMarkerUtils.makeFileByFile(templatePath, getStaticFilePath(filePath), configuration, model);
+				}
 			}
 			return new StaticResult(true, filePath);
 		} catch (Exception e) {
