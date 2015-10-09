@@ -90,7 +90,7 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
 		return freemarkerVariables;
 	}
 
-	public String getDirectivePrefix() {
-		return directivePrefix;
+	public String getDirectiveRemoveRegex() {
+		return directiveRemoveRegex;
 	}
 }
