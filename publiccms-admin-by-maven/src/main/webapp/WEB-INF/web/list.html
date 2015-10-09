@@ -11,9 +11,6 @@
 </head>
 <body>
 <#include "include_page/nav.html">
-<script>
-	$("header nav ul li a:contains('${category.name}')").parent().addClass('selected');
-</script>
 <main>
 	<div class="container nav">
 		<@_categoryList parentId=category.parentId>

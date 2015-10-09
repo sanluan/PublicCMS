@@ -2,6 +2,7 @@ package config;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
+import java.beans.PropertyVetoException;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -27,7 +28,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import com.mchange.v2.c3p0.DriverManagerDataSource;
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.publiccms.logic.component.CacheComponent;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.component.MailComponent;
 import com.sanluan.common.datasource.MultiDataSource;
@@ -49,17 +51,31 @@ public class ApplicationConfig {
 	@Bean
 	public DataSource dataSource() {
 		MultiDataSource dataSource = new MultiDataSource();
+
 		dataSource.setTargetDataSources(new HashMap<Object, Object>() {
 			private static final long serialVersionUID = 1L;
 			{
-				DriverManagerDataSource database1 = new DriverManagerDataSource();
-				database1.setDriverClass(env.getProperty("jdbc.driverClassName"));
-				database1.setJdbcUrl(env.getProperty("jdbc.url"));
-				database1.setUser(env.getProperty("jdbc.username"));
-				database1.setPassword(env.getProperty("jdbc.password"));
-				put("database1", database1);
+				try {
+					ComboPooledDataSource database1 = new ComboPooledDataSource();
+					database1.setDriverClass(env.getProperty("jdbc.driverClassName"));
+					database1.setJdbcUrl(env.getProperty("jdbc.url"));
+					database1.setUser(env.getProperty("jdbc.username"));
+					database1.setPassword(env.getProperty("jdbc.password"));
+					database1.setAutoCommitOnClose(Boolean.parseBoolean(env.getProperty("cpool.autoCommitOnClose")));
+					database1.setCheckoutTimeout(Integer.parseInt(env.getProperty("cpool.checkoutTimeout")));
+					database1.setInitialPoolSize(Integer.parseInt(env.getProperty("cpool.minPoolSize")));
+					database1.setMinPoolSize(Integer.parseInt(env.getProperty("cpool.minPoolSize")));
+					database1.setMaxPoolSize(Integer.parseInt(env.getProperty("cpool.maxPoolSize")));
+					database1.setMaxIdleTime(Integer.parseInt(env.getProperty("cpool.maxIdleTime")));
+					database1.setAcquireIncrement(Integer.parseInt(env.getProperty("cpool.acquireIncrement")));
+					database1.setMaxIdleTimeExcessConnections(Integer.parseInt(env
+							.getProperty("cpool.maxIdleTimeExcessConnections")));
+					put("database1", database1);
+				} catch (PropertyVetoException e) {
+				}
 			}
 		});
+
 		return dataSource;
 	}
 
@@ -147,7 +163,7 @@ public class ApplicationConfig {
 	@Bean
 	public FreeMarkerConfigurer freeMarkerConfigurer() {
 		FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
-		bean.setTemplateLoaderPath(env.getProperty("freemarker.templateLoaderPath"));
+		bean.setTemplateLoaderPath(CacheComponent.TEMPLATE_BASE_PATH);
 
 		Properties freemarkerSettings = new Properties();
 		freemarkerSettings.setProperty("template_update_delay", env.getProperty("freemarkerSettings.template_update_delay"));
