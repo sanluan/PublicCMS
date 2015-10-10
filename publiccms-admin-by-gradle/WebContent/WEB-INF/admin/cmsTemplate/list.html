@@ -91,7 +91,7 @@
 		<#if a.directory>
 			<a href="javascript:;">${a.fileName}${(a.alias?has_content)?then('(${a.alias!})','')}</a>
 			<ul>
-				<@includeTemplateTree queryPath/>
+				<@ftlTemplateTree queryPath/>
 			</ul>
 		<#else>
 			<a href="javascript:;" onclick="$('textarea[name=content]',navTab.getCurrentPanel()).insertAtCaret('${('<#include "'+queryPath+'"/>')?html?js_string}${(a.alias?has_content)?then('<#-- ${a.alias!} -->','')?html}');return false;">
