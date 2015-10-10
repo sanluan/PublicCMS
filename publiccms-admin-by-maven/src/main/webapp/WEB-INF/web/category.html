@@ -7,10 +7,10 @@
 	<title>${category.name} - PublicCMS</title>
 	<meta name="keywords" content="${category.name}"/>
 	<meta name="description" content="${category.name}"/>
-<!--#include virtual="/include/header.html"-->
+	<#include "include_page/header.html"/>
 </head>
 <body>
-<#include "include_page/nav.html">
+<#include "include_page/nav.html"/>
 <main>
 	<div class="container nav">
 		<@_categoryList parentId=category.id>
@@ -36,23 +36,7 @@
 	</#list>
 	<@_category ids=categoryIds!><#assign categoryMap=map/></@_category>
 	<#list page.list as a>
-			<dl>
-				<#if a.cover?has_content><dd><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank"><div class="img" style="background-image:url(${getUploadPath(getThumb(a.cover,144,192))})"></div></a></dd></#if>
-				<dt<#if a.cover?has_content> class="image"</#if>>
-					<h3>[<a href="${getSitePath(categoryMap[a.categoryId?string].url)}">${categoryMap[a.categoryId?string].name}</a>]<a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank" title="${a.title}">${a.title}</a></h3>
-					<div class="tags">
-						<#if a.tags?has_content>标签：
-							<@_tag ids=a.tags>
-								<#list map?keys as key>
-									<a href="tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
-								</#list>
-							</@_tag>
-						</#if>
-						<span>${a.publishDate?date}</span>
-					</div>
-					<p><@cut a.description 130 '...'/><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" title="${a.title}" target="_blank"> 详细 &gt;&gt;</a> </p>
-				</dt>
-			</dl>
+			<#include "include_page/data-list.html"/>
 	</#list>
 			<#if 1=pageIndex>
 				<div class="page">
@@ -83,6 +67,6 @@
 </@_contentList>
 	</div>
 </main>
-<!--#include virtual="/include/footer.html"-->
+<#include "include_page/footer.html"/>
 </body>
 </html>

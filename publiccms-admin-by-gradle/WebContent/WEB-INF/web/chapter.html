@@ -9,10 +9,10 @@
 	<title>${content.title} - <@_content id=content.parentId>${object.title}</@_content> - ${category.name} - PublicCMS</title>
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
-<!--#include virtual="/include/header.html"-->
+	<#include "include_page/header.html"/>
 </head>
 <body>
-<#include "include_page/nav.html">
+<#include "include_page/nav.html"/>
 <main>
 	<div class="container bread">
 		<#include "ftl/echoBread.ftl"/>
@@ -38,6 +38,6 @@
 		</article>
 	</div>
 </main>
-<!--#include virtual="/include/footer.html"-->
+<#include "include_page/footer.html"/>
 </body>
 </html>

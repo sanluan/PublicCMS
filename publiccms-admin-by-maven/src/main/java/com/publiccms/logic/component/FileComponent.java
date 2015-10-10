@@ -61,6 +61,7 @@ public class FileComponent {
 	public static final String DEFAULT_UPLOAD_FILE_PATH = "resource/upload/";
 	public static final String DEFAULT_PAGE_BREAK_TAG = "_page_break_tag_";
 	public static final String INCLUDE_DIR = "include";
+	public static final String FTL_DIR = "ftl";
 	public static final String INCLUDE_PATH = "/include/";
 	private static final String METADATA_FILE = "/metadata.data";
 
@@ -198,7 +199,7 @@ public class FileComponent {
 						path = (String) infoMap.get("path");
 				}
 				if (attrs.isDirectory()) {
-					if (!exclude || !INCLUDE_DIR.equalsIgnoreCase(fileName))
+					if (!exclude || (!INCLUDE_DIR.equalsIgnoreCase(fileName) && !FTL_DIR.equalsIgnoreCase(fileName)))
 						dirList.add(new FileInfo(fileName, path, alias, true, attrs));
 				} else {
 					if (!"metadata.data".equalsIgnoreCase(fileName))

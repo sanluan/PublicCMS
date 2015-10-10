@@ -82,6 +82,29 @@
 		</#if>
 	</@_templateList>
 </#macro>
+<#macro ftlTemplateTree filepath='/ftl'>
+	<@_templateList path=filepath exclude='true'>
+		<#if list?has_content>
+		<#list list as a>
+		<li>
+			<#local queryPath=filepath+'/'+a.fileName>
+		<#if a.directory>
+			<a href="javascript:;">${a.fileName}${(a.alias?has_content)?then('(${a.alias!})','')}</a>
+			<ul>
+				<@includeTemplateTree queryPath/>
+			</ul>
+		<#else>
+			<a href="javascript:;" onclick="$('textarea[name=content]',navTab.getCurrentPanel()).insertAtCaret('${('<#include "'+queryPath+'"/>')?html?js_string}${(a.alias?has_content)?then('<#-- ${a.alias!} -->','')?html}');return false;">
+				${a.fileName}${(a.alias?has_content)?then('(${a.alias!})','')}
+			</a>
+		</#if>
+		</li>
+		</#list>
+		<#else>
+			<li><a>空目录</a></li>
+		</#if>
+	</@_templateList>
+</#macro>
 				<h2 class="contentTitle">
 					<@t.m 'moudle.template'/><@t.m 'moudle.content'/>
 				</h2>
@@ -92,11 +115,22 @@
 							<div style="float:right;width:238px;">
 								<h3 class="contentTitle">点击使用页面片段</h3>
 								<ul class="tree treeFolder" style="border:solid 1px #CCC;">
-									<@includeTemplateTree/>
+									<li>
+										<a href="javascript:;">页面片段(使用SSI包含)</a>
+										<ul><@includeTemplateTree/></ul>
+									</li>
 							    </ul>
-								<#if !queryPath??||!queryPath?starts_with('/include/')>
+							    <h3 class="contentTitle">点击使用模板片段</h3>
+								<ul class="tree treeFolder" style="border:solid 1px #CCC;">
+									<li>
+										<a href="javascript:;">模板片段(使用模板包含)</a>
+										<ul><@ftlTemplateTree/></ul>
+									</li>
+							    </ul>
+								<#if !queryPath??||!queryPath?starts_with('/include/')||!queryPath?starts_with('/ftl/')>
 									<a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${('/include'+(queryPath!)+'/')?url}&userTemplate" target="navTab" rel="cmsTemplateCreate"><span>创建推荐位</span></a>
-									<a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${'/include/'?url}" target="navTab" rel="cmsTemplateCreate"><span>创建代码片段</span></a>
+									<a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${'/include/'?url}" target="navTab" rel="cmsTemplateCreate"><span>创建页面片段</span></a>
+									<a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${'/ftl/'?url}" target="navTab" rel="cmsTemplateCreate"><span>创建模板片段</span></a>
 								</#if>
 								<a class="buttonActive" href="javascript:;" onclick="$('textarea[name=content]',navTab.getCurrentPanel()).insertAtCaret('\t');return false;"><span>插入制表符</span></a>
 							</div>
@@ -124,7 +158,8 @@
 		<#else>
 			<h2 class="contentTitle">
 				<a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${((queryPath!)+'/')?url}" target="navTab" rel="cmsTemplateCreate"><span>创建<@t.m 'moudle.template'/></span></a>
-				<#if !queryPath??||!queryPath?starts_with('/include')><a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${('/include/')?url}" target="navTab" rel="cmsTemplateCreate"><span>创建代码片段</span></a></#if>
+				<#if !queryPath??||!queryPath?starts_with('/include')><a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${('/include/')?url}" target="navTab" rel="cmsTemplateCreate"><span>创建页面片段</span></a></#if>
+				<#if !queryPath??||!queryPath?starts_with('/ftl')><a class="buttonActive" href="cmsTemplate/add.html?navTabId=cmsTemplate&queryPath=${('/ftl/')?url}" target="navTab" rel="cmsTemplateCreate"><span>创建模板片段</span></a></#if>
 			</h2>
 		</#if>
 	</div>
