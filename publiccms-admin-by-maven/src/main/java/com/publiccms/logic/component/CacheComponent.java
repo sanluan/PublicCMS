@@ -85,25 +85,39 @@ public class CacheComponent {
 	}
 
 	public void deleteCacheFile(String path) {
-		String htmlFilePath = getHtmlFilePath(basePath, path);
+		String htmlFilePath = getHtmlFilePath(path);
 		File cacheFile = new File(htmlFilePath);
 		if (cacheFile.exists()) {
 			cacheFile.delete();
 		}
 		File cacheDir = new File(htmlFilePath.substring(0, htmlFilePath.lastIndexOf(TEMPLATE_SUFFIX)));
 		if (cacheDir.isDirectory()) {
-			cacheFile.delete();
+			deleteDir(cacheDir);
 		}
 	}
 
 	public void clearTemplateCache() {
 		freeMarkerConfigurer.getConfiguration().clearTemplateCache();
+		File cacheDir = new File(basePath + TEMPLATE_LOADER_PATH + cacheFileDirectory);
+		deleteDir(cacheDir);
+	}
+
+	private void deleteDir(File dir) {
+		if (null != dir) {
+			if (dir.isDirectory()) {
+				String[] children = dir.list();
+				for (int i = 0; i < children.length; i++) {
+					deleteDir(new File(dir, children[i]));
+				}
+			}
+			dir.delete();
+		}
 	}
 
 	private String createCache(String templatePath, String path, ModelMap model, HttpServletResponse response) {
 		int time = verify(templatePath);
 		if (0 != time) {
-			String htmlPath = getHtmlFilePath(basePath, path);
+			String htmlPath = getHtmlFilePath(path);
 			if (check(htmlPath, time)) {
 				return cacheFileDirectory + path;
 			} else {
@@ -151,8 +165,8 @@ public class CacheComponent {
 		return 0;
 	}
 
-	private String getHtmlFilePath(String realPath, String path) {
-		return realPath + TEMPLATE_LOADER_PATH + cacheFileDirectory + path + TEMPLATE_SUFFIX;
+	private String getHtmlFilePath(String path) {
+		return basePath + TEMPLATE_LOADER_PATH + cacheFileDirectory + path + TEMPLATE_SUFFIX;
 	}
 
 	private String getTemplateFilePath(String path) {
