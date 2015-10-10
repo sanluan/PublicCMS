@@ -16,13 +16,19 @@
 	<div class="container">
 		<!--#include virtual="/include/index.html/1.html"--><#-- 焦点图 -->
 		<div class="data-list left-content">
-			<h3>最新文章</h3>
-<@_contentList status=1 endPublishDate=.now orderField='publishDate' orderType='desc' count=10>
-	<#include "ftl/cut.ftl"/>
-	<#list page.list as a>
-			<#include "include_page/data-list.html"/>
+<@_modelList>
+	<#list page.list?reverse as m>
+		<@_contentList status=1 modelId=m.id endPublishDate=.now orderField='publishDate' orderType='desc' count=5>
+			<#if page.totalCount gt 0>
+				<h3>最新${m.name!}</h3>
+				<#include "ftl/cut.ftl"/>
+				<#list page.list as a>
+						<#include "include_page/data-list.html"/>
+				</#list>
+			</#if>
+		</@_contentList>
 	</#list>
-</@_contentList>
+</@_modelList>
 		</div>
 		<aside>
 			<!--#include virtual="/include/index_html/1.html"--><#-- 开源中国 -->
