@@ -10,9 +10,7 @@ a{ text-decoration:none;color:#333;}
 header nav ul li:hover ul { display:block;}
 .container{ width:1200px;}
 main .left-content{ float:left;width:800px;}
-main .data-list dl dd{ float:left;}
-main .data-list dl dd .img{ width: 200px;}
-main .data-list dl dt.image{ margin-left:210px;}
+main .data-list dl dd .img{ width: 140px;}
 main aside{ float:right;width:380px;}
 main aside ul.rank li a{ width:300px;}
 main aside ul li a{ width:350px;overflow: hidden;text-overflow:ellipsis;white-space: nowrap;}
@@ -20,14 +18,12 @@ main aside ul li a{ width:350px;overflow: hidden;text-overflow:ellipsis;white-sp
 
 @media screen and (min-width :480px) and (max-width :1249px){
 .container{ padding:0 10px;}
-main .data-list dl dd{ float:left;}
-main .data-list dl dd .img{ width: 200px;}
-main .data-list dl dt.image{ margin-left:210px;}
+main .data-list dl dd .img{ width: 140px;}
 }
 
 @media screen and (max-width :479px){
 .container{ padding:0 10px;}
-main .data-list dl dd .img{ width: 100%;}
+main .data-list dl dd .img{ width: 30%;}
 }
 
 .container{ margin:0 auto;clear:both;overflow:hidden;}
@@ -56,16 +52,16 @@ main article .author{ font-size:14px;text-align:center;color:#99;}
 main article .author em{ color:#f00;}
 main article #content{ padding-bottom:20px;}
 main article #content img{ max-width:100%;}
-main .data-list dl{ clear:both; overflow:hidden; margin-bottom:10px;border:1px solid #eee;padding:10px;}
-main .data-list dl dd .img{ height: 200px;background-repeat: no-repeat;background-size: contain;background-position: center center;}
-main .data-list dl dt{ font-size:14px; color:#666; line-height:22px;}
+main .data-list dl{ overflow: hidden;margin-bottom: 10px;border: 1px solid #eee;padding: 10px;clear:both;}
 main .data-list dl dt h3{ color:#333;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-main .data-list dl dt a{ color:#58a; text-decoration:none; }
-main .data-list dl dt p{ text-indent:2em;}
+main .data-list dl dt h3 span{ float:right;color:#666;font-size:14px;font-weight:normal;}
+main .data-list dl dd .img{ height: 100px;background-repeat: no-repeat;background-size: contain;background-position: center center;float:left;margin-right:10px;border: 1px solid #eee;}
+main .data-list dl dd{ font-size:14px; color:#666; line-height:22px;}
+main .data-list dl dd a{ color:#58a; text-decoration:none; }
+main .data-list dl dd p{ text-indent:2em;}
 main .search{ line-height:50px;text-align:center;margin-bottom:10px;}
 main .tags{ color:#333;line-height:30px;}
 main .tags em{ background-color:#dff; border:1px solid #cbe7ec; padding:2px 5px; color:#58a;}
-main .tags span{ float:right;}
 main .page{ padding:20px 0;text-align:center;line-height:30px;}
 main .page a,main .page span{ padding:2px 10px;border:1px solid #aaa;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;margin-right:5px;}
 main .page span,main .page .selected{ color:#cacaca;}

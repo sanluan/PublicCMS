@@ -4,10 +4,10 @@
 	<title>高级搜索 - PublicCMS</title>
 	<meta name="keywords" content="高级搜索"/>
 	<meta name="description" content="高级搜索  ${word!}"/>
-<!--#include virtual="/include/header.html"-->
+	<#include "include_page/header.html"/>
 </head>
 <body>
-<#include "include_page/nav.html">
+<#include "include_page/nav.html"/>
 <main>
 	<div class="container bread">
 		<a href="${getSitePath()}">首页</a>
@@ -27,19 +27,14 @@
 			<#assign modelFacet=page.map['modelId']!/>
 			<#assign categoryFacet=page.map['categoryId']!/>
 			<#include "include_page/meger.html"/>
+			<#include "ftl/cut.ftl"/>
 			<#list page.list as a>
 				<@meger 'cIds' a.categoryId/>
 			</#list>
 			<@_category ids=cIds>
 				<#list page.list as a>
 					<#assign category=map[a.categoryId?string]/>
-					<dl>
-						<#if a.cover?has_content><dd><a href="${getSitePath(a.url)}" target="_blank"><img src="${getUploadPath(getThumb(a.cover,200,160))}"/></a></dd></#if>
-						<dt<#if a.cover?has_content> class="image"</#if>>
-							<h3>[<a href="${getSitePath(category.url)}" target="_blank">${category.name}</a>]<a href="${getSitePath(a.url)}" target="_blank"><@t.cut a.title 36 '...'/></a></h3>
-							<p><@t.cut a.description 65 '...'/><a href="${getSitePath(a.url)}" target="_blank"> 详细 &gt;&gt;</a> </p>
-						</dt>
-					</dl>
+					<#include "include_page/search-list.html"/>
 				</#list>
 			</@_category>
 			<#include "include_page/search_page.html"/>
@@ -84,6 +79,6 @@
 		</aside>
 	</div>
 </main>
-<!--#include virtual="/include/footer.html"-->
+<#include "include_page/footer.html"/>
 </body>
 </html>
