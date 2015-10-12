@@ -9,13 +9,13 @@
 	<title>${content.title} - PublicCMS</title>
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
-	<#include "include_page/header.html"/>
+	<#include "../include_page/header.html"/>
 </head>
 <body>
-<#include "include_page/nav.html"/>
+<#include "../include_page/nav.html"/>
 <main>
 	<div class="container bread">
-		<#include "ftl/echoBread.ftl"/>
+		<#include "../ftl/echoBread.ftl"/>
 		<@echoBread category.id/>
 	</div>
 	<div class="container">
@@ -34,7 +34,7 @@
 				</div>
 			</#if>
 			<script>uParse('#content',{rootPath: '${getUploadPath()}ueditor'});</script>
-<#include "ftl/content_page.ftl"/>
+<#include "../ftl/content_page.ftl"/>
 			<script>
 				var link=$('article .page a:last').attr('href');
 				if("undefined" != typeof link && "" != link ){
@@ -59,8 +59,7 @@
 			<!--#include virtual="/include/system/article.html/1.html"--><#-- 文章右侧-编辑推荐 -->
 			<!--#include virtual="/include/category/list.html/2.html"--><#-- 精彩图集 -->
 <#if content.tags?has_content>
-	<#include "ftl/cut.ftl"/>
-	<#include "ftl/meger.ftl"/>
+	<#include "../ftl/meger.ftl"/>
 	<@_contentTagList tagIds=content.tags contentIds=content.id>
 			<#list page.list as a>
 				<@meger 'contentIds' a.contentId/>
@@ -71,7 +70,7 @@
 		<@_content ids=contentIds>
 			<#list map?keys as k>
 				<#assign a=map[k]!/>
-				<#if a?has_content><li><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank" title="${a.title}"><@cut a.title 20 '...'/></a></li></#if>
+				<#if a?has_content><li><a href="content.html?id=${a.id}" target="_blank" title="${a.title}"><@t.cut a.title 20 '...'/></a></li></#if>
 			</#list>
 		</@_content>
 				</ul>
@@ -81,6 +80,6 @@
 		</aside>
 	</div>
 </main>
-<#include "include_page/footer.html"/>
+<#include "../include_page/footer.html"/>
 </body>
 </html>

@@ -29,14 +29,18 @@
 			<#if 1=pageIndex>
 				<h3>最新文章</h3>
 			</#if>
-	<#include "/ftl/meger.ftl"/>
 	<#include "/ftl/cut.ftl"/>
+	<#include "/ftl/meger.ftl"/>
 	<#list page.list as a>
-		<@meger 'categoryIds' a.categoryId!/>
+		<@meger 'modelIds' a.modelId!/>
 	</#list>
-	<@_category ids=categoryIds!><#assign categoryMap=map/></@_category>
+	<@_model ids=modelIds!><#assign modelMap=map/></@_model>
 	<#list page.list as a>
-		<#include "/ftl/data-list.ftl"/>
+		<#if modelMap[a.modelId?string].isImages>
+			<#include "/ftl/image-list.ftl"/>
+		<#else>
+			<#include "/ftl/data-list.ftl"/>
+		</#if>
 	</#list>
 			<#if 1=pageIndex>
 				<div class="page">

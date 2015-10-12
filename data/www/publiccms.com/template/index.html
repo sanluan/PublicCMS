@@ -31,9 +31,15 @@ filter: grayscale(100%);
 			<#if page.totalCount gt 0>
 				<h3>最新${m.name!}</h3>
 				<#include "ftl/cut.ftl"/>
-				<#list page.list as a>
-					<#include "/ftl/data-list.ftl"/><#-- 列表模板 -->
-				</#list>
+				<#if m.isImages>
+					<#list page.list as a>
+							<#include "/ftl/image-list.ftl"/>
+					</#list>
+				<#else>
+					<#list page.list as a>
+							<#include "/ftl/data-list.ftl"/>
+					</#list>
+				</#if>
 			</#if>
 		</@_contentList>
 	</#list>

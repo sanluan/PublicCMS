@@ -5,6 +5,8 @@
 html,body,ul,li,dl,dd,dt{ margin:0;padding:0;}
 ul,li{ list-style:none;}
 a{ text-decoration:none;color:#333;}
+.clearfix-before{ *zoom: 1;}
+.clearfix-before:before{ display:block; content:"."; height:0; clear:both; visibility:hidden;}
 
 @media screen and (min-width :1250px){
 header nav ul li:hover ul { display:block;}

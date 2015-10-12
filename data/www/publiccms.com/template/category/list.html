@@ -27,8 +27,17 @@
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderField='publishDate' orderType='desc' pageIndex=pageIndex count=category.pageSize>
 		<div class="data-list left-content">
 	<#include "/ftl/cut.ftl"/>
+	<#include "/ftl/meger.ftl"/>
 	<#list page.list as a>
-		<#include "/ftl/data-list.ftl"/>
+		<@meger 'modelIds' a.modelId!/>
+	</#list>
+	<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+	<#list page.list as a>
+		<#if modelMap[a.modelId?string].isImages>
+			<#include "/ftl/image-list.ftl"/>
+		<#else>
+			<#include "/ftl/data-list.ftl"/>
+		</#if>
 	</#list>
 			<#if 1=pageIndex>
 				<div class="page">
