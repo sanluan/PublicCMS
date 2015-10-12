@@ -1,0 +1,9 @@
+<@_content id=id>
+	<@_categoryModelList categoryId=object.categoryId modelId=object.modelId>
+		<#if page.totalCount gt 0&&page.list[0].templatePath?has_content>
+			<#include "."+page.list[0].templatePath/>
+		<#else>
+			没有配置分类与模型映射中的模板地址
+		</#if>
+	</@_categoryModelList>
+</@_content>

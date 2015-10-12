@@ -9,15 +9,15 @@
 	<title>${content.title} - PublicCMS</title>
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
-	<#include "include_page/header.html"/>
+	<#include "../include_page/header.html"/>
 	<link href="${getUploadPath()}gallery/style.css" rel="stylesheet"/>
 	<script src="${getUploadPath()}gallery/gallery.js"></script>
 </head>
 <body>
-<#include "include_page/nav.html"/>
+<#include "../include_page/nav.html"/>
 <main>
 	<div class="container bread">
-		<#include "ftl/echoBread.ftl"/>
+		<#include "../ftl/echoBread.ftl"/>
 		<@echoBread category.id/>
 	</div>
 	<div class="container">
@@ -191,6 +191,6 @@ $.getJSON('content/clicks.json?id=${content.id}&callback=?', function(data){
 		</article>
 	</div>
 </main>
-<#include "include_page/footer.html"/>
+<#include "../include_page/footer.html"/>
 </body>
 </html>

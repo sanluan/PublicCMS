@@ -8,7 +8,7 @@ del, dfn, em, font, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
 dl, dt, dd, ol, ul, li,
 fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td{ padding:0;margin:0;font-size:12px;line-height:21px;font-family:Arial, sans-serif;}
+table, caption, tbody, tfoot, thead, tr, th, td{ padding:0;margin:0;font-size:12px;line-height:21px;font-family:Arial, sans-serif;word-break:break-all;}
 
 /* Remember to define focus styles! */
 :focus{ outline:0;}

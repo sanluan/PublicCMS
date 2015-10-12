@@ -26,9 +26,17 @@
 	<div class="container">
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderField='publishDate' orderType='desc' pageIndex=pageIndex count=category.pageSize>
 		<div class="data-list left-content">
-	<#include "ftl/cut.ftl"/>
+	<#include "ftl/meger.ftl"/>
 	<#list page.list as a>
+		<@meger 'modelIds' a.modelId!/>
+	</#list>
+	<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+	<#list page.list as a>
+		<#if modelMap[a.modelId?string].isImages>
+			<#include "include_page/image-list.html"/>
+		<#else>
 			<#include "include_page/data-list.html"/>
+		</#if>
 	</#list>
 			<#if 1=pageIndex>
 				<div class="page">
@@ -50,7 +58,7 @@
 				<ul class="rank">
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderType='desc' orderField='clicks' count=10>
 	<#list page.list as a>
-					<li><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+					<li><a href="content.html?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>
 </@_contentList>
 				</ul>

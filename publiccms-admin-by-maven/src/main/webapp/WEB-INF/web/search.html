@@ -24,17 +24,18 @@
 <#if word?has_content>
 		<@_search word=word pageIndex=page count=10>
 			<#assign prePath='search.html?word='+(word?url)!''+'&'/>
-			<#include "include_page/meger.html"/>
-			<#include "ftl/cut.ftl"/>
+			<#include "ftl/meger.ftl"/>
 			<#list page.list as a>
-				<@meger 'cIds' a.categoryId/>
+				<@meger 'modelIds' a.modelId!/>
 			</#list>
-			<@_category ids=cIds>
-				<#list page.list as a>
-					<#assign category=map[a.categoryId?string]/>
-					<#include "include_page/search-list.html"/>
-				</#list>
-			</@_category>
+			<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+			<#list page.list as a>
+				<#if modelMap[a.modelId?string].isImages>
+					<#include "include_page/image-list.html"/>
+				<#else>
+					<#include "include_page/data-list.html"/>
+				</#if>
+			</#list>
 			<#include "include_page/search_page.html"/>
 		</@_search>
 </#if>

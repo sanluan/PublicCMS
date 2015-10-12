@@ -21,10 +21,15 @@
 		<@_contentList status=1 modelId=m.id endPublishDate=.now orderField='publishDate' orderType='desc' count=5>
 			<#if page.totalCount gt 0>
 				<h3>最新${m.name!}</h3>
-				<#include "ftl/cut.ftl"/>
-				<#list page.list as a>
-						<#include "include_page/data-list.html"/>
-				</#list>
+				<#if m.isImages>
+					<#list page.list as a>
+							<#include "include_page/image-list.html"/>
+					</#list>
+				<#else>
+					<#list page.list as a>
+							<#include "include_page/data-list.html"/>
+					</#list>
+				</#if>
 			</#if>
 		</@_contentList>
 	</#list>
@@ -37,7 +42,7 @@
 				<ul class="rank">
 <@_contentList status=1 endPublishDate=.now orderType='desc' orderField='clicks'count=10>
 	<#list page.list as a>
-					<li><a href="${a.modelId?switch(3,'picture.html',4,'book.html','article.html')}?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+					<li><a href="content.html?id=${a.id}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>
 </@_contentList>
 				</ul>

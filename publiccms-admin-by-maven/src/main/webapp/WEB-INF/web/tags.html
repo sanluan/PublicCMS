@@ -32,8 +32,7 @@
 			</p>
 			<#if id?has_content>
 			<@_contentTagList tagIds=id>
-				<#include "include_page/meger.html"/>
-				<#include "ftl/cut.ftl"/>
+				<#include "ftl/meger.ftl"/>
 				<#list page.list as a>
 					<@meger 'contentIds' a.contentId/>
 				</#list>

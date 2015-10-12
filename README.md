@@ -43,14 +43,10 @@ PublicCMS 使用了FreeMarker 2.3.23,SpringMVC 4.2.1.RELEASE,Hibernate 5.0.2.Fin
 ![](doc/images/rt.jpg)
 
 ##其他
-* doc/Code Formatters 目录中包含eclipse开发工具的js和java代码格式化文件
 * 如果您没有使用过gradle或者maven，并且不打算使用它们，也可以在https://github.com/sanluan/PublicCMS-lib 或 https://git.oschina.net/sanluan/PublicCMS-lib 下载PublicCMS依赖的库，将其放在工程的WEB-INF\lib 目录下，并加入到build path中
-
-演示站点：http://www.publiccms.com/
-
-动态站点演示：http://cms.publiccms.com/
-
-后台演示：http://cms.publiccms.com/admin/ 账号/密码 test/test
+* 演示站点：http://www.publiccms.com/
+* 动态站点演示：http://cms.publiccms.com/
+* 后台演示：http://cms.publiccms.com/admin/ 账号/密码 test/test
 
 
 ##系统后台截图

@@ -149,11 +149,11 @@ public class ApplicationConfig {
 	@Bean
 	public FileComponent fileComponent() {
 		FileComponent bean = new FileComponent();
+		bean.setBasePath(basePath);
 		bean.setTemplateLoaderPath(env.getProperty("file.templateLoaderPath"));
 		bean.setDataFilePath(getDataFilePath() + "/pages");
 		bean.setStaticFileDirectory(env.getProperty("file.staticFileDirectory"));
 		bean.setUploadFilePath(env.getProperty("file.uploadFilePath"));
-		bean.setBasePath(basePath);
 		bean.setSitePath(env.getProperty("site.domain"));
 		bean.setCmsPath(env.getProperty("site.cmsPath"));
 		bean.setUploadPath(env.getProperty("site.upload"));
