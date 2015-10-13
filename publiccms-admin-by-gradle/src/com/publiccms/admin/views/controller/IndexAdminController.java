@@ -1,5 +1,7 @@
 package com.publiccms.admin.views.controller;
 
+import static com.publiccms.common.constants.FreeMakerConstants.CONTEXT_PATH;
+
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +28,7 @@ public class IndexAdminController extends BaseController {
 			int index = path.lastIndexOf(".");
 			path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
 		}
-		model.addAttribute("path", path);
+		model.addAttribute(CONTEXT_PATH, path);
 		return path;
 	}
 }
