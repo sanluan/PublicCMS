@@ -61,51 +61,58 @@ public class CmsContentService extends BaseService<CmsContent> {
 
 	public CmsContent check(Serializable id) {
 		CmsContent entity = getEntity(id);
-		if (notEmpty(entity) && STATUS_PEND == entity.getStatus())
+		if (notEmpty(entity) && STATUS_PEND == entity.getStatus()) {
 			entity.setStatus(STATUS_NORMAL);
+		}
 		return entity;
 	}
 
 	public CmsContent updateComments(Serializable id, int num) {
 		CmsContent entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setComments(entity.getComments() + num);
+		}
 		return entity;
 	}
 
 	public CmsContent updateTags(Serializable id, String tags) {
 		CmsContent entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setTags(tags);
+		}
 		return entity;
 	}
 
 	public CmsContent updateClicks(Serializable id, int num) {
 		CmsContent entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setClicks(entity.getClicks() + num);
+		}
 		return entity;
 	}
 
 	public CmsContent updateChilds(Serializable id, int num) {
 		CmsContent entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setChilds(entity.getChilds() + num);
+		}
 		return entity;
 	}
 
 	public CmsContent updateUrl(Serializable id, String url) {
 		CmsContent entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setUrl(url);
+		}
 		return entity;
 	}
 
 	@Override
 	public CmsContent delete(Serializable id) {
 		CmsContent entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setDisabled(true);
+		}
 		return entity;
 	}
 

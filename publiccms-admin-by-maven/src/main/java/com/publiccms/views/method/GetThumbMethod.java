@@ -35,6 +35,7 @@ public class GetThumbMethod extends BaseMethod {
 						Thumbnails.of(fileComponent.getUploadFilePath(imagePath)).size(width, height).toFile(thumbRealPath);
 						return thumbPath;
 					} catch (IOException e) {
+						log.debug(e.getMessage());
 					}
 				}
 			}

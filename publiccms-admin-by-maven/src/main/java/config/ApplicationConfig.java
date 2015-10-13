@@ -35,6 +35,11 @@ import com.publiccms.logic.component.MailComponent;
 import com.sanluan.common.datasource.MultiDataSource;
 import com.sanluan.common.handler.FreeMarkerExtendHandler;
 
+/**
+ * 
+ * ApplicationConfig Spring配置类
+ *
+ */
 @Configuration
 @ComponentScan(basePackages = "com.publiccms", excludeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
 @PropertySource({ "classpath:config/properties/dbconfig.properties", "classpath:config/properties/freemarker.properties",
@@ -48,6 +53,11 @@ public class ApplicationConfig {
 	private String dataFilePath;
 	public static String basePath;
 
+	/**
+	 * 数据源
+	 * 
+	 * @return
+	 */
 	@Bean
 	public DataSource dataSource() {
 		MultiDataSource dataSource = new MultiDataSource();
@@ -79,6 +89,11 @@ public class ApplicationConfig {
 		return dataSource;
 	}
 
+	/**
+	 * 持久层会话工厂类
+	 * 
+	 * @return
+	 */
 	@Bean
 	public FactoryBean<SessionFactory> sessionFactory() {
 		LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
@@ -108,6 +123,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * Hibernate事务管理
+	 * 
+	 * @return
+	 */
 	@Bean
 	public HibernateTransactionManager hibernateTransactionManager() {
 		HibernateTransactionManager bean = new HibernateTransactionManager();
@@ -115,6 +135,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * 国际化处理
+	 * 
+	 * @return
+	 */
 	@Bean
 	public MessageSource messageSource() {
 		ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
@@ -123,6 +148,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * 邮件发送组件
+	 * 
+	 * @return
+	 */
 	@Bean
 	public MailComponent mailComponent() {
 		MailComponent bean = new MailComponent();
@@ -130,6 +160,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * 邮件发送服务实现
+	 * 
+	 * @return
+	 */
 	@Bean
 	public JavaMailSenderImpl mailSender() {
 		JavaMailSenderImpl bean = new JavaMailSenderImpl();
@@ -146,6 +181,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * 文件操作组件
+	 * 
+	 * @return
+	 */
 	@Bean
 	public FileComponent fileComponent() {
 		FileComponent bean = new FileComponent();
@@ -160,6 +200,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * FreeMarker配置工厂
+	 * 
+	 * @return
+	 */
 	@Bean
 	public FreeMarkerConfigurer freeMarkerConfigurer() {
 		FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
@@ -183,6 +228,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * FreeMarker指令、方法扩展处理器
+	 * 
+	 * @return
+	 */
 	@Bean
 	public FreeMarkerExtendHandler freeMarkerExtendHandler() {
 		FreeMarkerExtendHandler bean = new FreeMarkerExtendHandler();
@@ -192,6 +242,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * 附件Multipart解决方案
+	 * 
+	 * @return
+	 */
 	@Bean
 	public CommonsMultipartResolver multipartResolver() {
 		CommonsMultipartResolver bean = new CommonsMultipartResolver();
@@ -200,6 +255,11 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * 任务计划工厂类配置
+	 * 
+	 * @return
+	 */
 	@Bean
 	public SchedulerFactoryBean scheduler() {
 		SchedulerFactoryBean bean = new SchedulerFactoryBean();
@@ -209,12 +269,22 @@ public class ApplicationConfig {
 		return bean;
 	}
 
+	/**
+	 * json消息转换适配器，用于支持RequestBody、ResponseBody
+	 * 
+	 * @return
+	 */
 	@Bean
 	public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
 		MappingJackson2HttpMessageConverter bean = new MappingJackson2HttpMessageConverter();
 		return bean;
 	}
 
+	/**
+	 * 数据文件存储路径
+	 * 
+	 * @return
+	 */
 	public String getDataFilePath() {
 		if (null == dataFilePath) {
 			dataFilePath = env.getProperty("file.dataFilePath");

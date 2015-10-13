@@ -124,6 +124,7 @@ public class UeditorController extends BaseController {
 				map.put("original", file.getOriginalFilename());
 				return map;
 			} catch (IllegalStateException | IOException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return getResultMap(false);
@@ -150,6 +151,7 @@ public class UeditorController extends BaseController {
 				map.put("original", "scraw" + SCRAW_TYPE);
 				return map;
 			} catch (IllegalStateException | IOException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return getResultMap(false);
@@ -187,10 +189,12 @@ public class UeditorController extends BaseController {
 							list.add(map);
 						}
 					} catch (Exception e) {
+						log.debug(e.getMessage());
 					} finally {
 						try {
 							response.close();
 						} catch (IOException e) {
+							log.debug(e.getMessage());
 						}
 					}
 				}
@@ -199,10 +203,12 @@ public class UeditorController extends BaseController {
 				return map;
 			}
 		} catch (Exception e) {
+			log.debug(e.getMessage());
 		} finally {
 			try {
 				httpclient.close();
 			} catch (IOException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return getResultMap(false);
@@ -213,8 +219,9 @@ public class UeditorController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> listfile(String file, Integer start, HttpSession session) throws IllegalStateException,
 			IOException {
-		if (null == start)
+		if (null == start) {
 			start = 0;
+		}
 
 		PageHandler page = logOperateService.getPage(null, LogOperateService.OPERATE_UPLOADFILE, null, UserUtils
 				.getAdminFromSession(session).getId(), null, null, null, null, start / 20 + 1, 20);
@@ -234,10 +241,11 @@ public class UeditorController extends BaseController {
 
 	private Map<String, Object> getResultMap(boolean success) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (success)
+		if (success) {
 			map.put("state", "SUCCESS");
-		else
+		} else {
 			map.put("state", "error");
+		}
 		return map;
 	}
 }

@@ -9,6 +9,11 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * 
+ * ErrorToNotFoundDispatcherServlet 请求发生异常时，转换为404错误
+ *
+ */
 public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
 
 	private Class<TaskAfterInitServlet>[] taskClasses;
@@ -17,18 +22,13 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * @param webApplicationContext
+	 */
 	public ErrorToNotFoundDispatcherServlet(WebApplicationContext webApplicationContext) {
 		super(webApplicationContext);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.web.servlet.DispatcherServlet#render(org.springframework
-	 * .web.servlet.ModelAndView, javax.servlet.http.HttpServletRequest,
-	 * javax.servlet.http.HttpServletResponse)
-	 */
 	public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		try {
 			super.render(mv, request, response);
@@ -46,6 +46,9 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
 		}
 	}
 
+	/**
+	 * @param taskClasses
+	 */
 	public void setTaskClasses(Class<TaskAfterInitServlet>[] taskClasses) {
 		this.taskClasses = taskClasses;
 	}

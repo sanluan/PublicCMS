@@ -12,6 +12,11 @@ import com.publiccms.logic.component.FileComponent;
 import com.sanluan.common.base.BaseDirective;
 import com.sanluan.common.handler.RenderHandler;
 
+/**
+ * 
+ * SpaceDirective 
+ *
+ */
 @Component
 public class SpaceDirective extends BaseDirective {
 	@Autowired

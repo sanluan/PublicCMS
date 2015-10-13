@@ -55,8 +55,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 			if (0 < list.size()) {
 				StringBuilder childIds = new StringBuilder();
 				for (CmsCategory category : list) {
-					if (childIds.length() > 0)
+					if (childIds.length() > 0) {
 						childIds.append(",");
+					}
 					childIds.append(category.getId());
 				}
 				updateChildIds(parentId, childIds.toString());
@@ -72,22 +73,25 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
 	public CmsCategory updateChildIds(Serializable id, String childIds) {
 		CmsCategory entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setChildIds(childIds);
+		}
 		return entity;
 	}
 
 	public CmsCategory updateUrl(Serializable id, String url) {
 		CmsCategory entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setUrl(url);
+		}
 		return entity;
 	}
 
 	public CmsCategory updateContents(Serializable id, int num) {
 		CmsCategory entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			entity.setContents(entity.getContents() + num);
+		}
 		return entity;
 	}
 

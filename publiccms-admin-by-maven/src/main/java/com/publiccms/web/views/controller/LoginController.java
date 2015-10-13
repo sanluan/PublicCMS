@@ -27,6 +27,11 @@ import com.sanluan.common.base.BaseController;
 import com.sanluan.common.tools.RequestUtils;
 import com.sanluan.common.tools.VerificationUtils;
 
+/**
+ * 
+ * LoginController 登陆逻辑
+ *
+ */
 @Controller
 public class LoginController extends BaseController {
 
@@ -37,6 +42,16 @@ public class LoginController extends BaseController {
 	@Autowired
 	private LogEmailCheckService logEmailCheckService;
 
+	/**
+	 * @param username
+	 * @param password
+	 * @param returnUrl
+	 * @param request
+	 * @param session
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = { "login" }, method = RequestMethod.POST)
 	public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
 			HttpServletResponse response, ModelMap model) {
@@ -71,14 +86,25 @@ public class LoginController extends BaseController {
 			try {
 				returnUrl = URLDecoder.decode(returnUrl, "utf-8");
 			} catch (UnsupportedEncodingException e) {
+				log.debug(e.getMessage());
 			}
 			return REDIRECT + returnUrl;
-		} else
+		} else {
 			return REDIRECT + "index.html";
+		}
 	}
 
 	/**
 	 * @param entity
+	 * @return
+	 */
+	/**
+	 * @param entity
+	 * @param repassword
+	 * @param request
+	 * @param session
+	 * @param response
+	 * @param model
 	 * @return
 	 */
 	@RequestMapping(value = { "register" })
@@ -105,6 +131,12 @@ public class LoginController extends BaseController {
 		return REDIRECT + "user/";
 	}
 
+	/**
+	 * @param code
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = { "verifyEmail" })
 	public String verifyEmail(String code, HttpSession session, ModelMap model) {
 		LogEmailCheck logEmailCheck = logEmailCheckService.findByCode(code);
@@ -118,6 +150,11 @@ public class LoginController extends BaseController {
 		return REDIRECT + "user/";
 	}
 
+	/**
+	 * @param request
+	 * @param response
+	 * @return
+	 */
 	@RequestMapping(value = { "logout" }, method = RequestMethod.GET)
 	public String logout(HttpServletRequest request, HttpServletResponse response) {
 		UserUtils.clearUserToSession(request, response);

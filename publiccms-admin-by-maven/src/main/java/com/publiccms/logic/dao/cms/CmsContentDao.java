@@ -34,10 +34,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 		return getFacetPage(query, facetFields, new HashMap<String, String>() {
 			private static final long serialVersionUID = 1L;
 			{
-				if (notEmpty(categoryId))
+				if (notEmpty(categoryId)) {
 					put("categoryId", categoryId);
-				if (notEmpty(modelId))
+				}
+				if (notEmpty(modelId)) {
 					put("modelId", modelId);
+				}
 			}
 		}, pageIndex, pageSize);
 	}

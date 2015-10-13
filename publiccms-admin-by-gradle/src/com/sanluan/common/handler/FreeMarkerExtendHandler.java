@@ -39,8 +39,9 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
 		for (Entry<String, TemplateDirectiveModel> entry : directiveMap.entrySet()) {
 			String directiveName = directivePrefix + uncapitalize(entry.getKey().replaceAll(directiveRemoveRegex, ""));
 			freemarkerVariables.put(directiveName, entry.getValue());
-			if (0 != directives.length())
+			if (0 != directives.length()) {
 				directives.append(",");
+			}
 			directives.append(directiveName);
 		}
 
@@ -48,8 +49,9 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
 		for (Entry<String, TemplateMethodModelEx> entry : methodMap.entrySet()) {
 			String methodName = uncapitalize(entry.getKey().replaceAll(methodRemoveRegex, ""));
 			freemarkerVariables.put(methodName, entry.getValue());
-			if (0 != methods.length())
+			if (0 != methods.length()) {
 				methods.append(",");
+			}
 			methods.append(methodName);
 		}
 
@@ -59,6 +61,7 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
 			log.info((directiveMap.size()) + " directives created:[" + directives.toString() + "];" + methodMap.size()
 					+ " methods created:[" + methods.toString() + "]");
 		} catch (TemplateModelException e) {
+			log.debug(e.getMessage());
 		}
 	}
 

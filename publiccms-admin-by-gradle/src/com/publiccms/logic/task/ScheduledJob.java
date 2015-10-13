@@ -16,12 +16,20 @@ import com.publiccms.logic.service.system.SystemTaskService;
 
 import freemarker.template.TemplateException;
 
+/**
+ * 
+ * ScheduledJob 任务计划实现类
+ *
+ */
 public class ScheduledJob implements Job {
 
 	public static SystemTaskService systemTaskService;
 	public static LogTaskService logTaskService;
 	public static FileComponent fileComponent;
 
+	/* (non-Javadoc)
+	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
+	 */
 	@Override
 	public void execute(JobExecutionContext context) throws JobExecutionException {
 		Date startTime = new Date();

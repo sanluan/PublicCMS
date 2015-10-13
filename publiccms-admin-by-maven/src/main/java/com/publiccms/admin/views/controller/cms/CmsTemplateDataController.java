@@ -74,6 +74,7 @@ public class CmsTemplateDataController extends BaseController {
 						RequestUtils.getIp(request), getDate(), path));
 			}
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 		}
 		return "common/ajaxDone";
 	}

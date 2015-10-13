@@ -70,8 +70,9 @@ public class CmsContentController extends BaseController {
 			entity.setStatus(CmsContentService.STATUS_PEND);
 		}
 		Date now = getDate();
-		if (null == entity.getPublishDate())
+		if (null == entity.getPublishDate()) {
 			entity.setPublishDate(now);
+		}
 		if (notEmpty(timing) && timing && entity.getPublishDate().before(now)) {
 			entity.setPublishDate(now);
 		}

@@ -13,11 +13,21 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import com.publiccms.admin.common.interceptor.AdminContextInterceptor;
 import com.publiccms.admin.common.view.AdminFreeMarkerView;
 
+/**
+ * 
+ * AdminConfig AdminServlet配置类
+ *
+ */
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.publiccms.admin.views.controller", useDefaultFilters = false, includeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
 public class AdminConfig extends WebMvcConfigurerAdapter {
 
+	/**
+	 * 视图层解决方案
+	 * 
+	 * @return
+	 */
 	@Bean
 	public ViewResolver viewResolver() {
 		FreeMarkerViewResolver bean = new FreeMarkerViewResolver();
@@ -28,6 +38,11 @@ public class AdminConfig extends WebMvcConfigurerAdapter {
 		return bean;
 	}
 
+	/**
+	 * 拦截器
+	 * 
+	 * @return
+	 */
 	@Bean
 	public AdminContextInterceptor initializingInterceptor() {
 		AdminContextInterceptor bean = new AdminContextInterceptor();

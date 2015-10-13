@@ -9,16 +9,25 @@ import static com.sanluan.common.tools.TemplateModelUtils.converMap;
 import static com.sanluan.common.tools.TemplateModelUtils.converShort;
 import static com.sanluan.common.tools.TemplateModelUtils.converString;
 import static com.sanluan.common.tools.TemplateModelUtils.converStringArray;
+import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.logging.Log;
 
 import freemarker.template.TemplateHashModel;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModel;
 import freemarker.template.TemplateModelException;
 
+/**
+ * 
+ * BaseMethod FreeMarker自定义方法基类
+ *
+ */
 public abstract class BaseMethod implements TemplateMethodModelEx {
+	protected final Log log = getLog(getClass());
 	private static TemplateModel getModel(int index, List<TemplateModel> arguments) {
 		if (index < arguments.size()) {
 			return arguments.get(index);
@@ -65,6 +74,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
 				}
 				return ids;
 			} catch (NumberFormatException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return null;
@@ -81,6 +91,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
 				}
 				return ids;
 			} catch (NumberFormatException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return null;

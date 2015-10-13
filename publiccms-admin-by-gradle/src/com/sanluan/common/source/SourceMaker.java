@@ -22,6 +22,11 @@ import com.sanluan.common.tools.MyClassUtils;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
+/**
+ * 
+ * SourceMaker 代码生成工具
+ *
+ */
 public class SourceMaker {
 	public static final String ENTITY_BASE_PACKAGE = "entities";
 	public static final String DAO_BASE_PACKAGE = "logic.dao";
@@ -40,28 +45,50 @@ public class SourceMaker {
 		sourceMaker.make("com.publiccms", "aaa", overwrite);
 	}
 
+	/**
+	 * @param basePackage
+	 */
 	public void make(String basePackage) {
 		make(basePackage, true);
 	}
 
+	/**
+	 * @param basePackage
+	 * @param overwrite
+	 *            是否覆盖
+	 */
 	public void make(String basePackage, boolean overwrite) {
 		String entitiesFullPackage = basePackage + "." + ENTITY_BASE_PACKAGE;
-		for (Class<?> c : MyClassUtils.getClasses(new String[]{entitiesFullPackage})) {
+		for (Class<?> c : MyClassUtils.getClasses(new String[] { entitiesFullPackage })) {
 			make(c, basePackage, overwrite);
 		}
 	}
 
+	/**
+	 * @param basePackage
+	 * @param entityPackage
+	 */
 	public void make(String basePackage, String entityPackage) {
 		make(basePackage, entityPackage, true);
 	}
 
+	/**
+	 * @param basePackage
+	 * @param entityPackage
+	 * @param overwrite
+	 */
 	public void make(String basePackage, String entityPackage, boolean overwrite) {
 		String entitiesFullPackage = basePackage + "." + ENTITY_BASE_PACKAGE + "." + entityPackage;
-		for (Class<?> c : MyClassUtils.getClasses(new String[]{entitiesFullPackage})) {
+		for (Class<?> c : MyClassUtils.getClasses(new String[] { entitiesFullPackage })) {
 			make(c, basePackage, overwrite);
 		}
 	}
 
+	/**
+	 * @param c
+	 * @param basePackage
+	 * @param overwrite
+	 */
 	public void make(Class<?> c, String basePackage, boolean overwrite) {
 		String name = c.getSimpleName();
 		String base = basePackage + "." + ENTITY_BASE_PACKAGE + ".";
@@ -127,8 +154,9 @@ public class SourceMaker {
 					String shortTypeName = typeName.substring(typeName.lastIndexOf(".") + 1, typeName.length());
 					columnList.add(new EntityColumn(field.getName(), shortTypeName, column.order(), column.title()));
 					if (column.condition()) {
-						if (!typeName.startsWith("java.lang"))
+						if (!typeName.startsWith("java.lang")) {
 							imports.add(typeName);
+						}
 						String key = isNotBlank(column.name()) ? column.name() : field.getName();
 						EntityCondition condition = conditionMap.get(key);
 						if (null == condition) {
@@ -159,10 +187,10 @@ public class SourceMaker {
 					config, model, overwrite);
 			FreeMarkerUtils.makeFileByFile("java/controller.ftl", controllerPath + name + CONTROLLER_SUFFIX + ".java", config,
 					model, overwrite);
-			FreeMarkerUtils.makeFileByFile("html/list.ftl", WEB_BASE_PATH + uncapitalize(name) + "/list.html",
-					config, model, overwrite);
-			FreeMarkerUtils.makeFileByFile("html/add.ftl", WEB_BASE_PATH + uncapitalize(name) + "/add.html", config,
-					model, overwrite);
+			FreeMarkerUtils.makeFileByFile("html/list.ftl", WEB_BASE_PATH + uncapitalize(name) + "/list.html", config, model,
+					overwrite);
+			FreeMarkerUtils.makeFileByFile("html/add.ftl", WEB_BASE_PATH + uncapitalize(name) + "/add.html", config, model,
+					overwrite);
 			FreeMarkerUtils.makeFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite, true);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
@@ -174,6 +202,9 @@ public class SourceMaker {
 
 	private Configuration config;
 
+	/**
+	 * 
+	 */
 	public SourceMaker() {
 		config = new freemarker.template.Configuration(Configuration.getVersion());
 		config.setClassForTemplateLoading(this.getClass(), "");

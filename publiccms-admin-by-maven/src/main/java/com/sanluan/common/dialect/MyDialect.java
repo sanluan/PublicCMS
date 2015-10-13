@@ -5,6 +5,11 @@ import java.sql.Types;
 import org.hibernate.dialect.MySQLDialect;
 import org.hibernate.type.StandardBasicTypes;
 
+/**
+ * 
+ * MyDialect Mysql方言处理
+ *
+ */
 public class MyDialect extends MySQLDialect{
 
 	protected void registerVarcharTypes() {

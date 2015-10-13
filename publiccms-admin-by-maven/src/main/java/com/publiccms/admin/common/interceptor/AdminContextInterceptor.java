@@ -3,6 +3,7 @@ package com.publiccms.admin.common.interceptor;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.split;
 import static org.apache.commons.lang3.time.DateUtils.addSeconds;
+import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.io.IOException;
 import java.util.Date;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.tools.UserUtils;
@@ -33,6 +35,8 @@ public class AdminContextInterceptor extends BaseInterceptor {
 	private SystemRoleService systemRoleService;
 	@Autowired
 	private SystemUserService systemUserService;
+	
+	private final Log log = getLog(getClass());
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
@@ -48,7 +52,9 @@ public class AdminContextInterceptor extends BaseInterceptor {
 					}
 					return false;
 				} catch (IllegalStateException e) {
+					log.error(e.getMessage());
 				} catch (IOException e) {
+					log.error(e.getMessage());
 				}
 			} else {
 				Date date = UserUtils.getUserTimeFromSession(request.getSession());
@@ -61,7 +67,9 @@ public class AdminContextInterceptor extends BaseInterceptor {
 						response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + loginUrl + "?returnUrl="
 								+ getURL(request) + getEncodeQueryString(request.getQueryString()));
 					} catch (IllegalStateException e) {
+						log.error(e.getMessage());
 					} catch (IOException e) {
+						log.error(e.getMessage());
 					}
 					return false;
 				} else if (null != unauthorizedUrl) {
@@ -74,6 +82,7 @@ public class AdminContextInterceptor extends BaseInterceptor {
 								response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + unauthorizedUrl);
 								return false;
 							} catch (IOException e) {
+								log.error(e.getMessage());
 							}
 						}
 					}

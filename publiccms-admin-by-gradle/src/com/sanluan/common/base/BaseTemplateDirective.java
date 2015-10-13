@@ -12,6 +12,11 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
+/**
+ * 
+ * BaseTemplateDirective 模板自定义指令基类
+ *
+ */
 public abstract class BaseTemplateDirective implements TemplateDirectiveModel {
 	@SuppressWarnings("unchecked")
 	@Override
@@ -27,5 +32,10 @@ public abstract class BaseTemplateDirective implements TemplateDirectiveModel {
 		}
 	}
 
+	/**
+	 * @param handler
+	 * @throws IOException
+	 * @throws Exception
+	 */
 	public abstract void execute(RenderHandler handler) throws IOException, Exception;
 }

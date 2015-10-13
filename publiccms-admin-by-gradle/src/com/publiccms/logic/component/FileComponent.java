@@ -5,6 +5,7 @@ import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.apache.commons.io.FileUtils.writeStringToFile;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
+import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +48,11 @@ import freemarker.template.SimpleHash;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModelException;
 
+/**
+ * 
+ * FileComponent 文件操作组件
+ *
+ */
 public class FileComponent {
 	private String staticFileDirectory;
 	private String templateLoaderPath;
@@ -75,11 +82,30 @@ public class FileComponent {
 	@Autowired
 	private FreeMarkerExtendHandler freeMarkerExtendHandler;
 	private Configuration configuration;
+	private final Log log = getLog(getClass());
 
+	/**
+	 * 处理字符串模板
+	 * 
+	 * @param template
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 * @throws TemplateException
+	 */
 	public String dealStringTemplate(String template, ModelMap model) throws IOException, TemplateException {
 		return FreeMarkerUtils.makeStringByString(template, configuration, model);
 	}
 
+	/**
+	 * 内容页面静态化
+	 * 
+	 * @param entity
+	 * @param category
+	 * @param cmsModel
+	 * @param templatePath
+	 * @return
+	 */
 	public StaticResult createContentHtml(CmsContent entity, CmsCategory category, CmsModel cmsModel, String templatePath) {
 		if (null != category) {
 			ModelMap model = new ModelMap();
@@ -92,8 +118,11 @@ public class FileComponent {
 					try {
 						model.put("extend", objectMapper.readValue(attribute.getData(), Map.class));
 					} catch (JsonParseException e) {
+						log.debug(e.getMessage());
 					} catch (JsonMappingException e) {
+						log.debug(e.getMessage());
 					} catch (IOException e) {
+						log.debug(e.getMessage());
 					}
 				}
 				if (isNotBlank(attribute.getText())) {
@@ -125,7 +154,9 @@ public class FileComponent {
 								model.put("page", page);
 							}
 						} catch (IOException e) {
+							log.debug(e.getMessage());
 						} catch (TemplateException e) {
+							log.debug(e.getMessage());
 						}
 					}
 				}
@@ -137,10 +168,27 @@ public class FileComponent {
 		}
 	}
 
+	/**
+	 * 分类页面静态化
+	 * 
+	 * @param entity
+	 * @param templatePath
+	 * @param path
+	 * @return
+	 */
 	public StaticResult createCategoryHtml(CmsCategory entity, String templatePath, String path) {
 		return createCategoryHtml(entity, templatePath, path, null);
 	}
 
+	/**
+	 * 分类页面静态化
+	 * 
+	 * @param entity
+	 * @param templatePath
+	 * @param path
+	 * @param totalPage
+	 * @return
+	 */
 	public StaticResult createCategoryHtml(CmsCategory entity, String templatePath, String path, Integer totalPage) {
 		ModelMap model = new ModelMap();
 		model.put("category", entity);
@@ -154,7 +202,9 @@ public class FileComponent {
 					createStaticFile(templatePath, prefixFilePath + '_' + i + suffixFilePath, model);
 				}
 			} catch (IOException e) {
+				log.debug(e.getMessage());
 			} catch (TemplateException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		model.put("pageIndex", 1);
@@ -163,11 +213,20 @@ public class FileComponent {
 		return result;
 	}
 
+	/**
+	 * 创建静态化页面
+	 * 
+	 * @param templatePath
+	 * @param filePath
+	 * @param model
+	 * @return
+	 */
 	public StaticResult createStaticFile(String templatePath, String filePath, ModelMap model) {
 		try {
 			if (isNotBlank(filePath)) {
-				if (null != model)
+				if (null != model) {
 					model = (ModelMap) model.clone();
+				}
 				filePath = FreeMarkerUtils.makeStringByString(filePath, configuration, model);
 				if (isNotBlank(templatePath)) {
 					model.put("url", filePath);
@@ -180,6 +239,14 @@ public class FileComponent {
 		}
 	}
 
+	/**
+	 * 获取目录下文件列表
+	 * 
+	 * @param dirPath
+	 * @param exclude
+	 *            是否包含ftl、include目录
+	 * @return
+	 */
 	public List<FileInfo> getFileList(String dirPath, boolean exclude) {
 		List<FileInfo> dirList = new ArrayList<FileInfo>();
 		List<FileInfo> fileList = new ArrayList<FileInfo>();
@@ -193,25 +260,37 @@ public class FileComponent {
 				String path = fileName;
 				Map<String, Object> infoMap = metadataMap.get(fileName);
 				if (null != infoMap) {
-					if (null != infoMap.get("alias"))
+					if (null != infoMap.get("alias")) {
 						alias = (String) infoMap.get("alias");
-					if (null != infoMap.get("path"))
+					}
+					if (null != infoMap.get("path")) {
 						path = (String) infoMap.get("path");
+					}
 				}
 				if (attrs.isDirectory()) {
-					if (!exclude || (!INCLUDE_DIR.equalsIgnoreCase(fileName) && !FTL_DIR.equalsIgnoreCase(fileName)))
+					if (!exclude || (!INCLUDE_DIR.equalsIgnoreCase(fileName) && !FTL_DIR.equalsIgnoreCase(fileName))) {
 						dirList.add(new FileInfo(fileName, path, alias, true, attrs));
+					}
 				} else {
-					if (!"metadata.data".equalsIgnoreCase(fileName))
+					if (!"metadata.data".equalsIgnoreCase(fileName)) {
 						fileList.add(new FileInfo(fileName, path, alias, false, attrs));
+					}
 				}
 			}
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 		}
 		dirList.addAll(fileList);
 		return dirList;
 	}
 
+	/**
+	 * 写入文件
+	 * 
+	 * @param filePath
+	 * @param content
+	 * @return
+	 */
 	public boolean createPage(String filePath, String content) {
 		try {
 			File file = new File(getTemplateFilePath(filePath));
@@ -220,10 +299,18 @@ public class FileComponent {
 				return true;
 			}
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 		}
 		return false;
 	}
 
+	/**
+	 * 更新元数据
+	 * 
+	 * @param filePath
+	 * @param map
+	 * @return
+	 */
 	public boolean updateMetadata(String filePath, Map<String, Object> map) {
 		try {
 			File file = new File(getTemplateFilePath(filePath));
@@ -235,10 +322,17 @@ public class FileComponent {
 				return true;
 			}
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 		}
 		return false;
 	}
 
+	/**
+	 * 删除文件或目录
+	 * 
+	 * @param filePath
+	 * @return
+	 */
 	public boolean deletePage(String filePath) {
 		File file = new File(getTemplateFilePath(filePath));
 		if (file.exists()) {
@@ -248,6 +342,13 @@ public class FileComponent {
 		return false;
 	}
 
+	/**
+	 * 保存文件内容
+	 * 
+	 * @param filePath
+	 * @param content
+	 * @return
+	 */
 	public boolean saveContent(String filePath, String content) {
 		try {
 			File file = new File(getTemplateFilePath(filePath));
@@ -256,10 +357,17 @@ public class FileComponent {
 				return true;
 			}
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 		}
 		return false;
 	}
 
+	/**
+	 * 静态化页面
+	 * 
+	 * @param filePath
+	 * @return
+	 */
 	public StaticResult staticPage(String filePath) {
 		File file = new File(getTemplateFilePath(filePath));
 		if (null != file && file.exists()) {
@@ -275,6 +383,12 @@ public class FileComponent {
 		return new StaticResult(true, "");
 	}
 
+	/**
+	 * 获取模板文件内容
+	 * 
+	 * @param filePath
+	 * @return
+	 */
 	public String getContent(String filePath) {
 		try {
 			File file = new File(getTemplateFilePath(filePath));
@@ -284,6 +398,12 @@ public class FileComponent {
 		}
 	}
 
+	/**
+	 * 静态化页面片段
+	 * 
+	 * @param filePath
+	 * @return
+	 */
 	public StaticResult staticPlace(String filePath) {
 		if (isNotBlank(filePath)) {
 			List<Map<String, Object>> dataList = getListData(filePath);
@@ -295,12 +415,28 @@ public class FileComponent {
 		return new StaticResult();
 	}
 
+	/**
+	 * 保存推荐位数据
+	 * 
+	 * @param filePath
+	 * @param data
+	 * @throws IOException
+	 */
 	public void saveData(String filePath, Map<String, Object> data) throws IOException {
 		List<Map<String, Object>> dataList = getListData(filePath);
 		dataList.add(data);
 		saveData(filePath, dataList);
 	}
 
+	/**
+	 * 保存哈希表数据
+	 * 
+	 * @param filePath
+	 * @param data
+	 * @throws JsonGenerationException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
 	public void saveMapData(String filePath, Map<String, Object> data) throws JsonGenerationException, JsonMappingException,
 			IOException {
 		File file = new File(getDataFilePath(filePath));
@@ -310,6 +446,14 @@ public class FileComponent {
 		objectMapper.writeValue(file, data);
 	}
 
+	/**
+	 * 更新推荐位数据
+	 * 
+	 * @param filePath
+	 * @param createDate
+	 * @param data
+	 * @throws IOException
+	 */
 	public void updateData(String filePath, Long createDate, Map<String, Object> data) throws IOException {
 		if (null != createDate) {
 			List<Map<String, Object>> dataList = getListData(filePath);
@@ -325,6 +469,13 @@ public class FileComponent {
 		}
 	}
 
+	/**
+	 * 删除推荐位数据
+	 * 
+	 * @param filePath
+	 * @param createDate
+	 * @throws IOException
+	 */
 	public void deleteData(String filePath, Long createDate) throws IOException {
 		if (null != createDate) {
 			List<Map<String, Object>> dataList = getListData(filePath);
@@ -340,6 +491,12 @@ public class FileComponent {
 		}
 	}
 
+	/**
+	 * 获取元数据
+	 * 
+	 * @param filePath
+	 * @return
+	 */
 	public Map<String, Object> getTemplateMetadata(String filePath) {
 		File file = new File(getTemplateFilePath(filePath));
 		Map<String, Object> map = null;
@@ -352,14 +509,35 @@ public class FileComponent {
 		return map;
 	}
 
+	/**
+	 * 获取文件名
+	 * 
+	 * @param suffix
+	 * @return
+	 */
 	public String getUploadFileName(String suffix) {
 		return new SimpleDateFormat("yyyy/MM/dd/HH-mm-ssSSSS").format(new Date()) + new Random().nextInt() + suffix;
 	}
 
+	/**
+	 * 获取文件后缀
+	 * 
+	 * @param originalFilename
+	 * @return
+	 */
 	public String getSuffix(String originalFilename) {
 		return originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
 	}
 
+	/**
+	 * 上传文件
+	 * 
+	 * @param file
+	 * @param fileName
+	 * @return
+	 * @throws IllegalStateException
+	 * @throws IOException
+	 */
 	public String upload(MultipartFile file, String fileName) throws IllegalStateException, IOException {
 		File dest = new File(getUploadFilePath(fileName));
 		dest.getParentFile().mkdirs();
@@ -376,6 +554,15 @@ public class FileComponent {
 		}
 	}
 
+	/**
+	 * 保存元数据
+	 * 
+	 * @param dirPath
+	 * @param metadataMap
+	 * @throws JsonGenerationException
+	 * @throws JsonMappingException
+	 * @throws IOException
+	 */
 	private void saveMetadata(String dirPath, Map<String, Map<String, Object>> metadataMap) throws JsonGenerationException,
 			JsonMappingException, IOException {
 		File file = new File(dirPath + METADATA_FILE);
@@ -394,6 +581,12 @@ public class FileComponent {
 		objectMapper.writeValue(file, dataList);
 	}
 
+	/**
+	 * 获取列表数据
+	 * 
+	 * @param filePath
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public List<Map<String, Object>> getListData(String filePath) {
 		List<Map<String, Object>> dataList = null;
@@ -405,6 +598,12 @@ public class FileComponent {
 		return dataList;
 	}
 
+	/**
+	 * 获取哈希表数据
+	 * 
+	 * @param filePath
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> getMapData(String filePath) {
 		try {
@@ -414,18 +613,34 @@ public class FileComponent {
 		}
 	}
 
+	/**
+	 * @param templatePath
+	 * @return
+	 */
 	public String getDataFilePath(String templatePath) {
 		return dataFilePath + templatePath + ".data";
 	}
 
+	/**
+	 * @param filePath
+	 * @return
+	 */
 	public String getStaticFilePath(String filePath) {
 		return staticFileDirectory + filePath;
 	}
 
+	/**
+	 * @param templatePath
+	 * @return
+	 */
 	public String getTemplateFilePath(String templatePath) {
 		return templateLoaderPath + templatePath;
 	}
 
+	/**
+	 * @param filePath
+	 * @return
+	 */
 	public String getUploadFilePath(String filePath) {
 		return uploadFilePath + filePath;
 	}
@@ -436,6 +651,7 @@ public class FileComponent {
 		try {
 			configuration.setDirectoryForTemplateLoading(new File(getTemplateFilePath("")));
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 		}
 		configuration.setAutoImports(new HashMap<String, String>());
 		configuration.setAutoIncludes(new ArrayList<String>());
@@ -443,6 +659,7 @@ public class FileComponent {
 			configuration.setAllSharedVariables(new SimpleHash(freeMarkerExtendHandler.getFreemarkerVariables(),
 					freeMarkerConfigurer.getConfiguration().getObjectWrapper()));
 		} catch (TemplateModelException e) {
+			log.debug(e.getMessage());
 		}
 	}
 
@@ -452,8 +669,9 @@ public class FileComponent {
 	 */
 	public void setStaticFileDirectory(String staticFileDirectory) {
 		if (isNotBlank(staticFileDirectory)) {
-			if (!(staticFileDirectory.endsWith("/") || staticFileDirectory.endsWith("\\")))
+			if (!(staticFileDirectory.endsWith("/") || staticFileDirectory.endsWith("\\"))) {
 				staticFileDirectory += "/";
+			}
 		} else {
 			staticFileDirectory = basePath + DEFAULT_STATIC_FILE_DIRECTORY;
 		}
@@ -466,8 +684,9 @@ public class FileComponent {
 	 */
 	public void setTemplateLoaderPath(String templateLoaderPath) {
 		if (isNotBlank(templateLoaderPath)) {
-			if (!(templateLoaderPath.endsWith("/") || templateLoaderPath.endsWith("\\")))
+			if (!(templateLoaderPath.endsWith("/") || templateLoaderPath.endsWith("\\"))) {
 				templateLoaderPath += "/";
+			}
 		} else {
 			templateLoaderPath = basePath + DEFAULT_TEMPLATE_LOADER_PATH;
 		}
@@ -480,8 +699,9 @@ public class FileComponent {
 	 */
 	public void setDataFilePath(String dataFilePath) {
 		if (isNotBlank(dataFilePath)) {
-			if (!(dataFilePath.endsWith("/") || dataFilePath.endsWith("\\")))
+			if (!(dataFilePath.endsWith("/") || dataFilePath.endsWith("\\"))) {
 				dataFilePath += "/";
+			}
 		}
 		this.dataFilePath = dataFilePath;
 	}
@@ -492,14 +712,20 @@ public class FileComponent {
 	 */
 	public void setUploadFilePath(String uploadFilePath) {
 		if (isNotBlank(uploadFilePath)) {
-			if (!(uploadFilePath.endsWith("/") || uploadFilePath.endsWith("\\")))
+			if (!(uploadFilePath.endsWith("/") || uploadFilePath.endsWith("\\"))) {
 				uploadFilePath += "/";
+			}
 		} else {
 			uploadFilePath = basePath + DEFAULT_UPLOAD_FILE_PATH;
 		}
 		this.uploadFilePath = uploadFilePath;
 	}
 
+	/**
+	 * 
+	 * StaticResult 静态化操作结果封装类
+	 *
+	 */
 	public class StaticResult {
 		private boolean result;
 		private String filePath;
@@ -521,6 +747,11 @@ public class FileComponent {
 		}
 	}
 
+	/**
+	 * 
+	 * FileInfo 文件信息封装类
+	 *
+	 */
 	public class FileInfo {
 		private String fileName;
 		private String path;

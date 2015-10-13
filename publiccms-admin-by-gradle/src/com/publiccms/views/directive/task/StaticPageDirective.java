@@ -34,8 +34,9 @@ public class StaticPageDirective extends BaseTemplateDirective {
 				messageList = deal(messageList, filePath + "/", fileComponent.getFileList(filePath, false));
 			} else {
 				StaticResult result = fileComponent.staticPage(filePath);
-				if (!result.getResult())
+				if (!result.getResult()) {
 					messageList.add(filePath);
+				}
 			}
 		}
 		return messageList;

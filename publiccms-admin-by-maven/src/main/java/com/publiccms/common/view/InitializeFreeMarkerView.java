@@ -17,6 +17,11 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
 import freemarker.ext.servlet.IncludePage;
 
+/**
+ * 
+ * InitializeFreeMarkerView 
+ *
+ */
 public class InitializeFreeMarkerView extends FreeMarkerView {
 	protected static final String CONTEXT_ADMIN = "admin";
 	protected static final String CONTEXT_USER = "user";

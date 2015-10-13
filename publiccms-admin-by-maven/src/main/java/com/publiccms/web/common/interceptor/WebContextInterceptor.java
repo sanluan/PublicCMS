@@ -19,6 +19,11 @@ import com.publiccms.entities.system.SystemUser;
 import com.publiccms.logic.service.system.SystemUserService;
 import com.sanluan.common.base.BaseInterceptor;
 
+/**
+ * 
+ * WebContextInterceptor 权限拦截器
+ *
+ */
 public class WebContextInterceptor extends BaseInterceptor {
 	private String[] needLoginUrls;
 	private String loginUrl;
@@ -54,10 +59,11 @@ public class WebContextInterceptor extends BaseInterceptor {
 			}
 			if (null == user) {
 				try {
-					response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + loginUrl + "?returnUrl=" + getURL(request)
-							+ getEncodeQueryString(request.getQueryString()));
+					response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + loginUrl + "?returnUrl="
+							+ getURL(request) + getEncodeQueryString(request.getQueryString()));
 					return false;
 				} catch (IOException e) {
+					log.debug(e.getMessage());
 				}
 			}
 		}

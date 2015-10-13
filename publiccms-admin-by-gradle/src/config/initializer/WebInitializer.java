@@ -29,6 +29,11 @@ import config.AdminConfig;
 import config.ApplicationConfig;
 import config.WebConfig;
 
+/**
+ * 
+ * WebInitializer Servlet3.0 工程入口类
+ *
+ */
 public class WebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer implements WebApplicationInitializer {
 
 	@Override

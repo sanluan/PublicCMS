@@ -75,10 +75,12 @@ public class CmsTemplateController extends BaseController {
 		Map<String, Object> map = fileComponent.getTemplateMetadata(path);
 		map.put("keywords", request.getParameter("keywords"));
 		map.put("description", request.getParameter("description"));
-		if (null != request.getParameter("alias"))
+		if (null != request.getParameter("alias")) {
 			map.put("alias", request.getParameter("alias"));
-		if (null != request.getParameter("targetpath"))
+		}
+		if (null != request.getParameter("targetpath")) {
 			map.put("path", request.getParameter("targetpath"));
+		}
 		fileComponent.updateMetadata(path, map);
 		if (notEmpty(path)) {
 			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.template.meta",

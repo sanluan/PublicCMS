@@ -31,8 +31,9 @@ public class ClearLogDirective extends BaseTemplateDirective {
 	@Override
 	public void execute(RenderHandler handler) throws IOException, Exception {
 		Date date = handler.getDate("clearDate");
-		if (null == date)
+		if (null == date) {
 			date = addMonths(new Date(), -3);
+		}
 		List<String> messageList = new ArrayList<String>();
 		messageList.add("email check log:" + String.valueOf(logEmailCheckService.delete(date)));
 		messageList.add("login log:" + String.valueOf(logLoginService.delete(date)));

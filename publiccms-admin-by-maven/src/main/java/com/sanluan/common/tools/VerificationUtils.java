@@ -4,7 +4,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Random;
 
+/**
+ * 
+ * VerificationUtils 安全验证工具类
+ *
+ */
 public class VerificationUtils {
+	/**
+	 * @param length
+	 * @return
+	 */
 	public static String getRandomNumber(int length) {
 		String result = "";
 		Random r = new Random();
@@ -15,6 +24,10 @@ public class VerificationUtils {
 		return result;
 	}
 
+	/**
+	 * @param input
+	 * @return
+	 */
 	public static String encode(String input) {
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance("MD5");
@@ -25,6 +38,10 @@ public class VerificationUtils {
 		return input;
 	}
 
+	/**
+	 * @param buffer
+	 * @return
+	 */
 	private static String typeToHex(byte buffer[]) {
 		StringBuffer sb = new StringBuffer(buffer.length * 2);
 		for (int i = 0; i < buffer.length; i++) {
