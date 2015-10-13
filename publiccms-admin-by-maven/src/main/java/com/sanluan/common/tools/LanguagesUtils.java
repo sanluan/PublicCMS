@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
  *
  */
 public final class LanguagesUtils {
+<<<<<<< HEAD
 	/**
 	 * 
 	 * @param request
@@ -38,4 +39,31 @@ public final class LanguagesUtils {
 		}
 		return result;
 	}
+=======
+    /**
+     * 
+     * @param request
+     *            HttpServletRequest
+     * @param code
+     *            国际化代码
+     * @param args
+     *            替换参数
+     * @return
+     * @see org.springframework.context.MessageSource#getMessage(String,
+     *      Object[], Locale)
+     */
+    public static String getMessage(HttpServletRequest request, String code, Object... args) {
+        WebApplicationContext messageSource = RequestContextUtils.findWebApplicationContext(request);
+        if (null == messageSource) {
+            throw new IllegalStateException("WebApplicationContext not found!");
+        }
+        String result;
+        try {
+            result = messageSource.getMessage(code, args, RequestContextUtils.getLocale(request));
+        } catch (Exception e) {
+            result = code;
+        }
+        return result;
+    }
+>>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

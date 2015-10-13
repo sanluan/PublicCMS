@@ -15,21 +15,21 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetTemplateContentMethod extends BaseMethod {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see freemarker.template.TemplateMethodModelEx#exec(java.util.List)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
-		String path = getString(0, arguments);
-		if (isNotEmpty(path)) {
-			return fileComponent.getContent(path);
-		}
-		return null;
-	}
+    /*
+     * (non-Javadoc)
+     * 
+     * @see freemarker.template.TemplateMethodModelEx#exec(java.util.List)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+        String path = getString(0, arguments);
+        if (isNotEmpty(path)) {
+            return fileComponent.getContent(path);
+        }
+        return null;
+    }
 
-	@Autowired
-	private FileComponent fileComponent;
+    @Autowired
+    private FileComponent fileComponent;
 }

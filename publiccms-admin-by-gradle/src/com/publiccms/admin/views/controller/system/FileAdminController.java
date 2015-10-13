@@ -24,11 +24,12 @@ import com.sanluan.common.tools.RequestUtils;
 @Controller
 @RequestMapping("file")
 public class FileAdminController extends BaseController {
-	@Autowired
-	private FileComponent fileComponent;
-	@Autowired
-	private LogOperateService logOperateService;
+    @Autowired
+    private FileComponent fileComponent;
+    @Autowired
+    private LogOperateService logOperateService;
 
+<<<<<<< HEAD
 	@RequestMapping(value = { "upload" }, method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> upload(MultipartFile file, String field, HttpServletRequest request, HttpSession session) {
@@ -46,4 +47,23 @@ public class FileAdminController extends BaseController {
 		}
 		return map;
 	}
+=======
+    @RequestMapping(value = { "upload" }, method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> upload(MultipartFile file, String field, HttpServletRequest request, HttpSession session) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (!file.isEmpty()) {
+            String fileName = fileComponent.getUploadFileName(fileComponent.getSuffix(file.getOriginalFilename()));
+            try {
+                fileComponent.upload(file, fileName);
+                map.put(field, fileName);
+                logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(),
+                        LogOperateService.OPERATE_UPLOADFILE, RequestUtils.getIp(request), getDate(), fileName));
+            } catch (IllegalStateException | IOException e) {
+                log.debug(e.getMessage());
+            }
+        }
+        return map;
+    }
+>>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

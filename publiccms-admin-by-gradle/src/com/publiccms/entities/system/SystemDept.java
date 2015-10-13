@@ -19,79 +19,79 @@ import com.sanluan.common.source.entity.MyColumn;
 @Entity
 @Table(name = "system_dept")
 public class SystemDept implements java.io.Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	@MyColumn(title = "名称", condition = true, like = true)
-	private String name;
-	@MyColumn(title = "父部门", condition = true)
-	private Integer parentId;
-	@MyColumn(title = "描述")
-	private String description;
-	@MyColumn(title = "负责人", condition = true)
-	private Integer userId;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    @MyColumn(title = "名称", condition = true, like = true)
+    private String name;
+    @MyColumn(title = "父部门", condition = true)
+    private Integer parentId;
+    @MyColumn(title = "描述")
+    private String description;
+    @MyColumn(title = "负责人", condition = true)
+    private Integer userId;
 
-	public SystemDept() {
-	}
+    public SystemDept() {
+    }
 
-	public SystemDept(String name) {
-		this.name = name;
-	}
+    public SystemDept(String name) {
+        this.name = name;
+    }
 
-	public SystemDept(String name, Integer parentId, String description, Integer userId) {
-		this.name = name;
-		this.parentId = parentId;
-		this.description = description;
-		this.userId = userId;
-	}
+    public SystemDept(String name, Integer parentId, String description, Integer userId) {
+        this.name = name;
+        this.parentId = parentId;
+        this.description = description;
+        this.userId = userId;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "name", nullable = false, length = 50)
-	public String getName() {
-		return this.name;
-	}
+    @Column(name = "name", nullable = false, length = 50)
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Column(name = "parent_id")
-	public Integer getParentId() {
-		return this.parentId;
-	}
+    @Column(name = "parent_id")
+    public Integer getParentId() {
+        return this.parentId;
+    }
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
-	}
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 
-	@Column(name = "description", length = 300)
-	public String getDescription() {
-		return this.description;
-	}
+    @Column(name = "description", length = 300)
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@Column(name = "user_id")
-	public Integer getUserId() {
-		return this.userId;
-	}
+    @Column(name = "user_id")
+    public Integer getUserId() {
+        return this.userId;
+    }
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 
 }

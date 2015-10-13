@@ -15,13 +15,13 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsCategoryModelListDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		PageHandler page = service.getPage(handler.getInteger("modelId"), handler.getInteger("categoryId"), handler.getInteger("pageIndex",1), handler.getInteger("count",20));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        PageHandler page = service.getPage(handler.getInteger("modelId"), handler.getInteger("categoryId"), handler.getInteger("pageIndex",1), handler.getInteger("count",20));
+        handler.put("page", page).render();
+    }
 
-	@Autowired
-	private CmsCategoryModelService service;
+    @Autowired
+    private CmsCategoryModelService service;
 
 }

@@ -17,12 +17,12 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsFormService extends BaseService<CmsForm> {
 
-	@Autowired
-	private CmsFormDao dao;
+    @Autowired
+    private CmsFormDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(String title, Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField,
-			String orderType, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(title, startCreateDate, endCreateDate, disabled, orderField, orderType, pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(String title, Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField,
+            String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(title, startCreateDate, endCreateDate, disabled, orderField, orderType, pageIndex, pageSize);
+    }
 }

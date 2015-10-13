@@ -18,6 +18,7 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetHtmlMethod extends BaseMethod {
 
+<<<<<<< HEAD
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -59,4 +60,47 @@ public class GetHtmlMethod extends BaseMethod {
 		}
 		return null;
 	}
+=======
+    /*
+     * (non-Javadoc)
+     * 
+     * @see freemarker.template.TemplateMethodModelEx#exec(java.util.List)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+        String url = getString(0, arguments);
+        if (null != url) {
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+            try {
+                HttpGet httpget = new HttpGet(url);
+                CloseableHttpResponse response = httpclient.execute(httpget);
+                try {
+                    HttpEntity entity = response.getEntity();
+                    EntityUtils.consume(entity);
+                    if (null != entity) {
+                        return entity.getContent();
+                    }
+                } catch (Exception e) {
+                    log.debug(e.getMessage());
+                } finally {
+                    try {
+                        response.close();
+                    } catch (IOException e) {
+                        log.debug(e.getMessage());
+                    }
+                }
+            } catch (Exception e) {
+                log.debug(e.getMessage());
+            } finally {
+                try {
+                    httpclient.close();
+                } catch (IOException e) {
+                    log.debug(e.getMessage());
+                }
+            }
+        }
+        return null;
+    }
+>>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

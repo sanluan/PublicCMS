@@ -20,26 +20,26 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsContentDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Integer id = handler.getInteger("id");
-		if (null != id) {
-			CmsContent entity = service.getEntity(id);
-			handler.put("object", entity).renderIfNotNull(entity);
-		} else {
-			Integer[] ids = handler.getIntegerArray("ids");
-			if (isNotEmpty(ids)) {
-				List<CmsContent> entityList = service.getEntitys(ids);
-				Map<String, CmsContent> map = new HashMap<String, CmsContent>();
-				for (CmsContent entity : entityList) {
-					map.put(String.valueOf(entity.getId()), entity);
-				}
-				handler.put("map", map).render();
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer id = handler.getInteger(ID);
+        if (null != id) {
+            CmsContent entity = service.getEntity(id);
+            handler.put("object", entity).renderIfNotNull(entity);
+        } else {
+            Integer[] ids = handler.getIntegerArray("ids");
+            if (isNotEmpty(ids)) {
+                List<CmsContent> entityList = service.getEntitys(ids);
+                Map<String, CmsContent> map = new HashMap<String, CmsContent>();
+                for (CmsContent entity : entityList) {
+                    map.put(String.valueOf(entity.getId()), entity);
+                }
+                handler.put("map", map).render();
+            }
+        }
+    }
 
-	@Autowired
-	private CmsContentService service;
+    @Autowired
+    private CmsContentService service;
 
 }

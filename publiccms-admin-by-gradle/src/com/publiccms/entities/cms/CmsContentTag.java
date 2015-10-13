@@ -16,49 +16,49 @@ import javax.persistence.Table;
 @Table(name = "cms_content_tag")
 public class CmsContentTag implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private int tagId;
-	private int contentId;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    private int tagId;
+    private int contentId;
 
-	public CmsContentTag() {
-	}
+    public CmsContentTag() {
+    }
 
-	public CmsContentTag(int tagId, int contentId) {
-		this.tagId = tagId;
-		this.contentId = contentId;
-	}
+    public CmsContentTag(int tagId, int contentId) {
+        this.tagId = tagId;
+        this.contentId = contentId;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "tag_id", nullable = false)
-	public int getTagId() {
-		return this.tagId;
-	}
+    @Column(name = "tag_id", nullable = false)
+    public int getTagId() {
+        return this.tagId;
+    }
 
-	public void setTagId(int tagId) {
-		this.tagId = tagId;
-	}
+    public void setTagId(int tagId) {
+        this.tagId = tagId;
+    }
 
-	@Column(name = "content_id", nullable = false)
-	public int getContentId() {
-		return this.contentId;
-	}
+    @Column(name = "content_id", nullable = false)
+    public int getContentId() {
+        return this.contentId;
+    }
 
-	public void setContentId(int contentId) {
-		this.contentId = contentId;
-	}
+    public void setContentId(int contentId) {
+        this.contentId = contentId;
+    }
 
 }

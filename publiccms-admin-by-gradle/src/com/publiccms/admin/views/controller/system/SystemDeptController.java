@@ -18,36 +18,36 @@ import com.sanluan.common.tools.RequestUtils;
 @Controller
 @RequestMapping("systemDept")
 public class SystemDeptController extends BaseController {
-	@Autowired
-	private SystemDeptService service;
-	@Autowired
-	private LogOperateService logOperateService;
+    @Autowired
+    private SystemDeptService service;
+    @Autowired
+    private LogOperateService logOperateService;
 
-	@RequestMapping("save")
-	public String save(SystemDept entity, HttpServletRequest request, HttpSession session) {
-		if (notEmpty(entity.getId())) {
-			entity = service.update(entity.getId(), entity, new String[] { "id", "childIds" });
-			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.dept", RequestUtils
-						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
-			}
-		} else {
-			entity = service.save(entity);
-			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.dept", RequestUtils
-						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
-			}
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(SAVE)
+    public String save(SystemDept entity, HttpServletRequest request, HttpSession session) {
+        if (notEmpty(entity.getId())) {
+            entity = service.update(entity.getId(), entity, new String[] { ID, "childIds" });
+            if (notEmpty(entity)) {
+                logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.dept", RequestUtils
+                        .getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+            }
+        } else {
+            entity = service.save(entity);
+            if (notEmpty(entity)) {
+                logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.dept", RequestUtils
+                        .getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+            }
+        }
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping("delete")
-	public String delete(Integer id, HttpServletRequest request, HttpSession session) {
-		SystemDept entity = service.delete(id);
-		if (notEmpty(entity)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.dept", RequestUtils
-					.getIp(request), getDate(), id + ":" + entity.getName()));
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(DELETE)
+    public String delete(Integer id, HttpServletRequest request, HttpSession session) {
+        SystemDept entity = service.delete(id);
+        if (notEmpty(entity)) {
+            logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.dept", RequestUtils
+                    .getIp(request), getDate(), id + ":" + entity.getName()));
+        }
+        return TEMPLATE_DONE;
+    }
 }

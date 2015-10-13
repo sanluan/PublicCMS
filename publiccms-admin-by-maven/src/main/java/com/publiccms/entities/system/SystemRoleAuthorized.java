@@ -15,49 +15,49 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "system_role_authorized")
 public class SystemRoleAuthorized implements java.io.Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private int roleId;
-	private String authorizedUrl;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    private int roleId;
+    private String authorizedUrl;
 
-	public SystemRoleAuthorized() {
-	}
+    public SystemRoleAuthorized() {
+    }
 
-	public SystemRoleAuthorized(int roleId, String authorizedUrl) {
-		this.roleId = roleId;
-		this.authorizedUrl = authorizedUrl;
-	}
+    public SystemRoleAuthorized(int roleId, String authorizedUrl) {
+        this.roleId = roleId;
+        this.authorizedUrl = authorizedUrl;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "role_id", nullable = false)
-	public int getRoleId() {
-		return this.roleId;
-	}
+    @Column(name = "role_id", nullable = false)
+    public int getRoleId() {
+        return this.roleId;
+    }
 
-	public void setRoleId(int roleId) {
-		this.roleId = roleId;
-	}
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
-	@Column(name = "authorized_url", nullable = false)
-	public String getAuthorizedUrl() {
-		return this.authorizedUrl;
-	}
+    @Column(name = "authorized_url", nullable = false)
+    public String getAuthorizedUrl() {
+        return this.authorizedUrl;
+    }
 
-	public void setAuthorizedUrl(String authorizedUrl) {
-		this.authorizedUrl = authorizedUrl;
-	}
+    public void setAuthorizedUrl(String authorizedUrl) {
+        this.authorizedUrl = authorizedUrl;
+    }
 
 }

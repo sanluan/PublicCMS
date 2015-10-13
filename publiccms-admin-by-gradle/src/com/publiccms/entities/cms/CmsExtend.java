@@ -18,160 +18,160 @@ import com.sanluan.common.source.entity.MyColumn;
 @Table(name = "cms_extend")
 public class CmsExtend implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	@MyColumn(title = "项目类型", condition = true)
-	private int itemType;
-	@MyColumn(title = "项目ID", condition = true)
-	private int itemId;
-	@MyColumn(title = "扩展类型", condition = true)
-	private int extendType;
-	@MyColumn(title = "自定义字段", condition = true)
-	private boolean isCustom;
-	@MyColumn(title = "必填", condition = true)
-	private boolean isRequired;
-	@MyColumn(title = "名称")
-	private String name;
-	@MyColumn(title = "描述")
-	private String description;
-	@MyColumn(title = "字段")
-	private String code;
-	@MyColumn(title = "表单类型")
-	private String inputType;
-	@MyColumn(title = "默认值")
-	private String defaultValue;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    @MyColumn(title = "项目类型", condition = true)
+    private int itemType;
+    @MyColumn(title = "项目ID", condition = true)
+    private int itemId;
+    @MyColumn(title = "扩展类型", condition = true)
+    private int extendType;
+    @MyColumn(title = "自定义字段", condition = true)
+    private boolean isCustom;
+    @MyColumn(title = "必填", condition = true)
+    private boolean isRequired;
+    @MyColumn(title = "名称")
+    private String name;
+    @MyColumn(title = "描述")
+    private String description;
+    @MyColumn(title = "字段")
+    private String code;
+    @MyColumn(title = "表单类型")
+    private String inputType;
+    @MyColumn(title = "默认值")
+    private String defaultValue;
 
-	public CmsExtend() {
-	}
+    public CmsExtend() {
+    }
 
-	public CmsExtend(int itemType, int itemId, int extendType, boolean isCustom, boolean isRequired, String name, String code,
-			String inputType) {
-		this.itemType = itemType;
-		this.itemId = itemId;
-		this.extendType = extendType;
-		this.isCustom = isCustom;
-		this.isRequired = isRequired;
-		this.name = name;
-		this.code = code;
-		this.inputType = inputType;
-	}
+    public CmsExtend(int itemType, int itemId, int extendType, boolean isCustom, boolean isRequired, String name, String code,
+            String inputType) {
+        this.itemType = itemType;
+        this.itemId = itemId;
+        this.extendType = extendType;
+        this.isCustom = isCustom;
+        this.isRequired = isRequired;
+        this.name = name;
+        this.code = code;
+        this.inputType = inputType;
+    }
 
-	public CmsExtend(int itemType, int itemId, int extendType, boolean isCustom, boolean isRequired, String name,
-			String description, String code, String inputType, String defaultValue) {
-		this.itemType = itemType;
-		this.itemId = itemId;
-		this.extendType = extendType;
-		this.isCustom = isCustom;
-		this.isRequired = isRequired;
-		this.name = name;
-		this.description = description;
-		this.code = code;
-		this.inputType = inputType;
-		this.defaultValue = defaultValue;
-	}
+    public CmsExtend(int itemType, int itemId, int extendType, boolean isCustom, boolean isRequired, String name,
+            String description, String code, String inputType, String defaultValue) {
+        this.itemType = itemType;
+        this.itemId = itemId;
+        this.extendType = extendType;
+        this.isCustom = isCustom;
+        this.isRequired = isRequired;
+        this.name = name;
+        this.description = description;
+        this.code = code;
+        this.inputType = inputType;
+        this.defaultValue = defaultValue;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "item_type", nullable = false)
-	public int getItemType() {
-		return this.itemType;
-	}
+    @Column(name = "item_type", nullable = false)
+    public int getItemType() {
+        return this.itemType;
+    }
 
-	public void setItemType(int itemType) {
-		this.itemType = itemType;
-	}
+    public void setItemType(int itemType) {
+        this.itemType = itemType;
+    }
 
-	@Column(name = "item_id", nullable = false)
-	public int getItemId() {
-		return this.itemId;
-	}
+    @Column(name = "item_id", nullable = false)
+    public int getItemId() {
+        return this.itemId;
+    }
 
-	public void setItemId(int itemId) {
-		this.itemId = itemId;
-	}
+    public void setItemId(int itemId) {
+        this.itemId = itemId;
+    }
 
-	@Column(name = "extend_type", nullable = false)
-	public int getExtendType() {
-		return this.extendType;
-	}
+    @Column(name = "extend_type", nullable = false)
+    public int getExtendType() {
+        return this.extendType;
+    }
 
-	public void setExtendType(int extendType) {
-		this.extendType = extendType;
-	}
+    public void setExtendType(int extendType) {
+        this.extendType = extendType;
+    }
 
-	@Column(name = "is_custom", nullable = false)
-	public boolean isIsCustom() {
-		return this.isCustom;
-	}
+    @Column(name = "is_custom", nullable = false)
+    public boolean isIsCustom() {
+        return this.isCustom;
+    }
 
-	public void setIsCustom(boolean isCustom) {
-		this.isCustom = isCustom;
-	}
+    public void setIsCustom(boolean isCustom) {
+        this.isCustom = isCustom;
+    }
 
-	@Column(name = "is_required", nullable = false)
-	public boolean isIsRequired() {
-		return this.isRequired;
-	}
+    @Column(name = "is_required", nullable = false)
+    public boolean isIsRequired() {
+        return this.isRequired;
+    }
 
-	public void setIsRequired(boolean isRequired) {
-		this.isRequired = isRequired;
-	}
+    public void setIsRequired(boolean isRequired) {
+        this.isRequired = isRequired;
+    }
 
-	@Column(name = "name", nullable = false, length = 20)
-	public String getName() {
-		return this.name;
-	}
+    @Column(name = "name", nullable = false, length = 20)
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Column(name = "description", length = 100)
-	public String getDescription() {
-		return this.description;
-	}
+    @Column(name = "description", length = 100)
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	@Column(name = "code", nullable = false, length = 20)
-	public String getCode() {
-		return this.code;
-	}
+    @Column(name = "code", nullable = false, length = 20)
+    public String getCode() {
+        return this.code;
+    }
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
-	@Column(name = "input_type", nullable = false, length = 20)
-	public String getInputType() {
-		return this.inputType;
-	}
+    @Column(name = "input_type", nullable = false, length = 20)
+    public String getInputType() {
+        return this.inputType;
+    }
 
-	public void setInputType(String inputType) {
-		this.inputType = inputType;
-	}
+    public void setInputType(String inputType) {
+        this.inputType = inputType;
+    }
 
-	@Column(name = "default_value", length = 50)
-	public String getDefaultValue() {
-		return this.defaultValue;
-	}
+    @Column(name = "default_value", length = 50)
+    public String getDefaultValue() {
+        return this.defaultValue;
+    }
 
-	public void setDefaultValue(String defaultValue) {
-		this.defaultValue = defaultValue;
-	}
+    public void setDefaultValue(String defaultValue) {
+        this.defaultValue = defaultValue;
+    }
 
 }

@@ -6,5 +6,5 @@ package com.sanluan.common.servlet;
  *
  */
 public interface TaskAfterInitServlet {
-	public void exec();
+    public void exec();
 }

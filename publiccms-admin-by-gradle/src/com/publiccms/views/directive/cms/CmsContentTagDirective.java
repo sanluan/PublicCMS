@@ -19,26 +19,26 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsContentTagDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Integer id = handler.getInteger("id");
-		if (null != id) {
-			CmsContentTag entity = service.getEntity(id);
-			handler.put("object", entity).renderIfNotNull(entity);
-		} else {
-			Integer[] ids = handler.getIntegerArray("ids");
-			if (ArrayUtils.isNotEmpty(ids)) {
-				List<CmsContentTag> entityList = service.getEntitys(ids);
-				Map<String, CmsContentTag> map = new HashMap<String, CmsContentTag>();
-				for (CmsContentTag entity : entityList) {
-					map.put(String.valueOf(entity.getId()), entity);
-				}
-				handler.put("map", map).render();
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer id = handler.getInteger(ID);
+        if (null != id) {
+            CmsContentTag entity = service.getEntity(id);
+            handler.put("object", entity).renderIfNotNull(entity);
+        } else {
+            Integer[] ids = handler.getIntegerArray("ids");
+            if (ArrayUtils.isNotEmpty(ids)) {
+                List<CmsContentTag> entityList = service.getEntitys(ids);
+                Map<String, CmsContentTag> map = new HashMap<String, CmsContentTag>();
+                for (CmsContentTag entity : entityList) {
+                    map.put(String.valueOf(entity.getId()), entity);
+                }
+                handler.put("map", map).render();
+            }
+        }
+    }
 
-	@Autowired
-	private CmsContentTagService service;
+    @Autowired
+    private CmsContentTagService service;
 
 }

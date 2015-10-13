@@ -16,49 +16,49 @@ import javax.persistence.Table;
 @Table(name = "cms_tag_type")
 public class CmsTagType implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private String name;
-	private int count;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    private String name;
+    private int count;
 
-	public CmsTagType() {
-	}
+    public CmsTagType() {
+    }
 
-	public CmsTagType(String name, int count) {
-		this.name = name;
-		this.count = count;
-	}
+    public CmsTagType(String name, int count) {
+        this.name = name;
+        this.count = count;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "name", nullable = false, length = 50)
-	public String getName() {
-		return this.name;
-	}
+    @Column(name = "name", nullable = false, length = 50)
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Column(name = "count", nullable = false)
-	public int getCount() {
-		return this.count;
-	}
+    @Column(name = "count", nullable = false)
+    public int getCount() {
+        return this.count;
+    }
 
-	public void setCount(int count) {
-		this.count = count;
-	}
+    public void setCount(int count) {
+        this.count = count;
+    }
 
 }

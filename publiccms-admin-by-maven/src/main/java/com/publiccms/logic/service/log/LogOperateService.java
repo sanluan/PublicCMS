@@ -14,18 +14,18 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class LogOperateService extends BaseService<LogOperate> {
-	public static final String OPERATE_UPLOADFILE = "uploadfile";
+    public static final String OPERATE_UPLOADFILE = "uploadfile";
 
-	@Autowired
-	private LogOperateDao dao;
+    @Autowired
+    private LogOperateDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(String content, String operate, String ip, Integer userId, Date startCreateDate,
-			Date endCreateDate, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(content, operate, ip, userId, startCreateDate, endCreateDate, orderField, orderType, pageIndex, pageSize);
-	}
-	
-	public int delete(Date createDate) {
-		return dao.delete(createDate);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(String content, String operate, String ip, Integer userId, Date startCreateDate,
+            Date endCreateDate, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(content, operate, ip, userId, startCreateDate, endCreateDate, orderField, orderType, pageIndex, pageSize);
+    }
+    
+    public int delete(Date createDate) {
+        return dao.delete(createDate);
+    }
 }

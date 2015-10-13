@@ -15,16 +15,16 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsCategoryListDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		PageHandler page = service.getPage(handler.getInteger("parentId"), handler.getString("extend1"),
-				handler.getString("name"), handler.getString("extend3"), handler.getString("extend2"),
-				handler.getString("extend4"), handler.getBoolean("disabled", false), handler.getInteger("pageIndex", 1),
-				handler.getInteger("count", 30));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        PageHandler page = service.getPage(handler.getInteger("parentId"), handler.getString("extend1"),
+                handler.getString("name"), handler.getString("extend3"), handler.getString("extend2"),
+                handler.getString("extend4"), handler.getBoolean("disabled", false), handler.getInteger("pageIndex", 1),
+                handler.getInteger("count", 30));
+        handler.put("page", page).render();
+    }
 
-	@Autowired
-	private CmsCategoryService service;
+    @Autowired
+    private CmsCategoryService service;
 
 }
