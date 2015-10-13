@@ -15,20 +15,20 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsContentListDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		PageHandler page = service.getPage(handler.getIntegerArray("status"), handler.getInteger("categoryId"),
-				handler.getBoolean("containChild"), handler.getBoolean("disabled", false), handler.getIntegerArray("modelId"),
-				handler.getInteger("parentId"), handler.getString("title"), handler.getInteger("userId"),
-				handler.getDate("startPublishDate"), handler.getDate("endPublishDate"), handler.getString("extend1"),
-				handler.getString("extend2"), handler.getString("extend3"), handler.getString("extend4"),
-				handler.getString("modelExtend1"), handler.getString("modelExtend2"), handler.getString("modelExtend3"),
-				handler.getString("modelExtend4"), handler.getString("orderField"), handler.getString("orderType"),
-				handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        PageHandler page = service.getPage(handler.getIntegerArray("status"), handler.getInteger("categoryId"),
+                handler.getBoolean("containChild"), handler.getBoolean("disabled", false), handler.getIntegerArray("modelId"),
+                handler.getInteger("parentId"), handler.getString("title"), handler.getInteger("userId"),
+                handler.getDate("startPublishDate"), handler.getDate("endPublishDate"), handler.getString("extend1"),
+                handler.getString("extend2"), handler.getString("extend3"), handler.getString("extend4"),
+                handler.getString("modelExtend1"), handler.getString("modelExtend2"), handler.getString("modelExtend3"),
+                handler.getString("modelExtend4"), handler.getString("orderField"), handler.getString("orderType"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+        handler.put("page", page).render();
+    }
 
-	@Autowired
-	private CmsContentService service;
+    @Autowired
+    private CmsContentService service;
 
 }

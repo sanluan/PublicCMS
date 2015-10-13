@@ -19,50 +19,50 @@ import com.sanluan.common.source.entity.MyColumn;
 @Entity
 @Table(name = "system_role")
 public class SystemRole implements java.io.Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	@MyColumn(title = "名称")
-	private String name;
-	@MyColumn(title = "拥有全部权限")
-	private boolean ownsAllRight;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    @MyColumn(title = "名称")
+    private String name;
+    @MyColumn(title = "拥有全部权限")
+    private boolean ownsAllRight;
 
-	public SystemRole() {
-	}
+    public SystemRole() {
+    }
 
-	public SystemRole(String name, boolean ownsAllRight) {
-		this.name = name;
-		this.ownsAllRight = ownsAllRight;
-	}
+    public SystemRole(String name, boolean ownsAllRight) {
+        this.name = name;
+        this.ownsAllRight = ownsAllRight;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "name", nullable = false, length = 50)
-	public String getName() {
-		return this.name;
-	}
+    @Column(name = "name", nullable = false, length = 50)
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Column(name = "owns_all_right", nullable = false)
-	public boolean isOwnsAllRight() {
-		return this.ownsAllRight;
-	}
+    @Column(name = "owns_all_right", nullable = false)
+    public boolean isOwnsAllRight() {
+        return this.ownsAllRight;
+    }
 
-	public void setOwnsAllRight(boolean ownsAllRight) {
-		this.ownsAllRight = ownsAllRight;
-	}
+    public void setOwnsAllRight(boolean ownsAllRight) {
+        this.ownsAllRight = ownsAllRight;
+    }
 }

@@ -17,15 +17,15 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class LogTaskService extends BaseService<LogTask> {
 
-	@Autowired
-	private LogTaskDao dao;
+    @Autowired
+    private LogTaskDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer taskId,Integer pageIndex, Integer pageSize) {
-		return dao.getPage(taskId, pageIndex, pageSize);
-	}
-	
-	public int delete(Date createDate) {
-		return dao.delete(createDate);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer taskId,Integer pageIndex, Integer pageSize) {
+        return dao.getPage(taskId, pageIndex, pageSize);
+    }
+    
+    public int delete(Date createDate) {
+        return dao.delete(createDate);
+    }
 }

@@ -15,14 +15,14 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SystemMoudleListDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		PageHandler page = service.getPage(handler.getInteger("parentId"), handler.getString("url"), 
-				handler.getInteger("pageIndex",1), handler.getInteger("count",20));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        PageHandler page = service.getPage(handler.getInteger("parentId"), handler.getString("url"), 
+                handler.getInteger("pageIndex",1), handler.getInteger("count",20));
+        handler.put("page", page).render();
+    }
 
-	@Autowired
-	private SystemMoudleService service;
+    @Autowired
+    private SystemMoudleService service;
 
 }

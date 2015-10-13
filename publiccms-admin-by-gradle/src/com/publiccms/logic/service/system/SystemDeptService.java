@@ -18,25 +18,25 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SystemDeptService extends BaseService<SystemDept> {
 
-	@Autowired
-	private SystemDeptDao dao;
+    @Autowired
+    private SystemDeptDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer parentId, Integer userId, String name, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(parentId, userId, name, pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer parentId, Integer userId, String name, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(parentId, userId, name, pageIndex, pageSize);
+    }
 
-	@Override
-	public SystemDept delete(Serializable id) {
-		SystemDept entity = getEntity(id);
-		if (notEmpty(entity)) {
-			@SuppressWarnings("unchecked")
-			List<SystemDept> list = (List<SystemDept>) getPage(entity.getId(), null, null, null, null).getList();
-			for (SystemDept child : list) {
-				delete(child.getId());
-			}
-			dao.delete(id);
-		}
-		return entity;
-	}
+    @Override
+    public SystemDept delete(Serializable id) {
+        SystemDept entity = getEntity(id);
+        if (notEmpty(entity)) {
+            @SuppressWarnings("unchecked")
+            List<SystemDept> list = (List<SystemDept>) getPage(entity.getId(), null, null, null, null).getList();
+            for (SystemDept child : list) {
+                delete(child.getId());
+            }
+            dao.delete(id);
+        }
+        return entity;
+    }
 }

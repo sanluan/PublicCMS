@@ -14,25 +14,25 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class CmsCategoryAttributeService extends BaseService<CmsCategoryAttribute> {
-	@Autowired
-	private CmsCategoryAttributeDao dao;
+    @Autowired
+    private CmsCategoryAttributeDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer pageIndex, Integer pageSize) {
-		return dao.getPage(pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer pageIndex, Integer pageSize) {
+        return dao.getPage(pageIndex, pageSize);
+    }
 
-	public void updateAttribute(Integer categoryId, String data) {
-		CmsCategoryAttribute attribute = getEntity(categoryId);
-		if (notEmpty(attribute)) {
-			if (notEmpty(data)) {
-				attribute.setData(data);
-				update(attribute.getCategoryId(), attribute, new String[] { "categoryId" });
-			} else {
-				delete(attribute.getCategoryId());
-			}
-		} else {
-			save(new CmsCategoryAttribute(categoryId, data));
-		}
-	}
+    public void updateAttribute(Integer categoryId, String data) {
+        CmsCategoryAttribute attribute = getEntity(categoryId);
+        if (notEmpty(attribute)) {
+            if (notEmpty(data)) {
+                attribute.setData(data);
+                update(attribute.getCategoryId(), attribute, new String[] { "categoryId" });
+            } else {
+                delete(attribute.getCategoryId());
+            }
+        } else {
+            save(new CmsCategoryAttribute(categoryId, data));
+        }
+    }
 }

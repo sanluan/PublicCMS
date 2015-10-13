@@ -15,30 +15,30 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class LogEmailCheckService extends BaseService<LogEmailCheck> {
 
-	@Autowired
-	private LogEmailCheckDao dao;
+    @Autowired
+    private LogEmailCheckDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer userId, Date startCreateDate, Date endCreateDate, 
-			Boolean checked, 
-			String orderField, String orderType, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(userId, startCreateDate, endCreateDate, 
-			checked, 
-			orderField, orderType, pageIndex, pageSize);
-	}
-	
-	public int delete(Date createDate) {
-		return dao.delete(createDate);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer userId, Date startCreateDate, Date endCreateDate, 
+            Boolean checked, 
+            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(userId, startCreateDate, endCreateDate, 
+            checked, 
+            orderField, orderType, pageIndex, pageSize);
+    }
+    
+    public int delete(Date createDate) {
+        return dao.delete(createDate);
+    }
 
-	public LogEmailCheck findByCode(String code) {
-		return dao.findByCode(code);
-	}
+    public LogEmailCheck findByCode(String code) {
+        return dao.findByCode(code);
+    }
 
-	public void checked(Integer id) {
-		LogEmailCheck entity = dao.getEntity(id);
-		if (notEmpty(entity)) {
-			entity.setChecked(true);
-		}
-	}
+    public void checked(Integer id) {
+        LogEmailCheck entity = dao.getEntity(id);
+        if (notEmpty(entity)) {
+            entity.setChecked(true);
+        }
+    }
 }

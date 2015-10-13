@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
  */
 public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
 
+<<<<<<< HEAD
 	private Class<TaskAfterInitServlet>[] taskClasses;
 	/**
 	 * 
@@ -52,5 +53,43 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
 	public void setTaskClasses(Class<TaskAfterInitServlet>[] taskClasses) {
 		this.taskClasses = taskClasses;
 	}
+=======
+    private Class<TaskAfterInitServlet>[] taskClasses;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * @param webApplicationContext
+     */
+    public ErrorToNotFoundDispatcherServlet(WebApplicationContext webApplicationContext) {
+        super(webApplicationContext);
+    }
+
+    public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            super.render(mv, request, response);
+        } catch (ServletException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
+
+    public void initFrameworkServlet() throws ServletException {
+        super.initFrameworkServlet();
+        if (!ObjectUtils.isEmpty(taskClasses)) {
+            for (Class<TaskAfterInitServlet> task : taskClasses) {
+                getWebApplicationContext().getBean(task).exec();
+            }
+        }
+    }
+
+    /**
+     * @param taskClasses
+     */
+    public void setTaskClasses(Class<TaskAfterInitServlet>[] taskClasses) {
+        this.taskClasses = taskClasses;
+    }
+>>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
 }

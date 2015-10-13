@@ -19,15 +19,16 @@ import com.sanluan.common.handler.RenderHandler;
 
 @Component
 public class ClearLogDirective extends BaseTemplateDirective {
-	@Autowired
-	private LogEmailCheckService logEmailCheckService;
-	@Autowired
-	private LogLoginService logLoginService;
-	@Autowired
-	private LogOperateService logOperateService;
-	@Autowired
-	private LogTaskService logTaskService;
+    @Autowired
+    private LogEmailCheckService logEmailCheckService;
+    @Autowired
+    private LogLoginService logLoginService;
+    @Autowired
+    private LogOperateService logOperateService;
+    @Autowired
+    private LogTaskService logTaskService;
 
+<<<<<<< HEAD
 	@Override
 	public void execute(RenderHandler handler) throws IOException, Exception {
 		Date date = handler.getDate("clearDate");
@@ -41,4 +42,19 @@ public class ClearLogDirective extends BaseTemplateDirective {
 		messageList.add("task log:" + String.valueOf(logTaskService.delete(date)));
 		handler.put("messageList", messageList).render();
 	}
+=======
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Date date = handler.getDate("clearDate");
+        if (null == date) {
+            date = addMonths(new Date(), -3);
+        }
+        List<String> messageList = new ArrayList<String>();
+        messageList.add("email check log:" + logEmailCheckService.delete(date));
+        messageList.add("login log:" + logLoginService.delete(date));
+        messageList.add("operate log:" + logOperateService.delete(date));
+        messageList.add("task log:" + logTaskService.delete(date));
+        handler.put("messageList", messageList).render();
+    }
+>>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

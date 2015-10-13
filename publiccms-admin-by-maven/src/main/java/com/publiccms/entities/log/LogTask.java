@@ -19,73 +19,73 @@ import javax.persistence.TemporalType;
 @Table(name = "log_task")
 public class LogTask implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private int taskId;
-	private Date begintime;
-	private Date endtime;
-	private String result;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    private int taskId;
+    private Date begintime;
+    private Date endtime;
+    private String result;
 
-	public LogTask() {
-	}
+    public LogTask() {
+    }
 
-	public LogTask(int taskId, Date begintime, Date endtime, String result) {
-		this.taskId = taskId;
-		this.begintime = begintime;
-		this.endtime = endtime;
-		this.result = result;
-	}
+    public LogTask(int taskId, Date begintime, Date endtime, String result) {
+        this.taskId = taskId;
+        this.begintime = begintime;
+        this.endtime = endtime;
+        this.result = result;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "task_id", nullable = false)
-	public int getTaskId() {
-		return this.taskId;
-	}
+    @Column(name = "task_id", nullable = false)
+    public int getTaskId() {
+        return this.taskId;
+    }
 
-	public void setTaskId(int taskId) {
-		this.taskId = taskId;
-	}
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "begintime", nullable = false, length = 19)
-	public Date getBegintime() {
-		return this.begintime;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "begintime", nullable = false, length = 19)
+    public Date getBegintime() {
+        return this.begintime;
+    }
 
-	public void setBegintime(Date begintime) {
-		this.begintime = begintime;
-	}
+    public void setBegintime(Date begintime) {
+        this.begintime = begintime;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "endtime", nullable = false, length = 19)
-	public Date getEndtime() {
-		return this.endtime;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "endtime", nullable = false, length = 19)
+    public Date getEndtime() {
+        return this.endtime;
+    }
 
-	public void setEndtime(Date endtime) {
-		this.endtime = endtime;
-	}
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
+    }
 
-	@Column(name = "result", nullable = false, length = 500)
-	public String getResult() {
-		return this.result;
-	}
+    @Column(name = "result", nullable = false, length = 500)
+    public String getResult() {
+        return this.result;
+    }
 
-	public void setResult(String result) {
-		this.result = result;
-	}
+    public void setResult(String result) {
+        this.result = result;
+    }
 
 }

@@ -15,26 +15,26 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsTagService extends BaseService<CmsTag> {
 
-	@Autowired
-	private CmsTagDao dao;
+    @Autowired
+    private CmsTagDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(String name, Integer categoryId, Integer typeId, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(name, categoryId, typeId, pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(String name, Integer categoryId, Integer typeId, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(name, categoryId, typeId, pageIndex, pageSize);
+    }
 
-	public Integer[] saveTags(Integer contentId, String[] tagNames) {
-		Integer[] newTagIds = null;
-		if (notEmpty(contentId)) {
-			if (notEmpty(tagNames)) {
-				newTagIds = new Integer[tagNames.length];
-				int i = 0;
-				for (String tagName : tagNames) {
-					CmsTag tag = save(new CmsTag(tagName));
-					newTagIds[i++] = tag.getId();
-				}
-			}
-		}
-		return newTagIds;
-	}
+    public Integer[] saveTags(Integer contentId, String[] tagNames) {
+        Integer[] newTagIds = null;
+        if (notEmpty(contentId)) {
+            if (notEmpty(tagNames)) {
+                newTagIds = new Integer[tagNames.length];
+                int i = 0;
+                for (String tagName : tagNames) {
+                    CmsTag tag = save(new CmsTag(tagName));
+                    newTagIds[i++] = tag.getId();
+                }
+            }
+        }
+        return newTagIds;
+    }
 }

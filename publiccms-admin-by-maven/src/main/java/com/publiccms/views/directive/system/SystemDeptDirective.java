@@ -20,26 +20,26 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SystemDeptDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Integer id = handler.getInteger("id");
-		if (null != id) {
-			SystemDept entity = service.getEntity(id);
-			handler.put("object", entity).renderIfNotNull(entity);
-		} else {
-			Integer[] ids = handler.getIntegerArray("ids");
-			if (isNotEmpty(ids)) {
-				List<SystemDept> entityList = service.getEntitys(ids);
-				Map<String, SystemDept> map = new HashMap<String, SystemDept>();
-				for (SystemDept entity : entityList) {
-					map.put(String.valueOf(entity.getId()), entity);
-				}
-				handler.put("map", map).render();
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer id = handler.getInteger(ID);
+        if (null != id) {
+            SystemDept entity = service.getEntity(id);
+            handler.put("object", entity).renderIfNotNull(entity);
+        } else {
+            Integer[] ids = handler.getIntegerArray("ids");
+            if (isNotEmpty(ids)) {
+                List<SystemDept> entityList = service.getEntitys(ids);
+                Map<String, SystemDept> map = new HashMap<String, SystemDept>();
+                for (SystemDept entity : entityList) {
+                    map.put(String.valueOf(entity.getId()), entity);
+                }
+                handler.put("map", map).render();
+            }
+        }
+    }
 
-	@Autowired
-	private SystemDeptService service;
+    @Autowired
+    private SystemDeptService service;
 
 }

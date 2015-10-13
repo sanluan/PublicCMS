@@ -15,12 +15,12 @@ import com.sanluan.common.handler.RenderHandler;
 
 @Component
 public class TemplateListDirective extends BaseDirective {
-	@Autowired
-	private FileComponent fileComponent;
+    @Autowired
+    private FileComponent fileComponent;
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		List<FileInfo> list = fileComponent.getFileList(handler.getString("path", "/"), handler.getBoolean("exclude", false));
-		handler.put("list", list).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        List<FileInfo> list = fileComponent.getFileList(handler.getString("path", "/"), handler.getBoolean("exclude", false));
+        handler.put("list", list).render();
+    }
 }

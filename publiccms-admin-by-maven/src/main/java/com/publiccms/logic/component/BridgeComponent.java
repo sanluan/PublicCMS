@@ -15,11 +15,11 @@ import com.sanluan.common.servlet.TaskAfterInitServlet;
 @Component
 public class BridgeComponent implements TaskAfterInitServlet {
 
-	@Autowired
-	private CmsContentAttributeService contentAttributeService;
+    @Autowired
+    private CmsContentAttributeService contentAttributeService;
 
-	@Override
-	public void exec() {
-		CmsContentBridge.contentAttributeService = contentAttributeService;
-	}
+    @Override
+    public void exec() {
+        CmsContentBridge.contentAttributeService = contentAttributeService;
+    }
 }

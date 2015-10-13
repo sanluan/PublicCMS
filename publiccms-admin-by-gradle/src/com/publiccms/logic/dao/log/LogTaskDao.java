@@ -16,32 +16,32 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class LogTaskDao extends BaseDao<LogTask> {
-	public PageHandler getPage(Integer taskId, Integer pageIndex, Integer pageSize) {
-		QueryHandler queryHandler = getQueryHandler("from LogTask bean");
-		if (notEmpty(taskId)) {
-			queryHandler.condition("bean.taskId = :taskId").setParameter("taskId", taskId);
-		}
-		queryHandler.append("order by bean.id desc");
-		return getPage(queryHandler, pageIndex, pageSize);
-	}
+    public PageHandler getPage(Integer taskId, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from LogTask bean");
+        if (notEmpty(taskId)) {
+            queryHandler.condition("bean.taskId = :taskId").setParameter("taskId", taskId);
+        }
+        queryHandler.append("order by bean.id desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
 
-	public int delete(Date createDate) {
-		QueryHandler queryHandler = getDeleteQueryHandler("from LogTask bean where bean.endtime <= :endtime");
-		queryHandler.setParameter("endtime", createDate);
-		return delete(queryHandler);
-	}
+    public int delete(Date createDate) {
+        QueryHandler queryHandler = getDeleteQueryHandler("from LogTask bean where bean.endtime <= :endtime");
+        queryHandler.setParameter("endtime", createDate);
+        return delete(queryHandler);
+    }
 
-	@Override
-	protected LogTask init(LogTask entity) {
-		if (notEmpty(entity) && 500 < length(entity.getResult())) {
-			entity.setResult(substring(entity.getResult(), 0, 500));
-		}
-		return entity;
-	}
+    @Override
+    protected LogTask init(LogTask entity) {
+        if (notEmpty(entity) && 500 < length(entity.getResult())) {
+            entity.setResult(substring(entity.getResult(), 0, 500));
+        }
+        return entity;
+    }
 
-	@Override
-	protected Class<LogTask> getEntityClass() {
-		return LogTask.class;
-	}
+    @Override
+    protected Class<LogTask> getEntityClass() {
+        return LogTask.class;
+    }
 
 }

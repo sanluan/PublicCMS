@@ -10,23 +10,32 @@ import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
  *
  */
 public class MultiDataSource extends AbstractRoutingDataSource {
-	private static final ThreadLocal<String> holder = new ThreadLocal<String>();
+    private static final ThreadLocal<String> holder = new ThreadLocal<String>();
 
-	@Override
-	protected Object determineCurrentLookupKey() {
-		return holder.get();
-	}
+    @Override
+    protected Object determineCurrentLookupKey() {
+        return holder.get();
+    }
 
-	@Override
-	public void setTargetDataSources(Map<Object, Object> targetDataSources) {
-		super.setTargetDataSources(targetDataSources);
-		super.setDefaultTargetDataSource(targetDataSources.values().iterator().next());
-	}
+    @Override
+    public void setTargetDataSources(Map<Object, Object> targetDataSources) {
+        super.setTargetDataSources(targetDataSources);
+        super.setDefaultTargetDataSource(targetDataSources.values().iterator().next());
+    }
 
+<<<<<<< HEAD
 	/**
 	 * @param name
 	 */
 	public static void setDataSourceName(String name) {
 		holder.set(name);
 	}
+=======
+    /**
+     * @param name
+     */
+    public static void setDataSourceName(String name) {
+        holder.set(name);
+    }
+>>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

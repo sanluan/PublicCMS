@@ -21,37 +21,37 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SystemRoleMoudleDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Integer[] roleIds = handler.getIntegerArray("roleIds");
-		Integer moudleId = handler.getInteger("moudleId");
-		if (null != roleIds) {
-			if (null != moudleId) {
-				SystemRoleMoudle entity = service.getEntity(roleIds, moudleId);
-				handler.put("object", entity).renderIfNotNull(entity);
-			} else {
-				Integer[] moudleIds = handler.getIntegerArray("moudleIds");
-				if (isNotEmpty(moudleIds)) {
-					Map<String, Boolean> map = new HashMap<String, Boolean>();
-					if (systemRoleService.ownsAllRight(roleIds)) {
-						for (Integer id : moudleIds) {
-							map.put(String.valueOf(id), true);
-						}
-					} else {
-						List<SystemRoleMoudle> entityList = service.getEntitys(roleIds, moudleIds);
-						for (SystemRoleMoudle entity : entityList) {
-							map.put(String.valueOf(entity.getMoudleId()), true);
-						}
-					}
-					handler.put("map", map).render();
-				}
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer[] roleIds = handler.getIntegerArray("roleIds");
+        Integer moudleId = handler.getInteger("moudleId");
+        if (null != roleIds) {
+            if (null != moudleId) {
+                SystemRoleMoudle entity = service.getEntity(roleIds, moudleId);
+                handler.put("object", entity).renderIfNotNull(entity);
+            } else {
+                Integer[] moudleIds = handler.getIntegerArray("moudleIds");
+                if (isNotEmpty(moudleIds)) {
+                    Map<String, Boolean> map = new HashMap<String, Boolean>();
+                    if (systemRoleService.ownsAllRight(roleIds)) {
+                        for (Integer id : moudleIds) {
+                            map.put(String.valueOf(id), true);
+                        }
+                    } else {
+                        List<SystemRoleMoudle> entityList = service.getEntitys(roleIds, moudleIds);
+                        for (SystemRoleMoudle entity : entityList) {
+                            map.put(String.valueOf(entity.getMoudleId()), true);
+                        }
+                    }
+                    handler.put("map", map).render();
+                }
+            }
+        }
+    }
 
-	@Autowired
-	private SystemRoleService systemRoleService;
-	@Autowired
-	private SystemRoleMoudleService service;
+    @Autowired
+    private SystemRoleService systemRoleService;
+    @Autowired
+    private SystemRoleMoudleService service;
 
 }

@@ -15,19 +15,19 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class LogLoginService extends BaseService<LogLogin> {
 
-	@Autowired
-	private LogLoginDao dao;
+    @Autowired
+    private LogLoginDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Boolean result, Integer userId, 
-				String name, Date startCreateDate, Date endCreateDate, String ip, 
-				String orderField, String orderType, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(result, userId, 
-				name, startCreateDate, endCreateDate, ip, 
-				orderField, orderType, pageIndex, pageSize);
-	}
-	
-	public int delete(Date createDate) {
-		return dao.delete(createDate);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Boolean result, Integer userId, 
+                String name, Date startCreateDate, Date endCreateDate, String ip, 
+                String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(result, userId, 
+                name, startCreateDate, endCreateDate, ip, 
+                orderField, orderType, pageIndex, pageSize);
+    }
+    
+    public int delete(Date createDate) {
+        return dao.delete(createDate);
+    }
 }
