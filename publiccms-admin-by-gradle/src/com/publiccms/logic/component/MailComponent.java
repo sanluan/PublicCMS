@@ -80,39 +80,15 @@ public class MailComponent {
  *
  */
 class SendThread extends Thread {
-<<<<<<< HEAD
-	private JavaMailSender mailSender;
-	private MimeMessage message;
-	private final Log log = getLog(getClass());
-=======
     private JavaMailSender mailSender;
     private MimeMessage message;
     private final Log log = getLog(getClass());
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     public SendThread(JavaMailSender mailSender, MimeMessage message) {
         this.message = message;
         this.mailSender = mailSender;
     }
 
-<<<<<<< HEAD
-	public void run() {
-		int i = 0;
-		while (i < 3) {
-			try {
-				mailSender.send(message);
-				break;
-			} catch (Exception e) {
-				i++;
-				try {
-					Thread.sleep(1000 * 60);
-				} catch (InterruptedException e1) {
-					log.debug(e1.getMessage());
-				}
-			}
-		}
-	}
-=======
     public void run() {
         int i = 0;
         while (i < 3) {
@@ -129,5 +105,4 @@ class SendThread extends Thread {
             }
         }
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

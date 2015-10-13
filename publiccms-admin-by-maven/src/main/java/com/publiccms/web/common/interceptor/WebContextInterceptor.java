@@ -51,26 +51,6 @@ public class WebContextInterceptor extends BaseInterceptor {
             }
         }
 
-<<<<<<< HEAD
-		if (verify(getURL(request))) {
-			if (null != user && user.isDisabled()) {
-				user = null;
-				UserUtils.clearUserToSession(request, response);
-				UserUtils.cancleCookie(request, response, COOKIES_USER, null);
-			}
-			if (null == user) {
-				try {
-					response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + loginUrl + "?returnUrl="
-							+ getURL(request) + getEncodeQueryString(request.getQueryString()));
-					return false;
-				} catch (IOException e) {
-					log.debug(e.getMessage());
-				}
-			}
-		}
-		return true;
-	}
-=======
         if (verify(getURL(request))) {
             if (null != user && user.isDisabled()) {
                 user = null;
@@ -89,7 +69,6 @@ public class WebContextInterceptor extends BaseInterceptor {
         }
         return true;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     private boolean verify(String url) {
         if (null != needLoginUrls && null != loginUrl && null != url) {

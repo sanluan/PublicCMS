@@ -17,25 +17,6 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsModelService extends BaseService<CmsModel> {
 
-<<<<<<< HEAD
-	@Autowired
-	private CmsModelDao dao;
-
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer parentId, Boolean hasChild, Boolean isUrl, Boolean isImages, Boolean isPart,
-			Boolean disabled, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(parentId, hasChild, isUrl, isImages, isPart, disabled, pageIndex, pageSize);
-	}
-
-	@Override
-	public CmsModel delete(Serializable id) {
-		CmsModel entity = getEntity(id);
-		if (notEmpty(entity)) {
-			entity.setDisabled(true);
-		}
-		return entity;
-	}
-=======
     @Autowired
     private CmsModelDao dao;
 
@@ -53,5 +34,4 @@ public class CmsModelService extends BaseService<CmsModel> {
         }
         return entity;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

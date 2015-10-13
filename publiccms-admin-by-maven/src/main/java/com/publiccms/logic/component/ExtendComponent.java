@@ -22,115 +22,14 @@ import com.publiccms.logic.service.cms.CmsExtendService;
 
 @Component
 public class ExtendComponent {
-<<<<<<< HEAD
-	public static final int ITEM_TYPE_MODEL = 1, ITEM_TYPE_CATEGORY = 2, EXTEND_TYPE_CONTENT = 1, EXTEND_TYPE_CATEGORY = 2;
-	private static final String PARAMETER_PREFIX = "ex_";
-	private final Log log = getLog(getClass());
-=======
     public static final int ITEM_TYPE_MODEL = 1, ITEM_TYPE_CATEGORY = 2, EXTEND_TYPE_CONTENT = 1, EXTEND_TYPE_CATEGORY = 2;
     private static final String PARAMETER_PREFIX = "ex_";
     private final Log log = getLog(getClass());
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     @Autowired
     private CmsExtendService extendService;
     private ObjectMapper objectMapper = new ObjectMapper();
 
-<<<<<<< HEAD
-	@SuppressWarnings("unchecked")
-	public String dealCategoryExtent(Integer categoryId, Map<String, String[]> parameterMap) {
-		if (null != categoryId) {
-			List<CmsExtend> modelExtendList = (List<CmsExtend>) extendService.getPage(ITEM_TYPE_CATEGORY, categoryId,
-					EXTEND_TYPE_CATEGORY, true, null, null).getList();
-			Map<String, String> map = dealExtent(modelExtendList, parameterMap);
-			try {
-				return objectMapper.writeValueAsString(map);
-			} catch (JsonProcessingException e) {
-				log.debug(e.getMessage());
-			}
-		}
-		return "";
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<Map<String, String>> getContentExtent(CmsContentAttribute cmsContentAttribute) {
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		if (null != cmsContentAttribute) {
-			if (null != cmsContentAttribute.getText()) {
-				try {
-					return (List<Map<String, String>>) objectMapper.readValue(cmsContentAttribute.getText(), List.class);
-				} catch (Exception e) {
-					log.debug(e.getMessage());
-				}
-			}
-		}
-		return list;
-	}
-
-	public String contentImages(CmsContentAttribute cmsContentAttribute, Map<String, String[]> parameterMap) {
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		if (null != cmsContentAttribute) {
-			try {
-				Set<String> parameterSet = parameterMap.keySet();
-				for (String paramterName : parameterSet) {
-					if (paramterName.startsWith("images_") && paramterName.endsWith("_image")
-							&& isNotBlank(getValue(parameterMap, paramterName))) {
-						String pre = paramterName.substring(0, paramterName.length() - 6);
-						Map<String, String> map = new HashMap<String, String>();
-						map.put("image", getValue(parameterMap, paramterName));
-						map.put("description", getValue(parameterMap, pre + "_description"));
-						list.add(map);
-					}
-				}
-				return objectMapper.writeValueAsString(list);
-			} catch (JsonProcessingException e) {
-				log.debug(e.getMessage());
-			}
-		}
-		return "[]";
-	}
-
-	public String contentExtent(CmsContentAttribute cmsContentAttribute, Map<String, String[]> parameterMap) {
-		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-		if (null != cmsContentAttribute) {
-			try {
-				Set<String> parameterSet = parameterMap.keySet();
-				for (String paramterName : parameterSet) {
-					if (paramterName.startsWith("ex_c_") && paramterName.endsWith("_name")
-							&& isNotBlank(getValue(parameterMap, paramterName))) {
-						String pre = paramterName.substring(0, paramterName.length() - 5);
-						Map<String, String> map = new HashMap<String, String>();
-						map.put("name", getValue(parameterMap, paramterName));
-						map.put("text", getValue(parameterMap, pre + "_text"));
-						list.add(map);
-					}
-				}
-				return objectMapper.writeValueAsString(list);
-			} catch (JsonProcessingException e) {
-				log.debug(e.getMessage());
-			}
-		}
-		return "[]";
-	}
-
-	@SuppressWarnings("unchecked")
-	public String dealExtent(int extendType, Integer categoryId, Integer modelId, Map<String, String[]> parameterMap) {
-		if (null != categoryId && null != modelId) {
-			List<CmsExtend> modelExtendList = (List<CmsExtend>) extendService.getPage(ITEM_TYPE_MODEL, modelId, extendType, true,
-					null, null).getList();
-			Map<String, String> map = dealExtent(modelExtendList, parameterMap);
-			List<CmsExtend> categoryExtendList = (List<CmsExtend>) extendService.getPage(ITEM_TYPE_CATEGORY, categoryId,
-					extendType, true, null, null).getList();
-			map.putAll(dealExtent(categoryExtendList, parameterMap));
-			try {
-				return objectMapper.writeValueAsString(map);
-			} catch (JsonProcessingException e) {
-				log.debug(e.getMessage());
-			}
-		}
-		return "";
-	}
-=======
     @SuppressWarnings("unchecked")
     public String dealCategoryExtent(Integer categoryId, Map<String, String[]> parameterMap) {
         if (null != categoryId) {
@@ -206,7 +105,6 @@ public class ExtendComponent {
         }
         return "[]";
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     @SuppressWarnings("unchecked")
     public String dealExtent(int extendType, Integer categoryId, Integer modelId, Map<String, String[]> parameterMap) {
@@ -255,18 +153,6 @@ public class ExtendComponent {
         }
     }
 
-<<<<<<< HEAD
-	private Map<String, String> dealExtent(List<CmsExtend> extendList, Map<String, String[]> parameterMap) {
-		Map<String, String> map = new HashMap<String, String>();
-		for (CmsExtend extend : extendList) {
-			String value = getValue(parameterMap, PARAMETER_PREFIX + extend.getCode());
-			if (null != value) {
-				map.put(extend.getCode(), value);
-			}
-		}
-		return map;
-	}
-=======
     public void updateExtend(int itemType, Integer itemId, int extendType, List<String> systemExtendList,
             Map<String, String[]> parameterMap) {
         if (null != itemId) {
@@ -315,5 +201,4 @@ public class ExtendComponent {
         }
         return map;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

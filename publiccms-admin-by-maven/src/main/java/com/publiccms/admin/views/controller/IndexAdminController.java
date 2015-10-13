@@ -23,28 +23,6 @@ public class IndexAdminController extends BaseController {
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
     private static final String SEPARATOR = "/";
 
-<<<<<<< HEAD
-	/**
-	 * 页面请求统一分发
-	 * 
-	 * @param request
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping("/**")
-	public String page(HttpServletRequest request, ModelMap model) {
-		String path = urlPathHelper.getLookupPathForRequest(request);
-		if (isNotBlank(path)) {
-			if (SEPARATOR.equals(path) || path.endsWith(SEPARATOR)) {
-				path += "index.html";
-			}
-			int index = path.lastIndexOf(".");
-			path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
-		}
-		model.addAttribute(CONTEXT_PATH, path);
-		return path;
-	}
-=======
     /**
      * 页面请求统一分发
      * 
@@ -65,5 +43,4 @@ public class IndexAdminController extends BaseController {
         model.addAttribute(CONTEXT_PATH, path);
         return path;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

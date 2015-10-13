@@ -61,65 +61,6 @@ public class CmsContentController extends BaseController {
     @Autowired
     private LogOperateService logOperateService;
 
-<<<<<<< HEAD
-	@RequestMapping("save")
-	public String save(CmsContent entity, Integer[] tagIds, String[] tagTitles, String txt, Boolean timing, Boolean draft,
-			HttpServletRequest request, HttpSession session, ModelMap model) {
-		if (notEmpty(draft) && draft) {
-			entity.setStatus(CmsContentService.STATUS_DRAFT);
-		} else {
-			entity.setStatus(CmsContentService.STATUS_PEND);
-		}
-		Date now = getDate();
-		if (null == entity.getPublishDate()) {
-			entity.setPublishDate(now);
-		}
-		if (notEmpty(timing) && timing && entity.getPublishDate().before(now)) {
-			entity.setPublishDate(now);
-		}
-		Map<String, String[]> parameterMap = request.getParameterMap();
-		CmsModel cmsModel = modelService.getEntity(entity.getModelId());
-		Integer[] newTagIds = null;
-		if (notEmpty(entity.getId())) {
-			String url = entity.getUrl();
-			entity = service.update(entity.getId(), entity, new String[] { "userId", "url", "tags", "createDate", "clicks",
-					"comments", "scores", "childs" });
-			if (cmsModel.isIsUrl()) {
-				entity = service.updateUrl(entity.getId(), url);
-			}
-			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.content",
-						RequestUtils.getIp(request), getDate(), entity.getId() + ":" + entity.getTitle()));
-			}
-			contentTagService.delete(null, entity.getId());
-			newTagIds = tagService.saveTags(entity.getId(), tagTitles);
-		} else {
-			SystemUser user = UserUtils.getAdminFromSession(session);
-			entity.setUserId(user.getId());
-			entity.setDeptId(user.getDeptId());
-			entity = service.save(entity);
-			if (notEmpty(entity.getParentId())) {
-				service.updateChilds(entity.getParentId(), 1);
-			} else {
-				categoryService.updateContents(entity.getCategoryId(), 1);
-			}
-			logOperateService.save(new LogOperate(user.getId(), "save.content", RequestUtils.getIp(request), getDate(), entity
-					.getId() + ":" + entity.getTitle()));
-			newTagIds = tagService.saveTags(entity.getId(), tagTitles);
-		}
-		service.updateTags(entity.getId(), arrayToCommaDelimitedString(addAll(tagIds, newTagIds)));
-		if (cmsModel.isIsPart()) {
-			txt = extendComponent.contentExtent(attributeService.getEntity(entity.getId()), parameterMap);
-		} else if (cmsModel.isIsImages()) {
-			txt = extendComponent.contentImages(attributeService.getEntity(entity.getId()), parameterMap);
-		}
-		String data = extendComponent.dealExtent(ExtendComponent.EXTEND_TYPE_CONTENT, entity.getCategoryId(),
-				entity.getModelId(), parameterMap);
-		attributeService.dealAttribute(entity.getId(), txt, data);
-		publish(new Integer[] { entity.getId() }, request, session, model);
-		return "common/ajaxDone";
-	}
-=======
     @RequestMapping(SAVE)
     public String save(CmsContent entity, Integer[] tagIds, String[] tagTitles, String txt, Boolean timing, Boolean draft,
             HttpServletRequest request, HttpSession session, ModelMap model) {
@@ -177,7 +118,6 @@ public class CmsContentController extends BaseController {
         publish(new Integer[] { entity.getId() }, request, session, model);
         return TEMPLATE_DONE;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     @RequestMapping(value = { "static" })
     public String publish(Integer[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {

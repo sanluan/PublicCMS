@@ -27,22 +27,6 @@ public class StaticPageDirective extends BaseTemplateDirective {
         handler.put("messageList", messageList).render();
     }
 
-<<<<<<< HEAD
-	private List<String> deal(List<String> messageList, String path, List<FileInfo> list) {
-		for (FileInfo fileInfo : list) {
-			String filePath = path + fileInfo.getFileName();
-			if (fileInfo.isDirectory()) {
-				messageList = deal(messageList, filePath + "/", fileComponent.getFileList(filePath, false));
-			} else {
-				StaticResult result = fileComponent.staticPage(filePath);
-				if (!result.getResult()) {
-					messageList.add(filePath);
-				}
-			}
-		}
-		return messageList;
-	}
-=======
     private List<String> deal(List<String> messageList, String path, List<FileInfo> list) {
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
@@ -57,5 +41,4 @@ public class StaticPageDirective extends BaseTemplateDirective {
         }
         return messageList;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

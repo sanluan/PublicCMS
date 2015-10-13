@@ -65,21 +65,6 @@ public class CmsTemplateDataController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-<<<<<<< HEAD
-	@RequestMapping("delete")
-	public String delete(String path, Long createDate, HttpServletRequest request, HttpSession session) {
-		try {
-			fileComponent.deleteData(path, createDate);
-			if (notEmpty(path)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.template.data",
-						RequestUtils.getIp(request), getDate(), path));
-			}
-		} catch (IOException e) {
-			log.debug(e.getMessage());
-		}
-		return "common/ajaxDone";
-	}
-=======
     @RequestMapping(DELETE)
     public String delete(String path, Long createDate, HttpServletRequest request, HttpSession session) {
         try {
@@ -93,7 +78,6 @@ public class CmsTemplateDataController extends BaseController {
         }
         return TEMPLATE_DONE;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     private Map<String, Object> getData(HttpServletRequest request) {
         Map<String, Object> data = new HashMap<String, Object>();

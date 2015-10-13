@@ -27,85 +27,6 @@ import freemarker.template.TemplateModelException;
  *
  */
 public abstract class BaseMethod implements TemplateMethodModelEx {
-<<<<<<< HEAD
-	protected final Log log = getLog(getClass());
-	private static TemplateModel getModel(int index, List<TemplateModel> arguments) {
-		if (index < arguments.size()) {
-			return arguments.get(index);
-		}
-		return null;
-	}
-
-	public TemplateHashModel getMap(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converMap(getModel(index, arguments));
-	}
-
-	public String getString(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converString(getModel(index, arguments));
-	}
-
-	public Integer getInteger(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converInteger(getModel(index, arguments));
-	}
-
-	public Short getShort(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converShort(getModel(index, arguments));
-	}
-
-	public Long getLong(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converLong(getModel(index, arguments));
-	}
-
-	public Double getDouble(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converDouble(getModel(index, arguments));
-	}
-
-	public String[] getStringArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converStringArray(getModel(index, arguments));
-	}
-
-	public Integer[] getIntegerArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		String[] arr = getStringArray(index, arguments);
-		if (null != arr) {
-			Integer[] ids = new Integer[arr.length];
-			int i = 0;
-			try {
-				for (String s : arr) {
-					ids[i++] = Integer.valueOf(s);
-				}
-				return ids;
-			} catch (NumberFormatException e) {
-				log.debug(e.getMessage());
-			}
-		}
-		return null;
-	}
-
-	public Long[] getLongArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		String[] arr = getStringArray(index, arguments);
-		if (null != arr) {
-			Long[] ids = new Long[arr.length];
-			int i = 0;
-			try {
-				for (String s : arr) {
-					ids[i++] = Long.valueOf(s);
-				}
-				return ids;
-			} catch (NumberFormatException e) {
-				log.debug(e.getMessage());
-			}
-		}
-		return null;
-	}
-
-	public Boolean getBoolean(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converBoolean(getModel(index, arguments));
-	}
-
-	public Date getDate(int index, List<TemplateModel> arguments) throws TemplateModelException {
-		return converDate(getModel(index, arguments));
-	}
-=======
     protected final Log log = getLog(getClass());
     private static TemplateModel getModel(int index, List<TemplateModel> arguments) {
         if (index < arguments.size()) {
@@ -183,5 +104,4 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     public Date getDate(int index, List<TemplateModel> arguments) throws TemplateModelException {
         return converDate(getModel(index, arguments));
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

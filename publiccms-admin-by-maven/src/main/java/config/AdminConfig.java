@@ -23,37 +23,6 @@ import com.publiccms.admin.common.view.AdminFreeMarkerView;
 @ComponentScan(basePackages = "com.publiccms.admin.views.controller", useDefaultFilters = false, includeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
 public class AdminConfig extends WebMvcConfigurerAdapter {
 
-<<<<<<< HEAD
-	/**
-	 * 视图层解决方案
-	 * 
-	 * @return
-	 */
-	@Bean
-	public ViewResolver viewResolver() {
-		FreeMarkerViewResolver bean = new FreeMarkerViewResolver();
-		bean.setViewClass(AdminFreeMarkerView.class);
-		bean.setPrefix("/admin/");
-		bean.setSuffix(".html");
-		bean.setContentType("text/html;charset=UTF-8");
-		return bean;
-	}
-
-	/**
-	 * 拦截器
-	 * 
-	 * @return
-	 */
-	@Bean
-	public AdminContextInterceptor initializingInterceptor() {
-		AdminContextInterceptor bean = new AdminContextInterceptor();
-		bean.setLoginUrl("/admin/login.html");
-		bean.setUnauthorizedUrl("/admin/common/unauthorizedUrl.html");
-		bean.setLoginJsonUrl("/admin/common/ajaxTimeout.html");
-		bean.setNeedNotLoginUrls(new String[] { "/admin/logout", "/admin/common/", "/admin/login" });
-		return bean;
-	}
-=======
     /**
      * 视图层解决方案
      * 
@@ -83,7 +52,6 @@ public class AdminConfig extends WebMvcConfigurerAdapter {
         bean.setNeedNotLoginUrls(new String[] { "/admin/logout", "/admin/common/", "/admin/login" });
         return bean;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

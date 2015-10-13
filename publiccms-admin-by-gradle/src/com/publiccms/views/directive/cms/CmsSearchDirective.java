@@ -16,21 +16,6 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsSearchDirective extends BaseDirective {
 
-<<<<<<< HEAD
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		try {
-			PageHandler page = service.query(handler.getString("word"), handler.getInteger("pageIndex", 1),
-					handler.getInteger("count", 30));
-			handler.put("page", page).render();
-		} catch (EmptyQueryException e) {
-			log.debug(e.getMessage());
-		}
-	}
-
-	@Autowired
-	private CmsContentService service;
-=======
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         try {
@@ -44,6 +29,5 @@ public class CmsSearchDirective extends BaseDirective {
 
     @Autowired
     private CmsContentService service;
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
 }

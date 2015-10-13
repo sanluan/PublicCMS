@@ -42,90 +42,6 @@ public class LoginController extends BaseController {
     @Autowired
     private LogEmailCheckService logEmailCheckService;
 
-<<<<<<< HEAD
-	/**
-	 * @param username
-	 * @param password
-	 * @param returnUrl
-	 * @param request
-	 * @param session
-	 * @param response
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = { "login" }, method = RequestMethod.POST)
-	public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
-			HttpServletResponse response, ModelMap model) {
-		if (virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {
-			model.addAttribute("username", username);
-			model.addAttribute("returnUrl", returnUrl);
-			return "login";
-		}
-		SystemUser user;
-		if (virifyNotEMail(username)) {
-			user = service.findByName(username);
-		} else {
-			user = service.findByEmail(username);
-		}
-		if (virifyNotExist("username", user, model)
-				|| virifyNotEquals("password", VerificationUtils.encode(password), user.getPassword(), model)
-				|| virifyNotEnablie(user, model)) {
-			model.addAttribute("username", username);
-			model.addAttribute("returnUrl", returnUrl);
-			LogLogin log = new LogLogin();
-			log.setName(username);
-			log.setErrorPassword(password);
-			log.setIp(RequestUtils.getIp(request));
-			logLoginService.save(log);
-			return "login";
-		}
-		UserUtils.setUserToSession(session, user);
-		String authToken = UUID.randomUUID().toString();
-		RequestUtils.addCookie(request, response, COOKIES_USER, authToken, Integer.MAX_VALUE, null);
-		service.updateLoginStatus(user.getId(), username, authToken, RequestUtils.getIp(request));
-		if (notEmpty(returnUrl)) {
-			try {
-				returnUrl = URLDecoder.decode(returnUrl, "utf-8");
-			} catch (UnsupportedEncodingException e) {
-				log.debug(e.getMessage());
-			}
-			return REDIRECT + returnUrl;
-		} else {
-			return REDIRECT + "index.html";
-		}
-	}
-
-	/**
-	 * @param entity
-	 * @return
-	 */
-	/**
-	 * @param entity
-	 * @param repassword
-	 * @param request
-	 * @param session
-	 * @param response
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = { "register" })
-	public String register(SystemUser entity, String repassword, HttpServletRequest request, HttpSession session,
-			HttpServletResponse response, ModelMap model) {
-		if (virifyNotEmpty("username", entity.getName(), model) || virifyNotEmpty("nickname", entity.getNickName(), model)
-				|| virifyNotEmpty("password", entity.getPassword(), model)
-				|| virifyNotUserName("username", entity.getName(), model)
-				|| virifyNotNickName("nickname", entity.getNickName(), model)
-				|| virifyNotEquals("repassword", entity.getPassword(), repassword, model)
-				|| virifyHasExist("username", service.findByName(entity.getName()), model)
-				|| virifyHasExist("nickname", service.findByNickName(entity.getNickName()), model)) {
-			return "register";
-		} else {
-			entity.setPassword(VerificationUtils.encode(entity.getPassword()));
-			entity.setLastLoginIp(RequestUtils.getIp(request));
-			String authToken = UUID.randomUUID().toString();
-			entity.setAuthToken(authToken);
-			entity = service.save(entity);
-=======
     /**
      * @param username
      * @param password
@@ -208,7 +124,6 @@ public class LoginController extends BaseController {
             String authToken = UUID.randomUUID().toString();
             entity.setAuthToken(authToken);
             entity = service.save(entity);
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
             UserUtils.setUserToSession(session, entity);
             RequestUtils.addCookie(request, response, COOKIES_USER, authToken, Integer.MAX_VALUE, null);
@@ -216,37 +131,6 @@ public class LoginController extends BaseController {
         return REDIRECT + "user/";
     }
 
-<<<<<<< HEAD
-	/**
-	 * @param code
-	 * @param session
-	 * @param model
-	 * @return
-	 */
-	@RequestMapping(value = { "verifyEmail" })
-	public String verifyEmail(String code, HttpSession session, ModelMap model) {
-		LogEmailCheck logEmailCheck = logEmailCheckService.findByCode(code);
-		if (virifyNotEmpty("verifyEmail.code", code, model) || virifyNotExist("verifyEmail.logEmailCheck", logEmailCheck, model)) {
-			return "login";
-		}
-		service.checked(logEmailCheck.getUserId(), logEmailCheck.getEmail());
-		logEmailCheckService.checked(logEmailCheck.getId());
-		UserUtils.clearUserTimeToSession(session);
-		model.addAttribute("message", "verifyEmail.success");
-		return REDIRECT + "user/";
-	}
-
-	/**
-	 * @param request
-	 * @param response
-	 * @return
-	 */
-	@RequestMapping(value = { "logout" }, method = RequestMethod.GET)
-	public String logout(HttpServletRequest request, HttpServletResponse response) {
-		UserUtils.clearUserToSession(request, response);
-		return REDIRECT + "index.html";
-	}
-=======
     /**
      * @param code
      * @param session
@@ -276,7 +160,6 @@ public class LoginController extends BaseController {
         UserUtils.clearUserToSession(request, response);
         return REDIRECT + "index.html";
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     protected boolean virifyNotEnablie(SystemUser user, ModelMap model) {
         if (user.isDisabled()) {

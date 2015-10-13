@@ -62,21 +62,6 @@ public class LoginAdminController extends BaseController {
         }
         UserUtils.setAdminToSession(session, user);
 
-<<<<<<< HEAD
-		String authToken = UUID.randomUUID().toString();
-		UserUtils.addCookie(request, response, COOKIES_USER, authToken, Integer.MAX_VALUE, null);
-		service.updateLoginStatus(user.getId(), username, authToken, UserUtils.getIp(request));
-		if (notEmpty(returnUrl)) {
-			try {
-				returnUrl = URLDecoder.decode(returnUrl, "utf-8");
-			} catch (UnsupportedEncodingException e) {
-				log.debug(e.getMessage());
-			}
-			return REDIRECT + returnUrl;
-		} else
-			return REDIRECT + "index.html";
-	}
-=======
         String authToken = UUID.randomUUID().toString();
         UserUtils.addCookie(request, response, COOKIES_USER, authToken, Integer.MAX_VALUE, null);
         service.updateLoginStatus(user.getId(), username, authToken, UserUtils.getIp(request));
@@ -90,7 +75,6 @@ public class LoginAdminController extends BaseController {
         } else
             return REDIRECT + "index.html";
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     @RequestMapping(value = { "systemUser/changePassword" }, method = RequestMethod.POST)
     public String changePassword(Integer id, String oldpassword, String password, String repassword, HttpServletRequest request,
