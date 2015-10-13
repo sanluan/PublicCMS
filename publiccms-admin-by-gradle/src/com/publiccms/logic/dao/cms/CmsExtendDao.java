@@ -11,32 +11,32 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsExtendDao extends BaseDao<CmsExtend> {
-	public PageHandler getPage(Integer itemType, Integer itemId, Integer extendType, Boolean isCustom, Integer pageIndex, Integer pageSize) {
-		QueryHandler queryHandler = getQueryHandler("from CmsExtend bean");
-		if (notEmpty(itemType)) {
-			queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
-		}
-		if (notEmpty(itemId)) {
-			queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
-		}
-		if (notEmpty(extendType)) {
-			queryHandler.condition("bean.extendType = :extendType").setParameter("extendType", extendType);
-		}
-		if (notEmpty(isCustom)) {
-			queryHandler.condition("bean.isCustom = :isCustom").setParameter("isCustom", isCustom);
-		}
-		queryHandler.append("order by bean.id desc");
-		return getPage(queryHandler, pageIndex, pageSize);
-	}
+    public PageHandler getPage(Integer itemType, Integer itemId, Integer extendType, Boolean isCustom, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from CmsExtend bean");
+        if (notEmpty(itemType)) {
+            queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
+        }
+        if (notEmpty(itemId)) {
+            queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
+        }
+        if (notEmpty(extendType)) {
+            queryHandler.condition("bean.extendType = :extendType").setParameter("extendType", extendType);
+        }
+        if (notEmpty(isCustom)) {
+            queryHandler.condition("bean.isCustom = :isCustom").setParameter("isCustom", isCustom);
+        }
+        queryHandler.append("order by bean.id desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
 
-	@Override
-	protected CmsExtend init(CmsExtend entity) {
-		return entity;
-	}
+    @Override
+    protected CmsExtend init(CmsExtend entity) {
+        return entity;
+    }
 
-	@Override
-	protected Class<CmsExtend> getEntityClass() {
-		return CmsExtend.class;
-	}
+    @Override
+    protected Class<CmsExtend> getEntityClass() {
+        return CmsExtend.class;
+    }
 
 }

@@ -19,79 +19,79 @@ import com.sanluan.common.source.entity.MyColumn;
 @Table(name = "system_moudle")
 public class SystemMoudle implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	@MyColumn(title = "名称")
-	private String name;
-	@MyColumn(title = "地址", condition = true)
-	private String url;
-	private String authorizedUrl;
-	@MyColumn(title = "父模块", condition = true)
-	private Integer parentId;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    @MyColumn(title = "名称")
+    private String name;
+    @MyColumn(title = "地址", condition = true)
+    private String url;
+    private String authorizedUrl;
+    @MyColumn(title = "父模块", condition = true)
+    private Integer parentId;
 
-	public SystemMoudle() {
-	}
+    public SystemMoudle() {
+    }
 
-	public SystemMoudle(String name, String url) {
-		this.name = name;
-		this.url = url;
-	}
+    public SystemMoudle(String name, String url) {
+        this.name = name;
+        this.url = url;
+    }
 
-	public SystemMoudle(String name, String url, String authorizedUrl, Integer parentId) {
-		this.name = name;
-		this.url = url;
-		this.authorizedUrl = authorizedUrl;
-		this.parentId = parentId;
-	}
+    public SystemMoudle(String name, String url, String authorizedUrl, Integer parentId) {
+        this.name = name;
+        this.url = url;
+        this.authorizedUrl = authorizedUrl;
+        this.parentId = parentId;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "name", nullable = false, length = 100)
-	public String getName() {
-		return this.name;
-	}
+    @Column(name = "name", nullable = false, length = 100)
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Column(name = "url", nullable = false)
-	public String getUrl() {
-		return this.url;
-	}
+    @Column(name = "url", nullable = false)
+    public String getUrl() {
+        return this.url;
+    }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	@Column(name = "authorized_url", length = 65535)
-	public String getAuthorizedUrl() {
-		return this.authorizedUrl;
-	}
+    @Column(name = "authorized_url", length = 65535)
+    public String getAuthorizedUrl() {
+        return this.authorizedUrl;
+    }
 
-	public void setAuthorizedUrl(String authorizedUrl) {
-		this.authorizedUrl = authorizedUrl;
-	}
+    public void setAuthorizedUrl(String authorizedUrl) {
+        this.authorizedUrl = authorizedUrl;
+    }
 
-	@Column(name = "parent_id")
-	public Integer getParentId() {
-		return this.parentId;
-	}
+    @Column(name = "parent_id")
+    public Integer getParentId() {
+        return this.parentId;
+    }
 
-	public void setParentId(Integer parentId) {
-		this.parentId = parentId;
-	}
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
 
 }

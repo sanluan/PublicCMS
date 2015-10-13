@@ -12,21 +12,21 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsTagTypeDao extends BaseDao<CmsTagType> {
-	public PageHandler getPage(
-				Integer pageIndex, Integer pageSize) {
-		QueryHandler queryHandler = getQueryHandler("from CmsTagType bean");
-		queryHandler.append("order by bean.id desc");
-		return getPage(queryHandler, pageIndex, pageSize);
-	}
+    public PageHandler getPage(
+                Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from CmsTagType bean");
+        queryHandler.append("order by bean.id desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
 
-	@Override
-	protected CmsTagType init(CmsTagType entity) {
-		return entity;
-	}
+    @Override
+    protected CmsTagType init(CmsTagType entity) {
+        return entity;
+    }
 
-	@Override
-	protected Class<CmsTagType> getEntityClass() {
-		return CmsTagType.class;
-	}
+    @Override
+    protected Class<CmsTagType> getEntityClass() {
+        return CmsTagType.class;
+    }
 
 }

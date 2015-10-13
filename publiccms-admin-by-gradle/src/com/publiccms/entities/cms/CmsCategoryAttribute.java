@@ -14,42 +14,42 @@ import javax.persistence.Table;
 @Table(name = "cms_category_attribute")
 public class CmsCategoryAttribute implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private int categoryId;
-	private String data;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private int categoryId;
+    private String data;
 
-	public CmsCategoryAttribute() {
-	}
+    public CmsCategoryAttribute() {
+    }
 
-	public CmsCategoryAttribute(int categoryId) {
-		this.categoryId = categoryId;
-	}
+    public CmsCategoryAttribute(int categoryId) {
+        this.categoryId = categoryId;
+    }
 
-	public CmsCategoryAttribute(int categoryId, String data) {
-		this.categoryId = categoryId;
-		this.data = data;
-	}
+    public CmsCategoryAttribute(int categoryId, String data) {
+        this.categoryId = categoryId;
+        this.data = data;
+    }
 
-	@Id
-	@Column(name = "category_id", unique = true, nullable = false)
-	public int getCategoryId() {
-		return this.categoryId;
-	}
+    @Id
+    @Column(name = "category_id", unique = true, nullable = false)
+    public int getCategoryId() {
+        return this.categoryId;
+    }
 
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
-	}
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
 
-	@Column(name = "data", length = 65535)
-	public String getData() {
-		return this.data;
-	}
+    @Column(name = "data", length = 65535)
+    public String getData() {
+        return this.data;
+    }
 
-	public void setData(String data) {
-		this.data = data;
-	}
+    public void setData(String data) {
+        this.data = data;
+    }
 
 }

@@ -15,14 +15,14 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SystemTaskListDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		PageHandler page = service.getPage(handler.getInteger("status"), handler.getInteger("pageIndex", 1),
-				handler.getInteger("count", 30));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        PageHandler page = service.getPage(handler.getInteger("status"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("count", 30));
+        handler.put("page", page).render();
+    }
 
-	@Autowired
-	private SystemTaskService service;
+    @Autowired
+    private SystemTaskService service;
 
 }

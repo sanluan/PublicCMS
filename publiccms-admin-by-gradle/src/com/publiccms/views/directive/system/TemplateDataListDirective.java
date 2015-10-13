@@ -15,12 +15,12 @@ import com.sanluan.common.handler.RenderHandler;
 
 @Component
 public class TemplateDataListDirective extends BaseDirective {
-	@Autowired
-	private FileComponent fileComponent;
+    @Autowired
+    private FileComponent fileComponent;
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		List<Map<String, Object>> list = fileComponent.getListData(handler.getString("path", "/"));
-		handler.put("list", list).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        List<Map<String, Object>> list = fileComponent.getListData(handler.getString("path", "/"));
+        handler.put("list", list).render();
+    }
 }

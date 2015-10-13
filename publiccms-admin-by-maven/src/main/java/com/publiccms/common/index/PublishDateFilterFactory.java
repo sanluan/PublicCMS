@@ -11,16 +11,16 @@ import org.hibernate.search.annotations.Factory;
 import org.hibernate.search.filter.impl.CachingWrapperFilter;
 
 public class PublishDateFilterFactory {
-	private Date publishDate;
+    private Date publishDate;
 
-	@Factory
-	public Filter getFilter() {
-		Query query = TermRangeQuery.newStringRange("publishDate", null,
-				DateTools.dateToString(publishDate, DateTools.Resolution.MILLISECOND), true, true);
-		return new CachingWrapperFilter(new QueryWrapperFilter(query));
-	}
+    @Factory
+    public Filter getFilter() {
+        Query query = TermRangeQuery.newStringRange("publishDate", null,
+                DateTools.dateToString(publishDate, DateTools.Resolution.MILLISECOND), true, true);
+        return new CachingWrapperFilter(new QueryWrapperFilter(query));
+    }
 
-	public void setPublishDate(Date publishDate) {
-		this.publishDate = publishDate;
-	}
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
+    }
 }

@@ -24,25 +24,26 @@ import com.sanluan.common.tools.RequestUtils;
 @Controller
 @RequestMapping("file")
 public class FileAdminController extends BaseController {
-	@Autowired
-	private FileComponent fileComponent;
-	@Autowired
-	private LogOperateService logOperateService;
+    @Autowired
+    private FileComponent fileComponent;
+    @Autowired
+    private LogOperateService logOperateService;
 
-	@RequestMapping(value = { "upload" }, method = RequestMethod.POST)
-	@ResponseBody
-	public Map<String, Object> upload(MultipartFile file, String field, HttpServletRequest request, HttpSession session) {
-		Map<String, Object> map = new HashMap<String, Object>();
-		if (!file.isEmpty()) {
-			String fileName = fileComponent.getUploadFileName(fileComponent.getSuffix(file.getOriginalFilename()));
-			try {
-				fileComponent.upload(file, fileName);
-				map.put(field, fileName);
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(),
-						LogOperateService.OPERATE_UPLOADFILE, RequestUtils.getIp(request), getDate(), fileName));
-			} catch (IllegalStateException | IOException e) {
-			}
-		}
-		return map;
-	}
+    @RequestMapping(value = { "upload" }, method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> upload(MultipartFile file, String field, HttpServletRequest request, HttpSession session) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        if (!file.isEmpty()) {
+            String fileName = fileComponent.getUploadFileName(fileComponent.getSuffix(file.getOriginalFilename()));
+            try {
+                fileComponent.upload(file, fileName);
+                map.put(field, fileName);
+                logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(),
+                        LogOperateService.OPERATE_UPLOADFILE, RequestUtils.getIp(request), getDate(), fileName));
+            } catch (IllegalStateException | IOException e) {
+                log.debug(e.getMessage());
+            }
+        }
+        return map;
+    }
 }

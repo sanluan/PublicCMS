@@ -17,20 +17,21 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsModelService extends BaseService<CmsModel> {
 
-	@Autowired
-	private CmsModelDao dao;
+    @Autowired
+    private CmsModelDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer parentId, Boolean hasChild, Boolean isUrl, Boolean isImages,Boolean isPart, Boolean disabled,
-			Integer pageIndex, Integer pageSize) {
-		return dao.getPage(parentId, hasChild, isUrl, isImages, isPart, disabled, pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer parentId, Boolean hasChild, Boolean isUrl, Boolean isImages, Boolean isPart,
+            Boolean disabled, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(parentId, hasChild, isUrl, isImages, isPart, disabled, pageIndex, pageSize);
+    }
 
-	@Override
-	public CmsModel delete(Serializable id) {
-		CmsModel entity = getEntity(id);
-		if (notEmpty(entity))
-			entity.setDisabled(true);
-		return entity;
-	}
+    @Override
+    public CmsModel delete(Serializable id) {
+        CmsModel entity = getEntity(id);
+        if (notEmpty(entity)) {
+            entity.setDisabled(true);
+        }
+        return entity;
+    }
 }

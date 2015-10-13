@@ -12,20 +12,32 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
+/**
+ * 
+ * BaseTemplateDirective 模板自定义指令基类
+ *
+ */
 public abstract class BaseTemplateDirective implements TemplateDirectiveModel {
-	@SuppressWarnings("unchecked")
-	@Override
-	public void execute(Environment environment, @SuppressWarnings("rawtypes") Map parameters, TemplateModel[] loopVars,
-			TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
-		try {
-			execute(new DirectiveHandler(parameters, loopVars, environment.getOut(), environment.getCurrentNamespace(),
-					environment.getObjectWrapper(), templateDirectiveBody));
-		} catch (IOException e) {
-			throw e;
-		} catch (Exception e) {
-			throw new TemplateException(e, environment);
-		}
-	}
+    protected static final String ID = "id";
 
-	public abstract void execute(RenderHandler handler) throws IOException, Exception;
+    @SuppressWarnings("unchecked")
+    @Override
+    public void execute(Environment environment, @SuppressWarnings("rawtypes") Map parameters, TemplateModel[] loopVars,
+            TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
+        try {
+            execute(new DirectiveHandler(parameters, loopVars, environment.getOut(), environment.getCurrentNamespace(),
+                    environment.getObjectWrapper(), templateDirectiveBody));
+        } catch (IOException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new TemplateException(e, environment);
+        }
+    }
+
+    /**
+     * @param handler
+     * @throws IOException
+     * @throws Exception
+     */
+    public abstract void execute(RenderHandler handler) throws IOException, Exception;
 }

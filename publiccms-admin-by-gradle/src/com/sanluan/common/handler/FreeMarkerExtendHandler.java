@@ -20,77 +20,80 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 public class FreeMarkerExtendHandler implements ApplicationContextAware {
-	private String directivePrefix;
-	private String directiveRemoveRegex;
-	private String methodRemoveRegex;
-	private Map<String, Object> freemarkerVariables = new HashMap<String, Object>();
-	private final Log log = getLog(getClass());
-	@Autowired
-	private Map<String, TemplateDirectiveModel> directiveMap;
-	@Autowired
-	private Map<String, TemplateMethodModelEx> methodMap;
+    private String directivePrefix;
+    private String directiveRemoveRegex;
+    private String methodRemoveRegex;
+    private Map<String, Object> freemarkerVariables = new HashMap<String, Object>();
+    private final Log log = getLog(getClass());
+    @Autowired
+    private Map<String, TemplateDirectiveModel> directiveMap;
+    @Autowired
+    private Map<String, TemplateMethodModelEx> methodMap;
 
-	@Override
-	public void setApplicationContext(ApplicationContext applicationcontext) throws BeansException {
-		log.info("Freemarker directives and methods Handler started");
-		FreeMarkerConfigurer freeMarkerConfigurer = applicationcontext.getBean(FreeMarkerConfigurer.class);
+    @Override
+    public void setApplicationContext(ApplicationContext applicationcontext) throws BeansException {
+        log.info("Freemarker directives and methods Handler started");
+        FreeMarkerConfigurer freeMarkerConfigurer = applicationcontext.getBean(FreeMarkerConfigurer.class);
 
-		StringBuffer directives = new StringBuffer();
-		for (Entry<String, TemplateDirectiveModel> entry : directiveMap.entrySet()) {
-			String directiveName = directivePrefix + uncapitalize(entry.getKey().replaceAll(directiveRemoveRegex, ""));
-			freemarkerVariables.put(directiveName, entry.getValue());
-			if (0 != directives.length())
-				directives.append(",");
-			directives.append(directiveName);
-		}
+        StringBuffer directives = new StringBuffer();
+        for (Entry<String, TemplateDirectiveModel> entry : directiveMap.entrySet()) {
+            String directiveName = directivePrefix + uncapitalize(entry.getKey().replaceAll(directiveRemoveRegex, ""));
+            freemarkerVariables.put(directiveName, entry.getValue());
+            if (0 != directives.length()) {
+                directives.append(",");
+            }
+            directives.append(directiveName);
+        }
 
-		StringBuffer methods = new StringBuffer();
-		for (Entry<String, TemplateMethodModelEx> entry : methodMap.entrySet()) {
-			String methodName = uncapitalize(entry.getKey().replaceAll(methodRemoveRegex, ""));
-			freemarkerVariables.put(methodName, entry.getValue());
-			if (0 != methods.length())
-				methods.append(",");
-			methods.append(methodName);
-		}
+        StringBuffer methods = new StringBuffer();
+        for (Entry<String, TemplateMethodModelEx> entry : methodMap.entrySet()) {
+            String methodName = uncapitalize(entry.getKey().replaceAll(methodRemoveRegex, ""));
+            freemarkerVariables.put(methodName, entry.getValue());
+            if (0 != methods.length()) {
+                methods.append(",");
+            }
+            methods.append(methodName);
+        }
 
-		try {
-			freeMarkerConfigurer.getConfiguration().setAllSharedVariables(
-					new SimpleHash(freemarkerVariables, freeMarkerConfigurer.getConfiguration().getObjectWrapper()));
-			log.info((directiveMap.size()) + " directives created:[" + directives.toString() + "];" + methodMap.size()
-					+ " methods created:[" + methods.toString() + "]");
-		} catch (TemplateModelException e) {
-		}
-	}
+        try {
+            freeMarkerConfigurer.getConfiguration().setAllSharedVariables(
+                    new SimpleHash(freemarkerVariables, freeMarkerConfigurer.getConfiguration().getObjectWrapper()));
+            log.info((directiveMap.size()) + " directives created:[" + directives.toString() + "];" + methodMap.size()
+                    + " methods created:[" + methods.toString() + "]");
+        } catch (TemplateModelException e) {
+            log.debug(e.getMessage());
+        }
+    }
 
-	/**
-	 * @param directivePrefix
-	 *            the directivePrefix to set
-	 */
-	public void setDirectivePrefix(String directivePrefix) {
-		this.directivePrefix = directivePrefix;
-	}
+    /**
+     * @param directivePrefix
+     *            the directivePrefix to set
+     */
+    public void setDirectivePrefix(String directivePrefix) {
+        this.directivePrefix = directivePrefix;
+    }
 
-	/**
-	 * @param directiveRemoveRegex
-	 *            the directiveRemoveRegex to set
-	 */
-	public void setDirectiveRemoveRegex(String directiveRemoveRegex) {
-		this.directiveRemoveRegex = directiveRemoveRegex;
-	}
+    /**
+     * @param directiveRemoveRegex
+     *            the directiveRemoveRegex to set
+     */
+    public void setDirectiveRemoveRegex(String directiveRemoveRegex) {
+        this.directiveRemoveRegex = directiveRemoveRegex;
+    }
 
-	/**
-	 * @param methodRemoveRegex
-	 *            the methodRemoveRegex to set
-	 */
-	public void setMethodRemoveRegex(String methodRemoveRegex) {
-		this.methodRemoveRegex = methodRemoveRegex;
-	}
+    /**
+     * @param methodRemoveRegex
+     *            the methodRemoveRegex to set
+     */
+    public void setMethodRemoveRegex(String methodRemoveRegex) {
+        this.methodRemoveRegex = methodRemoveRegex;
+    }
 
-	public Map<String, Object> getFreemarkerVariables() {
-		return freemarkerVariables;
-	}
+    public Map<String, Object> getFreemarkerVariables() {
+        return freemarkerVariables;
+    }
 
-	public String getDirectiveRemoveRegex() {
-		return directiveRemoveRegex;
-	}
+    public String getDirectiveRemoveRegex() {
+        return directiveRemoveRegex;
+    }
 }

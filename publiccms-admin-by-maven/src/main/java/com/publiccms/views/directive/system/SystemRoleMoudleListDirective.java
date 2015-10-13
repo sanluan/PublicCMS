@@ -15,14 +15,14 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SystemRoleMoudleListDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		PageHandler page = service.getPage(handler.getInteger("roleId"), handler.getInteger("moudleId"),
-				handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        PageHandler page = service.getPage(handler.getInteger("roleId"), handler.getInteger("moudleId"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+        handler.put("page", page).render();
+    }
 
-	@Autowired
-	private SystemRoleMoudleService service;
+    @Autowired
+    private SystemRoleMoudleService service;
 
 }

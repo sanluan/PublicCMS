@@ -15,49 +15,49 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "system_role_moudle")
 public class SystemRoleMoudle implements java.io.Serializable {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private int roleId;
-	private int moudleId;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    private int roleId;
+    private int moudleId;
 
-	public SystemRoleMoudle() {
-	}
+    public SystemRoleMoudle() {
+    }
 
-	public SystemRoleMoudle(int roleId, int moudleId) {
-		this.roleId = roleId;
-		this.moudleId = moudleId;
-	}
+    public SystemRoleMoudle(int roleId, int moudleId) {
+        this.roleId = roleId;
+        this.moudleId = moudleId;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "role_id", nullable = false)
-	public int getRoleId() {
-		return this.roleId;
-	}
+    @Column(name = "role_id", nullable = false)
+    public int getRoleId() {
+        return this.roleId;
+    }
 
-	public void setRoleId(int roleId) {
-		this.roleId = roleId;
-	}
+    public void setRoleId(int roleId) {
+        this.roleId = roleId;
+    }
 
-	@Column(name = "moudle_id", nullable = false)
-	public int getMoudleId() {
-		return this.moudleId;
-	}
+    @Column(name = "moudle_id", nullable = false)
+    public int getMoudleId() {
+        return this.moudleId;
+    }
 
-	public void setMoudleId(int moudleId) {
-		this.moudleId = moudleId;
-	}
+    public void setMoudleId(int moudleId) {
+        this.moudleId = moudleId;
+    }
 
 }

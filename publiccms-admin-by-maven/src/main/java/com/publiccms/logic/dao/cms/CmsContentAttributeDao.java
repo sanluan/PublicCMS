@@ -12,20 +12,20 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsContentAttributeDao extends BaseDao<CmsContentAttribute> {
-	public PageHandler getPage(Integer pageIndex, Integer pageSize) {
-		QueryHandler queryHandler = getQueryHandler("from CmsContentAttribute bean");
-		queryHandler.append("order by bean.id desc");
-		return getPage(queryHandler, pageIndex, pageSize);
-	}
+    public PageHandler getPage(Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from CmsContentAttribute bean");
+        queryHandler.append("order by bean.id desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
 
-	@Override
-	protected CmsContentAttribute init(CmsContentAttribute entity) {
-		return entity;
-	}
+    @Override
+    protected CmsContentAttribute init(CmsContentAttribute entity) {
+        return entity;
+    }
 
-	@Override
-	protected Class<CmsContentAttribute> getEntityClass() {
-		return CmsContentAttribute.class;
-	}
+    @Override
+    protected Class<CmsContentAttribute> getEntityClass() {
+        return CmsContentAttribute.class;
+    }
 
 }

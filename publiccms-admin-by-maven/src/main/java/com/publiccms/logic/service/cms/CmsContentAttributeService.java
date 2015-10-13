@@ -17,32 +17,32 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsContentAttributeService extends BaseService<CmsContentAttribute> {
 
-	@Autowired
-	private CmsContentAttributeDao dao;
+    @Autowired
+    private CmsContentAttributeDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer pageIndex, Integer pageSize) {
-		return dao.getPage(pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer pageIndex, Integer pageSize) {
+        return dao.getPage(pageIndex, pageSize);
+    }
 
-	public void dealAttribute(Integer contentId, String txt, String data) {
-		CmsContentAttribute attribute = getEntity(contentId);
-		if (notEmpty(attribute)) {
-			if (notEmpty(txt) || notEmpty(data)) {
-				attribute.setText(txt);
-				attribute.setWordCount(length(txt));
-				attribute.setData(data);
-				update(attribute.getContentId(), attribute, new String[] { "contentId" });
-			} else {
-				delete(attribute.getContentId());
-			}
-		} else {
-			attribute = new CmsContentAttribute();
-			attribute.setContentId(contentId);
-			attribute.setText(txt);
-			attribute.setWordCount(length(txt));
-			attribute.setData(data);
-			save(attribute);
-		}
-	}
+    public void dealAttribute(Integer contentId, String txt, String data) {
+        CmsContentAttribute attribute = getEntity(contentId);
+        if (notEmpty(attribute)) {
+            if (notEmpty(txt) || notEmpty(data)) {
+                attribute.setText(txt);
+                attribute.setWordCount(length(txt));
+                attribute.setData(data);
+                update(attribute.getContentId(), attribute, new String[] { "contentId" });
+            } else {
+                delete(attribute.getContentId());
+            }
+        } else {
+            attribute = new CmsContentAttribute();
+            attribute.setContentId(contentId);
+            attribute.setText(txt);
+            attribute.setWordCount(length(txt));
+            attribute.setData(data);
+            save(attribute);
+        }
+    }
 }

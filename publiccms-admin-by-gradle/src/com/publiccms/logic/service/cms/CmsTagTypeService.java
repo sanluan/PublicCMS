@@ -16,13 +16,13 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsTagTypeService extends BaseService<CmsTagType> {
 
-	@Autowired
-	private CmsTagTypeDao dao;
+    @Autowired
+    private CmsTagTypeDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(
-				Integer pageIndex, Integer pageSize) {
-		return dao.getPage(
-				pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(
+                Integer pageIndex, Integer pageSize) {
+        return dao.getPage(
+                pageIndex, pageSize);
+    }
 }

@@ -16,13 +16,13 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SystemMoudleService extends BaseService<SystemMoudle> {
 
-	@Autowired
-	private SystemMoudleDao dao;
+    @Autowired
+    private SystemMoudleDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer parentId, String url, 
-				Integer pageIndex, Integer pageSize) {
-		return dao.getPage(parentId, url, 
-				pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer parentId, String url, 
+                Integer pageIndex, Integer pageSize) {
+        return dao.getPage(parentId, url, 
+                pageIndex, pageSize);
+    }
 }

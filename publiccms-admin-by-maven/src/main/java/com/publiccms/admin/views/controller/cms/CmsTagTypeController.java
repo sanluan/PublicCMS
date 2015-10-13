@@ -12,22 +12,22 @@ import com.sanluan.common.base.BaseController;
 @Controller
 @RequestMapping("cmsTagType")
 public class CmsTagTypeController extends BaseController {
-	@Autowired
-	private CmsTagTypeService service;
+    @Autowired
+    private CmsTagTypeService service;
 
-	@RequestMapping(value = { "save" })
-	public String save(CmsTagType entity, HttpServletRequest request) {
-		if (notEmpty(entity.getId())) {
-			service.update(entity.getId(), entity, new String[]{"id"});
-		} else {
-			service.save(entity);
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { SAVE })
+    public String save(CmsTagType entity, HttpServletRequest request) {
+        if (notEmpty(entity.getId())) {
+            service.update(entity.getId(), entity, new String[]{ID});
+        } else {
+            service.save(entity);
+        }
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping(value = { "delete" })
-	public String delete(Integer id) {
-		service.delete(id);
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { DELETE })
+    public String delete(Integer id) {
+        service.delete(id);
+        return TEMPLATE_DONE;
+    }
 }

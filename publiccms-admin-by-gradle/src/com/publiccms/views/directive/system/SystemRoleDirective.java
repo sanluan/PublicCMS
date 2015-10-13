@@ -20,26 +20,26 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SystemRoleDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Integer id = handler.getInteger("id");
-		if (null != id) {
-			SystemRole entity = service.getEntity(id);
-			handler.put("object", entity).renderIfNotNull(entity);
-		} else {
-			Integer[] ids = handler.getIntegerArray("ids");
-			if (isNotEmpty(ids)) {
-				List<SystemRole> entityList = service.getEntitys(ids);
-				Map<String, SystemRole> map = new HashMap<String, SystemRole>();
-				for (SystemRole entity : entityList) {
-					map.put(String.valueOf(entity.getId()), entity);
-				}
-				handler.put("map", map).render();
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer id = handler.getInteger(ID);
+        if (null != id) {
+            SystemRole entity = service.getEntity(id);
+            handler.put("object", entity).renderIfNotNull(entity);
+        } else {
+            Integer[] ids = handler.getIntegerArray("ids");
+            if (isNotEmpty(ids)) {
+                List<SystemRole> entityList = service.getEntitys(ids);
+                Map<String, SystemRole> map = new HashMap<String, SystemRole>();
+                for (SystemRole entity : entityList) {
+                    map.put(String.valueOf(entity.getId()), entity);
+                }
+                handler.put("map", map).render();
+            }
+        }
+    }
 
-	@Autowired
-	private SystemRoleService service;
+    @Autowired
+    private SystemRoleService service;
 
 }

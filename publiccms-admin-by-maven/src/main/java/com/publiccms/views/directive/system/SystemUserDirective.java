@@ -18,30 +18,30 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SystemUserDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Integer id = handler.getInteger("id");
-		if (null != id) {
-			SystemUser entity= service.getEntity(id);
-			entity.setPassword(null);
-			entity.setAuthToken(null);
-			handler.put("object", entity).renderIfNotNull(entity);
-		} else {
-			Integer[] ids = handler.getIntegerArray("ids");
-			if (isNotEmpty(ids)) {
-				List<SystemUser> entityList = service.getEntitys(ids);
-				Map<String, SystemUser> map = new HashMap<String, SystemUser>();
-				for (SystemUser entity: entityList) {
-					entity.setPassword(null);
-					entity.setAuthToken(null);
-					map.put(String.valueOf(entity.getId()), entity);
-				}
-				handler.put("map", map).render();
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer id = handler.getInteger(ID);
+        if (null != id) {
+            SystemUser entity= service.getEntity(id);
+            entity.setPassword(null);
+            entity.setAuthToken(null);
+            handler.put("object", entity).renderIfNotNull(entity);
+        } else {
+            Integer[] ids = handler.getIntegerArray("ids");
+            if (isNotEmpty(ids)) {
+                List<SystemUser> entityList = service.getEntitys(ids);
+                Map<String, SystemUser> map = new HashMap<String, SystemUser>();
+                for (SystemUser entity: entityList) {
+                    entity.setPassword(null);
+                    entity.setAuthToken(null);
+                    map.put(String.valueOf(entity.getId()), entity);
+                }
+                handler.put("map", map).render();
+            }
+        }
+    }
 
-	@Autowired
-	private SystemUserService service;
+    @Autowired
+    private SystemUserService service;
 
 }

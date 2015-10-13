@@ -14,19 +14,19 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class SystemTaskService extends BaseService<SystemTask> {
-	@Autowired
-	private SystemTaskDao dao;
+    @Autowired
+    private SystemTaskDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer status, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(status, pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer status, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(status, pageIndex, pageSize);
+    }
 
-	public SystemTask updateStatus(Integer id, int status) {
-		SystemTask entity = dao.getEntity(id);
-		if (notEmpty(entity)) {
-			entity.setStatus(status);
-		}
-		return entity;
-	}
+    public SystemTask updateStatus(Integer id, int status) {
+        SystemTask entity = dao.getEntity(id);
+        if (notEmpty(entity)) {
+            entity.setStatus(status);
+        }
+        return entity;
+    }
 }

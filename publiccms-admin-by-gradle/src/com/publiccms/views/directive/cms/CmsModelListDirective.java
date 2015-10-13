@@ -15,15 +15,15 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsModelListDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		PageHandler page = service.getPage(handler.getInteger("parentId"), handler.getBoolean("hasChild"),
-				handler.getBoolean("isUrl"), handler.getBoolean("isImages"), handler.getBoolean("isPart"), handler.getBoolean("disabled", false),
-				handler.getInteger("pageIndex"), handler.getInteger("count"));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        PageHandler page = service.getPage(handler.getInteger("parentId"), handler.getBoolean("hasChild"),
+                handler.getBoolean("isUrl"), handler.getBoolean("isImages"), handler.getBoolean("isPart"), handler.getBoolean("disabled", false),
+                handler.getInteger("pageIndex"), handler.getInteger("count"));
+        handler.put("page", page).render();
+    }
 
-	@Autowired
-	private CmsModelService service;
+    @Autowired
+    private CmsModelService service;
 
 }

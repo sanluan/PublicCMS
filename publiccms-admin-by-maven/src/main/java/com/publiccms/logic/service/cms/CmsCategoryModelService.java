@@ -22,42 +22,42 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
 
-	@Autowired
-	private CmsCategoryModelDao dao;
-	@Autowired
-	private CmsModelDao modelDao;
+    @Autowired
+    private CmsCategoryModelDao dao;
+    @Autowired
+    private CmsModelDao modelDao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(modelId, categoryId, pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(modelId, categoryId, pageIndex, pageSize);
+    }
 
-	public void updateCategoryModel(boolean flag, Integer categoryId, CmsModel model, Map<String, String[]> parameterMap) {
-		CmsCategoryModel categoryModel = getEntity(model.getId(), categoryId);
-		if (!model.isIsUrl() && !model.isIsImages()) {
-			@SuppressWarnings("unchecked")
-			List<CmsModel> modelList = (List<CmsModel>) modelDao
-					.getPage(model.getId(), null, null, null, null, false, null, null).getList();
-			for (CmsModel child : modelList) {
-				updateCategoryModel(true, categoryId, child, parameterMap);
-			}
-		}
-		if (notEmpty(categoryModel) && flag) {
-			categoryModel.setTemplatePath(getValue(parameterMap, "templatePath_" + model.getId()));
-			update(categoryModel.getId(), categoryModel, new String[] { "id", "categoryId", "modelId" });
-		} else if (notEmpty(categoryModel) && !flag) {
-			delete(categoryModel.getId());
-		} else if (null == categoryModel && flag) {
-			categoryModel = new CmsCategoryModel();
-			categoryModel.setCategoryId(categoryId);
-			categoryModel.setModelId(model.getId());
-			categoryModel.setTemplatePath(getValue(parameterMap, "templatePath_" + model.getId()));
-			save(categoryModel);
-		}
-	}
+    public void updateCategoryModel(boolean flag, Integer categoryId, CmsModel model, Map<String, String[]> parameterMap) {
+        CmsCategoryModel categoryModel = getEntity(model.getId(), categoryId);
+        if (!model.isIsUrl() && !model.isIsImages()) {
+            @SuppressWarnings("unchecked")
+            List<CmsModel> modelList = (List<CmsModel>) modelDao
+                    .getPage(model.getId(), null, null, null, null, false, null, null).getList();
+            for (CmsModel child : modelList) {
+                updateCategoryModel(true, categoryId, child, parameterMap);
+            }
+        }
+        if (notEmpty(categoryModel) && flag) {
+            categoryModel.setTemplatePath(getValue(parameterMap, "templatePath_" + model.getId()));
+            update(categoryModel.getId(), categoryModel, new String[] { "id", "categoryId", "modelId" });
+        } else if (notEmpty(categoryModel) && !flag) {
+            delete(categoryModel.getId());
+        } else if (null == categoryModel && flag) {
+            categoryModel = new CmsCategoryModel();
+            categoryModel.setCategoryId(categoryId);
+            categoryModel.setModelId(model.getId());
+            categoryModel.setTemplatePath(getValue(parameterMap, "templatePath_" + model.getId()));
+            save(categoryModel);
+        }
+    }
 
-	@Transactional(readOnly = true)
-	public CmsCategoryModel getEntity(int modelId, int categoryId) {
-		return dao.getEntity(modelId, categoryId);
-	}
+    @Transactional(readOnly = true)
+    public CmsCategoryModel getEntity(int modelId, int categoryId) {
+        return dao.getEntity(modelId, categoryId);
+    }
 }

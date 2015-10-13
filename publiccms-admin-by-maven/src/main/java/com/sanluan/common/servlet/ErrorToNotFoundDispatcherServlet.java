@@ -9,45 +9,48 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
 
+/**
+ * 
+ * ErrorToNotFoundDispatcherServlet 请求发生异常时，转换为404错误
+ *
+ */
 public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
 
-	private Class<TaskAfterInitServlet>[] taskClasses;
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    private Class<TaskAfterInitServlet>[] taskClasses;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	public ErrorToNotFoundDispatcherServlet(WebApplicationContext webApplicationContext) {
-		super(webApplicationContext);
-	}
+    /**
+     * @param webApplicationContext
+     */
+    public ErrorToNotFoundDispatcherServlet(WebApplicationContext webApplicationContext) {
+        super(webApplicationContext);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * org.springframework.web.servlet.DispatcherServlet#render(org.springframework
-	 * .web.servlet.ModelAndView, javax.servlet.http.HttpServletRequest,
-	 * javax.servlet.http.HttpServletResponse)
-	 */
-	public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
-		try {
-			super.render(mv, request, response);
-		} catch (ServletException e) {
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-		}
-	}
+    public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        try {
+            super.render(mv, request, response);
+        } catch (ServletException e) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
 
-	public void initFrameworkServlet() throws ServletException {
-		super.initFrameworkServlet();
-		if (!ObjectUtils.isEmpty(taskClasses)) {
-			for (Class<TaskAfterInitServlet> task : taskClasses) {
-				getWebApplicationContext().getBean(task).exec();
-			}
-		}
-	}
+    public void initFrameworkServlet() throws ServletException {
+        super.initFrameworkServlet();
+        if (!ObjectUtils.isEmpty(taskClasses)) {
+            for (Class<TaskAfterInitServlet> task : taskClasses) {
+                getWebApplicationContext().getBean(task).exec();
+            }
+        }
+    }
 
-	public void setTaskClasses(Class<TaskAfterInitServlet>[] taskClasses) {
-		this.taskClasses = taskClasses;
-	}
+    /**
+     * @param taskClasses
+     */
+    public void setTaskClasses(Class<TaskAfterInitServlet>[] taskClasses) {
+        this.taskClasses = taskClasses;
+    }
 
 }

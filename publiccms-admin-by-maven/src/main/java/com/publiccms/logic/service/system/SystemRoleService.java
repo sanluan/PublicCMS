@@ -17,21 +17,22 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SystemRoleService extends BaseService<SystemRole> {
 
-	@Autowired
-	private SystemRoleDao dao;
+    @Autowired
+    private SystemRoleDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer deptId, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(deptId, pageIndex, pageSize);
-	}
-	
-	@Transactional(readOnly = true)
-	public boolean ownsAllRight(Integer[] roleIds){
-		List<SystemRole> list = getEntitys(roleIds);
-		for (SystemRole role : list) {
-			if (role.isOwnsAllRight())
-				return true;
-		}
-		return false;
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer deptId, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(deptId, pageIndex, pageSize);
+    }
+
+    @Transactional(readOnly = true)
+    public boolean ownsAllRight(Integer[] roleIds) {
+        List<SystemRole> list = getEntitys(roleIds);
+        for (SystemRole role : list) {
+            if (role.isOwnsAllRight()) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

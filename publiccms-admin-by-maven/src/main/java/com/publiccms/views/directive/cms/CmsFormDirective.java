@@ -20,26 +20,26 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsFormDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Integer id = handler.getInteger("id");
-		if (null != id) {
-			CmsForm entity = service.getEntity(id);
-			handler.put("object", entity).renderIfNotNull(entity);
-		} else {
-			Integer[] ids = handler.getIntegerArray("ids");
-			if (isNotEmpty(ids)) {
-				List<CmsForm> entityList = service.getEntitys(ids);
-				Map<String, CmsForm> map = new HashMap<String, CmsForm>();
-				for (CmsForm entity : entityList) {
-					map.put(String.valueOf(entity.getId()), entity);
-				}
-				handler.put("map", map).render();
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer id = handler.getInteger(ID);
+        if (null != id) {
+            CmsForm entity = service.getEntity(id);
+            handler.put("object", entity).renderIfNotNull(entity);
+        } else {
+            Integer[] ids = handler.getIntegerArray("ids");
+            if (isNotEmpty(ids)) {
+                List<CmsForm> entityList = service.getEntitys(ids);
+                Map<String, CmsForm> map = new HashMap<String, CmsForm>();
+                for (CmsForm entity : entityList) {
+                    map.put(String.valueOf(entity.getId()), entity);
+                }
+                handler.put("map", map).render();
+            }
+        }
+    }
 
-	@Autowired
-	private CmsFormService service;
+    @Autowired
+    private CmsFormService service;
 
 }
