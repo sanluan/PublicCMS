@@ -25,74 +25,6 @@ import com.sanluan.common.base.BaseInterceptor;
 public class AdminContextInterceptor extends BaseInterceptor {
     private static final String SEPARATOR = "/";
 
-<<<<<<< HEAD
-	private String[] needNotLoginUrls;
-	private String loginUrl;
-	private String loginJsonUrl;
-	private String unauthorizedUrl;
-	@Autowired
-	private SystemRoleAuthorizedService roleAuthorizedService;
-	@Autowired
-	private SystemRoleService systemRoleService;
-	@Autowired
-	private SystemUserService systemUserService;
-	
-	private final Log log = getLog(getClass());
-
-	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-		if (verify(getURL(request))) {
-			SystemUser user = UserUtils.getAdminFromSession(request.getSession());
-			if (null == user) {
-				try {
-					if ("XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {
-						response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + loginJsonUrl);
-					} else {
-						response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + loginUrl + "?returnUrl="
-								+ getURL(request) + getEncodeQueryString(request.getQueryString()));
-					}
-					return false;
-				} catch (IllegalStateException e) {
-					log.error(e.getMessage());
-				} catch (IOException e) {
-					log.error(e.getMessage());
-				}
-			} else {
-				Date date = UserUtils.getUserTimeFromSession(request.getSession());
-				if (null == date || date.before(addSeconds(new Date(), -30))) {
-					user = systemUserService.getEntity(user.getId());
-					UserUtils.setUserToSession(request.getSession(), user);
-				}
-				if (!user.isDisabled() && !user.isSuperuserAccess()) {
-					try {
-						response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + loginUrl + "?returnUrl="
-								+ getURL(request) + getEncodeQueryString(request.getQueryString()));
-					} catch (IllegalStateException e) {
-						log.error(e.getMessage());
-					} catch (IOException e) {
-						log.error(e.getMessage());
-					}
-					return false;
-				} else if (null != unauthorizedUrl) {
-					String path = urlPathHelper.getLookupPathForRequest(request);
-					if (isNotBlank(path) && !SEPARATOR.equals(path)) {
-						int index = path.lastIndexOf(".");
-						path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
-						if (0 == roleAuthorizedService.count(user.getRoles(), path) && !ownsAllRight(user.getRoles())) {
-							try {
-								response.sendRedirect(urlPathHelper.getOriginatingContextPath(request) + unauthorizedUrl);
-								return false;
-							} catch (IOException e) {
-								log.error(e.getMessage());
-							}
-						}
-					}
-				}
-			}
-		}
-		return true;
-	}
-=======
     private String[] needNotLoginUrls;
     private String loginUrl;
     private String loginJsonUrl;
@@ -105,7 +37,6 @@ public class AdminContextInterceptor extends BaseInterceptor {
     private SystemUserService systemUserService;
 
     private final Log log = getLog(getClass());
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {

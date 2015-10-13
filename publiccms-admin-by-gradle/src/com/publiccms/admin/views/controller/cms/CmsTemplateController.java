@@ -70,26 +70,6 @@ public class CmsTemplateController extends BaseController {
         return staticPage(path, request, session);
     }
 
-<<<<<<< HEAD
-	@RequestMapping(value = { "update" })
-	public String update(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
-		Map<String, Object> map = fileComponent.getTemplateMetadata(path);
-		map.put("keywords", request.getParameter("keywords"));
-		map.put("description", request.getParameter("description"));
-		if (null != request.getParameter("alias")) {
-			map.put("alias", request.getParameter("alias"));
-		}
-		if (null != request.getParameter("targetpath")) {
-			map.put("path", request.getParameter("targetpath"));
-		}
-		fileComponent.updateMetadata(path, map);
-		if (notEmpty(path)) {
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.template.meta",
-					RequestUtils.getIp(request), getDate(), path));
-		}
-		return staticPage(path, request, session);
-	}
-=======
     @RequestMapping(value = { "update" })
     public String update(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         Map<String, Object> map = fileComponent.getTemplateMetadata(path);
@@ -108,7 +88,6 @@ public class CmsTemplateController extends BaseController {
         }
         return staticPage(path, request, session);
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     @RequestMapping(value = { "staticPlace" })
     public String staticPlace(String path, HttpServletRequest request, HttpSession session) {

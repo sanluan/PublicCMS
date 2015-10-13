@@ -20,87 +20,6 @@ import com.sanluan.common.tools.RequestUtils;
  *
  */
 public class UserUtils extends RequestUtils {
-<<<<<<< HEAD
-	/**
-	 * @param session
-	 * @return
-	 */
-	public static SystemUser getUserFromSession(HttpSession session) {
-		return (SystemUser) session.getAttribute(SESSION_USER);
-	}
-
-	/**
-	 * @param session
-	 * @return
-	 */
-	public static Date getUserTimeFromSession(HttpSession session) {
-		return (Date) session.getAttribute(SESSION_USER_TIME);
-	}
-
-	/**
-	 * @param session
-	 * @param user
-	 */
-	public static void setUserToSession(HttpSession session, SystemUser user) {
-		session.setAttribute(SESSION_USER, user);
-		session.setAttribute(SESSION_USER_TIME, new Date());
-	}
-
-	/**
-	 * @param session
-	 * @param user
-	 */
-	public static void setUserToAttribute(HttpSession session, SystemUser user) {
-		session.setAttribute(SESSION_USER, user);
-	}
-
-	/**
-	 * @param session
-	 * @return
-	 */
-	public static SystemUser getUserFromAttribute(HttpSession session) {
-		return (SystemUser) session.getAttribute(SESSION_USER);
-	}
-
-	/**
-	 * @param request
-	 * @param response
-	 */
-	public static void clearUserToSession(HttpServletRequest request, HttpServletResponse response) {
-		cancleCookie(request, response, COOKIES_USER, null);
-		request.getSession().removeAttribute(SESSION_USER);
-	}
-
-	/**
-	 * @param session
-	 */
-	public static void clearUserTimeToSession(HttpSession session) {
-		session.removeAttribute(SESSION_USER_TIME);
-	}
-
-	/**
-	 * @param session
-	 * @return
-	 */
-	public static SystemUser getAdminFromSession(HttpSession session) {
-		return (SystemUser) session.getAttribute(SESSION_ADMIN);
-	}
-
-	/**
-	 * @param session
-	 * @param user
-	 */
-	public static void setAdminToSession(HttpSession session, SystemUser user) {
-		session.setAttribute(SESSION_ADMIN, user);
-	}
-
-	/**
-	 * @param session
-	 */
-	public static void clearAdminToSession(HttpSession session) {
-		session.removeAttribute(SESSION_ADMIN);
-	}
-=======
     /**
      * @param session
      * @return
@@ -180,5 +99,4 @@ public class UserUtils extends RequestUtils {
     public static void clearAdminToSession(HttpSession session) {
         session.removeAttribute(SESSION_ADMIN);
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

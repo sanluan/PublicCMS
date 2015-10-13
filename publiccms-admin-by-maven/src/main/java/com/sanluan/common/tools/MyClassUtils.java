@@ -23,52 +23,6 @@ public class MyClassUtils {
     private static final String RESOURCE_PATTERN = "/**/*.class";
     private static final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
-<<<<<<< HEAD
-	/**
-	 * @param cls
-	 * @param packages
-	 * @return
-	 */
-	public static List<Class<?>> getAllAssignedClass(Class<?> cls, String[] packages) {
-		List<Class<?>> classes = new ArrayList<Class<?>>();
-		for (Class<?> c : getClasses(packages)) {
-			if (cls.isAssignableFrom(c) && !cls.equals(c)) {
-				classes.add(c);
-			}
-		}
-		return classes;
-	}
-
-	/**
-	 * @param packagesToScan
-	 * @return
-	 */
-	public static Set<Class<?>> getClasses(String[] packagesToScan) {
-		Set<Class<?>> classSet = new HashSet<Class<?>>();
-		if (null != packagesToScan) {
-			for (String pkg : packagesToScan) {
-				String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX
-						+ ClassUtils.convertClassNameToResourcePath(pkg) + RESOURCE_PATTERN;
-				try {
-					Resource[] resources = resourcePatternResolver.getResources(pattern);
-					MetadataReaderFactory readerFactory = new CachingMetadataReaderFactory(resourcePatternResolver);
-					for (Resource resource : resources) {
-						if (resource.isReadable()) {
-							MetadataReader reader = readerFactory.getMetadataReader(resource);
-							String className = reader.getClassMetadata().getClassName();
-							try {
-								classSet.add(Class.forName(className));
-							} catch (ClassNotFoundException e) {
-							}
-						}
-					}
-				} catch (IOException e) {
-				}
-			}
-		}
-		return classSet;
-	}
-=======
     /**
      * @param cls
      * @param packages
@@ -113,5 +67,4 @@ public class MyClassUtils {
         }
         return classSet;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

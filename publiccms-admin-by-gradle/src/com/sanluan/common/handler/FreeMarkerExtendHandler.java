@@ -35,37 +35,6 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
         log.info("Freemarker directives and methods Handler started");
         FreeMarkerConfigurer freeMarkerConfigurer = applicationcontext.getBean(FreeMarkerConfigurer.class);
 
-<<<<<<< HEAD
-		StringBuffer directives = new StringBuffer();
-		for (Entry<String, TemplateDirectiveModel> entry : directiveMap.entrySet()) {
-			String directiveName = directivePrefix + uncapitalize(entry.getKey().replaceAll(directiveRemoveRegex, ""));
-			freemarkerVariables.put(directiveName, entry.getValue());
-			if (0 != directives.length()) {
-				directives.append(",");
-			}
-			directives.append(directiveName);
-		}
-
-		StringBuffer methods = new StringBuffer();
-		for (Entry<String, TemplateMethodModelEx> entry : methodMap.entrySet()) {
-			String methodName = uncapitalize(entry.getKey().replaceAll(methodRemoveRegex, ""));
-			freemarkerVariables.put(methodName, entry.getValue());
-			if (0 != methods.length()) {
-				methods.append(",");
-			}
-			methods.append(methodName);
-		}
-
-		try {
-			freeMarkerConfigurer.getConfiguration().setAllSharedVariables(
-					new SimpleHash(freemarkerVariables, freeMarkerConfigurer.getConfiguration().getObjectWrapper()));
-			log.info((directiveMap.size()) + " directives created:[" + directives.toString() + "];" + methodMap.size()
-					+ " methods created:[" + methods.toString() + "]");
-		} catch (TemplateModelException e) {
-			log.debug(e.getMessage());
-		}
-	}
-=======
         StringBuffer directives = new StringBuffer();
         for (Entry<String, TemplateDirectiveModel> entry : directiveMap.entrySet()) {
             String directiveName = directivePrefix + uncapitalize(entry.getKey().replaceAll(directiveRemoveRegex, ""));
@@ -95,7 +64,6 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
             log.debug(e.getMessage());
         }
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     /**
      * @param directivePrefix

@@ -28,21 +28,6 @@ public class ClearLogDirective extends BaseTemplateDirective {
     @Autowired
     private LogTaskService logTaskService;
 
-<<<<<<< HEAD
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Date date = handler.getDate("clearDate");
-		if (null == date) {
-			date = addMonths(new Date(), -3);
-		}
-		List<String> messageList = new ArrayList<String>();
-		messageList.add("email check log:" + String.valueOf(logEmailCheckService.delete(date)));
-		messageList.add("login log:" + String.valueOf(logLoginService.delete(date)));
-		messageList.add("operate log:" + String.valueOf(logOperateService.delete(date)));
-		messageList.add("task log:" + String.valueOf(logTaskService.delete(date)));
-		handler.put("messageList", messageList).render();
-	}
-=======
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Date date = handler.getDate("clearDate");
@@ -56,5 +41,4 @@ public class ClearLogDirective extends BaseTemplateDirective {
         messageList.add("task log:" + logTaskService.delete(date));
         handler.put("messageList", messageList).render();
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

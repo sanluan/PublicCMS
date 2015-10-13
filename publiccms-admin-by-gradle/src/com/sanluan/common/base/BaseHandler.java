@@ -18,13 +18,8 @@ import com.sanluan.common.handler.RenderHandler;
  *
  */
 public abstract class BaseHandler implements RenderHandler {
-<<<<<<< HEAD
-	protected Map<String, Object> map = new HashMap<String, Object>();
-	protected final Log log = getLog(getClass());
-=======
     protected Map<String, Object> map = new HashMap<String, Object>();
     protected final Log log = getLog(getClass());
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     /*
      * (non-Javadoc)
@@ -77,64 +72,6 @@ public abstract class BaseHandler implements RenderHandler {
         return null == result ? defaultValue : result;
     }
 
-<<<<<<< HEAD
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.sanluan.common.handler.RenderHandler#getIntegerArray(java.lang.String
-	 * )
-	 */
-	@Override
-	public Integer[] getIntegerArray(String name) throws Exception {
-		String[] arr = getStringArray(name);
-		if (null != arr) {
-			try {
-				Set<Integer> set = new TreeSet<Integer>();
-				for (String s : arr) {
-					set.add(Integer.valueOf(s));
-				}
-				int i = 0;
-				Integer[] ids = new Integer[set.size()];
-				for (Integer number : set) {
-					ids[i++] = number;
-				}
-				return ids;
-			} catch (NumberFormatException e) {
-				log.debug(e.getMessage());
-			}
-		}
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see
-	 * com.sanluan.common.handler.RenderHandler#getLongArray(java.lang.String)
-	 */
-	@Override
-	public Long[] getLongArray(String name) throws Exception {
-		String[] arr = getStringArray(name);
-		if (null != arr) {
-			try {
-				Set<Long> set = new TreeSet<Long>();
-				for (String s : arr) {
-					set.add(Long.valueOf(s));
-				}
-				int i = 0;
-				Long[] ids = new Long[set.size()];
-				for (Long number : set) {
-					ids[i++] = number;
-				}
-				return ids;
-			} catch (NumberFormatException e) {
-				log.debug(e.getMessage());
-			}
-		}
-		return null;
-	}
-=======
     /*
      * (non-Javadoc)
      * 
@@ -191,7 +128,6 @@ public abstract class BaseHandler implements RenderHandler {
         }
         return null;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     /*
      * (non-Javadoc)

@@ -9,13 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public abstract class BaseService<E> extends Base {
-<<<<<<< HEAD
-	@Autowired
-	protected BaseDao<E> dao;
-=======
     @Autowired
     protected BaseDao<E> dao;
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     /**
      * @param id
@@ -58,34 +53,6 @@ public abstract class BaseService<E> extends Base {
         return dao.delete(id);
     }
 
-<<<<<<< HEAD
-	/**
-	 * @param id
-	 * @param newEntity
-	 * @param ignoreProperties
-	 * @return
-	 */
-	public E update(Serializable id, E newEntity, String ignoreProperties[]) {
-		E entity = getEntity(id);
-		if (notEmpty(entity)) {
-			BeanUtils.copyProperties(dao.init(newEntity), entity, ignoreProperties);
-		}
-		return entity;
-	}
-
-	/**
-	 * @param id
-	 * @param newEntity
-	 * @return
-	 */
-	public E update(Serializable id, E newEntity) {
-		E entity = getEntity(id);
-		if (notEmpty(entity)) {
-			BeanUtils.copyProperties(dao.init(newEntity), entity);
-		}
-		return entity;
-	}
-=======
     /**
      * @param id
      * @param newEntity
@@ -112,7 +79,6 @@ public abstract class BaseService<E> extends Base {
         }
         return entity;
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     /**
      * @param entity

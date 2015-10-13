@@ -23,19 +23,10 @@ public class MultiDataSource extends AbstractRoutingDataSource {
         super.setDefaultTargetDataSource(targetDataSources.values().iterator().next());
     }
 
-<<<<<<< HEAD
-	/**
-	 * @param name
-	 */
-	public static void setDataSourceName(String name) {
-		holder.set(name);
-	}
-=======
     /**
      * @param name
      */
     public static void setDataSourceName(String name) {
         holder.set(name);
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

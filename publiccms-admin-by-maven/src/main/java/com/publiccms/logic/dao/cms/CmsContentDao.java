@@ -25,25 +25,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return getPage(query, pageIndex, pageSize);
     }
 
-<<<<<<< HEAD
-	public FacetPageHandler facetQuery(final String categoryId, final String modelId, String text, Integer pageIndex,
-			Integer pageSize) {
-		String[] facetFields = new String[] { "categoryId", "modelId" };
-		FullTextQuery query = getQuery(fields, facetFields, text);
-		query.enableFullTextFilter("publishDate").setParameter("publishDate", getDate());
-		return getFacetPage(query, facetFields, new HashMap<String, String>() {
-			private static final long serialVersionUID = 1L;
-			{
-				if (notEmpty(categoryId)) {
-					put("categoryId", categoryId);
-				}
-				if (notEmpty(modelId)) {
-					put("modelId", modelId);
-				}
-			}
-		}, pageIndex, pageSize);
-	}
-=======
     public FacetPageHandler facetQuery(final String categoryId, final String modelId, String text, Integer pageIndex,
             Integer pageSize) {
         String[] facetFields = new String[] { "categoryId", "modelId" };
@@ -61,7 +42,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             }
         }, pageIndex, pageSize);
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 
     public void index(Integer[] ids) {
         List<CmsContent> list = getEntitys(ids);

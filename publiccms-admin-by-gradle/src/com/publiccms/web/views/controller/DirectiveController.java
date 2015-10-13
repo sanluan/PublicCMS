@@ -39,59 +39,6 @@ public class DirectiveController extends BaseController {
 
     private MediaType mediaType = new MediaType("application", "json", MappingJackson2HttpMessageConverter.DEFAULT_CHARSET);
 
-<<<<<<< HEAD
-	/**
-	 * 接口指令统一分发
-	 * 
-	 * @param action
-	 * @param callback
-	 * @param request
-	 * @param response
-	 */
-	@RequestMapping("directive.json")
-	public void directive(String action, String callback, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			HttpServletDirective directive = actionMap.get(action);
-			if (notEmpty(directive)) {
-				directive.execute(mappingJackson2HttpMessageConverter, mediaType, request.getParameterMap(), callback, response);
-			} else {
-				HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, mediaType,
-						request.getParameterMap(), callback, response);
-				handler.put("error", INTERFACE_NOT_FOUND).render();
-			}
-		} catch (IOException e) {
-			log.debug(e.getMessage());
-		} catch (Exception e) {
-			log.debug(e.getMessage());
-		}
-	}
-
-	/**
-	 * 接口列表
-	 * 
-	 * @param callback
-	 * @return
-	 */
-	@RequestMapping("directives.json")
-	@ResponseBody
-	public MappingJacksonValue directives(String callback) {
-		MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(actionMap.keySet());
-		mappingJacksonValue.setJsonpFunction(callback);
-		return mappingJacksonValue;
-	}
-
-	/**
-	 * @param directiveMap
-	 *            接口初始化
-	 */
-	@Autowired
-	public void setActionMap(Map<String, HttpServletDirective> directiveMap) {
-		for (Entry<String, HttpServletDirective> entry : directiveMap.entrySet()) {
-			String directiveName = uncapitalize(entry.getKey().replaceAll(freeMarkerExtendHandler.getDirectiveRemoveRegex(), ""));
-			actionMap.put(directiveName, entry.getValue());
-		}
-	}
-=======
     /**
      * 接口指令统一分发
      * 
@@ -143,5 +90,4 @@ public class DirectiveController extends BaseController {
             actionMap.put(directiveName, entry.getValue());
         }
     }
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }

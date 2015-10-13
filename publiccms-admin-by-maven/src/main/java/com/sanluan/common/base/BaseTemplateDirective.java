@@ -20,14 +20,6 @@ import freemarker.template.TemplateModel;
 public abstract class BaseTemplateDirective implements TemplateDirectiveModel {
     protected static final String ID = "id";
 
-<<<<<<< HEAD
-	/**
-	 * @param handler
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	public abstract void execute(RenderHandler handler) throws IOException, Exception;
-=======
     @SuppressWarnings("unchecked")
     @Override
     public void execute(Environment environment, @SuppressWarnings("rawtypes") Map parameters, TemplateModel[] loopVars,
@@ -48,5 +40,4 @@ public abstract class BaseTemplateDirective implements TemplateDirectiveModel {
      * @throws Exception
      */
     public abstract void execute(RenderHandler handler) throws IOException, Exception;
->>>>>>> b7117fb2de906a985a5be5015f24f8c6b6b5a315
 }
