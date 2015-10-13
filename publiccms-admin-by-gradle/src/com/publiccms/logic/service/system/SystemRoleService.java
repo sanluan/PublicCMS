@@ -24,13 +24,14 @@ public class SystemRoleService extends BaseService<SystemRole> {
 	public PageHandler getPage(Integer deptId, Integer pageIndex, Integer pageSize) {
 		return dao.getPage(deptId, pageIndex, pageSize);
 	}
-	
+
 	@Transactional(readOnly = true)
-	public boolean ownsAllRight(Integer[] roleIds){
+	public boolean ownsAllRight(Integer[] roleIds) {
 		List<SystemRole> list = getEntitys(roleIds);
 		for (SystemRole role : list) {
-			if (role.isOwnsAllRight())
+			if (role.isOwnsAllRight()) {
 				return true;
+			}
 		}
 		return false;
 	}

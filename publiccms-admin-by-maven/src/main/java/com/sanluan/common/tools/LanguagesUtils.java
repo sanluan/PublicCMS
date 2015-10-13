@@ -7,9 +7,13 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+/**
+ * 
+ * LanguagesUtils 获得国际化信息
+ *
+ */
 public final class LanguagesUtils {
 	/**
-	 * 获得国际化信息
 	 * 
 	 * @param request
 	 *            HttpServletRequest
@@ -26,11 +30,11 @@ public final class LanguagesUtils {
 		if (null == messageSource) {
 			throw new IllegalStateException("WebApplicationContext not found!");
 		}
-		String result = code;
+		String result;
 		try {
 			result = messageSource.getMessage(code, args, RequestContextUtils.getLocale(request));
 		} catch (Exception e) {
-
+			result = code;
 		}
 		return result;
 	}

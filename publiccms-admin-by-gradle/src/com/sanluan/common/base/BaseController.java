@@ -15,6 +15,11 @@ import java.util.regex.Pattern;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 
+/**
+ * 
+ * BaseController
+ *
+ */
 public abstract class BaseController extends Base {
 	protected static final String TEMPLATE_INDEX = "index";
 	protected static final String MESSAGE = "message";
@@ -27,6 +32,12 @@ public abstract class BaseController extends Base {
 		return new HashMap<String, Object>();
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotEmpty(String field, String value, Map<String, Object> model) {
 		if (isEmpty(value)) {
 			model.put(ERROR, "verify.notEmpty." + field);
@@ -35,6 +46,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyCustom(String field, boolean value, Map<String, Object> model) {
 		if (value) {
 			model.put(ERROR, "verify.custom." + field);
@@ -43,6 +60,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotEmpty(String field, Object value, Map<String, Object> model) {
 		if (null == value) {
 			model.put(ERROR, "verify.notEmpty." + field);
@@ -51,6 +74,13 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param specific
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotGreaterThen(String field, Integer value, int specific, Map<String, Object> model) {
 		if (null == value) {
 			model.put(ERROR, "verify.notEmpty." + field);
@@ -62,6 +92,13 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param specific
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotLongThen(String field, String value, int specific, Map<String, Object> model) {
 		if (null == value) {
 			model.put(ERROR, "verify.notEmpty." + field);
@@ -73,6 +110,13 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param specific
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotLessThen(String field, String value, int specific, Map<String, Object> model) {
 		if (null == value) {
 			model.put(ERROR, "verify.notEmpty." + field);
@@ -84,6 +128,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotUserName(String field, String value, Map<String, Object> model) {
 		if (virifyNotUserName(value)) {
 			model.put(ERROR, "verify.notUserName." + field);
@@ -92,6 +142,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotNickName(String field, String value, Map<String, Object> model) {
 		if (virifyNotNickName(value)) {
 			model.put(ERROR, "verify.notNickName." + field);
@@ -100,6 +156,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotMobile(String field, String value, Map<String, Object> model) {
 		if (virifyNotMobile(value)) {
 			model.put(ERROR, "verify.notMobile." + field);
@@ -108,6 +170,10 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param value
+	 * @return
+	 */
 	protected boolean virifyNotUserName(String value) {
 		Pattern p = Pattern.compile(USERNAME_PATTERN);
 		Matcher m = p.matcher(value);
@@ -117,6 +183,10 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param value
+	 * @return
+	 */
 	protected boolean virifyNotNickName(String value) {
 		Pattern p = Pattern.compile(NICKNAME_PATTERN);
 		Matcher m = p.matcher(value);
@@ -126,6 +196,10 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param value
+	 * @return
+	 */
 	protected boolean virifyNotMobile(String value) {
 		Pattern p = Pattern.compile(MOBILE_PATTERN);
 		Matcher m = p.matcher(value);
@@ -135,6 +209,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotEMail(String field, String value, Map<String, Object> model) {
 		if (virifyNotEMail(value)) {
 			model.put(ERROR, "verify.notEmail." + field);
@@ -143,6 +223,10 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param value
+	 * @return
+	 */
 	protected boolean virifyNotEMail(String value) {
 		Pattern p = Pattern.compile(EMAIL_PATTERN);
 		Matcher m = p.matcher(value);
@@ -152,6 +236,10 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param value
+	 * @return
+	 */
 	protected boolean virifyNotNumber(String value) {
 		Pattern p = Pattern.compile(NUMBER_PATTERN);
 		Matcher m = p.matcher(value);
@@ -161,6 +249,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotEMailAndMobile(String field, String value, Map<String, Object> model) {
 		if (virifyNotEMail(value) && virifyNotMobile(value)) {
 			model.put(ERROR, "verify.notEmailAndMobile." + field);
@@ -169,6 +263,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotExist(String field, Object value, Map<String, Object> model) {
 		if (null == value) {
 			model.put(ERROR, "verify.notExist." + field);
@@ -177,6 +277,12 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyHasExist(String field, Object value, Map<String, Object> model) {
 		if (notEmpty(value)) {
 			model.put(ERROR, "verify.hasExist." + field);
@@ -185,6 +291,13 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value1
+	 * @param value2
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotEquals(String field, String value1, String value2, Map<String, Object> model) {
 		if (notEmpty(value1) && !value1.equals(value2)) {
 			model.put(ERROR, "verify.notEquals." + field);
@@ -193,6 +306,13 @@ public abstract class BaseController extends Base {
 		return false;
 	}
 
+	/**
+	 * @param field
+	 * @param value1
+	 * @param value2
+	 * @param model
+	 * @return
+	 */
 	protected boolean virifyNotEquals(String field, Integer value1, Integer value2, Map<String, Object> model) {
 		if (notEmpty(value1) && !value1.equals(value2)) {
 			model.put(ERROR, "verify.notEquals." + field);

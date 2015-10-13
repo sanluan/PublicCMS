@@ -21,7 +21,17 @@ import freemarker.template.TemplateNumberModel;
 import freemarker.template.TemplateScalarModel;
 import freemarker.template.TemplateSequenceModel;
 
+/**
+ * 
+ * TemplateModelUtils 模板数据模型帮助泪
+ *
+ */
 public class TemplateModelUtils {
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static String converString(TemplateModel model) throws TemplateModelException {
 		if (null != model) {
 			if (model instanceof TemplateScalarModel) {
@@ -33,6 +43,11 @@ public class TemplateModelUtils {
 		return null;
 	}
 
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static TemplateHashModel converMap(TemplateModel model) throws TemplateModelException {
 		if (null != model) {
 			if (model instanceof TemplateHashModelEx) {
@@ -44,6 +59,11 @@ public class TemplateModelUtils {
 		return null;
 	}
 
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static Integer converInteger(TemplateModel model) throws TemplateModelException {
 		if (null != model) {
 			if (model instanceof TemplateNumberModel) {
@@ -61,6 +81,11 @@ public class TemplateModelUtils {
 		return null;
 	}
 
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static Short converShort(TemplateModel model) throws TemplateModelException {
 		if (null != model) {
 			if (model instanceof TemplateNumberModel) {
@@ -78,6 +103,11 @@ public class TemplateModelUtils {
 		return null;
 	}
 
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static Long converLong(TemplateModel model) throws TemplateModelException {
 		if (null != model) {
 			if (model instanceof TemplateNumberModel) {
@@ -95,6 +125,11 @@ public class TemplateModelUtils {
 		return null;
 	}
 
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static Double converDouble(TemplateModel model) throws TemplateModelException {
 		if (null != model) {
 			if (model instanceof TemplateNumberModel) {
@@ -112,6 +147,11 @@ public class TemplateModelUtils {
 		return null;
 	}
 
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static String[] converStringArray(TemplateModel model) throws TemplateModelException {
 		if (model instanceof TemplateSequenceModel) {
 			TemplateSequenceModel smodel = (TemplateSequenceModel) model;
@@ -123,12 +163,17 @@ public class TemplateModelUtils {
 		} else {
 			String str = converString(model);
 			if (isNotBlank(str)) {
-				return split(str,',');
+				return split(str, ',');
 			}
 		}
 		return null;
 	}
 
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static Boolean converBoolean(TemplateModel model) throws TemplateModelException {
 		if (null != model) {
 			if (model instanceof TemplateBooleanModel) {
@@ -145,6 +190,11 @@ public class TemplateModelUtils {
 		return null;
 	}
 
+	/**
+	 * @param model
+	 * @return
+	 * @throws TemplateModelException
+	 */
 	public static Date converDate(TemplateModel model) throws TemplateModelException {
 		if (null != model) {
 			if (model instanceof TemplateDateModel) {

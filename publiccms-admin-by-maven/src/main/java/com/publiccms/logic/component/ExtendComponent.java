@@ -2,6 +2,7 @@ package com.publiccms.logic.component;
 
 import static com.sanluan.common.tools.RequestUtils.getValue;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +24,7 @@ import com.publiccms.logic.service.cms.CmsExtendService;
 public class ExtendComponent {
 	public static final int ITEM_TYPE_MODEL = 1, ITEM_TYPE_CATEGORY = 2, EXTEND_TYPE_CONTENT = 1, EXTEND_TYPE_CATEGORY = 2;
 	private static final String PARAMETER_PREFIX = "ex_";
+	private final Log log = getLog(getClass());
 
 	@Autowired
 	private CmsExtendService extendService;
@@ -36,6 +39,7 @@ public class ExtendComponent {
 			try {
 				return objectMapper.writeValueAsString(map);
 			} catch (JsonProcessingException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return "";
@@ -45,15 +49,17 @@ public class ExtendComponent {
 	public List<Map<String, String>> getContentExtent(CmsContentAttribute cmsContentAttribute) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		if (null != cmsContentAttribute) {
-			try {
-				if (null != cmsContentAttribute.getText())
+			if (null != cmsContentAttribute.getText()) {
+				try {
 					return (List<Map<String, String>>) objectMapper.readValue(cmsContentAttribute.getText(), List.class);
-			} catch (Exception e) {
+				} catch (Exception e) {
+					log.debug(e.getMessage());
+				}
 			}
 		}
 		return list;
 	}
-	
+
 	public String contentImages(CmsContentAttribute cmsContentAttribute, Map<String, String[]> parameterMap) {
 		List<Map<String, String>> list = new ArrayList<Map<String, String>>();
 		if (null != cmsContentAttribute) {
@@ -71,6 +77,7 @@ public class ExtendComponent {
 				}
 				return objectMapper.writeValueAsString(list);
 			} catch (JsonProcessingException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return "[]";
@@ -93,6 +100,7 @@ public class ExtendComponent {
 				}
 				return objectMapper.writeValueAsString(list);
 			} catch (JsonProcessingException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return "[]";
@@ -110,6 +118,7 @@ public class ExtendComponent {
 			try {
 				return objectMapper.writeValueAsString(map);
 			} catch (JsonProcessingException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return "";
@@ -186,8 +195,9 @@ public class ExtendComponent {
 		Map<String, String> map = new HashMap<String, String>();
 		for (CmsExtend extend : extendList) {
 			String value = getValue(parameterMap, PARAMETER_PREFIX + extend.getCode());
-			if (null != value)
+			if (null != value) {
 				map.put(extend.getCode(), value);
+			}
 		}
 		return map;
 	}

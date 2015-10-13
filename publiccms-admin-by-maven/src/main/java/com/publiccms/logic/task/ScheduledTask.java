@@ -22,6 +22,11 @@ import com.publiccms.logic.service.system.SystemTaskService;
 import com.sanluan.common.base.Base;
 import com.sanluan.common.servlet.TaskAfterInitServlet;
 
+/**
+ * 
+ * ScheduledTask 任务计划操作类
+ *
+ */
 @Component
 public class ScheduledTask extends Base implements TaskAfterInitServlet {
 	public static final String ID = "id";
@@ -49,6 +54,12 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
 		}
 	}
 
+	/**
+	 * 创建任务计划
+	 * 
+	 * @param id
+	 * @param cronExpression
+	 */
 	public void create(Integer id, String cronExpression) {
 		if (notEmpty(id) && notEmpty(cronExpression)) {
 			String taskName = getTaskName(id);
@@ -66,47 +77,81 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
 					scheduler.rescheduleJob(triggerKey, trigger);
 				}
 			} catch (SchedulerException e) {
+				log.debug(e.getMessage());
 				systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
 			}
 		}
 	}
 
+	/**
+	 * 执行任务计划
+	 * 
+	 * @param id
+	 */
 	public void runOnce(Integer id) {
 		try {
-			if (notEmpty(id))
+			if (notEmpty(id)) {
 				scheduler.triggerJob(JobKey.jobKey(getTaskName(id)));
+			}
 		} catch (SchedulerException e) {
+			log.debug(e.getMessage());
 			systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
 		}
 	}
 
+	/**
+	 * 暂停任务计划
+	 * 
+	 * @param id
+	 */
 	public void pause(Integer id) {
 		try {
-			if (notEmpty(id))
+			if (notEmpty(id)) {
 				scheduler.pauseJob(JobKey.jobKey(getTaskName(id)));
+			}
 		} catch (SchedulerException e) {
+			log.debug(e.getMessage());
 			systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
 		}
 	}
 
+	/**
+	 * 恢复任务计划
+	 * 
+	 * @param id
+	 */
 	public void resume(Integer id) {
 		try {
-			if (notEmpty(id))
+			if (notEmpty(id)) {
 				scheduler.resumeJob(JobKey.jobKey(getTaskName(id)));
+			}
 		} catch (SchedulerException e) {
+			log.debug(e.getMessage());
 			systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
 		}
 	}
 
+	/**
+	 * 删除任务计划
+	 * 
+	 * @param id
+	 */
 	public void delete(Integer id) {
 		if (notEmpty(id)) {
 			try {
 				scheduler.deleteJob(JobKey.jobKey(getTaskName(id)));
 			} catch (SchedulerException e) {
+				log.debug(e.getMessage());
 			}
 		}
 	}
 
+	/**
+	 * 任务计划名称
+	 * 
+	 * @param id
+	 * @return
+	 */
 	public String getTaskName(Integer id) {
 		return "task-" + id;
 	}
@@ -114,9 +159,11 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
 	private CronTrigger getCronTrigger(TriggerKey triggerKey) {
 		try {
 			Trigger trigger = scheduler.getTrigger(triggerKey);
-			if (null != trigger)
+			if (null != trigger) {
 				return (CronTrigger) trigger;
+			}
 		} catch (SchedulerException e) {
+			log.debug(e.getMessage());
 		}
 		return null;
 	}

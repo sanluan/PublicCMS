@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 import com.sanluan.common.base.BaseDirective;
 import com.sanluan.common.handler.RenderHandler;
 
+/**
+ * 
+ * MemoryDirective 内存指令
+ *
+ */
 @Component
 public class MemoryDirective extends BaseDirective {
 

@@ -10,6 +10,11 @@ import org.springframework.stereotype.Component;
 import com.sanluan.common.base.BaseDirective;
 import com.sanluan.common.handler.RenderHandler;
 
+/**
+ * 
+ * VersionDirective 版本指令
+ *
+ */
 @Component
 public class VersionDirective extends BaseDirective {
 

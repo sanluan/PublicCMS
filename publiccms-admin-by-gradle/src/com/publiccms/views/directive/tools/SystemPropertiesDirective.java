@@ -9,6 +9,11 @@ import org.springframework.stereotype.Component;
 import com.sanluan.common.base.BaseDirective;
 import com.sanluan.common.handler.RenderHandler;
 
+/**
+ * 
+ * SystemPropertiesDirective 系统参数指令
+ *
+ */
 @Component
 public class SystemPropertiesDirective extends BaseDirective {
 

@@ -25,6 +25,11 @@ import com.sanluan.common.tools.VerificationUtils;
 
 import freemarker.template.TemplateException;
 
+/**
+ * 
+ * UserController 用户逻辑处理
+ *
+ */
 @Controller
 @RequestMapping("user")
 public class UserController extends BaseController {
@@ -38,6 +43,16 @@ public class UserController extends BaseController {
 	@Autowired
 	private LogEmailCheckService logEmailCheckService;
 
+	/**
+	 * @param oldpassword
+	 * @param password
+	 * @param repassword
+	 * @param request
+	 * @param session
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = { "changePassword" })
 	public String changePassword(String oldpassword, String password, String repassword, HttpServletRequest request,
 			HttpSession session, HttpServletResponse response, ModelMap model) {
@@ -52,12 +67,20 @@ public class UserController extends BaseController {
 				model.addAttribute("message", "needReLogin");
 			}
 
-			if (notEmpty(user))
+			if (notEmpty(user)) {
 				service.updatePassword(user.getId(), VerificationUtils.encode(password));
+			}
 		}
 		return REDIRECT + "../login.html";
 	}
 
+	/**
+	 * @param email
+	 * @param request
+	 * @param session
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value = { "saveEmail" })
 	public String saveEmail(String email, HttpServletRequest request, HttpSession session, ModelMap model) {
 		if (virifyNotEmpty("email", email, model) || virifyNotEMail("email", email, model)
@@ -82,7 +105,9 @@ public class UserController extends BaseController {
 			mailComponent.sendHtml(email, LanguagesUtils.getMessage(request, "email.register.title", user.getNickName()),
 					fileComponent.dealStringTemplate(LanguagesUtils.getMessage(request, "email.register.template"), emailModel));
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 		} catch (TemplateException e) {
+			log.debug(e.getMessage());
 		}
 		model.addAttribute("message", "saveEmail.success");
 		return REDIRECT + "index.html";

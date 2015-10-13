@@ -12,11 +12,23 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.logic.service.cms.CmsContentService;
 
+/**
+ * 
+ * StatisticsController 统计
+ *
+ */
 @Controller
 public class StatisticsController {
 	@Autowired
 	private CmsContentService contentService;
 
+	/**
+	 * 内容点击统计
+	 * 
+	 * @param id
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping("content/clicks.json")
 	@ResponseBody
 	public MappingJacksonValue clicks(Integer id, String callback) {
@@ -28,6 +40,13 @@ public class StatisticsController {
 		return mappingJacksonValue;
 	}
 
+	/**
+	 * 内容评论统计
+	 * 
+	 * @param id
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping("content/comments.json")
 	@ResponseBody
 	public MappingJacksonValue comments(Integer id, String callback) {

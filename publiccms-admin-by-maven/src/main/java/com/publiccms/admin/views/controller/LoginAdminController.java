@@ -69,6 +69,7 @@ public class LoginAdminController extends BaseController {
 			try {
 				returnUrl = URLDecoder.decode(returnUrl, "utf-8");
 			} catch (UnsupportedEncodingException e) {
+				log.debug(e.getMessage());
 			}
 			return REDIRECT + returnUrl;
 		} else

@@ -1,15 +1,25 @@
 package com.sanluan.common.base;
 
+import static org.apache.commons.logging.LogFactory.getLog;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.commons.logging.Log;
+
 import com.sanluan.common.handler.RenderHandler;
 
+/**
+ * 
+ * BaseHandler 指令处理器基类
+ *
+ */
 public abstract class BaseHandler implements RenderHandler {
 	protected Map<String, Object> map = new HashMap<String, Object>();
+	protected final Log log = getLog(getClass());
 
 	/*
 	 * (non-Javadoc)
@@ -85,6 +95,7 @@ public abstract class BaseHandler implements RenderHandler {
 				}
 				return ids;
 			} catch (NumberFormatException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return null;
@@ -112,6 +123,7 @@ public abstract class BaseHandler implements RenderHandler {
 				}
 				return ids;
 			} catch (NumberFormatException e) {
+				log.debug(e.getMessage());
 			}
 		}
 		return null;

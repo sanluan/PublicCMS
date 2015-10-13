@@ -52,16 +52,18 @@ public class DirectiveHandler extends BaseHandler {
 	@Override
 	public void render() throws IOException, TemplateException {
 		Map<String, TemplateModel> reduceMap = reduce();
-		if (null != templateDirectiveBody)
+		if (null != templateDirectiveBody) {
 			templateDirectiveBody.render(out);
+		}
 		reduce(reduceMap);
 	}
 
 	private Map<String, TemplateModel> reduce() throws TemplateModelException {
 		Map<String, TemplateModel> reduceMap = new HashMap<String, TemplateModel>();
 		for (String key : map.keySet()) {
-			if (namespace.containsKey(key))
+			if (namespace.containsKey(key)) {
 				reduceMap.put(key, namespace.get(key));
+			}
 			namespace.put(key, objectWrapper.wrap(map.get(key)));
 		}
 		return reduceMap;

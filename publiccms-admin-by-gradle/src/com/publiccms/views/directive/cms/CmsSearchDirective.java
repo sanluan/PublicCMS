@@ -23,6 +23,7 @@ public class CmsSearchDirective extends BaseDirective {
 					handler.getInteger("count", 30));
 			handler.put("page", page).render();
 		} catch (EmptyQueryException e) {
+			log.debug(e.getMessage());
 		}
 	}
 

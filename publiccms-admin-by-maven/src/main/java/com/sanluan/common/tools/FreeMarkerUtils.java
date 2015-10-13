@@ -21,16 +21,43 @@ import freemarker.template.TemplateException;
 public class FreeMarkerUtils {
 	private final static Log log = getLog(FreeMarkerUtils.class);
 
+	/**
+	 * @param templateFilePath
+	 * @param destFilePath
+	 * @param config
+	 * @param model
+	 * @throws IOException
+	 * @throws TemplateException
+	 */
 	public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration config,
 			Map<String, Object> model) throws IOException, TemplateException {
 		makeFileByFile(templateFilePath, destFilePath, config, model, true, false);
 	}
 
+	/**
+	 * @param templateFilePath
+	 * @param destFilePath
+	 * @param config
+	 * @param model
+	 * @param override
+	 * @throws IOException
+	 * @throws TemplateException
+	 */
 	public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration config,
 			Map<String, Object> model, boolean override) throws IOException, TemplateException {
 		makeFileByFile(templateFilePath, destFilePath, config, model, override, false);
 	}
 
+	/**
+	 * @param templateFilePath
+	 * @param destFilePath
+	 * @param config
+	 * @param model
+	 * @param override
+	 * @param append
+	 * @throws IOException
+	 * @throws TemplateException
+	 */
 	public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration config,
 			Map<String, Object> model, boolean override, boolean append) throws IOException, TemplateException {
 		Template t = config.getTemplate(templateFilePath);
@@ -49,10 +76,21 @@ public class FreeMarkerUtils {
 		}
 	}
 
+	/**
+	 * @param template
+	 * @param configuration
+	 * @return
+	 */
 	public static String makeStringByFile(String template, Configuration configuration) {
 		return makeStringByFile(template, configuration, new ModelMap());
 	}
 
+	/**
+	 * @param template
+	 * @param configuration
+	 * @param model
+	 * @return
+	 */
 	public static String makeStringByFile(String template, Configuration configuration, ModelMap model) {
 		try {
 			Template tpl = configuration.getTemplate(template);
@@ -63,6 +101,14 @@ public class FreeMarkerUtils {
 		}
 	}
 
+	/**
+	 * @param templateContent
+	 * @param config
+	 * @param model
+	 * @return
+	 * @throws IOException
+	 * @throws TemplateException
+	 */
 	public static String makeStringByString(String templateContent, Configuration config, Map<String, Object> model)
 			throws IOException, TemplateException {
 		Template t = new Template(String.valueOf(templateContent.hashCode()), templateContent, config);

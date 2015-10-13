@@ -10,7 +10,16 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * 
+ * RequestUtils 
+ *
+ */
 public class RequestUtils {
+	/**
+	 * @param request
+	 * @return
+	 */
 	public static String getIp(HttpServletRequest request) {
 		String ip = request.getHeader("X-Real-IP");
 		if (!isBlank(ip) && !"unknown".equalsIgnoreCase(ip)) {
@@ -29,6 +38,11 @@ public class RequestUtils {
 		}
 	}
 
+	/**
+	 * @param parameterMap
+	 * @param key
+	 * @return
+	 */
 	public static String getValue(Map<String, String[]> parameterMap, String key) {
 		String[] values = parameterMap.get(key);
 		if (isNotEmpty(values))
@@ -36,14 +50,27 @@ public class RequestUtils {
 		return null;
 	}
 
+	/**
+	 * @param request
+	 * @return
+	 */
 	public static String getUserAgent(HttpServletRequest request) {
 		return request.getHeader("user-agent");
 	}
 
+	/**
+	 * @param request
+	 * @return
+	 */
 	public static String getAccept(HttpServletRequest request) {
 		return request.getHeader("Accept");
 	}
 
+	/**
+	 * @param request
+	 * @param name
+	 * @return
+	 */
 	public static Cookie getCookie(HttpServletRequest request, String name) {
 		Cookie[] cookies = request.getCookies();
 		if (isNotEmpty(cookies)) {
@@ -56,6 +83,15 @@ public class RequestUtils {
 		return null;
 	}
 
+	/**
+	 * @param request
+	 * @param response
+	 * @param name
+	 * @param value
+	 * @param expiry
+	 * @param domain
+	 * @return
+	 */
 	public static Cookie addCookie(HttpServletRequest request, HttpServletResponse response, String name, String value,
 			Integer expiry, String domain) {
 		Cookie cookie = new Cookie(name, value);
@@ -71,6 +107,12 @@ public class RequestUtils {
 		return cookie;
 	}
 
+	/**
+	 * @param request
+	 * @param response
+	 * @param name
+	 * @param domain
+	 */
 	public static void cancleCookie(HttpServletRequest request, HttpServletResponse response, String name, String domain) {
 		Cookie cookie = new Cookie(name, null);
 		cookie.setMaxAge(0);

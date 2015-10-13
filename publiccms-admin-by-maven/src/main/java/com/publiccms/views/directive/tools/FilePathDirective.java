@@ -12,6 +12,11 @@ import com.publiccms.logic.component.FileComponent;
 import com.sanluan.common.base.BaseDirective;
 import com.sanluan.common.handler.RenderHandler;
 
+/**
+ * 
+ * FilePathDirective 文件路径指令
+ *
+ */
 @Component
 public class FilePathDirective extends BaseDirective {
 	@Autowired

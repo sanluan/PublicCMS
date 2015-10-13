@@ -9,6 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
+/**
+ * 
+ * MailComponent 邮件发送组件
+ *
+ */
 public class MailComponent {
 	private final Log log = getLog(getClass());
 	@Autowired
@@ -69,9 +74,15 @@ public class MailComponent {
 	}
 }
 
+/**
+ * 
+ * SendThread 邮件发送线程
+ *
+ */
 class SendThread extends Thread {
 	private JavaMailSender mailSender;
 	private MimeMessage message;
+	private final Log log = getLog(getClass());
 
 	public SendThread(JavaMailSender mailSender, MimeMessage message) {
 		this.message = message;
@@ -89,6 +100,7 @@ class SendThread extends Thread {
 				try {
 					Thread.sleep(1000 * 60);
 				} catch (InterruptedException e1) {
+					log.debug(e1.getMessage());
 				}
 			}
 		}

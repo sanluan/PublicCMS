@@ -2,11 +2,13 @@ package com.publiccms.views.directive.tools;
 
 import static com.publiccms.common.constants.FreeMakerConstants.CACHE_VAR;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
+import static org.apache.commons.logging.LogFactory.getLog;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
+import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Component;
 
 import freemarker.core.Environment;
@@ -17,9 +19,15 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
+/**
+ * 
+ * NoCacheDirective 
+ *
+ */
 @SuppressWarnings("deprecation")
 @Component
 public class NoCacheDirective implements TemplateDirectiveModel {
+	protected final Log log = getLog(getClass());
 
 	/*
 	 * (non-Javadoc)
@@ -49,6 +57,7 @@ public class NoCacheDirective implements TemplateDirectiveModel {
 						environment.getOut().append(currentElement.getSource());
 					}
 				} catch (Exception e) {
+					log.debug(e.getMessage());
 				}
 			} else {
 				templateDirectiveBody.render(environment.getOut());

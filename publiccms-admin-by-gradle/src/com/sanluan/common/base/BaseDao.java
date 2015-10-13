@@ -60,10 +60,11 @@ public abstract class BaseDao<E> extends Base {
 	 * @return
 	 */
 	public E getEntity(Serializable id) {
-		if (notEmpty(id))
+		if (notEmpty(id)) {
 			return (E) getSession().get(getEntityClass(), id);
-		else
+		} else {
 			return null;
+		}
 	}
 
 	/**
@@ -116,8 +117,9 @@ public abstract class BaseDao<E> extends Base {
 	 */
 	public E delete(Serializable id) {
 		E entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			getSession().delete(entity);
+		}
 		return entity;
 	}
 

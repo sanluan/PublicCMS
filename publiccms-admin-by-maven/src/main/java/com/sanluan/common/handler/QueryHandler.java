@@ -62,15 +62,17 @@ public class QueryHandler {
 	}
 
 	public QueryHandler setParameter(String key, Object value) {
-		if (null == map)
+		if (null == map) {
 			map = new HashMap<String, Object>();
+		}
 		map.put(key, value);
 		return this;
 	}
 
 	public QueryHandler setParameter(String key, Object[] value) {
-		if (null == arrayMap)
+		if (null == arrayMap) {
 			arrayMap = new HashMap<String, Object[]>();
+		}
 		arrayMap.put(key, value);
 		return this;
 	}
@@ -79,8 +81,9 @@ public class QueryHandler {
 		if (whereFlag) {
 			whereFlag = false;
 			sqlBuilder.append(" where ");
-		} else
+		} else {
 			sqlBuilder.append(" and ");
+		}
 	}
 
 	private Query getQuery(Session session, String sql) {

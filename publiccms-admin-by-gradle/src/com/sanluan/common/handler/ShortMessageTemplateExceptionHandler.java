@@ -1,14 +1,18 @@
 package com.sanluan.common.handler;
 
+import static org.apache.commons.logging.LogFactory.getLog;
+
 import java.io.IOException;
 import java.io.Writer;
+
+import org.apache.commons.logging.Log;
 
 import freemarker.core.Environment;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 
 public class ShortMessageTemplateExceptionHandler implements TemplateExceptionHandler {
-
+	private final Log log = getLog(getClass());
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -30,6 +34,7 @@ public class ShortMessageTemplateExceptionHandler implements TemplateExceptionHa
 				writer.write("[SOME ERRORS OCCURRED！]");
 			}
 		} catch (IOException e) {
+			log.debug(e.getMessage());
 		}
 	}
 

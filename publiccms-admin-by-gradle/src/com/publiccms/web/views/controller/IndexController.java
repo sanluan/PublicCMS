@@ -20,6 +20,11 @@ import org.springframework.web.util.UrlPathHelper;
 import com.publiccms.logic.component.CacheComponent;
 import com.sanluan.common.base.BaseController;
 
+/**
+ * 
+ * IndexController 统一分发Controller
+ *
+ */
 @Controller
 public class IndexController extends BaseController {
 	@Autowired
@@ -35,6 +40,14 @@ public class IndexController extends BaseController {
 		}
 	};
 
+	/**
+	 * 页面请求统一分发
+	 * 
+	 * @param request
+	 * @param response
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping({ "index.html", "/", "/**" })
 	public String page(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 		String path = urlPathHelper.getLookupPathForRequest(request);
@@ -49,6 +62,12 @@ public class IndexController extends BaseController {
 		return cacheComponent.getFilePath(path, request, response, model);
 	}
 
+	/**
+	 * 接口请求统一分发
+	 * 
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping("*.json")
 	@ResponseBody
 	public MappingJacksonValue index(String callback) {
@@ -57,6 +76,12 @@ public class IndexController extends BaseController {
 		return mappingJacksonValue;
 	}
 
+	/**
+	 * 接口请求统一分发
+	 * 
+	 * @param callback
+	 * @return
+	 */
 	@RequestMapping("/**/*.json")
 	@ResponseBody
 	public MappingJacksonValue dir(String callback) {

@@ -7,6 +7,7 @@ import static com.publiccms.common.view.InitializeFreeMarkerView.UNSAFE_PATTERN;
 import static com.sanluan.common.constants.CommonConstants.NUMBER_PATTERN;
 import static freemarker.ext.servlet.FreemarkerServlet.KEY_INCLUDE;
 import static org.apache.commons.lang3.time.DateUtils.addSeconds;
+import static org.apache.commons.io.FileUtils.deleteQuietly;
 
 import java.io.File;
 import java.util.Date;
@@ -28,6 +29,11 @@ import com.sanluan.common.tools.FreeMarkerUtils;
 
 import freemarker.ext.servlet.IncludePage;
 
+/**
+ * 
+ * CacheComponent 缓存组件
+ *
+ */
 @Component
 public class CacheComponent {
 	private String cacheFileDirectory;
@@ -42,6 +48,8 @@ public class CacheComponent {
 	private FreeMarkerConfigurer freeMarkerConfigurer;
 
 	/**
+	 * 返回缓存模板路径或者模板原路径
+	 * 
 	 * @param path
 	 * @param request
 	 * @param response
@@ -85,6 +93,11 @@ public class CacheComponent {
 		return createCache(templatePath, path, model, response);
 	}
 
+	/**
+	 * 删除缓存文件
+	 * 
+	 * @param path
+	 */
 	public void deleteCacheFile(String path) {
 		String htmlFilePath = getHtmlFilePath(path);
 		File cacheFile = new File(htmlFilePath);
@@ -93,26 +106,17 @@ public class CacheComponent {
 		}
 		File cacheDir = new File(htmlFilePath.substring(0, htmlFilePath.lastIndexOf(TEMPLATE_SUFFIX)));
 		if (cacheDir.isDirectory()) {
-			deleteDir(cacheDir);
+			deleteQuietly(cacheDir);
 		}
 	}
 
+	/**
+	 * 清除模板缓存
+	 */
 	public void clearTemplateCache() {
 		freeMarkerConfigurer.getConfiguration().clearTemplateCache();
 		File cacheDir = new File(basePath + TEMPLATE_LOADER_PATH + cacheFileDirectory);
-		deleteDir(cacheDir);
-	}
-
-	private void deleteDir(File dir) {
-		if (null != dir) {
-			if (dir.isDirectory()) {
-				String[] children = dir.list();
-				for (int i = 0; i < children.length; i++) {
-					deleteDir(new File(dir, children[i]));
-				}
-			}
-			dir.delete();
-		}
+		deleteQuietly(cacheDir);
 	}
 
 	private String createCache(String templatePath, String path, ModelMap model, HttpServletResponse response) {

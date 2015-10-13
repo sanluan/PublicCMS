@@ -9,8 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public abstract class BaseService<E> extends Base {
-	@Autowired  
-    protected BaseDao<E> dao;
+	@Autowired
+	protected BaseDao<E> dao;
 
 	/**
 	 * @param id
@@ -61,8 +61,9 @@ public abstract class BaseService<E> extends Base {
 	 */
 	public E update(Serializable id, E newEntity, String ignoreProperties[]) {
 		E entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			BeanUtils.copyProperties(dao.init(newEntity), entity, ignoreProperties);
+		}
 		return entity;
 	}
 
@@ -73,8 +74,9 @@ public abstract class BaseService<E> extends Base {
 	 */
 	public E update(Serializable id, E newEntity) {
 		E entity = getEntity(id);
-		if (notEmpty(entity))
+		if (notEmpty(entity)) {
 			BeanUtils.copyProperties(dao.init(newEntity), entity);
+		}
 		return entity;
 	}
 

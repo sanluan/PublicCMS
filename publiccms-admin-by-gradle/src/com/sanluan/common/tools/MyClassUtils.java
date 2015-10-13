@@ -14,10 +14,20 @@ import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
 import org.springframework.util.ClassUtils;
 
+/**
+ * 
+ * MyClassUtils 
+ *
+ */
 public class MyClassUtils {
 	private static final String RESOURCE_PATTERN = "/**/*.class";
 	private static final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
+	/**
+	 * @param cls
+	 * @param packages
+	 * @return
+	 */
 	public static List<Class<?>> getAllAssignedClass(Class<?> cls, String[] packages) {
 		List<Class<?>> classes = new ArrayList<Class<?>>();
 		for (Class<?> c : getClasses(packages)) {
@@ -28,6 +38,10 @@ public class MyClassUtils {
 		return classes;
 	}
 
+	/**
+	 * @param packagesToScan
+	 * @return
+	 */
 	public static Set<Class<?>> getClasses(String[] packagesToScan) {
 		Set<Class<?>> classSet = new HashSet<Class<?>>();
 		if (null != packagesToScan) {
