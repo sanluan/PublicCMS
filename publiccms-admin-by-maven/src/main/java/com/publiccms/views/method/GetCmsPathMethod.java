@@ -15,26 +15,26 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetCmsPathMethod extends BaseMethod {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see freemarker.template.TemplateMethodModelEx#exec(java.util.List)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
-		String path = getString(0, arguments);
-		if (isNotEmpty(path)) {
-			if (path.indexOf("://") >= 0) {
-				return path;
-			} else {
-				return fileComponent.getCmsPath() + path;
-			}
-		}
-		return fileComponent.getCmsPath();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see freemarker.template.TemplateMethodModelEx#exec(java.util.List)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+        String path = getString(0, arguments);
+        if (isNotEmpty(path)) {
+            if (path.indexOf("://") >= 0) {
+                return path;
+            } else {
+                return fileComponent.getCmsPath() + path;
+            }
+        }
+        return fileComponent.getCmsPath();
 
-	}
+    }
 
-	@Autowired
-	private FileComponent fileComponent;
+    @Autowired
+    private FileComponent fileComponent;
 }

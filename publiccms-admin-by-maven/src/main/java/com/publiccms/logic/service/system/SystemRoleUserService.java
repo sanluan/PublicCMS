@@ -20,37 +20,37 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SystemRoleUserService extends BaseService<SystemRoleUser> {
 
-	@Autowired
-	private SystemRoleUserDao dao;
+    @Autowired
+    private SystemRoleUserDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer roleId, Integer userId, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(roleId, userId, pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer roleId, Integer userId, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(roleId, userId, pageIndex, pageSize);
+    }
 
-	public void dealRoleUsers(Integer userId, Integer[] roleIds) {
-		@SuppressWarnings("unchecked")
-		List<SystemRoleUser> list = (List<SystemRoleUser>) getPage(null, userId, null, null).getList();
-		if (null != roleIds) {
-			for (SystemRoleUser roleUser : list) {
-				if (!contains(roleIds, roleUser.getRoleId())) {
-					delete(roleUser.getId());
-					roleIds = removeElement(roleIds, roleUser.getRoleId());
-				}
-			}
-			for (Integer roleId : roleIds) {
-				save(new SystemRoleUser(roleId, userId));
-			}
-		} else {
-			deleteByUserId(userId);
-		}
-	}
+    public void dealRoleUsers(Integer userId, Integer[] roleIds) {
+        @SuppressWarnings("unchecked")
+        List<SystemRoleUser> list = (List<SystemRoleUser>) getPage(null, userId, null, null).getList();
+        if (null != roleIds) {
+            for (SystemRoleUser roleUser : list) {
+                if (!contains(roleIds, roleUser.getRoleId())) {
+                    delete(roleUser.getId());
+                    roleIds = removeElement(roleIds, roleUser.getRoleId());
+                }
+            }
+            for (Integer roleId : roleIds) {
+                save(new SystemRoleUser(roleId, userId));
+            }
+        } else {
+            deleteByUserId(userId);
+        }
+    }
 
-	public int deleteByUserId(Integer userId) {
-		return dao.deleteByUserId(userId);
-	}
+    public int deleteByUserId(Integer userId) {
+        return dao.deleteByUserId(userId);
+    }
 
-	public int deleteByRole(Integer roleId) {
-		return dao.deleteByRole(roleId);
-	}
+    public int deleteByRole(Integer roleId) {
+        return dao.deleteByRole(roleId);
+    }
 }

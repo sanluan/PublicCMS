@@ -20,74 +20,74 @@ import com.sanluan.common.tools.RequestUtils;
 @Controller
 @RequestMapping("systemTask")
 public class SystemTaskAdminController extends BaseController {
-	@Autowired
-	private SystemTaskService service;
-	@Autowired
-	private ScheduledTask scheduledTask;
-	@Autowired
-	private LogOperateService logOperateService;
+    @Autowired
+    private SystemTaskService service;
+    @Autowired
+    private ScheduledTask scheduledTask;
+    @Autowired
+    private LogOperateService logOperateService;
 
-	@RequestMapping("save")
-	public String save(SystemTask entity, HttpServletRequest request, HttpSession session, ModelMap model) {
-		if (notEmpty(entity.getId())) {
-			entity = service.update(entity.getId(), entity, new String[] { "id" });
-			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.task", RequestUtils
-						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
-			}
-		} else {
-			entity = service.save(entity);
-			if (notEmpty(entity)) {
-				logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.task", RequestUtils
-						.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
-			}
+    @RequestMapping(SAVE)
+    public String save(SystemTask entity, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (notEmpty(entity.getId())) {
+            entity = service.update(entity.getId(), entity, new String[] { ID });
+            if (notEmpty(entity)) {
+                logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "update.task", RequestUtils
+                        .getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+            }
+        } else {
+            entity = service.save(entity);
+            if (notEmpty(entity)) {
+                logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "save.task", RequestUtils
+                        .getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+            }
 
-		}
-		scheduledTask.create(entity.getId(), entity.getCronExpression());
-		return "common/ajaxDone";
-	}
+        }
+        scheduledTask.create(entity.getId(), entity.getCronExpression());
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping(value = { "runOnce" })
-	public String runOnce(Integer id, HttpServletRequest request, HttpSession session) {
-		SystemTask entity = service.getEntity(id);
-		if (notEmpty(entity)) {
-			scheduledTask.runOnce(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "runOnce.task", RequestUtils
-					.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { "runOnce" })
+    public String runOnce(Integer id, HttpServletRequest request, HttpSession session) {
+        SystemTask entity = service.getEntity(id);
+        if (notEmpty(entity)) {
+            scheduledTask.runOnce(id);
+            logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "runOnce.task", RequestUtils
+                    .getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+        }
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping(value = { "pause" })
-	public String pause(Integer id, HttpServletRequest request, HttpSession session) {
-		SystemTask entity = service.updateStatus(id, ScheduledTask.TASK_STATUS_PAUSE);
-		if (notEmpty(entity)) {
-			scheduledTask.pause(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "pause.task", RequestUtils
-					.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { "pause" })
+    public String pause(Integer id, HttpServletRequest request, HttpSession session) {
+        SystemTask entity = service.updateStatus(id, ScheduledTask.TASK_STATUS_PAUSE);
+        if (notEmpty(entity)) {
+            scheduledTask.pause(id);
+            logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "pause.task", RequestUtils
+                    .getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+        }
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping(value = { "resume" })
-	public String resume(Integer id, HttpServletRequest request, HttpSession session) {
-		SystemTask entity = service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
-		if (notEmpty(entity)) {
-			scheduledTask.resume(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "resume.task", RequestUtils
-					.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { "resume" })
+    public String resume(Integer id, HttpServletRequest request, HttpSession session) {
+        SystemTask entity = service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
+        if (notEmpty(entity)) {
+            scheduledTask.resume(id);
+            logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "resume.task", RequestUtils
+                    .getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+        }
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping("delete")
-	public String delete(Integer id, HttpServletRequest request, HttpSession session) {
-		SystemTask entity = service.delete(id);
-		if (notEmpty(entity)) {
-			scheduledTask.delete(id);
-			logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.task", RequestUtils
-					.getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(DELETE)
+    public String delete(Integer id, HttpServletRequest request, HttpSession session) {
+        SystemTask entity = service.delete(id);
+        if (notEmpty(entity)) {
+            scheduledTask.delete(id);
+            logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.task", RequestUtils
+                    .getIp(request), getDate(), entity.getId() + ":" + entity.getName()));
+        }
+        return TEMPLATE_DONE;
+    }
 }

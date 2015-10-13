@@ -11,38 +11,38 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SystemRoleAuthorizedDao extends BaseDao<SystemRoleAuthorized> {
-	public PageHandler getPage(Integer roleId, String authorizedUrl, Integer pageIndex, Integer pageSize) {
-		QueryHandler queryHandler = getQueryHandler("from SystemRoleAuthorized bean");
-		if (notEmpty(roleId)) {
-			queryHandler.condition("bean.roleId = :roleId").setParameter("roleId", roleId);
-		}
-		if (notEmpty(authorizedUrl)) {
-			queryHandler.condition("bean.authorizedUrl = :authorizedUrl").setParameter("authorizedUrl", authorizedUrl);
-		}
-		queryHandler.append("order by bean.id desc");
-		return getPage(queryHandler, pageIndex, pageSize);
-	}
+    public PageHandler getPage(Integer roleId, String authorizedUrl, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from SystemRoleAuthorized bean");
+        if (notEmpty(roleId)) {
+            queryHandler.condition("bean.roleId = :roleId").setParameter("roleId", roleId);
+        }
+        if (notEmpty(authorizedUrl)) {
+            queryHandler.condition("bean.authorizedUrl = :authorizedUrl").setParameter("authorizedUrl", authorizedUrl);
+        }
+        queryHandler.append("order by bean.id desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
 
-	public int count(Integer[] roleIds, String authorizedUrl) {
-		QueryHandler queryHandler = getCountQueryHandler("from SystemRoleAuthorized bean");
-		if (notEmpty(roleIds)) {
-			queryHandler.condition("bean.roleId in (:roleIds)").setParameter("roleIds", roleIds);
-		}
-		if (notEmpty(authorizedUrl)) {
-			queryHandler.condition("bean.authorizedUrl = :authorizedUrl").setParameter("authorizedUrl", authorizedUrl);
-		}
-		queryHandler.append("order by bean.id desc");
-		return count(queryHandler);
-	}
+    public int count(Integer[] roleIds, String authorizedUrl) {
+        QueryHandler queryHandler = getCountQueryHandler("from SystemRoleAuthorized bean");
+        if (notEmpty(roleIds)) {
+            queryHandler.condition("bean.roleId in (:roleIds)").setParameter("roleIds", roleIds);
+        }
+        if (notEmpty(authorizedUrl)) {
+            queryHandler.condition("bean.authorizedUrl = :authorizedUrl").setParameter("authorizedUrl", authorizedUrl);
+        }
+        queryHandler.append("order by bean.id desc");
+        return count(queryHandler);
+    }
 
-	@Override
-	protected SystemRoleAuthorized init(SystemRoleAuthorized entity) {
-		return entity;
-	}
+    @Override
+    protected SystemRoleAuthorized init(SystemRoleAuthorized entity) {
+        return entity;
+    }
 
-	@Override
-	protected Class<SystemRoleAuthorized> getEntityClass() {
-		return SystemRoleAuthorized.class;
-	}
+    @Override
+    protected Class<SystemRoleAuthorized> getEntityClass() {
+        return SystemRoleAuthorized.class;
+    }
 
 }

@@ -11,23 +11,23 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SystemTaskDao extends BaseDao<SystemTask> {
-	public PageHandler getPage(Integer status, Integer pageIndex, Integer pageSize) {
-		QueryHandler queryHandler = getQueryHandler("from SystemTask bean");
-		if (notEmpty(status)) {
-			queryHandler.condition("bean.status = :status").setParameter("status", status);
-		}
-		queryHandler.append("order by bean.id desc");
-		return getPage(queryHandler, pageIndex, pageSize);
-	}
+    public PageHandler getPage(Integer status, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from SystemTask bean");
+        if (notEmpty(status)) {
+            queryHandler.condition("bean.status = :status").setParameter("status", status);
+        }
+        queryHandler.append("order by bean.id desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
 
-	@Override
-	protected SystemTask init(SystemTask entity) {
-		return entity;
-	}
+    @Override
+    protected SystemTask init(SystemTask entity) {
+        return entity;
+    }
 
-	@Override
-	protected Class<SystemTask> getEntityClass() {
-		return SystemTask.class;
-	}
+    @Override
+    protected Class<SystemTask> getEntityClass() {
+        return SystemTask.class;
+    }
 
 }

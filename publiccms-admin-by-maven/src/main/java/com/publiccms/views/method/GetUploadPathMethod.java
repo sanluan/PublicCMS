@@ -15,26 +15,26 @@ import freemarker.template.TemplateModelException;
 @Component
 public class GetUploadPathMethod extends BaseMethod {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see freemarker.template.TemplateMethodModelEx#exec(java.util.List)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
-		String path = getString(0, arguments);
-		if (isNotEmpty(path)) {
-			if (path.indexOf("://") >= 0) {
-				return path;
-			} else {
-				return fileComponent.getUploadPath() + path;
-			}
-		}
-		return fileComponent.getUploadPath();
+    /*
+     * (non-Javadoc)
+     * 
+     * @see freemarker.template.TemplateMethodModelEx#exec(java.util.List)
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
+        String path = getString(0, arguments);
+        if (isNotEmpty(path)) {
+            if (path.indexOf("://") >= 0) {
+                return path;
+            } else {
+                return fileComponent.getUploadPath() + path;
+            }
+        }
+        return fileComponent.getUploadPath();
 
-	}
+    }
 
-	@Autowired
-	private FileComponent fileComponent;
+    @Autowired
+    private FileComponent fileComponent;
 }

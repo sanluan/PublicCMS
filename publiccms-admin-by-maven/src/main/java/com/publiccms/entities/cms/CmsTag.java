@@ -16,64 +16,64 @@ import javax.persistence.Table;
 @Table(name = "cms_tag")
 public class CmsTag implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	private String name;
-	private Integer categoryId;
-	private Integer typeId;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    private String name;
+    private Integer categoryId;
+    private Integer typeId;
 
-	public CmsTag() {
-	}
+    public CmsTag() {
+    }
 
-	public CmsTag(String name) {
-		this.name = name;
-	}
+    public CmsTag(String name) {
+        this.name = name;
+    }
 
-	public CmsTag(String name, Integer categoryId, Integer typeId) {
-		this.name = name;
-		this.categoryId = categoryId;
-		this.typeId = typeId;
-	}
+    public CmsTag(String name, Integer categoryId, Integer typeId) {
+        this.name = name;
+        this.categoryId = categoryId;
+        this.typeId = typeId;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "name", nullable = false, length = 50)
-	public String getName() {
-		return this.name;
-	}
+    @Column(name = "name", nullable = false, length = 50)
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	@Column(name = "category_id")
-	public Integer getCategoryId() {
-		return this.categoryId;
-	}
+    @Column(name = "category_id")
+    public Integer getCategoryId() {
+        return this.categoryId;
+    }
 
-	public void setCategoryId(Integer categoryId) {
-		this.categoryId = categoryId;
-	}
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 
-	@Column(name = "type_id")
-	public Integer getTypeId() {
-		return this.typeId;
-	}
+    @Column(name = "type_id")
+    public Integer getTypeId() {
+        return this.typeId;
+    }
 
-	public void setTypeId(Integer typeId) {
-		this.typeId = typeId;
-	}
+    public void setTypeId(Integer typeId) {
+        this.typeId = typeId;
+    }
 
 }

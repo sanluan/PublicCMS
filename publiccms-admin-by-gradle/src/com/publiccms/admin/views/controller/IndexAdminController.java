@@ -13,22 +13,34 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.sanluan.common.base.BaseController;
 
+/**
+ * 
+ * IndexAdminController 统一分发Controller
+ *
+ */
 @Controller
 public class IndexAdminController extends BaseController {
-	private UrlPathHelper urlPathHelper = new UrlPathHelper();
-	private static final String SEPARATOR = "/";
+    private UrlPathHelper urlPathHelper = new UrlPathHelper();
+    private static final String SEPARATOR = "/";
 
-	@RequestMapping("/**")
-	public String page(HttpServletRequest request, ModelMap model) {
-		String path = urlPathHelper.getLookupPathForRequest(request);
-		if (isNotBlank(path)) {
-			if (SEPARATOR.equals(path) || path.endsWith(SEPARATOR)) {
-				path += "index.html";
-			}
-			int index = path.lastIndexOf(".");
-			path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
-		}
-		model.addAttribute(CONTEXT_PATH, path);
-		return path;
-	}
+    /**
+     * 页面请求统一分发
+     * 
+     * @param request
+     * @param model
+     * @return
+     */
+    @RequestMapping("/**")
+    public String page(HttpServletRequest request, ModelMap model) {
+        String path = urlPathHelper.getLookupPathForRequest(request);
+        if (isNotBlank(path)) {
+            if (SEPARATOR.equals(path) || path.endsWith(SEPARATOR)) {
+                path += "index.html";
+            }
+            int index = path.lastIndexOf(".");
+            path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
+        }
+        model.addAttribute(CONTEXT_PATH, path);
+        return path;
+    }
 }

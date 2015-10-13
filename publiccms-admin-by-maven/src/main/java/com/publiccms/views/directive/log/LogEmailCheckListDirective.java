@@ -15,15 +15,15 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class LogEmailCheckListDirective extends BaseTemplateDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		PageHandler page = service.getPage(handler.getInteger("userId"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), 
-				handler.getBoolean("checked"), 
-				handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex",1), handler.getInteger("count",20));
-		handler.put("page", page).render();
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        PageHandler page = service.getPage(handler.getInteger("userId"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), 
+                handler.getBoolean("checked"), 
+                handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex",1), handler.getInteger("count",20));
+        handler.put("page", page).render();
+    }
 
-	@Autowired
-	private LogEmailCheckService service;
+    @Autowired
+    private LogEmailCheckService service;
 
 }

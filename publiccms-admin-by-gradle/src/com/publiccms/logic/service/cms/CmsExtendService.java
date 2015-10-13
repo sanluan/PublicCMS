@@ -15,11 +15,11 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class CmsExtendService extends BaseService<CmsExtend> {
 
-	@Autowired
-	private CmsExtendDao dao;
+    @Autowired
+    private CmsExtendDao dao;
 
-	@Transactional(readOnly = true)
-	public PageHandler getPage(Integer itemType, Integer itemId, Integer extendType, Boolean isCustom, Integer pageIndex, Integer pageSize) {
-		return dao.getPage(itemType, itemId, extendType, isCustom, pageIndex, pageSize);
-	}
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Integer itemType, Integer itemId, Integer extendType, Boolean isCustom, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(itemType, itemId, extendType, isCustom, pageIndex, pageSize);
+    }
 }

@@ -11,15 +11,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface MyColumn {
-	boolean condition() default false;
+    boolean condition() default false;
 
-	boolean like() default false;
-	
-	boolean order() default false;
-	
-	boolean or() default false;
-	
-	String name() default "";
-	
-	String title();
+    boolean like() default false;
+    
+    boolean order() default false;
+    
+    boolean or() default false;
+    
+    String name() default "";
+    
+    String title();
 }

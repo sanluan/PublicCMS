@@ -24,96 +24,96 @@ import com.sanluan.common.source.entity.MyColumn;
 @Table(name = "log_operate")
 public class LogOperate implements java.io.Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private Integer id;
-	@MyColumn(title = "用户", condition = true)
-	private int userId;
-	@MyColumn(title = "操作", condition = true)
-	private String operate;
-	@MyColumn(title = "IP", condition = true)
-	private String ip;
-	@MyColumn(title = "操作日期", condition = true, order = true)
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date createDate;
-	@MyColumn(title = "内容", condition = true, like = true)
-	private String content;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private Integer id;
+    @MyColumn(title = "用户", condition = true)
+    private int userId;
+    @MyColumn(title = "操作", condition = true)
+    private String operate;
+    @MyColumn(title = "IP", condition = true)
+    private String ip;
+    @MyColumn(title = "操作日期", condition = true, order = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date createDate;
+    @MyColumn(title = "内容", condition = true, like = true)
+    private String content;
 
-	public LogOperate() {
-	}
+    public LogOperate() {
+    }
 
-	public LogOperate(int userId, String operate, Date createDate, String content) {
-		this.userId = userId;
-		this.operate = operate;
-		this.createDate = createDate;
-		this.content = content;
-	}
+    public LogOperate(int userId, String operate, Date createDate, String content) {
+        this.userId = userId;
+        this.operate = operate;
+        this.createDate = createDate;
+        this.content = content;
+    }
 
-	public LogOperate(int userId, String operate, String ip, Date createDate, String content) {
-		this.userId = userId;
-		this.operate = operate;
-		this.ip = ip;
-		this.createDate = createDate;
-		this.content = content;
-	}
+    public LogOperate(int userId, String operate, String ip, Date createDate, String content) {
+        this.userId = userId;
+        this.operate = operate;
+        this.ip = ip;
+        this.createDate = createDate;
+        this.content = content;
+    }
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "id", unique = true, nullable = false)
-	public Integer getId() {
-		return this.id;
-	}
+    @Id
+    @GeneratedValue(strategy = IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    public Integer getId() {
+        return this.id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	@Column(name = "user_id", nullable = false)
-	public int getUserId() {
-		return this.userId;
-	}
+    @Column(name = "user_id", nullable = false)
+    public int getUserId() {
+        return this.userId;
+    }
 
-	public void setUserId(int userId) {
-		this.userId = userId;
-	}
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
 
-	@Column(name = "operate", nullable = false, length = 20)
-	public String getOperate() {
-		return this.operate;
-	}
+    @Column(name = "operate", nullable = false, length = 20)
+    public String getOperate() {
+        return this.operate;
+    }
 
-	public void setOperate(String operate) {
-		this.operate = operate;
-	}
+    public void setOperate(String operate) {
+        this.operate = operate;
+    }
 
-	@Column(name = "ip", length = 20)
-	public String getIp() {
-		return this.ip;
-	}
+    @Column(name = "ip", length = 20)
+    public String getIp() {
+        return this.ip;
+    }
 
-	public void setIp(String ip) {
-		this.ip = ip;
-	}
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
 
-	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "create_date", nullable = false, length = 19)
-	public Date getCreateDate() {
-		return this.createDate;
-	}
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "create_date", nullable = false, length = 19)
+    public Date getCreateDate() {
+        return this.createDate;
+    }
 
-	public void setCreateDate(Date createDate) {
-		this.createDate = createDate;
-	}
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
-	@Column(name = "content", nullable = false, length = 500)
-	public String getContent() {
-		return this.content;
-	}
+    @Column(name = "content", nullable = false, length = 500)
+    public String getContent() {
+        return this.content;
+    }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+    public void setContent(String content) {
+        this.content = content;
+    }
 
 }

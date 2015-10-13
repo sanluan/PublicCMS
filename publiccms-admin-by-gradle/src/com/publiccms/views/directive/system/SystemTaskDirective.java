@@ -20,26 +20,26 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SystemTaskDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		Integer id = handler.getInteger("id");
-		if (null != id) {
-			SystemTask entity= service.getEntity(id);
-			handler.put("object", entity).renderIfNotNull(entity);
-		} else {
-			Integer[] ids = handler.getIntegerArray("ids");
-			if (isNotEmpty(ids)) {
-				List<SystemTask> entityList = service.getEntitys(ids);
-				Map<String, SystemTask> map = new HashMap<String, SystemTask>();
-				for (SystemTask entity: entityList) {
-					map.put(String.valueOf(entity.getId()), entity);
-				}
-				handler.put("map", map).render();
-			}
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer id = handler.getInteger(ID);
+        if (null != id) {
+            SystemTask entity= service.getEntity(id);
+            handler.put("object", entity).renderIfNotNull(entity);
+        } else {
+            Integer[] ids = handler.getIntegerArray("ids");
+            if (isNotEmpty(ids)) {
+                List<SystemTask> entityList = service.getEntitys(ids);
+                Map<String, SystemTask> map = new HashMap<String, SystemTask>();
+                for (SystemTask entity: entityList) {
+                    map.put(String.valueOf(entity.getId()), entity);
+                }
+                handler.put("map", map).render();
+            }
+        }
+    }
 
-	@Autowired
-	private SystemTaskService service;
+    @Autowired
+    private SystemTaskService service;
 
 }

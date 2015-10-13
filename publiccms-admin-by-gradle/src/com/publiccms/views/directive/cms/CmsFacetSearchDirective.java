@@ -16,17 +16,18 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class CmsFacetSearchDirective extends BaseDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		try {
-			PageHandler page = service.facetQuery(handler.getString("categoryId"), handler.getString("modelId"),
-					handler.getString("word"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
-			handler.put("page", page).render();
-		} catch (EmptyQueryException e) {
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        try {
+            PageHandler page = service.facetQuery(handler.getString("categoryId"), handler.getString("modelId"),
+                    handler.getString("word"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+            handler.put("page", page).render();
+        } catch (EmptyQueryException e) {
+            log.debug(e.getMessage());
+        }
+    }
 
-	@Autowired
-	private CmsContentService service;
+    @Autowired
+    private CmsContentService service;
 
 }

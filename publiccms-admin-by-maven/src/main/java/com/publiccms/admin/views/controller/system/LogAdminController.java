@@ -12,52 +12,52 @@ import com.sanluan.common.base.BaseController;
 
 @Controller
 public class LogAdminController extends BaseController {
-	@Autowired
-	private LogEmailCheckService logEmailCheckService;
-	@Autowired
-	private LogLoginService logLoginService;
-	@Autowired
-	private LogOperateService logOperateService;
-	@Autowired
-	private LogTaskService logTaskService;
+    @Autowired
+    private LogEmailCheckService logEmailCheckService;
+    @Autowired
+    private LogLoginService logLoginService;
+    @Autowired
+    private LogOperateService logOperateService;
+    @Autowired
+    private LogTaskService logTaskService;
 
-	@RequestMapping(value = { "logEmailCheck/delete" })
-	public String logEmailCheckDelete(Integer[] ids) {
-		if (notEmpty(ids)) {
-			for (Integer id : ids) {
-				logEmailCheckService.delete(id);
-			}
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { "logEmailCheck/delete" })
+    public String logEmailCheckDelete(Integer[] ids) {
+        if (notEmpty(ids)) {
+            for (Integer id : ids) {
+                logEmailCheckService.delete(id);
+            }
+        }
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping(value = { "logLogin/delete" })
-	public String logLoginDelete(Integer[] ids) {
-		if (notEmpty(ids)) {
-			for (Integer id : ids) {
-				logLoginService.delete(id);
-			}
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { "logLogin/delete" })
+    public String logLoginDelete(Integer[] ids) {
+        if (notEmpty(ids)) {
+            for (Integer id : ids) {
+                logLoginService.delete(id);
+            }
+        }
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping(value = { "logOperate/delete" })
-	public String logOperateDelete(Integer[] ids) {
-		if (notEmpty(ids)) {
-			for (Integer id : ids) {
-				logOperateService.delete(id);
-			}
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { "logOperate/delete" })
+    public String logOperateDelete(Integer[] ids) {
+        if (notEmpty(ids)) {
+            for (Integer id : ids) {
+                logOperateService.delete(id);
+            }
+        }
+        return TEMPLATE_DONE;
+    }
 
-	@RequestMapping(value = { "logTask/delete" })
-	public String logTaskDelete(Integer[] ids) {
-		if (notEmpty(ids)) {
-			for (Integer id : ids) {
-				logTaskService.delete(id);
-			}
-		}
-		return "common/ajaxDone";
-	}
+    @RequestMapping(value = { "logTask/delete" })
+    public String logTaskDelete(Integer[] ids) {
+        if (notEmpty(ids)) {
+            for (Integer id : ids) {
+                logTaskService.delete(id);
+            }
+        }
+        return TEMPLATE_DONE;
+    }
 }
