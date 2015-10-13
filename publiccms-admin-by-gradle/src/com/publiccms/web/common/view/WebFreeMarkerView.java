@@ -8,8 +8,6 @@ import com.publiccms.common.tools.UserUtils;
 import com.publiccms.common.view.InitializeFreeMarkerView;
 
 public class WebFreeMarkerView extends InitializeFreeMarkerView {
-	private static final String CONTEXT_USER = "user";
-
 	protected void exposeHelpers(Map<String, Object> model, HttpServletRequest request) throws Exception {
 		model.put(CONTEXT_USER, UserUtils.getUserFromSession(request.getSession()));
 		super.exposeHelpers(model, request);

@@ -2,9 +2,10 @@ package com.publiccms.logic.component;
 
 import static com.publiccms.common.constants.FreeMakerConstants.CACHE_VAR;
 import static com.publiccms.common.constants.FreeMakerConstants.CONTEXT_BASE;
-import static freemarker.ext.servlet.FreemarkerServlet.KEY_INCLUDE;
 import static com.publiccms.common.constants.FreeMakerConstants.TEMPLATE_SUFFIX;
+import static com.publiccms.common.view.InitializeFreeMarkerView.UNSAFE_PATTERN;
 import static com.sanluan.common.constants.CommonConstants.NUMBER_PATTERN;
+import static freemarker.ext.servlet.FreemarkerServlet.KEY_INCLUDE;
 import static org.apache.commons.lang3.time.DateUtils.addSeconds;
 
 import java.io.File;
@@ -65,7 +66,7 @@ public class CacheComponent {
 		StringBuilder sb = new StringBuilder();
 		while (parameters.hasMoreElements()) {
 			String paramterName = parameters.nextElement();
-			if (!paramterName.startsWith("spm")) {
+			if (!paramterName.startsWith("spm") && !UNSAFE_PATTERN.matcher(paramterName).matches()) {
 				if (0 == sb.length()) {
 					sb.append("/");
 				} else {
