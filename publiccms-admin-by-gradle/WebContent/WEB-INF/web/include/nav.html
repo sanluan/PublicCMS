@@ -16,12 +16,12 @@
 <@_categoryList>
 	<#list page.list as a>
 				<li>
-					<a href="${getCmsPath(a.url)}">${a.name}</a>
+					<a href="${getCmsPath()}category.html?id=${a.id}">${a.name}</a>
 		<#if a.childIds?has_content>
 					<ul>
 			<@_categoryList parentId=a.id>
 				<#list page.list as a>
-						<li><a href="${getCmsPath(a.url)}">${a.name}</a></li>
+						<li><a href="${getCmsPath()}list.html?id=${a.id}">${a.name}</a></li>
 				</#list>
 			</@_categoryList>
 					</ul>
