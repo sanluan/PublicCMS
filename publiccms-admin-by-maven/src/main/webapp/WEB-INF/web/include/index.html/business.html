@@ -1,0 +1,8 @@
+<div class="info">
+	<h3>商务合作</h3>
+	<ul>
+<#list dataList?reverse as a>
+		<li><a target="_blank" href="${getSitePath(a.url)}">${a.title!}</a></li>
+</#list>
+	</ul>
+</div>

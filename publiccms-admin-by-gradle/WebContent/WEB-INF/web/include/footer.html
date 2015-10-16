@@ -1,7 +1,11 @@
 <footer>
 	<div class="container">
-		<!--#include virtual="/include/index.html/business.html"--><#-- 页尾导航 -->
-		<!--#include virtual="/include/index.html/support.html"--><#-- 技术支持 -->
+		<@_templateDataList path="index.html/business.html">
+			<#include path/><#-- 页尾导航 -->
+		</@_templateDataList>
+		<@_templateDataList path="index.html/support.html">
+			<#include path/><#-- 技术支持 -->
+		</@_templateDataList>
 	</div>
 	<div class="container">
 		<div class="copyright">&copy;${.now?string('yyyy')} PublicCMS.com All Rights Reserved. 京ICP备15009690号</div>

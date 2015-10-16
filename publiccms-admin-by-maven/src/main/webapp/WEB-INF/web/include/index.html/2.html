@@ -1,0 +1,10 @@
+<li>
+	<a href="${getSitePath()}" target="_blank">静态站点</a>
+<#if dataList?has_content>
+	<ul>
+	<#list dataList?reverse as a>
+		<li><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a></li>
+	</#list>
+	</ul>
+</#if>
+</li>

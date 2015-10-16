@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 	<title>接口列表</title>
-		<#include "include_page/header.html"/>
+	<#include "include/header.html"/>
 	<script src="http://libs.useso.com/js/jquery/1.9.1/jquery.min.js"></script>
 	<script src="${res}/code-formatter.js" type="text/javascript"></script>
 	<link href="${res}/code-formatter.css" type="text/css" rel="stylesheet"></link>
@@ -41,7 +41,7 @@ $.ajax({
 </script>
 </head>
 <body>
-<#include "include_page/nav.html"/>
+<#include "include/nav.html"/>
 <script>
 	$("header nav ul li a:contains('接口测试')").parent().addClass('selected');
 </script>
@@ -64,6 +64,6 @@ $.ajax({
 		</fieldset>
 	</div>
 </main>
-<#include "include_page/footer.html"/>
+<#include "include/footer.html"/>
 </body>
 </html>

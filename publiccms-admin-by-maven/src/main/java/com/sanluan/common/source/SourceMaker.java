@@ -42,7 +42,13 @@ public class SourceMaker {
     public static void main(String[] args) {
         SourceMaker sourceMaker = new SourceMaker();
         boolean overwrite = false;
-        sourceMaker.make("com.publiccms", "aaa", overwrite);
+        String basePackage = "com.publiccms";
+        // sourceMaker.make(basePackage, "aaa", overwrite);
+        try {
+            Class<?> c = Class.forName("com.publiccms.entities.cms.CmsContent");
+            sourceMaker.make(c, basePackage, overwrite);
+        } catch (ClassNotFoundException e) {
+        }
     }
 
     /**

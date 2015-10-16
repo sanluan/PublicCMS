@@ -5,16 +5,18 @@
 	<#assign meta=getTemplateMetadata('index.html')/>
 	<meta name="keywords" content="${(meta.keywords?html)!}"/>
 	<meta name="description" content="${(meta.description?html)!}"/>
-	<#include "include_page/header.html"/>
+	<#include "include/header.html"/>
 </head>
 <body>
-<#include "include_page/nav.html"/>
+<#include "include/nav.html"/>
 <script>
 	$("header nav ul li a:contains('首页')").parent().addClass('selected');
 </script>
 <main>
 	<div class="container">
-		<!--#include virtual="/include/index.html/1.html"--><#-- 焦点图 -->
+		<@_templateDataList path="index.html/1.html">
+			<#include "include/"+path/><#-- 焦点图 -->
+		</@_templateDataList>
 		<div class="data-list left-content">
 <@_modelList>
 	<#list page.list?reverse as m>
@@ -23,11 +25,11 @@
 				<h3>最新${m.name!}</h3>
 				<#if m.isImages>
 					<#list page.list as a>
-							<#include "include_page/image-list.html"/>
+							<#include "ftl/image-list.ftl"/>
 					</#list>
 				<#else>
 					<#list page.list as a>
-							<#include "include_page/data-list.html"/>
+							<#include "ftl/data-list.ftl"/>
 					</#list>
 				</#if>
 			</#if>
@@ -36,7 +38,7 @@
 </@_modelList>
 		</div>
 		<aside>
-			<!--#include virtual="/include/index_html/1.html"--><#-- 开源中国 -->
+			<#include "ftl/index.html/1.html"/><#-- 开源中国 -->
 			<div>
 				<h3>热门排行</h3>
 				<ul class="rank">
@@ -47,10 +49,12 @@
 </@_contentList>
 				</ul>
 			</div>
-			<!--#include virtual="/include/category/list.html/2.html"--><#-- 精彩图集 -->
+			<@_templateDataList path="category/list.html/2.html">
+				<#include "include/"+path/><#-- 精彩图集 -->
+			</@_templateDataList>
 		</aside>
 	</div>
 </main>
-<#include "include_page/footer.html"/>
+<#include "include/footer.html"/>
 </body>
 </html>
