@@ -4,13 +4,13 @@
 	<title>高级搜索 - PublicCMS</title>
 	<meta name="keywords" content="高级搜索"/>
 	<meta name="description" content="高级搜索  ${word!}"/>
-	<#include "include_page/header.html"/>
+	<#include "include/header.html"/>
 </head>
 <body>
-<#include "include_page/nav.html"/>
+<#include "include/nav.html"/>
 <main>
 	<div class="container bread">
-		<a href="${getSitePath()}">首页</a>
+		<a href="${getCmsPath()}">首页</a>
 	</div>
 	<div class="container">
 		<div class="data-list left-content">
@@ -33,12 +33,12 @@
 			<@_model ids=modelIds!><#assign modelMap=map/></@_model>
 			<#list page.list as a>
 				<#if modelMap[a.modelId?string].isImages>
-					<#include "include_page/image-list.html"/>
+					<#include "ftl/image-list.ftl"/>
 				<#else>
-					<#include "include_page/data-list.html"/>
+					<#include "ftl/data-list.ftl"/>
 				</#if>
 			</#list>
-			<#include "include_page/search_page.html"/>
+			<#include "ftl/search_page.ftl"/>
 		</#if>
 	</@_facetSearch>
 </#if>
@@ -76,10 +76,12 @@
 					</ul>
 				</div>
 			</#if>
-			<!--#include virtual="/include/category/list.html/1.html"--><#-- 右侧编辑推荐 -->
+			<@_templateDataList path="category/list.html/1.html">
+				<#include "include/"+path/><#-- 编辑推荐 -->
+			</@_templateDataList>
 		</aside>
 	</div>
 </main>
-<#include "include_page/footer.html"/>
+<#include "include/footer.html"/>
 </body>
 </html>

@@ -20,7 +20,8 @@ public class TemplateDataListDirective extends BaseDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        List<Map<String, Object>> list = fileComponent.getListData(handler.getString("path", "/"));
-        handler.put("list", list).render();
+        String path = handler.getString("path", "/");
+        List<Map<String, Object>> list = fileComponent.getListData(path);
+        handler.put("dataList", list).put("path", path).render();
     }
 }

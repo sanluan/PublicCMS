@@ -9,12 +9,12 @@
 	<title>${content.title} - PublicCMS</title>
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
-	<#include "../include_page/header.html"/>
+	<#include "../include/header.html"/>
 	<link href="${getUploadPath()}gallery/style.css" rel="stylesheet"/>
 	<script src="${getUploadPath()}gallery/gallery.js"></script>
 </head>
 <body>
-<#include "../include_page/nav.html"/>
+<#include "../include/nav.html"/>
 <main>
 	<div class="container bread">
 		<#include "../ftl/echoBread.ftl"/>
@@ -25,7 +25,7 @@
 			<div id="content">
 				<div class="mod-gallery">
 					<div class="gallery-title">
-						<h2><a href="${getSitePath(url)}">${content.title}</a></h2>
+						<h2><a href="${getCmsPath(url)}">${content.title}</a></h2>
 						<span class="gallery-counter">
 							<i class="gallery-counter-now" data-gallery="counter-now">?</i>/<i class="gallery-counter-total" data-gallery="counter-total">?</i>
 						</span>
@@ -59,7 +59,7 @@
 							<div class="gallery-end" data-gallery="end">
 <@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
 	<#list page.list as a>
-									<a href="${getSitePath(a.url)}">
+									<a href="${getCmsPath(a.url)}">
 										<img<#if a.cover?has_content> src="${getUploadPath(getThumb(a.cover,200,150))}"</#if> style="margin-top:20px;" alt="${a.title!}">
 										<span>下一图集 &gt;</span>
 									</a>
@@ -78,7 +78,7 @@
 	<#if 2=page.pageIndex>
 		<#list page.list as a>
 								<span class="gallery-prev">
-									<a href="${getSitePath(a.url)}">
+									<a href="${getCmsPath(a.url)}">
 										<img<#if a.cover?has_content> src="${getUploadPath(getThumb(a.cover,100,75))}"</#if> alt="${a.title!}">
 										<span>&lt; 上一图集</span>
 									</a>
@@ -89,7 +89,7 @@
 <@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
 	<#list page.list as a>
 								<span class="gallery-next">
-									<a href="${getSitePath(a.url)}">
+									<a href="${getCmsPath(a.url)}">
 										<img<#if a.cover?has_content> src="${getUploadPath(getThumb(a.cover,100,75))}"</#if> alt="${a.title!}">
 										<span>下一图集 &gt;</span>
 									</a>
@@ -191,6 +191,6 @@ $.getJSON('content/clicks.json?id=${content.id}&callback=?', function(data){
 		</article>
 	</div>
 </main>
-<#include "../include_page/footer.html"/>
+<#include "../include/footer.html"/>
 </body>
 </html>

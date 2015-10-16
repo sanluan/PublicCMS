@@ -145,6 +145,7 @@ public class ApplicationConfig {
         ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
         bean.setBasename("config.language.message");
         bean.setCacheSeconds(3000);
+        bean.setUseCodeAsDefaultMessage(true);
         return bean;
     }
 

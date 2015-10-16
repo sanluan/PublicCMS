@@ -96,7 +96,7 @@ function addTag($id,$name){
 				</dd>
 			</dl>
 	<#if a??>
-		<@_tag ids=a.tagIds!>
+		<@_tag ids=a.tags!>
 		<script>
 			<#list map?keys as k>
 				addTag('${k}','${map[k].name}');

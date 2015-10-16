@@ -14,12 +14,15 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.system.SystemMoudle;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.system.SystemMoudleService;
+import com.publiccms.logic.service.system.SystemRoleMoudleService;
 
 @Controller
 @RequestMapping("systemMoudle")
 public class SystemMoudleController extends BaseController {
     @Autowired
     private SystemMoudleService service;
+    @Autowired
+    private SystemRoleMoudleService roleMoudleService;
     @Autowired
     private LogOperateService logOperateService;
 
@@ -45,6 +48,7 @@ public class SystemMoudleController extends BaseController {
     public String delete(Integer id, HttpServletRequest request, HttpSession session) {
         SystemMoudle entity = service.delete(id);
         if (notEmpty(entity)) {
+            roleMoudleService.deleteByMoudleId(id);
             logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "delete.dept", RequestUtils
                     .getIp(request), getDate(), id + ":" + entity.getName()));
         }

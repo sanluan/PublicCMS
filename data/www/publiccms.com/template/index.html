@@ -46,11 +46,20 @@ filter: grayscale(100%);
 </@_modelList>
 		</div>
 		<aside>
-			<#include "/ftl/index.html/1.html"/><#-- 开源中国 -->
 			<div>
-				<h3>热门排行</h3>
+				<h3>热门文章</h3>
 				<ul class="rank">
-<@_contentList status=1 endPublishDate=.now orderType='desc' orderField='clicks'count=10>
+<@_contentList status=1 modelId=1 endPublishDate=.now orderType='desc' orderField='clicks'count=10>
+	<#list page.list as a>
+					<li><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+	</#list>
+</@_contentList>
+				</ul>
+			</div>
+			<div>
+				<h3>热门图集</h3>
+				<ul class="rank">
+<@_contentList status=1 modelId=3 endPublishDate=.now orderType='desc' orderField='clicks'count=10>
 	<#list page.list as a>
 					<li><a href="${getSitePath(a.url)}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>
@@ -58,9 +67,30 @@ filter: grayscale(100%);
 				</ul>
 			</div>
 			<!--#include virtual="/include/category/list.html/2.html"--><#-- 精彩图集 -->
+			<#include "/ftl/index.html/1.html"/><#-- 开源中国 -->
 		</aside>
 	</div>
 </main>
-<!--#include virtual="/include/footer.html"-->
+<footer>
+	<div class="container">
+		<!--#include virtual="/include/index.html/business.html"--><#-- 页尾导航 -->
+		<!--#include virtual="/include/index.html/support.html"--><#-- 技术支持 -->
+		<!--#include virtual="/include/index.html/code.html"--><#-- 源码托管 -->
+		<!--#include virtual="/include/index.html/frendlink.html"--><#-- 友情链接 -->
+	</div>
+	<div class="container">
+		<script type="text/javascript" src="http://links.webscan.360.cn/index/index/0ee0303b90149ca2b7b3d67e754d6fa4"></script>
+		<div class="copyright">&copy;${.now?string('yyyy')} PublicCMS.com All Rights Reserved. 京ICP备15009690号</div>
+	</div>
+</footer>
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?bd81f02e5329554415de9ee15f916a98";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
 </body>
 </html>

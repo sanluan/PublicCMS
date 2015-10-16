@@ -19,7 +19,6 @@
 <div>
 	<h3>精彩图集</h3>
 	<div id="right-images" class="owl-carousel owl-theme">
-<#include "/ftl/cut.ftl"/>
 <#list dataList?reverse as a>
 		<div class="item">
 			<a href="${getSitePath(a.url)}" target="_blank">
@@ -41,6 +40,7 @@ $("#right-images").owlCarousel({
     autoPlay : 4000,
     stopOnHover : true,
     paginationSpeed : 1000,
+    autoHeight : false,
     goToFirstSpeed : 2000,
     transitionStyle:"fade",
     lazyLoad:true

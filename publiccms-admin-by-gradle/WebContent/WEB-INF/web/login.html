@@ -2,13 +2,13 @@
 <html lang="zh-CN">
 <head>
 	<title>登陆页面</title>
-		<#include "include_page/header.html"/>
+		<#include "include/header.html"/>
 	<script type="text/javascript">
 	$(function(){$('.login-form input').eq(0).focus();});
 	</script>
 </head>
 <body>
-<#include "include_page/nav.html"/>
+<#include "include/nav.html"/>
 <main>
     <div class="container">
    	<#if user?has_content>
@@ -32,6 +32,6 @@
 	</#if>
     </div>
 </main>
-<#include "include_page/footer.html"/>
+<#include "include/footer.html"/>
 </body>
 </html>

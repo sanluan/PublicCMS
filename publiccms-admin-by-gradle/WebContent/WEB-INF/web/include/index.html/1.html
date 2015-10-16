@@ -1,0 +1,27 @@
+<style>
+#index-focus{ margin-top:30px;}
+#index-focus .owl-item img{ display:block;width:100%;height:auto;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
+#index-focus .owl-item .item{ padding:5px;}
+</style>
+<div id="index-focus" class="owl-carousel owl-theme">
+  <#list dataList?reverse as a>
+    <div class="item"><a href="${getSitePath(a.url)}" target="_blank"><img class="lazyOwl" data-src="${getUploadPath(a.cover)}" alt="${a.title!}"></a></div>
+  </#list>
+</div>
+<script>
+$("#index-focus").owlCarousel({
+    items : 2,
+    itemsDesktop : false,
+    itemsDesktopSmall : false,
+    itemsTablet : [768,1],
+    itemsTabletSmall: false,
+    itemsMobile : false,
+    autoPlay : 4000,
+    stopOnHover : true,
+    paginationSpeed : 1000,
+    goToFirstSpeed : 2000,
+    autoHeight : false,
+    transitionStyle:"fade",
+    lazyLoad:true
+});
+</script>

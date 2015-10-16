@@ -4,7 +4,7 @@
 	<title>搜索 - PublicCMS</title>
 	<meta name="keywords" content="搜索"/>
 	<meta name="description" content="搜索  ${word!}"/>
-	<#include "include_page/header.html"/>
+	<!--#include virtual="/include/header.html"-->
 </head>
 <body>
 <!--#include virtual="/include/nav.html"-->
@@ -18,7 +18,6 @@
 				<form action="search.html" method="get">
 					<input type="text" name="word" value="${word!}"/>
 					<input type="submit" value="搜索"/>
-					<a href="facetSearch.html">高级搜索</a>
 				</form>
 			</div>
 <#if word?has_content>
@@ -31,12 +30,12 @@
 			<@_model ids=modelIds!><#assign modelMap=map/></@_model>
 			<#list page.list as a>
 				<#if modelMap[a.modelId?string].isImages>
-					<#include "include_page/image-list.html"/>
+					<#include "ftl/image-list.ftl"/>
 				<#else>
-					<#include "include_page/data-list.html"/>
+					<#include "ftl/data-list.ftl"/>
 				</#if>
 			</#list>
-			<#include "include_page/search_page.html"/>
+			<#include "ftl/search_page.ftl"/>
 		</@_search>
 </#if>
 		</div>
@@ -45,6 +44,6 @@
 		</aside>
 	</div>
 </main>
-<#include "include_page/footer.html"/>
+<!--#include virtual="/include/footer.html"-->
 </body>
 </html>

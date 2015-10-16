@@ -9,7 +9,7 @@
 	<title>${content.title} - ${category.name} - PublicCMS</title>
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
-	<#include "../include_page/header.html"/>
+	<#include "../include/header.html"/>
 <style>
 article .cover{ float:left;}
 article .cover img{ width:144px;height:192px;}
@@ -19,7 +19,7 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 </style>
 </head>
 <body>
-<#include "../include_page/nav.html"/>
+<#include "../include/nav.html"/>
 <main>
 	<div class="container bread">
 		<#include "../ftl/echoBread.ftl"/>
@@ -86,6 +86,6 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 		</aside>
 	</div>
 </main>
-<#include "../include_page/footer.html"/>
+<#include "../include/footer.html"/>
 </body>
 </html>

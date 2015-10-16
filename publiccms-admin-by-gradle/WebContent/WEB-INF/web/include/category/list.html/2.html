@@ -1,0 +1,47 @@
+<style>
+#right-images .owl-item img{
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+}
+#right-images .owl-item .item h4{
+  border: 1px solid #000;
+  background: rgba(255,255,255,0.7);
+  position: absolute;
+  top: 0px;
+  right:0px;
+  padding:2px 5px;
+}
+</style>
+<div>
+	<h3>精彩图集</h3>
+	<div id="right-images" class="owl-carousel owl-theme">
+<#list dataList?reverse as a>
+		<div class="item">
+			<a href="${getSitePath(a.url)}" target="_blank">
+				<img class="lazyOwl" data-src="${getUploadPath(a.cover)}" alt="${a.title!}">
+				<h4>${a.title}</h4>
+			</a>
+		</div>
+</#list>
+	</div>
+</div>
+<script>
+$("#right-images").owlCarousel({
+    items : 1,
+    itemsDesktop : false,
+    itemsDesktopSmall : false,
+    itemsTablet : [1230,3],
+    itemsTabletSmall: [840,2],
+    itemsMobile : [420,1],
+    autoPlay : 4000,
+    stopOnHover : true,
+    paginationSpeed : 1000,
+    goToFirstSpeed : 2000,
+    transitionStyle:"fade",
+    lazyLoad:true
+});
+</script>
