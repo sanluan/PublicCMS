@@ -72,7 +72,7 @@ public class UeditorController extends BaseController {
 
     @RequestMapping(params = "action=" + ACTION_CONFIT)
     @ResponseBody
-    public Map<String, Object> config(HttpServletRequest request) throws IllegalStateException, IOException {
+    public Map<String, Object> config(HttpServletRequest request) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("imageActionName", ACTION_UPLOAD);
         map.put("snapscreenActionName", ACTION_UPLOAD);
@@ -107,8 +107,7 @@ public class UeditorController extends BaseController {
 
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
     @ResponseBody
-    public Map<String, Object> upload(MultipartFile file, HttpServletRequest request, HttpSession session)
-            throws IllegalStateException, IOException {
+    public Map<String, Object> upload(MultipartFile file, HttpServletRequest request, HttpSession session) {
         if (!file.isEmpty()) {
             String suffix = fileComponent.getSuffix(file.getOriginalFilename());
             String fileName = fileComponent.getUploadFileName(suffix);
@@ -132,8 +131,7 @@ public class UeditorController extends BaseController {
 
     @RequestMapping(params = "action=" + ACTION_UPLOAD_SCRAW)
     @ResponseBody
-    public Map<String, Object> uploadScraw(String file, HttpServletRequest request, HttpSession session)
-            throws IllegalStateException, IOException {
+    public Map<String, Object> uploadScraw(String file, HttpServletRequest request, HttpSession session) {
         if (null != file) {
             byte[] data = decodeBase64(file);
             String fileName = fileComponent.getUploadFileName(SCRAW_TYPE);
@@ -159,8 +157,7 @@ public class UeditorController extends BaseController {
 
     @RequestMapping(params = "action=" + ACTION_CATCHIMAGE)
     @ResponseBody
-    public Map<String, Object> catchimage(HttpServletRequest request, HttpSession session) throws IllegalStateException,
-            IOException {
+    public Map<String, Object> catchimage(HttpServletRequest request, HttpSession session) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         try {
             String[] file = request.getParameterValues(FIELD_NAME + "[]");
@@ -217,8 +214,7 @@ public class UeditorController extends BaseController {
     @SuppressWarnings("unchecked")
     @RequestMapping(params = "action=" + ACTION_LISTFILE)
     @ResponseBody
-    public Map<String, Object> listfile(String file, Integer start, HttpSession session) throws IllegalStateException,
-            IOException {
+    public Map<String, Object> listfile(String file, Integer start, HttpSession session) {
         if (null == start) {
             start = 0;
         }
