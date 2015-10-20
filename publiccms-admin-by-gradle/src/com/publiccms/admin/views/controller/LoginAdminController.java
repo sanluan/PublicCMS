@@ -76,26 +76,6 @@ public class LoginAdminController extends BaseController {
             return REDIRECT + "index.html";
     }
 
-    @RequestMapping(value = { "systemUser/changePassword" }, method = RequestMethod.POST)
-    public String changePassword(Integer id, String oldpassword, String password, String repassword, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
-        if (notEmpty(id)) {
-            SystemUser user = service.getEntity(id);
-            if (notEmpty(user)) {
-                if (virifyNotEquals("password", user.getPassword(), VerificationUtils.encode(oldpassword), model)) {
-                    return TEMPLATE_ERROR;
-                } else if (virifyNotEmpty("password", password, model)
-                        || virifyNotEquals("repassword", password, repassword, model)) {
-                    return TEMPLATE_ERROR;
-                }
-                service.updatePassword(user.getId(), VerificationUtils.encode(password));
-                logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(), "changepassword",
-                        RequestUtils.getIp(request), getDate(), user.getId() + ":" + user.getPassword()));
-            }
-        }
-        return TEMPLATE_DONE;
-    }
-
     @RequestMapping(value = { "changePassword" }, method = RequestMethod.POST)
     public String changeMyselfPassword(Integer id, String oldpassword, String password, String repassword,
             HttpServletRequest request, HttpSession session, ModelMap model) {
