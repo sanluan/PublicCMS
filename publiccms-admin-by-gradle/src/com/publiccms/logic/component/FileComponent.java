@@ -293,7 +293,7 @@ public class FileComponent {
         try {
             File file = new File(getTemplateFilePath(filePath));
             if (!file.exists()) {
-                writeStringToFile(file, content);
+                writeStringToFile(file, content, "UTF-8");
                 return true;
             }
         } catch (IOException e) {
