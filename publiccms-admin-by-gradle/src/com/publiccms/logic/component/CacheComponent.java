@@ -6,10 +6,11 @@ import static com.publiccms.common.constants.FreeMakerConstants.TEMPLATE_SUFFIX;
 import static com.publiccms.common.view.InitializeFreeMarkerView.UNSAFE_PATTERN;
 import static com.sanluan.common.constants.CommonConstants.NUMBER_PATTERN;
 import static freemarker.ext.servlet.FreemarkerServlet.KEY_INCLUDE;
-import static org.apache.commons.io.FileUtils.deleteQuietly;
+import static org.apache.commons.io.FileUtils.cleanDirectory;
 import static org.apache.commons.lang3.time.DateUtils.addSeconds;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -107,7 +108,10 @@ public class CacheComponent {
         }
         File cacheDir = new File(htmlFilePath.substring(0, htmlFilePath.lastIndexOf(TEMPLATE_SUFFIX)));
         if (cacheDir.isDirectory()) {
-            deleteQuietly(cacheDir);
+            try {
+                cleanDirectory(cacheDir);
+            } catch (IOException e) {
+            }
         }
     }
 
@@ -117,7 +121,10 @@ public class CacheComponent {
     public void clearTemplateCache() {
         freeMarkerConfigurer.getConfiguration().clearTemplateCache();
         File cacheDir = new File(basePath + TEMPLATE_LOADER_PATH + cacheFileDirectory);
-        deleteQuietly(cacheDir);
+        try {
+            cleanDirectory(cacheDir);
+        } catch (IOException e) {
+        }
     }
 
     private String createCache(String templatePath, String path, ModelMap model, HttpServletResponse response) {
