@@ -45,11 +45,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<#include "../include_page/meger.html"/>
 			<#list page.list as a>
-				<@meger 'userIds' a.userId!/>
+				<@t.meger 'userIds' a.userId!/>
 			</#list>
-			<@_systemUser ids=userIds!><#assign userMap=map/></@_systemUser>
+			<@_systemUser ids=t.userIds!><#assign userMap=map/></@_systemUser>
 			
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">

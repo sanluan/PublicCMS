@@ -40,11 +40,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<#include "../include_page/meger.html"/>
 			<#list page.list as a>
-				<@meger 'moudleIds' a.parentId!/>
+				<@t.meger 'moudleIds' a.parentId!/>
 			</#list>
-			<@_systemMoudle ids=moudleIds!><#assign moudleMap=map/></@_systemMoudle>
+			<@_systemMoudle ids=t.moudleIds!><#assign moudleMap=map/></@_systemMoudle>
 			
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">

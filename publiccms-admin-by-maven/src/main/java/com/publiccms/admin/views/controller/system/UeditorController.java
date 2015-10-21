@@ -23,6 +23,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -106,27 +107,29 @@ public class UeditorController extends BaseController {
     }
 
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
-    @ResponseBody
-    public Map<String, Object> upload(MultipartFile file, HttpServletRequest request, HttpSession session) {
+    public String upload(MultipartFile file, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (!file.isEmpty()) {
-            String suffix = fileComponent.getSuffix(file.getOriginalFilename());
+            String originalName=file.getOriginalFilename();
+            String suffix = fileComponent.getSuffix(originalName);
             String fileName = fileComponent.getUploadFileName(suffix);
             try {
-                String name = fileComponent.upload(file, fileName);
+                fileComponent.upload(file, fileName);
                 logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(),
                         LogOperateService.OPERATE_UPLOADFILE, RequestUtils.getIp(request), getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", file.getSize());
-                map.put("title", name);
+                map.put("title", originalName);
                 map.put("url", fileName);
                 map.put("type", suffix);
-                map.put("original", file.getOriginalFilename());
-                return map;
+                map.put("original", originalName);
+                model.put("result", map);
             } catch (IllegalStateException | IOException e) {
-                log.debug(e.getMessage());
+                model.put("result", getResultMap(false));
             }
+        } else {
+            model.put("result", getResultMap(false));
         }
-        return getResultMap(false);
+        return "common/mapResult";
     }
 
     @RequestMapping(params = "action=" + ACTION_UPLOAD_SCRAW)

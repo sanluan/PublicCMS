@@ -34,11 +34,10 @@
 			</tr>
 		</thead>
 		<tbody>
-			<#include "../include_page/meger.html"/>
 			<#list page.list as a>
-				<@meger 'taskIds' a.taskId!/>
+				<@t.meger 'taskIds' a.taskId!/>
 			</#list>
-			<@_systemTask ids=taskIds!><#assign taskMap=map/></@_systemTask>
+			<@_systemTask ids=t.taskIds!><#assign taskMap=map/></@_systemTask>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
