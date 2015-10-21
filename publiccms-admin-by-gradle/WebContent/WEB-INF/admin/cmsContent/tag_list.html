@@ -1,12 +1,11 @@
-<#include "../include_page/meger.html"/>
 <@_contentTagList tagId=tagId>
 	<#list page.list as a>
 		<@_tag id=a.id>
-			<@meger 'contentIds' a.contentId/>
+			<@t.meger 'contentIds' a.contentId/>
 		</@_tag>
 	</#list>
 </@_contentTagList>
-<@_content ids=contentIds>
+<@_content ids=t.contentIds>
 <form id="pagerForm" method="post">
 	<#include "../include_page/queryParamters.html"/>
 </form>

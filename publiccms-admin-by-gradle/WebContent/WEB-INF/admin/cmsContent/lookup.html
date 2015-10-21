@@ -46,16 +46,15 @@
 			</tr>
 		</thead>
 		<tbody>
-			<#include "../include_page/meger.html"/>
 			<#list page.list as a>
-				<@meger 'userIds' a.userId!/>
-				<@meger 'categoryIds' a.categoryId!/>
-				<@meger 'modelIds' a.modelId!/>
+				<@t.meger 'userIds' a.userId!/>
+				<@t.meger 'categoryIds' a.categoryId!/>
+				<@t.meger 'modelIds' a.modelId!/>
 			</#list>
 			
-			<@_systemUser ids=userIds!><#assign userMap=map/></@_systemUser>
-			<@_category ids=categoryIds!><#assign categoryMap=map/></@_category>
-			<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+			<@_systemUser ids=t.userIds!><#assign userMap=map/></@_systemUser>
+			<@_category ids=t.categoryIds!><#assign categoryMap=map/></@_category>
+			<@_model ids=t.modelIds!><#assign modelMap=map/></@_model>
 			
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">

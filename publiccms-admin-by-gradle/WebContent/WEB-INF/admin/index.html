@@ -53,11 +53,10 @@ function editorSyn(ename){
 	</ul>
 	<ul id="navMenu">
 <@_systemMoudleList>
-	<#include "include_page/meger.html"/>
 	<#list page.list as a>
-		<@meger 'moudleIds' a.id!/>
+		<@t.meger 'moudleIds' a.id!/>
 	</#list>
-	<@_systemRoleMoudle roleIds=admin.roles moudleIds=moudleIds!><#assign roleMoudleMap=map/></@_systemRoleMoudle>
+	<@_systemRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map/></@_systemRoleMoudle>
 
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>

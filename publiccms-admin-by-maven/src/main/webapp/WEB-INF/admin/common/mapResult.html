@@ -1,0 +1,5 @@
+{
+	<#list result?keys as k>
+		"${k}":"${result[k]}"<#if k?has_next>,</#if>
+	</#list>
+}
