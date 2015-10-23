@@ -26,7 +26,7 @@ ext {
 }
 
 war{
-	baseName ='public-cms'
+	baseName ='admin'
 	from("$projectDir/src/") {
 		include "*.xml"
 		into('WEB-INF/classes')
