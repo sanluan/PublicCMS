@@ -15,7 +15,8 @@ public class CmsContentBridge implements FieldBridge {
         CmsContent content = (CmsContent) value;
         CmsContentAttribute entity = contentAttributeService.getEntity(content.getId());
         if (null != entity) {
-            luceneOptions.addFieldToDocument(name+".text", entity.getText(), document);
+            content.setDescription(content.getDescription() + entity.getText());
+            value = content;
         }
     }
 }

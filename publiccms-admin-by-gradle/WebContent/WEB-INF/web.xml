@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- PublicCMS使用Servlet3.0技术，Web.xml不再是整个工程的入口，config.initializer.WebInitializer为工程的入口类，config.*Config为Spring配置 -->
+<!-- PublicCMS使用Servlet3.0技术，Web.xml不再是整个工程的入口，config.initializer.*Initializer为工程的入口类，config.*Config为Spring配置 -->
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://java.sun.com/xml/ns/javaee"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"

@@ -18,6 +18,7 @@ import org.hibernate.search.query.engine.spi.FacetManager;
 import org.hibernate.search.query.facet.Facet;
 import org.hibernate.search.query.facet.FacetSortOrder;
 import org.hibernate.search.query.facet.FacetingRequest;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sanluan.common.handler.FacetPageHandler;
@@ -159,6 +160,15 @@ public abstract class BaseDao<E> extends Base {
     }
 
     /**
+     * @param query
+     * @return
+     */
+    @SuppressWarnings("unchecked")
+    protected List<Map<String, Object>> getMapList(QueryHandler queryHandler) {
+        return getQuery(queryHandler).setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP).list();
+    }
+
+    /**
      * @param entityList
      */
     protected void index(List<E> entityList) {
@@ -287,7 +297,8 @@ public abstract class BaseDao<E> extends Base {
      * @param maxResults
      * @return
      */
-    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
+    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults,
+            boolean aliasToEntityMap) {
         PageHandler page;
         if (notEmpty(pageSize)) {
             int totalCount = countResult(queryHandler);
@@ -297,8 +308,34 @@ public abstract class BaseDao<E> extends Base {
             page = new PageHandler(pageIndex, pageSize, 0, maxResults);
         }
         queryHandler.setCacheable(true);
-        page.setList(getList(queryHandler));
+        if (aliasToEntityMap) {
+            page.setList(getMapList(queryHandler));
+        } else {
+            page.setList(getList(queryHandler));
+        }
         return page;
+    }
+
+    /**
+     * @param queryHandler
+     * @param pageIndex
+     * @param pageSize
+     * @param maxResults
+     * @return
+     */
+    protected PageHandler getMapPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
+        return getPage(queryHandler, pageIndex, pageSize, maxResults, true);
+    }
+
+    /**
+     * @param queryHandler
+     * @param pageIndex
+     * @param pageSize
+     * @param maxResults
+     * @return
+     */
+    protected PageHandler getMapPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
+        return getPage(queryHandler, pageIndex, pageSize, null, true);
     }
 
     /**
@@ -308,7 +345,7 @@ public abstract class BaseDao<E> extends Base {
      * @return
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, pageIndex, pageSize, null);
+        return getPage(queryHandler, pageIndex, pageSize, null, false);
     }
 
     /**
