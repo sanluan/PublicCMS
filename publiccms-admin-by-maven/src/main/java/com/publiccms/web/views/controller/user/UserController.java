@@ -53,7 +53,7 @@ public class UserController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = { "changePassword" })
+    @RequestMapping(value = "changePassword")
     public String changePassword(String oldpassword, String password, String repassword, HttpServletRequest request,
             HttpSession session, HttpServletResponse response, ModelMap model) {
         SystemUser user = UserUtils.getUserFromSession(session);
@@ -81,7 +81,7 @@ public class UserController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = { "saveEmail" })
+    @RequestMapping(value = "saveEmail")
     public String saveEmail(String email, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (virifyNotEmpty("email", email, model) || virifyNotEMail("email", email, model)
                 || virifyHasExist("email", service.findByEmail(email), model)) {
@@ -105,9 +105,9 @@ public class UserController extends BaseController {
             mailComponent.sendHtml(email, LanguagesUtils.getMessage(request, "email.register.title", user.getNickName()),
                     fileComponent.dealStringTemplate(LanguagesUtils.getMessage(request, "email.register.template"), emailModel));
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         } catch (TemplateException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         model.addAttribute("message", "saveEmail.success");
         return REDIRECT + "index.html";

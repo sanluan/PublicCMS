@@ -47,7 +47,7 @@ public class SystemTaskAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "runOnce" })
+    @RequestMapping("runOnce")
     public String runOnce(Integer id, HttpServletRequest request, HttpSession session) {
         SystemTask entity = service.getEntity(id);
         if (notEmpty(entity)) {
@@ -58,7 +58,7 @@ public class SystemTaskAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "pause" })
+    @RequestMapping("pause")
     public String pause(Integer id, HttpServletRequest request, HttpSession session) {
         SystemTask entity = service.updateStatus(id, ScheduledTask.TASK_STATUS_PAUSE);
         if (notEmpty(entity)) {
@@ -69,7 +69,7 @@ public class SystemTaskAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "resume" })
+    @RequestMapping("resume")
     public String resume(Integer id, HttpServletRequest request, HttpSession session) {
         SystemTask entity = service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
         if (notEmpty(entity)) {

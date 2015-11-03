@@ -39,7 +39,7 @@ public class LoginAdminController extends BaseController {
     @Autowired
     private LogOperateService logOperateService;
 
-    @RequestMapping(value = { "login" }, method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         if (virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {
@@ -69,14 +69,14 @@ public class LoginAdminController extends BaseController {
             try {
                 returnUrl = URLDecoder.decode(returnUrl, "utf-8");
             } catch (UnsupportedEncodingException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
             return REDIRECT + returnUrl;
         } else
             return REDIRECT + "index.html";
     }
 
-    @RequestMapping(value = { "changePassword" }, method = RequestMethod.POST)
+    @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     public String changeMyselfPassword(Integer id, String oldpassword, String password, String repassword,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SystemUser user = UserUtils.getAdminFromSession(session);
@@ -94,10 +94,17 @@ public class LoginAdminController extends BaseController {
         return "common/ajaxTimeout";
     }
 
-    @RequestMapping(value = { "logout" }, method = RequestMethod.GET)
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
     public String logout(HttpSession session) {
         UserUtils.clearAdminToSession(session);
         return REDIRECT + "index.html";
+    }
+
+
+    @RequestMapping(value = "clearTemplateCache")
+    public String clearTemplateCache(HttpServletRequest request) {
+        cacheComponent.clearTemplateCache();
+        return TEMPLATE_DONE;
     }
 
     protected boolean virifyNotAdmin(SystemUser user, ModelMap model) {
@@ -106,11 +113,5 @@ public class LoginAdminController extends BaseController {
             return true;
         }
         return false;
-    }
-
-    @RequestMapping(value = { "clearTemplateCache" })
-    public String clearTemplateCache(HttpServletRequest request) {
-        cacheComponent.clearTemplateCache();
-        return TEMPLATE_DONE;
     }
 }

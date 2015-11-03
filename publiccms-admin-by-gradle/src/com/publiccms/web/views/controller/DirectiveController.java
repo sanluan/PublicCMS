@@ -59,9 +59,9 @@ public class DirectiveController extends BaseController {
                 handler.put("error", INTERFACE_NOT_FOUND).render();
             }
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         } catch (Exception e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 

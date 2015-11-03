@@ -10,6 +10,7 @@ import com.publiccms.entities.cms.CmsTag;
 import com.publiccms.logic.service.cms.CmsContentTagService;
 import com.publiccms.logic.service.cms.CmsTagService;
 import com.sanluan.common.base.BaseController;
+
 @Controller
 @RequestMapping("cmsTag")
 public class CmsTagController extends BaseController {
@@ -18,17 +19,17 @@ public class CmsTagController extends BaseController {
     @Autowired
     private CmsContentTagService contentTagService;
 
-    @RequestMapping(value = { SAVE })
+    @RequestMapping(SAVE)
     public String save(CmsTag entity, HttpServletRequest request) {
         if (notEmpty(entity.getId())) {
-            service.update(entity.getId(), entity, new String[]{ID});
+            service.update(entity.getId(), entity, new String[] { ID });
         } else {
             service.save(entity);
         }
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { DELETE })
+    @RequestMapping(DELETE)
     public String delete(Integer[] ids) {
         if (notEmpty(ids)) {
             for (Integer id : ids) {

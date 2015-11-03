@@ -34,7 +34,7 @@ public class ShortMessageTemplateExceptionHandler implements TemplateExceptionHa
                 writer.write("[SOME ERRORS OCCURRED！]");
             }
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 

@@ -77,7 +77,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
                     scheduler.rescheduleJob(triggerKey, trigger);
                 }
             } catch (SchedulerException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
                 systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
             }
         }
@@ -94,7 +94,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
                 scheduler.triggerJob(JobKey.jobKey(getTaskName(id)));
             }
         } catch (SchedulerException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
         }
     }
@@ -110,7 +110,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
                 scheduler.pauseJob(JobKey.jobKey(getTaskName(id)));
             }
         } catch (SchedulerException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
         }
     }
@@ -126,7 +126,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
                 scheduler.resumeJob(JobKey.jobKey(getTaskName(id)));
             }
         } catch (SchedulerException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
             systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
         }
     }
@@ -141,7 +141,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
             try {
                 scheduler.deleteJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
     }
@@ -163,7 +163,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
                 return (CronTrigger) trigger;
             }
         } catch (SchedulerException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         return null;
     }

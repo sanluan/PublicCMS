@@ -93,7 +93,7 @@ public class CmsCategoryController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "static" })
+    @RequestMapping("static")
     public String publish(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         CmsCategory entity = service.getEntity(id);
         if (notEmpty(entity)) {

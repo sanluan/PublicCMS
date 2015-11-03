@@ -39,7 +39,7 @@ public class ExtendComponent {
             try {
                 return objectMapper.writeValueAsString(map);
             } catch (JsonProcessingException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return "";
@@ -53,7 +53,7 @@ public class ExtendComponent {
                 try {
                     return (List<Map<String, String>>) objectMapper.readValue(cmsContentAttribute.getText(), List.class);
                 } catch (Exception e) {
-                    log.debug(e.getMessage());
+                    log.error(e.getMessage());
                 }
             }
         }
@@ -77,7 +77,7 @@ public class ExtendComponent {
                 }
                 return objectMapper.writeValueAsString(list);
             } catch (JsonProcessingException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return "[]";
@@ -100,7 +100,7 @@ public class ExtendComponent {
                 }
                 return objectMapper.writeValueAsString(list);
             } catch (JsonProcessingException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return "[]";
@@ -118,7 +118,7 @@ public class ExtendComponent {
             try {
                 return objectMapper.writeValueAsString(map);
             } catch (JsonProcessingException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return "";

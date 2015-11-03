@@ -23,7 +23,7 @@ public class CmsFacetSearchDirective extends BaseDirective {
                     handler.getString("word"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
             handler.put("page", page).render();
         } catch (EmptyQueryException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 

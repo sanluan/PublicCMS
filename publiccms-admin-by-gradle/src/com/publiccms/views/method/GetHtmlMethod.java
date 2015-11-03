@@ -39,21 +39,21 @@ public class GetHtmlMethod extends BaseMethod {
                         return entity.getContent();
                     }
                 } catch (Exception e) {
-                    log.debug(e.getMessage());
+                    log.error(e.getMessage());
                 } finally {
                     try {
                         response.close();
                     } catch (IOException e) {
-                        log.debug(e.getMessage());
+                        log.error(e.getMessage());
                     }
                 }
             } catch (Exception e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             } finally {
                 try {
                     httpclient.close();
                 } catch (IOException e) {
-                    log.debug(e.getMessage());
+                    log.error(e.getMessage());
                 }
             }
         }

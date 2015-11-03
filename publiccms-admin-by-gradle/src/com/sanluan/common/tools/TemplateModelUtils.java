@@ -1,14 +1,12 @@
 package com.sanluan.common.tools;
 
-import static com.sanluan.common.constants.CommonConstants.FULL_DATE_FORMAT;
-import static com.sanluan.common.constants.CommonConstants.FULL_DATE_LENGTH;
-import static com.sanluan.common.constants.CommonConstants.SHORT_DATE_FORMAT;
-import static com.sanluan.common.constants.CommonConstants.SHORT_DATE_LENGTH;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.split;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import freemarker.template.TemplateBooleanModel;
@@ -23,10 +21,16 @@ import freemarker.template.TemplateSequenceModel;
 
 /**
  * 
- * TemplateModelUtils 模板数据模型帮助泪
+ * TemplateModelUtils 模板数据模型帮助类
  *
  */
 public class TemplateModelUtils {
+    public static final DateFormat FULL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static final int FULL_DATE_LENGTH = 19;
+
+    public static final DateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
+    public static final int SHORT_DATE_LENGTH = 10;
+
     /**
      * @param model
      * @return

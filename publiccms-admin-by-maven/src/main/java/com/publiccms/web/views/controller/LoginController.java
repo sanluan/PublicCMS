@@ -52,7 +52,7 @@ public class LoginController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = { "login" }, method = RequestMethod.POST)
+    @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         if (virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {
@@ -86,7 +86,7 @@ public class LoginController extends BaseController {
             try {
                 returnUrl = URLDecoder.decode(returnUrl, "utf-8");
             } catch (UnsupportedEncodingException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
             return REDIRECT + returnUrl;
         } else {
@@ -96,10 +96,6 @@ public class LoginController extends BaseController {
 
     /**
      * @param entity
-     * @return
-     */
-    /**
-     * @param entity
      * @param repassword
      * @param request
      * @param session
@@ -107,7 +103,7 @@ public class LoginController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = { "register" })
+    @RequestMapping("register" )
     public String register(SystemUser entity, String repassword, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         if (virifyNotEmpty("username", entity.getName(), model) || virifyNotEmpty("nickname", entity.getNickName(), model)
@@ -137,7 +133,7 @@ public class LoginController extends BaseController {
      * @param model
      * @return
      */
-    @RequestMapping(value = { "verifyEmail" })
+    @RequestMapping("verifyEmail")
     public String verifyEmail(String code, HttpSession session, ModelMap model) {
         LogEmailCheck logEmailCheck = logEmailCheckService.findByCode(code);
         if (virifyNotEmpty("verifyEmail.code", code, model) || virifyNotExist("verifyEmail.logEmailCheck", logEmailCheck, model)) {
@@ -155,7 +151,7 @@ public class LoginController extends BaseController {
      * @param response
      * @return
      */
-    @RequestMapping(value = { "logout" }, method = RequestMethod.GET)
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
     public String logout(HttpServletRequest request, HttpServletResponse response) {
         UserUtils.clearUserToSession(request, response);
         return REDIRECT + "index.html";

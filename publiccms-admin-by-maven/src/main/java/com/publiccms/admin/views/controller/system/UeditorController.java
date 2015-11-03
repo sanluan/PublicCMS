@@ -152,7 +152,7 @@ public class UeditorController extends BaseController {
                 map.put("original", "scraw" + SCRAW_TYPE);
                 return map;
             } catch (IllegalStateException | IOException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return getResultMap(false);
@@ -189,12 +189,12 @@ public class UeditorController extends BaseController {
                             list.add(map);
                         }
                     } catch (Exception e) {
-                        log.debug(e.getMessage());
+                        log.error(e.getMessage());
                     } finally {
                         try {
                             response.close();
                         } catch (IOException e) {
-                            log.debug(e.getMessage());
+                            log.error(e.getMessage());
                         }
                     }
                 }
@@ -203,12 +203,12 @@ public class UeditorController extends BaseController {
                 return map;
             }
         } catch (Exception e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         } finally {
             try {
                 httpclient.close();
             } catch (IOException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return getResultMap(false);

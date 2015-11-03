@@ -40,7 +40,7 @@ public class CmsTemplateController extends BaseController {
         return staticPage(path, request, session);
     }
 
-    @RequestMapping(value = { "create" })
+    @RequestMapping("create" )
     public String create(String path, String content, HttpServletRequest request, HttpSession session, ModelMap model) {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("keywords", request.getParameter("keywords"));
@@ -70,7 +70,7 @@ public class CmsTemplateController extends BaseController {
         return staticPage(path, request, session);
     }
 
-    @RequestMapping(value = { "update" })
+    @RequestMapping("update")
     public String update(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         Map<String, Object> map = fileComponent.getTemplateMetadata(path);
         map.put("keywords", request.getParameter("keywords"));
@@ -89,7 +89,7 @@ public class CmsTemplateController extends BaseController {
         return staticPage(path, request, session);
     }
 
-    @RequestMapping(value = { "staticPlace" })
+    @RequestMapping("staticPlace")
     public String staticPlace(String path, HttpServletRequest request, HttpSession session) {
         fileComponent.staticPlace(path);
         if (notEmpty(path)) {
@@ -99,7 +99,7 @@ public class CmsTemplateController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "staticPage" })
+    @RequestMapping("staticPage")
     public String staticPage(String path, HttpServletRequest request, HttpSession session) {
         List<FileInfo> list = fileComponent.getFileList(path, true);
         for (FileInfo fileInfo : list) {

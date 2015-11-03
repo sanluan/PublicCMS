@@ -1,9 +1,9 @@
 package com.sanluan.common.handler;
 
-import static com.sanluan.common.constants.CommonConstants.FULL_DATE_FORMAT;
-import static com.sanluan.common.constants.CommonConstants.FULL_DATE_LENGTH;
-import static com.sanluan.common.constants.CommonConstants.SHORT_DATE_FORMAT;
-import static com.sanluan.common.constants.CommonConstants.SHORT_DATE_LENGTH;
+import static com.sanluan.common.tools.TemplateModelUtils.FULL_DATE_FORMAT;
+import static com.sanluan.common.tools.TemplateModelUtils.FULL_DATE_LENGTH;
+import static com.sanluan.common.tools.TemplateModelUtils.SHORT_DATE_FORMAT;
+import static com.sanluan.common.tools.TemplateModelUtils.SHORT_DATE_LENGTH;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.trimToEmpty;
 import static org.apache.commons.lang3.StringUtils.split;
@@ -64,7 +64,7 @@ public class HttpParameterHandler extends BaseHandler {
             try {
                 return Integer.valueOf(result);
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;
@@ -77,7 +77,7 @@ public class HttpParameterHandler extends BaseHandler {
             try {
                 return Short.valueOf(result);
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;
@@ -90,7 +90,7 @@ public class HttpParameterHandler extends BaseHandler {
             try {
                 return Long.valueOf(result);
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;
@@ -103,7 +103,7 @@ public class HttpParameterHandler extends BaseHandler {
             try {
                 return Double.valueOf(result);
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;
@@ -125,7 +125,7 @@ public class HttpParameterHandler extends BaseHandler {
             try {
                 return Boolean.valueOf(result);
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;
@@ -144,10 +144,10 @@ public class HttpParameterHandler extends BaseHandler {
                         return SHORT_DATE_FORMAT.parse(temp);
                     }
                 } catch (ParseException e) {
-                    log.debug(e.getMessage());
+                    log.error(e.getMessage());
                 }
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;
