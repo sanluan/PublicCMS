@@ -1,7 +1,7 @@
 package com.sanluan.common.handler;
 
+import static org.apache.commons.lang3.StringUtils.uncapitalize;
 import static org.apache.commons.logging.LogFactory.getLog;
-import static org.springframework.util.StringUtils.uncapitalize;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -61,7 +61,7 @@ public class FreeMarkerExtendHandler implements ApplicationContextAware {
             log.info((directiveMap.size()) + " directives created:[" + directives.toString() + "];" + methodMap.size()
                     + " methods created:[" + methods.toString() + "]");
         } catch (TemplateModelException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 

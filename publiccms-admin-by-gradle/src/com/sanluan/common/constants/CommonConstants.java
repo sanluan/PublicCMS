@@ -1,7 +1,5 @@
 package com.sanluan.common.constants;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 
 public class CommonConstants {
     public static final String SESSION_USER = "S_USER";
@@ -25,10 +23,4 @@ public class CommonConstants {
 
     public static final int DEFAULT_PAGE_SIZE = 20;
     public static final int MAX_PAGE_SIZE = 100;
-
-    public static final DateFormat FULL_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public static final int FULL_DATE_LENGTH = 19;
-
-    public static final DateFormat SHORT_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-    public static final int SHORT_DATE_LENGTH = 10;
 }

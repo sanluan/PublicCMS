@@ -119,7 +119,7 @@ public class CmsContentController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "static" })
+    @RequestMapping("static")
     public String publish(Integer[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(ids)) {
             for (Integer id : ids) {
@@ -145,7 +145,7 @@ public class CmsContentController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "check" })
+    @RequestMapping("check")
     public String check(Integer[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(ids)) {
             for (Integer id : ids) {

@@ -95,7 +95,7 @@ public abstract class BaseHandler implements RenderHandler {
                 }
                 return ids;
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;
@@ -123,7 +123,7 @@ public abstract class BaseHandler implements RenderHandler {
                 }
                 return ids;
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;

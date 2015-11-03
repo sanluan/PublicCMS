@@ -57,7 +57,7 @@ public class NoCacheDirective implements TemplateDirectiveModel {
                         environment.getOut().append(currentElement.getSource());
                     }
                 } catch (Exception e) {
-                    log.debug(e.getMessage());
+                    log.error(e.getMessage());
                 }
             } else {
                 templateDirectiveBody.render(environment.getOut());

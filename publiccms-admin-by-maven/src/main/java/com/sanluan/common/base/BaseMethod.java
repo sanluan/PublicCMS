@@ -74,7 +74,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
                 }
                 return ids;
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;
@@ -91,7 +91,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
                 }
                 return ids;
             } catch (NumberFormatException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return null;

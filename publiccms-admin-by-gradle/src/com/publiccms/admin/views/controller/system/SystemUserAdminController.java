@@ -97,7 +97,7 @@ public class SystemUserAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "enable" }, method = RequestMethod.POST)
+    @RequestMapping(value = "enable", method = RequestMethod.POST)
     public String enable(Integer id, String repassword, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (virifyEquals("admin.operate", UserUtils.getAdminFromSession(session), id, model)) {
             return TEMPLATE_ERROR;
@@ -110,7 +110,7 @@ public class SystemUserAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "disable" }, method = RequestMethod.POST)
+    @RequestMapping(value = "disable", method = RequestMethod.POST)
     public String disable(Integer id, String repassword, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (virifyEquals("admin.operate", UserUtils.getAdminFromSession(session), id, model)) {
             return TEMPLATE_ERROR;

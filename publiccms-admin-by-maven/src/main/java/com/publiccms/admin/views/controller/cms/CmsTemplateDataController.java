@@ -52,7 +52,7 @@ public class CmsTemplateDataController extends BaseController {
                             RequestUtils.getIp(request), getDate(), path));
                 }
             } catch (IOException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return TEMPLATE_DONE;
@@ -69,7 +69,7 @@ public class CmsTemplateDataController extends BaseController {
                         RequestUtils.getIp(request), getDate(), path));
             }
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         return TEMPLATE_DONE;
     }
@@ -83,7 +83,7 @@ public class CmsTemplateDataController extends BaseController {
                         RequestUtils.getIp(request), getDate(), path));
             }
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         return TEMPLATE_DONE;
     }

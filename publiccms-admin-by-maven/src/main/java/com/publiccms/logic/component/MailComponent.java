@@ -100,7 +100,7 @@ class SendThread extends Thread {
                 try {
                     Thread.sleep(1000 * 60);
                 } catch (InterruptedException e1) {
-                    log.debug(e1.getMessage());
+                    log.error(e1.getMessage());
                 }
             }
         }

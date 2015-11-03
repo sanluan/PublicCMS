@@ -30,7 +30,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.publiccms.entities.cms.CmsCategory;
@@ -117,12 +116,8 @@ public class FileComponent {
                 if (isNotBlank(attribute.getData())) {
                     try {
                         model.put("extend", objectMapper.readValue(attribute.getData(), Map.class));
-                    } catch (JsonParseException e) {
-                        log.debug(e.getMessage());
-                    } catch (JsonMappingException e) {
-                        log.debug(e.getMessage());
                     } catch (IOException e) {
-                        log.debug(e.getMessage());
+                        log.error(e.getMessage());
                     }
                 }
                 if (isNotBlank(attribute.getText())) {
@@ -154,9 +149,9 @@ public class FileComponent {
                                 model.put("page", page);
                             }
                         } catch (IOException e) {
-                            log.debug(e.getMessage());
+                            log.error(e.getMessage());
                         } catch (TemplateException e) {
-                            log.debug(e.getMessage());
+                            log.error(e.getMessage());
                         }
                     }
                 }
@@ -201,9 +196,9 @@ public class FileComponent {
                     createStaticFile(templatePath, prefixFilePath + '_' + i + suffixFilePath, model);
                 }
             } catch (IOException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             } catch (TemplateException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         model.put("pageIndex", 1);
@@ -233,6 +228,7 @@ public class FileComponent {
             }
             return new StaticResult(true, filePath);
         } catch (Exception e) {
+            log.error(e.getMessage());
             return new StaticResult();
         }
     }
@@ -276,7 +272,7 @@ public class FileComponent {
                 }
             }
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         dirList.addAll(fileList);
         return dirList;
@@ -297,7 +293,7 @@ public class FileComponent {
                 return true;
             }
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         return false;
     }
@@ -320,7 +316,7 @@ public class FileComponent {
                 return true;
             }
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         return false;
     }
@@ -355,7 +351,7 @@ public class FileComponent {
                 return true;
             }
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         return false;
     }
@@ -649,7 +645,7 @@ public class FileComponent {
         try {
             configuration.setDirectoryForTemplateLoading(new File(getTemplateFilePath("")));
         } catch (IOException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
         configuration.setAutoImports(new HashMap<String, String>());
         configuration.setAutoIncludes(new ArrayList<String>());
@@ -657,7 +653,7 @@ public class FileComponent {
             configuration.setAllSharedVariables(new SimpleHash(freeMarkerExtendHandler.getFreemarkerVariables(),
                     freeMarkerConfigurer.getConfiguration().getObjectWrapper()));
         } catch (TemplateModelException e) {
-            log.debug(e.getMessage());
+            log.error(e.getMessage());
         }
     }
 

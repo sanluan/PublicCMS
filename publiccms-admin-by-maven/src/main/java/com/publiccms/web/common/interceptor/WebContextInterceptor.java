@@ -63,7 +63,7 @@ public class WebContextInterceptor extends BaseInterceptor {
                             + getURL(request) + getEncodeQueryString(request.getQueryString()));
                     return false;
                 } catch (IOException e) {
-                    log.debug(e.getMessage());
+                    log.error(e.getMessage());
                 }
             }
         }

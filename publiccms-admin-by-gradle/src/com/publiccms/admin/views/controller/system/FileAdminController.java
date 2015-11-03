@@ -27,7 +27,7 @@ public class FileAdminController extends BaseController {
     @Autowired
     private LogOperateService logOperateService;
 
-    @RequestMapping(value = { "doUpload" }, method = RequestMethod.POST)
+    @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     public String upload(MultipartFile file, String field, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         if (!file.isEmpty()) {
@@ -39,7 +39,7 @@ public class FileAdminController extends BaseController {
                 logOperateService.save(new LogOperate(UserUtils.getAdminFromSession(session).getId(),
                         LogOperateService.OPERATE_UPLOADFILE, RequestUtils.getIp(request), getDate(), fileName));
             } catch (IllegalStateException | IOException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return "common/upload";

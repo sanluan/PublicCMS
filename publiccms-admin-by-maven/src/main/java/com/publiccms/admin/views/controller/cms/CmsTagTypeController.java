@@ -15,7 +15,7 @@ public class CmsTagTypeController extends BaseController {
     @Autowired
     private CmsTagTypeService service;
 
-    @RequestMapping(value = { SAVE })
+    @RequestMapping( SAVE )
     public String save(CmsTagType entity, HttpServletRequest request) {
         if (notEmpty(entity.getId())) {
             service.update(entity.getId(), entity, new String[]{ID});
@@ -25,7 +25,7 @@ public class CmsTagTypeController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { DELETE })
+    @RequestMapping(DELETE )
     public String delete(Integer id) {
         service.delete(id);
         return TEMPLATE_DONE;

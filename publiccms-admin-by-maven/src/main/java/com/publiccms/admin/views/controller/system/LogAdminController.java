@@ -21,7 +21,7 @@ public class LogAdminController extends BaseController {
     @Autowired
     private LogTaskService logTaskService;
 
-    @RequestMapping(value = { "logEmailCheck/delete" })
+    @RequestMapping("logEmailCheck/delete")
     public String logEmailCheckDelete(Integer[] ids) {
         if (notEmpty(ids)) {
             for (Integer id : ids) {
@@ -31,7 +31,7 @@ public class LogAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "logLogin/delete" })
+    @RequestMapping("logLogin/delete")
     public String logLoginDelete(Integer[] ids) {
         if (notEmpty(ids)) {
             for (Integer id : ids) {
@@ -41,7 +41,7 @@ public class LogAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "logOperate/delete" })
+    @RequestMapping("logOperate/delete")
     public String logOperateDelete(Integer[] ids) {
         if (notEmpty(ids)) {
             for (Integer id : ids) {
@@ -51,7 +51,7 @@ public class LogAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    @RequestMapping(value = { "logTask/delete" })
+    @RequestMapping("logTask/delete")
     public String logTaskDelete(Integer[] ids) {
         if (notEmpty(ids)) {
             for (Integer id : ids) {

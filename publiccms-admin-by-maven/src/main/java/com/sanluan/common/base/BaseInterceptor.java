@@ -32,7 +32,7 @@ public abstract class BaseInterceptor extends HandlerInterceptorAdapter {
             try {
                 encodeQueryString = URLEncoder.encode("?" + queryString, "utf-8");
             } catch (UnsupportedEncodingException e) {
-                log.debug(e.getMessage());
+                log.error(e.getMessage());
             }
         }
         return encodeQueryString;
