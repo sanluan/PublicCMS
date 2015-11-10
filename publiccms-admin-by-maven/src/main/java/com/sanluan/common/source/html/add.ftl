@@ -7,7 +7,10 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_
 			<#if "Date"=a.type>
 			<dl>
 				<dt>${a.title}：</dt>
-				<dd><input class="required date" name="${a.name}" type="text" size="30" dateFmt="yyyy-MM-dd HH:mm:ss" value="${r"${(a."+a.name+")!}"}"/></dd>
+				<dd>
+					<input class="required date" name="${a.name}" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${r"${(a."+a.name+")!}"}"/>
+					<a class="inputDateButton" href="javascript:;">选择</a>
+				</dd>
 			</dl>
 			<#else>
 			<dl>

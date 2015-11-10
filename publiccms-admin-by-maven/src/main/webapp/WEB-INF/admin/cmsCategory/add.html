@@ -100,7 +100,7 @@ $(function(){
 					<dd><input class="required number" name="pageSize" type="text" size="4" value="${(a.pageSize)!(category.pageSize)!20}"/></dd>
 				</dl>
 	<#if parentId?has_content>
-		<@_extendList itemType=2 itemId=parentId extendType=3>
+		<@_extendList itemType=2 itemId=parentId extendType=2>
 			<#include "../include_page/extend.html"/>
 		</@_extendList>
 	</#if>
