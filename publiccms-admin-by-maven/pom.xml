@@ -185,7 +185,7 @@
 		</dependency>
 	</dependencies>
 	<properties>
-		<springVersion>4.2.2.RELEASE</springVersion>
+		<springVersion>4.2.3.RELEASE</springVersion>
 		<hibernateVersion>5.0.2.Final</hibernateVersion>
 		<hibernateSearchVersion>5.5.0.Final</hibernateSearchVersion>
 		<freemarkerVersion>2.3.23</freemarkerVersion>
