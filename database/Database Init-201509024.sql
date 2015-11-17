@@ -1,6 +1,5 @@
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
-DROP DATABASE `public_cms`;
 CREATE DATABASE `public_cms` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 USE `public_cms`;
 
