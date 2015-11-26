@@ -15,7 +15,7 @@ public class CmsTagTypeDao extends BaseDao<CmsTagType> {
     public PageHandler getPage(
                 Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsTagType bean");
-        queryHandler.append("order by bean.id desc");
+        queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

@@ -16,11 +16,11 @@
 	</@_categoryList>
 </#macro>
 <div class="accordion">
-<@_systemMoudleList parentId=parentId>
+<@_sysMoudleList parentId=parentId>
 	<#list page.list as a>
 		<@t.meger 'moudleIds' a.id!/>
 	</#list>
-	<@_systemRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map/></@_systemRoleMoudle>
+	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map/></@_sysRoleMoudle>
 	
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
@@ -48,15 +48,15 @@
 			<@templateTree 'cmsPage' ''/>
 			<#break>
 		<#default>
-			<@_systemMoudleList parentId=a.id>
+			<@_sysMoudleList parentId=a.id>
 				<#list page.list as a>
 			<li><a href="${a.url?html}" target="navTab" rel="${a.url?substring(0,a.url?index_of('/'))?html}">${a.name?html}</a></li>
 				</#list>
-			</@_systemMoudleList>
+			</@_sysMoudleList>
 	</#switch>
 		</ul>
 	</div>
 		</#if>
 	</#list>
-</@_systemMoudleList>
+</@_sysMoudleList>
 </div>

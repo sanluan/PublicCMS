@@ -15,10 +15,10 @@ import org.quartz.TriggerKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.entities.system.SystemTask;
+import com.publiccms.entities.sys.SysTask;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.service.log.LogTaskService;
-import com.publiccms.logic.service.system.SystemTaskService;
+import com.publiccms.logic.service.sys.SysTaskService;
 import com.sanluan.common.base.Base;
 import com.sanluan.common.servlet.TaskAfterInitServlet;
 
@@ -33,7 +33,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
     public static final int TASK_STATUS_READY = 0, TASK_STATUS_RUNNING = 1, TASK_STATUS_PAUSE = 2, TASK_STATUS_ERROR = 3;
 
     @Autowired
-    private SystemTaskService systemTaskService;
+    private SysTaskService sysTaskService;
     @Autowired
     private LogTaskService logTaskService;
     @Autowired
@@ -44,13 +44,13 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
     @Override
     public void exec() {
         ScheduledJob.logTaskService = logTaskService;
-        ScheduledJob.systemTaskService = systemTaskService;
+        ScheduledJob.sysTaskService = sysTaskService;
         ScheduledJob.fileComponent = fileComponent;
 
         @SuppressWarnings("unchecked")
-        List<SystemTask> systemTaskList = (List<SystemTask>) systemTaskService.getPage(TASK_STATUS_READY, null, null).getList();
-        for (SystemTask systemTask : systemTaskList) {
-            create(systemTask.getId(), systemTask.getCronExpression());
+        List<SysTask> sysTaskList = (List<SysTask>) sysTaskService.getPage(TASK_STATUS_READY, null, null).getList();
+        for (SysTask sysTask : sysTaskList) {
+            create(sysTask.getId(), sysTask.getCronExpression());
         }
     }
 
@@ -78,7 +78,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
                 }
             } catch (SchedulerException e) {
                 log.error(e.getMessage());
-                systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
+                sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
             }
         }
     }
@@ -95,7 +95,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
             }
         } catch (SchedulerException e) {
             log.error(e.getMessage());
-            systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
+            sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
         }
     }
 
@@ -111,7 +111,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
             }
         } catch (SchedulerException e) {
             log.error(e.getMessage());
-            systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
+            sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
         }
     }
 
@@ -127,7 +127,7 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
             }
         } catch (SchedulerException e) {
             log.error(e.getMessage());
-            systemTaskService.updateStatus(id, TASK_STATUS_ERROR);
+            sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
         }
     }
 

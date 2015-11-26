@@ -284,16 +284,16 @@ menu项:
 	description:描述
 	userId:负责人
 menu项:
-	systemDept/list	systemDept管理
+	sysDept/list	sysDept管理
 自定义指令：
 	分页列表查询：
-		<@_systemDeptList parentId=queryParentId  userId=queryUserId name=queryName 
-			pageIndex=pageNum count=numPerPage></@_systemDeptList>
+		<@_sysDeptList parentId=queryParentId  userId=queryUserId name=queryName 
+			pageIndex=pageNum count=numPerPage></@_sysDeptList>
 		结果：
 			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
 			page.list: List<SystemDept>对象 使用<#list page.list as a></#list> 遍历数据
 	单条记录查询：
-		<@_systemDept id=id ids=ids></@_systemDept>
+		<@_sysDept id=id ids=ids></@_sysDept>
 		结果：
 			id不为空时：object:属性参考字段列表
 			id为空且ids不为空时：map:{key:id,value:bean}其中bean属性参考字段列表
@@ -305,16 +305,16 @@ menu项:
 	url:地址
 	parentId:父模块
 menu项:
-	systemMoudle/list	systemMoudle管理
+	sysMoudle/list	sysMoudle管理
 自定义指令：
 	分页列表查询：
-		<@_systemMoudleList parentId=queryParentId url=queryUrl 
-			pageIndex=pageNum count=numPerPage></@_systemMoudleList>
+		<@_sysMoudleList parentId=queryParentId url=queryUrl 
+			pageIndex=pageNum count=numPerPage></@_sysMoudleList>
 		结果：
 			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
 			page.list: List<SystemMoudle>对象 使用<#list page.list as a></#list> 遍历数据
 	单条记录查询：
-		<@_systemMoudle id=id ids=ids></@_systemMoudle>
+		<@_sysMoudle id=id ids=ids></@_sysMoudle>
 		结果：
 			id不为空时：object:属性参考字段列表
 			id为空且ids不为空时：map:{key:id,value:bean}其中bean属性参考字段列表
@@ -326,15 +326,15 @@ menu项:
 	deptId:部门
 	ownsAllRight:拥有全部权限
 menu项:
-	systemRole/list	systemRole管理
+	sysRole/list	sysRole管理
 自定义指令：
 	分页列表查询：
-		<@_systemRoleList pageIndex=pageNum count=numPerPage></@_systemRoleList>
+		<@_sysRoleList pageIndex=pageNum count=numPerPage></@_sysRoleList>
 		结果：
 			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
 			page.list: List<SystemRole>对象 使用<#list page.list as a></#list> 遍历数据
 	单条记录查询：
-		<@_systemRole id=id ids=ids></@_systemRole>
+		<@_sysRole id=id ids=ids></@_sysRole>
 		结果：
 			id不为空时：object:属性参考字段列表
 			id为空且ids不为空时：map:{key:id,value:bean}其中bean属性参考字段列表
@@ -345,11 +345,11 @@ menu项:
 	roleId:角色
 	moudleId:模块
 menu项:
-	systemRoleMoudle/list	systemRoleMoudle管理
+	sysRoleMoudle/list	sysRoleMoudle管理
 自定义指令：
 	分页列表查询：
-		<@_systemRoleMoudleList roleId=queryRoleId moudleId=queryMoudleId
-			pageIndex=pageNum count=numPerPage></@_systemRoleMoudleList>
+		<@_sysRoleMoudleList roleId=queryRoleId moudleId=queryMoudleId
+			pageIndex=pageNum count=numPerPage></@_sysRoleMoudleList>
 		结果：
 			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
 			page.list: List<SystemRoleMoudle>对象 使用<#list page.list as a></#list> 遍历数据
@@ -358,11 +358,11 @@ menu项:
 -- SystemRoleUser begin 2015-7-20 11:48:08---
 字段列表：
 menu项:
-	systemRoleUser/list	systemRoleUser管理
+	sysRoleUser/list	sysRoleUser管理
 自定义指令：
 	分页列表查询：
-		<@_systemRoleUserList 
-			pageIndex=pageNum count=numPerPage></@_systemRoleUserList>
+		<@_sysRoleUserList 
+			pageIndex=pageNum count=numPerPage></@_sysRoleUserList>
 		结果：
 			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
 			page.list: List<SystemRoleUser>对象 使用<#list page.list as a></#list> 遍历数据
@@ -376,16 +376,16 @@ menu项:
 	description:描述
 	content:任务内容
 menu项:
-	systemTask/list	systemTask管理
+	sysTask/list	sysTask管理
 自定义指令：
 	分页列表查询：
-		<@_systemTaskList status=queryStatus
-			pageIndex=pageNum count=numPerPage></@_systemTaskList>
+		<@_sysTaskList status=queryStatus
+			pageIndex=pageNum count=numPerPage></@_sysTaskList>
 		结果：
 			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
 			page.list: List<SystemTask>对象 使用<#list page.list as a></#list> 遍历数据
 	单条记录查询：
-		<@_systemTask id=id ids=ids></@_systemTask>
+		<@_sysTask id=id ids=ids></@_sysTask>
 		结果：
 			id不为空时：object:属性参考字段列表
 			id为空且ids不为空时：map:{key:id,value:bean}其中bean属性参考字段列表
@@ -405,18 +405,18 @@ menu项:
 	loginCount:登录次数
 	dateRegistered:注册日期
 menu项:
-	systemUser/list	systemUser管理
+	sysUser/list	sysUser管理
 自定义指令：
 	分页列表查询：
-		<@_systemUserList startDateRegistered=queryStartDateRegistered endDateRegistered=queryEndDateRegistered startLastLoginDate=queryStartLastLoginDate endLastLoginDate=queryEndLastLoginDate 
+		<@_sysUserList startDateRegistered=queryStartDateRegistered endDateRegistered=queryEndDateRegistered startLastLoginDate=queryStartLastLoginDate endLastLoginDate=queryEndLastLoginDate 
 			superuserAccess=querySuperuserAccess emailChecked=queryEmailChecked name=queryName 
 			disabled=queryDisabled 
-			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage></@_systemUserList>
+			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage></@_sysUserList>
 		结果：
 			page:分页信息，totalCount：总条数，totalPage：总页数，pageSize每页数据条数，pageIndex当前页数
 			page.list: List<SystemUser>对象 使用<#list page.list as a></#list> 遍历数据
 	单条记录查询：
-		<@_systemUser id=id ids=ids></@_systemUser>
+		<@_sysUser id=id ids=ids></@_sysUser>
 		结果：
 			id不为空时：object:属性参考字段列表
 			id为空且ids不为空时：map:{key:id,value:bean}其中bean属性参考字段列表

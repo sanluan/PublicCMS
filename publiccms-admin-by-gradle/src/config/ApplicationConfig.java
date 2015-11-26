@@ -66,21 +66,21 @@ public class ApplicationConfig {
             private static final long serialVersionUID = 1L;
             {
                 try {
-                    ComboPooledDataSource database1 = new ComboPooledDataSource();
-                    database1.setDriverClass(env.getProperty("jdbc.driverClassName"));
-                    database1.setJdbcUrl(env.getProperty("jdbc.url"));
-                    database1.setUser(env.getProperty("jdbc.username"));
-                    database1.setPassword(env.getProperty("jdbc.password"));
-                    database1.setAutoCommitOnClose(Boolean.parseBoolean(env.getProperty("cpool.autoCommitOnClose")));
-                    database1.setCheckoutTimeout(Integer.parseInt(env.getProperty("cpool.checkoutTimeout")));
-                    database1.setInitialPoolSize(Integer.parseInt(env.getProperty("cpool.minPoolSize")));
-                    database1.setMinPoolSize(Integer.parseInt(env.getProperty("cpool.minPoolSize")));
-                    database1.setMaxPoolSize(Integer.parseInt(env.getProperty("cpool.maxPoolSize")));
-                    database1.setMaxIdleTime(Integer.parseInt(env.getProperty("cpool.maxIdleTime")));
-                    database1.setAcquireIncrement(Integer.parseInt(env.getProperty("cpool.acquireIncrement")));
-                    database1.setMaxIdleTimeExcessConnections(Integer.parseInt(env
+                    ComboPooledDataSource database = new ComboPooledDataSource();
+                    database.setDriverClass(env.getProperty("jdbc.driverClassName"));
+                    database.setJdbcUrl(env.getProperty("jdbc.url"));
+                    database.setUser(env.getProperty("jdbc.username"));
+                    database.setPassword(env.getProperty("jdbc.password"));
+                    database.setAutoCommitOnClose(Boolean.parseBoolean(env.getProperty("cpool.autoCommitOnClose")));
+                    database.setCheckoutTimeout(Integer.parseInt(env.getProperty("cpool.checkoutTimeout")));
+                    database.setInitialPoolSize(Integer.parseInt(env.getProperty("cpool.minPoolSize")));
+                    database.setMinPoolSize(Integer.parseInt(env.getProperty("cpool.minPoolSize")));
+                    database.setMaxPoolSize(Integer.parseInt(env.getProperty("cpool.maxPoolSize")));
+                    database.setMaxIdleTime(Integer.parseInt(env.getProperty("cpool.maxIdleTime")));
+                    database.setAcquireIncrement(Integer.parseInt(env.getProperty("cpool.acquireIncrement")));
+                    database.setMaxIdleTimeExcessConnections(Integer.parseInt(env
                             .getProperty("cpool.maxIdleTimeExcessConnections")));
-                    put("database1", database1);
+                    put("default", database);
                 } catch (PropertyVetoException e) {
                 }
             }

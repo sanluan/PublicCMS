@@ -21,7 +21,7 @@ public class LogTaskDao extends BaseDao<LogTask> {
         if (notEmpty(taskId)) {
             queryHandler.condition("bean.taskId = :taskId").setParameter("taskId", taskId);
         }
-        queryHandler.append("order by bean.id desc");
+        queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

@@ -14,6 +14,6 @@
 				<#if i?index gt breakIndex><#break/></#if>
 			</#list>
 		</#if>
-		<p class="clearfix-before"><@t.cut a.description 100 '...'/><a href="content.html?id=${a.id}" target="_blank"> 详细 &gt;&gt;</a></p>
+		<p class="clearfix-before"><@t.cut a.description! 100 '...'/><a href="content.html?id=${a.id}" target="_blank"> 详细 &gt;&gt;</a></p>
 	</dd>
 </dl>

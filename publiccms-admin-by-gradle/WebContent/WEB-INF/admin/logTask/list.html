@@ -9,7 +9,7 @@
 			<#if queryTaskId?has_content>
 				<li>
 					<label>任务：</label>
-					<@_systemTask id=queryTaskId>${object.name}</@_systemTask>
+					<@_sysTask id=queryTaskId>${object.name}</@_sysTask>
 				</li>
 			</#if>
 			</ul>
@@ -37,7 +37,7 @@
 			<#list page.list as a>
 				<@t.meger 'taskIds' a.taskId!/>
 			</#list>
-			<@_systemTask ids=t.taskIds!><#assign taskMap=map/></@_systemTask>
+			<@_sysTask ids=t.taskIds!><#assign taskMap=map/></@_sysTask>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>

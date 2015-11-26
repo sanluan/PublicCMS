@@ -1,0 +1,41 @@
+<@_sysMoudle id=id>
+	<#assign a=object/>
+	<#if object.parentId??><#assign parentId=object.parentId/></#if>
+</@_sysMoudle>
+<@_sysMoudle id=parentId!><#assign moudle=object/></@_sysMoudle>
+<div class="pageContent">
+	<form method="post" action="sysMoudle/save.do?callbackType=closeCurrent&navTabId=sysMoudle" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl class="nowrap">
+				<dt>父模块：</dt>
+				<dd>
+					<input name="parentId" type="hidden" value="${parentId!}" />
+					<input name="parentName" readonly="readonly" type="text" size="10" value="${(moudle.name)!}"/>
+					<a class="btnLook" href="sysMoudle/lookup.html" lookupGroup="">选择</a>
+				</dd>
+			</dl>
+			<dl>
+				<dt><@t.m 'field.name'/>：</dt>
+				<dd><input class="required" name="name" type="text" size="30" value="${(a.name)!}"/></dd>
+			</dl>
+			<dl>
+				<dt>地址：</dt>
+				<dd><input name="url" type="text" size="30" value="${(a.url)!}"/></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>授权访问地址：</dt>
+				<dd>
+					<textarea name="authorizedUrl" style="width: 100%;" rows="8">${(a.authorizedUrl)!}</textarea>
+					<span class="info">使用逗号分隔，不带后缀</span>
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

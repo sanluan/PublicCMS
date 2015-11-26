@@ -1,0 +1,67 @@
+<@_sysRole id=id>
+	<#assign a=object/>
+</@_sysRole>
+<#macro moudleTree queryParentId>
+	<@_sysMoudleList parentId=queryParentId>
+		<#if page.totalCount gt 0>
+			<ul>
+				<#list page.list as a>
+					<li>
+						<a tname="moudleIds" tvalue="${a.id}">${a.name}</a>
+						<@moudleTree a.id/>
+					</li>
+				</#list>
+			</ul>
+		</#if>
+	</@_sysMoudleList>
+</#macro>
+<div class="pageContent">
+	<form method="post" action="sysRole/save.do?callbackType=closeCurrent&navTabId=sysRole" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl class="nowrap">
+				<dt><@t.m 'field.name'/>：</dt>
+				<dd>
+					<input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>权限：</dt>
+				<dd>
+					<label><input name="ownsAllRight" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllRight').hide();}else{$('.ownsAllRight').show();}"/>拥有所有功能</label>
+				</dd>
+			</dl>
+			<fieldset class="ownsAllRight">
+				<legend>模块授权</legend>
+				<ul class="tree treeFolder treeCheck expand">
+			<@_sysMoudleList>
+				<#list page.list as a>
+					<li>
+						<a tname="moudleIds" tvalue="${a.id}">${a.name}</a>
+						<@moudleTree a.id/>
+					</li>
+				</#list>
+			</@_sysMoudleList>
+				</ul>
+	<#if a??>
+			<script>
+			<#if a.ownsAllRight>
+				$('input[name=ownsAllRight]',navTab.getCurrentPanel()).click();
+			</#if>
+		<@_sysRoleMoudleList roleId=a.id>
+			<#list page.list as a>
+				$('.tree li a[tname=moudleIds][tvalue=${a.moudleId?js_string}]',navTab.getCurrentPanel()).attr('checked','checked');
+			</#list>
+		</@_sysRoleMoudleList>
+			</script>
+	</#if>
+			</fieldset>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

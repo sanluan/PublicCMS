@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.publiccms.entities.system.SystemUser;
+import com.publiccms.entities.sys.SysUser;
 import com.sanluan.common.tools.RequestUtils;
 
 /**
@@ -24,8 +24,8 @@ public class UserUtils extends RequestUtils {
      * @param session
      * @return
      */
-    public static SystemUser getUserFromSession(HttpSession session) {
-        return (SystemUser) session.getAttribute(SESSION_USER);
+    public static SysUser getUserFromSession(HttpSession session) {
+        return (SysUser) session.getAttribute(SESSION_USER);
     }
 
     /**
@@ -40,7 +40,7 @@ public class UserUtils extends RequestUtils {
      * @param session
      * @param user
      */
-    public static void setUserToSession(HttpSession session, SystemUser user) {
+    public static void setUserToSession(HttpSession session, SysUser user) {
         session.setAttribute(SESSION_USER, user);
         session.setAttribute(SESSION_USER_TIME, new Date());
     }
@@ -49,7 +49,7 @@ public class UserUtils extends RequestUtils {
      * @param session
      * @param user
      */
-    public static void setUserToAttribute(HttpSession session, SystemUser user) {
+    public static void setUserToAttribute(HttpSession session, SysUser user) {
         session.setAttribute(SESSION_USER, user);
     }
 
@@ -57,8 +57,8 @@ public class UserUtils extends RequestUtils {
      * @param session
      * @return
      */
-    public static SystemUser getUserFromAttribute(HttpSession session) {
-        return (SystemUser) session.getAttribute(SESSION_USER);
+    public static SysUser getUserFromAttribute(HttpSession session) {
+        return (SysUser) session.getAttribute(SESSION_USER);
     }
 
     /**
@@ -81,15 +81,15 @@ public class UserUtils extends RequestUtils {
      * @param session
      * @return
      */
-    public static SystemUser getAdminFromSession(HttpSession session) {
-        return (SystemUser) session.getAttribute(SESSION_ADMIN);
+    public static SysUser getAdminFromSession(HttpSession session) {
+        return (SysUser) session.getAttribute(SESSION_ADMIN);
     }
 
     /**
      * @param session
      * @param user
      */
-    public static void setAdminToSession(HttpSession session, SystemUser user) {
+    public static void setAdminToSession(HttpSession session, SysUser user) {
         session.setAttribute(SESSION_ADMIN, user);
     }
 

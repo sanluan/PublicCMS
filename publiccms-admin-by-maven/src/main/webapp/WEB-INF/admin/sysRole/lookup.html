@@ -1,0 +1,21 @@
+<#macro lookupTree queryParentId=''>
+	<@_sysRoleList parentId=queryParentId>
+		<#list page.list as a>
+			<li>
+				<a href="javascript:;" onclick="$.bringBack({parentId:'${a.id}',queryParentId:'${a.id}',queryParentName:'${a.name}',roleId:'${a.id}',roleName:'${a.name}',parentName:'${a.name}'});return false;">${a.name!}</a>
+			</li>
+		</#list>
+	</@_sysRoleList>
+</#macro>
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="58">
+		<ul class="tree expand">
+			<@lookupTree/>
+		</ul>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button"><@t.m 'button.close'/></button></div></div></li>
+		</ul>
+	</div>
+</div>

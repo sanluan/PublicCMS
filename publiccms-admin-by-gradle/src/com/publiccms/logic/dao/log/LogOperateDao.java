@@ -42,10 +42,10 @@ public class LogOperateDao extends BaseDao<LogOperate> {
         }
         switch (orderField) {
         case "createDate":
-            queryHandler.append("order by bean.createDate " + orderType);
+            queryHandler.order("bean.createDate " + orderType);
             break;
         default:
-            queryHandler.append("order by bean.id " + orderType);
+            queryHandler.order("bean.id " + orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

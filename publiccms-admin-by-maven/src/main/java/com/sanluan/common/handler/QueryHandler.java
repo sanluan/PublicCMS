@@ -8,9 +8,12 @@ import org.hibernate.Session;
 
 public class QueryHandler {
     public static final String COUNT_SQL = "select count(*) ";
-    public static final String KEYWORD_FROM = "from ";
-    public static final String KEYWORD_GROUP = "group by";
+    public static final String KEYWORD_FROM = " from ";
+    public static final String KEYWORD_ORDER = " order by ";
+    public static final String KEYWORD_GROUP = " group by ";
     boolean whereFlag = true;
+    boolean orderFlag = true;
+    boolean groupFlag = true;
     private StringBuilder sqlBuilder;
     private Map<String, Object> map;
     private Map<String, Object[]> arrayMap;
@@ -19,7 +22,8 @@ public class QueryHandler {
     private Boolean cacheable;
 
     public QueryHandler(String sql) {
-        this.sqlBuilder = new StringBuilder(sql);
+        this.sqlBuilder = new StringBuilder(" ");
+        sqlBuilder.append(sql);
     }
 
     public QueryHandler() {
@@ -35,8 +39,35 @@ public class QueryHandler {
     }
 
     public QueryHandler condition(String condition) {
-        interval();
+        if (whereFlag) {
+            whereFlag = false;
+            sqlBuilder.append(" where ");
+        } else {
+            sqlBuilder.append(" and ");
+        }
         sqlBuilder.append(condition);
+        return this;
+    }
+
+    public QueryHandler order(String sqlString) {
+        if (orderFlag) {
+            orderFlag = false;
+            append(KEYWORD_ORDER);
+        } else {
+            sqlBuilder.append(',');
+        }
+        sqlBuilder.append(sqlString);
+        return this;
+    }
+
+    public QueryHandler group(String sqlString) {
+        if (groupFlag) {
+            groupFlag = false;
+            sqlBuilder.append(KEYWORD_GROUP);
+        } else {
+            sqlBuilder.append(',');
+        }
+        sqlBuilder.append(sqlString);
         return this;
     }
 
@@ -77,15 +108,6 @@ public class QueryHandler {
         return this;
     }
 
-    private void interval() {
-        if (whereFlag) {
-            whereFlag = false;
-            sqlBuilder.append(" where ");
-        } else {
-            sqlBuilder.append(" and ");
-        }
-    }
-
     private Query getQuery(Session session, String sql) {
         Query query = session.createQuery(sql);
         if (null != map) {
@@ -118,8 +140,12 @@ public class QueryHandler {
         String sql = getSql();
         sql = sql.substring(sql.toLowerCase().indexOf(KEYWORD_FROM));
         int groupIndex = sql.toLowerCase().indexOf(KEYWORD_GROUP);
+        int orderIndex = sql.toLowerCase().indexOf(KEYWORD_ORDER);
         if (-1 != groupIndex) {
             sql = sql.substring(0, groupIndex);
+        }
+        if (-1 != orderIndex) {
+            sql = sql.substring(0, orderIndex);
         }
         return COUNT_SQL + sql;
     }

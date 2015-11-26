@@ -19,7 +19,7 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
         if (notEmpty(categoryId)) {
             queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", categoryId);
         }
-        queryHandler.append("order by bean.id desc");
+        queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

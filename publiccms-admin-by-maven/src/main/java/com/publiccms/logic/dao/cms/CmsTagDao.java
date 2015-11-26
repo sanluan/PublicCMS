@@ -23,7 +23,7 @@ public class CmsTagDao extends BaseDao<CmsTag> {
         if (notEmpty(typeId)) {
             queryHandler.condition("bean.typeId = :typeId").setParameter("typeId", typeId);
         }
-        queryHandler.append("order by bean.id desc");
+        queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

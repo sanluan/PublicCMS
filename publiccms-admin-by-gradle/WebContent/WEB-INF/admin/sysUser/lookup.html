@@ -1,0 +1,95 @@
+<@_sysUserList startDateRegistered=queryStartDateRegistered endDateRegistered=queryEndDateRegistered startLastLoginDate=queryStartLastLoginDate endLastLoginDate=queryEndLastLoginDate 
+			superuserAccess=querySuperuserAccess emailChecked=queryEmailChecked name=queryName 
+			disable=queryDisable 
+			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return dwzSearch(this, 'dialog');" action="sysUser/lookup.html" method="post">
+	<div class="searchBar">
+		<table class="searchContent">
+			<tr>
+				<td>
+					<label><@t.m 'field.name'/>：</label>
+					<input type="text" name="queryName" value="${queryName!}" />
+				</td>
+				<td>
+					<label><@t.m 'moudle.user'/><@t.m 'field.status'/>:</label>
+					<select class="combox" name="queryDisable">
+						<option value="false"${(!queryDisable?has_content||"false"==queryDisable)?then(' selected="true"','')}>正常</option>
+						<option value="true"${(queryDisable?has_content&&"true"==queryDisable)?then(' selected="true"','')}>禁用</option>
+					</select>
+				</td>
+				<td>
+					<label>用户身份:</label>
+					<select class="combox" name="querySuperuserAccess">
+						<option value=""${(!querySuperuserAccess?has_content)?then(' selected="true"','')}>不限</option>
+						<option value="false"${(querySuperuserAccess?has_content&&"false"==querySuperuserAccess)?then(' selected="true"','')}>普通用户</option>
+						<option value="true"${(querySuperuserAccess?has_content&&"true"==querySuperuserAccess)?then(' selected="true"','')}>超级管理员</option>
+					</select>
+				</td>
+				<td>
+					<label>已验证邮箱：</label>
+					<select class="combox" name="queryEmailChecked">
+						<option value=""${(!queryEmailChecked?has_content)?then(' selected="true"','')}>不限</option>
+						<option value="false"${(queryEmailChecked?has_content&&"false"==queryEmailChecked)?then(' selected="true"','')}>未验证</option>
+						<option value="true"${(queryEmailChecked?has_content&&"true"==queryEmailChecked)?then(' selected="true"','')}>已验证</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<label>注册日期：</label>
+					<input type="text" name="queryStartDateRegistered" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryStartDateRegistered!}" />
+					<span>-</span>
+					<input type="text" name="queryEndDateRegistered" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryEndDateRegistered!}" />
+				</td>
+				<td colspan="2">
+					<label>上次登录日期：</label>
+					<input type="text" name="queryStartLastLoginDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryStartLastLoginDate!}" />
+					<span>-</span>
+					<input type="text" name="queryEndLastLoginDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryEndLastLoginDate!}" />
+				</td>
+			</tr>
+		</table>
+		<#include "../include_page/searchBar.html"/>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="table" width="100%" layoutH="137">
+		<thead>
+			<tr>
+				<th>选择</th>
+				<th>用户名</th>
+				<th>用户昵称</th>
+				<th>邮箱</th>
+				<th>已验证邮箱</th>
+				<th>上次登录日期</th>
+				<th>上次登录IP</th>
+				<th>登录次数</th>
+				<th>注册日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>
+					<a class="btnSelect" href="javascript:;" onclick="$.bringBack({queryUserId:'${a.id}',userId:'${a.id}', nickName:'${a.nickName}'});return false;" title="选择">选择</a>
+				</td>
+				<td>${a.name}</td>
+				<td>${a.nickName}${(a.superuserAccess)?then('[<font color="red">超级管理员</font>]','')}</td>
+				<td>${a.email}</td>
+				<td>${a.emailChecked?then('已验证','未验证')}</td>
+				<td>${a.lastLoginDate!}</td>
+				<td>${a.lastLoginIp!}</td>
+				<td>${a.loginCount!}</td>
+				<td>${a.dateRegistered}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_sysUserList>

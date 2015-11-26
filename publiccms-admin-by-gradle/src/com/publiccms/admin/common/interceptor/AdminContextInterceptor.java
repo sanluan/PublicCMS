@@ -16,10 +16,10 @@ import org.apache.commons.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.tools.UserUtils;
-import com.publiccms.entities.system.SystemUser;
-import com.publiccms.logic.service.system.SystemRoleAuthorizedService;
-import com.publiccms.logic.service.system.SystemRoleService;
-import com.publiccms.logic.service.system.SystemUserService;
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
+import com.publiccms.logic.service.sys.SysRoleService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.sanluan.common.base.BaseInterceptor;
 
 public class AdminContextInterceptor extends BaseInterceptor {
@@ -30,18 +30,18 @@ public class AdminContextInterceptor extends BaseInterceptor {
     private String loginJsonUrl;
     private String unauthorizedUrl;
     @Autowired
-    private SystemRoleAuthorizedService roleAuthorizedService;
+    private SysRoleAuthorizedService roleAuthorizedService;
     @Autowired
-    private SystemRoleService systemRoleService;
+    private SysRoleService sysRoleService;
     @Autowired
-    private SystemUserService systemUserService;
+    private SysUserService sysUserService;
 
     private final Log log = getLog(getClass());
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
         if (verify(getURL(request))) {
-            SystemUser user = UserUtils.getAdminFromSession(request.getSession());
+            SysUser user = UserUtils.getAdminFromSession(request.getSession());
             if (null == user) {
                 try {
                     if ("XMLHttpRequest".equalsIgnoreCase(request.getHeader("X-Requested-With"))) {
@@ -59,7 +59,7 @@ public class AdminContextInterceptor extends BaseInterceptor {
             } else {
                 Date date = UserUtils.getUserTimeFromSession(request.getSession());
                 if (null == date || date.before(addSeconds(new Date(), -30))) {
-                    user = systemUserService.getEntity(user.getId());
+                    user = sysUserService.getEntity(user.getId());
                     UserUtils.setUserToSession(request.getSession(), user);
                 }
                 if (!user.isDisabled() && !user.isSuperuserAccess()) {
@@ -100,7 +100,7 @@ public class AdminContextInterceptor extends BaseInterceptor {
             for (int i = 0; i < roleIdArray.length; i++) {
                 roleIds[i] = Integer.parseInt(roleIdArray[i]);
             }
-            return systemRoleService.ownsAllRight(roleIds);
+            return sysRoleService.ownsAllRight(roleIds);
         }
         return false;
     }

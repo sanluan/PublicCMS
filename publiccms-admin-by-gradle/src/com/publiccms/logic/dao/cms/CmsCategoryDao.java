@@ -37,7 +37,7 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         if (notEmpty(disabled)) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
         }
-        queryHandler.append("order by bean.id desc");
+        queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
