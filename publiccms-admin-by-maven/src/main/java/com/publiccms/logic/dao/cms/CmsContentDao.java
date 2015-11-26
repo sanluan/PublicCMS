@@ -118,19 +118,19 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         switch (orderField) {
         case "scores":
-            queryHandler.append("order by bean.scores " + orderType);
+            queryHandler.order("bean.scores " + orderType);
             break;
         case "comments":
-            queryHandler.append("order by bean.comments " + orderType);
+            queryHandler.order("bean.comments " + orderType);
             break;
         case "clicks":
-            queryHandler.append("order by bean.clicks " + orderType);
+            queryHandler.order("bean.clicks " + orderType);
             break;
         case "publishDate":
-            queryHandler.append("order by bean.publishDate " + orderType);
+            queryHandler.order("bean.publishDate " + orderType);
             break;
         default:
-            queryHandler.append("order by bean.id " + orderType);
+            queryHandler.order("bean.id " + orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

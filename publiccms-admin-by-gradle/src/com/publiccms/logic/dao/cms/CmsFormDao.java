@@ -38,8 +38,8 @@ public class CmsFormDao extends BaseDao<CmsForm> {
             orderField="";
         }
         switch(orderField) {
-            case "createDate" : queryHandler.append("order by bean.createDate " + orderType); break;
-            default : queryHandler.append("order by bean.id "+orderType);
+            case "createDate" : queryHandler.order("bean.createDate " + orderType); break;
+            default : queryHandler.order("bean.id "+orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

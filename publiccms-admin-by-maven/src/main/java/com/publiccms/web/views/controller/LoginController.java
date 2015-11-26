@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.publiccms.common.tools.UserUtils;
 import com.publiccms.entities.log.LogEmailCheck;
 import com.publiccms.entities.log.LogLogin;
-import com.publiccms.entities.system.SystemUser;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.log.LogEmailCheckService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.system.SystemUserService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.sanluan.common.base.BaseController;
 import com.sanluan.common.tools.RequestUtils;
 import com.sanluan.common.tools.VerificationUtils;
@@ -36,7 +36,7 @@ import com.sanluan.common.tools.VerificationUtils;
 public class LoginController extends BaseController {
 
     @Autowired
-    private SystemUserService service;
+    private SysUserService service;
     @Autowired
     private LogLoginService logLoginService;
     @Autowired
@@ -60,7 +60,7 @@ public class LoginController extends BaseController {
             model.addAttribute("returnUrl", returnUrl);
             return "login";
         }
-        SystemUser user;
+        SysUser user;
         if (virifyNotEMail(username)) {
             user = service.findByName(username);
         } else {
@@ -104,7 +104,7 @@ public class LoginController extends BaseController {
      * @return
      */
     @RequestMapping("register" )
-    public String register(SystemUser entity, String repassword, HttpServletRequest request, HttpSession session,
+    public String register(SysUser entity, String repassword, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         if (virifyNotEmpty("username", entity.getName(), model) || virifyNotEmpty("nickname", entity.getNickName(), model)
                 || virifyNotEmpty("password", entity.getPassword(), model)
@@ -157,7 +157,7 @@ public class LoginController extends BaseController {
         return REDIRECT + "index.html";
     }
 
-    protected boolean virifyNotEnablie(SystemUser user, ModelMap model) {
+    protected boolean virifyNotEnablie(SysUser user, ModelMap model) {
         if (user.isDisabled()) {
             model.addAttribute(ERROR, "verify.user.notEnablie");
             return true;

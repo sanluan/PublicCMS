@@ -42,6 +42,8 @@ PublicCMS 使用了SpringMVC 4.2.3.RELEASE,Hibernate 5.0.2.Final,Apache FreeMark
 
 ![](doc/images/rt.jpg)
 
+![](doc/images/j.jpg)
+
 ##其他
 * 如果您没有使用过gradle或者maven，并且不打算使用它们，也可以在https://github.com/sanluan/PublicCMS-lib 或 https://git.oschina.net/sanluan/PublicCMS-lib 下载PublicCMS依赖的库，将其放在工程的WEB-INF\lib 目录下，并加入到build path中
 * 演示站点：http://www.publiccms.com/
@@ -51,32 +53,32 @@ PublicCMS 使用了SpringMVC 4.2.3.RELEASE,Hibernate 5.0.2.Final,Apache FreeMark
 
 ##系统后台截图
 ###工作台
-![](preview/1.jpg)
+![](doc/images/preview/1.jpg)
 ###内容列表
-![](preview/2.jpg)
+![](doc/images/preview/2.jpg)
 ###内容编辑
 编辑器为百度编辑器，支持定时发布等功能
-![](preview/3.jpg)
+![](doc/images/preview/3.jpg)
 ###图集编辑
-![](preview/4.jpg)
+![](doc/images/preview/4.jpg)
 ###分类编辑
 分类支持4个可查询系统扩展字段，和无限自定义字段扩展
-![](preview/5.jpg)
+![](doc/images/preview/5.jpg)
 ###页面推荐位管理
-![](preview/6.jpg)
+![](doc/images/preview/6.jpg)
 ###模板在线编辑
 通过模板的include和SSI(服务器端包含)实现模板片段，页面片段的最大程度复用
-![](preview/7.jpg)
+![](doc/images/preview/7.jpg)
 ###模型管理
 模型支持4个可查询系统扩展字段，和无限自定义字段扩展
-![](preview/8.jpg)
+![](doc/images/preview/8.jpg)
 ###任务计划管理
-![](preview/9.jpg)
+![](doc/images/preview/9.jpg)
 ###任务计划编辑
-![](preview/10.jpg)
+![](doc/images/preview/10.jpg)
 ###用户管理
-![](preview/11.jpg)
+![](doc/images/preview/11.jpg)
 ###角色编辑
-![](preview/12.jpg)
+![](doc/images/preview/12.jpg)
 ###日志管理
-![](preview/13.jpg)
+![](doc/images/preview/13.jpg)

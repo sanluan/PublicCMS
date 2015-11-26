@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.publiccms.common.tools.UserUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.system.SystemUser;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.CacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.system.SystemUserService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.sanluan.common.base.BaseController;
 import com.sanluan.common.tools.RequestUtils;
 import com.sanluan.common.tools.VerificationUtils;
@@ -31,7 +31,7 @@ import com.sanluan.common.tools.VerificationUtils;
 @Controller
 public class LoginAdminController extends BaseController {
     @Autowired
-    private SystemUserService service;
+    private SysUserService service;
     @Autowired
     private CacheComponent cacheComponent;
     @Autowired
@@ -47,7 +47,7 @@ public class LoginAdminController extends BaseController {
             model.addAttribute("returnUrl", returnUrl);
             return "login";
         }
-        SystemUser user = service.findByName(username);
+        SysUser user = service.findByName(username);
         if (virifyNotExist("username", user, model)
                 || virifyNotEquals("password", VerificationUtils.encode(password), user.getPassword(), model)
                 || virifyNotAdmin(user, model)) {
@@ -79,7 +79,7 @@ public class LoginAdminController extends BaseController {
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     public String changeMyselfPassword(Integer id, String oldpassword, String password, String repassword,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        SystemUser user = UserUtils.getAdminFromSession(session);
+        SysUser user = UserUtils.getAdminFromSession(session);
         if (virifyNotEquals("password", user.getPassword(), VerificationUtils.encode(oldpassword), model)) {
             return TEMPLATE_ERROR;
         } else if (virifyNotEmpty("password", password, model) || virifyNotEquals("repassword", password, repassword, model)) {
@@ -107,7 +107,7 @@ public class LoginAdminController extends BaseController {
         return TEMPLATE_DONE;
     }
 
-    protected boolean virifyNotAdmin(SystemUser user, ModelMap model) {
+    protected boolean virifyNotAdmin(SysUser user, ModelMap model) {
         if (!user.isDisabled() && !user.isSuperuserAccess()) {
             model.addAttribute(ERROR, "verify.user.notAdmin");
             return true;

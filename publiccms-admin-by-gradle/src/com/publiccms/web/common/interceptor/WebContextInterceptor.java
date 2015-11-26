@@ -15,8 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.tools.UserUtils;
-import com.publiccms.entities.system.SystemUser;
-import com.publiccms.logic.service.system.SystemUserService;
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.sanluan.common.base.BaseInterceptor;
 
 /**
@@ -28,15 +28,15 @@ public class WebContextInterceptor extends BaseInterceptor {
     private String[] needLoginUrls;
     private String loginUrl;
     @Autowired
-    private SystemUserService systemUserService;
+    private SysUserService sysUserService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-        SystemUser user = UserUtils.getUserFromSession(request.getSession());
+        SysUser user = UserUtils.getUserFromSession(request.getSession());
         if (null == user) {
             Cookie userCookie = UserUtils.getCookie(request, COOKIES_USER);
             if (null != userCookie && isNotBlank(userCookie.getValue())) {
-                user = systemUserService.findByAuthToken(userCookie.getValue());
+                user = sysUserService.findByAuthToken(userCookie.getValue());
                 if (null != user) {
                     UserUtils.setUserToSession(request.getSession(), user);
                 } else {
@@ -46,7 +46,7 @@ public class WebContextInterceptor extends BaseInterceptor {
         } else {
             Date date = UserUtils.getUserTimeFromSession(request.getSession());
             if (null == date || date.before(addSeconds(new Date(), -30))) {
-                user = systemUserService.getEntity(user.getId());
+                user = sysUserService.getEntity(user.getId());
                 UserUtils.setUserToSession(request.getSession(), user);
             }
         }

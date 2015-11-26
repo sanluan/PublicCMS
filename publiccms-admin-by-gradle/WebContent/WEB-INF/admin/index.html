@@ -52,11 +52,11 @@ function editorSyn(ename){
 		<li><a href="logout.do">退出</a></li>
 	</ul>
 	<ul id="navMenu">
-<@_systemMoudleList>
+<@_sysMoudleList>
 	<#list page.list as a>
 		<@t.meger 'moudleIds' a.id!/>
 	</#list>
-	<@_systemRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map/></@_systemRoleMoudle>
+	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map/></@_sysRoleMoudle>
 
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
@@ -64,7 +64,7 @@ function editorSyn(ename){
 			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)?html}"><span>${a.name?html}</span></a></li>
 		</#if>
 	</#list>
-</@_systemMoudleList>
+</@_sysMoudleList>
 	</ul>
 	<script>$('#navMenu li:eq(0)').addClass("selected");</script>
 </header>

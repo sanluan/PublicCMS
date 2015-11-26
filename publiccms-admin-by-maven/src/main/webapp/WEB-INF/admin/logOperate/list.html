@@ -51,7 +51,7 @@
 			<#list page.list as a>
 				<@t.meger 'userIds' a.userId!/>
 			</#list>
-			<@_systemUser ids=t.userIds!><#assign userMap=map/></@_systemUser>
+			<@_sysUser ids=t.userIds!><#assign userMap=map/></@_sysUser>
 			
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">

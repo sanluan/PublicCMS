@@ -25,7 +25,7 @@ public class CmsExtendDao extends BaseDao<CmsExtend> {
         if (notEmpty(isCustom)) {
             queryHandler.condition("bean.isCustom = :isCustom").setParameter("isCustom", isCustom);
         }
-        queryHandler.append("order by bean.id desc");
+        queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

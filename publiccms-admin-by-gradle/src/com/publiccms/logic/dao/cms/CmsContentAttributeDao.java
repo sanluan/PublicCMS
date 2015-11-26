@@ -14,7 +14,7 @@ import com.sanluan.common.handler.QueryHandler;
 public class CmsContentAttributeDao extends BaseDao<CmsContentAttribute> {
     public PageHandler getPage(Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentAttribute bean");
-        queryHandler.append("order by bean.id desc");
+        queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

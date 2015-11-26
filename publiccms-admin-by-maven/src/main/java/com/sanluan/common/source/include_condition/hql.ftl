@@ -24,11 +24,11 @@
 		}
 		switch(orderField) {
 		<#list columnList as a><#if a.order>
-			case "${a.name}" : queryHandler.append("order by bean.${a.name} " + orderType); break;
+			case "${a.name}" : queryHandler.order("bean.${a.name} " + orderType); break;
 		</#if></#list>
-			default : queryHandler.append("order by bean.id "+orderType);
+			default : queryHandler.order("bean.id "+orderType);
 		}
 <#else>
-		queryHandler.append("order by bean.id desc");
+		queryHandler.order("bean.id desc");
 </#if>
 <#macro condition a><#if a.or>(</#if><#list a.nameList as n>bean.${n} <#if "String"=a.type&&a.like>like<#else>=</#if> :${a.name}<#sep> or </#sep></#list><#if a.or>)</#if></#macro>

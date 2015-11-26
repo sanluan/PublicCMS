@@ -1,0 +1,72 @@
+<@_sysUser id=id>
+	<#assign a=object/>
+	<#assign deptId=a.deptId!/>
+</@_sysUser>
+<@_sysDept id=deptId!><#assign dept=object/></@_sysDept>
+<div class="pageContent">
+	<form method="post" action="sysUser/save.do?callbackType=closeCurrent&navTabId=sysUser" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl class="nowrap">
+				<dt>用户名：</dt>
+				<dd>
+					<input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
+					<label><input name="superuserAccess" type="checkbox" onclick="if($(this).is(':checked')){$('.superuserAccess').show();}else{$('.superuserAccess').hide();}"/>管理员</label>
+				</dd>
+			</dl>
+			<dl class="nowrap superuserAccess" style="display:none">
+				<dt>所属部门：</dt>
+				<dd>
+					<input name="deptId" type="hidden" value="${(dept.id)!}"/>
+					<input readonly="readonly" name="deptName" type="text" size="10" value="${(dept.name)!}"/>
+					<a class="btnLook" href="sysDept/lookup.html" width="920" warn="请选择部门" lookupGroup="">选择部门</a>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>密码：</dt>
+				<dd>
+					<input<#if !a??> class="required"</#if> name="password" type="password" maxlength="30" size="20" value=""/>
+					<#if a??><span class="info">留空则不更新密码</span></#if>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>重复密码：</dt>
+				<dd><input<#if !a??> class="required"</#if> name="repassword" type="password" maxlength="30" size="20" value=""/></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>用户昵称：</dt>
+				<dd><input class="required" name="nickName" type="text" size="20" maxlength="30" value="${(a.nickName)!}"/></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>邮箱：</dt>
+				<dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
+			</dl>
+			<fieldset class="superuserAccess" style="display:none">
+				<legend>角色</legend>
+				<ul class="tree treeFolder treeCheck expand">
+			<@_sysRoleList parentId=queryParentId>
+				<#list page.list as a>
+					<li><a tname="roleIds" tvalue="${a.id}">${a.name}</a></li>
+				</#list>
+			</@_sysRoleList>
+				</ul>
+			</fieldset>
+		<#if a??&&a.superuserAccess>
+			<script>
+				$('input[name=superuserAccess]',navTab.getCurrentPanel()).click();
+		<#if a.roles?has_content>
+			<#list a.roles?split(',') as role>
+				$('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).attr('checked','checked');
+			</#list>
+		</#if>
+			</script>
+		</#if>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

@@ -1,0 +1,97 @@
+<@_sysUserList startDateRegistered=queryStartDateRegistered endDateRegistered=queryEndDateRegistered startLastLoginDate=queryStartLastLoginDate endLastLoginDate=queryEndLastLoginDate 
+			superuserAccess=querySuperuserAccess emailChecked=queryEmailChecked name=queryName 
+			disabled=queryDisabled  
+			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<form id="pagerForm" method="post">
+	<#include "../include_page/queryParamters.html"/>
+</form>
+<div class="pageHeader">
+	<form onsubmit="return navTabSearch(this);" method="post">
+	<div class="searchBar">
+		<ul class="searchContent two">
+			<li>
+				<label><@t.m 'field.name'/>：</label>
+				<input type="text" name="queryName" value="${queryName!}" />
+			</li>
+			<li>
+				<label><@t.m 'moudle.user'/><@t.m 'field.status'/>:</label>
+				<select class="combox" name="queryDisabled">
+					<option value="false"${(!queryDisabled?has_content||"false"==queryDisabled)?then(' selected="true"','')}>正常</option>
+					<option value="true"${(queryDisabled??&&"true"==queryDisabled)?then(' selected="true"','')}>禁用</option>
+				</select>
+			</li>
+			<li>
+				<label>用户身份:</label>
+				<select class="combox" name="querySuperuserAccess">
+					<option value=""${(!querySuperuserAccess?has_content)?then(' selected="true"','')}>不限</option>
+					<option value="false"${(querySuperuserAccess??&&"false"==querySuperuserAccess)?then(' selected="true"','')}>普通用户</option>
+					<option value="true"${(querySuperuserAccess??&&"true"==querySuperuserAccess)?then(' selected="true"','')}>超级管理员</option>
+				</select>
+			</li>
+			<li>
+				<label>已验证邮箱：</label>
+				<select class="combox" name="queryEmailChecked">
+					<option value=""${(!queryEmailChecked?has_content)?then(' selected="true"','')}>不限</option>
+					<option value="false"${(queryEmailChecked??&&"false"==queryEmailChecked)?then(' selected="true"','')}>已验证</option>
+					<option value="true"${(queryEmailChecked??&&"true"==queryEmailChecked)?then(' selected="true"','')}>未验证</option>
+				</select>
+			</li>
+			<li class="colspan">
+				<label>注册日期：</label>
+				<input type="text" name="queryStartDateRegistered" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryStartDateRegistered!}" />
+				<span>-</span>
+				<input type="text" name="queryEndDateRegistered" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryEndDateRegistered!}" />
+			</li>
+			<li class="colspan">
+				<label>上次登录：</label>
+				<input type="text" name="queryStartLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryStartLastLoginDate!}" />
+				<span>-</span>
+				<input type="text" name="queryEndLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${queryEndLastLoginDate!}" />
+			</li>
+		</ul>
+		<#include "../include_page/searchBar.html"/>
+	</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a class="add" href="sysUser/add.html" target="navTab" rel="sysUserAdd" title="<@t.m 'button.add'/><@t.m 'moudle.user'/>"><span><@t.m 'button.add'/></span></a></li>
+			<li><a class="edit" href="sysUser/add.html?id={sid}" target="navTab" rel="sysUserAdd" title="<@t.m 'button.edit'/><@t.m 'moudle.user'/>"><span><@t.m 'button.edit'/></span></a></li>
+			<li><a class="icon" href="sysUser/enable.do?id={sid}" title="确定要启用该用户吗?" target="ajaxTodo"><span>启用</span></a></li>
+			<li><a class="delete" href="sysUser/disable.do?id={sid}" title="确定要禁用该用户吗?" target="ajaxTodo"><span>禁用</span></a></li>
+		</ul>
+	</div>
+	<table class="table" width="100%" layoutH="144">
+		<thead>
+			<tr>
+				<th>用户名</th>
+				<th>用户昵称</th>
+				<th>邮箱</th>
+				<th>已验证邮箱</th>
+				<th>已禁用</th>
+				<th>上次登录IP</th>
+				<th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次登录日期</th>
+				<th orderField="loginCount" class="<#if orderField??&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">登录次数</th>
+				<th orderField="dateRegistered" class="<#if orderField??&&'dateRegistered'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">注册日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.name}</td>
+				<td>${a.nickName}${(a.superuserAccess)?then('[<font color="red">超级管理员</font>]','')}</td>
+				<td>${a.email}</td>
+				<td>${a.emailChecked?then('已验证','未验证')}</td>
+				<td>${(a.disabled)?then('<font color="red">禁用</font>','正常')}</td>
+				<td>${a.lastLoginIp!}</td>
+				<td>${a.lastLoginDate!}</td>
+				<td>${a.loginCount!}</td>
+				<td>${a.dateRegistered!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_sysUserList>

@@ -26,7 +26,7 @@ public class CmsContentTagDao extends BaseDao<CmsContentTag> {
         if (notEmpty(contentIds)) {
             queryHandler.condition("bean.contentId not in (:contentIds)").setParameter("contentIds", contentIds);
         }
-        queryHandler.append("order by bean.id desc");
+        queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

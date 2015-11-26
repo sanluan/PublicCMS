@@ -1,0 +1,44 @@
+<@_sysDept id=id>
+	<#assign a=object/>
+	<#if object.parentId??><#assign parentId=object.parentId/></#if>
+	<#if object.userId??><#assign userId=object.userId/></#if>
+</@_sysDept>
+<@_sysUser id=userId><#assign nickName=object.nickName/></@_sysUser>
+<@_sysDept id=parentId!><#assign parentName=object.name/></@_sysDept>
+<div class="pageContent">
+	<form method="post" action="sysDept/save.do?callbackType=closeCurrent&navTabId=sysDept" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl class="nowrap">
+				<dt>父部门：</dt>
+				<dd>
+					<input name="parentId" type="hidden" value="${parentId!}"/>
+					<input name="parentName" readonly="readonly" type="text" size="10" value="${parentName!}"/>
+					<a class="btnLook" href="sysDept/lookup.html" lookupGroup="">选择</a>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt><@t.m 'field.name'/>：</dt>
+				<dd><input class="required" name="name" type="text" size="30" value="${(a.name)!}"/></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>描述：</dt>
+				<dd><textarea name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>负责人：</dt>
+				<dd>
+					<input name="userId" value="${userId!}" type="hidden"/>
+					<input name="nickName" readonly="readonly" size="10" value="${nickName!}" type="text"/>
+					<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>	
+				</dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit"><@t.m 'button.save'/></button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close"><@t.m 'button.cancel'/></button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

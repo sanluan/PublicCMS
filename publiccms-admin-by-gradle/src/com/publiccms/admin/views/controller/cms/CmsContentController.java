@@ -22,7 +22,7 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsModel;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.system.SystemUser;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.ExtendComponent;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.component.FileComponent.StaticResult;
@@ -93,7 +93,7 @@ public class CmsContentController extends BaseController {
             contentTagService.delete(null, entity.getId());
             newTagIds = tagService.saveTags(entity.getId(), tagTitles);
         } else {
-            SystemUser user = UserUtils.getAdminFromSession(session);
+            SysUser user = UserUtils.getAdminFromSession(session);
             entity.setUserId(user.getId());
             entity.setDeptId(user.getDeptId());
             entity = service.save(entity);

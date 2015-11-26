@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.tools.UserUtils;
 import com.publiccms.entities.log.LogEmailCheck;
-import com.publiccms.entities.system.SystemUser;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.component.MailComponent;
 import com.publiccms.logic.service.log.LogEmailCheckService;
-import com.publiccms.logic.service.system.SystemUserService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.sanluan.common.base.BaseController;
 import com.sanluan.common.tools.LanguagesUtils;
 import com.sanluan.common.tools.VerificationUtils;
@@ -35,7 +35,7 @@ import freemarker.template.TemplateException;
 public class UserController extends BaseController {
     private final String passwordPage = "user/password";
     @Autowired
-    private SystemUserService service;
+    private SysUserService service;
     @Autowired
     private MailComponent mailComponent;
     @Autowired
@@ -56,7 +56,7 @@ public class UserController extends BaseController {
     @RequestMapping(value = "changePassword")
     public String changePassword(String oldpassword, String password, String repassword, HttpServletRequest request,
             HttpSession session, HttpServletResponse response, ModelMap model) {
-        SystemUser user = UserUtils.getUserFromSession(session);
+        SysUser user = UserUtils.getUserFromSession(session);
         if (virifyNotEmpty("password", password, model) || virifyNotEquals("repassword", password, repassword, model)) {
             return passwordPage;
         } else {
@@ -87,7 +87,7 @@ public class UserController extends BaseController {
                 || virifyHasExist("email", service.findByEmail(email), model)) {
             return "editEmail";
         }
-        SystemUser user = UserUtils.getUserFromSession(session);
+        SysUser user = UserUtils.getUserFromSession(session);
 
         String emailCheckCode = UUID.randomUUID().toString();
         LogEmailCheck emailCheckLog = new LogEmailCheck();

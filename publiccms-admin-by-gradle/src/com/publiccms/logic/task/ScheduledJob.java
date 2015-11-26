@@ -9,10 +9,10 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.publiccms.entities.log.LogTask;
-import com.publiccms.entities.system.SystemTask;
+import com.publiccms.entities.sys.SysTask;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.service.log.LogTaskService;
-import com.publiccms.logic.service.system.SystemTaskService;
+import com.publiccms.logic.service.sys.SysTaskService;
 
 import freemarker.template.TemplateException;
 
@@ -23,7 +23,7 @@ import freemarker.template.TemplateException;
  */
 public class ScheduledJob implements Job {
 
-    public static SystemTaskService systemTaskService;
+    public static SysTaskService sysTaskService;
     public static LogTaskService logTaskService;
     public static FileComponent fileComponent;
 
@@ -34,16 +34,16 @@ public class ScheduledJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         Date startTime = new Date();
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-        SystemTask task = systemTaskService.getEntity((Integer) dataMap.get(ScheduledTask.ID));
+        SysTask task = sysTaskService.getEntity((Integer) dataMap.get(ScheduledTask.ID));
         if (null != task) {
-            systemTaskService.updateStatus(task.getId(), ScheduledTask.TASK_STATUS_RUNNING);
+            sysTaskService.updateStatus(task.getId(), ScheduledTask.TASK_STATUS_RUNNING);
             String result;
             try {
                 result = "success:" + fileComponent.dealStringTemplate(task.getContent(), null);
             } catch (IOException | TemplateException e) {
                 result = "error:" + e.toString();
             }
-            systemTaskService.updateStatus(task.getId(), ScheduledTask.TASK_STATUS_READY);
+            sysTaskService.updateStatus(task.getId(), ScheduledTask.TASK_STATUS_READY);
             LogTask entity = new LogTask(task.getId(), startTime, new Date(), result);
             logTaskService.save(entity);
         }
