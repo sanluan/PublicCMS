@@ -1,1 +1,0 @@
-import ${base}.${servicePack}.${entityName}${serviceSuffix};
