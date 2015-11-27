@@ -11,7 +11,7 @@ import com.sanluan.common.handler.PageHandler;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
-public class SystemUserListDirective extends BaseTemplateDirective {
+public class SysUserListDirective extends BaseTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {

@@ -3,7 +3,6 @@ import org.gradle.plugins.ide.eclipse.model.Facet
 apply plugin: 'java'
 apply plugin: 'eclipse-wtp'
 apply plugin: 'war'
-apply plugin: 'jetty'
 
 webAppDirName = 'WebContent'
 sourceSets.main.java.srcDir 'src'
@@ -26,7 +25,7 @@ ext {
 }
 
 war{
-	baseName ='admin'
+	baseName ='cms'
 	from("$projectDir/src/") {
 		include "*.xml"
 		into('WEB-INF/classes')
@@ -82,9 +81,6 @@ dependencies {
 	'net.coobird:thumbnailator:0.4.8',
 
 	'org.apache.ant:ant:1.9.4',
-
-	//'org.apache.poi:poi:3.12',
-	//'org.apache.poi:poi-ooxml:3.12',
 
 	'org.quartz-scheduler:quartz:2.2.1',
 
