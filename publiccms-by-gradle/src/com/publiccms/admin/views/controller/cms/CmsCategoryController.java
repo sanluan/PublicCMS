@@ -88,7 +88,7 @@ public class CmsCategoryController extends BaseController {
                 systemExtendList, parameterMap);
         extendComponent.saveExtend(ExtendComponent.ITEM_TYPE_CATEGORY, entity.getId(), systemExtendList, parameterMap);
 
-        attributeService.updateAttribute(entity.getId(), extendComponent.dealCategoryExtent(entity.getId(), parameterMap));
+        attributeService.updateAttribute(entity.getId(), extendComponent.dealCategoryExtent(entity.getParentId(), parameterMap));
         publish(entity.getId(), request, session, model);
         return TEMPLATE_DONE;
     }

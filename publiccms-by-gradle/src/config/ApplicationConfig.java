@@ -88,6 +88,19 @@ public class ApplicationConfig {
 
         return dataSource;
     }
+    
+
+    /**
+     * Hibernate事务管理
+     * 
+     * @return
+     */
+    @Bean
+    public HibernateTransactionManager hibernateTransactionManager() {
+        HibernateTransactionManager bean = new HibernateTransactionManager();
+        bean.setSessionFactory(sessionFactory);
+        return bean;
+    }
 
     /**
      * 持久层会话工厂类
@@ -120,18 +133,6 @@ public class ApplicationConfig {
         hibernateProperties.setProperty("hibernate.search.default.indexBase", getDataFilePath() + "/indexes");
 
         bean.setHibernateProperties(hibernateProperties);
-        return bean;
-    }
-
-    /**
-     * Hibernate事务管理
-     * 
-     * @return
-     */
-    @Bean
-    public HibernateTransactionManager hibernateTransactionManager() {
-        HibernateTransactionManager bean = new HibernateTransactionManager();
-        bean.setSessionFactory(sessionFactory);
         return bean;
     }
 

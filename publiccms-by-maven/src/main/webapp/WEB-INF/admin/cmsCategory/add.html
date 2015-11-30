@@ -47,7 +47,7 @@ $(function(){
 	$('select[name=${pre}${a.id!}_inputType]',$temp).val('${(a.inputType?js_string)!}');
 	$('input[name=${pre}${a.id!}_code]',$temp).val('${(a.code?js_string)!}');
 	$('input[name=${pre}${a.id!}_defaultValue]',$temp).val('${(a.defaultValue?js_string)!}');
-	$('textarea[name=${pre}${a.id!}_description]',$temp).val('${(a.description?js_string)!}');
+	$('input[name=${pre}${a.id!}_description]',$temp).val('${(a.description?js_string)!}');
 	$temp.initUI();
 	</#list>
 </@_extendList>
