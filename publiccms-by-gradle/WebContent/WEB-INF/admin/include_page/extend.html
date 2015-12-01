@@ -33,7 +33,7 @@
 </#switch>
 </#macro>
 <#list page.list as e>
-	<dl<#if 'textarea'=e.inputType||'editor'=e.inputType> class="nowrap"</#if>>
+	<dl<#if 'textarea'=e.inputType||'editor'=e.inputType||'file'=e.inputType> class="nowrap"</#if>>
 		<dt>${e.name}：</dt>
 		<dd<#if 'editor'=e.inputType> style="width:80%;"</#if>>
 			<#if e.isCustom>

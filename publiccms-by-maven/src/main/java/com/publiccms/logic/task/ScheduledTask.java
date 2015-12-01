@@ -70,10 +70,10 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
                 if (null == trigger) {
                     JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class).withIdentity(taskName).build();
                     jobDetail.getJobDataMap().put(ID, id);
-                    trigger = TriggerBuilder.newTrigger().withIdentity(taskName).withSchedule(scheduleBuilder).build();
+                    trigger = TriggerBuilder.newTrigger().withIdentity(taskName).withSchedule(scheduleBuilder).startNow().build();
                     scheduler.scheduleJob(jobDetail, trigger);
                 } else {
-                    trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
+                    trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).startNow().build();
                     scheduler.rescheduleJob(triggerKey, trigger);
                 }
             } catch (SchedulerException e) {
