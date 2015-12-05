@@ -19,7 +19,7 @@
 * 日志管理
 
 ##简介
-PublicCMS 使用了SpringMVC 4.2.3.RELEASE,Hibernate 5.0.2.Final,Apache FreeMarker 2.3.23,hibernate-search5.5.0.Final等技术及框架,工程编译等工作由Gradle处理，运行部署需要jdk1.7+,tomcat7.0+/jetty8.0+,nginx/apache,mysql5.0+
+PublicCMS 使用了SpringMVC 4.2.3.RELEASE,Hibernate 5.0.5.Final,Apache FreeMarker 2.3.23,hibernate-search5.5.1.Final等技术及框架,工程编译等工作由Gradle处理，运行部署需要jdk1.7+,tomcat7.0+/jetty8.0+,nginx/apache,mysql5.0+
 通过不同那个的配置方式PublicCMS 支持全站静态化/全站动态，
 
 ##授权
