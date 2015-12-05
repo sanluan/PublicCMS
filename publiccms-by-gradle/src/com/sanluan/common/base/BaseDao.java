@@ -199,8 +199,8 @@ public abstract class BaseDao<E> extends Base {
         QueryBuilder queryBuilder = fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(getEntityClass()).get();
         org.apache.lucene.search.Query query = queryBuilder.keyword().onFields(fields).matching(text).createQuery();
         FullTextQuery fullTextQuery = fullTextSession.createFullTextQuery(query, getEntityClass());
-        FacetManager facetManager = fullTextQuery.getFacetManager();
         if (null != facetFields) {
+            FacetManager facetManager = fullTextQuery.getFacetManager();
             for (String facetField : facetFields) {
                 FacetingRequest facetingRequest = queryBuilder.facet().name(facetField + "FacetRequest").onField(facetField)
                         .discrete().orderedBy(FacetSortOrder.COUNT_DESC).includeZeroCounts(false).maxFacetCount(10)

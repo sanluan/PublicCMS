@@ -76,6 +76,8 @@ PublicCMS 使用了SpringMVC 4.2.3.RELEASE,Hibernate 5.0.2.Final,Apache FreeMark
 ![](doc/images/preview/9.jpg)
 ###任务计划编辑
 ![](doc/images/preview/10.jpg)
+###任务计划表达式模板
+![](doc/images/preview/14.jpg)
 ###用户管理
 ![](doc/images/preview/11.jpg)
 ###角色编辑
