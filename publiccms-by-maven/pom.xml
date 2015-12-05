@@ -64,11 +64,6 @@
 			<version>${springVersion}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.hibernate.common</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>5.0.0.Final</version>
-		</dependency>
-		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernateVersion}</version>
@@ -134,6 +129,11 @@
 			<version>1.1.1</version>
 		</dependency>
 		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>jta</artifactId>
+			<version>1.1</version>
+		</dependency>
+		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
@@ -186,8 +186,8 @@
 	</dependencies>
 	<properties>
 		<springVersion>4.2.3.RELEASE</springVersion>
-		<hibernateVersion>5.0.2.Final</hibernateVersion>
-		<hibernateSearchVersion>5.5.0.Final</hibernateSearchVersion>
+		<hibernateVersion>5.0.5.Final</hibernateVersion>
+		<hibernateSearchVersion>5.5.1.Final</hibernateSearchVersion>
 		<freemarkerVersion>2.3.23</freemarkerVersion>
 		<httpclientVersion>4.5</httpclientVersion>
 		<jacksonVersion>2.6.1</jacksonVersion>

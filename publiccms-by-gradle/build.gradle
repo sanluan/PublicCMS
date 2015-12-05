@@ -17,8 +17,8 @@ repositories {
 
 ext {
 	springVersion = '4.2.3.RELEASE'
-	hibernateVersion = '5.0.2.Final'
-	hibernateSearchVersion = '5.5.0.Final'
+	hibernateVersion = '5.0.5.Final'
+	hibernateSearchVersion = '5.5.1.Final'
 	freemarkerVersion = '2.3.23'
 	httpclientVersion = '4.5'
 	jacksonVersion = '2.6.1'
@@ -54,11 +54,8 @@ dependencies {
 	"org.springframework:spring-orm:${springVersion}",
 	"org.springframework:spring-webmvc:${springVersion}",
 
-	'org.hibernate.common:hibernate-commons-annotations:5.0.0.Final',
 	"org.hibernate:hibernate-core:${hibernateVersion}",
-
 	"org.hibernate:hibernate-ehcache:${hibernateVersion}",
-
 	"org.hibernate:hibernate-search:${hibernateSearchVersion}",
 
 	'c3p0:c3p0:0.9.1.2',
@@ -72,9 +69,11 @@ dependencies {
 	"org.apache.httpcomponents:httpmime:${httpclientVersion}",
 	"org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
 
-	'org.slf4j:slf4j-api:1.7.10',
 	'javax.activation:activation:1.1.1',
+    'javax.transaction:jta:1.1',
 	'javax.mail:mail:1.4.7',
+    
+    'org.slf4j:slf4j-api:1.7.10',
 	'eu.bitwalker:UserAgentUtils:1.15',
 	'antlr:antlr:2.7.7',
 	'dom4j:dom4j:1.6.1',
