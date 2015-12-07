@@ -26,17 +26,13 @@
 			<#assign prePath='facetSearch.html?word='+(word!'')?url+'&categoryId='+(categoryId!'')?url+'&modelId='+(modelId!'')?url+'&'/>
 			<#assign modelFacet=page.map['modelId']!/>
 			<#assign categoryFacet=page.map['categoryId']!/>
-			<#include "ftl/meger.ftl"/>
 			<#list page.list as a>
-				<@meger 'modelIds' a.modelId!/>
+				<@t.meger 'modelIds' a.modelId!/>
 			</#list>
-			<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+			<@_model ids=t.modelIds!><#assign modelMap=map/></@_model>
 			<#list page.list as a>
-				<#if modelMap[a.modelId?string].isImages>
-					<#include "ftl/image-list.ftl"/>
-				<#else>
-					<#include "ftl/data-list.ftl"/>
-				</#if>
+				<#assign model=modelMap[a.modelId?string]/>
+				<#include "ftl/data-list.ftl"/>
 			</#list>
 			<#include "ftl/search_page.ftl"/>
 		</#if>
@@ -46,9 +42,9 @@
 		<aside>
 			<#if modelFacet?has_content>
 				<#list modelFacet?keys as k>
-					<@meger 'modelIds' k/>
+					<@t.meger 'sidemodelIds' k/>
 				</#list>
-				<@_model ids=modelIds>
+				<@_model ids=t.sidemodelIds>
 					<#assign modelMap=map/>
 				</@_model>
 				<div style="border-bottom: 1px solid #eee;">
@@ -62,9 +58,9 @@
 			</#if>
 			<#if categoryFacet?has_content>
 				<#list categoryFacet?keys as k>
-					<@meger 'categoryIds' k/>
+					<@t.meger 'categoryIds' k/>
 				</#list>
-				<@_category ids=categoryIds>
+				<@_category ids=t.categoryIds>
 					<#assign categoryMap=map/>
 				</@_category>
 				<div style="border-bottom: 1px solid #eee;">

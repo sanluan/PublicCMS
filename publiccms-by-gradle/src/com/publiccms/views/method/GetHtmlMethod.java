@@ -36,7 +36,7 @@ public class GetHtmlMethod extends BaseMethod {
                     HttpEntity entity = response.getEntity();
                     EntityUtils.consume(entity);
                     if (null != entity) {
-                        return entity.getContent();
+                        return EntityUtils.toString(entity, "UTF_8");
                     }
                 } catch (Exception e) {
                     log.error(e.getMessage());

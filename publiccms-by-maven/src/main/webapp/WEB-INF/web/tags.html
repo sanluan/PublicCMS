@@ -32,14 +32,20 @@
 			</p>
 			<#if id?has_content>
 			<@_contentTagList tagIds=id>
-				<#include "ftl/meger.ftl"/>
 				<#list page.list as a>
-					<@meger 'contentIds' a.contentId/>
+					<@t.meger 'contentIds' a.contentId/>
 				</#list>
-				<@_content ids=contentIds>
+				<@_content ids=t.contentIds>
+					<#list page.list as tag>
+						<@t.meger 'modelIds' map[tag.contentId?string].modelId/>
+					</#list>
+					<@_model ids=t.modelIds>
+						<#assign modelMap = map/>
+					</@_model>
 					<#list page.list as tag>
 						<#assign a = map[tag.contentId?string]!/>
 						<#if a?has_content>
+							<#assign model=modelMap[a.modelId?string]/>
 							<#include "ftl/data-list.ftl"/>
 						</#if>
 					</#list>

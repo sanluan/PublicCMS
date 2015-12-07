@@ -66,15 +66,14 @@
 				<#include "../include/"+path/><#-- 精彩图集 -->
 			</@_templateDataList>
 <#if content.tags?has_content>
-	<#include "../ftl/meger.ftl"/>
 	<@_contentTagList tagIds=content.tags contentIds=content.id>
 			<#list page.list as a>
-				<@meger 'contentIds' a.contentId/>
+				<@t.meger 'contentIds' a.contentId/>
 			</#list>
 			<div style="border-bottom: 1px solid #eee;">
 				<h3>相关推荐</h3>
 				<ul>
-		<@_content ids=contentIds>
+		<@_content ids=t.contentIds>
 			<#list map?keys as k>
 				<#assign a=map[k]!/>
 				<#if a?has_content><li><a href="content.html?id=${a.id}" target="_blank" title="${a.title}"><@t.cut a.title 20 '...'/></a></li></#if>

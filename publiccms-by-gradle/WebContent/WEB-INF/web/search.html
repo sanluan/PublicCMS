@@ -23,17 +23,13 @@
 <#if word?has_content>
 		<@_search word=word pageIndex=page count=10>
 			<#assign prePath='search.html?word='+(word?url)!''+'&'/>
-			<#include "ftl/meger.ftl"/>
 			<#list page.list as a>
-				<@meger 'modelIds' a.modelId!/>
+				<@t.meger 'modelIds' a.modelId!/>
 			</#list>
-			<@_model ids=modelIds!><#assign modelMap=map/></@_model>
+			<@_model ids=t.modelIds!><#assign modelMap=map/></@_model>
 			<#list page.list as a>
-				<#if modelMap[a.modelId?string].isImages>
-					<#include "ftl/image-list.ftl"/>
-				<#else>
-					<#include "ftl/data-list.ftl"/>
-				</#if>
+				<#assign model=modelMap[a.modelId?string]/>
+				<#include "ftl/data-list.ftl"/>
 			</#list>
 			<#include "ftl/search_page.ftl"/>
 		</@_search>
