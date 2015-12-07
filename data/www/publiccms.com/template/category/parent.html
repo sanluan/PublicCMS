@@ -36,11 +36,8 @@
 	</#list>
 	<@_model ids=modelIds!><#assign modelMap=map/></@_model>
 	<#list page.list as a>
-		<#if modelMap[a.modelId?string].isImages>
-			<#include "/ftl/image-list.ftl"/>
-		<#else>
-			<#include "/ftl/data-list.ftl"/>
-		</#if>
+		<#assign model=modelMap[a.modelId?string]/>
+		<#include "/ftl/data-list.ftl"/>
 	</#list>
 			<#if 1=pageIndex>
 				<div class="page">

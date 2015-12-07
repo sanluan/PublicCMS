@@ -4,6 +4,8 @@
 	<title>${category.name} - PublicCMS</title>
 	<meta name="keywords" content="${category.name}"/>
 	<meta name="description" content="${category.name}"/>
+	<link href="${getUploadPath()}css/bootstrap.min.3.3.5.css" rel="stylesheet"/>
+	<link href="${getUploadPath()}css/product-list.css" rel="stylesheet"/>
 <!--#include virtual="/include/header.html"-->
 </head>
 <body>
@@ -25,7 +27,7 @@
 	</div>
 	<div class="container">
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderField='publishDate' orderType='desc' pageIndex=pageIndex count=category.pageSize>
-		<div class="data-list left-content">
+		<div class="product-list left-content">
 	<#include "/ftl/cut.ftl"/>
 	<#include "/ftl/meger.ftl"/>
 	<#list page.list as a>
@@ -34,8 +36,9 @@
 	<@_model ids=modelIds!><#assign modelMap=map/></@_model>
 	<#list page.list as a>
 		<#assign model=modelMap[a.modelId?string]/>
-		<#include "/ftl/data-list.ftl"/>
+		<#include "/ftl/product-list.ftl"/>
 	</#list>
+				<div class="clearfix"></div>
 			<#if 1=pageIndex>
 				<div class="page">
 					<#if !page.lastPage>

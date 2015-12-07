@@ -5,16 +5,6 @@
 	<meta name="keywords" content="${keywords!}"/>
 	<meta name="description" content="${description!}"/>
 <!--#include virtual="/include/header.html"-->
-<#if .now?date lt '2015-08-19'?date('yyyy-MM-dd')>
-<style>
-html{
-filter: grayscale(100%);
--moz-filter: grayscale(100%);
--o-filter: grayscale(100%);
--webkit-filter: grayscale(1);
-}
-</style>
-</#if>
 </head>
 <body>
 <!--#include virtual="/include/nav.html"-->
@@ -25,21 +15,15 @@ filter: grayscale(100%);
 	<div class="container">
 		<!--#include virtual="/include/index.html/1.html"--><#-- 焦点图 -->
 		<div class="data-list left-content">
+<#include "ftl/cut.ftl"/>
 <@_modelList>
-	<#list page.list?reverse as m>
-		<@_contentList status=1 modelId=m.id endPublishDate=.now orderField='publishDate' orderType='desc' count=5>
+	<#list page.list?reverse as model>
+		<@_contentList status=1 modelId=model.id endPublishDate=.now orderField='publishDate' orderType='desc' count=3>
 			<#if page.totalCount gt 0>
-				<h3>最新${m.name!}</h3>
-				<#include "ftl/cut.ftl"/>
-				<#if m.isImages>
-					<#list page.list as a>
-							<#include "/ftl/image-list.ftl"/>
-					</#list>
-				<#else>
-					<#list page.list as a>
-							<#include "/ftl/data-list.ftl"/>
-					</#list>
-				</#if>
+				<h3>最新${model.name!}</h3>
+				<#list page.list as a>
+					<#include "/ftl/data-list.ftl"/>
+				</#list>
 			</#if>
 		</@_contentList>
 	</#list>
