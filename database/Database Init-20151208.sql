@@ -89,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `cms_content` (
   `source_url` varchar(255) default NULL COMMENT '来源地址',
   `author` varchar(50) default NULL COMMENT '作者',
   `editor` varchar(50) default NULL COMMENT '编辑',
-  `url` varchar(255) default NULL COMMENT '地址',
+  `url` varchar(1000) default NULL COMMENT '地址',
   `description` varchar(300) default NULL COMMENT '简介',
   `tags` varchar(100) default NULL COMMENT '标签',
   `cover` varchar(255) default NULL COMMENT '封面',

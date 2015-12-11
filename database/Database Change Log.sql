@@ -13,3 +13,5 @@ RENAME TABLE  `system_moudle` TO  `sys_moudle`;
 update `sys_moudle` set `url`=replace(`url`,'system','sys'),`authorized_url`=replace(`authorized_url`,'system','sys');
 update  `sys_role_authorized` set `authorized_url`=replace(`authorized_url`,'system','sys');
 -- 20151120--
+ALTER TABLE  `cms_content` CHANGE  `url`  `url` VARCHAR( 1000 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT  '地址';
+-- 20151208--
