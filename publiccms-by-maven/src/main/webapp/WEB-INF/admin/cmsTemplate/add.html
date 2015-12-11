@@ -38,17 +38,19 @@
 				<dt><@t.m 'moudle.template'/><@t.m 'moudle.content'/>:</dt>
 				<dd>
 				<textarea name="content" class="required" style="width:100%;height:500px;padding:0px;"><#if userTemplate??><#noparse>
-<aside>
-<#list dataList?reverse as a>
+<#list dataList?reverse>
+<div>
+	<#items as a>
 		<dl>
-			<dt><h3><a href="${getSitePath(a.url)}" target="_blank">${a.title!}</a></h3></dt>
+			<dt><a href="${getSitePath(a.url)}" target="_blank"><h3>${a.title!}</h3></a></dt>
 			<dd>
 				<img src="${getUploadPath(a.cover)}" alt="${a.title!}"/>
 				<p>${a.description!}</p>
 			</dd>
 		</dl>
+	</#items>
+</div>
 </#list>
-</aside>
 </#noparse></#if></textarea>
 				</dd>
 			</dl>

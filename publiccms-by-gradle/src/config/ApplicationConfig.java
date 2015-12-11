@@ -3,6 +3,7 @@ package config;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.beans.PropertyVetoException;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Properties;
 
@@ -88,7 +89,6 @@ public class ApplicationConfig {
 
         return dataSource;
     }
-    
 
     /**
      * Hibernate事务管理
@@ -130,7 +130,9 @@ public class ApplicationConfig {
                 env.getProperty("hibernate.cache.provider_configuration_file_resource_path"));
         hibernateProperties.setProperty("hibernate.search.default.directory_provider",
                 env.getProperty("hibernate.search.default.directory_provider"));
-        hibernateProperties.setProperty("hibernate.search.default.indexBase", getDataFilePath() + "/indexes");
+        String indexBase = getDataFilePath() + "/indexes";
+        (new File(indexBase)).mkdirs();
+        hibernateProperties.setProperty("hibernate.search.default.indexBase", indexBase);
 
         bean.setHibernateProperties(hibernateProperties);
         return bean;
