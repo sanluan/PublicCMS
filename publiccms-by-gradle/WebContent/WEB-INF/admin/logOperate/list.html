@@ -49,7 +49,7 @@
 		</thead>
 		<tbody>
 			<#list page.list as a>
-				<@t.meger 'userIds' a.userId!/>
+				<@t.merge 'userIds' a.userId!/>
 			</#list>
 			<@_sysUser ids=t.userIds!><#assign userMap=map/></@_sysUser>
 			

@@ -1,7 +1,7 @@
 <@_contentTagList tagId=tagId>
 	<#list page.list as a>
 		<@_tag id=a.id>
-			<@t.meger 'contentIds' a.contentId/>
+			<@t.merge 'contentIds' a.contentId/>
 		</@_tag>
 	</#list>
 </@_contentTagList>

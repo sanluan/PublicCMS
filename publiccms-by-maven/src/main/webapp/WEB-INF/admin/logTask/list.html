@@ -35,7 +35,7 @@
 		</thead>
 		<tbody>
 			<#list page.list as a>
-				<@t.meger 'taskIds' a.taskId!/>
+				<@t.merge 'taskIds' a.taskId!/>
 			</#list>
 			<@_sysTask ids=t.taskIds!><#assign taskMap=map/></@_sysTask>
 			<#list page.list as a>

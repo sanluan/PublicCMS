@@ -41,7 +41,7 @@
 		</thead>
 		<tbody>
 			<#list page.list as a>
-				<@t.meger 'moudleIds' a.parentId!/>
+				<@t.merge 'moudleIds' a.parentId!/>
 			</#list>
 			<@_sysMoudle ids=t.moudleIds!><#assign moudleMap=map/></@_sysMoudle>
 			

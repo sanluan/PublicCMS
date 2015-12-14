@@ -27,7 +27,7 @@
 <@_contentList status=1 categoryId=category.id containChild=true endPublishDate=.now orderField='publishDate' orderType='desc' pageIndex=pageIndex count=category.pageSize>
 		<div class="data-list left-content">
 	<#list page.list as a>
-		<@t.meger 'modelIds' a.modelId!/>
+		<@t.merge 'modelIds' a.modelId!/>
 	</#list>
 	<@_model ids=t.modelIds!><#assign modelMap=map/></@_model>
 	<#list page.list as a>

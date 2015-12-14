@@ -54,7 +54,7 @@ function editorSyn(ename){
 	<ul id="navMenu">
 <@_sysMoudleList>
 	<#list page.list as a>
-		<@t.meger 'moudleIds' a.id!/>
+		<@t.merge 'moudleIds' a.id!/>
 	</#list>
 	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map/></@_sysRoleMoudle>
 

@@ -33,11 +33,11 @@
 			<#if id?has_content>
 			<@_contentTagList tagIds=id>
 				<#list page.list as a>
-					<@t.meger 'contentIds' a.contentId/>
+					<@t.merge 'contentIds' a.contentId/>
 				</#list>
 				<@_content ids=t.contentIds>
 					<#list page.list as tag>
-						<@t.meger 'modelIds' map[tag.contentId?string].modelId/>
+						<@t.merge 'modelIds' map[tag.contentId?string].modelId/>
 					</#list>
 					<@_model ids=t.modelIds>
 						<#assign modelMap = map/>

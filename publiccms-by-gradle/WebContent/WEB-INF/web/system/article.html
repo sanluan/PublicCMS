@@ -68,7 +68,7 @@
 <#if content.tags?has_content>
 	<@_contentTagList tagIds=content.tags contentIds=content.id>
 			<#list page.list as a>
-				<@t.meger 'contentIds' a.contentId/>
+				<@t.merge 'contentIds' a.contentId/>
 			</#list>
 			<div style="border-bottom: 1px solid #eee;">
 				<h3>相关推荐</h3>

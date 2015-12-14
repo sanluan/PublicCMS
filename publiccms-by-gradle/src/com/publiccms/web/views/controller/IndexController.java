@@ -68,23 +68,11 @@ public class IndexController extends BaseController {
      * @param callback
      * @return
      */
-    @RequestMapping("*.json")
+    @RequestMapping({ "*.json", "/**/*.json" })
     @ResponseBody
     public MappingJacksonValue index(String callback) {
         MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(NOT_FOUND_MAP);
         mappingJacksonValue.setJsonpFunction(callback);
         return mappingJacksonValue;
-    }
-
-    /**
-     * 接口请求统一分发
-     * 
-     * @param callback
-     * @return
-     */
-    @RequestMapping("/**/*.json")
-    @ResponseBody
-    public MappingJacksonValue dir(String callback) {
-        return index(callback);
     }
 }

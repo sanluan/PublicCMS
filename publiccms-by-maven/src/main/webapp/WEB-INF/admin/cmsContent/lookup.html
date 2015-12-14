@@ -47,9 +47,9 @@
 		</thead>
 		<tbody>
 			<#list page.list as a>
-				<@t.meger 'userIds' a.userId!/>
-				<@t.meger 'categoryIds' a.categoryId!/>
-				<@t.meger 'modelIds' a.modelId!/>
+				<@t.merge 'userIds' a.userId!/>
+				<@t.merge 'categoryIds' a.categoryId!/>
+				<@t.merge 'modelIds' a.modelId!/>
 			</#list>
 			
 			<@_sysUser ids=t.userIds!><#assign userMap=map/></@_sysUser>

@@ -191,6 +191,7 @@
 		<freemarkerVersion>2.3.23</freemarkerVersion>
 		<httpclientVersion>4.5</httpclientVersion>
 		<jacksonVersion>2.6.1</jacksonVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<build>
 		<defaultGoal>compile</defaultGoal>

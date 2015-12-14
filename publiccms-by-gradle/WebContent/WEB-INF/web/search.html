@@ -24,7 +24,7 @@
 		<@_search word=word pageIndex=page count=10>
 			<#assign prePath='search.html?word='+(word?url)!''+'&'/>
 			<#list page.list as a>
-				<@t.meger 'modelIds' a.modelId!/>
+				<@t.merge 'modelIds' a.modelId!/>
 			</#list>
 			<@_model ids=t.modelIds!><#assign modelMap=map/></@_model>
 			<#list page.list as a>

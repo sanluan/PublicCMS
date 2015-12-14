@@ -30,7 +30,7 @@
 				<h3>最新内容</h3>
 			</#if>
 	<#list page.list as a>
-		<@t.meger 'modelIds' a.modelId!/>
+		<@t.merge 'modelIds' a.modelId!/>
 	</#list>
 	<@_model ids=t.modelIds!><#assign modelMap=map/></@_model>
 	<#list page.list as a>

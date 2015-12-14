@@ -18,7 +18,7 @@
 <div class="accordion">
 <@_sysMoudleList parentId=parentId>
 	<#list page.list as a>
-		<@t.meger 'moudleIds' a.id!/>
+		<@t.merge 'moudleIds' a.id!/>
 	</#list>
 	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map/></@_sysRoleMoudle>
 	
