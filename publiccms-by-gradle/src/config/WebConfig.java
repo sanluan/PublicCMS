@@ -14,9 +14,9 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import com.publiccms.common.interceptor.web.WebContextInterceptor;
+import com.publiccms.common.view.web.WebFreeMarkerView;
 import com.publiccms.logic.component.CacheComponent;
-import com.publiccms.web.common.interceptor.WebContextInterceptor;
-import com.publiccms.web.common.view.WebFreeMarkerView;
 
 /**
  * 
@@ -25,7 +25,7 @@ import com.publiccms.web.common.view.WebFreeMarkerView;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.publiccms.web.views.controller", useDefaultFilters = false, includeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
+@ComponentScan(basePackages = "com.publiccms.views.controller.web", useDefaultFilters = false, includeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
     private CacheComponent cacheComponent;

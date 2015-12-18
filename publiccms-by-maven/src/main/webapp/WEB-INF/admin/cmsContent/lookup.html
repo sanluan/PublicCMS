@@ -1,9 +1,4 @@
-<@_contentList modelExtend3=queryModelExtend3 modelExtend4=queryModelExtend4 
-			extend1=queryExtend1 categoryId=queryCategoryId 
-			extend3=queryExtend3 extend2=queryExtend2 extend4=queryExtend4 
-			modelId=queryModelId title=queryTitle 
-			userId=queryUserId modelExtend2=queryModelExtend2 startPublishDate=queryStartPublishDate endPublishDate=.now 
-			modelExtend1=queryModelExtend1 orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<@_contentList modelId=queryModelId title=queryTitle userId=queryUserId startPublishDate=queryStartPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <form id="pagerForm" method="post" action="cmsContent/lookup.html">
 	<#include "../include_page/queryParamters.html"/>
 </form>

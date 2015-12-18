@@ -10,8 +10,8 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-import com.publiccms.admin.common.interceptor.AdminContextInterceptor;
-import com.publiccms.admin.common.view.AdminFreeMarkerView;
+import com.publiccms.common.interceptor.admin.AdminContextInterceptor;
+import com.publiccms.common.view.admin.AdminFreeMarkerView;
 
 /**
  * 
@@ -20,7 +20,7 @@ import com.publiccms.admin.common.view.AdminFreeMarkerView;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.publiccms.admin.views.controller", useDefaultFilters = false, includeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
+@ComponentScan(basePackages = "com.publiccms.views.controller.admin", useDefaultFilters = false, includeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
 public class AdminConfig extends WebMvcConfigurerAdapter {
 
     /**

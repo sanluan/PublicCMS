@@ -37,7 +37,7 @@ public class ScheduledTask extends Base {
     private Scheduler scheduler;
 
     @Autowired
-    public void init(SysTaskService sysTaskService, LogTaskService logTaskService, FileComponent fileComponent) {
+    public void init(LogTaskService logTaskService, FileComponent fileComponent) {
         ScheduledJob.logTaskService = logTaskService;
         ScheduledJob.sysTaskService = sysTaskService;
         ScheduledJob.fileComponent = fileComponent;

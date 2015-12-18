@@ -3,7 +3,7 @@
 			<p>
 				<label><@t.m 'moudle.myself'/>待审核:</label>
 				<a href="cmsContent/list.html?queryUserId=${admin.id}&queryStatus=2&queryNavTabId=myContent" title="<@t.m 'moudle.myself'/>待审核" target="navTab" rel="myContent">
-					<@_contentList status=2 userId=admin.id>
+					<@_contentList admin=true status=2 userId=admin.id>
 						${page.totalCount}篇
 					</@_contentList>
 				</a>
@@ -11,7 +11,7 @@
 			<p>
 				<label><@t.m 'moudle.myself'/>草稿:</label>
 				<a href="cmsContent/list.html?queryUserId=${admin.id}&queryStatus=0&queryNavTabId=myContent" title="<@t.m 'moudle.myself'/>草稿" target="navTab" rel="myContent">
-					<@_contentList status=0 userId=admin.id>
+					<@_contentList admin=true status=0 userId=admin.id>
 						${page.totalCount}篇
 					</@_contentList>
 				</a>
