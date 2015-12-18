@@ -3,8 +3,9 @@
 <#list columnList as a>
 	${a.name}:${a.title}
 </#list>
-menu项:
-	<li><a href="${entityName?uncap_first}/list.html?navTabId=${entityName?uncap_first}" target="navTab" rel="${entityName?uncap_first}">管理</a></li>
+模块数据:
+	地址：${entityName?uncap_first}/list
+	授权访问地址：${entityName?uncap_first}/save,${entityName?uncap_first}/add
 自定义指令：
 	分页列表查询：
 		${r"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_condition/paramter.ftl">>${r"</@_"+entityName?replace('Cms','')?uncap_first+"List>"}

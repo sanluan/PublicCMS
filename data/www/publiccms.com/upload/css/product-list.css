@@ -3,7 +3,7 @@
 .product-list .col-md-3{text-align:center;border: 1px solid #fff;}
 .product-list .col-md-3:hover{border: 1px solid #DDD;}
 
-.product-list .col-md-3 h3, .col-md-3 h4{font-size:0.85em;font-weight:500;color:#000;margin-bottom: 0;}
+.product-list .col-md-3 h3, .col-md-3 h4{font-size:0.85em;font-weight:500;color:#000;margin-bottom: 0;height: 2.2em;overflow: hidden;}
 .product-list .col-md-3 p{font-size:0.8125em;color:#968F88;margin:5px 0;}
 .product-list .col-md-3 a{text-decoration:none;}
 .product-list .col-md-3 img{transition: all 0.5s ease-in-out;-webkit-transition: all 0.5s ease-in-out;-moz-transition: all 0.5s ease-in-out;-ms-transition: all 0.5s ease-in-out;-o-transition: all 0.5s ease-in-out;}
@@ -11,4 +11,3 @@
 .product-list .col-md-3 img{margin-top:5px 0;display:inline-block;width:100%;}
 
 .product-list .col-md-3 p{font-size: 12px;}
-.product-list .col-md-3 h3, .col-md-3 h4{font-size: 12px;}

@@ -20,7 +20,6 @@ import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysTaskService;
 import com.sanluan.common.base.Base;
-import com.sanluan.common.servlet.TaskAfterInitServlet;
 
 /**
  * 
@@ -28,21 +27,17 @@ import com.sanluan.common.servlet.TaskAfterInitServlet;
  *
  */
 @Component
-public class ScheduledTask extends Base implements TaskAfterInitServlet {
+public class ScheduledTask extends Base {
     public static final String ID = "id";
     public static final int TASK_STATUS_READY = 0, TASK_STATUS_RUNNING = 1, TASK_STATUS_PAUSE = 2, TASK_STATUS_ERROR = 3;
 
     @Autowired
     private SysTaskService sysTaskService;
     @Autowired
-    private LogTaskService logTaskService;
-    @Autowired
-    private FileComponent fileComponent;
-    @Autowired
     private Scheduler scheduler;
 
-    @Override
-    public void exec() {
+    @Autowired
+    public void init(SysTaskService sysTaskService, LogTaskService logTaskService, FileComponent fileComponent) {
         ScheduledJob.logTaskService = logTaskService;
         ScheduledJob.sysTaskService = sysTaskService;
         ScheduledJob.fileComponent = fileComponent;
@@ -73,7 +68,8 @@ public class ScheduledTask extends Base implements TaskAfterInitServlet {
                     trigger = TriggerBuilder.newTrigger().withIdentity(taskName).withSchedule(scheduleBuilder).startNow().build();
                     scheduler.scheduleJob(jobDetail, trigger);
                 } else {
-                    trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).startNow().build();
+                    trigger = trigger.getTriggerBuilder().withIdentity(triggerKey).withSchedule(scheduleBuilder).startNow()
+                            .build();
                     scheduler.rescheduleJob(triggerKey, trigger);
                 }
             } catch (SchedulerException e) {

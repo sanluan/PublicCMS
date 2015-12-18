@@ -4,7 +4,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,8 +14,6 @@ import org.springframework.web.servlet.ModelAndView;
  *
  */
 public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
-
-    private Class<TaskAfterInitServlet>[] taskClasses;
     /**
      * 
      */
@@ -36,21 +33,4 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
-
-    public void initFrameworkServlet() throws ServletException {
-        super.initFrameworkServlet();
-        if (!ObjectUtils.isEmpty(taskClasses)) {
-            for (Class<TaskAfterInitServlet> task : taskClasses) {
-                getWebApplicationContext().getBean(task).exec();
-            }
-        }
-    }
-
-    /**
-     * @param taskClasses
-     */
-    public void setTaskClasses(Class<TaskAfterInitServlet>[] taskClasses) {
-        this.taskClasses = taskClasses;
-    }
-
 }

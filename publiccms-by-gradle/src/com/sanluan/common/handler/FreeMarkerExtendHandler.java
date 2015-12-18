@@ -8,10 +8,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.commons.logging.Log;
-import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import freemarker.template.SimpleHash;
@@ -19,22 +16,17 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
-public class FreeMarkerExtendHandler implements ApplicationContextAware {
+public class FreeMarkerExtendHandler {
     private String directivePrefix;
     private String directiveRemoveRegex;
     private String methodRemoveRegex;
     private Map<String, Object> freemarkerVariables = new HashMap<String, Object>();
     private final Log log = getLog(getClass());
-    @Autowired
-    private Map<String, TemplateDirectiveModel> directiveMap;
-    @Autowired
-    private Map<String, TemplateMethodModelEx> methodMap;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationcontext) throws BeansException {
+    @Autowired
+    public void init(Map<String, TemplateDirectiveModel> directiveMap, Map<String, TemplateMethodModelEx> methodMap,
+            FreeMarkerConfigurer freeMarkerConfigurer) {
         log.info("Freemarker directives and methods Handler started");
-        FreeMarkerConfigurer freeMarkerConfigurer = applicationcontext.getBean(FreeMarkerConfigurer.class);
-
         StringBuffer directives = new StringBuffer();
         for (Entry<String, TemplateDirectiveModel> entry : directiveMap.entrySet()) {
             String directiveName = directivePrefix + uncapitalize(entry.getKey().replaceAll(directiveRemoveRegex, ""));

@@ -26,8 +26,8 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<#if queryDeep?number lte 3><li><a class="add" href="sysMoudle/add.html?parentId=${queryParentId!}" target="navtab" rel="sysMoudleAdd"><span><@t.m 'button.add'/><@t.m 'button.moudle.add.'+queryDeep/></span></a></li></#if>
-			<li><a class="edit" href="sysMoudle/add.html?navTabId=${navTabId!}&id={sid}" target="navtab" rel="sysMoudleAdd"><span><@t.m 'button.edit'/></span></a></li>
+			<#if queryDeep?number lte 3><li><a class="add" href="sysMoudle/add.html?parentId=${queryParentId!}" target="navTab" rel="sysMoudleAdd"><span><@t.m 'button.add'/><@t.m 'button.moudle.add.'+queryDeep/></span></a></li></#if>
+			<li><a class="edit" href="sysMoudle/add.html?navTabId=${navTabId!}&id={sid}" target="navTab" rel="sysMoudleAdd"><span><@t.m 'button.edit'/></span></a></li>
 			<li><a class="delete" href="sysMoudle/delete.do?id={sid}" title="<@t.m 'button.delete.ask'/>" target="ajaxTodo"><span><@t.m 'button.delete'/></span></a></li>
 		</ul>
 	</div>

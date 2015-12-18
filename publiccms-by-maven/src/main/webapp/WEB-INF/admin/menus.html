@@ -1,5 +1,5 @@
 <#include "include_page/templateTree.html"/>
-<#macro categoryTree file rel queryCategoryId='' queryParentId='' target='navtab'>
+<#macro categoryTree file rel queryCategoryId='' queryParentId='' target='navTab'>
 	<@_categoryList parentId=queryParentId disabled=false>
 		<#list page.list as a>
 			<li>
@@ -35,7 +35,7 @@
 		<#case 'cmsCategory/list'>
 			<#assign name='分类'/>
 			<#assign navTabId=a.url?substring(0,a.url?index_of('/'))?html>
-			<li><a href="${a.url?html}?queryNavTabId=${navTabId}" target="navtab" rel="${navTabId}">${name}</a>
+			<li><a href="${a.url?html}?queryNavTabId=${navTabId}" target="navTab" rel="${navTabId}">${name}</a>
 				<ul>
 					<@categoryTree '${a.url?html}' '${navTabId}' queryCategoryId/>
 				</ul>

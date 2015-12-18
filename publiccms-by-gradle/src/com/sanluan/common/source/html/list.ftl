@@ -28,7 +28,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li><a class="add" href="${entityName?uncap_first}/add.html" target="navtab" rel="${entityName?uncap_first}Add"><span>添加</span></a></li>
-			<li><a class="edit" href="${entityName?uncap_first}/add.html?navTabId=<#noparse>${navTabId!}</#noparse>&id={sid}" target="navtab" rel="${entityName?uncap_first}Add"><span>修改</span></a></li>
+			<li><a class="edit" href="${entityName?uncap_first}/add.html?navTabId=${entityName?uncap_first}&id={sid}" target="navtab" rel="${entityName?uncap_first}Add"><span>修改</span></a></li>
 			<li><a class="delete" href="${entityName?uncap_first}/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><span>删除</span></a></li>
 		</ul>
 	</div>

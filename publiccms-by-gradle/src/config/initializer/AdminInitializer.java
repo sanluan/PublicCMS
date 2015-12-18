@@ -11,10 +11,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 import org.springframework.web.util.IntrospectorCleanupListener;
 
-import com.publiccms.logic.component.BridgeComponent;
-import com.publiccms.logic.task.ScheduledTask;
 import com.sanluan.common.servlet.ErrorToNotFoundDispatcherServlet;
-import com.sanluan.common.servlet.TaskAfterInitServlet;
 
 import config.AdminConfig;
 import config.ApplicationConfig;
@@ -34,14 +31,7 @@ public class AdminInitializer extends AbstractAnnotationConfigDispatcherServletI
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
-        ErrorToNotFoundDispatcherServlet dispatcherServlet = new ErrorToNotFoundDispatcherServlet(servletAppContext);
-        dispatcherServlet.setTaskClasses(getTaskClasses());
-        return dispatcherServlet;
-    }
-
-    @SuppressWarnings("unchecked")
-    protected Class<TaskAfterInitServlet>[] getTaskClasses() {
-        return new Class[] { ScheduledTask.class, BridgeComponent.class };
+        return new ErrorToNotFoundDispatcherServlet(servletAppContext);
     }
 
     protected Class<?>[] getServletConfigClasses() {

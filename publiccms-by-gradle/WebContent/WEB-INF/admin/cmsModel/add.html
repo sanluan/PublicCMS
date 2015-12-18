@@ -4,18 +4,15 @@
 </@_model>
 <script>
 var mo_i=1;
-function appendExtend($box,replaceStr){
+function appendModelExtend($box,replaceStr){
 	return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).appendTo($box);
-}
-function prependExtend($box,replaceStr){
-	return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).prependTo($box);
 }
 <#if id?has_content>
 $(function(){
 <@_extendList itemType=1 itemId=id>
 	<#list page.list as a>
 		<#assign pre='ex_c_'/>
-	$temp=appendExtend($('#ex_content',navTab.getCurrentPanel()),'_c_${a.id!}_');
+	$temp=appendModelExtend($('#ex_content',navTab.getCurrentPanel()),'_c_${a.id!}_');
 		<#if a.isRequired>
 	$('input[name=${pre}${a.id!}_required]',$temp).click();
 		</#if>
@@ -87,7 +84,7 @@ $(function(){
 				<legend>${(a.name)!temp}</legend>
 				<dl class="nowrap">
 					<dt></dt>
-					<dd><a class="buttonActive" href="javascript:;" onclick="prependExtend($('#ex_content',navTab.getCurrentPanel()),'_new_c_'+(mo_i++)+'_').initUI();return false;"><span>增加字段</span></a></dd>
+					<dd><a class="buttonActive" href="javascript:;" onclick="appendModelExtend($('#ex_content',navTab.getCurrentPanel()),'_new_c_'+(mo_i++)+'_').initUI();return false;"><span>增加字段</span></a></dd>
 				</dl>
 				<div id="ex_content"></div>
 			</fieldset>

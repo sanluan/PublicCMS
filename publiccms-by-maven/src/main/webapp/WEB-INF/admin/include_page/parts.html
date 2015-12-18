@@ -1,15 +1,12 @@
 <script>
 var content_i=0;
-function appendExtend($box,replaceStr){
+function appendPartExtend($box,replaceStr){
 	return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).appendTo($box);
-}
-function prependExtend($box,replaceStr){
-	return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).prependTo($box);
 }
 <#if (contentAttr?has_content&&contentAttr.text?has_content)>
 $(function(){
 	<#list contentAttr.text?eval as a>
-	$temp=appendExtend($('#ex_content',navTab.getCurrentPanel()),'_c_'+(content_i++)+'_');
+	$temp=appendPartExtend($('#ex_content',navTab.getCurrentPanel()),'_c_'+(content_i++)+'_');
 	$('input',$temp).val('${(a.name?js_string)!}');
 	$('textarea',$temp).val('${(a.text?js_string)!}');
 	$temp.initUI();
@@ -31,7 +28,7 @@ $(function(){
 <dl class="nowrap">
 	<dt>内容片段</dt>
 	<dd>
-		<a class="buttonActive" href="javascript:;" onclick="prependExtend($('#ex_content',navTab.getCurrentPanel()),'_c_'+(content_i++)+'_').initUI();return false;"><span>增加片段</span></a>
+		<a class="buttonActive" href="javascript:;" onclick="appendPartExtend($('#ex_content',navTab.getCurrentPanel()),'_c_'+(content_i++)+'_').initUI();return false;"><span>增加片段</span></a>
 		<div id="ex_content"></div>
 	</dd>
 </dl>

@@ -23,11 +23,8 @@
 </#macro>
 <script>
 var ca_i=1;
-function appendExtend($box,replaceStr){
+function appendCategoryExtend($box,replaceStr){
 	return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).appendTo($box);
-}
-function prependExtend($box,replaceStr){
-	return $($.parseHTML($('#ex_new').text().replace(eval("/_new_/gi"),replaceStr), document, true)).prependTo($box);
 }
 <#if id?has_content||parentId?has_content>
 $(function(){
@@ -35,10 +32,10 @@ $(function(){
 	<#list page.list as a>
 		<#if a.extendType=1>
 			<#assign pre='ex_c_'/>
-	$temp=appendExtend($('#ex_content',navTab.getCurrentPanel()),'_c_${a.id!}_');
+	$temp=appendCategoryExtend($('#ex_content',navTab.getCurrentPanel()),'_c_${a.id!}_');
 		<#else>
 			<#assign pre='ex_ca_'/>
-	$temp=appendExtend($('#ex_catrgory',navTab.getCurrentPanel()),'_ca_${a.id!}_');
+	$temp=appendCategoryExtend($('#ex_catrgory',navTab.getCurrentPanel()),'_ca_${a.id!}_');
 		</#if>
 		<#if a.isRequired>
 	$('input[name=${pre}${a.id!}_required]',$temp).click();
@@ -137,7 +134,7 @@ $(function(){
 				<legend><@t.m 'moudle.contentExtend'/></legend>
 				<dl class="nowrap">
 					<dt></dt>
-					<dd><a class="buttonActive" href="javascript:;" onclick="prependExtend($('#ex_content',navTab.getCurrentPanel()),'_new_c_'+(ca_i++)+'_').initUI();return false;"><span>增加字段</span></a></dd>
+					<dd><a class="buttonActive" href="javascript:;" onclick="appendCategoryExtend($('#ex_content',navTab.getCurrentPanel()),'_new_c_'+(ca_i++)+'_').initUI();return false;"><span>增加字段</span></a></dd>
 				</dl>
 				<div id="ex_content"></div>
 			</fieldset>
@@ -145,7 +142,7 @@ $(function(){
 				<legend><@t.m 'moudle.child'/><@t.m 'moudle.categoryExtend'/></legend>
 				<dl class="nowrap">
 					<dt></dt>
-					<dd><a class="buttonActive" href="javascript:;" onclick="prependExtend($('#ex_catrgory',navTab.getCurrentPanel()),'_new_ca_'+(ca_i++)+'_').initUI();return false;"><span>增加字段</span></a></dd>
+					<dd><a class="buttonActive" href="javascript:;" onclick="appendCategoryExtend($('#ex_catrgory',navTab.getCurrentPanel()),'_new_ca_'+(ca_i++)+'_').initUI();return false;"><span>增加字段</span></a></dd>
 				</dl>
 				<div id="ex_catrgory"></div>
 			</fieldset>
