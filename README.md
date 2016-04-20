@@ -2,21 +2,34 @@
 
 <a target="_blank" href="http://shang.qq.com/wpa/qunwpa?idkey=8a633f84fb2475068182d3c447319977faca6a14dc3acf8017a160d65962a175"><img border="0" src="http://pub.idqqimg.com/wpa/images/group.png" alt="Public CMS" title="Public CMS"/></a>
 
-##功能列表
+##后台功能列表
 
+* 与我相关
 * 内容管理
-* 分类管理
 * 标签管理
+* 分类管理
+* 分类类型管理
 * 标签分类管理
 * 页面管理
 * 模板管理
-* 模型管理
-* 模块管理
-* 任务计划管理
+* 任务计划脚本管理
 * 用户管理
 * 部门管理
 * 角色管理
-* 日志管理
+* 用户登录授权管理
+* 内容模型管理
+* 任务计划管理
+* FTP用户管理
+* 动态域名管理
+* 操作日志管理
+* 登陆日志管理
+* 任务计划日志管理
+* 站点管理
+* 域名管理
+* 模块管理
+* 应用授权
+* 接口测试
+* 客户端管理
 
 ![](doc/images/j.jpg)
 

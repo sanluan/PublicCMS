@@ -35,8 +35,12 @@ This license is used by the following third-party libraries:
 This license is used by the following third-party libraries:
 
   * hibernate (http://hibernate.org/orm/)
-  
+
 ### [MIT License](http://www.opensource.org/licenses/MIT)
 This license is used by the following third-party libraries:
 
   * jquery (http://jquery.com/)
+
+### [License(BSD)](https://github.com/ecomfe/echarts/blob/master/LICENSE)
+
+  * Echarts (http://echarts.baidu.com/)
