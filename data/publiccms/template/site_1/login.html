@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>${metadata.alias!}</title>
+		<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
+	<script type="text/javascript">
+	$(function(){$('.login-form input').eq(0).focus();});
+	</script>
+</head>
+<body>
+<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
+<main>
+    <div class="container">
+   	<#if user?has_content>
+   		<p class="message">您已经登录了${user!}</p>
+   		<script>${(returnUrl?has_content)?then("window.location.href='${base}${(returnUrl?html)!}'","")}</script>
+   	<#else>
+		<form action="doLogin.do" method="post" class="center login-form">
+			<p><input type="text" name="username" class="input-text" placeholder="用户名" title="用户名"/></p>
+			<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
+			<p class="text-center">
+				<input type="submit" class="button" value="登  录"/>
+				<input type="hidden" name="returnUrl" value="${(returnUrl?html)!}"/>
+			</p>
+			<#if error??>
+				<p class="message red"><@t.m error/></p>
+			</#if>
+			<#if message??>
+				<p class="message"><@t.m "message."+message/></p>
+			</#if>
+		</form>
+	</#if>
+    </div>
+</main>
+<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
+</body>
+</html>

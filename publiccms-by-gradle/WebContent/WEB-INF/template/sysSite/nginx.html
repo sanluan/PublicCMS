@@ -1,0 +1,155 @@
+<@_sysSite id=siteId><#assign a=object/></@_sysSite>
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="57">
+		<dl class="nowrap">
+			<dt>站点名称:</dt>
+			<dd>
+				${(a.name)!}
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>Nginx配置:</dt>
+			<dd>
+				<textarea id="nginx" name="description" style="width: 100%;" rows="20"><@_disk>
+<@_sysDomainList admin=true siteId=siteId>
+	<#if page.totalCount gt 0>
+		<#assign dynamicPath=a.dynamicPath/>
+		<#if 0 = dynamicPath?index_of('http') || 0 = dynamicPath?index_of('//')>
+			<#assign dynamicPath=dynamicPath[dynamicPath?index_of('//')+2..]/>
+		</#if>
+		<#if dynamicPath?index_of('/') gt 0>
+			<#assign dynamicLocation=dynamicPath[dynamicPath?index_of('/')..]/>
+			<#assign dynamicPath=dynamicPath[0..dynamicPath?index_of('/')-1]/>
+		</#if>
+		<#if dynamicPath?index_of(':') gt 0>
+			<#assign dynamicPort=dynamicPath[sitePath?index_of(':')+1..]/>
+		</#if>
+		<#assign ports =[dynamicPort!80]/>
+		<#assign domains=[]/>
+		<#list page.list as d>
+			<#assign domainArray=d.name?split(':')/>
+			<#if domainArray?size gt 1>
+				<#if !ports?seq_contains(domainArray[1])>
+					<#assign ports+=[domainArray[1]]/>
+				</#if>
+			</#if>
+			<#if !domains?seq_contains(domainArray[0])>
+				<#assign domains+=[domainArray[0]]/>
+			</#if>
+		</#list>
+		<#if a.resourcePath?starts_with(a.dynamicPath)||a.useSsi>
+server {
+			<#list ports as port>
+	listen       ${port};
+			</#list>
+	server_name  <#list domains as domain>${domain}<#sep> </#list>;
+			<#if a.useSsi>
+	ssi on;
+	ssi_silent_errors on;
+	location ${dynamicLocation!'/'} {
+		proxy_redirect off;
+		proxy_set_header Host $host;
+		proxy_set_header X-Real-IP $remote_addr;
+		proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+		proxy_connect_timeout 5;
+		proxy_send_timeout 30;
+		proxy_read_timeout 10;
+		proxy_pass http://publiccms;
+	}
+	location /include/ {
+		alias ${rootPath}/web/site_${siteId}/include/;
+	}
+			</#if>
+			<#if a.resourcePath?starts_with(a.dynamicPath)>
+	location /${a.resourcePath[a.dynamicPath.length..]} {
+		alias ${rootPath}/resource/site_${siteId}/;
+	}
+			</#if>
+}
+		</#if>
+	</#if>
+</@_sysDomainList>
+<#if a.useStatic>
+	<#assign sitePath=a.sitePath!''/>
+	<#if 0 = sitePath?index_of('http') || 0 = sitePath?index_of('//')>
+		<#assign sitePath=sitePath[sitePath?index_of('//')+2..]/>
+	</#if>
+	<#if sitePath?index_of('/') gt 0>
+		<#assign siteLocation=sitePath[sitePath?index_of('/')..]/>
+		<#assign sitePath=sitePath[0..sitePath?index_of('/')-1]/>
+	</#if>
+	<#if sitePath?index_of(':') gt 0>
+		<#assign sitePort=sitePath[sitePath?index_of(':')+1..]/>
+		<#assign sitePath=sitePath[0..sitePath?index_of(':')-1]/>
+		<#if sitePort?index_of('/') gt 0>
+			<#assign sitePort=sitePath[0..sitePort?index_of('/')-1]/>
+		</#if>
+	</#if>
+
+server {
+	listen       ${sitePort!80};
+	server_name  ${sitePath};
+	<#if a.useSsi>
+	ssi on;
+	ssi_silent_errors on;
+	</#if>
+
+	location ${siteLocation!'/'} {
+		root   ${rootPath}/web/site_${siteId}/;
+		index  index.html;
+	}
+	<#if a.resourcePath?starts_with(a.sitePath)>
+
+	location /${a.resourcePath[a.sitePath?length..]} {
+		alias ${rootPath}/resource/site_${siteId}/;
+	}
+	</#if>
+}
+</#if>
+<#if (!a.sitePath?has_content||!a.resourcePath?starts_with(a.sitePath))&&!a.resourcePath?starts_with(a.dynamicPath)>
+	<#assign resourcePath=a.resourcePath/>
+	<#if 0 = resourcePath?index_of('http') || 0 = resourcePath?index_of('//')>
+		<#assign resourcePath=resourcePath[resourcePath?index_of('//')+2..]/>
+	</#if>
+	<#if resourcePath?index_of('/') gt 0>
+		<#assign resourceLocation=resourcePath[resourcePath?index_of('/')..]/>
+		<#assign resourcePath=resourcePath[0..resourcePath?index_of('/')-1]/>
+	</#if>
+	<#if resourcePath?index_of(':') gt 0>
+		<#assign resourcePort=resourcePath[resourcePath?index_of(':')+1..]/>
+		<#assign resourcePath=resourcePath[0..resourcePath?index_of(':')-1]/>
+		<#if resourcePort?index_of('/') gt 0>
+			<#assign resourcePort=resourcePath[0..resourcePort?index_of('/')]/>
+		</#if>
+	</#if>
+
+server {
+	listen       ${resourcePort!80};
+	server_name  ${resourcePath};
+
+	location ${resourceLocation!'/'} {
+		root   ${rootPath}/resource/site_${siteId}/;
+		index  index.html;
+		add_header Access-Control-Allow-Origin *;
+	}
+}</#if></@_disk></textarea>
+<script>
+	CodeMirror.fromTextArea(document.getElementById("nginx"), {
+		mode: "nginx",
+		lineNumbers: true,
+        tabSize        : 4,
+        indentUnit     : 4,
+        lineWrapping   : true,
+        indentWithTabs : true
+	});
+</script>
+				<span class="info">本站点配置应该包含在nginx配置文件 http包中,点击这里查看<a href="sysSite/nginxCommon.html" target="dialog" rel="nginx_common">Nginx通用配置</a></span>
+			</dd>
+		</dl>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
+		</ul>
+	</div>
+</div>

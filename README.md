@@ -31,12 +31,27 @@
 * 接口测试
 * 客户端管理
 
-![](doc/images/j.jpg)
-
 ##简介
 
-PublicCMS 使用了SpringMVC 4.2.3.RELEASE,Hibernate 5.0.5.Final,Apache FreeMarker 2.3.23,hibernate-search5.5.1.Final等技术及框架,工程编译等工作由Gradle或Maven处理，运行部署需要jdk1.7+,tomcat7.0+/jetty8.0+,nginx/apache,mysql5.0+（其他类型数据库需要自己修改方言等配置）
-通过不同的配置方式PublicCMS 支持全站静态化/全站动态。
+PublicCMS是采用2016年最新主流技术开发的免费开源JAVACMS系统。商用免费，架构科学。无需任何数据库优化，即可支持上千万数据；支持全站静态化，动态页面缓存，SSI，0xml配置，扩展指令自动加载等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
+
+##获取可运行程序
+
+http://git.oschina.net/sanluan/PublicCMS-war
+
+https://github.com/sanluan/PublicCMS-war
+
+##参与研发(预览版)
+
+http://git.oschina.net/sanluan/PublicCMS-preview
+
+https://github.com/sanluan/PublicCMS-preview
+
+##相关下载及文档(知识库)
+
+https://github.com/sanluan/PublicCMS-lib
+
+https://git.oschina.net/sanluan/PublicCMS-lib
 
 ##授权
 
@@ -45,8 +60,7 @@ PublicCMS 使用了SpringMVC 4.2.3.RELEASE,Hibernate 5.0.5.Final,Apache FreeMark
 ##结构说明
 
 * publiccms-by-gradle 为Gradle管理的工程，publiccms-by-maven为Maven管理的工程，两个工程中源码是一样的
-* data/www/publiccms.com 为PublicCMS的 数据目录
-* nginx-conf 为PublicCMS的nginx配置文件
+* data/publiccms 为PublicCMS的 数据目录
 * database/Database Init.sql 为数据库初始化脚本，Database Change Log.sql 为数据库变更记录
 
 ##编译部署
@@ -133,9 +147,75 @@ http://cms.publiccms.com/directive.json?action=memory&callback=callback
 ```
 结合其他指令，比如您自己扩展的发送邮件指令，短信通知指令，即可实现系统监控
 
-* PublicCMS提供动态模板统一分发请求处理
-  这意味着您只需要把demo.html放到WEB-INF/web/目录下，即可使用http://domain/您的项目路径/demo.html 访问该模板，并可以通过?id=123,向模板传递一个名称为id的变量
-  在模板中可以直接用${id}输出
+##更新记录
+
+新增功能：
+
+1. 新增动态模板在线编辑功能
+
+1. 新增内容推荐
+
+1. 新增内容附件列表
+
+1. 新增内容移动功能
+
+1. 新增内容刷新功能
+
+1. 新增分类移动功能
+
+1. 新增分类生成多页功能
+
+1. 新增分类标签类型管理
+
+1. 新增分类SEO优化设置
+
+1. 新增页面元数据扩展功能
+
+1. 新增支持FreeMarker与HTML语法混合的模板编辑器
+
+1. 新增动态页面管理功能
+
+1. 新增推荐位数据扩展功能
+
+1. 新增动态模板可接受参数配置功能
+
+1. 新增用户登录授权管理功能
+
+1. 新增部门数据权限功能：页面权限，分类权限
+
+1. 新增角色只读权功能，修复权限授权bug
+
+1. 新FTP服务、FTP用户在线管理功能
+
+1. 新增动态域名绑定管理功能
+
+1. 新增站点管理功能
+
+1. 新增分类，模块等排序功能
+
+1. 新增应用授权功能
+
+1. 新增定制接口及测试页面
+
+1. 新增客户端管理
+
+
+
+优化修改:
+
+1. 任务计划脚本改为文件
+
+1. 推荐位数据改为数据库存储
+
+1. UI列表样式修改，性能优化
+
+1. UI美观度提升，图标优化
+
+1. 模板与工程彻底分离
+
+1. 登陆超时改为弹出登陆对话框
+
+1. 指令简化
 
 ##系统后台截图
 
@@ -145,45 +225,52 @@ http://cms.publiccms.com/directive.json?action=memory&callback=callback
 ###内容列表
 
 ![](doc/images/preview/2.jpg)
+###内容管理
+
+![](doc/images/preview/3.jpg)
 ###内容编辑
 
 编辑器为百度编辑器，支持定时发布等功能
-![](doc/images/preview/3.jpg)
+![](doc/images/preview/4.jpg)
 ###图集编辑
 
-![](doc/images/preview/4.jpg)
+![](doc/images/preview/5.jpg)
 ###分类编辑
 
-分类支持4个可查询系统扩展字段，和无限自定义字段扩展
-![](doc/images/preview/5.jpg)
-###页面推荐位管理
+分类支持无限自定义字段扩展
 
 ![](doc/images/preview/6.jpg)
-###模板在线编辑
+###页面元数据管理
 
-通过模板的include和SSI(服务器端包含)实现模板片段，页面片段的最大程度复用
 ![](doc/images/preview/7.jpg)
-###模型管理
+###页面推荐位管理
 
-模型支持4个可查询系统扩展字段，和无限自定义字段扩展
 ![](doc/images/preview/8.jpg)
-###任务计划管理
+###页面推荐位编辑
 
 ![](doc/images/preview/9.jpg)
-###任务计划编辑
+###模板在线编辑
 
+通过模板的include和SSI(服务器端包含)实现模板片段，页面片段的最大程度复用，模板编辑器支持FreeMarker语法与html混合高亮显示
 ![](doc/images/preview/10.jpg)
-###任务计划表达式模板
-
-![](doc/images/preview/14.jpg)
-###用户管理
+###模板元数据管理
 
 ![](doc/images/preview/11.jpg)
-###角色编辑
+###部门编辑
 
 ![](doc/images/preview/12.jpg)
-###日志管理
+###角色编辑
 
 ![](doc/images/preview/13.jpg)
+###内容模型编辑
 
-如果您没有使用过gradle或者maven，并且不打算使用它们，也可以在https://github.com/sanluan/PublicCMS-lib 或 https://git.oschina.net/sanluan/PublicCMS-lib 下载PublicCMS依赖的库，将其放在工程的WEB-INF\lib 目录下，并加入到build path中
+![](doc/images/preview/14.jpg)
+###任务计划编辑
+
+![](doc/images/preview/15.jpg)
+###任务计划日志查看
+
+![](doc/images/preview/16.jpg)
+###日志管理
+
+![](doc/images/preview/17.jpg)

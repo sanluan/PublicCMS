@@ -1,0 +1,25 @@
+<@_word id=id><#assign a=object/></@_word>
+<div class="pageContent">
+	<form method="post" action="cmsWord/save.do?callbackType=closeCurrent&navTabId=cmsWord/list" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="pageFormContent" layoutH="57">
+			<dl>
+				<dt>名称:</dt>
+				<dd>
+					<input class="required" name="name" type="text" size="30" value="${(a.name)!}"/>
+					<label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')}/>隐藏</label>
+				</dd>
+			</dl>
+			<dl>
+				<dt>搜索次数:</dt>
+				<dd><input class="required number" name="searchCount" type="number" size="5" value="${(a.searchCount)!0}"/></dd>
+			</dl>
+		</div>
+		<div class="formBar">
+			<ul>
+				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
+				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
+			</ul>
+		</div>
+	</form>
+</div>

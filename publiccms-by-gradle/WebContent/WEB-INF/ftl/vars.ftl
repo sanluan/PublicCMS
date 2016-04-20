@@ -1,0 +1,1 @@
+<#assign res=base+'/resource'/>

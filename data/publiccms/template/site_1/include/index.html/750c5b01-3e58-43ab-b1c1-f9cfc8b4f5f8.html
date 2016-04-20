@@ -1,0 +1,10 @@
+<li>
+	<a href="https://github.com/sanluan/PublicCMS/archive/master.zip"  target="_blank">下载</a>
+  <#list page.list>
+	<ul>
+	<#items as a>
+		<li><a href="${a.url!}" target="_blank">${a.title}</a></li>
+	</#items>
+	</ul>
+</#list>
+</li>

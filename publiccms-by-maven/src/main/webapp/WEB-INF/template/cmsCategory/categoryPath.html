@@ -1,0 +1,22 @@
+<div class="pageContent">
+	<h2><#if site.useStatic>使用静态化时，请您选择静态化路径，并配置分类模板路径。<#else>请选择分类路径</#if></h2>
+	<div class="pageFormContent" layoutH="58">
+		<ul class="tree expand">
+			<li>
+			<#if site.useStatic>
+				<#assign code><#noparse>${category.englishName}/index.html</#noparse></#assign>
+				<a href="javascript:;" onclick="$.bringBack({path:'${code?js_string}'});return false;">静态化路径:分类英文名/index.html</a>
+				<#assign code><#noparse>category/${category.id}.html</#noparse></#assign>
+				<a href="javascript:;" onclick="$.bringBack({path:'${code?js_string}'});return false;">静态化路径:category/分类ID.html</a>
+			</#if>
+				<#assign code><#noparse>category.html?id=${category.id}</#noparse></#assign>
+				<a href="javascript:;" onclick="$.bringBack({path:'${code?js_string}'});return false;">动态路径:category.html?id=分类ID</a>
+			</li>
+		</ul>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
+		</ul>
+	</div>
+</div>

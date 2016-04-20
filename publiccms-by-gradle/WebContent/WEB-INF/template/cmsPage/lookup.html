@@ -1,0 +1,73 @@
+<#macro categoryTree parentId=''>
+	<@_categoryList parentId=parentId>
+		<#list page.list as a>
+			<li>
+				<a href="cmsPage/lookup_content_list.html?categoryId=${a.id}" target="ajax" rel="lookup_content_list">${a.name!}</a>
+			<#if a.childIds?has_content>
+				<ul>
+					<@categoryTree a.id/>
+				</ul>
+			</#if>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_categoryList>
+</#macro>
+<#macro lookupTree parentId=''>
+	<@_categoryList parentId=parentId>
+		<#list page.list as a>
+			<li>
+				<a href="javascript:;" onclick="$.bringBack({itemType:'category',itemId:'${a.id}',title:'${a.name}',url:'${a.url}'});return false;">${a.name!}</a>
+			<#if a.childIds?has_content>
+				<ul>
+					<@lookupTree a.id/>
+				</ul>
+			</#if>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_categoryList>
+</#macro>
+<div class="tabs">
+	<div class="tabsHeader">
+		<div class="tabsHeaderContent">
+			<ul>
+				<li><a href="javascript:;"><span>内容</span></a></li>
+				<li><a href="javascript:;"><span>分类</span></a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="tabsContent">
+		<div>
+			<div class="pageContent">
+				<div class="unitBox" layoutH="38" style="float:left; display:block; overflow:auto; width:180px;border-right:solid 1px #CCC;">
+					<ul class="tree treeFolder">
+						<li>
+							<a href="cmsPage/lookup_content_list.html" target="ajax" rel="lookup_content_list">内容分类</a>
+							<ul>
+								<@categoryTree/>
+							</ul>
+						</li>
+				     </ul>
+				</div>
+				<div id="lookup_content_list" class="unitBox" style="margin-left:180px;">
+					<#include "lookup_content_list.html"/>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="pageContent">
+				<div class="unitBox" layoutH="38" style="display:block; overflow:auto;">
+					<ul class="tree expand">
+						<@lookupTree/>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tabsFooter">
+		<div class="tabsFooterContent"></div>
+	</div>
+</div>

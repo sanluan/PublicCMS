@@ -1,0 +1,61 @@
+<#if siteId?has_content>
+	<@_sysSite id=siteId>
+		<#assign sysSite=object/>
+	</@_sysSite>
+</#if>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<#if sysSite?has_content>
+					<li>
+						<label>站点:</label>${sysSite.name}
+					</li>
+				</#if>
+			</ul>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a href="sysDomain/add.html?id={sid}" target="navTab" rel="sysDomain/edit"><i class="icon-edit icon-large"></i> 修改域名</a></li>
+			<li><a href="sysDomain/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+		</ul>
+	</div>
+<@_sysDomainList admin=true siteId=siteId pageIndex=pageNum count=numPerPage>
+	<table class="list" width="100%" layoutH="92">
+		<thead>
+			<tr>
+				<th width="30">ID</th>
+				<th>站点ID</th>
+				<th>站点</th>
+				<th>动态站点域名</th>
+				<th>模板跟目录</th>
+				<th>登陆模板路径</th>
+				<th>注册模板路径</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@t.merge 'siteIds' a.siteId!/>
+			</#list>
+			
+			<@_sysSite ids=t.siteIds!><#assign siteMap=map!/></@_sysSite>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.id!}</td>
+				<td>${a.siteId!}</td>
+				<td>${(siteMap[a.siteId?string].name)!}</td>
+				<td>${a.name!}</td>
+				<td>${a.path!}</td>
+				<td>${a.loginPath!}</td>
+				<td>${a.registerPath!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</@_sysDomainList>
+</div>

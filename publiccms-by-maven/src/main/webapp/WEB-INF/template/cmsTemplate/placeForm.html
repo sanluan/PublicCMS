@@ -1,0 +1,36 @@
+<@_placeMetadata path='include'+path><#assign a=object/></@_placeMetadata>
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="57">
+		<dl class="nowrap">
+			<dt>推荐位:</dt>
+			<dd>
+				${(path?html)!} ${(a.alias)!}
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>表单代码:</dt>
+			<dd>
+			<#if (a.allowContribute)?has_content&&a.allowContribute>
+				<textarea style="width: 100%;" rows="20"><form method="post" action="${site.dynamicPath}place/save.do">
+	<input name="path" type="hidden" value="${(path?html)!}" />
+	<input name="returnUrl" type="hidden" value="这里是您的表单提交之后的页面地址" />
+	<p><label>标题:</label><input name="title" type="text" size="60" value=""/></p>
+	<p><label>地址:</label><input name="url" type="text" value="${(a.url)!}"/></p>
+	<p><label>图片:</label><input name="cover" type="text" size="60" value=""/></p>
+	<#include "../include_page/extendData.html"/>
+	<#assign extendList=(a.extendList)![]/>
+	<#assign extendValues=getPageDataAttribute((a.id)!)!{}/>
+	<@extendData 'extendDataList' extendList extendValues true/>
+</form></textarea>
+			<#else>
+				该推荐位不允许前台提交，请先修改推荐位元数据
+			</#if>
+			</dd>
+		</dl>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
+		</ul>
+	</div>
+</div>

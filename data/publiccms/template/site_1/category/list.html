@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>${(attribute.title?html)!category.name?html}</title>
+	<meta name="keywords" content="${(attribute.keywords?html)!}"/>
+	<meta name="description" content="${(attribute.description?html)!}"/>
+<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
+</head>
+<body>
+<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
+<script>
+	$("header nav ul li a:contains('${category.name}')").parent().addClass('selected');
+</script>
+<main>
+	<nav class="container">
+		<@_categoryList parentId=category.parentId>
+			<#list page.list as a>
+				<a href="${a.url!}"<#if category.id=a.id> class="selected"</#if>>${a.name}</a>
+			</#list>
+		</@_categoryList>
+	</nav>
+	<div class="container bread">
+		<@include path="/ftl/echoBread.ftl"/>
+		<@echoBread category.id/>
+	</div>
+	<div class="container">
+<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
+		<div class="data-list left-content">
+	<@import path="/ftl/tools.ftl" namespace="t"/>
+
+	<#list page.list as a>
+		<@include path="/ftl/data-list.ftl"/>
+	</#list>
+			<#if 1=pageIndex>
+				<div class="page">
+					<#if !page.lastPage>
+						<a href="${getPage(url,page.nextPage)}">查看更多</a>
+					<#else>
+						<span>查看更多</span>
+					</#if>
+				</div>
+			<#else>
+				<@include path="/ftl/category_page.ftl"/>
+			</#if>
+		</div>
+		<aside>
+			<!--#include virtual="/include/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"--> <#-- 编辑推荐 -->
+			<!--#include virtual="/include/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"--> <#-- 精彩图集 -->
+			<div>
+				<h3>热门排行</h3>
+				<ul class="rank">
+<@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
+	<#list page.list as a>
+					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+	</#list>
+</@_contentList>
+				</ul>
+			</div>
+		</aside>
+</@_contentList>
+	</div>
+</main>
+<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>${content.title} - <@_content id=content.parentId>${object.title}</@_content> - ${category.name}</title>
+	<meta name="keywords" content="${content.title}"/>
+	<meta name="description" content="${content.description}"/>
+<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
+</head>
+<body>
+<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
+<main>
+	<div class="container bread">
+		<@include path="/ftl/echoBread.ftl"/>
+		<@echoBread category.id/>
+	</div>
+	<div class="container">
+		<article>
+			<h3><@_content id=content.parentId><@_content id=object.parentId><a href="${object.url}" target="_blank">《${object.title}》</a></@_content> ${object.title}</@_content> ${content.title}</h3>
+			<div id="content">
+				${text!}
+			</div>
+			<script>
+				uParse('#content',{rootPath: '${site.resourcePath!}ueditor'});
+				$.getJSON('${site.dynamicPath!}content/clicks.json?id=${content.id}&callback=?', function(data){});
+<@_content id=content.parentId>
+				$.getJSON('${site.dynamicPath!}content/clicks.json?id=${object.parentId}&callback=?', function(data){});
+</@_content>
+			</script>
+			<div class="page">
+				<@_contentList parentId=content.parentId endPublishDate=content.publishDate pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">上一章</a></#list></#if></@_contentList>
+				<@_contentList parentId=content.parentId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1><#list page.list as a><a href="${a.url!}">下一章</a></#list></@_contentList>
+			</div>
+		</article>
+	</div>
+</main>
+<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
+</body>
+</html>

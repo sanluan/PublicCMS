@@ -1,0 +1,6 @@
+<h3>下载链接</h3>
+<ul>
+	<#list page.list as a>
+		<li><a href="${site.dynamicPath}page/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></li>
+	</#list>
+</ul>

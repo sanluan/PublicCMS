@@ -1,0 +1,1 @@
+import ${base}.${daoPack}.${entityName}${daoSuffix};
