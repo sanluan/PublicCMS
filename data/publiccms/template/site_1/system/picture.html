@@ -4,12 +4,12 @@
 	<title>${content.title?html} - ${category.name?html}</title>
 	<meta name="keywords" content="${content.title?html}"/>
 	<meta name="description" content="${content.description?html}"/>
-<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
+<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 	<link href="${site.resourcePath!}gallery/style.css" rel="stylesheet"/>
 	<script src="${site.resourcePath!}gallery/gallery.js"></script>
 </head>
 <body>
-<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 <main>
 	<div class="container bread">
 		<@include path="/ftl/echoBread.ftl"/>
@@ -24,7 +24,7 @@
 						<span class="gallery-counter">
 							<i class="gallery-counter-now" data-gallery="counter-now">?</i>/<i class="gallery-counter-total" data-gallery="counter-total">?</i>
 						</span>
-						<span class="gallery-info"><#if content.copied>来源：<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate} 阅读:<em>loading...</em></span>
+						<span class="gallery-info"><#if content.copied>来源：<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></span>
 					</div>
 					<div class="gallery-description">
 						<p>
@@ -188,6 +188,6 @@ $.getJSON('${site.dynamicPath!}content/clicks.json?id=${content.id}&callback=?',
 		</article>
 	</div>
 </main>
-<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
+<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
 </body>
 </html>

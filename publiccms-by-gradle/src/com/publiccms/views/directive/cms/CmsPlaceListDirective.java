@@ -37,7 +37,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
                 handler.getString("itemType"), handler.getInteger("itemId"), handler.getDate("startPublishDate"),
                 handler.getDate("endPublishDate"), status, disabled, handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
-        handler.put("page", page).put("path", path).render();
+        handler.put("page", page).render();
     }
 
     @Autowired

@@ -6,7 +6,7 @@
 				<ul>
 <@_templateList path='include'+path+'/'>
 	<#list list as a>
-		<@_placeMetadata dir='include'+path><#assign metaDataMap=object/></@_placeMetadata>
+		<@_placeMetadata dir=path><#assign metaDataMap=object/></@_placeMetadata>
 		<#if !a.directory>
 			<li>
 			<#if 0=((metaDataMap[a.fileName].size)!0)>

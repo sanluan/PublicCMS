@@ -8,6 +8,7 @@ import static com.publiccms.logic.component.SiteComponent.getFullFileName;
 import static com.publiccms.logic.component.TemplateCacheComponent.CONTENT_CACHE;
 import static com.sanluan.common.tools.FreeMarkerUtils.makeFileByFile;
 import static com.sanluan.common.tools.FreeMarkerUtils.makeStringByString;
+import static com.sanluan.common.tools.FreeMarkerUtils.makeStringByFile;
 import static org.apache.commons.lang3.StringUtils.splitByWholeSeparator;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
@@ -99,7 +100,6 @@ public class TemplateComponent extends Base implements Cacheable {
             }
             model.put("metadata", metadata);
             expose(model, site);
-            model.put("metadata", metadata);
             filePath = makeStringByString(filePath, webConfiguration, model);
             model.put("url", site.getSitePath() + filePath);
             if (notEmpty(pageIndex) && 1 < pageIndex) {
@@ -109,35 +109,6 @@ public class TemplateComponent extends Base implements Cacheable {
             makeFileByFile(templatePath, siteComponent.getStaticFilePath(site, filePath), webConfiguration, model);
         }
         return filePath;
-    }
-
-    /**
-     * 创建静态化页面
-     * 
-     * @param templatePath
-     * @param filePath
-     * @param model
-     * @return
-     * @throws TemplateException
-     * @throws IOException
-     */
-    public String createPlaceFile(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model)
-            throws IOException, TemplateException {
-        if (notEmpty(templatePath)) {
-            if (empty(model)) {
-                model = new HashMap<String, Object>();
-            }
-            String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
-            if (empty(metadata)) {
-                metadata = metadataComponent.getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, placeTemplatePath));
-            }
-            model.put("metadata", metadata);
-            expose(model, site);
-            model.put("metadata", metadata);
-            makeFileByFile(getFullFileName(site, placeTemplatePath), siteComponent.getStaticFilePath(site, placeTemplatePath),
-                    webConfiguration, model);
-        }
-        return templatePath;
     }
 
     /**
@@ -314,6 +285,19 @@ public class TemplateComponent extends Base implements Cacheable {
         return createStaticFile(site, templatePath, filePath, 1, null, model);
     }
 
+    private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
+        int pageSize = 10;
+        if (notEmpty(metadata.getSize())) {
+            pageSize = metadata.getSize();
+        }
+        if (pageSize > 0) {
+            model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null, getDate(),
+                    CmsPlaceService.STATUS_NORMAL, false, null, null, 1, pageSize));
+        }
+        model.put("metadata", metadata);
+        expose(model, site);
+    }
+
     /**
      * 静态化页面片段
      * 
@@ -324,15 +308,29 @@ public class TemplateComponent extends Base implements Cacheable {
      */
     public void staticPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata) throws IOException, TemplateException {
         if (notEmpty(templatePath)) {
-            int pageSize = 10;
-            if (notEmpty(metadata.getSize())) {
-                pageSize = metadata.getSize();
-            }
             Map<String, Object> model = new HashMap<String, Object>();
-            model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null, getDate(),
-                    CmsPlaceService.STATUS_NORMAL, false, null, null, 1, pageSize));
-            createPlaceFile(site, templatePath, metadata, model);
+            exposePlace(site, templatePath, metadata, model);
+            String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
+            makeFileByFile(getFullFileName(site, placeTemplatePath), siteComponent.getStaticFilePath(site, placeTemplatePath),
+                    webConfiguration, model);
         }
+    }
+
+    /**
+     * 输出页面片段
+     * 
+     * @param filePath
+     * @return
+     * @throws TemplateException
+     * @throws IOException
+     */
+    public String printPlace(SysSite site, String templatePath, CmsPlaceMetadata metadata) throws IOException, TemplateException {
+        if (notEmpty(templatePath)) {
+            Map<String, Object> model = new HashMap<String, Object>();
+            exposePlace(site, templatePath, metadata, model);
+            return makeStringByFile(getFullFileName(site, INCLUDE_DIRECTORY + templatePath), webConfiguration, model);
+        }
+        return "";
     }
 
     @Autowired(required = false)

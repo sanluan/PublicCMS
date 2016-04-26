@@ -32,6 +32,38 @@ public class PublishPageDirective extends AbstractTaskDirective {
         handler.put("map", deal(getSite(handler), path, list)).render();
     }
 
+    private Map<String, Boolean> deal(SysSite site, String path, List<FileInfo> list) {
+        path = path.replace("\\", SEPARATOR).replace("//", SEPARATOR);
+        Map<String, CmsPageMetadata> metadataMap = metadataComponent.getTemplateMetadataMap(siteComponent.getWebTemplateFilePath(
+                site, path));
+        Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
+        for (FileInfo fileInfo : list) {
+            String filePath = path + fileInfo.getFileName();
+            if (fileInfo.isDirectory()) {
+                map.putAll(deal(site, filePath + SEPARATOR,
+                        fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, filePath))));
+            } else {
+                if (site.isUseSsi()) {
+                    String placesPath = INCLUDE_DIRECTORY + filePath + SEPARATOR;
+                    map.putAll(dealPlace(site, filePath + SEPARATOR,
+                            metadataComponent.getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(site, placesPath)),
+                            fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, placesPath))));
+                }
+                CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
+                if (notEmpty(metadata) && notEmpty(metadata.getPublishPath())) {
+                    try {
+                        templateComponent.createStaticFile(site, getFullFileName(site, filePath), metadata.getPublishPath(),
+                                null, metadata, null);
+                        map.put(filePath, true);
+                    } catch (IOException | TemplateException e) {
+                        map.put(filePath, false);
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
     private Map<String, Boolean> dealPlace(SysSite site, String path, Map<String, CmsPlaceMetadata> metadataMap,
             List<FileInfo> fileList) {
         Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
@@ -46,36 +78,6 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 map.put(filePath, true);
             } catch (IOException | TemplateException e) {
                 map.put(filePath, false);
-            }
-        }
-        return map;
-    }
-
-    private Map<String, Boolean> deal(SysSite site, String path, List<FileInfo> list) {
-        path = path.replace("\\", SEPARATOR).replace("//", SEPARATOR);
-        Map<String, CmsPageMetadata> metadataMap = metadataComponent.getTemplateMetadataMap(siteComponent.getWebTemplateFilePath(
-                site, path));
-        Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
-        for (FileInfo fileInfo : list) {
-            String filePath = path + fileInfo.getFileName();
-            if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, filePath + SEPARATOR,
-                        fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, filePath))));
-            } else {
-                CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
-                String placesPath = INCLUDE_DIRECTORY + filePath + SEPARATOR;
-                map.putAll(dealPlace(site, placesPath,
-                        metadataComponent.getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(site, placesPath)),
-                        fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, placesPath))));
-                if (notEmpty(metadata) && notEmpty(metadata.getPublishPath())) {
-                    try {
-                        templateComponent.createStaticFile(site, getFullFileName(site, filePath), metadata.getPublishPath(),
-                                null, metadata, null);
-                        map.put(filePath, true);
-                    } catch (IOException | TemplateException e) {
-                        map.put(filePath, false);
-                    }
-                }
             }
         }
         return map;

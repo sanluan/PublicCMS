@@ -1,6 +1,6 @@
 <@_content id=contentId>
 <div class="pageContent">
-	<form method="post" action="cmsPlace/save.do?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return validateCallback(this,dialogAjaxDone);">
+	<form method="post" action="cmsPlace/save.do?callbackType=closeCurrent" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
 		<input name="path" type="hidden" value="${(path?html)!}" />
 		<input name="itemType" type="hidden" value="content" />
 		<input name="itemId" type="hidden" value="${contentId}" />
@@ -25,13 +25,14 @@
 			<dl class="nowrap">
 				<dt>封面:</dt>
 				<dd>
-					<input name="cover" value="${site.resourcePath+object.cover!}" maxlength="300" size="40" type="text"/>
+					<input name="cover" value="${object.cover!}" maxlength="300" size="40" type="text"/>
+					<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 					<#include "../include_page/preview.html"/>
 					<@preview 'pushToPlace' 'input[name=cover]'/>
 				</dd>
 			</dl>
 			<#include "../include_page/extendData.html"/>
-			<@_placeMetadata path='include'+path><#assign metadata=object/></@_placeMetadata>
+			<@_placeMetadata path=path><#assign metadata=object/></@_placeMetadata>
 			<#assign extendList=(metadata.extendList)![]/>
 			<#assign extendValues=getPageDataAttribute(object.id)!{}/>
 			<@extendData 'extendDataList' extendList extendValues/>

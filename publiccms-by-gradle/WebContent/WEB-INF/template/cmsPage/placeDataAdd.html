@@ -36,7 +36,7 @@
 				</dd>
 			</dl>
 			<#include "../include_page/extendData.html"/>
-			<@_placeMetadata path='include'+(a.path)!path!''><#assign metadata=object/></@_placeMetadata>
+			<@_placeMetadata path=(a.path)!path!''><#assign metadata=object/></@_placeMetadata>
 			<#assign extendList=(metadata.extendList)![]/>
 			<#assign extendValues=getPageDataAttribute((a.id)!)!{}/>
 			<@extendData 'extendDataList' extendList extendValues/>

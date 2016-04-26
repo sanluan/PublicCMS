@@ -133,7 +133,7 @@ public class CmsTemplateAdminController extends AbstractController {
     public String deletePlace(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
-            String filePath = siteComponent.getWebTemplateFilePath(site, path);
+            String filePath = siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + path);
             if (virifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }

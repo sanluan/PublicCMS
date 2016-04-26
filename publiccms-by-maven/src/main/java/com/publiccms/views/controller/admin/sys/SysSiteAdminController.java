@@ -48,6 +48,9 @@ public class SysSiteAdminController extends AbstractController {
     public String save(SysSite entity, String roleName, String userName, String password, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
+        if (!entity.isUseStatic()) {
+            entity.setUseSsi(false);
+        }
         if (notEmpty(entity.getId())) {
             entity = service.update(entity.getId(), entity, new String[] { "id" });
             if (notEmpty(entity)) {

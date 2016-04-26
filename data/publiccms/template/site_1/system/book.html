@@ -4,7 +4,7 @@
 	<title>${content.title} - ${category.name}</title>
 	<meta name="keywords" content="${content.title}"/>
 	<meta name="description" content="${content.description}"/>
-<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
+<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 <style>
 article .cover{ float:left;}
 article .cover img{ width:144px;height:192px;}
@@ -14,7 +14,7 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 </style>
 </head>
 <body>
-<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 <main>
 	<div class="container bread">
 		<@include path="/ftl/echoBread.ftl"/>
@@ -81,6 +81,6 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 		</aside>
 	</div>
 </main>
-<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->
+<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
 </body>
 </html>

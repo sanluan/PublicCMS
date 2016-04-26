@@ -1,10 +1,18 @@
 <header>
 	<div class="container">
-		<div class="search">
-			<form action="${site.dynamicPath!}search.html">
+		<div class="tools">
+			<div class="user">
+				<a href="${site.dynamicPath}login.html">登陆</a>
+				<a href="${site.dynamicPath}register.html">注册</a>
+			</div>
+			<div class="user user-logout" style="display:none">
+				您好，<a href="#" class="nickname"></a> <a class="master" style="display:none;" target="_blank" href="${site.dynamicPath}admin/">管理后台</a> <a href="${site.dynamicPath}logout.do?returnUrl=${site.dynamicPath?url}login.html">退出登陆</a>
+			</div>
+			<form class="search" action="${site.dynamicPath!}search.html">
 				<input name="word" type="text" placeholder="这里输入关键词"/>
 				<input type="submit" value="搜索"/>
 			</form>
+			<div class="clearfix-before"></div>
 		</div>
 		<a href="#" class="nav-icon"></a>
 		<div class="logo">
@@ -30,8 +38,8 @@
 				</li>
 	</#list>
 </@_categoryList>
-				<!--#include virtual="/include/index.html/750c5b01-3e58-43ab-b1c1-f9cfc8b4f5f8.html"--> <#-- 导航-下载链接 -->
-				<!--#include virtual="/include/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html"--> <#-- 导航-动态站点 -->
+				<@_includePlace path="/index.html/750c5b01-3e58-43ab-b1c1-f9cfc8b4f5f8.html"/> <#-- 导航-下载链接 -->
+				<@_includePlace path="/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html"/> <#-- 导航-动态站点 -->
 			</ul>
 		</nav>
 		<div class="clearfix-before"></div>
@@ -51,5 +59,16 @@
 				$('header').addClass('fixed-position');
 			}
 		});
+		if ($.cookie("CMS_USER")) {
+			var userdata = $.cookie('CMS_USER').split('##');
+			if(userdata.length > 2) {
+				$('.tools .user').hide();
+				$('.tools .user-logout .nickname').text(userdata[1]);
+				$('.tools .user-logout').show();
+				if(userdata[2]&&'true'==userdata[2]){
+					$('.tools .user-logout .master').show()
+				}
+			}
+		}
 	});
 </script>

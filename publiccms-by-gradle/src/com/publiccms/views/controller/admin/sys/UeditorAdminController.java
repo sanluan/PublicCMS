@@ -35,6 +35,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.FileComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.views.pojo.UeditorConfig;
 import com.sanluan.common.handler.PageHandler;
 
 @Controller
@@ -73,37 +74,37 @@ public class UeditorAdminController extends AbstractController {
 
     @RequestMapping(params = "action=" + ACTION_CONFIT)
     @ResponseBody
-    public Map<String, Object> config(HttpServletRequest request) {
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("imageActionName", ACTION_UPLOAD);
-        map.put("snapscreenActionName", ACTION_UPLOAD);
-        map.put("scrawlActionName", ACTION_UPLOAD_SCRAW);
-        map.put("videoActionName", ACTION_UPLOAD);
-        map.put("fileActionName", ACTION_UPLOAD);
-        map.put("catcherActionName", ACTION_CATCHIMAGE);
-        map.put("imageManagerActionName", ACTION_LISTFILE);
-        map.put("fileManagerActionName", ACTION_LISTFILE);
-        map.put("imageFieldName", FIELD_NAME);
-        map.put("scrawlFieldName", FIELD_NAME);
-        map.put("catcherFieldName", FIELD_NAME);
-        map.put("videoFieldName", FIELD_NAME);
-        map.put("fileFieldName", FIELD_NAME);
+    public UeditorConfig config(HttpServletRequest request) {
         String urlPrefix = getSite(request).getResourcePath();
-        map.put("imageUrlPrefix", urlPrefix);
-        map.put("scrawlUrlPrefix", urlPrefix);
-        map.put("snapscreenUrlPrefix", urlPrefix);
-        map.put("catcherUrlPrefix", urlPrefix);
-        map.put("videoUrlPrefix", urlPrefix);
-        map.put("fileUrlPrefix", urlPrefix);
-        map.put("imageManagerUrlPrefix", urlPrefix);
-        map.put("fileManagerUrlPrefix", urlPrefix);
-        map.put("imageAllowFiles", IMAGE_ALLOW_FILES);
-        map.put("catcherAllowFiles", IMAGE_ALLOW_FILES);
-        map.put("videoAllowFiles", VIDEO_ALLOW_FILES);
-        map.put("fileAllowFiles", ALLOW_FILES);
-        map.put("imageManagerAllowFiles", IMAGE_ALLOW_FILES);
-        map.put("fileManagerAllowFiles", ALLOW_FILES);
-        return map;
+        UeditorConfig config = new UeditorConfig();
+        config.setImageActionName(ACTION_UPLOAD);
+        config.setSnapscreenActionName(ACTION_UPLOAD);
+        config.setScrawlActionName(ACTION_UPLOAD_SCRAW);
+        config.setVideoActionName(ACTION_UPLOAD);
+        config.setFileActionName(ACTION_UPLOAD);
+        config.setCatcherActionName(ACTION_CATCHIMAGE);
+        config.setImageManagerActionName(ACTION_LISTFILE);
+        config.setFileManagerActionName(ACTION_LISTFILE);
+        config.setImageFieldName(FIELD_NAME);
+        config.setScrawlFieldName(FIELD_NAME);
+        config.setCatcherFieldName(FIELD_NAME);
+        config.setVideoFieldName(FIELD_NAME);
+        config.setFileFieldName(FIELD_NAME);
+        config.setImageUrlPrefix(urlPrefix);
+        config.setScrawlUrlPrefix(urlPrefix);
+        config.setSnapscreenUrlPrefix(urlPrefix);
+        config.setCatcherUrlPrefix(urlPrefix);
+        config.setVideoUrlPrefix(urlPrefix);
+        config.setFileUrlPrefix(urlPrefix);
+        config.setImageManagerUrlPrefix(urlPrefix);
+        config.setFileManagerUrlPrefix(urlPrefix);
+        config.setImageAllowFiles(IMAGE_ALLOW_FILES);
+        config.setCatcherAllowFiles(IMAGE_ALLOW_FILES);
+        config.setVideoAllowFiles(VIDEO_ALLOW_FILES);
+        config.setFileAllowFiles(ALLOW_FILES);
+        config.setImageManagerAllowFiles(IMAGE_ALLOW_FILES);
+        config.setFileManagerAllowFiles(ALLOW_FILES);
+        return config;
     }
 
     @RequestMapping(params = "action=" + ACTION_UPLOAD)

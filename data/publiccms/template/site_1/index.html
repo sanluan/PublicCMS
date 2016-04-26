@@ -4,16 +4,16 @@
 	<title>PublicCMS - 永久免费开源JAVA CMS(内容管理系统),最新技术框架</title>
 	<meta name="keywords" content="${(metadata.extendData.keywords?html)!}"/>
 	<meta name="description" content="${(metadata.extendData.description?html)!}"/>
-	<!--#include virtual="/include/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"--> <#-- 头部Header -->
+	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 </head>
 <body>
-<!--#include virtual="/include/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"--> <#-- 导航 -->
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 <script>
 	$("header nav ul li a:contains('首页')").parent().addClass('selected');
 </script>
 <main>
 	<div class="container">
-		<!--#include virtual="/include/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"--> <#-- 焦点图 -->
+		<@_includePlace path="/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"/> <#-- 焦点图 -->
 		<div class="data-list left-content">
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <@_modelList>
@@ -40,13 +40,12 @@
 </@_contentList>
 				</ul>
 			</div>
-			<!--#include virtual="/include/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"--> <#-- 精彩图集 -->
-            <!--#include virtual="/include/index.html/71ba70bf-cf86-4365-be4a-c22816892660.html"--> <#-- 预览版 -->
-            <!--#include virtual="/include/index.html/2ac8682d-d844-4d95-921d-8c92b89e515c.html"--> <#-- 开源中国 -->
-            <!--#include virtual="/include/index.html/30ef2211-1197-4725-b253-e5dc12af1b21.html"--> <#-- github -->
+			<@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+            <@_includePlace path="/index.html/2ac8682d-d844-4d95-921d-8c92b89e515c.html"/> <#-- 开源中国 -->
+            <@_includePlace path="/index.html/30ef2211-1197-4725-b253-e5dc12af1b21.html"/> <#-- github -->
 		</aside>
 	</div>
 </main>
-<!--#include virtual="/include/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"--> <#-- 尾部Footer -->  
+<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
 </body>
 </html>

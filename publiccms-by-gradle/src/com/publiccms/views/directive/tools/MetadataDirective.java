@@ -17,8 +17,7 @@ public class MetadataDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         String dir = handler.getString("dir");
         if (notEmpty(path) && !path.endsWith(SEPARATOR)) {
-            handler.put("path", path)
-                    .put("object",
+            handler.put("object",
                             metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), path)))
                     .render();
         } else if (null != dir) {

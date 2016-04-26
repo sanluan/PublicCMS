@@ -8,13 +8,13 @@
 				<dd>
 					<input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
 					<label><input name="useStatic" type="checkbox" onclick="if($(this).is(':checked')){$('.useStatic').show();$('.useStatic input[type=text]',navTab.getCurrentPanel()).addClass('required')}else{$('.useStatic').hide();$('.useStatic input[type=text]',navTab.getCurrentPanel()).val('').removeClass('required');}"/>启用静态化</label>
-					<label><input name="useSsi" type="checkbox"/>启用SSI</label>
 				</dd>
 			</dl>
 			<dl class="nowrap useStatic" style="display:none">
 				<dt>静态站点地址:</dt>
 				<dd>
 					<input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
+					<label><input name="useSsi" type="checkbox"/>启用SSI</label>
 					<span class="info">该地址用于静态站点访问</span>
 				</dd>
 			</dl>
@@ -67,7 +67,7 @@
 				</#if>
 				<#if !a??||a.useSsi>
 					$('input[name=useSsi]',navTab.getCurrentPanel()).click();
-					</#if>
+				</#if>
 			</script>
 		</div>
 		<div class="formBar">

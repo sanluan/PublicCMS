@@ -8,8 +8,6 @@ import static com.sanluan.common.tools.RequestUtils.getCookie;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static com.sanluan.common.tools.VerificationUtils.encode;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -102,11 +100,6 @@ public class LoginController extends AbstractController {
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), CHANNEL_WEB, getDate(), ip));
         service.updateLoginStatus(user.getId(), ip);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB, true, getDate(), null));
-        try {
-            returnUrl = URLDecoder.decode(returnUrl, DEFAULT_CHARSET);
-        } catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage());
-        }
         return REDIRECT + returnUrl;
     }
 
@@ -157,7 +150,7 @@ public class LoginController extends AbstractController {
                 || virifyNotEquals("repassword", entity.getPassword(), repassword, model)
                 || virifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
                 || virifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()), model)) {
-            return domain.getRegisterPath();
+            return REDIRECT + domain.getRegisterPath();
         }
         String ip = getIpAddress(request);
         entity.setPassword(encode(entity.getPassword()));
@@ -213,15 +206,10 @@ public class LoginController extends AbstractController {
         }
         clearUserToSession(request.getContextPath(), request.getSession(), response);
         if (notEmpty(returnUrl)) {
-            try {
-                returnUrl = URLDecoder.decode(returnUrl, DEFAULT_CHARSET);
-                return REDIRECT + returnUrl;
-            } catch (UnsupportedEncodingException e) {
-                log.error(e.getMessage());
-                return REDIRECT + "index.html";
-            }
+            return REDIRECT + returnUrl;
         }
-        return REDIRECT + "index.html";
+        SysDomain domain = getDomain(request);
+        return REDIRECT + domain.getLoginPath();
     }
 
     protected boolean virifyNotEnablie(SysUser user, ModelMap model) {

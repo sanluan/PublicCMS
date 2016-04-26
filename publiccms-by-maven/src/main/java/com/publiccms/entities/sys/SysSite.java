@@ -27,9 +27,11 @@ public class SysSite implements java.io.Serializable {
     private Integer id;
     @MyColumn(title = "名称", condition = true, like = true)
     private String name;
+    @MyColumn(title = "启用静态化")
     private boolean useStatic;
     @MyColumn(title = "站点地址")
     private String sitePath;
+    @MyColumn(title = "启用SSI")
     private boolean useSsi;
     @MyColumn(title = "动态站点地址")
     private String dynamicPath;

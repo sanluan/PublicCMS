@@ -4,9 +4,6 @@ import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB_MANAGE
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static com.sanluan.common.tools.VerificationUtils.encode;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -63,13 +60,7 @@ public class LoginAdminController extends AbstractController {
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB_MANAGER, true, getDate(), null));
 
         if (notEmpty(returnUrl)) {
-            try {
-                returnUrl = URLDecoder.decode(returnUrl, DEFAULT_CHARSET);
-                return REDIRECT + returnUrl;
-            } catch (UnsupportedEncodingException e) {
-                log.error(e.getMessage());
-                return REDIRECT + "index.html";
-            }
+            return REDIRECT + returnUrl;
         }
         return REDIRECT + "index.html";
     }

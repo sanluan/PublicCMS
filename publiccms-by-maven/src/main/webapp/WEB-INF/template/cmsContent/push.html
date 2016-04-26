@@ -30,11 +30,10 @@
 		</p>
 		<p>
 	<#list page.list as a>
-		${a.path[0..a.path?last_index_of('/')]}<@_placeMetadata path='include'+a.path>${(object.alias)!}</@_placeMetadata> (${a.clicks})<br/>
+		${a.path[0..a.path?last_index_of('/')]}<@_placeMetadata path=a.path>${(object.alias)!}</@_placeMetadata> (${a.clicks})<br/>
 	</#list>
 		</p>
 </@_placeList>
 	</div>
-	<div class="divider"></div>
 	<div class="divider"></div>
 </div>

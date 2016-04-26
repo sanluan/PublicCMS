@@ -1,10 +1,6 @@
 <#macro chipTree filepath prefix suffix>
-	<@_templateList path=filepath>
-		<#if filepath?starts_with('ftl')>
-			<@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
-		<#else>
-			<@_placeMetadata dir=filepath><#local metaDataMap=object/></@_placeMetadata>
-		</#if>
+	<@_templateList path='include'+filepath>
+		<@_placeMetadata dir=filepath><#local metaDataMap=object/></@_placeMetadata>
 		<#list list as a>
 			<li>
 				<#local path=filepath+'/'+a.fileName>
@@ -27,13 +23,7 @@
 <div class="pageContent">
 	<div class="pageFormContent" layoutH="58">
 		<ul class="tree treeFolder">
-<#if chip='ftl'>
-	<@chipTree 'ftl' '<@include path="' '"/>'/>
-<#elseif chip='ssi'>
-	<@chipTree 'include' '<!--#include virtual="' '"-->'/>
-<#else>
-	<@chipTree 'include' '<@_placeMetadata path="' '"><@_placeList path=path count=object.size><@include path=path/></@_placeList></@_placeMetadata>'/>
-</#if>
+	<@chipTree '' '<@_includePlace path="' '"/>'/>
 		</ul>
 	</div>
 	<div class="formBar">

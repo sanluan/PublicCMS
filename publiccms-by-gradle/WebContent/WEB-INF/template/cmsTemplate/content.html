@@ -7,16 +7,15 @@ function refreshCmsTemplate(){
 }
 </script>
 <h2 class="contentTitle">
-	<#if site.useSsi><a href="cmsTemplate/chipLookup.html?chip=ssi" target="dialog" mask="true">推荐位(SSI)</a></#if>
-	<a href="cmsTemplate/chipLookup.html?chip=include" target="dialog" mask="true">推荐位(include)</a>
- 	<a href="cmsTemplate/chipLookup.html?chip=ftl" target="dialog" mask="true">模板片段</a>
+	<a href="cmsTemplate/placeLookup.html" target="dialog" mask="true">推荐位</a>
+ 	<a href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">模板片段</a>
 <#if !path?has_content||!path?starts_with('/ftl/')>
 	<a href="cmsTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="cmsTemplate/metadata">创建模板片段</a>
 </#if>
-	<a href="cmsTemplate/delete.do?path=${path?html?url}" title="确定要删除该模板吗?" target="ajaxTodo" rel="cmsTemplate/list">删除模板</a>
+	<a href="cmsTemplate/delete.do?path=${path?html?url}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a>
  </h2>
 <div class="pageContent">
-	<form method="post" action="cmsTemplate/save.do?navTabId=cmsTemplate" class="pageForm required-validate" onsubmit="refreshCmsTemplate();return validateCallback(this, navTabAjaxDone);">
+	<form method="post" action="cmsTemplate/save.do?navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="refreshCmsTemplate();return validateCallback(this, navTabAjaxDone);">
 		<div class="pageFormContent" layoutH="98" style="background:#ffffff;">
 	   		<div>
 				<input name="path" type="hidden" value="${path?html}"/>

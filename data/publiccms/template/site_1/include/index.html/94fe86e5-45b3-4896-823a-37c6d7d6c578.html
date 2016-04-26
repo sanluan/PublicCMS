@@ -5,7 +5,7 @@
 </style>
 <div id="index-focus" class="owl-carousel owl-theme">
   <#list page.list as a>
-    <div class="item"><a href="${site.dynamicPath}page/redirect.do?id=${a.id!}" target="_blank"><img class="lazyOwl" data-src="${site.resourcePath+a.cover}" alt="${a.title!}"></a></div>
+    <div class="item"><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img class="lazyOwl" data-src="${site.resourcePath+a.cover}" alt="${a.title!}"></a></div>
   </#list>
 </div>
 <script>

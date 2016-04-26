@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.component.MetadataComponent;
+import static com.publiccms.logic.component.TemplateComponent.INCLUDE_DIRECTORY;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -17,13 +18,15 @@ public class PlaceMetadataDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         String dir = handler.getString("dir");
         if (notEmpty(path) && !path.endsWith(SEPARATOR)) {
-            handler.put("path", path)
-                    .put("object",
-                            metadataComponent.getPlaceMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), path)))
-                    .render();
+            handler.put(
+                    "object",
+                    metadataComponent.getPlaceMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), INCLUDE_DIRECTORY
+                            + path))).render();
         } else if (null != dir) {
-            handler.put("object", metadataComponent.getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(getSite(handler), dir)))
-                    .render();
+            handler.put(
+                    "object",
+                    metadataComponent.getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(getSite(handler),
+                            INCLUDE_DIRECTORY + dir))).render();
         }
     }
 

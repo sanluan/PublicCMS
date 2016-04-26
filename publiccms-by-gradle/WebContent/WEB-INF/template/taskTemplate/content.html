@@ -11,10 +11,10 @@ function refreshTaskTemplate(){
 	<#if !path?has_content||!path?starts_with('/ftl/')>
 		<a href="taskTemplate/content.html?path=${'/ftl/'?url}" target="ajax" rel="taskTemplateBox">创建模板片段</a>
 	</#if>
-	<a href="taskTemplate/delete.do?path=${path?html?url}" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a>
+	<a href="taskTemplate/delete.do?path=${path?html?url}&navTabId=taskTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a>
 </h2>
 <div class="pageContent">
-	<form method="post" action="taskTemplate/save.do?navTabId=taskTemplate" class="pageForm required-validate" onsubmit="refreshTaskTemplate();return validateCallback(this, navTabAjaxDone);">
+	<form method="post" action="taskTemplate/save.do?navTabId=taskTemplate/list" class="pageForm required-validate" onsubmit="refreshTaskTemplate();return validateCallback(this, navTabAjaxDone);">
 		<div style="height: 24px;padding: 0 5px;">
 			<label>路径:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path?html)!}"/>
 		</div>

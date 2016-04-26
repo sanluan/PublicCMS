@@ -1289,7 +1289,7 @@ CREATE TABLE `sys_site` (
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '1', '//www.publiccms.com/', '1', '//cms.publiccms.com/', '//image.publiccms.com/', '0');
+INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '1', '//www.publiccms.com/', '0', '//cms.publiccms.com/', '//image.publiccms.com/', '0');
 INSERT INTO `sys_site` VALUES ('2', '演示站点1', '0', '//www.oldhunter.com/', '0', '#', '//resource.oldhunter.com/', '0');
 
 -- ----------------------------

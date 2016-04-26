@@ -1,0 +1,34 @@
+<#macro chipTree filepath prefix suffix>
+	<@_templateList path=filepath>
+		<@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
+		<#list list as a>
+			<li>
+				<#local path=filepath+'/'+a.fileName>
+			<#if a.directory>
+				<a href="javascript:;">${a.fileName} </a>
+				<ul>
+					<@chipTree path prefix suffix/>
+				</ul>
+			<#else>
+				<a href="javascript:;" onclick="cmsTemplateEditor.replaceSelection('${(prefix+path+suffix)?html?js_string} ${(metaDataMap[a.fileName].alias)?has_content?then('<#-- '+metaDataMap[a.fileName].alias+' -->','')?html}');$.pdialog.closeCurrent();return false;">
+					${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+				</a>
+			</#if>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_templateList>
+</#macro>
+<div class="pageContent">
+	<div class="pageFormContent" layoutH="58">
+		<ul class="tree treeFolder">
+	<@chipTree 'ftl' '<@include path="' '"/>'/>
+		</ul>
+	</div>
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
+		</ul>
+	</div>
+</div>

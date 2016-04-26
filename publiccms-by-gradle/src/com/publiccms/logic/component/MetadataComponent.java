@@ -60,11 +60,9 @@ public class MetadataComponent extends Base implements Cacheable {
      */
     public CmsPlaceMetadata getPlaceMetadata(String filePath) {
         File file = new File(filePath);
-        if (notEmpty(file)) {
-            CmsPlaceMetadata pageMetadata = getPlaceMetadataMap(file.getParent()).get(file.getName());
-            if (notEmpty(pageMetadata)) {
-                return pageMetadata;
-            }
+        CmsPlaceMetadata pageMetadata = getPlaceMetadataMap(file.getParent()).get(file.getName());
+        if (notEmpty(pageMetadata)) {
+            return pageMetadata;
         }
         return new CmsPlaceMetadata();
     }
@@ -80,11 +78,9 @@ public class MetadataComponent extends Base implements Cacheable {
      */
     public CmsPageMetadata getTemplateMetadata(String filePath) {
         File file = new File(filePath);
-        if (notEmpty(file)) {
-            CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
-            if (notEmpty(pageMetadata)) {
-                return pageMetadata;
-            }
+        CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
+        if (notEmpty(pageMetadata)) {
+            return pageMetadata;
         }
         return new CmsPageMetadata();
     }
@@ -128,18 +124,15 @@ public class MetadataComponent extends Base implements Cacheable {
      */
     public boolean updateTemplateMetadata(String filePath, CmsPageMetadata metadata) {
         File file = new File(filePath);
-        if (notEmpty(file)) {
-            String dirPath = file.getParent();
-            Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
-            metadataMap.put(file.getName(), metadata);
-            try {
-                saveTemplateMetadata(dirPath, metadataMap);
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
+        String dirPath = file.getParent();
+        Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
+        metadataMap.put(file.getName(), metadata);
+        try {
+            saveTemplateMetadata(dirPath, metadataMap);
+            return true;
+        } catch (IOException e) {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -154,18 +147,15 @@ public class MetadataComponent extends Base implements Cacheable {
      */
     public boolean updatePlaceMetadata(String filePath, CmsPlaceMetadata metadata) {
         File file = new File(filePath);
-        if (notEmpty(file)) {
-            String dirPath = file.getParent();
-            Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
-            metadataMap.put(file.getName(), metadata);
-            try {
-                savePlaceMetadata(dirPath, metadataMap);
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
+        String dirPath = file.getParent();
+        Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
+        metadataMap.put(file.getName(), metadata);
+        try {
+            savePlaceMetadata(dirPath, metadataMap);
+            return true;
+        } catch (IOException e) {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -179,18 +169,15 @@ public class MetadataComponent extends Base implements Cacheable {
      */
     public boolean deleteTemplateMetadata(String filePath) {
         File file = new File(filePath);
-        if (notEmpty(file)) {
-            String dirPath = file.getParent();
-            Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
-            metadataMap.remove(file.getName());
-            try {
-                saveTemplateMetadata(dirPath, metadataMap);
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
+        String dirPath = file.getParent();
+        Map<String, CmsPageMetadata> metadataMap = getTemplateMetadataMap(dirPath);
+        metadataMap.remove(file.getName());
+        try {
+            saveTemplateMetadata(dirPath, metadataMap);
+            return true;
+        } catch (IOException e) {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -204,18 +191,15 @@ public class MetadataComponent extends Base implements Cacheable {
      */
     public boolean deletePlaceMetadata(String filePath) {
         File file = new File(filePath);
-        if (notEmpty(file)) {
-            String dirPath = file.getParent();
-            Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
-            metadataMap.remove(file.getName());
-            try {
-                savePlaceMetadata(dirPath, metadataMap);
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
+        String dirPath = file.getParent();
+        Map<String, CmsPlaceMetadata> metadataMap = getPlaceMetadataMap(dirPath);
+        metadataMap.remove(file.getName());
+        try {
+            savePlaceMetadata(dirPath, metadataMap);
+            return true;
+        } catch (IOException e) {
+            return false;
         }
-        return false;
     }
 
     /**

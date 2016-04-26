@@ -48,8 +48,17 @@ https://git.oschina.net/sanluan/PublicCMS-lib
 * 接口演示：http://cms.publiccms.com/interface.html
 
 ##更新记录
+V2016.0423更新
 
-新增功能：
+1. 前台站点增加登陆注册功能，友情链接提交功能
+
+1. 网站模板取消使用SSI与不使用SSI的差异化
+
+1. 后台删除模板时元数据未被删除bug修复
+
+1. 后台任务计划生成静态化失败bug修复
+
+V2016新增功能：
 
 1. 新增动态模板在线编辑功能
 

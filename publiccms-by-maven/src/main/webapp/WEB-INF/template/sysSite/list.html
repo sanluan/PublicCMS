@@ -33,7 +33,6 @@
 				<th width="30">ID</th>
 				<th>名称</th>
 				<th>启用静态化</th>
-				<th>启用SSI</th>
 				<th>动态站点地址</th>
 				<th>资源站点地址</th>
 				<th>操作</th>
@@ -44,8 +43,7 @@
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id}</td>
 				<td>${a.name}</td>
-				<td>${a.useStatic?then('是(${a.sitePath!})','否')}</td>
-				<td>${a.useSsi?then('是','否')}</td>
+				<td>${a.useStatic?then('是(${a.sitePath!})','否')}  ${a.useSsi?then('[已启用服务器端包含]','')}</td>
 				<td>${a.dynamicPath!}</td>
 				<td>${a.resourcePath!}</td>
 				<td>

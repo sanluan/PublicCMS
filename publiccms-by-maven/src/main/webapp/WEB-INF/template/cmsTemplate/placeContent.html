@@ -1,4 +1,4 @@
-<@_placeMetadata path='include'+path><#assign a=object/></@_placeMetadata>
+<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
 <style>
 .CodeMirror{height:100%;font-size:14px;}
 </style>
@@ -8,14 +8,16 @@ function refreshcmsTemplatePlace(){
 }
 </script>
 <h2 class="contentTitle">
-	<#if site.useSsi><a href="cmsTemplate/chipLookup.html?chip=ssi" target="dialog" mask="true">推荐位(SSI)</a></#if>
-	<a href="cmsTemplate/chipLookup.html?chip=include" target="dialog" mask="true">推荐位(include)</a>
- 	<a href="cmsTemplate/chipLookup.html?chip=ftl" target="dialog" mask="true">模板片段</a>
+	<a href="cmsTemplate/placeLookup.html" target="dialog" mask="true">推荐位</a>
+ 	<a href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">模板片段</a>
 	<a href="cmsTemplate/metadata.html?path=${'/ftl/'?url}" target="navTab" rel="cmsTemplate/metadata">创建模板片段</a>
 	<#if (a.allowContribute)?has_content&&a.allowContribute>
 		<a href="cmsTemplate/placeForm.html?path=${path?html?url}" target="navTab" rel="cmsTemplate/placeForm">前台表单模板</a>
 	</#if>
-	<a href="cmsTemplate/deletePlace.do?path=${'/include'+path?html?url}" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a>
+	<#if site.useSsi>
+		<a href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo">发布</a>
+	</#if>
+	<a href="cmsTemplate/deletePlace.do?path=${path?html?url}&navTabId=cmsTemplate/placeList" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a>
  </h2>
 <div class="pageContent">
 	<form method="post" action="cmsTemplate/save.do?navTabId=cmsTemplate/placeList" class="pageForm required-validate" onsubmit="refreshcmsTemplatePlace();return validateCallback(this, navTabAjaxDone);">
