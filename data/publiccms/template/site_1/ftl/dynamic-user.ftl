@@ -1,8 +1,5 @@
 <#if user?has_content>
 <script>
-	$('.tools .user').hide();
-	$('.tools .user-logout .nickname').text('${user.nickName}');
-	$('.tools .user-logout').show();
-	<#if user.superuserAccess>$('.tools .user-logout .master').show();</#if>
+	$.cookie('CMS_USER','${user.id}##${user.nickName}##${user.superuserAccess?string}##${user.emailChecked?string}',{expires: 24000});
 </script>
 </#if>

@@ -38,8 +38,8 @@ public class CmsCategory implements java.io.Serializable, Staticable {
     private String childIds;
     @MyColumn(title = "标签ID")
     private String tagTypeIds;
-    @MyColumn(title = "英文名")
-    private String englishName;
+    @MyColumn(title = "编码")
+    private String code;
     @MyColumn(title = "模板路径")
     private String templatePath;
     @MyColumn(title = "路径")
@@ -68,14 +68,12 @@ public class CmsCategory implements java.io.Serializable, Staticable {
     public CmsCategory() {
     }
 
-    public CmsCategory(int siteId, String name, String templatePath, String path, boolean hasStatic, String contentPath,
+    public CmsCategory(int siteId, String name, String path, boolean hasStatic, 
             boolean allowContribute, int sort, boolean disabled, int contents) {
         this.siteId = siteId;
         this.name = name;
-        this.templatePath = templatePath;
         this.path = path;
         this.hasStatic = hasStatic;
-        this.contentPath = contentPath;
         this.allowContribute = allowContribute;
         this.sort = sort;
         this.disabled = disabled;
@@ -83,7 +81,7 @@ public class CmsCategory implements java.io.Serializable, Staticable {
     }
 
     public CmsCategory(int siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds,
-            String englishName, String templatePath, String path, boolean hasStatic, String url, String contentPath,
+            String code, String templatePath, String path, boolean hasStatic, String url, String contentPath,
             Integer pageSize, boolean allowContribute, int sort, boolean hidden, boolean disabled, int contents, Integer extendId) {
         this.siteId = siteId;
         this.name = name;
@@ -91,7 +89,7 @@ public class CmsCategory implements java.io.Serializable, Staticable {
         this.typeId = typeId;
         this.childIds = childIds;
         this.tagTypeIds = tagTypeIds;
-        this.englishName = englishName;
+        this.code = code;
         this.templatePath = templatePath;
         this.path = path;
         this.hasStatic = hasStatic;
@@ -171,16 +169,16 @@ public class CmsCategory implements java.io.Serializable, Staticable {
         this.tagTypeIds = tagTypeIds;
     }
 
-    @Column(name = "english_name", length = 50)
-    public String getEnglishName() {
-        return this.englishName;
+    @Column(name = "code", length = 50)
+    public String getCode() {
+        return this.code;
     }
 
-    public void setEnglishName(String englishName) {
-        this.englishName = englishName;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    @Column(name = "template_path", nullable = false)
+    @Column(name = "template_path")
     public String getTemplatePath() {
         return this.templatePath;
     }
@@ -217,7 +215,7 @@ public class CmsCategory implements java.io.Serializable, Staticable {
         this.url = url;
     }
 
-    @Column(name = "content_path", nullable = false, length = 500)
+    @Column(name = "content_path", length = 500)
     public String getContentPath() {
         return this.contentPath;
     }

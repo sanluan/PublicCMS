@@ -46,7 +46,7 @@
 			<li><a href="sysAppClient/disable.do?id={sid}" title="确定要禁用该客户端吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 禁用</a></li>
 		</ul>
 	</div>
-<@_sysAppClientList channel=channel admin=true 
+<@_sysAppClientList channel=channel advanced=true 
             userId=userId allowPush=allowPush startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate 
             startCreateDate=startCreateDate endCreateDate=endCreateDate disabled=disabled 
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>

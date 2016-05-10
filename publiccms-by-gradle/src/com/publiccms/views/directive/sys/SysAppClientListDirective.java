@@ -17,9 +17,9 @@ public class SysAppClientListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Boolean disabled = handler.getBoolean("disabled", false);
-        if (!handler.getBoolean("admin", false)) {
-            disabled = false;
+        Boolean disabled = false;
+        if (handler.getBoolean("advanced", false)) {
+            disabled = handler.getBoolean("disabled", false);
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("channel"), handler.getInteger("userId"),
                 handler.getBoolean("allowPush"), handler.getDate("startLastLoginDate"), handler.getDate("endLastLoginDate"),

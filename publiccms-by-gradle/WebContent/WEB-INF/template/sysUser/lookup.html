@@ -82,7 +82,7 @@
 				</td>
 				<td>${a.name}</td>
 				<td>${a.nickName}${(a.superuserAccess)?then('[<font color="red">超级管理员</font>]','')}</td>
-				<td>${a.email}</td>
+				<td>${a.email!}</td>
 				<td>${a.emailChecked?then('已验证','未验证')}</td>
 				<td>${a.lastLoginDate!}</td>
 				<td>${a.lastLoginIp!}</td>

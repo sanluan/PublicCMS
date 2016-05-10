@@ -19,17 +19,18 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Date endPublishDate = handler.getDate("endPublishDate");
-        Integer[] status = handler.getIntegerArray("status");
-        Boolean disabled = handler.getBoolean("disabled", false);
-        Boolean emptyParent = handler.getBoolean("emptyParent");
-        if (!handler.getBoolean("admin", false)) {
+        Integer[] status = new Integer[] { CmsContentService.STATUS_NORMAL };
+        Boolean disabled = false;
+        Boolean emptyParent = true;
+        if (handler.getBoolean("advanced", false)) {
+            status = handler.getIntegerArray("status");
+            disabled = handler.getBoolean("disabled", false);
+            emptyParent = handler.getBoolean("emptyParent");
+        } else {
             Date now = getDate();
             if (empty(endPublishDate) || endPublishDate.after(now)) {
                 endPublishDate = now;
             }
-            status = new Integer[] { CmsContentService.STATUS_NORMAL };
-            disabled = false;
-            emptyParent = true;
         }
         PageHandler page = service.getPage(getSite(handler).getId(), status, handler.getInteger("categoryId"),
                 handler.getBoolean("containChild"), disabled, handler.getIntegerArray("modelId"), handler.getInteger("parentId"),

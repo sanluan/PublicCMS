@@ -17,9 +17,9 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Boolean hidden = null;
-        if (!handler.getBoolean("admin", false)) {
-            hidden = handler.getBoolean("hidden", false);
+        Boolean hidden = false;
+        if (handler.getBoolean("advanced", false)) {
+            hidden = handler.getBoolean("hidden");
         }
         PageHandler page = service.getPage(getSite(handler).getId(), hidden, handler.getDate("startCreateDate"),
                 handler.getDate("endCreateDate"), handler.getString("name"), handler.getString("orderField"),

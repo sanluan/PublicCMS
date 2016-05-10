@@ -70,14 +70,10 @@
 				<li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> 添加更多内容</a></li>
 			</#if>
 		</@_modelList>
-				<li class="line">line</li>
 	</#if>
 				<li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> 修改内容</a></li>
-</#if>
-			<#if authorizedMap['cmsContent/delete']>
-				<li><a href="cmsContent/delete.do" title="确定要删除这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 				<li class="line">line</li>
-			</#if>
+</#if>
 			<#if authorizedMap['cmsContent/check']>
 				<li><a href="cmsContent/check.do" title="确定要审核这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核</a></li>
 			</#if>
@@ -90,9 +86,13 @@
 			<#if authorizedMap['cmsContent/moveParameters']>
 				<li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> 批量移动</a></li>
 			</#if>
+			<#if authorizedMap['cmsContent/delete']>
+				<li class="line">line</li>
+				<li><a href="cmsContent/delete.do" title="确定要删除这些记录么?"  target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+			</#if>
 			</ul>
 		</div>
-	<@_contentList admin=true status=status categoryId=categoryId containChild=containChild
+	<@_contentList advanced=true status=status categoryId=categoryId containChild=containChild
 				modelId=modelId parentId=parentId emptyParent=true title=title userId=userId 
 				startPublishDate=startPublishDate endPublishDate=endPublishDate 
 				orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>

@@ -19,6 +19,7 @@ public abstract class BaseHandler extends Base implements RenderHandler {
     public static final String PARAMETERS_NAME = "parameters";
     public static final String PARAMETERS_CONTROLLER = "showParamters";
     public static final String PARAMETER_TYPE_STRING = "string";
+    public static final String PARAMETER_TYPE_CHAR = "char";
     public static final String PARAMETER_TYPE_SHORT = "short";
     public static final String PARAMETER_TYPE_LONG = "long";
     public static final String PARAMETER_TYPE_DOUBLE = "double";
@@ -110,6 +111,22 @@ public abstract class BaseHandler extends Base implements RenderHandler {
      * (non-Javadoc)
      * 
      * @see
+     * com.sanluan.common.handler.RenderHandler#getCharacter(java.lang.String)
+     */
+    @Override
+    public Character getCharacter(String name) throws Exception {
+        regristerParamter(PARAMETER_TYPE_CHAR, name);
+        String result = getStringWithoutRegrister(name);
+        if (notEmpty(result)) {
+            return result.charAt(0);
+        }
+        return null;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
      * com.sanluan.common.handler.RenderHandler#getInteger(java.lang.String)
      */
     @Override
@@ -126,7 +143,7 @@ public abstract class BaseHandler extends Base implements RenderHandler {
      * int)
      */
     @Override
-    public Integer getInteger(String name, int defaultValue) throws Exception {
+    public int getInteger(String name, int defaultValue) throws Exception {
         regristerParamter(PARAMETER_TYPE_INTEGER, name, defaultValue);
         Integer result = getIntegerWithoutRegrister(name);
         return notEmpty(result) ? result : defaultValue;
@@ -190,7 +207,7 @@ public abstract class BaseHandler extends Base implements RenderHandler {
      * com.sanluan.common.handler.RenderHandler#getBoolean(java.lang.String,
      * java.lang.Boolean)
      */
-    protected Boolean getBooleanWithoutRegrister(String name, Boolean defaultValue) throws Exception {
+    protected boolean getBooleanWithoutRegrister(String name, boolean defaultValue) throws Exception {
         Boolean result = getBooleanWithoutRegrister(name);
         return notEmpty(result) ? result : defaultValue;
     }
@@ -215,7 +232,7 @@ public abstract class BaseHandler extends Base implements RenderHandler {
      * java.lang.Boolean)
      */
     @Override
-    public Boolean getBoolean(String name, Boolean defaultValue) throws Exception {
+    public boolean getBoolean(String name, boolean defaultValue) throws Exception {
         regristerParamter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
         return getBooleanWithoutRegrister(name, defaultValue);
     }

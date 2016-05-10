@@ -1,22 +1,29 @@
 <@_metadata path=path><#assign a=object/></@_metadata>
 <form method="post" action="cmsPage/saveMetaData.do?rel=pageBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 	<div class="pageFormContent" layoutH="56" style="background:#ffffff;">
-		<dl class="nowrap">
-			<dt>操作:</dt>
-			<dd>
-				<input name="path" type="hidden" value="${path?html}"/>
-				<#if site.useStatic&&(a.publishPath)?has_content>
-					<label><a class="button" href="cmsTemplate/publish.do?path=${path?url}" target="ajaxTodo"><span>生成静态页面</span></a></label>
-					<label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank"><span>查看静态页面</span></a></label>
-				</#if>
-				<#if !a?has_content||a.useDynamic?has_content&&a.useDynamic>
-					<label><a class="button" href="${site.dynamicPath+path}" target="_blank"><span>查看动态页面</span></a></label>
+		<input name="path" type="hidden" value="${path?html}"/>
+		<#if site.useStatic&&(a.publishPath)?has_content>
+			<dl class="nowrap">
+				<dt>静态页面:</dt>
+				<dd>
+					<label><a class="button" href="cmsTemplate/publish.do?path=${path?url}" target="ajaxTodo"><span>生成页面</span></a></label>
+					<label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank"><span>查看页面</span></a></label>
+					<label><a class="button" href="cmsPage/push_page.html?url=${site.sitePath+a.publishPath}&title=${a.alias!}" target="dialog" rel="push"><span>推荐</span></a></label>
+				</dd>
+			</dl>
+		</#if>
+		<#if !a?has_content||a.useDynamic?has_content&&a.useDynamic>
+			<dl class="nowrap">
+				<dt>动态页面:</dt>
+				<dd>
+					<label><a class="button" href="${site.dynamicPath+path}" target="_blank"><span>查看页面</span></a></label>
 					<#if 10 lte (a.cacheTime)!0>
-						<label><a class="button" href="cmsPage/clearCache.do?path=${path?url}" target="ajaxTodo"><span>清除页面缓存</span></a></label>
+						<label><a class="button" href="cmsPage/clearCache.do?path=${path?url}" target="ajaxTodo"><span>清除缓存</span></a></label>
 					</#if>
-				</#if>
-			</dd>
-		</dl>
+					<label><a class="button" href="cmsPage/push_page.html?url=${site.dynamicPath+path}&title=${a.alias!}" target="dialog" rel="push"><span>推荐</span></a></label>
+				</dd>
+			</dl>
+		</#if>
 		<#include "../include_page/extendData.html"/>
 		<#assign extendList=(a.extendList)![]/>
 		<#assign extendValues=(a.extendData)!{}/>

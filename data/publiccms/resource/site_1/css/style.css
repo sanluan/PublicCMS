@@ -89,6 +89,10 @@ footer ul li ul li a:hover{color:#a7f;}
 footer .copyright{float:right;}
 footer .frendlink a{border:1px solid #ccc;padding:0 4px;margin:2px 0px;display:inline-block;line-height:20px;}
 footer .frendlink a:hover{color:#a7f;}
+.sidebar{background:rgba(0,0,0,.3) none repeat scroll 0 0;border-radius:8px 0 0 8px;bottom:45%;margin-top:80px;padding:5px 0 5px 0;position:fixed;right:0;width:55px;z-index:999}
+.sidebar li{border-radius:8px 0 0 8px;height:50px;padding-left:17px;transition:all .5s ease 0s;width:160px;list-style:none;}
+.sidebar li img{display:block}
+.sidebar li:hover{background:rgba(0,0,0,.6) none repeat scroll 0 0;margin-left:-105px}
 
 @media screen and (min-width :1250px){
 header.fixed-position{position:fixed;top:0;left:0;z-index:999;height:40px;}
@@ -105,8 +109,9 @@ header.fixed-position .tools{display:none;}
 header.fixed-position .logo{width:105px;height:40px;}
 header.fixed-position .slogan{line-height:40px;font-size:12px;}
 header.fixed-position nav{margin-top:0;}
-header.fixed-position nav ul li{height:40px;line-height:40px;}
+header.fixed-position nav ul li{height:30px;line-height:30px;margin-top:5px;}
 header.fixed-position nav ul li ul li{height:30px;line-height:30px;}
+header.fixed-position nav ul li a{padding:0 10px;}
 .container{padding:0 10px;width:auto;}
 main .left-content{float:none;width:100%;}
 main aside{float:none;width:100%;}
@@ -135,4 +140,5 @@ main aside{float:none;width:100%;}
 main aside ul.rank li a{width:100%;}
 main aside ul li a{width:100%;}
 footer>ul>li,footer>ul>li:last-child{padding-right:0;width:100%;text-align:center;}
+.sidebar{bottom:5%;}
 }

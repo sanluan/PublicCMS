@@ -1,10 +1,10 @@
 <div class="pageFormContent" style="background:#ffffff;">
+<#if site.useSsi>
 	<dl class="nowrap">
 		<dt>操作:</dt>
 		<dd>
-			<#if site.useSsi>
-				<a class="button" href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo"><span>发布</span></a>
-			</#if>
+			<a class="button" href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo"><span>发布</span></a>
 		</dd>
 	</dl>
+</#if>
 </div>

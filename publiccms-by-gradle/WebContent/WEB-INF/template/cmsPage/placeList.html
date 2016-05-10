@@ -10,9 +10,9 @@
 		<#if !a.directory>
 			<li>
 			<#if 0=((metaDataMap[a.fileName].size)!0)>
-				<a href="cmsPage/publishPlace.html?path=${(path+'/'+a.fileName)?url}" target="ajax" rel="pageBox">${(metaDataMap[a.fileName].alias)!a.fileName} (不可编辑)</a>
+				<a href="cmsPage/publishPlace.html?path=${(path+'/'+a.fileName)?url}" target="ajax" rel="pageBox">${(metaDataMap[a.fileName].alias)!a.fileName} (0)</a>
 			<#else>
-				<a href="cmsPage/placeDataList.html?path=${(path+'/'+a.fileName)?url}" target="navTab" rel="cmsPage/placeDataList" title="推荐位:${(metaDataMap[a.fileName].alias)!a.fileName}">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
+				<a href="cmsPage/placeDataList.html?path=${(path+'/'+a.fileName)?url}" target="navTab" rel="cmsPage/placeDataList" title="推荐位:${(metaDataMap[a.fileName].alias)!a.fileName}">${(metaDataMap[a.fileName].alias)!a.fileName} (${(metaDataMap[a.fileName].size)!0})</a>
 			</#if>
 			</li>
 		</#if>

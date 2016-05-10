@@ -19,16 +19,17 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Date endPublishDate = handler.getDate("endPublishDate");
-        Boolean disabled = handler.getBoolean("disabled", false);
-        Integer status = handler.getInteger("status");
         String path = handler.getString("path");
-        if (!handler.getBoolean("admin", false)) {
+        Boolean disabled = false;
+        Integer status = CmsPlaceService.STATUS_NORMAL;
+        if (handler.getBoolean("advanced", false)) {
+            status = handler.getInteger("status");
+            disabled = handler.getBoolean("disabled", false);
+        } else {
             Date now = getDate();
             if (empty(endPublishDate) || endPublishDate.after(now)) {
                 endPublishDate = now;
             }
-            disabled = false;
-            status = CmsPlaceService.STATUS_NORMAL;
         }
         if (notEmpty(path)) {
             path = path.replace("//", SEPARATOR);

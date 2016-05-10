@@ -1,10 +1,9 @@
 <html lang="zh-CN">
 <head>
 	<title>${metadata.alias!}</title>
-		<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
+	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 </head>
 <body>
-	跳转中...
 <script type="text/javascript">
 	$.getJSON('${site.dynamicPath}loginStatus.json?callback=?', function(data){
 			if(data.id) {

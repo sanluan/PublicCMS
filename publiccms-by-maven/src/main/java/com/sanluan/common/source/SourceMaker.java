@@ -139,7 +139,7 @@ public class SourceMaker extends Base {
                     typeName = "java.lang.Byte";
                     break;
                 case "char":
-                    typeName = "java.lang.Charactor";
+                    typeName = "java.lang.Character";
                     break;
                 case "double":
                     typeName = "java.lang.Double";

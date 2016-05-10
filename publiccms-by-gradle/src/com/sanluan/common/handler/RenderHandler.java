@@ -49,12 +49,20 @@ public interface RenderHandler {
 
     /**
      * @param name
+     * 
+     * @return
+     * @throws Exception
+     */
+    public Character getCharacter(String name) throws Exception;
+
+    /**
+     * @param name
      * @param defaultValue
      * @return
      * @throws Exception
      * @throws Exception
      */
-    public Integer getInteger(String name, int defaultValue) throws Exception;
+    public int getInteger(String name, int defaultValue) throws Exception;
 
     /**
      * @param name
@@ -118,7 +126,7 @@ public interface RenderHandler {
      * @return
      * @throws Exception
      */
-    public Boolean getBoolean(String name, Boolean defaultValue) throws Exception;
+    public boolean getBoolean(String name, boolean defaultValue) throws Exception;
 
     /**
      * @param name

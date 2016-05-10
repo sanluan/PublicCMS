@@ -17,11 +17,11 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Boolean disabled = handler.getBoolean("disabled", false);
-        Boolean hidden = null;
-        if (!handler.getBoolean("admin", false)) {
-            disabled = false;
-            hidden = handler.getBoolean("hidden", false);
+        Boolean disabled = false;
+        Boolean hidden = false;
+        if (handler.getBoolean("advanced", false)) {
+            disabled = handler.getBoolean("disabled", false);
+            hidden = handler.getBoolean("hidden");
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("parentId"),
                 handler.getInteger("typeId"), handler.getBoolean("allowContribute"), hidden, disabled,

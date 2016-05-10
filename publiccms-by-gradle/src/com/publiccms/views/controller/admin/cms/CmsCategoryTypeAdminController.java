@@ -93,7 +93,7 @@ public class CmsCategoryTypeAdminController extends AbstractController {
         if (notEmpty(entity)) {
             if (virifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
                     || virifyNotGreaterThen("category", categoryService
-                            .getPage(site.getId(), null, id, null, null, null, null, 1).getTotalCount(), 0, model)) {
+                            .getPage(site.getId(), null, id, null, null, null, null, 1).getTotalCount(), 1, model)) {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);

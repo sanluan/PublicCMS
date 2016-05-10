@@ -11,7 +11,7 @@
 			<dt>Nginx配置:</dt>
 			<dd>
 				<textarea id="nginx" name="description" style="width: 100%;" rows="20"><@_disk>
-<@_sysDomainList admin=true siteId=siteId>
+<@_sysDomainList advanced=true siteId=siteId>
 	<#if page.totalCount gt 0>
 		<#assign dynamicPath=a.dynamicPath/>
 		<#if 0 = dynamicPath?index_of('http') || 0 = dynamicPath?index_of('//')>

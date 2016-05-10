@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50090
 File Encoding         : 65001
 
-Date: 2016-04-19 11:11:49
+Date: 2016-05-10 11:11:49
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -27,12 +27,12 @@ CREATE TABLE `cms_category` (
   `type_id` int(11) default NULL COMMENT '分类类型',
   `child_ids` text COMMENT '所有子分类ID',
   `tag_type_ids` varchar(100) default NULL COMMENT '标签分类',
-  `english_name` varchar(50) default NULL COMMENT '英文名',
-  `template_path` varchar(255) NOT NULL COMMENT '模板路径',
+  `code` varchar(50) default NULL COMMENT '编码',
+  `template_path` varchar(255) default NULL COMMENT '模板路径',
   `path` varchar(2000) NOT NULL COMMENT '首页路径',
   `has_static` tinyint(1) NOT NULL COMMENT '已经静态化',
   `url` varchar(2048) default NULL COMMENT '首页地址',
-  `content_path` varchar(500) NOT NULL COMMENT '内容路径',
+  `content_path` varchar(500) default NULL COMMENT '内容路径',
   `page_size` int(11) default NULL COMMENT '每页数据条数',
   `allow_contribute` tinyint(1) NOT NULL COMMENT '允许投稿',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
@@ -53,20 +53,20 @@ CREATE TABLE `cms_category` (
 -- ----------------------------
 -- Records of cms_category
 -- ----------------------------
-INSERT INTO `cms_category` VALUES ('1', '1', '演示', null, null, '17,15,12,9,8,7,6,18', '', 'demonstrate', '/category/parent.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/demonstrate/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
-INSERT INTO `cms_category` VALUES ('6', '1', '汽车', '1', null, null, '', 'car', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/car/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
-INSERT INTO `cms_category` VALUES ('7', '1', '社会', '1', null, null, '', 'social', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/social/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
-INSERT INTO `cms_category` VALUES ('8', '1', '美图', '1', null, null, '', 'picture', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/picture/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
-INSERT INTO `cms_category` VALUES ('9', '1', '系统介绍', '1', null, null, '', 'introduction', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/introduction/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '2', null);
-INSERT INTO `cms_category` VALUES ('12', '1', '文章', '1', null, null, '', 'article', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/article/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
-INSERT INTO `cms_category` VALUES ('11', '1', '测试', null, null, null, null, 'test', '/category/parent.html', '${category.englishName}/index.html', '0', 'test/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '1', '0', null);
+INSERT INTO `cms_category` VALUES ('1', '1', '演示', null, null, '17,15,12,9,8,7,6,18', '', 'demonstrate', '/category/parent.html', '${category.code}/index.html', '1', '//www.publiccms.com/demonstrate/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('6', '1', '汽车', '1', null, null, '', 'car', '/category/list.html', '${category.code}/index.html', '1', '//www.publiccms.com/car/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('7', '1', '社会', '1', null, null, '', 'social', '/category/list.html', '${category.code}/index.html', '1', '//www.publiccms.com/social/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('8', '1', '美图', '1', null, null, '', 'picture', '/category/list.html', '${category.code}/index.html', '1', '//www.publiccms.com/picture/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('9', '1', '系统介绍', '1', null, null, '', 'introduction', '/category/list.html', '${category.code}/index.html', '1', '//www.publiccms.com/introduction/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '2', null);
+INSERT INTO `cms_category` VALUES ('12', '1', '文章', '1', null, null, '', 'article', '/category/list.html', '${category.code}/index.html', '1', '//www.publiccms.com/article/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('11', '1', '测试', null, null, null, null, 'test', '/category/parent.html', '${category.code}/index.html', '0', 'test/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '1', '0', null);
 INSERT INTO `cms_category` VALUES ('13', '1', '下载', null, null, null, null, 'download', '', 'https://github.com/sanluan/PublicCMS', '0', 'https://github.com/sanluan/PublicCMS', '', '20', '0', '0', '0', '1', '0', null);
-INSERT INTO `cms_category` VALUES ('14', '1', '图书', '1', null, null, null, 'book', '/category/parent.html', 'demonstrate/${category.englishName}/index.html', '0', 'demonstrate/book/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '1', '0', null);
-INSERT INTO `cms_category` VALUES ('15', '1', '小说', '1', null, null, '', 'novel', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/novel/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('14', '1', '图书', '1', null, null, null, 'book', '/category/parent.html', 'demonstrate/${category.code}/index.html', '0', 'demonstrate/book/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '1', '0', null);
+INSERT INTO `cms_category` VALUES ('15', '1', '小说', '1', null, null, '', 'novel', '/category/list.html', '${category.code}/index.html', '1', '//www.publiccms.com/novel/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
 INSERT INTO `cms_category` VALUES ('16', '1', 'OSChina下载', '13', null, null, null, 'download', '', 'http://git.oschina.net/sanluan/PublicCMS', '0', 'http://git.oschina.net/sanluan/PublicCMS', '', '20', '0', '0', '0', '1', '0', null);
-INSERT INTO `cms_category` VALUES ('17', '1', '科技', '1', null, null, '', 'science', '/category/list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/science/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
-INSERT INTO `cms_category` VALUES ('18', '1', '商品', '1', null, null, '', 'product', '/category/product_list.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/product/index.html', '${category.englishName}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '-3', null);
-INSERT INTO `cms_category` VALUES ('19', '1', '案例', null, null, null, '', 'case', '/category/parent.html', '${category.englishName}/index.html', '1', '//www.publiccms.com/case/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '2', '2');
+INSERT INTO `cms_category` VALUES ('17', '1', '科技', '1', null, null, '', 'science', '/category/list.html', '${category.code}/index.html', '1', '//www.publiccms.com/science/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '0', null);
+INSERT INTO `cms_category` VALUES ('18', '1', '商品', '1', null, null, '', 'product', '/category/product_list.html', '${category.code}/index.html', '1', '//www.publiccms.com/product/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '10', '0', '0', '0', '0', '-3', null);
+INSERT INTO `cms_category` VALUES ('19', '1', '案例', null, null, null, '', 'case', '/category/parent.html', '${category.code}/index.html', '1', '//www.publiccms.com/case/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '20', '0', '0', '0', '0', '2', '2');
 
 -- ----------------------------
 -- Table structure for cms_category_attribute
@@ -250,7 +250,7 @@ CREATE TABLE `cms_content_attribute` (
   `source` varchar(50) default NULL COMMENT '内容来源',
   `source_url` varchar(2048) default NULL COMMENT '来源地址',
   `data` longtext COMMENT '数据JSON',
-  `text` text COMMENT '内容',
+  `text` longtext COMMENT '内容',
   `word_count` int(11) NOT NULL COMMENT '字数',
   PRIMARY KEY  (`content_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='内容扩展';
@@ -1074,13 +1074,13 @@ INSERT INTO `sys_moudle` VALUES ('19', '审核', null, 'cmsContent/check', '12',
 INSERT INTO `sys_moudle` VALUES ('20', '刷新', null, 'cmsContent/refresh', '12', '0');
 INSERT INTO `sys_moudle` VALUES ('21', '生成', null, 'cmsContent/publish', '12', '0');
 INSERT INTO `sys_moudle` VALUES ('22', '移动', 'cmsContent/moveParameters', 'cmsContent/move', '12', '0');
-INSERT INTO `sys_moudle` VALUES ('23', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsContent/push_to_place,cmsContent/related', '12', '0');
+INSERT INTO `sys_moudle` VALUES ('23', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPage/placeDataAdd,cmsPlace/save,cmsContent/related', '12', '0');
 INSERT INTO `sys_moudle` VALUES ('24', '<i class=\"icon-folder-open icon-large\"></i> 分类管理', 'cmsCategory/list', null, '3', '0');
 INSERT INTO `sys_moudle` VALUES ('25', '增加/修改', 'cmsCategory/add', 'cmsCategory/addMore,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '24', '0');
 INSERT INTO `sys_moudle` VALUES ('26', '删除', null, 'cmsCategory/delete', '24', '0');
 INSERT INTO `sys_moudle` VALUES ('27', '生成', 'cmsCategory/publishParameters', 'cmsCategory/publish', '24', '0');
 INSERT INTO `sys_moudle` VALUES ('28', '移动', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', '24', '0');
-INSERT INTO `sys_moudle` VALUES ('29', '<i class=\"icon-globe icon-large\"></i> 页面管理', 'cmsPage/placeList', 'sysUser/lookup,cmsPage/placeDataList', '4', '0');
+INSERT INTO `sys_moudle` VALUES ('30', '<i class=\"icon-globe icon-large\"></i> 页面管理', 'cmsPage/placeList', 'sysUser/lookup,sysUser/lookup_content_list,cmsPage/placeDataList,cmsPage/placeDataAdd,cmsPlace/save,cmsTemplate/publishPlace,cmsPage/publishPlace,cmsPage/push_page,cmsPage/push_page_list', '4', '0');
 INSERT INTO `sys_moudle` VALUES ('31', '<i class=\"icon-road icon-large\"></i> 分类扩展', null, null, '3', '0');
 INSERT INTO `sys_moudle` VALUES ('32', '<i class=\"icon-road icon-large\"></i> 分类类型', 'cmsCategoryType/list', null, '31', '0');
 INSERT INTO `sys_moudle` VALUES ('33', '<i class=\"icon-tags icon-large\"></i> 标签分类', 'cmsTagType/list', null, '31', '0');
@@ -1147,6 +1147,7 @@ INSERT INTO `sys_moudle` VALUES ('104', '刷新', null, 'cmsContent/refresh', '8
 INSERT INTO `sys_moudle` VALUES ('105', '生成', null, 'cmsContent/publish', '8', '0');
 INSERT INTO `sys_moudle` VALUES ('106', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsContent/push_to_place,cmsContent/related', '8', '0');
 INSERT INTO `sys_moudle` VALUES ('107', '推荐位数据列表', 'cmsPage/placeDataList', null, '29', '0');
+INSERT INTO `sys_moudle` VALUES ('29', '推荐', 'cmsCategory/push_page', 'cmsCategory/push_page_list,cmsPage/placeDataAdd,cmsPlace/save', '24', '0');
 
 -- ----------------------------
 -- Table structure for sys_role

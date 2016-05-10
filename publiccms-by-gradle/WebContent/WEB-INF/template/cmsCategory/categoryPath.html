@@ -4,8 +4,8 @@
 		<ul class="tree expand">
 			<li>
 			<#if site.useStatic>
-				<#assign code><#noparse>${category.englishName}/index.html</#noparse></#assign>
-				<a href="javascript:;" onclick="$.bringBack({path:'${code?js_string}'});return false;">静态化路径:分类英文名/index.html</a>
+				<#assign code><#noparse>${category.code}/index.html</#noparse></#assign>
+				<a href="javascript:;" onclick="$.bringBack({path:'${code?js_string}'});return false;">静态化路径:分类编码/index.html</a>
 				<#assign code><#noparse>category/${category.id}.html</#noparse></#assign>
 				<a href="javascript:;" onclick="$.bringBack({path:'${code?js_string}'});return false;">静态化路径:category/分类ID.html</a>
 			</#if>

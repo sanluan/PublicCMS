@@ -1,7 +1,7 @@
 <form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
 		<#include "../include_page/paramters.html"/>
 </form>
-<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/publishParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/publishParameters,cmsCategory/push_page'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
@@ -15,28 +15,29 @@
 			<li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> 添加更多分类</a></li>
 		</#if>
 	</@_categoryTypeList>
-			<li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类"><i class="icon-edit icon-large"></i> 修改</a></li>
-</#if>
-		<#if authorizedMap['cmsCategory/delete']>
-			<li><a href="cmsCategory/delete.do" title="确定要删除该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+			<li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类"><i class="icon-edit icon-large"></i> 修改分类</a></li>
 			<li class="line">line</li>
-		</#if>
+</#if>
 		<#if authorizedMap['cmsCategory/publish']>
 			<li><a href="cmsCategory/publish.do" title="确定要生成该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> 批量生成分类首页</a></li>
 		</#if>
 		<#if authorizedMap['cmsCategory/moveParameters']>
 			<li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> 批量移动</a></li>
 		</#if>
+		<#if authorizedMap['cmsCategory/delete']>
+			<li class="line">line</li>
+			<li><a href="cmsCategory/delete.do" title="确定要删除该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+		</#if>
 		</ul>
 	</div>
-<@_categoryList admin=true parentId=categoryId pageIndex=pageNum count=numPerPage>
+<@_categoryList advanced=true parentId=categoryId pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="57">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
 				<th width="30">ID</th>
 				<th>名称</th>
-				<th>英文名</th>
+				<th>编码</th>
 				<th>路径</th>
 				<th>内容路径</th>
 				<th>每页数据</th>
@@ -52,7 +53,7 @@
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>${a.id!}</td>
 				<td><a href="${a.url!}" target="_blank">${a.name!}${(a.disabled?then("[已删除]",''))!}</a></td>
-				<td>${a.englishName!}</td>
+				<td>${a.code!}</td>
 				<td>${a.path!}</td>
 				<td>${a.contentPath!}</td>
 				<td>${a.pageSize!}</td>
@@ -61,6 +62,9 @@
 				<td>${a.hidden?then('隐藏','')}</td>
 				<td>
 					<a href="cmsCategory/add.html?parentId=${a.id}" target="navTab" rel="cmsCategory/add">添加子分类</a>
+				<#if authorizedMap['cmsCategory/push_page']>
+					<a href="cmsCategory/push_page.html?categoryId=${a.id}&url=${(a.url?url)!}&title=${a.name!}" target="dialog" rel="push">推荐</a>
+				</#if>
 				<#if authorizedMap['cmsCategory/add']>
 					<a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类">修改</a>
 				</#if>

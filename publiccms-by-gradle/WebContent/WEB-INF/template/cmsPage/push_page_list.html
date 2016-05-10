@@ -1,4 +1,3 @@
-<@_content id=contentId>
 <div layoutH="0">
 	<ul class="tree treeFolder">
 <@_templateList path='/include'+path>
@@ -6,7 +5,7 @@
 		<@_placeMetadata dir=path><#assign metaDataMap=object/></@_placeMetadata>
 		<#if !a.directory&&0 != ((metaDataMap[a.fileName].size)!0)>
 		<li>
-			<a href="cmsPage/placeDataAdd.html?path=${(path+'/'+a.fileName)?url}&url=${(object.url?url)!}&title=${(object.title?url)!}&itemType=content&publishDate=${object.publishDate}&cover=${(object.cover?url)!}&itemId=${contentId!}" target="navTab" rel="cmsContent/push_to_place">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
+			<a href="cmsPage/placeDataAdd.html?path=${(path+'/'+a.fileName)?url}&itemType=page&url=${url!}&title=${title!}" target="navTab" rel="cmsPage/push_to_place">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
 		</li>
 		</#if>
 	</#list>
@@ -18,4 +17,3 @@ $('#push_page_list ul li a',$.pdialog.getCurrent()).click(function(){
 	$.pdialog.closeCurrent();
 });
 </script>
-</@_content>

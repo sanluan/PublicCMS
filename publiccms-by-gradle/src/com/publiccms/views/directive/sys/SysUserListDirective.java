@@ -15,9 +15,9 @@ public class SysUserListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Boolean disabled = handler.getBoolean("disabled", false);
-        if (!handler.getBoolean("admin", false)) {
-            disabled = false;
+        Boolean disabled = false;
+        if (handler.getBoolean("advanced", false)) {
+            disabled = handler.getBoolean("disabled", false);
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("deptId"),
                 handler.getDate("startRegisteredDate"), handler.getDate("endRegisteredDate"),

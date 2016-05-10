@@ -17,9 +17,9 @@ public class SysFtpUserListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer siteId = handler.getInteger("siteId");
-        if (empty(siteId) || !handler.getBoolean("admin", false)) {
-            siteId = getSite(handler).getId();
+        Integer siteId = getSite(handler).getId();
+        if (handler.getBoolean("advanced", false) && notEmpty(handler.getInteger("siteId"))) {
+            siteId = handler.getInteger("siteId");
         }
         PageHandler page = service.getPage(siteId, handler.getInteger("name"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("count", 30));

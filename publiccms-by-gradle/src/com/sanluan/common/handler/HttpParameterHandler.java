@@ -57,11 +57,7 @@ public class HttpParameterHandler extends BaseHandler {
 
     @Override
     protected String getStringWithoutRegrister(String name) {
-        String[] values = request.getParameterValues(name);
-        if (notEmpty(values)) {
-            return values[0];
-        }
-        return null;
+        return request.getParameter(name);
     }
 
     @Override

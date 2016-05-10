@@ -17,9 +17,9 @@ public class SysSiteListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Boolean disabled = handler.getBoolean("disabled", false);
-        if (!handler.getBoolean("admin", false)) {
-            disabled = false;
+        Boolean disabled = false;
+        if (handler.getBoolean("advanced", false)) {
+            disabled = handler.getBoolean("disabled", false);
         }
         PageHandler page = service.getPage(disabled, handler.getString("name"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("count", 30));

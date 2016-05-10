@@ -16,7 +16,7 @@ sourceSets{
     }
 }
 [compileJava]*.options*.encoding = 'UTF-8'
-version = 'V2016.0423'
+version = 'V2016.0510'
 sourceCompatibility = 1.7
 
 repositories {

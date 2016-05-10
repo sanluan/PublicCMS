@@ -30,12 +30,46 @@
 		</#list>
 	</@_categoryList>
 </#macro>
+<#macro pageTree filepath=''>
+	<@_templateList path=filepath>
+		<@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
+		<#list list as a>
+			<#local path=filepath+'/'+a.fileName>
+			<#if 'ftl'!=a.fileName>
+				<li>
+				<#if a.directory>
+					<a href="javascript:;" onclick="return false;">
+						${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+					</a>
+					<ul>
+						<@pageTree path/>
+					</ul>
+				<#else>
+					<#if site.useStatic&&(metaDataMap[a.fileName].publishPath)?has_content>
+						<a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(metaDataMap[a.fileName].alias)!}',url:'${site.sitePath+metaDataMap[a.fileName].publishPath}'});return false;">
+							[静态页面] ${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+						</a>
+					</#if>
+					<#if (metaDataMap[a.fileName].useDynamic)?has_content&&metaDataMap[a.fileName].useDynamic>
+						<a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(metaDataMap[a.fileName].alias)!}',url:'${site.dynamicPath+path}'});return false;">
+							[动态页面] ${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+						</a>
+					</#if>
+				</#if>
+				</li>
+			</#if>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_templateList>
+</#macro>
 <div class="tabs">
 	<div class="tabsHeader">
 		<div class="tabsHeaderContent">
 			<ul>
 				<li><a href="javascript:;"><span>内容</span></a></li>
 				<li><a href="javascript:;"><span>分类</span></a></li>
+				<li><a href="javascript:;"><span>页面</span></a></li>
 			</ul>
 		</div>
 	</div>
@@ -62,6 +96,15 @@
 				<div class="unitBox" layoutH="38" style="display:block; overflow:auto;">
 					<ul class="tree expand">
 						<@lookupTree/>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div class="pageContent">
+				<div class="unitBox" layoutH="38" style="display:block; overflow:auto;">
+					<ul class="tree expand">
+						<@pageTree/>
 					</ul>
 				</div>
 			</div>

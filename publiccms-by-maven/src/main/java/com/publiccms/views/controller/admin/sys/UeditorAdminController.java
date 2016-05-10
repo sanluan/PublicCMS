@@ -63,11 +63,11 @@ public class UeditorAdminController extends AbstractController {
     private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
-            put("Content-Type: image/gif", ".gif");
-            put("Content-Type: image/jpeg", ".jpg");
-            put("Content-Type: image/jpg", ".jpg");
-            put("Content-Type: image/png", ".png");
-            put("Content-Type: image/bmp", ".bmp");
+            put("image/gif", ".gif");
+            put("image/jpeg", ".jpg");
+            put("image/jpg", ".jpg");
+            put("image/png", ".png");
+            put("image/bmp", ".bmp");
         }
     };
     CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -177,7 +177,10 @@ public class UeditorAdminController extends AbstractController {
                     CloseableHttpResponse response = httpclient.execute(httpget);
                     HttpEntity entity = response.getEntity();
                     if (notEmpty(entity)) {
-                        String suffix = CONTENT_TYPE_MAP.get(entity.getContentType().getName());
+                        String suffix = null;
+                        if (notEmpty(entity.getContentType().getElements())) {
+                            suffix = CONTENT_TYPE_MAP.get(entity.getContentType().getElements()[0].getName());
+                        }
                         if (empty(suffix)) {
                             suffix = ".jpg";
                         }

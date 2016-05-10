@@ -3,7 +3,7 @@
 		<p>
 			<label>我的待审核:</label>
 			<a href="myself/contentList.html?status=2" title="<i class='icon-book icon-large'></i> 我的内容" target="navTab" rel="myself/contentList">
-				<@_contentList admin=true status=2 userId=admin.id>
+				<@_contentList advanced=true status=2 userId=admin.id>
 					${page.totalCount}篇
 				</@_contentList>
 			</a>
@@ -11,7 +11,7 @@
 		<p>
 			<label>我的草稿:</label>
 			<a href="myself/contentList.html?status=0" title="<i class='icon-book icon-large'></i> 我的内容" target="navTab" rel="myself/contentList">
-				<@_contentList admin=true status=0 userId=admin.id>
+				<@_contentList advanced=true status=0 userId=admin.id>
 					${page.totalCount}篇
 				</@_contentList>
 			</a>
