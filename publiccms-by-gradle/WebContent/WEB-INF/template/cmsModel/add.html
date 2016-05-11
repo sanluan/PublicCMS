@@ -51,8 +51,8 @@
 				</script>
 			</#if>
 			</fieldset>
-<#if object?has_content>
-	<@_sysExtendFieldList itemId=object.extendId>
+<#if a?has_content>
+	<@_sysExtendFieldList extendId=a.extendId>
 		<#assign contentExtendList=page.list>
 	</@_sysExtendFieldList>
 </#if>
