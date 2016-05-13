@@ -36,7 +36,7 @@ https://git.oschina.net/sanluan/PublicCMS-lib
 
 ##部署运行
 
-![](doc/images/rt.jpg)
+![](preview/rt.jpg)
 * 根据文档部署工程
 * 数据脚本内置管理员账号admin，密码admin
 
@@ -104,56 +104,56 @@ V2016新增功能：
 
 ###工作台
 
-![](doc/images/preview/1.jpg)
+![](preview/1.jpg)
 ###内容列表
 
-![](doc/images/preview/2.jpg)
+![](preview/2.jpg)
 ###内容管理
 
-![](doc/images/preview/3.jpg)
+![](preview/3.jpg)
 ###内容编辑
 
 编辑器为百度编辑器，支持定时发布等功能
-![](doc/images/preview/4.jpg)
+![](preview/4.jpg)
 ###图集编辑
 
-![](doc/images/preview/5.jpg)
+![](preview/5.jpg)
 ###分类编辑
 
 分类支持无限自定义字段扩展
 
-![](doc/images/preview/6.jpg)
+![](preview/6.jpg)
 ###页面元数据管理
 
-![](doc/images/preview/7.jpg)
+![](preview/7.jpg)
 ###页面推荐位管理
 
-![](doc/images/preview/8.jpg)
+![](preview/8.jpg)
 ###页面推荐位编辑
 
-![](doc/images/preview/9.jpg)
+![](preview/9.jpg)
 ###模板在线编辑
 
 通过模板的include和SSI(服务器端包含)实现模板片段，页面片段的最大程度复用，模板编辑器支持FreeMarker语法与html混合高亮显示
-![](doc/images/preview/10.jpg)
+![](preview/10.jpg)
 ###模板元数据管理
 
-![](doc/images/preview/11.jpg)
+![](preview/11.jpg)
 ###部门编辑
 
-![](doc/images/preview/12.jpg)
+![](preview/12.jpg)
 ###角色编辑
 
-![](doc/images/preview/13.jpg)
+![](preview/13.jpg)
 ###内容模型编辑
 
-![](doc/images/preview/14.jpg)
+![](preview/14.jpg)
 ###任务计划编辑
 
-![](doc/images/preview/15.jpg)
+![](preview/15.jpg)
 ###任务计划日志查看
 
-![](doc/images/preview/16.jpg)
+![](preview/16.jpg)
 ###日志管理
 
-![](doc/images/preview/17.jpg)
+![](preview/17.jpg)
