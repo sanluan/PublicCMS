@@ -25,16 +25,16 @@ public class CmsContentTag implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "标签")
-    private int tagId;
+    private long tagId;
     @MyColumn(title = "内容")
-    private int contentId;
+    private long contentId;
 
     public CmsContentTag() {
     }
 
-    public CmsContentTag(int tagId, int contentId) {
+    public CmsContentTag(long tagId, long contentId) {
         this.tagId = tagId;
         this.contentId = contentId;
     }
@@ -42,29 +42,29 @@ public class CmsContentTag implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Column(name = "tag_id", nullable = false)
-    public int getTagId() {
+    public long getTagId() {
         return this.tagId;
     }
 
-    public void setTagId(int tagId) {
+    public void setTagId(long tagId) {
         this.tagId = tagId;
     }
 
     @Column(name = "content_id", nullable = false)
-    public int getContentId() {
+    public long getContentId() {
         return this.contentId;
     }
 
-    public void setContentId(int contentId) {
+    public void setContentId(long contentId) {
         this.contentId = contentId;
     }
 

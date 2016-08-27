@@ -16,7 +16,7 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.publiccms.common.base.Staticable;
+import com.publiccms.common.spi.Staticable;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -56,12 +56,14 @@ public class PluginVote implements java.io.Serializable , Staticable {
     private String description;
     @MyColumn(title = "已禁用", condition = true)
     private boolean disabled;
+    @MyColumn(title = "选项扩展ID")
+    private int itemExtendId;
 
     public PluginVote() {
     }
 
     public PluginVote(int siteId, Date startDate, Date endDate, int intervalHour, int maxVote, boolean anonymous, int userCounts,
-            String url, String title, boolean disabled) {
+            String url, String title, boolean disabled, int itemExtendId) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -72,10 +74,11 @@ public class PluginVote implements java.io.Serializable , Staticable {
         this.url = url;
         this.title = title;
         this.disabled = disabled;
+        this.itemExtendId = itemExtendId;
     }
 
     public PluginVote(int siteId, Date startDate, Date endDate, int intervalHour, int maxVote, boolean anonymous, int userCounts,
-            String url, String title, String description, boolean disabled) {
+            String url, String title, String description, boolean disabled, int itemExtendId) {
         this.siteId = siteId;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -87,6 +90,7 @@ public class PluginVote implements java.io.Serializable , Staticable {
         this.title = title;
         this.description = description;
         this.disabled = disabled;
+        this.itemExtendId = itemExtendId;
     }
 
     @Id
@@ -200,6 +204,15 @@ public class PluginVote implements java.io.Serializable , Staticable {
 
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
+    }
+
+    @Column(name = "item_extend_id", nullable = false)
+    public int getItemExtendId() {
+        return this.itemExtendId;
+    }
+
+    public void setItemExtendId(int itemExtendId) {
+        this.itemExtendId = itemExtendId;
     }
 
 }

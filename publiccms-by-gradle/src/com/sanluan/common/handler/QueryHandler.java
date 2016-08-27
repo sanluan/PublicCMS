@@ -141,11 +141,7 @@ public class QueryHandler extends Base {
     private String getCountSql() {
         String sql = getSql();
         sql = sql.substring(sql.toLowerCase().indexOf(KEYWORD_FROM));
-        int groupIndex = sql.toLowerCase().indexOf(KEYWORD_GROUP);
         int orderIndex = sql.toLowerCase().indexOf(KEYWORD_ORDER);
-        if (-1 != groupIndex) {
-            sql = sql.substring(0, groupIndex);
-        }
         if (-1 != orderIndex) {
             sql = sql.substring(0, orderIndex);
         }

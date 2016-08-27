@@ -1,9 +1,10 @@
 package com.sanluan.common.base;
 
+import static org.springframework.beans.BeanUtils.copyProperties;
+
 import java.io.Serializable;
 import java.util.List;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,7 +73,7 @@ public abstract class BaseService<E> extends Base {
     public E update(Serializable id, E newEntity, String[] ignoreProperties) {
         E entity = getEntity(id);
         if (notEmpty(entity)) {
-            BeanUtils.copyProperties(dao.init(newEntity), entity, ignoreProperties);
+            copyProperties(dao.init(newEntity), entity, ignoreProperties);
         }
         return entity;
     }
@@ -85,7 +86,7 @@ public abstract class BaseService<E> extends Base {
     public void update(Serializable id, E newEntity) {
         E entity = getEntity(id);
         if (notEmpty(entity)) {
-            BeanUtils.copyProperties(dao.init(newEntity), entity);
+            copyProperties(dao.init(newEntity), entity);
         }
     }
 

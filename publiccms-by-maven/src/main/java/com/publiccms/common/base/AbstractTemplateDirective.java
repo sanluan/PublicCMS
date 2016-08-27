@@ -36,7 +36,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective im
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
             String callback, HttpServletResponse response) throws IOException, Exception {
         HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, callback, response);
-        if (empty(getApp(handler))) {
+        if (needAppToken() && empty(getApp(handler))) {
             handler.put("error", "needAppToken").render();
         } else {
             execute(handler);
@@ -50,6 +50,10 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective im
             return appService.getEntity(appToken.getAppId());
         }
         return null;
+    }
+
+    public boolean needAppToken() {
+        return false;
     }
 
     @Autowired

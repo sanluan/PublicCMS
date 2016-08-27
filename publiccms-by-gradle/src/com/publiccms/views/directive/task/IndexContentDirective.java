@@ -16,12 +16,12 @@ public class IndexContentDirective extends AbstractTaskDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
-        Integer[] ids = handler.getIntegerArray("ids");
+        Long id = handler.getLong("id");
+        Long[] ids = handler.getLongArray("ids");
         if (notEmpty(ids)) {
             service.index(getSite(handler).getId(), ids);
         } else if (notEmpty(id)) {
-            service.index(getSite(handler).getId(), new Integer[] { id });
+            service.index(getSite(handler).getId(), new Long[] { id });
         }
     }
 }

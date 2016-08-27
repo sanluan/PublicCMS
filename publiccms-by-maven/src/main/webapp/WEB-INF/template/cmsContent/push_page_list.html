@@ -6,7 +6,7 @@
 		<@_placeMetadata dir=path><#assign metaDataMap=object/></@_placeMetadata>
 		<#if !a.directory&&0 != ((metaDataMap[a.fileName].size)!0)>
 		<li>
-			<a href="cmsPage/placeDataAdd.html?path=${(path+'/'+a.fileName)?url}&url=${(object.url?url)!}&title=${(object.title?url)!}&itemType=content&publishDate=${object.publishDate}&cover=${(object.cover?url)!}&itemId=${contentId!}" target="navTab" rel="cmsContent/push_to_place">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
+			<a href="cmsPage/placeDataAdd.html?path=${(path+'/'+a.fileName)?url}&url=${(object.url?url)!}&title=${(object.title)!}&itemType=content&cover=${(object.cover?url)!}&itemId=${contentId!}<#if object.publishDate gt .now>&publishDate=${object.publishDate}</#if>" target="navTab" rel="">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
 		</li>
 		</#if>
 	</#list>

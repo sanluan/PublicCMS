@@ -27,13 +27,13 @@ public class LogLogin implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "站点", condition = true)
     private int siteId;
     @MyColumn(title = "用户名", condition = true, like = true)
     private String name;
     @MyColumn(title = "用户", condition = true)
-    private Integer userId;
+    private Long userId;
     @MyColumn(title = "IP", condition = true, like = true)
     private String ip;
     @MyColumn(title = "登陆渠道", condition = true)
@@ -57,7 +57,7 @@ public class LogLogin implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    public LogLogin(int siteId, String name, Integer userId, String ip, String channel, boolean result, Date createDate,
+    public LogLogin(int siteId, String name, Long userId, String ip, String channel, boolean result, Date createDate,
             String errorPassword) {
         this.siteId = siteId;
         this.name = name;
@@ -72,11 +72,11 @@ public class LogLogin implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -99,11 +99,11 @@ public class LogLogin implements java.io.Serializable {
     }
 
     @Column(name = "user_id")
-    public Integer getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

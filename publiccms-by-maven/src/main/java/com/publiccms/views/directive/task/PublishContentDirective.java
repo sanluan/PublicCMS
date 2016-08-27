@@ -19,13 +19,13 @@ import com.sanluan.common.handler.RenderHandler;
 public class PublishContentDirective extends AbstractTaskDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         Map<String, Boolean> map = new LinkedHashMap<String, Boolean>();
         if (notEmpty(id)) {
             map.put(id.toString(), templateComponent.createContentFile(site, service.getEntity(id), null, null));
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            Long[] ids = handler.getLongArray("ids");
             if (notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
                 for (CmsContent entity : entityList) {

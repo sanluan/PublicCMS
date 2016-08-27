@@ -29,12 +29,12 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.publiccms.common.base.Staticable;
 import com.publiccms.common.index.CmsContentBridge;
 import com.publiccms.common.index.CmsContentInterceptor;
 import com.publiccms.common.index.PublishDateFilterFactory;
 import com.publiccms.common.index.SiteIdFilterFactory;
 import com.publiccms.common.index.StringBridge;
+import com.publiccms.common.spi.Staticable;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -54,7 +54,7 @@ public class CmsContent implements java.io.Serializable, Staticable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "站点", condition = true)
     @Field(analyze = Analyze.NO)
     private int siteId;
@@ -62,9 +62,9 @@ public class CmsContent implements java.io.Serializable, Staticable {
     @Field
     private String title;
     @MyColumn(title = "发布用户", condition = true)
-    private int userId;
+    private long userId;
     @MyColumn(title = "审核用户", condition = true)
-    private Integer checkUserId;
+    private Long checkUserId;
     @MyColumn(title = "分类", condition = true)
     @Field(analyze = Analyze.NO)
     @FieldBridge(impl = StringBridge.class)
@@ -76,7 +76,7 @@ public class CmsContent implements java.io.Serializable, Staticable {
     @Facet(encoding = FacetEncodingType.STRING)
     private int modelId;
     @MyColumn(title = "父内容", condition = true)
-    private Integer parentId;
+    private Long parentId;
     @MyColumn(title = "是否转载")
     private boolean copied;
     @MyColumn(title = "作者")
@@ -127,7 +127,7 @@ public class CmsContent implements java.io.Serializable, Staticable {
     public CmsContent() {
     }
 
-    public CmsContent(int siteId, String title, int userId, int categoryId, int modelId, boolean copied, boolean onlyUrl,
+    public CmsContent(int siteId, String title, long userId, int categoryId, int modelId, boolean copied, boolean onlyUrl,
             boolean hasImages, boolean hasFiles, boolean hasStatic, int childs, int scores, int comments, int clicks,
             Date publishDate, Date createDate, int status, boolean disabled) {
         this.siteId = siteId;
@@ -150,7 +150,7 @@ public class CmsContent implements java.io.Serializable, Staticable {
         this.disabled = disabled;
     }
 
-    public CmsContent(int siteId, String title, int userId, Integer checkUserId, int categoryId, int modelId, Integer parentId,
+    public CmsContent(int siteId, String title, long userId, Long checkUserId, int categoryId, int modelId, Long parentId,
             boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles,
             boolean hasStatic, String url, String description, String tagIds, String cover, int childs, int scores, int comments,
             int clicks, Date publishDate, Date createDate, int status, boolean disabled) {
@@ -185,11 +185,11 @@ public class CmsContent implements java.io.Serializable, Staticable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -212,20 +212,20 @@ public class CmsContent implements java.io.Serializable, Staticable {
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
     @Column(name = "check_user_id")
-    public Integer getCheckUserId() {
+    public Long getCheckUserId() {
         return this.checkUserId;
     }
 
-    public void setCheckUserId(Integer checkUserId) {
+    public void setCheckUserId(Long checkUserId) {
         this.checkUserId = checkUserId;
     }
 
@@ -248,11 +248,11 @@ public class CmsContent implements java.io.Serializable, Staticable {
     }
 
     @Column(name = "parent_id")
-    public Integer getParentId() {
+    public Long getParentId() {
         return this.parentId;
     }
 
-    public void setParentId(Integer parentId) {
+    public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
 
@@ -338,7 +338,7 @@ public class CmsContent implements java.io.Serializable, Staticable {
         this.description = description;
     }
 
-    @Column(name = "tag_ids", length = 100)
+    @Column(name = "tag_ids", length = 65535)
     public String getTagIds() {
         return this.tagIds;
     }

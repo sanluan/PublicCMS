@@ -16,7 +16,7 @@ import com.sanluan.common.handler.PageHandler;
 public class SysUserTokenService extends BaseService<SysUserToken> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer userId, String channel, String orderType, Integer pageIndex,
+    public PageHandler getPage(Integer siteId, Long userId, String channel, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, userId, channel, orderType, pageIndex, pageSize);
     }

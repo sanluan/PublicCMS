@@ -1,6 +1,6 @@
 <#ftl>
-<#macro m code>${springMacroRequestContext.getMessage(code,code)}</#macro>
-<#macro ma code args>${springMacroRequestContext.getMessage(code, args, code)}</#macro>
+<#macro m code>${springMacroRequestContext.getMessage(code,code?html)}</#macro>
+<#macro ma code args>${springMacroRequestContext.getMessage(code, args, code?html)}</#macro>
 <#macro cut string l=50 append=''>${string[0..*l]}<#if string?length gt l>${append}</#if></#macro>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
 <#macro compare sequence string output1='' output2=''>${(sequence?is_sequence&&sequence?seq_contains(string)||sequence?is_string&&sequence=string)?then(output1,output2)}</#macro>

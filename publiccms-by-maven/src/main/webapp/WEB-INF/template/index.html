@@ -2,12 +2,12 @@
 <html lang="zh">
 <head>
 	<meta charset="utf-8">
-	<title>PublicCMS开源版管理后台</title>
+	<title>管理后台 - ${site.name}</title>
 	<link href="${res}/themes/css/core.css" rel="stylesheet" media="screen"/>
 	<link href="${res}/themes/css/print.css" rel="stylesheet" media="print"/>
-	<link rel="stylesheet" href="${res}/font-awesome/css/font-awesome.min.css">
+	<link href="${res}/font-awesome/css/font-awesome.min.css" rel="stylesheet" >
 	<!--[if IE 7]>
-	<link rel="stylesheet" href="${res}/font-awesome/css/font-awesome-ie7.min.css">
+	<link href="${res}/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet" >
 	<![endif]-->
 	<!--[if lte IE 9]>
 		<link href="${res}/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
@@ -25,7 +25,7 @@
 	<script src="${res}/ueditor/ueditor.all.min.js"></script>
 	<script src="${res}/ueditor/lang/zh-cn/zh-cn.js"></script>
 
-	<script src="${res}/js/dwz.min.js"></script>
+	<script src="${res}/js/dwz.min.js?0801"></script>
 	<script src="${res}/js/dwz.regional.zh.js"></script>
 	
 	<link href="${res}/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
@@ -78,7 +78,7 @@ function editorSyn(ename){
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
 			<#if !parentId?has_content><#assign parentId=a.id/></#if>
-			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)?html}">${a.name}</a></li>
+			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)?html}">${a.attached!} ${a.name}</a></li>
 		</#if>
 	</#list>
 </@_sysMoudleList>

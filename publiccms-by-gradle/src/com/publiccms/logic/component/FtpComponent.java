@@ -5,10 +5,9 @@ import static com.publiccms.logic.component.SiteComponent.STATIC_FILE_PATH_WEB;
 import static com.publiccms.logic.component.SiteComponent.TASK_FILE_PATH;
 import static com.publiccms.logic.component.SiteComponent.TEMPLATE_PATH;
 import static com.publiccms.logic.component.SiteComponent.getFullFileName;
+import static com.sanluan.common.tools.StreamUtils.write;
 import static com.sanluan.common.tools.VerificationUtils.encode;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +15,6 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -46,7 +44,6 @@ public class FtpComponent extends Base {
     public static final String DATE_FORMAT = "yyyyMMddHHmmss";
     public static final String LIST_DATE_FORMAT = "MMM dd HH:mm";
     public static final String LIST_DATE_FORMAT1 = "MMM dd yyyy";
-    public static final String BLANKSPACE = " ";
     public static final String ROOT = SEPARATOR;
     public static final String[] VIRTUAL_FILE_PATHS = { STATIC_FILE_PATH_WEB, STATIC_FILE_PATH_RESOURCE, TASK_FILE_PATH,
             TEMPLATE_PATH };
@@ -147,12 +144,12 @@ public class FtpComponent extends Base {
             try {
                 boolean flag = true;
                 String inputString;
-                output.println("332 welcome to ThinServer.");
+                pirnt("332 welcome to ThinServer.");
                 output.flush();
                 while (flag && null != (inputString = input.readLine())) {
                     String command;
                     String param = BLANK;
-                    int index = inputString.indexOf(BLANKSPACE);
+                    int index = inputString.indexOf(BLANK_SPACE);
                     if (-1 == index) {
                         command = inputString.toUpperCase();
                     } else {
@@ -179,18 +176,18 @@ public class FtpComponent extends Base {
                                     }
                                 }
                             } catch (Exception e) {
-                                output.println("451 failed to send.");
+                                pirnt("451 failed to send.");
                             }
-                            output.println("421 service unavailable.");
+                            pirnt("421 service unavailable.");
                             break;
                         case "ACCT":// 系统特权帐号
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "ALLO":// 为服务器上的文件存储器分配字节
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "APPE":// 添加文件到服务器同名文件
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "CDUP":// 到上一层目录
                             changeCurrentPath("..");
@@ -202,14 +199,16 @@ public class FtpComponent extends Base {
                             deleteFile(param);
                             break;
                         case "HELP": // 返回指定命令信息
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "LIST": // 如果是文件名列出文件信息，如果是目录则列出文件列表
+                            listFiles(param, false);
+                            break;
                         case "NLST": // 列出指定目录内容
-                            listFiles(param);
+                            listFiles(param, true);
                             break;
                         case "MODE":
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "MDTM":
                             lastModified(param);
@@ -218,7 +217,7 @@ public class FtpComponent extends Base {
                             makeDir(param);
                             break;
                         case "NOOP":
-                            output.println("200 ok.");
+                            pirnt("200 ok.");
                             break;
                         case "PASV":
                             pasvMode();
@@ -228,20 +227,20 @@ public class FtpComponent extends Base {
                             break;
                         case "PWD":
                         case "XPWD": // "当前目录" 信息
-                            output.println("257 \"" + currentPath + "\"");
+                            pirnt("257 \"" + currentPath + "\"");
                             break;
                         case "QUIT": // 退出
-                            output.println("221 close.");
+                            pirnt("221 close.");
                             if (notEmpty(transportSocket)) {
                                 transportSocket.close();
                             }
                             flag = false;
                             break;
                         case "REIN":
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "REST":
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "RETR": // 从服务器中获得文件
                             getFile(param);
@@ -250,55 +249,55 @@ public class FtpComponent extends Base {
                             deleteDir(param);
                             break;
                         case "RNFR": // 对旧路径重命名
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "RNTO": // 对旧路径重命名
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "SITE": // 由服务器提供的站点特殊参数
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "SIZE": // 文件大小
                             size(param);
                             break;
                         case "SMNT": // 挂载指定文件结构
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "STAT": // 在当前程序或目录上返回信息
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "STOR":// 储存（复制）文件到服务器上
                             reciveFile(param);
                             break;
                         case "STOU":// 储存文件到服务器名称上
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "STRU":// 数据结构（F=文件，R=记录，P=页面）
-                            output.println("500 command not supported.");
+                            pirnt("500 command not supported.");
                             break;
                         case "SYST":
-                            output.println("215 " + System.getProperty("os.name"));
+                            pirnt("215 " + System.getProperty("os.name"));
                             break;
                         case "TYPE":// 数据类型（A=ASCII,E=EBCDIC,I=binary）
                             if ("A".equals(param)) {
                                 type = State.TYPE_ASCII;
-                                output.println("200 changed to ASCII.");
+                                pirnt("200 changed to ASCII.");
                             } else if ("I".equals(param)) {
                                 type = State.TYPE_IMAGE;
-                                output.println("200 changed to BINARY.");
+                                pirnt("200 changed to BINARY.");
                             } else {
-                                output.println("504 error paramter.");
+                                pirnt("504 error paramter.");
                             }
                             break;
                         case "FEAT":
-                            output.println("extension supported:");
-                            output.println("MDTM");
-                            output.println("SIZE");
-                            output.println("PASV");
-                            output.println("211 ok.");
+                            pirnt("extension supported:");
+                            pirnt("MDTM");
+                            pirnt("SIZE");
+                            pirnt("PASV");
+                            pirnt("211 ok.");
                             break;
                         default:
-                            output.println("500 error command.");
+                            pirnt("500 error command.");
                             break;
                         }
                         break;
@@ -313,26 +312,30 @@ public class FtpComponent extends Base {
             }
         }
 
+        private void pirnt(String message) {
+            output.println(message);
+        }
+
         private boolean checkUsername(String command, String username) {
             if ("USER".equals(command)) {
                 user = server.getUser(username);
-                site = server.getSite(user.getSiteId());
                 if (notEmpty(user)) {
-                    output.println("331 need password.");
+                    site = server.getSite(user.getSiteId());
+                    pirnt("331 need password.");
                     state = State.STATE_NEED_PASSWORD;
                     userPath = empty(user.getPath()) ? "" : user.getPath();
                     return true;
                 }
-                output.println("501 user does't exist.");
+                pirnt("501 user does't exist.");
             } else {
-                output.println("501 error command,need login.");
+                pirnt("501 error command,need login.");
             }
             return false;
         }
 
         private void welcome() {
             state = State.STATE_READY;
-            output.println("230 login success,welcome " + user.getName() + " come from site " + user.getSiteId() + ".");
+            pirnt("230 login success,welcome " + user.getName() + " come from site " + user.getSiteId() + ".");
         }
 
         private boolean checkPassword(String command, String password) {
@@ -341,9 +344,9 @@ public class FtpComponent extends Base {
                     welcome();
                     return true;
                 }
-                output.println("530 login failed.");
+                pirnt("530 login failed.");
             } else {
-                output.println("501 error command,need password.");
+                pirnt("501 error command,need password.");
             }
             return false;
         }
@@ -358,16 +361,16 @@ public class FtpComponent extends Base {
                 String str = BLANK;
                 byte[] arrayOfByte = inetAddress.getAddress();
                 for (int i = 0; i < arrayOfByte.length; ++i) {
-                    str = str + (arrayOfByte[i] & 0xFF) + ",";
+                    str = str + (arrayOfByte[i] & 0xFF) + COMMA_DELIMITED;
                 }
-                str = str + (transportServerSocket.getLocalPort() >>> 8 & 0xFF) + ","
+                str = str + (transportServerSocket.getLocalPort() >>> 8 & 0xFF) + COMMA_DELIMITED
                         + (transportServerSocket.getLocalPort() & 0xFF);
-                output.println("227  entering passive mode (" + str + ")");
+                pirnt("227  entering passive mode (" + str + ")");
                 output.flush();
                 transportSocket = transportServerSocket.accept();
                 isPasv = true;
             } catch (Exception e) {
-                output.println("451 failed to send.");
+                pirnt("451 failed to send.");
             }
         }
 
@@ -377,7 +380,7 @@ public class FtpComponent extends Base {
             int[] a = new int[6];
             int j = 0;
             try {
-                while ((p2 = param.indexOf(",", p1)) != -1) {
+                while ((p2 = param.indexOf(COMMA_DELIMITED, p1)) != -1) {
                     a[j] = Integer.parseInt(param.substring(p1, p2));
                     p2 = p2 + 1;
                     p1 = p2;
@@ -385,14 +388,14 @@ public class FtpComponent extends Base {
                 }
                 a[j] = Integer.parseInt(param.substring(p1, param.length()));// 最后一位
             } catch (NumberFormatException e) {
-                output.println("501 error command.");
+                pirnt("501 error command.");
             }
             try {
                 transportSocket = new Socket(a[0] + "." + a[1] + "." + a[2] + "." + a[3], a[4] * 256 + a[5],
                         InetAddress.getLocalHost(), 20);
-                output.println("200 ok.");
+                pirnt("200 ok.");
             } catch (IOException e) {
-                output.println("451 failed to send.");
+                pirnt("451 failed to send.");
             }
         }
 
@@ -402,18 +405,10 @@ public class FtpComponent extends Base {
                 if (file.exists()) {
                     try {
                         if (type == State.TYPE_IMAGE) {
-                            output.println("150 Opening ASCII mode data connection for " + param);
-                            BufferedInputStream fin = new BufferedInputStream(new FileInputStream(file));
-                            PrintStream dataOutput = new PrintStream(transportSocket.getOutputStream(), true);
-                            byte[] buf = new byte[1024];
-                            int l = 0;
-                            while ((l = fin.read(buf, 0, 1024)) != -1) {
-                                dataOutput.write(buf, 0, l);
-                            }
-                            fin.close();
-                            dataOutput.close();
+                            pirnt("150 Opening ASCII mode data connection for " + param);
+                            write(new FileInputStream(file), transportSocket.getOutputStream());
                         } else {
-                            output.println("150 Opening ASCII mode data connection for " + param);
+                            pirnt("150 Opening ASCII mode data connection for " + param);
                             BufferedReader fin = new BufferedReader(new FileReader(file));
                             PrintWriter dataOutput = new PrintWriter(transportSocket.getOutputStream(), true);
                             String s;
@@ -427,15 +422,15 @@ public class FtpComponent extends Base {
                         if (isPasv) {
                             transportServerSocket.close();
                         }
-                        output.println("226 send completed.");
+                        pirnt("226 send completed.");
                     } catch (Exception e) {
-                        output.println("451 failed to send.");
+                        pirnt("451 failed to send.");
                     }
                 } else {
-                    output.println("550 file does't exist");
+                    pirnt("550 file does't exist");
                 }
             } catch (IOException e) {
-                output.println("550 file does't exist");
+                pirnt("550 file does't exist");
             }
         }
 
@@ -443,12 +438,12 @@ public class FtpComponent extends Base {
             try {
                 File file = new File(getCurrentPath(param));
                 if (file.exists()) {
-                    output.println("213 " + new SimpleDateFormat(DATE_FORMAT).format(new Date(file.lastModified())));
+                    pirnt("213 " + new SimpleDateFormat(DATE_FORMAT).format(new Date(file.lastModified())));
                 } else {
-                    output.println("550 file does't exist");
+                    pirnt("550 file does't exist");
                 }
             } catch (IOException e) {
-                output.println("550 file does't exist");
+                pirnt("550 file does't exist");
             }
         }
 
@@ -456,12 +451,12 @@ public class FtpComponent extends Base {
             try {
                 File file = new File(getCurrentPath(param));
                 if (file.exists()) {
-                    output.println("213 " + file.length());
+                    pirnt("213 " + file.length());
                 } else {
-                    output.println("550 file does't exist");
+                    pirnt("550 file does't exist");
                 }
             } catch (IOException e) {
-                output.println("550 file does't exist");
+                pirnt("550 file does't exist");
             }
         }
 
@@ -469,18 +464,10 @@ public class FtpComponent extends Base {
             if (notEmpty(param)) {
                 try {
                     if (type == State.TYPE_IMAGE) {
-                        output.println("150 Opening Binary mode data connection for " + param);
-                        BufferedOutputStream fout = new BufferedOutputStream(new FileOutputStream(getCurrentPath(param)));
-                        BufferedInputStream dataInput = new BufferedInputStream(transportSocket.getInputStream());
-                        byte[] buf = new byte[1024];
-                        int l = 0;
-                        while ((l = dataInput.read(buf, 0, 1024)) != -1) {
-                            fout.write(buf, 0, l);
-                        }
-                        dataInput.close();
-                        fout.close();
+                        pirnt("150 Opening Binary mode data connection for " + param);
+                        write(transportSocket.getInputStream(), new FileOutputStream(getCurrentPath(param)));
                     } else {
-                        output.println("150 Opening ASCII mode data connection for " + param);
+                        pirnt("150 Opening ASCII mode data connection for " + param);
                         PrintWriter fout = new PrintWriter(new FileOutputStream(getCurrentPath(param)));
                         BufferedReader dataInput = new BufferedReader(new InputStreamReader(transportSocket.getInputStream()));
                         String line;
@@ -494,12 +481,12 @@ public class FtpComponent extends Base {
                     if (isPasv) {
                         transportServerSocket.close();
                     }
-                    output.println("226 send completed.");
+                    pirnt("226 send completed.");
                 } catch (Exception e) {
-                    output.println("451 failed to send.");
+                    pirnt("451 failed to send.");
                 }
             } else {
-                output.println("501 error paramter.");
+                pirnt("501 error paramter.");
             }
         }
 
@@ -525,12 +512,12 @@ public class FtpComponent extends Base {
                 if (directory.exists() && directory.isDirectory()) {
                     path = (empty(path) ? ROOT : path.startsWith(SEPARATOR) ? path : currentPath + path + SEPARATOR);
                     currentPath = dealPath(path);
-                    output.println("250 current directory changed to " + currentPath);
+                    pirnt("250 current directory changed to " + currentPath);
                 } else {
-                    output.println("550 path does't exist.");
+                    pirnt("550 path does't exist.");
                 }
             } catch (IOException e) {
-                output.println("550 file does't exist");
+                pirnt("550 file does't exist");
             }
         }
 
@@ -538,13 +525,13 @@ public class FtpComponent extends Base {
             try {
                 File dir = new File(getCurrentPath(path));
                 if (dir.exists()) {
-                    output.println("550 directory already exists.");
+                    pirnt("550 directory already exists.");
                 } else {
                     dir.mkdirs();
-                    output.println("250 directory created.");
+                    pirnt("250 directory created.");
                 }
             } catch (IOException e) {
-                output.println("550 file does't exist");
+                pirnt("550 file does't exist");
             }
         }
 
@@ -553,12 +540,12 @@ public class FtpComponent extends Base {
                 File dir = new File(getCurrentPath(path));
                 if (dir.exists() && dir.isDirectory()) {
                     dir.delete();
-                    output.println("250 directory deleted.");
+                    pirnt("250 directory deleted.");
                 } else {
-                    output.println("550 directory does't exist.");
+                    pirnt("550 directory does't exist.");
                 }
             } catch (IOException e) {
-                output.println("550 file does't exist");
+                pirnt("550 file does't exist");
             }
         }
 
@@ -567,16 +554,16 @@ public class FtpComponent extends Base {
                 File file = new File(getCurrentPath(path));
                 if (file.exists() && !file.isDirectory()) {
                     file.delete();
-                    output.println("250 file deleted.");
+                    pirnt("250 file deleted.");
                 } else {
-                    output.println("550 file or directory does't exist.");
+                    pirnt("550 file or directory does't exist.");
                 }
             } catch (IOException e) {
-                output.println("550 file does't exist");
+                pirnt("550 file does't exist");
             }
         }
 
-        private void listFiles(String param) {
+        private void listFiles(String param, boolean nlist) {
             String path;
             if (empty(param) || param.startsWith("-")) {
                 path = getUserPath(null);
@@ -585,11 +572,15 @@ public class FtpComponent extends Base {
             }
             try {
                 PrintWriter dout = new PrintWriter(transportSocket.getOutputStream(), true);
-                output.println("150 Opening ASCII mode data connection.");
+                pirnt("150 Opening ASCII mode data connection.");
                 if (ROOT.equals(path)) {
                     for (String virtualPath : VIRTUAL_FILE_PATHS) {
                         File file = new File(rootPath + getSitePath(virtualPath));
-                        dout.println(getListString(file));
+                        if (nlist) {
+                            dout.println(file.getName());
+                        } else {
+                            dout.println(getListString(file));
+                        }
                     }
                 } else {
                     DirectoryStream<Path> stream = null;
@@ -597,6 +588,7 @@ public class FtpComponent extends Base {
                         stream = Files.newDirectoryStream(Paths.get(rootPath + getSitePath(path)));
                         for (Path entry : stream) {
                             dout.println(getListString(entry.toFile()));
+                            System.out.println(getListString(entry.toFile()));
                         }
                     } catch (IOException e) {
                     } finally {
@@ -614,9 +606,9 @@ public class FtpComponent extends Base {
                 if (isPasv) {
                     transportServerSocket.close();
                 }
-                output.println("226 send completed.");
+                pirnt("226 send completed.");
             } catch (Exception e) {
-                output.println("451 failed to send.");
+                pirnt("451 failed to send.");
             }
         }
 
@@ -629,16 +621,12 @@ public class FtpComponent extends Base {
             String rightString = rightsb.toString();
             sb.append(rightString).append(rightString).append(rightString);
             Date fileModifiedDate = new Date(file.lastModified());
-            sb.append(BLANKSPACE)
-                    .append(BLANKSPACE)
-                    .append(BLANKSPACE)
-                    .append(file.isDirectory() ? 3 : 1)
-                    .append(" user group ")
-                    .append(String.valueOf(file.length()))
-                    .append(BLANKSPACE)
-                    .append(System.currentTimeMillis() - file.lastModified() > 183L * 24L * 60L * 60L * 1000L ? new SimpleDateFormat(
-                            LIST_DATE_FORMAT, Locale.ENGLISH).format(fileModifiedDate) : new SimpleDateFormat(LIST_DATE_FORMAT1,
-                            Locale.ENGLISH).format(fileModifiedDate)).append(BLANKSPACE);
+            sb.append(BLANK_SPACE).append(file.isDirectory() ? 3 : 1).append(" user      group            ")
+                    .append(String.valueOf(file.length())).append(BLANK_SPACE)
+                    .append(System.currentTimeMillis() - file.lastModified() > 183L * 24L * 60L * 60L * 1000L
+                            ? new SimpleDateFormat(LIST_DATE_FORMAT, Locale.ENGLISH).format(fileModifiedDate)
+                            : new SimpleDateFormat(LIST_DATE_FORMAT1, Locale.ENGLISH).format(fileModifiedDate))
+                    .append(BLANK_SPACE);
             sb.append(file.getName());
             return sb.toString();
         }

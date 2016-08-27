@@ -21,13 +21,13 @@ import com.sanluan.common.handler.RenderHandler;
  *
  */
 public abstract class AbstractAppV1Directive extends AbstractAppDirective implements AppV1 {
-    private SysUser getUser(RenderHandler handler, SysApp app) throws Exception {
+    public final static String REQUIRED_PARAMTER = "required_paramter:";
+    private SysUser getUser(RenderHandler handler) throws Exception {
         String authToken = handler.getString("authToken");
-        Integer authUserId = handler.getInteger("authUserId");
+        Long authUserId = handler.getLong("authUserId");
         if (notEmpty(authToken) && notEmpty(authUserId)) {
             SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
-            if (notEmpty(sysUserToken) && sysUserToken.getUserId() == authUserId
-                    && sysUserToken.getChannel().equals(app.getChannel())) {
+            if (notEmpty(sysUserToken) && sysUserToken.getUserId() == authUserId) {
                 return sysUserService.getEntity(sysUserToken.getUserId());
             }
         }
@@ -46,9 +46,9 @@ public abstract class AbstractAppV1Directive extends AbstractAppDirective implem
     public void execute(RenderHandler handler) throws IOException, Exception {
         SysApp app = null;
         SysUser user = null;
-        if ((needApp() || needUser()) && empty((app = getApp(handler)))) {
+        if (needAppToken() && empty((app = getApp(handler)))) {
             handler.put("error", "needAppToken").render();
-        } else if (needUser() && empty((user = getUser(handler, app)))) {
+        } else if (needUserToken() && empty((user = getUser(handler)))) {
             handler.put("error", "needLogin").render();
         } else {
             execute(handler, app, user);
@@ -56,10 +56,6 @@ public abstract class AbstractAppV1Directive extends AbstractAppDirective implem
     }
 
     public abstract void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception;
-
-    public abstract boolean needUser();
-
-    public abstract boolean needApp();
 
     @Override
     public String getVersion() {

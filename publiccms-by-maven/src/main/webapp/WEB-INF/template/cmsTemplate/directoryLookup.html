@@ -16,18 +16,11 @@
 		</#list>
 	</@_templateList>
 </#macro>
-<div class="pageContent">
-	<div class="pageFormContent" layoutH="58">
-		<ul class="tree treeFolder">
-			<@templateTree field/>
-		</ul>
-		<script>
-			$('a[data="${(value!)?url?js_string}"]',$.pdialog.getCurrent()).parent().addClass('selected');
-		</script>
-	</div>
-	<div class="formBar">
-		<ul>
-			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
-		</ul>
-	</div>
+<div class="pageFormContent">
+	<ul class="tree treeFolder">
+		<@templateTree field/>
+	</ul>
+	<script>
+		$('a[data="${(value!)?url?js_string}"]',$.pdialog.getCurrent()).parent().addClass('selected');
+	</script>
 </div>

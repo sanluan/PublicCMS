@@ -28,11 +28,11 @@ public class PluginLotteryUser implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "抽奖", condition = true)
     private int lotteryId;
     @MyColumn(title = "用户", condition = true)
-    private int userId;
+    private long userId;
     @MyColumn(title = "是否中奖", condition = true)
     private boolean winning;
     @MyColumn(title = "IP")
@@ -43,7 +43,7 @@ public class PluginLotteryUser implements java.io.Serializable {
     public PluginLotteryUser() {
     }
 
-    public PluginLotteryUser(int lotteryId, int userId, boolean winning, String ip, Date createDate) {
+    public PluginLotteryUser(int lotteryId, long userId, boolean winning, String ip, Date createDate) {
         this.lotteryId = lotteryId;
         this.userId = userId;
         this.winning = winning;
@@ -54,11 +54,11 @@ public class PluginLotteryUser implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -72,11 +72,11 @@ public class PluginLotteryUser implements java.io.Serializable {
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

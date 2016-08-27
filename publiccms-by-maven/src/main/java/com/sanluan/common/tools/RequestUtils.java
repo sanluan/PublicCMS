@@ -12,6 +12,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.sanluan.common.base.Base;
 
+/**
+ * Request工具类
+ * 
+ * @author kerneler
+ *
+ */
 public class RequestUtils extends Base {
     /**
      * @param parameterMap

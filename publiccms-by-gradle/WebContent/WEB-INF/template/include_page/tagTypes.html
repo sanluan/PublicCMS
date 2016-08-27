@@ -9,7 +9,7 @@
 		<div id="tagTypes"></div>
 		<input name="type[].id" type="hidden"/>
 		<input name="type[].name" type="text" size="30" postField="name" suggestfields="id,name" lookupgroup="type[]" suggestUrl="common/tagTypeSuggest.html"/>
-		<a class="button" href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;"><span>增加</span></a>
+		<a class="button" href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;">增加</a>
 		<span class="info">点击某个标签分类可以将其删除</span>
 	</dd>
 </dl>
@@ -39,7 +39,7 @@ function reIndexTagType(){
 }
 	<@_tagType ids=typeIds>
 		<#list map?keys as k>
-		addTagType('${k}','${map[k].name}');
+		addTagType('${k}','${map[k].name?html?js_string}');
 		</#list>
 	</@_tagType>
 </script>

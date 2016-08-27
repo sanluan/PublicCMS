@@ -21,9 +21,9 @@
 			</div>
 			<script>
 				uParse('#content',{rootPath: '${site.resourcePath!}ueditor'});
-				$.getJSON('${site.dynamicPath!}content/clicks.json?id=${content.id}&callback=?', function(data){});
+				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){});
 <@_content id=content.parentId>
-				$.getJSON('${site.dynamicPath!}content/clicks.json?id=${object.parentId}&callback=?', function(data){});
+				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${object.parentId}&callback=?', function(data){});
 </@_content>
 			</script>
 			<div class="page">
@@ -32,6 +32,7 @@
 			</div>
 		</article>
 	</div>
+	<div class="clearfix-before"></div>
 </main>
 <@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
 </body>

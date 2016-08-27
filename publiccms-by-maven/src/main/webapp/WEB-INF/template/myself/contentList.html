@@ -7,7 +7,7 @@
 	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
-			<ul class="searchContent two">
+			<ul class="searchContent">
 				<li class="width:auto">
 					<#include "../include_page/status.html"/>
 				</li>
@@ -28,7 +28,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -52,7 +52,7 @@
 <@_contentList advanced=true status=status modelId=modelId parentId=parentId emptyParent=true title=title userId=admin.id 
 			startPublishDate=startPublishDate endPublishDate=endPublishDate 
 			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
-	<table class="list" width="100%" layoutH="117">
+	<table class="list" width="100%" layoutH="92">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -84,15 +84,15 @@
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>${a.id}</td>
-				<td>${(a.copied?then('[转载]',''))!}<a href="${a.url!}" target="_blank">${a.title!}</a></td>
+				<td>${(a.copied?then('[转载]',''))!}<a href="${a.url!}" target="_blank">${(a.title?html)!}</a></td>
 				<td>
 					<a href="myself/contentList.html?categoryId=${a.categoryId}&navTabId=myself/contentList" target="navTab" rel="myself/contentList" title="我的内容">
-						${(categoryMap[a.categoryId?string].name)!}
+						${(categoryMap[a.categoryId?string].name?html)!}
 					</a>
 				</td>
 				<td>
 					<a href="myself/contentList.html?modelId=${a.modelId}&navTabId=myself/contentList" target="navTab" rel="myself/contentList" title="我的内容">
-						${(modelMap[a.modelId?string].name)!}
+						${(modelMap[a.modelId?string].name?html)!}
 					</a>
 				</td>
 				<td>${a.scores!}</td>

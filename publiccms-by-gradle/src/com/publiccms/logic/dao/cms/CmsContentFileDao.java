@@ -11,7 +11,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsContentFileDao extends BaseDao<CmsContentFile> {
-    public PageHandler getPage(Integer contentId, Integer userId, Boolean image, String orderField, String orderType,
+    public PageHandler getPage(Long contentId, Long userId, Boolean image, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentFile bean");
         if (notEmpty(contentId)) {

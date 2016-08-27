@@ -20,11 +20,11 @@ public class PluginVoteItemDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        Long id = handler.getLong("id");
         if (notEmpty(id)) {
             handler.put("object", service.getEntity(id)).render();
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            Long[] ids = handler.getLongArray("ids");
             if (notEmpty(ids)) {
                 List<PluginVoteItem> entityList = service.getEntitys(ids);
                 Map<String, PluginVoteItem> map = new LinkedHashMap<String, PluginVoteItem>();

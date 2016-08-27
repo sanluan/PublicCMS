@@ -2,15 +2,22 @@ package com.publiccms.views.pojo;
 
 import java.util.List;
 
-import com.publiccms.entities.sys.SysExtendField;
-import com.sanluan.common.base.Base;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-public class CmsPlaceMetadata extends Base {
-    private String alias;
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class CmsPlaceMetadata implements java.io.Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	private String alias;
     private Integer size;
     private Integer[] adminIds;
     private boolean allowContribute;
-    private List<SysExtendField> extendList;
+    private boolean allowAnonymous;
+
+    private List<ExtendField> extendList;
 
     public String getAlias() {
         return alias;
@@ -35,12 +42,20 @@ public class CmsPlaceMetadata extends Base {
     public void setAllowContribute(boolean allowContribute) {
         this.allowContribute = allowContribute;
     }
+    
+    public boolean isAllowAnonymous() {
+        return allowAnonymous;
+    }
 
-    public List<SysExtendField> getExtendList() {
+    public void setAllowAnonymous(boolean allowAnonymous) {
+        this.allowAnonymous = allowAnonymous;
+    }
+
+    public List<ExtendField> getExtendList() {
         return extendList;
     }
 
-    public void setExtendList(List<SysExtendField> extendList) {
+    public void setExtendList(List<ExtendField> extendList) {
         this.extendList = extendList;
     }
 

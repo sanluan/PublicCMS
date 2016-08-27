@@ -33,7 +33,7 @@ public class SysDept implements java.io.Serializable {
     @MyColumn(title = "描述")
     private String description;
     @MyColumn(title = "负责人", condition = true)
-    private Integer userId;
+    private Long userId;
     @MyColumn(title = "拥有全部分类")
     private boolean ownsAllCategory;
     @MyColumn(title = "拥有全部页面")
@@ -49,7 +49,7 @@ public class SysDept implements java.io.Serializable {
         this.ownsAllPage = ownsAllPage;
     }
 
-    public SysDept(int siteId, String name, Integer parentId, String description, Integer userId, boolean ownsAllCategory,
+    public SysDept(int siteId, String name, Integer parentId, String description, Long userId, boolean ownsAllCategory,
             boolean ownsAllPage) {
         this.siteId = siteId;
         this.name = name;
@@ -108,11 +108,11 @@ public class SysDept implements java.io.Serializable {
     }
 
     @Column(name = "user_id")
-    public Integer getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

@@ -1,8 +1,8 @@
 package com.publiccms.views.controller.web.content;
 
 import static com.publiccms.common.tools.ExtendUtils.getExtendString;
-import static com.publiccms.common.tools.ExtendUtils.getExtentDataMap;
-import static com.sanluan.common.tools.MyStringUtils.removeHtmlTag;
+import static com.publiccms.common.tools.ExtendUtils.getSysExtentDataMap;
+import static com.sanluan.common.tools.HTMLUtils.removeHtmlTag;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static org.apache.commons.lang3.ArrayUtils.addAll;
 
@@ -93,7 +93,7 @@ public class ContentController extends AbstractController {
         SysSite site = getSite(request);
         SysUser user = getAdminFromSession(session);
         CmsCategoryModel categoryModel = categoryModelService.getEntity(entity.getModelId(), entity.getCategoryId());
-        if (virifyNotEmpty("categoryModel", categoryModel, model)) {
+        if (verifyNotEmpty("categoryModel", categoryModel, model)) {
             return REDIRECT + returnUrl;
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
@@ -105,7 +105,7 @@ public class ContentController extends AbstractController {
             cmsModel = null;
         }
 
-        if (virifyNotEmpty("category", category, model) || virifyNotEmpty("model", cmsModel, model)) {
+        if (verifyNotEmpty("category", category, model) || verifyNotEmpty("model", cmsModel, model)) {
             return REDIRECT + returnUrl;
         }
         entity.setHasFiles(cmsModel.isHasFiles());
@@ -123,7 +123,7 @@ public class ContentController extends AbstractController {
         }
         if (notEmpty(entity)) {
             CmsContent oldEntity = service.getEntity(entity.getId());
-            if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return REDIRECT + returnUrl;
             }
             String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "createDate", "clicks",
@@ -159,16 +159,16 @@ public class ContentController extends AbstractController {
         Map<String, String> map = null;
         if (notEmpty(extendService.getEntity(cmsModel.getExtendId()))) {
             @SuppressWarnings("unchecked")
-            List<SysExtendField> modelExtendList = (List<SysExtendField>) extendFieldService.getPage(cmsModel.getExtendId(),
-                    null, null).getList();
-            map = getExtentDataMap(cmsModel.getExtendId(), contentParamters.getModelExtendDataList(), modelExtendList);
+            List<SysExtendField> modelExtendList = (List<SysExtendField>) extendFieldService
+                    .getPage(cmsModel.getExtendId(), null, null).getList();
+            map = getSysExtentDataMap(contentParamters.getModelExtendDataList(), modelExtendList);
         }
         if (notEmpty(extendService.getEntity(category.getExtendId()))) {
             @SuppressWarnings("unchecked")
-            List<SysExtendField> categoryExtendList = (List<SysExtendField>) extendFieldService.getPage(category.getExtendId(),
-                    null, null).getList();
-            Map<String, String> categoryMap = getExtentDataMap(entity.getCategoryId(),
-                    contentParamters.getCategoryExtendDataList(), categoryExtendList);
+            List<SysExtendField> categoryExtendList = (List<SysExtendField>) extendFieldService
+                    .getPage(category.getExtendId(), null, null).getList();
+            Map<String, String> categoryMap = getSysExtentDataMap(contentParamters.getCategoryExtendDataList(),
+                    categoryExtendList);
             if (notEmpty(map)) {
                 map.putAll(categoryMap);
             } else {
@@ -192,7 +192,7 @@ public class ContentController extends AbstractController {
      * @return
      */
     @RequestMapping("related/redirect")
-    public void relatedRedirect(Integer id, HttpServletRequest request, HttpServletResponse response) {
+    public void relatedRedirect(Long id, HttpServletRequest request, HttpServletResponse response) {
         CmsContentRelatedStatistics contentRelatedStatistics = statisticsComponent.relatedClicks(id);
         SysSite site = getSite(request);
         if (notEmpty(contentRelatedStatistics.getEntity())) {
@@ -209,7 +209,7 @@ public class ContentController extends AbstractController {
      * @return
      */
     @RequestMapping("redirect")
-    public void redirect(Integer id, HttpServletRequest request, HttpServletResponse response) {
+    public void redirect(Long id, HttpServletRequest request, HttpServletResponse response) {
         CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
         SysSite site = getSite(request);
         if (notEmpty(contentStatistics.getEntity()) && site.getId() == contentStatistics.getEntity().getSiteId()) {
@@ -217,40 +217,6 @@ public class ContentController extends AbstractController {
         } else {
             redirectPermanently(response, site.getSitePath());
         }
-    }
-
-    /**
-     * 内容点击统计
-     * 
-     * @param id
-     * @param callback
-     * @return
-     */
-    @RequestMapping("clicks")
-    @ResponseBody
-    public MappingJacksonValue clicks(Integer id, String callback, ModelMap model) {
-        CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
-        if (notEmpty(contentStatistics.getEntity())) {
-            model.addAttribute("clicks", contentStatistics.getEntity().getClicks() + contentStatistics.getClicks());
-        }
-        return getMappingJacksonValue(model, callback);
-    }
-
-    /**
-     * 内容分数统计
-     * 
-     * @param id
-     * @param callback
-     * @return
-     */
-    @RequestMapping("scores")
-    @ResponseBody
-    public MappingJacksonValue scores(Integer id, String callback, ModelMap model) {
-        CmsContentStatistics contentStatistics = statisticsComponent.scores(id);
-        if (notEmpty(contentStatistics.getEntity())) {
-            model.addAttribute("scores", contentStatistics.getEntity().getScores() + contentStatistics.getScores());
-        }
-        return getMappingJacksonValue(model, callback);
     }
 
     /**
@@ -262,11 +228,12 @@ public class ContentController extends AbstractController {
      */
     @RequestMapping("comments")
     @ResponseBody
-    public MappingJacksonValue comments(Integer id, String callback, ModelMap model) {
+    public MappingJacksonValue comments(Long id, String callback, ModelMap model) {
         CmsContentStatistics contentStatistics = statisticsComponent.comments(id);
         if (notEmpty(contentStatistics.getEntity())) {
             model.addAttribute("comments", contentStatistics.getEntity().getComments() + contentStatistics.getComments());
         }
         return getMappingJacksonValue(model, callback);
     }
+
 }

@@ -1,6 +1,11 @@
 package com.publiccms.views.pojo;
 
-public class UeditorConfig {
+public class UeditorConfig implements java.io.Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private String imageActionName;
     private String snapscreenActionName;
     private String scrawlActionName;

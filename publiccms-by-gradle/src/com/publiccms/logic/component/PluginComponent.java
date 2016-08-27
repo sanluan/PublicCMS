@@ -11,12 +11,12 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.Pluginable;
+import com.publiccms.common.spi.Cacheable;
+import com.publiccms.common.spi.Pluginable;
 import com.publiccms.entities.plugin.PluginSite;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.plugin.PluginSiteService;
 import com.sanluan.common.base.Base;
-import com.sanluan.common.base.Cacheable;
 
 @Component
 public class PluginComponent extends Base implements Cacheable {

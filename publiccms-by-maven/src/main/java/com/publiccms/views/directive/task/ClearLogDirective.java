@@ -15,6 +15,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
+import com.publiccms.logic.service.log.LogUploadService;
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -30,6 +31,7 @@ public class ClearLogDirective extends AbstractTaskDirective {
         map.put("loginLog:", logLoginService.delete(site.getId(), date));
         map.put("operateLog:", logOperateService.delete(site.getId(), date));
         map.put("taskLog:", logTaskService.delete(site.getId(), date));
+        map.put("uploadLog:", logUploadService.delete(site.getId(), date));
         handler.put("result", map).render();
     }
 
@@ -39,4 +41,6 @@ public class ClearLogDirective extends AbstractTaskDirective {
     private LogOperateService logOperateService;
     @Autowired
     private LogTaskService logTaskService;
+    @Autowired
+    private LogUploadService logUploadService;
 }

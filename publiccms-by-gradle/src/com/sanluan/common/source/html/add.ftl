@@ -1,8 +1,14 @@
 ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_"+entityName?replace('Cms','')?uncap_first+">"}
-<div class="pageContent">
-	<form method="post" action="${entityName?uncap_first}/save.do?callbackType=closeCurrent&navTabId=${entityName?uncap_first}/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-		<input name="id" type="hidden" value="<#noparse>${id!}</#noparse>" />
-		<div class="pageFormContent" layoutH="57">
+<form method="post" action="${entityName?uncap_first}/save.do?callbackType=closeCurrent&navTabId=${entityName?uncap_first}/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="<#noparse>${id!}</#noparse>" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">取消</button></li>
+		</ul>
+	</div>
+	<div class="pageContent">
+		<div class="pageFormContent" layoutH="56">
 		<#list columnList as a>
 			<#if "Date"=a.type>
 			<dl>
@@ -20,11 +26,5 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_
 			</#if>
 		</#list>
 		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
-	</form>
-</div>
+	</div>
+</form>

@@ -4,9 +4,7 @@
 <@_contentRelatedList relatedContentId=contentId>
 		<p>
 			<label>${page.totalCount}条内容:</label>
-			<a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" rel="push">
-				<span>推荐到内容</span>
-			</a>
+			<a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" rel="push">推荐到内容</a>
 		</p>
 		<p>
 	<#list page.list as a>
@@ -24,9 +22,7 @@
 <@_placeList itemType='content' itemId=contentId>
 		<p>
 			<label>${page.totalCount}个页面:</label>
-			<a class="button" href="cmsContent/push_page.html?contentId=${contentId}" target="dialog" rel="push">
-				<span>推荐到页面</span>
-			</a>
+			<a class="button" href="cmsContent/push_page.html?contentId=${contentId}" target="dialog" rel="push">推荐到页面</a>
 		</p>
 		<p>
 	<#list page.list as a>

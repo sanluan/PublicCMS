@@ -13,7 +13,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SysAppClientDao extends BaseDao<SysAppClient> {
-    public PageHandler getPage(Integer siteId, String channel, Integer userId, Boolean allowPush, Date startLastLoginDate,
+    public PageHandler getPage(Integer siteId, String channel, Long userId, Boolean allowPush, Date startLastLoginDate,
             Date endLastLoginDate, Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysAppClient bean");

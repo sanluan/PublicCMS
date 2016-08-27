@@ -29,4 +29,8 @@ public class MultiDataSource extends AbstractRoutingDataSource {
     public static void setDataSourceName(String name) {
         HOLDER.set(name);
     }
+    
+    public static void clearDataSourceName() {
+        HOLDER.remove();
+    }
 }

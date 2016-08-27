@@ -9,11 +9,14 @@
 				</li>
 				<li>
 					<label>用户:</label>
-					<input type="text" name="userId" value="${userId!}" />
+					<#include "../include_page/userId.html"/>
 				</li>
 				<li>
-					<label>是否中奖:</label>
-					<input type="text" name="winning" value="${winning!}" />
+					<select class="combox" name="winning">
+						<option value=""${(!winning?has_content)?then(' selected="true"','')}>是否中奖</option>
+						<option value="false"${(winning??&&"false"=winning)?then(' selected="true"','')}>未中奖</option>
+						<option value="true"${(winning??&&"true"=winning)?then(' selected="true"','')}>中奖</option>
+					</select>
 				</li>
 				<li class="colspan">
 					<label>抽奖时间:</label>
@@ -25,7 +28,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -60,7 +63,7 @@
 				<td>${a.id!}</td>
 				<td>${a.lotteryId!}</td>
 				<td>${a.userId!}</td>
-				<td>${a.winning!}</td>
+				<td>${a.winning?then('中奖','未中奖')!}</td>
 				<td>${a.ip!}</td>
 				<td>${a.createDate!}</td>
 			</tr>

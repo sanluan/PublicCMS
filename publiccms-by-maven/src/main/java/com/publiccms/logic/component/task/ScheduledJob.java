@@ -34,53 +34,60 @@ import freemarker.template.TemplateException;
 @Component
 public class ScheduledJob extends Base implements Job {
 
-    public static SysTaskService sysTaskService;
-    public static LogTaskService logTaskService;
-    public static SysSiteService siteService;
-    public static TemplateComponent templateComponent;
-    public static SiteComponent siteComponent;
+	public static SysTaskService sysTaskService;
+	public static LogTaskService logTaskService;
+	public static SysSiteService siteService;
+	public static ScheduledTask scheduledTask;
+	public static TemplateComponent templateComponent;
+	public static SiteComponent siteComponent;
 
-    @Autowired
-    public void init(LogTaskService logTaskService, SysSiteService siteService, SysTaskService sysTaskService,
-            SiteComponent siteComponent, TemplateComponent templateComponent) {
-        ScheduledJob.logTaskService = logTaskService;
-        ScheduledJob.sysTaskService = sysTaskService;
-        ScheduledJob.siteService = siteService;
-        ScheduledJob.templateComponent = templateComponent;
-        ScheduledJob.siteComponent = siteComponent;
-    }
+	@Autowired
+	public void init(LogTaskService logTaskService, SysSiteService siteService, SysTaskService sysTaskService,
+			SiteComponent siteComponent, ScheduledTask scheduledTask, TemplateComponent templateComponent) {
+		ScheduledJob.logTaskService = logTaskService;
+		ScheduledJob.sysTaskService = sysTaskService;
+		ScheduledJob.siteService = siteService;
+		ScheduledJob.templateComponent = templateComponent;
+		ScheduledJob.siteComponent = siteComponent;
+		ScheduledJob.scheduledTask = scheduledTask;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
-     */
-    @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        SysTask task = sysTaskService.getEntity((Integer) context.getJobDetail().getJobDataMap().get(ScheduledTask.ID));
-        if (notEmpty(task) && ScheduledTask.TASK_STATUS_READY == task.getStatus()) {
-            sysTaskService.updateStatus(task.getId(), ScheduledTask.TASK_STATUS_RUNNING);
-            LogTask entity = new LogTask(task.getSiteId(), task.getId(), getDate(), false);
-            logTaskService.save(entity);
-            boolean success = false;
-            String result;
-            try {
-                success = true;
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("task", task);
-                SysSite site = siteService.getEntity(task.getSiteId());
-                expose(map, site);
-                result = makeStringByFile(getFullFileName(site, task.getFilePath()), templateComponent.getTaskConfiguration(),
-                        map);
-            } catch (IOException | TemplateException e) {
-                result = e.getMessage();
-            }
-            entity.setEndtime(getDate());
-            entity.setSuccess(success);
-            entity.setResult(result);
-            logTaskService.update(entity.getId(), entity, new String[] { "id", "begintime", "taskId", "siteId" });
-            sysTaskService.updateStatus(task.getId(), ScheduledTask.TASK_STATUS_READY);
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
+	 */
+	@Override
+	public void execute(JobExecutionContext context) throws JobExecutionException {
+		Integer taskId = (Integer) context.getJobDetail().getJobDataMap().get(ScheduledTask.ID);
+		SysTask task = sysTaskService.getEntity(taskId);
+		if (notEmpty(task)) {
+			if (ScheduledTask.TASK_STATUS_READY == task.getStatus()
+					&& sysTaskService.updateStatusToRunning(task.getId())) {
+				LogTask entity = new LogTask(task.getSiteId(), task.getId(), getDate(), false);
+				logTaskService.save(entity);
+				boolean success = false;
+				String result;
+				try {
+					success = true;
+					Map<String, Object> map = new HashMap<String, Object>();
+					map.put("task", task);
+					SysSite site = siteService.getEntity(task.getSiteId());
+					expose(map, site);
+					result = makeStringByFile(getFullFileName(site, task.getFilePath()),
+							templateComponent.getTaskConfiguration(), map);
+				} catch (IOException | TemplateException e) {
+					result = e.getMessage();
+				}
+				entity.setEndtime(getDate());
+				entity.setSuccess(success);
+				entity.setResult(result);
+				logTaskService.update(entity.getId(), entity, new String[] { "id", "begintime", "taskId", "siteId" });
+				sysTaskService.updateStatus(task.getId(), ScheduledTask.TASK_STATUS_READY);
 
-        }
-    }
+			}
+		} else {
+			scheduledTask.delete(taskId);
+		}
+	}
 }

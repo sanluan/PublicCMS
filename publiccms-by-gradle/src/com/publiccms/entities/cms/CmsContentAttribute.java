@@ -21,7 +21,7 @@ public class CmsContentAttribute implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "内容")
-    private int contentId;
+    private long contentId;
     @MyColumn(title = "来源")
     private String source;
     @MyColumn(title = "来源地址")
@@ -36,12 +36,12 @@ public class CmsContentAttribute implements java.io.Serializable {
     public CmsContentAttribute() {
     }
 
-    public CmsContentAttribute(int contentId, int wordCount) {
+    public CmsContentAttribute(long contentId, int wordCount) {
         this.contentId = contentId;
         this.wordCount = wordCount;
     }
 
-    public CmsContentAttribute(int contentId, String source, String sourceUrl, String data, String text, int wordCount) {
+    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String text, int wordCount) {
         this.contentId = contentId;
         this.source = source;
         this.sourceUrl = sourceUrl;
@@ -52,11 +52,11 @@ public class CmsContentAttribute implements java.io.Serializable {
 
     @Id
     @Column(name = "content_id", unique = true, nullable = false)
-    public int getContentId() {
+    public long getContentId() {
         return this.contentId;
     }
 
-    public void setContentId(int contentId) {
+    public void setContentId(long contentId) {
         this.contentId = contentId;
     }
 

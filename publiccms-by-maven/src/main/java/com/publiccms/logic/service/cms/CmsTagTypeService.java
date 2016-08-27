@@ -1,5 +1,7 @@
 package com.publiccms.logic.service.cms;
 
+import java.io.Serializable;
+
 // Generated 2015-7-10 16:36:23 by com.sanluan.common.source.SourceMaker
 
 import java.util.HashSet;
@@ -24,7 +26,7 @@ public class CmsTagTypeService extends BaseService<CmsTagType> {
         return dao.getPage(siteId, name, pageIndex, pageSize);
     }
 
-    public void delete(int siteId, Integer[] ids) {
+    public void delete(int siteId, Serializable[] ids) {
         for (CmsTagType entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());

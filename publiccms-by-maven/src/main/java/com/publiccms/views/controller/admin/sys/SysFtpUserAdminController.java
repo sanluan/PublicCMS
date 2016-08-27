@@ -31,7 +31,7 @@ public class SysFtpUserAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
             SysFtpUser user = service.getEntity(entity.getId());
-            if ((!user.getName().equals(entity.getName()) && virifyHasExist("username", service.findByName(entity.getName()),
+            if ((!user.getName().equals(entity.getName()) && verifyHasExist("username", service.findByName(entity.getName()),
                     model))) {
                 return TEMPLATE_ERROR;
             }
@@ -47,8 +47,8 @@ public class SysFtpUserAdminController extends AbstractController {
                                 + ":" + entity.getName()));
             }
         } else {
-            if (virifyNotEmpty("password", entity.getPassword(), model)
-                    || virifyHasExist("username", service.findByName(entity.getName()), model)) {
+            if (verifyNotEmpty("password", entity.getPassword(), model)
+                    || verifyHasExist("username", service.findByName(entity.getName()), model)) {
                 return TEMPLATE_ERROR;
             }
             if (0 == entity.getSiteId()) {

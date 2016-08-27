@@ -34,7 +34,7 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         if (notEmpty(path)) {
             path = path.replace("//", SEPARATOR);
         }
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("userId"), path,
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), path,
                 handler.getString("itemType"), handler.getInteger("itemId"), handler.getDate("startPublishDate"),
                 handler.getDate("endPublishDate"), status, disabled, handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));

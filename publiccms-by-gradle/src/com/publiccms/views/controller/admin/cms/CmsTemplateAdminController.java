@@ -88,7 +88,7 @@ public class CmsTemplateAdminController extends AbstractController {
                     publish(site, path);
                 }
             } catch (IOException | TemplateException e) {
-                virifyCustom("template.save", true, model);
+                verifyCustom("template.save", true, model);
                 log.error(e.getMessage());
                 return TEMPLATE_ERROR;
             }
@@ -109,7 +109,7 @@ public class CmsTemplateAdminController extends AbstractController {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, path);
-            if (virifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
+            if (verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }
             metadataComponent.deleteTemplateMetadata(filePath);
@@ -134,7 +134,7 @@ public class CmsTemplateAdminController extends AbstractController {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + path);
-            if (virifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
+            if (verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }
             metadataComponent.deletePlaceMetadata(filePath);
@@ -170,7 +170,7 @@ public class CmsTemplateAdminController extends AbstractController {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.template.meta", getIpAddress(request), getDate(), path));
             } catch (IOException e) {
-                virifyCustom("metadata.save", true, model);
+                verifyCustom("metadata.save", true, model);
                 log.error(e.getMessage());
                 return TEMPLATE_ERROR;
             }
@@ -209,7 +209,7 @@ public class CmsTemplateAdminController extends AbstractController {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.template.meta", getIpAddress(request), getDate(), path));
             } catch (IOException | TemplateException e) {
-                virifyCustom("metadata.save", true, model);
+                verifyCustom("metadata.save", true, model);
                 log.error(e.getMessage());
                 return TEMPLATE_ERROR;
             }

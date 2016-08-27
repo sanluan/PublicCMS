@@ -2,6 +2,7 @@ package com.publiccms.views.controller.admin.sys;
 
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static com.sanluan.common.tools.VerificationUtils.encode;
+import static org.apache.commons.lang3.StringUtils.trim;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,9 +35,13 @@ public class SysUserAdminController extends AbstractController {
     public String save(SysUser entity, String repassword, Integer[] roleIds, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
-        if (virifyNotEmpty("username", entity.getName(), model) || virifyNotEmpty("nickname", entity.getNickName(), model)
-                || virifyNotUserName("username", entity.getName(), model)
-                || virifyNotNickName("nickname", entity.getNickName(), model)) {
+        entity.setName(trim(entity.getName()));
+        entity.setNickName(trim(entity.getNickName()));
+        entity.setPassword(trim(repassword));
+        repassword = trim(entity.getNickName());
+        if (verifyNotEmpty("username", entity.getName(), model) || verifyNotEmpty("nickname", entity.getNickName(), model)
+                || verifyNotUserName("username", entity.getName(), model)
+                || verifyNotNickName("nickname", entity.getNickName(), model)) {
             return TEMPLATE_ERROR;
         }
         if (entity.isSuperuserAccess()) {
@@ -48,18 +53,18 @@ public class SysUserAdminController extends AbstractController {
         }
         if (notEmpty(entity.getId())) {
             SysUser oldEntity = service.getEntity(entity.getId());
-            if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             SysUser user = service.getEntity(entity.getId());
-            if ((!user.getName().equals(entity.getName()) && virifyHasExist("username",
+            if ((!user.getName().equals(entity.getName()) && verifyHasExist("username",
                     service.findByName(site.getId(), entity.getName()), model))
-                    || (!user.getNickName().equals(entity.getNickName()) && virifyHasExist("nickname",
+                    || (!user.getNickName().equals(entity.getNickName()) && verifyHasExist("nickname",
                             service.findByNickName(site.getId(), entity.getNickName()), model))) {
                 return TEMPLATE_ERROR;
             }
             if (notEmpty(entity.getPassword())) {
-                if (virifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
+                if (verifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return TEMPLATE_ERROR;
                 }
                 entity.setPassword(encode(entity.getPassword()));
@@ -69,8 +74,8 @@ public class SysUserAdminController extends AbstractController {
                     entity.setEmailChecked(false);
                 }
             }
-            entity = service.update(entity.getId(), entity, new String[] { "id", "registeredDate", "siteId", "authToken", "lastLoginDate",
-                    "lastLoginIp", "loginCount", "disabled" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "registeredDate", "siteId", "authToken",
+                    "lastLoginDate", "lastLoginIp", "loginCount", "disabled" });
             if (notEmpty(entity)) {
                 roleUserService.dealRoleUsers(entity.getId(), roleIds);
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
@@ -78,9 +83,9 @@ public class SysUserAdminController extends AbstractController {
                                 + ":" + entity.getName()));
             }
         } else {
-            if (virifyNotEmpty("password", entity.getPassword(), model)
-                    || virifyNotEquals("repassword", entity.getPassword(), repassword, model)
-                    || virifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
+            if (verifyNotEmpty("password", entity.getPassword(), model)
+                    || verifyNotEquals("repassword", entity.getPassword(), repassword, model)
+                    || verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
                 return TEMPLATE_ERROR;
             }
             entity.setSiteId(site.getId());
@@ -99,14 +104,14 @@ public class SysUserAdminController extends AbstractController {
     }
 
     @RequestMapping(value = "enable", method = RequestMethod.POST)
-    public String enable(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (virifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
+    public String enable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
             return TEMPLATE_ERROR;
         }
         SysUser entity = service.getEntity(id);
         if (notEmpty(entity)) {
             SysSite site = getSite(request);
-            if (virifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
@@ -118,14 +123,14 @@ public class SysUserAdminController extends AbstractController {
     }
 
     @RequestMapping(value = "disable", method = RequestMethod.POST)
-    public String disable(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (virifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
+    public String disable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
             return TEMPLATE_ERROR;
         }
         SysUser entity = service.getEntity(id);
         if (notEmpty(entity)) {
             SysSite site = getSite(request);
-            if (virifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);
@@ -135,13 +140,4 @@ public class SysUserAdminController extends AbstractController {
         }
         return TEMPLATE_DONE;
     }
-
-    protected boolean virifyEquals(String field, Integer value, Integer value2, ModelMap model) {
-        if (notEmpty(value) && value.equals(value2)) {
-            model.addAttribute(ERROR, "verify.equals." + field);
-            return true;
-        }
-        return false;
-    }
-
 }

@@ -56,7 +56,7 @@ public class CmsCategoryTypeAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
             CmsCategoryType oldEntity = service.getEntity(entity.getId());
-            if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "extendId" });
@@ -73,7 +73,8 @@ public class CmsCategoryTypeAdminController extends AbstractController {
                             + ":" + entity.getName()));
         }
         if (empty(extendService.getEntity(entity.getExtendId()))) {
-            service.updateExtendId(entity.getId(), (Integer) extendService.save(new SysExtend("categoryType", entity.getId())));
+            entity = service.updateExtendId(entity.getId(),
+                    (Integer) extendService.save(new SysExtend("categoryType", entity.getId())));
         }
         extendFieldService.update(entity.getExtendId(), categoryTypeParamters.getCategoryExtends());// 修改或增加分类类型扩展字段
         return TEMPLATE_DONE;
@@ -91,8 +92,8 @@ public class CmsCategoryTypeAdminController extends AbstractController {
         SysSite site = getSite(request);
         CmsCategoryType entity = service.getEntity(id);
         if (notEmpty(entity)) {
-            if (virifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || virifyNotGreaterThen("category", categoryService
+            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
+                    || verifyNotGreaterThen("category", categoryService
                             .getPage(site.getId(), null, id, null, null, null, null, 1).getTotalCount(), 1, model)) {
                 return TEMPLATE_ERROR;
             }

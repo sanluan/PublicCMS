@@ -1,20 +1,18 @@
 <@_sysApp id=id><#assign a=object/></@_sysApp>
-<div class="pageContent">
-	<form method="post" action="sysApp/save.do?callbackType=closeCurrent&navTabId=sysApp/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-		<div class="pageFormContent" layoutH="57">
-			<input name="id" type="hidden" value="${id!}" />
-			<input name="appKey" type="hidden" value="${(a.appKey)!getUUID()}"/>
-			<input name="appSecret" type="hidden" value="${(a.appSecret)!getUUID()}"/>
-			<dl class="nowrap">
-				<dt>渠道:</dt>
-				<dd><input class="required" name="channel" type="text" size="30" value="${(a.channel)!}"/></dd>
-			</dl>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
-	</form>
-</div>
+<form method="post" action="sysApp/save.do?callbackType=closeCurrent&navTabId=sysApp/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">取消</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="56">
+		<input name="id" type="hidden" value="${id!}" />
+		<input name="appKey" type="hidden" value="${(a.appKey)!getUUID()}"/>
+		<input name="appSecret" type="hidden" value="${(a.appSecret)!getUUID()}"/>
+		<dl class="nowrap">
+			<dt>渠道:</dt>
+			<dd><input class="required" name="channel" type="text" size="30" value="${(a.channel)!}"/></dd>
+		</dl>
+	</div>
+</form>

@@ -1,13 +1,18 @@
 package com.publiccms.views.controller.web;
 
-import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
-import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
+import static com.publiccms.common.constants.CommonConstants.getCookiesUser;
+import static com.publiccms.common.constants.CommonConstants.getCookiesUserSplit;
+import static com.publiccms.logic.component.config.LoginConfigComponent.CONFIG_CODE;
+import static com.publiccms.logic.component.config.LoginConfigComponent.CONFIG_LOGIN_PATH;
+import static com.publiccms.logic.component.config.LoginConfigComponent.CONFIG_REGISTER_PATH;
 import static com.publiccms.logic.service.log.LogLoginService.CHANNEL_WEB;
 import static com.sanluan.common.tools.RequestUtils.addCookie;
 import static com.sanluan.common.tools.RequestUtils.getCookie;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static com.sanluan.common.tools.VerificationUtils.encode;
+import static org.apache.commons.lang3.StringUtils.trim;
 
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -26,12 +31,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysDomain;
-import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
+import com.publiccms.logic.component.ConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -42,7 +46,6 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  */
 @Controller
 public class LoginController extends AbstractController {
-
     @Autowired
     private SysUserService service;
     @Autowired
@@ -50,7 +53,7 @@ public class LoginController extends AbstractController {
     @Autowired
     private LogLoginService logLoginService;
     @Autowired
-    private SysEmailTokenService sysEmailTokenService;
+    private ConfigComponent configComponent;
 
     /**
      * @param username
@@ -68,34 +71,47 @@ public class LoginController extends AbstractController {
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         SysDomain domain = getDomain(request);
-        if (virifyNotEmpty("domain", domain, model) || virifyNotEmpty("loginPath", domain.getLoginPath(), model)
-                || virifyNotEmpty("username", username, model) || virifyNotEmpty("password", password, model)) {
+        username = trim(username);
+        password = trim(password);
+        if (empty(returnUrl)) {
+            returnUrl = site.getSitePath();
+        }
+        if (verifyNotEmpty("domain", domain.getId(), model)) {
+            return REDIRECT + returnUrl;
+        }
+
+        Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE, domain.getId().toString());
+        String loginPath = config.get(CONFIG_LOGIN_PATH);
+        if (verifyNotEmpty("loginPath", loginPath, model)) {
+            return REDIRECT + returnUrl;
+        }
+        if (verifyNotEmpty("username", username, model) || verifyNotEmpty("password", password, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
-            return REDIRECT + domain.getLoginPath();
+            return REDIRECT + loginPath;
         }
         SysUser user;
-        if (virifyNotEMail(username)) {
+        if (verifyNotEMail(username)) {
             user = service.findByName(site.getId(), username);
         } else {
             user = service.findByEmail(site.getId(), username);
         }
         String ip = getIpAddress(request);
-        if (virifyNotExist("username", user, model) || virifyNotEquals("password", encode(password), user.getPassword(), model)
-                || virifyNotEnablie(user, model)) {
+        if (verifyNotExist("username", user, model) || verifyNotEquals("password", encode(password), user.getPassword(), model)
+                || verifyNotEnablie(user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
-            Integer userId = null;
+            Long userId = null;
             if (notEmpty(user)) {
                 userId = user.getId();
             }
             logLoginService.save(new LogLogin(site.getId(), username, userId, ip, CHANNEL_WEB, false, getDate(), password));
-            return REDIRECT + domain.getLoginPath();
+            return REDIRECT + loginPath;
         }
         user.setPassword(null);
         setUserToSession(session, user);
         String authToken = UUID.randomUUID().toString();
-        addCookie(request.getContextPath(), response, COOKIES_USER, user.getId() + COOKIES_USER_SPLIT + authToken,
+        addCookie(request.getContextPath(), response, getCookiesUser(), user.getId() + getCookiesUserSplit() + authToken,
                 Integer.MAX_VALUE, null);
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), CHANNEL_WEB, getDate(), ip));
         service.updateLoginStatus(user.getId(), ip);
@@ -141,16 +157,31 @@ public class LoginController extends AbstractController {
     public String register(SysUser entity, String repassword, String returnUrl, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
+        if (empty(returnUrl)) {
+            returnUrl = site.getSitePath();
+        }
         SysDomain domain = getDomain(request);
-        if (virifyNotEmpty("domain", domain, model) || virifyNotEmpty("registerPath", domain.getRegisterPath(), model)
-                || virifyNotEmpty("username", entity.getName(), model) || virifyNotEmpty("nickname", entity.getNickName(), model)
-                || virifyNotEmpty("password", entity.getPassword(), model)
-                || virifyNotUserName("username", entity.getName(), model)
-                || virifyNotNickName("nickname", entity.getNickName(), model)
-                || virifyNotEquals("repassword", entity.getPassword(), repassword, model)
-                || virifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
-                || virifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()), model)) {
-            return REDIRECT + domain.getRegisterPath();
+        entity.setName(trim(entity.getName()));
+        entity.setNickName(trim(entity.getNickName()));
+        entity.setPassword(trim(entity.getPassword()));
+        repassword = trim(repassword);
+        if (verifyNotEmpty("domain", domain.getId(), model)) {
+            return REDIRECT + returnUrl;
+        }
+
+        Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE, domain.getId().toString());
+        String registerPath = config.get(CONFIG_REGISTER_PATH);
+        if (verifyNotEmpty("registerPath", registerPath, model)) {
+            return REDIRECT + returnUrl;
+        }
+        if (verifyNotEmpty("username", entity.getName(), model) || verifyNotEmpty("nickname", entity.getNickName(), model)
+                || verifyNotEmpty("password", entity.getPassword(), model)
+                || verifyNotUserName("username", entity.getName(), model)
+                || verifyNotNickName("nickname", entity.getNickName(), model)
+                || verifyNotEquals("repassword", entity.getPassword(), repassword, model)
+                || verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
+                || verifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()), model)) {
+            return REDIRECT + registerPath;
         }
         String ip = getIpAddress(request);
         entity.setPassword(encode(entity.getPassword()));
@@ -160,30 +191,9 @@ public class LoginController extends AbstractController {
         String authToken = UUID.randomUUID().toString();
         entity.setPassword(null);
         setUserToSession(session, entity);
-        addCookie(request.getContextPath(), response, COOKIES_USER, entity.getId() + COOKIES_USER_SPLIT + authToken,
+        addCookie(request.getContextPath(), response, getCookiesUser(), entity.getId() + getCookiesUserSplit() + authToken,
                 Integer.MAX_VALUE, null);
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), CHANNEL_WEB, getDate(), ip));
-        return REDIRECT + returnUrl;
-    }
-
-    /**
-     * @param code
-     * @param session
-     * @param model
-     * @return
-     */
-    @RequestMapping("verifyEmail")
-    @ResponseBody
-    public String verifyEmail(String authToken, String returnUrl, HttpSession session, ModelMap model) {
-        SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
-        if (virifyNotEmpty("verifyEmail.authToken", authToken, model)
-                || virifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
-            return REDIRECT + returnUrl;
-        }
-        sysEmailTokenService.delete(sysEmailToken.getAuthToken());
-        service.checked(sysEmailToken.getUserId(), sysEmailToken.getEmail());
-        clearUserTimeToSession(session);
-        model.addAttribute(MESSAGE, "verifyEmail.success");
         return REDIRECT + returnUrl;
     }
 
@@ -194,25 +204,25 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     public String logout(String returnUrl, HttpServletRequest request, HttpServletResponse response) {
-        Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
+        SysSite site = getSite(request);
+        if (empty(returnUrl)) {
+            returnUrl = site.getSitePath();
+        }
+        Cookie userCookie = getCookie(request.getCookies(), getCookiesUser());
         if (null != userCookie && notEmpty(userCookie.getValue())) {
             String value = userCookie.getValue();
             if (null != value) {
-                String[] userData = value.split(COOKIES_USER_SPLIT);
+                String[] userData = value.split(getCookiesUserSplit());
                 if (userData.length > 1) {
                     sysUserTokenService.delete(userData[1]);
                 }
             }
         }
         clearUserToSession(request.getContextPath(), request.getSession(), response);
-        if (notEmpty(returnUrl)) {
-            return REDIRECT + returnUrl;
-        }
-        SysDomain domain = getDomain(request);
-        return REDIRECT + domain.getLoginPath();
+        return REDIRECT + returnUrl;
     }
 
-    protected boolean virifyNotEnablie(SysUser user, ModelMap model) {
+    protected boolean verifyNotEnablie(SysUser user, ModelMap model) {
         if (user.isDisabled()) {
             model.addAttribute(ERROR, "verify.user.notEnablie");
             return true;

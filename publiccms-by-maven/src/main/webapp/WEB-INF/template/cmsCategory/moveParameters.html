@@ -1,11 +1,11 @@
-<#macro categoryTree id parentId=''>
+<#macro categoryTree parentId=''>
 	<@_categoryList parentId=parentId>
 		<#list page.list as a>
 			<li>
 				<a href="javascript:;" onclick="$('input[name=parentId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();">${a.name!}</a>
 			<#if a.childIds?has_content>
 				<ul>
-					<@categoryTree id a.id/>
+					<@categoryTree a.id/>
 				</ul>
 			</#if>
 			</li>
@@ -25,22 +25,15 @@ if(0==$('#idsToMove input',$.pdialog.getCurrent()).length){
 	$.pdialog.closeCurrent();
 }
 </script>
-<div class="pageContent">
+<div class="pageFormContent">
 	<form action="cmsCategory/move.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
-		<input type="hidden" name="parentId" value=""/>
-		<div id="idsToMove"></div>
-		<div class="pageFormContent" layoutH="57">
-			<ul class="tree expand">
-				<li>
-					<a href="javascript:;">请选择父分类</a>
-					<ul><@categoryTree id/></ul>
-				</li>
-			</ul>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
+	<input type="hidden" name="parentId" value=""/>
+	<div id="idsToMove"></div>
+		<ul class="tree expand">
+			<li>
+				<a href="javascript:;">请选择父分类</a>
+				<ul><@categoryTree/></ul>
+			</li>
+		</ul>
 	</form>
 </div>

@@ -2,9 +2,9 @@
 <table class="list nowrap itemDetail" addButton="新增推荐内容" width="100%">
 	<thead>
 		<tr>
-			<th type="lookup" name="contentRelateds[#index#].title" size="50" fieldClass="required" fieldAttrs="{maxlength:255}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId">选择</th>
-			<th type="text" name="contentRelateds[#index#].url" size="50" fieldClass="required" fieldAttrs="{maxlength:2048}">地址</th>
-			<th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:300,rows:2,cols:80}">描述</th>
+			<th type="lookup" name="contentRelateds[#index#].title" size="40" fieldClass="required" fieldAttrs="{maxlength:255}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId">选择</th>
+			<th type="text" name="contentRelateds[#index#].url" size="40" fieldClass="required" fieldAttrs="{maxlength:2048}">地址</th>
+			<th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:300,rows:2,cols:60}">描述</th>
 			<th type="text" name="contentRelateds[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5">排序</th>
 			<th type="del" width="60">操作</th>
 		</tr>
@@ -17,14 +17,14 @@
 				<td>
 					<input type="hidden" name="contentRelateds[${related?index}].id" value="${related.id}"/>
 					<input type="hidden" name="contentRelateds[${related?index}].relatedContentId" value="${related.relatedContentId!}"/>
-					<input class="required" type="text" name="contentRelateds[${related?index}].title" value="${related.relatedContentId}" size="50" maxlength="255" class="required" />
+					<input class="required" type="text" name="contentRelateds[${related?index}].title" value="${related.title}" size="40" maxlength="255" class="required" />
 					<a class="btnLook" href="cmsContent/lookup.html" lookupGroup="contentRelateds[${related?index}]" lookupPk="relatedContentId" width="560" height="300">选择</a>
 				</td>
 				<td>
-					<input class="required" type="text" name="contentRelateds[${related?index}].url" value="${related.url!}" size="50" maxlength="2048"/>
+					<input class="required" type="text" name="contentRelateds[${related?index}].url" value="${(related.url?html)!}" size="40" maxlength="2048"/>
 				</td>
 				<td>
-					<textarea name="contentRelateds[${related?index}].description" rows="2" cols="80" maxlength="300">${related.description!}</textarea>
+					<textarea name="contentRelateds[${related?index}].description" rows="2" cols="60" maxlength="300">${(related.description?html)!}</textarea>
 				</td>
 				<td>
 					<input class="required digits" type="text" name="contentRelateds[${related?index}].sort" value="${related.sort!}" size="5" maxlength="5"/>

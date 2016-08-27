@@ -11,7 +11,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class LogOperateDao extends BaseDao<LogOperate> {
-    public PageHandler getPage(Integer siteId, String channel, String operate, Integer userId, Date startCreateDate,
+    public PageHandler getPage(Integer siteId, String channel, String operate, Long userId, Date startCreateDate,
             Date endCreateDate, String content, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogOperate bean");
         if (notEmpty(siteId)) {
@@ -48,9 +48,11 @@ public class LogOperateDao extends BaseDao<LogOperate> {
     }
 
     public int delete(Integer siteId, Date createDate) {
-        QueryHandler queryHandler = getDeleteQueryHandler("from LogOperate bean");
-        if (notEmpty(siteId)) {
-            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        if (notEmpty(siteId) || notEmpty(createDate)) {
+            QueryHandler queryHandler = getDeleteQueryHandler("from LogOperate bean");
+            if (notEmpty(siteId)) {
+                queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+            }
             if (notEmpty(createDate)) {
                 queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
             }

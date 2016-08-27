@@ -20,14 +20,14 @@ import com.sanluan.common.handler.PageHandler;
 public class CmsContentFileService extends BaseService<CmsContentFile> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer contentId, Integer userId, Boolean image, String orderField, String orderType,
+    public PageHandler getPage(Long contentId, Long userId, Boolean image, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(contentId, userId, image, orderField, orderType, pageIndex, pageSize);
     }
 
     @SuppressWarnings("unchecked")
-    public void update(int contentId, Integer userId, List<CmsContentFile> files, List<CmsContentFile> images) {
-        Set<Integer> idList = new HashSet<Integer>();
+    public void update(long contentId, Long userId, List<CmsContentFile> files, List<CmsContentFile> images) {
+        Set<Long> idList = new HashSet<Long>();
         if (notEmpty(images)) {
             for (CmsContentFile entity : images) {
                 if (notEmpty(entity.getId())) {

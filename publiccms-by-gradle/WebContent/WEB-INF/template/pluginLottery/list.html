@@ -19,7 +19,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -40,15 +40,14 @@
 		<thead>
 			<tr>
 				<th>ID</th>
+				<th>标题</th>
 				<th orderField="startDate" class="<#if orderField??&&'startDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">开始日期</th>
 				<th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">结束日期</th>
 				<th>每天发放数量</th>
 				<th>奖品总数</th>
 				<th>剩余数量</th>
 				<th>每天可抽奖次数</th>
-				<th>概率分子</th>
-				<th>概率分母</th>
-				<th>标题</th>
+				<th>概率</th>
 				<th>描述</th>
 			</tr>
 		</thead>
@@ -56,16 +55,15 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
+				<td>${(a.title?html)!}</td>
 				<td>${a.startDate!}</td>
 				<td>${a.endDate!}</td>
 				<td>${a.dayCount!}</td>
 				<td>${a.totalCount!}</td>
 				<td>${a.lastCount!}</td>
 				<td>${a.lotteryCount!}</td>
-				<td>${a.fractions!}</td>
-				<td>${a.numerator!}</td>
-				<td>${a.title!}</td>
-				<td>${a.description!}</td>
+				<td>${a.fractions!}/${a.numerator!}</td>
+				<td>${(a.description?html)!}</td>
 			</tr>
 			</#list>
 		</tbody>

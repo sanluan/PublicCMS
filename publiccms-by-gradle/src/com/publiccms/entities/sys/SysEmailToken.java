@@ -26,7 +26,7 @@ public class SysEmailToken implements java.io.Serializable {
     @MyColumn(title = "验证授权码")
     private String authToken;
     @MyColumn(title = "用户", condition = true)
-    private int userId;
+    private long userId;
     @MyColumn(title = "邮件地址")
     private String email;    
     @MyColumn(title = "创建日期")
@@ -35,7 +35,7 @@ public class SysEmailToken implements java.io.Serializable {
     public SysEmailToken() {
     }
 
-    public SysEmailToken(String authToken, int userId, String email, Date createDate) {
+    public SysEmailToken(String authToken, long userId, String email, Date createDate) {
         this.authToken = authToken;
         this.userId = userId;
         this.email = email;
@@ -53,11 +53,11 @@ public class SysEmailToken implements java.io.Serializable {
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

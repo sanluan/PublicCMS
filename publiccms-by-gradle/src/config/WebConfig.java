@@ -23,42 +23,44 @@ import com.publiccms.logic.component.TemplateComponent;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.publiccms.views.controller.web", useDefaultFilters = false, includeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
+@ComponentScan(basePackages = "com.publiccms.views.controller.web", useDefaultFilters = false, includeFilters = {
+		@ComponentScan.Filter(value = { Controller.class }) })
 public class WebConfig extends WebMvcConfigurerAdapter {
-    @Autowired
-    private TemplateComponent templateComponent;
-    @Autowired
-    private WebContextInterceptor initializingInterceptor;
+	@Autowired
+	private TemplateComponent templateComponent;
+	@Autowired
+	private WebContextInterceptor initializingInterceptor;
 
-    /**
-     * 视图层解析器
-     * 
-     * @return
-     * @throws IOException
-     */
-    @Bean
-    public WebFreeMarkerViewResolver viewResolver() {
-        return new WebFreeMarkerViewResolver() {
-            {
-                setConfiguration(templateComponent.getWebConfiguration());
-                setViewClass(WebFreeMarkerView.class);
-                setContentType("text/html;charset=UTF-8");
-            }
-        };
-    }
+	/**
+	 * 视图层解析器
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	@Bean
+	public WebFreeMarkerViewResolver viewResolver() {
+		return new WebFreeMarkerViewResolver() {
+			{
+				setOrder(0);
+				setConfiguration(templateComponent.getWebConfiguration());
+				setViewClass(WebFreeMarkerView.class);
+				setContentType("text/html;charset=UTF-8");
+			}
+		};
+	}
 
-    /**
-     * 拦截器
-     * 
-     * @return
-     */
-    @Bean
-    public WebContextInterceptor initializingInterceptor() {
-        return new WebContextInterceptor();
-    }
+	/**
+	 * 拦截器
+	 * 
+	 * @return
+	 */
+	@Bean
+	public WebContextInterceptor initializingInterceptor() {
+		return new WebContextInterceptor();
+	}
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(initializingInterceptor);
-    }
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(initializingInterceptor);
+	}
 }

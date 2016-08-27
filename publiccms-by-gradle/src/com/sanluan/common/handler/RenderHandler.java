@@ -2,6 +2,7 @@ package com.sanluan.common.handler;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -143,6 +144,12 @@ public interface RenderHandler {
      * @throws Exception
      */
     public Date getDate(String name) throws Exception;
+
+    /**
+     * @return
+     * @throws Exception
+     */
+    public Locale getLocale() throws Exception;
 
     /**
      * @return

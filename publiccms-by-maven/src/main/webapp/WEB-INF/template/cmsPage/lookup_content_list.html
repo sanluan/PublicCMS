@@ -2,9 +2,8 @@
 	<form id="pagerForm" action="cmsPage/lookup_content_list.html" onsubmit="return divSearch(this, 'lookup_content_list');" method="post">
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
-			<ul class="searchContent two">
+			<ul class="searchContent">
 				<li>
-					<label>模型:</label>
 					<#include "../include_page/modelId.html"/>
 				</li>
 				<li class="colspan">
@@ -19,18 +18,18 @@
 				</li>
 			</ul>
 			<div class="subBar">
-					<ul>
-						<li>
-							<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
-						</li>
-					</ul>
-				</div>
+				<ul>
+					<li>
+						<button type="submit" class="buttonActive">搜索</button>
+					</li>
+				</ul>
+			</div>
 		</div>
 	</form>
 </div>
 <div>
 <@_contentList categoryId=categoryId modelId=modelId title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
-	<table class="list" width="100%" layoutH="128" targetType="dialog" rel="lookup_content_list">
+	<table class="list" width="100%" layoutH="105" targetType="dialog" rel="lookup_content_list">
 		<thead>
 			<tr>
 				<th>使用</th>
@@ -43,8 +42,7 @@
 				<th width="40" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
 				<th width="40" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
 				<th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
-				<th width="70">创建日期</th>
-				<th width="50">状态/审核用户</th>
+				<th width="40">状态</th>
 				<th width="60">子内容</th>
 			</tr>
 		</thead>
@@ -91,10 +89,8 @@
 				<td>${a.comments!}</td>
 				<td>${a.clicks!}</td>
 				<td>${a.publishDate!}</td>
-				<td>${a.createDate!}<#if a.updateDate??>/${a.updateDate}</#if></td>
 				<td>
 					<@t.m 'status.content.'+a.status/>
-					<#if 2==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
 				</td>
 				<td>
 					<#if modelMap[a.modelId?string].hasChild>

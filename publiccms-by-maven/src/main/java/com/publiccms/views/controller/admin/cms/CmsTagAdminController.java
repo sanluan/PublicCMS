@@ -44,10 +44,10 @@ public class CmsTagAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
             CmsTag oldEntity = service.getEntity(entity.getId());
-            if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
-            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId" });
+            entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "searchCount" });
             if (notEmpty(entity)) {
                 logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.tag", getIpAddress(request), getDate(), entity.getId() + ":"
@@ -71,7 +71,7 @@ public class CmsTagAdminController extends AbstractController {
      * @return
      */
     @RequestMapping("delete")
-    public String delete(Integer[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (notEmpty(ids)) {
             SysSite site = getSite(request);
             service.delete(site.getId(), ids);

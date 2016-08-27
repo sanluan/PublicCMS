@@ -9,9 +9,10 @@ import org.springframework.stereotype.Component;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
+import com.sanluan.common.base.Base;
 
 @Component
-public class CmsContentBridge implements FieldBridge {
+public class CmsContentBridge extends Base implements FieldBridge {
     public static CmsContentAttributeService contentAttributeService;
 
     @Autowired
@@ -23,7 +24,7 @@ public class CmsContentBridge implements FieldBridge {
     public void set(String name, Object value, Document document, LuceneOptions luceneOptions) {
         CmsContent content = (CmsContent) value;
         CmsContentAttribute entity = contentAttributeService.getEntity(content.getId());
-        if (null != entity) {
+        if (notEmpty(entity)) {
             content.setDescription(content.getDescription() + entity.getText());
         }
     }

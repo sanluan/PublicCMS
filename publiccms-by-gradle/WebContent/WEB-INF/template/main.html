@@ -17,9 +17,7 @@
 			</a>
 		</p>
 		<p>
-			<a class="button" href="main.html" target="navTab" rel="main">
-				<span>刷新</span>
-			</a>
+			<a class="button" href="main.html" target="navTab" rel="main">刷新</a>
 		</p>
 	</div>
 	<div class="divider"></div>
@@ -40,13 +38,13 @@
 	<div class="divider"></div>
 	<div class="unit">
 		<p>
-			<label>静态站点地址:</label><a href="${site.sitePath}" target="_blank">${site.sitePath}</a>
+			<label>静态站点地址:</label><a href="${(site.sitePath?html)!}" target="_blank">${(site.sitePath?html)!}</a>
 		</p>
 		<p>
-			<label>动态站点地址:</label><a href="${site.dynamicPath}" target="_blank">${site.dynamicPath}</a>
+			<label>动态站点地址:</label><a href="${(site.dynamicPath?html)!}" target="_blank">${(site.dynamicPath?html)!}</a>
 		</p>
 		<p>
-			<label>资源文件地址:</label><a href="${site.resourcePath}" target="_blank">${site.resourcePath}</a>
+			<label>资源文件地址:</label><a href="${(site.resourcePath?html)!}" target="_blank">${(site.resourcePath?html)!}</a>
 		</p>
 	</div>
 	<div class="divider"></div>
@@ -159,7 +157,7 @@ window.memoryInterval=setInterval(function () {
 		}
 		memoryChart.countChart.setOption({
 			title:{
-				subtext: '占用内存:'+memoryChart.toDecimal(data.totalMemory/1048576)+'MB',
+				subtext: '占用内存:'+memoryChart.toDecimal(data.totalMemory/1048576)+'MB'
 			},
 			series: [{
 	             name: '内存使用',
@@ -282,76 +280,32 @@ echarts.init(document.getElementById('disk')).setOption({
 	</div>
 	<div class="divider"></div>
 </@_systemProperties>
+</@_masterSite>
 <@_version>
 	<div class="unit">
-		<p>
-			<label>FreeMarker:</label>
-			<a href="http://freemarker.org/" target="_blank">${.version}</a>
-			(<a href="http://freemarker.org/docs/app_license.html" target="_blank">Apache License2</a>)
-		</p>
-		<p>
-			<label>Spring Framework:</label>
-			<a href="http://projects.spring.io/spring-framework/" target="_blank">${spring}</a>
-			(<a href="https://github.com/spring-projects/spring-framework" target="_blank">Apache License2</a>)
-		</p>
-		<p>
-			<label>Hibernate:</label>
-			<a href="http://hibernate.org/orm/" target="_blank">${hibernate}</a>
-			(<a href="http://hibernate.org/community/license/" target="_blank">LGPL 2.1 License</a>)
-		</p>
-		<p>
-			<label>Hibernate Search:</label>
-			<a href="http://hibernate.org/search/" target="_blank">${hibernateSearch}</a>
-			(<a href="https://raw.githubusercontent.com/hibernate/hibernate-search/master/lgpl.txt" target="_blank">LGPL 2.1 License</a>)
-		</p>
-		<p>
-			<label>lucene:</label>
-			<a href="http://lucene.apache.org/" target="_blank">${lucene}</a>
-			(<a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License2</a>)
-		</p>
-		<p>
-			<label>Jquery:</label>
-			<a id="JQueryVersion" href="http://jquery.com/" target="_blank"></a>
-			(<a href="https://jquery.org/license/" target="_blank">The MIT License</a>)
-		</p>
-		<p>
-			<label>jUI:</label>
-			<a id="jUIVersion" href="http://jui.org/" target="_blank"></a>
-			(<a href="https://code.csdn.net/dwzteam/dwz_jui" target="_blank">Apache License2</a>)
-		</p>
-		<p>
-			<label>Font Awesome:</label>
-			<a href="http://fontawesome.io/3.2.1/icons/" target="_blank">3.2.1 </a>
-			(<a href="http://fontawesome.io/3.2.1/license/" target="_blank">SIL OFL 1.1</a>)
-		</p>
-		<p>
-			<label>Echarts:</label>
-			<a id="EchartsVersion" href="http://echarts.baidu.com/" target="_blank"></a>
-			(<a href="https://github.com/ecomfe/echarts/blob/master/LICENSE" target="_blank">License(BSD)</a>)
-		</p>
-		<p>
-			<label>UEditor:</label>
-			<a id="UEditorVersion" href="http://ueditor.baidu.com/website/" target="_blank"></a>
-			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
-		</p>
-		<script>
-			$('#JQueryVersion').text(jQuery.fn.jquery);
-			$('#EchartsVersion').text(echarts.version);
-			$('#UEditorVersion').text(UE.version);
-			$('#jUIVersion').text(DWZ.version);
-		</script>
-	</div>
-</@_version>
-	<div class="divider"></div>
-</@_masterSite>
-	<@_version>
-	<div class="unit">
-		<p>
+		<p id="cmsVersion">
 			<label>Public CMS:</label>
 			<a href="http://www.publiccms.com/" target="_blank">${cms}</a>
 			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
 		</p>
+	<@_masterSite>
+		<p>
+			<label>节点ID:</label>
+			${cluster}
+		</p>
+		<p>
+			<label>节点属性:</label>
+			${master?string('管理节点','[普通节点]')}
+		</p>
+		<script>
+			$.getJSON('http://cms.publiccms.com/api/directive/version?callback=?',function(data){
+				if($('#cmsVersion a').eq(0).text()!==data.cms){
+					$('#cmsVersion a').eq(0).append('[<em style="color:red">有新版本</em>]');
+				}
+			});
+		</script>
+	</@_masterSite>
 	</div>
 	<div class="divider"></div>
-	</@_version>
+</@_version>
 </div>

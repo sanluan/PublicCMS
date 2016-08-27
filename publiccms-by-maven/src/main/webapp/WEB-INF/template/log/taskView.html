@@ -1,6 +1,11 @@
 <@_logTask id=id><#assign a=object/></@_logTask>
 <div class="pageContent">
-	<div class="pageFormContent" layoutH="57">
+	<div class="formBar">
+		<ul>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="56">
 		<dl>
 			<dt>任务计划:</dt>
 			<dd>
@@ -26,13 +31,8 @@
 		<dl class="nowrap">
 			<dt>执行结果:</dt>
 			<dd>
-				<textarea name="description" style="width: 100%;" rows="20">${(a.result)!}</textarea>
+				<textarea name="description" style="width: 100%;" rows="20">${(a.result?html)!}</textarea>
 			</dd>
 		</dl>
-	</div>
-	<div class="formBar">
-		<ul>
-			<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
-		</ul>
 	</div>
 </div>

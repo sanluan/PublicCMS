@@ -29,7 +29,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -61,12 +61,12 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
-				<td>${a.name!}</td>
+				<td>${(a.name?html)!}</td>
 				<td>${a.channel!}</td>
 				<td>${a.ip!}</td>
 				<td>${a.result?then('成功','失败')}</td>
 				<td>${a.createDate!}</td>
-				<td>${a.errorPassword!}</td>
+				<td>${(a.errorPassword?html)!}</td>
 			</tr>
 			</#list>
 		</tbody>

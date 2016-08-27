@@ -5,12 +5,14 @@
 <div class="pageHeader">
 	<form id="pagerForm" onsubmit="return dwzSearch(this, 'dialog');" action="sysUser/lookup.html" method="post">
 		<#include "../include_page/paramters.html"/>
+		<input type="hidden" name="field" value="${field!'userId'}"/>
+		<input type="hidden" name="nickNameField" value="${nickNameField!'nickName'}"/>
 		<div class="searchBar">
 			<table class="searchContent">
 				<tr>
 					<td>
 						<label>名称:</label>
-						<input type="text" name="name" value="${name!}" />
+						<input type="text" name="name" value="${(name?html)!}" />
 					</td>
 					<td>
 						<label>状态:</label>
@@ -52,7 +54,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -60,7 +62,7 @@
 	</form>
 </div>
 <div class="pageContent">
-	<table class="list" width="100%" layoutH="137">
+	<table class="list" width="100%" layoutH="86">
 		<thead>
 			<tr>
 				<th>选择</th>
@@ -78,11 +80,11 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>
-					<a class="btnSelect" href="javascript:;" onclick="$.bringBack({userId:'${a.id}',nickName:'${a.nickName}'});return false;" title="选择">选择</a>
+					<a class="btnSelect" href="javascript:;" onclick="$.bringBack({${field!'userId'}:'${a.id}',${nickNameField!'nickName'}:'${(a.nickName?html?js_string)!}'});return false;" title="选择">选择</a>
 				</td>
-				<td>${a.name}</td>
-				<td>${a.nickName}${(a.superuserAccess)?then('[<font color="red">超级管理员</font>]','')}</td>
-				<td>${a.email!}</td>
+				<td>${(a.name?html)!}</td>
+				<td>${(a.nickName?html)!}${(a.superuserAccess)?then('[<font color="red">超级管理员</font>]','')}</td>
+				<td>${(a.email?html)!}</td>
 				<td>${a.emailChecked?then('已验证','未验证')}</td>
 				<td>${a.lastLoginDate!}</td>
 				<td>${a.lastLoginIp!}</td>

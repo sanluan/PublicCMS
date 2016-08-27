@@ -20,16 +20,16 @@
 </#macro>
 	<div layoutH="0" style="float:left; display:block; overflow:auto; width:240px;border-right:solid 1px #CCC; line-height:21px;">
 		<h2 class="contentTitle">
-			<a href="cmsTemplate/createPlace.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/createPlace">创建推荐位</a>
+			<a class="button" href="cmsTemplate/createPlace.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/createPlace">创建推荐位</a>
 		</h2>
-		<ul class="tree treeFolder">
+		<ul class="tree treeFolder" layoutH="44">
 			<li>
 				<a href="javascript:;">推荐位</a>
 				<ul><@templateTree path/></ul>
 			</li>
 	     </ul>
 	</div>
-	<div id="cmsTemplatePlace" class="unitBox" style="margin-left:240px;">
+	<div id="cmsTemplatePlace" style="margin-left:240px;">
 		
 	</div>
 </div>

@@ -29,7 +29,7 @@ public class SysUserToken implements java.io.Serializable {
     @MyColumn(title = "站点", condition = true)
     private int siteId;
     @MyColumn(title = "用户", condition = true)
-    private int userId;
+    private long userId;
     @MyColumn(title = "授权渠道", condition = true)
     private String channel;
     @MyColumn(title = "授权日期", order = true)
@@ -40,7 +40,7 @@ public class SysUserToken implements java.io.Serializable {
     public SysUserToken() {
     }
 
-    public SysUserToken(String authToken, int siteId, int userId, String channel, Date createDate, String loginIp) {
+    public SysUserToken(String authToken, int siteId, long userId, String channel, Date createDate, String loginIp) {
         this.authToken = authToken;
         this.siteId = siteId;
         this.userId = userId;
@@ -69,11 +69,11 @@ public class SysUserToken implements java.io.Serializable {
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

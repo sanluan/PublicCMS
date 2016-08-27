@@ -30,7 +30,7 @@ public class PluginLotteryAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
             PluginLottery oldEntity = service.getEntity(entity.getId());
-            if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "extendId" });
@@ -54,7 +54,7 @@ public class PluginLotteryAdminController extends AbstractController {
         SysSite site = getSite(request);
         PluginLottery entity = service.getEntity(id);
         if (notEmpty(entity)) {
-            if (virifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);

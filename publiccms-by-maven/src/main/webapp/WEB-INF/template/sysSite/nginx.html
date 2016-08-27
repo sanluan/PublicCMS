@@ -1,16 +1,21 @@
 <@_sysSite id=siteId><#assign a=object/></@_sysSite>
-<div class="pageContent">
-	<div class="pageFormContent" layoutH="57">
-		<dl class="nowrap">
-			<dt>站点名称:</dt>
-			<dd>
-				${(a.name)!}
-			</dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>Nginx配置:</dt>
-			<dd>
-				<textarea id="nginx" name="description" style="width: 100%;" rows="20"><@_disk>
+<div class="formBar">
+	<ul>
+		<li><button type="button" class="button close">关闭</button></li>
+	</ul>
+</div>
+<div class="pageFormContent" layoutH="56">
+	<dl class="nowrap">
+		<dt>站点名称:</dt>
+		<dd>
+			${(a.name?html)!}
+		</dd>
+	</dl>
+	<dl class="nowrap">
+		<dt>Nginx配置:</dt>
+		<dd>
+			<textarea id="nginx" name="description" style="width: 100%;" rows="20"><@_disk>
+<#assign rootPath=rootPath?replace('\\','/')/>
 <@_sysDomainList advanced=true siteId=siteId>
 	<#if page.totalCount gt 0>
 		<#assign dynamicPath=a.dynamicPath/>
@@ -22,7 +27,7 @@
 			<#assign dynamicPath=dynamicPath[0..dynamicPath?index_of('/')-1]/>
 		</#if>
 		<#if dynamicPath?index_of(':') gt 0>
-			<#assign dynamicPort=dynamicPath[sitePath?index_of(':')+1..]/>
+			<#assign dynamicPort=dynamicPath[dynamicPath?index_of(':')+1..]/>
 		</#if>
 		<#assign ports =[dynamicPort!80]/>
 		<#assign domains=[]/>
@@ -61,7 +66,7 @@ server {
 	}
 			</#if>
 			<#if a.resourcePath?starts_with(a.dynamicPath)>
-	location /${a.resourcePath[a.dynamicPath.length..]} {
+	location /${a.resourcePath[a.dynamicPath?length..]} {
 		alias ${rootPath}/resource/site_${siteId}/;
 	}
 			</#if>
@@ -143,13 +148,7 @@ server {
         indentWithTabs : true
 	});
 </script>
-				<span class="info">本站点配置应该包含在nginx配置文件 http包中,点击这里查看<a href="sysSite/nginxCommon.html" target="dialog" rel="nginx_common">Nginx通用配置</a></span>
-			</dd>
-		</dl>
-	</div>
-	<div class="formBar">
-		<ul>
-			<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
-		</ul>
-	</div>
+			<span class="info">本站点配置应该包含在nginx配置文件 http包中,点击这里查看<a href="sysSite/nginxCommon.html" target="dialog" rel="nginx_common">Nginx通用配置</a></span>
+		</dd>
+	</dl>
 </div>

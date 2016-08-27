@@ -28,12 +28,12 @@ public class SysRoleUser implements java.io.Serializable {
     @MyColumn(title = "角色", condition = true)
     private int roleId;
     @MyColumn(title = "用户", condition = true)
-    private int userId;
+    private long userId;
 
     public SysRoleUser() {
     }
 
-    public SysRoleUser(int roleId, int userId) {
+    public SysRoleUser(int roleId, long userId) {
         this.roleId = roleId;
         this.userId = userId;
     }
@@ -59,11 +59,11 @@ public class SysRoleUser implements java.io.Serializable {
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

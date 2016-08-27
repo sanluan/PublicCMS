@@ -1,0 +1,25 @@
+<div class="pageFormContent">
+<@_sysConfigItemList code=code>
+	<#list list as a>
+	<div class="unit">
+		<p>
+			${a.description}
+		</p>
+		<p>
+		<@_sysAuthorized roleIds=admin.roles urls='sysConfig/config,sysConfig/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+		<#if authorizedMap['sysConfig/config']>
+			<label>
+				<a class="button" href="sysConfig/config.html?code=${code}&subcode=${a.code}" target="navTab" rel="sysConfig/config">修改配置</a>
+			</label>
+		</#if>
+		<#if authorizedMap['sysConfig/delete']>
+			<label>
+				<a class="button" href="sysConfig/delete.do?code=${code}&subcode=${a.code}" title="确定要 清空配置么?"  target="ajaxTodo">清空配置</a>
+			</label>
+		</#if>
+		</p>
+	</div>
+	<div class="divider"></div>
+	</#list>
+</@_sysConfigItemList>
+</div>

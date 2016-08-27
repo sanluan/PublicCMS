@@ -21,11 +21,11 @@ import com.sanluan.common.handler.PageHandler;
 public class SysRoleUserService extends BaseService<SysRoleUser> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer roleId, Integer userId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer roleId, Long userId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(roleId, userId, pageIndex, pageSize);
     }
 
-    public void dealRoleUsers(Integer userId, Integer[] roleIds) {
+    public void dealRoleUsers(Long userId, Integer[] roleIds) {
         @SuppressWarnings("unchecked")
         List<SysRoleUser> list = (List<SysRoleUser>) getPage(null, userId, null, null).getList();
         if (notEmpty(roleIds)) {
@@ -43,7 +43,7 @@ public class SysRoleUserService extends BaseService<SysRoleUser> {
         }
     }
 
-    public int deleteByUserId(Integer userId) {
+    public int deleteByUserId(Long userId) {
         return dao.deleteByUserId(userId);
     }
 

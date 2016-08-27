@@ -1,64 +1,54 @@
 <@_pluginLottery id=id><#assign a=object/></@_pluginLottery>
-<div class="pageContent">
-	<form method="post" action="pluginLottery/save.do?callbackType=closeCurrent&navTabId=pluginLottery/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-		<input name="id" type="hidden" value="${id!}" />
-		<div class="pageFormContent" layoutH="57">
-			<dl>
-				<dt>ID:</dt>
-				<dd><input class="required" name="id" type="text" size="30" value="${(a.id)!}"/></dd>
-			</dl>
-			<dl>
-				<dt>开始日期:</dt>
-				<dd>
-					<input class="required date" name="startDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
-					<a class="inputDateButton" href="javascript:;">选择</a>
-				</dd>
-			</dl>
-			<dl>
-				<dt>结束日期:</dt>
-				<dd>
-					<input class="required date" name="endDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.endDate)!}"/>
-					<a class="inputDateButton" href="javascript:;">选择</a>
-				</dd>
-			</dl>
-			<dl>
-				<dt>每天发放数量:</dt>
-				<dd><input class="required" name="dayCount" type="text" size="30" value="${(a.dayCount)!}"/></dd>
-			</dl>
-			<dl>
-				<dt>奖品总数:</dt>
-				<dd><input class="required" name="totalCount" type="text" size="30" value="${(a.totalCount)!}"/></dd>
-			</dl>
-			<dl>
-				<dt>剩余数量:</dt>
-				<dd><input class="required" name="lastCount" type="text" size="30" value="${(a.lastCount)!}"/></dd>
-			</dl>
-			<dl>
-				<dt>每天可抽奖次数:</dt>
-				<dd><input class="required" name="lotteryCount" type="text" size="30" value="${(a.lotteryCount)!}"/></dd>
-			</dl>
-			<dl>
-				<dt>概率分子:</dt>
-				<dd><input class="required" name="fractions" type="text" size="30" value="${(a.fractions)!}"/></dd>
-			</dl>
-			<dl>
-				<dt>概率分母:</dt>
-				<dd><input class="required" name="numerator" type="text" size="30" value="${(a.numerator)!}"/></dd>
-			</dl>
-			<dl>
-				<dt>标题:</dt>
-				<dd><input class="required" name="title" type="text" size="30" value="${(a.title)!}"/></dd>
-			</dl>
-			<dl>
-				<dt>描述:</dt>
-				<dd><input class="required" name="description" type="text" size="30" value="${(a.description)!}"/></dd>
-			</dl>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
-	</form>
-</div>
+<form method="post" action="pluginLottery/save.do?callbackType=closeCurrent&navTabId=pluginLottery/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">取消</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="56">
+		<dl class="nowrap">
+			<dt>标题:</dt>
+			<dd><input class="required" name="title" type="text" size="50" value="${(a.title?html)!}"/></dd>
+		</dl>
+		<dl>
+			<dt>开始日期:</dt>
+			<dd>
+				<input class="required date" name="startDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
+				<a class="inputDateButton" href="javascript:;">选择</a>
+			</dd>
+		</dl>
+		<dl>
+			<dt>结束日期:</dt>
+			<dd>
+				<input class="required date" name="endDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.endDate)!}"/>
+				<a class="inputDateButton" href="javascript:;">选择</a>
+			</dd>
+		</dl>
+		<dl>
+			<dt>奖品总数:</dt>
+			<dd><input class="required digits" name="totalCount" type="number" size="3" value="${(a.totalCount)!}"/></dd>
+		</dl>
+		<dl>
+			<dt>每天发放数量:</dt>
+			<dd><input class="required digits" name="dayCount" type="number" size="3" value="${(a.dayCount)!}"/></dd>
+		</dl>
+		<dl>
+			<dt>剩余数量:</dt>
+			<dd><input class="required digits" name="lastCount" type="number" size="3" value="${(a.lastCount)!}"/></dd>
+		</dl>
+		<dl>
+			<dt>每天可抽奖次数:</dt>
+			<dd><input class="required digits" name="lotteryCount" type="text" size="3" value="${(a.lotteryCount)!}"/></dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>中奖概率:</dt>
+			<dd><input class="required digits" name="fractions" type="text" size="3" value="${(a.fractions)!}"/><label style="width:2px;">/</label><input class="required digits" name="numerator" type="text" size="3" value="${(a.numerator)!}"/></dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>描述:</dt>
+			<dd><textarea class="required" name="description" maxlength="300" style="width: 100%;" rows="5"/>${(a.description?html)!}</textarea></dd>
+		</dl>
+	</div>
+</form>

@@ -3,11 +3,20 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>publiccms</groupId>
 	<artifactId>cms</artifactId>
-	<version>V2016.0510</version>
+	<version>V2016.0828</version>
 	<packaging>war</packaging>
 	<name>PublicCMS</name>
 	<url>http://www.publiccms.com/</url>
 	<description>PublicCMS</description>
+	<properties>
+		<springVersion>4.3.2.RELEASE</springVersion>
+		<hibernateVersion>5.1.1.Final</hibernateVersion>
+		<hibernateSearchVersion>5.5.4.Final</hibernateSearchVersion>
+		<freemarkerVersion>2.3.25-incubating</freemarkerVersion>
+		<httpclientVersion>4.5.2</httpclientVersion>
+		<jacksonVersion>2.8.1</jacksonVersion>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.freemarker</groupId>
@@ -51,11 +60,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-jdbc</artifactId>
-			<version>${springVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${springVersion}</version>
 		</dependency>
@@ -63,11 +67,6 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-			<version>${hibernateVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -91,11 +90,6 @@
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-core</artifactId>
-			<version>${jacksonVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>${jacksonVersion}</version>
 		</dependency>
@@ -103,11 +97,6 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
 			<version>${jacksonVersion}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>${httpclientVersion}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.httpcomponents</groupId>
@@ -193,15 +182,6 @@
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
-	<properties>
-		<springVersion>4.2.4.RELEASE</springVersion>
-		<hibernateVersion>5.1.0.Final</hibernateVersion>
-		<hibernateSearchVersion>5.5.2.Final</hibernateSearchVersion>
-		<freemarkerVersion>2.3.23</freemarkerVersion>
-		<httpclientVersion>4.5.1</httpclientVersion>
-		<jacksonVersion>2.6.1</jacksonVersion>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 	<build>
 		<defaultGoal>compile</defaultGoal>
 		<plugins>

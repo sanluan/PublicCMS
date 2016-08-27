@@ -7,7 +7,9 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.logic.component.MetadataComponent;
+
 import static com.publiccms.logic.component.TemplateComponent.INCLUDE_DIRECTORY;
+
 import com.sanluan.common.handler.RenderHandler;
 
 @Component
@@ -28,6 +30,11 @@ public class PlaceMetadataDirective extends AbstractTemplateDirective {
                     metadataComponent.getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(getSite(handler),
                             INCLUDE_DIRECTORY + dir))).render();
         }
+    }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

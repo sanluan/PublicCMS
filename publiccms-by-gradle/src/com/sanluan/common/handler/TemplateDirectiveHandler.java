@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -163,6 +164,11 @@ public class TemplateDirectiveHandler extends BaseHandler {
     public Date getDate(String name) throws TemplateModelException, ParseException {
         regristerParamter(PARAMETER_TYPE_DATE, name);
         return converDate(getModel(name));
+    }
+
+    @Override
+    public Locale getLocale() throws Exception {
+        return environment.getLocale();
     }
 
     @Override

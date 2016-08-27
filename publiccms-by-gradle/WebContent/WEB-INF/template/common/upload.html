@@ -3,6 +3,7 @@ var imagesSuffix=["png","gif","jpg","jpeg","bmp"];
 var resourcePath = '${site.resourcePath}';
 function checkFileType(){
 <#if onlyImage?has_content>
+	<#assign image=true/>
 	var filenames=$('input[name=file]',$.pdialog.getCurrent()).val().toLowerCase().split('.');
 	if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
 		return true;
@@ -27,46 +28,44 @@ function selectFile(path){
 }
 </script>
 <form action="file/doUpload.do" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
-	<div class="pageContent">
-		<div class="pageFormContent">
-			<div id="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
-			<dl>
-				<dt>附件:</dt>
-				<dd>
-					<input type="hidden" name="field" value="${field!'fileName'}"/>
-					<input type="hidden" name="onlyImage" value="${onlyImage!'false'}"/>
-					<input type="file" name="file" class="required" size="30" />
-				</dd>
-			</dl>
-			<ul class="tree" style="height:200px">
-			<#if admin?has_content>
-		<@_logOperateList operate='uploadfile' userId=admin.id pageIndex=1 count=5>
-			<#list page.list as a>
-				<li><a href="javascript:;" onclick="if(selectFile('${a.content!}')){$.bringBack({'${field!'fileName'}':'${a.content!}'});}return false;">${a.content!}</a></li>
-			</#list>
-		</@_logOperateList>
-			</ul>
-			<script>
-				$('ul li a',$.pdialog.getCurrent()).hover(function(){
-					var filenames=$(this).text().toLowerCase().split('.');
-					if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
-						if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
-							$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).text());
-						}else{
-							$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',resourcePath+$(this).text());
-						}
+	<div class="formBar">
+		<ul>
+			<li><button type="submit"  class="buttonActive"onclick="return checkFileType();">上传</button></li>
+			<li><button type="button"  class="button close">取消</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="56">
+		<div id="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
+		<dl>
+			<dt>附件:</dt>
+			<dd>
+				<input type="hidden" name="field" value="${field!'fileName'}"/>
+				<input type="hidden" name="onlyImage" value="${onlyImage!'false'}"/>
+				<input type="file" name="file" class="required" size="30" />
+			</dd>
+		</dl>
+		<ul class="tree" style="height:200px">
+		<#if admin?has_content>
+	<@_logUploadList userId=admin.id image=image pageIndex=1 count=5>
+		<#list page.list as a>
+			<li><a href="javascript:;" onclick="if(selectFile('${a.filePath!}')){$.bringBack({'${field!'fileName'}':'${a.filePath!}'});}return false;">${a.filePath!}</a></li>
+		</#list>
+	</@_logUploadList>
+		</ul>
+		<script>
+			$('ul li a',$.pdialog.getCurrent()).hover(function(){
+				var filenames=$(this).text().toLowerCase().split('.');
+				if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+					if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
+						$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).text());
+					}else{
+						$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',resourcePath+$(this).text());
 					}
-				},function(){
-					$('#preview',$.pdialog.getCurrent()).hide();
-				});
-			</script>
-			</#if>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit" onclick="return checkFileType();">上传</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
-			</ul>
-		</div>
+				}
+			},function(){
+				$('#preview',$.pdialog.getCurrent()).hide();
+			});
+		</script>
+		</#if>
 	</div>
 </form>

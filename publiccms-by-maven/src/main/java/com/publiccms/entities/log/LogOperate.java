@@ -28,11 +28,11 @@ public class LogOperate implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "站点", condition = true)
     private int siteId;
     @MyColumn(title = "用户", condition = true)
-    private int userId;
+    private long userId;
     @MyColumn(title = "渠道", condition = true)
     private String channel;
     @MyColumn(title = "操作", condition = true)
@@ -47,7 +47,7 @@ public class LogOperate implements java.io.Serializable {
     public LogOperate() {
     }
 
-    public LogOperate(int siteId, int userId, String channel, String operate, Date createDate, String content) {
+    public LogOperate(int siteId, long userId, String channel, String operate, Date createDate, String content) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
@@ -56,7 +56,7 @@ public class LogOperate implements java.io.Serializable {
         this.content = content;
     }
 
-    public LogOperate(int siteId, int userId, String channel, String operate, String ip, Date createDate, String content) {
+    public LogOperate(int siteId, long userId, String channel, String operate, String ip, Date createDate, String content) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
@@ -69,11 +69,11 @@ public class LogOperate implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -87,11 +87,11 @@ public class LogOperate implements java.io.Serializable {
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

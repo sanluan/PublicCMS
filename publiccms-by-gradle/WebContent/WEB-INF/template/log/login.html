@@ -4,14 +4,6 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>登录结果:</label>
-					<select class="combox" name="result">
-						<option value=""${(!result?has_content)?then(' selected="true"','')}>不限</option>
-						<option value="1"${(result?has_content&&"1"==result)?then(' selected="true"','')}>成功</option>
-						<option value="0"${(result?has_content&&"0"==result)?then(' selected="true"','')}>失败</option>
-					</select>
-				</li>
-				<li>
 					<label>渠道:</label>
 					<input type="text" name="channel" value="${channel!}" />
 				</li>
@@ -30,6 +22,14 @@
 					<input type="text" name="endCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
 				</li>
 				<li>
+					<label>登录结果:</label>
+					<select class="combox" name="result">
+						<option value=""${(!result?has_content)?then(' selected="true"','')}>不限</option>
+						<option value="true"${(result?has_content&&"true"==result)?then(' selected="true"','')}>成功</option>
+						<option value="false"${(result?has_content&&"false"==result)?then(' selected="true"','')}>失败</option>
+					</select>
+				</li>
+				<li>
 					<label>IP:</label>
 					<input type="text" name="ip" value="${ip!}" />
 				</li>
@@ -37,7 +37,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -70,13 +70,25 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
-				<td>${a.name!}</td>
-				<td>${a.userId!}</td>
-				<td>${a.channel!}</td>
+				<td>${(a.name?html)!}</td>
+				<td>
+					<a href="log/login.html?userId=${a.userId!}" target="navTab" rel="log/login">
+						${a.userId!}
+					</a>
+				</td>
+				<td>
+					<a href="log/login.html?channel=${a.channel!}" target="navTab" rel="log/login">
+						${a.channel!}
+					</a>
+				</td>
 				<td>${a.ip!}</td>
-				<td>${a.result?then('成功','失败')}</td>
+				<td>
+					<a href="log/login.html?result=${a.result?string}" target="navTab" rel="log/login">
+						${a.result?then('成功','失败')}
+					</a>
+				</td>
 				<td>${a.createDate!}</td>
-				<td>${a.errorPassword!}</td>
+				<td>${(a.errorPassword?html)!}</td>
 			</tr>
 			</#list>
 		</tbody>

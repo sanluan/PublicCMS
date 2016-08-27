@@ -3,9 +3,13 @@ package com.publiccms.views.pojo;
 import java.util.List;
 
 import com.publiccms.entities.sys.SysExtendField;
-import com.sanluan.common.base.Base;
 
-public class CmsModelParamters extends Base {
+public class CmsModelParamters implements java.io.Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     List<SysExtendField> contentExtends;
 
     public List<SysExtendField> getContentExtends() {

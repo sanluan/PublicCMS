@@ -22,7 +22,7 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.name!}</td>
+				<td>${(a.name?html)!}</td>
 				<td>${a.count!}</td>
 			</tr>
 			</#list>

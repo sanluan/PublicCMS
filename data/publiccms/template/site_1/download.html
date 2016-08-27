@@ -19,23 +19,26 @@
 <@include path="ftl/dynamic-user.ftl"/> <#-- 动态站点用户状态 -->
 <main>
     <div class="container">
-		<#if result?has_content>
-			<#if error?has_content>
-				<@import path="/ftl/tools.ftl" namespace="t"/>
-				<p class="message red"><@t.m error/></p>
-			<#else>
-				<p class="message">提交成功，感谢您贡献下载链接，请等待审核通过</p>
-			</#if>
-		<#else>
-			<form method="post" action="//cms.publiccms.com/place/save.do" onsubmit="return check();">
-				<input name="path" type="hidden" value="/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html" />
-				<input name="returnUrl" type="hidden" value="${site.dynamicPath}friendlink.html?result=true" />
-				<p><label>下载链接标题:</label><input name="title" type="text" size="60" maxlength="60" value=""/></p>
-				<p><label>下载链接地址:</label><input name="url" type="text" size="60"  maxlength="60" value=""/></p>
-				<p><input type="submit" value="提交"/></p>
-			</form>
-		</#if>
+		<div class="data-list left-content">
+			<h3>下载链接</h3>
+			<@_placeList path='/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html'>
+				<#list page.list as a>
+					<p><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></p>
+				</#list>
+			</@_placeList>
+			<h3>源码托管</h3>
+			<@_placeList path='/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html'>
+				<#list page.list as a>
+					<p><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></p>
+				</#list>
+			</@_placeList>
+		</div>
+		<aside>
+            <@_includePlace path="/index.html/2ac8682d-d844-4d95-921d-8c92b89e515c.html"/> <#-- 开源中国 -->
+            <@_includePlace path="/index.html/30ef2211-1197-4725-b253-e5dc12af1b21.html"/> <#-- github -->
+		</aside>
     </div>
+	<div class="clearfix-before"></div>
 </main>
 <@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
 </body>

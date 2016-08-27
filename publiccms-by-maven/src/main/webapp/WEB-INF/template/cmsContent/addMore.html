@@ -1,5 +1,10 @@
 <div class="pageContent">
-	<div class="pageFormContent" layoutH="58">
+	<div class="formBar">
+		<ul>
+			<li><div class="button"><button class="close" type="button">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="56">
 		<ul class="tree expand">
 	<#if categoryId?has_content>
 		<@_modelList parentId=(parent.modelId)!''>
@@ -19,9 +24,4 @@
 		$.pdialog.closeCurrent();
 	});
 	</script>
-	<div class="formBar">
-		<ul>
-			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
-		</ul>
-	</div>
 </div>

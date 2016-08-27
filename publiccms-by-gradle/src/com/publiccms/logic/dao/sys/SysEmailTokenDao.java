@@ -11,7 +11,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SysEmailTokenDao extends BaseDao<SysEmailToken> {
-    public PageHandler getPage(Integer userId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Long userId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysEmailToken bean");
         if (notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
@@ -21,11 +21,12 @@ public class SysEmailTokenDao extends BaseDao<SysEmailToken> {
     }
 
     public int delete(Date createDate) {
-        QueryHandler queryHandler = getDeleteQueryHandler("from SysEmailToken bean");
         if (notEmpty(createDate)) {
+            QueryHandler queryHandler = getDeleteQueryHandler("from SysEmailToken bean");
             queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
+            return delete(queryHandler);
         }
-        return delete(queryHandler);
+        return 0;
     }
 
     @Override

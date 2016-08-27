@@ -30,10 +30,6 @@ public class SysDomain implements java.io.Serializable {
     private int siteId;
     @MyColumn(title = "路径")
     private String path;
-    @MyColumn(title = "登陆模板路径")
-    private String loginPath;
-    @MyColumn(title = "注册模板路径")
-    private String registerPath;
 
     public SysDomain() {
     }
@@ -43,12 +39,10 @@ public class SysDomain implements java.io.Serializable {
         this.siteId = siteId;
     }
 
-    public SysDomain(String name, int siteId, String path, String loginPath, String registerPath) {
+    public SysDomain(String name, int siteId, String path) {
         this.name = name;
         this.siteId = siteId;
         this.path = path;
-        this.loginPath = loginPath;
-        this.registerPath = registerPath;
     }
 
     @Id
@@ -87,24 +81,6 @@ public class SysDomain implements java.io.Serializable {
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    @Column(name = "login_path")
-    public String getLoginPath() {
-        return this.loginPath;
-    }
-
-    public void setLoginPath(String loginPath) {
-        this.loginPath = loginPath;
-    }
-
-    @Column(name = "register_path")
-    public String getRegisterPath() {
-        return this.registerPath;
-    }
-
-    public void setRegisterPath(String registerPath) {
-        this.registerPath = registerPath;
     }
 
 }

@@ -5,13 +5,13 @@
 			<ul class="searchContent">
 				<li>
 					<label>用户名:</label>
-					<input type="text" name="name" value="${name!}" />
+					<input type="text" name="name" value="${(name?html)!}" />
 				</li>
 			</ul>
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -39,8 +39,8 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.name!}</td>
-				<td>${a.path!}</td>
+				<td>${(a.name?html)!}</td>
+				<td>${(a.path?html)!}</td>
 			</tr>
 			</#list>
 		</tbody>

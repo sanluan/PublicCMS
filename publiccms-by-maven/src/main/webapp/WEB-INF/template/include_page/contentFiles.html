@@ -16,11 +16,11 @@
 			<tr>
 				<td>
 					<input type="hidden" name="${name}[${file?index}].id" value="${file.id}"/>
-					<input type="text" name="${name}[${file?index}].filePath" value="${file.filePath}" size="50" class="required" />
+					<input type="text" name="${name}[${file?index}].filePath" value="${(file.filePath?html)}" size="50" class="required" />
 					<a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath${image?then('&onlyImage=true','')}" width="560" height="300" >${image?then('图片','附件')}</a>
 				</td>
 				<td>
-					<textarea name="${name}[${file?index}].description" rows="2" cols="80" maxlength="300">${file.description!}</textarea>
+					<textarea name="${name}[${file?index}].description" rows="2" cols="80" maxlength="300">${(file.description?html)!}</textarea>
 				</td>
 				<td>
 					<input type="text" name="${name}[${file?index}].sort" value="${file.sort!}" size="5" maxlength="5"/>

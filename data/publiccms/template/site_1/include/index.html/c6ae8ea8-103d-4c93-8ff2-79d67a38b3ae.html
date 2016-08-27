@@ -3,5 +3,6 @@
 	<#list page.list as a>
 		<li><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></li>
 	</#list>
-	<li><a href="${site.dynamicPath}download.html" target="_blank">提交下载链接</a></li>
+	<@_metadata path='/index.html'><#assign metadata=object/></@_metadata>
+	<li><a href="${metadata.extendData.member!}download.html" target="_blank">提交下载链接</a></li>
 </ul>

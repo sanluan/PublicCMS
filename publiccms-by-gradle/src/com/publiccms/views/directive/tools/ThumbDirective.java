@@ -3,16 +3,15 @@ package com.publiccms.views.directive.tools;
 import java.io.File;
 import java.io.IOException;
 
-import net.coobird.thumbnailator.Thumbnails;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.FileComponent;
-import com.publiccms.logic.service.sys.SysSiteService;
-import com.publiccms.common.base.AbstractTemplateDirective;
 import com.sanluan.common.handler.RenderHandler;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 @Component
 public class ThumbDirective extends AbstractTemplateDirective {
@@ -41,9 +40,12 @@ public class ThumbDirective extends AbstractTemplateDirective {
             }
         }
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 
-    @Autowired
-    private SysSiteService sysSiteService;
     @Autowired
     private FileComponent fileComponent;
 }

@@ -13,19 +13,15 @@
 			<tr>
 				<th width="30">ID</th>
 				<th>动态站点域名</th>
-				<th>模板跟路径</th>
-				<th>登陆模板路径</th>
-				<th>注册模板路径</th>
+				<th>模板根路径</th>
 			</tr>
 		</thead>
 		<tbody>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.name!}</td>
-				<td>${a.path!}</td>
-				<td>${a.loginPath!}</td>
-				<td>${a.registerPath!}</td>
+				<td>${(a.name?html)!}</td>
+				<td>${(a.path?html)!}</td>
 			</tr>
 			</#list>
 		</tbody>

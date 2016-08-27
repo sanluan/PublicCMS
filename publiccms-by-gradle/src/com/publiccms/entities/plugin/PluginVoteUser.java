@@ -29,11 +29,11 @@ public class PluginVoteUser implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "投票", condition = true)
     private int lotteryId;
     @MyColumn(title = "用户", condition = true)
-    private Integer userId;
+    private long userId;
     @MyColumn(title = "选项")
     private String itemIds;
     @MyColumn(title = "IP", condition = true)
@@ -44,14 +44,7 @@ public class PluginVoteUser implements java.io.Serializable {
     public PluginVoteUser() {
     }
 
-    public PluginVoteUser(int lotteryId, String itemIds, String ip, Date createDate) {
-        this.lotteryId = lotteryId;
-        this.itemIds = itemIds;
-        this.ip = ip;
-        this.createDate = createDate;
-    }
-
-    public PluginVoteUser(int lotteryId, Integer userId, String itemIds, String ip, Date createDate) {
+    public PluginVoteUser(int lotteryId, long userId, String itemIds, String ip, Date createDate) {
         this.lotteryId = lotteryId;
         this.userId = userId;
         this.itemIds = itemIds;
@@ -62,11 +55,11 @@ public class PluginVoteUser implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -79,16 +72,16 @@ public class PluginVoteUser implements java.io.Serializable {
         this.lotteryId = lotteryId;
     }
 
-    @Column(name = "user_id")
-    public Integer getUserId() {
+    @Column(name = "user_id", nullable = false)
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
-    @Column(name = "item_ids", nullable = false, length = 100)
+    @Column(name = "item_ids", nullable = false, length = 65535)
     public String getItemIds() {
         return this.itemIds;
     }

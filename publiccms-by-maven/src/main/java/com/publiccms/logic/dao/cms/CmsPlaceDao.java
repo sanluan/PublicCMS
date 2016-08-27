@@ -13,7 +13,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsPlaceDao extends BaseDao<CmsPlace> {
-    public PageHandler getPage(Integer siteId, Integer userId, String path, String itemType, Integer itemId,
+    public PageHandler getPage(Integer siteId, Long userId, String path, String itemType, Integer itemId,
             Date startPublishDate, Date endPublishDate, Integer status, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsPlace bean");

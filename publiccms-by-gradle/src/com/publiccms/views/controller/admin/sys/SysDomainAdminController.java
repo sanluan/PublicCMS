@@ -30,26 +30,26 @@ public class SysDomainAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (notEmpty(entity.getId())) {
             if (!entity.getName().equals(service.getEntity(entity.getId()).getName())
-                    && virifyHasExist("domain", service.getEntity(entity.getName()), model)) {
+                    && verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id" });
             if (notEmpty(entity)) {
-                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.domain", getIpAddress(request), getDate(), entity.getId()
-                                + ":" + entity.getName()));
+                logOperateService.save(
+                        new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "update.domain", getIpAddress(request), getDate(), entity.getId() + ":" + entity.getName()));
             }
         } else {
-            if (virifyHasExist("domain", service.getEntity(entity.getName()), model)) {
+            if (verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
                 return TEMPLATE_ERROR;
             }
             if (0 == entity.getSiteId()) {
                 entity.setSiteId(site.getId());
             }
             service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.domain", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.domain", getIpAddress(request), getDate(), entity.getId() + ":" + entity.getName()));
         }
         siteComponent.clear();
         return TEMPLATE_DONE;
@@ -61,9 +61,9 @@ public class SysDomainAdminController extends AbstractController {
         if (notEmpty(entity)) {
             service.delete(id);
             SysSite site = getSite(request);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.domain", getIpAddress(request), getDate(), entity.getId() + ":"
-                            + entity.getName()));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "delete.domain", getIpAddress(request), getDate(), entity.getId() + ":" + entity.getName()));
         }
         siteComponent.clear();
         return TEMPLATE_DONE;

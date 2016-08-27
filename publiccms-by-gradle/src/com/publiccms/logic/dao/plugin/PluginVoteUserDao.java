@@ -13,7 +13,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class PluginVoteUserDao extends BaseDao<PluginVoteUser> {
-    public PageHandler getPage(Integer lotteryId, Integer userId, 
+    public PageHandler getPage(Integer lotteryId, Long userId, 
                 String ip, Date startCreateDate, Date endCreateDate, 
                 String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from PluginVoteUser bean");

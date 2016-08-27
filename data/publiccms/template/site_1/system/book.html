@@ -66,7 +66,7 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 </@_contentList>
 			<script>
 				uParse('#content',{rootPath: '${site.resourcePath!}ueditor'});
-				$.getJSON('${site.dynamicPath!}content/clicks.json?id=${content.id}&callback=?', function(data){});
+				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){});
 			</script>
 			<div id="SOHUCS" class="comment" sid="${content.id}"></div>
 			<script charset="utf-8"src="http://changyan.sohu.com/upload/changyan.js"></script>
@@ -77,9 +77,8 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 				});
 			</script>
 		</article>
-		<aside>
-		</aside>
 	</div>
+	<div class="clearfix-before"></div>
 </main>
 <@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
 </body>

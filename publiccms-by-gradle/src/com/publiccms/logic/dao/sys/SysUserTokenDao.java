@@ -11,7 +11,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SysUserTokenDao extends BaseDao<SysUserToken> {
-    public PageHandler getPage(Integer siteId, Integer userId, String channel, String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer siteId, Long userId, String channel, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysUserToken bean");
         if (notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

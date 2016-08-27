@@ -4,6 +4,7 @@ import static org.apache.commons.lang3.ArrayUtils.removeElement;
 import static org.apache.commons.lang3.StringUtils.split;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +40,14 @@ public class SysUserService extends BaseService<SysUser> {
         return dao.findByEmail(siteId, email);
     }
 
-    public void updatePassword(Integer id, String password) {
+    public void updatePassword(Serializable id, String password) {
         SysUser entity = dao.getEntity(id);
         if (notEmpty(entity)) {
             entity.setPassword(password);
         }
     }
 
-    public SysUser updateLoginStatus(Integer id, String ip) {
+    public SysUser updateLoginStatus(Serializable id, String ip) {
         SysUser entity = dao.getEntity(id);
         if (notEmpty(entity)) {
             entity.setLastLoginDate(getDate());
@@ -56,26 +57,25 @@ public class SysUserService extends BaseService<SysUser> {
         return entity;
     }
 
-    public void deleteRoleIds(Integer userId, Integer roleId) {
+    public void deleteRoleIds(Serializable userId, Integer roleId) {
         SysUser entity = dao.getEntity(userId);
         if (notEmpty(entity)) {
             String roles = entity.getRoles();
             String[] roleArray = split(roles, ',');
             removeElement(roleArray, roleId.toString());
-            roles = arrayToCommaDelimitedString(roleArray);
-            entity.setRoles(roles);
+            entity.setRoles(arrayToCommaDelimitedString(roleArray));
         }
     }
 
-    public void checked(Integer userId, String email) {
-        SysUser entity = dao.getEntity(userId);
+    public void checked(Serializable id, String email) {
+        SysUser entity = dao.getEntity(id);
         if (notEmpty(entity)) {
             entity.setEmail(email);
             entity.setEmailChecked(true);
         }
     }
 
-    public SysUser updateStatus(Integer id, boolean status) {
+    public SysUser updateStatus(Serializable id, boolean status) {
         SysUser entity = dao.getEntity(id);
         if (notEmpty(entity)) {
             entity.setDisabled(status);

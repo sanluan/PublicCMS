@@ -29,17 +29,17 @@ if(0==$('#idsToMove input',$.pdialog.getCurrent()).length){
 	<form action="cmsContent/move.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input type="hidden" name="categoryId" value=""/>
 		<div id="idsToMove"></div>
-		<div class="pageFormContent" layoutH="57">
+		<div class="formBar">
+			<ul>
+				<li><button type="button" class="button close">关闭</button></li>
+			</ul>
+		</div>
+		<div class="pageFormContent" layoutH="56">
 			<ul class="tree expand">
 				<li>
 					<a href="javascript:;">请选择父分类</a>
 					<ul><@categoryTree/></ul>
 				</li>
-			</ul>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
 			</ul>
 		</div>
 	</form>

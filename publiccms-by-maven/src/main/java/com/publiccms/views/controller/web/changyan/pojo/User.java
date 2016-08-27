@@ -7,15 +7,15 @@ public class User implements Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private int user_id;// 用户在自己网站的id
+    private long user_id;// 用户在自己网站的id
     private String nickname;// 用户昵称
     private String sign;// 签名
 
-    public int getUser_id() {
+    public long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(long user_id) {
         this.user_id = user_id;
     }
 

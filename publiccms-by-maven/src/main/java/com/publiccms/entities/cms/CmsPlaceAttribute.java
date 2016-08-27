@@ -21,29 +21,29 @@ public class CmsPlaceAttribute implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "分类")
-    private int placeId;
+    private long placeId;
     @MyColumn(title = "扩展数据")
     private String data;
 
     public CmsPlaceAttribute() {
     }
 
-    public CmsPlaceAttribute(int placeId) {
+    public CmsPlaceAttribute(long placeId) {
         this.placeId = placeId;
     }
 
-    public CmsPlaceAttribute(int placeId, String data) {
+    public CmsPlaceAttribute(long placeId, String data) {
         this.placeId = placeId;
         this.data = data;
     }
 
     @Id
     @Column(name = "place_id", unique = true, nullable = false)
-    public int getPlaceId() {
+    public long getPlaceId() {
         return this.placeId;
     }
 
-    public void setPlaceId(int placeId) {
+    public void setPlaceId(long placeId) {
         this.placeId = placeId;
     }
 

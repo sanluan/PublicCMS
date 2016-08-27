@@ -20,6 +20,11 @@ public class TaskTemplateContentDirective extends AbstractTemplateDirective {
                     .render();
         }
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 
     @Autowired
     private FileComponent fileComponent;

@@ -17,9 +17,11 @@ public class SysDomainListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer siteId = getSite(handler).getId();
-        if (handler.getBoolean("advanced", false) && notEmpty(handler.getInteger("siteId"))) {
+        Integer siteId = null;
+        if (handler.getBoolean("advanced", false)) {
             siteId = handler.getInteger("siteId");
+        } else {
+            siteId = getSite(handler).getId();
         }
         PageHandler page = service.getPage(siteId, handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();

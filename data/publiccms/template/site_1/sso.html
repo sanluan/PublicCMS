@@ -1,3 +1,5 @@
+<@_metadata path='/index.html'><#assign metadata=object/></@_metadata>
+<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
 	<title>${metadata.alias!}</title>
@@ -5,7 +7,7 @@
 </head>
 <body>
 <script type="text/javascript">
-	$.getJSON('${site.dynamicPath}loginStatus.json?callback=?', function(data){
+	$.getJSON('${metadata.extendData.member!}loginStatus.json?callback=?', function(data){
 			if(data.id) {
 				$.cookie('CMS_USER',data.id+'##'+data.nickname+'##'+data.superuserAccess+'##'+data.emailChecked,{expires: 24000});
 			} else {

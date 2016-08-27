@@ -25,6 +25,11 @@ public class MetadataDirective extends AbstractTemplateDirective {
                     .render();
         }
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 
     @Autowired
     private MetadataComponent metadataComponent;

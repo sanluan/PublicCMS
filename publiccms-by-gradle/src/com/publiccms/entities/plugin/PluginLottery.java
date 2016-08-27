@@ -17,7 +17,7 @@ import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.publiccms.common.base.Staticable;
+import com.publiccms.common.spi.Staticable;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**

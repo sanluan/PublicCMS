@@ -17,7 +17,7 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getInteger("contentId"), handler.getInteger("userId"),
+        PageHandler page = service.getPage(handler.getLong("contentId"), handler.getLong("userId"),
                 handler.getBoolean("image"), handler.getString("orderField"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();

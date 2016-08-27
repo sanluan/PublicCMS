@@ -10,7 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.publiccms.common.base.Staticable;
+import com.publiccms.common.spi.Staticable;
 import com.sanluan.common.source.entity.MyColumn;
 
 /**
@@ -44,6 +44,8 @@ public class CmsCategory implements java.io.Serializable, Staticable {
     private String templatePath;
     @MyColumn(title = "路径")
     private String path;
+    @MyColumn(title = "外链")
+    private boolean onlyUrl;
     @MyColumn(title = "有静态化")
     private boolean hasStatic;
     @MyColumn(title = "地址")
@@ -68,20 +70,22 @@ public class CmsCategory implements java.io.Serializable, Staticable {
     public CmsCategory() {
     }
 
-    public CmsCategory(int siteId, String name, String path, boolean hasStatic, 
-            boolean allowContribute, int sort, boolean disabled, int contents) {
+    public CmsCategory(int siteId, String name, String path, boolean onlyUrl, boolean hasStatic, 
+            boolean allowContribute, int sort, boolean hidden, boolean disabled, int contents) {
         this.siteId = siteId;
         this.name = name;
         this.path = path;
+        this.onlyUrl = onlyUrl;
         this.hasStatic = hasStatic;
         this.allowContribute = allowContribute;
         this.sort = sort;
+        this.hidden = hidden;
         this.disabled = disabled;
         this.contents = contents;
     }
 
     public CmsCategory(int siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds,
-            String code, String templatePath, String path, boolean hasStatic, String url, String contentPath,
+            String code, String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url, String contentPath,
             Integer pageSize, boolean allowContribute, int sort, boolean hidden, boolean disabled, int contents, Integer extendId) {
         this.siteId = siteId;
         this.name = name;
@@ -92,6 +96,7 @@ public class CmsCategory implements java.io.Serializable, Staticable {
         this.code = code;
         this.templatePath = templatePath;
         this.path = path;
+        this.onlyUrl = onlyUrl;
         this.hasStatic = hasStatic;
         this.url = url;
         this.contentPath = contentPath;
@@ -160,7 +165,7 @@ public class CmsCategory implements java.io.Serializable, Staticable {
         this.childIds = childIds;
     }
 
-    @Column(name = "tag_type_ids", length = 100)
+    @Column(name = "tag_type_ids", length = 65535)
     public String getTagTypeIds() {
         return this.tagTypeIds;
     }
@@ -194,6 +199,15 @@ public class CmsCategory implements java.io.Serializable, Staticable {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    @Column(name = "only_url", nullable = false)
+    public boolean isOnlyUrl() {
+        return this.onlyUrl;
+    }
+
+    public void setOnlyUrl(boolean onlyUrl) {
+        this.onlyUrl = onlyUrl;
     }
 
     @Column(name = "has_static", nullable = false)

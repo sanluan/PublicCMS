@@ -1,9 +1,13 @@
 package com.publiccms.views.controller.web.user;
 
-import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
-import static com.publiccms.common.constants.CommonConstants.COOKIES_USER_SPLIT;
+import static com.publiccms.common.constants.CommonConstants.getCookiesUser;
+import static com.publiccms.common.constants.CommonConstants.getCookiesUserSplit;
+import static com.publiccms.logic.component.EmailComponent.CONFIG_CODE;
+import static com.publiccms.logic.component.config.EmailTemplateConfigComponent.CONFIG_EMAIL_PATH;
+import static com.publiccms.logic.component.config.EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE;
+import static com.publiccms.logic.component.config.EmailTemplateConfigComponent.CONFIG_SUBCODE;
 import static com.sanluan.common.tools.FreeMarkerUtils.makeStringByFile;
-import static com.sanluan.common.tools.LanguagesUtils.getMessage;
+import static com.sanluan.common.tools.FreeMarkerUtils.makeStringByString;
 import static com.sanluan.common.tools.RequestUtils.getCookie;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static com.sanluan.common.tools.VerificationUtils.encode;
@@ -13,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +34,8 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.MailComponent;
+import com.publiccms.logic.component.ConfigComponent;
+import com.publiccms.logic.component.EmailComponent;
 import com.publiccms.logic.component.TemplateComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
@@ -52,11 +58,13 @@ public class UserController extends AbstractController {
     @Autowired
     private SysUserTokenService sysUserTokenService;
     @Autowired
-    private MailComponent mailComponent;
+    private EmailComponent emailComponent;
     @Autowired
     private TemplateComponent templateComponent;
     @Autowired
     private SysEmailTokenService sysEmailTokenService;
+    @Autowired
+    private ConfigComponent configComponent;
 
     /**
      * @param oldpassword
@@ -72,13 +80,13 @@ public class UserController extends AbstractController {
     public String changePassword(String oldpassword, String password, String repassword, String returnUrl,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysUser user = getUserFromSession(session);
-        if (!virifyNotEmpty("password", password, model) && !virifyNotEquals("repassword", password, repassword, model)) {
-            if (!virifyNotEquals("password", user.getPassword(), encode(oldpassword), model)) {
-                Cookie userCookie = getCookie(request.getCookies(), COOKIES_USER);
+        if (!verifyNotEmpty("password", password, model) && !verifyNotEquals("repassword", password, repassword, model)) {
+            if (!verifyNotEquals("password", user.getPassword(), encode(oldpassword), model)) {
+                Cookie userCookie = getCookie(request.getCookies(), getCookiesUser());
                 if (null != userCookie && notEmpty(userCookie.getValue())) {
                     String value = userCookie.getValue();
                     if (null != value) {
-                        String[] userData = value.split(COOKIES_USER_SPLIT);
+                        String[] userData = value.split(getCookiesUserSplit());
                         if (userData.length > 1) {
                             sysUserTokenService.delete(userData[1]);
                         }
@@ -106,30 +114,56 @@ public class UserController extends AbstractController {
     @RequestMapping(value = "saveEmail")
     public String saveEmail(String email, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (!virifyNotEmpty("email", email, model) && !virifyNotEMail("email", email, model)
-                && virifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE, CONFIG_SUBCODE);
+        String emailTitle = config.get(CONFIG_EMAIL_TITLE);
+        String emailPath = config.get(CONFIG_EMAIL_PATH);
+        if (!verifyNotEmpty("email", email, model) && !verifyNotEmpty("email.config", emailTitle, model)
+                && !verifyNotEmpty("config", emailTitle, model) && !verifyNotEMail("email.config", emailPath, model)
+                && verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
             SysUser user = getUserFromSession(session);
             SysEmailToken sysEmailToken = new SysEmailToken();
             sysEmailToken.setUserId(user.getId());
             sysEmailToken.setAuthToken(UUID.randomUUID().toString());
             sysEmailToken.setEmail(email);
             sysEmailTokenService.save(sysEmailToken);
-
             try {
                 Map<String, Object> emailModel = new HashMap<String, Object>();
                 emailModel.put("user", user);
+                emailModel.put("site", site);
                 emailModel.put("email", email);
                 emailModel.put("authToken", sysEmailToken.getAuthToken());
-                mailComponent.sendHtml(
-                        email,
-                        getMessage(request, "email.register.title", user.getNickName()),
-                        makeStringByFile(getMessage(request, "email.register.template"), templateComponent.getWebConfiguration(),
-                                emailModel));
-            } catch (IOException | TemplateException e) {
-                model.addAttribute("error", "saveEmail.email.error");
+                if (emailComponent.sendHtml(site.getId(), email,
+                        makeStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
+                        makeStringByFile(emailPath, templateComponent.getWebConfiguration(), emailModel))) {
+                    model.addAttribute(MESSAGE, "sendEmail.success");
+                } else {
+                    model.addAttribute(MESSAGE, "sendEmail.error");
+                }
+            } catch (IOException | TemplateException | MessagingException e) {
+                model.addAttribute("error", "sendEmail.error");
             }
-            model.addAttribute(MESSAGE, "saveEmail.success");
         }
+        return REDIRECT + returnUrl;
+    }
+
+    /**
+     * @param code
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("verifyEmail")
+    @ResponseBody
+    public String verifyEmail(String authToken, String returnUrl, HttpSession session, ModelMap model) {
+        SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
+        if (verifyNotEmpty("verifyEmail.authToken", authToken, model)
+                || verifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
+            return REDIRECT + returnUrl;
+        }
+        sysEmailTokenService.delete(sysEmailToken.getAuthToken());
+        service.checked(sysEmailToken.getUserId(), sysEmailToken.getEmail());
+        clearUserTimeToSession(session);
+        model.addAttribute(MESSAGE, "verifyEmail.success");
         return REDIRECT + returnUrl;
     }
 }

@@ -9,13 +9,13 @@
 				</li>
 				<li>
 					<label>渠道:</label>
-					<input type="text" name="channel" value="${channel!}" />
+					<input type="text" name="channel" value="${(channel?html)!}" />
 				</li>
 			</ul>
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -49,7 +49,7 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.authToken}">
 				<td>${a.userId!}</td>
-				<td>${(userMap[a.userId?string].nickName)!}</td>
+				<td>${(userMap[a.userId?string].nickName?html)!}</td>
 				<td>${a.channel!}</td>
 				<td>${a.createDate!}</td>
 				<td>${a.loginIp!}</td>

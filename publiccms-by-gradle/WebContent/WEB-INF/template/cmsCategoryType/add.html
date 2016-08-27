@@ -2,10 +2,18 @@
 <div class="pageContent">
 	<form method="post" action="cmsCategoryType/save.do?callbackType=closeCurrent&navTabId=cmsCategoryType/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 		<input name="id" type="hidden" value="${id!}" />
-		<div class="pageFormContent" layoutH="57">
+		<div class="formBar">
+			<ul>
+			<@_sysAuthorized roleIds=admin.roles url='cmsCategoryType/save'>
+				<li><button type="submit" class="buttonActive">保存</button></li>
+			</@_sysAuthorized>
+				<li><button type="button" class="button close">取消</button></li>
+			</ul>
+		</div>
+		<div class="pageFormContent" layoutH="56">
 			<dl>
 				<dt>名称:</dt>
-				<dd><input class="required" name="name" type="text" size="30" value="${(a.name)!}"/></dd>
+				<dd><input class="required" name="name" type="text" size="30" value="${(a.name?html)!}"/></dd>
 			</dl>
 			<dl class="nowrap">
 				<dt>排序:</dt>
@@ -21,14 +29,6 @@
 				<legend>分类扩展字段</legend>
 					<@extends 'categoryExtends' categoryExtendList![]/>
 			</fieldset>
-		</div>
-		<div class="formBar">
-			<ul>
-			<@_sysAuthorized roleIds=admin.roles url='cmsCategoryType/save'>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-			</@_sysAuthorized>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
 		</div>
 	</form>
 </div>

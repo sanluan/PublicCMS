@@ -25,36 +25,40 @@ public class CmsTag implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "站点", condition = true)
     private int siteId;
     @MyColumn(title = "名称", condition = true, like = true)
     private String name;
     @MyColumn(title = "类型", condition = true)
     private Integer typeId;
+    @MyColumn(title = "搜索次数", order = true)
+    private int searchCount;
 
     public CmsTag() {
     }
 
-    public CmsTag(int siteId, String name) {
+    public CmsTag(int siteId, String name, int searchCount) {
         this.siteId = siteId;
         this.name = name;
+        this.searchCount = searchCount;
     }
 
-    public CmsTag(int siteId, String name, Integer typeId) {
+    public CmsTag(int siteId, String name, Integer typeId, int searchCount) {
         this.siteId = siteId;
         this.name = name;
         this.typeId = typeId;
+        this.searchCount = searchCount;
     }
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -83,6 +87,15 @@ public class CmsTag implements java.io.Serializable {
 
     public void setTypeId(Integer typeId) {
         this.typeId = typeId;
+    }
+
+    @Column(name = "search_count", nullable = false)
+    public int getSearchCount() {
+        return this.searchCount;
+    }
+
+    public void setSearchCount(int searchCount) {
+        this.searchCount = searchCount;
     }
 
 }

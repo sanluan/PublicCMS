@@ -1,14 +1,15 @@
+<@_metadata path='/index.html'><#assign metadata=object/></@_metadata>
 <header>
 	<div class="container">
 		<div class="tools">
-			<div class="user">
-				<a href="${site.dynamicPath}login.html">登陆</a>
-				<a href="${site.dynamicPath}register.html">注册</a>
+			<div class="user user-login">
+				<a href="${metadata.extendData.member!}login.html">登陆</a>
+				<a href="${metadata.extendData.member!}register.html">注册</a>
 			</div>
 			<div class="user user-logout" style="display:none">
-				您好，<a href="#" class="nickname"></a> <a class="master" style="display:none;" target="_blank" href="${site.dynamicPath}admin/">管理后台</a> <a href="${site.dynamicPath}logout.do?returnUrl=${site.dynamicPath?url}login.html">退出登陆</a>
+				您好，<a href="${metadata.extendData.member!}" target="_blank" class="nickname"></a> <a class="master" style="display:none;" target="_blank" href="${site.dynamicPath}admin/">管理后台</a> <a class="logout" href="${metadata.extendData.member!}logout.do">退出登陆</a>
 			</div>
-			<form class="search" action="${site.dynamicPath!}search.html">
+			<form class="search" action="${metadata.extendData.search!}">
 				<input name="word" type="text" placeholder="这里输入关键词"/>
 				<input type="submit" value="搜索"/>
 			</form>
@@ -66,9 +67,15 @@
 				$('.tools .user-logout .nickname').text(userdata[1]);
 				$('.tools .user-logout').show();
 				if(userdata[2]&&'true'==userdata[2]){
-					$('.tools .user-logout .master').show()
+					$('.tools .user-logout .master').show();
 				}
+				$('.tools .user-logout .logout').prop('href',$('.tools .user-logout .logout').prop('href')+'?returnUrl='+encodeURIComponent('${metadata.extendData.member!}login.html?returnUrl='+encodeURIComponent(window.location.href)));
 			}
 		}
+		if(0>window.location.href.indexOf('returnUrl')){
+			$('.tools .user-login a').each(function(){
+				$(this).prop('href',$(this).prop('href')+'?returnUrl='+encodeURIComponent(window.location.href));
+			});
+		}		
 	});
 </script>

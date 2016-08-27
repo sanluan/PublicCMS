@@ -25,7 +25,7 @@ public class GetContentAttributeMethod extends BaseMethod {
     @SuppressWarnings("unchecked")
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
-        Integer id = getInteger(0, arguments);
+        Long id = getLong(0, arguments);
         if (notEmpty(id)) {
             CmsContentAttribute entity = service.getEntity(id);
             if (notEmpty(entity)) {

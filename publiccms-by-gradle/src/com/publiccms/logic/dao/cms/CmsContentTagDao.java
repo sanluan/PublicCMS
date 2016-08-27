@@ -11,7 +11,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsContentTagDao extends BaseDao<CmsContentTag> {
-    public PageHandler getPage(Integer tagId, Integer contentId, Integer[] contentIds, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Long tagId, Long contentId, Long[] contentIds, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentTag bean");
         if (notEmpty(tagId)) {
             queryHandler.condition("bean.tagId = :tagId").setParameter("tagId", tagId);
@@ -26,8 +26,8 @@ public class CmsContentTagDao extends BaseDao<CmsContentTag> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
-    public int delete(Integer[] tagIds, Integer[] contentIds) {
-        if (empty(tagIds) || empty(contentIds)) {
+    public int delete(Long[] tagIds, Long[] contentIds) {
+        if (notEmpty(tagIds) || notEmpty(contentIds)) {
             QueryHandler queryHandler = getDeleteQueryHandler("from CmsContentTag bean");
             if (notEmpty(tagIds)) {
                 queryHandler.condition("bean.tagId in (:tagIds)").setParameter("tagIds", tagIds);

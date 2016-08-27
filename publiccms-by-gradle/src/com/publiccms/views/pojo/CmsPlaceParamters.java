@@ -2,10 +2,13 @@ package com.publiccms.views.pojo;
 
 import java.util.List;
 
-import com.sanluan.common.base.Base;
+public class CmsPlaceParamters implements java.io.Serializable {
 
-public class CmsPlaceParamters extends Base {
-    List<ExtendData> extendDataList;
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+	List<ExtendData> extendDataList;
 
     public List<ExtendData> getExtendDataList() {
         return extendDataList;

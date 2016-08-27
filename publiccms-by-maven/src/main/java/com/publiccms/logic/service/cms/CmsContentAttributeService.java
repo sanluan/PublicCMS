@@ -20,7 +20,7 @@ public class CmsContentAttributeService extends BaseService<CmsContentAttribute>
         return dao.getPage(pageIndex, pageSize);
     }
 
-    public void updateAttribute(Integer contentId, CmsContentAttribute entity) {
+    public void updateAttribute(Long contentId, CmsContentAttribute entity) {
         CmsContentAttribute attribute = getEntity(contentId);
         if (notEmpty(attribute)) {
             if (notEmpty(entity)) {

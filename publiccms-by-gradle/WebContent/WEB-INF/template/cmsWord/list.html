@@ -5,7 +5,14 @@
 			<ul class="searchContent">
 				<li>
 					<label>名称:</label>
-					<input type="text" name="name" value="${name!}" />
+					<input type="text" name="name" value="${(name?html)!}" />
+				</li>
+				<li>
+					<select class="combox" name="hidden">
+						<option value="">前台展示</option>
+						<option value="false"${(hidden??&&'false'=hidden)?then(' selected="true"','')}>显示</option>
+						<option value="true"${(hidden??&&'true'=hidden)?then(' selected="true"','')}>隐藏</option>
+					</select>
 				</li>
 				<li class="colspan">
 					<label>创建日期:</label>
@@ -17,7 +24,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -27,12 +34,14 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a href="cmsWord/add.html" target="dialog" rel="cmsWord/add"><i class="icon-plus-sign-alt icon-large"></i> 添加搜索词</a></li>
-			<li><a href="cmsWord/add.html?id={sid}" target="dialog" rel="cmsWord/edit"><i class="icon-edit icon-large"></i> 修改搜索词</a></li>
+			<li><a href="cmsWord/add.html" target="navTab" rel="cmsWord/add"><i class="icon-plus-sign-alt icon-large"></i> 添加搜索词</a></li>
+			<li><a href="cmsWord/add.html?id={sid}" target="navTab" rel="cmsWord/edit"><i class="icon-edit icon-large"></i> 修改搜索词</a></li>
+			<li><a href="cmsWord/hidden.do?id={sid}" title="确定要隐藏该关键词吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> 隐藏</a></li>
+			<li><a href="cmsWord/show.do?id={sid}" title="确定要显示该关键词吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 显示</a></li>
 			<li><a href="cmsWord/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
 		</ul>
 	</div>
-<@_wordList name=name advanced=true startCreateDate=startCreateDate endCreateDate=endCreateDate 
+<@_wordList name=name advanced=true hidden=hidden startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="92">
 		<thead>
@@ -40,7 +49,7 @@
 				<th>ID</th>
 				<th>名称</th>
 				<th>站点</th>
-				<th orderField="searchCount" class="<#if orderField??&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">搜索次数</th>
+				<th orderField="searchCount" class="<#if orderField??&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">热度</th>
 				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
 				<th>操作</th>
 			</tr>
@@ -49,12 +58,17 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.name!}${a.hidden?then('[隐藏]','')}</td>
+				<td>${(a.name?html)!}${a.hidden?then('[隐藏]','')}</td>
 				<td>${a.siteId!}</td>
 				<td>${a.searchCount!}</td>
 				<td>${a.createDate!}</td>
 				<td>
 					<a href="cmsWord/add.html?id=${a.id}" target="dialog" rel="cmsWord/edit">修改</a>
+					<#if a.hidden>
+						<a href="cmsWord/show.do?id=${a.id}" title="确定要显示该关键词吗?" target="ajaxTodo">显示</a>
+					<#else>
+						<a href="cmsWord/hidden.do?id=${a.id}" title="确定要隐藏该关键词吗?" target="ajaxTodo">隐藏</a>
+					</#if>
 					<a href="cmsWord/delete.do?id=${a.id}" title="确定要删除该条记录吗?" target="ajaxTodo">删除</a>
 				</td>
 			</tr>

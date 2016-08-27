@@ -11,7 +11,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SysRoleUserDao extends BaseDao<SysRoleUser> {
-    public PageHandler getPage(Integer roleId, Integer userId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer roleId, Long userId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysRoleUser bean");
         if (notEmpty(roleId)) {
             queryHandler.condition("bean.roleId = :roleId").setParameter("roleId", roleId);
@@ -32,7 +32,7 @@ public class SysRoleUserDao extends BaseDao<SysRoleUser> {
         return 0;
     }
 
-    public int deleteByUserId(Integer userId) {
+    public int deleteByUserId(Long userId) {
         if (notEmpty(userId)) {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleUser bean where bean.userId = :userId");
             queryHandler.setParameter("userId", userId);

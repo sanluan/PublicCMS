@@ -6,14 +6,14 @@
 	<input name="${name}[${index}].name" type="hidden" value="${extend.code}"/>
 	<#switch extend.inputType>
 		<#case 'number'>
-		<input name="${inputName}" <#if !customform>class="number<#if extend.required> required</#if>" </#if>type="text" size="30" value="${value!}"/>
+		<input name="${inputName}" <#if !customform>class="number<#if extend.required> required</#if>" </#if>type="text" size="5" value="${(value?html)!}"/>
 			<#break>
 		<#case 'file'>
-		<input name="${inputName}"  <#if !customform>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${value!}" readonly="readonly"/>
+		<input name="${inputName}"  <#if !customform>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value?html)!}" readonly="readonly"/>
 		<#if !customform><a class="btnAttach" href="common/upload.html?field=${inputName}" lookupGroup="" width="560" height="300">附件</a></#if>
 			<#break>
 		<#case 'image'>
-		<input name="${inputName}" <#if !customform>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${value!}" readonly="readonly"/>
+		<input name="${inputName}" <#if !customform>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value?html)!}" readonly="readonly"/>
 		<#if !customform>
 			<a class="btnAttach" href="common/upload.html?field=${inputName}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 			<#if !preview?has_content>
@@ -23,32 +23,48 @@
 		</#if>
 			<#break>
 		<#case 'password'>
-		<input name="${inputName}" <#if !customform>class="<#if extend.required> required</#if>" </#if>type="password" size="30" value="${value!}"/>
+		<input name="${inputName}" <#if !customform>class="<#if extend.required> required</#if>" </#if>type="password" size="30" value="${(value?html)!}"/>
 			<#break>
 		<#case 'textarea'>
-		<textarea name="${inputName}" <#if !customform>class="<#if extend.required>required</#if>" </#if>cols="80" rows="5">${value!}</textarea>
+		<textarea name="${inputName}" <#if !customform>class="<#if extend.required>required</#if>" </#if>cols="80" rows="5">${(value?html)!}</textarea>
 			<#break>
 		<#case 'editor'>
-		<textarea name="${inputName}" <#if !customform>class="editor<#if extend.required> required</#if>" </#if>style="width: 100%;" rows="20">${value!}</textarea>
+		<textarea name="${inputName}" <#if !customform>class="editor<#if extend.required> required</#if>" </#if>style="width: 100%;" rows="20">${(value?html)!}</textarea>
+			<#break>
+		<#case 'template'>
+		<input name="${inputName}" type="text" maxlength="255" size="40" value="${(value?html)!}"<#if !customform> class="<#if extend.required> required</#if>"</#if>/>
+		<a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName}" lookupGroup="">选择模板</a>
+			<#break>
+		<#case 'boolean'>
+		<select class="combox" name="${inputName}"<#if !customform> class="<#if extend.required> required</#if>"</#if>>
+			<option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')}>是</option>
+			<option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')}>否</option>
+		</select>
+			<#break>
+		<#case 'user'>
+		<@_sysUser id=value><#assign user=object/></@_sysUser>
+		<input name="${inputName}" value="${(value?html)!}" type="hidden"/>
+		<input readonly="readonly" size="10" value="${(user.nickName?html)!}" type="text"<#if !customform> class="<#if extend.required> required</#if>"</#if>/>
+		<a class="btnLook" href="sysUser/lookup.html?field=${inputName}" width="920" warn="请选择用户" lookupGroup="">选择用户</a>
 			<#break>
 		<#case 'date'>
-		<input name="${inputName}" <#if !customform>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${value!}"/>
+		<input name="${inputName}" <#if !customform>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value?html)!}"/>
 		<#if !customform><a class="inputDateButton" href="javascript:;">选择</a></#if>
 			<#break>
 		<#default>
-		<input name="${inputName}" <#if !customform>class="<#if extend.required> required</#if>" </#if>type="text" size="30" value="${value!}"/>
+		<input name="${inputName}" <#if !customform>class="<#if extend.required> required</#if>" </#if>type="text" size="30" value="${(value?html)!}"/>
 	</#switch>
 </#macro>
 <#macro extendData name extendList extendValues customform=false>
 	<#list extendList as e>
 	<#if customform>
-	<p><label>${e.name}:</label><@input name e e?index extendValues[e.code]!/></p>
+	<p><label>${(e.name?html)}:</label><@input name e e?index extendValues[e.code]!/></p>
 	<#else>
 	<dl class="nowrap">
-		<dt>${e.name}:</dt>
+		<dt>${(e.name?html)}:</dt>
 		<dd<#if 'editor'=e.inputType> style="width:80%;"</#if>>
 			<@input name e e?index extendValues[e.code]!/>
-			<span class="info">${e.description!}</span>
+			<span class="info">${(e.description?html)!}</span>
 		</dd>
 	</dl>
 	</#if>

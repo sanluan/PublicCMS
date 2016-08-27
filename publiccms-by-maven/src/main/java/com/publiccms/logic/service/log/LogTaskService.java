@@ -1,5 +1,7 @@
 package com.publiccms.logic.service.log;
 
+import java.io.Serializable;
+
 // Generated 2015-7-3 16:15:25 by com.sanluan.common.source.SourceMaker
 
 import java.util.Date;
@@ -27,7 +29,7 @@ public class LogTaskService extends BaseService<LogTask> {
         return dao.delete(siteId, begintime);
     }
 
-    public void delete(int siteId, Integer[] ids) {
+    public void delete(int siteId, Serializable[] ids) {
         for (LogTask entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());

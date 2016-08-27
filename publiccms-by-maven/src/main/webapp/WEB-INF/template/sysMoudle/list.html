@@ -11,9 +11,10 @@
 			<ul class="searchContent">
 			<#if parent?has_content>
 				<li>
-					<label>父模块:</label>${parent.name!}
+					<label>父模块:</label>${(parent.name)!}
 				</li>
 			</#if>
+				<li></li>
 			</ul>
 		</div>
 	</form>
@@ -26,9 +27,9 @@
 				<li class="line">line</li>
 			</#if>
 			<#if deep lte 3>
-				<li><a href="sysMoudle/add.html?parentId=${parentId!}" target="navTab" rel="sysMoudle/add"><i class="icon-plus-sign-alt icon-large"></i> 添加<@t.m 'button.moudle.add.'+deep/></a></li>
+				<li><a href="sysMoudle/add.html?parentId=${parentId!}&deep=${deep}" target="navTab" rel="sysMoudle/add"><i class="icon-plus-sign-alt icon-large"></i> 添加<@t.m 'button.moudle.add.'+deep/></a></li>
 			</#if>
-			<li><a href="sysMoudle/add.html?id={sid}" target="navTab" rel="sysMoudle/edit"><i class="icon-edit icon-large"></i> 修改<@t.m 'button.moudle.add.'+deep/></a></li>
+			<li><a href="sysMoudle/add.html?id={sid}&deep=${deep}" target="navTab" rel="sysMoudle/edit"><i class="icon-edit icon-large"></i> 修改<@t.m 'button.moudle.add.'+deep/></a></li>
 			<li><a href="sysMoudle/delete.do?id={sid}" title="确定要删除这条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
 		</ul>
 	</div>
@@ -53,9 +54,9 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.name!}</td>
+				<td>${(a.name?html)!}</td>
 				<td>${a.url!}</td>
-				<td>${(moudleMap[a.parentId?string].name)!}</td>
+				<td>${(moudleMap[a.parentId?string].name?html)!}</td>
 				<td>${a.sort!}</td>
 				<td>
 					<#if deep lte 2>

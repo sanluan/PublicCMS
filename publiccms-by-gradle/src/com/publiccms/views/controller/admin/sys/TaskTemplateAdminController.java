@@ -17,7 +17,6 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.FileComponent;
-import com.publiccms.logic.component.TemplateCacheComponent;
 import com.publiccms.logic.component.TemplateComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 
@@ -31,8 +30,6 @@ import com.publiccms.logic.service.log.LogLoginService;
 public class TaskTemplateAdminController extends AbstractController {
     @Autowired
     private TemplateComponent templateComponent;
-    @Autowired
-    private TemplateCacheComponent templateCacheComponent;
     @Autowired
     private FileComponent fileComponent;
 
@@ -50,7 +47,7 @@ public class TaskTemplateAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (notEmpty(path)) {
             try {
-                String filePath = siteComponent.getWebTemplateFilePath(site, path);
+                String filePath = siteComponent.getTaskTemplateFilePath(site, path);
                 File templateFile = new File(filePath);
                 if (notEmpty(templateFile)) {
                     fileComponent.updateFile(templateFile, content);
@@ -63,7 +60,7 @@ public class TaskTemplateAdminController extends AbstractController {
                 }
                 templateComponent.clear();
             } catch (IOException e) {
-                virifyCustom("template.save", true, model);
+                verifyCustom("template.save", true, model);
                 log.error(e.getMessage());
                 return TEMPLATE_ERROR;
             }
@@ -83,7 +80,7 @@ public class TaskTemplateAdminController extends AbstractController {
         if (notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, path);
-            if (virifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
+            if (verifyCustom("notExist.template", !fileComponent.deleteFile(filePath), model)) {
                 return TEMPLATE_ERROR;
             }
             templateComponent.clear();

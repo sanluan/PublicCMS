@@ -1,1 +1,1 @@
-{"parent.html":{"alias":"父栏目","publishPath":"","useDynamic":true,"needLogin":false,"acceptParamters":"id","cacheTime":0,"allowContribute":false,"extendList":null,"extendDataList":null}}
+{"parent.html":{"alias":"父栏目","publishPath":"","useDynamic":false,"needLogin":false,"acceptParamters":"","cacheTime":0,"allowContribute":false,"extendList":null,"extendDataList":null},"list.html":{"alias":"内容列表","publishPath":"","useDynamic":false,"needLogin":false,"acceptParamters":"","cacheTime":0,"allowContribute":false,"extendList":null,"extendDataList":null}}

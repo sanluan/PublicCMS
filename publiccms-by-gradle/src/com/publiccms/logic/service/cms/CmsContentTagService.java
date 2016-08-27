@@ -22,21 +22,21 @@ import com.sanluan.common.handler.PageHandler;
 public class CmsContentTagService extends BaseService<CmsContentTag> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer tagId, Integer contentId, Integer[] contentIds, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Long tagId, Long contentId, Long[] contentIds, Integer pageIndex, Integer pageSize) {
         return dao.getPage(tagId, contentId, contentIds, pageIndex, pageSize);
     }
 
-    public int delete(Integer[] tagIds, Integer[] contentIds) {
+    public int delete(Long[] tagIds, Long[] contentIds) {
         return dao.delete(tagIds, contentIds);
     }
 
-    public void update(Integer contentId, String tagIds) {
+    public void update(Long contentId, String tagIds) {
         if (notEmpty(tagIds) && notEmpty(contentId)) {
-            String[] tagIdsArray = splitByWholeSeparator(tagIds, ",");
+            String[] tagIdsArray = splitByWholeSeparator(tagIds, BLANK_SPACE);
             if (notEmpty(tagIdsArray)) {
-                Set<Integer> idSet = new HashSet<Integer>();
+                Set<Long> idSet = new HashSet<Long>();
                 for (int i = 0; i < tagIdsArray.length; i++) {
-                    idSet.add(Integer.parseInt(tagIdsArray[i]));
+                    idSet.add(Long.parseLong(tagIdsArray[i]));
                 }
                 @SuppressWarnings("unchecked")
                 List<CmsContentTag> list = (List<CmsContentTag>) getPage(null, contentId, null, null, null).getList();
@@ -47,7 +47,7 @@ public class CmsContentTagService extends BaseService<CmsContentTag> {
                         delete(contentTag.getId());
                     }
                 }
-                for (int tagid : idSet) {
+                for (long tagid : idSet) {
                     save(new CmsContentTag(tagid, contentId));
                 }
             }

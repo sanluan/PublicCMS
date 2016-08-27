@@ -31,13 +31,13 @@ public class CmsPlace implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "站点", condition = true)
     private int siteId;
     @MyColumn(title = "路径", condition = true)
     private String path;
     @MyColumn(title = "推荐用户", condition = true)
-    private int userId;
+    private long userId;
     @MyColumn(title = "项目类型", condition = true)
     private String itemType;
     @MyColumn(title = "项目ID", condition = true)
@@ -63,7 +63,7 @@ public class CmsPlace implements java.io.Serializable {
     public CmsPlace() {
     }
 
-    public CmsPlace(int siteId, String path, int userId, String title, Date createDate, Date publishDate, int status,
+    public CmsPlace(int siteId, String path, long userId, String title, Date createDate, Date publishDate, int status,
             int clicks, boolean disabled) {
         this.siteId = siteId;
         this.path = path;
@@ -76,7 +76,7 @@ public class CmsPlace implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsPlace(int siteId, String path, int userId, String itemType, Integer itemId, String title, String url,
+    public CmsPlace(int siteId, String path, long userId, String itemType, Integer itemId, String title, String url,
             String cover, Date createDate, Date publishDate, int status, int clicks, boolean disabled) {
         this.siteId = siteId;
         this.path = path;
@@ -96,11 +96,11 @@ public class CmsPlace implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -123,11 +123,11 @@ public class CmsPlace implements java.io.Serializable {
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

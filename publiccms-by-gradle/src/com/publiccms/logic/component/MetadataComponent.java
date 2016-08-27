@@ -17,37 +17,22 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.common.spi.Cacheable;
 import com.publiccms.views.pojo.CmsPageMetadata;
 import com.publiccms.views.pojo.CmsPlaceMetadata;
-import com.publiccms.views.pojo.ExtendData;
 import com.sanluan.common.base.Base;
-import com.sanluan.common.base.Cacheable;
 
 @Component
 public class MetadataComponent extends Base implements Cacheable {
     private ObjectMapper objectMapper = new ObjectMapper();
     public static String METADATA_FILE = "metadata.data";
+
     private static List<String> cachedPagelist = synchronizedList(new ArrayList<String>());
-    private static Map<String, Map<String, CmsPageMetadata>> cachedPageMap = synchronizedMap(new HashMap<String, Map<String, CmsPageMetadata>>());
+    private static Map<String, Map<String, CmsPageMetadata>> cachedPageMap = synchronizedMap(
+            new HashMap<String, Map<String, CmsPageMetadata>>());
     private static List<String> cachedPlacelist = synchronizedList(new ArrayList<String>());
-    private static Map<String, Map<String, CmsPlaceMetadata>> cachedPlaceMap = synchronizedMap(new HashMap<String, Map<String, CmsPlaceMetadata>>());
-
-    private void clearPageCache(int size) {
-        if (size < cachedPagelist.size()) {
-            for (int i = 0; i < size / 10; i++) {
-                cachedPageMap.remove(cachedPagelist.remove(0));
-            }
-        }
-    }
-
-    private void clearPlaceCache(int size) {
-        if (size < cachedPlacelist.size()) {
-            for (int i = 0; i < size / 10; i++) {
-                cachedPlaceMap.remove(cachedPlacelist.remove(0));
-            }
-        }
-    }
+    private static Map<String, Map<String, CmsPlaceMetadata>> cachedPlaceMap = synchronizedMap(
+            new HashMap<String, Map<String, CmsPlaceMetadata>>());
 
     /**
      * 获取推荐位元数据
@@ -83,33 +68,6 @@ public class MetadataComponent extends Base implements Cacheable {
             return pageMetadata;
         }
         return new CmsPageMetadata();
-    }
-
-    /**
-     * 获取推荐位扩展数据
-     * 
-     * @param filePath
-     * @param extendDataList
-     * @return
-     */
-    public Map<String, String> getPlaceExtendDataMap(String filePath, List<ExtendData> extendDataList) {
-        Map<String, String> extendFieldMap = new HashMap<String, String>();
-        Map<String, String> map = new HashMap<String, String>();
-        List<SysExtendField> extendList = getPlaceMetadata(filePath).getExtendList();
-        if (notEmpty(extendList)) {
-            for (ExtendData extendData : extendDataList) {
-                extendFieldMap.put(extendData.getName(), extendData.getValue());
-            }
-            for (SysExtendField extend : extendList) {
-                String value = extendFieldMap.get(extend.getCode());
-                if (notEmpty(value)) {
-                    map.put(extend.getCode(), value);
-                } else {
-                    map.put(extend.getCode(), extend.getDefaultValue());
-                }
-            }
-        }
-        return map;
     }
 
     /**
@@ -265,8 +223,8 @@ public class MetadataComponent extends Base implements Cacheable {
      * @throws JsonMappingException
      * @throws IOException
      */
-    private void saveTemplateMetadata(String dirPath, Map<String, CmsPageMetadata> metadataMap) throws JsonGenerationException,
-            JsonMappingException, IOException {
+    private void saveTemplateMetadata(String dirPath, Map<String, CmsPageMetadata> metadataMap)
+            throws JsonGenerationException, JsonMappingException, IOException {
         File file = new File(dirPath + SEPARATOR + METADATA_FILE);
         if (empty(file)) {
             file.getParentFile().mkdirs();
@@ -285,8 +243,8 @@ public class MetadataComponent extends Base implements Cacheable {
      * @throws JsonMappingException
      * @throws IOException
      */
-    private void savePlaceMetadata(String dirPath, Map<String, CmsPlaceMetadata> metadataMap) throws JsonGenerationException,
-            JsonMappingException, IOException {
+    private void savePlaceMetadata(String dirPath, Map<String, CmsPlaceMetadata> metadataMap)
+            throws JsonGenerationException, JsonMappingException, IOException {
         File file = new File(dirPath + SEPARATOR + METADATA_FILE);
         if (empty(file)) {
             file.getParentFile().mkdirs();
@@ -294,6 +252,22 @@ public class MetadataComponent extends Base implements Cacheable {
         objectMapper.writeValue(file, metadataMap);
         cachedPlacelist.clear();
         cachedPlaceMap.clear();
+    }
+
+    private void clearPageCache(int size) {
+        if (size < cachedPagelist.size()) {
+            for (int i = 0; i < size / 10; i++) {
+                cachedPageMap.remove(cachedPagelist.remove(0));
+            }
+        }
+    }
+
+    private void clearPlaceCache(int size) {
+        if (size < cachedPlacelist.size()) {
+            for (int i = 0; i < size / 10; i++) {
+                cachedPlaceMap.remove(cachedPlacelist.remove(0));
+            }
+        }
     }
 
     @Override

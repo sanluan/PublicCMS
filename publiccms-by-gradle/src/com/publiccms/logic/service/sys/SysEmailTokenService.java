@@ -16,7 +16,7 @@ import com.sanluan.common.handler.PageHandler;
 public class SysEmailTokenService extends BaseService<SysEmailToken> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer userId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Long userId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(userId, pageIndex, pageSize);
     }
 

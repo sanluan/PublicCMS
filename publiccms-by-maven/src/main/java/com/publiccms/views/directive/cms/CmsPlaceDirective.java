@@ -21,7 +21,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        Long id = handler.getLong("id");
         SysSite site = getSite(handler);
         if (notEmpty(id)) {
             CmsPlace entity = service.getEntity(id);
@@ -29,7 +29,7 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
                 handler.put("object", entity).render();
             }
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            Long[] ids = handler.getLongArray("ids");
             if (notEmpty(ids)) {
                 List<CmsPlace> entityList = service.getEntitys(ids);
                 Map<String, CmsPlace> map = new LinkedHashMap<String, CmsPlace>();

@@ -1,19 +1,17 @@
 <@_pluginSite id=id><#assign a=object/></@_pluginSite>
-<div class="pageContent">
-	<form method="post" action="pluginSite/save.do?callbackType=closeCurrent&navTabId=pluginSite/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-		<input name="id" type="hidden" value="${id!}" />
-		<input name="pluginCode" type="hidden" value="${pluginCode!}" />
-		<div class="pageFormContent" layoutH="57">
-			<dl>
-				<dt>设置:</dt>
-				<dd><input class="required" name="setting" type="text" size="30" value="${(a.setting)!}"/></dd>
-			</dl>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
-	</form>
-</div>
+<form method="post" action="pluginSite/save.do?callbackType=closeCurrent&navTabId=pluginSite/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<input name="pluginCode" type="hidden" value="${pluginCode!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">取消</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="56">
+		<dl>
+			<dt>设置:</dt>
+			<dd><input class="required" name="setting" type="text" size="30" value="${(a.setting)!}"/></dd>
+		</dl>
+	</div>
+</form>

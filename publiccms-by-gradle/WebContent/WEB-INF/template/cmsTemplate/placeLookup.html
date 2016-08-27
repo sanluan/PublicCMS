@@ -10,8 +10,8 @@
 					<@chipTree path prefix suffix/>
 				</ul>
 			<#else>
-				<a href="javascript:;" onclick="cmsTemplateEditor.replaceSelection('${(prefix+path+suffix)?html?js_string} ${(metaDataMap[a.fileName].alias)?has_content?then('<#-- '+metaDataMap[a.fileName].alias+' -->','')?html}');$.pdialog.closeCurrent();return false;">
-					${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+				<a href="javascript:;" onclick="${editor!'cmsTemplateEditor'}.replaceSelection('${(prefix+path+suffix)?html?js_string} ${(metaDataMap[a.fileName].alias)?has_content?then('<#-- '+metaDataMap[a.fileName].alias+' -->','')?html?js_string}');$.pdialog.closeCurrent();return false;">
+					${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias?html+')','')}
 				</a>
 			</#if>
 			</li>
@@ -20,15 +20,8 @@
 		</#list>
 	</@_templateList>
 </#macro>
-<div class="pageContent">
-	<div class="pageFormContent" layoutH="58">
-		<ul class="tree treeFolder">
-	<@chipTree '' '<@_includePlace path="' '"/>'/>
-		</ul>
-	</div>
-	<div class="formBar">
-		<ul>
-			<li><div class="button"><div class="buttonContent"><button class="close" type="button">关闭</button></div></div></li>
-		</ul>
-	</div>
+<div class="pageFormContent">
+	<ul class="tree treeFolder">
+<@chipTree '' '<@_includePlace path="' '"/>'/>
+	</ul>
 </div>

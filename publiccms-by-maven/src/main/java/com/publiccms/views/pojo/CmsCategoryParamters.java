@@ -4,9 +4,13 @@ import java.util.List;
 
 import com.publiccms.entities.cms.CmsTagType;
 import com.publiccms.entities.sys.SysExtendField;
-import com.sanluan.common.base.Base;
 
-public class CmsCategoryParamters  extends Base{
+public class CmsCategoryParamters implements java.io.Serializable {
+
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private List<CmsTagType> tagTypes;
     private List<SysExtendField> contentExtends;
     private List<ExtendData> extendDataList;

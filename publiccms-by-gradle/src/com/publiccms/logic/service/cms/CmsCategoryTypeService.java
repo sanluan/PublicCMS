@@ -20,11 +20,12 @@ public class CmsCategoryTypeService extends BaseService<CmsCategoryType> {
         return dao.getPage(siteId, pageIndex, pageSize);
     }
 
-    public void updateExtendId(Integer id, Integer extendId) {
+    public CmsCategoryType updateExtendId(Integer id, Integer extendId) {
         CmsCategoryType entity = getEntity(id);
         if (notEmpty(entity)) {
             entity.setExtendId(extendId);
         }
+        return entity;
     }
 
     @Autowired

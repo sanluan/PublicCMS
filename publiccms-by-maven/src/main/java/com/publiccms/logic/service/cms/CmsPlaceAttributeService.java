@@ -12,12 +12,14 @@ import com.sanluan.common.base.BaseService;
 @Transactional
 public class CmsPlaceAttributeService extends BaseService<CmsPlaceAttribute> {
 
-    public void updateAttribute(Integer placeId, String data) {
+    public void updateAttribute(Long placeId, String data) {
         CmsPlaceAttribute attribute = getEntity(placeId);
         if (notEmpty(attribute)) {
             attribute.setData(data);
         } else {
-            save(new CmsPlaceAttribute(placeId, data));
+            if (notEmpty(placeId)) {
+                save(new CmsPlaceAttribute(placeId, data));
+            }
         }
     }
 }

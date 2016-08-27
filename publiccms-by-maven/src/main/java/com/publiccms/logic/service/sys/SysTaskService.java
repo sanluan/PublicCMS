@@ -1,5 +1,7 @@
 package com.publiccms.logic.service.sys;
 
+import java.util.Date;
+
 // Generated 2015-7-3 16:18:22 by com.sanluan.common.source.SourceMaker
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +17,22 @@ import com.sanluan.common.handler.PageHandler;
 @Transactional
 public class SysTaskService extends BaseService<SysTask> {
 
-    @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer status, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, status, pageIndex, pageSize);
-    }
+	@Transactional(readOnly = true)
+	public PageHandler getPage(Integer siteId, Integer status, Date beginUpdateDate, Integer pageIndex, Integer pageSize) {
+		return dao.getPage(siteId, status, beginUpdateDate, pageIndex, pageSize);
+	}
 
-    public void updateStatus(Integer id, int status) {
-        SysTask entity = dao.getEntity(id);
-        if (notEmpty(entity)) {
-            entity.setStatus(status);
-        }
-    }
-    
-    @Autowired
-    private SysTaskDao dao;
+	public void updateStatus(Integer id, int status) {
+		SysTask entity = dao.getEntity(id);
+		if (notEmpty(entity)) {
+			entity.setStatus(status);
+		}
+	}
+
+	public boolean updateStatusToRunning(Integer id) {
+		return 1 == dao.updateStatusToRunning(id);
+	}
+
+	@Autowired
+	private SysTaskDao dao;
 }

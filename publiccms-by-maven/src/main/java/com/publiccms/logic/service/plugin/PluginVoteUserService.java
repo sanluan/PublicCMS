@@ -18,7 +18,7 @@ import com.sanluan.common.handler.PageHandler;
 public class PluginVoteUserService extends BaseService<PluginVoteUser> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer lotteryId, Integer userId, 
+    public PageHandler getPage(Integer lotteryId, Long userId, 
                 String ip, Date startCreateDate, Date endCreateDate, 
                 String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(lotteryId, userId, 

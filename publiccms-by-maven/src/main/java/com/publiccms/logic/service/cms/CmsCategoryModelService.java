@@ -24,17 +24,17 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
 
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(modelId,categoryId,  pageIndex, pageSize);
+        return dao.getPage(modelId, categoryId, pageIndex, pageSize);
     }
 
     public void updateCategoryModel(boolean flag, Integer categoryId, CmsModel model, Map<String, String[]> parameterMap) {
         CmsCategoryModel categoryModel = getEntity(model.getId(), categoryId);
-        if (!model.isOnlyUrl()) {
+        if (model.isHasChild()) {
             @SuppressWarnings("unchecked")
-            List<CmsModel> modelList = (List<CmsModel>) modelDao.getPage(model.getSiteId(), model.getId(), null, null, null,
-                    null, false, null, null).getList();
+            List<CmsModel> modelList = (List<CmsModel>) modelDao
+                    .getPage(model.getSiteId(), model.getId(), null, null, null, null, false, null, null).getList();
             for (CmsModel child : modelList) {
-                updateCategoryModel(true, categoryId, child, parameterMap);
+                updateCategoryModel(flag, categoryId, child, parameterMap);
             }
         }
         if (notEmpty(categoryModel) && flag) {

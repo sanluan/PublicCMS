@@ -1,5 +1,5 @@
 <h2 class="contentTitle">
-	<a class="button" href="cmsTemplate/metadata.html?path=${((path!)+'/')?url}" target="navTab" rel="cmsTemplate/metadata"><span>创建模板</span></a>
-	<#if !path?has_content||!path?starts_with('/ftl')><a class="button" href="cmsTemplate/metadata.html?path=${('/ftl/')?url}" target="navTab" rel="cmsTemplate/metadata"><span>创建模板片段</span></a></#if>
-	<#if path?has_content><a class="button" href="cmsTemplate/delete.do?path=${path?html?url}&navTabId=cmsTemplate/list" title="确定要删除该目录吗?" target="ajaxTodo"><span>删除目录</span></a></#if>
+	<a class="button" href="cmsTemplate/metadata.html?path=${((path!)+'/')?url}" target="navTab" rel="cmsTemplate/metadata">创建模板</a>
+	<#if !path?has_content||!path?starts_with('/ftl')><a class="button" href="cmsTemplate/metadata.html?path=${('/ftl/')?url}" target="navTab" rel="cmsTemplate/metadata">创建模板片段</a></#if>
+	<#if path?has_content><a class="button" href="cmsTemplate/delete.do?path=${path?html?url}&navTabId=cmsTemplate/list" title="确定要删除该目录吗?" target="ajaxTodo">删除目录</a></#if>
 </h2>

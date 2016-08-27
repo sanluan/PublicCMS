@@ -30,7 +30,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 addChildIds(parent.getParentId(), id);
                 String childIds;
                 if (notEmpty(parent.getChildIds())) {
-                    childIds = parent.getChildIds() + "," + String.valueOf(id);
+                    childIds = parent.getChildIds() + COMMA_DELIMITED + String.valueOf(id);
                 } else {
                     childIds = String.valueOf(id);
                 }
@@ -46,12 +46,12 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         if (0 < list.size()) {
             for (CmsCategory category : list) {
                 if (childIds.length() > 0) {
-                    childIds.append(",");
+                    childIds.append(COMMA_DELIMITED);
                 }
                 childIds.append(category.getId());
                 String childChildIds = getChildIds(siteId, category.getId());
                 if (childChildIds.length() > 0) {
-                    childIds.append(",");
+                    childIds.append(COMMA_DELIMITED);
                     childIds.append(childChildIds);
                 }
             }
@@ -98,11 +98,12 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         }
     }
 
-    public void updateExtendId(Integer id, Integer extendId) {
+    public CmsCategory updateExtendId(Integer id, Integer extendId) {
         CmsCategory entity = getEntity(id);
         if (notEmpty(entity)) {
             entity.setExtendId(extendId);
         }
+        return entity;
     }
 
     public void updateParentId(int siteId, Serializable id, Integer parentId) {

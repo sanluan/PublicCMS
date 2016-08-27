@@ -1,6 +1,7 @@
 package com.sanluan.common.tools;
 
 import static org.apache.commons.logging.LogFactory.getLog;
+import static org.springframework.ui.freemarker.FreeMarkerTemplateUtils.processTemplateIntoString;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -12,7 +13,6 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.springframework.ui.ModelMap;
-import org.springframework.ui.freemarker.FreeMarkerTemplateUtils;
 
 import com.sanluan.common.base.Base;
 
@@ -22,6 +22,12 @@ import freemarker.template.MalformedTemplateNameException;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+/**
+ * FreeMarker工具类
+ * 
+ * @author kerneler
+ *
+ */
 public class FreeMarkerUtils extends Base {
     private final static Log log = getLog(FreeMarkerUtils.class);
 
@@ -33,29 +39,29 @@ public class FreeMarkerUtils extends Base {
      * @throws IOException
      * @throws TemplateException
      */
-    public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration config,
+    public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration configuration,
             Map<String, Object> model) throws IOException, TemplateException {
-        makeFileByFile(templateFilePath, destFilePath, config, model, true, false);
+        makeFileByFile(templateFilePath, destFilePath, configuration, model, true, false);
     }
 
     /**
      * @param templateFilePath
      * @param destFilePath
-     * @param config
+     * @param configuration
      * @param model
      * @param override
      * @throws IOException
      * @throws TemplateException
      */
-    public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration config,
+    public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration configuration,
             Map<String, Object> model, boolean override) throws IOException, TemplateException {
-        makeFileByFile(templateFilePath, destFilePath, config, model, override, false);
+        makeFileByFile(templateFilePath, destFilePath, configuration, model, override, false);
     }
 
     /**
      * @param templateFilePath
      * @param destFilePath
-     * @param config
+     * @param configuration
      * @param model
      * @param override
      * @param append
@@ -64,10 +70,10 @@ public class FreeMarkerUtils extends Base {
      * @throws IOException
      * @throws TemplateException
      */
-    public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration config,
-            Map<String, Object> model, boolean override, boolean append) throws MalformedTemplateNameException, ParseException,
-            IOException, TemplateException {
-        Template t = config.getTemplate(templateFilePath);
+    public static void makeFileByFile(String templateFilePath, String destFilePath, Configuration configuration,
+            Map<String, Object> model, boolean override, boolean append)
+            throws MalformedTemplateNameException, ParseException, IOException, TemplateException {
+        Template t = configuration.getTemplate(templateFilePath);
         File destFile = new File(destFilePath);
         if (override || append || !destFile.exists()) {
             File parent = destFile.getParentFile();
@@ -97,7 +103,7 @@ public class FreeMarkerUtils extends Base {
 
     /**
      * @param template
-     * @param configuration
+     * @param configurationuration
      * @return
      * @throws TemplateException
      * @throws IOException
@@ -117,20 +123,20 @@ public class FreeMarkerUtils extends Base {
     public static String makeStringByFile(String template, Configuration configuration, Map<String, Object> model)
             throws IOException, TemplateException {
         Template tpl = configuration.getTemplate(template);
-        return FreeMarkerTemplateUtils.processTemplateIntoString(tpl, model);
+        return processTemplateIntoString(tpl, model);
     }
 
     /**
      * @param templateContent
-     * @param config
+     * @param configuration
      * @param model
      * @return
      * @throws IOException
      * @throws TemplateException
      */
-    public static String makeStringByString(String templateContent, Configuration config, Map<String, Object> model)
+    public static String makeStringByString(String templateContent, Configuration configuration, Map<String, Object> model)
             throws IOException, TemplateException {
-        Template t = new Template(String.valueOf(templateContent.hashCode()), templateContent, config);
-        return FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
+        Template t = new Template(String.valueOf(templateContent.hashCode()), templateContent, configuration);
+        return processTemplateIntoString(t, model);
     }
 }

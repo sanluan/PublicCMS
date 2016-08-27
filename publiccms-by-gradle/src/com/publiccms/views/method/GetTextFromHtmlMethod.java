@@ -1,6 +1,6 @@
 package com.publiccms.views.method;
 
-import static com.sanluan.common.tools.MyStringUtils.removeHtmlTag;
+import static com.sanluan.common.tools.HTMLUtils.removeHtmlTag;
 
 import java.util.List;
 

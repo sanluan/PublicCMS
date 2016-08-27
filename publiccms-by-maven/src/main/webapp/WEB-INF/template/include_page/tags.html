@@ -55,9 +55,9 @@ function reIndex(){
 	<@_tag ids=tagIds>
 		<#list map?keys as k>
 			<#if typeIds?has_content>
-addTag('${map[k].typeId!}','${k}','${map[k].name}','${map[k].typeId!}');
+addTag('${map[k].typeId!}','${k}','${map[k].name?html?js_string}','${map[k].typeId!}');
 			<#else>
-addTag('','${k}','${map[k].name}','${map[k].typeId!}');
+addTag('','${k}','${map[k].name?html?js_string}','${map[k].typeId!}');
 			</#if>
 		</#list>
 	</@_tag>

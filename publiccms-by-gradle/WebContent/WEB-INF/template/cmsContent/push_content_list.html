@@ -2,7 +2,7 @@
 	<form id="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
-			<ul class="searchContent two">
+			<ul class="searchContent">
 				<li>
 					<label>模型:</label>
 					<#include "../include_page/modelId.html"/>
@@ -21,7 +21,7 @@
 			<div class="subBar">
 					<ul>
 						<li>
-							<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+							<button type="submit" class="buttonActive">搜索</button>
 						</li>
 					</ul>
 				</div>
@@ -30,7 +30,7 @@
 </div>
 <div>
 <@_contentList categoryId=categoryId modelId=modelId title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
-	<table class="list" width="100%" layoutH="89" targetType="dialog" rel="push_content_list">
+	<table class="list" width="100%" layoutH="66" targetType="dialog" rel="push_content_list">
 		<thead>
 			<tr>
 				<th>使用</th>

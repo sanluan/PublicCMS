@@ -17,9 +17,14 @@ public class SysUserTokenListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("userId"), handler.getString("channel"),
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getString("channel"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
+    }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

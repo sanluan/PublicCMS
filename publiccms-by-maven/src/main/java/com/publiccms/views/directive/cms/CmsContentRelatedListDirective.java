@@ -17,8 +17,8 @@ public class CmsContentRelatedListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getInteger("contentId"), handler.getInteger("relatedContentId"),
-                handler.getInteger("userId"), handler.getString("orderField"), handler.getString("orderType"),
+        PageHandler page = service.getPage(handler.getLong("contentId"), handler.getLong("relatedContentId"),
+                handler.getLong("userId"), handler.getString("orderField"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("count", 10));
         handler.put("page", page).render();
     }

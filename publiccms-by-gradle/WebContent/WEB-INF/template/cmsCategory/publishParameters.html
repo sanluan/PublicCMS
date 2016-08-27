@@ -1,19 +1,17 @@
-<div class="pageContent">
-	<form action="cmsCategory/publish.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
-		<input type="hidden" name="ids" value="${id!}"/>
-		<div class="pageFormContent" layoutH="57">
-			<dl>
-				<dt>生成页数:</dt>
-				<@_contentList categoryId=id containChild=true count=pageSize>
-				<dd><input class="required digits"  type="number" name="max" max="${page.totalPage}" min="1" value="${page.totalPage}"/></dd>
-				</@_contentList>
-			</dl>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">生成</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
-	</form>
-</div>
+<form action="cmsCategory/publish.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+	<input type="hidden" name="ids" value="${id!}"/>
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">生成</button></li>
+			<li><button type="button" class="button close">取消</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent">
+		<dl>
+			<dt>生成页数:</dt>
+			<@_contentList categoryId=id containChild=true count=pageSize>
+			<dd><input class="required digits"  type="number" name="max" max="${page.totalPage}" min="1" value="${page.totalPage}"/></dd>
+			</@_contentList>
+		</dl>
+	</div>
+</form>

@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.Pluginable;
+import com.publiccms.common.spi.Pluginable;
 import com.publiccms.logic.service.plugin.PluginVoteService;
 import com.sanluan.common.base.Base;
 

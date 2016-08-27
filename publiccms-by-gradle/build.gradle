@@ -16,8 +16,9 @@ sourceSets{
     }
 }
 [compileJava]*.options*.encoding = 'UTF-8'
-version = 'V2016.0510'
+version = 'V2016.0828'
 sourceCompatibility = 1.7
+targetCompatibility = 1.7
 
 repositories {
     mavenLocal()
@@ -25,12 +26,12 @@ repositories {
 }
 
 ext {
-    springVersion = '4.2.4.RELEASE'
-    hibernateVersion = '5.1.0.Final'
-    hibernateSearchVersion = '5.5.2.Final'
-    freemarkerVersion = '2.3.23'
-    httpclientVersion = '4.5.1'
-    jacksonVersion = '2.6.1'
+    springVersion = '4.3.2.RELEASE'
+    hibernateVersion = '5.1.1.Final'
+    hibernateSearchVersion = '5.5.4.Final'
+    freemarkerVersion = '2.3.25-incubating'
+    httpclientVersion = '4.5.2'
+    jacksonVersion = '2.8.1'
 }
 
 war{ baseName ='cms' }
@@ -47,22 +48,18 @@ dependencies {
             'org.apache.commons:commons-lang3:3.4',
 
             "org.springframework:spring-context-support:${springVersion}",
-            "org.springframework:spring-jdbc:${springVersion}",
             "org.springframework:spring-orm:${springVersion}",
             "org.springframework:spring-webmvc:${springVersion}",
 
-            "org.hibernate:hibernate-core:${hibernateVersion}",
             "org.hibernate:hibernate-ehcache:${hibernateVersion}",
             "org.hibernate:hibernate-search:${hibernateSearchVersion}",
 
             'c3p0:c3p0:0.9.1.2',
             'mysql:mysql-connector-java:5.1.35',
 
-            "com.fasterxml.jackson.core:jackson-core:${jacksonVersion}",
             "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
             "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
 
-            "org.apache.httpcomponents:httpclient:${httpclientVersion}",
             "org.apache.httpcomponents:httpmime:${httpclientVersion}",
             "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
 

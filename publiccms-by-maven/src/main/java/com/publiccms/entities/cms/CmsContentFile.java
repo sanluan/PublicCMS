@@ -25,11 +25,11 @@ public class CmsContentFile implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "内容", condition = true)
-    private int contentId;
+    private long contentId;
     @MyColumn(title = "上传用户", condition = true)
-    private int userId;
+    private long userId;
     @MyColumn(title = "文件路径")
     private String filePath;
     @MyColumn(title = "是否图片", condition = true)
@@ -46,7 +46,7 @@ public class CmsContentFile implements java.io.Serializable {
     public CmsContentFile() {
     }
 
-    public CmsContentFile(int contentId, int userId, String filePath, boolean image, int size, int clicks, int sort) {
+    public CmsContentFile(long contentId, long userId, String filePath, boolean image, int size, int clicks, int sort) {
         this.contentId = contentId;
         this.userId = userId;
         this.filePath = filePath;
@@ -56,7 +56,7 @@ public class CmsContentFile implements java.io.Serializable {
         this.sort = sort;
     }
 
-    public CmsContentFile(int contentId, int userId, String filePath, boolean image, int size, int clicks, int sort,
+    public CmsContentFile(long contentId, long userId, String filePath, boolean image, int size, int clicks, int sort,
             String description) {
         this.contentId = contentId;
         this.userId = userId;
@@ -71,29 +71,29 @@ public class CmsContentFile implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Column(name = "content_id", nullable = false)
-    public int getContentId() {
+    public long getContentId() {
         return this.contentId;
     }
 
-    public void setContentId(int contentId) {
+    public void setContentId(long contentId) {
         this.contentId = contentId;
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

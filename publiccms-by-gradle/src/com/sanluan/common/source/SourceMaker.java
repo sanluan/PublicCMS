@@ -1,5 +1,7 @@
 package com.sanluan.common.source;
 
+import static com.sanluan.common.tools.FreeMarkerUtils.makeFileByFile;
+import static com.sanluan.common.tools.ScanClassUtils.getClasses;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.uncapitalize;
 
@@ -18,8 +20,6 @@ import com.sanluan.common.base.Base;
 import com.sanluan.common.source.entity.EntityColumn;
 import com.sanluan.common.source.entity.EntityCondition;
 import com.sanluan.common.source.entity.MyColumn;
-import com.sanluan.common.tools.FreeMarkerUtils;
-import com.sanluan.common.tools.MyClassUtils;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -51,7 +51,7 @@ public class SourceMaker extends Base {
         // 生成某个包所有实体类的代码
         // sourceMaker.make(basePackage, "plugin", overwrite);
         // 生成某个实体类的代码
-        sourceMaker.make(Class.forName("com.publiccms.entities.cms.CmsWord"), basePackage, overwrite);
+        sourceMaker.make(Class.forName("com.publiccms.entities.sys.SysCluster"), basePackage, overwrite);
     }
 
     /**
@@ -64,7 +64,7 @@ public class SourceMaker extends Base {
      */
     public void make(String basePackage, boolean overwrite) throws ClassNotFoundException, IOException {
         String entitiesFullPackage = basePackage + "." + ENTITY_BASE_PACKAGE;
-        for (Class<?> c : MyClassUtils.getClasses(new String[] { entitiesFullPackage })) {
+        for (Class<?> c : getClasses(new String[] { entitiesFullPackage })) {
             make(c, basePackage, overwrite);
         }
     }
@@ -80,7 +80,7 @@ public class SourceMaker extends Base {
      */
     public void make(String basePackage, String entityPackage, boolean overwrite) throws ClassNotFoundException, IOException {
         String entitiesFullPackage = basePackage + "." + ENTITY_BASE_PACKAGE + "." + entityPackage;
-        for (Class<?> c : MyClassUtils.getClasses(new String[] { entitiesFullPackage })) {
+        for (Class<?> c : getClasses(new String[] { entitiesFullPackage })) {
             make(c, basePackage, overwrite);
         }
     }
@@ -181,20 +181,15 @@ public class SourceMaker extends Base {
         String controllerPath = JAVA_BASE_PATH + basePackage.replace('.', '/') + "/" + controllerPack.replace('.', '/') + "/";
 
         try {
-            FreeMarkerUtils.makeFileByFile("java/dao.ftl", daoPath + name + DAO_SUFFIX + ".java", config, model, overwrite);
-            FreeMarkerUtils.makeFileByFile("java/service.ftl", servicePath + name + SERVICE_SUFFIX + ".java", config, model,
+            makeFileByFile("java/dao.ftl", daoPath + name + DAO_SUFFIX + ".java", config, model, overwrite);
+            makeFileByFile("java/service.ftl", servicePath + name + SERVICE_SUFFIX + ".java", config, model, overwrite);
+            makeFileByFile("java/directive.ftl", directivePath + name + DIRECTIVE_SUFFIX + ".java", config, model, overwrite);
+            makeFileByFile("java/directiveList.ftl", directivePath + name + "List" + DIRECTIVE_SUFFIX + ".java", config, model,
                     overwrite);
-            FreeMarkerUtils.makeFileByFile("java/directive.ftl", directivePath + name + DIRECTIVE_SUFFIX + ".java", config,
-                    model, overwrite);
-            FreeMarkerUtils.makeFileByFile("java/directiveList.ftl", directivePath + name + "List" + DIRECTIVE_SUFFIX + ".java",
-                    config, model, overwrite);
-            FreeMarkerUtils.makeFileByFile("java/controller.ftl", controllerPath + name + CONTROLLER_SUFFIX + ".java", config,
-                    model, overwrite);
-            FreeMarkerUtils.makeFileByFile("html/list.ftl", WEB_BASE_PATH + uncapitalize(name) + "/list.html", config, model,
-                    overwrite);
-            FreeMarkerUtils.makeFileByFile("html/add.ftl", WEB_BASE_PATH + uncapitalize(name) + "/add.html", config, model,
-                    overwrite);
-            FreeMarkerUtils.makeFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite, true);
+            makeFileByFile("java/controller.ftl", controllerPath + name + CONTROLLER_SUFFIX + ".java", config, model, overwrite);
+            makeFileByFile("html/list.ftl", WEB_BASE_PATH + uncapitalize(name) + "/list.html", config, model, overwrite);
+            makeFileByFile("html/add.ftl", WEB_BASE_PATH + uncapitalize(name) + "/add.html", config, model, overwrite);
+            makeFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite, true);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (TemplateException e) {

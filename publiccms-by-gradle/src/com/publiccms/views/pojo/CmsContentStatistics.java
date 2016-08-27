@@ -1,16 +1,19 @@
 package com.publiccms.views.pojo;
 
 import com.publiccms.entities.cms.CmsContent;
-import com.sanluan.common.base.Base;
 
-public class CmsContentStatistics extends Base {
-    private int id;
+public class CmsContentStatistics implements java.io.Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private long id;
     private int clicks;
     private int comments;
     private int scores;
     private CmsContent entity;
 
-    public CmsContentStatistics(int id, int clicks, int comments, int scores, CmsContent entity) {
+    public CmsContentStatistics(long id, int clicks, int comments, int scores, CmsContent entity) {
         this.clicks = clicks;
         this.comments = comments;
         this.scores = scores;
@@ -18,11 +21,11 @@ public class CmsContentStatistics extends Base {
         this.entity = entity;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

@@ -1,5 +1,6 @@
 package com.publiccms.logic.service.log;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,9 @@ import com.sanluan.common.handler.PageHandler;
 @Service
 @Transactional
 public class LogOperateService extends BaseService<LogOperate> {
-    public static final String OPERATE_UPLOADFILE = "uploadfile";
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, String channel, String operate, Integer userId, Date startCreateDate,
+    public PageHandler getPage(Integer siteId, String channel, String operate, Long userId, Date startCreateDate,
             Date endCreateDate, String content, String ip, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, channel, operate, userId, startCreateDate, endCreateDate, content, ip, orderType, pageIndex,
                 pageSize);
@@ -27,7 +27,7 @@ public class LogOperateService extends BaseService<LogOperate> {
         return dao.delete(siteId, createDate);
     }
 
-    public void delete(int siteId, Integer[] ids) {
+    public void delete(int siteId, Serializable[] ids) {
         for (LogOperate entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId()) {
                 delete(entity.getId());

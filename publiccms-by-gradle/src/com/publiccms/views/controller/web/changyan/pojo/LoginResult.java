@@ -7,14 +7,14 @@ public class LoginResult implements Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private int user_id;
+    private long user_id;
     private int reload_page = 0;
 
-    public int getUser_id() {
+    public long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(long user_id) {
         this.user_id = user_id;
     }
 

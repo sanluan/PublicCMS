@@ -1,75 +1,32 @@
 <@_sysDomain id=id><#assign a=object/></@_sysDomain>
-<script>
-function startWith(content, str) {
-	if (str == null || str == "" || content == null || content.length == 0 || str.length > content.length ) {
-		return false;
-	}
-	if (content.substr(0, str.length) == str ) {
-		return true;
-	} else {
-		return false;
-	}
-	return true;
-}
-function refreshTemplatePath() {
-	var rootPath = $('input[name=path]', navTab.getCurrentPanel()).val();
-	var loginPath = $('input[name=loginPath]', navTab.getCurrentPanel()).val();
-	var registerPath = $('input[name=registerPath]', navTab.getCurrentPanel()).val();
-	if(startWith(loginPath, rootPath)){
-		$('input[name=loginPath]', navTab.getCurrentPanel()).val(loginPath.substr(rootPath.length, loginPath.length));
-	}
-	if(startWith(registerPath, rootPath)){
-		$('input[name=registerPath]', navTab.getCurrentPanel()).val(registerPath.substr(rootPath.length, registerPath.length));
-	}
-}
-</script>
-<div class="pageContent">
-	<form method="post" action="sysDomain/save.do?callbackType=closeCurrent&navTabId=sysDomain/list" class="pageForm required-validate" onsubmit="refreshTemplatePath(); return validateCallback(this, navTabAjaxDone);">
-		<input name="id" type="hidden" value="${id!}" />
-		<div class="pageFormContent" layoutH="57">
-			<dl class="nowrap">
-				<dt>站点:</dt>
-				<dd>
-					<input name="siteId" type="hidden" value="${(a.siteId)!siteId!site.id}" />
-					<@_sysSite id=(a.siteId)!siteId!site.id>${(object.name)!}</@_sysSite>
-				</dd>
-			</dl>
-			<dl class="nowrap">
-				<dt>动态站点域名:</dt>
-				<dd>
-					<input class="required" name="name" type="text" size="20"  maxlength="255"value="${(a.name)!}"/>
-					<span class="info">不包含协议头，当端口不是80时，需要指定端口</span>
-				</dd>
-			</dl>
-			<dl class="nowrap">
-				<dt>模板跟目录:</dt>
-				<dd>
-					<input name="path" type="text" size="50" maxlength="255" value="${(a.path)!}"/>
-					<a class="btnLook" href="cmsTemplate/directoryLookup.html?field=path" lookupGroup="">选择</a>
-				</dd>
-			</dl>
-			<dl class="nowrap">
-				<dt>登陆模板路径:</dt>
-				<dd>
-					<input name="loginPath" type="text" size="50" maxlength="255" value="${(a.path)!}${(a.loginPath)!}"/>
-					<a class="btnLook" href="cmsTemplate/lookup.html?field=loginPath" lookupGroup="">选择</a>
-					<span class="info">留空则禁止使用该域名登陆,如果模板跟目录不为空,请保证登陆模板路径在模板跟目录下</span>
-				</dd>
-			</dl>
-			<dl class="nowrap">
-				<dt>注册模板路径:</dt>
-				<dd>
-					<input name="registerPath" type="text" size="50" maxlength="255" value="${(a.path)!}${(a.registerPath)!}"/>
-					<a class="btnLook" href="cmsTemplate/lookup.html?field=registerPath" lookupGroup="">选择</a>
-					<span class="info">留空则禁止使用该域名注册,如果模板跟目录不为空,请保证注册模板路径在模板跟目录下</span>
-				</dd>
-			</dl>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
-	</form>
-</div>
+<form method="post" action="sysDomain/save.do?callbackType=closeCurrent&navTabId=sysDomain/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">取消</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="56">
+		<dl class="nowrap">
+			<dt>站点:</dt>
+			<dd>
+				<input name="siteId" type="hidden" value="${(a.siteId)!siteId!site.id}" />
+				<@_sysSite id=(a.siteId)!siteId!site.id>${(object.name?html)!}</@_sysSite>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>动态站点域名:</dt>
+			<dd>
+				<input class="required" name="name" type="text" size="20"  maxlength="255"value="${(a.name?html)!}"/>
+				<span class="info">不包含协议头，当端口不是80时，需要指定端口</span>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>模板根目录:</dt>
+			<dd>
+				<input name="path" type="text" size="50" maxlength="255" value="${(a.path?html)!}"/>
+			</dd>
+		</dl>
+	</div>
+</form>

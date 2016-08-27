@@ -3,5 +3,6 @@
 	<#list page.list as a>
 		<li><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></li>
 	</#list>
-	<li><a href="${site.dynamicPath}friendlink.html" target="_blank">申请友链</a></li>
+	<@_metadata path='/index.html'><#assign metadata=object/></@_metadata>
+	<li><a href="${metadata.extendData.member!}friendlink.html" target="_blank">申请友链</a></li>
 </ul>

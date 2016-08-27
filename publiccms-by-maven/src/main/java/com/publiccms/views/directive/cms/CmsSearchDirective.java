@@ -7,8 +7,10 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.StatisticsComponent;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.sanluan.common.handler.PageHandler;
 import com.sanluan.common.handler.RenderHandler;
 
@@ -20,12 +22,30 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
         String word = handler.getString("word");
         String tagId = handler.getString("tagId");
         if (notEmpty(word) || notEmpty(tagId)) {
-            PageHandler page = service.query(getSite(handler).getId(), word, tagId, handler.getInteger("pageIndex", 1),
-                    handler.getInteger("count", 30));
+            SysSite site = getSite(handler);
+            if (notEmpty(word)) {
+                statisticsComponent.search(site.getId(), word);
+            }
+            if (notEmpty(tagId)) {
+                try {
+                    statisticsComponent.searchTag(Long.parseLong(tagId));
+                } catch (NumberFormatException e) {
+                }
+            }
+            PageHandler page;
+            Integer pageIndex = handler.getInteger("pageIndex", 1);
+            Integer count = handler.getInteger("count", 30);
+            try {
+                page = service.query(site.getId(), word, tagId, pageIndex, count);
+            } catch (Exception e) {
+                page = new PageHandler(pageIndex, count, 0, null);
+            }
             handler.put("page", page).render();
         }
     }
 
+    @Autowired
+    private StatisticsComponent statisticsComponent;
     @Autowired
     private CmsContentService service;
 

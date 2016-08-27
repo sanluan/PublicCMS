@@ -1,9 +1,9 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.constants.CommonConstants.COOKIES_USER;
-import static com.publiccms.common.constants.CommonConstants.SESSION_ADMIN;
-import static com.publiccms.common.constants.CommonConstants.SESSION_USER;
-import static com.publiccms.common.constants.CommonConstants.SESSION_USER_TIME;
+import static com.publiccms.common.constants.CommonConstants.getCookiesUser;
+import static com.publiccms.common.constants.CommonConstants.getSessionAdmin;
+import static com.publiccms.common.constants.CommonConstants.getSessionUser;
+import static com.publiccms.common.constants.CommonConstants.getSessionUserTime;
 import static com.sanluan.common.tools.RequestUtils.cancleCookie;
 import static com.sanluan.common.tools.RequestUtils.getUserAgent;
 
@@ -41,14 +41,14 @@ public abstract class AbstractController extends BaseController {
     public static final Pattern USERNAME_PATTERN = Pattern.compile("^[A-Za-z_]{1}[0-9A-Za-z_]{3,40}$");
     public static final Pattern NICKNAME_PATTERN = Pattern.compile("^[0-9A-Za-z_\u4E00-\uFA29\uE7C7-\uE7F3]{2,45}$");
     private static final String VALID_CHARS = "[^\\s\\(\\)<>@,;:\\\\\\\"\\.\\[\\]+]+";
-    public static final Pattern EMAIL_PATTERN = Pattern.compile("(" + VALID_CHARS + "(\\." + VALID_CHARS + ")*@" + VALID_CHARS
-            + "(\\." + VALID_CHARS + ")*)");
+    public static final Pattern EMAIL_PATTERN = Pattern
+            .compile("(" + VALID_CHARS + "(\\." + VALID_CHARS + ")*@" + VALID_CHARS + "(\\." + VALID_CHARS + ")*)");
 
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
-    
+
     protected SysDomain getDomain(HttpServletRequest request) {
         return siteComponent.getDomain(request.getServerName(), request.getServerPort());
     }
@@ -77,7 +77,7 @@ public abstract class AbstractController extends BaseController {
      * @return
      */
     public static SysUser getUserFromSession(HttpSession session) {
-        return (SysUser) session.getAttribute(SESSION_USER);
+        return (SysUser) session.getAttribute(getSessionUser());
     }
 
     /**
@@ -85,7 +85,7 @@ public abstract class AbstractController extends BaseController {
      * @return
      */
     public static Date getUserTimeFromSession(HttpSession session) {
-        return (Date) session.getAttribute(SESSION_USER_TIME);
+        return (Date) session.getAttribute(getSessionUserTime());
     }
 
     /**
@@ -93,8 +93,8 @@ public abstract class AbstractController extends BaseController {
      * @param user
      */
     public static void setUserToSession(HttpSession session, SysUser user) {
-        session.setAttribute(SESSION_USER, user);
-        session.setAttribute(SESSION_USER_TIME, getDate());
+        session.setAttribute(getSessionUser(), user);
+        session.setAttribute(getSessionUserTime(), getDate());
     }
 
     /**
@@ -102,15 +102,15 @@ public abstract class AbstractController extends BaseController {
      * @param response
      */
     public static void clearUserToSession(String contextPath, HttpSession session, HttpServletResponse response) {
-        cancleCookie(contextPath, response, COOKIES_USER, null);
-        session.removeAttribute(SESSION_USER);
+        cancleCookie(contextPath, response, getCookiesUser(), null);
+        session.removeAttribute(getSessionUser());
     }
 
     /**
      * @param session
      */
     public static void clearUserTimeToSession(HttpSession session) {
-        session.removeAttribute(SESSION_USER_TIME);
+        session.removeAttribute(getSessionUserTime());
     }
 
     /**
@@ -118,7 +118,7 @@ public abstract class AbstractController extends BaseController {
      * @return
      */
     public static SysUser getAdminFromSession(HttpSession session) {
-        return (SysUser) session.getAttribute(SESSION_ADMIN);
+        return (SysUser) session.getAttribute(getSessionAdmin());
     }
 
     /**
@@ -126,14 +126,14 @@ public abstract class AbstractController extends BaseController {
      * @param user
      */
     public static void setAdminToSession(HttpSession session, SysUser user) {
-        session.setAttribute(SESSION_ADMIN, user);
+        session.setAttribute(getSessionAdmin(), user);
     }
 
     /**
      * @param value
      * @return
      */
-    public static boolean virifyNotUserName(String value) {
+    public static boolean verifyNotUserName(String value) {
         Matcher m = USERNAME_PATTERN.matcher(value);
         if (!m.matches()) {
             return true;
@@ -145,7 +145,7 @@ public abstract class AbstractController extends BaseController {
      * @param value
      * @return
      */
-    public static boolean virifyNotNickName(String value) {
+    public static boolean verifyNotNickName(String value) {
         Matcher m = NICKNAME_PATTERN.matcher(value);
         if (!m.matches()) {
             return true;
@@ -157,7 +157,7 @@ public abstract class AbstractController extends BaseController {
      * @param value
      * @return
      */
-    protected static boolean virifyNotMobile(String value) {
+    protected static boolean verifyNotMobile(String value) {
         Matcher m = MOBILE_PATTERN.matcher(value);
         if (!m.matches()) {
             return true;
@@ -171,8 +171,8 @@ public abstract class AbstractController extends BaseController {
      * @param model
      * @return
      */
-    protected static boolean virifyNotEMail(String field, String value, Map<String, Object> model) {
-        if (virifyNotEMail(value)) {
+    protected static boolean verifyNotEMail(String field, String value, Map<String, Object> model) {
+        if (verifyNotEMail(value)) {
             model.put(ERROR, "verify.notEmail." + field);
             return true;
         }
@@ -185,8 +185,8 @@ public abstract class AbstractController extends BaseController {
      * @param model
      * @return
      */
-    protected static boolean virifyNotUserName(String field, String value, Map<String, Object> model) {
-        if (virifyNotUserName(value)) {
+    protected static boolean verifyNotUserName(String field, String value, Map<String, Object> model) {
+        if (verifyNotUserName(value)) {
             model.put(ERROR, "verify.notUserName." + field);
             return true;
         }
@@ -199,8 +199,8 @@ public abstract class AbstractController extends BaseController {
      * @param model
      * @return
      */
-    protected static boolean virifyNotNickName(String field, String value, Map<String, Object> model) {
-        if (virifyNotNickName(value)) {
+    protected static boolean verifyNotNickName(String field, String value, Map<String, Object> model) {
+        if (verifyNotNickName(value)) {
             model.put(ERROR, "verify.notNickName." + field);
             return true;
         }
@@ -213,8 +213,8 @@ public abstract class AbstractController extends BaseController {
      * @param model
      * @return
      */
-    protected static boolean virifyNotMobile(String field, String value, Map<String, Object> model) {
-        if (virifyNotMobile(value)) {
+    protected static boolean verifyNotMobile(String field, String value, Map<String, Object> model) {
+        if (verifyNotMobile(value)) {
             model.put(ERROR, "verify.notMobile." + field);
             return true;
         }
@@ -225,7 +225,7 @@ public abstract class AbstractController extends BaseController {
      * @param value
      * @return
      */
-    public static boolean virifyNotEMail(String value) {
+    public static boolean verifyNotEMail(String value) {
         Matcher m = EMAIL_PATTERN.matcher(value);
         if (!m.matches()) {
             return true;
@@ -237,7 +237,7 @@ public abstract class AbstractController extends BaseController {
      * @param value
      * @return
      */
-    public static boolean virifyNotNumber(String value) {
+    public static boolean verifyNotNumber(String value) {
         Matcher m = NUMBER_PATTERN.matcher(value);
         if (!m.matches()) {
             return true;
@@ -251,8 +251,8 @@ public abstract class AbstractController extends BaseController {
      * @param model
      * @return
      */
-    protected static boolean virifyNotEMailAndMobile(String field, String value, Map<String, Object> model) {
-        if (virifyNotEMail(value) && virifyNotMobile(value)) {
+    protected static boolean verifyNotEMailAndMobile(String field, String value, Map<String, Object> model) {
+        if (verifyNotEMail(value) && verifyNotMobile(value)) {
             model.put(ERROR, "verify.notEmailAndMobile." + field);
             return true;
         }
@@ -263,6 +263,6 @@ public abstract class AbstractController extends BaseController {
      * @param session
      */
     public static void clearAdminToSession(HttpSession session) {
-        session.removeAttribute(SESSION_ADMIN);
+        session.removeAttribute(getSessionAdmin());
     }
 }

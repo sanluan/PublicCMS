@@ -25,13 +25,13 @@ public class CmsContentRelated implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "内容", condition = true)
-    private int contentId;
+    private long contentId;
     @MyColumn(title = "推荐内容", condition = true)
-    private Integer relatedContentId;
+    private Long relatedContentId;
     @MyColumn(title = "推荐用户", condition = true)
-    private int userId;
+    private long userId;
     @MyColumn(title = "推荐地址")
     private String url;
     @MyColumn(title = "推荐标题")
@@ -46,14 +46,14 @@ public class CmsContentRelated implements java.io.Serializable {
     public CmsContentRelated() {
     }
 
-    public CmsContentRelated(int contentId, int userId, int clicks, int sort) {
+    public CmsContentRelated(long contentId, long userId, int clicks, int sort) {
         this.contentId = contentId;
         this.userId = userId;
         this.clicks = clicks;
         this.sort = sort;
     }
 
-    public CmsContentRelated(int contentId, Integer relatedContentId, int userId, String url, String title, String description,
+    public CmsContentRelated(long contentId, Long relatedContentId, long userId, String url, String title, String description,
             int clicks, int sort) {
         this.contentId = contentId;
         this.relatedContentId = relatedContentId;
@@ -68,38 +68,38 @@ public class CmsContentRelated implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Column(name = "content_id", nullable = false)
-    public int getContentId() {
+    public long getContentId() {
         return this.contentId;
     }
 
-    public void setContentId(int contentId) {
+    public void setContentId(long contentId) {
         this.contentId = contentId;
     }
 
     @Column(name = "related_content_id")
-    public Integer getRelatedContentId() {
+    public Long getRelatedContentId() {
         return this.relatedContentId;
     }
 
-    public void setRelatedContentId(Integer relatedContentId) {
+    public void setRelatedContentId(Long relatedContentId) {
         this.relatedContentId = relatedContentId;
     }
 
     @Column(name = "user_id", nullable = false)
-    public int getUserId() {
+    public long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

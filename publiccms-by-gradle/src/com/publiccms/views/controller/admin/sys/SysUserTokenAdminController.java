@@ -27,9 +27,9 @@ public class SysUserTokenAdminController extends AbstractController {
     public String delete(String authToken, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         SysUserToken entity = service.getEntity(authToken);
-        int userId = getAdminFromSession(session).getId();
+        Long userId = getAdminFromSession(session).getId();
         if (notEmpty(entity)) {
-            if (virifyNotEquals("siteId", userId, entity.getUserId(), model)) {
+            if (verifyNotEquals("siteId", userId, entity.getUserId(), model)) {
                 return TEMPLATE_ERROR;
             }
             service.delete(authToken);

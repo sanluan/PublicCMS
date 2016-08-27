@@ -9,9 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
+import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.sanluan.common.base.Base;
@@ -29,16 +31,20 @@ public class ScheduledTaskComponent extends Base {
     @Autowired
     private LogTaskService logTaskService;
     @Autowired
+    private LogUploadService logUploadService;
+    @Autowired
     private CacheComponent cacheComponent;
 
     /**
      * 每分钟清理半小时前的token
      */
-    @Scheduled(cron = "0 * *  * * ?")
+    @Scheduled(fixedDelay = 60 * 1000L)
     public void clearAppToken() {
-        Date date = addMinutes(getDate(), -30);
-        appTokenService.delete(date);
-        sysEmailTokenService.delete(date);
+        if (CmsVersion.isMaster()) {
+            Date date = addMinutes(getDate(), -30);
+            appTokenService.delete(date);
+            sysEmailTokenService.delete(date);
+        }
     }
 
     /**
@@ -54,9 +60,12 @@ public class ScheduledTaskComponent extends Base {
      */
     @Scheduled(cron = "0 0 0 1 * ?")
     public void clearLog() {
-        Date date = addYears(getDate(), -2);
-        logLoginService.delete(null, date);
-        logOperateService.delete(null, date);
-        logTaskService.delete(null, date);
+        if (CmsVersion.isMaster()) {
+            Date date = addYears(getDate(), -2);
+            logLoginService.delete(null, date);
+            logOperateService.delete(null, date);
+            logTaskService.delete(null, date);
+            logUploadService.delete(null, date);
+        }
     }
 }

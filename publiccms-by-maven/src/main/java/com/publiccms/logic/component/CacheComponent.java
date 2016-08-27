@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.spi.Cacheable;
 import com.publiccms.logic.service.tools.HqlService;
 import com.sanluan.common.base.Base;
-import com.sanluan.common.base.Cacheable;
 
 @Component
 public class CacheComponent extends Base {

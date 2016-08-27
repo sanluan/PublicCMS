@@ -37,7 +37,7 @@
 		<#list page.list as a>
 			<#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
 				<li>
-					<a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" title="<i class='icon-book icon-large'></i> 内容管理">${a.name!}</a>
+					<a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" title="<i class='icon-book icon-large'></i> 内容管理">${(a.name?html)!}</a>
 				<#if a.childIds?has_content>
 					<ul>
 						<@contentCategoryTree a.id/>
@@ -55,7 +55,7 @@
 		<#list page.list as a>
 			<#if a.childIds?has_content>
 			<li>
-				<a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" title="<i class='icon-folder-open icon-large'></i> 分类管理">${a.name!}</a>
+				<a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" title="<i class='icon-folder-open icon-large'></i> 分类管理">${(a.name?html)!}</a>
 				<ul>
 					<@categoryTree a.id/>
 				</ul>
@@ -74,7 +74,7 @@
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
 	<div class="accordionHeader">
-		<h2>${a.name}</h2>
+		<h2>${a.attached!} ${a.name}</h2>
 	</div>
 	<div class="accordionContent">
 	<#switch a.url!''>
@@ -119,7 +119,7 @@
 				<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.childMoudleIds!><#assign childRoleMoudleMap=map!/></@_sysRoleMoudle>
 				<#list page.list as a>
 					<#if (childRoleMoudleMap[a.id?string])?has_content&&childRoleMoudleMap[a.id?string]>
-				<li><a href="${(a.url?html)!}" target="navTab" rel="${(a.url?html)!}">${a.name}</a></li>
+				<li><a href="${(a.url?html)!}" target="navTab" rel="${(a.url?html)!}">${a.attached!} ${(a.name?html)!}</a></li>
 					</#if>
 				</#list>
 			</@_sysMoudleList>

@@ -10,9 +10,10 @@
 			<ul class="searchContent">
 				<#if sysSite?has_content>
 					<li>
-						<label>站点:</label>${sysSite.name}
+						<label>站点:</label>${sysSite.name?html}
 					</li>
 				</#if>
+				<li></li>
 			</ul>
 		</div>
 	</form>
@@ -32,9 +33,7 @@
 				<th>站点ID</th>
 				<th>站点</th>
 				<th>动态站点域名</th>
-				<th>模板跟目录</th>
-				<th>登陆模板路径</th>
-				<th>注册模板路径</th>
+				<th>模板根目录</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -47,11 +46,9 @@
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
 				<td>${a.siteId!}</td>
-				<td>${(siteMap[a.siteId?string].name)!}</td>
-				<td>${a.name!}</td>
-				<td>${a.path!}</td>
-				<td>${a.loginPath!}</td>
-				<td>${a.registerPath!}</td>
+				<td>${(siteMap[a.siteId?string].name?html)!}</td>
+				<td>${(a.name?html)!}</td>
+				<td>${(a.path?html)!}</td>
 			</tr>
 			</#list>
 		</tbody>

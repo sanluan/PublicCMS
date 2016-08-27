@@ -23,7 +23,7 @@
 <#items as a>
 		<div class="item">
 			<a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">
-				<img class="lazyOwl" data-src="${site.resourcePath+a.cover!}" alt="${a.title!}">
+				<img class="lazyOwl" data-src="<@_thumb path=a.cover width=400 height=450/>" alt="${a.title!}">
 				<h4>${a.title}</h4>
 			</a>
 		</div>

@@ -42,7 +42,7 @@ public class CmsDomainAdminController extends AbstractController {
         if (notEmpty(entity.getId())) {
             SysSite site = getSite(request);
             SysDomain oldEntity = service.getEntity(entity.getId());
-            if (empty(oldEntity) || virifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
+            if (empty(oldEntity) || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, new String[] { "id", "siteId", "name" });

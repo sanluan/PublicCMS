@@ -11,7 +11,7 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class SysDeptDao extends BaseDao<SysDept> {
-    public PageHandler getPage(Integer siteId, Integer parentId, Integer userId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer siteId, Integer parentId, Long userId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysDept bean");
         if (notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);

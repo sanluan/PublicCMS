@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>用户中心</title>
+	<meta name="keywords" content="${(metadata.extendData.keywords?html)!}"/>
+	<meta name="description" content="${(metadata.extendData.description?html)!}"/>
+	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+	<div class="container">
+		${user.nickName},你好
+	</div>
+	<div class="clearfix-before"></div>
+</main>
+<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
+</body>
+</html>

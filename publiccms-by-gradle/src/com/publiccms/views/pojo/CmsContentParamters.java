@@ -5,61 +5,65 @@ import java.util.List;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.cms.CmsTag;
-import com.sanluan.common.base.Base;
 
-public class CmsContentParamters extends Base {
-    private List<CmsContentRelated> contentRelateds;
-    private List<CmsTag> tags;
-    private List<CmsContentFile> files;
-    private List<CmsContentFile> images;
-    private List<ExtendData> modelExtendDataList;
-    private List<ExtendData> categoryExtendDataList;
+public class CmsContentParamters implements java.io.Serializable {
 
-    public List<CmsContentRelated> getContentRelateds() {
-        return contentRelateds;
-    }
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private List<CmsContentRelated> contentRelateds;
+	private List<CmsTag> tags;
+	private List<CmsContentFile> files;
+	private List<CmsContentFile> images;
+	private List<ExtendData> modelExtendDataList;
+	private List<ExtendData> categoryExtendDataList;
 
-    public void setContentRelateds(List<CmsContentRelated> contentRelateds) {
-        this.contentRelateds = contentRelateds;
-    }
+	public List<CmsContentRelated> getContentRelateds() {
+		return contentRelateds;
+	}
 
-    public List<CmsContentFile> getFiles() {
-        return files;
-    }
+	public void setContentRelateds(List<CmsContentRelated> contentRelateds) {
+		this.contentRelateds = contentRelateds;
+	}
 
-    public void setFiles(List<CmsContentFile> files) {
-        this.files = files;
-    }
+	public List<CmsContentFile> getFiles() {
+		return files;
+	}
 
-    public List<ExtendData> getModelExtendDataList() {
-        return modelExtendDataList;
-    }
+	public void setFiles(List<CmsContentFile> files) {
+		this.files = files;
+	}
 
-    public void setModelExtendDataList(List<ExtendData> modelExtendDataList) {
-        this.modelExtendDataList = modelExtendDataList;
-    }
+	public List<ExtendData> getModelExtendDataList() {
+		return modelExtendDataList;
+	}
 
-    public List<ExtendData> getCategoryExtendDataList() {
-        return categoryExtendDataList;
-    }
+	public void setModelExtendDataList(List<ExtendData> modelExtendDataList) {
+		this.modelExtendDataList = modelExtendDataList;
+	}
 
-    public void setCategoryExtendDataList(List<ExtendData> categoryExtendDataList) {
-        this.categoryExtendDataList = categoryExtendDataList;
-    }
+	public List<ExtendData> getCategoryExtendDataList() {
+		return categoryExtendDataList;
+	}
 
-    public List<CmsContentFile> getImages() {
-        return images;
-    }
+	public void setCategoryExtendDataList(List<ExtendData> categoryExtendDataList) {
+		this.categoryExtendDataList = categoryExtendDataList;
+	}
 
-    public void setImages(List<CmsContentFile> images) {
-        this.images = images;
-    }
+	public List<CmsContentFile> getImages() {
+		return images;
+	}
 
-    public List<CmsTag> getTags() {
-        return tags;
-    }
+	public void setImages(List<CmsContentFile> images) {
+		this.images = images;
+	}
 
-    public void setTags(List<CmsTag> tags) {
-        this.tags = tags;
-    }
+	public List<CmsTag> getTags() {
+		return tags;
+	}
+
+	public void setTags(List<CmsTag> tags) {
+		this.tags = tags;
+	}
 }

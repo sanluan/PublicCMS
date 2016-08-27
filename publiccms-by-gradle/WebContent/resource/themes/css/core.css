@@ -1,8 +1,8 @@
 @charset "utf-8";
 
 /* Core Code */
-html, body, *{ padding:0;margin:0;font-size:12px;line-height:23px;font-family:Arial, sans-serif;word-break:break-all;}
-input[type="checkbox"] {margin: 3px 3px 3px 4px;}
+html, body, *{ padding:0;margin:0;font-size:12px;font-family:Arial, sans-serif;word-break:break-all;}
+input[type="checkbox"] { margin:3px 3px 3px 4px;}
 /* Remember to define focus styles! */
 :focus{ outline:0;}
 body{ width:100%;height:100%;color:black;overflow:hidden;}
@@ -21,40 +21,45 @@ img{ border:none;}
 a{ text-decoration:none;}
 a:hover{ text-decoration:underline;}
 
-header{ display:block;overflow:hidden;height:34px;position:relative;border-bottom-width:1px;border-bottom-style:solid;}
+header{ display:block;overflow:hidden;height:39px;position:relative;border-bottom-width:1px;border-bottom-style:solid;}
 main{ overflow:hidden;}
 footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;z-index:-1;border-top-width:1px;border-top-style:solid;position:absolute;}
 
+/* Menu */
+header .logo{ float:left;width:200px;height:100%;background:url(../default/images/logo.png) no-repeat;}
+header .nav{ display:block;float:right;z-index:1;}
+header .nav li{ float:left;padding:0 5px;line-height:37px;}
+#navMenu{ float:left;display:block;position:absolute;top:3px;left:202px;z-index:1;border-radius:6px 6px 0 0;border-width:1px;border-style:solid }
+#navMenu li{ float:left;border-right-width:1px;border-right-style:solid }
+#navMenu li:first-child{ border-radius:6px 0 0 0;}
+#navMenu li:last-child{ border-right-width:0;border-radius:0 6px 0 0;}
+#navMenu li.selected{ border-width:1px 1px 1px 1px;border-style:solid;}
+#navMenu li a{ font-size:14px;font-weight:bold;line-height:36px;text-decoration:none;padding:0 15px;}
+#navMenu li a i{ font-size:14px;}
+#navMenu li.selected a{ line-height:33px;}
+
 /* Tabs */
 .tabs{ background-position:0 100%;background-repeat:repeat-x;}
-.tabs .tabsHeader{ display:block;overflow:hidden;height:28px;padding-left:5px;background-position:0 0;}
-.tabs .tabsHeaderContent{ display:block;overflow:hidden;height:28px;padding-right:5px;background-position:100% -50px;}
-.tabs .tabsHeader ul{ display:block;height:28px;background-position:0 -100px;background-repeat:repeat-x;}
-.tabs .tabsHeader li{ float:left;display:block;height:28px;margin-right:2px;background-position:0 -250px;background-repeat:repeat-x;cursor:pointer;}
-.tabs .tabsHeader li a{ float:left;display:block;height:28px;padding-left:5px;background-position:0 -150px;}
+.tabs .tabsHeader{ display:block;overflow:hidden;height:30px;padding-left:5px;background-position:0 0;}
+.tabs .tabsHeaderContent{ display:block;overflow:hidden;height:100%;}
+.tabs .tabsHeader ul{ display:block;height:100%;}
+.tabs .tabsHeader li{ float:left;display:block;height:100%;margin-right:2px;line-height:30px;}
+.tabs .tabsHeader li a{ float:left;display:block;height:100%;padding:0 15px;line-height:30px;}
 .tabs .tabsHeader li a:hover{ text-decoration:none;}
-.tabs .tabsHeader li span{ float:left;display:block;overflow:hidden;height:28px;padding:2px 10px 0 5px;line-height:25px;background-position:100% -200px;cursor:pointer;}
-.tabs .tabsHeader li.hover{ background-position:0 -400px;background-repeat:repeat-x;}
-.tabs .tabsHeader li.hover a{ background-position:0 -300px;}
-.tabs .tabsHeader li.hover span{ background-position:100% -350px;}
-.tabs .tabsHeader li.selected{ background-position:0 -550px;}
-.tabs .tabsHeader li.selected a{ background-position:0 -450px;}
-.tabs .tabsHeader li.selected span{ font-weight:bold;background-position:100% -500px;}
-.tabs .tabsContent{ display:block;overflow:auto;padding:5px 5px 1px 5px;border-style:solid;border-width:0 1px;}
-.tabs .tabsFooter{ display:block;overflow:hidden;height:5px;background-position:0 -600px;}
-.tabs .tabsFooterContent{ display:block;overflow:hidden;height:5px;background-position:100% -650px;}
+.tabs .tabsHeader li.selected{ border-style:solid;border-width:1px;background:#fff;}
+.tabs .tabsContent{ display:block;overflow:auto;}
 
 .tabsPage{ margin-left:202px;}
-.tabsPage .tabsPageHeader{ display:block;height:28px;border-style:solid;border-width:0px 1px 1px 1px;position:relative;}
-.tabsPage .tabsPageHeaderContent{ display:block;overflow:hidden;height:29px;margin-right:19px;position:relative;}
+.tabsPage .tabsPageHeader{ display:block;height:32px;border-style:solid;border-width:0px 1px 1px 1px;position:relative;}
+.tabsPage .tabsPageHeaderContent{ display:block;overflow:hidden;height:33px;margin-right:19px;position:relative;}
 .tabsPage .tabsPageHeaderMargin{ margin:0 34px 0 17px;}
-.tabsPage .tabsPageHeader ul{ display:block;width:10000px;height:28px;z-index:1;margin-top:1px;position:absolute;}
-.tabsPage .tabsPageHeader li{ font-size:13px;float:left;display:block;height:28px;margin-left:2px;border-style:solid;border-width:1px 1px 0 1px;border-color:#aaaaaa;border-radius:3px 3px 0 0;position:relative;}
-.tabsPage .tabsPageHeader li a{ display:block;overflow:hidden;height:28px;max-width:112px;padding-left:6px;padding-right:15px;line-height:28px;background-position:0 0;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;}
+.tabsPage .tabsPageHeader ul{ display:block;width:10000px;height:32px;z-index:1;margin-top:1px;position:absolute;}
+.tabsPage .tabsPageHeader li{ float:left;display:block;height:100%;margin-left:2px;border-style:solid;border-width:1px 1px 0 1px;border-color:#aaaaaa;border-radius:3px 3px 0 0;position:relative;}
+.tabsPage .tabsPageHeader li a{ font-size:13px;display:block;overflow:hidden;max-width:112px;padding-left:8px;padding-right:16px;line-height:32px;background-position:0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tabsPage .tabsPageHeader li a:hover{ text-decoration:none;}
 .tabsPage .tabsPageHeader li.hover a ,.tabsPage .tabsPageHeader li.selected a{ font-weight:bold;}
-.tabsPage .tabsPageHeader li .close{ line-height:12px;height:12px;padding:0;position:absolute;top:2px;right:2px;}
-.tabsPage .tabsMove{ height:25px;position:absolute;top:0;right:0;z-index:2;}
+.tabsPage .tabsPageHeader li .close{ line-height:14px;height:14px;font-size:14px;padding:0;position:absolute;top:2px;right:2px;}
+.tabsPage .tabsMove{ height:100%;position:absolute;top:0;right:0;z-index:2;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ display:block;overflow:hidden;width:17px;height:27px;text-indent:-1000px;position:absolute;z-index:2;}
 .tabsPage .tabsLeft{ background-position:0 0;top:1px;left:0;cursor:pointer;}
 .tabsPage .tabsLeftHover{ background-position:0 -50px;}
@@ -145,15 +150,15 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 .shadow .shadow_c, .shadow .shadow_c_l, .shadow .shadow_c_r, .shadow .shadow_c_c{ display:block;overflow:hidden;height:100%;}
 
 /* Shadow */
-.shadow .shadow_h_l{background-image:url(../default/images/shadow/shadow_h_l.png);background-repeat:no-repeat;}
-.shadow .shadow_h_r{background-image:url(../default/images/shadow/shadow_h_r.png);background-repeat:no-repeat;}
-.shadow .shadow_h_c{background-image:url(../default/images/shadow/shadow_h_c.png);background-repeat:repeat-x;}
-.shadow .shadow_c_l{background-image:url(../default/images/shadow/shadow_c_l.png);background-repeat:repeat-y;}
-.shadow .shadow_c_r{background-image:url(../default/images/shadow/shadow_c_r.png);background-repeat:repeat-y;}
-.shadow .shadow_c_c{background-image:url(../default/images/shadow/shadow_c_c.png);background-repeat:repeat;}
-.shadow .shadow_f_l{background-image:url(../default/images/shadow/shadow_f_l.png);background-repeat:no-repeat;}
-.shadow .shadow_f_r{background-image:url(../default/images/shadow/shadow_f_r.png);background-repeat:no-repeat;}
-.shadow .shadow_f_c{background-image:url(../default/images/shadow/shadow_f_c.png);background-repeat:repeat-x;}
+.shadow .shadow_h_l{ background-image:url(../default/images/shadow/shadow_h_l.png);background-repeat:no-repeat;}
+.shadow .shadow_h_r{ background-image:url(../default/images/shadow/shadow_h_r.png);background-repeat:no-repeat;}
+.shadow .shadow_h_c{ background-image:url(../default/images/shadow/shadow_h_c.png);background-repeat:repeat-x;}
+.shadow .shadow_c_l{ background-image:url(../default/images/shadow/shadow_c_l.png);background-repeat:repeat-y;}
+.shadow .shadow_c_r{ background-image:url(../default/images/shadow/shadow_c_r.png);background-repeat:repeat-y;}
+.shadow .shadow_c_c{ background-image:url(../default/images/shadow/shadow_c_c.png);background-repeat:repeat;}
+.shadow .shadow_f_l{ background-image:url(../default/images/shadow/shadow_f_l.png);background-repeat:no-repeat;}
+.shadow .shadow_f_r{ background-image:url(../default/images/shadow/shadow_f_r.png);background-repeat:no-repeat;}
+.shadow .shadow_f_c{ background-image:url(../default/images/shadow/shadow_f_c.png);background-repeat:repeat-x;}
 
 /* Tree */
 .tree li{ clear:both;display:block;line-height:24px;cursor:pointer;}
@@ -182,35 +187,33 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 .tree .hover .checked{ background-position:0 -150px;}
 .tree .indeterminate{ background-position:0 -200px;}
 .tree .hover .indeterminate{ background-position:0 -250px;}
-.tree div div{background-image:url(../default/images/tree/tree.png);background-repeat:no-repeat;}
-.tree .folder_collapsable, .tree .folder_expandable, .tree .file{background-image:url(../default/images/tree/folder.png);background-repeat:no-repeat;}
-.tree .checked, .tree .unchecked, .tree .indeterminate{background-image:url(../default/images/tree/check.png);background-repeat:no-repeat;}
+.tree div div{ background-image:url(../default/images/tree/tree.png);background-repeat:no-repeat;}
+.tree .folder_collapsable, .tree .folder_expandable, .tree .file{ background-image:url(../default/images/tree/folder.png);background-repeat:no-repeat;}
+.tree .checked, .tree .unchecked, .tree .indeterminate{ background-image:url(../default/images/tree/check.png);background-repeat:no-repeat;}
 
 /* Accordion */
 .accordion{ display:block;border-style:solid;border-width:1px 1px 0 1px;}
-.accordion .accordionHeader{ display:block;overflow:hidden;background-repeat:repeat-x;cursor:pointer;}
-.accordion .accordionHeader h2{ display:block;overflow:hidden;padding:0 25px 0 5px;height:25px;line-height:24px;}
+.accordion .accordionHeader{ display:block;overflow:hidden;background-repeat:repeat-x;cursor:pointer;border-bottom-width:1px;border-bottom-style:solid;}
+.accordion .accordionHeader h2{ display:block;overflow:hidden;padding:0 30px 0 5px;height:30px;line-height:30px;}
 .accordion .accordionContent{ display:block;overflow:auto;border-style:solid;border-width:0 0 1px 0;}
 
-.accordion .accordionHeader.hover{ background-position:0 -25px;}
-.accordion .accordionHeader h2{ background-repeat:no-repeat;background-position:100% -50px;}
-.accordion .accordionHeader.hover h2{ background-position:100% -75px;}
-.accordion .accordionHeader .collapsable{ background-position:100% -100px;}
-.accordion .accordionHeader.hover .collapsable{ background-position:100% -125px;}
+.accordion .accordionHeader h2{ background-repeat:no-repeat;background-position:100% 2px;}
+.accordion .accordionHeader.hover h2{ background-position:100% -23px;}
+.accordion .accordionHeader .collapsable{ background-position:100% -48px;}
+.accordion .accordionHeader.hover .collapsable{ background-position:100% -73px;}
 
 /* Grid */
-.panelBar{ display:block;overflow:hidden;height:27px;border-style:solid;border-width:1px 0;background-repeat:repeat-x;}
-.panelBar ul{ padding:1px;}
-.panelBar li{ float:left;display:block;overflow:hidden;height:25px;padding:0 0 0 5px;}
-.panelBar li.hover{ background-position:0 -100px;}
-.panelBar li.hover a{ background-position:100% -150px;}
-.panelBar .toolBar li, .panelBar .toolBar li.hover{ padding:0 0 0 5px;background-position:0 -100px;}
-.panelBar .toolBar a, .panelBar .toolBar li.hover a{ float:left;display:block;overflow:hidden;padding:0 5px 0 0;text-decoration:none;background-position:100% -150px;}
+.panelBar{ display:block;overflow:hidden;height:28px;border-style:solid;border-width:1px 0;background-repeat:repeat-x;}
+.panelBar ul{ padding:1px 5px;}
+.panelBar li{ float:left;display:block;overflow:hidden;height:26px;padding:0 5px;}
+.panelBar .toolBar li a:hover{ border-radius:2px;}
+.panelBar .toolBar li a{ line-height:22px;display:block;overflow:hidden;padding:2px 5px;text-decoration:none;}
+.panelBar .toolBar li.line{ display:block;overflow:hidden;height:24px;width:1px;border-radius:1px;border-width:1px;border-style:solid;padding:0;text-indent:-1000px;}
 
-.panelBar .toolBar li.line{ display:block;overflow:hidden;width:12px;padding:0;text-indent:-1000px;background-position:5px -200px;}
 .panelBar .pages{ float:left;overflow:hidden;height:21px;padding:2px 5px;}
 .panelBar .pages span{ float:left;line-height:21px;}
 .panelBar .pages select{ float:left;margin:0 3px;font-size:12px;}
+
 .pagination{ float:right;padding-left:7px;background-position:0 -199px;}
 .pagination li, .pagination li.hover{ padding:0 0 0 5px;background-position:0 -100px;}
 .pagination a, .pagination li.hover a, .pagination li span{ float:left;display:block;padding:0 5px 0 0;text-decoration:none;line-height:23px;background-position:100% -150px;}
@@ -239,22 +242,22 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 .pagination li.jumpto .goto{ float:left;display:block;overflow:hidden;width:16px;height:19px;border:0;text-indent:-1000px;background-position:0 -650px;cursor:pointer;}
 
 /* CSS Table */
-table.list {border-collapse:collapse; border:solid 1px #ededed;}
-table.list thead tr {background:url("../default/images/tableth.png") repeat-x scroll 0 0 #F0EFF0;}
-table.list th {padding:1px 2px; line-height:26px; border-right: solid 1px #D0D0D0; border-bottom:solid 1px #D0D0D0; font-weight:bolder; }
-table.list td {padding:1px 2px; line-height:24px; border-right:solid 1px #ededed;}
-table.list th.order{background:url(../default/images/order.gif) no-repeat right; cursor:pointer;}
-table.list th.asc{background:url(../default/images/order_up.gif) no-repeat right; cursor:pointer;}
-table.list th.desc{background:url(../default/images/order_down.gif) no-repeat right; cursor:pointer;}
-table.list tbody {background-color:#fff;}
-table.list .right {text-align:right;}
-table.list .trbg {background-color:#f8f8f8;}
-table.list .hover {background-color:#fff5c0;}
-table.list .selected {background-color:#CDE8FF;}
-table.list a {color:#3C7FB1;}
-table.list a:hover {text-decoration:underline;}
-table.list td span.error {z-index:-1}
-table.nowrap tbody tr {border-bottom:solid 1px #ededed;}
+table.list { border-collapse:collapse;border:solid 1px #ededed;position:relative;}
+table.list thead tr { background:url("../default/images/tableth.png") repeat-x scroll 0 0 #F0EFF0;}
+table.list th { padding:1px 2px;line-height:26px;border-right:solid 1px #D0D0D0;border-bottom:solid 1px #D0D0D0;font-weight:bolder;}
+table.list td { padding:1px 2px;line-height:24px;border-right:solid 1px #ededed;}
+table.list th.order{ background:url(../default/images/order.gif) no-repeat right;cursor:pointer;}
+table.list th.asc{ background:url(../default/images/order_up.gif) no-repeat right;cursor:pointer;}
+table.list th.desc{ background:url(../default/images/order_down.gif) no-repeat right;cursor:pointer;}
+table.list tbody { background-color:#fff;}
+table.list .right { text-align:right;}
+table.list .trbg { background-color:#f8f8f8;}
+table.list .hover { background-color:#fff5c0;}
+table.list .selected { background-color:#CDE8FF;}
+table.list a { color:#3C7FB1;}
+table.list a:hover { text-decoration:underline;}
+table.list td span.error { z-index:-1}
+table.nowrap tbody tr { border-bottom:solid 1px #ededed;}
 
 
 /* Taskbar */
@@ -311,44 +314,18 @@ label.alt{ display:block;overflow:hidden;position:absolute;line-height:20px}
 .nowrap span.error{ position:static;}
 
 /* Button */
-.button, .buttonActive, .buttonDisabled{ float:left;display:block;overflow:hidden;height:25px;padding-left:5px;}
-
-.button span, .buttonDisabled span, .buttonActive span,
-.button .buttonContent, .buttonHover, .buttonHover .buttonContent,
-.buttonActive .buttonContent, .buttonDisabled .buttonContent{ float:left;display:block;overflow:hidden;height:25px;line-height:25px;font-weight:bold;}
-
-.button{ background-position:0 0;}
-.button .buttonContent{ padding:0 5px 0 0;background-position:100% -50px;}
-.button span{ padding:0 10px 0 5px;background-position:100% -50px;cursor:pointer;}
-.button:hover{ text-decoration:none;background-position:0 -100px;}
-.button:hover span{ background-position:100% -150px;}
-.buttonHover{ padding-left:5px;background-position:0 -100px;}
-.buttonHover .buttonContent{ padding:0 5px 0 0;background-position:100% -150px;}
-
-.buttonActive{ background-position:0 -200px;}
-.buttonActive .buttonContent{ padding:0 5px 0 0;background-position:100% -250px;}
-.buttonActive span{ padding:0 10px 0 5px;background-position:100% -250px;cursor:pointer;}
-.buttonActive:hover{ text-decoration:none;background-position:0 -300px;}
-.buttonActive:hover span{ background-position:100% -350px;}
-.buttonActiveHover{ background-position:0 -300px;}
-.buttonActiveHover .buttonContent{ padding:0 5px 0 0;background-position:100% -350px;}
-
-.buttonDisabled, .buttonDisabled:hover{ text-decoration:none;background-position:0 -400px;}
-.buttonDisabled span, .buttonDisabled:hover span{ padding:0 10px 0 5px;background-position:100% -450px;cursor:default;}
-.buttonDisabled .buttonContent{ padding:0 5px 0 0;background-position:100% -450px;}
-
-.button button, .buttonHover button,
-.buttonActive button, .buttonDisabled button{ width:auto;height:25px;margin:0;padding:0 5px 1px 5px;border:0;font-size:12px;background:none;cursor:pointer;}
-.buttonDisabled button{ cursor:default;}
-
+.button,.buttonActive{ display:inline-block;height:22px;padding:2px 22px;border:none;border-radius:2px;cursor:pointer;text-align:center;line-height:22px;white-space:nowrap;font-size:14px;letter-spacing:.03em;overflow:hidden;}
+button.button,button.buttonActive{ height:26px;}
+.button:hover{ text-decoration:none;}
+.buttonActive{ font-weight:bold;}
 /* ----------------------------------------------------------------- Pages */
 /* Layout */
 #leftside{ position:relative;}
-#sidebar{ width:200px;position:absolute;top:0;left:0px;z-index:20;overflow:hidden;}
+#sidebar{ width:200px;position:absolute;top:0px;left:0px;z-index:20;overflow:hidden;}
 #sidebar #menu{ overflow:auto;}
-#sidebar_s{ display:none;width:25px;position:absolute;top:0;left:0;z-index:21;}
-#splitBar{ display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:35px;left:200px;z-index:20;}
-#splitBarProxy{ display:none;overflow:hidden;width:1px;border-style:solid;border-color:#c0c0c0;background:#CCC;border-width:1px;cursor:col-resize;position:absolute;top:35px;left:200px;z-index:20;}
+#sidebar_s{ display:none;width:26px;position:absolute;top:1px;left:0;z-index:21;}
+#splitBar{ display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:40px;left:200px;z-index:20;}
+#splitBarProxy{ display:none;overflow:hidden;width:2px;border-style:solid;border-color:#c0c0c0;background:#CCC;border-width:1px;cursor:col-resize;position:absolute;top:40px;left:200px;z-index:20;}
 
 .toggleCollapse{ overflow:hidden;}
 .toggleCollapse div{ display:block;overflow:hidden;width:25px;height:28px;background-position:100% -47px;cursor:pointer;}
@@ -358,18 +335,6 @@ label.alt{ display:block;overflow:hidden;position:absolute;line-height:20px}
 #sidebar_s .toggleCollapse{ border:0;background:none;}
 #sidebar_s .toggleCollapse div{ width:21px;border:0;background-position:-2px -147px;}
 #sidebar_s .toggleCollapse div:hover{ background-position:-2px -197px;}
-
-/* Menu */
-header .logo{ float:left;width:200px;height:34px;background:url(../default/images/logo.png) no-repeat;}
-header .nav{ display:block;float:right;z-index:1;}
-header .nav li{ float:left;padding:0 5px;line-height:34px;}
-#navMenu{ float:left;display:block;position:absolute;top:1px;left:202px;z-index:1;border-radius:6px 6px 0 0;border-width:1px;border-style:solid }
-#navMenu li{ float:left;border-right-width:1px;border-right-style:solid }
-#navMenu li:first-child{border-radius:5px 0 0 0;}
-#navMenu li:last-child{border-right-width:0;border-radius:0 5px 0 0;}
-#navMenu li.selected{border-width:1px 1px 1px 1px;border-style:solid;}
-#navMenu li a{ line-height:30px;font-size:14px;font-weight:bold;text-decoration:none;padding:0 15px;}
-#navMenu li.selected a{line-height:28px;}
 
 .themeList li div{ background:url(../default/images/themeButton.png) no-repeat;}
 .themeList{ width:100px;position:absolute;right:0px;top:0px;padding:7px;}
@@ -385,16 +350,16 @@ header .nav li{ float:left;padding:0 5px;line-height:34px;}
 .themeList li.default .selected{ background-position:-60px -20px;}
 
 /* Pages default */
-.page{ display:block;overflow:hidden;float:left;width:100%;}
+.page{ display:block;overflow:hidden;float:left;width:100%;height:100%;}
 .pageHeader{ display:block;overflow:hidden;padding:5px;position:relative;}
 .searchBar ul.searchContent{ display:block;overflow:hidden;height:25px;margin-right:50px}
-.searchBar ul.two{ height:50px}
+.searchBar ul.searchContent:hover,.searchBar ul.searchContentHover{ height:auto;}
 .searchBar input,.searchBar span{ float:left;}
 .searchBar span{ line-height:20px;}
 .searchBar ul.searchContent li{ float:left;white-space:nowrap;display:block;overflow:hidden;width:230px;height:21px;padding:2px 0;}
 .searchBar ul.searchContent li.colspan{ width:460px;}
 .searchBar label{ float:left;width:65px;padding:0 5px;line-height:23px;}
-.searchBar .subBar{ height:25px;position:absolute;bottom:2px;right:2px;}
+.searchBar .subBar{ height:30px;position:absolute;bottom:2px;right:2px;}
 .searchBar .subBar ul{ float:right;}
 .searchBar .subBar li{ float:left;margin-left:5px;}
 .pageContent{ display:block;overflow:auto;position:relative;}
@@ -404,22 +369,22 @@ header .nav li{ float:left;padding:0 5px;line-height:34px;}
 
 /* Pages Form */
 .pageForm{ display:block;overflow:auto;}
-.pageFormContent{ display:block;overflow:auto;padding:10px 5px;position:relative;}
+.pageFormContent{ display:block;overflow:auto;padding:10px 5px;position:relative;height:100%;}
 .pageFormContent div.unit{ display:block;margin:0;padding:5px 0;position:relative;clear:both;}
-.pageFormContent p{ float:left;display:block;width:380px;margin:0;padding:5px 0;position:relative;}
+.pageFormContent p{ float:left;display:block;min-width:380px;margin:0;padding:5px 0;position:relative;}
 .pageFormContent p.nowrap{ width:100%}
 .pageFormContent .radioGroup{ float:left;display:block;overflow:hidden;}
-.pageFormContent label{ float:left;width:120px;padding:0 5px;line-height:21px;}
-.pageFormContent label.radioButton{ float:left;width:auto;padding:0 10px 0 0;line-height:21px;}
+.pageFormContent label{ float:left;width:120px;padding:2px 5px;}
+.pageFormContent label.radioButton{ float:left;width:auto;padding:0 10px 0 0;}
 .pageFormContent .textInput{ float:left;}
 .pageFormContent select{ float:left;}
 .pageFormContent .inputInfo{ padding:0 5px;line-height:21px;}
 .pageFormContent span.unit, .pageFormContent a.unit{ padding:0 5px;line-height:21px;}
 .pageFormContent span.info{ color:#7F7F7F;display:block;line-height:21px;float:left;}
 
-.pageFormContent dl{ float:left;display:block;width:380px;height:21px;margin:0;padding:5px 0;position:relative;}
-.pageFormContent dt{ float:left;width:120px;padding:0 5px;line-height:21px;}
-.pageFormContent dd{ display:block;line-height:21px;width:220px;float:left;}
+.pageFormContent dl{ float:left;line-height:22px;display:block;width:380px;margin:0;padding:5px 0;position:relative;}
+.pageFormContent dt{ float:left;width:120px;padding:0 5px;}
+.pageFormContent dd{ display:block;width:220px;float:left;}
 .pageFormContent dl.nowrap, .nowrap dl{ width:100%;height:auto;clear:both;}
 .pageFormContent dl.nowrap dd, .nowrap dd{ width:560px;}
 
@@ -427,15 +392,15 @@ fieldset{ padding:3px;margin:0 0 5px 0;border:1px dotted #B8D0D6;}
 fieldset legend{ padding:2px;border:1px dotted #B8D0D6;font-weight:bold;}
 fieldset legend:hover{ background-color:#dddddd;}
 
-.formBar{ clear:both;padding:0 5px;height:30px;padding-top:5px;border-style:solid;border-width:1px 0 0 0;}
+.formBar{ clear:both;padding:0 5px;height:30px;padding-top:5px;border-style:solid;border-width:0 0 1px 0;}
 .formBar ul{ float:right;}
 .formBar li{ float:left;margin-left:5px;}
 .divider{ clear:both;display:block;overflow:hidden;text-indent:-1000px;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dotted;border-width:0 0 1px 0;}
 
 /* Pages dialog */
 .dialog .pageHeader{ border-style:solid;border-width:1px;margin:0}
-.dialog .pageContent{ border-style:solid;border-width:0 1px;background-color:#fff}
-.dialog .pageFormContent, .dialog .viewInfo{ border-style:solid;border-width:1px 0 0 0;}
+.dialog .pageContent{ border-style:solid;border-width:0 1px;}
+.dialog .viewInfo{ border-style:solid;border-width:1px 0 0 0;}
 .dialog .formBar{ border-style:solid;border-width:1px 0;}
 
 
@@ -450,8 +415,8 @@ fieldset legend:hover{ background-color:#dddddd;}
 .comboxop li{ text-align:left;}
 
 /* contentTitle */
-h2.contentTitle{ margin-bottom:10px;padding:0 10px;line-height:30px;font-size:14px;border-bottom:solid 1px #CCC;}
-h3.contentTitle{ margin-bottom:5px;line-height:25px;font-size:13px;border-bottom:solid 1px #CCC;clear:both;}
+h2.contentTitle{ padding:5px 10px;line-height:24px;font-size:14px;border-bottom:solid 1px #CCC;}
+h3.contentTitle{ line-height:24px;font-size:13px;border-bottom:solid 1px #CCC;clear:both;}
 .dialog h2.contentTitle{ border:none}
 
 /* rightMenu */
@@ -499,30 +464,22 @@ h3.contentTitle{ margin-bottom:5px;line-height:25px;font-size:13px;border-bottom
 #suggest li.selected{ border:1px solid #0a246a;background-color:#b6bdd2}
 
 /* button */
-a.btnAdd, a.btnDel, a.btnView, a.btnEdit, a.btnSelect, a.btnInfo, a.btnAssign, a.btnLook, a.btnAttach{ background:url(../default/images/button.gif) no-repeat;display:block;width:22px;height:20px;text-indent:-1000px;overflow:hidden;float:left;margin-right:3px}
-a.btnAdd{ background-position:0 0}
+a.btnDel,a.btnSelect, a.btnLook, a.btnAttach{ background:url(../default/images/button.gif) no-repeat;display:block;width:22px;height:20px;text-indent:-1000px;overflow:hidden;float:left;margin-right:3px}
 a.btnDel{ background-position:-23px 0}
-a.btnInfo{ background-position:-46px 0}
-a.btnAssign{ background-position:-69px 0}
-a.btnView{ background-position:-115px 0}
-a.btnEdit{ background-position:-138px 0}
 a.btnSelect{ background-position:-92px 0}
 a.btnLook{ background-position:-161px 0}
 a.btnAttach{ background-position:-183px 0}
-.center a.btnAdd, .center a.btnDel, .center a.btnView, .center a.btnEdit, .center a.btnSelect, .center a.btnInfo, 
-.center a.btnAssign, .center a.btnLook, .center a.btnAttach{ display:inline-block;float:none}
-.right a.btnAdd, .right a.btnDel, .right a.btnView, .right a.btnEdit, .right a.btnSelect, .right a.btnInfo, 
-.right a.btnAssign, .right a.btnLook, .right a.btnAttach{ display:inline-block;float:none;text-indent:1000px}
+.center a.btnDel, .center a.btnSelect, .center a.btnLook, .center a.btnAttach{ display:inline-block;float:none}
+.right a.btnDel, .right a.btnSelect, .right a.btnLook, .right a.btnAttach{ display:inline-block;float:none;text-indent:1000px}
 
 .viewInfo{ padding:10px 5px}
-.viewInfo dl{ float:left;display:block;width:380px;height:21px;margin:0;padding:5px 0;position:relative;}
-.viewInfo dt{ float:left;width:120px;padding:0 5px;line-height:21px;text-align:right;}
-.viewInfo dd{ display:block;line-height:21px;width:220px;float:left;border-bottom:1px dotted #999;min-height:21px}
+.viewInfo dl{ float:left;display:block;width:380px;line-height:22px;margin:0;padding:5px 0;position:relative;}
+.viewInfo dt{ float:left;width:120px;padding:0 5px;text-align:right;}
+.viewInfo dd{ display:block;width:220px;float:left;border-bottom:1px dotted #999;min-height:21px}
 .viewInfo dl.nowrap{ width:100%;height:auto;clear:both;}
-.viewInfo dl.nowrap dt{ }
+.viewInfo dl.nowrap dt{ width:120px;}
 .viewInfo dl.nowrap dd{ width:auto;}
-.dialogContent .viewInfo{ background-color:#fff}
-.pageContent .panel{ clear:both;margin:5px}
+.dialogContent .viewInfo,.dialogContent .pageContent{ background-color:#fff}
 
 .sortDragPlaceholder{ border:1px dashed #ccc;}
 #printBox{ display:none}

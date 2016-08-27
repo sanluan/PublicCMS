@@ -19,7 +19,7 @@ import com.sanluan.common.handler.PageHandler;
 public class SysDeptService extends BaseService<SysDept> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer parentId, Integer userId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer siteId, Integer parentId, Long userId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, parentId, userId, pageIndex, pageSize);
     }
 

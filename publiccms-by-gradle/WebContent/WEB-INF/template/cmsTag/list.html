@@ -5,20 +5,20 @@
 			<ul class="searchContent">
 				<li>
 					<label>名称:</label>
-					<input type="text" name="name" value="${name!}" />
+					<input type="text" name="name" value="${(name?html)!}" />
 				</li>
 				<li>
 					<label>类型:</label>
 					<#if typeId?has_content><@_tagType id=typeId><#assign typeName=(object.name)!/></@_tagType></#if>
 					<input type="hidden" name="typeId" value="${typeId!}" />
-					<input class="readonly" readonly="readonly" name="typeName" type="text" size="10" value="${typeName!}"/>
+					<input class="readonly" readonly="readonly" name="typeName" type="text" size="10" value="${(typeName?html)!}"/>
 					<a class="btnLook" href="cmsTagType/lookup.html?typeId=${typeId!}" width="920" warn="请选择标签分类" lookupGroup="">选择标签分类</a>
 				</li>
 			</ul>
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -33,7 +33,7 @@
 			<li><a href="cmsTag/delete.do" title="确定要删除这些记录吗?"  target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 		</ul>
 	</div>
-<@_tagList name=name typeId=typeId pageIndex=pageNum count=numPerPage>
+<@_tagList advanced=true name=name typeId=typeId orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 	<table class="list" width="100%" layoutH="92">
 		<thead>
 			<tr>
@@ -41,6 +41,7 @@
 				<th width="30">ID</th>
 				<th>名称</th>
 				<th>标签分类</th>
+				<th orderField="searchCount" class="<#if orderField??&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">热度</th>
 				<th>内容数</th>
 				<th>操作</th>
 			</tr>
@@ -55,8 +56,9 @@
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>${a.id}</td>
-				<td>${a.name!}</td>
-				<td>${(typeMap[a.typeId?string].name)!}</td>
+				<td>${(a.name?html)!}</td>
+				<td>${(typeMap[a.typeId?string].name?html)!}</td>
+				<td>${a.searchCount!}</td>
 				<td><@_contentTagList tagId=a.id>${page.totalCount}</@_contentTagList></td>
 				<td>
 					<a href="cmsTag/add.html?id=${a.id}" target="navTab" rel="cmsTag/edit">修改</a>

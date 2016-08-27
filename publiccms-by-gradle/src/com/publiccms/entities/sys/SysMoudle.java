@@ -19,93 +19,105 @@ import com.sanluan.common.source.entity.MyColumn;
 @Table(name = "sys_moudle")
 public class SysMoudle implements java.io.Serializable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    @MyColumn(title = "ID")
-    private Integer id;
-    @MyColumn(title = "名称")
-    private String name;
-    @MyColumn(title = "地址")
-    private String url;
-    @MyColumn(title = "授权地址")
-    private String authorizedUrl;
-    @MyColumn(title = "父模块", condition = true)
-    private Integer parentId;
-    @MyColumn(title = "排序")
-    private int sort;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	@MyColumn(title = "ID")
+	private Integer id;
+	@MyColumn(title = "名称")
+	private String name;
+	@MyColumn(title = "地址")
+	private String url;
+	@MyColumn(title = "授权地址")
+	private String authorizedUrl;
+	@MyColumn(title = "附加")
+	private String attached;
+	@MyColumn(title = "父模块", condition = true)
+	private Integer parentId;
+	@MyColumn(title = "排序")
+	private int sort;
 
-    public SysMoudle() {
-    }
+	public SysMoudle() {
+	}
 
-    public SysMoudle(String name, int sort) {
-        this.name = name;
-        this.sort = sort;
-    }
+	public SysMoudle(String name, int sort) {
+		this.name = name;
+		this.sort = sort;
+	}
 
-    public SysMoudle(String name, String url, String authorizedUrl, Integer parentId, int sort) {
-        this.name = name;
-        this.url = url;
-        this.authorizedUrl = authorizedUrl;
-        this.parentId = parentId;
-        this.sort = sort;
-    }
+	public SysMoudle(String name, String url, String authorizedUrl, String attached, Integer parentId, int sort) {
+		this.name = name;
+		this.url = url;
+		this.authorizedUrl = authorizedUrl;
+		this.attached = attached;
+		this.parentId = parentId;
+		this.sort = sort;
+	}
 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
-        return this.id;
-    }
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "id", unique = true, nullable = false)
+	public Integer getId() {
+		return this.id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    @Column(name = "name", nullable = false, length = 100)
-    public String getName() {
-        return this.name;
-    }
+	@Column(name = "name", nullable = false, length = 100)
+	public String getName() {
+		return this.name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Column(name = "url")
-    public String getUrl() {
-        return this.url;
-    }
+	@Column(name = "url")
+	public String getUrl() {
+		return this.url;
+	}
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
-    @Column(name = "authorized_url", length = 65535)
-    public String getAuthorizedUrl() {
-        return this.authorizedUrl;
-    }
+	@Column(name = "authorized_url", length = 65535)
+	public String getAuthorizedUrl() {
+		return this.authorizedUrl;
+	}
 
-    public void setAuthorizedUrl(String authorizedUrl) {
-        this.authorizedUrl = authorizedUrl;
-    }
+	public void setAuthorizedUrl(String authorizedUrl) {
+		this.authorizedUrl = authorizedUrl;
+	}
 
-    @Column(name = "parent_id")
-    public Integer getParentId() {
-        return this.parentId;
-    }
+	@Column(name = "attached", length = 300)
+	public String getAttached() {
+		return this.attached;
+	}
 
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
+	public void setAttached(String attached) {
+		this.attached = attached;
+	}
 
-    @Column(name = "sort", nullable = false)
-    public int getSort() {
-        return this.sort;
-    }
+	@Column(name = "parent_id")
+	public Integer getParentId() {
+		return this.parentId;
+	}
 
-    public void setSort(int sort) {
-        this.sort = sort;
-    }
+	public void setParentId(Integer parentId) {
+		this.parentId = parentId;
+	}
+
+	@Column(name = "sort", nullable = false)
+	public int getSort() {
+		return this.sort;
+	}
+
+	public void setSort(int sort) {
+		this.sort = sort;
+	}
 
 }

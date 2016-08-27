@@ -11,7 +11,8 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsTagDao extends BaseDao<CmsTag> {
-    public PageHandler getPage(Integer siteId, Integer typeId, String name, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer siteId, Integer typeId, String name, String orderField, String orderType,
+            Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsTag bean");
         if (notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -22,7 +23,21 @@ public class CmsTagDao extends BaseDao<CmsTag> {
         if (notEmpty(name)) {
             queryHandler.condition("bean.name like :name").setParameter("name", likeStart(name));
         }
-        queryHandler.order("bean.id desc");
+        if ("asc".equalsIgnoreCase(orderType)) {
+            orderType = "asc";
+        } else {
+            orderType = "desc";
+        }
+        if (null == orderField) {
+            orderField = "";
+        }
+        switch (orderField) {
+        case "searchCount":
+            queryHandler.order("bean.searchCount " + orderType);
+            break;
+        default:
+            queryHandler.order("bean.id " + orderType);
+        }
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

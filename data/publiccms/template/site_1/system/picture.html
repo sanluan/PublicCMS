@@ -163,7 +163,7 @@ $(function(){
 		templatePhotoThumb: ''
 	});
 });
-$.getJSON('${site.dynamicPath!}content/clicks.json?id=${content.id}&callback=?', function(data){
+$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){
 	$('.gallery-info em').text(data.clicks);
 });
 </script>

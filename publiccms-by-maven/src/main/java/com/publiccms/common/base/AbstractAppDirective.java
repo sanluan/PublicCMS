@@ -24,6 +24,10 @@ public abstract class AbstractAppDirective extends BaseHttpDirective implements 
         return siteComponent.getSite(request.getServerName(), request.getServerPort());
     }
 
+    public abstract boolean needUserToken();
+
+    public abstract boolean needAppToken();
+
     @Autowired
     private SiteComponent siteComponent;
 }

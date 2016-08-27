@@ -3,7 +3,7 @@ package com.publiccms.common.interceptor.admin;
 import static com.publiccms.common.base.AbstractController.getAdminFromSession;
 import static com.publiccms.common.base.AbstractController.setAdminToSession;
 import static com.publiccms.common.constants.CmsVersion.getVersion;
-import static com.publiccms.common.constants.CommonConstants.X_POWERED;
+import static com.publiccms.common.constants.CommonConstants.getXPowered;
 import static com.sanluan.common.tools.RequestUtils.getEncodePath;
 import static org.apache.commons.lang3.StringUtils.split;
 
@@ -40,7 +40,7 @@ public class AdminContextInterceptor extends BaseInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-        response.addHeader(X_POWERED, getVersion());
+        response.addHeader(getXPowered(), getVersion());
         String path = urlPathHelper.getLookupPathForRequest(request);
         String ctxPath = urlPathHelper.getOriginatingContextPath(request);
         if (AdminInitializer.BASEPATH.equals(path)) {
@@ -80,6 +80,8 @@ public class AdminContextInterceptor extends BaseInterceptor {
                             return true;
                         }
                     }
+                    user.setName(entity.getName());
+                    user.setNickName(entity.getNickName());
                     user.setRoles(entity.getRoles());
                     user.setDeptId(entity.getDeptId());
                     setAdminToSession(request.getSession(), user);
@@ -89,13 +91,13 @@ public class AdminContextInterceptor extends BaseInterceptor {
         return true;
     }
 
-    private void redirectLogin(String ctxPath, String path, String queryString, String requestedWith, HttpServletResponse response)
-            throws IOException {
+    private void redirectLogin(String ctxPath, String path, String queryString, String requestedWith,
+            HttpServletResponse response) throws IOException {
         if ("XMLHttpRequest".equalsIgnoreCase(requestedWith)) {
             response.sendRedirect(ctxPath + loginJsonUrl);
         } else {
-            response.sendRedirect(ctxPath + loginUrl + "?returnUrl="
-                    + getEncodePath(AdminInitializer.BASEPATH + path, queryString));
+            response.sendRedirect(
+                    ctxPath + loginUrl + "?returnUrl=" + getEncodePath(AdminInitializer.BASEPATH + path, queryString));
         }
     }
 

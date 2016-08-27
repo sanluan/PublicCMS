@@ -12,6 +12,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.publiccms.common.spi.Cacheable;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.entities.sys.SysDomain;
@@ -19,7 +20,6 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysDomainService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.sanluan.common.base.Base;
-import com.sanluan.common.base.Cacheable;
 
 public class SiteComponent extends Base implements Cacheable {
     public static final String TEMPLATE_PATH = "template";
@@ -177,7 +177,7 @@ public class SiteComponent extends Base implements Cacheable {
     }
 
     public void setSiteMasters(String siteMasters) {
-        String[] masters = siteMasters.split(",");
+        String[] masters = siteMasters.split(COMMA_DELIMITED);
         for (String master : masters) {
             Integer id;
             try {

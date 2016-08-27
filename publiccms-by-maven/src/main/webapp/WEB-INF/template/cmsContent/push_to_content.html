@@ -5,7 +5,13 @@
 		<input name="contentId" type="hidden" value="${contentId!}" />
 		<input name="relatedContentId" type="hidden" value="${relatedContentId!}" />
 		<input name="url" type="hidden" value="${related.url!}" />
-		<div class="pageFormContent" layoutH="57">
+		<div class="formBar">
+			<ul>
+				<li><button type="submit" class="buttonActive">推荐</button></li>
+				<li><button type="button" class="button close">取消</button></li>
+			</ul>
+		</div>
+		<div class="pageFormContent" layoutH="56">
 			<dl class="nowrap">
 				<dt>推荐到:</dt>
 				<dd>${(content.title)!}</dd>
@@ -22,12 +28,6 @@
 					<textarea class="required" name="description" maxlength="300" style="width: 100%;" rows="5">${(related.description)!}</textarea>
 				</dd>
 			</dl>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">推荐</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
 		</div>
 	</form>
 </div>

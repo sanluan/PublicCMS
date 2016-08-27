@@ -41,7 +41,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.facetQuery(siteId, categoryId, modelId, text, tagId, pageIndex, pageSize);
     }
 
-    public void index(int siteId, Integer[] ids) {
+    public void index(int siteId, Serializable[] ids) {
         dao.index(siteId, ids);
     }
 
@@ -51,15 +51,15 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer siteId, Integer[] status, Integer categoryId, Boolean containChild, Boolean disabled,
-            Integer[] modelId, Integer parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
-            String title, Integer userId, Integer checkUserId, Date startPublishDate, Date endPublishDate, String orderField,
+            Integer[] modelId, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
+            String title, Long userId, Long checkUserId, Date startPublishDate, Date endPublishDate, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, status, categoryId, getCategoryIds(containChild, categoryId), disabled, modelId, parentId,
                 emptyParent, onlyUrl, hasImages, hasFiles, title, userId, checkUserId, startPublishDate, endPublishDate,
                 orderField, orderType, pageIndex, pageSize);
     }
 
-    public void refresh(int siteId, Integer[] ids) {
+    public void refresh(int siteId, Serializable[] ids) {
         Date now = getDate();
         for (CmsContent entity : getEntitys(ids)) {
             if (notEmpty(entity) && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
@@ -70,7 +70,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
     }
 
-    public List<CmsContent> check(int siteId, Integer userId, Integer[] ids) {
+    public List<CmsContent> check(int siteId, Long userId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<CmsContent>();
         for (CmsContent entity : getEntitys(ids)) {
             if (notEmpty(entity) && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
@@ -91,12 +91,12 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     public void updateStatistics(Collection<CmsContentStatistics> entitys) {
-        for (CmsContentStatistics contentStatistics : entitys) {
-            CmsContent entity = getEntity(contentStatistics.getId());
+        for (CmsContentStatistics entityStatistics : entitys) {
+            CmsContent entity = getEntity(entityStatistics.getId());
             if (notEmpty(entity)) {
-                entity.setClicks(entity.getClicks() + contentStatistics.getClicks());
-                entity.setComments(entity.getComments() + contentStatistics.getComments());
-                entity.setScores(entity.getScores() + contentStatistics.getScores());
+                entity.setClicks(entity.getClicks() + entityStatistics.getClicks());
+                entity.setComments(entity.getComments() + entityStatistics.getComments());
+                entity.setScores(entity.getScores() + entityStatistics.getScores());
             }
         }
     }
@@ -126,12 +126,12 @@ public class CmsContentService extends BaseService<CmsContent> {
         return entity;
     }
 
-    public int deleteByCategoryIds(int siteId, Integer[] ids) {
-        return dao.deleteByCategoryIds(siteId, ids);
+    public int deleteByCategoryIds(int siteId, Integer[] categoryIds) {
+        return dao.deleteByCategoryIds(siteId, categoryIds);
     }
 
     @SuppressWarnings("unchecked")
-    public List<CmsContent> delete(int siteId, Integer[] ids) {
+    public List<CmsContent> delete(int siteId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<CmsContent>();
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
@@ -154,7 +154,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (notEmpty(containChild) && containChild && notEmpty(categoryId)) {
             CmsCategory category = categoryDao.getEntity(categoryId);
             if (notEmpty(category) && notEmpty(category.getChildIds())) {
-                String[] categoryStringIds = add(splitByWholeSeparator(category.getChildIds(), ","), String.valueOf(categoryId));
+                String[] categoryStringIds = add(splitByWholeSeparator(category.getChildIds(), COMMA_DELIMITED), String.valueOf(categoryId));
                 categoryIds = new Integer[categoryStringIds.length + 1];
                 for (int i = 0; i < categoryStringIds.length; i++) {
                     categoryIds[i] = Integer.parseInt(categoryStringIds[i]);

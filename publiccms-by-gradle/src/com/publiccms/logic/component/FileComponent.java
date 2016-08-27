@@ -1,12 +1,10 @@
 package com.publiccms.logic.component;
 
-import static java.util.Collections.synchronizedList;
-import static java.util.Collections.synchronizedMap;
+import static com.publiccms.logic.component.MetadataComponent.METADATA_FILE;
+import static com.publiccms.logic.component.TemplateComponent.INCLUDE_DIRECTORY;
 import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.apache.commons.io.FileUtils.writeStringToFile;
-import static com.publiccms.logic.component.MetadataComponent.METADATA_FILE;
-import static com.publiccms.logic.component.TemplateComponent.INCLUDE_DIRECTORY;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,15 +16,12 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.sanluan.common.base.Base;
-import com.sanluan.common.base.Cacheable;
 
 /**
  * 
@@ -34,17 +29,7 @@ import com.sanluan.common.base.Cacheable;
  *
  */
 @Component
-public class FileComponent extends Base implements Cacheable {
-    private static List<String> cachedlist = synchronizedList(new ArrayList<String>());
-    private static Map<String, List<FileInfo>> cachedMap = synchronizedMap(new HashMap<String, List<FileInfo>>());
-
-    private void clearCache(int size) {
-        if (size < cachedlist.size()) {
-            for (int i = 0; i < size / 10; i++) {
-                cachedMap.remove(cachedlist.remove(0));
-            }
-        }
-    }
+public class FileComponent extends Base {
 
     /**
      * 获取目录下文件列表
@@ -54,41 +39,34 @@ public class FileComponent extends Base implements Cacheable {
      * @throws IOException
      */
     public List<FileInfo> getFileList(String dirPath) {
-        List<FileInfo> fileList = cachedMap.get(dirPath);
-        if (empty(fileList)) {
-            DirectoryStream<Path> stream = null;
-            try {
-                fileList = new ArrayList<FileInfo>();
-                List<FileInfo> tempList = new ArrayList<FileInfo>();
-                stream = Files.newDirectoryStream(Paths.get(dirPath));
-                for (Path entry : stream) {
-                    Path fileNamePath = entry.getFileName();
-                    if (notEmpty(fileNamePath)) {
-                        String fileName = fileNamePath.toString();
-                        if (!METADATA_FILE.equalsIgnoreCase(fileName) && !INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
-                            BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
-                            if (attrs.isDirectory()) {
-                                fileList.add(new FileInfo(fileName, true, attrs));
-                            } else {
-                                tempList.add(new FileInfo(fileName, false, attrs));
-                            }
+        List<FileInfo> fileList = new ArrayList<FileInfo>();
+        DirectoryStream<Path> stream = null;
+        try {
+            List<FileInfo> tempList = new ArrayList<FileInfo>();
+            stream = Files.newDirectoryStream(Paths.get(dirPath));
+            for (Path entry : stream) {
+                Path fileNamePath = entry.getFileName();
+                if (notEmpty(fileNamePath)) {
+                    String fileName = fileNamePath.toString();
+                    if (!METADATA_FILE.equalsIgnoreCase(fileName) && !INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
+                        BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
+                        if (attrs.isDirectory()) {
+                            fileList.add(new FileInfo(fileName, true, attrs));
+                        } else {
+                            tempList.add(new FileInfo(fileName, false, attrs));
                         }
                     }
                 }
-                fileList.addAll(tempList);
-            } catch (IOException e) {
-                fileList = new ArrayList<FileInfo>();
-            } finally {
-                try {
-                    if (notEmpty(stream)) {
-                        stream.close();
-                    }
-                } catch (IOException e) {
-                }
             }
-            clearCache(100);
-            cachedlist.add(dirPath);
-            cachedMap.put(dirPath, fileList);
+            fileList.addAll(tempList);
+        } catch (IOException e) {
+        } finally {
+            try {
+                if (notEmpty(stream)) {
+                    stream.close();
+                }
+            } catch (IOException e) {
+            }
         }
         return fileList;
     }
@@ -104,7 +82,6 @@ public class FileComponent extends Base implements Cacheable {
     public boolean createFile(File file, String content) throws IOException {
         if (empty(file)) {
             writeStringToFile(file, content, DEFAULT_CHARSET);
-            clear();
             return true;
         }
         return false;
@@ -120,7 +97,6 @@ public class FileComponent extends Base implements Cacheable {
         File file = new File(filePath);
         if (notEmpty(file)) {
             deleteQuietly(file);
-            clear();
             return true;
         }
         return false;
@@ -137,7 +113,6 @@ public class FileComponent extends Base implements Cacheable {
     public boolean updateFile(File file, String content) throws IOException {
         if (notEmpty(file)) {
             writeStringToFile(file, content, DEFAULT_CHARSET);
-            clear();
             return true;
         }
         return false;
@@ -190,7 +165,6 @@ public class FileComponent extends Base implements Cacheable {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         file.transferTo(dest);
-        clear();
         return dest.getName();
     }
 
@@ -263,11 +237,5 @@ public class FileComponent extends Base implements Cacheable {
         public void setDirectory(boolean directory) {
             this.directory = directory;
         }
-    }
-
-    @Override
-    public void clear() {
-        cachedlist.clear();
-        cachedMap.clear();
     }
 }

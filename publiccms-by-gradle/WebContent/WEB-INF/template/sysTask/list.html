@@ -16,7 +16,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -49,10 +49,10 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.name!}</td>
-				<td>${a.description!}</td>
-				<td>${a.cronExpression!}</td>
-				<td>${a.filePath!}</td>
+				<td>${(a.name?html)!}</td>
+				<td>${(a.description?html)!}</td>
+				<td>${(a.cronExpression?html)!}</td>
+				<td>${(a.filePath?html)!}</td>
 				<td><@t.m 'status.task.'+a.status/></td>
 				<td>
 					<#if a.status=0>

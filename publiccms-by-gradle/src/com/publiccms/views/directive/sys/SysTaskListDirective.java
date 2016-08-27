@@ -15,14 +15,15 @@ import com.sanluan.common.handler.RenderHandler;
 @Component
 public class SysTaskListDirective extends AbstractTemplateDirective {
 
-    @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("status"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
-        handler.put("page", page).render();
-    }
+	@Override
+	public void execute(RenderHandler handler) throws IOException, Exception {
+		PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("status"),
+				handler.getDate("beginUpdateDate"), handler.getInteger("pageIndex", 1),
+				handler.getInteger("count", 30));
+		handler.put("page", page).render();
+	}
 
-    @Autowired
-    private SysTaskService service;
+	@Autowired
+	private SysTaskService service;
 
 }

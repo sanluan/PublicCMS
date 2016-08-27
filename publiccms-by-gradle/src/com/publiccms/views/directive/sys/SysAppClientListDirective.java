@@ -21,7 +21,7 @@ public class SysAppClientListDirective extends AbstractTemplateDirective {
         if (handler.getBoolean("advanced", false)) {
             disabled = handler.getBoolean("disabled", false);
         }
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("channel"), handler.getInteger("userId"),
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getString("channel"), handler.getLong("userId"),
                 handler.getBoolean("allowPush"), handler.getDate("startLastLoginDate"), handler.getDate("endLastLoginDate"),
                 handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), disabled, handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));

@@ -11,7 +11,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -42,10 +42,10 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id}</td>
-				<td>${a.name}</td>
+				<td>${(a.name?html)!} <#if site.id=a.id>[当前站点]</#if></td>
 				<td>${a.useStatic?then('是(${a.sitePath!})','否')}  ${a.useSsi?then('[已启用服务器端包含]','')}</td>
-				<td>${a.dynamicPath!}</td>
-				<td>${a.resourcePath!}</td>
+				<td>${(a.dynamicPath?html)!}</td>
+				<td>${(a.resourcePath?html)!}</td>
 				<td>
 					<a href="sysDomain/add.html?siteId=${a.id!}" target="navTab" rel="sysDomain/add">添加动态域名</a>
 					<a href="sysDomain/list?siteId=${a.id!}" target="navTab" rel="sysDomain/list">域名列表</a>

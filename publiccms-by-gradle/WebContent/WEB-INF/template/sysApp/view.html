@@ -1,30 +1,28 @@
 <@_sysApp id=id><#assign a=object/></@_sysApp>
-<div class="pageContent">
-	<div class="pageFormContent" layoutH="57">
-		<dl class="nowrap">
-			<dt>授权渠道:</dt>
-			<dd>
-				${a.channel!}
-			</dd>
-		</dl>
-		<div class="divider"></div>
-		<dl class="nowrap">
-			<dt>appKey:</dt>
-			<dd>
-				${a.appKey!}
-			</dd>
-		</dl>
-		<div class="divider"></div>
-		<dl class="nowrap">
-			<dt>appSecret:</dt>
-			<dd>
-				${a.appSecret!}
-			</dd>
-		</dl>
-	</div>
-	<div class="formBar">
-		<ul>
-			<li><div class="button"><div class="buttonContent"><button type="button" class="close">关闭</button></div></div></li>
-		</ul>
-	</div>
+<div class="formBar">
+	<ul>
+		<li><button type="button" class="button close">关闭</button></li>
+	</ul>
+</div>
+<div class="pageFormContent" layoutH="56">
+	<dl class="nowrap">
+		<dt>授权渠道:</dt>
+		<dd>
+			${a.channel!}
+		</dd>
+	</dl>
+	<div class="divider"></div>
+	<dl class="nowrap">
+		<dt>appKey:</dt>
+		<dd>
+			${a.appKey!}
+		</dd>
+	</dl>
+	<div class="divider"></div>
+	<dl class="nowrap">
+		<dt>appSecret:</dt>
+		<dd>
+			${a.appSecret!}
+		</dd>
+	</dl>
 </div>

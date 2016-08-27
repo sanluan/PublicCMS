@@ -1,7 +1,7 @@
 <#if page??>
 	<div class="page">
 		<#if !page.firstPage>
-			<a href="search.html?word=${(word?url)!}&page=${page.prePage}">上一页</a>
+			<a href="?word=${(word?url)!}&page=${page.prePage}">上一页</a>
 		<#else>
 			<span>上一页</span>
 		</#if>
@@ -14,14 +14,14 @@
 			<#assign end=page.pageIndex+4/>
 		</#if>
 		<#if start gt 1>
-			<a href="search.html?word=${(word?url)!}&page=1">1</a> ...
+			<a href="?word=${(word?url)!}&page=1">1</a> ...
 		</#if>
-		<#list start..end as n><a href="search.html?word=${(word?url)!}&page=${n}"<#if n=page.pageIndex> class="selected"</#if>>${n}</a></#list>
+		<#list start..end as n><a href="?word=${(word?url)!}&page=${n}"<#if n=page.pageIndex> class="selected"</#if>>${n}</a></#list>
 		<#if end lt page.totalPage>
-			... <a href="search.html?word=${(word?url)!}&page=${page.totalPage}">${page.totalPage}</a>
+			... <a href="?word=${(word?url)!}&page=${page.totalPage}">${page.totalPage}</a>
 		</#if>
 		<#if !page.lastPage>
-			<a href="search.html?word=${(word?url)!}&page=${page.nextPage}">下一页</a>
+			<a href="?word=${(word?url)!}&page=${page.nextPage}">下一页</a>
 		<#else>
 			<span>下一页</span>
 		</#if>

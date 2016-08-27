@@ -1,13 +1,16 @@
 package com.publiccms.views.pojo;
 
-import com.sanluan.common.base.Base;
+public class ExtendData implements java.io.Serializable {
 
-public class ExtendData extends Base {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     String name;
     String value;
 
     public String getName() {
-        return name;
+        return this.name;
     }
 
     public void setName(String name) {
@@ -15,7 +18,7 @@ public class ExtendData extends Base {
     }
 
     public String getValue() {
-        return value;
+        return this.value;
     }
 
     public void setValue(String value) {

@@ -23,11 +23,12 @@ public class CmsModelService extends BaseService<CmsModel> {
         return dao.getPage(siteId, parentId, hasChild, onlyUrl, hasImages, hasFiles, disabled, pageIndex, pageSize);
     }
 
-    public void updateExtendId(Integer id, Integer extendId) {
+    public CmsModel updateExtendId(Serializable id, Integer extendId) {
         CmsModel entity = getEntity(id);
         if (notEmpty(entity)) {
             entity.setExtendId(extendId);
         }
+        return entity;
     }
 
     @Override

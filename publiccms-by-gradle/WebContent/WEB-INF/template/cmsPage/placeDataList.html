@@ -3,7 +3,7 @@
 	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
-			<ul class="searchContent two">
+			<ul class="searchContent">
 				<li class="colspan">
 					<label>推荐位名称:</label><label>${a.alias!}</label>
 				</li>
@@ -29,7 +29,7 @@
 			<div class="subBar">
 				<ul>
 					<li>
-						<div class="buttonActive"><div class="buttonContent"><button type="submit">搜索</button></div></div>
+						<button type="submit" class="buttonActive">搜索</button>
 					</li>
 				</ul>
 			</div>
@@ -55,7 +55,7 @@
 	</div>
 <@_placeList path=path advanced=true status=status userId=userId startPublishDate=startPublishDate endPublishDate=endPublishDate 
 	orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
-	<table class="list" width="100%" layoutH="117">
+	<table class="list" width="100%" layoutH="92">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -63,6 +63,7 @@
 				<th>标题</th>
 				<th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
 				<th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+				<th width="100">发布用户</th>
 				<th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
 				<th width="50">状态</th>
 				<th width="100">操作</th>
@@ -70,12 +71,18 @@
 		</thead>
 		<tbody>
 	<#list page.list as a>
+		<@t.merge 'userIds' a.userId!/>
+	</#list>
+	
+	<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+	<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>${a.id}</td>
 				<td><a href="${a.url}" target="_blank">${a.title}</a></td>
 				<td>${a.publishDate}</td>
 				<td>${a.createDate}</td>
+				<td>${(userMap[a.userId?string].nickName)!}</td>
 				<td>${a.clicks}</td>
 				<td><@t.m 'status.place.data.'+a.status/></td>
 				<td>

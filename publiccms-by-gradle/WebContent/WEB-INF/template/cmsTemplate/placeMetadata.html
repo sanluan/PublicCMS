@@ -37,47 +37,58 @@ $(function(){
 #adminIds{line-height:25px;}
 #adminIds span{margin-right:8px;padding:3px;border:1px solid #aaa;}
 </style>
-<div class="pageContent">
-	<form method="post" action="cmsTemplate/savePlaceMetaData.do?navTabId=cmsTemplate/placeList&callbackType=${callbackType!}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-		<input name="path" type="hidden" value="${path}"/>
-		<div class="pageFormContent" layoutH="57" style="background:#ffffff;">
-			<dl class="nowrap">
-				<dt>别名:</dt></dt>
-				<dd>
-					<input class="required" name="alias" type="text" maxlength="50" size="50" value="${(a.alias)!}"/>
-				</dd>
-			</dl>
-			<dl class="nowrap">
-				<dt>有效数据条数:</dt>
-				<dd>
-					<input name="size" class="required digits" onchange="checkPageSize();" type="number" value="${(a.size)!5}"/>
-				</dd>
-			</dl>
-			<dl class="nowrap placeExtend">
-				<dt>可前台提交:</dt>
-				<dd>
-					<input name="allowContribute" type="checkbox"${((a.allowContribute)?has_content&&a.allowContribute)?then(' checked="checked"','')}/>
-				</dd>
-			</dl>
-			<dl class="nowrap placeExtend">
-				<dt>数据管理人员:</dt>
-				<dd>
-					<div id="adminIds"></div>
-					<input name="userId" type="hidden"/>
-					<input name="nickName" type="text" size="30" readonly="readonly"/>
-					<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>
-					<a class="button" href="javascript:;" onclick="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$('input[name=\'nickName\']',navTab.getCurrentPanel()).val());return false;"><span>增加</span></a>
-					<span class="info">点击某个用户昵称可以将其删除</span>
-				</dd>
-			</dl>
-			<fieldset class="placeExtend">
-				<legend>列表数据扩展字段</legend>
-				<#include '../include_page/extends.html'/>
-				<#assign extendList=(a.extendList)![]/>
-				<@extends 'extendList' extendList/>
-			</fieldset>
-			<textarea name="content" style="display:none"></textarea>
-			<textarea id="content" style="display:none"><#noparse>
+<form method="post" action="cmsTemplate/savePlaceMetaData.do?navTabId=cmsTemplate/placeList&callbackType=${callbackType!}" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="path" type="hidden" value="${path}"/>
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="56">
+		<dl class="nowrap">
+			<dt>别名:</dt></dt>
+			<dd>
+				<input class="required" name="alias" type="text" maxlength="50" size="30" value="${(a.alias)!}"/>
+				<label>
+					<input name="allowContribute" type="checkbox" onclick="if($(this).is(':checked')){$('.allowContribute',navTab.getCurrentPanel()).show()}else{$('.allowContribute',navTab.getCurrentPanel()).hide()}"/>
+					允许前台提交
+				</label>
+				<label class="allowContribute" style="display:none">
+					<input name="allowAnonymous" type="checkbox"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')}/>
+					允许匿名提交
+				</label>
+			</dd>
+		</dl>
+		<#if a?has_content&&a.allowContribute>
+			<script>
+				$('input[name=allowContribute]',navTab.getCurrentPanel()).click();
+			</script>
+		</#if>
+		<dl class="nowrap">
+			<dt>有效数据条数:</dt>
+			<dd>
+				<input name="size" class="required digits" onchange="checkPageSize();" type="number" value="${(a.size)!5}"/>
+			</dd>
+		</dl>
+		<dl class="nowrap placeExtend">
+			<dt>数据管理人员:</dt>
+			<dd>
+				<div id="adminIds"></div>
+				<input name="userId" type="hidden"/>
+				<input name="nickName" type="text" size="30" readonly="readonly"/>
+				<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>
+				<a class="button" href="javascript:;" onclick="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$('input[name=\'nickName\']',navTab.getCurrentPanel()).val());return false;">增加</a>
+				<span class="info">点击某个用户昵称可以将其删除</span>
+			</dd>
+		</dl>
+		<fieldset class="placeExtend">
+			<legend>列表数据扩展字段</legend>
+			<#include '../include_page/extends.html'/>
+			<#assign extendList=(a.extendList)![]/>
+			<@extends 'extendList' extendList/>
+		</fieldset>
+		<textarea name="content" style="display:none"></textarea>
+		<textarea id="content" style="display:none"><#noparse>
 <#list page.list>
 	<ul>
 	<#items as a>
@@ -86,12 +97,5 @@ $(function(){
 	</ul>
 </#list>
 </#noparse></textarea>
-		</div>
-		<div class="formBar">
-			<ul>
-				<li><div class="buttonActive"><div class="buttonContent"><button type="submit">保存</button></div></div></li>
-				<li><div class="button"><div class="buttonContent"><button type="button" class="close">取消</button></div></div></li>
-			</ul>
-		</div>
-	</form>
-</div>
+	</div>
+</form>

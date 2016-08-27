@@ -1,16 +1,12 @@
 package com.sanluan.common.tools;
 
-import static org.springframework.web.servlet.support.RequestContextUtils.findWebApplicationContext;
-
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.context.NoSuchMessageException;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.sanluan.common.base.Base;
+
+import config.ApplicationConfig;
 
 /**
  * 
@@ -19,27 +15,20 @@ import com.sanluan.common.base.Base;
  */
 public final class LanguagesUtils extends Base {
     /**
+     * @param locale
+     *            语言
      * 
-     * @param request
-     *            HttpServletRequest
      * @param code
      *            国际化代码
      * @param args
      *            替换参数
      * @return
-     * @see org.springframework.context.MessageSource#getMessage(String,
-     *      Object[], Locale)
      */
-    public static String getMessage(HttpServletRequest request, String code, Object... args) {
-        WebApplicationContext messageSource = findWebApplicationContext(request);
+    public static String getMessage(Locale locale, String code, Object... args) {
         String result;
-        if (notEmpty(messageSource)) {
-            try {
-                result = messageSource.getMessage(code, args, RequestContextUtils.getLocale(request));
-            } catch (NoSuchMessageException e) {
-                result = code;
-            }
-        } else {
+        try {
+            result = ApplicationConfig.webApplicationContext.getMessage(code, args, locale);
+        } catch (NoSuchMessageException e) {
             result = code;
         }
         return result;

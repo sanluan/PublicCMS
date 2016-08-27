@@ -15,6 +15,8 @@ public abstract class BaseMultiDataSourceDao<E> extends BaseDao<E> {
     @Override
     protected Session getSession() {
         MultiDataSource.setDataSourceName(getDataSource());
-        return sessionFactory.getCurrentSession();
+        Session session = sessionFactory.getCurrentSession();
+        MultiDataSource.clearDataSourceName();
+        return session;
     }
 }

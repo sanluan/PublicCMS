@@ -13,6 +13,7 @@
 					<label>父模型:</label>${parent.name}
 				</li>
 			</#if>
+				<li></li>
 			</ul>
 		</div>
 	</form>
@@ -45,8 +46,8 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.id!}</td>
-				<td>${a.name!}</td>
-				<td>${a.templatePath!}</td>
+				<td>${(a.name?html)!}</td>
+				<td>${(a.templatePath?html)!}</td>
 				<td>
 					<#if a.hasChild>
 						<a href="cmsModel/list.html?parentId=${a.id}" target="navTab" rel="cmsModel/list">子模型管理</a>

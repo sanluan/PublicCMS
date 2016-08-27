@@ -22,23 +22,23 @@ import com.sanluan.common.handler.PageHandler;
 public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer contentId, Integer relatedContentId, Integer userId, String orderField, String orderType,
+    public PageHandler getPage(Long contentId, Long relatedContentId, Long userId, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(contentId, relatedContentId, userId, orderField, orderType, pageIndex, pageSize);
     }
 
     public void updateStatistics(Collection<CmsContentRelatedStatistics> entitys) {
-        for (CmsContentRelatedStatistics contentRelatedStatistics : entitys) {
-            CmsContentRelated entity = getEntity(contentRelatedStatistics.getId());
+        for (CmsContentRelatedStatistics entityStatistics : entitys) {
+            CmsContentRelated entity = getEntity(entityStatistics.getId());
             if (notEmpty(entity)) {
-                entity.setClicks(entity.getClicks() + contentRelatedStatistics.getClicks());
+                entity.setClicks(entity.getClicks() + entityStatistics.getClicks());
             }
         }
     }
 
     @SuppressWarnings("unchecked")
-    public void update(int contentId, List<CmsContentRelated> entitys) {
-        Set<Integer> idList = new HashSet<Integer>();
+    public void update(long contentId, List<CmsContentRelated> entitys) {
+        Set<Long> idList = new HashSet<Long>();
         if (notEmpty(entitys)) {
             for (CmsContentRelated entity : entitys) {
                 if (notEmpty(entity.getId())) {

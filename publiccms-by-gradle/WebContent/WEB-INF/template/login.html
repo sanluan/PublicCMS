@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>管理后台登陆页面</title>
+    <title>管理后台 - ${site.name} - 登陆页面</title>
     <link rel="stylesheet" href="${res}/login/login.css">
 </head>
 <body onload="document.getElementsByTagName('input')[0].focus();">
@@ -13,7 +13,7 @@
 	        <p><input type="password" name="password" placeholder="密码" title="密码"/></p>
 	        <p>
 	        	<input type="submit" value="登  录"/>
-	        	<input type="hidden" name="returnUrl" value="${returnUrl!''?html}"/>
+	        	<input type="hidden" name="returnUrl" value="${(returnUrl!)?html}"/>
 	        </p>
 		</form>
     </div>

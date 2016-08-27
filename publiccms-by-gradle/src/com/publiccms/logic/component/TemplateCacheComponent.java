@@ -2,6 +2,7 @@ package com.publiccms.logic.component;
 
 import static com.publiccms.logic.component.SiteComponent.expose;
 import static com.publiccms.logic.component.TemplateCacheComponent.CACHE_VAR;
+import static com.sanluan.common.tools.FreeMarkerUtils.makeFileByFile;
 import static org.apache.commons.io.FileUtils.deleteQuietly;
 import static org.apache.commons.lang3.ArrayUtils.isNotEmpty;
 import static org.apache.commons.lang3.StringUtils.split;
@@ -19,10 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 
+import com.publiccms.common.spi.Cacheable;
 import com.publiccms.entities.sys.SysSite;
 import com.sanluan.common.base.Base;
-import com.sanluan.common.base.Cacheable;
-import com.sanluan.common.tools.FreeMarkerUtils;
 
 import freemarker.core.DirectiveCallPlace;
 import freemarker.core.Environment;
@@ -71,7 +71,7 @@ public class TemplateCacheComponent extends Base implements Cacheable {
     private String getRequestParamtersString(HttpServletRequest request, String acceptParamters) {
         StringBuilder sb = new StringBuilder();
         sb.append("/default.html");
-        for (String paramterName : split(acceptParamters, ",")) {
+        for (String paramterName : split(acceptParamters, COMMA_DELIMITED)) {
             String[] values = request.getParameterValues(paramterName);
             if (isNotEmpty(values)) {
                 for (int i = 0; i < values.length; i++) {
@@ -99,7 +99,8 @@ public class TemplateCacheComponent extends Base implements Cacheable {
         deleteCachedFile(getCachedFilePath(""));
     }
 
-    private String createCache(String requestPath, String fullTemplatePath, String cachePath, int cacheMillisTime, ModelMap model) {
+    private String createCache(String requestPath, String fullTemplatePath, String cachePath, int cacheMillisTime,
+            ModelMap model) {
         String cachedFilePath = getCachedFilePath(cachePath);
         String cachedtemplatePath = CACHE_FILE_DIRECTORY + cachePath;
         String cachedPath = CACHE_URL_PREFIX + cachedtemplatePath;
@@ -107,7 +108,7 @@ public class TemplateCacheComponent extends Base implements Cacheable {
             return cachedPath;
         }
         try {
-            FreeMarkerUtils.makeFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getWebConfiguration(), model);
+            makeFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getWebConfiguration(), model);
             templateComponent.getWebConfiguration().removeTemplateFromCache(cachedtemplatePath);
             return cachedPath;
         } catch (Exception e) {

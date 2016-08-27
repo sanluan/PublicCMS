@@ -1,4 +1,4 @@
 <#if userId?has_content><@_sysUser id=userId><#assign user=object/></@_sysUser></#if>
 <input name="userId" value="${(user.id)!}" type="hidden"/>
-<input name="nickName" readonly="readonly" size="10" value="${(user.nickName)!}" type="text"/>
+<input name="nickName" readonly="readonly" size="10" value="${(user.nickName?html)!}" type="text"/>
 <a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>

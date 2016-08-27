@@ -18,8 +18,8 @@ import com.sanluan.common.handler.PageHandler;
 public class SysRoleService extends BaseService<SysRole> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer deptId, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(deptId, pageIndex, pageSize);
+    public PageHandler getPage(Integer siteId, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, pageIndex, pageSize);
     }
 
     @Transactional(readOnly = true)

@@ -29,7 +29,7 @@ public class SysAppClient implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @MyColumn(title = "ID")
-    private Integer id;
+    private Long id;
     @MyColumn(title = "站点", condition = true)
     private int siteId;
     @MyColumn(title = "渠道", condition = true)
@@ -37,7 +37,7 @@ public class SysAppClient implements java.io.Serializable {
     @MyColumn(title = "唯一标识符")
     private String uuid;
     @MyColumn(title = "用户ID", condition = true)
-    private Integer userId;
+    private Long userId;
     @MyColumn(title = "版本")
     private String clientVersion;
     @MyColumn(title = "允许推送", condition = true)
@@ -67,7 +67,7 @@ public class SysAppClient implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public SysAppClient(int siteId, String channel, String uuid, Integer userId, String clientVersion, boolean allowPush,
+    public SysAppClient(int siteId, String channel, String uuid, Long userId, String clientVersion, boolean allowPush,
             String pushToken, Date lastLoginDate, String lastLoginIp, Date createDate, boolean disabled) {
         this.siteId = siteId;
         this.channel = channel;
@@ -85,11 +85,11 @@ public class SysAppClient implements java.io.Serializable {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
-    public Integer getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -121,11 +121,11 @@ public class SysAppClient implements java.io.Serializable {
     }
 
     @Column(name = "user_id")
-    public Integer getUserId() {
+    public Long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
@@ -166,7 +166,7 @@ public class SysAppClient implements java.io.Serializable {
         this.lastLoginDate = lastLoginDate;
     }
 
-    @Column(name = "last_login_ip", length = 20)
+    @Column(name = "last_login_ip", length = 64)
     public String getLastLoginIp() {
         return this.lastLoginIp;
     }

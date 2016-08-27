@@ -18,5 +18,5 @@ INSERT INTO public_cms.`cms_content_tag` SELECT * FROM public_cms_old.`cms_conte
 
 INSERT INTO public_cms.`cms_tag` SELECT id,1,name,type_id FROM public_cms_old.`cms_tag`;
 
-INSERT INTO `cms_model`(`id`, `site_id`, `parent_id`, `name`, `template_path`, `has_child`, `only_url`, `has_images`, `has_files`, `disabled`, `extend_id`) SELECT `id`, 1 , `parent_id`, `name`, `template_path`, `has_child`, `is_url`, `is_images`,0, `disabled`,null FROM public_cms_old.`cms_model`;
+INSERT INTO public_cms.`cms_model`(`id`, `site_id`, `parent_id`, `name`, `template_path`, `has_child`, `only_url`, `has_images`, `has_files`, `disabled`, `extend_id`) SELECT `id`, 1 , `parent_id`, `name`, `template_path`, `has_child`, `is_url`, `is_images`,0, `disabled`,null FROM public_cms_old.`cms_model`;
 
