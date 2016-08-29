@@ -175,7 +175,7 @@ public class CmsContentAdminController extends AbstractController {
                     getIpAddress(request), now, entity.getId() + ":" + entity.getTitle()));
         }
         Long[] tagIds = tagService.update(site.getId(), contentParamters.getTags());
-        service.updateTagIds(entity.getId(), arrayToDelimitedString(tagIds,BLANK_SPACE));// 更新保存标签
+        service.updateTagIds(entity.getId(), arrayToDelimitedString(tagIds, BLANK_SPACE));// 更新保存标签
         if (entity.isHasImages() || entity.isHasFiles()) {
             contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,
                     entity.isHasImages() ? contentParamters.getImages() : null);// 更新保存图集，附件
@@ -212,7 +212,7 @@ public class CmsContentAdminController extends AbstractController {
         }
         attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
 
-        cmsContentRelatedService.update(entity.getId(), contentParamters.getContentRelateds());// 更新保存推荐内容
+        cmsContentRelatedService.update(entity.getId(), user.getId(), contentParamters.getContentRelateds());// 更新保存推荐内容
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
         return TEMPLATE_DONE;
     }
@@ -287,10 +287,12 @@ public class CmsContentAdminController extends AbstractController {
             if (empty(entity.getDescription())) {
                 entity.setDescription(entity.getDescription());
             }
+            SysUser user = getAdminFromSession(session);
+            entity.setUserId(user.getId());
             cmsContentRelatedService.save(entity);
             publish(new Long[] { entity.getContentId() }, request, session, model);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "related.content", getIpAddress(request), getDate(),
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "related.content", getIpAddress(request), getDate(),
                     related.getId() + ":" + related.getTitle() + " to " + content.getId() + ":" + content.getTitle()));
         }
         return TEMPLATE_DONE;
@@ -315,8 +317,8 @@ public class CmsContentAdminController extends AbstractController {
                     if (sb.length() > 0) {
                         sb.append(COMMA_DELIMITED);
                     }
-                    sb.append(getMessage(getLocale(request), "message.content.categoryModel.empty", entity.getId() + ":" + entity.getTitle(),
-                            categoryId + ":" + category.getName()));
+                    sb.append(getMessage(getLocale(request), "message.content.categoryModel.empty",
+                            entity.getId() + ":" + entity.getTitle(), categoryId + ":" + category.getName()));
                 }
             }
             model.put("message", sb.toString());
