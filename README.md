@@ -9,19 +9,21 @@ PublicCMS是采用2016年最新主流技术开发的免费开源JAVACMS系统。
 ##获取可运行程序
 
 http://git.oschina.net/sanluan/PublicCMS-war
-
 https://github.com/sanluan/PublicCMS-war
+
+##获取稳定版源码
+
+http://git.oschina.net/sanluan/PublicCMS
+https://github.com/sanluan/PublicCMS
 
 ##参与研发(预览版)
 
 http://git.oschina.net/sanluan/PublicCMS-preview
-
 https://github.com/sanluan/PublicCMS-preview
 
 ##相关下载及文档(知识库)
 
 https://github.com/sanluan/PublicCMS-lib
-
 https://git.oschina.net/sanluan/PublicCMS-lib
 
 ##授权
