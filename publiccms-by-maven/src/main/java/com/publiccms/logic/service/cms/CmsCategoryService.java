@@ -130,4 +130,8 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     @Autowired
     private CmsCategoryDao dao;
+
+    public CmsCategory getCategoryByCode(int siteId, String code) {
+        return dao.getCategory(siteId, code);
+    }
 }

@@ -165,6 +165,18 @@ public class CmsContentService extends BaseService<CmsContent> {
         return categoryIds;
     }
 
+    public CmsContent getLastEntity(Integer categoryId) {
+        CmsCategory category = categoryDao.getEntity(categoryId);
+        if(category != null){
+            PageHandler pageHandler = dao.getPage(category.getSiteId(), null, category.getId(), null, false, null, null, null, null, null, null, null, null, null, null, null, null, null, 1, 1);
+            List<CmsContent> list = (List<CmsContent>) pageHandler.getList();
+            if(list.size()>0){
+                return list.get(0);
+            }
+        }
+        return null;
+    }
+
     @Autowired
     private CmsContentDao dao;
     @Autowired
