@@ -5,7 +5,6 @@ import static com.publiccms.common.tools.ExtendUtils.getExtendMap;
 // Generated 2016-7-16 11:54:15 by com.sanluan.common.source.SourceMaker
 
 import java.io.IOException;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,12 +26,7 @@ public class SysConfigDirective extends AbstractTemplateDirective {
         if (notEmpty(code) && notEmpty(subcode)) {
             SysConfig entity = service.getEntity(site.getId(), code, subcode);
             if (notEmpty(entity)) {
-                Map<String, String> extendMap = getExtendMap(entity.getData());
-                if(extendMap.size()>0){
-                    handler.put("object", extendMap).render();
-                }else{
-                    handler.put("data", entity.getData()).render();
-                }
+                handler.put("object", getExtendMap(entity.getData())).render();
             }
         }
     }

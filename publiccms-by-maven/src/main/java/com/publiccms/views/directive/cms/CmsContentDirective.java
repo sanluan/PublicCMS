@@ -22,34 +22,24 @@ public class CmsContentDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
-        Integer categoryId = handler.getInteger("categoryId");
-
-        CmsContent entity = null;
-
         SysSite site = getSite(handler);
         if (notEmpty(id)) {
-              entity = service.getEntity(id);
-
-        }else if(notEmpty(categoryId)){
-            entity = service.getLastEntity(categoryId);
-
+            CmsContent entity = service.getEntity(id);
+            if (notEmpty(entity) && site.getId() == entity.getSiteId()) {
+                handler.put("object", entity).render();
+            }
         } else {
             Long[] ids = handler.getLongArray("ids");
             if (notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
                 Map<String, CmsContent> map = new LinkedHashMap<String, CmsContent>();
-                for (CmsContent _entity : entityList) {
-                    if (site.getId() == _entity.getSiteId()) {
-                        map.put(String.valueOf(_entity.getId()), _entity);
+                for (CmsContent entity : entityList) {
+                    if (site.getId() == entity.getSiteId()) {
+                        map.put(String.valueOf(entity.getId()), entity);
                     }
                 }
                 handler.put("map", map).render();
             }
-        }
-
-
-        if (notEmpty(entity) && site.getId() == entity.getSiteId()) {
-            handler.put("object", entity).render();
         }
     }
 

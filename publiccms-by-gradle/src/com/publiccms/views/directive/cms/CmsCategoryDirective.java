@@ -22,13 +22,21 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
+        String code = handler.getString("code");
+
         SysSite site = getSite(handler);
         if (notEmpty(id)) {
             CmsCategory entity = service.getEntity(id);
             if (notEmpty(entity) && site.getId() == entity.getSiteId()) {
                 handler.put("object", entity).render();
             }
-        } else {
+        }else if(notEmpty(code)){
+            CmsCategory entity = service.getCategoryByCode(site.getId(), code);
+            if (notEmpty(entity) && site.getId() == entity.getSiteId()) {
+                handler.put("object", entity).render();
+            }
+
+        }else{
             Integer[] ids = handler.getIntegerArray("ids");
             if (notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);

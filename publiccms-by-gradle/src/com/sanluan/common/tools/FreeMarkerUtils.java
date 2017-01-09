@@ -34,7 +34,7 @@ public class FreeMarkerUtils extends Base {
     /**
      * @param templateFilePath
      * @param destFilePath
-     * @param config
+     * @param configuration
      * @param model
      * @throws IOException
      * @throws TemplateException
@@ -86,6 +86,7 @@ public class FreeMarkerUtils extends Base {
                 Writer out = new BufferedWriter(new OutputStreamWriter(outputStream, DEFAULT_CHARSET));
                 t.process(model, out);
                 out.close();
+                destFile.setReadable(true, false);
             } finally {
                 try {
                     if (notEmpty(outputStream)) {
@@ -103,7 +104,7 @@ public class FreeMarkerUtils extends Base {
 
     /**
      * @param template
-     * @param configurationuration
+     * @param configuration
      * @return
      * @throws TemplateException
      * @throws IOException

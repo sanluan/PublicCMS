@@ -9,6 +9,8 @@ import com.sanluan.common.base.BaseDao;
 import com.sanluan.common.handler.PageHandler;
 import com.sanluan.common.handler.QueryHandler;
 
+import java.util.List;
+
 @Repository
 public class CmsCategoryDao extends BaseDao<CmsCategory> {
     public PageHandler getPage(Integer siteId, Integer parentId, Integer typeId, Boolean allowContribute, Boolean hidden,
@@ -36,6 +38,24 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         }
         queryHandler.order("bean.sort asc,bean.id asc");
         return getPage(queryHandler, pageIndex, pageSize);
+    }
+
+    public CmsCategory getCategory(Integer siteId, String code) {
+        QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
+        if (notEmpty(siteId)) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        if (notEmpty(code)) {
+            queryHandler.condition("bean.code = :code").setParameter("code", code);
+        }
+        queryHandler.order("bean.sort asc,bean.id asc");
+        PageHandler page = getPage(queryHandler, 1, 1);
+        List<CmsCategory> list = (List<CmsCategory>) page.getList();
+        if(list.size()>0){
+            return list.get(0);
+        }
+        return null;
+
     }
 
     @Override
