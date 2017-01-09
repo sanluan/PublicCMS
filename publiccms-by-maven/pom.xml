@@ -3,11 +3,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>publiccms</groupId>
 	<artifactId>cms</artifactId>
-	<version>V2016.0828</version>
+	<version>V2017.01.01</version>
 	<packaging>war</packaging>
 	<name>PublicCMS</name>
 	<url>http://www.publiccms.com/</url>
 	<description>PublicCMS</description>
+
+
 	<properties>
 		<springVersion>4.3.2.RELEASE</springVersion>
 		<hibernateVersion>5.1.1.Final</hibernateVersion>
@@ -16,7 +18,41 @@
 		<httpclientVersion>4.5.2</httpclientVersion>
 		<jacksonVersion>2.8.1</jacksonVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+		<db_host>172.17.0.2</db_host>
+		<db_username>root</db_username>
+		<db_password>mysql1234</db_password>
+		<ftl_update_delay>5</ftl_update_delay>
+		<log_level>info</log_level>
+
 	</properties>
+
+	<profiles>
+		<profile>
+			<id>release</id>
+			<properties>
+				<db_host>172.18.0.2</db_host>
+				<db_username>root</db_username>
+				<db_password>mysqlqidianxinchuang</db_password>
+				<ftl_update_delay>60</ftl_update_delay>
+				<log_level>info</log_level>
+			</properties>
+		</profile>
+
+		<profile>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<id>local</id>
+			<properties>
+				<db_host>172.17.0.2</db_host>
+				<db_username>root</db_username>
+				<db_password>mysql123</db_password>
+				<ftl_update_delay>5</ftl_update_delay>
+			</properties>
+		</profile>
+	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.freemarker</groupId>
@@ -183,7 +219,24 @@
 		</dependency>
 	</dependencies>
 	<build>
+
 		<defaultGoal>compile</defaultGoal>
+		<resources>
+
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+			<resource>
+				<directory>src/main/java</directory>
+			</resource>
+
+			<resource>
+				<directory>lib</directory>
+				<targetPath>lib</targetPath>
+			</resource>
+		</resources>
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -195,7 +248,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
+				<version>3.5.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>

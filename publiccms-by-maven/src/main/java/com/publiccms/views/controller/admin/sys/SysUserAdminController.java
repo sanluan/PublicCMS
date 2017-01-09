@@ -38,7 +38,7 @@ public class SysUserAdminController extends AbstractController {
         entity.setName(trim(entity.getName()));
         entity.setNickName(trim(entity.getNickName()));
         entity.setPassword(trim(repassword));
-        repassword = trim(entity.getNickName());
+        repassword = trim(entity.getPassword());
         if (verifyNotEmpty("username", entity.getName(), model) || verifyNotEmpty("nickname", entity.getNickName(), model)
                 || verifyNotUserName("username", entity.getName(), model)
                 || verifyNotNickName("nickname", entity.getNickName(), model)) {

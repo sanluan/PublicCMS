@@ -9,8 +9,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.springframework.ui.ModelMap;
 
@@ -34,7 +41,6 @@ public class FreeMarkerUtils extends Base {
     /**
      * @param templateFilePath
      * @param destFilePath
-     * @param config
      * @param model
      * @throws IOException
      * @throws TemplateException
@@ -75,6 +81,8 @@ public class FreeMarkerUtils extends Base {
             throws MalformedTemplateNameException, ParseException, IOException, TemplateException {
         Template t = configuration.getTemplate(templateFilePath);
         File destFile = new File(destFilePath);
+
+
         if (override || append || !destFile.exists()) {
             File parent = destFile.getParentFile();
             if (null != parent) {
@@ -86,6 +94,7 @@ public class FreeMarkerUtils extends Base {
                 Writer out = new BufferedWriter(new OutputStreamWriter(outputStream, DEFAULT_CHARSET));
                 t.process(model, out);
                 out.close();
+                destFile.setReadable(true, false);
             } finally {
                 try {
                     if (notEmpty(outputStream)) {
@@ -103,7 +112,6 @@ public class FreeMarkerUtils extends Base {
 
     /**
      * @param template
-     * @param configurationuration
      * @return
      * @throws TemplateException
      * @throws IOException
