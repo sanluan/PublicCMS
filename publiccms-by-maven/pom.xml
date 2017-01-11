@@ -18,40 +18,7 @@
 		<httpclientVersion>4.5.2</httpclientVersion>
 		<jacksonVersion>2.8.1</jacksonVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-		<db_host>172.17.0.2</db_host>
-		<db_username>root</db_username>
-		<db_password>mysql1234</db_password>
-		<ftl_update_delay>5</ftl_update_delay>
-		<log_level>info</log_level>
-
 	</properties>
-
-	<profiles>
-		<profile>
-			<id>release</id>
-			<properties>
-				<db_host>172.18.0.2</db_host>
-				<db_username>root</db_username>
-				<db_password>mysqlqidianxinchuang</db_password>
-				<ftl_update_delay>60</ftl_update_delay>
-				<log_level>info</log_level>
-			</properties>
-		</profile>
-
-		<profile>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<id>local</id>
-			<properties>
-				<db_host>172.17.0.2</db_host>
-				<db_username>root</db_username>
-				<db_password>mysql123</db_password>
-				<ftl_update_delay>5</ftl_update_delay>
-			</properties>
-		</profile>
-	</profiles>
 
 	<dependencies>
 		<dependency>
