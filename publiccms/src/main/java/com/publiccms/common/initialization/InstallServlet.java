@@ -187,9 +187,8 @@ public class InstallServlet extends HttpServlet {
         try (InputStream inputStream = getClass().getResourceAsStream(databaseType + "/createtables.sql");) {
             runner.runScript(new InputStreamReader(inputStream, "UTF-8"));
             if (useSimple) {
-                try (InputStreamReader inputStreamReader = new InputStreamReader(
-                        getClass().getResourceAsStream(databaseType + "/simpledata.sql"))) {
-                    runner.runScript(inputStreamReader);
+                try (InputStream simpleInputStream = getClass().getResourceAsStream(databaseType + "/simpledata.sql")) {
+                    runner.runScript(new InputStreamReader(simpleInputStream, "UTF-8"));
                 }
             }
         }
