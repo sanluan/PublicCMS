@@ -1,7 +1,0 @@
-<li>
-	<label>是否禁用:</label>
-	<select class="combox" name="disabled">
-		<option value="false"${(!disabled?has_content||"false"==disabled)?then(' selected="true"','')}>正常</option>
-		<option value="true"${(disabled??&&"true"==disabled)?then(' selected="true"','')}>禁用</option>
-	</select>
-</li>

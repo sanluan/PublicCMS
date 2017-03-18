@@ -1,0 +1,3 @@
+rootProject.name = 'publiccms-gradle'  
+include 'publiccms'
+project(':publiccms').projectDir = new File(settingsDir, '../publiccms') 

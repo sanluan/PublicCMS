@@ -3,7 +3,7 @@
 <head>
 	<title>高级搜索 - PublicCMS</title>
 	<meta name="keywords" content="高级搜索"/>
-	<meta name="description" content="高级搜索  ${(word?html)!}"/>
+	<meta name="description" content="高级搜索  ${word!}"/>
 	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 </head>
 <body>
@@ -15,23 +15,23 @@
 	<div class="container">
 		<div class="data-list left-content">
 			<div class="search">
-				<form action="facetSearch.html" method="get">
-						<input type="text" name="word" value="${(word?html)!tagName!}"/>
+				<form action="facet.html" method="get">
+						<input type="text" name="word" value="${word!tagName!}"/>
 						<input type="submit" value="搜索"/>
 				</form>
 				<@_tagList count=10>
 					<p>
 						热门标签：
 						<#list page.list as a>
-							<a href="?tagId=${a.id?html}">${a.name?html}</a>
+							<a href="?tagId=${a.id}">${a.name}</a>
 						</#list>
 					</p>
 				</@_tagList>
 				<@_wordList count=10>
-					<p>	
+					<p>
 						热门搜索词：
 						<#list page.list as a>
-							<a href="?word=${a.name?html}">${a.name?html}</a>
+							<a href="?word=${a.name?url}">${a.name}</a>
 						</#list>
 					</p>
 				</@_wordList>
@@ -46,9 +46,9 @@
 			<@_category ids=(t.categoryIds)!><#assign categoryMap=map!/></@_category>
 				<div class="search-condition">
 					<label>分类:</label>
-						<a href="facetSearch.html?word=${(word?html?url)!}" ${(!categoryId?has_content)?then('style="font-weight:bold;"','')}>全部</a>
+						<a href="facet.html?word=${(word?url)!}" ${(!categoryId?has_content)?then('style="font-weight:bold;"','')}>全部</a>
 						<#list categoryFacet?keys as k>
-						<a href="facetSearch.html?word=${(word?html?url)!}&categoryId=${k}" ${(k=categoryId!'')?then('style="font-weight:bold;"','')}>${categoryMap[k].name}(${categoryFacet[k]})</a>
+						<a href="facet.html?word=${(word?url)!}&categoryId=${k}" ${(k=categoryId!'')?then('style="font-weight:bold;"','')}>${categoryMap[k].name}(${categoryFacet[k]})</a>
 						</#list>
 				</div>
 		</#if>
@@ -57,9 +57,9 @@
 			<@_model ids=(t.sidemodelIds)!><#assign modelMap=map!/></@_model>
 				<div class="search-condition">
 					<label>模型:</label>
-						<a href="facetSearch.html?word=${(word?html?url)!}&categoryId=${(categoryId?url)!}" ${(!modelId?has_content)?then('style="font-weight:bold;"','')}>全部</a>
+						<a href="facet.html?word=${(word?url)!}&categoryId=${(categoryId?url)!}" ${(!modelId?has_content)?then('style="font-weight:bold;"','')}>全部</a>
 						<#list modelFacet?keys as k>
-						<a href="facetSearch.html?word=${(word?html?url)!}&modelId=${k}&categoryId=${(categoryId?url)!}" ${(k=modelId!'')?then('style="font-weight:bold;"','')}>${modelMap[k].name}(${modelFacet[k]})</a>
+						<a href="facet.html?word=${(word?url)!}&modelId=${k}&categoryId=${(categoryId?url)!}" ${(k=modelId!'')?then('style="font-weight:bold;"','')}>${modelMap[k].name}(${modelFacet[k]})</a>
 						</#list>
 				</div>
 		</#if>

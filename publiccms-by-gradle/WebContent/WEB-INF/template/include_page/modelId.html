@@ -1,8 +1,0 @@
-<@_modelList parentId=(parent.modelId)!''>
-	<#list page.list as a>
-		<label style="width:auto">
-			<input <@t.compare modelId!'' a.id?string 'checked="checked"'/> name="modelId" value="${a.id}" type="checkbox"/>
-			<span>${(a.name?html)!}</span>
-		</label>
-	</#list>
-</@_modelList>

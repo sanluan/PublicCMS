@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>接口列表</title>
+	<meta charset="utf-8">
+	<script src="${base}/resource/js/jquery-1.9.1.min.js"></script>
+	<script src="${base}/resource/interface/code-formatter.js" type="text/javascript"></script>
+	<link href="${base}/resource/interface/code-formatter.css" type="text/css" rel="stylesheet"/>
+<style>
+#sendData{width: 500px; height: 50px;}
+#rawJson{width:100%; height: 50px;}
+#interfaes a{padding: 0 5px;}
+</style>
+<script>
+var i=0;
+var apiArray=['${base}/api/directive/','${base}/api/method/','${base}/api/']
+var apisArray=['${base}/api/directives','${base}/api/methods','${base}/api/apis'];
+var supportShowParamtersArray=[true,false,true];
+
+function invoke(){
+	$('#rawJson').val('loading...');
+	$.ajax({
+	    url: $('#sendData').val(),
+	    type: 'GET',
+	    contentType:'application/json; charset=UTF-8',
+	    dataType: 'text',
+	    success: function (data) {
+	    	$('#rawJson').val(data);
+	    	process(data,$('.code-canvas'));
+	    }
+	});
+}
+function getSymbol(value){
+	if(value&&value.indexOf('?')>0){
+		return '&';
+	}else{
+		return '?';
+	}
+}
+function use(action,needAppToken,needUserToken,minParamters){
+	$('#sendData').val(apiArray[i]+action);
+	if('true'==needAppToken){
+		$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken={AppToken}');
+	}
+	if('true'==needUserToken){
+		$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken={用户登录Token}&authUserId={用户ID}');
+	}
+	if(minParamters != 'undefined'){
+		for (var j = 1; j <= minParamters; j++) {
+			$('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'paramters=value' + j);
+		}
+	}else if($('input[name=showParamters]').is(':checked')&&$('input[name=showParamters]').is(':visible')){
+		$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParamters=true');
+	}
+	$('#buttons').show();
+	return false;
+}
+function init(){
+	i=$('input:radio[name=api]:checked').val();
+	if(supportShowParamtersArray[i]){
+		$('input[name=showParamters]').parent().show();
+	}else{
+		$('input[name=showParamters]').parent().hide();
+	}
+	$('#interfaes').empty();
+	$.ajax({
+		url:apisArray[i],type: 'GET',
+		contentType:'application/json; charset=UTF-8',
+		dataType: 'json',
+		success: function (dataList) {
+			$(dataList).each(function(index,data){
+				var style='';
+				if('true'==data.needAppToken){
+					style+='color:#f00;';
+				}
+				if('true'==data.needUserToken){
+					style+='border:1px solid #0f0;';
+				}
+				$('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParamters+'\');">'+data.name+'</a> ');
+			});
+		}
+	});
+}
+$(function(){
+	$('input[name=showParamters]').click(function(){
+		if($(this).is(':checked')){
+			$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParamters=true');
+		}else{
+			$('#sendData').val($('#sendData').val().replace('showParamters=true',''));
+		}
+	});
+	$('input:radio[name=api]').eq(0).click();
+	$('input[name=api]').click(function(){
+		init();
+	});
+	init();
+});
+</script>
+</head>
+<body>
+	<fieldset>
+		<legend>接口测试</legend>
+		<p>
+			<label>地址：</label>
+			<textarea id="sendData"></textarea>
+			<label><input name="showParamters" type="checkbox" checked="checked"/>返回请求参数</label>
+		</p>
+		<p id="buttons" style="display:none"><input type="button" value="发送请求" onclick="invoke()"/></p>
+		<p>
+			<label><input type="radio" name="api" value="0"/>指令接口</label>
+			<label><input type="radio" name="api" value="1"/>方法接口</label>
+			<label><input type="radio" name="api" value="2"/>定制接口</label>
+			<em>(红色字体接口需要使用AppToken才能访问，绿色框体接口需要登陆信息authToken，authUserId才能访问)</em>
+		</p>
+		<p id="interfaes"></p>
+	</fieldset>
+	<fieldset>
+		<legend>返回报文</legend>
+		<textarea id="rawJson"></textarea>
+		<p><input type="button" value="格式化" onclick="process($('#rawJson').val(),$('.code-canvas'))"/></p>
+		<div class="code-canvas"></div>
+	</fieldset>
+</body>
+</html>

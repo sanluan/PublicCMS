@@ -1,0 +1,77 @@
+<div style="display:none">
+	<textarea name="index"><@html_escape><#include "demo/index.html" parse=false/></@html_escape></textarea>
+	<textarea name="content"><@html_escape><#include "demo/content.html" parse=false/></@html_escape></textarea>
+	<textarea name="category"><@html_escape><#include "demo/category.html" parse=false/></@html_escape></textarea>
+	<textarea name="search"><@html_escape><#include "demo/search.html" parse=false/></@html_escape></textarea>
+	<#if site.useStatic>
+		<textarea name="staticContent"><@html_escape><#include "demo/staticContent.html" parse=false/></@html_escape></textarea>
+		<textarea name="staticCategory"><@html_escape><#include "demo/staticCategory.html" parse=false/></@html_escape></textarea>
+	</#if>
+</div>
+<script>
+function templateDefaultConfig(type){
+	switch (type){
+	case 'index':
+		$('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+		$('input[name=path]',navTab.getCurrentPanel()).val('/index.html');
+		$('input[name=alias]',navTab.getCurrentPanel()).val('首页');
+		$('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
+	<#if site.useStatic>
+		$('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+		$('input[name=publishPath]',navTab.getCurrentPanel()).val('index.html');
+	</#if>
+		break;
+	case 'content':
+		$('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+		$('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+		$('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.html');
+		$('input[name=alias]',navTab.getCurrentPanel()).val('内容页');
+		$('input[name=acceptParamters]',navTab.getCurrentPanel()).val('id,pageIndex');
+		break;
+	case 'category':
+		$('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+		$('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+		$('input[name=path]',navTab.getCurrentPanel()).val('/demo/category.html');
+		$('input[name=alias]',navTab.getCurrentPanel()).val('分类页');
+		$('input[name=acceptParamters]',navTab.getCurrentPanel()).val('id,pageIndex');
+		break;
+	case 'search':
+		$('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+		$('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+		$('input[name=path]',navTab.getCurrentPanel()).val('/demo/search.html');
+		$('input[name=alias]',navTab.getCurrentPanel()).val('搜索页');
+		$('input[name=acceptParamters]',navTab.getCurrentPanel()).val('word,pageIndex,tagId');
+		break;
+<#if site.useStatic>
+	case 'staticContent':
+		$('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+		$('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+		$('input[name=path]',navTab.getCurrentPanel()).val('/demo/staticContent.html');
+		$('input[name=alias]',navTab.getCurrentPanel()).val('静态化内容页');
+		$('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
+		break;
+	case 'staticCategory':
+		$('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+		$('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+		$('input[name=path]',navTab.getCurrentPanel()).val('/demo/staticCategory.html');
+		$('input[name=alias]',navTab.getCurrentPanel()).val('静态化分类页');
+		$('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
+		break;
+</#if>
+	}
+	$('textarea[name=content]',navTab.getCurrentPanel()).val($('textarea[name='+type+']',$.pdialog.getCurrent()).val());
+	$.pdialog.closeCurrent();
+}
+</script>
+<div class="pageFormContent" layoutH="19">
+	<ul class="tree treeFolder">
+		<li><a href="javascript:;" onclick="templateDefaultConfig('index');">首页</a></li>
+		<li><a href="javascript:;" onclick="templateDefaultConfig('content');">内容页</a></li>
+		<li><a href="javascript:;" onclick="templateDefaultConfig('category');">分类页</a></li>
+		<li><a href="javascript:;" onclick="templateDefaultConfig('search');">搜索页面</a></li>
+	<#if site.useStatic>
+		<li><a href="javascript:;" onclick="templateDefaultConfig('staticContent');">静态化内容页</a></li>
+		<li><a href="javascript:;" onclick="templateDefaultConfig('staticCategory');">静态化分类页</a></li>
+	</#if>
+	</ul>
+</div>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>CMS使用报表</title>
+	<link href="${res}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+	<link href="${res}/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
+	<script src="${res}/js/jquery-1.9.1.min.js"></script>
+	<script src="${res}/bootstrap/js/bootstrap.min.js"></script>
+	<script src="${res}/js/echarts.common.min.js"></script>
+</head>
+<body>
+<div class="container theme-showcase" role="main">
+	<div class="page-header">
+		<h1>CMS系统监控</h1>
+	</div>
+	<div class="row">
+		<div id="memory" class="col-lg-3 col-md-4 col-sm-6" style="height:300px;"></div>
+		<div id="memory_count" class="col-lg-3 col-md-4 col-sm-6" style="height:300px;"></div>
+		<div id="disk" class="col-lg-3 col-md-4 col-sm-6" style="height:300px;"></div>
+	</div>
+<script>
+var memoryChart={
+	chart:echarts.init(document.getElementById('memory')),
+	countChart:echarts.init(document.getElementById('memory_count')),
+	data:{
+		freeMemory:[],
+		usedMemory:[],
+		unUsedMemory:[]
+	},
+	time:[],
+	toDecimal:function(number) {  
+        var value = parseFloat(number);  
+        if (isNaN(value)) {  
+            return 0;  
+        }  
+        value = Math.round(number*100)/100;  
+        return value;  
+    }  
+};
+memoryChart.chart.setOption({
+	title: {
+        text: '内存监测'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: memoryChart.time
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+   	    name:'实际使用',
+   	    type:'line',
+   	    stack: '总量',
+   	    areaStyle: {normal: {}},
+   	    data:memoryChart.data.usedMemory
+   	},
+   	{
+   	    name:'闲置内存',
+   	    type:'line',
+   	    stack: '总量',
+   	    areaStyle: {normal: {}},
+   	    data:memoryChart.data.freeMemory
+   	},
+   	{
+   	    name:'可用剩余',
+   	    type:'line',
+   	    stack: '总量',
+   	    areaStyle: {normal: {}},
+   	    data:memoryChart.data.unUsedMemory
+   	}]
+});
+memoryChart.countChart.setOption({
+	title : {
+        text: '内存使用',
+        subtext: '占用内存',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)",
+        position: [10, 10]
+    },
+    series : [
+        {
+            name: '内存使用',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+                {value:0, name:'已用'},
+                {value:0, name:'闲置'}
+            ]
+        }
+    ]
+});
+<@_disk>
+echarts.init(document.getElementById('disk')).setOption({
+	title : {
+        text: '站点磁盘:<@t.fileSize totalSpace/>',
+        subtext: '${(rootPath?js_string)!}',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'item',
+        formatter: "{a} <br/>{b} : {c} ({d}%)",
+        position: [10, 10]
+    },
+    series : [
+        {
+            name: '磁盘空间',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data:[
+            	{value:<@t.fileSize (totalSpace-freeSpace) false/>, name:'已用'},
+                {value:<@t.fileSize freeSpace false/>, name:'空闲'}
+            ]
+        }
+    ]
+});
+</@_disk>
+if(window.memoryInterval){
+	clearInterval(window.memoryInterval);
+}
+function refreshMemory(){
+	$.getJSON("../common/memory.html", function(data) {
+		memoryChart.time.push(data.time);
+		memoryChart.data.freeMemory.push(memoryChart.toDecimal(data.freeMemory/1048576));
+		memoryChart.data.usedMemory.push(memoryChart.toDecimal((data.totalMemory-data.freeMemory)/1048576));
+		memoryChart.data.unUsedMemory.push(memoryChart.toDecimal((data.maxMemory-data.totalMemory)/1048576));
+		if(memoryChart.time.length > 200){
+			memoryChart.time.shift();
+			memoryChart.data.freeMemory.shift();
+			memoryChart.data.usedMemory.shift();
+			memoryChart.data.unUsedMemory.shift();
+		}
+		memoryChart.countChart.setOption({
+			title:{
+				subtext: '占用内存:'+memoryChart.toDecimal(data.totalMemory/1048576)+'MB'
+			},
+			series: [{
+	             name: '内存使用',
+	             type: 'pie',
+	             radius : '55%',
+	             center: ['50%', '60%'],
+	             data:[
+	                 {value:memoryChart.toDecimal((data.totalMemory-data.freeMemory)/1048576), name:'已用'},
+	                 {value:memoryChart.toDecimal(data.freeMemory/1048576), name:'闲置'}
+	             ]
+	         }]
+		});
+		memoryChart.chart.setOption({
+	        xAxis: {
+	            data: memoryChart.time
+	        },
+	        series: [
+	    	{
+	    	    name:'实际使用',
+	    	    type:'line',
+	    	    stack: '总量',
+	    	    areaStyle: {normal: {}},
+	    	    data:memoryChart.data.usedMemory
+	    	},
+	    	{
+	    	    name:'闲置内存',
+	    	    type:'line',
+	    	    stack: '总量',
+	    	    areaStyle: {normal: {}},
+	    	    data:memoryChart.data.freeMemory
+	    	},
+	    	{
+	    	    name:'可用剩余',
+	    	    type:'line',
+	    	    stack: '总量',
+	    	    areaStyle: {normal: {}},
+	    	    data:memoryChart.data.unUsedMemory
+	    	}]
+	    });
+	});
+}
+window.memoryInterval=setInterval(function () {
+	refreshMemory();
+}, 10000);
+refreshMemory();
+</script>
+</div>
+</body>
+</html>

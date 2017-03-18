@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
 	<title>${content.title} - <@_content id=content.parentId>${object.title}</@_content> - ${category.name}</title>
-	<meta name="keywords" content="${content.title}"/>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
 	<meta name="description" content="${content.description}"/>
 <@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 </head>
@@ -17,15 +17,8 @@
 		<article>
 			<h3><@_content id=content.parentId><@_content id=object.parentId><a href="${object.url}" target="_blank">《${object.title}》</a></@_content> ${object.title}</@_content> ${content.title}</h3>
 			<div id="content">
-				${text!}
+				${text?no_esc!}
 			</div>
-			<script>
-				uParse('#content',{rootPath: '${site.resourcePath!}ueditor'});
-				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){});
-<@_content id=content.parentId>
-				$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${object.parentId}&callback=?', function(data){});
-</@_content>
-			</script>
 			<div class="page">
 				<@_contentList parentId=content.parentId endPublishDate=content.publishDate pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">上一章</a></#list></#if></@_contentList>
 				<@_contentList parentId=content.parentId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1><#list page.list as a><a href="${a.url!}">下一章</a></#list></@_contentList>
@@ -35,5 +28,12 @@
 	<div class="clearfix-before"></div>
 </main>
 <@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
+<script>
+	uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){});
+<@_content id=content.parentId>
+	$.getJSON('${site.dynamicPath!}api/contentClick?id=${object.parentId}&callback=?', function(data){});
+</@_content>
+</script>
 </body>
 </html>

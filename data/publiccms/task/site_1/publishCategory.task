@@ -2,7 +2,7 @@
 <#macro deal parentId>
 	<@_categoryList parentId=parentId count=100>
 		<#list page.list as a>
-			<@_contentList categoryId=a.id containChild=true endPublishDate=.now count=a.pageSize>
+			<@_contentList categoryId=a.id containChild=a.containChild endPublishDate=.now count=a.pageSize>
 				<@_publishCategory id=a.id totalPage=page.totalPage><#assign dealCount++/></@_publishCategory>
 			</@_contentList>
 			<#if a.childIds?has_content><@deal a.id/></#if>

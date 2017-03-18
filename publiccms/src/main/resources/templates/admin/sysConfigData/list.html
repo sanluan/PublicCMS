@@ -1,0 +1,26 @@
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a href="sysConfigData/edit.html?code={sid}" target="navTab" rel="sysConfigData/edit"><i class="icon-edit icon-large"></i> 修改配置数据</a></li>
+		</ul>
+	</div>
+<@_sysConfigList>
+	<table class="list" width="100%" layoutH="57">
+		<thead>
+			<tr>
+				<th width="200">配置编码</th>
+				<th>配置描述</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list list as a>
+			<tr target="sid" rel="${a.code}">
+				<td>${(a.code)!}</td>
+				<td>${(a.description)!}</td>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+</@_sysConfigList>
+</div>

@@ -1,0 +1,124 @@
+<div class="pageFormContent" layoutH="19">
+	<div class="unit">
+		<p>
+			<label>我的待审核:</label>
+			<a href="myself/contentList.html?status=2" title="<i class='icon-book icon-large'></i> 我的内容" target="navTab" rel="myself/contentList">
+				<@_contentList advanced=true status=2 userId=admin.id>
+					${page.totalCount}篇
+				</@_contentList>
+			</a>
+		</p>
+		<p>
+			<label>我的草稿:</label>
+			<a href="myself/contentList.html?status=0" title="<i class='icon-book icon-large'></i> 我的内容" target="navTab" rel="myself/contentList">
+				<@_contentList advanced=true status=0 userId=admin.id>
+					${page.totalCount}篇
+				</@_contentList>
+			</a>
+		</p>
+		<p>
+			<a class="button" href="main.html" target="navTab" rel="main">刷新</a>
+		</p>
+	</div>
+	<div class="divider"></div>
+	<div class="unit">
+		<p>
+			<label>登录次数:</label>
+			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
+		</p>
+		<p>
+			<label>上次登录日期:</label>
+			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.lastLoginDate!}</a>
+		</p>
+		<p>
+			<label>上次登录IP:</label>
+			<a href="myself/logLogin.html" title="<i class='icon-signin icon-large'></i> 我的登陆日志" target="navTab" rel="myself/logLogin">${admin.lastLoginIp!}</a>
+		</p>
+		<p>
+			<label>我的登陆授权:</label>
+			<a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> 我的登陆授权" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
+		</p>
+	</div>
+	<div class="divider"></div>
+<@_masterSite>
+	<@_systemProperties>
+	<div class="unit">
+		<p>
+			<label>操作系统:</label>${.vars['os.name']!}(${.vars['os.arch']!})
+		</p>
+		<p>
+			<label>操作系统版本:</label>${.vars['os.version']!}
+		</p>
+		<p>
+			<label>操作系统用户:</label>${.vars['user.name']!}
+		</p>
+		<p>
+			<label>操作系统时区:</label>${.vars['user.timezone']!}
+		</p>
+		<p>
+			<label>文件编码:</label>${.vars['file.encoding']!}
+		</p>
+	</div>
+	<div class="divider"></div>
+	<div class="unit">
+		<p>
+			<label>JRE名称:</label>${.vars['java.runtime.name']!}
+		</p>
+		<p>
+			<label>JRE版本:</label>
+			${.vars['java.runtime.version']!}(${.vars['java.vm.info']!})
+		</p>
+		<p>
+			<label>JVM名称:</label>${.vars['java.vm.name']!}
+		</p>
+		<p>
+			<label>JVM版本:</label>${.vars['java.vm.version']!}
+		</p>
+	</div>
+	<div class="divider"></div>
+	<div class="unit">
+		<p>
+			<label>用户目录:</label>${.vars['user.home']!}
+		</p>
+		<p>
+			<label>工作目录:</label>${.vars['user.dir']!}
+		</p>
+		<p>
+			<label>临时文件目录:</label>${.vars['java.io.tmpdir']!}
+		</p>
+		<p>
+			<label>文件分隔符:</label>${.vars['file.separator']!}
+		</p>
+	</div>
+	<div class="divider"></div>
+	</@_systemProperties>
+</@_masterSite>
+<@_version>
+	<div class="unit">
+		<p id="cmsVersion">
+			<label>Public CMS:</label>
+			<a href="http://www.publiccms.com/" target="navTab" rel="publiccms.com" title="<i class='icon-home icon-large'></i> PublicCMS官网">${cms}</a>
+			(<a href="http://opensource.org/licenses/MIT" target="_blank">The MIT License</a>)
+		</p>
+	<@_sysAuthorized roleIds=admin.roles url='sysCluster/list'>
+		<p>
+			<label>节点ID:</label>
+			<a href="sysCluster/list.html" title="<i class='icon-code-fork icon-large'></i> 节点列表" target="navTab" rel="sysCluster/list">${cluster}</a> [${master?string('管理节点','普通节点')}]
+		</p>
+	</@_sysAuthorized>
+	<@_masterSite>
+		<script>
+			$.getJSON('//cms.publiccms.com/api/directive/version?callback=?',function(data){
+				if($('#cmsVersion a').eq(0).text()!==data.cms){
+					<#if preview>$('#cmsVersion a').eq(0).append('-preview');</#if>
+					$('#cmsVersion a').eq(0).append('[<em style="color:red">有新版本</em>]');
+				}else{
+					<#if preview>$('#cmsVersion a').eq(0).append('-preview');</#if>
+				}
+			});
+		</script>
+	</@_masterSite>
+	</div>
+	<div class="divider"></div>
+</@_version>
+</div>

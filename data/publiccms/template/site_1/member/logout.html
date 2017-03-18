@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>退出登陆</title>
+	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+    <div class="container">
+    	<p class="message">正在退出登陆</p>
+    	<iframe src="sso.html" style="display:none"></iframe>
+    </div>
+</main>
+<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
+<script>
+   	$.post("doLogout.do",function(){
+		window.location.href='sso.html?logout=true&returnUrl=${site.sitePath}';
+   	 });
+</script>
+</body>
+</html>

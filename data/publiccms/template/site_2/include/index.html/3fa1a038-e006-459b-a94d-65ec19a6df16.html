@@ -1,0 +1,21 @@
+<header id="fh5co-header" role="banner">
+		<div class="container">
+			<div class="row">
+				<div class="header-inner">
+					<h1><a href="${site.dynamicPath}">ONE HEART FOCUS ON<span>.</span></a></h1>
+					<nav role="navigation">
+						<ul>
+<@_categoryList>
+	<#list page.list as a>
+		<li><a href="${a.url!}" target="_blank">${a.name}</a></li>
+	</#list>
+</@_categoryList>
+<#list page.list  as a>
+		<li><a href="${a.url!}" target="_blank">${a.title?no_esc}</a></li>
+</#list>
+						</ul>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</header>

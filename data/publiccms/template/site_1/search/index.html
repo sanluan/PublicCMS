@@ -3,7 +3,7 @@
 <head>
 	<title>搜索 - PublicCMS</title>
 	<meta name="keywords" content="搜索"/>
-	<meta name="description" content="搜索  ${(word?html)!}"/>
+	<meta name="description" content="搜索  ${(word)!}"/>
 	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
 </head>
 <body>
@@ -16,7 +16,7 @@
 		<div class="data-list left-content">
 			<div class="search">
 				<form action="./" method="get">
-					   <input type="text" name="word" value="${(word?html)!tagName!}"/>
+					   <input type="text" name="word" value="${(word)!tagName!}"/>
 						<input type="submit" value="搜索"/>
 						<input type="button" onclick="$('.search form').attr('action','facet.html').submit();" value="高级搜索"/>
 				</form>
@@ -24,15 +24,15 @@
 					<p>
 						热门标签：
 						<#list page.list as a>
-							<a href="?tagId=${a.id?html}">${a.name?html}</a>
+							<a href="?tagId=${a.id}">${a.name}</a>
 						</#list>
 					</p>
 				</@_tagList>
 				<@_wordList count=10>
-					<p>	
+					<p>
 						热门搜索词：
 						<#list page.list as a>
-							<a href="?word=${a.name?html}">${a.name?html}</a>
+							<a href="?word=${a.name?url}">${a.name}</a>
 						</#list>
 					</p>
 				</@_wordList>

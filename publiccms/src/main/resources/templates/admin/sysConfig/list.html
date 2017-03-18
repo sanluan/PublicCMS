@@ -1,0 +1,33 @@
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a href="sysConfig/add.html" target="navTab" rel="sysConfig/add"><i class="icon-plus-sign-alt icon-large"></i> 添加配置</a></li>
+			<li><a href="sysConfig/add.html?code={sid}" target="navTab" rel="sysConfig/edit"><i class="icon-edit icon-large"></i> 修改配置</a></li>
+		</ul>
+	</div>
+<@_sysConfigList>
+	<table class="list" width="100%" layoutH="57">
+		<thead>
+			<tr>
+				<th width="200">配置编码</th>
+				<th>配置描述</th>
+				<th width="200">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list list as a>
+			<tr target="sid" rel="${a.code}">
+				<td>${(a.code)!}${a.customed?then('',' [系统配置项]')}</td>
+				<td>${(a.description)!}</td>
+				<td>
+					<a href="sysConfig/add.html?code=${a.code}" target="navTab" rel="sysConfig/edit">修改配置</a>
+				<#if a.customed>
+					<a href="sysConfig/delete.do?code=${a.code}&navTabId=sysConfig/list" title="确定要删除该配置吗?" target="ajaxTodo">删除配置</a>
+				</#if>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+</@_sysConfigList>
+</div>

@@ -1,0 +1,45 @@
+<@_content id=id>
+	<#assign content=object/>
+	<#assign attribute=getContentAttribute(id)/>
+</@_content>
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+	<title>${(content.title)!}</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>" />
+	<meta name="description" content="${(content.description)!}" />
+<@_includePlace path="/index.html/885f27db-b93d-4642-9b95-9dcf2a418844.html"/> <#-- Head Meta -->
+</head>
+<body>
+<div id="fh5co-page">
+	<@_includePlace path="/index.html/3fa1a038-e006-459b-a94d-65ec19a6df16.html"/> <#-- 导航 -->
+
+	<div class="fh5co-page-title" style="background-image: url(${site.sitePath}images/slide_6.jpg);">
+		<div class="overlay"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-12 animate-box">
+					<h1>${(content.title)!}</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+
+	<div class="fh5co-contact animate-box">
+		<div class="container">
+			<div class="row">
+				${(attribute.text?no_esc)!}
+			</div>
+		</div>	
+	</div>
+
+	<@_includePlace path="/index.html/1edfb072-0c53-4062-b457-034b6cad77ab.html"/> <#-- Footer -->
+</div>
+</body>
+</html>
+

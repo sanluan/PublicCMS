@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>${content.title?html} - ${category.name?html}</title>
-	<meta name="keywords" content="${content.title?html}"/>
-	<meta name="description" content="${content.description?html}"/>
+	<title>${content.title} - ${category.name}</title>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+	<meta name="description" content="${content.description}"/>
 <@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
-	<link href="${site.resourcePath!}gallery/style.css" rel="stylesheet"/>
-	<script src="${site.resourcePath!}gallery/gallery.js"></script>
+	<link href="${site.sitePath!}assets/gallery/style.css" rel="stylesheet"/>
 </head>
 <body>
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
@@ -31,7 +30,6 @@
 						${content.description!}
 						</p>
 						<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
-<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["renren","bdxc","kaixin001","tqf","tieba","douban","sqq","fx","mail","isohu","ty","copy"],"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","weixin"],"viewText":"分享到：","viewSize":"24"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 					</div>
 					<div class="gallery-content" data-gallery="content">
 						<div class="gallery-toolbar">
@@ -45,14 +43,14 @@
 							</span>
 						</div>
 						<div class="gallery-photo">
-							<div class="gallery-photo-items" data-gallery="photo-items">${(content.cover?has_content)?then("<img src='"+site.resourcePath+content.cover+"'/>","")}</div>
+							<div class="gallery-photo-items" data-gallery="photo-items">${(content.cover?has_content)?then("<img src='"+site.sitePath+content.cover+"'/>","")}</div>
 							<div class="gallery-photo-prev" data-gallery="photo-prev">
 								<a title="点击浏览上一张图片，支持'←'翻页" href="javascript:void(0);" hideFocus="true">上一页</a>
 							</div>
 							<div class="gallery-photo-next" data-gallery="photo-next">
 								<a title="点击浏览下一张图片，支持'→'翻页" href="javascript:void(0);" hideFocus="true">下一页</a>
 							</div>
-							<div class="gallery-loading" data-gallery="loading"><img src="${site.resourcePath!}gallery/images/loading.gif" /></div>
+							<div class="gallery-loading" data-gallery="loading"><img src="${site.sitePath!}gallery/images/loading.gif" /></div>
 							<div class="gallery-end" data-gallery="end">
 <@_contentList modelId=content.modelId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1>
 	<#list page.list as a>
@@ -139,6 +137,12 @@
 					</div>
 				</div>
 			</div>
+			<div id="SOHUCS" class="comment" sid="${content.id}"></div>
+		</article>
+	</div>
+</main>
+<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
+<script src="${site.sitePath!}assets/gallery/gallery.js"></script>
 <script>
 $(function(){
 	var gallery = new Gallery({
@@ -147,7 +151,7 @@ $(function(){
 <@_contentFileList contentId=content.id image=true>
 <#list page.list as a>
 			{
-				big: '${site.resourcePath+a.filePath}',
+				big: '${site.sitePath+a.filePath}',
 				small: '<@_thumb path=a.filePath width=100 height=75/>',
 				thumb: '<@_thumb path=a.filePath width=100 height=75/>',
 				note: '${(a.description!content.description!)?js_string}'
@@ -163,31 +167,17 @@ $(function(){
 		templatePhotoThumb: ''
 	});
 });
-$.getJSON('${site.dynamicPath!}api/app/V1.0/contentClick?id=${content.id}&callback=?', function(data){
+$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){
 	$('.gallery-info em').text(data.clicks);
 });
 </script>
-			<#if content.tags?has_content>
-				<div class="tags">
-					标签：
-					<@_tag ids=content.tags>
-						<#list map?keys as key>
-							<a href="${site.dynamicPath!}tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
-						</#list>
-					</@_tag>
-				</div>
-			</#if>
-			<div id="SOHUCS" class="comment" sid="${content.id}"></div>
-			<script charset="utf-8" type="text/javascript" src="http://changyan.sohu.com/upload/changyan.js" ></script>
-			<script type="text/javascript">
-				window.changyan.api.config({
-					appid: 'cyrUsl0PT',
-					conf: 'prod_64e213c0c1210c839584707e2d5e7cd7'
-				});
-			</script>
-		</article>
-	</div>
-</main>
-<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
+<script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["renren","bdxc","kaixin001","tqf","tieba","douban","sqq","fx","mail","isohu","ty","copy"],"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","weixin"],"viewText":"分享到：","viewSize":"24"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
+<script charset="utf-8" type="text/javascript" src="//changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+	window.changyan.api.config({
+		appid: 'cyrUsl0PT',
+		conf: 'prod_64e213c0c1210c839584707e2d5e7cd7'
+	});
+</script>
 </body>
 </html>

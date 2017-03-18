@@ -1,0 +1,23 @@
+<#list page.list>
+	<ul class="slides">
+	<#items as a>
+		<#assign attribute=getPlaceAttribute(a.id)/>	
+		<li style="background-image: url(${site.sitePath+a.cover});">
+			<div class="container">
+				<div class="col-md-12 text-center js-fullheight fh5co-property-brief slider-text">
+					<div class="fh5co-property-brief-inner">
+						<div class="fh5co-box">
+							<h3><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}">${a.title}</a></h3>
+							<div class="price-status">
+								<span class="price">${attribute.price!}</span>
+							</div>
+							<p>${attribute.description!}</p>
+							<p><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" class="btn btn-primary">Learn more</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		  </li>
+	</#items>
+	</ul>
+</#list>

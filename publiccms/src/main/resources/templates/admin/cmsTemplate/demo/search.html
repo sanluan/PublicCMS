@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>搜索${word?has_content?then(' - '+word,'')}</title>
+	<meta name="keywords" content="<#list getKeywords(word) as a>${a}<#sep>,</#list>"/>
+	<meta name="description" content="${site.name} - 搜索"/>
+</head>
+<body>
+	<header>
+		<form method="get">
+			<input type="text" name="word" value="${word!}"/>
+			<input type="submit" value="搜索"/>
+		</form>
+	</header>
+	<nav>
+		<a href="${base}">首页</a>
+<@_categoryList>
+	<#list page.list as a>
+		<a href="${a.url!}" target="_blank">${a.name}</a>
+	</#list>
+</@_categoryList>
+	</nav>
+	<main>
+<@_search word=word tagId=tagId>
+	<#if page.totalCount gt 0>
+		<h1>搜索结果</h1>
+	<#list page.list as a>
+		<article>
+		    <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
+		    <p>
+		    	<#if a.cover?has_content><img src="${site.sitePath+a.cover}" alt="${a.title}"/></#if>
+		    	${a.description!}
+		    </p>
+		</article>
+	</#list>
+		<div>
+			<#if !page.firstPage>
+				<a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.prePage}">上一页</a>
+			<#else>
+				<span>上一页</span>
+			</#if>
+			<#assign start=1/>
+			<#if (page.pageIndex-5) gt start>
+				<#assign start=page.pageIndex-4/>
+			</#if>
+			<#assign end=page.totalPage/>
+			<#if (page.pageIndex+5) lt end>
+				<#assign end=page.pageIndex+4/>
+			</#if>
+			<#if start gt 1>
+				<a href="?word=${word!}&tagId=${tagId!}">1</a> ...
+			</#if>
+			<#list start..end as n>
+				<#if n=page.pageIndex>
+					${n}
+				<#else>
+					<a href="?word=${word!}&tagId=${tagId!}&pageIndex=${n}">${n}</a>
+				</#if>
+			</#list>
+			<#if end lt page.totalPage>
+				... <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
+			</#if>
+			<#if !page.lastPage>
+				<a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.nextPage}">下一页</a>
+			<#else>
+				<span>下一页</span>
+			</#if>
+		</div>
+	</#if>
+</@_search>
+		<aside>
+			<h3>热门内容</h3>
+			<ul>
+<@_contentList orderField='clicks' count=10>
+	<#list page.list as a>
+				<li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+	</#list>
+</@_contentList>
+			</ul>
+		</aside>
+	</main>
+	<footer>
+		Copyright &copy; ${.now?string('yyyy')}
+	</footer>
+</body>
+</html>

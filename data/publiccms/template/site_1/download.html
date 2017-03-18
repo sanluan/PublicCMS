@@ -3,20 +3,12 @@
 <head>
 	<title>${metadata.alias!}</title>
 	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
-	<script type="text/javascript">
-	$(function(){$('.login-form input').eq(0).focus();});
-	function check(){
-		if(!$('input[name=title]').val()||!$('input[name=url]').val()){
-			alert('站点标题和地址不能为空');
-			return false;
-		}
-		return true;
-	}
-	</script>
 </head>
 <body>
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
-<@include path="ftl/dynamic-user.ftl"/> <#-- 动态站点用户状态 -->
+<script>
+	$("header nav ul li a:contains('下载')").parent().addClass('selected');
+</script>
 <main>
     <div class="container">
 		<div class="data-list left-content">
@@ -35,7 +27,6 @@
 		</div>
 		<aside>
             <@_includePlace path="/index.html/2ac8682d-d844-4d95-921d-8c92b89e515c.html"/> <#-- 开源中国 -->
-            <@_includePlace path="/index.html/30ef2211-1197-4725-b253-e5dc12af1b21.html"/> <#-- github -->
 		</aside>
     </div>
 	<div class="clearfix-before"></div>
