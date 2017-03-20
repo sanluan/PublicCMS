@@ -50,7 +50,7 @@
 			<#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
 			<tr>
 				<td><input name="paths" value="${filePath}" type="checkbox"></td>
-				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}"></div></td>
+				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:24px;"></div></td>
 				<td>
 					<#if a.directory>
 						<a href="cmsWebFile/list.html?path=${filePath}" target="navTab" rel="cmsWebFile/list">

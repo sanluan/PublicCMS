@@ -76,7 +76,7 @@
 						<a class="btnSelect" href="javascript:;" onclick="${editor!'cmsTemplateEditor'}.replaceSelection('${useFile(filePath,a.fileName)}');$.pdialog.closeCurrent();return false;" title="选择">选择</a>
 					</#if>
 				</td>
-				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}"></div></td>
+				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:24px;"></div></td>
 				<td>
 					<#if a.directory>
 						<a href="cmsWebFile/lookup.html?path=${filePath}&editor=${editor!}" target="dialog" mask="true" rel="cmsWebFileLookup" title="${filePath}">
