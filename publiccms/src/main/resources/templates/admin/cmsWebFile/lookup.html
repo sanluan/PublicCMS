@@ -58,7 +58,7 @@
 				<td></td>
 				<td class="tree"><div class="folder_expandable"></div></td>
 				<td>
-					<a href="cmsWebFile/lookup.html?path=${path?keep_before_last('/')}&editor=${editor!}" target="dialog" mask="true" rel="cmsWebFileLookup" title="${path?keep_before_last('/')}">
+					<a href="cmsWebFile/lookup.html?path=${path?keep_before_last('/')}&editor=${editor!'cmsTemplateEditor'}" target="dialog" mask="true" rel="cmsWebFileLookup" title="${path?keep_before_last('/')}">
 						返回上级..
 					</a>
 				</td>
@@ -79,7 +79,7 @@
 				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:24px;"></div></td>
 				<td>
 					<#if a.directory>
-						<a href="cmsWebFile/lookup.html?path=${filePath}&editor=${editor!}" target="dialog" mask="true" rel="cmsWebFileLookup" title="${filePath}">
+						<a href="cmsWebFile/lookup.html?path=${filePath}&editor=${editor!'cmsTemplateEditor'}" target="dialog" mask="true" rel="cmsWebFileLookup" title="${filePath}">
 							${a.fileName}
 						</a>
 					<#else>
