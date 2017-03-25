@@ -56,8 +56,8 @@ public class PlaceController extends AbstractController {
      * @return
      */
     @RequestMapping(value = "save")
-    public String save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParamters placeParamters,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+    public void save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParamters placeParamters,
+            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -70,14 +70,16 @@ public class PlaceController extends AbstractController {
             SysUser user = getUserFromSession(session);
             if (verifyCustom("contribute",
                     null == user || null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)) {
-                return REDIRECT + returnUrl;
+                redirect(response, returnUrl);
+                return;
             }
             if (null != entity.getId()) {
                 CmsPlace oldEntity = service.getEntity(entity.getId());
                 if (null == oldEntity || empty(oldEntity.getUserId()) || null == user
                         || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                         || verifyNotEquals("siteId", user.getId(), oldEntity.getUserId(), model)) {
-                    return REDIRECT + returnUrl;
+                    redirect(response, returnUrl);
+                    return;
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.place",
@@ -98,7 +100,7 @@ public class PlaceController extends AbstractController {
             String extentString = getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);
         }
-        return REDIRECT + returnUrl;
+        redirect(response, returnUrl);
     }
 
     /**
@@ -110,7 +112,8 @@ public class PlaceController extends AbstractController {
      * @return
      */
     @RequestMapping("delete")
-    public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public void delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response,
+            ModelMap model) {
         SysSite site = getSite(request);
         if (empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -122,12 +125,13 @@ public class PlaceController extends AbstractController {
                 null == entity || null == user || empty(metadata.getAdminIds())
                         || !contains(metadata.getAdminIds(), user.getId()),
                 model) || verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-            return REDIRECT + returnUrl;
+            redirect(response, returnUrl);
+        } else {
+            service.delete(id);
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "delete.place",
+                    getIpAddress(request), getDate(), id.toString()));
+            redirect(response, returnUrl);
         }
-        service.delete(id);
-        logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "delete.place",
-                getIpAddress(request), getDate(), id.toString()));
-        return REDIRECT + returnUrl;
     }
 
     /**
@@ -139,7 +143,8 @@ public class PlaceController extends AbstractController {
      * @return
      */
     @RequestMapping("check")
-    public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public void check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response,
+            ModelMap model) {
         SysSite site = getSite(request);
         if (empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -151,12 +156,13 @@ public class PlaceController extends AbstractController {
                 null == entity || null == user || empty(metadata.getAdminIds())
                         || !contains(metadata.getAdminIds(), user.getId()),
                 model) || verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-            return REDIRECT + returnUrl;
+            redirect(response, returnUrl);
+        } else {
+            service.check(id);
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
+                    getIpAddress(request), getDate(), id.toString()));
+            redirect(response, returnUrl);
         }
-        service.check(id);
-        logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
-                "check.place", getIpAddress(request), getDate(), id.toString()));
-        return REDIRECT + returnUrl;
     }
 
     /**

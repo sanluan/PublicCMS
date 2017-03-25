@@ -412,7 +412,7 @@ CREATE TABLE `cms_word` (
   UNIQUE KEY `name` (`name`,`site_id`),
   KEY `hidden` (`hidden`),
   KEY `create_date` (`create_date`),
-  KEY `search_count` USING BTREE (`search_count`)
+  KEY `search_count` (`search_count`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -1047,7 +1047,7 @@ INSERT INTO `sys_moudle` VALUES ('1', '个人', null, null, '<i class=\"icon-use
 INSERT INTO `sys_moudle` VALUES ('2', '内容', null, null, '<i class=\"icon-book icon-large\"></i>', null, '1', '0');
 INSERT INTO `sys_moudle` VALUES ('3', '分类', null, null, '<i class=\"icon-folder-open icon-large\"></i>', null, '1', '1');
 INSERT INTO `sys_moudle` VALUES ('4', '页面', null, null, '<i class=\"icon-globe icon-large\"></i>', null, '1', '0');
-INSERT INTO `sys_moudle` VALUES ('5', '维护', null, null, '<i class=\"icon-cog icon-large\"></i>', null, '1', '1');
+INSERT INTO `sys_moudle` VALUES ('5', '维护', null, null, '<i class=\"icon-cogs icon-large\"></i>', null, '1', '1');
 INSERT INTO `sys_moudle` VALUES ('6', '与我相关', null, null, '<i class=\"icon-user icon-large\"></i>', '1', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('7', '修改密码', 'myself/password', 'changePassword', '<i class=\"icon-key icon-large\"></i>', '6', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('8', '我的内容', 'myself/contentList', null, '<i class=\"icon-book icon-large\"></i>', '6', '1', '0');
@@ -1088,7 +1088,7 @@ INSERT INTO `sys_moudle` VALUES ('42', '修改推荐位', 'cmsTemplate/placeList
 INSERT INTO `sys_moudle` VALUES ('43', '删除模板', null, 'cmsTemplate/delete', null, '39', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('44', '搜索词管理', 'cmsWord/list', null, '<i class=\"icon-search icon-large\"></i>', '109', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('45', '运营', null, null, '<i class=\"icon-user icon-large\"></i>', null, '1', '0');
-INSERT INTO `sys_moudle` VALUES ('46', '报表管理', NULL, NULL, '<i class=\"icon-sort-by-attributes-alt icon-large\"></i>', '45', '1', '0');
+INSERT INTO `sys_moudle` VALUES ('46', '系统管理', NULL, NULL, '<i class=\"icon-cog icon-large\"></i>', '45', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('47', '生成页面', null, 'cmsTemplate/publish', null, '30', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('48', '保存页面元数据', '', 'cmsPage/saveMetaData,file/doUpload,cmsPage/clearCache', null, '30', '1', '0');
 INSERT INTO `sys_moudle` VALUES ('49', '增加/修改推荐位数据', 'cmsPage/placeDataAdd', 'cmsContent/lookup,cmsPage/lookup,cmsPage/lookup_content_list,file/doUpload,cmsPlace/save', null, '30', '1', '0');
@@ -1389,7 +1389,7 @@ CREATE TABLE `sys_user` (
   KEY `lastLoginDate` (`last_login_date`),
   KEY `email_checked` (`email_checked`),
   KEY `dept_id` (`dept_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户';
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user

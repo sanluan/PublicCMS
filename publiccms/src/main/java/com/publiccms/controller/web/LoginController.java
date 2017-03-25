@@ -64,8 +64,8 @@ public class LoginController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "doLogin")
-    public String login(String username, String password, String returnUrl, HttpServletRequest request,
+    @RequestMapping(value = "doLogin", method = RequestMethod.POST)
+    public void login(String username, String password, String returnUrl, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (empty(returnUrl)) {
@@ -79,40 +79,43 @@ public class LoginController extends AbstractController {
         username = trim(username);
         password = trim(password);
         if (verifyNotEmpty("username", username, model) || verifyNotEmpty("password", password, model)) {
-            return REDIRECT + loginPath;
-        }
-        SysUser user;
-        if (verifyNotEMail(username)) {
-            user = service.findByName(site.getId(), username);
+            redirect(response, returnUrl);
         } else {
-            user = service.findByEmail(site.getId(), username);
-        }
-        String ip = getIpAddress(request);
-        if (verifyNotExist("username", user, model) || verifyNotEquals("password", encode(password), user.getPassword(), model)
-                || verifyNotEnablie(user, model)) {
-            Long userId = null;
-            if (null != user) {
-                userId = user.getId();
+            SysUser user;
+            if (verifyNotEMail(username)) {
+                user = service.findByName(site.getId(), username);
+            } else {
+                user = service.findByEmail(site.getId(), username);
             }
-            logLoginService.save(new LogLogin(site.getId(), username, userId, ip, CHANNEL_WEB, false, getDate(), password));
-            return REDIRECT + loginPath;
+            String ip = getIpAddress(request);
+            if (verifyNotExist("username", user, model)
+                    || verifyNotEquals("password", encode(password), user.getPassword(), model)
+                    || verifyNotEnablie(user, model)) {
+                Long userId = null;
+                if (null != user) {
+                    userId = user.getId();
+                }
+                logLoginService.save(new LogLogin(site.getId(), username, userId, ip, CHANNEL_WEB, false, getDate(), password));
+                redirect(response, returnUrl);
+            } else {
+                user.setPassword(null);
+                setUserToSession(request.getSession(), user);
+                String authToken = UUID.randomUUID().toString();
+                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), CHANNEL_WEB, getDate(), ip));
+                try {
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(user.getId()).append(getCookiesUserSplit()).append(authToken).append(getCookiesUserSplit())
+                            .append(user.isSuperuserAccess()).append(getCookiesUserSplit())
+                            .append(URLEncoder.encode(user.getNickName(), DEFAULT_CHARSET_NAME));
+                    addCookie(request.getContextPath(), response, getCookiesUser(), sb.toString(), Integer.MAX_VALUE, null);
+                } catch (UnsupportedEncodingException e) {
+                    log.error(e);
+                }
+                service.updateLoginStatus(user.getId(), ip);
+                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB, true, getDate(), null));
+                redirect(response, returnUrl);
+            }
         }
-        user.setPassword(null);
-        setUserToSession(request.getSession(), user);
-        String authToken = UUID.randomUUID().toString();
-        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), CHANNEL_WEB, getDate(), ip));
-        try {
-            StringBuilder sb = new StringBuilder();
-            sb.append(user.getId()).append(getCookiesUserSplit()).append(authToken).append(getCookiesUserSplit())
-                    .append(user.isSuperuserAccess()).append(getCookiesUserSplit())
-                    .append(URLEncoder.encode(user.getNickName(), DEFAULT_CHARSET_NAME));
-            addCookie(request.getContextPath(), response, getCookiesUser(), sb.toString(), Integer.MAX_VALUE, null);
-        } catch (UnsupportedEncodingException e) {
-            log.error(e);
-        }
-        service.updateLoginStatus(user.getId(), ip);
-        logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, CHANNEL_WEB, true, getDate(), null));
-        return REDIRECT + returnUrl;
     }
 
     /**
@@ -122,10 +125,9 @@ public class LoginController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "loginStatus")
+    @RequestMapping("loginStatus")
     @ResponseBody
-    public ModelMap loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response,
-            ModelMap model) {
+    public ModelMap loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysUser user = getUserFromSession(session);
         if (null != user) {
             model.addAttribute("id", user.getId());
@@ -148,8 +150,8 @@ public class LoginController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "doRegister")
-    public String register(SysUser entity, String repassword, String returnUrl, HttpServletRequest request,
+    @RequestMapping(value = "doRegister", method = RequestMethod.POST)
+    public void register(SysUser entity, String repassword, String returnUrl, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (empty(returnUrl)) {
@@ -167,21 +169,22 @@ public class LoginController extends AbstractController {
                 || verifyNotEquals("repassword", entity.getPassword(), repassword, model)
                 || verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
                 || verifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()), model)) {
-            return REDIRECT + returnUrl;
+            redirect(response, returnUrl);
+        } else {
+            String ip = getIpAddress(request);
+            entity.setPassword(encode(entity.getPassword()));
+            entity.setLastLoginIp(ip);
+            entity.setSiteId(site.getId());
+            service.save(entity);
+            entity.setPassword(null);
+            setUserToSession(request.getSession(), entity);
+            String authToken = UUID.randomUUID().toString();
+            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), CHANNEL_WEB, getDate(), ip));
+            String loginInfo = entity.getId() + getCookiesUserSplit() + authToken + getCookiesUserSplit() + entity.getNickName();
+            model.addAttribute("loginInfo", loginInfo);
+            addCookie(request.getContextPath(), response, getCookiesUser(), loginInfo, Integer.MAX_VALUE, null);
+            redirect(response, returnUrl);
         }
-        String ip = getIpAddress(request);
-        entity.setPassword(encode(entity.getPassword()));
-        entity.setLastLoginIp(ip);
-        entity.setSiteId(site.getId());
-        service.save(entity);
-        entity.setPassword(null);
-        setUserToSession(request.getSession(), entity);
-        String authToken = UUID.randomUUID().toString();
-        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), CHANNEL_WEB, getDate(), ip));
-        String loginInfo = entity.getId() + getCookiesUserSplit() + authToken + getCookiesUserSplit() + entity.getNickName();
-        model.addAttribute("loginInfo", loginInfo);
-        addCookie(request.getContextPath(), response, getCookiesUser(), loginInfo, Integer.MAX_VALUE, null);
-        return REDIRECT + returnUrl;
     }
 
     /**

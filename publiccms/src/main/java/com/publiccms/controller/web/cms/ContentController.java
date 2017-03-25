@@ -21,6 +21,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.entities.cms.CmsCategory;
@@ -95,9 +96,10 @@ public class ContentController extends AbstractController {
      * @param model
      * @return
      */
-    @RequestMapping("save")
-    public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
-            Boolean timing, Boolean draft, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @RequestMapping(value = "save", method = RequestMethod.POST)
+    public void save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
+            Boolean timing, Boolean draft, String returnUrl, HttpServletRequest request, HttpSession session,
+            HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -106,7 +108,8 @@ public class ContentController extends AbstractController {
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (verifyNotEmpty("categoryModel", categoryModel, model)) {
-            return REDIRECT + returnUrl;
+            redirect(response, returnUrl);
+            return;
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
         if (null != category && (site.getId() != category.getSiteId() || category.isAllowContribute())) {
@@ -114,7 +117,8 @@ public class ContentController extends AbstractController {
         }
         CmsModel cmsModel = modelComponent.getMap(site).get(entity.getModelId());
         if (verifyNotEmpty("category", category, model) || verifyNotEmpty("model", cmsModel, model)) {
-            return REDIRECT + returnUrl;
+            redirect(response, returnUrl);
+            return;
         }
         entity.setHasFiles(cmsModel.isHasFiles());
         entity.setHasImages(cmsModel.isHasImages());
@@ -132,7 +136,8 @@ public class ContentController extends AbstractController {
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
-                return REDIRECT + returnUrl;
+                redirect(response, returnUrl);
+                return;
             }
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (null != entity.getId()) {
@@ -178,7 +183,7 @@ public class ContentController extends AbstractController {
             attribute.setData(null);
         }
         attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
-        return REDIRECT + returnUrl;
+        redirect(response, returnUrl);
     }
 
     /**

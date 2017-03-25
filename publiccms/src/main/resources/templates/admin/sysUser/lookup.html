@@ -32,7 +32,7 @@
 						<select class="combox" name="emailChecked">
 							<option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}>邮箱验证状态</option>
 							<option value="false"${(emailChecked?has_content&&"false"==emailChecked)?then(' selected="true"','')?no_esc}>未验证</option>
-							<option value="true"${(emailChecked?has_content&&"true"==emailChecked)?then(' selected="true"','')?no_esc>已验证</option>
+							<option value="true"${(emailChecked?has_content&&"true"==emailChecked)?then(' selected="true"','')?no_esc}>已验证</option>
 						</select>
 					</td>
 				</tr>
