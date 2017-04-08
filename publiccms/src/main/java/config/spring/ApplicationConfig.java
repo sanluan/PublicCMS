@@ -203,6 +203,7 @@ public class ApplicationConfig extends Base {
         bean.setMethodRemoveRegex(env.getProperty("cms.methodRemoveRegex"));
         return bean;
     }
+
     /**
      * <p>
      * 模板组件

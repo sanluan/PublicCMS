@@ -9,16 +9,14 @@
 <main>
     <div class="container">
     	<p class="message">正在退出登陆</p>
-		<a href="#" class="logout">确认退出</a>
+    	<iframe src="sso.html" style="display:none"></iframe>
     </div>
 </main>
 <@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
 <script>
-$('.logout').click(function(){
-	$.post("doLogout.do",function(){
+   	$.post("doLogout.do",function(){
 		window.location.href='sso.html?logout=true&returnUrl=${site.sitePath}';
-   	});
-});
+   	 });
 </script>
 </body>
 </html>

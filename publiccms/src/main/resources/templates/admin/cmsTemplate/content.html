@@ -9,7 +9,7 @@ function refreshCmsTemplate(){
 <form method="post" action="cmsTemplate/save.do" class="pageForm required-validate" onsubmit="refreshCmsTemplate();return validateCallback(this, navTabAjaxDone);">
 	<div class="formBar">
 		<ul>
-			<li><a class="button" href="cmsTemplate/delete.do?path=${path?url}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
+			<li><a class="button" href="cmsTemplate/delete.do?path=${path}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
 			<li><a class="button" href="cmsPage/placeList.html?path=${path?url}&navTabId=cmsTemplate/list" target="navTab" title="<i class='icon-globe icon-large'></i> 页面管理" rel="cmsPage/placeList">页面管理</a></li>
 			<li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/metadata">元数据管理</a></li>
 			<#if !path?starts_with('/ftl/')>
@@ -21,8 +21,8 @@ function refreshCmsTemplate(){
 	<h2 class="contentTitle">
 		<a class="button" href="cmsTemplate/placeLookup.html" target="dialog" mask="true">推荐位</a>
 	 	<a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">模板片段</a>
-	 	<a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true" rel="cmsWebFileLookup">网站文件</a>
-	 	<a class="button" href="cmsTemplate/help.html?path=${(path?url)!}" target="dialog" mask="true" rel="cmsTemplate_help">模板帮助</a>
+	 	<a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true">网站文件</a>
+	 	<a class="button" href="cmsTemplate/help.html?path=${(path?url)!}" target="dialog" mask="true">模板帮助</a>
 	</h2>
 	<div class="pageFormContent" layoutH="100">
    		<div>

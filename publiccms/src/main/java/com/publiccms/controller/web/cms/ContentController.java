@@ -8,7 +8,6 @@ import static com.sanluan.common.tools.JsonUtils.getString;
 import static com.sanluan.common.tools.RequestUtils.getIpAddress;
 import static org.apache.commons.lang3.ArrayUtils.addAll;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -87,19 +86,15 @@ public class ContentController extends AbstractController {
      * @param entity
      * @param attribute
      * @param contentParamters
-     * @param txt
-     * @param timing
-     * @param draft
-     * @param callback
+     * @param returnUrl
      * @param request
      * @param session
+     * @param response
      * @param model
-     * @return
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public void save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
-            Boolean timing, Boolean draft, String returnUrl, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
+            String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -112,7 +107,7 @@ public class ContentController extends AbstractController {
             return;
         }
         CmsCategory category = categoryService.getEntity(entity.getCategoryId());
-        if (null != category && (site.getId() != category.getSiteId() || category.isAllowContribute())) {
+        if (null != category && (site.getId() != category.getSiteId() || !category.isAllowContribute())) {
             category = null;
         }
         CmsModel cmsModel = modelComponent.getMap(site).get(entity.getModelId());
@@ -122,17 +117,8 @@ public class ContentController extends AbstractController {
         }
         entity.setHasFiles(cmsModel.isHasFiles());
         entity.setHasImages(cmsModel.isHasImages());
-        if (notEmpty(draft) && draft) {
-            entity.setStatus(CmsContentService.STATUS_DRAFT);
-        } else {
-            entity.setStatus(CmsContentService.STATUS_PEND);
-        }
-        Date now = getDate();
-        if (empty(entity.getPublishDate())) {
-            entity.setPublishDate(now);
-        } else if (notEmpty(timing) && timing && now.after(entity.getPublishDate())) {
-            entity.setPublishDate(now);
-        }
+        entity.setOnlyUrl(cmsModel.isOnlyUrl());
+        entity.setStatus(CmsContentService.STATUS_PEND);
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -142,7 +128,7 @@ public class ContentController extends AbstractController {
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (null != entity.getId()) {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.content",
-                        getIpAddress(request), now, getString(entity)));
+                        getIpAddress(request), getDate(), getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
@@ -154,7 +140,7 @@ public class ContentController extends AbstractController {
                 categoryService.updateContents(entity.getCategoryId(), 1);
             }
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.content",
-                    getIpAddress(request), now, getString(entity)));
+                    getIpAddress(request), getDate(), getString(entity)));
         }
         if (entity.isHasImages() || entity.isHasFiles()) {
             contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,

@@ -43,7 +43,7 @@ public class CmsCategoryTypeAdminController extends AbstractController {
     private SysExtendService extendService;
     @Autowired
     private SysExtendFieldService extendFieldService;
-    
+
     private String[] ignoreProperties = new String[] { "id", "siteId", "extendId" };
 
     /**
@@ -65,14 +65,16 @@ public class CmsCategoryTypeAdminController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.categoryType", getIpAddress(request), getDate(), getString(entity)));
+                logOperateService.save(
+                        new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "update.categoryType", getIpAddress(request), getDate(), getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.categoryType", getIpAddress(request), getDate(), getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.categoryType", getIpAddress(request), getDate(), getString(entity)));
         }
         if (null == extendService.getEntity(entity.getExtendId())) {
             entity = service.updateExtendId(entity.getId(),
@@ -94,9 +96,8 @@ public class CmsCategoryTypeAdminController extends AbstractController {
         SysSite site = getSite(request);
         CmsCategoryType entity = service.getEntity(id);
         if (null != entity) {
-            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || verifyNotGreaterThen("category", categoryService
-                            .getPage(site.getId(), null, id, null, null, null, null, 1).getTotalCount(), 1, model)) {
+            if (verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model) || verifyNotGreaterThen("category",
+                    categoryService.getPage(site.getId(), null, true, id, null, null, null, null, 1).getTotalCount(), 1, model)) {
                 return TEMPLATE_ERROR;
             }
             service.delete(id);

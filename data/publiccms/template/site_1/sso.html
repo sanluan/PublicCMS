@@ -1,49 +1,49 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-	<title>登陆状态同步</title>
-</head>
-<body>
-	<a href="${site.sitePath}">返回首页</a>
-<script src="${site.sitePath!}js/jquery-1.9.1.min.js"></script>
-<script src="${site.sitePath!}js/jquery.cookie.js"></script>
-<script type="text/javascript">
-function getQueryString(name) {
-	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
-	var r = window.location.search.substr(1).match(reg); 
-	if (r != null) return unescape(r[2]); return null; 
-}
-var ssoCount=0;
-function sso(url){
-	ssoCount++;
-	$('<iframe src="'+url+'" style="display:none"></iframe>').on("load",function(){
-			if(0==--ssoCount){
-				var returnUrl = getQueryString('returnUrl');
-				if(returnUrl){
-					window.location.href=returnUrl;
-				}else{
-					window.location.href='${site.sitePath}';
-				}
-			}
-	}).appendTo($('body'));
-}
-var token=getQueryString('token');
-$.cookie.raw = true;
-if(token){
-	$.cookie('PUBLICCMS_USER',token,{expires: 10800});
-}else{
-	var logout=getQueryString('logout');
-	if(logout){
-		sso('${site.sitePath}sso.html');
-		sso('//search.publiccms.com/sso.html');
-	}else if($.cookie('PUBLICCMS_USER')){
-		var token=encodeURIComponent($.cookie('PUBLICCMS_USER'));
-		sso('${site.sitePath}sso.html?token='+token);
-		sso('//search.publiccms.com/sso.html?token='+token);
-	}else{
-		$.removeCookie('PUBLICCMS_USER');
-	}
-}
-</script>
-</body>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>登陆状态同步</title>
+</head>
+<body>
+	<a href="${site.sitePath}">返回首页</a>
+<script src="${site.sitePath!}assets/js/jquery-1.9.1.min.js"></script>
+<script src="${site.sitePath!}assets/js/jquery.cookie.js"></script>
+<script type="text/javascript">
+function getQueryString(name) {
+	var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i"); 
+	var r = window.location.search.substr(1).match(reg); 
+	if (r != null) return unescape(r[2]); return null; 
+}
+var ssoCount=0;
+function sso(url){
+	ssoCount++;
+	$('<iframe src="'+url+'" style="display:none"></iframe>').on("load",function(){
+			if(0==--ssoCount){
+				var returnUrl = getQueryString('returnUrl');
+				if(returnUrl){
+					window.location.href=returnUrl;
+				}else{
+					window.location.href='${site.sitePath}';
+				}
+			}
+	}).appendTo($('body'));
+}
+var token=getQueryString('token');
+$.cookie.raw = true;
+if(token){
+	$.cookie('PUBLICCMS_USER',token,{expires: 10800});
+}else{
+	var logout=getQueryString('logout');
+	if(logout){
+		sso('${site.sitePath}sso.html');
+		sso('//search.publiccms.com/sso.html');
+	}else if($.cookie('PUBLICCMS_USER')){
+		var token=encodeURIComponent($.cookie('PUBLICCMS_USER'));
+		sso('${site.sitePath}sso.html?token='+token);
+		sso('//search.publiccms.com/sso.html?token='+token);
+	}else{
+		$.removeCookie('PUBLICCMS_USER');
+	}
+}
+</script>
+</body>
 </html>

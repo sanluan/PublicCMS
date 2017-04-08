@@ -123,7 +123,7 @@ public class CmsUpgrader extends Base implements Json {
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass()
                 .getResourceAsStream(databaseType + "/" + fromVersion + "-" + toVersion + ".sql");) {
-            runner.runScript(new InputStreamReader(inputStream, "UTF-8"));
+            runner.runScript(new InputStreamReader(inputStream, DEFAULT_CHARSET));
         }
         version = toVersion;
     }

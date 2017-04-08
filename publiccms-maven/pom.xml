@@ -70,11 +70,6 @@
 				<artifactId>spring-webmvc</artifactId>
 				<version>${version.spring}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-websocket</artifactId>
-				<version>${version.spring}</version>
-			</dependency>
 			<!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
 			<dependency>
 				<groupId>org.mybatis</groupId>

@@ -8,19 +8,42 @@
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 <main>
     <div class="container">
-		<#if result?has_content&&error?has_content>
-			<@import path="/ftl/tools.ftl" namespace="t"/>
-			<p class="message red"><@t.m error/></p>
-		<#elseif result?has_content>
-			<p class="message red">提交成功，请等待管理员审核！</p>
+		<#assign path='/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html'/>
+		<@import path="ftl/tools.ftl" namespace="t"/>
+		
+		<#if error?has_content>
+			<p style="color:red"><@t.m error/></p>
+		</#if>
+		
+		<#if result?has_content&&!error?has_content>
+			<p style="color:red">提交成功，请等待管理员审核！</p>
 		<#else>
 			<form method="post" action="${site.dynamicPath}place/save.do" onsubmit="return check();">
-				<input name="path" type="hidden" value="/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html" />
+				<input name="path" type="hidden" value="${path}" />
 				<input name="returnUrl" type="hidden" value="${site.dynamicPath}friendlink.html?result=true" />
 				<p><label>友链标题:</label><input name="title" type="text" size="60" maxlength="60" value=""/></p>
 				<p><label>网站地址:</label><input name="url" type="text" size="60"  maxlength="60" value=""/></p>
 				<p><input type="submit" value="提交"/></p>
 			</form>
+		</#if>
+		
+		<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+		<#if user?has_content&&(a.adminIds)?has_content&&a.adminIds?seq_contains(user.id)>
+			<@_placeList path=path advanced=true pageIndex=pageNum count=numPerPage>
+				<#list page.list as a>
+					<@t.merge 'userIds' a.userId!/>
+				</#list>
+				<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+				<#list page.list as a>
+						<p>
+							<a href="${a.url}" target="_blank">${a.title}</a> [${(userMap[a.userId?string].nickName)!}]
+						<#if 0=a.status>
+							<a href="${site.dynamicPath}place/check.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">审核</a> 
+						</#if>
+							<a href="${site.dynamicPath}place/delete.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">删除</a> 
+						</p>
+				</#list>
+			</@_placeList>
 		</#if>
     </div>
 </main>

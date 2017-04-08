@@ -64,8 +64,7 @@ public class PlaceController extends AbstractController {
         }
         if (null != entity && notEmpty(entity.getPath())) {
             entity.setPath(entity.getPath().replace("//", SEPARATOR));
-            String placePath = INCLUDE_DIRECTORY + entity.getPath();
-            String filePath = siteComponent.getWebTemplateFilePath(site, placePath);
+            String filePath = siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
             SysUser user = getUserFromSession(session);
             if (verifyCustom("contribute",
@@ -120,7 +119,8 @@ public class PlaceController extends AbstractController {
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = getUserFromSession(session);
-        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(INCLUDE_DIRECTORY + entity.getPath());
+        String filePath = siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + entity.getPath());
+        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
         if (verifyCustom("manage",
                 null == entity || null == user || empty(metadata.getAdminIds())
                         || !contains(metadata.getAdminIds(), user.getId()),
@@ -151,7 +151,8 @@ public class PlaceController extends AbstractController {
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = getUserFromSession(session);
-        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(INCLUDE_DIRECTORY + entity.getPath());
+        String filePath = siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + entity.getPath());
+        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
         if (verifyCustom("manage",
                 null == entity || null == user || empty(metadata.getAdminIds())
                         || !contains(metadata.getAdminIds(), user.getId()),

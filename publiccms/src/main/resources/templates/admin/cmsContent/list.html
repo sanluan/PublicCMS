@@ -155,7 +155,7 @@
 				</td>
 				<td>
 					<#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-						<a href="cmsContent/list.html?parentId=${a.id}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list">子内容管理</a>
+						<a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list">子内容管理</a>
 					</#if>
 					<#if 1=a.status>
 						<#if authorizedMap['cmsContent/push']>

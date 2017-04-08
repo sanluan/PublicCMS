@@ -11,15 +11,15 @@ import com.sanluan.common.handler.QueryHandler;
 
 @Repository
 public class CmsCategoryDao extends BaseDao<CmsCategory> {
-    public PageHandler getPage(Integer siteId, Integer parentId, Integer typeId, Boolean allowContribute, Boolean hidden,
-            Boolean disabled, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer siteId, Integer parentId, Boolean queryAll, Integer typeId, Boolean allowContribute,
+            Boolean hidden, Boolean disabled, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
         if (notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
         if (notEmpty(parentId)) {
             queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", parentId);
-        } else {
+        } else if (empty(queryAll) || !queryAll) {
             queryHandler.condition("bean.parentId is null");
         }
         if (notEmpty(typeId)) {

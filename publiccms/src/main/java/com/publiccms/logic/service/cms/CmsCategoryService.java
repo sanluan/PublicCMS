@@ -18,9 +18,9 @@ import com.sanluan.common.handler.PageHandler;
 public class CmsCategoryService extends BaseService<CmsCategory> {
 
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer siteId, Integer parentId, Integer typeId, Boolean allowContribute, Boolean hidden,
-            Boolean disabled, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, parentId, typeId, allowContribute, hidden, disabled, pageIndex, pageSize);
+    public PageHandler getPage(Integer siteId, Integer parentId, Boolean queryAll, Integer typeId, Boolean allowContribute,
+            Boolean hidden, Boolean disabled, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, parentId, queryAll, typeId, allowContribute, hidden, disabled, pageIndex, pageSize);
     }
 
     public void addChildIds(Serializable parentId, Serializable id) {
@@ -42,7 +42,8 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     private String getChildIds(int siteId, Integer parentId) {
         StringBuilder childIds = new StringBuilder();
         @SuppressWarnings("unchecked")
-        List<CmsCategory> list = (List<CmsCategory>) getPage(siteId, parentId, null, null, null, false, null, null).getList();
+        List<CmsCategory> list = (List<CmsCategory>) getPage(siteId, parentId, false, null, null, null, false, null, null)
+                .getList();
         if (0 < list.size()) {
             for (CmsCategory category : list) {
                 childIds.append(category.getId());
@@ -73,8 +74,8 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         for (CmsCategory entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 @SuppressWarnings("unchecked")
-                List<CmsCategory> list = (List<CmsCategory>) getPage(siteId, entity.getId(), null, null, null, null, null, null)
-                        .getList();
+                List<CmsCategory> list = (List<CmsCategory>) getPage(siteId, entity.getId(), false, null, null, null, null, null,
+                        null).getList();
                 for (CmsCategory child : list) {
                     child.setParentId(entity.getParentId());
                 }

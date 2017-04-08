@@ -9,7 +9,7 @@ function refreshTaskTemplate(){
 <form method="post" action="taskTemplate/save.do" class="pageForm required-validate" onsubmit="refreshTaskTemplate();return validateCallback(this, navTabAjaxDone);">
 	<div class="formBar">
 		<ul>
-			<li><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a></li>
+			<li><a class="button" href="taskTemplate/delete.do?path=${path}&navTabId=taskTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a></li>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 		</ul>
 	</div>

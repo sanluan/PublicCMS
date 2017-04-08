@@ -108,9 +108,9 @@ public class CmsContentAdminController extends AbstractController {
      * @param entity
      * @param attribute
      * @param contentParamters
-     * @param txt
      * @param timing
      * @param draft
+     * @param checked
      * @param request
      * @param session
      * @param model
@@ -146,9 +146,8 @@ public class CmsContentAdminController extends AbstractController {
         }
         entity.setHasFiles(cmsModel.isHasFiles());
         entity.setHasImages(cmsModel.isHasImages());
-        if (null != checked && checked) {
-            entity.setStatus(CmsContentService.STATUS_NORMAL);
-        } else if (null != draft && draft) {
+        entity.setOnlyUrl(cmsModel.isOnlyUrl());
+        if ((null == checked || !checked) && null != draft && draft) {
             entity.setStatus(CmsContentService.STATUS_DRAFT);
         } else {
             entity.setStatus(CmsContentService.STATUS_PEND);
@@ -215,6 +214,13 @@ public class CmsContentAdminController extends AbstractController {
 
         cmsContentRelatedService.update(entity.getId(), user.getId(), contentParamters.getContentRelateds());// 更新保存推荐内容
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
+        if (null != checked && checked) {
+            contentTagService.update(entity.getId(), entity.getTagIds());
+            if (notEmpty(entity.getParentId())) {
+                publish(new Long[] { entity.getParentId() }, request, session, model);
+            }
+            templateComponent.createCategoryFile(site, category, null, null);
+        }
         return TEMPLATE_DONE;
     }
 

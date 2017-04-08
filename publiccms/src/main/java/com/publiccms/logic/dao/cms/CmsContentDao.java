@@ -75,7 +75,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     }
 
     public PageHandler getPage(Integer siteId, Integer[] status, Integer categoryId, Integer[] categoryIds, Boolean disabled,
-            String[] modelId, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
+            String[] modelIds, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
             String title, Long userId, Long checkUserId, Date startPublishDate, Date endPublishDate, String orderField,
             String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
@@ -93,15 +93,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (notEmpty(disabled)) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
         }
-        if (notEmpty(modelId)) {
-            queryHandler.condition("bean.modelId in (:modelId)").setParameter("modelId", modelId);
+        if (notEmpty(modelIds)) {
+            queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", modelIds);
         }
         if (notEmpty(parentId)) {
             queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", parentId);
-        } else {
-            if (notEmpty(emptyParent) && emptyParent) {
-                queryHandler.condition("bean.parentId is null");
-            }
+        } else if (notEmpty(emptyParent) && emptyParent) {
+            queryHandler.condition("bean.parentId is null");
         }
         if (notEmpty(onlyUrl)) {
             queryHandler.condition("bean.onlyUrl = :onlyUrl").setParameter("onlyUrl", onlyUrl);

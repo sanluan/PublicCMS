@@ -13,7 +13,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 	private String alias;
     private Integer size;
-    private Integer[] adminIds;
+    private Long[] adminIds;
     private boolean allowContribute;
     private boolean allowAnonymous;
 
@@ -59,11 +59,11 @@ public class CmsPlaceMetadata implements java.io.Serializable {
         this.extendList = extendList;
     }
 
-    public void setAdminIds(Integer[] adminIds) {
+    public void setAdminIds(Long[] adminIds) {
         this.adminIds = adminIds;
     }
 
-    public Integer[] getAdminIds() {
+    public Long[] getAdminIds() {
         return adminIds;
     }
 }
