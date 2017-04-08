@@ -12,7 +12,7 @@ public class CmsVersion {
     }
 
     public static boolean isPreview() {
-        return true;
+        return false;
     }
 
     public static final String getClusterId() {
