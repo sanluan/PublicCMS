@@ -26,7 +26,7 @@ import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
 /**
- * 
+ *
  * SourceMaker 代码生成工具
  *
  */
@@ -41,7 +41,7 @@ public class SourceGenerator extends Base {
     public static final String CONTROLLER_BASE_PACKAGE = "controller.admin";
     public static final String CONTROLLER_SUFFIX = "AdminController";
     public static final String JAVA_BASE_PATH = "src/test/java/";
-    public static final String WEB_BASE_PATH = "src/test/webapp/WEB-INF/admin/";
+    public static final String WEB_BASE_PATH = "src/test/main/resources/templates/";
 
     public static void main(String[] arg) throws ClassNotFoundException, IOException {
         SourceGenerator sourceGenerator= new SourceGenerator();
@@ -57,7 +57,7 @@ public class SourceGenerator extends Base {
 
     /**
      * 生成所有实体类的代码
-     * 
+     *
      * @param basePackage
      * @param overwrite
      * @throws ClassNotFoundException
@@ -72,7 +72,7 @@ public class SourceGenerator extends Base {
 
     /**
      * 生成某个包所有实体类的代码
-     * 
+     *
      * @param basePackage
      * @param entityPackage
      * @param overwrite
@@ -88,7 +88,7 @@ public class SourceGenerator extends Base {
 
     /**
      * 生成某个实体类的代码
-     * 
+     *
      * @param c
      * @param basePackage
      * @param overwrite
@@ -203,11 +203,11 @@ public class SourceGenerator extends Base {
 
     /**
      * @throws IOException
-     * 
+     *
      */
     public SourceGenerator() throws IOException {
         config = new freemarker.template.Configuration(Configuration.getVersion());
-        config.setDirectoryForTemplateLoading(new File("src/test/resources/com/sanluan/common/source/"));
+        config.setDirectoryForTemplateLoading(new File("src/test/resources/com/sanluan/common/generator/"));
         config.setDefaultEncoding("utf-8");
     }
 

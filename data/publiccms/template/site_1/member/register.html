@@ -15,7 +15,7 @@
 			<p class="message">${user.nickName},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
 		<#else>
 			<@import path="/ftl/tools.ftl" namespace="t"/>
-			<form action="doRegister.do" method="post" class="center login-form">
+			<form action="${site.dynamicPath}doRegister.do" method="post" class="center login-form">
 				<#if error??>
 					<p class="message red"><@t.m error/></p>
 				</#if>
@@ -29,7 +29,7 @@
 				<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
 				<p><input type="password" name="repassword" class="input-text" placeholder="重复密码" title="重复密码"/></p>
 				<p class="text-center">
-					<input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+					<input type="hidden" name="returnUrl" value="${site.dynamicPath}register.html?returnUrl=${(returnUrl?url)!}"/>
 					<input type="submit" class="button" value="注册"/>
 				</p>
 				<p class="message">已有账号?请<a href="login.html?returnUrl=${(returnUrl!site.sitePath!)?url}">登录</a></p>

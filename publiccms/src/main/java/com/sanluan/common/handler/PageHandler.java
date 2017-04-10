@@ -9,7 +9,7 @@ public class PageHandler implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final int DEFAULT_PAGE_SIZE = 30;
-    public static final int MAX_PAGE_SIZE = 100;
+    public static final int MAX_PAGE_SIZE = 500;
 
     private int totalCount;
     private int pageSize;

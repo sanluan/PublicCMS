@@ -9,6 +9,7 @@
 				<li><a href="javascript:;">常用方法</a></li>
 				<li><a href="javascript:;">配置参数</a></li>
 				<li><a href="javascript:;">模板片段</a></li>
+				<li><a href="javascript:;">投稿表单</a></li>
 			</ul>
 		</div>
 	</div>
@@ -162,6 +163,28 @@
 			<ul class="tree treeFolder">
 				<li><a href="javascript:;" <@getAction r'<#list .dataModel?keys as k>${k}<#sep>,</#list>' '打印数据模型变量'/>>打印数据模型变量</a></li>
 				<li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' '打印当前数据模型变量'/>>打印当前数据模型变量</a></li>
+			</ul>
+		</div>
+		<div class="pageFormContent" layoutH="37">
+			<ul class="tree treeFolder">
+		<@_categoryList queryAll=true allowContribute=true count=500>
+			<#list page.list as a>
+				<li>
+					<a href="javascript:;">${(a.name)!}</a>
+					<ul>
+				<@_categoryModelList categoryId=a.id>
+					<#list page.list as a>
+						<@t.merge 'modelIds' a.id.modelId!/>
+					</#list>
+					<@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+					<#list page.list as a>
+						<li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
+					</#list>
+				</@_categoryModelList>
+					</ul>
+				</li>
+			</#list>
+		</@_categoryList>
 			</ul>
 		</div>
 	</div>

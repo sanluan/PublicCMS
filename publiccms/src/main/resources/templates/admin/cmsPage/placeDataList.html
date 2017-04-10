@@ -47,12 +47,12 @@
 			<li><a href="cmsPlace/check.do" title="确定要审核这些记录么?" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核</a></li>
 			<#if site.useSsi>
 				<li class="line">line</li>
-				<li><a href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> 发布</a></li>
+				<li><a href="cmsTemplate/publishPlace.do?path=${path!}" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> 发布</a></li>
 			</#if>
 			<li class="line">line</li>
 			<li><a href="cmsPlace/delete.do" title="确定要删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 			<li class="line">line</li>
-			<li><a href="cmsPlace/clear.do?path=${(path?url!)}" title="确定要清空这些记录么?" target="ajaxTodo"><i class="icon-wrench icon-large"></i> 全部清空</a></li>
+			<li><a href="cmsPlace/clear.do?path=${path!}" title="确定要清空这些记录么?" target="ajaxTodo"><i class="icon-wrench icon-large"></i> 全部清空</a></li>
 		</ul>
 	</div>
 	<table class="list" width="100%" layoutH="92">

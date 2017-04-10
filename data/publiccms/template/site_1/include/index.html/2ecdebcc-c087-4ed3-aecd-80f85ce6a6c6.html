@@ -18,7 +18,8 @@
 		<div class="logo">
 			<a href="${site.sitePath}"><img src="${site.sitePath!}assets/image/logo.png" alt="Public CMS"/></a>
 		</div>
-		<span class="slogan">${(config.slogan)!}</span>
+
+		<span class="slogan"><@_sysConfigData code="site">${(object.slogan)!}</@_sysConfigData></span>
 		<nav class="clearfix-before">
 			<ul>
 				<li><a href="${site.sitePath}">首页</a></li>

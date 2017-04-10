@@ -12,6 +12,7 @@
 	<#assign extendList=(a.extendList)![]/>
 	<#assign extendValues=getPlaceAttribute((a.id)!)!{}/>
 	<@extendData 'extendDataList' extendList extendValues true/>
+	<p><input type="submit" value="提交"/></p>
 </form>
 		<#else>
 该推荐位不允许前台提交，请先修改推荐位元数据

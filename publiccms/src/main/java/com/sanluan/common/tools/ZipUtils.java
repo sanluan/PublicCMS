@@ -24,6 +24,9 @@ import com.sanluan.common.base.Base;
  *
  */
 public class ZipUtils extends Base {
+    static {
+        System.setProperty("sun.zip.encoding", System.getProperty("sun.jnu.encoding"));
+    }
 
     /**
      * @param srcPathName
@@ -49,7 +52,6 @@ public class ZipUtils extends Base {
             } else {
                 zipFile.getParentFile().mkdirs();
                 try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile));) {
-                    zipOutputStream.setEncoding(DEFAULT_CHARSET_NAME);
                     compress(Paths.get(sourceFilePath), zipOutputStream, BLANK);
                     return true;
                 }
@@ -127,11 +129,11 @@ public class ZipUtils extends Base {
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String targetPath, boolean overwrite) throws IOException {
-        ZipFile zipFile = new ZipFile(zipFilePath, DEFAULT_CHARSET_NAME);
-        Enumeration<ZipEntry> entryEnum = zipFile.getEntries();
+        ZipFile zipFile = new ZipFile(zipFilePath);
+        Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (null != entryEnum) {
             while (entryEnum.hasMoreElements()) {
-                ZipEntry zipEntry = (ZipEntry) entryEnum.nextElement();
+                ZipEntry zipEntry = entryEnum.nextElement();
                 if (zipEntry.isDirectory()) {
                     File dir = new File(targetPath + File.separator + zipEntry.getName());
                     dir.mkdirs();

@@ -2,6 +2,7 @@ package com.publiccms.common.initialization.upgrade;
 
 import static com.publiccms.logic.component.site.SiteComponent.MODEL_FILE;
 import static com.publiccms.logic.component.site.SiteComponent.SITE_PATH_PREFIX;
+import static com.publiccms.logic.component.site.SiteComponent.TEMPLATE_PATH;
 import static config.initializer.InitializationInitializer.CMS_CONFIG_FILE;
 import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
 
@@ -68,8 +69,8 @@ public class CmsUpgrader extends Base implements Json {
                 ResultSet rs = statement.executeQuery("select * from cms_model");) {
             while (rs.next()) {
                 CmsModel entity = new CmsModel();
-                String filePath = properties.getProperty("cms.filePath") + SITE_PATH_PREFIX + rs.getString("site_id") + SEPARATOR
-                        + MODEL_FILE;
+                String filePath = properties.getProperty("cms.filePath") + SEPARATOR + TEMPLATE_PATH + SEPARATOR
+                        + SITE_PATH_PREFIX + rs.getString("site_id") + SEPARATOR + MODEL_FILE;
                 File file = new File(filePath);
                 file.getParentFile().mkdirs();
                 Map<String, CmsModel> modelMap;
@@ -91,15 +92,18 @@ public class CmsUpgrader extends Base implements Json {
                 entity.setTemplatePath((String) rs.getString("template_path"));
                 if (null != rs.getString("extend_id")) {
                     List<ExtendField> extendList = new ArrayList<ExtendField>();
-                    ResultSet extendFieldRs = statement
-                            .executeQuery("select * from sys_extend_field where extend_id = " + rs.getString("extend_id"));
-                    while (extendFieldRs.next()) {
-                        ExtendField e = new ExtendField(extendFieldRs.getString("code"), extendFieldRs.getString("input_type"),
-                                extendFieldRs.getBoolean("required"), extendFieldRs.getString("name"),
-                                extendFieldRs.getString("description"), extendFieldRs.getString("default_value"));
-                        extendList.add(e);
+                    try (Connection extendFieldConnection = dataSource.getConnection();
+                            Statement extendFieldStatement = connection.createStatement();
+                            ResultSet extendFieldRs = extendFieldStatement.executeQuery(
+                                    "select * from sys_extend_field where extend_id = " + rs.getString("extend_id"));) {
+                        while (extendFieldRs.next()) {
+                            ExtendField e = new ExtendField(extendFieldRs.getString("code"),
+                                    extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
+                                    extendFieldRs.getString("name"), extendFieldRs.getString("description"),
+                                    extendFieldRs.getString("default_value"));
+                            extendList.add(e);
+                        }
                     }
-                    extendFieldRs.close();
                     entity.setExtendList(extendList);
                 }
                 modelMap.put(entity.getId(), entity);
@@ -119,7 +123,7 @@ public class CmsUpgrader extends Base implements Json {
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass()
                 .getResourceAsStream(databaseType + "/" + fromVersion + "-" + toVersion + ".sql");) {
-            runner.runScript(new InputStreamReader(inputStream, "UTF-8"));
+            runner.runScript(new InputStreamReader(inputStream, DEFAULT_CHARSET));
         }
         version = toVersion;
     }

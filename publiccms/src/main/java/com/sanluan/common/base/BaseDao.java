@@ -25,7 +25,6 @@ import org.hibernate.search.query.facet.FacetSortOrder;
 import org.hibernate.search.query.facet.FacetingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.sanluan.common.datasource.MultiDataSource;
 import com.sanluan.common.handler.FacetPageHandler;
 import com.sanluan.common.handler.PageHandler;
 import com.sanluan.common.handler.QueryHandler;
@@ -345,14 +344,6 @@ public abstract class BaseDao<E> extends Base {
         }
         page.setList(fullTextQuery.list());
         return page;
-    }
-    
-    protected void setDataSourceName(String dataSourceName) {
-        MultiDataSource.setDataSourceName(dataSourceName);
-    }
-    
-    protected void resetDataSourceName() {
-        MultiDataSource.resetDataSourceName();
     }
 
     protected Session getSession() {

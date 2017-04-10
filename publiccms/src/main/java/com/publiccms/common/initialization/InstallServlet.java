@@ -12,6 +12,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class InstallServlet extends HttpServlet {
                                 request.getParameter("password"));
                         checkDataBaseConfig(databaseConfiFile);
                         map.put("message", "success");
-                    } catch (PropertyVetoException | SQLException e) {
+                    } catch (PropertyVetoException | SQLException | URISyntaxException e) {
                         if (null != dataSource) {
                             dataSource.close();
                         }
@@ -158,7 +159,7 @@ public class InstallServlet extends HttpServlet {
     }
 
     private void saveDataBaseConfig(String databaseConfiFile, String host, String port, String database, String username,
-            String password) throws IOException {
+            String password) throws IOException, URISyntaxException {
         Properties dbconfigProperties = loadAllProperties(databaseConfiFile);
         StringBuilder sb = new StringBuilder();
         sb.append("jdbc:mysql://");
@@ -173,7 +174,7 @@ public class InstallServlet extends HttpServlet {
         dbconfigProperties.setProperty("jdbc.url", sb.toString());
         dbconfigProperties.setProperty("jdbc.username", username);
         dbconfigProperties.setProperty("jdbc.password", password);
-        try (FileOutputStream fos = new FileOutputStream(getClass().getResource("/" + databaseConfiFile).getFile())) {
+        try (FileOutputStream fos = new FileOutputStream(getClass().getResource("/" + databaseConfiFile).toURI().getPath())) {
             dbconfigProperties.store(fos, null);
         }
     }
@@ -185,10 +186,10 @@ public class InstallServlet extends HttpServlet {
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass().getResourceAsStream(databaseType + "/createtables.sql");) {
-            runner.runScript(new InputStreamReader(inputStream, "UTF-8"));
+            runner.runScript(new InputStreamReader(inputStream, Base.DEFAULT_CHARSET));
             if (useSimple) {
                 try (InputStream simpleInputStream = getClass().getResourceAsStream(databaseType + "/simpledata.sql")) {
-                    runner.runScript(new InputStreamReader(simpleInputStream, "UTF-8"));
+                    runner.runScript(new InputStreamReader(simpleInputStream, Base.DEFAULT_CHARSET));
                 }
             }
         }

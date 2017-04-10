@@ -8,6 +8,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sanluan.common.datasource.MultiDataSource;
+
 @Transactional
 public abstract class BaseService<E> extends Base {
     @Autowired
@@ -108,5 +110,13 @@ public abstract class BaseService<E> extends Base {
                 save(entity);
             }
         }
+    }
+    
+    public void setDataSourceName(String dataSourceName){
+        MultiDataSource.setDataSourceName(dataSourceName);
+    }
+
+    public void resetDataSourceName() {
+        MultiDataSource.resetDataSourceName();
     }
 }

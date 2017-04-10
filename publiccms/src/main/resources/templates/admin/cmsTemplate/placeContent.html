@@ -11,9 +11,9 @@ function refreshcmsTemplatePlace(){
 	<div class="formBar">
 		<ul>
 			<#if site.useSsi>
-				<li><a class="button" href="cmsTemplate/publishPlace.do?path=${(path?url!)}" target="ajaxTodo">发布</a></li>
+				<li><a class="button" href="cmsTemplate/publishPlace.do?path=${path!}" target="ajaxTodo">发布</a></li>
 			</#if>
-			<li><a class="button" href="cmsTemplate/deletePlace.do?path=${path?url}&navTabId=cmsTemplate/placeList" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a></li>
+			<li><a class="button" href="cmsTemplate/deletePlace.do?path=${path!}&navTabId=cmsTemplate/placeList" title="确定要删除该模板吗?" target="ajaxTodo">删除推荐位</a></li>
 			<li><a class="button" href="cmsTemplate/placeMetadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">推荐位元数据</a></li>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 		</ul>
@@ -21,11 +21,11 @@ function refreshcmsTemplatePlace(){
 	<h2 class="contentTitle">
 		<a class="button" href="cmsTemplate/placeLookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">推荐位</a>
 	 	<a class="button" href="cmsTemplate/ftlLookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">模板片段</a>
-	 	<a class="button" href="cmsWebFile/lookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true" rel="cmsWebFileLookup">网站文件</a>
+	 	<a class="button" href="cmsWebFile/lookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">网站文件</a>
 		<#if (a.allowContribute)?has_content&&a.allowContribute>
 			<a class="button" href="cmsTemplate/placeForm.html?path=${path?url}" target="dialog" rel="placeForm">表单模板</a>
 		</#if>
-		<a class="button" href="cmsTemplate/help.html?path=${(path?url)!}&editor=cmsTemplatePlaceEditor" target="dialog" mask="true" rel="cmsTemplate_help">模板帮助</a>
+		<a class="button" href="cmsTemplate/help.html?path=${(path?url)!}&editor=cmsTemplatePlaceEditor" target="dialog" mask="true">模板帮助</a>
 	</h2>
 	<div class="pageFormContent" layoutH="100">
    		<div>

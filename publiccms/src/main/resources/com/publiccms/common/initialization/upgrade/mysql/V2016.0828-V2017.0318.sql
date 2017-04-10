@@ -537,7 +537,7 @@ UPDATE `sys_moudle` SET sort = 1 where id = 5;
 UPDATE `sys_moudle` SET parent_id = 46 where id = 101;
 UPDATE `sys_moudle` SET attached = '<i class="icon-cogs icon-large"></i>' where id = 5;
 UPDATE `sys_moudle` SET attached = '<i class="icon-cog icon-large"></i>',name='系统管理' where id = 46;
-ALTER TABLE `sys_domain` ADD COLUMN `wild`  tinyint(1) NOT NULL COMMENT '通配域名' AFTER `site_id`;
+ALTER TABLE `sys_domain` ADD COLUMN `wild` tinyint(1) NOT NULL COMMENT '通配域名' AFTER `site_id`;
 UPDATE `sys_moudle` SET parent_id = 109 where id = 44;
 UPDATE `sys_moudle` SET parent_id = 109 where id = 99;
 UPDATE `sys_moudle` SET parent_id = 109 where id = 147;
@@ -547,5 +547,5 @@ DELETE FROM `sys_extend_field` WHERE extend_id IN (SELECT extend_id FROM `sys_ex
 DELETE FROM `sys_extend` WHERE item_type = 'model';
 DROP TABLE cms_model;
 -- 20170305 --
-ALTER TABLE `cms_category` ADD COLUMN `contain_child`  tinyint NOT NULL DEFAULT 1 COMMENT '包含子分类内容' AFTER `content_path`;
-ALTER TABLE `sys_moudle` ADD COLUMN `menu`  tinyint NOT NULL DEFAULT 1 COMMENT '是否菜单' AFTER `parent_id`;
+ALTER TABLE `cms_category` ADD COLUMN `contain_child` tinyint(1) NOT NULL DEFAULT 1 COMMENT '包含子分类内容' AFTER `content_path`;
+ALTER TABLE `sys_moudle` ADD COLUMN `menu` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否菜单' AFTER `parent_id`;

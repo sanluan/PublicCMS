@@ -11,7 +11,7 @@
     	<#if user?has_content>
     		<p class="message">${user.nickName},您已经登录了!  您可以<a href="sso.html?returnUrl=${(returnUrl?url)!}">同步登陆状态</a>，也可以选择<a href="logout.html">退出登录</a></p>
     	<#else>
-	    	<form action="doLogin.do" method="post" class="center">
+	    	<form action="${site.dynamicPath}doLogin.do" method="post" class="center">
 				<@import path="/ftl/tools.ftl" namespace="t"/>
 				<#if error??>
 					<p class="message red"><@t.m error/></p>

@@ -239,6 +239,7 @@ public class TemplateComponent extends Base implements Cache {
                     categoryService.updateUrl(entity.getId(), url, false);
                 }
             } catch (IOException | TemplateException e) {
+                log.error(e.getMessage());
                 return false;
             }
             return true;

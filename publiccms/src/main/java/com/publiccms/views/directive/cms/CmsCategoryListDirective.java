@@ -19,11 +19,12 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Boolean disabled = false;
         Boolean hidden = false;
+        Boolean queryAll = handler.getBoolean("queryAll");
         if (handler.getBoolean("advanced", false)) {
             disabled = handler.getBoolean("disabled", false);
             hidden = handler.getBoolean("hidden");
         }
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("parentId"),
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("parentId"), queryAll,
                 handler.getInteger("typeId"), handler.getBoolean("allowContribute"), hidden, disabled,
                 handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();

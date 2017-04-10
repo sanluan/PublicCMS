@@ -63,7 +63,6 @@ project(':publiccms') {
 	        "org.springframework:spring-context-support:${springVersion}",
 	        "org.springframework:spring-orm:${springVersion}",
 	        "org.springframework:spring-webmvc:${springVersion}",
-	        "org.springframework:spring-websocket:${springVersion}",
 
 	        // http://mvnrepository.com/artifact/org.mybatis/mybatis
 	        "org.mybatis:mybatis:3.4.2",
@@ -105,7 +104,7 @@ project(':publiccms') {
 	        "net.coobird:thumbnailator:0.4.8",
 	        // http://mvnrepository.com/artifact/cglib/cglib-nodep
 	        "cglib:cglib-nodep:3.2.4",
-
+	        
 	        // http://mvnrepository.com/artifact/org.apache.ant/ant
 	        "org.apache.ant:ant:1.9.9",
 
