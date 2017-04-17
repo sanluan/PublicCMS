@@ -1,37 +1,37 @@
-#PublicCMS 2017
+# PublicCMS 2017
 
 <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=89ffe8cd3abc04f6794965a330b0a278fdbc31f53e46fd5ee1c4f54ed43a6b28"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Public CMS-开源JAVACMS 1群" title="Public CMS-开源JAVACMS 1群"></a> <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=088c921c4eb74328eef0192bac1e63c7228eb31b0524a373d40cdd907ddd2d3c"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Public CMS-开源JAVACMS 2群" title="Public CMS-开源JAVACMS 2群"></a>
 
-##简介
+## 简介
 
 PublicCMS是采用2017年最新主流技术开发的免费开源JAVACMS系统。架构科学，轻松支持上千万数据、千万PV；支持全站静态化，SSI，动态页面局部静态化等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
 
-##获取可运行程序
+## 获取可运行程序
 
 https://git.oschina.net/sanluan/PublicCMS-war
 https://github.com/sanluan/PublicCMS-war
 
-##获取稳定版源码
+## 获取稳定版源码
 
 https://git.oschina.net/sanluan/PublicCMS
 https://github.com/sanluan/PublicCMS
 https://code.csdn.net/zyyy358/publiccms
 
-##参与研发(预览版)
+## 参与研发(预览版)
 
 https://git.oschina.net/sanluan/PublicCMS-preview
 https://github.com/sanluan/PublicCMS-preview
 
-##相关下载及文档(知识库)
+## 相关下载及文档(知识库)
 
 https://github.com/sanluan/PublicCMS-lib
 https://git.oschina.net/sanluan/PublicCMS-lib
 
-##授权
+## 授权
 
 该软件永久开源免费(MIT 授权协议)
 
-##目录说明
+## 目录说明
 
 * data\publiccms	PublicCMS数据目录
 * doc			文档
@@ -42,20 +42,20 @@ https://git.oschina.net/sanluan/PublicCMS-lib
 * README.md		说明
 * Update History.md	更新历史
 
-##部署运行
+## 部署运行
 
 * 根据文档部署工程
 * 数据脚本内置管理员账号admin，密码admin
 
-##演示
+## 演示
 
 * 演示站点：https://www.publiccms.com/
 * 后台演示：https://cms.publiccms.com/admin/ 演示账号/密码 test/test
 * 接口演示：https://cms.publiccms.com/interface.html
 
-##更新记录
+## 更新记录
 
-###2017.0408
+### 2017.0408
 
 BUG修复:
 
@@ -70,7 +70,7 @@ BUG修复:
 1. 内容投稿
 1. 内容投稿模板帮助
 
-###V2017.0318更新：
+### V2017.0318更新：
 
 BUG修复:
 
