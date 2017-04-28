@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2015 PublicMS
+Copyright (c) 2017 PublicMS
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -35,6 +35,7 @@ This license is used by the following third-party libraries:
 This license is used by the following third-party libraries:
 
   * hibernate (http://hibernate.org/orm/)
+  * mybatis (http://www.mybatis.org/mybatis-3/)
 
 ### [MIT License](http://www.opensource.org/licenses/MIT)
 This license is used by the following third-party libraries:
