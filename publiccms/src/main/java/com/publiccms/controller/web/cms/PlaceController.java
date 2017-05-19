@@ -67,8 +67,8 @@ public class PlaceController extends AbstractController {
             String filePath = siteComponent.getWebTemplateFilePath(site, INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
             SysUser user = getUserFromSession(session);
-            if (verifyCustom("contribute",
-                    null == user || null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)) {
+            if (verifyCustom("contribute", null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize()
+                    || (null == user && !metadata.isAllowAnonymous()), model)) {
                 redirect(response, returnUrl);
                 return;
             }
