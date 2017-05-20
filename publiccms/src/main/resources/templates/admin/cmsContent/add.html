@@ -42,7 +42,7 @@ function clickAddTag(){
 	        </div>
 	    </div>
 	    <div class="tabsContent unitBox">
-			<div class="pageFormContent" layoutH="86">
+			<div class="pageFormContent" layoutH="96">
 			<@_content id=parentId>
 				<dl class="nowrap">
 					<dt>父内容:</dt>
@@ -133,7 +133,7 @@ function clickAddTag(){
 				<dl class="nowrap">
 					<dt>封面:</dt>
 					<dd>
-						<input name="cover" value="${(a.cover)!}" maxlength="300" size="40" type="text"/>
+						<input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
 						<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 						<#include "../include_page/preview.html"/>
 						<@preview 'content' 'input[name=cover]'/>
@@ -170,7 +170,7 @@ function clickAddTag(){
 				</dl>
 			</#if>
 			</div>
-			<div class="pageFormContent" layoutH="86">
+			<div class="pageFormContent" layoutH="96">
 				<#include "../include_page/related.html"/>
 				<@related id!/>
 			</div>

@@ -42,7 +42,7 @@ $(function(){
 			<li><button type="submit" class="buttonActive">保存</button></li>
 		</ul>
 	</div>
-	<div class="pageFormContent" layoutH="56">
+	<div class="pageFormContent" layoutH="60">
 		<dl class="nowrap">
 			<dt>路径:</dt></dt>
 			<dd>
@@ -59,7 +59,7 @@ $(function(){
 		<dl class="nowrap">
 			<dt>别名:</dt></dt>
 			<dd>
-				<input class="required" name="alias" type="text" maxlength="50" size="30" value="${(a.alias)!}"/>
+				<input class="required" name="alias" type="text" maxlength="50" size="20" value="${(a.alias)!}"/>
 				<label>
 					<input name="allowContribute" type="checkbox" onclick="if($(this).is(':checked')){$('.allowContribute',navTab.getCurrentPanel()).show()}else{$('.allowContribute',navTab.getCurrentPanel()).hide()}"/>
 					允许投稿

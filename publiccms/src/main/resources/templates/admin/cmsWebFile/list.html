@@ -21,7 +21,7 @@
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="paths" class="checkboxCtrl"></th>
-				<th width="20"></th>
+				<th width="30"></th>
 				<th>名称</th>
 				<th>修改日期</th>
 				<th>创建日期</th>
@@ -50,7 +50,7 @@
 			<#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
 			<tr>
 				<td><input name="paths" value="${filePath}" type="checkbox"></td>
-				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:24px;"></div></td>
+				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
 				<td>
 					<#if a.directory>
 						<a href="cmsWebFile/list.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/list">

@@ -6,7 +6,7 @@
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
 			<ul class="searchContent">
-				<li class="colspan">
+				<li>
 					<label>推荐位名称:</label><label>${a.alias!}</label>
 				</li>
 				<li class="width:auto">
@@ -21,7 +21,7 @@
 					<label>发布用户:</label>
 					<#include "../include_page/userId.html"/>
 				</li>
-				<li class="colspan">
+				<li>
 					<label>发布日期:</label>
 					<input type="text" name="startPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${startPublishDate!}" />
 					<span>-</span>
@@ -55,7 +55,7 @@
 			<li><a href="cmsPlace/clear.do?path=${path!}" title="确定要清空这些记录么?" target="ajaxTodo"><i class="icon-wrench icon-large"></i> 全部清空</a></li>
 		</ul>
 	</div>
-	<table class="list" width="100%" layoutH="92">
+	<table class="list" width="100%" layoutH="99">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -79,7 +79,7 @@
 			<tr target="sid" rel="${a.id}">
 				<td><input name="ids" value="${a.id}" type="checkbox"></td>
 				<td>${a.id}</td>
-				<td><a href="${a.url}" target="_blank">${a.title}</a></td>
+				<td><#if a.url?has_content><a href="${a.url}" target="_blank">${a.title}</a><#else>${a.title}</#if></td>
 				<td>${a.publishDate}</td>
 				<td>${a.createDate}</td>
 				<td>${(userMap[a.userId?string].nickName)!}</td>

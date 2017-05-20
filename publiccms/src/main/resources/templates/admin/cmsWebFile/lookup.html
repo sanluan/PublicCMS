@@ -44,7 +44,7 @@
 		<thead>
 			<tr>
 				<th>使用</th>
-				<th width="20"></th>
+				<th width="30"></th>
 				<th>名称</th>
 				<th>修改日期</th>
 				<th>创建日期</th>
@@ -76,7 +76,7 @@
 						<a class="btnSelect" href="javascript:;" onclick="${editor!'cmsTemplateEditor'}.replaceSelection('${useFile(filePath,a.fileName)}');$.pdialog.closeCurrent();return false;" title="选择">选择</a>
 					</#if>
 				</td>
-				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:24px;"></div></td>
+				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
 				<td>
 					<#if a.directory>
 						<a href="cmsWebFile/lookup.html?path=${filePath}&editor=${editor!'cmsTemplateEditor'}" target="dialog" mask="true" title="${filePath}">

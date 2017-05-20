@@ -17,10 +17,10 @@ function refreshTaskTemplate(){
 	 	<a class="button" href="taskTemplate/chipLookup.html" target="dialog" mask="true">模板片段</a>
 	</h2>
 	<div class="pageFormContent" layoutH="100">
-		<div style="height: 24px;padding: 0 5px;">
+		<div class="clearfix">
 			<label>路径:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
 		</div>
-   		<div> 
+   		<div>
 			<textarea name="content" id="taskTemplateEditor"><@_taskTemplateContent path=path>${(object)!}</@_taskTemplateContent></textarea>
 			<script>
 				var taskTemplateEditor = CodeMirror.fromTextArea(document.getElementById('taskTemplateEditor'), {

@@ -2,14 +2,14 @@ package config.initializer;
 
 import javax.servlet.Filter;
 
+import org.publiccms.common.servlet.WebDispatcherServlet;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import com.publiccms.common.servlet.MultiSiteDispatcherServlet;
-import com.sanluan.common.base.Base;
+import com.publiccms.common.base.Base;
 
 import config.spring.WebConfig;
 
@@ -27,7 +27,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
-        return new MultiSiteDispatcherServlet(servletAppContext);
+        return new WebDispatcherServlet(servletAppContext);
     }
 
     @Override

@@ -1,5 +1,8 @@
 package config.spring;
 
+import org.publiccms.common.interceptor.AdminContextInterceptor;
+import org.publiccms.common.view.AdminFreeMarkerView;
+import org.publiccms.logic.component.cache.CacheComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -12,18 +15,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-import com.publiccms.common.interceptor.AdminContextInterceptor;
-import com.publiccms.common.view.admin.AdminFreeMarkerView;
-import com.publiccms.logic.component.cache.CacheComponent;
-
 /**
+ * AdminServlet配置类
  * 
- * AdminConfig AdminServlet配置类
+ * AdminConfig 
  *
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
+@ComponentScan(basePackages = "org.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
 public class AdminConfig extends WebMvcConfigurerAdapter {
     @Autowired

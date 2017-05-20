@@ -1,7 +1,11 @@
 package config.spring;
 
-import java.io.IOException;
-
+import org.publiccms.common.interceptor.WebContextInterceptor;
+import org.publiccms.common.view.DefaultWebFreeMarkerView;
+import org.publiccms.common.view.WebFreeMarkerView;
+import org.publiccms.common.view.WebFreeMarkerViewResolver;
+import org.publiccms.logic.component.cache.CacheComponent;
+import org.publiccms.logic.component.template.TemplateComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -13,13 +17,6 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
-import com.publiccms.common.interceptor.WebContextInterceptor;
-import com.publiccms.common.view.WebFreeMarkerViewResolver;
-import com.publiccms.common.view.web.DefaultWebFreeMarkerView;
-import com.publiccms.common.view.web.WebFreeMarkerView;
-import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
-
 /**
  * 
  * WebConfig WebServlet配置类
@@ -27,7 +24,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "com.publiccms.controller.web", useDefaultFilters = false, includeFilters = {
+@ComponentScan(basePackages = "org.publiccms.controller.web", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
@@ -54,8 +51,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     /**
      * 视图层解析器
      * 
+     * @param templateComponent
      * @return
-     * @throws IOException
      */
     @Bean
     public WebFreeMarkerViewResolver webViewResolver(TemplateComponent templateComponent) {

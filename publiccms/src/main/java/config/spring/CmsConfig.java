@@ -4,6 +4,8 @@ import static org.springframework.scheduling.quartz.SchedulerFactoryBean.PROP_TH
 
 import java.util.Properties;
 
+import org.publiccms.common.servlet.WebFileHttpRequestHandler;
+import org.publiccms.logic.component.site.SiteComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -12,31 +14,26 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.servlet.resource.DefaultServletHttpRequestHandler;
 
-import com.publiccms.common.servlet.MultiSiteWebHttpRequestHandler;
-import com.publiccms.logic.component.site.SiteComponent;
-
 /**
- * <h1>CmsRootConfig</h1>
- * <p>
- * Cms跟配置类
- * </p>
- * <p>
+ * Cms根配置类
+ * 
  * Spring Config Class
- * </p>
  *
  */
 @Import(ApplicationConfig.class)
 public class CmsConfig {
+    /**
+     * 
+     */
+    public static String CMS_FILEPATH;
+    
     @Autowired
     private Environment env;
 
     /**
-     * <p>
      * 资源处理器
-     * </p>
-     * <p>
+     * 
      * DefaultServletHttpRequestHandler
-     * </p>
      * 
      * @return
      */
@@ -47,28 +44,24 @@ public class CmsConfig {
     }
 
     /**
-     * <p>
      * 站点静态页面处理器
-     * </p>
-     * <p>
-     * DefaultServletHttpRequestHandler
-     * </p>
      * 
+     * DefaultServletHttpRequestHandler
+     * 
+     * @param siteComponent 
      * @return
      */
     @Bean
     public HttpRequestHandler webfileServlet(SiteComponent siteComponent) {
-        MultiSiteWebHttpRequestHandler bean = new MultiSiteWebHttpRequestHandler(siteComponent);
+        WebFileHttpRequestHandler bean = new WebFileHttpRequestHandler(siteComponent);
         return bean;
     }
 
     /**
-     * <p>
+     * 
      * 任务计划工厂
-     * </p>
-     * <p>
+     * 
      * Task Scheduler Factory
-     * </p>
      * 
      * @return
      */

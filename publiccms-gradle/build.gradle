@@ -11,41 +11,110 @@ buildscript {
 subprojects{
 	apply plugin: "java"
 	apply plugin: "eclipse"
-	
-	group = 'com.publiccms'
-	version = "V2017.0318"
-	
+	apply plugin: 'idea'
+
+	ext {
+	    // http://mvnrepository.com/artifact/org.springframework/spring-core
+	    // http://projects.spring.io/spring-framework/
+	    springVersion = "4.3.8.RELEASE"
+	    // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+	    // http://hc.apache.org/downloads.cgi
+	    httpclientVersion = "4.5.3"
+	    // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+	    jacksonVersion = "2.8.8"
+	    // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
+	    // http://hibernate.org/orm/downloads/
+	    hibernateVersion = "5.1.6.Final"
+	    // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
+	    // http://hibernate.org/search/downloads/
+	    hibernateSearchVersion = "5.6.1.Final"
+	    // http://mvnrepository.com/artifact/org.freemarker/freemarker
+	    freemarkerVersion = "2.3.26-incubating"
+	    // http://mvnrepository.com/artifact/org.mybatis/mybatis
+	    mybatisVersion = "3.4.4"
+	    // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
+	    luceneVersion = "5.5.4"
+	    // http://mvnrepository.com/artifact/redis.clients/jedis
+	    jedisVersion = "2.9.0"
+	    // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
+		quartzVersion = "2.3.0"
+		// http://mvnrepository.com/artifact/com.mchange/c3p0
+		c3p0Version = "0.9.5.2"
+	}
+
 	sourceCompatibility = 1.7
 	targetCompatibility = 1.7
-	
+
 	[compileJava]*.options*.encoding = "UTF-8"
 	[compileTestJava]*.options*.encoding = "UTF-8"
-	
+
 	repositories {
 		mavenLocal()
 		jcenter()
 	    mavenCentral()
 	}
+	
+	eclipse {
+	    classpath {
+		    defaultOutputDir = file('build/classes/main')
+		    file.withXml { n ->
+		        n.asNode().classpathentry.findAll { it.@path.startsWith('src/test') }
+		                .each { it.@output = 'build/classes/test' }
+		    }
+		}
+	}
+}
+project(':publiccms-common') {
+	group = 'com.publiccms'
+	version = "1.0"
+
+	dependencies {
+	    compile (
+	        // http://mvnrepository.com/artifact/commons-codec/commons-codec
+	        "commons-codec:commons-codec:1.10",
+	        // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+	        "org.apache.commons:commons-lang3:3.5",
+
+	        "org.freemarker:freemarker:${freemarkerVersion}",
+
+	        "org.springframework:spring-context-support:${springVersion}",
+	        "org.springframework:spring-orm:${springVersion}",
+	        "org.springframework:spring-webmvc:${springVersion}",
+
+	        "org.mybatis:mybatis:${mybatisVersion}",
+
+	        "org.hibernate:hibernate-core:${hibernateVersion}",
+	        "org.hibernate:hibernate-search-orm:${hibernateSearchVersion}",
+
+	        "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+
+	        // http://mvnrepository.com/artifact/org.apache.ant/ant
+	        "org.apache.ant:ant:1.9.9",
+	        // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+	        "javax.servlet:javax.servlet-api:3.1.0"
+	    )
+	    testCompile(
+		    // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
+		    "org.mybatis.generator:mybatis-generator-core:1.3.5"
+	    )
+	}
 }
 project(':publiccms') {
 	apply plugin: "war"
 	apply plugin: "eclipse-wtp"
-	apply plugin: 'idea'
 	/** delete this line for spring boot
 	apply plugin: 'org.springframework.boot'
 	delete this line for spring boot */
-	
-	ext {
-	    // http://mvnrepository.com/artifact/org.springframework/spring-core
-	    springVersion = "4.3.7.RELEASE"
-	    // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
-	    httpclientVersion = "4.5.3"
-	    // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-	    jacksonVersion = "2.8.6"
-	}
+
+	group = 'org.publiccms'
+	version = "V2017.0520"
 
 	dependencies {
+		compile project(':publiccms-common')
+		// compile project(':publiccms-improve') //商业版插件
 	    compile (
+	        // "redis.clients:jedis:${jedisVersion}",  //商业版插件
+
 	        // http://mvnrepository.com/artifact/commons-io/commons-io
 	        "commons-io:commons-io:2.5",
 	        // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
@@ -57,31 +126,23 @@ project(':publiccms') {
 	        // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 	        "org.apache.commons:commons-lang3:3.5",
 
-	        // http://mvnrepository.com/artifact/org.freemarker/freemarker
-	        "org.freemarker:freemarker:2.3.25-incubating",
+	        "org.freemarker:freemarker:${freemarkerVersion}",
 
 	        "org.springframework:spring-context-support:${springVersion}",
 	        "org.springframework:spring-orm:${springVersion}",
 	        "org.springframework:spring-webmvc:${springVersion}",
 
-	        // http://mvnrepository.com/artifact/org.mybatis/mybatis
-	        "org.mybatis:mybatis:3.4.2",
+	        "org.mybatis:mybatis:${mybatisVersion}",
 	        // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
 	        "org.mybatis:mybatis-spring:1.3.1",
 
-	        // http://mvnrepository.com/artifact/org.hibernate/hibernate-ehcache
-	        "org.hibernate:hibernate-ehcache:5.1.3.Final",
-	        // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
-	        "org.hibernate:hibernate-core:5.1.3.Final",
-	        // http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm
-	        "org.hibernate:hibernate-search-orm:5.5.6.Final",
-	        // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
-	        "org.apache.lucene:lucene-analyzers-smartcn:5.3.1",
-	        // http://mvnrepository.com/artifact/redis.clients/jedis
-	        "redis.clients:jedis:2.9.0",
+	        "org.hibernate:hibernate-ehcache:${hibernateVersion}",
+	        "org.hibernate:hibernate-core:${hibernateVersion}",
+	        "org.hibernate:hibernate-search-orm:${hibernateSearchVersion}",
+	        "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}",
+	        "org.apache.lucene:lucene-backward-codecs:${luceneVersion}",
 
-	        // http://mvnrepository.com/artifact/c3p0/c3p0
-	        "c3p0:c3p0:0.9.1.2",
+	        "com.mchange:c3p0:${c3p0Version}",
 	        // http://mvnrepository.com/artifact/mysql/mysql-connector-java
 	        "mysql:mysql-connector-java:5.1.40",
 
@@ -90,7 +151,7 @@ project(':publiccms') {
 
 	        "org.apache.httpcomponents:httpmime:${httpclientVersion}",
 	        "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
-			
+
 			// http://mvnrepository.com/artifact/org.slf4j/slf4j-api
 			'org.slf4j:slf4j-api:1.7.12',
 	        // http://mvnrepository.com/artifact/javax.transaction/jta
@@ -104,22 +165,19 @@ project(':publiccms') {
 	        "net.coobird:thumbnailator:0.4.8",
 	        // http://mvnrepository.com/artifact/cglib/cglib-nodep
 	        "cglib:cglib-nodep:3.2.4",
-	        
+
 	        // http://mvnrepository.com/artifact/org.apache.ant/ant
 	        "org.apache.ant:ant:1.9.9",
 
-	        // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
-	        "org.quartz-scheduler:quartz:2.2.3"
+	        "org.quartz-scheduler:quartz:${quartzVersion}"
 	    )
 	    providedCompile(
 		    // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-		    "javax.servlet:javax.servlet-api:3.1.0",
-		    // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
-		    "org.mybatis.generator:mybatis-generator-core:1.3.5"
+		    "javax.servlet:javax.servlet-api:3.1.0"
 	    )
 	    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-	    /** delete this line for spring boot 
-	    compile("org.springframework.boot:spring-boot-starter-web:1.5.1.RELEASE") {
+	    /** delete this line for spring boot
+	    compile("org.springframework.boot:spring-boot-starter-web:1.5.3.RELEASE") {
 	    	exclude group:"org.springframework.boot", module: 'spring-boot-starter-logging'
 	    }
 	    delete this line for spring boot */
@@ -130,17 +188,12 @@ project(':publiccms') {
 		)
 		compile fileTree(dir: 'src/main/webapp/WEB-INF/lib', include: ['*.jar'])
 	}
-	/**
-	 delete this line for spring boot */
-	war {
-		file("src/main/java/config/boot/SprintBootApplication.java").renameTo(file("src/main/java/config/boot/SprintBootApplication.java.txt"))
-		doLast {
-	        file("src/main/java/config/boot/SprintBootApplication.java.txt").renameTo(file("src/main/java/config/boot/SprintBootApplication.java"))
-	    }
-	}
-	/** delete this line for spring boot
-	 */
 	eclipse {
+		/**
+	 	delete this line for spring boot */
+		file("src/main/java/config/boot/SprintBootApplication.java").renameTo(file("src/main/java/config/boot/SprintBootApplication.java.txt"))
+		/** delete this line for spring boot
+	 	*/
 	    wtp {
 	        facet {
 	            facet name: "jst.java", version: "1.7"
@@ -148,12 +201,5 @@ project(':publiccms') {
 	            facet name: "wst.jsdt.web", version: "1.0"
 	        }
 	    }
-	    classpath {
-		    defaultOutputDir = file('build/classes/main')
-		    file.withXml { n ->
-		        n.asNode().classpathentry.findAll { it.@path.startsWith('src/test') }
-		                .each { it.@output = 'build/classes/test' }
-		    }
-		}
 	}
 }

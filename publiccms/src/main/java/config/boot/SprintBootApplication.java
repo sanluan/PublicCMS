@@ -29,10 +29,16 @@ import config.spring.CmsConfig;
 @Import(CmsConfig.class)
 public class SprintBootApplication {
 
+    /**
+     * @param args
+     */
     public static void main(String[] args) {
         SpringApplication.run(SprintBootApplication.class, args);
     }
 
+    /**
+     * @return
+     */
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
@@ -42,6 +48,9 @@ public class SprintBootApplication {
         return factory;
     }
 
+    /**
+     * @return
+     */
     @Bean
     public ServletContextInitializer webInitializer() {
         return new ServletContextInitializer() {
@@ -54,6 +63,9 @@ public class SprintBootApplication {
         };
     }
 
+    /**
+     * @return
+     */
     @Bean
     public ServletContextInitializer adminInitializer() {
         return new ServletContextInitializer() {
@@ -64,6 +76,9 @@ public class SprintBootApplication {
         };
     }
 
+    /**
+     * @return
+     */
     @Bean
     public ServletContextInitializer apiInitializer() {
         return new ServletContextInitializer() {
@@ -74,6 +89,9 @@ public class SprintBootApplication {
         };
     }
 
+    /**
+     * @return
+     */
     @Bean
     public ServletContextInitializer installationInitializer() {
         return new ServletContextInitializer() {
@@ -84,6 +102,9 @@ public class SprintBootApplication {
         };
     }
 
+    /**
+     * @return
+     */
     @Bean
     public ServletContextInitializer resourceInitializer() {
         return new ServletContextInitializer() {

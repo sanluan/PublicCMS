@@ -10,15 +10,15 @@
 					<label>登录结果:</label>
 					<select class="combox" name="result">
 						<option value=""${(!result?has_content)?then(' selected="true"','')?no_esc}>不限</option>
-						<option value="1"${(result?has_content&&"1"==result)?then(' selected="true"','')?no_esc}>成功</option>
-						<option value="0"${(result?has_content&&"0"==result)?then(' selected="true"','')?no_esc}>失败</option>
+						<option value="true"${(result?has_content&&"1"==result)?then(' selected="true"','')?no_esc}>成功</option>
+						<option value="false"${(result?has_content&&"0"==result)?then(' selected="true"','')?no_esc}>失败</option>
 					</select>
 				</li>
 				<li>
 					<label>渠道:</label>
 					<input type="text" name="channel" value="${channel!}" />
 				</li>
-				<li class="colspan">
+				<li>
 					<label>登录日期:</label>
 					<input type="text" name="startCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
 					<span>-</span>
@@ -45,7 +45,7 @@
 			<li><a href="logLogin/delete.do" title="确定要删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 		</ul>
 	</div>
-	<table class="list" width="100%" layoutH="92">
+	<table class="list" width="100%" layoutH="99">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
