@@ -6,6 +6,7 @@
 <meta http-equiv="cache-control" content="no-cache">  
 <meta http-equiv="expires" content="0">
 <meta charset="utf-8" />
+<script src="../resource/js/jquery-1.9.1.min.js"></script>
 <style type="text/css">
 .error{color:#f00;}
 .box{margin:0 auto;width:500px;}
@@ -29,7 +30,7 @@
 	<form action="./" method="post">
 		<p>
 			<label>下一步操作</label>:
-			<select name="step" onchange="if(this.value=='update'){document.getElementById('useUpdate').style='display:block';}else{document.getElementById('useUpdate').style='display:none';}">
+			<select name="step" onChange="if($(this).val()=='update'){$('#useUpdate').show();}else{$('#useUpdate').hide();}">
 				<option value="update">重新升级数据库</option>
 				<option value="start">直接启动</option>
 			</select>

@@ -1,7 +1,7 @@
 <form action="./" method="post">
 	<p>
 		<label>下一步操作</label>:
-		<select name="step" onchange="if(this.value=='initDatabase'){document.getElementById('useSimple').style='display:block';}else{document.getElementById('useSimple').style='display:none';};if(this.value=='update'){document.getElementById('useUpdate').style='display:block';}else{document.getElementById('useUpdate').style='display:none';}">
+		<select name="step" onChange="if($(this).val()=='initDatabase'){$('#useSimple').show();}else{$('#useSimple').hide();};if($(this).val()=='update'){$('#useUpdate').show();}else{$('#useUpdate').hide();}">
 			<option value="initDatabase">初始化数据库(新安装用户，请选择此项)</option>
 			<option value="update"<#if fromVersion?has_content> selected="true"</#if>>升级数据库(旧版本CMS升级，请选择此项)</option>
 			<option value="start">直接启动(已手动初始化数据库，请选择此项)</option>

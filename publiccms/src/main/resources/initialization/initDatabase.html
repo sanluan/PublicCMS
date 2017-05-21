@@ -29,7 +29,7 @@
 	<form action="./" method="post">
 		<p>
 			<label>下一步操作</label>:
-			<select name="step" onchange="if(this.value=='initDatabase'){document.getElementById('useSimple').style='display:block';}else{document.getElementById('useSimple').style='display:none';};">
+			<select name="step" onChange="if($(this).val()=='initDatabase'){$('#useSimple').show();}else{$('#useSimple').hide();};">
 				<option value="initDatabase">重新初始化数据库</option>
 				<option value="start">直接启动</option>
 			</select>
