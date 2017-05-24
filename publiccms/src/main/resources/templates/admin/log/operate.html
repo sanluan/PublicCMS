@@ -22,7 +22,7 @@
 					<label>内容:</label>
 					<input type="text" name="content" value="${content!}" />
 				</li>
-				<li class="colspan">
+				<li>
 					<label>操作日期:</label>
 					<input type="text" name="startCreateDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
 					<span>-</span>
@@ -45,7 +45,7 @@
 			<li><a href="logOperate/delete.do" title="确定要删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
 		</ul>
 	</div>
-	<table class="list" width="100%" layoutH="92">
+	<table class="list" width="100%" layoutH="99">
 		<thead>
 			<tr>
 				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>

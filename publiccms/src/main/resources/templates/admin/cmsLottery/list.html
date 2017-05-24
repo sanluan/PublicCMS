@@ -5,13 +5,13 @@
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
 			<ul class="searchContent">
-				<li class="colspan">
+				<li>
 					<label>开始日期:</label>
 					<input type="text" name="startStartDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${startStartDate!}" />
 					<span>-</span>
 					<input type="text" name="endStartDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${endStartDate!}" />
 				</li>
-				<li class="colspan">
+				<li>
 					<label>结束日期:</label>
 					<input type="text" name="startEndDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${startEndDate!}" />
 					<span>-</span>
@@ -36,7 +36,7 @@
 			<li><a href="cmsLottery/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
 		</ul>
 	</div>
-	<table class="list" width="100%" layoutH="92">
+	<table class="list" width="100%" layoutH="99">
 		<thead>
 			<tr>
 				<th>ID</th>

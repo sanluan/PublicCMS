@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<title>管理后台 - ${site.name}</title>
-	<link href="${res}/themes/css/core.css" rel="stylesheet" media="screen"/>
+	<link href="${res}/themes/css/core.css?0423" rel="stylesheet" media="screen"/>
 	<link href="${res}/themes/css/print.css" rel="stylesheet" media="print"/>
 	<link href="${res}/font-awesome/css/font-awesome.min.css" rel="stylesheet" >
 	<!--[if IE 7]>
@@ -24,9 +24,9 @@
 	<script src="${res}/ueditor/ueditor.all.min.js"></script>
 	<script src="${res}/ueditor/lang/zh-cn/zh-cn.js"></script>
 
-	<script src="${res}/js/dwz.min.js?1107"></script>
+	<script src="${res}/js/dwz.min.js?042301"></script>
 	<script src="${res}/js/dwz.regional.zh.js"></script>
-	
+
 	<link href="${res}/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
 	<script src="${res}/codemirror/lib/codemirror.js"></script>
 	<script src="${res}/codemirror/mode/xml/xml.js"></script>
@@ -44,7 +44,7 @@ $(function(){
 		debug:false,	// 调试模式 【true|false】
 		callback:function(){
 			initEnv();
-			$("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"azure"}); // themeBase 相对于index页面的主题base路径
+			$("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"azure",version:"0423"}); // themeBase 相对于index页面的主题base路径
 		}
 	});
 });
@@ -54,14 +54,14 @@ $(function(){
 <header>
 	<a class="logo" href="./"></a>
 	<ul class="nav">
-		<li>${(admin.nickName)!}</li>
+		<li><i class="icon-user icon-large"></i> ${(admin.nickName)!}</li>
 		<li>
-			<a href="${site.useStatic?then(site.sitePath!,site.dynamicPath!)}" target="_blank">网站首页</a>
+			<a href="${site.useStatic?then(site.sitePath!,site.dynamicPath!)}" target="_blank"><i class="icon-home icon-large"></i> 网站首页</a>
 		</li>
 		<@_sysAuthorized roleIds=admin.roles url='clearCache'>
-			<li><a href="clearCache" target="ajaxTodo">刷新缓存</a></li>
+			<li><a href="clearCache" target="ajaxTodo"><i class="icon-refresh icon-large"></i> 刷新缓存</a></li>
 		</@_sysAuthorized>
-		<li><a href="logout">退出</a></li>
+		<li><a href="logout"><i class="icon-signout icon-large"></i> 退出</a></li>
 	</ul>
 	<ul id="navMenu">
 <@_sysMoudleList>
@@ -86,14 +86,14 @@ $(function(){
 <main>
 	<div id="leftside">
 		<div id="sidebar_s">
-			<div class="collapse">
-				<div class="toggleCollapse"><div></div></div>
-			</div>
+			<a href="javascript:;"><i class="icon-reorder icon-large"></i></a>
 		</div>
 		<div id="sidebar">
-			<div class="toggleCollapse"><div></div></div>
 			<div id="menu">
 <#include "menus.html"/>
+			</div>
+			<div class="collapse">
+				<a href="javascript:;" class="toggleCollapse"><i class="icon icon-chevron-sign-left icon-large"></i></a>
 			</div>
 		</div>
 	</div>
@@ -104,9 +104,9 @@ $(function(){
 					<li tabid="main" class="main"><a href="javascript:;"><i class="icon-home icon-large"></i> 工作台</a></li>
 				</ul>
 			</div>
-			<div class="tabsLeft">left</div>
-			<div class="tabsRight">right</div>
-			<div class="tabsMore">more</div>
+			<a href="javascript:;" class="tabsLeft"><i class="icon-backward icon-large"></i></a>
+			<a href="javascript:;" class="tabsRight"><i class="icon-forward icon-large"></i></a>
+			<a href="javascript:;" class="tabsMore"><i class="icon-th-list icon-large"></i></a>
 		</div>
 		<ul class="tabsMoreList">
 			<li><a href="javascript:;"><i class="icon-home icon-large"></i> 工作台</a></li>
@@ -127,14 +127,5 @@ $(function(){
 		<li theme="default"><div>淡青</div></li>
 	</ul>
 </footer>
-<script>
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "//hm.baidu.com/hm.js?bd81f02e5329554415de9ee15f916a98";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
-</script>
 </body>
 </html>

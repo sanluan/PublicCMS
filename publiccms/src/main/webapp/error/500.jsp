@@ -45,11 +45,11 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 		<div style="display: none;" id=divexception>
 			<textarea rows="40" style="width:100%">
 <%
-	Exception exception;
+	Throwable throwable;
 	try{
-	    exception = (Exception) request.getAttribute("javax.servlet.error.exception");
+	    throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
 	}catch(Exception e){
-	    exception = e;
+	    throwable = e;
 	}
 	out.println(exceptionMsgForInner(exception));
 %>

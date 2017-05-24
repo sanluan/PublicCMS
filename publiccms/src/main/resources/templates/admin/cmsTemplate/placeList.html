@@ -5,7 +5,11 @@
 			<li>
 			<#local path=filepath+'/'+a.fileName>
 				<a href="cmsTemplate/placeContent.html?path=${path?url}" target="ajax" rel="cmsTemplatePlace">
-					${(metaDataMap[a.fileName].alias)!a.fileName}
+					<#if 0=((metaDataMap[a.fileName].size)!0)>
+						${(metaDataMap[a.fileName].alias)!a.fileName}
+					<#else>
+						${(metaDataMap[a.fileName].alias)!a.fileName} (${(metaDataMap[a.fileName].size)!}) ${(metaDataMap[a.fileName].allowContribute?then('允许投稿',''))!}
+					</#if>
 				</a>
 			<#if a.directory>
 				<ul>
@@ -22,7 +26,7 @@
 		<h2 class="contentTitle">
 			<a class="button" href="cmsTemplate/createPlace.html?path=${(path?url)!}" target="navTab" rel="cmsTemplate/createPlace">创建推荐位</a>
 		</h2>
-		<ul class="tree treeFolder" layoutH="44">
+		<ul class="tree treeFolder" layoutH="48">
 			<li>
 				<a href="javascript:;">推荐位</a>
 				<ul><@templateTree path/></ul>

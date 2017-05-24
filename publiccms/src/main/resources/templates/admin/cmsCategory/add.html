@@ -33,7 +33,7 @@ function clickAddTagType(){
 	        </div>
 	    </div>
 		<div class="tabsContent unitBox">
-			<div class="pageFormContent" layoutH="86">
+			<div class="pageFormContent" layoutH="96">
 				<dl>
 					<dt>父分类:</dt>
 					<dd>
@@ -101,7 +101,7 @@ function clickAddTagType(){
 	</@_sysExtendFieldList>
 </#if>
 			</div>
-			<div class="pageFormContent onlyUrl" layoutH="86">
+			<div class="pageFormContent onlyUrl" layoutH="96">
 				<dl class="nowrap">
 					<dt>标题:</dt>
 					<dd><input name="title" type="text" maxlength="80" size="50" value="${(attribute.title)!}"/></dd>
@@ -121,7 +121,7 @@ function clickAddTagType(){
 					</dd>
 				</dl>
 			</div>
-			<div class="pageFormContent categoryModel" layoutH="86">
+			<div class="pageFormContent categoryModel" layoutH="96">
 				<div class="divider"></div>
 <#assign modelIndex=0/>
 <#macro childModel parent index=1>
@@ -208,7 +208,7 @@ $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
 </#if>
 		</script>
 			</div>
-			<div class="pageFormContent categoryModelContent" layoutH="86">
+			<div class="pageFormContent categoryModelContent" layoutH="96">
 <#if a?has_content&&a.extendId?has_content>
 	<@_sysExtendFieldList extendId=a.extendId>
 		<#assign contentExtendList=list>

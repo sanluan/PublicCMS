@@ -74,7 +74,7 @@
 	<#list page.list as a>
 		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
 	<div class="accordionHeader">
-		<h2>${a.attached?no_esc!} ${a.name}</h2>
+		<h2>${a.attached?no_esc!} ${a.name} <i class="icon icon-chevron-up"></i></h2>
 	</div>
 	<div class="accordionContent">
 	<#switch a.url!''>

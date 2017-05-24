@@ -26,13 +26,13 @@
 						<option value="true"${(emailChecked??&&"true"==emailChecked)?then(' selected="true"','')?no_esc}>未验证</option>
 					</select>
 				</li>
-				<li class="colspan">
+				<li>
 					<label>注册日期:</label>
 					<input type="text" name="startRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
 					<span>-</span>
 					<input type="text" name="endRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endRegisteredDate!}" />
 				</li>
-				<li class="colspan">
+				<li>
 					<label>上次登录:</label>
 					<input type="text" name="startLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
 					<span>-</span>
@@ -58,7 +58,7 @@
 			<li><a href="sysUser/disable.do?id={sid}" title="确定要禁用该用户吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 禁用</a></li>
 		</ul>
 	</div>
-	<table class="list" width="100%" layoutH="92">
+	<table class="list" width="100%" layoutH="99">
 		<thead>
 			<tr>
 				<th width="30">ID</th>

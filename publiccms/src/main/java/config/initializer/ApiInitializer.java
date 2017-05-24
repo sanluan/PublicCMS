@@ -8,8 +8,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-import com.sanluan.common.base.Base;
-import com.sanluan.common.servlet.ErrorToNotFoundDispatcherServlet;
+import com.publiccms.common.base.Base;
+import com.publiccms.common.servlet.ErrorToNotFoundDispatcherServlet;
 
 import config.spring.ApiConfig;
 
