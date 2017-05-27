@@ -10,11 +10,6 @@ PublicCMS是采用2017年最新主流技术开发的免费开源JAVACMS系统。
 
 http://pan.baidu.com/s/1eSG6l5S
 
-## 获取可运行程序
-
-https://git.oschina.net/sanluan/PublicCMS-war
-https://github.com/sanluan/PublicCMS-war
-
 ## 获取稳定版源码
 
 https://git.oschina.net/sanluan/PublicCMS
