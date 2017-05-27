@@ -6,10 +6,11 @@ function refreshTaskTemplate(){
 	$('textarea[name=content]',navTab.getCurrentPanel()).val(taskTemplateEditor.getValue());
 }
 </script>
+<@_taskTemplateContent path=path><#assign template=object/></@_taskTemplateContent>
 <form method="post" action="taskTemplate/save.do" class="pageForm required-validate" onsubmit="refreshTaskTemplate();return validateCallback(this, navTabAjaxDone);">
 	<div class="formBar">
 		<ul>
-			<li><a class="button" href="taskTemplate/delete.do?path=${path}&navTabId=taskTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a></li>
+			<#if template?has_content><li><a class="button" href="taskTemplate/delete.do?path=${path}&navTabId=taskTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除模板</a></li></#if>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 		</ul>
 	</div>
@@ -21,7 +22,7 @@ function refreshTaskTemplate(){
 			<label>路径:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
 		</div>
    		<div>
-			<textarea name="content" id="taskTemplateEditor"><@_taskTemplateContent path=path>${(object)!}</@_taskTemplateContent></textarea>
+			<textarea name="content" id="taskTemplateEditor">${(template)!}</textarea>
 			<script>
 				var taskTemplateEditor = CodeMirror.fromTextArea(document.getElementById('taskTemplateEditor'), {
 			        mode: "freemarker",

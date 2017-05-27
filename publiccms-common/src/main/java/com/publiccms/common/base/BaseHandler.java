@@ -215,7 +215,10 @@ public abstract class BaseHandler extends Base implements RenderHandler {
         if (notEmpty(arr)) {
             Set<Integer> set = new TreeSet<Integer>();
             for (String s : arr) {
-                set.add(Integer.valueOf(s));
+                try {
+                    set.add(Integer.valueOf(s));
+                } catch (NumberFormatException e) {
+                }
             }
             int i = 0;
             Integer[] ids = new Integer[set.size()];
@@ -234,7 +237,10 @@ public abstract class BaseHandler extends Base implements RenderHandler {
         if (notEmpty(arr)) {
             Set<Long> set = new TreeSet<Long>();
             for (String s : arr) {
-                set.add(Long.valueOf(s));
+                try {
+                    set.add(Long.valueOf(s));
+                } catch (NumberFormatException e) {
+                }
             }
             int i = 0;
             Long[] ids = new Long[set.size()];

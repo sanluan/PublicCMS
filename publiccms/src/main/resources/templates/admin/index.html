@@ -78,7 +78,9 @@ $(function(){
 	</#list>
 </@_sysMoudleList>
 	<@_masterSite>
-		<li><a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a></li>
+		<@_sysAuthorized roleIds=admin.roles url='sysSite/menu'>
+			<li><a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a></li>
+		</@_sysAuthorized>
 	</@_masterSite>
 	</ul>
 	<script>$('#navMenu li:eq(0)').addClass("selected");</script>

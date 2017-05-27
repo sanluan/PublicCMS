@@ -282,7 +282,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.6.0</version>
+				<version>3.6.1</version>
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
@@ -298,7 +298,6 @@
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.10</version>
 				<configuration>
-					<wtpapplicationxml>true</wtpapplicationxml>
 					<wtpversion>2.0</wtpversion>
 				</configuration>
 			</plugin>
@@ -311,10 +310,10 @@
 		</plugins>
 	</build>
 	<modules>
-		<module>../publiccms</module>
-		<module>../publiccms-common</module>
 		<!-- 商业版插件
 		<module>../publiccms-improve</module>
 		-->
+		<module>../publiccms</module>
+		<module>../publiccms-common</module>
 	</modules>
 </project>

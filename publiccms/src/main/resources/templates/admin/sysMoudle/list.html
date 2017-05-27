@@ -4,7 +4,7 @@
 	</@_sysMoudle>
 </#if>
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
-<@_sysMoudleList parentId=parentId	pageIndex=pageNum count=numPerPage>
+<@_sysMoudleList advanced=true parentId=parentId pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
 		<#include "../include_page/paramters.html"/>

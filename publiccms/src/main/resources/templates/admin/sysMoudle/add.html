@@ -25,7 +25,7 @@
 			<dt>名称:</dt>
 			<dd>
 				<input class="required" name="name" type="text" size="50" maxlength="100" value="${(a.name)!}"/>
-				<label><input name="menu" type="checkbox" onclick="if($(this).is(':checked')){$('.menu').show();}else{$('.menu',navTab.getCurrentPanel()).hide();$('.menu input[type=text]',navTab.getCurrentPanel()).val('');}"/>菜单</label>
+				<label><input name="menu" type="checkbox"<#if !a?has_content||a.menu> checked="checked"</#if>/>菜单</label>
 			</dd>
 		</dl>
 	<#if deep lte 2>
@@ -37,7 +37,7 @@
 			</dd>
 		</dl>
 	</#if>
-		<dl class="nowrap menu" style="display:none">
+		<dl class="nowrap">
 			<dt>页面地址:</dt>
 			<dd>
 				<input name="url" type="text" size="30" value="${(a.url)!}"/>
@@ -55,10 +55,5 @@
 			<dt>排序:</dt>
 			<dd><input class="required digits" name="sort" type="number" size="3" value="${(a.sort)!0}"/></dd>
 		</dl>
-<script>
-<#if !a?has_content||a.menu>
-	$('input[name=menu]',navTab.getCurrentPanel()).click();
-</#if>
-</script>
 	</div>
 </form>

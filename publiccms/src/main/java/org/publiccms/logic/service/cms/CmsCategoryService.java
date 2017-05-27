@@ -16,7 +16,7 @@ import com.publiccms.common.handler.PageHandler;
 /**
  *
  * CmsCategoryService
- * 
+ *
  */
 @Service
 @Transactional
@@ -70,7 +70,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 childIds.append(category.getId());
                 childIds.append(COMMA_DELIMITED);
                 String childChildIds = getChildIds(siteId, category.getId());
-                if (childChildIds.length() > 0) {
+                if (notEmpty(childChildIds)) {
                     childIds.append(childChildIds);
                     childIds.append(COMMA_DELIMITED);
                 }

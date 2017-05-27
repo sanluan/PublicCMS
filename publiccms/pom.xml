@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>com.publiccms</groupId>
 			<artifactId>publiccms-improve</artifactId>
-			<version>V2017.0412</version>
+			<version>V2017.0520</version>
 		</dependency>
 		<dependency>
 			<groupId>redis.clients</groupId>

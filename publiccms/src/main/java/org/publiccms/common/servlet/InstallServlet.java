@@ -223,12 +223,12 @@ public class InstallServlet extends HttpServlet {
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql");) {
             runner.runScript(new InputStreamReader(inputStream, Base.DEFAULT_CHARSET));
-            if (useSimple) {
-                try (InputStream simpleInputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql")) {
-                    runner.runScript(new InputStreamReader(simpleInputStream, Base.DEFAULT_CHARSET));
-                }
-            }
         }
+		if (useSimple) {
+			try (InputStream simpleInputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql")) {
+				runner.runScript(new InputStreamReader(simpleInputStream, Base.DEFAULT_CHARSET));
+			}
+		}
         return stringWriter.toString();
     }
 
