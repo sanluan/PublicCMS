@@ -21,11 +21,6 @@ https://code.csdn.net/zyyy358/publiccms
 https://git.oschina.net/sanluan/PublicCMS-preview
 https://github.com/sanluan/PublicCMS-preview
 
-## 贡献文档
-
-https://github.com/sanluan/PublicCMS-lib
-https://git.oschina.net/sanluan/PublicCMS-lib
-
 ## 授权
 
 该软件永久开源免费(MIT 授权协议)
