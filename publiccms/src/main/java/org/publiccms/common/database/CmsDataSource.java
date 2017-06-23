@@ -21,11 +21,11 @@ import com.publiccms.common.datasource.MultiDataSource;
 /**
  *
  * CmsDataSource
- * 
+ *
  */
 public class CmsDataSource extends MultiDataSource {
     public static final String DATABASE_CONFIG_FILENAME = "/database.properties";
-    public static final String DATABASE_CONFIG_TEMPLATE = "/config/database-template.properties";
+    public static final String DATABASE_CONFIG_TEMPLATE = "config/database-template.properties";
     private static CmsDataSource cmsDataSource;
     private String dbconfigFilePath;
 
@@ -101,7 +101,7 @@ public class CmsDataSource extends MultiDataSource {
     }
 
     /**
-     * 
+     *
      */
     public void init() {
         super.afterPropertiesSet();
