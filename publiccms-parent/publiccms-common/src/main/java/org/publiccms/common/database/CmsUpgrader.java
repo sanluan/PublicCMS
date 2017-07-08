@@ -58,8 +58,12 @@ public class CmsUpgrader implements Base {
     /**
      *
      */
+    public final static String VERSION_20170520 = "V2017.0520";
+    /**
+     *
+     */
     public final static List<String> VERSION_LIST = Arrays
-            .asList(new String[] { VERSION_20160423, VERSION_20160510, VERSION_20160828, VERSION_20170318 });
+            .asList(new String[] { VERSION_20160423, VERSION_20160510, VERSION_20160828, VERSION_20170318, VERSION_20170520 });
     private Connection connection;
     private String version;
     @SuppressWarnings("unused")
@@ -91,7 +95,9 @@ public class CmsUpgrader implements Base {
             updateModelToFile();
             runScript(VERSION_20160828, VERSION_20170318);
         case VERSION_20170318:
-            runScript(VERSION_20170318, CmsVersion.getVersion());
+            runScript(VERSION_20170318, VERSION_20170520);
+        case VERSION_20170520:
+            runScript(VERSION_20170520, CmsVersion.getVersion());
             break;
         }
     }
@@ -156,7 +162,9 @@ public class CmsUpgrader implements Base {
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass()
                 .getResourceAsStream("/initialization/upgrade/" + fromVersion + "-" + toVersion + ".sql");) {
-            runner.runScript(new InputStreamReader(inputStream, DEFAULT_CHARSET));
+            if (null != inputStream) {
+                runner.runScript(new InputStreamReader(inputStream, DEFAULT_CHARSET));
+            }
         }
         version = toVersion;
     }
