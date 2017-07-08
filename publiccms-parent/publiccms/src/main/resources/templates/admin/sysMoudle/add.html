@@ -1,0 +1,59 @@
+<@_sysMoudle id=id>
+	<#assign a=object/>
+	<#if (object.parentId)??><#assign parentId=(object.parentId)/></#if>
+</@_sysMoudle>
+<@_sysMoudle id=parentId!><#assign moudle=object/></@_sysMoudle>
+<#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
+<form method="post" action="sysMoudle/save.do?callbackType=closeCurrent&navTabId=sysMoudle/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>父模块:</dt>
+			<dd>
+				<input name="parentId" type="hidden" value="${parentId!}" />
+				<input name="parentName" readonly="readonly" type="text" size="50" value="${(moudle.name)!}"/>
+				<a class="btnLook" href="sysMoudle/lookup.html" lookupGroup="">选择</a>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>名称:</dt>
+			<dd>
+				<input class="required" name="name" type="text" size="50" maxlength="100" value="${(a.name)!}"/>
+				<label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/>菜单</label>
+			</dd>
+		</dl>
+	<#if deep lte 2>
+		<dl class="nowrap">
+			<dt>附加图标:</dt>
+			<dd>
+				<input name="attached" type="text" size="50" maxlength="300" value="${(a.attached)!}"/>
+				<a class="btnLook" href="sysMoudle/icons.html?field=attached" lookupGroup="">选择图标</a>
+			</dd>
+		</dl>
+	</#if>
+		<dl class="nowrap">
+			<dt>页面地址:</dt>
+			<dd>
+				<input name="url" type="text" size="30" value="${(a.url)!}"/>
+				<span class="info">此模块的展示页面，不带后缀</span>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>授权访问地址:</dt>
+			<dd>
+				<textarea name="authorizedUrl" style="width: 100%;" rows="8">${(a.authorizedUrl)!}</textarea>
+				<span class="info">此模块需要授权的URL请求路径，使用逗号分隔，不带后缀</span>
+			</dd>
+		</dl>
+		<dl>
+			<dt>排序:</dt>
+			<dd><input class="required digits" name="sort" type="number" size="3" value="${(a.sort)!0}"/></dd>
+		</dl>
+	</div>
+</form>

@@ -1,0 +1,37 @@
+<style>
+.CodeMirror{height:100%;line-height:16px;}
+</style>
+<script>
+function refreshTaskTemplate(){
+	$('textarea[name=content]',navTab.getCurrentPanel()).val(taskTemplateEditor.getValue());
+}
+</script>
+<@_taskTemplateContent path=path><#assign template=object!/></@_taskTemplateContent>
+<form method="post" action="taskTemplate/save.do" class="pageForm required-validate" onsubmit="refreshTaskTemplate();return validateCallback(this, navTabAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<#if template?has_content><li><a class="button" href="taskTemplate/delete.do?path=${path}&navTabId=taskTemplate/list" title="确定要删除该脚本吗?" target="ajaxTodo">删除脚本</a></li></#if>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+		</ul>
+	</div>
+	<h2 class="contentTitle">
+	 	<a class="button" href="taskTemplate/chipLookup.html" target="dialog" mask="true">脚本片段</a>
+	</h2>
+	<div class="pageFormContent" layoutH="100">
+		<div class="clearfix">
+			<label>路径:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
+		</div>
+   		<div>
+			<textarea name="content" id="taskTemplateEditor">${(template)!}</textarea>
+			<script>
+				var taskTemplateEditor = CodeMirror.fromTextArea(document.getElementById('taskTemplateEditor'), {
+			        mode: "freemarker",
+			        lineNumbers: true,
+			        tabSize        : 4,
+			        indentUnit     : 4,
+			        indentWithTabs : true
+				});
+			</script>
+		</div>
+	</div>
+</form>

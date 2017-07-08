@@ -1,0 +1,111 @@
+<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+<script>
+function checkPageSize(){
+	if(parseInt($('input[name=size]',navTab.getCurrentPanel()).val())>0){
+		$('.placeExtend',navTab.getCurrentPanel()).show();
+		$('textarea[name=content]',navTab.getCurrentPanel()).val($('#content',navTab.getCurrentPanel()).val());
+		$('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).removeAttr('disabled');
+	} else {
+		$('.placeExtend',navTab.getCurrentPanel()).hide();
+		$('textarea[name=content]',navTab.getCurrentPanel()).val('');
+		$('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).attr('disabled','disabled');
+	}
+}
+function addUser($id,$name){
+	if($name){
+		$name=$name.trim();
+	}
+	if($id&&$name){
+		$('#adminIds',navTab.getCurrentPanel()).append("<span><a href=\"javascript:;\" onclick=\"$(this).parent().remove();return false;\">"+$name+"</a><input type=\"hidden\" name=\"adminIds\" value=\""+$id+"\"/></span>");
+	}
+	$('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
+	$('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
+}
+$(function(){
+	checkPageSize();
+<#if (a.adminIds)?has_content>
+	<@_sysUser ids=a.adminIds>
+		<#list map?keys as k>
+		addUser('${k}','${map[k].nickName}');
+		</#list>
+	</@_sysUser>
+</#if>
+});
+</script>
+<style>
+#adminIds{line-height:25px;}
+#adminIds span{margin-right:8px;padding:3px;border:1px solid #aaa;}
+</style>
+<form method="post" action="cmsTemplate/savePlaceMetaData.do?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>路径:</dt></dt>
+			<dd>
+			
+			<#if path?has_content>
+				${path}
+				<input name="path" type="hidden" value="${path}" size="40"/>
+			<#else>
+				<input name="path" type="text" value="/${getUUID()}.html" size="40"/>
+			</#if>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>别名:</dt></dt>
+			<dd>
+				<input class="required" name="alias" type="text" maxlength="50" size="20" value="${(a.alias)!}"/>
+				<label>
+					<input name="allowContribute" type="checkbox" onclick="if($(this).is(':checked')){$('.allowContribute',navTab.getCurrentPanel()).show()}else{$('.allowContribute',navTab.getCurrentPanel()).hide()}"/>
+					允许投稿
+				</label>
+				<label class="allowContribute" style="display:none">
+					<input name="allowAnonymous" type="checkbox"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
+					允许匿名提交
+				</label>
+			</dd>
+		</dl>
+		<#if a?has_content&&a.allowContribute>
+			<script>
+				$('input[name=allowContribute]',navTab.getCurrentPanel()).click();
+			</script>
+		</#if>
+		<dl class="nowrap">
+			<dt>有效数据条数:</dt>
+			<dd>
+				<input name="size" class="required digits" onchange="checkPageSize();" type="number" value="${(a.size)!5}"/>
+			</dd>
+		</dl>
+		<dl class="nowrap placeExtend">
+			<dt>数据管理人员:</dt>
+			<dd>
+				<div id="adminIds"></div>
+				<input name="userId" type="hidden"/>
+				<input name="nickName" type="text" size="30" readonly="readonly"/>
+				<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>
+				<a class="button" href="javascript:;" onclick="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$('input[name=\'nickName\']',navTab.getCurrentPanel()).val());return false;">增加</a>
+				<span class="info">点击某个用户昵称可以将其删除</span>
+			</dd>
+		</dl>
+		<fieldset class="placeExtend">
+			<legend>列表数据扩展字段</legend>
+			<#include '../include_page/extends.html'/>
+			<#assign extendList=(a.extendList)![]/>
+			<@extends 'extendList' extendList/>
+		</fieldset>
+		<textarea name="content" style="display:none"></textarea>
+		<textarea id="content" style="display:none"><#noparse>
+<#list page.list>
+	<ul>
+	<#items as a>
+		<li><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></li>
+	</#items>
+	</ul>
+</#list>
+</#noparse></textarea>
+	</div>
+</form>

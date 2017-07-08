@@ -1,0 +1,209 @@
+<@_content id=id>
+	<#assign a=object/>
+	<#assign id=a.id/>
+	<#assign parentId=a.parentId!/>
+	<#assign categoryId=a.categoryId!/>
+	<#assign modelId=a.modelId!/>
+	<#assign attribute=getContentAttribute(a.id)!/>
+</@_content>
+<@_category id=categoryId!><#assign category=object/></@_category>
+<@_model id=modelId!><#assign model=object/></@_model>
+<div class="pageContent">
+	<div class="formBar">
+		<ul>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<@_content id=parentId>
+			<dl class="nowrap">
+				<dt>父内容:</dt>
+				<dd>
+					${(object.title)!}
+				</dd>
+			</dl>
+		</@_content>
+			<dl>
+				<dt>分类:</dt>
+				<dd>
+					${categoryId!}:${(category.name)!}
+				</dd>
+			</dl>
+			<dl>
+				<dt>模型:</dt>
+				<dd>
+					${modelId!}:${(model.name)!}
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>标题:</dt>
+				<dd>
+					${(a.copied?then('[转载]',''))!}${(a.title)!}
+				</dd>
+			</dl>
+			<dl>
+				<dt>状态:</dt>
+				<dd>
+					<@t.m 'status.content.'+(a.status)!/>
+				</dd>
+			</dl>
+		<#if 1=a.status>
+			<dl>
+				<dt>审核用户:</dt>
+				<dd>
+					 <@_sysUser id=a.checkUserId>${(object.nickName)!}</@_sysUser>
+				</dd>
+			</dl>
+		</#if>
+			<dl class="nowrap">
+				<dt>网址:</dt>
+				<dd>
+					<a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
+				</dd>
+			</dl>
+		<#if a?has_content&&a.copied>
+			<dl>
+				<dt>来源:</dt>
+				<dd>${(attribute.source)!}</dd>
+			</dl>
+			<dl>
+				<dt>来源网址:</dt>
+				<dd>
+					<#if attribute.sourceUrl?has_content><a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.sourceUrl)!}</a></#if>
+				</dd>
+			</dl>
+			</script>
+		</#if>
+		<#if (a.author)?has_content>
+			<dl>
+				<dt>作者:</dt>
+				<dd>${(a.author)!}</dd>
+			</dl>
+		</#if>
+		<#if (a.editor)?has_content>
+			<dl>
+				<dt>编辑:</dt>
+				<dd>${(a.editor)!}</dd>
+			</dl>
+		</#if>
+		<#if (a.tagIds)?has_content>
+<#if category.tagTypeIds?has_content>
+	<@_tagType ids=category.tagTypeIds>
+		<#list map?keys as k>
+			<dl class="nowrap tags">
+				<dt>${map[k].name}:</dt>
+				<dd>
+					<@_tag ids=a.tagIds>
+						<#list map?keys as j>
+							<#if map[j].typeId=k>
+								${map[k].name},
+							</#if>
+						</#list>
+					</@_tag>
+				</dd>
+			</dl>
+		</#list>
+	</@_tagType>
+<#else>
+			<dl class="nowrap tags">
+				<dt>标签:</dt>
+				<dd>
+					<@_tag ids=a.tagIds>
+						<#list map?keys as j>
+							${map[j].name}<#sep>,
+						</#list>
+					</@_tag>
+				</dd>
+			</dl>
+</#if>
+		</#if>
+		<#if (a.description)?has_content>
+			<dl class="nowrap">
+				<dt>描述:</dt>
+				<dd>
+					${(a.description)!}
+				</dd>
+			</dl>
+		</#if>
+			<dl>
+				<dt>发布日期:</dt>
+				<dd>
+					${(a.publishDate)!}
+				</dd>
+			</dl>
+		<#if (a.cover)?has_content>
+			<dl class="nowrap">
+				<dt>封面:</dt>
+				<dd>
+					<div class="thumbnail">
+						<img src="${(site.sitePath+a.cover)!}" style="max-width:200px;max-height:200px;"/>
+					</div>
+				</dd>
+			</dl>
+		</#if>
+		<#include "../include_page/extendData.html"/>
+		<#if category?has_content&&category.extendId?has_content>
+			<@_sysExtendFieldList extendId=category.extendId>
+				<#assign extendList=list![]/>
+				<#assign extendValue=attribute!{}/>
+				<@extendData 'categoryExtendDataList' extendList extendValue 'view'/>
+			</@_sysExtendFieldList>
+		</#if>
+		<#if model?has_content>
+			<#assign extendList=model.extendList![]/>
+			<#assign extendValue=attribute!{}/>
+			<@extendData 'modelExtendDataList' extendList extendValue 'view'/>
+		</#if>
+		<#if model?has_content&&(model.hasImages||model.hasFiles)>
+			<#include "../include_page/contentFiles.html"/>
+			<#if model.hasImages>
+			<dl class="nowrap">
+				<dt>图片列表:</dt>
+				<dd>
+			<@_contentFileList contentId=contentId image=true>
+				<#list page.list as file>
+					<div class="thumbnail">
+						<img src="${(site.sitePath+file.filePath)!}" style="max-width:200px;max-height:200px;"/>
+					</div>
+				</#list>
+			</@_contentFileList>
+				</dd>
+			</dl>
+			</#if>
+			<#if model.hasFiles>
+				<dl class="nowrap">
+					<dt>附件列表:</dt>
+					<dd>
+				<@_contentFileList contentId=contentId image=false>
+					<#list page.list as file>
+						<a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
+					</#list>
+				</@_contentFileList>
+					</dd>
+				</dl>
+			</#if>
+		</#if>
+		<#if !model?has_content||!model.onlyUrl>
+			<dl class="nowrap">
+				<dt>正文:</dt>
+				<dd id="content">
+					${(attribute.text?no_esc)!}
+				</dd>
+			</dl>
+		</#if>
+	<#if a?has_content>
+		<@_contentRelatedList contentId=a.id>
+			<#if page.totalCount gt 0>
+			<dl class="nowrap">
+				<dt>推荐内容:</dt>
+				<dd>
+					<#list page.list as a>
+						<a href="${(a.url)!}" target="_blank">${(a.title)!}</a>
+					</#list>
+				</dd>
+			</dl>
+			</#if>
+		</@_contentRelatedList>
+	</#if>
+	</div>
+</div>

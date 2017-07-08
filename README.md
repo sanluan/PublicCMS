@@ -1,6 +1,8 @@
 # PublicCMS 2017
 
-<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=89ffe8cd3abc04f6794965a330b0a278fdbc31f53e46fd5ee1c4f54ed43a6b28"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Public CMS-开源JAVACMS 1群" title="Public CMS-开源JAVACMS 1群"></a>(已满) <a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=088c921c4eb74328eef0192bac1e63c7228eb31b0524a373d40cdd907ddd2d3c"><img border="0" src="//pub.idqqimg.com/wpa/images/group.png" alt="Public CMS-开源JAVACMS 2群" title="Public CMS-开源JAVACMS 2群"></a>
+<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=89ffe8cd3abc04f6794965a330b0a278fdbc31f53e46fd5ee1c4f54ed43a6b28">交流群1群 191381542(已满)</a>
+<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=088c921c4eb74328eef0192bac1e63c7228eb31b0524a373d40cdd907ddd2d3c">交流群2群 481589563</a>
+<a target="_blank" href="//shang.qq.com/wpa/qunwpa?idkey=8b1c7e07973d9f9553c0b8d5f8410107c02456bf6b4674dc7e4d113266ee8e03">交流群3群 638756883</a>
 
 ## 简介
 
@@ -29,12 +31,7 @@ https://github.com/sanluan/PublicCMS-preview
 
 * data\publiccms	PublicCMS数据目录
 * doc			文档
-* publiccms		工程源码
-* publiccms-gradle	Gradle配置文件
-* publiccms-maven	Maven配置文件
-* LISCENSE		授权文件
-* README.md		说明
-* Update History.md	更新历史
+* publiccms-parent	工程源码
 
 ## 部署运行
 
@@ -47,62 +44,10 @@ https://github.com/sanluan/PublicCMS-preview
 * 后台演示：https://cms.publiccms.com/admin/ 演示账号/密码 test/test
 * 接口演示：https://cms.publiccms.com/interface.html
 
-## 更新记录
+## 鸣谢：
+感谢 @默会 开发了内容回收站功能
+感谢 @胡晓光 改进安装引导界面，数据目录没有读写权限时，使用默认目录路径
 
-### 2017.0527
+## Public CMS架构图
 
-BUG修复:
-
-1. 指令获取数组，参数为空字符串时报错问题修复
-1. 分类查询可能产生空指针问题修复
-1. 模块非菜单隐藏问题修复
-1. 分类设置前台隐藏导致后台也隐藏问题修复
-1. 增加商业版本认证和标识
-1. maven配置工程后，提示库URI冲突问题修复
-
-### 2017.0520
-
-框架升级:
-
-1. Freemarker 2.3.26-incubating
-1. Jackson 2.8.8
-1. Spring 4.3.8.RELEASE
-1. Spring Boot 1.5.3.RELEASE
-1. Quartz 2.3.0
-1. lucene 5.5.4
-1. Hibernate 5.1.6.Final
-1. Hibernate Search 5.6.1.Final
-1. Mybatis 3.4.4
-1. C3p0 0.9.5.2
-
-BUG修复:
-
-1. CMS部署路径有空格时配置错误
-1. 导入数据库脚本乱码
-1. 内容列表没有子内容模型新建按钮
-1. 网站文件列表中查看文件路径错误
-1. 高版本Mysql打印警告信息修复
-1. 推荐位匿名投稿错误
-1. 删除分类后父分类childIds不为空错误
-1. 模板帮助getDateNumber错误
-1. 分类类型删除提示有分类已使用错误
-1. Chrome浏览器上传文件按钮反应延迟
-1. 500错误页面报错信息不支持Throwable类型
-1. 我的登陆日志不能过滤成功登陆类型
-
-新增功能:
-
-1. 前台推荐位投稿管理
-1. 内容投稿
-1. 内容投稿模板帮助
-1. 启动命令指定数据目录位置
-
-其他提升:
-
-1. 删除cms_content_tag表及相关代码
-1. 界面修改、字体行距等调大
-1. 将数据库配置文件位置改为数据目录下
-1. 将包名改为org.publiccms,将com.sanluan包独立到publiccms-common工程
-1. 统计代码清理
-1. 取消cms.autoInstall配置文件项
-1. 将数据库配置文件改到数据目录中
+![](doc/structure.png)

@@ -1,0 +1,71 @@
+<script>
+var imagesSuffix=["png","gif","jpg","jpeg","bmp"];
+function checkFileType(){
+<#if onlyImage?has_content>
+	<#assign image=true/>
+	var filenames=$('input[name=file]',$.pdialog.getCurrent()).val().toLowerCase().split('.');
+	if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+		return true;
+	}
+	alertMsg.error('请选择图片');
+	return false;
+<#else>
+	return true;
+</#if>
+}
+function selectFile(path){
+<#if onlyImage?has_content>
+	var filenames=path.toLowerCase().split('.');
+	if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+		return true;
+	}
+	alertMsg.error('请选择图片');
+	return false;
+<#else>
+	return true;
+</#if>
+}
+</script>
+<form action="file/doUpload.do" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive" onclick="return checkFileType();">上传</button></li>
+			<li><button type="button" class="button" onclick="$.bringBack({'${field}':''});return false;">清空字段</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<div id="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
+		<dl>
+			<dt>附件:</dt>
+			<dd>
+				<input type="hidden" name="field" value="${field!'fileName'}"/>
+				<input type="hidden" name="onlyImage" value="${onlyImage!'false'}"/>
+				<input type="file" name="file" class="required" size="30" />
+			</dd>
+		</dl>
+		<ul class="tree" style="height:200px">
+		<#if admin?has_content>
+	<@_logUploadList userId=admin.id image=image pageIndex=1 count=5>
+		<#list page.list as a>
+			<li><a href="javascript:;" onclick="if(selectFile('${a.filePath!}')){$.bringBack({'${field!'fileName'}':'${a.filePath!}'});}return false;">${a.filePath!}</a></li>
+		</#list>
+	</@_logUploadList>
+		</ul>
+		<script>
+			$('ul li a',$.pdialog.getCurrent()).hover(function(){
+				var filenames=$(this).text().toLowerCase().split('.');
+				if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+					if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
+						$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).text());
+					}else{
+						$('#preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).text());
+					}
+				}
+			},function(){
+				$('#preview',$.pdialog.getCurrent()).hide();
+			});
+		</script>
+		</#if>
+	</div>
+</form>

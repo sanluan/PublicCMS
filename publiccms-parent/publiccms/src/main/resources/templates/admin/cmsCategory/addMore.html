@@ -1,0 +1,19 @@
+<div class="formBar">
+	<ul>
+		<li><button type="button" class="button close">关闭</button></li>
+	</ul>
+</div>
+<div class="pageFormContent" layoutH="60">
+	<ul class="tree treeFolder expand">
+<@_categoryTypeList>
+	<#list page.list as a>
+		<li><a href="cmsCategory/add.html?parentId=${parentId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add">添加${(a.name)!}分类</a></li>
+	</#list>
+</@_categoryTypeList>
+	</ul>
+</div>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+	$.pdialog.closeCurrent();
+});
+</script>

@@ -1,0 +1,57 @@
+<#macro chipTree filepath>
+	<@_templateList path=filepath>
+		<@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
+		<#list list as a>
+			<li>
+				<#local path=filepath+'/'+a.fileName>
+			<#if a.directory>
+				<a href="javascript:;" onclick="return false;">${a.fileName} </a>
+				<ul>
+					<@chipTree path/>
+				</ul>
+			<#else>
+				<a href="javascript:;" onclick="use('${path}','${(metaDataMap[a.fileName].alias)?has_content?then('<#-- '+metaDataMap[a.fileName].alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
+					${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+				</a>
+			</#if>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_templateList>
+</#macro>
+<script>
+function check(){
+	if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
+		$('input[name=namespace]',$.pdialog.getCurrent()).parent().hide();
+	} else {
+		$('input[name=namespace]',$.pdialog.getCurrent()).parent().show();
+	}
+}
+function use(path,description){
+	if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
+		${editor!'cmsTemplateEditor'}.replaceSelection('${r'<@include path="'?no_esc}'+path+'${r'"/>'?no_esc}'+description);
+	} else {
+		${editor!'cmsTemplateEditor'}.replaceSelection('${r'<@import path="'?no_esc}'+path+'" namespace="'+$('input[name=namespace]',$.pdialog.getCurrent()).val()+'"${r'/>'?no_esc}'+description);
+	}
+}
+</script>
+<div class="pageFormContent" layoutH="19">
+	<dl class="nowrap">
+		<dt>引用方式</dt>
+		<dd>
+			<label style="width:auto;">
+				<input name="use" type="radio" onchange="check()" value="include" checked="true"/>
+				包含
+			</label>
+			<label style="width:auto;">
+				<input name="use" type="radio" onchange="check()" value="import"/>
+				导入
+			</label>
+			<div style="display:none"><label style="width:auto;">命名空间：</label><input name="namespace" type="text" maxlength="10" size="10" value="t"/></div>
+		</dd>
+	</dl>
+	<ul class="tree treeFolder">
+<@chipTree 'ftl'/>
+	</ul>
+</div>

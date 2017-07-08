@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<meta charset="utf-8">
+	<title>管理后台 - ${site.name}</title>
+	<link href="${res}/themes/css/core.css?0423" rel="stylesheet" media="screen"/>
+	<link href="${res}/themes/css/print.css" rel="stylesheet" media="print"/>
+	<link href="${res}/font-awesome/css/font-awesome.min.css" rel="stylesheet" >
+	<!--[if IE 7]>
+	<link href="${res}/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet" >
+	<![endif]-->
+	<!--[if lte IE 9]>
+		<link href="${res}/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
+		<script src="${res}/js/html5shiv.min.js"></script>
+		<script src="${res}/js/respond.min.js"></script>
+	<![endif]-->
+	<script src="${res}/js/jquery-1.9.1.min.js"></script>
+	<script src="${res}/js/jquery.cookie.js"></script>
+	<script src="${res}/js/jquery.validate.js"></script>
+	<script src="${res}/js/jquery.bgiframe.js"></script>
+
+	<script>var base="${base}/admin";</script>
+	<script src="${res}/ueditor/ueditor.config.js"></script>
+	<script src="${res}/ueditor/ueditor.all.min.js"></script>
+	<script src="${res}/ueditor/lang/zh-cn/zh-cn.js"></script>
+
+	<script src="${res}/js/dwz.min.js?042301"></script>
+	<script src="${res}/js/dwz.regional.zh.js"></script>
+
+	<link href="${res}/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
+	<script src="${res}/codemirror/lib/codemirror.js"></script>
+	<script src="${res}/codemirror/mode/xml/xml.js"></script>
+	<script src="${res}/codemirror/mode/javascript/javascript.js"></script>
+	<script src="${res}/codemirror/mode/css/css.js"></script>
+	<script src="${res}/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+	<script src="${res}/codemirror/mode/freemarker/freemarker.js"></script>
+	<script src="${res}/codemirror/mode/freemarkermixed/freemarkermixed.js"></script>
+	<script src="${res}/codemirror/mode/nginx/nginx.js"></script>
+	<script>
+$(function(){
+	DWZ.init("${res}/dwz.frag.html", {
+		loginUrl:"login_dialog.html", loginTitle:"登录",
+		pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"}, //【可选】
+		debug:false,	// 调试模式 【true|false】
+		callback:function(){
+			initEnv();
+			$("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"azure",version:"0423"}); // themeBase 相对于index页面的主题base路径
+		}
+	});
+});
+	</script>
+</head>
+<body scroll="no">
+<header>
+	<a class="logo" href="./"></a>
+	<ul class="nav">
+		<li><i class="icon-user icon-large"></i> ${(admin.nickName)!}</li>
+		<li>
+			<a href="${site.useStatic?then(site.sitePath!,site.dynamicPath!)}" target="_blank"><i class="icon-home icon-large"></i> 网站首页</a>
+		</li>
+		<@_sysAuthorized roleIds=admin.roles url='clearCache'>
+			<li><a href="clearCache" target="ajaxTodo"><i class="icon-refresh icon-large"></i> 刷新缓存</a></li>
+		</@_sysAuthorized>
+		<li><a href="logout"><i class="icon-signout icon-large"></i> 退出</a></li>
+	</ul>
+	<ul id="navMenu">
+<@_sysMoudleList>
+	<#list page.list as a>
+		<@t.merge 'moudleIds' a.id!/>
+	</#list>
+	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map!/></@_sysRoleMoudle>
+
+	<#list page.list as a>
+		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
+			<#if !parentId?has_content><#assign parentId=a.id/></#if>
+			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}">${(a.attached?no_esc)!} ${a.name}</a></li>
+		</#if>
+	</#list>
+</@_sysMoudleList>
+	<@_masterSite>
+		<@_sysAuthorized roleIds=admin.roles url='sysSite/menu'>
+			<li><a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a></li>
+		</@_sysAuthorized>
+	</@_masterSite>
+	</ul>
+	<script>$('#navMenu li:eq(0)').addClass("selected");</script>
+</header>
+<main>
+	<div id="leftside">
+		<div id="sidebar_s">
+			<a href="javascript:;" onclick="return false;"><i class="icon-reorder icon-large"></i></a>
+		</div>
+		<div id="sidebar">
+			<div id="menu">
+<#include "menus.html"/>
+			</div>
+			<div class="collapse">
+				<a href="javascript:;" onclick="return false;" class="toggleCollapse"><i class="icon icon-chevron-sign-left icon-large"></i></a>
+			</div>
+		</div>
+	</div>
+	<div id="navTab" class="tabsPage">
+		<div class="tabsPageHeader">
+			<div class="tabsPageHeaderContent">
+				<ul class="navTab-tab">
+					<li tabid="main" class="main"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> 工作台</a></li>
+				</ul>
+			</div>
+			<a href="javascript:;" onclick="return false;" class="tabsLeft"><i class="icon-backward icon-large"></i></a>
+			<a href="javascript:;" onclick="return false;" class="tabsRight"><i class="icon-forward icon-large"></i></a>
+			<a href="javascript:;" onclick="return false;" class="tabsMore"><i class="icon-th-list icon-large"></i></a>
+		</div>
+		<ul class="tabsMoreList">
+			<li><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> 工作台</a></li>
+		</ul>
+		<div class="navTab-panel tabsPageContent layoutBox">
+			<div class="page unitBox">
+				<#include "main.html"/>
+			</div>
+		</div>
+	</div>
+</main>
+<footer>
+	<@_version><#if businessEdition>商业版授权</#if></@_version> Copyright &copy; ${.now?string('yyyy')}
+	<ul class="themeList" id="themeList">
+		<li theme="azure"><div class="selected">天蓝</div></li>
+		<li theme="silver"><div>银色</div></li>
+		<li theme="purple"><div>紫色</div></li>
+		<li theme="default"><div>淡青</div></li>
+	</ul>
+</footer>
+</body>
+</html>

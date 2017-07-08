@@ -1,0 +1,222 @@
+<@_category id=id!copyId>
+	<#assign a=object/>
+	<#assign parentId=object.parentId!/>
+	<#assign typeId=object.typeId!/>
+	<#assign attribute=getCategoryAttribute(a.id)!/>
+</@_category>
+<@_category id=parentId><#assign category=object/></@_category>
+<@_categoryType id=typeId><#assign categoryType=object/></@_categoryType>
+<script>
+function clickAddTagType(){
+	$('.tagTypes .button',navTab.getCurrentPanel()).click();
+}
+</script>
+<form method="post" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+		<@_sysAuthorized roleIds=admin.roles url='cmsCategory/save'>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+		</@_sysAuthorized>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="tabs">
+		<div class="tabsHeader">
+	        <div class="tabsHeaderContent">
+	            <ul>
+					<li><a href="javascript:;" onclick="return false;">基础信息</a></li>
+					<li class="onlyUrl"><a href="javascript:;" onclick="return false;">SEO优化</a></li>
+					<li><a href="javascript:;" onclick="return false;">可发布内容模型</a></li>
+					<li class="categoryModelContent"><a href="javascript:;" onclick="return false;">内容扩展字段</a></li>
+	            </ul>
+	        </div>
+	    </div>
+		<div class="tabsContent unitBox">
+			<div class="pageFormContent" layoutH="96">
+				<dl>
+					<dt>父分类:</dt>
+					<dd>
+						<input name="parentId" type="hidden" value="${parentId!}" />
+						<input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
+						<a class="btnLook" href="cmsCategory/lookup.html?categoryId=${parentId!}" lookupGroup="">选择</a>
+					</dd>
+				</dl>
+				<dl>
+					<dt>分类类型:</dt>
+					<dd>
+						<input name="typeId" type="hidden" value="${typeId!}" />
+						<input name="typeName" readonly="readonly" type="text" size="10" value="${(categoryType.name)!}"/>
+					</dd>
+				</dl>
+				<div class="divider"></div>
+				<dl class="nowrap">
+					<dt>名称:</dt>
+					<dd>
+						<input class="required" name="name" type="text" maxlength="50" size="20" value="${(a.name)!}"/>
+						<label><input name="onlyUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.onlyUrl',navTab.getCurrentPanel()).hide();$('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.onlyUrl').show();}"/>外链</label>
+						<label><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')?no_esc}/>允许投稿</label>
+						<label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')?no_esc}/>前台隐藏</label>
+					</dd>
+				</dl>
+				<dl class="nowrap">
+					<dt>编码:</dt>
+					<dd><input class="required" name="code" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/></dd>
+				</dl>
+<#include "../include_page/tagTypes.html"/>
+<@tagTypes ((a.tagTypeIds)!'')/>
+<#if site.useStatic>
+				<dl class="nowrap onlyUrl">
+					<dt>静态化模板路径:</dt>
+					<dd>
+						<input name="templatePath" type="text" maxlength="255" size="30" value="${(a.templatePath)!}"/>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="">选择静态化模板</a>
+						<span class="info">模板路径为空时不生成静态化页面</span>
+					</dd>
+				</dl>
+</#if>
+				<dl class="nowrap">
+					<dt>分类页面访问路径:</dt>
+					<dd>
+						<input class="required" name="path" type="text" maxlength="500" size="50" value="${(a.path)!(category.path)!}"/>
+						<a class="btnLook onlyUrl" href="cmsCategory/categoryPath.html" width="920" lookupGroup="">选择路径</a>
+					</dd>
+				</dl>
+				<div class="divider"></div>
+				<dl class="nowrap onlyUrl">
+					<dt>每页数据:</dt>
+					<dd>
+						<input class="required digits" name="pageSize" type="number" size="4" value="${(a.pageSize)!(category.pageSize)!20}"/>
+						<label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/>包含子分类内容</label>
+					</dd>
+				</dl>
+				<dl>
+					<dt>排序:</dt>
+					<dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!0}"/></dd>
+				</dl>
+<#if categoryType?has_content&&categoryType.extendId?has_content>
+	<#include "../include_page/extendData.html"/>
+	<@_sysExtendFieldList extendId=categoryType.extendId>
+		<@extendData 'extendDataList' list attribute!{}/>
+	</@_sysExtendFieldList>
+</#if>
+			</div>
+			<div class="pageFormContent onlyUrl" layoutH="96">
+				<dl class="nowrap">
+					<dt>标题:</dt>
+					<dd><input name="title" type="text" maxlength="80" size="50" value="${(attribute.title)!}"/></dd>
+				</dl>
+				<dl class="nowrap">
+					<dt>关键词:</dt>
+					<dd>
+						<textarea name="keywords" maxlength="100" style="width: 80%;" rows="2">${(attribute.keywords)!}</textarea>
+						<span class="info">请填写与分类内容相关的关键词，多个关键词应该使用逗号分开，最好保持在10个以下</span>
+					</dd>
+				</dl>
+				<dl class="nowrap">
+					<dt>描述:</dt>
+					<dd>
+						<textarea name="description" maxlength="300" style="width: 80%;" rows="2">${(attribute.description)!}</textarea>
+						<span class="info">请填写与分类内容相关的描述，字数控制应该70-100个汉字或者140-200个英文字符</span>
+					</dd>
+				</dl>
+			</div>
+			<div class="pageFormContent categoryModel" layoutH="96">
+				<div class="divider"></div>
+<#assign modelIndex=0/>
+<#macro childModel parent index=1>
+	<#if parent.hasChild>
+		<@_modelList parentId=parent.id>
+	<ul>
+			<#list page.list as a>
+				<#assign modelIndex++/>
+		<li style="clear:both;margin-left:${index*50}px;padding: 5px 0;">
+			<label>${a.id}:${a.name!}</label>
+			<input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
+			<input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
+			<input name="categoryModelList[${modelIndex}].categoryModel.templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+			<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
+			<@childModel a index+1/>
+		</li>
+			</#list>
+	</ul>
+		</@_modelList>
+	</#if>
+</#macro>
+<@_modelList>
+	<#list page.list as a>
+		<#assign modelIndex++/>
+				<dl class="nowrap">
+					<dt>
+						<input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
+						${a.id}:${a.name!}
+						<input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
+					</dt>
+		<#if site.useStatic>
+					<dd <#if a.onlyUrl> style="display:none"</#if>>
+						<label>静态化模板路径:</label><input name="categoryModelList[${modelIndex}].categoryModel.templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
+						<@childModel a/>
+					</dd>
+		</#if>
+				</dl>
+	<#else>
+				<dl class="nowrap">
+					<dt>还没有内容模型</dt>
+					<dd>
+					<@_sysAuthorized roleIds=admin.roles url='cmsModel/list'>
+						<a href="cmsModel/list.html" target="navTab" rel="cmsModel/list"><i class="icon-th-large icon-large"></i> 模型管理</a>
+					</@_sysAuthorized>
+					</dd>
+				</dl>
+	</#list>
+</@_modelList>
+				<dl class="nowrap categoryModelContentPath">
+					<dt>内容页面访问路径:</dt>
+					<dd>
+						<input name="contentPath" type="text" maxlength="500" size="80" value="${(a.contentPath)!(category.contentPath)!}"/>
+						<a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup="">选择路径</a>
+						<#if id?has_content><span class="info">此配置只会影响该分类下新增的内容，想修改旧的内容，请重新生成这些内容</span></#if>
+					</dd>
+				</dl>
+<script>
+function checkCategoryModel(){
+	$('.categoryModelContent',navTab.getCurrentPanel()).hide();
+	$('.categoryModelContentPath',navTab.getCurrentPanel()).hide().find('input[name=contentPath]').removeClass("required");
+	$('.categoryModel dl',navTab.getCurrentPanel()).each(function(){
+		if($(this).find('input[type=checkbox]').is(':checked')){
+			$(this).find('dd ul li input[name$=\\.use]').val('true');
+			$('.categoryModelContent',navTab.getCurrentPanel()).show();
+			if(0 == $(this).find('dd').length || $(this).find('dd').is(":visible")){
+				$('.categoryModelContentPath',navTab.getCurrentPanel()).show().find('input[name=contentPath]').addClass("required");
+				return ;
+			}
+		}
+	});
+}
+checkCategoryModel();
+<#if id?has_content||copyId?has_content>
+	<@_categoryModelList categoryId=id!copyId>
+		<#list page.list as a>
+			$('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().find('input[type=checkbox]').click();
+			$('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().find('input[name$=\\[${a.id.modelId}\\]\\.categoryModel\\.templatePath]').val('${(a.templatePath)!}');
+		</#list>
+	</@_categoryModelList>
+</#if>
+<#if a?has_content&&a.onlyUrl>
+$('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
+</#if>
+		</script>
+			</div>
+			<div class="pageFormContent categoryModelContent" layoutH="96">
+<#if a?has_content&&a.extendId?has_content>
+	<@_sysExtendFieldList extendId=a.extendId>
+		<#assign contentExtendList=list>
+	</@_sysExtendFieldList>
+</#if>
+<#include "../include_page/extends.html"/>
+			<@extends 'contentExtends' contentExtendList![]/>
+			</div>
+		</div>
+	</div>
+</form>

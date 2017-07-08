@@ -1,0 +1,49 @@
+<@_dictionaryList multiple=multiple pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return dialogSearch(this);" action="cmsDictionary/lookup.html" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<select class="combox" name="multiple">
+						<option value=""${(!multiple?has_content)?then(' selected="true"','')?no_esc}>字典类型</option>
+						<option value="false"${(multiple??&&"false"=multiple)?then(' selected="true"','')?no_esc}>多选</option>
+						<option value="true"${(multiple??&&"true"=multiple)?then(' selected="true"','')?no_esc}>单选</option>
+					</select>
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<button type="button" class="button" onclick="$.bringBack({'${field!'dictionaryId'}':'','dictionaryName':''});return false;">清空选择</button>
+						<button type="submit" class="buttonActive">搜索</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th>选择</th>
+				<th>名称</th>
+				<th>允许多选</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>
+					<a class="btnSelect" href="javascript:;" onclick="$.bringBack({'${field!'dictionaryId'}':'${a.id}','dictionaryName':'${(a.name?js_string)!}'});return false;" title="选择">选择</a>
+				</td>
+				<td>${a.name!}</td>
+				<td>${a.multiple?then('多选','单选')}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/pageDialog.html"/>
+</div>
+</@_dictionaryList>

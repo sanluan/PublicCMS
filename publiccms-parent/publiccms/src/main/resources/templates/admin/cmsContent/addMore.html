@@ -1,0 +1,32 @@
+<#if parentId?has_content>
+	<@_content id=parentId>
+		<#assign parent=object/>
+	</@_content>
+</#if>
+<div class="pageContent">
+	<div class="formBar">
+		<ul>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<ul class="tree treeFolder expand">
+	<#if categoryId?has_content>
+		<@_modelList parentId=(parent.modelId)!''>
+			<#list page.list as a>
+				<@_categoryModelList modelId=a.id categoryId=categoryId>
+					<#if page.totalCount gt 0>
+				<li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add">添加${(a.name)!}</a></li>
+					</#if>
+				</@_categoryModelList>
+			</#list>
+		</@_modelList>
+	</#if>
+		</ul>
+	</div>
+	<script>
+	$('ul li a',$.pdialog.getCurrent()).click(function(){
+		$.pdialog.closeCurrent();
+	});
+	</script>
+</div>

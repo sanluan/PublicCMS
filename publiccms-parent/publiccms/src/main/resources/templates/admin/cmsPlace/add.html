@@ -1,0 +1,57 @@
+<@_place id=id>
+	<#assign a=object/>
+</@_place>
+<#if !a?has_content&&itemType?has_content>
+<#switch itemType>
+	<#case 'content'>
+		<@_content id=itemId><#assign content=object/></@_content><#break>
+	<#case 'category'>
+		<@_category id=itemId><#assign category=object/></@_category><#break>
+</#switch>
+</#if>
+<form method="post" action="cmsPlace/save.do?callbackType=closeCurrent&navTabId=cmsPlace/dataList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
+	<input name="id" type="hidden" value="${(a.id)!}" />
+	<input name="path" type="hidden" value="${(a.path)!(path)!}" />
+	<input name="itemType" type="hidden" value="${(a.itemType)!itemType!}" />
+	<input name="itemId" type="hidden" value="${(a.itemId)!itemId!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>标题:</dt>
+			<dd>
+				<input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!title!}"/>
+				<a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" >选择</a>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>地址:</dt>
+			<dd><input name="url" type="text" maxlength="1000" style="width: 100%;" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
+		</dl>
+		<dl>
+			<dt>发布日期:</dt>
+			<dd>
+				<input class="date" name="publishDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
+				<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>封面:</dt>
+			<dd>
+				<input name="cover" value="${(a.cover)!}" maxlength="300" size="40" type="text"/>
+				<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+				<#include "../include_page/preview.html"/>
+				<@preview 'page' 'input[name=cover]'/>
+			</dd>
+		</dl>
+		<#include "../include_page/extendData.html"/>
+		<@_placeMetadata path=(a.path)!path!''><#assign metadata=object/></@_placeMetadata>
+		<#assign extendList=(metadata.extendList)![]/>
+		<#assign attribute=getPlaceAttribute((a.id)!)!{}/>
+		<@extendData 'extendDataList' extendList attribute/>
+	</div>
+</form>

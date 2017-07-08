@@ -1,0 +1,115 @@
+@charset "utf-8";
+
+a{ color:#3C7FB1;}
+/* Tabs */
+.tabs .tabsHeader{ background-color:#F1F1F1;}
+.tabs .tabsHeader li a{ color:#03408b;}
+.tabs .tabsHeader li span{ color:#183152;}
+.tabs .tabsContent{ border-color:#C1C1C1;background-color:#eef4f5;}
+
+/* Header */
+header{border-color:#C1C1C1;background:url(images/header_background.jpg) no-repeat;background-size: cover;}
+footer{border-color:#C1C1C1;background-color:#F1F1F1;}
+
+/* NavMenu */
+#navMenu li.selected a,#navMenu li a:hover{ color:#333;background-color:#F1F1F1;}
+
+/* TabsPage */
+.tabsPage .tabsPageHeader{ background-color:#F1F1F1;border-color:#C1C1C1;}
+.tabsPage .tabsPageHeader li{ border-right-color:#C1C1C1;}
+.tabsPage .tabsPageHeader li a{ color:#183152;}
+.tabsPage .tabsPageHeader li.selected{ background:#ffffff;}
+.tabsPage .tabsPageHeader li a.close:hover{ color:#ffffff;}
+.tabsPage .tabsPageHeader li a:hover{ color:#F1F1F1;}
+.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ color:#183152;}
+.tabsPage .tabsLeft{ border-right-color:#C1C1C1;}
+.tabsPage .tabsRight,.tabsPage .tabsMore{ border-left-color:#C1C1C1;}
+.tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{ color:#F1F1F1;}
+.tabsPage .tabsMoreList{ border-color:#C1C1C1;background-color:#FFF;}
+.tabsPage{ border-color:#C1C1C1;background-color:#FFF;}
+
+/* Alert */
+.alert .alertFooter, .alert .alertFooter_r, .alert .alertFooter_c{ background-image:url(./images/alert_panel.png);}
+.alert .alertContent{ border-color:#C1C1C1;background-color:#eef4f5;}
+.alert .warn .alertInner{ border-color:#e83e09;background-color:#fefacf;}
+.alert .error .alertInner{ border-color:#e50000;background-color:#fefacf;}
+.alert .correct .alertInner, .alert .info .alertInner{ border-color:#C1C1C1;background-color:#fefacf;}
+.alert .confirm .alertInner{ border-color:#C1C1C1;background-color:#fefacf;}
+.alert h1{ border-color:#CCC;background-image:url(./images/alert_panel_icon.png);background-repeat:no-repeat;}
+
+/* Dialog */
+.dialog .dialogHeader, .dialog .dialogHeader_r,
+.dialog .dialogFooter, .dialog .dialogFooter_r{ background-image:url(./images/dialogpanel.png);background-repeat:no-repeat;}
+.dialog .dialogHeader_c,.dialog .dialogFooter_c{ background-image:url(./images/dialogpanel.png);}
+.dialog .dialogHeader h1, .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize, .resizable_f_r{ background-image:url(./images/dialogpanel_icon.png);background-repeat:no-repeat;}
+.dialog .dialogHeader h1{ color:#183152;}
+.dialog .dialogContent{ border-color:#C1C1C1;background-color:#eef4f5;}
+.resizable{ border-color:#081629;background-color:#c3d7dc;}
+
+/* Tree */
+.tree ul{ background-color:#FFF;}
+.tree li a, .tree li span{ color:#183152;}
+.tree .hover{ background-color:#f5f5f5;}
+.tree .selected{ background-color:#e8edf3;}
+
+/* Accordion */
+.accordion .accordionHeader h2{ color:#183152;}
+.accordion{ background-color:#FFF;}
+.accordion .accordionHeader{ background-color:#F1F1F1;}
+.accordion .accordionHeader,.accordion .accordionContent{ border-color:#C1C1C1;}
+
+/* Grid */
+.pagination, .pagination li.hover, .pagination li.hover a, .pagination li span,
+.pagination li.disabled span span,
+.panelBar .line, .pagination li.jumpto, .pagination li.jumpto .goto{ background-image:url(./images/grid.png);}
+
+.pagination, .pagination li.hover, .pagination li.hover a, .pagination li span,
+.pagination li.disabled span span,
+.pagination li.jumpto, .pagination li.jumpto .goto{ background-repeat:no-repeat;}
+.panelBar{ border-color:#C1C1C1;background-color:#efefef;}
+.panelBar .toolBar li.line{border-color:#C1C1C1;}
+/* ----------------------------------------------------------------- Form */
+/* TextInput */
+.textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
+textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled{ background-image:url(./images/input_bg.png);background-repeat:no-repeat;background-attachment:scroll;}
+.textInput, .textArea{ border-color:#a2bac0 #C1C1C1 #C1C1C1 #a2bac0;background-color:#FFF;}
+input.required, textarea.required{ border-color:#a2bac0 #C1C1C1 #C1C1C1 #a2bac0;background-color:#FFF;}
+input.error, textarea.error{ border-color:#F80C11 #FB7E81 #FB7E81 #F80C11;}
+input.focus, textarea.focus{ border-color:#64aabc #a9d7e3 #a9d7e3 #64aabc;background-color:#f8fafc;}
+input.readonly, textarea.readonly{ border-color:#9eabb3 #d5dbdf #d5dbdf #9eabb3;background-color:#F6F6F6;}
+input.disabled, textarea.disabled{ border-color:#9eabb3 #d5dbdf #d5dbdf #9eabb3;background-color:#F6F6F6;}
+.inputButton, .inputDateButton{ background-image:url(../default/images/input_bt.png);background-repeat:no-repeat;}
+
+/* Button */
+.panelBar .toolBar li a:hover,.button, .buttonActive { color:#183152;background-color:#C1C1C1;}
+.panelBar .toolBar li a:hover,.button:hover,.buttonActive:hover{ color:#fff;}
+/* ----------------------------------------------------------------- Pages */
+/* Layout */
+#splitBar,#sidebar .collapse{ background-color:#EDEDED;}
+#sidebar_s{ background-color:#EDEDED;}
+#taskbar, #taskbar li, #taskbar li .taskbutton{ background-image:url(./images/taskbar.png);background-repeat:no-repeat;}
+#taskbar .close, #taskbar .restore, #taskbar .minimize{ background-image:url(./images/taskbar_icon.png);background-repeat:no-repeat;}
+#taskbar li .taskbutton span{ color:#FFF;}
+#taskbar .taskbarLeft, #taskbar .taskbarRight{ background-image:url(./images/taskbar_control.png);background-repeat:no-repeat;}
+
+/* Homepage */
+.sidebarContent{ display:block;overflow:auto;height:500px;border:solid 1px #86B4EC;background-color:#FFF;}
+
+/* Pages */
+.pageForm .inputInfo{ color:#999;}
+
+/* Pages dialog */
+.dialog .pageHeader, .dialog .pageContent{ border-color:#C1C1C1;}
+.pageFormContent{ border-color:#C1C1C1;background-color:#FFF;}
+
+/* Pages default */
+.page .searchBar label{ color:#183152;}
+
+/* Pages Form */
+.pageForm .formBar{ border-color:#C1C1C1;}
+.divider{ border-color:#C1C1C1;}
+
+/* combox */
+.combox .select a{ color:#183152;}
+.comboxop{ border-color:#B8D0D6;}
+.combox, .combox div, .combox div a{ background-image:url(../default/images/search-bg.gif);background-repeat:no-repeat;}

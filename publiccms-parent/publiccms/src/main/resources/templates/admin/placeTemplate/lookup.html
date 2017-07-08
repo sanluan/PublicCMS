@@ -1,0 +1,27 @@
+<#macro chipTree filepath prefix suffix>
+	<@_templateList path='include'+filepath>
+		<@_placeMetadata dir=filepath><#local metaDataMap=object/></@_placeMetadata>
+		<#list list as a>
+			<li>
+				<#local path=filepath+'/'+a.fileName>
+			<#if a.directory>
+				<a href="javascript:;" onclick="return false;">${a.fileName} </a>
+				<ul>
+					<@chipTree path prefix suffix/>
+				</ul>
+			<#else>
+				<a href="javascript:;" onclick="${editor!'cmsTemplateEditor'}.replaceSelection('${(prefix+path+suffix)?js_string} ${(metaDataMap[a.fileName].alias)?has_content?then('<#-- '+metaDataMap[a.fileName].alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
+					${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+				</a>
+			</#if>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_templateList>
+</#macro>
+<div class="pageFormContent" layoutH="19">
+	<ul class="tree treeFolder">
+<@chipTree '' '<@_includePlace path="' '"/>'/>
+	</ul>
+</div>

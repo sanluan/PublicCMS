@@ -1,0 +1,46 @@
+<@_place id=id>
+	<#assign a=object/>
+</@_place>
+<div class="pageContent">
+	<div class="formBar">
+		<ul>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>标题:</dt>
+			<dd>
+				${(a.title)!}
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>网址:</dt>
+			<dd>
+				<a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
+			</dd>
+		</dl>
+		<dl>
+			<dt>发布日期:</dt>
+			<dd>
+				${(a.publishDate)}
+			</dd>
+		</dl>
+	<#if (a.cover)?has_content>
+		<dl class="nowrap">
+			<dt>封面:</dt>
+			<dd>
+				<div class="thumbnail">
+					<img src="${(site.sitePath+a.cover)!}" style="max-width:200px;max-height:200px;"/>
+				</div>
+			</dd>
+		</dl>
+	</#if>
+		<@_placeMetadata path=(a.path)!><#assign metadata=object/></@_placeMetadata>
+	<#if (metadata.extendList)?has_content>
+		<#include "../include_page/extendData.html"/>
+		<#assign attribute=getPlaceAttribute((a.id)!)!{}/>
+		<@extendData 'extendDataList' metadata.extendList attribute 'view'/>
+	</#if>
+	</div>
+</div>

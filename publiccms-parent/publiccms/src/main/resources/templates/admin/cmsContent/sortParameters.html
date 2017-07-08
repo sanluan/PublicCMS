@@ -1,0 +1,16 @@
+<@_sysDept id=admin.deptId><#assign dept=object/></@_sysDept>
+<form action="cmsContent/sort.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+	<input type="hidden" name="id" value="${id!}"/>
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">确定</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="19">
+		<dl>
+			<dt>置顶级别:</dt>
+			<dd><input class="required digits" type="number" name="sort" max="${(dept.maxSort)!0}" min="0" value="${sort!0}"/></dd>
+		</dl>
+	</div>
+</form>

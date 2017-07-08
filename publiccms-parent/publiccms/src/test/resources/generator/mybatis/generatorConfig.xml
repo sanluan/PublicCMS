@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+	<context id="context" defaultModelType="flat">
+		<!-- 生成的Java文件的编码 -->
+		<property name="javaFileEncoding" value="UTF-8" />
+		<!-- 序列化插件 -->
+		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+		<!-- 自动生成toString方法 -->
+		<plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+		<!-- 自动生成equals方法和hashcode方法 -->
+		<plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+		<!--自动生成分页查询函数，该分页是内存全量 -->
+		<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin" />
+		<!--自定义插件 -->
+		<plugin type="com.publiccms.common.generator.mybatis.ServicePlugin" />
+		<plugin type="org.mybatis.generator.plugins.RenameExampleClassPlugin">
+			<property name="searchString" value="Example$" />
+			<property name="replaceString" value="Query" />
+		</plugin>
+		<!--不生成冗余的注释说明 -->
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+			<property name="suppressDate" value="true" />
+		</commentGenerator>
+		<jdbcConnection
+			connectionURL="jdbc:mysql://localhost:3306/public_cms?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=round"
+			driverClass="com.mysql.jdbc.Driver" userId="publiccms" password="publiccms_password" />
+		<javaModelGenerator targetPackage="org.publliccms.model"
+			targetProject="src/main/java/">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+		<sqlMapGenerator targetPackage="mapper.cms.xml"
+			targetProject="src/main/resources/" />
+		<javaClientGenerator targetPackage="org.publliccms.mapper"
+			targetProject="src/main/java/" type="XMLMAPPER" />
+		<table tableName="cms_category"></table>
+	</context>
+</generatorConfiguration>

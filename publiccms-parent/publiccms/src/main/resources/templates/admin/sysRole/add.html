@@ -1,0 +1,70 @@
+<@_sysRole id=id>
+	<#assign a=object/>
+</@_sysRole>
+<form method="post" action="sysRole/save.do?callbackType=closeCurrent&navTabId=sysRole/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>名称:</dt>
+			<dd>
+				<input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>拥有所有功能权限:</dt>
+			<dd>
+				<input name="ownsAllRight" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllRight',navTab.getCurrentPanel()).hide();}else{$('.ownsAllRight').show();}"/>
+			</dd>
+		</dl>
+<#macro moudleTree parentId=''>
+	<@_sysMoudleList parentId=parentId advanced=true>
+		<#if page.totalCount gt 0>
+			<ul>
+				<#list page.list as a>
+					<li>
+						<a tname="moudleIds" tvalue="${a.id}">${(a.attached?no_esc)!} ${a.name}</a>
+						<@moudleTree a.id/>
+					</li>
+				</#list>
+			</ul>
+		</#if>
+	</@_sysMoudleList>
+</#macro>
+		<fieldset class="ownsAllRight">
+			<legend>模块授权</legend>
+			<dl class="nowrap">
+				<dt>显示所有模块:</dt>
+				<dd>
+					<input name="showAllMoudle" type="checkbox"/>
+				</dd>
+			</dl>
+			<ul class="tree treeFolder treeCheck">
+				<li>
+					<a href="javascript:;" onclick="return false;">所有模块</a>
+					<@moudleTree/>
+				</li>
+			</ul>
+<#if a??>
+<script>
+	<#if a.ownsAllRight>
+	$('input[name=ownsAllRight]',navTab.getCurrentPanel()).click();
+	</#if>
+	<#if a.showAllMoudle>
+	$('input[name=showAllMoudle]',navTab.getCurrentPanel()).click();
+	</#if>
+	<@_sysRoleMoudleList roleId=a.id>
+		<#list page.list as a>
+	$('.tree li a[tname=moudleIds][tvalue=${a.id.moudleId?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+		</#list>
+	</@_sysRoleMoudleList>
+</script>
+</#if>
+		</fieldset>
+	</div>
+</form>

@@ -1,0 +1,8 @@
+<#macro extendsFieldType inputName value=''>
+<#local inputTypes={'text':'输入框','number':'数字','file':'文件','image':'图片','password':'密码','editor':'编辑器','textarea':'文本域','date':'日期','datetime':'时间','template':'模板路径','boolean':'是否','user':'用户','content':'内容','category':'分类','dictionary':'数据字典'}/>
+<select class="combox" name="${inputName!}">
+	<#list inputTypes?keys as a>
+	<option value="${a}"${(a=value)?then(' selected="true"','')?no_esc}>${inputTypes[a]}</option>
+	</#list>
+</select>
+</#macro>

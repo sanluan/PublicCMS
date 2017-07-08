@@ -1,7 +1,0 @@
-rootProject.name = 'publiccms-gradle'
-include 'publiccms'
-include 'publiccms-common'
-// include 'publiccms-improve' //商业版插件
-project(':publiccms').projectDir = new File(settingsDir, '../publiccms')
-project(':publiccms-common').projectDir = new File(settingsDir, '../publiccms-common') 
-// project(':publiccms-improve').projectDir = new File(settingsDir, '../publiccms-improve') 

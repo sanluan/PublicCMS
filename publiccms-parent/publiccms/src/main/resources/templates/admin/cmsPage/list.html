@@ -1,0 +1,35 @@
+<#macro pageTree filepath=''>
+	<@_templateList path=filepath>
+		<@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
+		<#list list as a>
+			<@t.merge 'pages' filepath+'/'+a.fileName/>
+		</#list>
+		<@_sysDeptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@_sysDeptPage>
+		<#list list as a>
+			<#local path=filepath+'/'+a.fileName>
+			<#if 'ftl'!=a.fileName&&(deptPageMap[path])?has_content&&deptPageMap[path]>
+				<li>
+				<#if a.directory>
+					<a href="javascript:;" onclick="return false;">${a.fileName}</a>
+					<ul><@pageTree path/></ul>
+				<#else>
+					<a href="cmsPage/metadata.html?path=${path?url}" target="ajax" rel="pageBox">
+						${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+					</a>
+				</#if>
+				</li>
+			</#if>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_templateList>
+</#macro>
+<div class="pageContent">
+	<div layoutH="0" style="float:left; display:block; overflow:auto; width:240px;border-right:solid 1px #CCC; line-height:21px;background:#ffffff">
+		<ul class="tree treeFolder">
+			<@pageTree/>
+	     </ul>
+	</div>
+	<div id="pageBox" class="unitBox" style="margin-left:240px;">
+	</div>
+</div>

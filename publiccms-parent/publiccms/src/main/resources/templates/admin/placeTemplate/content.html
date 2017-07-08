@@ -1,0 +1,44 @@
+<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+<style>
+.CodeMirror{height:100%;line-height:16px;}
+</style>
+<script>
+function refreshcmsTemplatePlace(){
+	$('textarea[name=content]',navTab.getCurrentPanel()).val(cmsTemplatePlaceEditor.getValue());
+}
+</script>
+<form method="post" action="cmsTemplate/save.do" class="pageForm required-validate" onsubmit="refreshcmsTemplatePlace();return validateCallback(this, navTabAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<#if site.useSsi>
+				<li><a class="button" href="cmsTemplate/publishPlace.do?path=${path!}" target="ajaxTodo">发布</a></li>
+			</#if>
+			<li><a class="button" href="cmsTemplate/deletePlace.do?path=${path!}&navTabId=placeTemplate/list" title="确定要删除该页面片段吗?" target="ajaxTodo">删除页面片段</a></li>
+			<li><a class="button" href="placeTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">页面片段元数据</a></li>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+		</ul>
+	</div>
+	<h2 class="contentTitle">
+	 	<a class="button" href="cmsTemplate/ftlLookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">模板片段</a>
+	 	<a class="button" href="placeTemplate/lookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">页面片段</a>
+	 	<a class="button" href="cmsWebFile/lookup.html?editor=cmsTemplatePlaceEditor" target="dialog" mask="true">网站文件</a>
+		<a class="button" href="cmsTemplate/help.html?path=${('/include'+path?url)!}&editor=cmsTemplatePlaceEditor" target="dialog" mask="true">模板帮助</a>
+	</h2>
+	<div class="pageFormContent" layoutH="100">
+   		<div>
+			<input name="path" type="hidden" value="${'/include'+path}"/>
+			<textarea name="content" id="cmsTemplatePlaceEditor"><@_templateContent path='/include'+path>${(object)!}</@_templateContent></textarea>
+			<script>
+				var cmsTemplatePlaceEditor = CodeMirror.fromTextArea(document.getElementById('cmsTemplatePlaceEditor'), {
+			        mode: "freemarkermixed",
+			        lineNumbers: true,
+			        tabSize        : 4,
+			        indentUnit     : 4,
+			        lineWrapping   : true,
+			        indentWithTabs : true,
+			        extraKeys: { "Ctrl-Space": "autocomplete" }
+				});
+			</script>
+		</div>
+	</div>
+</form>
