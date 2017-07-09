@@ -9,15 +9,15 @@
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-			<input name="${inputName}" <#if 'customform'=type>class="number<#if extend.required> required</#if>" </#if>type="text" size="5" value="${(value)!}"/>
+			<input name="${inputName}" <#if 'customform'!=type>class="number<#if extend.required> required</#if>" </#if>type="text" size="5" value="${(value)!}"/>
 			</#if>
 			<#break>
 		<#case 'file'>
 			<#if 'view'=type>
 				<a href="${site.sitePath+value}" target="_blank">${(value)!}</a>
 			<#else>
-				<input name="${inputName}" <#if 'customform'=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
-				<#if 'customform'=type><a class="btnAttach" href="common/upload.html?field=${inputName}" lookupGroup="" width="560" height="300">附件</a></#if>
+				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
+				<#if 'customform'!=type><a class="btnAttach" href="common/upload.html?field=${inputName}" lookupGroup="" width="560" height="300">附件</a></#if>
 			</#if>
 			<#break>
 		<#case 'image'>
@@ -26,8 +26,8 @@
 				<br/>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" <#if 'customform'=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
-				<#if 'customform'=type>
+				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
+				<#if 'customform'!=type>
 					<a class="btnAttach" href="common/upload.html?field=${inputName}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 					<#if !preview?has_content>
 						<#include "../include_page/preview.html"/>
@@ -40,28 +40,28 @@
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" <#if 'customform'=type>class="<#if extend.required> required</#if>" </#if>type="password" size="30" value="${(value)!}"/>
+				<input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" size="30" value="${(value)!}"/>
 			</#if>
 			<#break>
 		<#case 'textarea'>
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<textarea name="${inputName}" <#if 'customform'=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="5">${(value)!}</textarea>
+				<textarea name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="5">${(value)!}</textarea>
 			</#if>
 			<#break>
 		<#case 'editor'>
 			<#if 'view'=type>
 				${(value?no_esc)!}
 			<#else>
-				<textarea name="${inputName}" <#if 'customform'=type>class="editor<#if extend.required> required</#if>" </#if>style="width: 100%;" rows="20">${(value)!}</textarea>
+				<textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>style="width: 100%;" rows="20">${(value)!}</textarea>
 			</#if>
 			<#break>
 		<#case 'template'>
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" type="text" maxlength="255" size="40" value="${(value)!}"<#if 'customform'=type> class="<#if extend.required> required</#if>"</#if>/>
+				<input name="${inputName}" type="text" maxlength="255" size="40" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
 				<a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName}" lookupGroup="">选择模板</a>
 			</#if>
 			<#break>
@@ -69,7 +69,7 @@
 			<#if 'view'=type>
 				<#if value?has_content>${('true'=value)?then('是','否')}</#if>
 			<#else>
-				<select class="combox" name="${inputName}"<#if 'customform'=type> class="<#if extend.required> required</#if>"</#if>>
+				<select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
 					<option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')?no_esc}>是</option>
 					<option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')?no_esc}>否</option>
 				</select>
@@ -81,7 +81,7 @@
 				${(value)!}:${(user.nickName)!}
 			<#else>
 				<input name="${inputName}" value="${(value)!}" type="hidden"/>
-				<input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(user.nickName)!}" type="text"<#if 'customform'=type> class="<#if extend.required> required</#if>"</#if>/>
+				<input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(user.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
 				<a class="btnLook" href="sysUser/lookup.html?field=value" width="920" warn="请选择用户" lookupGroup="${name}[${index}]">选择用户</a>
 			</#if>
 			<#break>
@@ -91,7 +91,7 @@
 				${(value)!}:${(content.title)!}
 			<#else>
 				<input name="${inputName}" value="${(value)!}" type="hidden"/>
-				<input name="${name}[${index}].title" readonly="readonly" size="30" value="${(content.title)!}" type="text"<#if 'customform'=type> class="<#if extend.required> required</#if>"</#if>/>
+				<input name="${name}[${index}].title" readonly="readonly" size="30" value="${(content.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
 				<a class="btnLook" href="cmsContent/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择内容</a>
 			</#if>
 			<#break>
@@ -101,7 +101,7 @@
 				${(value)!}:${(category.name)!}
 			<#else>
 				<input name="${inputName}" value="${(value)!}" type="hidden"/>
-				<input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(category.name)!}" type="text"<#if 'customform'=type> class="<#if extend.required> required</#if>"</#if>/>
+				<input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(category.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
 				<a class="btnLook" href="cmsCategory/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择分类</a>
 			</#if>
 			<#break>
@@ -119,7 +119,7 @@
 							</#list>
 						</@_dictionaryDataList>
 					<#else>
-						<select class="combox" name="${inputName}"<#if 'customform'=type> class="<#if extend.required> required</#if>"</#if>>
+						<select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
 						<@_dictionaryDataList dictionaryId=extend.dictionaryId>
 							<#list list as d>
 							<option value="${d.id.value}"${(value?has_content&&d.id.value=value)?then(' selected="true"','')?no_esc}>${d.text}</option>
@@ -134,23 +134,23 @@
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" <#if 'customform'=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="20" value="${(value)!}"/>
-				<#if 'customform'=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
+				<input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="20" value="${(value)!}"/>
+				<#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
 			</#if>
 			<#break>
 		<#case 'datetime'>
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" <#if 'customform'=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
-				<#if 'customform'=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
+				<input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
+				<#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
 			</#if>
 			<#break>
 		<#default>
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" <#if 'customform'=type>class="<#if extend.required> required</#if>" </#if>type="text" size="30" value="${(value)!}"/>
+				<input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" size="30" value="${(value)!}"/>
 			</#if>
 	</#switch>
 </#macro>
