@@ -7,8 +7,8 @@
 			<th type="enum" name="${name}[#index#].inputType" enumUrl="common/extendsFieldType.html" fieldClass="required" size="10">字段类型</th>
 			<th type="text" name="${name}[#index#].name" size="10" fieldClass="required" fieldAttrs="{maxlength:20}">名称</th>
 			<th type="checkbox" name="${name}[#index#].required" size="10">必填</th>
-			<th type="text" name="${name}[#index#].defaultValue" size="12">默认值</th>
-			<th type="lookup" name="${name}[#index#].dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" size="10">数据字典</th>
+			<th type="text" name="${name}[#index#].defaultValue" size="10">默认值</th>
+			<th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" size="10">数据字典</th>
 			<th type="textarea" name="${name}[#index#].description" fieldAttrs="{maxlength:100,rows:2,cols:40}">描述</th>
 			<th type="del" width="60">操作</th>
 		</tr>
