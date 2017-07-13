@@ -31,6 +31,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<scope>provided</scope> <!-- delete this line for spring boot -->
 			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
@@ -52,6 +53,7 @@
 	<build>
 		<defaultGoal>compile</defaultGoal>
 		<plugins>
+			<!-- delete this line for spring boot
 			<plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -63,6 +65,7 @@
                     </execution>
                 </executions>
             </plugin>
+			delete this line for spring boot -->
             <plugin>
 			  <groupId>org.eclipse.jetty</groupId>
 			  <artifactId>jetty-maven-plugin</artifactId>
