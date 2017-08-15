@@ -1,0 +1,34 @@
+<@_categoryType id=id><#assign a=object/></@_categoryType>
+<div class="pageContent">
+	<form method="post" action="cmsCategoryType/save.do?callbackType=closeCurrent&navTabId=cmsCategoryType/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+		<input name="id" type="hidden" value="${id!}" />
+		<div class="formBar">
+			<ul>
+			<@_sysAuthorized roleIds=admin.roles url='cmsCategoryType/save'>
+				<li><button type="submit" class="buttonActive">保存</button></li>
+			</@_sysAuthorized>
+				<li><button type="button" class="button close">关闭</button></li>
+			</ul>
+		</div>
+		<div class="pageFormContent" layoutH="60">
+			<dl>
+				<dt>名称:</dt>
+				<dd><input class="required" name="name" type="text" size="20" value="${(a.name)!}"/></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>排序:</dt>
+				<dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!(category.sort)!0}"/></dd>
+			</dl>
+			<#include "../include_page/extends.html"/>
+<#if a?has_content>
+	<@_sysExtendFieldList extendId=a.extendId>
+		<#assign categoryExtendList=list>
+	</@_sysExtendFieldList>
+</#if>
+			<fieldset>
+				<legend>分类扩展字段</legend>
+				<@extends 'categoryExtends' categoryExtendList![]/>
+			</fieldset>
+		</div>
+	</form>
+</div>

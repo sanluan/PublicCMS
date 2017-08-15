@@ -1,0 +1,82 @@
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>路径:</label><label>${path?has_content?then(path+'/','/')}</label>
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a href="cmsWebFile/directory.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i> 新建目录</a></li>
+			<li><a href="cmsWebFile/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-upload icon-large"></i> 上传文件</a></li>
+			<li><a href="cmsWebFile/delete.do" title="确定要删除这些文件吗?" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="65">
+		<thead>
+			<tr>
+				<th width="20"><input type="checkbox" group="paths" class="checkboxCtrl"></th>
+				<th width="30"></th>
+				<th>名称</th>
+				<th>修改日期</th>
+				<th>创建日期</th>
+				<th>文件大小</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+	<@_webFileList path=path>
+		<#if path?has_content>
+			<tr>
+				<td></td>
+				<td class="tree"><div class="folder_expandable"></div></td>
+				<td>
+					<a href="cmsWebFile/list.html?path=${path?keep_before_last('/')}" target="navTab" rel="cmsWebFile/list" title="返回上一级">
+						返回上级..
+					</a>
+				</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+			</tr>
+		</#if>
+		<#list list as a>
+			<#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+			<tr>
+				<td><input name="paths" value="${filePath}" type="checkbox"></td>
+				<td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
+				<td>
+					<#if a.directory>
+						<a href="cmsWebFile/list.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/list">
+							${a.fileName}
+						</a>
+					<#else>
+					${a.fileName}
+					</#if>
+				</td>
+				<td>${a.lastModifiedTime?datetime}</td>
+				<td>${a.creationTime?datetime}</td>
+				<td><@t.fileSize a.size/></td>
+				<td>
+					<#if a.directory>
+						<a href="cmsWebFile/zip.do?path=${filePath}" title="确定要压缩这个目录吗?" target="ajaxTodo">压缩目录</a>
+					<#else>
+						<#if a.fileName?ends_with('.zip')>
+							<a href="cmsWebFile/unzip?path=${filePath}" title="确定要解压缩这个文件么?" target="ajaxTodo">解压缩</a>
+							<a href="cmsWebFile/unzipHere?path=${filePath}" title="确定要解压缩这个文件到当前目录么?" target="ajaxTodo">解压缩到当前目录</a>
+						</#if>
+						<a href="${site.sitePath+filePath}" target="_blank" title="查看">查看</a>
+					</#if>
+				</td>
+			</tr>
+		</#list>
+	</@_webFileList>
+		</tbody>
+	</table>
+</div>

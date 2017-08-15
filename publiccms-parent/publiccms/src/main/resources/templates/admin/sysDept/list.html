@@ -1,0 +1,92 @@
+<#if parentId?has_content>
+	<@_sysDept id=parentId!>
+		<#assign parent=object/>
+	</@_sysDept>
+</#if>
+<@_sysDeptList parentId=parentId userId=userId name=name
+			pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>父部门:</label>
+					<input name="parentId" type="hidden" value="${parentId!}"/>
+					<input readonly="readonly" name="parentName" type="text" size="10" value="${(parent.name)!}"/>
+					<a class="btnLook" href="sysDept/lookup.html" width="920" warn="请选择部门" lookupGroup="">选择部门</a>
+				</li>
+				<li>
+					<label>负责人:</label>
+					<#include "../include_page/userId.html"/>
+				</li>
+				<li>
+					<label>名称:</label>
+					<input type="text" name="name" value="${(name)!}" />
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<button type="submit" class="buttonActive">搜索</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<#if parent?has_content>
+				<li><a href="sysDept/list.html?parentId=${(parent.parentId)!}" target="navTab" rel="sysDept/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
+				<li class="line">line</li>
+			</#if>
+			<li><a href="sysDept/add.html?parentId=${parentId!}" target="navTab" rel="sysDept/add"><i class="icon-plus-sign-alt icon-large"></i> 添加部门</a></li>
+			<li><a href="sysDept/add.html?id={sid}" target="navTab" rel="sysDept/edit"><i class="icon-edit icon-large"></i> 修改部门</a></li>
+			<li><a href="sysDept/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th width="30">ID</th>
+				<th>名称</th>
+				<th>父部门</th>
+				<th>描述</th>
+				<th>负责人</th>
+				<th>拥有全部分类</th>
+				<th>最大内容置顶级别</th>
+				<th>拥有全部页面</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@t.merge 'userIds' a.userId!/>
+			</#list>
+			<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.id!}</td>
+				<td>${(a.name)!}</td>
+				<td>${a.parentId!}</td>
+				<td>${a.description!}</td>
+				<td>${(userMap[a.userId?string].nickName)!}</td>
+				<td>${a.ownsAllCategory?then('是','')}</td>
+				<td>${a.maxSort}</td>
+				<td>${a.ownsAllPage?then('是','')}</td>
+				<td>
+					<a href="sysDept/list.html?parentId=${a.id}" target="navTab" rel="sysDept/list">子部门管理</a>
+				<#if a.userId?has_content&&a.userId=admin.id>
+					<a href="sysDept/userList.html?deptId=${a.id}" target="navTab" rel="sysDept/userList" title="<i class='icon-user icon-large'></i> ${(a.name)!}人员管理">人员管理</a>
+				</#if>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_sysDeptList>

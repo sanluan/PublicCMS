@@ -1,0 +1,37 @@
+<@_metadata path=path><#assign a=object/></@_metadata>
+<form method="post" action="cmsPage/save.do?rel=pageBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<li>
+				<#if (a.extendList)?has_content><button type="submit" class="buttonActive">保存</button></#if>
+			</li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<input name="path" type="hidden" value="${path}"/>
+		<#if site.useStatic&&(a.publishPath)?has_content>
+			<dl class="nowrap">
+				<dt>静态页面:</dt>
+				<dd>
+					<label><a class="button" href="cmsTemplate/publish.do?path=${path}" target="ajaxTodo">生成页面</a></label>
+					<label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank">查看页面</a></label>
+				</dd>
+			</dl>
+		</#if>
+		<#if !a?has_content||a.useDynamic?has_content&&a.useDynamic>
+			<dl class="nowrap">
+				<dt>动态页面:</dt>
+				<dd>
+					<label><a class="button" href="${site.dynamicPath+path}" target="_blank">查看页面</a></label>
+					<#if 10 lte (a.cacheTime)!0>
+						<label><a class="button" href="cmsPage/clearCache.do?path=${path}" target="ajaxTodo">清除缓存</a></label>
+					</#if>
+				</dd>
+			</dl>
+		</#if>
+		<#include "../include_page/extendData.html"/>
+		<#assign extendList=(a.extendList)![]/>
+		<#assign attribute=(a.extendData)!{}/>
+		<@extendData 'extendDataList' extendList attribute/>
+	</div>
+</form>

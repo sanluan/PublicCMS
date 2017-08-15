@@ -1,0 +1,85 @@
+<@_logUploadList userId=userId channel=channel image=image filePath=filePath orderType=orderType pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>用户：</label>
+					<#include "../include_page/userId.html"/>
+				</li>
+				<li>
+					<label>渠道：</label>
+					<input type="text" name="channel" value="${channel!}" />
+				</li>
+				<li>
+					<select class="combox" name="image">
+						<option value="">是否图片</option>
+						<option value="false"${(image?has_content&&'false'=image)?then(' selected="true"','')?no_esc}>文件</option>
+						<option value="true"${(image?has_content&&'true'=image)?then(' selected="true"','')?no_esc}>图片</option>
+					</select>
+				</li>
+				<li>
+					<label>文件路径：</label>
+					<input type="text" name="filePath" value="${filePath!}" />
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<button type="submit" class="buttonActive">搜索</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a href="logUpload/delete.do" title="确定要删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th>用户ID</th>
+				<th>用户昵称</th>
+				<th>渠道</th>
+				<th>是否图片</th>
+				<th orderField="fileSize" class="<#if orderField??&&'fileSize'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">文件大小</th>
+				<th>IP</th>
+				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">操作日期</th>
+				<th>文件路径</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@t.merge 'userIds' a.userId!/>
+			</#list>
+			<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
+				<td>${a.userId!}</td>
+				<td>
+					${(userMap[a.userId?string].nickName)!}
+				</td>
+				<td>
+					${a.channel!}
+				</td>
+				<td>
+					${a.image?then('是','否')}
+				</td>
+				<td><@t.fileSize a.fileSize/></td>
+				<td>${a.ip!}</td>
+				<td>${a.createDate!}</td>
+				<td>${(a.filePath)!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_logUploadList>

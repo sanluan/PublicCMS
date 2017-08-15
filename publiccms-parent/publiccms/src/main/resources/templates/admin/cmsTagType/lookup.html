@@ -1,0 +1,16 @@
+<#macro typeLookupTree typeId=''>
+	<@_tagTypeList>
+		<#list page.list as a>
+			<li>
+				<a href="javascript:;" onclick="$.bringBack({typeId:'${a.id}',typeName:'${a.name}'});return false;"<#if typeId??&&a.id?string=typeId> class="selected"</#if>>${a.name!}</a>
+			</li>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_tagTypeList>
+</#macro>
+<div class="pageFormContent" layoutH="19">
+	<ul class="tree treeFolder expand">
+		<@typeLookupTree typeId/>
+	</ul>
+</div>

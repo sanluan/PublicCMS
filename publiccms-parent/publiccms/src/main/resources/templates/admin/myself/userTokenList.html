@@ -1,0 +1,50 @@
+<@_sysUserTokenList userId=admin.id channel=channel orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>渠道:</label>
+					<input type="text" name="channel" value="${(channel)!}" />
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<button type="submit" class="buttonActive">搜索</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a href="sysUserToken/delete.do?authToken={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th>用户ID</th>
+				<th>渠道</th>
+				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">授权日期</th>
+				<th>登录IP</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.authToken}">
+				<td>${a.userId!}</td>
+				<td>${a.channel!}</td>
+				<td>${a.createDate!}</td>
+				<td>${a.loginIp!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_sysUserTokenList>

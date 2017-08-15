@@ -1,0 +1,54 @@
+<@_category id=categoryId!>
+	<#assign category=object/>
+	<@_model id=modelId!>
+		<#assign model=object/>
+<#assign formContent>
+	<#if category.allowContribute>
+<form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save.do">
+	<input name="returnUrl" type="hidden" value="这里是您的表单提交之后的页面地址" />
+	<input name="categoryId" type="hidden" value="${category.id!}"/>
+	<input name="modelId" type="hidden" value="${model.id!}"/>
+	<input name="author" type="hidden" value="<#noparse>${(user.nickName)!}</#noparse>"/>
+	<p><label>标题:</label><input name="title" type="text" size="60" maxlength="255"/></p>
+	<#if model?has_content&&model.onlyUrl>
+	<p><label>正文:</label><input name="url" type="text" size="60" maxlength="1000"/></p>
+	<#else>
+	<p><label>正文:</label><textarea name="text" style="width: 100%;" rows="20"></textarea></p>
+	</#if>
+	<#include "../include_page/extendData.html"/>
+	<@_sysExtendFieldList extendId=category.extendId>
+		<#assign extendList=list![]/>
+		<#assign extendValue=attribute!{}/>
+		<@extendData 'categoryExtendDataList' extendList extendValue 'customform'/>
+	</@_sysExtendFieldList>
+	<#assign extendList=model.extendList![]/>
+	<#assign extendValue=attribute!{}/>
+	<@extendData 'modelExtendDataList' extendList extendValue 'customform'/>
+	<p><input type="submit" value="提交"/></p>
+</form>
+		<#else>
+该分类不允许前台提交，请先修改分类设置
+	</#if>
+</#assign>
+	</@_model>
+</@_category>
+<div class="pageFormContent" layoutH="19">
+	<dl>
+		<dt>分类:</dt>
+		<dd>
+			${(category.name)!}
+		</dd>
+	</dl>
+	<dl>
+		<dt>模型:</dt>
+		<dd>
+			${(model.name)!}
+		</dd>
+	</dl>
+	<dl class="nowrap">
+		<dt>表单代码:</dt>
+		<dd>
+			<textarea style="width: 100%;" rows="20"><@html_escape>${(formContent)!}</@html_escape></textarea>
+		</dd>
+	</dl>
+</div>

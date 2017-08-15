@@ -1,0 +1,35 @@
+<@_sysApp id=id><#assign a=object/></@_sysApp>
+<div class="formBar">
+	<ul>
+		<li><button type="button" class="button close">关闭</button></li>
+	</ul>
+</div>
+<div class="pageFormContent" layoutH="60">
+	<dl class="nowrap">
+		<dt>授权渠道:</dt>
+		<dd>
+			${a.channel!}
+		</dd>
+	</dl>
+	<div class="divider"></div>
+	<dl class="nowrap">
+		<dt>appKey:</dt>
+		<dd>
+			${a.appKey!}
+		</dd>
+	</dl>
+	<div class="divider"></div>
+	<dl class="nowrap">
+		<dt>appSecret:</dt>
+		<dd>
+			${a.appSecret!}
+		</dd>
+	</dl>
+	<div class="divider"></div>
+	<dl class="nowrap">
+		<dt>已授权API:</dt>
+		<dd>
+			${a.authorizedApis!}
+		</dd>
+	</dl>
+</div>

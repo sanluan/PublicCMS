@@ -1,0 +1,29 @@
+<@_tag id=id><#assign a=object/></@_tag>
+<form method="post" action="cmsTag/save.do?callbackType=closeCurrent&navTabId=cmsTag/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl>
+			<dt>标签分类:</dt>
+			<dd>
+				<input name="typeId" type="hidden" value="${(a.typeId)!}"/>
+				<#if a??&&a.typeId??><@_tagType id=a.typeId><#assign typeName=object.name/></@_tagType></#if>
+				<input class="readonly" readonly="readonly" name="typeName" type="text" size="10" value="${(typeName)!}"/>
+				<a class="btnLook" href="cmsTagType/lookup.html?typeId=${(a.typeId)!}" width="920" warn="请选择标签分类" lookupGroup="">选择标签分类</a>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>名称:</dt>
+			<dd><input class="required" name="name" type="text" maxlength="50" size="20" value="${(a.name)!}"/></dd>
+		</dl>
+		<dl>
+			<dt>热度:</dt>
+			<dd><input class="required number" name="searchCount" type="number" size="5" value="${(a.searchCount)!0}"/></dd>
+		</dl>
+	</div>
+</form>

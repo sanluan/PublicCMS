@@ -1,6 +1,0 @@
-<h2 class="contentTitle">
-	<a class="button" href="cmsTemplate/metadata.html?path=${((path!)+'/')}" target="navTab" rel="cmsTemplate/metadata">创建模板</a>
-	<a class="button" href="cmsTemplate/upload.html?path=${path!}" target="dialog" mask="true" width="500" height="200">上传模板</a>
-	<#if !path?has_content||!path?starts_with('/ftl')><a class="button" href="cmsTemplate/metadata.html?path=${('/ftl/')?url}" target="navTab" rel="cmsTemplate/metadata">创建模板片段</a></#if>
-	<#if path?has_content><a class="button" href="cmsTemplate/delete.do?path=${path}&navTabId=cmsTemplate/list" title="确定要删除该目录吗?" target="ajaxTodo">删除目录</a></#if>
-</h2>

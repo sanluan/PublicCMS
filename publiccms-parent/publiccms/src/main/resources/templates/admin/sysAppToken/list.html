@@ -1,0 +1,39 @@
+<@_sysAppTokenList appId=appId pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>AppID:</label>
+					${appId!}
+				</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a href="sysAppToken/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th>授权码</th>
+				<th>授权日期</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.authToken}">
+				<td>${a.authToken!}</td>
+				<td>${a.createDate!}</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_sysAppTokenList>

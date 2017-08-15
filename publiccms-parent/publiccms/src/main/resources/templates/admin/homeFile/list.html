@@ -1,0 +1,90 @@
+<@_homeFileList userId=userId
+            directoryId=directoryId title=title image=image disabled=disabled
+            orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<input type="hidden" name="directoryId" value="${directoryId!}" />
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>用户：</label>
+					<#include "../include_page/userId.html"/>
+				</li>
+				<li>
+					<label>标题：</label>
+					<input type="text" name="title" value="${title!}" />
+				</li>
+				<li>
+					<select class="combox" name="image">
+						<option value=""${(!image?has_content)?then(' selected="true"','')?no_esc}>文件类型</option>
+						<option value="false"${(image??&&"false"=image)?then(' selected="true"','')?no_esc}>图片</option>
+						<option value="true"${(image??&&"true"=image)?then(' selected="true"','')?no_esc}>文件</option>
+					</select>
+				</li>
+				<#include "../include_page/disabled.html"/>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li><button type="submit" class="buttonActive">搜索</button></li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='homeFile/enable,homeFile/disable'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+		<#if authorizedMap['homeFile/enable']>
+			<li><a href="homeFile/enable.do?id={sid}" title="确定要启用该文件吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> 启用</a></li>
+		</#if>
+		<#if authorizedMap['homeFile/disable']>
+			<li><a href="homeFile/disable.do?id={sid}" title="确定要禁用该文件吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 禁用</a></li>
+		</#if>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>用户</th>
+				<th>目录</th>
+				<th>标题</th>
+				<th>图片</th>
+				<th orderField="fileSize" class="<#if orderField??&&'fileSize'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">文件大小</th>
+				<th orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
+				<th orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
+				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+				<th>已禁用</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@t.merge 'userIds' a.userId!/>
+				<@t.merge 'directoryIds' a.directoryId!/>
+			</#list>
+			<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+			<@_homeDirectory ids=t.directoryIds!><#assign directoryMap=map!/></@_homeDirectory>
+
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.id!}</td>
+				<td>${(userMap[a.userId?string].nickName)!}</td>
+				<td>${(directoryMap[a.directoryId?string].title)!}</td>
+				<td>${a.title!}</td>
+				<td>${a.image?then('图片','文件')}</td>
+				<td>${a.fileSize!}</td>
+				<td>${a.scores!}</td>
+				<td>${a.comments!}</td>
+				<td>${a.createDate!}</td>
+				<td>${a.disabled?then('<font color="red">禁用</font>','正常')?no_esc}</td>
+				<td><a href="${site.sitePath+a.filePath}" target="_blank">查看</a></td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_homeFileList>

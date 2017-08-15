@@ -1,0 +1,51 @@
+<@_vote id=id><#assign a=object/></@_vote>
+<form method="post" action="cmsVote/save.do?callbackType=closeCurrent&navTabId=cmsVote/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>标题:</dt>
+			<dd>
+				<input class="required" name="title" type="text" size="80" maxlength="255" value="${(a.title)!}"/>
+				<label><input name="anonymous" type="checkbox" />允许匿名</label>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>描述:</dt>
+			<dd>
+				<textarea class="required" name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>开始日期:</dt>
+			<dd>
+				<input class="required date" name="startDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
+				<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>结束日期:</dt>
+			<dd>
+				<input class="required date" name="endDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.endDate)!}"/>
+				<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
+			</dd>
+		</dl>
+		<dl>
+			<dt>时间间隔:</dt>
+			<dd><input class="required digtal" name="intervalHour" type="number" size="50" value="${(a.intervalHour)!}"/></dd>
+		</dl>
+		<dl>
+			<dt>最大投票数:</dt>
+			<dd><input class="required digtal" name="maxVote" type="number" size="5" value="${(a.maxVote)!}"/></dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>地址:</dt>
+			<dd><input class="required" name="url" type="text" size="80" maxlength="255" value="${(a.url)!}"/></dd>
+		</dl>
+	</div>
+</form>

@@ -1,0 +1,5 @@
+<h2 class="contentTitle">
+	<a class="button" href="taskTemplate/content.html?path=${(path!)+'/'}" target="ajax" rel="taskTemplateBox">创建脚本</a>
+	<#if !path?has_content||!path?starts_with('/ftl')><a class="button" href="taskTemplate/content.html?path=${('/ftl/')?url}" target="ajax" rel="taskTemplateBox">创建脚本片段</a></#if>
+	<#if path?has_content><a class="button" href="taskTemplate/delete.do?path=${path}&navTabId=taskTemplate/list" title="确定要删除该目录吗?" target="ajaxTodo">删除目录</a></#if>
+</h2>

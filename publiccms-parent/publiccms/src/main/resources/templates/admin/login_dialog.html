@@ -1,0 +1,21 @@
+<form action="loginDialog.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">登陆</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl>
+			<dt>帐号:</dt>
+			<dd><input type="text" name="username" title="账号"/></dd>
+		</dl>
+		<dl>
+			<dt>密码:</dt>
+			<dd><input type="password" name="password" title="密码"/></dd>
+		</dl>
+	</div>
+<script>
+	$('input[name=username]')[0].focus();
+</script>
+</form>

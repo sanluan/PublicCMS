@@ -1,0 +1,55 @@
+<@_sysTask id=id><#assign a=object/></@_sysTask>
+<form method="post" action="sysTask/save.do?callbackType=closeCurrent&navTabId=sysTask/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>任务名称:</dt>
+			<dd>
+				<input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>表达式:</dt>
+			<dd>
+				<input class="required" name="cronExpression" type="text" maxlength="50" size="30" value="${(a.cronExpression)!}"/>
+				<a class="btnLook" href="sysTask/example.html" width="920" warn="请选择表达式" lookupGroup="">选择表达式</a>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>表达式说明:</dt>
+			<dd>
+				<table bordercolor="#cccccc" cellspacing="1" cellpadding="1" border="1">
+					<tbody>
+						<tr><td width="54">位置</td><td width="82">时间域名</td><td width="133">允许值</td><td width="290">允许的特殊字符</td></tr>
+						<tr><td>1</td><td>分钟</td><td>0-59</td><td>, - * /</td></tr>
+						<tr><td>2</td><td>小时</td><td>0-23</td><td>, - * /</td></tr>
+						<tr><td>3</td><td>日期</td><td>1-31</td><td>, - * ? / L W C </td></tr>
+						<tr><td>4</td><td>月份</td><td>1-12</td><td>, - * /</td></tr>
+						<tr><td>5</td><td>星期</td><td>1-7</td><td>, - * ? / L C #</td></tr>
+						<tr><td>6</td><td>年(可选)</td><td>空值1970-2099</td><td>, - * /</td></tr>
+						<tr><td colspan="4">[*] 表示所有值 [?] 表示不指定值 [-] 表示区间[,] 表示指定多个值[/] 用于递增触发[L] 表示最后的意思[W]表示离指定日期的最近那个工作日[#] 序号(表示每月的第几个周几)</td></tr>
+					</tbody>
+				</table>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>描述:</dt>
+			<dd>
+				<textarea name="description" maxlength="300" style="width: 100%;" rows="3">${(a.description)!}</textarea>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>任务计划脚本:</dt>
+			<dd>
+				<input name="filePath" type="text" class="required" maxlength="255" size="40" value="${(a.filePath)!}"/>
+				<a class="btnLook" href="taskTemplate/lookup.html?field=filePath" lookupGroup="">选择</a>
+			</dd>
+		</dl>
+	</div>
+</form>

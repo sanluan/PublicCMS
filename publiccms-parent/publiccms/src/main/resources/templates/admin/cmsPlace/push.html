@@ -1,0 +1,36 @@
+<#macro placeTree filepath=''>
+	<@_templateList path='/include'+filepath>
+		<@_placeMetadata dir=filepath><#local metaDataMap=object/></@_placeMetadata>
+		<#list list as a>
+			<@t.merge 'pages' '/include'+filepath+'/'+a.fileName/>
+		</#list>
+		<@_sysDeptPage deptId=admin.deptId!'' pages=t.pages!><#assign deptPageMap=map!/></@_sysDeptPage>
+		<#list list as a>
+			<#local path=filepath+'/'+a.fileName>
+			<#if (deptPageMap['/include'+path])?has_content&&deptPageMap['/include'+path]>
+				<#if a.directory>
+					<li>
+						<a href="javascript:;" onclick="return false;">${a.fileName}</a>
+						<ul><@placeTree path/></ul>
+					</li>
+				<#elseif 0!=((metaDataMap[a.fileName].size)!0)>
+					<li>
+						<a href="cmsPlace/add.html?path=${(path+'/'+a.fileName)?url}&itemType=${itemType}&itemId=${itemId!}" target="navTab" rel="cmsPlace/add">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
+					</li>
+				</#if>
+			</#if>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_templateList>
+</#macro>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+	$.pdialog.closeCurrent();
+});
+</script>
+<div class="pageFormContent" layoutH="19">
+	<ul class="tree treeFolder expand">
+		<@placeTree/>
+	</ul>
+</div>

@@ -1,0 +1,45 @@
+<@_homeArticle id=id><#assign a=object/></@_homeArticle>
+	<div class="formBar">
+		<ul>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageContent">
+		<div class="pageFormContent" layoutH="60">
+			<dl>
+				<dt>目录：</dt>
+				<dd><@_homeDirectory id=a.directoryId>${object.title}</@_homeDirectory></dd>
+			</dl>
+			<dl>
+				<dt>创建日期：</dt>
+				<dd>
+					${(a.createDate)!}
+				</dd>
+			</dl>
+			<dl>
+				<dt>用户昵称：</dt>
+				<dd><@_sysUser id=a.userId>${object.nickName}</@_sysUser></dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>标题：</dt>
+				<dd>${(a.title)!}</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>内容：</dt>
+				<dd>${(getHomeGroupPostContent(a.id).content?no_esc)!}</dd>
+			</dl>
+			<dl>
+				<dt>分数：</dt>
+				<dd>${(a.scores)!}</dd>
+			</dl>
+			<dl>
+				<dt>评论数：</dt>
+				<dd>${(a.comments)!}</dd>
+			</dl>
+			<dl>
+				<dt>点击数：</dt>
+				<dd>${(a.clicks)!}</dd>
+			</dl>
+		</div>
+	</div>
+</form>

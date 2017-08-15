@@ -1,0 +1,97 @@
+<#macro contentCategoryTree parentId=''>
+	<@_categoryList advanced=true parentId=parentId>
+		<#list page.list as a>
+			<@t.merge 'categoryIds' a.id!/>
+		</#list>
+		<@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+		<#list page.list as a>
+			<#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
+				<li>
+					<a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" title="<i class='icon-book icon-large'></i> 内容管理">${(a.name)!}</a>
+				<#if a.childIds?has_content>
+					<ul>
+						<@contentCategoryTree a.id/>
+					</ul>
+				</#if>
+				</li>
+			</#if>
+		<#else>
+			<li><a>空目录</a></li>
+		</#list>
+	</@_categoryList>
+</#macro>
+<#macro categoryTree parentId=''>
+	<@_categoryList advanced=true parentId=parentId>
+		<#list page.list as a>
+			<#if a.childIds?has_content>
+			<li>
+				<a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" title="<i class='icon-folder-open icon-large'></i> 分类管理">${(a.name)!}</a>
+				<ul>
+					<@categoryTree a.id/>
+				</ul>
+			</li>
+			</#if>
+		</#list>
+	</@_categoryList>
+</#macro>
+<div class="accordion">
+<@_sysMoudleList parentId=parentId>
+	<#list page.list as a>
+		<@t.merge 'moudleIds' a.id!/>
+	</#list>
+	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map!/></@_sysRoleMoudle>
+	
+	<#list page.list as a>
+		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
+	<div class="accordionHeader">
+		<h2>${a.attached?no_esc!} ${a.name} <i class="icon icon-chevron-up"></i></h2>
+	</div>
+	<div class="accordionContent">
+	<#switch a.url!''>
+		<#case 'cmsContent/list'>
+			<ul class="tree treeFolder">
+				<li>
+					<@_sysDept id=admin.deptId>
+						<#assign  dept=object/>
+					</@_sysDept>
+					<#if dept?has_content&&dept.ownsAllCategory>
+						<a href="cmsContent/list.html" target="navTab" rel="cmsContent/list" title="<i class='icon-book icon-large'></i> 内容管理">分类</a>
+					<#else>
+						<a href="javascript:;" onclick="return false;">分类</a>
+					</#if>
+					<ul>
+						<@contentCategoryTree/>
+					</ul>
+				</li>
+			</ul>
+			<#break>
+		<#case 'cmsCategory/list'>
+			<ul class="tree treeFolder">
+				<li>
+					<a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list" title="<i class='icon-folder-open icon-large'></i> 分类管理">父分类</a>
+					<ul>
+						<@categoryTree/>
+					</ul>
+				</li>
+			</ul>
+			<#break>
+		<#default>
+			<ul class="tree">
+			<@_sysMoudleList parentId=a.id>
+				<#list page.list as a>
+					<@t.merge 'childMoudleIds' a.id!/>
+				</#list>
+				<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.childMoudleIds!><#assign childRoleMoudleMap=map!/></@_sysRoleMoudle>
+				<#list page.list as a>
+					<#if (childRoleMoudleMap[a.id?string])?has_content&&childRoleMoudleMap[a.id?string]>
+				<li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}" ${(a.url!'')?starts_with('report')?then('external="true"','')?no_esc}>${(a.attached?no_esc)!} ${(a.name)!}</a></li>
+					</#if>
+				</#list>
+			</@_sysMoudleList>
+			</ul>
+	</#switch>
+	</div>
+		</#if>
+	</#list>
+</@_sysMoudleList>
+</div>

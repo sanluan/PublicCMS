@@ -1,0 +1,78 @@
+<@_homeDirectoryList userId=userId
+            disabled=disabled
+            orderType=orderType pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>用户：</label>
+					<#include "../include_page/userId.html"/>
+				</li>
+				<#include "../include_page/disabled.html"/>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li><button type="submit" class="buttonActive">搜索</button></li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='homeDirectory/enable,homeDirectory/disable,homeFile/list,homeArticle/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+		<#if authorizedMap['homeDirectory/enable']>
+			<li><a href="homeDirectory/enable.do?id={sid}" title="确定要启用该目录吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> 启用</a></li>
+		</#if>
+		<#if authorizedMap['homeDirectory/disable']>
+			<li><a href="homeDirectory/disable.do?id={sid}" title="确定要禁用该目录吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 禁用</a></li>
+		</#if>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>用户</th>
+				<th>标题</th>
+				<th>封面</th>
+				<th>文件数</th>
+				<th>保密</th>
+				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+				<th>已禁用</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@t.merge 'userIds' a.userId!/>
+			</#list>
+			<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.id!}</td>
+				<td>${(userMap[a.userId?string].nickName)!}</td>
+				<td>${a.title!}</td>
+				<td>${a.cover!}</td>
+				<td>${a.files!}</td>
+				<td>${a.secret?then('保密','公开')}}</td>
+				<td>${a.createDate!}</td>
+				<td>${a.disabled?then('<font color="red">禁用</font>','正常')?no_esc}</td>
+				<td>
+					<#if authorizedMap['homeFile/list']>
+						<a href="homeFile/list.html?directoryId=${a.directoryId}" target="navTab" rel="homeFile/list">文件列表</a>
+					</#if>
+					<#if authorizedMap['homeArticle/list']>
+						<a href="homeArticle/list.html?directoryId=${a.directoryId}" target="navTab" rel="homeArticle/list">文章列表</a>
+					</#if>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_homeDirectoryList>

@@ -1,0 +1,110 @@
+<@_contentList categoryId=categoryId modelId=modelId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>模型:</label>
+					<#include "../include_page/modelId.html"/>
+				</li>
+				<li>
+					<label>发布日期:</label>
+					<input type="text" name="startPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
+					<span>-</span>
+					<input type="text" name="endPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endPublishDate!}" />
+				</li>
+				<li>
+					<label>标题:</label>
+					<input type="text" size="40" name="title" value="${title!}" />
+				</li>
+			</ul>
+			<div class="subBar">
+					<ul>
+						<li>
+							<button type="submit" class="buttonActive">搜索</button>
+						</li>
+					</ul>
+				</div>
+		</div>
+	</form>
+</div>
+<div>
+	<table class="list" width="100%" layoutH="66" targetType="dialog" rel="push_content_list">
+		<thead>
+			<tr>
+				<th>使用</th>
+				<th width="30">ID</th>
+				<th>标题</th>
+				<th>发布用户</th>
+				<th>分类</th>
+				<th>模型</th>
+				<th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
+				<th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
+				<th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
+				<th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
+				<th width="70">创建日期</th>
+				<th width="50">状态/审核用户</th>
+				<th width="40">子内容</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@t.merge 'userIds' a.userId!/>
+				<@t.merge 'checkUserIds' a.checkUserId!/>
+				<@t.merge 'categoryIds' a.categoryId!/>
+				<@t.merge 'modelIds' a.modelId!/>
+			</#list>
+
+			<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+			<@_sysUser ids=t.checkUserIds!><#assign checkUserMap=map!/></@_sysUser>
+			<@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
+			<@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>
+					<a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" rel="push">推荐</a>
+				</td>
+				<td>${a.id}</td>
+				<td>
+					<a href="${a.url!}" target="_blank">
+						${(a.copied?then('[转载]',''))!}${a.title!}
+					</a>
+				</td>
+				<td>
+					<a href="cmsContent/push_content_list.html?contentId=${contentId!}&userId=${a.userId}" target="ajax" rel="push_content_list">
+						${(userMap[a.userId?string].nickName)!}
+					</a>
+				</td>
+				<td>
+					<a href="cmsContent/push_content_list.html?contentId=${contentId!}&categoryId=${a.categoryId}" target="ajax" rel="push_content_list">
+						${(categoryMap[a.categoryId?string].name)!}
+					</a>
+				</td>
+				<td>
+					<a href="cmsContent/push_content_list.html?contentId=${contentId!}&modelId=${a.modelId}" target="ajax" rel="push_content_list">
+						${(modelMap[a.modelId].name)!}
+					</a>
+				</td>
+				<td>${a.scores!}</td>
+				<td>${a.comments!}</td>
+				<td>${a.clicks!}</td>
+				<td>${a.publishDate!}</td>
+				<td>${a.createDate!}<#if a.updateDate??>/${a.updateDate}</#if></td>
+				<td>
+					<@t.m 'status.content.'+a.status/>
+					<#if 2==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
+				</td>
+				<td>
+					<#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
+						<a href="cmsContent/push_content_list.html?contentId=${contentId!}&parentId=${a.id}&categoryId=${a.categoryId}" target="ajax" rel="push_content_list">子内容列表</a>
+					</#if>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/pageDialog.html"/>
+</div>
+</@_contentList>

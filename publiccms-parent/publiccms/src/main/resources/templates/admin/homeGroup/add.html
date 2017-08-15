@@ -1,0 +1,30 @@
+<@_homeGroup id=id><#assign a=object/></@_homeGroup>
+<form method="post" action="homeGroup/save.do?callbackType=closeCurrent&navTabId=homeGroup/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageContent">
+		<div class="pageFormContent" layoutH="60">
+			<dl>
+				<dt>创始人：</dt>
+				<dd>
+					<input name="userId" value="${userId!}" type="hidden"/>
+					<input name="nickName" readonly="readonly" size="10" value="${(user.nickName)!}" type="text"/>
+					<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>	
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>名称：</dt>
+				<dd><input class="required" name="name" type="text" maxlength="255" size="20" value="${(a.name)!}"/></dd>
+			</dl>
+			<dl>
+				<dt>描述：</dt>
+				<dd><textarea name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea></dd>
+			</dl>
+		</div>
+	</div>
+</form>

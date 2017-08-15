@@ -1,0 +1,17 @@
+<form action="cmsWebFile/createDirectory.do?callbackType=closeCurrent&navTabId=cmsWebFile/list" method="post" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">创建</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl>
+			<dt>目录名:</dt>
+			<dd>
+				<input type="hidden" name="path" value="${path!}"/>
+				<input type="text" name="fileName" class="required" size="30" />
+			</dd>
+		</dl>
+	</div>
+</form>

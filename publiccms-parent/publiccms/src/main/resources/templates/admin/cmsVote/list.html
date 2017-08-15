@@ -1,0 +1,79 @@
+<@_voteList startStartDate=startStartDate endStartDate=endStartDate
+            startEndDate=startEndDate endEndDate=endEndDate disabled=disabled
+            orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li>
+					<label>开始日期:</label>
+					<input type="text" name="startStartDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${startStartDate!}" />
+					<span>-</span>
+					<input type="text" name="endStartDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${endStartDate!}" />
+				</li>
+				<li>
+					<label>结束:</label>
+					<input type="text" name="startEndDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${startEndDate!}" />
+					<span>-</span>
+					<input type="text" name="endEndDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${endEndDate!}" />
+				</li>
+				<#include "../include_page/disabled.html"/>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<button type="submit" class="buttonActive">搜索</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+			<li><a href="cmsVote/add.html" target="navTab" rel="cmsVote/add"><i class="icon-plus-sign-alt icon-large"></i> 添加投票</a></li>
+			<li><a href="cmsVote/add.html?id={sid}" target="navTab" rel="cmsVote/edit"><i class="icon-edit icon-large"></i> 修改投票</a></li>
+			<li><a href="cmsVote/delete.do?id={sid}" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th orderField="startDate" class="<#if orderField??&&'startDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">开始日期</th>
+				<th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">结束</th>
+				<th>时间间隔</th>
+				<th>最大投票数</th>
+				<th>允许匿名</th>
+				<th>地址</th>
+				<th>标题</th>
+				<th>描述</th>
+				<th>参与人数</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td>${a.id!}</td>
+				<td>${a.startDate!}</td>
+				<td>${a.endDate!}</td>
+				<td>${a.intervalHour!}</td>
+				<td>${a.maxVote!}</td>
+				<td>${a.anonymous?then('允许匿名','')}</td>
+				<td>${a.url!}</td>
+				<td>${a.title!}</td>
+				<td>${a.description!}</td>
+				<td>${a.userCounts!}</td>
+				<td>
+					<a href="cmsVoteUser/list.html?voteId=${a.id}" target="navTab" rel="cmsVoteUser/list">投票用户</a>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_voteList>

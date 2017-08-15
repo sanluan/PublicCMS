@@ -1,0 +1,171 @@
+<#macro input name extend index value='' type='form'>
+	<#if !value?has_content>
+		<#local value=extend.defaultValue!/>
+	</#if>
+	<#local inputName=name+'['+index+'].value'/>
+	<input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
+	<#switch extend.inputType>
+		<#case 'number'>
+			<#if 'view'=type>
+				${(value)!}
+			<#else>
+			<input name="${inputName}" <#if 'customform'!=type>class="number<#if extend.required> required</#if>" </#if>type="text" size="5" value="${(value)!}"/>
+			</#if>
+			<#break>
+		<#case 'file'>
+			<#if 'view'=type>
+				<a href="${site.sitePath+value}" target="_blank">${(value)!}</a>
+			<#else>
+				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
+				<#if 'customform'!=type><a class="btnAttach" href="common/upload.html?field=${inputName}" lookupGroup="" width="560" height="300">附件</a></#if>
+			</#if>
+			<#break>
+		<#case 'image'>
+			<#if 'view'=type>
+				<img src="${site.sitePath+value}" style="max-width:200px;max-height:200px;"/>
+				<br/>
+				${(value)!}
+			<#else>
+				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
+				<#if 'customform'!=type>
+					<a class="btnAttach" href="common/upload.html?field=${inputName}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+					<#if !preview?has_content>
+						<#include "../include_page/preview.html"/>
+					</#if>
+					<@preview extend.id.code 'input[name="${inputName}"]' ''/>
+				</#if>
+			</#if>
+			<#break>
+		<#case 'password'>
+			<#if 'view'=type>
+				${(value)!}
+			<#else>
+				<input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" size="30" value="${(value)!}"/>
+			</#if>
+			<#break>
+		<#case 'textarea'>
+			<#if 'view'=type>
+				${(value)!}
+			<#else>
+				<textarea name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="5">${(value)!}</textarea>
+			</#if>
+			<#break>
+		<#case 'editor'>
+			<#if 'view'=type>
+				${(value?no_esc)!}
+			<#else>
+				<textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>style="width: 100%;" rows="20">${(value)!}</textarea>
+			</#if>
+			<#break>
+		<#case 'template'>
+			<#if 'view'=type>
+				${(value)!}
+			<#else>
+				<input name="${inputName}" type="text" maxlength="255" size="40" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+				<a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName}" lookupGroup="">选择模板</a>
+			</#if>
+			<#break>
+		<#case 'boolean'>
+			<#if 'view'=type>
+				<#if value?has_content>${('true'=value)?then('是','否')}</#if>
+			<#else>
+				<select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
+					<option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')?no_esc}>是</option>
+					<option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')?no_esc}>否</option>
+				</select>
+			</#if>
+			<#break>
+		<#case 'user'>
+			<@_sysUser id=value><#assign user=object/></@_sysUser>
+			<#if 'view'=type>
+				${(value)!}:${(user.nickName)!}
+			<#else>
+				<input name="${inputName}" value="${(value)!}" type="hidden"/>
+				<input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(user.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+				<a class="btnLook" href="sysUser/lookup.html?field=value" width="920" warn="请选择用户" lookupGroup="${name}[${index}]">选择用户</a>
+			</#if>
+			<#break>
+		<#case 'content'>
+			<@_content id=value><#assign content=object/></@_content>
+			<#if 'view'=type>
+				${(value)!}:${(content.title)!}
+			<#else>
+				<input name="${inputName}" value="${(value)!}" type="hidden"/>
+				<input name="${name}[${index}].title" readonly="readonly" size="30" value="${(content.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+				<a class="btnLook" href="cmsContent/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择内容</a>
+			</#if>
+			<#break>
+		<#case 'category'>
+		<@_category id=value><#assign category=object/></@_category>
+			<#if 'view'=type>
+				${(value)!}:${(category.name)!}
+			<#else>
+				<input name="${inputName}" value="${(value)!}" type="hidden"/>
+				<input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(category.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+				<a class="btnLook" href="cmsCategory/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择分类</a>
+			</#if>
+			<#break>
+		<#case 'dictionary'>
+			<@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
+			<#if dictionary?has_content>
+				<#if 'view'=type>
+					<#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map?keys as k>${map[k].text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
+				<#else>
+					<#if dictionary.multiple>
+						<#assign values=value?split(',')/>
+						<@_dictionaryDataList dictionaryId=extend.dictionaryId>
+							<#list list as d>
+								<label><input name="${name}[${index}].values" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>${d.text}</label>
+							</#list>
+						</@_dictionaryDataList>
+					<#else>
+						<select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
+						<@_dictionaryDataList dictionaryId=extend.dictionaryId>
+							<#list list as d>
+							<option value="${d.id.value}"${(value?has_content&&d.id.value=value)?then(' selected="true"','')?no_esc}>${d.text}</option>
+							</#list>
+						</@_dictionaryDataList>
+						</select>
+					</#if>
+				</#if>
+			</#if>
+			<#break>
+		<#case 'date'>
+			<#if 'view'=type>
+				${(value)!}
+			<#else>
+				<input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="20" value="${(value)!}"/>
+				<#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
+			</#if>
+			<#break>
+		<#case 'datetime'>
+			<#if 'view'=type>
+				${(value)!}
+			<#else>
+				<input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
+				<#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
+			</#if>
+			<#break>
+		<#default>
+			<#if 'view'=type>
+				${(value)!}
+			<#else>
+				<input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" size="30" value="${(value)!}"/>
+			</#if>
+	</#switch>
+</#macro>
+<#macro extendData name extendList extendValues type='form'>
+	<#list extendList as e>
+		<#if 'customform'=type>
+	<p><label>${(e.name)}:</label><@input name e e?index extendValues[e.id.code]! true/></p>
+		<#else>
+	<dl class="nowrap">
+		<dt>${(e.name)}:</dt>
+		<dd<#if 'editor'=e.inputType> id="content"</#if>>
+			<@input name e e?index extendValues[e.id.code]!/>
+			<span class="info">${(e.description)!}</span>
+		</dd>
+	</dl>
+		</#if>
+	</#list>
+</#macro>

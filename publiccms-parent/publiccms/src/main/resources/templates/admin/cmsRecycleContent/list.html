@@ -1,0 +1,134 @@
+<#if parentId?has_content>
+	<@_content id=parentId>
+		<#assign parent=object/>
+	</@_content>
+</#if>
+<@_contentList advanced=true status=status categoryId=categoryId containChild=containChild disabled=true
+			modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
+			startPublishDate=startPublishDate endPublishDate=endPublishDate
+			orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+		<#include "../include_page/paramters.html"/>
+		<div class="searchBar">
+			<ul class="searchContent">
+				<li class="width:auto">
+					<#include "../include_page/status.html"/>
+				</li>
+				<li>
+					<label>发布用户:</label>
+					<#include "../include_page/userId.html"/>
+				</li>
+				<li>
+					<label>发布日期:</label>
+					<input type="text" name="startPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${startPublishDate!}" />
+					<span>-</span>
+					<input type="text" name="endPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${endPublishDate!}" />
+				</li>
+				<li>
+					<label>标题:</label><input type="text" size="20" name="title" value="${title!}" />
+				</li>
+				<li style="width:auto">
+					<label>模型:</label>
+					<#include "../include_page/modelId.html"/>
+				</li>
+			</ul>
+			<div class="subBar">
+				<ul>
+					<li>
+						<button type="submit" class="buttonActive">搜索</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContent/realDelete,cmsContent/recycle'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+	<div class="panelBar">
+		<ul class="toolBar">
+		<#if parent?has_content>
+			<li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
+			<li class="line">line</li>
+		</#if>
+		<#if authorizedMap['cmsContent/recycle']>
+			<li><a href="cmsContent/recycle.do" title="确定要还原这些记录么?" target="selectedTodo" rel="ids"><i class="icon-reply-all icon-large"></i> 批量还原</a></li>
+		</#if>
+		<#if authorizedMap['cmsContent/realDelete']>
+			<li class="line">line</li>
+			<li><a href="cmsContent/realDelete.do" title="确定要彻底删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量彻底删除</a></li>
+		</#if>
+		</ul>
+	</div>
+	<table class="list" width="100%" layoutH="99">
+		<thead>
+			<tr>
+				<th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+				<th width="30">ID</th>
+				<th width="250">标题</th>
+				<th width="40">发布</th>
+				<th width="30">分类</th>
+				<th width="30">模型</th>
+				<th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
+				<th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
+				<th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
+				<th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
+				<th width="70">创建日期</th>
+				<th width="50">状态/审核用户</th>
+				<th width="100">操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<#list page.list as a>
+				<@t.merge 'userIds' a.userId!/>
+				<@t.merge 'checkUserIds' a.checkUserId!/>
+				<@t.merge 'categoryIds' a.categoryId!/>
+				<@t.merge 'modelIds' a.modelId!/>
+			</#list>
+
+			<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+			<@_sysUser ids=t.checkUserIds!><#assign checkUserMap=map!/></@_sysUser>
+			<@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
+			<@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+
+			<#list page.list as a>
+			<tr target="sid" rel="${a.id}">
+				<td><input name="ids" value="${a.id}" type="checkbox"></td>
+				<td>${a.id}</td>
+				<td>${(a.copied?then('[转载]',''))!}<a href="${a.url!}" target="_blank">${(a.title)!}</a></td>
+				<td>
+					${(userMap[a.userId?string].nickName)!}
+				</td>
+				<td>
+					${(categoryMap[a.categoryId?string].name)!}
+				</td>
+				<td>
+					${(modelMap[a.modelId].name)!}
+				</td>
+				<td>${a.scores!}</td>
+				<td>${a.comments!}</td>
+				<td>${a.clicks!}</td>
+				<td>${a.publishDate!}</td>
+				<td>${a.createDate!}</td>
+				<td>
+					<@t.m 'status.content.'+a.status/>
+					<#if 1=a.status>/ ${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
+				</td>
+				<td>
+					<#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
+						<a href="cmsRecycleContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsRecycleContent/list">子内容管理</a>
+					</#if>
+					<#if authorizedMap['cmsContent/recycle']>
+						<a href="cmsContent/recycle.do?ids=${a.id}" title="确定要还原这条记录么?" target="ajaxTodo">还原</a>
+					</#if>
+					<#if authorizedMap['cmsContent/realDelete']>
+						<a href="cmsContent/realDelete.do?ids=${a.id}" title="确定要删除这条记录么?" target="ajaxTodo">彻底删除</a>
+					</#if>
+				</td>
+			</tr>
+			</#list>
+		</tbody>
+	</table>
+	<#include "../include_page/page.html"/>
+</div>
+</@_contentList>

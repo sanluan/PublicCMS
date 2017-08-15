@@ -1,0 +1,50 @@
+<@_dictionary id=id><#assign a=object/></@_dictionary>
+<form method="post" action="cmsDictionary/save.do?callbackType=closeCurrent&navTabId=cmsDictionary/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<input name="id" type="hidden" value="${id!}" />
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageContent">
+		<div class="pageFormContent" layoutH="60">
+			<dl class="nowrap">
+				<dt>名称：</dt>
+				<dd>
+					<input class="required" name="name" type="text" size="20" maxlength="100" value="${(a.name)!}"/>
+					<label><input name="multiple" type="checkbox"${((a.multiple)?has_content&&a.multiple)?then(' checked="true"','')?no_esc}/>多选</label>
+				</dd>
+			</dl>
+			<table class="list nowrap itemDetail" addButton="新增字典数据" width="100%">
+				<thead>
+					<tr>
+						<th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{maxlength:50}">值</th>
+						<th type="text" name="dataList[#index#].text" size="50" fieldClass="required" fieldAttrs="{maxlength:100}">文字</th>
+						<th type="del" width="60">操作</th>
+					</tr>
+				</thead>
+				<tbody>
+			<#if id?has_content>
+				<@_dictionaryDataList dictionaryId=id>
+					<#list list as d>
+						<tr>
+							<td>
+								<input type="hidden" name="dataList[${d?index}].id.dictionaryId" value="${(d.id.dictionaryId)!}"/>
+								<input type="text" name="dataList[${d?index}].id.value" value="${d.id.value}" size="20" class="required" maxlength="50"/>
+							</td>
+							<td>
+								<input type="text" name="dataList[${d?index}].text" value="${d.text}" size="50" class="required" maxlength="100"/>
+							</td>
+							<td>
+								<a href="javascript:void(0)" class="btnDel ">删除</a>
+							</td>
+						</tr>
+					</#list>
+				</@_dictionaryDataList>
+			</#if>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</form>

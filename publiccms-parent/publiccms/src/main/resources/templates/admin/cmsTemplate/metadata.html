@@ -1,0 +1,102 @@
+<@_metadata path=path><#assign a=object/></@_metadata>
+<form method="post" action="cmsTemplate/saveMetaData.do?navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<#if !a?has_content>
+				<li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true">模板实例</a></li>
+			</#if>
+			<li><button type="submit" class="buttonActive">保存</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>路径:</dt></dt>
+			<dd>
+				<input name="path" class="required" type="text" size="50" value="${(path)!}"/>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>别名:</dt></dt>
+			<dd>
+				<input name="alias" type="text" maxlength="40" size="20" value="${(a.alias)!}"/>
+			<#if !path?starts_with('/ftl/')>
+				<#if site.useStatic>
+					<label>
+						<input name="useStatic" type="checkbox" onchange="if($(this).is(':checked')){$('input[name=publishPath]',navTab.getCurrentPanel()).addClass('required');$('.useStatic',navTab.getCurrentPanel()).show();}else{$('input[name=publishPath]',navTab.getCurrentPanel()).removeClass('required').val('');$('.useStatic',navTab.getCurrentPanel()).hide();}"/>
+						启用静态化
+					</label>
+				</#if>
+				<label>
+					<input name="useDynamic" type="checkbox" onchange="if($(this).is(':checked')){$('.useDynamic',navTab.getCurrentPanel()).show();}else{$('.useDynamic',navTab.getCurrentPanel()).hide();}"/>
+					允许动态访问
+				</label>
+			</#if>
+			</dd>
+		</dl>
+	<#if !path?starts_with('/ftl/')>
+		<#if site.useStatic>
+		<fieldset class="useStatic" style="display:none">
+			<legend>静态化配置</legend>
+			<dl class="nowrap">
+				<dt>发布路径:</dt>
+				<dd>
+					<input name="publishPath" type="text" maxlength="50" size="50" value="${(a.publishPath)!}"/>
+				</dd>
+			</dl>
+		</fieldset>
+		</#if>
+		<fieldset class="useDynamic" style="display:none">
+			<legend>动态访问配置</legend>
+			<dl class="nowrap">
+				<dt>需要登录:</dt>
+				<dd>
+					<label><input name="needLogin" type="checkbox"/></label>
+					<span class="info">勾选后当用户未登陆时，将跳转到动态域名中配置的登陆地址</span>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>可接受请求参数:</dt>
+				<dd>
+					<input name="acceptParamters" type="text" value="${(a.acceptParamters)!}"/>
+					<span class="info">逗号分隔，用于控制模板中可直接使用哪些请求参数</span>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>需要请求报文体:</dt>
+				<dd>
+					<label><input name="needBody" type="checkbox"/></label>
+					<span class="info">勾选后，可以从模板中取得请求的请求报文体：body</span>
+				</dd>
+			</dl>
+			<dl class="nowrap">
+				<dt>缓存时间(秒):</dt>
+				<dd>
+					<input name="cacheTime" class="required digits" type="text" value="${(a.cacheTime)!0}"/>
+					<span class="info">值大于0时，模板将被缓存,您可以使用noCache指令指定不使用缓存的模板片段:<#noparse>&lt;@noCache&gt;登陆用户:${user.nickName}&lt;/@noCache&gt;</#noparse></span>
+				</dd>
+			</dl>
+		</fieldset>
+<script>
+<#if site.useStatic&&(a.publishPath)?has_content>
+	$('input[name=useStatic]',navTab.getCurrentPanel()).click();
+</#if>
+<#if (a.useDynamic)?has_content&&a.useDynamic||!(a.useDynamic)?has_content&&!site.useStatic>
+	$('input[name=useDynamic]',navTab.getCurrentPanel()).click();
+</#if>
+<#if (a.needLogin)?has_content&&a.needLogin>
+	$('input[name=needLogin]',navTab.getCurrentPanel()).click();
+</#if>
+<#if (a.needBody)?has_content&&a.needBody>
+	$('input[name=needBody]',navTab.getCurrentPanel()).click();
+</#if>
+</script>
+		<fieldset>
+			<legend>元数据扩展字段</legend>
+			<#include '../include_page/extends.html'/>
+			<#assign extendList=(a.extendList)![]/>
+			<@extends 'extendList' extendList/>
+		</fieldset>
+	</#if>
+		<textarea name="content" style="display:none">New PublicCMS Template</textarea>
+	</div>
+</form>
