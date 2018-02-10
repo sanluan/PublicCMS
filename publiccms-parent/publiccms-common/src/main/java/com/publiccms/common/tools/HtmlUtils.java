@@ -1,7 +1,5 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.util.regex.Pattern;
 
 import com.publiccms.common.base.Base;
@@ -11,7 +9,7 @@ import com.publiccms.common.base.Base;
  * 
  */
 public class HtmlUtils implements Base {
-    
+
     /**
      * 
      */
@@ -19,10 +17,10 @@ public class HtmlUtils implements Base {
 
     /**
      * @param string
-     * @return
+     * @return result
      */
     public static String removeHtmlTag(String string) {
-        if (notEmpty(string)) {
+        if (CommonUtils.notEmpty(string)) {
             return HTML_PATTERN.matcher(string).replaceAll(BLANK);
         }
         return string;

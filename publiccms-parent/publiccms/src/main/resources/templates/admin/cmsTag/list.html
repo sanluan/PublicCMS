@@ -10,9 +10,9 @@
 				</li>
 				<li>
 					<label>类型:</label>
-					<#if typeId?has_content><@_tagType id=typeId><#assign typeName=(object.name)!/></@_tagType></#if>
+					<#if typeId?has_content><@_tagType id=typeId><#assign tagTypeName=object.name/></@_tagType></#if>
 					<input type="hidden" name="typeId" value="${typeId!}" />
-					<input class="readonly" readonly="readonly" name="typeName" type="text" size="10" value="${(typeName)!}"/>
+					<input class="readonly" readonly="readonly" name="tagTypeName" type="text" size="10" value="${(tagTypeName)!}"/>
 					<a class="btnLook" href="cmsTagType/lookup.html?typeId=${typeId!}" width="920" warn="请选择标签分类" lookupGroup="">选择标签分类</a>
 				</li>
 			</ul>

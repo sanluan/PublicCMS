@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 <#include "../include_imports/service.ftl">
 
-import org.publliccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.handler.PageHandler;
 

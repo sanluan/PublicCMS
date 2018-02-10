@@ -1,1 +1,1 @@
-{"${field}":"${.vars[field]!}"}
+{"${field}":"${.vars[field]!}"<#if originalField?has_content>,"${originalField}":"${.vars[originalField]!}"</#if>}

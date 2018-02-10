@@ -3,9 +3,11 @@
 <head>
 	<meta charset="utf-8">
 	<title>管理后台 - ${site.name}</title>
-	<link href="${res}/themes/css/core.css?0423" rel="stylesheet" media="screen"/>
+	<link href="${res}/codemirror/lib/codemirror.css" rel="stylesheet" >
+    <link href="${res}/codemirror/addon/hint/show-hint.css" rel="stylesheet" >
+	<link href="${res}/themes/css/core.css" rel="stylesheet" media="screen"/>
 	<link href="${res}/themes/css/print.css" rel="stylesheet" media="print"/>
-	<link href="${res}/font-awesome/css/font-awesome.min.css" rel="stylesheet" >
+	<link href="${res}/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
 	<!--[if IE 7]>
 	<link href="${res}/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet" >
 	<![endif]-->
@@ -19,32 +21,27 @@
 	<script src="${res}/js/jquery.validate.js"></script>
 	<script src="${res}/js/jquery.bgiframe.js"></script>
 
-	<script>var base="${base}/admin";</script>
-	<script src="${res}/ueditor/ueditor.config.js"></script>
-	<script src="${res}/ueditor/ueditor.all.min.js"></script>
-	<script src="${res}/ueditor/lang/zh-cn/zh-cn.js"></script>
-
-	<script src="${res}/js/dwz.min.js?042301"></script>
+	<script src="${res}/js/dwz.min.js"></script>
 	<script src="${res}/js/dwz.regional.zh.js"></script>
 
-	<link href="${res}/codemirror/lib/codemirror.css" rel="stylesheet" type="text/css" />
-	<script src="${res}/codemirror/lib/codemirror.js"></script>
-	<script src="${res}/codemirror/mode/xml/xml.js"></script>
-	<script src="${res}/codemirror/mode/javascript/javascript.js"></script>
-	<script src="${res}/codemirror/mode/css/css.js"></script>
-	<script src="${res}/codemirror/mode/htmlmixed/htmlmixed.js"></script>
-	<script src="${res}/codemirror/mode/freemarker/freemarker.js"></script>
-	<script src="${res}/codemirror/mode/freemarkermixed/freemarkermixed.js"></script>
-	<script src="${res}/codemirror/mode/nginx/nginx.js"></script>
 	<script>
+	var base="${base}/admin";
+	window.UEDITOR_HOME_URL="${res}/ueditor/";
+	window.CKEDITOR_BASEPATH="${res}/ckeditor/";
 $(function(){
 	DWZ.init("${res}/dwz.frag.html", {
+		ckeditorResources:["${res}/ckeditor/ckeditor.js"],
+		ueditorResources:["${res}/ueditor/ueditor.config.js","${res}/ueditor/ueditor.all.min.js","${res}/ueditor/lang/zh-cn/zh-cn.js"],
+		codemirrorResources:['${res}/codemirror/lib/codemirror.js','${res}/codemirror/mode/xml/xml.js','${res}/codemirror/mode/javascript/javascript.js','${res}/codemirror/mode/css/css.js',
+            '${res}/codemirror/mode/htmlmixed/htmlmixed.js','${res}/codemirror/mode/freemarker/freemarker.js','${res}/codemirror/mode/freemarkermixed/freemarkermixed.js',
+            '${res}/codemirror/mode/nginx/nginx.js','${res}/codemirror/addon/hint/show-hint.js','${res}/codemirror/addon/hint/javascript-hint.js','${res}/codemirror/addon/hint/html-hint.js',
+            '${res}/codemirror/addon/hint/css-hint.js','${res}/codemirror/addon/hint/xml-hint.js'],
 		loginUrl:"login_dialog.html", loginTitle:"登录",
 		pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"}, //【可选】
 		debug:false,	// 调试模式 【true|false】
 		callback:function(){
 			initEnv();
-			$("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"azure",version:"0423"}); // themeBase 相对于index页面的主题base路径
+			$("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"azure"}); // themeBase 相对于index页面的主题base路径
 		}
 	});
 });
@@ -52,36 +49,54 @@ $(function(){
 </head>
 <body scroll="no">
 <header>
-	<a class="logo" href="./"></a>
+	<a class="logo" href="./"><img src="${res}/themes/logo.png"/></a>
 	<ul class="nav">
 		<li><i class="icon-user icon-large"></i> ${(admin.nickName)!}</li>
-		<li>
-			<a href="${site.useStatic?then(site.sitePath!,site.dynamicPath!)}" target="_blank"><i class="icon-home icon-large"></i> 网站首页</a>
+		<!-- <li id="switchEnvBox"><i class="icon-wrench icon-large"></i> <a href="javascript:">切换语言</a>
+			<ul>
+				<li><a href="changeLocale?lang=zh" target="ajaxTodo">中文</a></li>
+				<li><a href="changeLocale?lang=en" target="ajaxTodo">English</a></li>
+			</ul>
 		</li>
-		<@_sysAuthorized roleIds=admin.roles url='clearCache'>
-			<li><a href="clearCache" target="ajaxTodo"><i class="icon-refresh icon-large"></i> 刷新缓存</a></li>
-		</@_sysAuthorized>
-		<li><a href="logout"><i class="icon-signout icon-large"></i> 退出</a></li>
+		-->
+		<li>
+			<i class="icon-home icon-large"></i> <a href="${site.dynamicPath!}" target="_blank">网站首页</a> 
+			<#if site.useStatic>
+				| <a href="${site.sitePath!}" target="_blank">静态首页</a>
+			</#if>
+		</li>
+	<@_sysAuthorized roleIds=admin.roles url='clearCache'>
+		<li>
+			<i class="icon-refresh icon-large"></i> <a href="clearCache" target="ajaxTodo">刷新缓存</a>
+		</li>
+	</@_sysAuthorized>
+		<li>
+			<i class="icon-signout icon-large"></i> <a href="logout">退出</a>
+		</li>
 	</ul>
 	<ul id="navMenu">
-<@_sysMoudleList>
+<@_sysModuleList>
 	<#list page.list as a>
-		<@t.merge 'moudleIds' a.id!/>
+		<@t.merge 'moduleIds' a.id!/>
 	</#list>
-	<@_sysRoleMoudle roleIds=admin.roles moudleIds=t.moudleIds!><#assign roleMoudleMap=map!/></@_sysRoleMoudle>
+	<@_sysRoleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@_sysRoleModule>
 
 	<#list page.list as a>
-		<#if (roleMoudleMap[a.id?string])??&&roleMoudleMap[a.id?string]>
+		<#if (roleModuleMap[a.id?string])??&&roleModuleMap[a.id?string]>
 			<#if !parentId?has_content><#assign parentId=a.id/></#if>
-			<li><a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}">${(a.attached?no_esc)!} ${a.name}</a></li>
+			<li>
+				<a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}">${(a.attached?no_esc)!} ${a.name}</a>
+			</li>
 		</#if>
 	</#list>
-</@_sysMoudleList>
-	<@_masterSite>
-		<@_sysAuthorized roleIds=admin.roles url='sysSite/menu'>
-			<li><a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a></li>
-		</@_sysAuthorized>
-	</@_masterSite>
+</@_sysModuleList>
+<@_masterSite>
+	<@_sysAuthorized roleIds=admin.roles url='sysSite/menu'>
+		<li>
+			<a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a>
+		</li>
+	</@_sysAuthorized>
+</@_masterSite>
 	</ul>
 	<script>$('#navMenu li:eq(0)').addClass("selected");</script>
 </header>
@@ -92,10 +107,7 @@ $(function(){
 		</div>
 		<div id="sidebar">
 			<div id="menu">
-<#include "menus.html"/>
-			</div>
-			<div class="collapse">
-				<a href="javascript:;" onclick="return false;" class="toggleCollapse"><i class="icon icon-chevron-sign-left icon-large"></i></a>
+				<#include "menus.html"/>
 			</div>
 		</div>
 	</div>
@@ -106,6 +118,7 @@ $(function(){
 					<li tabid="main" class="main"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> 工作台</a></li>
 				</ul>
 			</div>
+			<a href="javascript:;" onclick="return false;" class="toggleCollapse"><i class="icon icon-chevron-sign-left icon-large"></i></a>
 			<a href="javascript:;" onclick="return false;" class="tabsLeft"><i class="icon-backward icon-large"></i></a>
 			<a href="javascript:;" onclick="return false;" class="tabsRight"><i class="icon-forward icon-large"></i></a>
 			<a href="javascript:;" onclick="return false;" class="tabsMore"><i class="icon-th-list icon-large"></i></a>
@@ -121,7 +134,19 @@ $(function(){
 	</div>
 </main>
 <footer>
-	<@_version><#if businessEdition>商业版授权</#if></@_version> Copyright &copy; ${.now?string('yyyy')}
+<@_version>
+	<#if authorizationEdition>
+		<a href="common/license.html" target="dialog" mask="true">授权: ${getLicense().authorization!}</a>
+    <#else>
+    	未授权
+    	<@_masterSite>
+			<@_sysAuthorized roleIds=admin.roles url='sysSite/uploadLicense'>
+		<a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="上传License">升级</a>
+			</@_sysAuthorized>
+		</@_masterSite>
+    </#if>
+</@_version>
+	Copyright &copy; ${.now?string('yyyy')}
 	<ul class="themeList" id="themeList">
 		<li theme="azure"><div class="selected">天蓝</div></li>
 		<li theme="silver"><div>银色</div></li>

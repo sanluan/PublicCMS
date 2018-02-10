@@ -10,16 +10,37 @@
     mod(CodeMirror);
 })(function(CodeMirror) {
   CodeMirror.defineExtension("addPanel", function(node, options) {
+    options = options || {};
+
     if (!this.state.panels) initPanels(this);
 
     var info = this.state.panels;
-    if (options && options.position == "bottom")
-      info.wrapper.appendChild(node);
-    else
-      info.wrapper.insertBefore(node, info.wrapper.firstChild);
+    var wrapper = info.wrapper;
+    var cmWrapper = this.getWrapperElement();
+
+    if (options.after instanceof Panel && !options.after.cleared) {
+      wrapper.insertBefore(node, options.before.node.nextSibling);
+    } else if (options.before instanceof Panel && !options.before.cleared) {
+      wrapper.insertBefore(node, options.before.node);
+    } else if (options.replace instanceof Panel && !options.replace.cleared) {
+      wrapper.insertBefore(node, options.replace.node);
+      options.replace.clear();
+    } else if (options.position == "bottom") {
+      wrapper.appendChild(node);
+    } else if (options.position == "before-bottom") {
+      wrapper.insertBefore(node, cmWrapper.nextSibling);
+    } else if (options.position == "after-top") {
+      wrapper.insertBefore(node, cmWrapper);
+    } else {
+      wrapper.insertBefore(node, wrapper.firstChild);
+    }
+
     var height = (options && options.height) || node.offsetHeight;
     this._setSize(null, info.heightLeft -= height);
     info.panels++;
+    if (options.stable && isAtTop(this, node))
+      this.scrollTo(null, this.getScrollInfo().top + height)
+
     return new Panel(this, node, options, height);
   });
 
@@ -36,6 +57,8 @@
     this.cleared = true;
     var info = this.cm.state.panels;
     this.cm._setSize(null, info.heightLeft += this.height);
+    if (this.options.stable && isAtTop(this.cm, this.node))
+      this.cm.scrollTo(null, this.cm.getScrollInfo().top - this.height)
     info.wrapper.removeChild(this.node);
     if (--info.panels == 0) removePanels(this.cm);
   };
@@ -43,7 +66,7 @@
   Panel.prototype.changed = function(height) {
     var newHeight = height == null ? this.node.offsetHeight : height;
     var info = this.cm.state.panels;
-    this.cm._setSize(null, info.height += (newHeight - this.height));
+    this.cm._setSize(null, info.heightLeft -= (newHeight - this.height));
     this.height = newHeight;
   };
 
@@ -90,5 +113,11 @@
     wrap.style.height = info.setHeight;
     cm.setSize = cm._setSize;
     cm.setSize();
+  }
+
+  function isAtTop(cm, dom) {
+    for (var sibling = dom.nextSibling; sibling; sibling = sibling.nextSibling)
+      if (sibling == cm.getWrapperElement()) return true
+    return false
   }
 });

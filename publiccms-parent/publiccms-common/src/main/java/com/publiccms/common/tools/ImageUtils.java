@@ -1,7 +1,5 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -11,8 +9,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
-
-import org.apache.commons.codec.binary.Base64;
 
 import com.publiccms.common.base.Base;
 
@@ -27,7 +23,7 @@ public class ImageUtils implements Base {
      * @param width
      * @param height
      * @param text
-     * @return
+     * @return base64 encoded picture
      * @throws IOException
      */
     public static String getImageData(int width, int height, String text) throws IOException {
@@ -36,7 +32,7 @@ public class ImageUtils implements Base {
         byteArrayOutputStream.close();
         StringBuilder sb = new StringBuilder();
         sb.append("data:image/png;base64,");
-        sb.append(Base64.encodeBase64String(byteArrayOutputStream.toByteArray()));
+        sb.append(VerificationUtils.base64Encode(byteArrayOutputStream.toByteArray()));
         return sb.toString();
     }
 
@@ -52,7 +48,7 @@ public class ImageUtils implements Base {
         Graphics g = bufferedImage.getGraphics();
         g.setColor(getRandColor(210, 255));
         g.fillRect(0, 0, width, height);
-        if (notEmpty(text)) {
+        if (CommonUtils.notEmpty(text)) {
             int fontWidth = width / text.length();
             int fontSize = fontWidth >= height ? height - 1 : fontWidth;
             Font font1 = getFont(fontSize);
@@ -60,11 +56,11 @@ public class ImageUtils implements Base {
             for (int i = 0; i < text.length(); i++) {
                 g.setFont(font1);
                 g.setColor(getRandColor(0, 200));
-                g.drawString(String.valueOf(text.charAt(i)), i * fontWidth + 3, height - r.nextInt(height - fontSize));
+                g.drawString(String.valueOf(text.charAt(i)), i * fontWidth + 3, height - random.nextInt(height - fontSize));
                 g.setFont(font2);
                 for (int j = 0; j < 4; j++) {
                     g.setColor(getRandColor(100, 250));
-                    g.drawString(String.valueOf(text.charAt(i)), r.nextInt(width), r.nextInt(height));
+                    g.drawString(String.valueOf(text.charAt(i)), random.nextInt(width), random.nextInt(height));
                 }
             }
         }
@@ -76,7 +72,7 @@ public class ImageUtils implements Base {
             fc = 255;
         }
         int rc = (bc > 255 ? 255 : bc) - fc;
-        return new Color(fc + r.nextInt(rc), fc + r.nextInt(rc), fc + r.nextInt(rc));
+        return new Color(fc + random.nextInt(rc), fc + random.nextInt(rc), fc + random.nextInt(rc));
     }
 
     private static Font getFont(int size) {
@@ -85,6 +81,6 @@ public class ImageUtils implements Base {
         font[1] = new Font("Antique Olive Compact", Font.PLAIN, size);
         font[2] = new Font("Fixedsys", Font.PLAIN, size);
         font[3] = new Font("Gill Sans Ultra", Font.PLAIN, size);
-        return font[r.nextInt(4)];
+        return font[random.nextInt(4)];
     }
 }

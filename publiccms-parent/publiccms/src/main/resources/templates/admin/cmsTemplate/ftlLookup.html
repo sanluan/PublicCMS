@@ -30,9 +30,9 @@ function check(){
 }
 function use(path,description){
 	if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
-		${editor!'cmsTemplateEditor'}.replaceSelection('${r'<@include path="'?no_esc}'+path+'${r'"/>'?no_esc}'+description);
+		DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@include path="'?no_esc}'+path+'${r'"/>'?no_esc}'+description);
 	} else {
-		${editor!'cmsTemplateEditor'}.replaceSelection('${r'<@import path="'?no_esc}'+path+'" namespace="'+$('input[name=namespace]',$.pdialog.getCurrent()).val()+'"${r'/>'?no_esc}'+description);
+		DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@import path="'?no_esc}'+path+'" namespace="'+$('input[name=namespace]',$.pdialog.getCurrent()).val()+'"${r'/>'?no_esc}'+description);
 	}
 }
 </script>
@@ -48,10 +48,10 @@ function use(path,description){
 				<input name="use" type="radio" onchange="check()" value="import"/>
 				导入
 			</label>
-			<div style="display:none"><label style="width:auto;">命名空间：</label><input name="namespace" type="text" maxlength="10" size="10" value="t"/></div>
+			<div style="display:none"><label style="width:auto;">命名空间:</label><input name="namespace" type="text" maxlength="10" size="10" value="t"/></div>
 		</dd>
 	</dl>
 	<ul class="tree treeFolder">
-<@chipTree 'ftl'/>
+<@chipTree ''/>
 	</ul>
 </div>

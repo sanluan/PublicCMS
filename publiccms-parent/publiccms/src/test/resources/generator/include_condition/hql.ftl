@@ -1,13 +1,13 @@
 <#list conditionList as a>
     <#if "Date"=a.type>
-        if (notEmpty(start${a.name?cap_first})) {
+        if (null != start${a.name?cap_first}) {
             queryHandler.condition("bean.${a.name} > :start${a.name?cap_first}").setParameter("start${a.name?cap_first}", start${a.name?cap_first});
         }
-        if (notEmpty(end${a.name?cap_first})) {
+        if (null != end${a.name?cap_first}) {
             queryHandler.condition("bean.${a.name} <= :end${a.name?cap_first}").setParameter("end${a.name?cap_first}", end${a.name?cap_first});
         }
     <#else>
-        if (notEmpty(${a.name})) {
+        if (<#if ["Long","Integer","String"]?seq_contains(a.type)>CommonUtils.notEmpty(${a.name})<#else>null != ${a.name}</#if>) {
             queryHandler.condition("<@condition a/>").setParameter("${a.name}", <#if "String"=a.type&&a.like>like(${a.name})<#else>${a.name}</#if>);
         }
     </#if>

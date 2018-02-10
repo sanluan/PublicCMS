@@ -1,17 +1,15 @@
 package ${base}.${daoPack};
 
 // Generated ${.now} by com.publiccms.common.generator.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-
 <#include "../include_imports/field_type.ftl">
 
 import org.springframework.stereotype.Repository;
 
-<#include "../include_imports/entity.ftl">
-
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
+<#include "../include_imports/entity.ftl">
 
 /**
  *

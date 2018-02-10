@@ -2,6 +2,9 @@
 	<#assign dept=object/>
 	<#assign containChild=object.ownsAllCategory/>
 </@_sysDept>
+<@_category id=categoryId>
+	<#assign containChild=object.containChild&&containChild?has_content&&containChild/>
+</@_category>
 <@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!><#assign deptCategory=object!/></@_sysDeptCategory>
 <#if !dept?has_content||(!dept.ownsAllCategory&&!deptCategory?has_content)>
 	<#assign error='verify.notEquals.siteId'/>
@@ -30,9 +33,9 @@
 				</li>
 				<li>
 					<label>发布日期:</label>
-					<input type="text" name="startPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${startPublishDate!}" />
+					<input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
 					<span>-</span>
-					<input type="text" name="endPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${endPublishDate!}" />
+					<input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
 				</li>
 				<li>
 					<label>标题:</label><input type="text" size="20" name="title" value="${title!}" />
@@ -52,7 +55,7 @@
 		</div>
 	</form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
@@ -83,6 +86,12 @@
 </#if>
 		<#if authorizedMap['cmsContent/check']>
 			<li><a href="cmsContent/check.do" title="确定要审核这些记录么?" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核</a></li>
+		</#if>
+		<#if authorizedMap['cmsContent/check']>
+			<li><a href="cmsContent/check.do?refresh=true" title="确定要审核并刷新这些记录么?" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核并刷新</a></li>
+		</#if>
+		<#if authorizedMap['cmsContent/uncheck']>
+			<li><a href="cmsContent/uncheck.do" title="确定要撤销审核这些记录么?" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量撤销审核</a></li>
 		</#if>
 		<#if authorizedMap['cmsContent/refresh']>
 			<li><a href="cmsContent/refresh.do" title="确定要刷新这些记录么?" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
@@ -166,6 +175,9 @@
 							</#if>
 							<a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push">推荐</a>
 						</#if>
+						<#if authorizedMap['cmsContent/uncheck']>
+                            <a href="cmsContent/uncheck.do?ids=${a.id}" title="确定要撤销审核这条记录么?" target="ajaxTodo">撤销</a>
+                        </#if>
 					<#elseif 2=a.status>
 						<#if authorizedMap['cmsContent/check']>
 							<a href="cmsContent/check.do?ids=${a.id}" title="确定要审核这条记录么?" target="ajaxTodo">审核</a>

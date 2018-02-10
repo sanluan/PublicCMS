@@ -15,40 +15,46 @@
 		<dl>
 			<dt>开始日期:</dt>
 			<dd>
-				<input class="required date" name="startDate" type="text" size="15" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
+				<input type="text" name="startDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
 				<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
 			</dd>
 		</dl>
 		<dl>
 			<dt>结束日期:</dt>
 			<dd>
-				<input class="required date" name="endDate" type="text" size="15" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.endDate)!}"/>
+				<input type="text" name="endDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.endDate)!}"/>
 				<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
 			</dd>
 		</dl>
-		<dl>
-			<dt>奖品总数:</dt>
-			<dd><input class="required digits" name="totalCount" type="number" size="3" value="${(a.totalCount)!}"/></dd>
+		<dl class="nowrap">
+			<dt>奖品总数/剩余:</dt>
+			<dd>
+				<input class="required digits" name="lastGift" type="number" size="3" value="${(a.lastGift)!}"/>
+				<label style="width:2px;">/</label>
+				<input class="required digits" name="totalGift" type="number" size="3" value="${(a.totalGift)!}"/>
+			</dd>
 		</dl>
-		<dl>
-			<dt>每天发放数量:</dt>
-			<dd><input class="required digits" name="dayCount" type="number" size="3" value="${(a.dayCount)!}"/></dd>
-		</dl>
-		<dl>
-			<dt>剩余数量:</dt>
-			<dd><input class="required digits" name="lastCount" type="number" size="3" value="${(a.lastCount)!}"/></dd>
-		</dl>
-		<dl>
-			<dt>每天可抽奖次数:</dt>
-			<dd><input class="required digits" name="lotteryCount" type="text" size="3" value="${(a.lotteryCount)!}"/></dd>
+		<dl class="nowrap">
+			<dt>抽奖次数:</dt>
+			<dd>
+				<input class="required digits" name="lotteryCount" type="number" size="3" value="${(a.lotteryCount)!}"/>
+			</dd>
 		</dl>
 		<dl class="nowrap">
 			<dt>中奖概率:</dt>
-			<dd><input class="required digits" name="fractions" type="text" size="3" value="${(a.fractions)!}"/><label style="width:2px;">/</label><input class="required digits" name="numerator" type="text" size="3" value="${(a.numerator)!}"/></dd>
+			<dd>
+				<input class="required digits" name="fractions" type="number" size="3" value="${(a.fractions)!}"/>
+				<label style="width:2px;">/</label>
+				<input class="required digits" name="numerator" type="number" size="3" value="${(a.numerator)!}"/>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>网址:</dt>
+			<dd><input name="url" type="text" maxlength="255" size="60" value="${(a.url)!}"/></dd>
 		</dl>
 		<dl class="nowrap">
 			<dt>描述:</dt>
-			<dd><textarea class="required" name="description" maxlength="300" style="width: 100%;" rows="5"/>${(a.description)!}</textarea></dd>
+			<dd><textarea name="description" maxlength="300" cols="80" rows="5"/>${(a.description)!}</textarea></dd>
 		</dl>
 	</div>
 </form>

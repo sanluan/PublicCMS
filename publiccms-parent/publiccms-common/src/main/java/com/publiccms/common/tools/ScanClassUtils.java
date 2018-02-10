@@ -1,7 +1,5 @@
 package com.publiccms.common.tools;
 
-import static org.springframework.util.ClassUtils.convertClassNameToResourcePath;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,6 +12,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.MetadataReaderFactory;
+import org.springframework.util.ClassUtils;
 
 /**
  * 类扫描工具类
@@ -22,14 +21,14 @@ import org.springframework.core.type.classreading.MetadataReaderFactory;
  *
  */
 public class ScanClassUtils {
-    
+
     private static final String RESOURCE_PATTERN = "/**/*.class";
     private static final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
     /**
      * @param cls
      * @param packages
-     * @return
+     * @return classes list
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -45,7 +44,7 @@ public class ScanClassUtils {
 
     /**
      * @param packagesToScan
-     * @return
+     * @return classes set
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -53,7 +52,7 @@ public class ScanClassUtils {
         Set<Class<?>> classSet = new HashSet<>();
         if (null != packagesToScan) {
             for (String pkg : packagesToScan) {
-                String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + convertClassNameToResourcePath(pkg)
+                String pattern = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + ClassUtils.convertClassNameToResourcePath(pkg)
                         + RESOURCE_PATTERN;
                 Resource[] resources = resourcePatternResolver.getResources(pattern);
                 MetadataReaderFactory readerFactory = new CachingMetadataReaderFactory(resourcePatternResolver);

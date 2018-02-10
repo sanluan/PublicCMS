@@ -1,13 +1,12 @@
 package com.publiccms.common.tools;
 
-import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.time.DateUtils.*;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 /**
  * 基类 Base
@@ -16,214 +15,142 @@ import java.util.Map;
 public class CommonUtils {
 
     /**
-     * 获取日期
-     * 
-     * Get Date
-     * 
-     * @return
+     * @return 当前日期
      */
     public static Date getDate() {
         return new Date();
     }
 
     /**
-     * 获取日期
-     * 
-     * Get Date
-     * 
-     * @return
+     * @return 精确到分钟的当前日期
      */
     public static Date getMinuteDate() {
-        return setSeconds(setMilliseconds(getDate(), 0), 0);
+        return DateUtils.setSeconds(DateUtils.setMilliseconds(getDate(), 0), 0);
     }
 
     /**
-     * 非空
-     * 
-     * Not Empty
-     * 
      * @param var
-     * @return
+     * @return 是否为非空
      */
     public static boolean notEmpty(String var) {
-        return isNotBlank(var);
+        return StringUtils.isNotBlank(var);
     }
 
     /**
-     * 空
-     * 
-     * Empty
-     * 
      * @param var
-     * @return
+     * @return 是否为空
      */
     public static boolean empty(String var) {
-        return isBlank(var);
+        return StringUtils.isBlank(var);
     }
 
     /**
-     * 非空
-     * 
-     * Not Empty
-     * 
      * @param var
-     * @return
+     * @return 是否非空
      */
-    public static boolean notEmpty(long var) {
-        return 0 != var;
+    public static boolean notEmpty(Long var) {
+        return null != var && 0 != var;
     }
 
     /**
-     * 空
-     * 
-     * Empty
-     * 
      * @param var
-     * @return
+     * @return 是否为空
      */
-    public static boolean empty(long var) {
-        return 0 == var;
+    public static boolean empty(Long var) {
+        return null == var || 0 == var;
     }
 
     /**
-     * 非空
-     * 
-     * Not Empty
-     * 
      * @param var
-     * @return
+     * @return 是否非空
      */
-    public static boolean notEmpty(int var) {
-        return 0 != var;
+    public static boolean notEmpty(Integer var) {
+        return null != var && 0 != var;
     }
 
     /**
-     * 空
-     * 
-     * Empty
-     * 
      * @param var
-     * @return
+     * @return 是否为空
      */
-    public static boolean empty(int var) {
-        return 0 == var;
+    public static boolean empty(Integer var) {
+        return null == var || 0 == var;
     }
 
     /**
-     * 非空
-     * 
-     * Not Empty
-     * 
      * @param var
-     * @return
+     * @return 是否非空
      */
-    public static boolean notEmpty(Object var) {
-        return null != var;
+    public static boolean notEmpty(Short var) {
+        return null != var && 0 != var;
     }
 
     /**
-     * 空
-     * 
-     * Empty
-     * 
      * @param var
-     * @return
+     * @return 是否为空
      */
-    public static boolean empty(Object var) {
-        return null == var;
+    public static boolean empty(Short var) {
+        return null == var || 0 == var;
     }
 
     /**
-     * 非空
-     * 
-     * Not Empty
-     * 
      * @param var
-     * @return
+     * @return 是否非空
      */
     public static boolean notEmpty(List<?> var) {
         return null != var && !var.isEmpty();
     }
 
     /**
-     * 空
-     * 
-     * Empty
-     * 
      * @param var
-     * @return
+     * @return 是否为空
      */
     public static boolean empty(List<?> var) {
         return null == var || var.isEmpty();
     }
 
     /**
-     * 非空
-     * 
-     * Not Empty
-     * 
      * @param var
-     * @return
+     * @return 是否非空
      */
     public static boolean notEmpty(Map<?, ?> var) {
         return null != var && !var.isEmpty();
     }
 
     /**
-     * 空
-     * 
-     * Empty
-     * 
      * @param var
-     * @return
+     * @return 是否为空
      */
     public static boolean empty(Map<?, ?> var) {
         return null == var || var.isEmpty();
     }
 
     /**
-     * 非空
-     * 
-     * Not Empty
-     * 
      * @param file
-     * @return
+     * @return 是否非空
      */
     public static boolean notEmpty(File file) {
         return null != file && file.exists();
     }
 
     /**
-     * 空
-     * 
-     * Empty
-     * 
      * @param file
-     * @return
+     * @return 是否为空
      */
     public static boolean empty(File file) {
         return null == file || !file.exists();
     }
 
     /**
-     * 非空
-     * 
-     * Not Empty
-     * 
      * @param var
-     * @return
+     * @return 是否非空
      */
     public static boolean notEmpty(Object[] var) {
         return null != var && 0 < var.length;
     }
 
     /**
-     * 空
-     * 
-     * Empty
-     * 
      * @param var
-     * @return
+     * @return 是否为空
      */
     public static boolean empty(Object[] var) {
         return null == var || 0 == var.length;

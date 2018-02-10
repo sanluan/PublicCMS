@@ -6,12 +6,17 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.context.embedded.AbstractEmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.jetty.JettyEmbeddedServletContainerFactory;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
+import org.springframework.boot.context.embedded.undertow.UndertowEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+
+import com.publiccms.common.constants.CommonConstants;
 
 import config.initializer.AdminInitializer;
 import config.initializer.ApiInitializer;
@@ -33,23 +38,32 @@ public class SprintBootApplication {
      * @param args
      */
     public static void main(String[] args) {
-        SpringApplication.run(SprintBootApplication.class, args);
+        CommonConstants.applicationContext = SpringApplication.run(SprintBootApplication.class, args);
     }
 
     /**
-     * @return
+     * @return servlet container
      */
     @Bean
     public EmbeddedServletContainerFactory servletContainer() {
-        TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-        factory.setPort(8080);// 设置端口
-        factory.setDisplayName("PublicCMS");// 设置显示名称
-        factory.setSessionTimeout(20, TimeUnit.MINUTES);// 设置session超时时间
+        String server = System.getProperty("cms.server");
+        AbstractEmbeddedServletContainerFactory factory = null;
+        if ("jetty".equalsIgnoreCase(server)) {
+            factory = new JettyEmbeddedServletContainerFactory();
+        } else if ("undertow".equalsIgnoreCase(server)) {
+            factory = new UndertowEmbeddedServletContainerFactory();
+        } else {
+            factory = new TomcatEmbeddedServletContainerFactory();
+        }
+        factory.setPort(Integer.valueOf(System.getProperty("cms.port", "8080")));
+        factory.setContextPath(System.getProperty("cms.contextPath", ""));
+        factory.setDisplayName("PublicCMS");
+        factory.setSessionTimeout(20, TimeUnit.MINUTES);
         return factory;
     }
 
     /**
-     * @return
+     * @return web servlet initializer
      */
     @Bean
     public ServletContextInitializer webInitializer() {
@@ -64,20 +78,20 @@ public class SprintBootApplication {
     }
 
     /**
-     * @return
+     * @return admin servlet initializer
      */
     @Bean
     public ServletContextInitializer adminInitializer() {
         return new ServletContextInitializer() {
             @Override
             public void onStartup(ServletContext servletContext) throws ServletException {
-                new AdminInitializer(true).onStartup(servletContext);
+                new AdminInitializer().onStartup(servletContext);
             }
         };
     }
 
     /**
-     * @return
+     * @return api servlet initializer
      */
     @Bean
     public ServletContextInitializer apiInitializer() {
@@ -90,7 +104,7 @@ public class SprintBootApplication {
     }
 
     /**
-     * @return
+     * @return install servlet initializer
      */
     @Bean
     public ServletContextInitializer installationInitializer() {
@@ -103,7 +117,7 @@ public class SprintBootApplication {
     }
 
     /**
-     * @return
+     * @return resource servlet initializer
      */
     @Bean
     public ServletContextInitializer resourceInitializer() {

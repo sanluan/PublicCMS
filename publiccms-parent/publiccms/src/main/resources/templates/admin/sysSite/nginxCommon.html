@@ -6,9 +6,10 @@
 <div class="pageFormContent" layoutH="60">
 	<dl class="nowrap">
 		<dt>Nginx通用配置:</dt>
-		<dd><textarea id="nginxCommon" name="description" style="width: 100%;" rows="20"><@_disk>
+		<dd><textarea name="description" class="code" mode="nginx">
 upstream cms {
-	server localhost:8080  weight=1; #这里填写CMS的真实地址和端口
+	#这里填写CMS的真实地址和端口,可使用多行以下配置启用集群
+	server localhost:8080  weight=1;
 }
 server {
 	listen       80 default; #这里填写nginx监听的端口，后面的default表示监听所有域名的请求
@@ -27,18 +28,8 @@ server {
 		#proxy_cookie_path /publiccms/ /;
 		#rewrite /publiccms/(.*)$ /$1 permanent;
 	}
-}</@_disk></textarea>
+}</textarea>
 			<span class="info">Nginx通用配置应该包含在nginx配置文件 http包中</span>
 		</dd>
 	</dl>
-<script>
-	CodeMirror.fromTextArea(document.getElementById("nginxCommon"), {
-		mode: "nginx",
-		lineNumbers: true,
-        tabSize        : 4,
-        indentUnit     : 4,
-        lineWrapping   : true,
-        indentWithTabs : true
-	});
-</script>
 </div>

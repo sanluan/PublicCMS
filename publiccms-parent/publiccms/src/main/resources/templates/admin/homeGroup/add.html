@@ -10,20 +10,20 @@
 	<div class="pageContent">
 		<div class="pageFormContent" layoutH="60">
 			<dl>
-				<dt>创始人：</dt>
+				<dt>创始人:</dt>
 				<dd>
 					<input name="userId" value="${userId!}" type="hidden"/>
-					<input name="nickName" readonly="readonly" size="10" value="${(user.nickName)!}" type="text"/>
+					<input name="nickName" readonly="readonly" size="10" value="<@_sysUser id=userId>${(object.nickName)!}</@_sysUser>" type="text"/>
 					<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>	
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>名称：</dt>
+				<dt>名称:</dt>
 				<dd><input class="required" name="name" type="text" maxlength="255" size="20" value="${(a.name)!}"/></dd>
 			</dl>
 			<dl>
-				<dt>描述：</dt>
-				<dd><textarea name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea></dd>
+				<dt>描述:</dt>
+				<dd><textarea name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea></dd>
 			</dl>
 		</div>
 	</div>

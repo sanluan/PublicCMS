@@ -1,7 +1,7 @@
 <@_sysUser id=id>
 	<#assign a=object/>
-	<@_sysDept id=object.deptId><#assign dept=object/></@_sysDept>
 </@_sysUser>
+<@_sysDept id=(a.deptId)!deptId><#assign dept=object/></@_sysDept>
 <form method="post" action="sysDept/saveUser.do?callbackType=closeCurrent&navTabId=sysDept/userList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 	<input name="id" type="hidden" value="${id!}" />
 	<div class="formBar">
@@ -47,8 +47,8 @@
 			<legend><i class="icon-user-md icon-large"></i> 角色(只能授权您拥有得角色)</legend>
 			<ul class="tree treeFolder treeCheck expand">
 		<@_sysRole ids=admin.roles>
-			<#list map?keys as k>
-				<li><a tname="roleIds" tvalue="${map[k].id}">${map[k].name}</a></li>
+			<#list map as k,role>
+				<li><a tname="roleIds" tvalue="${k}">${role.name}</a></li>
 			</#list>
 		</@_sysRole>
 			</ul>

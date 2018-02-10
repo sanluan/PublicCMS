@@ -41,116 +41,148 @@ function clickAddTag(){
 	    </div>
 	    <div class="tabsContent unitBox">
 			<div class="pageFormContent" layoutH="96">
+		<#if model?has_content>
+			<#assign fieldList=model.fieldList![]/>
+			<#assign requiredFieldList=model.requiredFfieldList![]/>
 			<@_content id=parentId>
 				<dl class="nowrap">
-					<dt>父内容:</dt>
+				    <dt>父内容:</dt>
 					<dd>
-						${(object.title)!}
+					    ${(object.title)!}
 					</dd>
-				</dl>
+			    </dl>
 			</@_content>
-				<dl>
-					<dt>分类:</dt>
-					<dd>
-						<input name="categoryId" type="hidden" value="${categoryId!}"/>
-						${categoryId!}:${(category.name)!}
-					</dd>
-				</dl>
-				<dl>
-					<dt>模型:</dt>
-					<dd>
-						<input name="modelId" type="hidden" value="${modelId!}"/>
-						${modelId!}:${(model.name)!}
-					</dd>
-				</dl>
-				<dl class="nowrap">
-					<dt>标题:</dt>
-					<dd>
-						<input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!}"/>
-						<#if !model?has_content||!model.onlyUrl><label><input name="copied" type="checkbox" onclick="if($(this).is(':checked')){$('.copied',navTab.getCurrentPanel()).show();}else{$('.copied',navTab.getCurrentPanel()).hide();$('.copied input[type=text]',navTab.getCurrentPanel()).val('');}"/>转载</label></#if>
-					</dd>
-				</dl>
+			<dl>
+				<dt>分类:</dt>
+				<dd>
+					<input name="categoryId" type="hidden" value="${categoryId!}"/>
+					${(category.name)!}
+				</dd>
+			</dl>
+			<dl>
+				<dt>模型:</dt>
+				<dd>
+					<input name="modelId" type="hidden" value="${modelId!}"/>
+					${(model.name)!}
+				</dd>
+			 </dl>
+		 	 <dl class="nowrap">
+		        <dt>${(model.fieldTextMap['title'])!}:</dt>
+				<dd>
+					<input class="required" name="title" type="text" maxlength="250" size="60" value="${(a.title)!}"/>
+			<#if fieldList?seq_contains('copied')>
+					<label><input name="copied" type="checkbox"/>${(model.fieldTextMap['copied'])!}</label>
+<script>
+$('input[name=copied]',navTab.getCurrentPanel()).click(function(){
+	if($(this).is(':checked')) {
+	    $('.copied',navTab.getCurrentPanel()).show();
+	    $('.copied input[type=text]',navTab.getCurrentPanel()).addClass('required');
+	} else {
+		$('.copied',navTab.getCurrentPanel()).hide();
+		$('.copied input[type=text]',navTab.getCurrentPanel()).removeClass('required').val('');
+	}
+});
+</script>
+			</#if>
+			        </dd>
+			    </dl>
 				<dl class="copied" style="display:none">
-					<dt>来源:</dt>
+					<dt>${(model.fieldTextMap['source'])!}:</dt>
 					<dd><input name="source" type="text" maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
 				</dl>
-				<dl class="copied" style="display:none">
-					<dt>来源网址:</dt>
-					<dd><input class="url" name="sourceUrl" type="text" maxlength="255" size="20" value="${(attribute.sourceUrl)!}"/></dd>
+			    <dl class="copied" style="display:none">
+					<dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>
+					<dd><input class="url" name="sourceUrl" type="text" maxlength="250" size="20" value="${(attribute.sourceUrl)!}"/></dd>
 				</dl>
-			<#if a?has_content&&a.copied>
-				<script>
-					$('input[name=copied]',navTab.getCurrentPanel()).click();
-				</script>
+			<#if a?has_content&&a.copied&&fieldList?seq_contains('copied')>
+<script>
+$('input[name=copied]',navTab.getCurrentPanel()).click();
+</script>
 			</#if>
-			<#if model?has_content&&model.onlyUrl>
+			<#if model.onlyUrl>
 				<dl class="nowrap">
-					<dt>网址:</dt>
+					<dt>${(model.fieldTextMap['url'])!}:</dt>
 					<dd>
-						<input name="url" type="text" maxlength="1000" style="width: 100%;" value="${(a.url)!}"/>
+						<input name="url" type="text" maxlength="1000" size="60" value="${(a.url)!}"/>
 					</dd>
 				</dl>
-			<#else>
-				<dl>
-					<dt>作者:</dt>
-					<dd><input name="author" type="text" maxlength="50" size="20" value="${(a.author)!}"/></dd>
-				</dl>
-				<dl>
-					<dt>编辑:</dt>
-					<dd><input name="editor" type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
-				</dl>
-				<#include "../include_page/tags.html"/>
-				<#assign tagTypeIds=category.tagTypeIds!''/>
-				<#assign tagIds=(a.tagIds)!''/>
-				<@tags tagTypeIds tagIds/>
 			</#if>
+			<#if fieldList?seq_contains('tag')>
+			     <#include "../include_page/tags.html"/>
+                 <#assign tagTypeIds=category.tagTypeIds!''/>
+                 <#assign tagIds=(a.tagIds)!''/>
+                 <#assign tagText=(model.fieldTextMap['tag'])!''/>
+                 <@tags tagText tagTypeIds tagIds/>
+			</#if>
+			<#if fieldList?seq_contains('author')>
+			    <dl>
+				    <dt>${(model.fieldTextMap['author'])!}:</dt>
+				    <dd><input name="author"<#if requiredFieldList?seq_contains('author')> class="required"</#if> type="text" maxlength="50" size="20" value="${(a.author)!}"/></dd>
+			    </dl>
+			</#if>
+			<#if fieldList?seq_contains('editor')>
+				<dl>
+					<dt>${(model.fieldTextMap['editor'])!}:</dt>
+					<dd><input name="editor"<#if requiredFieldList?seq_contains('author')> class="required"</#if> type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
+				</dl>
+			</#if>
+			<#if fieldList?seq_contains('description')>
 				<dl class="nowrap">
-					<dt>描述:</dt>
+					<dt>${(model.fieldTextMap['description'])!}:</dt>
 					<dd>
-						<textarea name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea>
+					    <textarea name="description"<#if requiredFieldList?seq_contains('author')> class="required"</#if> maxlength="280" cols="80" rows="4">${(a.description)!}</textarea>
 					</dd>
 				</dl>
+			</#if>
 				<dl>
 					<dt>定时发布:</dt>
 					<dd>
-						<input name="timing" type="checkbox" onclick="if($(this).is(':checked')){$('#publishDate',navTab.getCurrentPanel()).show();$('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid')}else{$('#publishDate',navTab.getCurrentPanel()).hide();$('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid')}"/>
+					  <input name="timing" type="checkbox" onclick="if($(this).is(':checked')){$('#publishDate',navTab.getCurrentPanel()).show();$('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid')}else{$('#publishDate',navTab.getCurrentPanel()).hide();$('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid')}"/>
 					</dd>
 				</dl>
 				<dl id="publishDate" style="display:none">
 					<dt>发布日期:</dt>
 					<dd>
-						<input class="date" name="publishDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
+						<input type="text" name="publishDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
 						<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
 					</dd>
 				</dl>
 			<#if a?has_content&&a.publishDate gt .now>
-				<script>
-					$('input[name=timing]',navTab.getCurrentPanel()).click();
-				</script>
+<script>
+$('input[name=timing]',navTab.getCurrentPanel()).click();
+</script>
 			</#if>
+			<#if fieldList?seq_contains('cover')>
 				<dl class="nowrap">
-					<dt>封面:</dt>
+					<dt>${(model.fieldTextMap['cover'])!}:</dt>
 					<dd>
-						<input name="cover" value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
-						<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+						<input name="cover"<#if requiredFieldList?seq_contains('author')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+						<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">${model.coverText!}</a>
 						<#include "../include_page/preview.html"/>
 						<@preview 'content' 'input[name=cover]'/>
 					</dd>
 				</dl>
+			</#if>
 			<#include "../include_page/extendData.html"/>
 			<#if category?has_content&&category.extendId?has_content>
-				<@_sysExtendFieldList extendId=category.extendId>
+				 <@_sysExtendFieldList extendId=category.extendId>
 					<#assign extendList=list![]/>
 					<#assign extendValue=attribute!{}/>
 					<@extendData 'categoryExtendDataList' extendList extendValue/>
-				</@_sysExtendFieldList>
+				 </@_sysExtendFieldList>
 			</#if>
-			<#if model?has_content>
-				<#assign extendList=model.extendList![]/>
-				<#assign extendValue=attribute!{}/>
-				<@extendData 'modelExtendDataList' extendList extendValue/>
+			<#assign extendList=model.extendList![]/>
+			<#assign extendValue=attribute!{}/>
+			<@extendData 'modelExtendDataList' extendList extendValue/>
+			<#if fieldList?seq_contains('content')>
+				<dl class="nowrap">
+					<dt>${(model.fieldTextMap['content'])!}:</dt>
+					<dd style="width:90%">
+						<textarea name="text" class="editor<#if requiredFieldList?seq_contains('author')> required</#if>" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
+					</dd>
+				</dl>
 			</#if>
-			<#if model?has_content&&(model.hasImages||model.hasFiles)>
+			<#if model.hasImages||model.hasFiles>
 				<#include "../include_page/contentFiles.html"/>
 				<#if model.hasImages>
 					<@contentFiles true id!/>
@@ -159,15 +191,8 @@ function clickAddTag(){
 					<@contentFiles false id!/>
 				</#if>
 			</#if>
-			<#if !model?has_content||!model.onlyUrl>
-				<dl class="nowrap">
-					<dt>正文:</dt>
-					<dd style="width:800px">
-						<textarea name="text" class="<#if model?has_content&&!model.hasImages&&!model.hasFiles>required </#if>editor" style="width: 100%;" rows="20">${(attribute.text)!}</textarea>
-					</dd>
-				</dl>
-			</#if>
-			</div>
+		</#if>
+            </div>
 			<div class="pageFormContent" layoutH="96">
 				<#include "../include_page/related.html"/>
 				<@related id!/>

@@ -1,23 +1,34 @@
 <@_sysSite id=id><#assign a=object/></@_sysSite>
 <script>
-function siteDefaultConfig${id!}(){
-	if(!$('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
-		$('input[name=useStatic]',navTab.getCurrentPanel()).click();
+function siteDefaultConfig${id!}(type){
+	if('static'==type){
+		if(!$('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
+	        $('input[name=useStatic]',navTab.getCurrentPanel()).click();
+	    }
+	    if($('input[name=useSsi]',navTab.getCurrentPanel()).is(":checked")){
+	        $('input[name=useSsi]',navTab.getCurrentPanel()).click();
+	    }
+	    $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
+	    $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
+	}else{
+		if($('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
+	        $('input[name=useStatic]',navTab.getCurrentPanel()).click();
+	    }
+	    $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
+	    $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
 	}
-	if($('input[name=useSsi]',navTab.getCurrentPanel()).is(":checked")){
-		$('input[name=useSsi]',navTab.getCurrentPanel()).click();
-	}
-	$('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
-	$('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
 	<#if !a??>
 		$('input[name=domainName]',navTab.getCurrentPanel()).val("${base?keep_after('//')?keep_before('/')?keep_before(':')}");
 	</#if>
+	$('.info',navTab.getCurrentPanel()).show();
 }
 </script>
 <form method="post" action="sysSite/save.do?callbackType=closeCurrent&navTabId=sysSite/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 	<input name="id" type="hidden" value="${id!}" />
 	<div class="formBar">
 		<ul>
+		    <li><button class="button" onclick="siteDefaultConfig${id!}('static');return false;">默认静态化配置</button></li>
+            <li><button class="button" onclick="siteDefaultConfig${id!}();return false;">默认动态配置</button></li>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 			<li><button type="button" class="button close">关闭</button></li>
 		</ul>
@@ -27,24 +38,24 @@ function siteDefaultConfig${id!}(){
 			<dt>名称:</dt>
 			<dd>
 				<input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
-				<label><input name="useStatic" type="checkbox"/>启用静态化</label>
-				<button class="button" onclick="siteDefaultConfig${id!}();return false;">使用默认配置</button>
-				<span class="info">默认配置并不是最佳的运行方式,建议仅在开发阶段使用</span>
-			</dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>静态站点地址:</dt>
-			<dd>
-				<input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
-				<label><input name="useSsi" type="checkbox"/>启用SSI</label>
-				<span class="info">该地址用于静态站点访问,启用SSI后应该使用支持SSI的容器发布静态页面、反向代理动态页面</span>
+				<label><input name="useStatic" onchange="if($(this).is(':checked')){$('.useSsi').show();}else{$('.useSsi').hide();}" type="checkbox"/>启用静态化</label>
+				<span class="info" style="display:none">默认配置根据您当前访问的域名自动生成,并不是最佳的运行方式,建议仅在开发阶段使用</span>
 			</dd>
 		</dl>
 		<dl class="nowrap">
 			<dt>动态站点地址:</dt>
 			<dd>
 				<input class="required" name="dynamicPath" type="text" maxlength="255" size="60" value="${(a.dynamicPath)!}"/>
-				<span class="info">该地址用于动态站点访问</span>
+				<span class="info">默认地址为 [协议头:]//域名[:端口]/[上下文/],也可以配置为反向代理后动态站点的访问地址</span>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>静态站点地址:</dt>
+			<dd>
+				<input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
+				<label style="display:none" class="useSsi"><input name="useSsi" type="checkbox"/>启用SSI</label>
+				<span class="info">默认地址为 [协议头:]//域名[:端口]/[上下文/]webfile/,也可以配置为其他方式发布的静态文件访问地址</span>
+				<span style="display:none" class="info useSsi">启用SSI后应该使用支持SSI的容器发布静态页面、反向代理动态页面</span>
 			</dd>
 		</dl>
 		<#if !a??>
@@ -54,7 +65,7 @@ function siteDefaultConfig${id!}(){
 					<dt>域名:</dt>
 					<dd>
 						<input class="required domain" remote="sysDomain/virify.do" name="domainName" type="text" maxlength="50" size="20" value=""/>
-						<span class="info">不包含协议头，不包含端口，不包含路径，不能和已有域名重复</span>
+						<span class="info">不包含协议头，不包含端口，不包含路径，不能和已有域名重复，域名需要先解析到服务器IP地址，保存后请使用此域名访问您的新站点</span>
 					</dd>
 				</dl>
 				<dl class="nowrap">

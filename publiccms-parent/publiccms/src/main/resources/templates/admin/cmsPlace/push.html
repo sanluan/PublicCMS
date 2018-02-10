@@ -15,7 +15,7 @@
 					</li>
 				<#elseif 0!=((metaDataMap[a.fileName].size)!0)>
 					<li>
-						<a href="cmsPlace/add.html?path=${(path+'/'+a.fileName)?url}&itemType=${itemType}&itemId=${itemId!}" target="navTab" rel="cmsPlace/add">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
+						<a href="cmsPlace/add.html?path=${path}&itemType=${itemType}&itemId=${itemId!}" target="navTab" rel="cmsPlace/add">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
 					</li>
 				</#if>
 			</#if>

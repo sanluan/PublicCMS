@@ -30,19 +30,19 @@
 		</dl>
 		<dl class="nowrap">
 			<dt>地址:</dt>
-			<dd><input name="url" type="text" maxlength="1000" style="width: 100%;" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
+			<dd><input name="url" type="text" maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
 		</dl>
 		<dl>
 			<dt>发布日期:</dt>
 			<dd>
-				<input class="date" name="publishDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
+				<input type="text" name="publishDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
 				<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
 			</dd>
 		</dl>
 		<dl class="nowrap">
 			<dt>封面:</dt>
 			<dd>
-				<input name="cover" value="${(a.cover)!}" maxlength="300" size="40" type="text"/>
+				<input name="cover" value="${(a.cover)!(content.cover)!}" maxlength="300" size="40" type="text"/>
 				<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 				<#include "../include_page/preview.html"/>
 				<@preview 'page' 'input[name=cover]'/>

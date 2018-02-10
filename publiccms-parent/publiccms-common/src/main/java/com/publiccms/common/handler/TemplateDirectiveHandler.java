@@ -1,17 +1,5 @@
 package com.publiccms.common.handler;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.TemplateModelUtils.converBean;
-import static com.publiccms.common.tools.TemplateModelUtils.converBoolean;
-import static com.publiccms.common.tools.TemplateModelUtils.converDate;
-import static com.publiccms.common.tools.TemplateModelUtils.converDouble;
-import static com.publiccms.common.tools.TemplateModelUtils.converInteger;
-import static com.publiccms.common.tools.TemplateModelUtils.converLong;
-import static com.publiccms.common.tools.TemplateModelUtils.converMap;
-import static com.publiccms.common.tools.TemplateModelUtils.converShort;
-import static com.publiccms.common.tools.TemplateModelUtils.converString;
-import static com.publiccms.common.tools.TemplateModelUtils.converStringArray;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.text.ParseException;
@@ -26,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.publiccms.common.base.Base;
 import com.publiccms.common.base.BaseHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.TemplateModelUtils;
 
 import freemarker.core.Environment;
 import freemarker.core.Environment.Namespace;
@@ -110,7 +100,7 @@ public class TemplateDirectiveHandler extends BaseHandler implements Base {
     }
 
     private void reduce(Map<String, TemplateModel> reduceMap) {
-        if (notEmpty(reduceMap)) {
+        if (CommonUtils.notEmpty(reduceMap)) {
             Namespace namespace = environment.getCurrentNamespace();
             namespace.putAll(reduceMap);
         }
@@ -122,55 +112,54 @@ public class TemplateDirectiveHandler extends BaseHandler implements Base {
 
     /**
      * @param name
-     * @return
+     * @return map value
      * @throws TemplateModelException
      */
     public TemplateHashModelEx getMap(String name) throws TemplateModelException {
-        return converMap(getModel(name));
+        return TemplateModelUtils.converMap(getModel(name));
     }
 
     @Override
     protected String getStringWithoutRegrister(String name) throws TemplateModelException {
-        return converString(getModel(name));
+        return TemplateModelUtils.converString(getModel(name));
     }
 
     @Override
     public Integer getIntegerWithoutRegrister(String name) throws TemplateModelException {
-        return converInteger(getModel(name));
+        return TemplateModelUtils.converInteger(getModel(name));
     }
 
     @Override
     public Short getShort(String name) throws TemplateModelException {
         regristerParamter(PARAMETER_TYPE_SHORT, name);
-        return converShort(getModel(name));
+        return TemplateModelUtils.converShort(getModel(name));
     }
 
     @Override
     public Long getLong(String name) throws TemplateModelException {
         regristerParamter(PARAMETER_TYPE_LONG, name);
-        return converLong(getModel(name));
+        return TemplateModelUtils.converLong(getModel(name));
     }
 
     @Override
     public Double getDouble(String name) throws TemplateModelException {
         regristerParamter(PARAMETER_TYPE_DOUBLE, name);
-        return converDouble(getModel(name));
+        return TemplateModelUtils.converDouble(getModel(name));
     }
 
     @Override
     protected String[] getStringArrayWithoutRegrister(String name) throws TemplateModelException {
-        return converStringArray(getModel(name));
+        return TemplateModelUtils.converStringArray(getModel(name));
     }
 
     @Override
     protected Boolean getBooleanWithoutRegrister(String name) throws TemplateModelException {
-        return converBoolean(getModel(name));
+        return TemplateModelUtils.converBoolean(getModel(name));
     }
 
     @Override
-    public Date getDate(String name) throws TemplateModelException, ParseException {
-        regristerParamter(PARAMETER_TYPE_DATE, name);
-        return converDate(getModel(name));
+    public Date getDateWithoutRegrister(String name) throws TemplateModelException, ParseException {
+        return TemplateModelUtils.converDate(getModel(name));
     }
 
     @Override
@@ -191,7 +180,7 @@ public class TemplateDirectiveHandler extends BaseHandler implements Base {
     public Object getAttribute(String name) throws IOException, Exception {
         TemplateModel model = environment.getGlobalVariable(name);
         if (null != model) {
-            return converBean(model);
+            return TemplateModelUtils.converBean(model);
         }
         return null;
     }

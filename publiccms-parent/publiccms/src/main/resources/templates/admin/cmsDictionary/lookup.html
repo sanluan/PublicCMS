@@ -7,8 +7,8 @@
 				<li>
 					<select class="combox" name="multiple">
 						<option value=""${(!multiple?has_content)?then(' selected="true"','')?no_esc}>字典类型</option>
-						<option value="false"${(multiple??&&"false"=multiple)?then(' selected="true"','')?no_esc}>多选</option>
-						<option value="true"${(multiple??&&"true"=multiple)?then(' selected="true"','')?no_esc}>单选</option>
+						<option value="false"${(multiple??&&"false"=multiple)?then(' selected="true"','')?no_esc}>单选</option>
+						<option value="true"${(multiple??&&"true"=multiple)?then(' selected="true"','')?no_esc}>多选</option>
 					</select>
 				</li>
 			</ul>

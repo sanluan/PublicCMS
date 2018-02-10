@@ -11,7 +11,7 @@ import com.publiccms.common.handler.RenderHandler;
  */
 public interface Directive {
     /**
-     * @return
+     * @return name
      */
     public String getName();
 

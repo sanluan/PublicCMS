@@ -4,7 +4,7 @@
 	<title>${content.title} - ${category.name}</title>
 	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
 	<meta name="description" content="${content.description}"/>
-	<script src="${site.sitePath!}js/jquery-1.9.1.min.js"></script>
+	<script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
 </head>
 <body>
 	<header>
@@ -22,14 +22,14 @@
 	<main>
 		<article>
 			<h1><a href="${content.url!}">${content.title}</a></h1>
-			<p><#if content.copied>来源：<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></p>
+			<p><#if content.copied>来源:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></p>
 			<div>${text?no_esc!}</div>
 		<#if content.tags?has_content>
 			<div>
-				标签：
+				标签:
 				<@_tag ids=content.tags>
-					<#list map?keys as key>
-						<em>${map[key].name}</em>
+					<#list map as key,tag>
+						<em>${tag.name}</em>
 					</#list>
 				</@_tag>
 			</div>

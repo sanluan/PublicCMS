@@ -26,8 +26,8 @@ import org.mybatis.generator.config.PropertyRegistry;
  * ServicePlugin
  * 
  */
-public class ServicePlugin extends PluginAdapter{
-    
+public class ServicePlugin extends PluginAdapter {
+
     private List<TopLevelClass> services = new ArrayList<>();
 
     /**
@@ -41,9 +41,8 @@ public class ServicePlugin extends PluginAdapter{
         String packageName = interfaze.getType().getPackageName();
         String shortName = interfaze.getType().getShortName();
         String mapperName = interfaze.getType().getFullyQualifiedName();
-        int idx = shortName.lastIndexOf("Mapper");
         if (shortName.endsWith("Mapper")) {
-            idx = packageName.lastIndexOf(".");
+            int idx = packageName.lastIndexOf(".");
             if (idx < 0) {
                 idx = packageName.length();
             }
@@ -82,42 +81,57 @@ public class ServicePlugin extends PluginAdapter{
             for (Method it : methods) {
                 Method m = new Method();
                 m.setVisibility(JavaVisibility.PUBLIC);
-                m.setName(it.getName());
-                m.setReturnType(it.getReturnType());
-                topLevelClazz.addImportedType(it.getReturnType());
-                String bodyline = "return mapper.";
-                bodyline += m.getName();
-                bodyline += "(";
-                List<Parameter> params = it.getParameters();
-                List<String> paramTxt = new ArrayList<>();
-                for (Parameter p : params) {
-                    FullyQualifiedJavaType t = p.getType();
-                    topLevelClazz.addImportedType(t);
-                    Parameter tmp = new Parameter(t, p.getName());
-                    m.addParameter(tmp);
-                    paramTxt.add(tmp.getName());
+                if (it.getName().endsWith("WithRowbounds")) {
+                    m.setName(it.getName().replace("WithRowbounds", "WithPage"));
+                    FullyQualifiedJavaType pageHandler = new FullyQualifiedJavaType("com.publiccms.common.handler.PageHandler");
+                    m.setReturnType(pageHandler);
+                    topLevelClazz.addImportedType(pageHandler);
+                    m.addBodyLine("PageHandler page = new PageHandler(pageIndex, pageSize, mapper.countByExample(example), null);");
+                    StringBuilder bodyline = new StringBuilder("");
+                    bodyline.append("page.setList(mapper.");
+                    bodyline.append(it.getName());
+                    bodyline.append("(");
+                    List<Parameter> params = it.getParameters();
+                    List<String> paramTxt = new ArrayList<>();
+                    for (Parameter p : params) {
+                        FullyQualifiedJavaType t = p.getType();
+                        topLevelClazz.addImportedType(t);
+                        if ("RowBounds".equals(t.getShortNameWithoutTypeArguments())) {
+                            m.addParameter(new Parameter(new FullyQualifiedJavaType("long"), "pageIndex"));
+                            m.addParameter(new Parameter(FullyQualifiedJavaType.getIntInstance(), "pageSize"));
+                            paramTxt.add("new RowBounds((pageIndex - 1) * pageSize, pageSize)");
+                        } else {
+                            Parameter tmp = new Parameter(t, p.getName());
+                            m.addParameter(tmp);
+                            paramTxt.add(tmp.getName());
+                        }
+                    }
+                    bodyline.append(StringUtils.join(paramTxt, ", "));
+                    bodyline.append("));");
+                    m.addBodyLine(bodyline.toString());
+                    m.addBodyLine("return page;");
+                } else {
+                    m.setName(it.getName());
+                    m.setReturnType(it.getReturnType());
+                    topLevelClazz.addImportedType(it.getReturnType());
+                    String bodyline = "return mapper.";
+                    bodyline += m.getName();
+                    bodyline += "(";
+                    List<Parameter> params = it.getParameters();
+                    List<String> paramTxt = new ArrayList<>();
+                    for (Parameter p : params) {
+                        FullyQualifiedJavaType t = p.getType();
+                        topLevelClazz.addImportedType(t);
+                        Parameter tmp = new Parameter(t, p.getName());
+                        m.addParameter(tmp);
+                        paramTxt.add(tmp.getName());
+                    }
+                    bodyline += StringUtils.join(paramTxt, ",");
+                    bodyline += ");";
+                    m.addBodyLine(bodyline);
                 }
-                bodyline += StringUtils.join(paramTxt, ",");
-                bodyline += ");";
-                m.addBodyLine(bodyline);
                 topLevelClazz.addMethod(m);
             }
-            {
-                Method m = new Method();
-                m.setVisibility(JavaVisibility.PUBLIC);
-                m.setName("setDataSourceName");
-                m.addParameter(new Parameter(new FullyQualifiedJavaType("String"), "dataSourceName"));
-                m.addBodyLine("MultiDataSource.setDataSourceName(dataSourceName);");
-                topLevelClazz.addMethod(m);
-            }
-            {
-                Method m = new Method();
-                m.setVisibility(JavaVisibility.PUBLIC);
-                m.setName("setDefaultDataSource");
-                m.addBodyLine("MultiDataSource.resetDataSourceName();");
-                topLevelClazz.addMethod(m);
-            }
-            topLevelClazz.addImportedType("com.publiccms.common.datasource.MultiDataSource");
 
             services.add(topLevelClazz);
         }

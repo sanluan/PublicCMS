@@ -8,15 +8,15 @@
 			<ul class="searchContent">
 				<li>
 					<label>开始日期:</label>
-					<input type="text" name="startStartDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${startStartDate!}" />
+					<input type="text" name="startStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startStartDate!}" />
 					<span>-</span>
-					<input type="text" name="endStartDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${endStartDate!}" />
+					<input type="text" name="endStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endStartDate!}" />
 				</li>
 				<li>
 					<label>结束:</label>
-					<input type="text" name="startEndDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${startEndDate!}" />
+					<input type="text" name="startEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startEndDate!}" />
 					<span>-</span>
-					<input type="text" name="endEndDate" size="15" class="date" dateFmt="yyyy-MM-dd" value="${endEndDate!}" />
+					<input type="text" name="endEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endEndDate!}" />
 				</li>
 				<#include "../include_page/disabled.html"/>
 			</ul>
@@ -46,7 +46,6 @@
 				<th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">结束</th>
 				<th>时间间隔</th>
 				<th>最大投票数</th>
-				<th>允许匿名</th>
 				<th>地址</th>
 				<th>标题</th>
 				<th>描述</th>
@@ -62,7 +61,6 @@
 				<td>${a.endDate!}</td>
 				<td>${a.intervalHour!}</td>
 				<td>${a.maxVote!}</td>
-				<td>${a.anonymous?then('允许匿名','')}</td>
 				<td>${a.url!}</td>
 				<td>${a.title!}</td>
 				<td>${a.description!}</td>

@@ -1,8 +1,8 @@
 package com.publiccms.common.base;
 
-import static org.apache.commons.logging.LogFactory.getLog;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -13,5 +13,5 @@ import org.springframework.web.util.UrlPathHelper;
  */
 public abstract class BaseInterceptor extends HandlerInterceptorAdapter {
     protected UrlPathHelper urlPathHelper = new UrlPathHelper();
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 }

@@ -1,26 +1,25 @@
 package ${base}.${controllerPack};
 
 // Generated ${.now} by com.publiccms.common.generator.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.RequestUtils.getIpAddress;
-import static com.publiccms.common.tools.JsonUtils.getString;
-import static org.apache.commons.lang3.StringUtils.join;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import org.publliccms.common.base.AbstractController;
+import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.base.AbstractController;
 
 <#include "../include_imports/entity.ftl">
-
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.log.LogOperate;
+import com.publiccms.logic.service.log.LogLoginService;
 <#include "../include_imports/service.ftl">
-import org.publliccms.entities.sys.SysSite;
-import org.publliccms.entities.log.LogOperate;
-import org.publliccms.logic.service.log.LogLoginService;
 
 /**
  *
@@ -37,7 +36,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      * @param entity
      * @param request
      * @param session
-     * @return
+     * @return operate result
      */
     @RequestMapping("save")
     public String save(${entityName} entity, HttpServletRequest request, HttpSession session) {
@@ -46,12 +45,12 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(
                         new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                "update.${entityName?uncap_first}", getIpAddress(request), getDate(), getString(entity)));
+                                "update.${entityName?uncap_first}", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             service.save(entity);
             logOperateService
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.${entityName?uncap_first}", getIpAddress(request), getDate(), getString(entity)));
+                            "save.${entityName?uncap_first}", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return TEMPLATE_DONE;
     }
@@ -60,15 +59,15 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      * @param ids
      * @param request
      * @param session
-     * @return
+     * @return operate result
      */
     @RequestMapping("delete")
     public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
     	SysSite site = getSite(request);
-    	if (notEmpty(ids)) {
+    	if (CommonUtils.notEmpty(ids)) {
 	        service.delete(ids);
 	        logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.${entityName?uncap_first}", getIpAddress(request), getDate(), join(ids, ',')));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.${entityName?uncap_first}", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return TEMPLATE_DONE;
     }

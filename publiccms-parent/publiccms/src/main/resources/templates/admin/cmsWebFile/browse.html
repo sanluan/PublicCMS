@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>文件浏览</title>
+    <link href="${res}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="${res}/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
+    <script src="${res}/js/jquery-1.9.1.min.js"></script>
+    <script src="${res}/bootstrap/js/bootstrap.min.js"></script>
+<script>  
+function callback(fileUrl){  
+    var parentWindow = ( window.parent == window ) ? window.opener : window.parent;  
+    parentWindow.CKEDITOR.tools.callFunction(${CKEditorFuncNum}, fileUrl);  
+    window.close();
+}
+</script>
+</head>
+<body>
+<div class="container theme-showcase" role="main">
+    <div class="page-header">
+        <h1>网站文件</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-1"></div>
+        <div class="col-md-5">文件名</div>
+        <div class="col-md-2">修改日期</div>
+        <div class="col-md-2">创建日期</div>
+        <div class="col-md-2">文件大小</div>
+    </div>
+<#if path?has_content>
+    <div class="row">
+        <div class="col-md-1">
+            [目录]
+        </div>
+        <div class="col-md-5">
+            <a href="?path=${path?keep_before_last('/')}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self" title="返回上一级">返回上级..</a>
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+        </div>
+        <div class="col-md-2">
+        </div>
+    </div>
+</#if>
+<#assign imageSuffix=["png","gif","jpg","jpeg","bmp"]/>
+<#assign flashSuffix=["swf","fla"]/>
+<@_webFileList path=path>
+    <#list list as a>
+    <div class="row">
+        <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+        <div class="col-md-1">
+            <#if a.directory>[目录]</#if>
+        </div>
+        <div class="col-md-5">
+            <#if a.directory>
+                <a href="?path=${filePath}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self">${a.fileName}</a>
+            <#else>
+                <#if 'image'=type&&imageSuffix?seq_contains(a.fileName?keep_after_last('.'))||'flash'=type&&flashSuffix?seq_contains(a.fileName?keep_after_last('.'))>
+                    <a href="javascript:callback('${site.sitePath+filePath}');">${a.fileName}</a>
+                <#else>
+                    ${a.fileName}
+                </#if>
+            </#if>
+        </div>
+        <div class="col-md-2">
+            ${a.lastModifiedTime?datetime}
+        </div>
+        <div class="col-md-2">
+            ${a.creationTime?datetime}
+        </div>
+        <div class="col-md-2">
+            <@t.fileSize a.size/>
+        </div>
+    </div>
+    </#list>
+</@_webFileList>
+</div>
+</body>
+</html>

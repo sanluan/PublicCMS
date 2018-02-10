@@ -7,13 +7,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  *
- * Json
+ * Base
  * 
  */
 public interface Base {
-
     /**
-     * 
+     * Json Mapper
      */
     public static final ObjectMapper objectMapper = new ObjectMapper();
     /**
@@ -21,7 +20,7 @@ public interface Base {
      * 
      * Random
      */
-    public static final Random r = new Random();
+    public static final Random random = new Random();
     /**
      * 默认字符编码名称
      * 
@@ -52,12 +51,6 @@ public interface Base {
      * dot
      */
     public static final String DOT = ".";
-    /**
-     * 点
-     * 
-     * dot
-     */
-    public static final String ASTERISK = "*";
     /**
      * 空格
      * 

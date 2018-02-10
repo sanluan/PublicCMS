@@ -12,14 +12,17 @@
 <body>
 <div class="container theme-showcase" role="main">
 	<div class="page-header">
-		<h1>CMS系统监控</h1>
+		<a href=""><h1>CMS系统监控</h1></a>
 	</div>
 	<div class="row">
-		<div id="memory" class="col-lg-3 col-md-4 col-sm-6" style="height:300px;"></div>
-		<div id="memory_count" class="col-lg-3 col-md-4 col-sm-6" style="height:300px;"></div>
-		<div id="disk" class="col-lg-3 col-md-4 col-sm-6" style="height:300px;"></div>
+		<div id="memory" class="col-lg-4 col-md-6"></div>
+		<div id="memory_count" class="col-lg-4 col-md-6"></div>
+		<div id="disk" class="col-lg-4 col-md-6"></div>
 	</div>
 <script>
+document.getElementById('memory').style.height=document.getElementById('memory').offsetWidth+'px';
+document.getElementById('memory_count').style.height=document.getElementById('memory_count').offsetWidth+'px';
+document.getElementById('disk').style.height=document.getElementById('disk').offsetWidth+'px';
 var memoryChart={
 	chart:echarts.init(document.getElementById('memory')),
 	countChart:echarts.init(document.getElementById('memory_count')),
@@ -44,6 +47,11 @@ memoryChart.chart.setOption({
     },
     tooltip : {
         trigger: 'axis'
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
     },
     xAxis: {
         type: 'category',
@@ -87,6 +95,11 @@ memoryChart.countChart.setOption({
         formatter: "{a} <br/>{b} : {c} ({d}%)",
         position: [10, 10]
     },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
     series : [
         {
             name: '内存使用',
@@ -111,6 +124,11 @@ echarts.init(document.getElementById('disk')).setOption({
         trigger: 'item',
         formatter: "{a} <br/>{b} : {c} ({d}%)",
         position: [10, 10]
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
     },
     series : [
         {

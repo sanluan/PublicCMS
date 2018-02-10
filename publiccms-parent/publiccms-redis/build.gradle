@@ -1,0 +1,4 @@
+dependencies {
+	compile project(':publiccms-core')
+	compile ("redis.clients:jedis:${jedisVersion}")
+}

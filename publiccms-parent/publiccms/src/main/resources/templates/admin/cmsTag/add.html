@@ -12,8 +12,8 @@
 			<dt>标签分类:</dt>
 			<dd>
 				<input name="typeId" type="hidden" value="${(a.typeId)!}"/>
-				<#if a??&&a.typeId??><@_tagType id=a.typeId><#assign typeName=object.name/></@_tagType></#if>
-				<input class="readonly" readonly="readonly" name="typeName" type="text" size="10" value="${(typeName)!}"/>
+				<#if a??&&a.typeId??><@_tagType id=a.typeId><#assign tagTypeName=object.name/></@_tagType></#if>
+				<input class="readonly" readonly="readonly" name="tagTypeName" type="text" size="10" value="${(tagTypeName)!}"/>
 				<a class="btnLook" href="cmsTagType/lookup.html?typeId=${(a.typeId)!}" width="920" warn="请选择标签分类" lookupGroup="">选择标签分类</a>
 			</dd>
 		</dl>

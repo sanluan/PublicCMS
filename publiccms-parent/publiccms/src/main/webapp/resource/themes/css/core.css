@@ -27,12 +27,17 @@ main{ overflow:hidden;}
 footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;z-index:-1;border-top-width:1px;border-top-style:solid;}
 
 /* Menu */
-header .logo{ float:left;width:200px;height:100%;background:url(../default/images/logo.png) no-repeat;background-size:80%;background-position:center;}
-header .nav{ display:block;float:right;z-index:1;}
-header .nav li{ float:left;padding:0 5px;line-height:37px;}
-#navMenu{ float:left;display:block;position:absolute;bottom:0px;left:200px;z-index:1;}
-#navMenu li{ float:left;padding:0px 1px;}
-#navMenu li a{ font-size:14px;font-weight:bold;line-height:38px;text-decoration:none;padding:8px 12px;border:1px solid;border-radius:2px;}
+header .logo{ float:left;width:200px;height:100%;}
+header .logo img{ width:100%;}
+header .nav{ display:block;position:absolute;right:0px;z-index:1;}
+header .nav li{ float:left;padding:0 5px;line-height:37px;position: relative;}
+header .nav ul { display:none; width:100px; border:solid 1px #06223e; overflow:hidden; position:absolute; top:30px; right:0;}
+header .nav ul li { margin-top:5px; line-height:26px;}
+header .nav ul li a { color:#000;}
+header .nav .selected ul {display:block;}
+#navMenu{ float:left;display:block;position:absolute;top:33px;left:200px;z-index:1;}
+#navMenu li{ float:left;margin:0px 1px;border-style: solid;border-width: 1px;border-radius: 2px;}
+#navMenu li a{ font-size:14px;font-weight:bold;line-height:32px;text-decoration:none;padding:8px 12px;}
 
 /* Tabs */
 .tabs{ background-position:0 100%;background-repeat:repeat-x;}
@@ -47,8 +52,8 @@ header .nav li{ float:left;padding:0 5px;line-height:37px;}
 
 .tabsPage{ margin-left:202px;border-left-style: solid;border-left-width: 1px;}
 .tabsPage .tabsPageHeader{ display:block;height:35px;border-bottom-style:solid;border-bottom-width:1px;position:relative;}
-.tabsPage .tabsPageHeaderContent{ display:block;overflow:hidden;height: 100%;margin-left:35px;margin-right:72px;position:relative;}
-.tabsPage .tabsPageHeaderMargin{ margin:0 71px 0 36px;}
+.tabsPage .tabsPageHeaderContent{ display:block;overflow:hidden;height: 100%;margin-left:70px;margin-right:72px;position:relative;}
+.tabsPage .tabsPageHeaderMargin{ margin:0 71px 0 71px;}
 .tabsPage .tabsPageHeader ul{ display:block;width:10000px;z-index:1;position:absolute;}
 .tabsPage .tabsPageHeader li{ float:left;display:block;height:100%;margin-left:1px;border-right-style:solid;border-right-width:1px;position:relative;}
 .tabsPage .tabsPageHeader li a{ font-size:13px;display:inline-block;max-width:112px;padding:0 10px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -56,8 +61,9 @@ header .nav li{ float:left;padding:0 5px;line-height:37px;}
 .tabsPage .tabsPageHeader li.selected a{ font-weight:bold;}
 .tabsPage .tabsPageHeader li .close{ padding:0;padding-right: 10px;}
 .tabsPage .tabsMove{ height:100%;position:absolute;top:0;right:0;z-index:2;}
-.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ text-decoration:none;display:block;overflow:hidden;width:35px;text-align: center;height:35px;line-height:35px;position:absolute;z-index:2;}
-.tabsPage .tabsLeft{ top:0px;left:0;border-right-style:solid;border-right-width:1px;}
+.toggleCollapse,.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ text-decoration:none;display:block;overflow:hidden;width:35px;text-align: center;height:35px;line-height:35px;position:absolute;z-index:2;}
+.toggleCollapse{ top:0px;left:0;border-right-style:solid;border-right-width:1px;}
+.tabsPage .tabsLeft{ top:0px;left:35px;border-right-style:solid;border-right-width:1px;}
 .tabsPage .tabsRight{ top:0px;right:35px;border-left-style:solid;border-left-width:1px;}
 .tabsPage .tabsMore{ top:0px;right:0;border-left-style:solid;border-left-width:1px;}
 .tabsPage .tabsMoreList{ display:none;overflow-x:hidden;overflow-y:auto;width:170px;max-height:380px;padding:2px;border-style:solid;border-width:1px;position:absolute;top:110px;right:0;z-index:3;}
@@ -227,8 +233,7 @@ button.button,button.buttonActive{ height:30px;}
 #leftside{ position:relative;}
 #sidebar{ width:200px;position:absolute;top:0px;left:0px;z-index:20;overflow:hidden;}
 #sidebar #menu{ overflow:auto;}
-#sidebar .collapse{ overflow:hidden;height:35px;line-height:35px;text-align:right;padding-right:5px;}
-#sidebar .collapse a{ text-decoration:none;}
+a.toggleCollapse{ text-decoration:none;}
 #sidebar_s{ display:none;width:35px;height:35px;position:absolute;top:0px;left:0;z-index:21;text-align: center}
 #sidebar_s a{ text-decoration:none;line-height:35px;}
 #splitBar{ display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
@@ -271,21 +276,22 @@ button.button,button.buttonActive{ height:30px;}
 .pageFormContent p{ float:left;display:block;min-width:380px;margin:0;padding:5px 0;position:relative;}
 .pageFormContent p.nowrap{ width:100%}
 .pageFormContent .radioGroup{ float:left;display:block;overflow:hidden;}
-.pageFormContent label{ float:left;width:120px;padding:2px 5px;}
+.pageFormContent label{ float:left;width:120px;padding:0px 10px;}
 .pageFormContent label.radioButton{ float:left;width:auto;padding:0 10px 0 0;}
 .pageFormContent .textInput{ float:left;}
 .pageFormContent select{ float:left;}
 .pageFormContent .inputInfo{ padding:0 5px;line-height:21px;}
 .pageFormContent span.unit, .pageFormContent a.unit{ padding:0 5px;line-height:21px;}
-.pageFormContent span.info{ color:#7F7F7F;display:block;line-height:21px;float:left;}
+.pageFormContent span.info{ color:#7F7F7F;display:block;line-height:21px;}
+.pageFormContent span.info:before {display:block; content:"."; height:0; clear:both; visibility:hidden;}
 
-.pageFormContent dl{ float:left;line-height:22px;display:block;width:380px;margin:0;padding:5px 0;position:relative;}
+.pageFormContent dl{ float:left;line-height:22px;display:block;width:50%;margin:0;padding:5px 0;position:relative;}
 .pageFormContent dt{ float:left;width:120px;padding:0 5px;}
-.pageFormContent dd{ display:block;width:220px;float:left;}
+.pageFormContent dd{ float:left;display:block;}
 .pageFormContent dl.nowrap, .nowrap dl{ width:100%;height:auto;clear:both;}
-.pageFormContent dl.nowrap dd, .nowrap dd{ width:600px;}
 #content{width:800px;}
 #content p{float: none;display: block;min-width: initial;padding: 0;}
+.CodeMirror{height:100%;line-height:16px;}
 
 fieldset{ padding:3px;margin:0 0 5px 0;border:1px dotted #B8D0D6;}
 fieldset legend{ padding:2px;border:1px dotted #B8D0D6;font-weight:bold;}
@@ -333,11 +339,11 @@ h3.contentTitle{ line-height:24px;font-size:13px;border-bottom:solid 1px #CCC;cl
 #suggest li.selected{ border:1px solid #0a246a;background-color:#b6bdd2}
 
 /* button */
-a.btnDel,a.btnSelect, a.btnLook, a.btnAttach{ background:url(../default/images/button.gif) no-repeat;display:block;width:22px;height:20px;text-indent:-1000px;overflow:hidden;float:left;margin-right:3px}
-a.btnDel{ background-position:-23px 0}
-a.btnSelect{ background-position:-92px 0}
-a.btnLook{ background-position:-161px 0}
-a.btnAttach{ background-position:-183px 0}
+a.btnDel,a.btnSelect, a.btnLook, a.btnAttach{ background:url(../default/images/button.gif) no-repeat;display:block;width:24px;height:28px;text-indent:-1000px;overflow:hidden;float:left;margin-right:3px}
+a.btnDel{ background-position:-22px 3px}
+a.btnSelect{ background-position:-91px 3px}
+a.btnLook{ background-position:-160px 3px}
+a.btnAttach{ background-position:-182px 3px}
 .center a.btnDel, .center a.btnSelect, .center a.btnLook, .center a.btnAttach{ display:inline-block;float:none}
 .right a.btnDel, .right a.btnSelect, .right a.btnLook, .right a.btnAttach{ display:inline-block;float:none;text-indent:1000px}
 

@@ -1,0 +1,75 @@
+buildscript {
+	repositories {
+		jcenter()
+		mavenCentral()
+	}
+	/**
+	dependencies {
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE")
+    }*/
+}
+
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+
+subprojects{
+    apply plugin: "java"
+    apply plugin: 'idea'
+    apply plugin: "eclipse-wtp"
+	
+	group = 'com.publiccms'
+	version = 'V4.0.20180210'
+	
+	test.enabled = false
+	
+    ext {
+        // http://mvnrepository.com/artifact/org.springframework/spring-core
+        // http://projects.spring.io/spring-framework/
+        springVersion = "4.3.14.RELEASE"
+        // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+        // https://projects.spring.io/spring-boot/
+        springBootVersion = "1.5.10.RELEASE"
+        // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
+        // http://hc.apache.org/downloads.cgi
+        httpclientVersion = "4.5.5"
+        // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
+        jacksonVersion = "2.8.11"
+        // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
+        // http://hibernate.org/orm/downloads/
+        hibernateVersion = "5.1.12.Final"
+        // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
+        // http://hibernate.org/search/downloads/
+        hibernateSearchVersion = "5.6.4.Final"
+        // http://mvnrepository.com/artifact/org.freemarker/freemarker
+        freemarkerVersion = "2.3.27-incubating"
+        // http://mvnrepository.com/artifact/org.mybatis/mybatis
+        mybatisVersion = "3.4.5"
+        // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
+        luceneVersion = "5.5.5"
+        // http://mvnrepository.com/artifact/redis.clients/jedis
+        jedisVersion = "2.9.0"
+        // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
+        quartzVersion = "2.3.0"
+        // http://mvnrepository.com/artifact/com.mchange/c3p0
+        c3p0Version = "0.9.5.2"
+    }
+	sourceCompatibility = 1.7
+	targetCompatibility = 1.7
+
+    [compileJava]*.options*.encoding = "UTF-8"
+    [compileTestJava]*.options*.encoding = "UTF-8"
+
+    repositories {
+		mavenLocal()
+		jcenter()
+        mavenCentral()
+    }
+    eclipse {
+	    wtp {
+	        facet {
+	            facet name: "jst.java", version: "1.7"
+	        }
+	    }
+	}
+}

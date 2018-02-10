@@ -9,7 +9,6 @@ import java.util.Map;
  * 
  */
 public class FacetPageHandler extends PageHandler {
-    private boolean facetResult = true;
     private Map<String, Map<String, Integer>> map = new LinkedHashMap<>();
 
     /**
@@ -28,24 +27,10 @@ public class FacetPageHandler extends PageHandler {
     private static final long serialVersionUID = 1L;
 
     /**
-     * @return
+     * @return facet result map
      */
     public Map<String, Map<String, Integer>> getFacetMap() {
         return map;
-    }
-
-    /**
-     * @return
-     */
-    public boolean getFacetResult() {
-        return facetResult;
-    }
-
-    /**
-     * @param facetResult
-     */
-    public void setFacetResult(boolean facetResult) {
-        this.facetResult = facetResult;
     }
 
 }

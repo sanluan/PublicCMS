@@ -10,8 +10,19 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 import org.hibernate.id.enhanced.SequenceStyleGenerator;
 import org.hibernate.internal.util.config.ConfigurationHelper;
 
+/**
+ *
+ * IDSequenceStyleGenerator
+ *
+ */
 public class IDSequenceStyleGenerator extends SequenceStyleGenerator {
+    /**
+     * 
+     */
     public static final String CONFIG_TARGET_TABLE = "target_table";
+    /**
+     * 
+     */
     public static final String DEF_SEQUENCE_SUFFIX = "_ID_SEQ";
 
     @Override

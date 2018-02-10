@@ -109,21 +109,21 @@ function clickAddTagType(){
 				<dl class="nowrap">
 					<dt>关键词:</dt>
 					<dd>
-						<textarea name="keywords" maxlength="100" style="width: 80%;" rows="2">${(attribute.keywords)!}</textarea>
+						<textarea name="keywords" maxlength="100" cols="80" rows="2">${(attribute.keywords)!}</textarea>
 						<span class="info">请填写与分类内容相关的关键词，多个关键词应该使用逗号分开，最好保持在10个以下</span>
 					</dd>
 				</dl>
 				<dl class="nowrap">
 					<dt>描述:</dt>
 					<dd>
-						<textarea name="description" maxlength="300" style="width: 80%;" rows="2">${(attribute.description)!}</textarea>
+						<textarea name="description" maxlength="300" cols="80" rows="2">${(attribute.description)!}</textarea>
 						<span class="info">请填写与分类内容相关的描述，字数控制应该70-100个汉字或者140-200个英文字符</span>
 					</dd>
 				</dl>
 			</div>
 			<div class="pageFormContent categoryModel" layoutH="96">
 				<div class="divider"></div>
-<#assign modelIndex=0/>
+<#assign modelIndex=-1/>
 <#macro childModel parent index=1>
 	<#if parent.hasChild>
 		<@_modelList parentId=parent.id>
@@ -134,8 +134,10 @@ function clickAddTagType(){
 			<label>${a.id}:${a.name!}</label>
 			<input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
 			<input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
-			<input name="categoryModelList[${modelIndex}].categoryModel.templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+				<#if site.useStatic>
+			<input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
 			<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
+				</#if>
 			<@childModel a index+1/>
 		</li>
 			</#list>
@@ -149,16 +151,17 @@ function clickAddTagType(){
 				<dl class="nowrap">
 					<dt>
 						<input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
-						${a.id}:${a.name!}
 						<input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
+						${a.id}:${a.name!}
 					</dt>
-		<#if site.useStatic>
 					<dd <#if a.onlyUrl> style="display:none"</#if>>
-						<label>静态化模板路径:</label><input name="categoryModelList[${modelIndex}].categoryModel.templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+		<#if site.useStatic>
+						<label>静态化模板路径:</label>
+						<input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
 						<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
+		</#if>
 						<@childModel a/>
 					</dd>
-		</#if>
 				</dl>
 	<#else>
 				<dl class="nowrap">
@@ -187,7 +190,7 @@ function checkCategoryModel(){
 		if($(this).find('input[type=checkbox]').is(':checked')){
 			$(this).find('dd ul li input[name$=\\.use]').val('true');
 			$('.categoryModelContent',navTab.getCurrentPanel()).show();
-			if(0 == $(this).find('dd').length || $(this).find('dd').is(":visible")){
+			if(0 == $(this).find('dd').children().length || $(this).find('dd').is(":visible")){
 				$('.categoryModelContentPath',navTab.getCurrentPanel()).show().find('input[name=contentPath]').addClass("required");
 				return ;
 			}
@@ -199,7 +202,7 @@ checkCategoryModel();
 	<@_categoryModelList categoryId=id!copyId>
 		<#list page.list as a>
 			$('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().find('input[type=checkbox]').click();
-			$('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().find('input[name$=\\[${a.id.modelId}\\]\\.categoryModel\\.templatePath]').val('${(a.templatePath)!}');
+			$('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
 		</#list>
 	</@_categoryModelList>
 </#if>
@@ -215,7 +218,10 @@ $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
 	</@_sysExtendFieldList>
 </#if>
 <#include "../include_page/extends.html"/>
-			<@extends 'contentExtends' contentExtendList![]/>
+				<fieldset>
+	                <legend>内容扩展字段(以下字段名无效:source,sourceUrl,text)</legend>
+	                <@extends 'contentExtends' contentExtendList![]/>
+	            </fieldset>
 			</div>
 		</div>
 	</div>

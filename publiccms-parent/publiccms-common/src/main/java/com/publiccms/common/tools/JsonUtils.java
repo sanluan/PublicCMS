@@ -13,7 +13,7 @@ public final class JsonUtils implements Base {
 
     /**
      * @param object
-     * @return
+     * @return json string
      */
     public static String getString(Object object) {
         try {

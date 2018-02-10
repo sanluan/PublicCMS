@@ -1,0 +1,23 @@
+<div style="width:400px; margin:0 auto;">
+	<form action="./" method="post" id="formDataConfig">
+		<div class="wrapper"><label>选择操作</label>
+			<select name="step" onChange="if($(this).val()=='initDatabase'){$('#useSimple').show();}else{$('#useSimple').hide();};if($(this).val()=='update'){$('#useUpdate').show();}else{$('#useUpdate').hide();}">
+				<option value="initDatabase">初始化数据库(新安装)</option>
+				<option value="update"<#if fromVersion?has_content> selected="true"</#if>>升级数据库(旧版本CMS升级)</option>
+				<option value="start">直接启动</option>
+			</select>
+		</div>
+		<div class="wrapper" id="useSimple"<#if fromVersion?has_content> style="display:none"</#if>>
+			<input type="checkbox" name="useSimple" value="true"/>导入测试数据
+		</div>
+		<div class="wrapper" id="useUpdate"<#if !fromVersion?has_content> style="display:none"</#if>>
+			<label>原CMS版本</label>
+			<select name="from_version">
+				<#list versions as v>
+					<option value="${v}"<#if fromVersion?has_content&&fromVersion=v> selected="true"</#if>>${v}</option>
+				</#list>
+			</select>
+		</div>
+	</form>
+</div>
+				

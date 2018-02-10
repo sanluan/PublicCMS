@@ -1,22 +1,14 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.TemplateModelUtils.converBoolean;
-import static com.publiccms.common.tools.TemplateModelUtils.converDate;
-import static com.publiccms.common.tools.TemplateModelUtils.converDouble;
-import static com.publiccms.common.tools.TemplateModelUtils.converInteger;
-import static com.publiccms.common.tools.TemplateModelUtils.converLong;
-import static com.publiccms.common.tools.TemplateModelUtils.converMap;
-import static com.publiccms.common.tools.TemplateModelUtils.converShort;
-import static com.publiccms.common.tools.TemplateModelUtils.converString;
-import static com.publiccms.common.tools.TemplateModelUtils.converStringArray;
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.TemplateModelUtils;
 
 import freemarker.template.TemplateHashModelEx;
 import freemarker.template.TemplateMethodModelEx;
@@ -29,11 +21,11 @@ import freemarker.template.TemplateModelException;
  *
  */
 public abstract class BaseMethod implements TemplateMethodModelEx, Base {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     private String name;
 
     private static TemplateModel getModel(int index, List<TemplateModel> arguments) {
-        if (notEmpty(arguments) && index < arguments.size()) {
+        if (CommonUtils.notEmpty(arguments) && index < arguments.size()) {
             return arguments.get(index);
         }
         return null;
@@ -42,82 +34,82 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return map value
      * @throws TemplateModelException
      */
     public static TemplateHashModelEx getMap(int index, List<TemplateModel> arguments) throws TemplateModelException {
-        return converMap(getModel(index, arguments));
+        return TemplateModelUtils.converMap(getModel(index, arguments));
     }
 
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return string value
      * @throws TemplateModelException
      */
     public static String getString(int index, List<TemplateModel> arguments) throws TemplateModelException {
-        return converString(getModel(index, arguments));
+        return TemplateModelUtils.converString(getModel(index, arguments));
     }
 
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return int value
      * @throws TemplateModelException
      */
     public static Integer getInteger(int index, List<TemplateModel> arguments) throws TemplateModelException {
-        return converInteger(getModel(index, arguments));
+        return TemplateModelUtils.converInteger(getModel(index, arguments));
     }
 
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return short value
      * @throws TemplateModelException
      */
     public static Short getShort(int index, List<TemplateModel> arguments) throws TemplateModelException {
-        return converShort(getModel(index, arguments));
+        return TemplateModelUtils.converShort(getModel(index, arguments));
     }
 
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return long value
      * @throws TemplateModelException
      */
     public static Long getLong(int index, List<TemplateModel> arguments) throws TemplateModelException {
-        return converLong(getModel(index, arguments));
+        return TemplateModelUtils.converLong(getModel(index, arguments));
     }
 
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return double value
      * @throws TemplateModelException
      */
     public static Double getDouble(int index, List<TemplateModel> arguments) throws TemplateModelException {
-        return converDouble(getModel(index, arguments));
+        return TemplateModelUtils.converDouble(getModel(index, arguments));
     }
 
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return string array value
      * @throws TemplateModelException
      */
     public static String[] getStringArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
-        return converStringArray(getModel(index, arguments));
+        return TemplateModelUtils.converStringArray(getModel(index, arguments));
     }
 
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return int array value
      * @throws TemplateModelException
      */
     public static Integer[] getIntegerArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
         String[] arr = getStringArray(index, arguments);
-        if (notEmpty(arr)) {
+        if (CommonUtils.notEmpty(arr)) {
             Integer[] ids = new Integer[arr.length];
             int i = 0;
             for (String s : arr) {
@@ -131,12 +123,12 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return long array value
      * @throws TemplateModelException
      */
     public static Long[] getLongArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
         String[] arr = getStringArray(index, arguments);
-        if (notEmpty(arr)) {
+        if (CommonUtils.notEmpty(arr)) {
             Long[] ids = new Long[arr.length];
             int i = 0;
             for (String s : arr) {
@@ -150,43 +142,43 @@ public abstract class BaseMethod implements TemplateMethodModelEx, Base {
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return bool value
      * @throws TemplateModelException
      */
     public static Boolean getBoolean(int index, List<TemplateModel> arguments) throws TemplateModelException {
-        return converBoolean(getModel(index, arguments));
+        return TemplateModelUtils.converBoolean(getModel(index, arguments));
     }
 
     /**
      * @param index
      * @param arguments
-     * @return
+     * @return date
      * @throws TemplateModelException
      * @throws ParseException
      */
     public static Date getDate(int index, List<TemplateModel> arguments) throws TemplateModelException, ParseException {
-        return converDate(getModel(index, arguments));
+        return TemplateModelUtils.converDate(getModel(index, arguments));
     }
 
     /**
-     * @return
+     * @return whether to enable http 
      */
     public boolean httpEnabled() {
         return true;
     }
 
     /**
-     * @return
+     * @return min paramters number
      */
     public abstract int minParamtersNumber();
 
     /**
-     * @return
+     * @return whether to need app token
      */
     public abstract boolean needAppToken();
 
     /**
-     * @return
+     * @return name
      */
     public String getName() {
         return this.name;

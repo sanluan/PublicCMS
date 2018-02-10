@@ -1,5 +1,5 @@
 <#macro lookupTree parentId=''>
-	<@_categoryList parentId=parentId>
+	<@_categoryList advanced=true parentId=parentId count=500>
 		<#list page.list as a>
 			<li>
 				<a href="javascript:;" onclick="$.bringBack({parentId:'${a.id}',${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;">${a.name!}</a>
@@ -17,7 +17,7 @@
 <div class="pageFormContent" layoutH="19">
 	<ul class="tree treeFolder expand">
 		<li>
-			<a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:''});return false;">清空选择</a>
+			<a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:'',parentId:''});return false;">清空选择</a>
 		</li>
 		<@lookupTree/>
 	</ul>

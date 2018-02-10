@@ -1,0 +1,54 @@
+<div class="pageContent">
+    <div class="formBar">
+        <ul>
+            <li><button type="button" class="button close">关闭</button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH="60">
+    <#assign license = getLicense()/>
+    <#if license?has_content>
+		<dl>
+		    <dt>证书版本:</dt>
+		    <dd>${license.version!}</dd>
+		</dl>
+		<dl>
+		    <dt>授权类型:</dt>
+		    <dd>${license.authorization!}</dd>
+		</dl>
+		<dl class="nowrap">
+		    <dt>授权用户:</dt>
+		    <dd>${license.organization!}</dd>
+		</dl>
+		<dl class="nowrap">
+            <dt>授权域名:</dt>
+            <dd>${license.domain!}</dd>
+        </dl>
+        <dl>
+            <dt>生成日期:</dt>
+            <dd>${license.startDate!}</dd>
+        </dl>
+		<dl>
+            <dt>有效日期:</dt>
+            <dd>${license.endDate!}</dd>
+        </dl>
+		<dl class="nowrap">
+		    <dt>颁发单位:</dt>
+		    <dd>${license.issue!}</dd>
+		</dl>
+		<dl class="nowrap">
+            <dt>在线验证:</dt>
+            <dd class="licenseVerify"></dd>
+        </dl>
+        <script>
+            $.getJSON('//cms.publiccms.com/api/directive/licenseVerify?callback=?&licenseData=${getLicenseData()?url}&signaturer=${license.signaturer?url}',function(data){
+                if(data.result){
+                	$('.licenseVerify').append('验证通过');
+                }else{
+                	$('.licenseVerify').append('<em style="color:red">验证未通过</em>');
+                }
+            });
+        </script>
+	</#if>
+	</div>
+</div>
+        

@@ -1,7 +1,7 @@
 package config.spring;
 
-import org.publiccms.common.servlet.WebFileHttpRequestHandler;
-import org.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.common.servlet.WebFileHttpRequestHandler;
+import com.publiccms.logic.component.site.SiteComponent;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.HttpRequestHandler;
@@ -19,9 +19,7 @@ public class CmsConfig {
     /**
      * 资源处理器
      * 
-     * DefaultServletHttpRequestHandler
-     * 
-     * @return
+     * @return default servlet httprequesthandler
      */
     @Bean
     public HttpRequestHandler defaultServlet() {
@@ -30,12 +28,10 @@ public class CmsConfig {
     }
 
     /**
-     * 站点静态页面处理器
-     * 
-     * DefaultServletHttpRequestHandler
+     * 站点静态资源处理器
      * 
      * @param siteComponent 
-     * @return
+     * @return static resource servlet httprequesthandler
      */
     @Bean
     public HttpRequestHandler webfileServlet(SiteComponent siteComponent) {

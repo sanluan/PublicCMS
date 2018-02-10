@@ -80,7 +80,7 @@
 				<td>
 					<a href="sysDept/list.html?parentId=${a.id}" target="navTab" rel="sysDept/list">子部门管理</a>
 				<#if a.userId?has_content&&a.userId=admin.id>
-					<a href="sysDept/userList.html?deptId=${a.id}" target="navTab" rel="sysDept/userList" title="<i class='icon-user icon-large'></i> ${(a.name)!}人员管理">人员管理</a>
+					<a href="sysDept/userList.html?deptId=${a.id}" target="navTab" rel="sysDept/userList" icon="<i class='icon-user icon-large'></i>" title="${(a.name)!}人员管理">人员管理</a>
 				</#if>
 				</td>
 			</tr>

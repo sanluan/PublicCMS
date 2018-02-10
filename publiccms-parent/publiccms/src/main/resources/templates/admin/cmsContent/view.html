@@ -1,6 +1,5 @@
 <@_content id=id>
 	<#assign a=object/>
-	<#assign id=a.id/>
 	<#assign parentId=a.parentId!/>
 	<#assign categoryId=a.categoryId!/>
 	<#assign modelId=a.modelId!/>
@@ -15,6 +14,8 @@
 		</ul>
 	</div>
 	<div class="pageFormContent" layoutH="60">
+	<#if model?has_content>
+		<#assign fieldList=model.fieldList![]/>
 		<@_content id=parentId>
 			<dl class="nowrap">
 				<dt>父内容:</dt>
@@ -26,17 +27,17 @@
 			<dl>
 				<dt>分类:</dt>
 				<dd>
-					${categoryId!}:${(category.name)!}
+					${(category.name)!}
 				</dd>
 			</dl>
 			<dl>
 				<dt>模型:</dt>
 				<dd>
-					${modelId!}:${(model.name)!}
+					${(model.name)!}
 				</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>标题:</dt>
+				<dt>${(model.fieldTextMap['title'])!}:</dt>
 				<dd>
 					${(a.copied?then('[转载]',''))!}${(a.title)!}
 				</dd>
@@ -56,47 +57,46 @@
 			</dl>
 		</#if>
 			<dl class="nowrap">
-				<dt>网址:</dt>
+				<dt><#if model.onlyUrl>${(model.fieldTextMap['url'])!}<#else>网址</#if>:</dt>
 				<dd>
 					<a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
 				</dd>
 			</dl>
 		<#if a?has_content&&a.copied>
 			<dl>
-				<dt>来源:</dt>
+				<dt>${(model.fieldTextMap['source'])!}:</dt>
 				<dd>${(attribute.source)!}</dd>
 			</dl>
 			<dl>
-				<dt>来源网址:</dt>
+				<dt>${(attribute.source)!}:</dt>
 				<dd>
-					<#if attribute.sourceUrl?has_content><a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.sourceUrl)!}</a></#if>
+					<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.sourceUrl)!}</a>
 				</dd>
 			</dl>
-			</script>
 		</#if>
-		<#if (a.author)?has_content>
+		<#if fieldList?seq_contains('author')>
 			<dl>
-				<dt>作者:</dt>
+				<dt>${(model.fieldTextMap['author'])!}:</dt>
 				<dd>${(a.author)!}</dd>
 			</dl>
 		</#if>
-		<#if (a.editor)?has_content>
+		<#if fieldList?seq_contains('editor')>
 			<dl>
-				<dt>编辑:</dt>
+				<dt>${(model.fieldTextMap['editor'])!}:</dt>
 				<dd>${(a.editor)!}</dd>
 			</dl>
 		</#if>
 		<#if (a.tagIds)?has_content>
 <#if category.tagTypeIds?has_content>
 	<@_tagType ids=category.tagTypeIds>
-		<#list map?keys as k>
+		<#list map as k,tagType>
 			<dl class="nowrap tags">
-				<dt>${map[k].name}:</dt>
+				<dt>${tagType.name}:</dt>
 				<dd>
 					<@_tag ids=a.tagIds>
-						<#list map?keys as j>
-							<#if map[j].typeId=k>
-								${map[k].name},
+						<#list map as j,tag>
+							<#if tag.typeId=k>
+								${tag.name},
 							</#if>
 						</#list>
 					</@_tag>
@@ -106,20 +106,20 @@
 	</@_tagType>
 <#else>
 			<dl class="nowrap tags">
-				<dt>标签:</dt>
+				<dt>${(model.fieldTextMap['tag'])!}:</dt>
 				<dd>
 					<@_tag ids=a.tagIds>
-						<#list map?keys as j>
-							${map[j].name}<#sep>,
+						<#list map as j,tag>
+							${tag.name}<#sep>,
 						</#list>
 					</@_tag>
 				</dd>
 			</dl>
 </#if>
 		</#if>
-		<#if (a.description)?has_content>
+		<#if fieldList?seq_contains('description')>
 			<dl class="nowrap">
-				<dt>描述:</dt>
+				<dt>${(model.fieldTextMap['description'])!}:</dt>
 				<dd>
 					${(a.description)!}
 				</dd>
@@ -131,9 +131,9 @@
 					${(a.publishDate)!}
 				</dd>
 			</dl>
-		<#if (a.cover)?has_content>
+		<#if fieldList?seq_contains('cover')>
 			<dl class="nowrap">
-				<dt>封面:</dt>
+				<dt>${(model.fieldTextMap['cover'])!}:</dt>
 				<dd>
 					<div class="thumbnail">
 						<img src="${(site.sitePath+a.cover)!}" style="max-width:200px;max-height:200px;"/>
@@ -160,10 +160,10 @@
 			<dl class="nowrap">
 				<dt>图片列表:</dt>
 				<dd>
-			<@_contentFileList contentId=contentId image=true>
+			<@_contentFileList contentId=a.id image=true>
 				<#list page.list as file>
 					<div class="thumbnail">
-						<img src="${(site.sitePath+file.filePath)!}" style="max-width:200px;max-height:200px;"/>
+						<img src="${site.sitePath+(file.filePath)!}" style="max-width:200px;max-height:200px;"/>
 					</div>
 				</#list>
 			</@_contentFileList>
@@ -174,23 +174,24 @@
 				<dl class="nowrap">
 					<dt>附件列表:</dt>
 					<dd>
-				<@_contentFileList contentId=contentId image=false>
+				<@_contentFileList contentId=a.id image=false>
 					<#list page.list as file>
-						<a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
+						<a href="${site.sitePath+(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
 					</#list>
 				</@_contentFileList>
 					</dd>
 				</dl>
 			</#if>
 		</#if>
-		<#if !model?has_content||!model.onlyUrl>
+		<#if fieldList?seq_contains('content')>
 			<dl class="nowrap">
-				<dt>正文:</dt>
+				<dt>${(model.fieldTextMap['content'])!}:</dt>
 				<dd id="content">
 					${(attribute.text?no_esc)!}
 				</dd>
 			</dl>
 		</#if>
+	</#if>
 	<#if a?has_content>
 		<@_contentRelatedList contentId=a.id>
 			<#if page.totalCount gt 0>

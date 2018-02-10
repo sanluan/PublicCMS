@@ -103,7 +103,7 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     /**
-     * @return
+     * @return cache size
      */
     public int getSize() {
         return size;
@@ -137,9 +137,9 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public void init(String name, Integer size, Properties properties) {
-        if (null != size) {
-            this.size = size;
+    public void init(String name, Integer cacheSize, Properties properties) {
+        if (null != cacheSize) {
+            this.size = cacheSize;
         }
     }
 }

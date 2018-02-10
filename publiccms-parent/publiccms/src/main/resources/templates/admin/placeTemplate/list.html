@@ -5,12 +5,10 @@
 			<li>
 			<#local path=filepath+'/'+a.fileName>
 			<#if a.directory>
-				<a href="javascript:;" onclick="return false;">${a.fileName}</a>
+				<a href="placeTemplate/directory.html?path=${path!}" target="ajax" rel="cmsTemplatePlace">${a.fileName}</a>
 				<ul><@placeTree path/></ul>
 			<#else>
-				<a href="placeTemplate/content.html?path=${path?url}" target="ajax" rel="cmsTemplatePlace">
-					${(metaDataMap[a.fileName].alias)!a.fileName}
-				</a>
+				<a href="placeTemplate/content.html?path=${path!}" target="ajax" rel="cmsTemplatePlace">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
 			</#if>
 			</li>
 		<#else>

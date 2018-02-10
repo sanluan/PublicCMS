@@ -11,7 +11,7 @@
 			<ul class="searchContent">
 				<#if sysSite?has_content>
 					<li>
-						<label>站点:</label>${sysSite.name}
+						<label>站点:</label><label>${sysSite.name}</label>
 					</li>
 				</#if>
 				<li>
@@ -59,7 +59,7 @@
 			<@_sysSite ids=t.siteIds!><#assign siteMap=map!/></@_sysSite>
 			<#list page.list as a>
 			<tr target="sid" rel="${a.name}">
-				<td>${(a.name)!} ${a.wild?then('[通配域名]','')}</td>
+				<td><a href="http://${(a.name)!}">${(a.name)!}</a> ${a.wild?then('[通配域名]','')}</td>
 				<td>${a.siteId!}</td>
 				<td>${(siteMap[a.siteId?string].name)!}</td>
 				<td>${(a.path)!}</td>

@@ -24,9 +24,9 @@
 			<dt>配置描述:</dt>
 			<dd>
 				<#if a?has_content&&!a.customed>
-					<textarea class="required readonly" readonly="readonly" name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea>
+					<textarea class="required readonly" readonly="readonly" name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea>
 				<#else>
-					<textarea class="required" name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea>
+					<textarea class="required" name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea>
 				</#if>
 			</dd>
 		</dl>

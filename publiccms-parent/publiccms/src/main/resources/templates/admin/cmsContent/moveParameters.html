@@ -1,5 +1,5 @@
 <#macro categoryTree parentId=''>
-	<@_categoryList parentId=parentId>
+	<@_categoryList advanced=true parentId=parentId>
 		<#list page.list as a>
 			<li>
 				<a href="javascript:;" onclick="$('input[name=categoryId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();" target="ajax">${a.name!}</a>

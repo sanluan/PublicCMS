@@ -13,7 +13,7 @@
 			<dl class="nowrap">
 				<dt>静态页面:</dt>
 				<dd>
-					<label><a class="button" href="cmsTemplate/publish.do?path=${path}" target="ajaxTodo">生成页面</a></label>
+                    <label><a class="button" href="cmsTemplate/publish.do?path=${path}" target="ajaxTodo">生成页面</a></label>
 					<label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank">查看页面</a></label>
 				</dd>
 			</dl>
@@ -22,7 +22,7 @@
 			<dl class="nowrap">
 				<dt>动态页面:</dt>
 				<dd>
-					<label><a class="button" href="${site.dynamicPath+path}" target="_blank">查看页面</a></label>
+					<label><a class="button" href="${site.dynamicPath+path}<#if a.acceptParamters?has_content>?<#list a.acceptParamters?split(',') as p>${p}={value}${p?counter}<#sep>&</#list></#if>" target="_blank">查看页面</a></label>
 					<#if 10 lte (a.cacheTime)!0>
 						<label><a class="button" href="cmsPage/clearCache.do?path=${path}" target="ajaxTodo">清除缓存</a></label>
 					</#if>

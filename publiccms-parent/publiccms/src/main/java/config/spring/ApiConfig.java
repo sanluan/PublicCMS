@@ -13,7 +13,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "org.publiccms.controller.api", useDefaultFilters = false, includeFilters = {
+@ComponentScan(basePackages = "com.publiccms.controller.api", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
 public class ApiConfig extends WebMvcConfigurerAdapter {
 }

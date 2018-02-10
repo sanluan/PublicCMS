@@ -8,11 +8,12 @@ a{ color:#3C7FB1;}
 .tabs .tabsContent{ border-color:#C1C1C1;background-color:#eef4f5;}
 
 /* Header */
-header{border-color:#C1C1C1;background:url(images/header_background.jpg) no-repeat;background-size: cover;}
+header{border-color:#C1C1C1;background:url(images/header_background.jpg);background-size: cover;}
 footer{border-color:#C1C1C1;background-color:#F1F1F1;}
 
 /* NavMenu */
 #navMenu li.selected a,#navMenu li a:hover{ color:#333;background-color:#F1F1F1;}
+#navMenu li{ border-color:#C1C1C1;}
 
 /* TabsPage */
 .tabsPage .tabsPageHeader{ background-color:#F1F1F1;border-color:#C1C1C1;}
@@ -22,7 +23,7 @@ footer{border-color:#C1C1C1;background-color:#F1F1F1;}
 .tabsPage .tabsPageHeader li a.close:hover{ color:#ffffff;}
 .tabsPage .tabsPageHeader li a:hover{ color:#F1F1F1;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ color:#183152;}
-.tabsPage .tabsLeft{ border-right-color:#C1C1C1;}
+.toggleCollapse,.tabsPage .tabsLeft{ border-right-color:#C1C1C1;}
 .tabsPage .tabsRight,.tabsPage .tabsMore{ border-left-color:#C1C1C1;}
 .tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{ color:#F1F1F1;}
 .tabsPage .tabsMoreList{ border-color:#C1C1C1;background-color:#FFF;}
@@ -50,7 +51,7 @@ footer{border-color:#C1C1C1;background-color:#F1F1F1;}
 .tree ul{ background-color:#FFF;}
 .tree li a, .tree li span{ color:#183152;}
 .tree .hover{ background-color:#f5f5f5;}
-.tree .selected{ background-color:#e8edf3;}
+.tree .selected{ background-color:#F1F5F9;}
 
 /* Accordion */
 .accordion .accordionHeader h2{ color:#183152;}

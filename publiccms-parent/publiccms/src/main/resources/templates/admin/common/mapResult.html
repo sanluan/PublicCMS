@@ -1,5 +1,5 @@
 {
-	<#list result?keys as k>
-		"${k}":"${result[k]}"<#sep>,
+	<#list result as k,v>
+		"${k}":"${v}"<#sep>,
 	</#list>
 }

@@ -26,15 +26,17 @@
 		<jdbcConnection
 			connectionURL="jdbc:mysql://localhost:3306/public_cms?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=round"
 			driverClass="com.mysql.jdbc.Driver" userId="publiccms" password="publiccms_password" />
-		<javaModelGenerator targetPackage="org.publliccms.model"
+		<javaModelGenerator targetPackage="com.publiccms.model"
 			targetProject="src/main/java/">
 			<property name="enableSubPackages" value="true" />
 			<property name="trimStrings" value="true" />
 		</javaModelGenerator>
 		<sqlMapGenerator targetPackage="mapper.cms.xml"
 			targetProject="src/main/resources/" />
-		<javaClientGenerator targetPackage="org.publliccms.mapper"
+		<javaClientGenerator targetPackage="com.publiccms.mapper"
 			targetProject="src/main/java/" type="XMLMAPPER" />
-		<table tableName="cms_category"></table>
+		<table tableName="cms_category">
+		  <generatedKey column="id" sqlStatement="JDBC" identity="true"/>
+		</table>
 	</context>
 </generatorConfiguration>

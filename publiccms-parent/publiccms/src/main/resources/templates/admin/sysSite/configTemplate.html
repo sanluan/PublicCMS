@@ -9,12 +9,13 @@
 		<dt>站点名称:</dt>
 		<dd>
 			${(a.name)!}
+			<span class="info">以下Nginx配置根据您的站点当前配置信息及绑定的域名动态生成</span>
 		</dd>
 	</dl>
 	<dl class="nowrap">
 		<dt>Nginx配置:</dt>
 		<dd>
-			<textarea id="nginx" name="description" style="width: 100%;" rows="20"><@_disk>
+			<textarea name="description" class="code" mode="nginx"><@_disk>
 <#assign rootPath=rootPath?replace('\\','/')/>
 <#assign dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')/>
 <#assign dynamicLocation=a.dynamicPath?keep_after('//')?keep_after('/')/>
@@ -69,7 +70,7 @@ server {
 	ssi on;
 	ssi_silent_errors on;
 	ssi_types text/shtml;
-	
+
 		<#if siteLocation?has_content>
 	location /include/ {
 		alias ${rootPath}/web/site_${siteId}/include/;
@@ -84,16 +85,6 @@ server {
 	}
 }
 </#if></@_disk></textarea>
-<script>
-	CodeMirror.fromTextArea(document.getElementById("nginx"), {
-		mode: "nginx",
-		lineNumbers: true,
-        tabSize        : 4,
-        indentUnit     : 4,
-        lineWrapping   : true,
-        indentWithTabs : true
-	});
-</script>
 			<span class="info">本站点配置应该包含在nginx配置文件 http包中,点击这里查看<a href="sysSite/nginxCommon.html" target="dialog" rel="nginx_common">Nginx通用配置</a></span>
 		</dd>
 	</dl>

@@ -1,0 +1,22 @@
+<form action="sysSite/doUploadLicense.do?callbackType=closeCurrent" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this,navTabAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">上传</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>获取License:</dt>
+			<dd>
+				<a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i> PublicCMS官网</a>
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>License:</dt>
+			<dd>
+				<input type="file" name="file" class="required" size="30" />
+			</dd>
+		</dl>
+	</div>
+</form>

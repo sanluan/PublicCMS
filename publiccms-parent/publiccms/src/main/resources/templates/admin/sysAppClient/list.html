@@ -17,15 +17,15 @@
 				</li>
 				<li>
 					<label>上次登录:</label>
-					<input type="text" name="startLastLoginDate" size="15" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
+					<input type="text" name="startLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
 					<span>-</span>
-					<input type="text" name="endLastLoginDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endLastLoginDate!}" />
+					<input type="text" name="endLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
 				</li>
 				<li>
 					<label>创建日期:</label>
-					<input type="text" name="startCreateDate" size="15" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+					<input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
 					<span>-</span>
-					<input type="text" name="endCreateDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
+					<input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
 				</li>
 				<#include "../include_page/disabled.html"/>
 			</ul>
@@ -56,7 +56,7 @@
 				<th>用户昵称</th>
 				<th>版本</th>
 				<th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次登录日期</th>
-				<th>上次登陆IP</th>
+				<th>上次登录IP</th>
 				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
 				<th>已禁用</th>
 			</tr>

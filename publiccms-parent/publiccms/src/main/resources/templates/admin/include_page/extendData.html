@@ -16,7 +16,7 @@
 			<#if 'view'=type>
 				<a href="${site.sitePath+value}" target="_blank">${(value)!}</a>
 			<#else>
-				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
+				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}"/>
 				<#if 'customform'!=type><a class="btnAttach" href="common/upload.html?field=${inputName}" lookupGroup="" width="560" height="300">附件</a></#if>
 			</#if>
 			<#break>
@@ -26,7 +26,7 @@
 				<br/>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
+				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}"/>
 				<#if 'customform'!=type>
 					<a class="btnAttach" href="common/upload.html?field=${inputName}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 					<#if !preview?has_content>
@@ -47,14 +47,14 @@
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<textarea name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="5">${(value)!}</textarea>
+				<textarea name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="4">${(value)!}</textarea>
 			</#if>
 			<#break>
 		<#case 'editor'>
 			<#if 'view'=type>
 				${(value?no_esc)!}
 			<#else>
-				<textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>style="width: 100%;" rows="20">${(value)!}</textarea>
+				<textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>cols="80" rows="20">${(value)!}</textarea>
 			</#if>
 			<#break>
 		<#case 'template'>
@@ -96,7 +96,7 @@
 			</#if>
 			<#break>
 		<#case 'category'>
-		<@_category id=value><#assign category=object/></@_category>
+			<@_category id=value><#assign category=object/></@_category>
 			<#if 'view'=type>
 				${(value)!}:${(category.name)!}
 			<#else>
@@ -105,11 +105,31 @@
 				<a class="btnLook" href="cmsCategory/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择分类</a>
 			</#if>
 			<#break>
+		<#case 'categoryType'>
+			<@_categoryType id=value><#assign categoryType=object/></@_categoryType>
+			<#if 'view'=type>
+				${(value)!}:${(categoryType.name)!}
+			<#else>
+				<input name="${inputName}" value="${(value)!}" type="hidden"/>
+				<input name="${name}[${index}].categoryTypeName" readonly="readonly" size="30" value="${(categoryType.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+				<a class="btnLook" href="cmsCategoryType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择分类</a>
+			</#if>
+			<#break>
+		<#case 'tagType'>
+			<@_tagType id=value><#assign tagType=object/></@_tagType>
+			<#if 'view'=type>
+				${(value)!}:${(tagType.name)!}
+			<#else>
+				<input name="${inputName}" value="${(value)!}" type="hidden"/>
+				<input name="${name}[${index}].tagTypeName" readonly="readonly" size="30" value="${(tagType.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+				<a class="btnLook" href="cmsTagType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择分类</a>
+			</#if>
+			<#break>
 		<#case 'dictionary'>
 			<@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
 			<#if dictionary?has_content>
 				<#if 'view'=type>
-					<#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map?keys as k>${map[k].text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
+					<#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
 				<#else>
 					<#if dictionary.multiple>
 						<#assign values=value?split(',')/>
@@ -134,7 +154,7 @@
 			<#if 'view'=type>
 				${(value)!}
 			<#else>
-				<input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="20" value="${(value)!}"/>
+				<input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="10" value="${(value)!}"/>
 				<#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
 			</#if>
 			<#break>
@@ -156,13 +176,14 @@
 </#macro>
 <#macro extendData name extendList extendValues type='form'>
 	<#list extendList as e>
+	<#assign value=extendValues[e.id.code]!''/>
 		<#if 'customform'=type>
-	<p><label>${(e.name)}:</label><@input name e e?index extendValues[e.id.code]! true/></p>
+	<p><label>${(e.name)}:</label><@input name e e?index value type/></p>
 		<#else>
 	<dl class="nowrap">
 		<dt>${(e.name)}:</dt>
 		<dd<#if 'editor'=e.inputType> id="content"</#if>>
-			<@input name e e?index extendValues[e.id.code]!/>
+			<@input name e e?index value type/>
 			<span class="info">${(e.description)!}</span>
 		</dd>
 	</dl>

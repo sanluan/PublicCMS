@@ -94,7 +94,7 @@ public class EntityCondition {
     }
 
     /**
-     * @return
+     * @return the name list
      */
     public List<String> getNameList() {
         return nameList;

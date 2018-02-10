@@ -38,15 +38,15 @@
 				<tr>
 					<td colspan="2">
 						<label>注册日期:</label>
-						<input type="text" name="startRegisteredDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
+						<input type="text" name="startRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
 						<span>-</span>
-						<input type="text" name="endRegisteredDate" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endRegisteredDate!}" />
+						<input type="text" name="endRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
 					</td>
 					<td colspan="2">
 						<label>上次登录:</label>
-						<input type="text" name="startLastLoginDate" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
+						<input type="text" name="startLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
 						<span>-</span>
-						<input type="text" name="endLastLoginDate" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endLastLoginDate!}" />
+						<input type="text" name="endLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
 					</td>
 				</tr>
 			</table>

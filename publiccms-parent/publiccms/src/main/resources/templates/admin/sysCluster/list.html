@@ -6,10 +6,10 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>心跳时间：</label>
-					<input type="text" name="startHeartbeatDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${startHeartbeatDate!}" />
+					<label>心跳时间:</label>
+					<input type="text" name="startHeartbeatDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startHeartbeatDate!}" />
 					<span>-</span>
-					<input type="text" name="endHeartbeatDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endHeartbeatDate!}" />
+					<input type="text" name="endHeartbeatDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endHeartbeatDate!}" />
 				</li>
 				<li>
 					<select class="combox" name="master">

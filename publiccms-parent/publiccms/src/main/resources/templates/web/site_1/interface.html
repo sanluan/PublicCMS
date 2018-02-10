@@ -3,18 +3,20 @@
 <head>
 	<title>接口列表</title>
 	<meta charset="utf-8">
+	<link href="${base}/resource/interface/code-formatter.css" rel="stylesheet"/>
+	<script src="${base}/resource/interface/code-formatter.js"></script>
+	<script src="${base}/resource/interface/json2.js"></script>
 	<script src="${base}/resource/js/jquery-1.9.1.min.js"></script>
-	<script src="${base}/resource/interface/code-formatter.js" type="text/javascript"></script>
-	<link href="${base}/resource/interface/code-formatter.css" type="text/css" rel="stylesheet"/>
 <style>
-#sendData{width: 500px; height: 50px;}
 #rawJson{width:100%; height: 50px;}
+#interfaes{overflow: hidden;}
 #interfaes a{padding: 0 5px;}
 </style>
 <script>
 var i=0;
-var apiArray=['${base}/api/directive/','${base}/api/method/','${base}/api/']
-var apisArray=['${base}/api/directives','${base}/api/methods','${base}/api/apis'];
+var sitePath = '${base}/';
+var apiArray=['api/directive/','api/method/','api/']
+var apisArray=['api/directives','api/methods','api/apis'];
 var supportShowParamtersArray=[true,false,true];
 
 function invoke(){
@@ -23,22 +25,31 @@ function invoke(){
 	    url: $('#sendData').val(),
 	    type: 'GET',
 	    contentType:'application/json; charset=UTF-8',
-	    dataType: 'text',
+	    dataType: 'jsonp',
 	    success: function (data) {
-	    	$('#rawJson').val(data);
-	    	process(data,$('.code-canvas'));
+	    	$('#rawJson').val(JSON.stringify(data));
+	    	process(JSON.stringify(data),$('.code-canvas'));
+	    },
+	    error: function (XMLHttpRequest, textStatus, errorThrown) {
+	    	console.log(XMLHttpRequest);
+	    	console.log(errorThrown);
+	    	$('#rawJson').val('http code:'+XMLHttpRequest.status+',error:'+textStatus);
 	    }
 	});
 }
 function getSymbol(value){
-	if(value&&value.indexOf('?')>0){
-		return '&';
+	if(value.charAt(value.length-1)=='&'||value.charAt(value.length-1)=='?'){
+		return '';
 	}else{
-		return '?';
+		if(value&&value.indexOf('?')>0){
+			return '&';
+		}else{
+			return '?';
+		}
 	}
 }
 function use(action,needAppToken,needUserToken,minParamters){
-	$('#sendData').val(apiArray[i]+action);
+	$('#sendData').val(sitePath+apiArray[i]+action);
 	if('true'==needAppToken){
 		$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken={AppToken}');
 	}
@@ -86,7 +97,7 @@ $(function(){
 		if($(this).is(':checked')){
 			$('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParamters=true');
 		}else{
-			$('#sendData').val($('#sendData').val().replace('showParamters=true',''));
+			$('#sendData').val($('#sendData').val().replace('&showParamters=true','').replace('?showParamters=true',''));
 		}
 	});
 	$('input:radio[name=api]').eq(0).click();
@@ -102,17 +113,30 @@ $(function(){
 		<legend>接口测试</legend>
 		<p>
 			<label>地址：</label>
-			<textarea id="sendData"></textarea>
+			<textarea cols="100" rows="2" id="sendData"></textarea>
 			<label><input name="showParamters" type="checkbox" checked="checked"/>返回请求参数</label>
 		</p>
 		<p id="buttons" style="display:none"><input type="button" value="发送请求" onclick="invoke()"/></p>
 		<p>
+			<label>站点切换
+				<select onchange="$('#sendData').val($('#sendData').val().replace(sitePath,$(this).val()));sitePath=$(this).val();">
+			<@_sysSiteList count=500>
+				<#list page.list as a>
+					<option value ="${a.dynamicPath!}" <#if site.id=a.id>selected="selected"</#if>>${a.name!}<#if site.id=a.id>[当前站点]</#if></option>
+				</#list>
+			</@_sysSiteList>
+				</select>
+			</label>
 			<label><input type="radio" name="api" value="0"/>指令接口</label>
 			<label><input type="radio" name="api" value="1"/>方法接口</label>
 			<label><input type="radio" name="api" value="2"/>定制接口</label>
-			<em>(红色字体接口需要使用AppToken才能访问，绿色框体接口需要登陆信息authToken，authUserId才能访问)</em>
 		</p>
+		<p><em>红色字体接口需要使用AppToken才能访问，后台添加应用然后用appKey和appSecret通过定制接口appToken获取appToken，绿色框体接口需要登录信息authToken，authUserId才能访问,通过定制接口login获取</em></p>
 		<p id="interfaes"></p>
+		<p>
+			<a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','20px');return false;">↑↑↑↑ 折叠接口列表</a>
+			<a href="javascript:;" style="display:none;" onclick="$(this).hide().prev().show();$('#interfaes').css('height','auto');return false;">↓↓↓↓ 展开接口列表</a>
+		</p>
 	</fieldset>
 	<fieldset>
 		<legend>返回报文</legend>

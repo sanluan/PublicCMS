@@ -1,0 +1,52 @@
+<form method="post" action="sysSite/execSql.do?navTabId=sysSite/sql" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+	<div class="formBar">
+		<ul>
+			<li><button type="submit" class="buttonActive">执行</button></li>
+			<li><button type="button" class="button close">关闭</button></li>
+		</ul>
+	</div>
+	<div class="pageFormContent" layoutH="60">
+		<dl class="nowrap">
+			<dt>SQL语句:</dt>
+			<dd>
+				<textarea class="required" name="sql" maxlength="500" cols="80" rows="4"></textarea>
+				<a class="btnLook" href="sysSite/sqlExample.html" width="920" warn="请选择SQL模板" lookupGroup="">选择SQL模板</a>
+				<span class="info">仅能执行单条sql</span>
+			</dd>
+		</dl>
+<@_logOperateList operate='execSql.site' count=10>
+	<#list page.list as a>
+		<@t.merge 'userIds' a.userId!/>
+	</#list>
+	<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+	<#list page.list as a>
+		<dl>
+			<dt>用户:</dt>
+			<dd>
+				${(userMap[a.userId?string].nickName)!}
+			</dd>
+		</dl>
+		<dl>
+			<dt>执行日期:</dt>
+			<dd>
+				${a.createDate!}
+			</dd>
+		</dl>
+		<#assign content=a.content?eval/>
+		<dl class="nowrap">
+			<dt>详情:</dt>
+			<dd>
+				${(content.sql)!}
+			</dd>
+		</dl>
+		<dl class="nowrap">
+			<dt>结果:</dt>
+			<dd>
+				${(content.result)!(content.error)!}
+			</dd>
+		</dl>
+		<div class="divider"></div>
+	</#list>
+</@_logOperateList>
+	</div>
+</form>

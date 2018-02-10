@@ -1,13 +1,9 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.lang3.StringUtils.split;
-import static org.apache.commons.lang3.StringUtils.trimToEmpty;
-
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
 
 import com.publiccms.common.base.Base;
 
@@ -29,28 +25,9 @@ import freemarker.template.TemplateSequenceModel;
  */
 public class TemplateModelUtils implements Base {
 
-    private static final String FULL_DATE_FORMAT_STRING = "yyyy-MM-dd HH:mm:ss";
-    private static final String SHORT_DATE_FORMAT_STRING = "yyyy-MM-dd";
-    /**
-     * 
-     */
-    public static final DateFormat FULL_DATE_FORMAT = new SimpleDateFormat(FULL_DATE_FORMAT_STRING);
-    /**
-     * 
-     */
-    public static final int FULL_DATE_LENGTH = FULL_DATE_FORMAT_STRING.length();
-    /**
-     * 
-     */
-    public static final DateFormat SHORT_DATE_FORMAT = new SimpleDateFormat(SHORT_DATE_FORMAT_STRING);
-    /**
-     * 
-     */
-    public static final int SHORT_DATE_LENGTH = SHORT_DATE_FORMAT_STRING.length();
-
     /**
      * @param model
-     * @return
+     * @return java bean value
      * @throws TemplateModelException
      */
     public static Object converBean(TemplateModel model) throws TemplateModelException {
@@ -67,7 +44,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return string value
      * @throws TemplateModelException
      */
     public static String converString(TemplateModel model) throws TemplateModelException {
@@ -86,7 +63,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return map value
      * @throws TemplateModelException
      */
     public static TemplateHashModelEx converMap(TemplateModel model) throws TemplateModelException {
@@ -100,7 +77,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return int value
      * @throws TemplateModelException
      */
     public static Integer converInteger(TemplateModel model) throws TemplateModelException {
@@ -112,7 +89,7 @@ public class TemplateModelUtils implements Base {
                 return ((TemplateNumberModel) model).getAsNumber().intValue();
             } else if (model instanceof TemplateScalarModel) {
                 String s = ((TemplateScalarModel) model).getAsString();
-                if (notEmpty(s)) {
+                if (CommonUtils.notEmpty(s)) {
                     try {
                         return Integer.parseInt(s);
                     } catch (NumberFormatException e) {
@@ -126,7 +103,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return short value
      * @throws TemplateModelException
      */
     public static Short converShort(TemplateModel model) throws TemplateModelException {
@@ -138,7 +115,7 @@ public class TemplateModelUtils implements Base {
                 return ((TemplateNumberModel) model).getAsNumber().shortValue();
             } else if (model instanceof TemplateScalarModel) {
                 String s = ((TemplateScalarModel) model).getAsString();
-                if (notEmpty(s)) {
+                if (CommonUtils.notEmpty(s)) {
                     try {
                         return Short.parseShort(s);
                     } catch (NumberFormatException e) {
@@ -152,7 +129,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return long value
      * @throws TemplateModelException
      */
     public static Long converLong(TemplateModel model) throws TemplateModelException {
@@ -164,7 +141,7 @@ public class TemplateModelUtils implements Base {
                 return ((TemplateNumberModel) model).getAsNumber().longValue();
             } else if (model instanceof TemplateScalarModel) {
                 String s = ((TemplateScalarModel) model).getAsString();
-                if (notEmpty(s)) {
+                if (CommonUtils.notEmpty(s)) {
                     try {
                         return Long.parseLong(s);
                     } catch (NumberFormatException e) {
@@ -178,7 +155,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return double value
      * @throws TemplateModelException
      */
     public static Double converDouble(TemplateModel model) throws TemplateModelException {
@@ -190,7 +167,7 @@ public class TemplateModelUtils implements Base {
                 return ((TemplateNumberModel) model).getAsNumber().doubleValue();
             } else if (model instanceof TemplateScalarModel) {
                 String s = ((TemplateScalarModel) model).getAsString();
-                if (notEmpty(s)) {
+                if (CommonUtils.notEmpty(s)) {
                     try {
                         return Double.parseDouble(s);
                     } catch (NumberFormatException e) {
@@ -204,7 +181,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return string array value
      * @throws TemplateModelException
      */
     public static String[] converStringArray(TemplateModel model) throws TemplateModelException {
@@ -217,11 +194,11 @@ public class TemplateModelUtils implements Base {
             return values;
         }
         String str = converString(model);
-        if (notEmpty(str)) {
+        if (CommonUtils.notEmpty(str)) {
             if (0 <= str.indexOf(COMMA_DELIMITED)) {
-                return split(str, COMMA_DELIMITED);
+                return StringUtils.split(str, COMMA_DELIMITED);
             } else {
-                return split(str, BLANK_SPACE);
+                return StringUtils.split(str, BLANK_SPACE);
             }
         }
         return null;
@@ -229,7 +206,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return bool value
      * @throws TemplateModelException
      */
     public static Boolean converBoolean(TemplateModel model) throws TemplateModelException {
@@ -243,7 +220,7 @@ public class TemplateModelUtils implements Base {
                 return !(0 == ((TemplateNumberModel) model).getAsNumber().intValue());
             } else if (model instanceof TemplateScalarModel) {
                 String temp = ((TemplateScalarModel) model).getAsString();
-                if (notEmpty(temp)) {
+                if (CommonUtils.notEmpty(temp)) {
                     return Boolean.valueOf(temp);
                 }
             }
@@ -253,7 +230,7 @@ public class TemplateModelUtils implements Base {
 
     /**
      * @param model
-     * @return
+     * @return data value
      * @throws TemplateModelException
      * @throws ParseException
      */
@@ -265,15 +242,11 @@ public class TemplateModelUtils implements Base {
             if (model instanceof TemplateDateModel) {
                 return ((TemplateDateModel) model).getAsDate();
             } else if (model instanceof TemplateScalarModel) {
-                String temp = trimToEmpty(((TemplateScalarModel) model).getAsString());
-                if (FULL_DATE_LENGTH == temp.length()) {
-                    synchronized (FULL_DATE_FORMAT) {
-                        return FULL_DATE_FORMAT.parse(temp);
-                    }
-                } else if (SHORT_DATE_LENGTH == temp.length()) {
-                    synchronized (SHORT_DATE_FORMAT) {
-                        return SHORT_DATE_FORMAT.parse(temp);
-                    }
+                String temp = StringUtils.trimToEmpty(((TemplateScalarModel) model).getAsString());
+                if (DateFormatUtils.FULL_DATE_LENGTH == temp.length()) {
+                    return DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING).parse(temp);
+                } else if (DateFormatUtils.SHORT_DATE_LENGTH == temp.length()) {
+                        return DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING).parse(temp);
                 } else {
                     try {
                         return new Date(Long.parseLong(temp));

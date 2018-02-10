@@ -1,11 +1,10 @@
 package com.publiccms.common.directive;
 
-import static org.apache.commons.logging.LogFactory.getLog;
-
 import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.publiccms.common.handler.TemplateDirectiveHandler;
 
@@ -21,7 +20,7 @@ import freemarker.template.TemplateModel;
  *
  */
 public abstract class BaseTemplateDirective implements TemplateDirectiveModel, Directive , HttpDirective {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     private String name;
     
     @SuppressWarnings("unchecked")

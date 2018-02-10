@@ -1,0 +1,6 @@
+rootProject.name = 'publiccms-parent'
+include 'publiccms'
+include 'publiccms-core'
+include 'publiccms-common'
+include 'publiccms-oauth'
+include 'publiccms-redis'

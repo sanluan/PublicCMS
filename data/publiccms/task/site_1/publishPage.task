@@ -1,8 +1,8 @@
-<@_publishPage path='/include'>
+<@_publishPlace>
 <#list map?keys as k>
 	${k!}	${map[k]?string('成功','失败')}
 </#list>
-</@_publishPage>
+</@_publishPlace>
 <@_publishPage>
 <#list map?keys as k>
 	${k!}	${map[k]?string('成功','失败')}

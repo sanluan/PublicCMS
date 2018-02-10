@@ -1,4 +1,4 @@
-<@_lotteryUserList lotteryId=lotteryId userId=userId
+<@_lotteryUserList lotteryId=lotteryId!queryLotteryId userId=userId
             winning=winning startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
@@ -8,7 +8,7 @@
 			<ul class="searchContent">
 				<li>
 					<label>抽奖:</label>
-					<input type="text" name="lotteryId" value="${lotteryId!}" />
+					<input type="text" name="lotteryId" value="${lotteryId!queryLotteryId!}" />
 				</li>
 				<li>
 					<label>用户:</label>
@@ -23,9 +23,9 @@
 				</li>
 				<li>
 					<label>抽奖时间:</label>
-					<input type="text" name="startCreateDate" size="15" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+					<input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
 					<span>-</span>
-					<input type="text" name="endCreateDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
+					<input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
 				</li>
 			</ul>
 			<div class="subBar">

@@ -21,13 +21,14 @@
 		range: $.validator.format("请输入一个介于 {0} 和 {1} 之间的值"),
 		max: $.validator.format("请输入一个最大为 {0} 的值"),
 		min: $.validator.format("请输入一个最小为 {0} 的值"),
-		
-		alphanumeric: "字母、数字、下划线",
+
+		alphanumeric: "必须是字母、数字、下划线",
 		lettersonly: "必须是字母",
+		letterstart: "必须是字母、数字、下划线,首字符必须是字母",
 		phone: "请输入合法的电话号码",
-		domain: "请输入合法的域名",
+		domain: "请输入合法的域名"
 	});
-	
+
 	// DWZ regional
 	$.setRegional("datepicker", {
 		dayNames: ['日', '一', '二', '三', '四', '五', '六'],
@@ -37,7 +38,7 @@
 		title:{error:"错误", info:"提示", warn:"警告", correct:"成功", confirm:"确认提示"},
 		butMsg:{ok:"确定", yes:"是", no:"否", cancel:"取消"}
 	});
-	
+
 
 	$.setMessage('statusCode_503','服务器当前负载过大或者正在维护!');
 	$.setMessage('validateFormError','提交数据不完整，{0}个字段有错误，请改正后再提交!');

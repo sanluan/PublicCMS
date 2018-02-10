@@ -10,73 +10,73 @@
 	<div class="pageContent">
 		<div class="pageFormContent" layoutH="60">
 			<dl>
-				<dt>用户ID：</dt>
+				<dt>用户ID:</dt>
 				<dd>${(a.userId)!}</dd>
 			</dl>
 			<dl>
-				<dt>用户昵称：</dt>
+				<dt>用户昵称:</dt>
 				<dd><@_sysUser id=a.userId>${object.nickName}</@_sysUser></dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>标题：</dt>
+				<dt>标题:</dt>
 				<dd>${(a.title)!}</dd>
 			</dl>
 			<dl class="nowrap">
-				<dt>签名：</dt>
+				<dt>签名:</dt>
 				<dd>${(a.signature)!}</dd>
 			</dl>
 			<dl>
-				<dt>上次登陆日期：</dt>
+				<dt>上次登录日期:</dt>
 				<dd>
-					<input class="required date" name="lastLoginDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.lastLoginDate)!}
+					<input class="required date" name="lastLoginDate" type="text" size="20" dateFmt="yyyy-MM-dd" value="${(a.lastLoginDate)!}
 					<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
 				</dd>
 			</dl>
 			<dl>
-				<dt>创建日期：</dt>
+				<dt>创建日期:</dt>
 				<dd>
-					<input class="required date" name="createDate" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.createDate)!}
+					<input class="required date" name="createDate" type="text" size="20" dateFmt="yyyy-MM-dd" value="${(a.createDate)!}
 					<a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
 				</dd>
 			</dl>
 			<dl>
-				<dt>好友数：</dt>
+				<dt>好友数:</dt>
 				<dd>${(a.friends)!}</dd>
 			</dl>
 			<dl>
-				<dt>消息数：</dt>
+				<dt>消息数:</dt>
 				<dd>${(a.messages)!}</dd>
 			</dl>
 			<dl>
-				<dt>问题数：</dt>
+				<dt>问题数:</dt>
 				<dd>${(a.questions)!}</dd>
 			</dl>
 			<dl>
-				<dt>回答数：</dt>
+				<dt>回答数:</dt>
 				<dd>${(a.answers)!}</dd>
 			</dl>
 			<dl>
-				<dt>文章数：</dt>
+				<dt>文章数:</dt>
 				<dd>${(a.articles)!}</dd>
 			</dl>
 			<dl>
-				<dt>点击数：</dt>
+				<dt>点击数:</dt>
 				<dd>${(a.clicks)!}</dd>
 			</dl>
 			<dl>
-				<dt>广播数：</dt>
+				<dt>广播数:</dt>
 				<dd>${(a.broadcasts)!}</dd>
 			</dl>
 			<dl>
-				<dt>评论数：</dt>
+				<dt>评论数:</dt>
 				<dd>${(a.comments)!}</dd>
 			</dl>
 			<dl>
-				<dt>关注数：</dt>
+				<dt>关注数:</dt>
 				<dd>${(a.attentions)!}</dd>
 			</dl>
 			<dl>
-				<dt>粉丝数：</dt>
+				<dt>粉丝数:</dt>
 				<dd>${(a.fans)!}</dd>
 			</dl>
 		</div>

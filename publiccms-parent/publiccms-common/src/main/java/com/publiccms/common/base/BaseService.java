@@ -1,32 +1,32 @@
 package com.publiccms.common.base;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static org.apache.commons.logging.LogFactory.getLog;
-import static org.springframework.beans.BeanUtils.copyProperties;
-
 import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.common.datasource.MultiDataSource;
+import com.publiccms.common.tools.CommonUtils;
+
 /**
  *
  * BaseService
- * @param <E> 
+ * 
+ * @param <E>
  * 
  */
 @Transactional
 public abstract class BaseService<E> implements Base {
-    protected final Log log = getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     protected BaseDao<E> dao;
 
     /**
      * @param id
-     * @return
+     * @return entity
      */
     public E getEntity(Serializable id) {
         return null != id ? dao.getEntity(id) : null;
@@ -35,7 +35,7 @@ public abstract class BaseService<E> implements Base {
     /**
      * @param id
      * @param pk
-     * @return
+     * @return entity
      */
     public E getEntity(Serializable id, String pk) {
         return dao.getEntity(id, pk);
@@ -44,7 +44,7 @@ public abstract class BaseService<E> implements Base {
     /**
      * @param ids
      * @param pk
-     * @return
+     * @return entitys list
      */
     public List<E> getEntitys(Serializable[] ids, String pk) {
         return dao.getEntitys(ids, pk);
@@ -52,7 +52,7 @@ public abstract class BaseService<E> implements Base {
 
     /**
      * @param ids
-     * @return
+     * @return entitys list
      */
     public List<E> getEntitys(Serializable[] ids) {
         return dao.getEntitys(ids);
@@ -78,12 +78,12 @@ public abstract class BaseService<E> implements Base {
      * @param id
      * @param newEntity
      * @param ignoreProperties
-     * @return
+     * @return entity
      */
     public E update(Serializable id, E newEntity, String[] ignoreProperties) {
         E entity = getEntity(id);
         if (null != entity) {
-            copyProperties(dao.init(newEntity), entity, ignoreProperties);
+            BeanUtils.copyProperties(dao.init(newEntity), entity, ignoreProperties);
         }
         return entity;
     }
@@ -91,46 +91,32 @@ public abstract class BaseService<E> implements Base {
     /**
      * @param id
      * @param newEntity
-     * @return
+     * @return entity
      */
     public E update(Serializable id, E newEntity) {
         E entity = getEntity(id);
         if (null != entity) {
-            copyProperties(dao.init(newEntity), entity);
+            BeanUtils.copyProperties(dao.init(newEntity), entity);
         }
         return entity;
     }
 
     /**
      * @param entity
-     * @return
+     * @return id
      */
     public Serializable save(E entity) {
         return dao.save(entity);
     }
-    
+
     /**
      * @param entityList
      */
     public void save(List<E> entityList) {
-        if (notEmpty(entityList)) {
+        if (CommonUtils.notEmpty(entityList)) {
             for (E entity : entityList) {
                 save(entity);
             }
         }
-    }
-    
-    /**
-     * @param dataSourceName
-     */
-    public void setDataSourceName(String dataSourceName){
-        MultiDataSource.setDataSourceName(dataSourceName);
-    }
-
-    /**
-     * 
-     */
-    public void resetDataSourceName() {
-        MultiDataSource.resetDataSourceName();
     }
 }

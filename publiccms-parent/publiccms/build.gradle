@@ -1,0 +1,39 @@
+apply plugin: "war"
+//apply plugin: 'org.springframework.boot'
+
+group = 'com.publiccms'
+
+dependencies {
+    compile project(':publiccms-core')
+    compile project(':publiccms-oauth')
+	compile project(':publiccms-redis')
+    testCompile(
+        // http://mvnrepository.com/artifact/junit/junit
+        "junit:junit:4.12",
+        "org.springframework:spring-test:${springVersion}",
+        "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
+    )
+    providedCompile(
+        // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
+        "org.mybatis.generator:mybatis-generator-core:1.3.6",
+        // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+        "javax.servlet:javax.servlet-api:3.1.0"
+    )
+    compile(
+        "org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
+        exclude group:"org.springframework.boot", module: 'spring-boot-starter-logging'
+    }
+    compile fileTree(dir: 'src/main/webapp/WEB-INF/lib', include: ['*.jar'])
+}
+war{
+    archiveName = "${project.name}.war"
+}
+eclipse {
+    wtp {
+        facet {
+            facets = facets
+            facet name: "jst.web", version: "3.0"
+            facet name: "wst.jsdt.web", version: "1.0"
+        }
+    }
+}

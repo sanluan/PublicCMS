@@ -8,7 +8,9 @@
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
-					<label>父模型:</label>${(parent.name)!}
+				    <#if parent?has_content>
+					   <label>父模型:</label><label>${(parent.name)!}</label>
+					</#if>
 				</li>
 			</ul>
 		</div>
@@ -18,10 +20,10 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<#if parent?has_content>
-				<li><a href="cmsModel/list.html?parentId=${(parent.parentId)!}" target="navTab" rel="cmsModel/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
+				<li><a href="cmsModel/list.html?parentId=${(parent.parentId?url)!}" target="navTab" rel="cmsModel/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
 				<li class="line">line</li>
 			</#if>
-			<li><a href="cmsModel/add.html?parentId=${(parent.id)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i> 添加模型</a></li>
+			<li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i> 添加模型</a></li>
 			<li><a href="cmsModel/add.html?id={sid}" target="navTab" rel="cmsModel/edit"><i class="icon-edit icon-large"></i> 修改模型</a></li>
 			<@_sysAuthorized roleIds=admin.roles url='cmsModel/delete'>
 				<li><a href="cmsModel/delete.do?id={sid}" title="确定要删除这条记录么?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
@@ -34,19 +36,25 @@
 			<tr>
 				<th width="80">ID</th>
 				<th>模型名称</th>
+				<th>链接</th>
 				<th>内容页面模板路径</th>
+				<th>拥有图片列表</th>
+				<th>拥有附件列表</th>
 				<th>操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<#list page.list as a>
-			<tr target="sid" rel="${a.id}">
+			<tr target="sid" rel="${a.id?url}">
 				<td>${a.id!}</td>
 				<td>${(a.name)!}</td>
+				<td>${a.onlyUrl?then('是','')}</td>
 				<td>${(a.templatePath)!}</td>
+				<td>${a.hasImages?then('是','')}</td>
+				<td>${a.hasFiles?then('是','')}</td>
 				<td>
 					<#if a.hasChild>
-						<a href="cmsModel/list.html?parentId=${a.id}" target="navTab" rel="cmsModel/list">子模型管理</a>
+						<a href="cmsModel/list.html?parentId=${a.id?url}" target="navTab" rel="cmsModel/list">子模型管理</a>
 					</#if>
 				</td>
 			</tr>

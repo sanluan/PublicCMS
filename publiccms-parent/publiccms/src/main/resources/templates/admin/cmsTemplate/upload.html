@@ -1,5 +1,5 @@
 <script>
-var imagesSuffix=["html","htm","ftl","xml","text","text"];
+var imagesSuffix=["html","htm","ftl","xml","text","txt"];
 function checkFileType(){
 	var filenames=$('input[name=file]',$.pdialog.getCurrent()).val().toLowerCase().split('.');
 	if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){

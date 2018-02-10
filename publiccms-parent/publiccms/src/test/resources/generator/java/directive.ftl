@@ -1,7 +1,6 @@
 package ${base}.${directivePack};
 
 // Generated ${.now} by com.publiccms.common.generator.SourceGenerator
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -15,7 +14,8 @@ import org.springframework.stereotype.Component;
 
 <#include "../include_imports/service.ftl">
 
-import org.publliccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
@@ -29,11 +29,11 @@ public class ${entityName}${directiveSuffix} extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
-        if (notEmpty(id)) {
+        if (CommonUtils.notEmpty(id)) {
             handler.put("object", service.getEntity(id)).render();
         } else {
             Integer[] ids = handler.getIntegerArray("ids");
-            if (notEmpty(ids)) {
+            if (CommonUtils.notEmpty(ids)) {
                 List<${entityName}> entityList = service.getEntitys(ids);
                 Map<String, ${entityName}> map = new LinkedHashMap<>();
                 for (${entityName} entity : entityList) {

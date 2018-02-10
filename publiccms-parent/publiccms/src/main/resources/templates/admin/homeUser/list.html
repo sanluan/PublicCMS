@@ -34,7 +34,7 @@
 				<th>昵称</th>
 				<th>标题</th>
 				<th>签名</th>
-				<th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次登陆日期</th>
+				<th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次登录日期</th>
 				<th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
 				<th>已禁用</th>
 				<th>操作</th>
@@ -49,7 +49,7 @@
 			<#list page.list as a>
 			<tr target="sid" rel="${a.id}">
 				<td>${a.userId!}</td>
-				<td>${(userMap[a.userId?string].nickName)!}[${(userMap[a.userId?string].disabled?then('<font color="red">禁止登陆</font>','正常')?no_esc)!}]</td>
+				<td>${(userMap[a.userId?string].nickName)!}[${(userMap[a.userId?string].disabled?then('<font color="red">禁止登录</font>','正常')?no_esc)!}]</td>
 				<td>${a.title!}</td>
 				<td>${a.signature!}</td>
 				<td>${a.lastLoginDate!}</td>

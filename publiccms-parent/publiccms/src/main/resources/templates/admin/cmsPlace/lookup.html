@@ -35,8 +35,7 @@
 		<@_metadata dir=filepath><#local metadataMap=object/></@_metadata>
 		<#list list as a>
 			<#local path=filepath+'/'+a.fileName>
-			<#if 'ftl'!=a.fileName>
-				<li>
+			<li>
 				<#if a.directory>
 					<a href="javascript:;" onclick="return false;">
 						${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
@@ -56,8 +55,7 @@
 						</a>
 					</#if>
 				</#if>
-				</li>
-			</#if>
+			</li>
 		<#else>
 			<li><a>空目录</a></li>
 		</#list>

@@ -31,40 +31,40 @@ public interface CacheEntity<K, V> {
     /**
      * @param key
      * @param value
-     * @return
+     * @return values list
      */
     public List<V> put(K key, V value);
 
     /**
      * @param key
-     * @return
+     * @return value
      */
     public V remove(K key);
 
     /**
      * @param key
-     * @return
+     * @return whether it is included
      */
     public boolean contains(K key);
 
     /**
      * @param key
-     * @return
+     * @return value
      */
     public V get(K key);
 
     /**
-     * @return
+     * @return values list
      */
     public List<V> clear();
 
     /**
-     * @return
+     * @return datasize
      */
     public long getDataSize();
 
     /**
-     * @return
+     * @return values map
      */
     public Map<K, V> getAll();
 }

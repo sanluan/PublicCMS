@@ -8,11 +8,12 @@ a{ color:#3C7FB1;}
 .tabs .tabsContent{ border-color:#91b3e0;background-color:#e4ebf6;}
 
 /* Header */
-header{ border-color:#91b3e0;background:url(images/header_background.jpg) no-repeat;background-size: cover;}
+header{ border-color:#91b3e0;background:url(images/header_background.jpg);background-size: cover;}
 footer{ border-color:#88a0be;background-color:#b0cdf5;}
 
 /* NavMenu */
-#navMenu li.selected a,#navMenu li a:hover{ color:#333;background-color:#b0cdf5;}
+#navMenu li.selected,#navMenu li:hover{ color:#333;background-color:#b0cdf5;}
+#navMenu li{ border-color:#3C7FB1;}
 
 /* TabsPage */
 .tabsPage .tabsPageHeader{ background-color:#b0cdf5;border-color:#91b3e0;}
@@ -22,7 +23,7 @@ footer{ border-color:#88a0be;background-color:#b0cdf5;}
 .tabsPage .tabsPageHeader li a:hover{ color:#ffffff;}
 .tabsPage .tabsPageHeader li.selected a:hover{ color:#b0cdf5;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ color:#15428B;}
-.tabsPage .tabsLeft{ border-right-color:#88a0be;}
+.toggleCollapse,.tabsPage .tabsLeft{ border-right-color:#88a0be;}
 .tabsPage .tabsRight,.tabsPage .tabsMore{ border-left-color:#88a0be;}
 .tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{ color:#F1F1F1;}
 .tabsPage .tabsMoreList{ border-color:#88a0be;background-color:#FFF;}

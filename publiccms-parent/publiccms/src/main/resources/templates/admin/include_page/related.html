@@ -2,7 +2,7 @@
 <table class="list nowrap itemDetail" addButton="新增推荐内容" width="100%">
 	<thead>
 		<tr>
-			<th type="lookup" name="contentRelateds[#index#].title" size="30" fieldClass="required" fieldAttrs="{maxlength:255,width:1000,height:500}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId">选择</th>
+			<th type="lookup" name="contentRelateds[#index#].title" size="30" fieldClass="required" fieldAttrs="{maxlength:255,width:1080,height:500}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId">选择</th>
 			<th type="text" name="contentRelateds[#index#].url" size="40" fieldClass="required" fieldAttrs="{maxlength:2048}">地址</th>
 			<th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:300,rows:2,cols:60}">描述</th>
 			<th type="text" name="contentRelateds[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5">排序</th>
@@ -18,7 +18,7 @@
 					<input type="hidden" name="contentRelateds[${related?index}].id" value="${related.id}"/>
 					<input type="hidden" name="contentRelateds[${related?index}].relatedContentId" value="${related.relatedContentId!}"/>
 					<input class="required" type="text" name="contentRelateds[${related?index}].title" value="${related.title}" size="30" maxlength="255" class="required" />
-					<a class="btnLook" href="cmsContent/lookup.html" lookupGroup="contentRelateds[${related?index}]" lookupPk="relatedContentId" width="1000" height="500">选择</a>
+					<a class="btnLook" href="cmsContent/lookup.html" lookupGroup="contentRelateds[${related?index}]" lookupPk="relatedContentId" width="1080" height="500">选择</a>
 				</td>
 				<td>
 					<input class="required" type="text" name="contentRelateds[${related?index}].url" value="${(related.url)!}" size="40" maxlength="2048"/>

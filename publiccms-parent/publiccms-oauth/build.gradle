@@ -1,0 +1,7 @@
+dependencies {
+	compile project(':publiccms-core')
+	compile(
+        // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+        "javax.servlet:javax.servlet-api:3.1.0"
+    )
+}

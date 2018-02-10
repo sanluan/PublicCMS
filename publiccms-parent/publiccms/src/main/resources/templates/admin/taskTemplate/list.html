@@ -3,7 +3,7 @@
 		<#list list as a>
 			<li>
 				<#local path=filepath+'/'+a.fileName>
-				<a href="taskTemplate/${a.directory?then('directory','content')}.html?path=${path?url}" target="ajax" rel="taskTemplateBox">
+				<a href="taskTemplate/${a.directory?then('directory','content')}.html?path=${path!}" target="ajax" rel="taskTemplateBox">
 					${a.fileName}
 				</a>
 			<#if a.directory>

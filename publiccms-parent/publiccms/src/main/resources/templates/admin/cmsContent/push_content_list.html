@@ -1,4 +1,4 @@
-<@_contentList categoryId=categoryId modelId=modelId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<@_contentList categoryId=categoryId modelId=modelId parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
 		<#include "../include_page/paramters.html"/>
@@ -10,9 +10,9 @@
 				</li>
 				<li>
 					<label>发布日期:</label>
-					<input type="text" name="startPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
+					<input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
 					<span>-</span>
-					<input type="text" name="endPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" maxDate="{%y}-%M-{%d}" value="${endPublishDate!}" />
+					<input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
 				</li>
 				<li>
 					<label>标题:</label>
@@ -105,6 +105,7 @@
 			</#list>
 		</tbody>
 	</table>
+	<#assign rel='push_content_list'/>
 	<#include "../include_page/pageDialog.html"/>
 </div>
 </@_contentList>

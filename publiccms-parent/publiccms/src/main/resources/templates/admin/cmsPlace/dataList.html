@@ -23,9 +23,9 @@
 				</li>
 				<li>
 					<label>发布日期:</label>
-					<input type="text" name="startPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${startPublishDate!}" />
+					<input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
 					<span>-</span>
-					<input type="text" name="endPublishDate" size="15" class="date" dateFmt="yyyy-MM-dd HH:mm:ss" value="${endPublishDate!}" />
+					<input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
 				</li>
 			</ul>
 			<div class="subBar">
@@ -41,7 +41,7 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a href="cmsPlace/add.html?path=${(path?url!)}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i> 添加推荐位数据</a></li>
+			<li><a href="cmsPlace/add.html?path=${path!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i> 添加推荐位数据</a></li>
 			<li><a href="cmsPlace/add.html?id={sid}" target="navTab" rel="cmsPlace/edit"><i class="icon-edit icon-large"></i> 修改推荐位数据</a></li>
 			<li><a href="cmsPlace/refresh.do" title="确定要刷新这些记录么?" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
 			<li><a href="cmsPlace/check.do" title="确定要审核这些记录么?" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核</a></li>

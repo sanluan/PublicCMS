@@ -1,13 +1,5 @@
 package com.publiccms.common.handler;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.TemplateModelUtils.FULL_DATE_FORMAT;
-import static com.publiccms.common.tools.TemplateModelUtils.FULL_DATE_LENGTH;
-import static com.publiccms.common.tools.TemplateModelUtils.SHORT_DATE_FORMAT;
-import static com.publiccms.common.tools.TemplateModelUtils.SHORT_DATE_LENGTH;
-import static org.apache.commons.lang3.StringUtils.split;
-import static org.apache.commons.lang3.StringUtils.trimToEmpty;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.text.ParseException;
@@ -19,6 +11,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotWritableException;
@@ -28,6 +21,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.base.Base;
 import com.publiccms.common.base.BaseHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 
 /**
  *
@@ -68,7 +63,7 @@ public class HttpParameterHandler extends BaseHandler implements Base {
     public void render() throws HttpMessageNotWritableException, IOException {
         if (!renderd) {
             MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(map);
-            if (notEmpty(callback)) {
+            if (CommonUtils.notEmpty(callback)) {
                 Matcher m = FUNCTIONNAME_PATTERN.matcher(callback);
                 if (m.matches()) {
                     mappingJacksonValue.setJsonpFunction(callback);
@@ -97,7 +92,7 @@ public class HttpParameterHandler extends BaseHandler implements Base {
     @Override
     protected Integer getIntegerWithoutRegrister(String name) {
         String result = getStringWithoutRegrister(name);
-        if (notEmpty(result)) {
+        if (CommonUtils.notEmpty(result)) {
             try {
                 return Integer.valueOf(result);
             } catch (NumberFormatException e) {
@@ -111,7 +106,7 @@ public class HttpParameterHandler extends BaseHandler implements Base {
     public Short getShort(String name) {
         regristerParamter(PARAMETER_TYPE_STRING, name);
         String result = getStringWithoutRegrister(name);
-        if (notEmpty(result)) {
+        if (CommonUtils.notEmpty(result)) {
             try {
                 return Short.valueOf(result);
             } catch (NumberFormatException e) {
@@ -125,7 +120,7 @@ public class HttpParameterHandler extends BaseHandler implements Base {
     public Long getLong(String name) {
         regristerParamter(PARAMETER_TYPE_LONG, name);
         String result = getStringWithoutRegrister(name);
-        if (notEmpty(result)) {
+        if (CommonUtils.notEmpty(result)) {
             try {
                 return Long.valueOf(result);
             } catch (NumberFormatException e) {
@@ -139,7 +134,7 @@ public class HttpParameterHandler extends BaseHandler implements Base {
     public Double getDouble(String name) {
         regristerParamter(PARAMETER_TYPE_DOUBLE, name);
         String result = getStringWithoutRegrister(name);
-        if (notEmpty(result)) {
+        if (CommonUtils.notEmpty(result)) {
             try {
                 return Double.valueOf(result);
             } catch (NumberFormatException e) {
@@ -152,8 +147,8 @@ public class HttpParameterHandler extends BaseHandler implements Base {
     @Override
     protected String[] getStringArrayWithoutRegrister(String name) {
         String[] values = request.getParameterValues(name);
-        if (notEmpty(values) && 1 == values.length && 0 <= values[0].indexOf(COMMA_DELIMITED)) {
-            return split(values[0], COMMA_DELIMITED);
+        if (CommonUtils.notEmpty(values) && 1 == values.length && 0 <= values[0].indexOf(COMMA_DELIMITED)) {
+            return StringUtils.split(values[0], COMMA_DELIMITED);
         }
         return values;
     }
@@ -161,26 +156,21 @@ public class HttpParameterHandler extends BaseHandler implements Base {
     @Override
     protected Boolean getBooleanWithoutRegrister(String name) {
         String result = getStringWithoutRegrister(name);
-        if (notEmpty(result)) {
+        if (CommonUtils.notEmpty(result)) {
             return Boolean.valueOf(result);
         }
         return null;
     }
 
     @Override
-    public Date getDate(String name) throws ParseException {
-        regristerParamter(PARAMETER_TYPE_DATE, name);
+    public Date getDateWithoutRegrister(String name) throws ParseException {
         String result = getStringWithoutRegrister(name);
-        if (notEmpty(result)) {
-            String temp = trimToEmpty(result);
-            if (FULL_DATE_LENGTH == temp.length()) {
-                synchronized (FULL_DATE_FORMAT) {
-                    return FULL_DATE_FORMAT.parse(temp);
-                }
-            } else if (SHORT_DATE_LENGTH == temp.length()) {
-                synchronized (SHORT_DATE_FORMAT) {
-                    return SHORT_DATE_FORMAT.parse(temp);
-                }
+        if (CommonUtils.notEmpty(result)) {
+            String temp = StringUtils.trimToEmpty(result);
+            if (DateFormatUtils.FULL_DATE_LENGTH == temp.length()) {
+                return DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING).parse(temp);
+            } else if (DateFormatUtils.SHORT_DATE_LENGTH == temp.length()) {
+                return DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING).parse(temp);
             } else {
                 try {
                     return new Date(Long.parseLong(temp));

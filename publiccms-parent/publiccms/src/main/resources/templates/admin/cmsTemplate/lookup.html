@@ -8,7 +8,7 @@
 			<a href="javascript:;" onclick="return false;">${a.fileName}</a>
 			<ul><@templateTree field path/></ul>
 		<#else>
-			<a href="javascript:;" data="${path?url}" onclick="$.bringBack({'${field}':'${path}'});return false;">
+			<a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">
 				${a.fileName}  ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
 			</a>
 		</#if>
@@ -23,6 +23,6 @@
 		<@templateTree field/>
 	</ul>
 	<script>
-		$('a[data="${(value!)?url?js_string}"]',$.pdialog.getCurrent()).parent().addClass('selected');
+		$('a[data="${(value?js_string)!}"]',$.pdialog.getCurrent()).parent().addClass('selected');
 	</script>
 </div>

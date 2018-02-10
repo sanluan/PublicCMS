@@ -22,32 +22,32 @@
 				<input name="ownsAllRight" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllRight',navTab.getCurrentPanel()).hide();}else{$('.ownsAllRight').show();}"/>
 			</dd>
 		</dl>
-<#macro moudleTree parentId=''>
-	<@_sysMoudleList parentId=parentId advanced=true>
+<#macro moduleTree parentId=''>
+	<@_sysModuleList parentId=parentId advanced=true>
 		<#if page.totalCount gt 0>
 			<ul>
 				<#list page.list as a>
 					<li>
-						<a tname="moudleIds" tvalue="${a.id}">${(a.attached?no_esc)!} ${a.name}</a>
-						<@moudleTree a.id/>
+						<a tname="moduleIds" tvalue="${a.id}">${(a.attached?no_esc)!} ${a.name}</a>
+						<@moduleTree a.id/>
 					</li>
 				</#list>
 			</ul>
 		</#if>
-	</@_sysMoudleList>
+	</@_sysModuleList>
 </#macro>
 		<fieldset class="ownsAllRight">
 			<legend>模块授权</legend>
 			<dl class="nowrap">
 				<dt>显示所有模块:</dt>
 				<dd>
-					<input name="showAllMoudle" type="checkbox"/>
+					<input name="showAllModule" type="checkbox"/>
 				</dd>
 			</dl>
 			<ul class="tree treeFolder treeCheck">
 				<li>
 					<a href="javascript:;" onclick="return false;">所有模块</a>
-					<@moudleTree/>
+					<@moduleTree/>
 				</li>
 			</ul>
 <#if a??>
@@ -55,14 +55,14 @@
 	<#if a.ownsAllRight>
 	$('input[name=ownsAllRight]',navTab.getCurrentPanel()).click();
 	</#if>
-	<#if a.showAllMoudle>
-	$('input[name=showAllMoudle]',navTab.getCurrentPanel()).click();
+	<#if a.showAllModule>
+	$('input[name=showAllModule]',navTab.getCurrentPanel()).click();
 	</#if>
-	<@_sysRoleMoudleList roleId=a.id>
+	<@_sysRoleModuleList roleId=a.id>
 		<#list page.list as a>
-	$('.tree li a[tname=moudleIds][tvalue=${a.id.moudleId?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+	$('.tree li a[tname=moduleIds][tvalue=${a.id.moduleId?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
 		</#list>
-	</@_sysRoleMoudleList>
+	</@_sysRoleModuleList>
 </script>
 </#if>
 		</fieldset>

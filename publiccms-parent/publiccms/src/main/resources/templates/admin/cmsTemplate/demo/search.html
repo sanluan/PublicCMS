@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>搜索${word?has_content?then(' - '+word,'')}</title>
+	<title>${metadata.alias!}${word?has_content?then(' - '+word,'')}</title>
 	<meta name="keywords" content="<#list getKeywords(word) as a>${a}<#sep>,</#list>"/>
 	<meta name="description" content="${site.name} - 搜索"/>
 </head>
@@ -13,7 +13,7 @@
 		</form>
 	</header>
 	<nav>
-		<a href="${base}">首页</a>
+		<a href="${base}">Home</a>
 <@_categoryList>
 	<#list page.list as a>
 		<a href="${a.url!}" target="_blank">${a.name}</a>
@@ -21,7 +21,7 @@
 </@_categoryList>
 	</nav>
 	<main>
-<@_search word=word tagId=tagId>
+<@_search word=word tagId=tagId pageIndex=pageIndex count=10>
 	<#if page.totalCount gt 0>
 		<h1>搜索结果</h1>
 	<#list page.list as a>

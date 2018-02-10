@@ -28,7 +28,7 @@
 		</dl>
 		<dl class="nowrap">
 			<dt>描述:</dt>
-			<dd><textarea name="description" maxlength="300" style="width: 100%;" rows="5">${(a.description)!}</textarea></dd>
+			<dd><textarea name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea></dd>
 		</dl>
 		<dl class="nowrap">
 			<dt>负责人:</dt>
@@ -79,17 +79,15 @@
 	<@_templateList path=filepath>
 		<@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
 		<#list list as a>
-			<#if 'ftl'!=a.fileName>
-				<li>
-					<#local path=filepath+'/'+a.fileName>
-					<a tname="pages" tvalue="${path}">${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}</a>
-					<#if a.directory>
-					<ul>
-						<@pageTree path/>
-					</ul>
-					</#if>
-				</li>
-			</#if>
+			<li>
+				<#local path=filepath+'/'+a.fileName>
+				<a tname="pages" tvalue="${path}">${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}</a>
+				<#if a.directory>
+				<ul>
+					<@pageTree path/>
+				</ul>
+				</#if>
+			</li>
 		<#else>
 			<li><a>空目录</a></li>
 		</#list>

@@ -1,12 +1,11 @@
 package com.publiccms.common.tools;
 
-import static com.publiccms.common.tools.CommonUtils.notEmpty;
-import static com.publiccms.common.tools.StreamUtils.write;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.channels.FileLock;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -30,11 +29,12 @@ public class ZipUtils implements Base {
     static {
         System.setProperty("sun.zip.encoding", System.getProperty("sun.jnu.encoding"));
     }
+    private static final String ENCODING = System.getProperty("sun.jnu.encoding");
 
     /**
      * @param sourceFilePath
      * @param zipFilePath
-     * @return
+     * @return whether the compression is successful
      * @throws IOException
      */
     public static boolean zip(String sourceFilePath, String zipFilePath) throws IOException {
@@ -45,20 +45,21 @@ public class ZipUtils implements Base {
      * @param sourceFilePath
      * @param zipFilePath
      * @param overwrite
-     * @return
+     * @return whether the compression is successful
      * @throws IOException
      */
     public static boolean zip(String sourceFilePath, String zipFilePath, boolean overwrite) throws IOException {
-        if (notEmpty(sourceFilePath)) {
+        if (CommonUtils.notEmpty(sourceFilePath)) {
             File zipFile = new File(zipFilePath);
             if (zipFile.exists() && !overwrite) {
                 return false;
             } else {
                 zipFile.getParentFile().mkdirs();
-                try (ZipOutputStream zipOutputStream = new ZipOutputStream(new FileOutputStream(zipFile));) {
+                try (FileOutputStream outputStream = new FileOutputStream(zipFile);
+                        ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
+                        FileLock fileLock = outputStream.getChannel().tryLock();) {
+                    zipOutputStream.setEncoding(ENCODING);
                     compress(Paths.get(sourceFilePath), zipOutputStream, BLANK);
-                    zipFile.setReadable(true, false);
-                    zipFile.setWritable(true, false);
                     return true;
                 }
             }
@@ -101,11 +102,13 @@ public class ZipUtils implements Base {
      * @throws IOException
      */
     private static void compressFile(File file, ZipOutputStream out, String fullName) throws IOException {
-        if (notEmpty(file)) {
+        if (CommonUtils.notEmpty(file)) {
             ZipEntry entry = new ZipEntry(fullName);
             entry.setTime(file.lastModified());
             out.putNextEntry(entry);
-            write(new FileInputStream(file), out, false);
+            try (FileInputStream fis = new FileInputStream(file);) {
+                StreamUtils.copy(fis, out);
+            }
         }
     }
 
@@ -136,7 +139,7 @@ public class ZipUtils implements Base {
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String targetPath, boolean overwrite) throws IOException {
-        ZipFile zipFile = new ZipFile(zipFilePath);
+        ZipFile zipFile = new ZipFile(zipFilePath, ENCODING);
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (null != entryEnum) {
             while (entryEnum.hasMoreElements()) {
@@ -148,7 +151,11 @@ public class ZipUtils implements Base {
                     File targetFile = new File(targetPath + File.separator + zipEntry.getName());
                     if (!targetFile.exists() || overwrite) {
                         targetFile.getParentFile().mkdirs();
-                        write(zipFile.getInputStream(zipEntry), new FileOutputStream(targetFile));
+                        try (InputStream inputStream = zipFile.getInputStream(zipEntry);
+                                FileOutputStream outputStream = new FileOutputStream(targetFile);
+                                FileLock fileLock = outputStream.getChannel().tryLock();) {
+                            StreamUtils.copy(inputStream, outputStream);
+                        }
                     }
                 }
             }

@@ -9,12 +9,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- *
- * GeneratorColumn
+ * 字段元数据注解
  * 
- */
-/**
- *
  * GeneratorColumn
  * 
  */
@@ -23,32 +19,32 @@ import java.lang.annotation.Target;
 public @interface GeneratorColumn {
     
     /**
-     * @return
+     * @return 是否作为查询条件
      */
     boolean condition() default false;
 
     /**
-     * @return
+     * @return 是否作为like查询
      */
     boolean like() default false;
     
     /**
-     * @return
+     * @return 是否作为排序条件
      */
     boolean order() default false;
     
     /**
-     * @return
+     * @return 是否作为or查询
      */
     boolean or() default false;
     
     /**
-     * @return
+     * @return or查询名称
      */
     String name() default "";
     
     /**
-     * @return
+     * @return 文字描述
      */
     String title();
 }

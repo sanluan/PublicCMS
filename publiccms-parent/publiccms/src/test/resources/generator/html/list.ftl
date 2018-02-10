@@ -6,9 +6,9 @@
 			<#list conditionList as a><#if "Date"=a.type>
 				<li class="colspan">
 					<label>${a.title}：</label>
-					<input type="text" name="start${a.name?cap_first}" size="15" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${start"+a.name?cap_first+"!}"}" />
+					<input type="text" name="start${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${start"+a.name?cap_first+"!}"}" />
 					<span>-</span>
-					<input type="text" name="end${a.name?cap_first}" size="15" class="date" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${end"+a.name?cap_first+"!}"}" />
+					<input type="text" name="end${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${end"+a.name?cap_first+"!}"}" />
 				</li>
 				<#else>
 				<li>

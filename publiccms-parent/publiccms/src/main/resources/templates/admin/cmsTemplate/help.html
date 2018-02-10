@@ -1,5 +1,7 @@
-<@_metadata path=path><#assign metadata=object/></@_metadata>
-<#macro getAction code description=''>onclick="${editor!'cmsTemplateEditor'}.replaceSelection('<#if description?has_content><#${r'--'} ${description} ${'--'}>\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"</#macro>
+<#if !task?has_content>
+	<@_metadata path=path><#assign metadata=object/></@_metadata>
+</#if>
+<#macro getAction code description=''>onclick="DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('<#if description?has_content><#${r'--'} ${description} ${'--'}>\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"</#macro>
 <div class="tabs">
 	<div class="tabsHeader">
 		<div class="tabsHeaderContent">
@@ -8,7 +10,6 @@
 				<li><a href="javascript:;" onclick="return false;">常用指令</a></li>
 				<li><a href="javascript:;" onclick="return false;">常用方法</a></li>
 				<li><a href="javascript:;" onclick="return false;">配置参数</a></li>
-				<li><a href="javascript:;" onclick="return false;">模板片段</a></li>
 				<li><a href="javascript:;" onclick="return false;">投稿表单</a></li>
 			</ul>
 		</div>
@@ -33,8 +34,7 @@
 				</#if>
 					</ul>
 				</li>
-			</#if>
-			<#if metadata.useStatic?has_content&&site.useStatic>
+				<#if metadata.useStatic?has_content&&site.useStatic>
 				<li>
 					<a href="javascript:;" onclick="return false;">静态化内容模板数据</a>
 					<ul>
@@ -52,6 +52,7 @@
 				<li>
 					<li><a href="javascript:;" <@getAction r'${url!}'/>>静态化页面当前页面路径</a></li>
 				</li>
+				</#if>
 			</#if>
 				<li>
 					<a href="javascript:;" onclick="return false;">站点属性</a>
@@ -65,14 +66,43 @@
 						<li><a href="javascript:;" <@getAction r'${site.disabled?string}'/>>已禁用</a></li>
 					</ul>
 				</li>
+				<li>
+					<a href="javascript:;" onclick="return false;">站点扩展属性</a>
+					<ul>
+				<@_sysConfigFieldList code='siteAttribute'>
+					<#list list as extend>
+						<li><a href="javascript:;" <@getAction r'${siteAttribute.'+extend.id.code+r'!}'/>>${extend.name}</a></li>
+					<#else>
+						<li><a href="javascript:;" onclick="return false;">没有站点扩展属性</a></li>
+					</#list>
+				</@_sysConfigFieldList>
+					</ul>
+				</li>
+				<li><a href="javascript:;" <@getAction r'<#list .dataModel?keys as k>${k}<#sep>,</#list>' '打印数据模型变量'/>>打印数据模型变量</a></li>
+				<li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' '打印当前数据模型变量'/>>打印当前数据模型变量</a></li>
 			</ul>
 		</div>
 		<div class="pageFormContent" layoutH="37">
 			<ul class="tree treeFolder">
+			<#if task?has_content>
+				<li>
+					<a href="javascript:;" onclick="return false;">任务计划专用指令</a>
+					<ul>
+						<li><a href="javascript:;" <@getAction r'<@_clearLog clearDate=clearDate>登陆日志清理条数：${result.loginLog},操作日志清理条数：${result.operateLog},任务计划日志清理条数：${result.taskLog}</@_createCategoryFile>'/>>清理日志</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_indexContent id=id ids=ids/>'/>>重建索引</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids pageIndex=pageIndex totalPage=totalPage>生成失败分类ID:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishCategory>' 'totalPage为空时只生成1页'/>>重新生成分类页面</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids>生成失败内容ID:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishCategory>'/>>重新生成内容页面</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_publishPage path=path>生成失败的模板:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishPage>'/>>重新生成页面</a></li>
+					<#if site.useSsi>
+						<li><a href="javascript:;" <@getAction r'<@_publishPlace path=path>生成失败的页面片段:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishPlace>'/>>重新生成页面片段</a></li>
+					</#if>
+					</ul>
+				</li>
+			</#if>
 				<li>
 					<a href="javascript:;" onclick="return false;">获取数据列表</a>
 					<ul>
-						<li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_contentList>' 'categoryId:分类ID,containChild:包含子分类内容,modelId:模型ID,parentId:父内容ID,onlyUrl:["true":仅外链,"false":非外链,默认全部],hasImages:["true":仅图集,"false":非图集,默认全部],hasFiles:["true":仅带附件,"false":非带附件,默认全部],orderField:排序字段["scores":分数,"comments":评论,"clicks":点击,"publishDate":发布日期,默认排序+发布日期倒序],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>>内容</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_contentList>' 'categoryId:分类ID,containChild:包含子分类内容,modelId:模型ID,parentId:父内容ID,onlyUrl:["true":仅外链,"false":非外链,默认全部],hasImages:["true":仅图集,"false":非图集,默认全部],hasFiles:["true":仅带附件,"false":非带附件,默认全部],orderField:排序字段["scores":分数,"comments":评论,"clicks":点击,"publishDate":发布日期,"checkDate":审核日期,"updateDate":更新日期,默认排序+发布日期倒序],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>>内容</a></li>
 						<li><a href="javascript:;" <@getAction r'<@_contentFileList contentId=contentId image=image orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a>${a.filePath}</#list></@_contentFileList>' 'orderField:排序字段["size":大小,"click":点击,默认排序字段顺序],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>>内容附件</a></li>
 						<li><a href="javascript:;" <@getAction r'<@_categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryList>' 'parentId:父分类ID,typeId:分类类型ID,allowContribute:["true":允许投稿,"false":不允许投稿,默认全部],pageIndex:页码,count:每页数据条数'/>>分类</a></li>
 						<li><a href="javascript:;" <@getAction r'<@_categoryTypeList pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryTypeList>' 'pageIndex:页码,count:每页数据条数'/>>分类类型</a></li>
@@ -86,23 +116,25 @@
 					<a href="javascript:;" onclick="return false;">获取单条/多条数据</a>
 					<ul>
 						<li><a href="javascript:;" <@getAction r'<@_content id=id><a href="${object.url!}">${object.title}</a></@_content>'/>>内容</a></li>
-						<li><a href="javascript:;" <@getAction r'<@_content ids=ids><#list map?keys as k><a href="${map[k].url!}">${map[k].title}</a><#sep>,</#list></@_content>'/>>多条内容</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_content ids=ids><#list map as k,content><a href="${content.url!}">${content.title}</a><#sep>,</#list></@_content>'/>>多条内容</a></li>
 						<li><a href="javascript:;" <@getAction r'<@_category id=id><a href="${object.url!}">${object.name}</a></@_category>'/>>分类</a></li>
-						<li><a href="javascript:;" <@getAction r'<@_category ids=ids><#list map?keys as k><a href="${map[k].url!}">${map[k].name}</a><#sep>,</#list></@_category>'/>>多个分类</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_category ids=ids><#list map as k,category><a href="${category.url!}">${category.name}</a><#sep>,</#list></@_category>'/>>多个分类</a></li>
 						<li><a href="javascript:;" <@getAction r'<@_tag id=id>${object.name}</@_tag>'/>>标签</a></li>
-						<li><a href="javascript:;" <@getAction r'<@_tag ids=ids><#list map?keys as k>${map[k].name}<#sep>,</#list></@_tag>'/>>多个标签</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_tag ids=ids><#list map as k,tag>${tag.name}<#sep>,</#list></@_tag>'/>>多个标签</a></li>
 						<li><a href="javascript:;" <@getAction r'<@_sysUser id=id>${object.nickName}</@_sysUser>'/>>用户</a></li>
-						<li><a href="javascript:;" <@getAction r'<@_sysUser ids=ids><#list map?keys as k>${map[k].nickName}<#sep>,</#list></@_sysUser>'/>>多个用户</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_sysUser ids=ids><#list map as k,user>${user.nickName}<#sep>,</#list></@_sysUser>'/>>多个用户</a></li>
 					</ul>
 				</li>
 				<li>
 					<a href="javascript:;" onclick="return false;">工具指令</a>
 					<ul>
-					<#if metadata.useStatic?has_content&&site.useStatic>
-						<li><a href="javascript:;" <@getAction r'<@_createCategoryFile id=id templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}<@_createCategoryFile>'/>>生成静态化分类页面</a></li>
-						<li><a href="javascript:;" <@getAction r'<@_createContentFile id=id templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}<@_createContentFile>'/>>生成静态化内容页面</a></li>
-						<li><a href="javascript:;" <@getAction r'<@_createTemplateFile templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}<@_createTemplateFile>'/>>生成静态化页面</a></li>
+					<#if site.useStatic>
+						<li><a href="javascript:;" <@getAction r'<@_createCategoryFile id=id templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createCategoryFile>'/>>生成静态化分类页面</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_createContentFile id=id templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createContentFile>'/>>生成静态化内容页面</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_createTemplateFile templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createTemplateFile>'/>>生成静态化页面</a></li>
 					</#if>
+						<li><a href="javascript:;" <@getAction r'<@_userAgent>${object.deviceType}</@_userAgent>' 'object.deviceType:设备类型'/>>UserAgent指令</a></li>
+						<li><a href="javascript:;" <@getAction r'<@_sendEmail email=email title=title templatePath=templatePath content=content><#if result>发送成功</#if></@_sendEmail>' 'email,title不能为空,content和templatePath不能同时为空'/>>发送邮件</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -128,7 +160,7 @@
 					<a href="javascript:;" onclick="return false;">工具方法</a>
 					<ul>
 						<li><a href="javascript:;" <@getAction r'${getDate(.now,"thisSunday")}' '日期处理(参数1为日期，参数2[thisSunday:本周日,thisMonday:本周一,lastMonday:上周一,lastSunday:上周日]，少于两个参数输出当前时间)'/>>日期处理</a></li>
-						<li><a href="javascript:;" <@getAction r'${getDateNumber(.now)}' '日期转数字(参数1为日期)'/>>日期转数字</a></li>
+						<li><a href="javascript:;" <@getAction r'${getDateNumber(.now)}' '日期转数字(参数1为日期)，可替换为${.now?long}'/>>日期转数字</a></li>
 						<li><a href="javascript:;" <@getAction r'${getHtml(url,paramter)}' '获取远程文本内容(参数1为网址，参数2为参数组成的map或字符串消息体，参数2可以为空)'/>>获取远程文本内容</a></li>
 						<li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' '获取文字中的关键词(参数1为字符串内容)'/>>获取文字中的关键词</a></li>
 						<li><a href="javascript:;" <@getAction r'${getMd5(value)}' '输出文本MD5加密结果(参数1为字符串)'/>>输出文本MD5加密结果</a></li>
@@ -140,7 +172,6 @@
 						<li><a href="javascript:;" <@getAction r'${getTextFromHtml(html)}' '输出HTML中的文本(参数1为html格式字符串)'/>>输出HTML中的文本</a></li>
 						<li><a href="javascript:;" <@getAction r'${getUUID()}' '输出UUID'/>>输出UUID</a></li>
 						<li><a href="javascript:;" <@getAction r'getXml(xml)' '获取xml节点(参数1为xml格式字符串)'/>>获取xml节点</a></li>
-						<li><a href="javascript:;" <@getAction r'parseUserAgent(value)' '解析UserAgent(参数为1到UserAgent字符串)'/>>解析UserAgent</a></li>
 					</ul>
 				</li>
 			</ul>
@@ -157,12 +188,6 @@
 				<li><a href="javascript:;" onclick="return false;">没有配置项</a></li>
 	</#list>
 </@_sysConfigList>
-			</ul>
-		</div>
-		<div class="pageFormContent" layoutH="37">
-			<ul class="tree treeFolder">
-				<li><a href="javascript:;" <@getAction r'<#list .dataModel?keys as k>${k}<#sep>,</#list>' '打印数据模型变量'/>>打印数据模型变量</a></li>
-				<li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' '打印当前数据模型变量'/>>打印当前数据模型变量</a></li>
 			</ul>
 		</div>
 		<div class="pageFormContent" layoutH="37">
@@ -194,7 +219,7 @@
 	<@_templateList path='/include'+filepath>
 		<@_placeMetadata dir=filepath><#local metaDataMap=object/></@_placeMetadata>
 		<#list list as a>
-			
+
 			<#local path=filepath+'/'+a.fileName>
 			<#if a.directory>
 				<li>
@@ -203,7 +228,7 @@
 				</li>
 			<#elseif metaDataMap[a.fileName]?has_content&&metaDataMap[a.fileName].allowContribute>
 				<li>
-					<a href="placeTemplate/form.html?path=${path?url}" target="dialog" mask="true">
+					<a href="placeTemplate/form.html?path=${path!}" target="dialog" mask="true">
 						${(metaDataMap[a.fileName].alias)!a.fileName}
 					</a>
 				</li>

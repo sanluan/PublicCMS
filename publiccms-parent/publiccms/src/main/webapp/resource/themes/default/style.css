@@ -12,7 +12,8 @@ header{ border-color:#b8d0d6;}
 footer{ border-color:#b8d0d6;background-color:#d7ebf1;}
 
 /* NavMenu */
-#navMenu li.selected a,#navMenu li a:hover{ color:#333;background-color:#d7ebf1;}
+#navMenu li.selected,#navMenu li:hover{ color:#333;background-color:#d7ebf1;}
+#navMenu li{ border-color:#3C7FB1;}
 
 /* TabsPage */
 .tabsPage .tabsPageHeader{ background-color:#d7ebf1;border-color:#b8d0d6;}
@@ -22,7 +23,7 @@ footer{ border-color:#b8d0d6;background-color:#d7ebf1;}
 .tabsPage .tabsPageHeader li a:hover{ color:#ffffff;}
 .tabsPage .tabsPageHeader li.selected a:hover{ color:#d7ebf1;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ color:#183152;}
-.tabsPage .tabsLeft{ border-right-color:#b8d0d6;}
+.toggleCollapse,.tabsPage .tabsLeft{ border-right-color:#b8d0d6;}
 .tabsPage .tabsRight,.tabsPage .tabsMore{ border-left-color:#b8d0d6;}
 .tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{ color:#F1F1F1;}
 .tabsPage .tabsMoreList{ border-color:#b8d0d6;background-color:#FFF;}

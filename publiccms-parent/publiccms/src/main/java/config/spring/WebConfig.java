@@ -1,11 +1,11 @@
 package config.spring;
 
-import org.publiccms.common.interceptor.WebContextInterceptor;
-import org.publiccms.common.view.DefaultWebFreeMarkerView;
-import org.publiccms.common.view.WebFreeMarkerView;
-import org.publiccms.common.view.WebFreeMarkerViewResolver;
-import org.publiccms.logic.component.cache.CacheComponent;
-import org.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.common.interceptor.WebContextInterceptor;
+import com.publiccms.common.view.DefaultWebFreeMarkerView;
+import com.publiccms.common.view.WebFreeMarkerView;
+import com.publiccms.common.view.WebFreeMarkerViewResolver;
+import com.publiccms.logic.component.cache.CacheComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -24,7 +24,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
  */
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages = "org.publiccms.controller.web", useDefaultFilters = false, includeFilters = {
+@ComponentScan(basePackages = "com.publiccms.controller.web", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
 public class WebConfig extends WebMvcConfigurerAdapter {
     @Autowired
@@ -35,7 +35,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     /**
      * 视图层解析器
      * 
-     * @return
+     * @return default web viewresolver
      */
     @Bean
     public ViewResolver defaultWebViewResolver() {
@@ -52,7 +52,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      * 视图层解析器
      * 
      * @param templateComponent
-     * @return
+     * @return web viewresolver
      */
     @Bean
     public WebFreeMarkerViewResolver webViewResolver(TemplateComponent templateComponent) {
@@ -68,7 +68,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     /**
      * 拦截器
      * 
-     * @return
+     * @return web servlet interceptor
      */
     @Bean
     public WebContextInterceptor webInitializingInterceptor() {

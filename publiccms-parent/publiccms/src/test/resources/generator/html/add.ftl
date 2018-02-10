@@ -14,7 +14,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_
 			<dl>
 				<dt>${a.title}：</dt>
 				<dd>
-					<input class="required date" name="${a.name}" type="text" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${r"${(a."+a.name+")!}"}"/>
+					<input type="text" name="${a.name}" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${r"${(a."+a.name+")!}"}"/>
 					<a class="inputDateButton" href="javascript:;">选择</a>
 				</dd>
 			</dl>

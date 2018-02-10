@@ -1,0 +1,53 @@
+package com.publiccms.views.directive.cms;
+
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsDictionaryData;
+import com.publiccms.entities.cms.CmsDictionaryDataId;
+import com.publiccms.logic.service.cms.CmsDictionaryDataService;
+
+/**
+ *
+ * CmsDictionaryDataDirective
+ * 
+ */
+@Component
+public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
+
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        Long dictionaryId = handler.getLong("dictionaryId");
+        String value = handler.getString("value");
+        if (CommonUtils.notEmpty(dictionaryId)) {
+            if (CommonUtils.notEmpty(value)) {
+                CmsDictionaryData entity = service.getEntity(new CmsDictionaryDataId(dictionaryId, value));
+                handler.put("object", entity).render();
+            } else {
+                String[] values = handler.getStringArray("values");
+                if (CommonUtils.notEmpty(values)) {
+                    Map<String, CmsDictionaryData> map = new LinkedHashMap<>();
+                    CmsDictionaryDataId[] ids = new CmsDictionaryDataId[values.length];
+                    for (int i = 0; i < values.length; i++) {
+                        ids[i] = new CmsDictionaryDataId(dictionaryId, values[i]);
+                    }
+                    for (CmsDictionaryData entity : service.getEntitys(ids)) {
+                        map.put(entity.getId().getValue(), entity);
+                    }
+                    handler.put("map", map).render();
+                }
+            }
+        }
+    }
+
+    @Autowired
+    private CmsDictionaryDataService service;
+
+}

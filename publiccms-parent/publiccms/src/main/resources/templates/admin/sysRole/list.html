@@ -16,6 +16,7 @@
 				<th width="30">ID</th>
 				<th>名称</th>
 				<th>拥有所有功能权限</th>
+				<th>显示所有模块</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -24,6 +25,7 @@
 				<td>${a.id!}</td>
 				<td>${(a.name)!}</td>
 				<td>${a.ownsAllRight?then('是','')}</td>
+				<td>${a.showAllModule?then('是','')}</td>
 			</tr>
 			</#list>
 		</tbody>

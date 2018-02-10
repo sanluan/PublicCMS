@@ -60,7 +60,6 @@
 				<th>编码</th>
 				<th>分类类型</th>
 				<th>父分类</th>
-				<th>内容数</th>
 				<th>每页数据</th>
 				<th>是否允许投稿</th>
 				<th>是否前台隐藏</th>
@@ -83,7 +82,6 @@
 				<td>${a.code!}</td>
 				<td>${(typeMap[a.typeId?string].name)!}</td>
 				<td>${(parentMap[a.parentId?string].name)!}</td>
-				<td>${a.contents!}</td>
 				<td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then("[包含子分类内容]",''))!}</#if></td>
 				<td>${a.allowContribute?then('允许','禁止')}</td>
 				<td>${a.hidden?then('隐藏','显示')}</td>

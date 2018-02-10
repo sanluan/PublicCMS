@@ -57,7 +57,7 @@ public class QueryHandler {
 
     /**
      * @param session
-     * @return
+     * @return query
      */
     public Query getQuery(Session session) {
         return getQuery(session, getSql());
@@ -65,7 +65,7 @@ public class QueryHandler {
 
     /**
      * @param session
-     * @return
+     * @return count query
      */
     public Query getCountQuery(Session session) {
         return getQuery(session, getCountSql());
@@ -73,7 +73,7 @@ public class QueryHandler {
 
     /**
      * @param condition
-     * @return
+     * @return query handler
      */
     public QueryHandler condition(String condition) {
         if (whereFlag) {
@@ -88,7 +88,7 @@ public class QueryHandler {
 
     /**
      * @param sqlString
-     * @return
+     * @return query handler
      */
     public QueryHandler order(String sqlString) {
         if (orderFlag) {
@@ -103,7 +103,7 @@ public class QueryHandler {
 
     /**
      * @param sqlString
-     * @return
+     * @return query handler
      */
     public QueryHandler group(String sqlString) {
         if (groupFlag) {
@@ -118,7 +118,7 @@ public class QueryHandler {
 
     /**
      * @param sqlString
-     * @return
+     * @return query handler
      */
     public QueryHandler append(String sqlString) {
         sqlBuilder.append(" ");
@@ -128,7 +128,7 @@ public class QueryHandler {
 
     /**
      * @param firstResult
-     * @return
+     * @return query handler
      */
     public QueryHandler setFirstResult(int firstResult) {
         this.firstResult = firstResult;
@@ -137,7 +137,7 @@ public class QueryHandler {
 
     /**
      * @param maxResults
-     * @return
+     * @return query handler
      */
     public QueryHandler setMaxResults(int maxResults) {
         this.maxResults = maxResults;
@@ -146,7 +146,7 @@ public class QueryHandler {
 
     /**
      * @param cacheable
-     * @return
+     * @return query handler
      */
     public QueryHandler setCacheable(boolean cacheable) {
         this.cacheable = cacheable;
@@ -156,7 +156,7 @@ public class QueryHandler {
     /**
      * @param key
      * @param value
-     * @return
+     * @return query handler
      */
     public QueryHandler setParameter(String key, Object value) {
         if (null == map) {
@@ -169,7 +169,7 @@ public class QueryHandler {
     /**
      * @param key
      * @param value
-     * @return
+     * @return query handler
      */
     public QueryHandler setParameter(String key, Object[] value) {
         if (null == arrayMap) {

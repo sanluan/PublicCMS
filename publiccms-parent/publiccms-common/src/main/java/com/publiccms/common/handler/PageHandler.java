@@ -8,18 +8,18 @@ import java.util.List;
  * 
  */
 public class PageHandler implements java.io.Serializable {
-    
+
     /**
      * 
      */
     private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     * 默认每页数据条数
      */
     public static final int DEFAULT_PAGE_SIZE = 30;
     /**
-     * 
+     * 最大每页数据条数
      */
     public static final int MAX_PAGE_SIZE = 500;
 
@@ -32,17 +32,27 @@ public class PageHandler implements java.io.Serializable {
      * @param pageIndex
      * @param pageSize
      * @param totalCount
-     * @param maxResults
+     * @param maxPages
      */
-    public PageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxResults) {
-        setTotalCount(totalCount, maxResults);
+    public PageHandler(Integer pageIndex, Integer pageSize, long totalCount, Integer maxPages) {
+        this(pageIndex, pageSize, totalCount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) totalCount, maxPages);
+    }
+
+    /**
+     * @param pageIndex
+     * @param pageSize
+     * @param totalCount
+     * @param maxPages
+     */
+    public PageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxPages) {
+        setTotalCount(totalCount, maxPages);
         setPageSize(null != pageSize ? pageSize : 0);
         setPageIndex(null != pageIndex ? pageIndex : 1);
         init();
     }
 
     /**
-     * 
+     * 初始化
      */
     public void init() {
         pageSize = 1 > pageSize ? DEFAULT_PAGE_SIZE : MAX_PAGE_SIZE < pageSize ? MAX_PAGE_SIZE : pageSize;
@@ -51,7 +61,9 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * 总页数
+     * 
+     * @return total page
      */
     public int getTotalPage() {
         int totalPage = totalCount / pageSize;
@@ -59,13 +71,17 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * 第一条结果
+     * 
+     * @return first result
      */
     public int getFirstResult() {
         return (pageIndex - 1) * pageSize;
     }
 
     /**
+     * 总数据条数
+     * 
      * @return the totalCount
      */
     public int getTotalCount() {
@@ -82,19 +98,21 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * @param totalCount
-     * @param maxResults
+     * @param maxPages
      */
-    public void setTotalCount(Integer totalCount, Integer maxResults) {
-        setTotalCount(null != maxResults && maxResults < totalCount ? maxResults : totalCount);
+    public void setTotalCount(int totalCount, Integer maxPages) {
+        setTotalCount(null != maxPages && maxPages < totalCount ? maxPages : totalCount);
     }
 
     /**
+     * 每页数据条数
+     * 
      * @return the pageSize
      */
     public int getPageSize() {
         return pageSize;
     }
-    
+
     /**
      * @param pageSize
      *            the pageSize to set
@@ -104,6 +122,8 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
+     * 当前页码
+     * 
      * @return the pageIndex
      */
     public int getPageIndex() {
@@ -119,6 +139,8 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
+     * 结果数据
+     * 
      * @return the list
      */
     public List<?> getList() {
@@ -137,21 +159,27 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * 是否第一页
+     * 
+     * @return whether the first page
      */
     public boolean isFirstPage() {
         return pageIndex <= 1;
     }
 
     /**
-     * @return
+     * 是否最后一页
+     * 
+     * @return whether the last page
      */
     public boolean isLastPage() {
         return pageIndex >= getTotalPage();
     }
 
     /**
-     * @return
+     * 下一页
+     * 
+     * @return next page
      */
     public int getNextPage() {
         if (isLastPage()) {
@@ -161,7 +189,9 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
-     * @return
+     * 上一页
+     * 
+     * @return previous page
      */
     public int getPrePage() {
         if (isFirstPage()) {
