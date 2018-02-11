@@ -285,7 +285,7 @@ public abstract class BaseDao<E> implements Base {
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
-        return getPage(queryHandler, pageIndex, pageSize, 100);
+        return getPage(queryHandler, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
