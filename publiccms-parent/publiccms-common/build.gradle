@@ -12,7 +12,7 @@ dependencies {
         "org.apache.commons:commons-collections4:4.1",
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         "org.apache.commons:commons-lang3:3.7",
-        
+
         "org.apache.httpcomponents:httpmime:${httpclientVersion}",
         "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
 
@@ -41,8 +41,6 @@ dependencies {
         "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
         "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
 
-        "org.quartz-scheduler:quartz:${quartzVersion}",
-        
         // http://mvnrepository.com/artifact/javax.transaction/jta
 	    "javax.transaction:jta:1.1",
 	    // http://mvnrepository.com/artifact/javax.mail/mail
@@ -50,4 +48,8 @@ dependencies {
         // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         "javax.servlet:javax.servlet-api:3.1.0"
     )
+    compile(
+        "org.quartz-scheduler:quartz:${quartzVersion}") {
+        exclude group:"com.zaxxer", module: 'HikariCP-java6'
+    }
 }
