@@ -138,7 +138,7 @@ public class SysSiteAdminController extends AbstractController {
      */
     @SuppressWarnings("unchecked")
     @RequestMapping("delete")
-    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(Short id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return TEMPLATE_ERROR;
