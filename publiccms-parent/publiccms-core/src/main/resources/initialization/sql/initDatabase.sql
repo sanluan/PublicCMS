@@ -239,7 +239,7 @@ CREATE TABLE `cms_lottery_user` (
 DROP TABLE IF EXISTS `cms_place`;
 CREATE TABLE `cms_place` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id`site_id` smallint(6)L COMMENT '站点ID',
+  `site_id` smallint(6)L COMMENT '站点ID',
   `path` varchar(255) NOT NULL COMMENT '模板路径',
   `user_id` bigint(20) default NULL COMMENT '提交用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
