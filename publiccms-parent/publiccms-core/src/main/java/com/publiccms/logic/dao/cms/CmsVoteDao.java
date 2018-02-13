@@ -17,11 +17,9 @@ import com.publiccms.entities.cms.CmsVote;
  */
 @Repository
 public class CmsVoteDao extends BaseDao<CmsVote> {
-    
+
     /**
      * @param siteId
-     * @param startStartDate
-     * @param endStartDate
      * @param startEndDate
      * @param endEndDate
      * @param disabled
@@ -31,18 +29,11 @@ public class CmsVoteDao extends BaseDao<CmsVote> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Date startStartDate, Date endStartDate, 
-                Date startEndDate, Date endEndDate, Boolean disabled, 
-                String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Date startEndDate, Date endEndDate, Boolean disabled, String orderField,
+            String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsVote bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
-        }
-        if (null != startStartDate) {
-            queryHandler.condition("bean.startDate > :startStartDate").setParameter("startStartDate", startStartDate);
-        }
-        if (null != endStartDate) {
-            queryHandler.condition("bean.startDate <= :endStartDate").setParameter("endStartDate", endStartDate);
         }
         if (null != startEndDate) {
             queryHandler.condition("bean.endDate > :startEndDate").setParameter("startEndDate", startEndDate);
@@ -53,16 +44,21 @@ public class CmsVoteDao extends BaseDao<CmsVote> {
         if (null != disabled) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);
         }
-        if(!ORDERTYPE_ASC.equalsIgnoreCase(orderType)){
+        if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        if(null == orderField){
-            orderField=BLANK;
+        if (null == orderField) {
+            orderField = BLANK;
         }
-        switch(orderField) {
-            case "startDate" : queryHandler.order("bean.startDate " + orderType); break;
-            case "endDate" : queryHandler.order("bean.endDate " + orderType); break;
-            default : queryHandler.order("bean.id " + orderType);
+        switch (orderField) {
+        case "startDate":
+            queryHandler.order("bean.startDate " + orderType);
+            break;
+        case "endDate":
+            queryHandler.order("bean.endDate " + orderType);
+            break;
+        default:
+            queryHandler.order("bean.id " + orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

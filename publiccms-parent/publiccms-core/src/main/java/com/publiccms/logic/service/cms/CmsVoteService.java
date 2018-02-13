@@ -26,8 +26,6 @@ public class CmsVoteService extends BaseService<CmsVote> {
 
     /**
      * @param siteId
-     * @param startStartDate
-     * @param endStartDate
      * @param startEndDate
      * @param endEndDate
      * @param disabled
@@ -38,9 +36,9 @@ public class CmsVoteService extends BaseService<CmsVote> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Date startStartDate, Date endStartDate, Date startEndDate, Date endEndDate,
+    public PageHandler getPage(Short siteId, Date startEndDate, Date endEndDate,
             Boolean disabled, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, startStartDate, endStartDate, startEndDate, endEndDate, disabled, orderField, orderType,
+        return dao.getPage(siteId, startEndDate, endEndDate, disabled, orderField, orderType,
                 pageIndex, pageSize);
     }
 
