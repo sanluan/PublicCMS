@@ -52,7 +52,7 @@
 			<dt>数据管理人员:</dt>
 			<dd>
 				<input name="userId" type="hidden"/>
-				<input name="nickName" type="hidden" onchange="addUser($(this).val(),$('input[name=\'nickName\']',navTab.getCurrentPanel()).val());"/>
+				<input name="nickName" type="hidden" onchange="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());"/>
 				<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>
 				<div id="adminIds"></div>
 			</dd>
