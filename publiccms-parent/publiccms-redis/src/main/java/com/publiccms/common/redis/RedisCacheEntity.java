@@ -19,14 +19,14 @@ import redis.clients.jedis.JedisPool;
 /**
  *
  * RedisCacheEntity
- * 
+ *
  * @param <K>
  * @param <V>
- * 
+ *
  */
 public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializable, Base {
     /**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
     private int size = 100;
@@ -122,18 +122,18 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     /**
-     * 
+     *
      * @return
-     * 
+     *
      */
     public int getSize() {
         return size;
     }
 
     /**
-     * 
+     *
      * @param size
-     * 
+     *
      */
     public void setSize(int size) {
         this.size = size;
@@ -166,7 +166,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
 
     @Override
     public void init(String entityName, Integer cacheSize, Properties properties) {
-        init(name, size, RedisUtils.createJedisPool(properties));
+        init(entityName, cacheSize, RedisUtils.createJedisPool(properties));
     }
 
     public void init(String entityName, Integer cacheSize, JedisPool pool) {
