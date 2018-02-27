@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.publiccms.common.handler.HttpParameterHandler;
 
 /**
- * 
+ *
  * AppController 接口指令统一分发
  *
  */
@@ -29,27 +29,27 @@ public class ApiController extends AbstractController {
     private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
     private List<Map<String, String>> appList = new ArrayList<>();
     /**
-     * 
+     *
      */
     public final static String INTERFACE_NOT_FOUND = "interfaceNotFound";
     /**
-     * 
+     *
      */
     public final static String NEED_APP_TOKEN = "needAppToken";
     /**
-     * 
+     *
      */
     public final static String UN_AUTHORIZED = "unAuthorized";
     /**
-     * 
+     *
      */
     public final static String NEED_LOGIN = "needLogin";
     /**
-     * 
+     *
      */
     public final static String EXCEPTION = "exception";
     /**
-     * 
+     *
      */
     public static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
@@ -60,7 +60,7 @@ public class ApiController extends AbstractController {
 
     /**
      * 接口请求统一分发
-     * 
+     *
      * @return result
      */
     @RequestMapping({ SEPARATOR, "/**" })
@@ -71,7 +71,7 @@ public class ApiController extends AbstractController {
 
     /**
      * 接口指令统一分发
-     * 
+     *
      * @param api
      * @param callback
      * @param request
@@ -102,7 +102,7 @@ public class ApiController extends AbstractController {
 
     /**
      * 接口列表
-     * 
+     *
      * @return result
      */
     @RequestMapping("apis")
@@ -113,18 +113,21 @@ public class ApiController extends AbstractController {
 
     /**
      * 接口初始化
-     * 
+     *
      * @param directiveComponent
      * @param directiveList
-     * 
+     *
      */
     @Autowired(required = false)
     public void init(DirectiveComponent directiveComponent, List<AbstractAppDirective> directiveList) {
         for (AbstractAppDirective appDirective : directiveList) {
-            String name = directiveComponent.getDirectiveName(appDirective.getClass().getSimpleName());
-            appDirectiveMap.put(name, appDirective);
+			if (null == appDirective.getName()) {
+                appDirective.setName(directiveComponent.getDirectiveName(appDirective.getClass().getSimpleName()));
+            }
+            appDirectiveMap.put(appDirective.getName(), appDirective);
+
             Map<String, String> map = new HashMap<>();
-            map.put("name", name);
+            map.put("name", appDirective.getName());
             map.put("needAppToken", String.valueOf(appDirective.needAppToken()));
             map.put("needUserToken", String.valueOf(appDirective.needUserToken()));
             appList.add(map);
