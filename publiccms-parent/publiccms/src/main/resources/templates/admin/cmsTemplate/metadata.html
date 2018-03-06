@@ -3,7 +3,7 @@
 	<div class="formBar">
 		<ul>
 			<#if !a?has_content>
-                <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true">模板实例</a></li>
+                <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true">模板示例</a></li>
 			<#else>
 				<li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
 				<li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">模板内容编辑</a></li>
