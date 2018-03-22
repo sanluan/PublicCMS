@@ -25,7 +25,7 @@ public class CommonUtils {
      * @return 精确到分钟的当前日期
      */
     public static Date getMinuteDate() {
-        return DateUtils.setSeconds(DateUtils.setMilliseconds(getDate(), 0), 0);
+        return DateUtils.addMinutes(DateUtils.setSeconds(DateUtils.setMilliseconds(getDate(), 0), 0), 1);
     }
 
     /**

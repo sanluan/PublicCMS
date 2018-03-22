@@ -30,7 +30,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * TemplateDirectiveHandler
- * 
+ *
  */
 public class TemplateDirectiveHandler extends BaseHandler implements Base {
     private Map<String, TemplateModel> parameters;
@@ -106,60 +106,56 @@ public class TemplateDirectiveHandler extends BaseHandler implements Base {
         }
     }
 
-    private TemplateModel getModel(String name) {
-        return parameters.get(name);
-    }
-
     /**
      * @param name
      * @return map value
      * @throws TemplateModelException
      */
     public TemplateHashModelEx getMap(String name) throws TemplateModelException {
-        return TemplateModelUtils.converMap(getModel(name));
+        return TemplateModelUtils.converMap(parameters.get(name));
     }
 
     @Override
     protected String getStringWithoutRegrister(String name) throws TemplateModelException {
-        return TemplateModelUtils.converString(getModel(name));
+        return TemplateModelUtils.converString(parameters.get(name));
     }
 
     @Override
     public Integer getIntegerWithoutRegrister(String name) throws TemplateModelException {
-        return TemplateModelUtils.converInteger(getModel(name));
+        return TemplateModelUtils.converInteger(parameters.get(name));
     }
 
     @Override
     public Short getShort(String name) throws TemplateModelException {
         regristerParamter(PARAMETER_TYPE_SHORT, name);
-        return TemplateModelUtils.converShort(getModel(name));
+        return TemplateModelUtils.converShort(parameters.get(name));
     }
 
     @Override
     public Long getLong(String name) throws TemplateModelException {
         regristerParamter(PARAMETER_TYPE_LONG, name);
-        return TemplateModelUtils.converLong(getModel(name));
+        return TemplateModelUtils.converLong(parameters.get(name));
     }
 
     @Override
     public Double getDouble(String name) throws TemplateModelException {
         regristerParamter(PARAMETER_TYPE_DOUBLE, name);
-        return TemplateModelUtils.converDouble(getModel(name));
+        return TemplateModelUtils.converDouble(parameters.get(name));
     }
 
     @Override
     protected String[] getStringArrayWithoutRegrister(String name) throws TemplateModelException {
-        return TemplateModelUtils.converStringArray(getModel(name));
+        return TemplateModelUtils.converStringArray(parameters.get(name));
     }
 
     @Override
     protected Boolean getBooleanWithoutRegrister(String name) throws TemplateModelException {
-        return TemplateModelUtils.converBoolean(getModel(name));
+        return TemplateModelUtils.converBoolean(parameters.get(name));
     }
 
     @Override
     public Date getDateWithoutRegrister(String name) throws TemplateModelException, ParseException {
-        return TemplateModelUtils.converDate(getModel(name));
+        return TemplateModelUtils.converDate(parameters.get(name));
     }
 
     @Override
