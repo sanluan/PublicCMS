@@ -1,6 +1,9 @@
 <@_contentList categoryId=categoryId modelId=modelId parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
+		<input type="hidden" name="categoryId" value="${categoryId!}"/>
+		<input type="hidden" name="userId" value="${userId!}"/>
+		<input type="hidden" name="parentId" value="${parentId!}"/>
 		<#include "../include_page/paramters.html"/>
 		<div class="searchBar">
 			<ul class="searchContent">
@@ -73,17 +76,15 @@
 					</a>
 				</td>
 				<td>
-					<a href="cmsContent/push_content_list.html?contentId=${contentId!}&userId=${a.userId}" target="ajax" rel="push_content_list">
+					<a href="cmsContent/push_content_list.html?contentId=${contentId!}&categoryId=${categoryId!}&userId=${a.userId}" target="ajax" rel="push_content_list">
 						${(userMap[a.userId?string].nickName)!}
 					</a>
 				</td>
 				<td>
-					<a href="cmsContent/push_content_list.html?contentId=${contentId!}&categoryId=${a.categoryId}" target="ajax" rel="push_content_list">
-						${(categoryMap[a.categoryId?string].name)!}
-					</a>
+					${(categoryMap[a.categoryId?string].name)!}
 				</td>
 				<td>
-					<a href="cmsContent/push_content_list.html?contentId=${contentId!}&modelId=${a.modelId}" target="ajax" rel="push_content_list">
+					<a href="cmsContent/push_content_list.html?contentId=${contentId!}&categoryId=${categoryId!}&modelId=${a.modelId}" target="ajax" rel="push_content_list">
 						${(modelMap[a.modelId].name)!}
 					</a>
 				</td>

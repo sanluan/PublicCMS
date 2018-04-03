@@ -1,9 +1,11 @@
-<@_contentList categoryId=categoryId modelId=modelId title=title containChild=true userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<@_contentList categoryId=categoryId modelId=modelId title=title parentId=parentId containChild=true userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
 	<form id="pagerForm" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
 		<#include "../include_page/paramters.html"/>
 		<input type="hidden" name="field" value="${field!'relatedContentId'}"/>
 		<input type="hidden" name="categoryId" value="${categoryId!}"/>
+		<input type="hidden" name="userId" value="${userId!}"/>
+		<input type="hidden" name="parentId" value="${parentId!}"/>
 		<div class="searchBar">
 			<ul class="searchContent">
 				<li>
@@ -75,17 +77,15 @@
 					</a>
 				</td>
 				<td>
-					<a href="cmsContent/lookup_list.html?userId=${a.userId}" target="ajax" rel="content_list">
+					<a href="cmsContent/lookup_list.html?userId=${a.userId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">
 						${(userMap[a.userId?string].nickName)!}
 					</a>
 				</td>
 				<td>
-					<a href="cmsContent/lookup_list.html?categoryId=${a.categoryId}" target="ajax" rel="content_list">
-						${(categoryMap[a.categoryId?string].name)!}
-					</a>
+					${(categoryMap[a.categoryId?string].name)!}
 				</td>
 				<td>
-					<a href="cmsContent/lookup_list.html?modelId=${a.modelId}" target="ajax" rel="content_list">
+					<a href="cmsContent/lookup_list.html?modelId=${a.modelId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">
 						${(modelMap[a.modelId].name)!}
 					</a>
 				</td>
@@ -100,7 +100,7 @@
 				</td>
 				<td>
 					<#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-						<a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}" target="ajax" rel="content_list">子内容列表</a>
+						<a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">子内容列表</a>
 					</#if>
 				</td>
 			</tr>

@@ -107,7 +107,8 @@ public class SysSiteAdminController extends AbstractController {
             if (ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
                     || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domainName), model)
                     || ControllerUtils.verifyNotEmpty("userName", userName, model)
-                    || ControllerUtils.verifyNotEmpty("password", password, model)) {
+                    || ControllerUtils.verifyNotEmpty("password", password, model)
+                    || ControllerUtils.verifyHasExist("domain", service.getEntity(domainName), model)) {
                 return TEMPLATE_ERROR;
             }
             service.save(entity);

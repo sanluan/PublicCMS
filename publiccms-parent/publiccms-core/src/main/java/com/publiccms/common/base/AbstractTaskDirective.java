@@ -57,7 +57,10 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective implem
     protected SysApp getApp(RenderHandler handler) throws Exception {
         SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
         if (null != appToken) {
-            return appService.getEntity(appToken.getAppId());
+            SysApp app = appService.getEntity(appToken.getAppId());
+            if (app.getSiteId() == getSite(handler).getId()) {
+                return app;
+            }
         }
         return null;
     }

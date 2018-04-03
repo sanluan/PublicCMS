@@ -1065,7 +1065,7 @@ INSERT INTO `sys_module` VALUES ('113', '刷新缓存', NULL, 'clearCache', '', 
 INSERT INTO `sys_module` VALUES ('114', '查看', 'cmsContent/view', null, null, '12', '0', '0');
 INSERT INTO `sys_module` VALUES ('115', '查看', 'cmsPlace/view', null, null, '107', '0', '0');
 INSERT INTO `sys_module` VALUES ('116', '修改类型', 'cmsCategory/changeTypeParameters', 'cmsCategory/changeType', null, '24', '0', '0');
-INSERT INTO `sys_module` VALUES ('117', '内容回收站', 'cmsRecycleContent/list', 'sysUser/lookup', '<i class=\"icon-trash icon-large\"></i>', '13', '1', '0');
+INSERT INTO `sys_module` VALUES ('117', '内容回收站', 'cmsRecycleContent/list', 'sysUser/lookup,cmsContent/recycle,cmsContent/realDelete', '<i class=\"icon-trash icon-large\"></i>', '13', '1', '0');
 INSERT INTO `sys_module` VALUES ('118', '删除', NULL, 'cmsContent/realDelete', NULL, '117', '0', '0');
 INSERT INTO `sys_module` VALUES ('119', '还原', NULL, 'cmsContent/recycle', NULL, '117', '0', '0');
 INSERT INTO `sys_module` VALUES ('120', '置顶', 'cmsContent/sortParameters', 'cmsContent/sort', NULL, '12', '0', '0');

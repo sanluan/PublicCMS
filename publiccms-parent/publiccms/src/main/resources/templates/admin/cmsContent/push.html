@@ -12,7 +12,7 @@
 	</#list>
 	<@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
 	<#list page.list as a>
-			<a href="${contentMap[a.contentId?string].url!}" target="_blank">${contentMap[a.contentId?string].title}</a> (${a.clicks})<br/>
+			<a href="${(contentMap[a.contentId?string].url)!}" target="_blank">${(contentMap[a.contentId?string].title)!}</a> (${(a.clicks)!})<br/>
 	</#list>
 		</p>
 </@_contentRelatedList>

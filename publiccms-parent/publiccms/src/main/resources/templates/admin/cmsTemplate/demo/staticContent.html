@@ -35,25 +35,23 @@
 			</div>
 		</#if>
 			<div>
-				<div>
-					<#if !page.firstPage>
-						<a href="${getPage(url,page.prePage)}">上一页</a>
+				<#if !page.firstPage>
+					<a href="${getPage(url,page.prePage)}">上一页</a>
+				<#else>
+					<span>上一页</span>
+				</#if>
+				<#list 1..page.totalCount as n>
+					<#if n=page.pageIndex>
+						${n}
 					<#else>
-						<span>上一页</span>
+						<a href="${getPage(url,n)}">${n}</a>
 					</#if>
-					<#list 1..page.totalCount as n>
-						<#if n=page.pageIndex>
-							${n}
-						<#else>
-							<a href="${getPage(url,n)}">${n}</a>
-						</#if>
-					</#list>
-					<#if !page.lastPage>
-						<a href="${getPage(url,page.nextPage)}">下一页</a>
-					<#else>
-						<span>下一页</span>
-					</#if>
-				</div>
+				</#list>
+				<#if !page.lastPage>
+					<a href="${getPage(url,page.nextPage)}">下一页</a>
+				<#else>
+					<span>下一页</span>
+				</#if>
 			</div>
 			<script>
 				$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){
