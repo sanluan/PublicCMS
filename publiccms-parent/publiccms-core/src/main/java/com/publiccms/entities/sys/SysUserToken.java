@@ -101,7 +101,7 @@ public class SysUserToken implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    @Column(name = "login_ip", nullable = false, length = 20)
+    @Column(name = "login_ip", nullable = false, length = 64)
     public String getLoginIp() {
         return this.loginIp;
     }

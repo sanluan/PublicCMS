@@ -209,7 +209,7 @@ public class SysUser implements java.io.Serializable {
         this.lastLoginDate = lastLoginDate;
     }
 
-    @Column(name = "last_login_ip", length = 20)
+    @Column(name = "last_login_ip", length = 64)
     public String getLastLoginIp() {
         return this.lastLoginIp;
     }

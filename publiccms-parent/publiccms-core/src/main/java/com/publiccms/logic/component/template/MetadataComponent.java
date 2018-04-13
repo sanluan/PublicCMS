@@ -62,9 +62,7 @@ public class MetadataComponent implements Cache, Base {
         CmsPageMetadata pageMetadata = getTemplateMetadataMap(file.getParent()).get(file.getName());
         if (null == pageMetadata) {
             pageMetadata = new CmsPageMetadata();
-            if (!file.exists()) {
-                pageMetadata.setUseDynamic(true);
-            }
+            pageMetadata.setUseDynamic(true);
         }
         return pageMetadata;
     }

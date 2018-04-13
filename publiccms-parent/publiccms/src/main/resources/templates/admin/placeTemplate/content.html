@@ -1,5 +1,5 @@
 <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
-<form method="post" action="cmsTemplate/save.do" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" action="cmsTemplate/savePlace.do" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 	<div class="formBar">
 		<ul>
 			<#if site.useSsi>
@@ -23,7 +23,7 @@
 	</h2>
 	<div class="pageFormContent" layoutH="109">
    		<div>
-			<input name="path" type="hidden" value="${'/include'+path}"/>
+			<input name="path" type="hidden" value="${path}"/>
 			<textarea name="content" class="code" mode="freemarkermixed"><@_templateContent path='/include'+path>${(object)!}</@_templateContent></textarea>
 		</div>
 	</div>

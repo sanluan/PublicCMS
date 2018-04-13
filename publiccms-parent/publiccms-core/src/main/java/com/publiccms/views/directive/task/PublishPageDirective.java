@@ -39,7 +39,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
         if (file.isFile()) {
             Map<String, Boolean> map = new LinkedHashMap<>();
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(fullPath);
-            if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
+            if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
                     templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, path), metadata.getPublishPath(),
                             null, metadata, null);

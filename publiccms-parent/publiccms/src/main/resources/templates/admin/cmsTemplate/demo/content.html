@@ -4,10 +4,9 @@
 		<#assign category=object/>
 	</@_category>
 	<#assign attribute=getContentAttribute(id)/>
-	<#assign texts=(attribute.text!'')?split('_page_break_tag_')/>
-	<#assign pageIndex=(pageIndex!'1')?number/>
-	<#assign text=texts[pageIndex-1]/>
-	<#assign totalCount=texts?size/>
+	<#assign temp=getContentPage(attribute.text!'',pageIndex)/>
+	<#assign page=temp.page/>
+	<#assign text=temp.text/>
 </@_content>
 <!DOCTYPE html>
 <html lang="zh">
@@ -46,20 +45,21 @@
 			</div>
 		</#if>
 			<div>
-				<#if pageIndex gt 1>
-					<a href="?id=${id}&pageIndex=${pageIndex-1}">上一页</a>
+				<#assign url='?id=${id}'/>
+				<#if !page.firstPage>
+					<a href="${getPage(url,page.prePage,'pageIndex')}">上一页</a>
 				<#else>
 					<span>上一页</span>
 				</#if>
-				<#list 1..totalCount as n>
-					<#if n=pageIndex>
+				<#list 1..page.totalCount as n>
+					<#if n=page.pageIndex>
 						${n}
 					<#else>
-						<a href="?id=${id}&pageIndex=${n}">${n}</a>
+						<a href="${getPage(url,n,'pageIndex')}">${n}</a>
 					</#if>
 				</#list>
-				<#if pageIndex lt totalCount>
-					<a href="?id=${id}&pageIndex=${pageIndex+1}">下一页</a>
+				<#if !page.lastPage>
+					<a href="${getPage(url,page.nextPage,'pageIndex')}">下一页</a>
 				<#else>
 					<span>下一页</span>
 				</#if>

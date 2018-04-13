@@ -98,8 +98,8 @@ public class LoginAdminController extends AbstractController {
                     .append(CommonConstants.getCookiesUserSplit()).append(user.isSuperuserAccess())
                     .append(CommonConstants.getCookiesUserSplit())
                     .append(URLEncoder.encode(user.getNickName(), DEFAULT_CHARSET_NAME));
-            RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesAdmin(), sb.toString(), Integer.MAX_VALUE,
-                    null);
+            RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesAdmin(), sb.toString(),
+                    Integer.MAX_VALUE, null);
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }
@@ -165,23 +165,27 @@ public class LoginAdminController extends AbstractController {
     }
 
     /**
+     * @param userId
      * @param request
      * @param response
      * @return view name
      */
     @RequestMapping(value = "logout", method = RequestMethod.GET)
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesAdmin());
-        if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
-            String value = userCookie.getValue();
-            if (null != value) {
-                String[] userData = value.split(CommonConstants.getCookiesUserSplit());
-                if (userData.length > 1) {
-                    sysUserTokenService.delete(userData[1]);
+    public String logout(Long userId, HttpServletRequest request, HttpServletResponse response) {
+        SysUser admin = getAdminFromSession(request.getSession());
+        if (null != userId && null != admin && userId == admin.getId()) {
+            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesAdmin());
+            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
+                String value = userCookie.getValue();
+                if (null != value) {
+                    String[] userData = value.split(CommonConstants.getCookiesUserSplit());
+                    if (userData.length > 1) {
+                        sysUserTokenService.delete(userData[1]);
+                    }
                 }
             }
+            clearAdminToSession(request.getContextPath(), request.getSession(), response);
         }
-        clearAdminToSession(request.getContextPath(), request.getSession(), response);
         return REDIRECT + CommonConstants.getDefaultPage();
     }
 

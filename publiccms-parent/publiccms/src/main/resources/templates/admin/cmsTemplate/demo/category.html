@@ -36,8 +36,9 @@
 		</article>
 	</#list>
 		<div>
+			<#assign url='?id=${id}'/>
 			<#if !page.firstPage>
-				<a href="?id=${id}&pageIndex=${page.prePage}">上一页</a>
+				<a href="${getPage(url,page.prePage,'pageIndex')}">上一页</a>
 			<#else>
 				<span>上一页</span>
 			</#if>
@@ -50,20 +51,20 @@
 				<#assign end=page.pageIndex+4/>
 			</#if>
 			<#if start gt 1>
-				<a href="?id=${id}">1</a> ...
+				<a href="${url}">1</a> ...
 			</#if>
 			<#list start..end as n>
 				<#if n=page.pageIndex>
 					${n}
 				<#else>
-					<a href="?id=${id}&pageIndex=${n}">${n}</a>
+					<a href="${getPage(url,n,'pageIndex')}">${n}</a>
 				</#if>
 			</#list>
 			<#if end lt page.totalPage>
-				... <a href="?id=${id}&pageIndex=${page.totalPage}">${page.totalPage}</a>
+				... <a href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
 			</#if>
 			<#if !page.lastPage>
-				<a href="?id=${id}&pageIndex=${page.nextPage}">下一页</a>
+				<a href="${getPage(url,page.nextPage,'pageIndex')}">下一页</a>
 			<#else>
 				<span>下一页</span>
 			</#if>
