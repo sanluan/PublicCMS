@@ -123,14 +123,14 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
 			<#if fieldList?seq_contains('editor')>
 				<dl>
 					<dt>${(model.fieldTextMap['editor'])!}:</dt>
-					<dd><input name="editor"<#if requiredFieldList?seq_contains('author')> class="required"</#if> type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
+					<dd><input name="editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
 				</dl>
 			</#if>
 			<#if fieldList?seq_contains('description')>
 				<dl class="nowrap">
 					<dt>${(model.fieldTextMap['description'])!}:</dt>
 					<dd>
-					    <textarea name="description"<#if requiredFieldList?seq_contains('author')> class="required"</#if> maxlength="280" cols="80" rows="4">${(a.description)!}</textarea>
+					    <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="280" cols="80" rows="4">${(a.description)!}</textarea>
 					</dd>
 				</dl>
 			</#if>
@@ -156,7 +156,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
 				<dl class="nowrap">
 					<dt>${(model.fieldTextMap['cover'])!}:</dt>
 					<dd>
-						<input name="cover"<#if requiredFieldList?seq_contains('author')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
+						<input name="cover"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
 						<a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">${model.coverText!}</a>
 						<#include "../include_page/preview.html"/>
 						<@preview 'content' 'input[name=cover]'/>
@@ -178,7 +178,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
 				<dl class="nowrap">
 					<dt>${(model.fieldTextMap['content'])!}:</dt>
 					<dd style="width:90%">
-						<textarea name="text" class="editor<#if requiredFieldList?seq_contains('author')> required</#if>" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
+						<textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
 					</dd>
 				</dl>
 			</#if>

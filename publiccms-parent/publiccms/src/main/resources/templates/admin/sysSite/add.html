@@ -27,8 +27,8 @@ function siteDefaultConfig${id!}(type){
 	<input name="id" type="hidden" value="${id!}" />
 	<div class="formBar">
 		<ul>
-		    <li><button class="button" onclick="siteDefaultConfig${id!}('static');return false;">默认静态化配置</button></li>
-            <li><button class="button" onclick="siteDefaultConfig${id!}();return false;">默认动态配置</button></li>
+		    <li><button type="button" class="button" onclick="siteDefaultConfig${id!}('static');return false;">默认静态化配置</button></li>
+            <li><button type="button" class="button" onclick="siteDefaultConfig${id!}();return false;">默认动态配置</button></li>
 			<li><button type="submit" class="buttonActive">保存</button></li>
 			<li><button type="button" class="button close">关闭</button></li>
 		</ul>

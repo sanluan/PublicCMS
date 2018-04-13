@@ -85,7 +85,7 @@ $(function(){
 		<#if (roleModuleMap[a.id?string])??&&roleModuleMap[a.id?string]>
 			<#if !parentId?has_content><#assign parentId=a.id/></#if>
 			<li>
-				<a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}">${(a.attached?no_esc)!} ${a.name}</a>
+				<a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}" parentId="${a.id}">${(a.attached?no_esc)!} ${a.name}</a>
 			</li>
 		</#if>
 	</#list>
@@ -98,7 +98,7 @@ $(function(){
 	</@_sysAuthorized>
 </@_masterSite>
 	</ul>
-	<script>$('#navMenu li:eq(0)').addClass("selected");</script>
+	<script>$('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");</script>
 </header>
 <main>
 	<div id="leftside">
