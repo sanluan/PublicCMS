@@ -44,7 +44,7 @@
 				<td>${a.id}</td>
 				<td>${a.name!} <#if site.id=a.id>[当前站点]</#if></td>
 				<td><a href="${a.dynamicPath!}" target="_blank">${a.dynamicPath!}</a></td>
-				<td>${a.useStatic?then('是','否')} ${a.useSsi?then('[已启用服务器端包含]','')}</td>
+				<td>${a.useStatic?then('是','否')} ${a.useSsi?then('[已启用SSI]','')}</td>
 				<td><a href="${a.sitePath!}" target="_blank">${a.sitePath!}</a></td>
 				<td>
 					<a href="sysDomain/add.html?siteId=${a.id!}" target="navTab" rel="sysDomain/add">添加域名</a>
