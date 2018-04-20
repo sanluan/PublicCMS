@@ -70,8 +70,8 @@ public class AdminContextInterceptor extends WebContextInterceptor implements Ba
                 }
             }
             SysUser entity = sysUserService.getEntity(user.getId());
-            if (null != entity && !entity.isDisabled() && !entity.isSuperuserAccess() && null != site && !site.isDisabled()
-                    && site.getId() != entity.getSiteId()) {
+            if (null == entity || entity.isDisabled() || !entity.isSuperuserAccess() || null == site || site.isDisabled()
+                    || site.getId() != entity.getSiteId()) {
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
                     return false;
