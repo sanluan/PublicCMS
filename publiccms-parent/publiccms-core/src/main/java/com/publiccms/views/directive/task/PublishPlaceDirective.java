@@ -58,10 +58,10 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     private Map<String, Boolean> deal(SysSite site, String path) {
         path = path.replace("\\", SEPARATOR).replace("//", SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        List<FileInfo> list = fileComponent
-                .getFileList(siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + SEPARATOR + path));
-        Map<String, CmsPlaceMetadata> metadataMap = metadataComponent
-                .getPlaceMetadataMap(siteComponent.getWebTemplateFilePath(site, path));
+        String realPath = siteComponent.getWebTemplateFilePath(site,
+                TemplateComponent.INCLUDE_DIRECTORY + SEPARATOR + path);
+        List<FileInfo> list = fileComponent.getFileList(realPath);
+        Map<String, CmsPlaceMetadata> metadataMap = metadataComponent.getPlaceMetadataMap(realPath);
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
