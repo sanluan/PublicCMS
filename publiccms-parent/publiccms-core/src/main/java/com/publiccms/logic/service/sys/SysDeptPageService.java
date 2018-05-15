@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.sys.SysDeptCategory;
 import com.publiccms.entities.sys.SysDeptPage;
 import com.publiccms.entities.sys.SysDeptPageId;
 import com.publiccms.logic.dao.sys.SysDeptPageDao;
@@ -69,9 +68,9 @@ public class SysDeptPageService extends BaseService<SysDeptPage> {
     public void delete(Integer deptId, String page) {
         if (CommonUtils.notEmpty(page) || CommonUtils.notEmpty(deptId)) {
             @SuppressWarnings("unchecked")
-            List<SysDeptCategory> list = (List<SysDeptCategory>) getPage(deptId, page, null, null).getList();
-            for (SysDeptCategory deptCategory : list) {
-                delete(deptCategory.getId());
+            List<SysDeptPage> list = (List<SysDeptPage>) getPage(deptId, page, null, null).getList();
+            for (SysDeptPage deptPage : list) {
+                delete(deptPage.getId());
             }
         }
     }
