@@ -44,7 +44,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
      */
     @Override
     public void update(Connection connection, String fromVersion) throws SQLException, IOException {
-        switch (version) {
+        switch (fromVersion) {
         case VERSION_20160423:
             runScript(connection, VERSION_20160423, VERSION_20160510);
         case VERSION_20160510:
