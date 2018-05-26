@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.redis.serializer.BinarySerializer;
 import com.publiccms.common.redis.serializer.StringSerializer;
 import com.publiccms.common.tools.RedisUtils;
@@ -24,7 +24,7 @@ import redis.clients.jedis.JedisPool;
  * @param <V>
  *
  */
-public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializable, Base {
+public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializable {
     /**
      *
      */
@@ -161,7 +161,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     private byte[] getKey(K key) {
-        return stringSerializer.serialize(name + DOT + key);
+        return stringSerializer.serialize(name + CommonConstants.DOT + key);
     }
 
     @Override

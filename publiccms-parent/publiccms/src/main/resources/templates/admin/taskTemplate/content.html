@@ -1,22 +1,23 @@
 <@_taskTemplateContent path=path><#assign template=object!/></@_taskTemplateContent>
 <form method="post" action="taskTemplate/save.do?navTabId=taskTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<div class="formBar">
-		<ul>
-			<#if template?has_content><li><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list" title="确定要删除该脚本吗?" target="ajaxTodo">删除</a></li></#if>
-			<li><a class="button" href="taskTemplate/run.html?path=${path?url}" target="navTab" rel="taskTemplate/run">执行脚本</a></li>
-			<li><button type="submit" class="buttonActive">保存</button></li>
-		</ul>
-	</div>
-	<h2 class="contentTitle">
-	 	<a class="button" href="taskTemplate/chipLookup.html" target="dialog" mask="true">引用脚本</a>
-	 	<a class="button" href="cmsTemplate/help.html?path=${'/include'+path?url!}&task=true" target="dialog" mask="true">模板帮助</a>
-	</h2>
-	<div class="pageFormContent" layoutH="109">
-		<div class="clearfix">
-			<label>路径:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
-		</div>
-   		<div>
-			<textarea name="content" class="code" mode="freemarkermixed">${(template)!}</textarea>
-		</div>
-	</div>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <#if template?has_content><li><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该脚本吗?" target="ajaxTodo">删除</a></li></#if>
+            <li><a class="button" href="taskTemplate/run.html?path=${path?url}" target="navTab" rel="taskTemplate/run">执行脚本</a></li>
+            <li><button type="submit" class="buttonActive">保存</button></li>
+        </ul>
+    </div>
+    <h2 class="contentTitle">
+         <a class="button" href="taskTemplate/chipLookup.html" target="dialog" mask="true">引用脚本</a>
+         <a class="button" href="cmsTemplate/help.html?path=${'/include'+path?url!}&task=true" target="dialog" mask="true">模板帮助</a>
+    </h2>
+    <div class="pageFormContent" layoutH="109">
+        <div class="clearfix">
+            <label>路径:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
+        </div>
+           <div>
+            <textarea name="content" class="code" mode="freemarkermixed">${(template)!}</textarea>
+        </div>
+    </div>
 </form>

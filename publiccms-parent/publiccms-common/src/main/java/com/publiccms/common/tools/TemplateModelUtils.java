@@ -5,7 +5,7 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.Constants;
 
 import freemarker.ext.beans.BeanModel;
 import freemarker.template.TemplateBooleanModel;
@@ -23,7 +23,7 @@ import freemarker.template.TemplateSequenceModel;
  * TemplateModelUtils
  *
  */
-public class TemplateModelUtils implements Base {
+public class TemplateModelUtils {
 
     /**
      * @param model
@@ -195,10 +195,10 @@ public class TemplateModelUtils implements Base {
         }
         String str = converString(model);
         if (CommonUtils.notEmpty(str)) {
-            if (0 <= str.indexOf(COMMA_DELIMITED)) {
-                return StringUtils.split(str, COMMA_DELIMITED);
+            if (0 <= str.indexOf(Constants.COMMA_DELIMITED)) {
+                return StringUtils.split(str, Constants.COMMA_DELIMITED);
             } else {
-                return StringUtils.split(str, BLANK_SPACE);
+                return StringUtils.split(str, Constants.BLANK_SPACE);
             }
         }
         return null;

@@ -35,7 +35,6 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
@@ -58,7 +57,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 @PropertySource({ "classpath:" + CommonConstants.CMS_CONFIG_FILE })
 @EnableTransactionManagement
 @EnableScheduling
-public class ApplicationConfig implements Base {
+public class ApplicationConfig {
 
     @Autowired
     private Environment env;
@@ -251,7 +250,7 @@ public class ApplicationConfig implements Base {
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver bean = new CommonsMultipartResolver();
-        bean.setDefaultEncoding(DEFAULT_CHARSET_NAME);
+        bean.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
         bean.setMaxUploadSize(Long.parseLong(env.getProperty("cms.multipart.maxUploadSize")) * 1024 * 1024);
         return bean;
     }

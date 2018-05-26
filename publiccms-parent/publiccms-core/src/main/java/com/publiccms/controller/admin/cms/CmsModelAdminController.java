@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
@@ -36,12 +38,18 @@ public class CmsModelAdminController extends AbstractController {
     /**
      * @param entity
      * @param modelId
+     * @param _csrf
      * @param request
      * @param session
+     * @param model 
      * @return view name
      */
     @RequestMapping("save")
-    public String save(@ModelAttribute CmsModel entity, String modelId, HttpServletRequest request, HttpSession session) {
+    public String save(@ModelAttribute CmsModel entity, String modelId, String _csrf, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         SysSite site = getSite(request);
         modelComponent.clear(site.getId());
         if (CommonUtils.notEmpty(modelId)) {
@@ -49,29 +57,33 @@ public class CmsModelAdminController extends AbstractController {
             modelMap.remove(modelId);
             modelMap.put(entity.getId(), entity);
             modelComponent.save(site, modelMap);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.model", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             Map<String, CmsModel> modelMap = modelComponent.getMap(site);
             modelMap.put(entity.getId(), entity);
             modelComponent.save(site, modelMap);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param id
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String id, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(String id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         SysSite site = getSite(request);
         Map<String, CmsModel> modelMap = modelComponent.getMap(site);
         CmsModel entity = modelMap.remove(id);
@@ -82,10 +94,10 @@ public class CmsModelAdminController extends AbstractController {
                 modelMap.put(m.getId(), m);
             }
             modelComponent.save(site, modelMap);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.model", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 }

@@ -33,11 +33,11 @@ public class IndexAdminController extends AbstractController {
     public String page(HttpServletRequest request) {
         String path = urlPathHelper.getLookupPathForRequest(request);
         if (CommonUtils.notEmpty(path)) {
-            if (SEPARATOR.equals(path) || path.endsWith(SEPARATOR)) {
+            if (CommonConstants.SEPARATOR.equals(path) || path.endsWith(CommonConstants.SEPARATOR)) {
                 path += CommonConstants.getDefaultPage();
             }
-            int index = path.lastIndexOf(DOT);
-            path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
+            int index = path.lastIndexOf(CommonConstants.DOT);
+            path = path.substring(path.indexOf(CommonConstants.SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
         }
         return path;
     }
@@ -58,6 +58,6 @@ public class IndexAdminController extends AbstractController {
                 localeResolver.setLocale(request, response, StringUtils.parseLocaleString(lang));
             }
         }
-        return TEMPLATE_DONEANDREFRESH;
+        return CommonConstants.TEMPLATE_DONEANDREFRESH;
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
@@ -87,7 +88,7 @@ public class LoginAdminController extends AbstractController {
             return "login";
         }
 
-        setAdminToSession(session, user);
+        ControllerUtils.setAdminToSession(session, user);
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -97,7 +98,7 @@ public class LoginAdminController extends AbstractController {
             sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
                     .append(CommonConstants.getCookiesUserSplit()).append(user.isSuperuserAccess())
                     .append(CommonConstants.getCookiesUserSplit())
-                    .append(URLEncoder.encode(user.getNickName(), DEFAULT_CHARSET_NAME));
+                    .append(URLEncoder.encode(user.getNickName(), CommonConstants.DEFAULT_CHARSET_NAME));
             RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesAdmin(), sb.toString(),
                     Integer.MAX_VALUE, null);
         } catch (UnsupportedEncodingException e) {
@@ -106,9 +107,9 @@ public class LoginAdminController extends AbstractController {
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
         if (CommonUtils.notEmpty(returnUrl)) {
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
-        return REDIRECT + CommonConstants.getDefaultPage();
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();
     }
 
     /**
@@ -124,15 +125,16 @@ public class LoginAdminController extends AbstractController {
     public String loginDialog(String username, String password, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         if ("login".equals(login(username, password, null, request, session, response, model))) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param oldpassword
      * @param password
      * @param repassword
+     * @param _csrf
      * @param request
      * @param session
      * @param response
@@ -140,22 +142,23 @@ public class LoginAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
-    public String changeMyselfPassword(String oldpassword, String password, String repassword, HttpServletRequest request,
-            HttpSession session, HttpServletResponse response, ModelMap model) {
+    public String changeMyselfPassword(String oldpassword, String password, String repassword, String _csrf,
+            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        SysUser user = service.getEntity(getAdminFromSession(session).getId());
-        if (ControllerUtils.verifyNotEquals("siteId", site.getId(), user.getSiteId(), model)) {
-            return TEMPLATE_ERROR;
+        SysUser user = service.getEntity(ControllerUtils.getAdminFromSession(session).getId());
+        if (ControllerUtils.verifyNotEquals("siteId", site.getId(), user.getSiteId(), model)
+                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
         }
         String encodedOldPassword = VerificationUtils.md5Encode(oldpassword);
         if (ControllerUtils.verifyNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         } else if (ControllerUtils.verifyNotEmpty("password", password, model)
                 || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)) {
-            return TEMPLATE_ERROR;
+            return CommonConstants.TEMPLATE_ERROR;
         } else {
-            clearAdminToSession(request.getContextPath(), request.getSession(), response);
-            model.addAttribute(MESSAGE, "message.needReLogin");
+            ControllerUtils.clearAdminToSession(request.getContextPath(), request.getSession(), response);
+            model.addAttribute(CommonConstants.MESSAGE, "message.needReLogin");
         }
         service.updatePassword(user.getId(), VerificationUtils.md5Encode(password));
         sysUserTokenService.delete(user.getId());
@@ -172,7 +175,7 @@ public class LoginAdminController extends AbstractController {
      */
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     public String logout(Long userId, HttpServletRequest request, HttpServletResponse response) {
-        SysUser admin = getAdminFromSession(request.getSession());
+        SysUser admin = ControllerUtils.getAdminFromSession(request.getSession());
         if (null != userId && null != admin && userId == admin.getId()) {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesAdmin());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
@@ -184,9 +187,9 @@ public class LoginAdminController extends AbstractController {
                     }
                 }
             }
-            clearAdminToSession(request.getContextPath(), request.getSession(), response);
+            ControllerUtils.clearAdminToSession(request.getContextPath(), request.getSession(), response);
         }
-        return REDIRECT + CommonConstants.getDefaultPage();
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();
     }
 
     /**
@@ -195,12 +198,12 @@ public class LoginAdminController extends AbstractController {
     @RequestMapping(value = "clearCache")
     public String clearCache() {
         cacheComponent.clear();
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     protected boolean verifyNotAdmin(SysUser user, ModelMap model) {
         if (!user.isDisabled() && !user.isSuperuserAccess()) {
-            model.addAttribute(ERROR, "verify.user.notAdmin");
+            model.addAttribute(CommonConstants.ERROR, "verify.user.notAdmin");
             return true;
         }
         return false;
@@ -208,7 +211,7 @@ public class LoginAdminController extends AbstractController {
 
     protected boolean verifyNotEnablie(SysUser user, ModelMap model) {
         if (user.isDisabled()) {
-            model.addAttribute(ERROR, "verify.user.notEnablie");
+            model.addAttribute(CommonConstants.ERROR, "verify.user.notEnablie");
             return true;
         }
         return false;

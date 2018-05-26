@@ -29,7 +29,7 @@ import com.publiccms.views.pojo.entities.ExtendField;
  * AbstractCmsUpgrader
  *
  */
-public abstract class AbstractCmsUpgrader implements Base {
+public abstract class AbstractCmsUpgrader {
     /**
      * 表名_ID_SEQ SEQUENCE主键策略
      */
@@ -83,13 +83,14 @@ public abstract class AbstractCmsUpgrader implements Base {
                 ResultSet rs = statement.executeQuery("select * from cms_model");) {
             while (rs.next()) {
                 CmsModel entity = new CmsModel();
-                String filePath = CommonConstants.CMS_FILEPATH + SEPARATOR + SiteComponent.TEMPLATE_PATH + SEPARATOR
-                        + SiteComponent.SITE_PATH_PREFIX + rs.getString("site_id") + SEPARATOR + SiteComponent.MODEL_FILE;
+                String filePath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
+                        + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("site_id")
+                        + CommonConstants.SEPARATOR + SiteComponent.MODEL_FILE;
                 File file = new File(filePath);
                 file.getParentFile().mkdirs();
                 Map<String, CmsModel> modelMap;
                 try {
-                    modelMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsModel>>() {
+                    modelMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, CmsModel>>() {
                     });
                 } catch (IOException | ClassCastException e) {
                     modelMap = new HashMap<>();
@@ -121,7 +122,7 @@ public abstract class AbstractCmsUpgrader implements Base {
                 }
                 modelMap.put(entity.getId(), entity);
                 try (FileOutputStream outputStream = new FileOutputStream(file);) {
-                    objectMapper.writeValue(outputStream, modelMap);
+                    CommonConstants.objectMapper.writeValue(outputStream, modelMap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -133,12 +134,14 @@ public abstract class AbstractCmsUpgrader implements Base {
         try (Statement statement = connection.createStatement();
                 ResultSet rs = statement.executeQuery("select * from sys_site");) {
             while (rs.next()) {
-                String filePath = CommonConstants.CMS_FILEPATH + SEPARATOR + SiteComponent.TEMPLATE_PATH + SEPARATOR
-                        + SiteComponent.SITE_PATH_PREFIX + rs.getString("id") + SEPARATOR + SiteComponent.MODEL_FILE;
+                String filePath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
+                        + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("id")
+                        + CommonConstants.SEPARATOR + SiteComponent.MODEL_FILE;
                 File file = new File(filePath);
                 try {
-                    Map<String, CmsModel> modelMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsModel>>() {
-                    });
+                    Map<String, CmsModel> modelMap = CommonConstants.objectMapper.readValue(file,
+                            new TypeReference<Map<String, CmsModel>>() {
+                            });
                     if (null != modelMap && !modelMap.isEmpty()) {
                         for (CmsModel model : modelMap.values()) {
                             List<String> fieldList = new ArrayList<>();
@@ -176,7 +179,7 @@ public abstract class AbstractCmsUpgrader implements Base {
                         }
                     }
                     try {
-                        objectMapper.writeValue(file, modelMap);
+                        CommonConstants.objectMapper.writeValue(file, modelMap);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -196,7 +199,7 @@ public abstract class AbstractCmsUpgrader implements Base {
         try (InputStream inputStream = getClass()
                 .getResourceAsStream("/initialization/upgrade/" + fromVersion + "-" + toVersion + ".sql");) {
             if (null != inputStream) {
-                runner.runScript(new InputStreamReader(inputStream, DEFAULT_CHARSET));
+                runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
             }
         }
         version = toVersion;

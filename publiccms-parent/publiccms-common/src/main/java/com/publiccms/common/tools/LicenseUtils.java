@@ -15,10 +15,10 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.copyright.License;
 
-public class LicenseUtils implements Base {
+public class LicenseUtils {
     public static final String DATE_FORMAT_STRING = "yyyy-MM-dd";
 
     public static String writeLicense(License license) {
@@ -55,9 +55,31 @@ public class LicenseUtils implements Base {
         return license;
     }
 
+    public static License readLicense(byte[] licenseData) {
+        License license = new License();
+        if (null != licenseData) {
+            String licenseText = new String(licenseData, Constants.DEFAULT_CHARSET);
+            String[] licenseItem = StringUtils.split(licenseText, ";");
+            for (String item : licenseItem) {
+                String[] values = StringUtils.split(item, "=", 2);
+                if (values.length == 2) {
+                    license.put(values[0], values[1]);
+                }
+            }
+        }
+        return license;
+    }
+
     public static boolean verifyLicense(String publicKey, License license) {
         if (null != license && VerificationUtils.publicKeyVerify(VerificationUtils.base64Decode(publicKey),
                 getLicenseDate(license), VerificationUtils.base64Decode(license.getSignaturer()))) {
+            return verifyLicenseDate(license);
+        }
+        return false;
+    }
+
+    public static boolean verifyLicenseDate(License license) {
+        if (null != license && null != license.getStartDate() && null != license.getEndDate()) {
             Date now = new Date();
             try {
                 if (now.after(
@@ -87,6 +109,6 @@ public class LicenseUtils implements Base {
                 }
             }
         }
-        return sb.toString().getBytes(DEFAULT_CHARSET);
+        return sb.toString().getBytes(Constants.DEFAULT_CHARSET);
     }
 }

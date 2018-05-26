@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
@@ -23,7 +22,7 @@ import com.publiccms.views.pojo.entities.ExtendField;
  *
  */
 @Component
-public class EmailTemplateConfigComponent implements Config, Base {
+public class EmailTemplateConfigComponent implements Config {
     /**
      * 
      */
@@ -56,9 +55,13 @@ public class EmailTemplateConfigComponent implements Config, Base {
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             extendFieldList.add(new ExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_EMAIL_TITLE), null, null));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                            CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_TITLE),
+                    null, null));
             extendFieldList.add(new ExtendField(CONFIG_EMAIL_PATH, INPUTTYPE_TEMPLATE, false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_EMAIL_PATH), null, null));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                            CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH),
+                    null, null));
         }
         return extendFieldList;
     }

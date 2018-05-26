@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.oauth.Oauth;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
@@ -40,7 +39,7 @@ import com.publiccms.views.pojo.entities.ExtendField;
  * AbstractOauth
  *
  */
-public abstract class AbstractOauth implements Config, Oauth, Base {
+public abstract class AbstractOauth implements Config, Oauth {
     /**
      * 
      */
@@ -109,7 +108,7 @@ public abstract class AbstractOauth implements Config, Oauth, Base {
         try (CloseableHttpResponse response = httpclient.execute(request)) {
             HttpEntity entity = response.getEntity();
             if (null != entity) {
-                html = EntityUtils.toString(entity, DEFAULT_CHARSET);
+                html = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
                 EntityUtils.consume(entity);
             }
         }
@@ -123,11 +122,11 @@ public abstract class AbstractOauth implements Config, Oauth, Base {
         for (Entry<String, String> entry : paramters.entrySet()) {
             nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
-        request.setEntity(new UrlEncodedFormEntity(nvps, DEFAULT_CHARSET));
+        request.setEntity(new UrlEncodedFormEntity(nvps, CommonConstants.DEFAULT_CHARSET));
         try (CloseableHttpResponse response = httpclient.execute(request)) {
             HttpEntity entity = response.getEntity();
             if (null != entity) {
-                html = EntityUtils.toString(entity, DEFAULT_CHARSET);
+                html = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
                 EntityUtils.consume(entity);
             }
         }
@@ -176,16 +175,17 @@ public abstract class AbstractOauth implements Config, Oauth, Base {
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, true, LanguagesUtils
-                .getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + prefix + CONFIG_APP_KEY),
+        extendFieldList.add(new ExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, true,
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY),
                 null, null));
         extendFieldList.add(new ExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT, true,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + DOT + prefix + CONFIG_APP_SECRET),
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET),
                 null, null));
         extendFieldList.add(new ExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT, true,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + DOT + prefix + CONFIG_RETURN_URL),
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL),
                 null, null));
         return extendFieldList;
     }

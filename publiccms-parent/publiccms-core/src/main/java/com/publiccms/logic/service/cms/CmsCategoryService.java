@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
@@ -45,7 +46,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 addChildIds(parent.getParentId(), id);
                 String childIds;
                 if (CommonUtils.notEmpty(parent.getChildIds())) {
-                    childIds = parent.getChildIds() + COMMA_DELIMITED + String.valueOf(id);
+                    childIds = parent.getChildIds() + CommonConstants.COMMA_DELIMITED + String.valueOf(id);
                 } else {
                     childIds = String.valueOf(id);
                 }
@@ -73,11 +74,11 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
         if (0 < list.size()) {
             for (CmsCategory category : list) {
                 childIds.append(category.getId());
-                childIds.append(COMMA_DELIMITED);
+                childIds.append(CommonConstants.COMMA_DELIMITED);
                 String childChildIds = getChildIds(siteId, category.getId());
                 if (CommonUtils.notEmpty(childChildIds)) {
                     childIds.append(childChildIds);
-                    childIds.append(COMMA_DELIMITED);
+                    childIds.append(CommonConstants.COMMA_DELIMITED);
                 }
             }
             if (0 < childIds.length()) {

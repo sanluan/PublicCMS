@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.base.oauth.AbstractOauth;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.view.pojo.oauth.OauthAccess;
 import com.publiccms.view.pojo.oauth.OauthConfig;
@@ -54,7 +55,7 @@ public class WechatOauthComponent extends AbstractOauth {
             sb.append(config.getAppKey()).append("&secret=").append(config.getAppSecret()).append("&code=").append(code)
                     .append("&grant_type=authorization_code");
             String html = get(sb.toString());
-            Map<String, Object> map = objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
+            Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
             });
             if (null != map.get("access_token")) {
                 return new OauthAccess(code, (String) map.get("access_token"), (String) map.get("openid"));
@@ -74,7 +75,7 @@ public class WechatOauthComponent extends AbstractOauth {
             sb.append(oauthInfo.getAccessToken()).append("&openid=").append(oauthInfo.getOpenId());
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
-                Map<String, Object> map = objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
+                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
                 });
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("nickname"), (String) map.get("headimgurl"),
                         (Integer) map.get("sex") == 1 ? "m" : "f");

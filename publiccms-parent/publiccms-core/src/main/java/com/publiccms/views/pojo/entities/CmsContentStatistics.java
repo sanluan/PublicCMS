@@ -9,10 +9,10 @@ import com.publiccms.entities.cms.CmsContent;
  */
 public class CmsContentStatistics implements java.io.Serializable {
     /**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private long id;
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private long id;
     private int clicks;
     private int comments;
     private int scores;

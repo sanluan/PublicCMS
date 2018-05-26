@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 
@@ -25,7 +26,7 @@ public class GetTemplateResultMethod extends BaseMethod {
      */
     public GetTemplateResultMethod() {
         configuration = new Configuration(Configuration.getVersion());
-        configuration.setDefaultEncoding(DEFAULT_CHARSET_NAME);
+        configuration.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
         configuration.setTemplateUpdateDelayMilliseconds(0);
         configuration.setAPIBuiltinEnabled(false);
         configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);

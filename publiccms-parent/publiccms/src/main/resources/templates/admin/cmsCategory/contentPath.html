@@ -1,14 +1,14 @@
 <h2 class="contentTitle"><#if site.useStatic>
 使用静态化路径时，请配置所有分类模型映射模板路径。使用动态路径时，请将模板名改为可动态访问的模板名，清空所有分类模型映射模板路径。<#else>请选择内容路径，然后将模板名改为可动态访问的模板名。</#if></h2>
 <div class="pageFormContent" layoutH="60">
-	<ul class="tree treeFolder expand">
-		<li>
-		<#if site.useStatic>
-			<a href="javascript:;" onclick="$.bringBack({contentPath:'<#noparse>${category.code}/${content.publishDate?string(\'yyyy-MM-dd\')}/${content.id}.html</#noparse>'});return false;">静态化路径:{分类编码}/{年-月-日}/{内容ID}.html</a>
-			<a href="javascript:;" onclick="$.bringBack({contentPath:'<#noparse>${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html</#noparse>'});return false;">静态化路径:{年}/{月-日}/{内容ID}.html</a>
-		</#if>
-			<a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content.html?id=${content.id}</#noparse>'});return false;">动态路径:模板名.html?id={内容ID}</a>
-			<a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content/${content.id}</#noparse>'});return false;">动态路径:模板名/{内容ID}</a>
-		</li>
-	</ul>
+    <ul class="tree treeFolder expand">
+        <li>
+        <#if site.useStatic>
+            <a href="javascript:;" onclick="$.bringBack({contentPath:'<#noparse>${category.code}/${content.publishDate?string(\'yyyy-MM-dd\')}/${content.id}.html</#noparse>'});return false;">静态化路径:{分类编码}/{年-月-日}/{内容ID}.html</a>
+            <a href="javascript:;" onclick="$.bringBack({contentPath:'<#noparse>${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html</#noparse>'});return false;">静态化路径:{年}/{月-日}/{内容ID}.html</a>
+        </#if>
+            <a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content.html?id=${content.id}</#noparse>'});return false;">动态路径:模板名.html?id={内容ID}</a>
+            <a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content/${content.id}</#noparse>'});return false;">动态路径:模板名/{内容ID}</a>
+        </li>
+    </ul>
 </div>

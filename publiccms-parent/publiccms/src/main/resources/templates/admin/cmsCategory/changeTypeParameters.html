@@ -1,20 +1,20 @@
 <div class="formBar">
-	<ul>
-		<li><button type="button" class="button close">关闭</button></li>
-	</ul>
+    <ul>
+        <li><button type="button" class="button close">关闭</button></li>
+    </ul>
 </div>
 <div class="pageFormContent" layoutH="60">
-	<ul class="tree treeFolder expand">
-		<li><a href="cmsCategory/changeType.do?id=${id!}" title="确定要改为分类么?" target="ajaxTodo">改为分类</a></li>
+    <ul class="tree treeFolder expand">
+        <li><a href="cmsCategory/changeType.do?id=${id!}&_csrf=<@_csrfToken admin=true/>" title="确定要改为普通分类么?" target="ajaxTodo">改为普通分类</a></li>
 <@_categoryTypeList>
-	<#list page.list as a>
-		<li><a href="cmsCategory/changeType.do?id=${id!}&typeId=${a.id}" title="确定要改为${(a.name)!}么?" target="ajaxTodo">改为${(a.name)!}</a></li>
-	</#list>
+    <#list page.list as a>
+        <li><a href="cmsCategory/changeType.do?id=${id!}&typeId=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要改为${(a.name)!}么?" target="ajaxTodo">改为${(a.name)!}</a></li>
+    </#list>
 </@_categoryTypeList>
-	</ul>
+    </ul>
 </div>
 <script>
 $('ul li a',$.pdialog.getCurrent()).click(function(){
-	$.pdialog.closeCurrent();
+    $.pdialog.closeCurrent();
 });
 </script>

@@ -17,7 +17,6 @@ import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.util.IntrospectorCleanupListener;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.proxy.UsernamePasswordAuthenticator;
@@ -29,7 +28,7 @@ import com.publiccms.common.servlet.InstallServlet;
  * InstallationInitializer
  *
  */
-public class InitializationInitializer implements WebApplicationInitializer, Base {
+public class InitializationInitializer implements WebApplicationInitializer {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 安装Servlet映射路径
@@ -52,7 +51,7 @@ public class InitializationInitializer implements WebApplicationInitializer, Bas
             initProxy(config);
             File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
             if (file.exists()) {
-                String version = FileUtils.readFileToString(file, DEFAULT_CHARSET);
+                String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
                 if (CmsVersion.getVersion().equals(version)) {
                     CmsVersion.setInitialized(true);
                     log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + CommonConstants.CMS_FILEPATH);

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
@@ -30,7 +31,7 @@ public class ThumbDirective extends AbstractTemplateDirective {
         Integer height = handler.getInteger("height");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(width) && CommonUtils.notEmpty(height)) {
-            String thumbPath = path.substring(0, path.lastIndexOf(DOT)) + "_" + width + "_" + height
+            String thumbPath = path.substring(0, path.lastIndexOf(CommonConstants.DOT)) + "_" + width + "_" + height
                     + fileComponent.getSuffix(path);
             File thumbFile = new File(siteComponent.getWebFilePath(site, thumbPath));
             thumbPath = site.getSitePath() + thumbPath;

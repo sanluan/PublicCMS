@@ -1,13 +1,13 @@
 <h2 class="contentTitle"><#if site.useStatic>使用静态化路径时，请配置分类静态化模板路径。使用动态路径时，请将模板名改为可动态访问的模板名，清空静态化模板路径。<#else>请选择分类路径，然后将模板名改为可动态访问的模板名。</#if></h2>
 <div class="pageFormContent" layoutH="60">
-	<ul class="tree treeFolder expand">
-		<li>
-		<#if site.useStatic>
-			<a href="javascript:;" onclick="$.bringBack({path:'<#noparse>${category.code}/index.html</#noparse>'});return false;">静态化路径:{分类编码}/index.html</a>
-			<a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}.html</#noparse>'});return false;">静态化路径:category/{分类ID}.html</a>
-		</#if>
-			<a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}</#noparse>',templatePath:''});return false;">动态路径:模板名.后缀?id={分类ID}</a>
-			<a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}</#noparse>',templatePath:''});return false;">动态路径:模板名/{分类ID}</a>
-		</li>
-	</ul>
+    <ul class="tree treeFolder expand">
+        <li>
+        <#if site.useStatic>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>${category.code}/index.html</#noparse>'});return false;">静态化路径:{分类编码}/index.html</a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}.html</#noparse>'});return false;">静态化路径:category/{分类ID}.html</a>
+        </#if>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}</#noparse>',templatePath:''});return false;">动态路径:模板名.后缀?id={分类ID}</a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}</#noparse>',templatePath:''});return false;">动态路径:模板名/{分类ID}</a>
+        </li>
+    </ul>
 </div>

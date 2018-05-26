@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.common.handler.RenderHandler;
@@ -34,7 +35,7 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  * AbstractTemplateDirective 自定义模板指令基类
  *
  */
-public abstract class AbstractTemplateDirective extends BaseTemplateDirective implements Base {
+public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     /**
      * @param handler
      * @return site
@@ -78,7 +79,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective im
         HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, callback, response);
         SysApp app = null;
         if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
-                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), COMMA_DELIMITED), getName()))) {
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName()))) {
             if (null == app) {
                 handler.put("error", ApiController.NEED_APP_TOKEN).render();
             } else {
@@ -107,6 +108,13 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective im
             }
         }
         return null;
+    }
+    
+    /**
+     * @return whether to enable http 
+     */
+    public boolean httpEnabled() {
+        return true;
     }
 
     /**

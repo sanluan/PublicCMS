@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
@@ -56,7 +58,7 @@ public class CkeditorAdminController extends AbstractController {
             try {
                 fileComponent.upload(upload, siteComponent.getWebFilePath(site, fileName));
                 logUploadService.save(
-                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 false, upload.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put(RESULT_FILENAME, originalName);
@@ -65,15 +67,15 @@ public class CkeditorAdminController extends AbstractController {
             } catch (IllegalStateException | IOException e) {
                 Map<String, Object> map = getResultMap(false);
                 Map<String, String> messageMap = new HashMap<>();
-                messageMap.put(MESSAGE, e.getMessage());
-                map.put(ERROR, messageMap);
+                messageMap.put(CommonConstants.MESSAGE, e.getMessage());
+                map.put(CommonConstants.ERROR, messageMap);
                 model.addAttribute("result", map);
             }
         } else {
             Map<String, Object> map = getResultMap(false);
             Map<String, String> messageMap = new HashMap<>();
-            messageMap.put(MESSAGE, "no file");
-            map.put(ERROR, messageMap);
+            messageMap.put(CommonConstants.MESSAGE, "no file");
+            map.put(CommonConstants.ERROR, messageMap);
             model.addAttribute("result", map);
         }
         return "common/ckuploadResult";

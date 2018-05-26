@@ -19,8 +19,8 @@ import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.base.BaseHandler;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 
@@ -29,7 +29,7 @@ import com.publiccms.common.tools.DateFormatUtils;
  * HttpParameterHandler
  * 
  */
-public class HttpParameterHandler extends BaseHandler implements Base {
+public class HttpParameterHandler extends BaseHandler {
 
     /**
      * 
@@ -147,8 +147,8 @@ public class HttpParameterHandler extends BaseHandler implements Base {
     @Override
     protected String[] getStringArrayWithoutRegrister(String name) {
         String[] values = request.getParameterValues(name);
-        if (CommonUtils.notEmpty(values) && 1 == values.length && 0 <= values[0].indexOf(COMMA_DELIMITED)) {
-            return StringUtils.split(values[0], COMMA_DELIMITED);
+        if (CommonUtils.notEmpty(values) && 1 == values.length && 0 <= values[0].indexOf(Constants.COMMA_DELIMITED)) {
+            return StringUtils.split(values[0], Constants.COMMA_DELIMITED);
         }
         return values;
     }

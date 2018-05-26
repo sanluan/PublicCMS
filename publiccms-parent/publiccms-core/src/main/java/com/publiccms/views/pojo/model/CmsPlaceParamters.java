@@ -15,7 +15,7 @@ public class CmsPlaceParamters implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-	List<ExtendData> extendDataList;
+    List<ExtendData> extendDataList;
 
     /**
      * @return

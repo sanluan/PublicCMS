@@ -2,13 +2,13 @@ package com.publiccms.common.tools;
 
 import java.util.regex.Pattern;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.Constants;
 
 /**
  * HtmlUtils
  * 
  */
-public class HtmlUtils implements Base {
+public class HtmlUtils {
 
     /**
      * 
@@ -21,7 +21,7 @@ public class HtmlUtils implements Base {
      */
     public static String removeHtmlTag(String string) {
         if (CommonUtils.notEmpty(string)) {
-            return HTML_PATTERN.matcher(string).replaceAll(BLANK);
+            return HTML_PATTERN.matcher(string).replaceAll(Constants.BLANK);
         }
         return string;
     }

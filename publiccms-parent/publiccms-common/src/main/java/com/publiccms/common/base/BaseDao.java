@@ -41,7 +41,7 @@ import com.publiccms.common.tools.CommonUtils;
  * @param <E>
  * 
  */
-public abstract class BaseDao<E> implements Base {
+public abstract class BaseDao<E> {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 分面名称搜索前缀

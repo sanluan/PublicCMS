@@ -1,30 +1,31 @@
 <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
 <form method="post" action="cmsTemplate/savePlace.do" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<div class="formBar">
-		<ul>
-			<#if site.useSsi>
-				<li><a class="button" href="cmsTemplate/publishPlace.do?path=${path!}" target="ajaxTodo">发布</a></li>
-			</#if>
-			<li><a class="button" href="cmsTemplate/deletePlace.do?path=${path!}&navTabId=placeTemplate/list" title="确定要删除该页面片段吗?" target="ajaxTodo">删除</a></li>
+	<input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <#if site.useSsi>
+                <li><a class="button" href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo">发布</a></li>
+            </#if>
+            <li><a class="button" href="cmsTemplate/deletePlace.do?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该页面片段吗?" target="ajaxTodo">删除</a></li>
     <@_sysAuthorized roleIds=admin.roles url='cmsPlace/dataList'>
         <@_sysDeptPage deptId=admin.deptId!'' pages='/include'+path>
-            <li><a class="button" href="cmsPlace/dataList.html?path=${path}" target="navTab" rel="cmsPlace/dataList" title="推荐位:${(a.alias)!}">推荐位管理</a></li>
+            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="推荐位:${(a.alias)!}">推荐位管理</a></li>
         </@_sysDeptPage>
     </@_sysAuthorized>
-			<li><a class="button" href="placeTemplate/metadata.html?path=${path!}" target="ajax" rel="cmsTemplatePlace">元数据管理</a></li>
-			<li><button type="submit" class="buttonActive">保存</button></li>
-		</ul>
-	</div>
-	<h2 class="contentTitle">
-	 	<a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">引用模板</a>
-	 	<a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true">页面片段</a>
-	 	<a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true">网站文件</a>
-		<a class="button" href="cmsTemplate/help.html?path=${'/include'+path!}" target="dialog" mask="true">模板帮助</a>
-	</h2>
-	<div class="pageFormContent" layoutH="109">
-   		<div>
-			<input name="path" type="hidden" value="${path}"/>
-			<textarea name="content" class="code" mode="freemarkermixed"><@_templateContent path='/include'+path>${(object)!}</@_templateContent></textarea>
-		</div>
-	</div>
+            <li><a class="button" href="placeTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">元数据管理</a></li>
+            <li><button type="submit" class="buttonActive">保存</button></li>
+        </ul>
+    </div>
+    <h2 class="contentTitle">
+         <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">引用模板</a>
+         <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true">页面片段</a>
+         <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true">网站文件</a>
+        <a class="button" href="cmsTemplate/help.html?path=${'/include'+(path?url)!}" target="dialog" mask="true">模板帮助</a>
+    </h2>
+    <div class="pageFormContent" layoutH="109">
+           <div>
+            <input name="path" type="hidden" value="${path}"/>
+            <textarea name="content" class="code" mode="freemarkermixed"><@_templateContent path='/include'+path>${(object)!}</@_templateContent></textarea>
+        </div>
+    </div>
 </form>

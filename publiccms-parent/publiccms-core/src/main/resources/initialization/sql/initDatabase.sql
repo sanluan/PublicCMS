@@ -34,7 +34,7 @@ CREATE TABLE `cms_category` (
   KEY `type_id` (`type_id`),
   KEY `allow_contribute` (`allow_contribute`),
   KEY `hidden` (`hidden`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='分类';
+) DEFAULT CHARSET=utf8 COMMENT='分类';
 
 -- ----------------------------
 -- Table structure for cms_category_attribute
@@ -47,7 +47,7 @@ CREATE TABLE `cms_category_attribute` (
   `description` varchar(300) default NULL COMMENT '描述',
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`category_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='分类扩展';
+) DEFAULT CHARSET=utf8 COMMENT='分类扩展';
 
 -- ----------------------------
 -- Table structure for cms_category_model
@@ -58,7 +58,7 @@ CREATE TABLE `cms_category_model` (
   `model_id` varchar(20) NOT NULL COMMENT '模型编码',
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
   PRIMARY KEY  (`category_id`,`model_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='分类模型';
+) DEFAULT CHARSET=utf8 COMMENT='分类模型';
 
 -- ----------------------------
 -- Table structure for cms_category_type
@@ -72,7 +72,7 @@ CREATE TABLE `cms_category_type` (
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='分类类型';
+) DEFAULT CHARSET=utf8 COMMENT='分类类型';
 
 -- ----------------------------
 -- Table structure for cms_content
@@ -114,7 +114,7 @@ CREATE TABLE `cms_content` (
   KEY `scores` (`scores`,`comments`,`clicks`),
   KEY `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`),
   KEY `only_url` (`only_url`,`has_images`,`has_files`,`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='内容';
+) DEFAULT CHARSET=utf8 COMMENT='内容';
 
 -- ----------------------------
 -- Table structure for cms_content_attribute
@@ -128,7 +128,7 @@ CREATE TABLE `cms_content_attribute` (
   `text` longtext COMMENT '内容',
   `word_count` int(11) NOT NULL COMMENT '字数',
   PRIMARY KEY  (`content_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='内容扩展';
+) DEFAULT CHARSET=utf8 COMMENT='内容扩展';
 
 -- ----------------------------
 -- Table structure for cms_content_file
@@ -151,7 +151,7 @@ CREATE TABLE `cms_content_file` (
   KEY `size` (`size`),
   KEY `clicks` (`clicks`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='内容附件';
+) DEFAULT CHARSET=utf8 COMMENT='内容附件';
 
 -- ----------------------------
 -- Table structure for cms_content_related
@@ -169,7 +169,7 @@ CREATE TABLE `cms_content_related` (
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
   KEY `user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='推荐推荐';
+) DEFAULT CHARSET=utf8 COMMENT='推荐推荐';
 
 -- ----------------------------
 -- Table structure for cms_dictionary
@@ -181,7 +181,7 @@ CREATE TABLE `cms_dictionary` (
   `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
   PRIMARY KEY  (`id`),
   KEY `multiple` (`multiple`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字典';
+) DEFAULT CHARSET=utf8 COMMENT='字典';
 
 -- ----------------------------
 -- Table structure for cms_dictionary_data
@@ -192,7 +192,7 @@ CREATE TABLE `cms_dictionary_data` (
   `value` varchar(50) NOT NULL COMMENT '值',
   `text` varchar(100) NOT NULL COMMENT '文字',
   PRIMARY KEY  (`dictionary_id`,`value`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字典数据';
+) DEFAULT CHARSET=utf8 COMMENT='字典数据';
 
 -- ----------------------------
 -- Table structure for cms_lottery
@@ -214,7 +214,7 @@ CREATE TABLE `cms_lottery` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   PRIMARY KEY  (`id`),
   KEY `start_date` (`site_id`,`start_date`,`end_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖';
+) DEFAULT CHARSET=utf8 COMMENT='抽奖';
 
 -- ----------------------------
 -- Table structure for cms_lottery_user
@@ -231,7 +231,7 @@ CREATE TABLE `cms_lottery_user` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   KEY `lottery_id` (`lottery_id`,`user_id`,`winning`,`confirmed`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户';
+) DEFAULT CHARSET=utf8 COMMENT='抽奖用户';
 
 -- ----------------------------
 -- Table structure for cms_place
@@ -263,7 +263,7 @@ CREATE TABLE `cms_place` (
   KEY `item_type` (`item_type`),
   KEY `user_id` (`user_id`),
   KEY `clicks` (`clicks`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='页面数据';
+) DEFAULT CHARSET=utf8 COMMENT='页面数据';
 
 -- ----------------------------
 -- Table structure for cms_place_attribute
@@ -273,7 +273,7 @@ CREATE TABLE `cms_place_attribute` (
   `place_id` bigint(20) NOT NULL COMMENT '位置ID',
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`place_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='推荐位数据扩展';
+) DEFAULT CHARSET=utf8 COMMENT='推荐位数据扩展';
 
 -- ----------------------------
 -- Table structure for cms_tag
@@ -287,7 +287,7 @@ CREATE TABLE `cms_tag` (
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='标签';
+) DEFAULT CHARSET=utf8 COMMENT='标签';
 
 -- ----------------------------
 -- Table structure for cms_tag_type
@@ -300,7 +300,7 @@ CREATE TABLE `cms_tag_type` (
   `count` int(11) NOT NULL COMMENT '标签数',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='标签类型';
+) DEFAULT CHARSET=utf8 COMMENT='标签类型';
 
 -- ----------------------------
 -- Table structure for cms_vote
@@ -318,7 +318,7 @@ CREATE TABLE `cms_vote` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`site_id`,`end_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票';
+) DEFAULT CHARSET=utf8 COMMENT='投票';
 
 -- ----------------------------
 -- Table structure for cms_vote_item
@@ -333,7 +333,7 @@ CREATE TABLE `cms_vote_item` (
   `sort` int(11) NOT NULL COMMENT '顺序',
   PRIMARY KEY  (`id`),
   KEY `vote_id` (`vote_id`,`scores`,`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票选项';
+) DEFAULT CHARSET=utf8 COMMENT='投票选项';
 
 -- ----------------------------
 -- Table structure for cms_vote_user
@@ -348,7 +348,7 @@ CREATE TABLE `cms_vote_user` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   KEY `vote_id` (`vote_id`,`user_id`,`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票用户';
+) DEFAULT CHARSET=utf8 COMMENT='投票用户';
 
 -- ----------------------------
 -- Table structure for cms_word
@@ -366,296 +366,7 @@ CREATE TABLE `cms_word` (
   KEY `hidden` (`hidden`),
   KEY `create_date` (`create_date`),
   KEY `search_count` (`search_count`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='搜索词';
-
--- ----------------------------
--- Table structure for home_active
--- ----------------------------
-DROP TABLE IF EXISTS `home_active`;
-CREATE TABLE `home_active` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
-  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
-  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
-  `create_date` datetime NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `item_type` (`user_id`,`item_type`,`item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间动态';
-
--- ----------------------------
--- Table structure for home_article
--- ----------------------------
-DROP TABLE IF EXISTS `home_article`;
-CREATE TABLE `home_article` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `directory_id` bigint(20) default NULL COMMENT '目录ID',
-  `title` varchar(255) NOT NULL COMMENT '标题',
-  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
-  `cover` varchar(255) default NULL COMMENT '封面图',
-  `scores` int(11) NOT NULL COMMENT '分数',
-  `comments` int(11) NOT NULL COMMENT '评论数',
-  `clicks` int(11) NOT NULL COMMENT '点击数',
-  `last_comment_id` bigint(20) NOT NULL COMMENT '最新回复',
-  `best_comment_id` bigint(20) NOT NULL COMMENT '最佳回复',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  `create_date` datetime NOT NULL COMMENT '发布日期',
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`,`directory_id`,`user_id`,`create_date`),
-  KEY `best_comment_id` (`best_comment_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间文章';
-
--- ----------------------------
--- Table structure for home_article_content
--- ----------------------------
-DROP TABLE IF EXISTS `home_article_content`;
-CREATE TABLE `home_article_content` (
-  `article_id` bigint(20) NOT NULL COMMENT '文章ID',
-  `content` longtext COMMENT '内容',
-  PRIMARY KEY  (`article_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文章内容';
-
--- ----------------------------
--- Table structure for home_attention
--- ----------------------------
-DROP TABLE IF EXISTS `home_attention`;
-CREATE TABLE `home_attention` (
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `attention_id` bigint(20) NOT NULL COMMENT '关注ID',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`user_id`,`attention_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间关注';
-
--- ----------------------------
--- Table structure for home_broadcast
--- ----------------------------
-DROP TABLE IF EXISTS `home_broadcast`;
-CREATE TABLE `home_broadcast` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `scores` int(11) NOT NULL COMMENT '分数',
-  `reposts` int(11) NOT NULL COMMENT '转发数',
-  `comments` int(11) NOT NULL COMMENT '评论数',
-  `message` varchar(300) NOT NULL COMMENT '消息',
-  `reposted` tinyint(1) NOT NULL COMMENT '转发',
-  `repost_id` bigint(20) NOT NULL COMMENT '转发广播ID',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY  (`id`),
-  KEY `reposted` (`reposted`,`repost_id`),
-  KEY `site_id` (`site_id`,`user_id`,`create_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间广播';
-
--- ----------------------------
--- Table structure for home_comment
--- ----------------------------
-DROP TABLE IF EXISTS `home_comment`;
-CREATE TABLE `home_comment` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
-  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
-  `scores` int(11) NOT NULL COMMENT '分数',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`,`user_id`,`item_type`,`item_id`,`disabled`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评论';
-
--- ----------------------------
--- Table structure for home_comment_content
--- ----------------------------
-DROP TABLE IF EXISTS `home_comment_content`;
-CREATE TABLE `home_comment_content` (
-  `comment_id` bigint(20) NOT NULL,
-  `content` longtext,
-  PRIMARY KEY  (`comment_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评论内容';
-
--- ----------------------------
--- Table structure for home_directory
--- ----------------------------
-DROP TABLE IF EXISTS `home_directory`;
-CREATE TABLE `home_directory` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
-  `title` varchar(255) NOT NULL COMMENT '标题',
-  `cover` varchar(255) default NULL COMMENT '封面图',
-  `files` int(11) NOT NULL COMMENT '文件数',
-  `secret` tinyint(1) NOT NULL COMMENT '私密目录',
-  `create_date` datetime NOT NULL COMMENT '发布日期',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`,`user_id`,`create_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间目录';
-
--- ----------------------------
--- Table structure for home_file
--- ----------------------------
-DROP TABLE IF EXISTS `home_file`;
-CREATE TABLE `home_file` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
-  `directory_id` bigint(20) default NULL COMMENT '目录',
-  `title` varchar(255) NOT NULL COMMENT '标题',
-  `file_path` varchar(255) NOT NULL COMMENT '封面图',
-  `image` tinyint(1) NOT NULL COMMENT '是否图片',
-  `file_size` int(11) NOT NULL COMMENT '文件大小',
-  `scores` int(11) NOT NULL COMMENT '分数',
-  `comments` int(11) NOT NULL COMMENT '评论数',
-  `create_date` datetime NOT NULL COMMENT '发布日期',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`,`user_id`,`directory_id`,`image`,`create_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间文件';
-
--- ----------------------------
--- Table structure for home_friend
--- ----------------------------
-DROP TABLE IF EXISTS `home_friend`;
-CREATE TABLE `home_friend` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `friend_id` bigint(20) NOT NULL COMMENT '好友ID',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `remark_name` varchar(100) NOT NULL COMMENT '备注名',
-  PRIMARY KEY  (`id`),
-  KEY `user_id` (`user_id`,`friend_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友';
-
--- ----------------------------
--- Table structure for home_friend_apply
--- ----------------------------
-DROP TABLE IF EXISTS `home_friend_apply`;
-CREATE TABLE `home_friend_apply` (
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `friend_id` bigint(20) NOT NULL COMMENT '好友ID',
-  `message` varchar(300) NOT NULL COMMENT '消息',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`user_id`,`friend_id`),
-  KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友申请';
-
--- ----------------------------
--- Table structure for home_group
--- ----------------------------
-DROP TABLE IF EXISTS `home_group`;
-CREATE TABLE `home_group` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `name` varchar(255) NOT NULL,
-  `description` varchar(300) default NULL,
-  `users` int(11) NOT NULL,
-  `create_date` datetime NOT NULL,
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`,`user_id`,`users`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组';
-
--- ----------------------------
--- Table structure for home_group_apply
--- ----------------------------
-DROP TABLE IF EXISTS `home_group_apply`;
-CREATE TABLE `home_group_apply` (
-  `group_id` bigint(20) NOT NULL COMMENT '群组ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `message` text NOT NULL COMMENT '消息',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`group_id`,`user_id`),
-  KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组申请';
-
--- ----------------------------
--- Table structure for home_group_post
--- ----------------------------
-DROP TABLE IF EXISTS `home_group_post`;
-CREATE TABLE `home_group_post` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `group_id` bigint(20) default NULL COMMENT '群组ID',
-  `title` varchar(255) NOT NULL COMMENT '标题',
-  `user_id` bigint(20) NOT NULL COMMENT '发布用户',
-  `scores` int(11) NOT NULL COMMENT '分数',
-  `comments` int(11) NOT NULL COMMENT '评论数',
-  `clicks` int(11) NOT NULL COMMENT '点击数',
-  `create_date` datetime NOT NULL COMMENT '发布日期',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`,`group_id`,`user_id`,`disabled`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组帖子';
-
--- ----------------------------
--- Table structure for home_group_post_content
--- ----------------------------
-DROP TABLE IF EXISTS `home_group_post_content`;
-CREATE TABLE `home_group_post_content` (
-  `post_id` bigint(20) NOT NULL,
-  `content` longtext,
-  PRIMARY KEY  (`post_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='帖子内容';
-
--- ----------------------------
--- Table structure for home_group_user
--- ----------------------------
-DROP TABLE IF EXISTS `home_group_user`;
-CREATE TABLE `home_group_user` (
-  `group_id` bigint(20) NOT NULL COMMENT '群组ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `superuser_access` tinyint(1) NOT NULL COMMENT '管理员',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`group_id`,`user_id`),
-  KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组用户';
-
--- ----------------------------
--- Table structure for home_score
--- ----------------------------
-DROP TABLE IF EXISTS `home_score`;
-CREATE TABLE `home_score` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `item_type` varchar(20) NOT NULL COMMENT '项目类型',
-  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
-  `score` int(11) NOT NULL COMMENT '分数',
-  `ip` varchar(64) NOT NULL COMMENT 'IP地址',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`,`user_id`,`item_type`,`item_id`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评分';
-
--- ----------------------------
--- Table structure for home_user
--- ----------------------------
-DROP TABLE IF EXISTS `home_user`;
-CREATE TABLE `home_user` (
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `title` varchar(255) default NULL COMMENT '标题',
-  `signature` varchar(300) default NULL,
-  `friends` int(11) NOT NULL COMMENT '好友数',
-  `messages` int(11) NOT NULL COMMENT '消息数',
-  `questions` int(11) NOT NULL COMMENT '问题数',
-  `answers` int(11) NOT NULL COMMENT '回答数',
-  `articles` int(11) NOT NULL COMMENT '文章数',
-  `clicks` int(11) NOT NULL COMMENT '点击数数',
-  `broadcasts` int(11) NOT NULL COMMENT '广播数',
-  `comments` int(11) NOT NULL COMMENT '评论数',
-  `attention_ids` text COMMENT '关注用户',
-  `attentions` int(11) NOT NULL COMMENT '关注数',
-  `fans` int(11) NOT NULL COMMENT '粉丝数',
-  `last_login_date` datetime default NULL COMMENT '上次登录日期',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY  (`user_id`),
-  KEY `site_id` (`site_id`,`last_login_date`,`create_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户空间';
+) DEFAULT CHARSET=utf8 COMMENT='搜索词';
 
 -- ----------------------------
 -- Table structure for log_login
@@ -678,7 +389,7 @@ CREATE TABLE `log_login` (
   KEY `ip` (`ip`),
   KEY `site_id` (`site_id`),
   KEY `channel` (`channel`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='登录日志';
+) DEFAULT CHARSET=utf8 COMMENT='登录日志';
 
 -- ----------------------------
 -- Table structure for log_operate
@@ -700,7 +411,7 @@ CREATE TABLE `log_operate` (
   KEY `ip` (`ip`),
   KEY `site_id` (`site_id`),
   KEY `channel` (`channel`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='操作日志';
+) DEFAULT CHARSET=utf8 COMMENT='操作日志';
 
 -- ----------------------------
 -- Table structure for log_task
@@ -719,7 +430,7 @@ CREATE TABLE `log_task` (
   KEY `success` (`success`),
   KEY `site_id` (`site_id`),
   KEY `begintime` (`begintime`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='任务计划日志';
+) DEFAULT CHARSET=utf8 COMMENT='任务计划日志';
 
 -- ----------------------------
 -- Table structure for log_upload
@@ -743,7 +454,7 @@ CREATE TABLE `log_upload` (
   KEY `channel` (`channel`),
   KEY `image` (`image`),
   KEY `file_size` (`file_size`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='上传日志';
+) DEFAULT CHARSET=utf8 COMMENT='上传日志';
 
 -- ----------------------------
 -- Table structure for sys_app
@@ -759,7 +470,7 @@ CREATE TABLE `sys_app` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `key` (`app_key`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='应用';
+) DEFAULT CHARSET=utf8 COMMENT='应用';
 
 -- ----------------------------
 -- Table structure for sys_app_client
@@ -777,7 +488,7 @@ CREATE TABLE `sys_app_client` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   PRIMARY KEY  (`site_id`,`channel`,`uuid`),
   KEY `user_id` (`user_id`,`disabled`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='应用客户端';
+) DEFAULT CHARSET=utf8 COMMENT='应用客户端';
 
 -- ----------------------------
 -- Table structure for sys_app_token
@@ -790,7 +501,7 @@ CREATE TABLE `sys_app_token` (
   PRIMARY KEY  (`auth_token`),
   KEY `app_id` (`app_id`),
   KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='应用授权';
+) DEFAULT CHARSET=utf8 COMMENT='应用授权';
 
 -- ----------------------------
 -- Table structure for sys_cluster
@@ -804,7 +515,7 @@ CREATE TABLE `sys_cluster` (
   `cms_version` varchar(20) default NULL,
   PRIMARY KEY  (`uuid`),
   KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='服务器集群';
+) DEFAULT CHARSET=utf8 COMMENT='服务器集群';
 
 -- ----------------------------
 -- Table structure for sys_config_data
@@ -815,7 +526,7 @@ CREATE TABLE `sys_config_data` (
   `code` varchar(50) NOT NULL COMMENT '配置项编码',
   `data` longtext NOT NULL COMMENT '值',
   PRIMARY KEY  (`site_id`,`code`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='站点配置';
+) DEFAULT CHARSET=utf8 COMMENT='站点配置';
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -833,7 +544,7 @@ CREATE TABLE `sys_dept` (
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='部门';
+) AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='部门';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -849,7 +560,7 @@ CREATE TABLE `sys_dept_category` (
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
   `category_id` int(11) NOT NULL COMMENT '分类ID',
   PRIMARY KEY  (`dept_id`,`category_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='部门分类';
+) DEFAULT CHARSET=utf8 COMMENT='部门分类';
 
 -- ----------------------------
 -- Table structure for sys_dept_page
@@ -859,7 +570,7 @@ CREATE TABLE `sys_dept_page` (
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
   `page` varchar(255) NOT NULL COMMENT '页面',
   PRIMARY KEY  (`dept_id`,`page`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='部门页面';
+) DEFAULT CHARSET=utf8 COMMENT='部门页面';
 
 -- ----------------------------
 -- Table structure for sys_domain
@@ -872,7 +583,7 @@ CREATE TABLE `sys_domain` (
   `path` varchar(255) default NULL COMMENT '路径',
   PRIMARY KEY  (`name`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='域名';
+) DEFAULT CHARSET=utf8 COMMENT='域名';
 
 -- ----------------------------
 -- Records of sys_domain
@@ -894,7 +605,7 @@ CREATE TABLE `sys_email_token` (
   PRIMARY KEY  (`auth_token`),
   KEY `create_date` (`create_date`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='邮件地址验证日志';
+) DEFAULT CHARSET=utf8 COMMENT='邮件地址验证日志';
 
 -- ----------------------------
 -- Table structure for sys_extend
@@ -905,7 +616,7 @@ CREATE TABLE `sys_extend` (
   `item_type` varchar(20) NOT NULL COMMENT '扩展类型',
   `item_id` int(11) NOT NULL COMMENT '扩展项目ID',
   PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='扩展';
+) DEFAULT CHARSET=utf8 COMMENT='扩展';
 
 -- ----------------------------
 -- Table structure for sys_extend_field
@@ -920,12 +631,11 @@ CREATE TABLE `sys_extend_field` (
   `description` varchar(100) default NULL COMMENT '解释',
   `input_type` varchar(20) NOT NULL COMMENT '表单类型',
   `default_value` varchar(50) default NULL COMMENT '默认值',
-  `dictionary_type` varchar(20) default NULL,
   `dictionary_id` varchar(20) default NULL,
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
   KEY `sort` (`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='扩展字段';
+) DEFAULT CHARSET=utf8 COMMENT='扩展字段';
 
 -- ----------------------------
 -- Table structure for sys_module
@@ -944,7 +654,7 @@ CREATE TABLE `sys_module` (
   KEY `url` (`url`),
   KEY `parent_id` (`parent_id`),
   KEY `sort` (`sort`)
-) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='模块';
+) AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='模块';
 
 -- ----------------------------
 -- Records of sys_module
@@ -971,7 +681,7 @@ INSERT INTO `sys_module` VALUES ('19', '审核', null, 'cmsContent/check', null,
 INSERT INTO `sys_module` VALUES ('20', '刷新', null, 'cmsContent/refresh', null, '12', '1', '0');
 INSERT INTO `sys_module` VALUES ('21', '生成', null, 'cmsContent/publish', null, '12', '1', '0');
 INSERT INTO `sys_module` VALUES ('22', '移动', 'cmsContent/moveParameters', 'cmsContent/move', null, '12', '1', '0');
-INSERT INTO `sys_module` VALUES ('23', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related', null, '12', '1', '0');
+INSERT INTO `sys_module` VALUES ('23', '推荐', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete', null, '12', '1', '0');
 INSERT INTO `sys_module` VALUES ('24', '分类管理', 'cmsCategory/list', null, '<i class=\"icon-folder-open icon-large\"></i>', '3', '1', '0');
 INSERT INTO `sys_module` VALUES ('25', '增加/修改', 'cmsCategory/add', 'cmsCategory/addMore,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', null, '24', '1', '0');
 INSERT INTO `sys_module` VALUES ('26', '删除', null, 'cmsCategory/delete', null, '24', '1', '0');
@@ -1089,16 +799,16 @@ INSERT INTO `sys_module` VALUES ('140', '站点配置', 'sysConfig/list', null, 
 INSERT INTO `sys_module` VALUES ('142', '保存配置', null, 'sysConfig/save', null, '140', '1', '0');
 INSERT INTO `sys_module` VALUES ('143', '修改配置', 'sysConfig/add', null, null, '140', '1', '0');
 INSERT INTO `sys_module` VALUES ('144', '删除配置', null, 'sysConfig/delete', null, '140', '1', '0');
-INSERT INTO `sys_module` VALUES ('145', '保存', NULL, 'cmsLottery/save', NULL, '1007', '1', '0');
-INSERT INTO `sys_module` VALUES ('146', '删除', NULL, 'cmsLottery/delete', NULL, '1007', '1', '0');
+INSERT INTO `sys_module` VALUES ('145', '保存', NULL, 'cmsLottery/save', NULL, '99', '1', '0');
+INSERT INTO `sys_module` VALUES ('146', '删除', NULL, 'cmsLottery/delete', NULL, '99', '1', '0');
 INSERT INTO `sys_module` VALUES ('147', '抽奖用户管理', 'cmsLotteryUser/list', 'sysUser/lookup', '<i class=\"icon-smile icon-large\"></i>', '109', '1', '0');
 INSERT INTO `sys_module` VALUES ('148', '删除', NULL, 'cmsLotteryUser/delete', NULL, '1011', '1', '0');
 INSERT INTO `sys_module` VALUES ('149', '投票管理', 'cmsVote/list', NULL, '<i class=\"icon-hand-right icon-large\"></i>', '109', '1', '0');
-INSERT INTO `sys_module` VALUES ('150', '增加/修改', 'cmsVote/add', NULL, NULL, '1013', '1', '0');
-INSERT INTO `sys_module` VALUES ('151', '保存', NULL, 'cmsVote/save', NULL, '1013', '1', '0');
-INSERT INTO `sys_module` VALUES ('152', '删除', NULL, 'cmsVote/delete', NULL, '1013', '1', '0');
-INSERT INTO `sys_module` VALUES ('153', '查看', 'cmsVote/view', NULL, NULL, '1013', '1', '0');
-INSERT INTO `sys_module` VALUES ('154', '投票用户', 'cmsVoteUser/list', 'sysUser/lookup', NULL, '1013', '1', '0');
+INSERT INTO `sys_module` VALUES ('150', '增加/修改', 'cmsVote/add', NULL, NULL, '149', '1', '0');
+INSERT INTO `sys_module` VALUES ('151', '保存', NULL, 'cmsVote/save', NULL, '149', '1', '0');
+INSERT INTO `sys_module` VALUES ('152', '删除', NULL, 'cmsVote/delete', NULL, '149', '1', '0');
+INSERT INTO `sys_module` VALUES ('153', '查看', 'cmsVote/view', NULL, NULL, '149', '1', '0');
+INSERT INTO `sys_module` VALUES ('154', '投票用户', 'cmsVoteUser/list', 'sysUser/lookup', NULL, '149', '1', '0');
 
 -- ----------------------------
 -- Table structure for sys_role
@@ -1112,7 +822,7 @@ CREATE TABLE `sys_role` (
   `show_all_module` tinyint(1) NOT NULL COMMENT '显示全部模块',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色';
+) AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
@@ -1128,7 +838,7 @@ CREATE TABLE `sys_role_authorized` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `url` varchar(255) NOT NULL COMMENT '授权地址',
   PRIMARY KEY  (`role_id`,`url`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色授权地址';
+) DEFAULT CHARSET=utf8 COMMENT='角色授权地址';
 
 -- ----------------------------
 -- Records of sys_role_authorized
@@ -1142,7 +852,7 @@ CREATE TABLE `sys_role_module` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `module_id` int(11) NOT NULL COMMENT '模块ID',
   PRIMARY KEY  (`role_id`,`module_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='角色授权模块';
+) DEFAULT CHARSET=utf8 COMMENT='角色授权模块';
 
 -- ----------------------------
 -- Records of sys_role_module
@@ -1156,7 +866,7 @@ CREATE TABLE `sys_role_user` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   PRIMARY KEY  (`role_id`,`user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户角色';
+) DEFAULT CHARSET=utf8 COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of sys_role_user
@@ -1178,7 +888,7 @@ CREATE TABLE `sys_site` (
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`disabled`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='站点';
+) AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='站点';
 
 -- ----------------------------
 -- Records of sys_site
@@ -1203,7 +913,7 @@ CREATE TABLE `sys_task` (
   KEY `status` (`status`),
   KEY `site_id` (`site_id`),
   KEY `update_date` (`update_date`)
-) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='任务计划';
+) AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='任务计划';
 
 -- ----------------------------
 -- Records of sys_task
@@ -1243,7 +953,7 @@ CREATE TABLE `sys_user` (
   KEY `lastLoginDate` (`last_login_date`),
   KEY `email_checked` (`email_checked`),
   KEY `dept_id` (`dept_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user
@@ -1268,7 +978,7 @@ CREATE TABLE `sys_user_token` (
   KEY `create_date` (`create_date`),
   KEY `channel` (`channel`),
   KEY `site_id` (`site_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户令牌';
+) DEFAULT CHARSET=utf8 COMMENT='用户令牌';
 
 -- ----------------------------
 -- Records of sys_user_token

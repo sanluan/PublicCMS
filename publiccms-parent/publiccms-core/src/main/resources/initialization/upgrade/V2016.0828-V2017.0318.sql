@@ -54,7 +54,7 @@ CREATE TABLE `cms_lottery` (
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
   KEY `start_date` (`site_id`,`start_date`,`end_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE `cms_lottery_user` (
   `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
@@ -67,13 +67,13 @@ CREATE TABLE `cms_lottery_user` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   KEY `lottery_id` (`lottery_id`,`user_id`,`winning`,`confirmed`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE `cms_lottery_user_attribute` (
   `lottery_user_id` bigint(20) NOT NULL COMMENT '抽奖用户ID',
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`lottery_user_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='抽奖用户扩展';
+) DEFAULT CHARSET=utf8 COMMENT='抽奖用户扩展';
 
 CREATE TABLE `cms_vote` (
   `id` int(11) NOT NULL auto_increment,
@@ -91,7 +91,7 @@ CREATE TABLE `cms_vote` (
   `item_extend_id` int(11) NOT NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`site_id`,`start_date`,`end_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE `cms_vote_item` (
   `id` bigint(20) NOT NULL auto_increment,
@@ -102,13 +102,13 @@ CREATE TABLE `cms_vote_item` (
   `sort` int(11) NOT NULL COMMENT '顺序',
   PRIMARY KEY  (`id`),
   KEY `vote_id` (`vote_id`,`scores`,`sort`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 CREATE TABLE `cms_vote_item_attribute` (
   `vote_item_id` bigint(20) NOT NULL COMMENT '选项ID',
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`vote_item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='投票选项扩展';
+) DEFAULT CHARSET=utf8 COMMENT='投票选项扩展';
 
 DROP TABLE IF EXISTS `cms_vote_user`;
 CREATE TABLE `cms_vote_user` (
@@ -120,7 +120,7 @@ CREATE TABLE `cms_vote_user` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   KEY `vote_id` (`vote_id`,`user_id`,`ip`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8;
 
 ALTER TABLE `sys_extend_field` DROP COLUMN `id`,
 MODIFY COLUMN `code`  varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '编码' AFTER `extend_id`,
@@ -143,7 +143,7 @@ CREATE TABLE `home_active` (
   `create_date` datetime NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `item_type` (`user_id`,`item_type`,`item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间动态';
+) DEFAULT CHARSET=utf8 COMMENT='空间动态';
 
 
 DROP TABLE IF EXISTS `home_article`;
@@ -164,7 +164,7 @@ CREATE TABLE `home_article` (
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`,`directory_id`,`user_id`,`create_date`),
   KEY `best_comment_id` (`best_comment_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间文章';
+) DEFAULT CHARSET=utf8 COMMENT='空间文章';
 
 
 DROP TABLE IF EXISTS `home_article_content`;
@@ -172,7 +172,7 @@ CREATE TABLE `home_article_content` (
   `article_id` bigint(20) NOT NULL COMMENT '文章ID',
   `content` longtext COMMENT '内容',
   PRIMARY KEY  (`article_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='文章内容';
+) DEFAULT CHARSET=utf8 COMMENT='文章内容';
 
 
 DROP TABLE IF EXISTS `home_attention`;
@@ -181,7 +181,7 @@ CREATE TABLE `home_attention` (
   `attention_id` bigint(20) NOT NULL COMMENT '关注ID',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`user_id`,`attention_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间关注';
+) DEFAULT CHARSET=utf8 COMMENT='空间关注';
 
 
 DROP TABLE IF EXISTS `home_broadcast`;
@@ -200,7 +200,7 @@ CREATE TABLE `home_broadcast` (
   PRIMARY KEY  (`id`),
   KEY `reposted` (`reposted`,`repost_id`),
   KEY `site_id` (`site_id`,`user_id`,`create_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间广播';
+) DEFAULT CHARSET=utf8 COMMENT='空间广播';
 
 
 DROP TABLE IF EXISTS `home_comment`;
@@ -215,7 +215,7 @@ CREATE TABLE `home_comment` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`,`user_id`,`item_type`,`item_id`,`disabled`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评论';
+) DEFAULT CHARSET=utf8 COMMENT='评论';
 
 
 DROP TABLE IF EXISTS `home_comment_content`;
@@ -223,7 +223,7 @@ CREATE TABLE `home_comment_content` (
   `comment_id` bigint(20) NOT NULL,
   `content` longtext,
   PRIMARY KEY  (`comment_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评论内容';
+) DEFAULT CHARSET=utf8 COMMENT='评论内容';
 
 
 DROP TABLE IF EXISTS `home_dialog`;
@@ -238,7 +238,7 @@ CREATE TABLE `home_dialog` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`user_id`,`item_type`,`item_id`),
   KEY `last_message_date` (`disabled`,`last_message_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='对话';
+) DEFAULT CHARSET=utf8 COMMENT='对话';
 
 
 DROP TABLE IF EXISTS `home_directory`;
@@ -254,7 +254,7 @@ CREATE TABLE `home_directory` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`,`user_id`,`create_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间目录';
+) DEFAULT CHARSET=utf8 COMMENT='空间目录';
 
 
 DROP TABLE IF EXISTS `home_file`;
@@ -273,7 +273,7 @@ CREATE TABLE `home_file` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`,`user_id`,`directory_id`,`image`,`create_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间文件';
+) DEFAULT CHARSET=utf8 COMMENT='空间文件';
 
 
 DROP TABLE IF EXISTS `home_friend`;
@@ -285,7 +285,7 @@ CREATE TABLE `home_friend` (
   `remark_name` varchar(100) NOT NULL COMMENT '备注名',
   PRIMARY KEY  (`id`),
   KEY `user_id` (`user_id`,`friend_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友';
+) DEFAULT CHARSET=utf8 COMMENT='好友';
 
 
 DROP TABLE IF EXISTS `home_friend_apply`;
@@ -296,7 +296,7 @@ CREATE TABLE `home_friend_apply` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`user_id`,`friend_id`),
   KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='好友申请';
+) DEFAULT CHARSET=utf8 COMMENT='好友申请';
 
 
 DROP TABLE IF EXISTS `home_group`;
@@ -310,7 +310,7 @@ CREATE TABLE `home_group` (
   `create_date` datetime NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`,`user_id`,`users`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组';
+) DEFAULT CHARSET=utf8 COMMENT='群组';
 
 
 DROP TABLE IF EXISTS `home_group_active`;
@@ -323,7 +323,7 @@ CREATE TABLE `home_group_active` (
   `create_date` datetime NOT NULL,
   PRIMARY KEY  (`id`),
   KEY `item_type` (`group_id`,`user_id`,`item_type`,`item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='空间动态';
+) DEFAULT CHARSET=utf8 COMMENT='空间动态';
 
 
 DROP TABLE IF EXISTS `home_group_apply`;
@@ -335,7 +335,7 @@ CREATE TABLE `home_group_apply` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`group_id`,`user_id`),
   KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组申请';
+) DEFAULT CHARSET=utf8 COMMENT='群组申请';
 
 
 DROP TABLE IF EXISTS `home_group_post`;
@@ -352,7 +352,7 @@ CREATE TABLE `home_group_post` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`,`group_id`,`user_id`,`disabled`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组帖子';
+) DEFAULT CHARSET=utf8 COMMENT='群组帖子';
 
 
 DROP TABLE IF EXISTS `home_group_post_content`;
@@ -360,7 +360,7 @@ CREATE TABLE `home_group_post_content` (
   `post_id` bigint(20) NOT NULL,
   `content` longtext,
   PRIMARY KEY  (`post_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='帖子内容';
+) DEFAULT CHARSET=utf8 COMMENT='帖子内容';
 
 
 DROP TABLE IF EXISTS `home_group_user`;
@@ -372,7 +372,7 @@ CREATE TABLE `home_group_user` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`group_id`,`user_id`),
   KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='群组用户';
+) DEFAULT CHARSET=utf8 COMMENT='群组用户';
 
 
 DROP TABLE IF EXISTS `home_message`;
@@ -386,7 +386,7 @@ CREATE TABLE `home_message` (
   PRIMARY KEY  (`id`),
   KEY `create_date` (`create_date`),
   KEY `user_id` (`user_id`,`item_type`,`item_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户消息';
+) DEFAULT CHARSET=utf8 COMMENT='用户消息';
 
 
 DROP TABLE IF EXISTS `home_score`;
@@ -401,7 +401,7 @@ CREATE TABLE `home_score` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`,`user_id`,`item_type`,`item_id`,`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='评分';
+) DEFAULT CHARSET=utf8 COMMENT='评分';
 
 
 DROP TABLE IF EXISTS `home_user`;
@@ -426,7 +426,7 @@ CREATE TABLE `home_user` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`user_id`),
   KEY `site_id` (`site_id`,`last_login_date`,`create_date`,`disabled`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='用户空间';
+) DEFAULT CHARSET=utf8 COMMENT='用户空间';
 
 DROP TABLE IF EXISTS `cms_dictionary`;
 CREATE TABLE `cms_dictionary` (
@@ -435,7 +435,7 @@ CREATE TABLE `cms_dictionary` (
   `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
   PRIMARY KEY  (`id`),
   KEY `multiple` (`multiple`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字典';
+) DEFAULT CHARSET=utf8 COMMENT='字典';
 
 -- ----------------------------
 -- Records of cms_dictionary
@@ -450,7 +450,7 @@ CREATE TABLE `cms_dictionary_data` (
   `value` varchar(50) NOT NULL COMMENT '值',
   `text` varchar(100) NOT NULL COMMENT '文字',
   PRIMARY KEY  (`dictionary_id`,`value`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='字典数据';
+) DEFAULT CHARSET=utf8 COMMENT='字典数据';
 
 -- 20161203--
 

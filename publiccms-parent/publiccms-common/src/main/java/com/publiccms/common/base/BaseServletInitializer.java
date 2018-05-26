@@ -9,6 +9,7 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.servlet.ErrorToNotFoundDispatcherServlet;
 
 /**
@@ -16,7 +17,7 @@ import com.publiccms.common.servlet.ErrorToNotFoundDispatcherServlet;
  * BaseServletInitializer
  *
  */
-public abstract class BaseServletInitializer extends AbstractDispatcherServletInitializer implements Base {
+public abstract class BaseServletInitializer extends AbstractDispatcherServletInitializer {
 
     @Override
     protected WebApplicationContext createServletApplicationContext() {
@@ -41,7 +42,7 @@ public abstract class BaseServletInitializer extends AbstractDispatcherServletIn
     @Override
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding(DEFAULT_CHARSET_NAME);
+        characterEncodingFilter.setEncoding(Constants.DEFAULT_CHARSET_NAME);
         characterEncodingFilter.setForceEncoding(true);
         return new Filter[] { characterEncodingFilter };
     }

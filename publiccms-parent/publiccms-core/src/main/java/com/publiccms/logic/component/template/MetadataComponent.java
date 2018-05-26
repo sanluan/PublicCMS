@@ -13,9 +13,9 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.publiccms.common.api.Cache;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
@@ -27,7 +27,7 @@ import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
  *
  */
 @Component
-public class MetadataComponent implements Cache, Base {
+public class MetadataComponent implements Cache {
     /**
      *
      */
@@ -154,10 +154,10 @@ public class MetadataComponent implements Cache, Base {
     public Map<String, CmsPlaceMetadata> getPlaceMetadataMap(String dirPath) {
         Map<String, CmsPlaceMetadata> metadataMap = placeCache.get(dirPath);
         if (null == metadataMap) {
-            File file = new File(dirPath + SEPARATOR + METADATA_FILE);
+            File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    metadataMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsPlaceMetadata>>() {
+                    metadataMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, CmsPlaceMetadata>>() {
                     });
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new HashMap<>();
@@ -179,10 +179,10 @@ public class MetadataComponent implements Cache, Base {
     public Map<String, CmsPageMetadata> getTemplateMetadataMap(String dirPath) {
         Map<String, CmsPageMetadata> metadataMap = pageCache.get(dirPath);
         if (null == metadataMap) {
-            File file = new File(dirPath + SEPARATOR + METADATA_FILE);
+            File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    metadataMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsPageMetadata>>() {
+                    metadataMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, CmsPageMetadata>>() {
                     });
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new HashMap<>();
@@ -206,12 +206,12 @@ public class MetadataComponent implements Cache, Base {
      */
     private void saveTemplateMetadata(String dirPath, Map<String, CmsPageMetadata> metadataMap)
             throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(dirPath + SEPARATOR + METADATA_FILE);
+        File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file);) {
-            objectMapper.writeValue(file, metadataMap);
+            CommonConstants.objectMapper.writeValue(file, metadataMap);
         }
         pageCache.clear();
     }
@@ -227,11 +227,11 @@ public class MetadataComponent implements Cache, Base {
      */
     private void savePlaceMetadata(String dirPath, Map<String, CmsPlaceMetadata> metadataMap)
             throws JsonGenerationException, JsonMappingException, IOException {
-        File file = new File(dirPath + SEPARATOR + METADATA_FILE);
+        File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
         }
-        objectMapper.writeValue(file, metadataMap);
+        CommonConstants.objectMapper.writeValue(file, metadataMap);
         placeCache.clear();
     }
 

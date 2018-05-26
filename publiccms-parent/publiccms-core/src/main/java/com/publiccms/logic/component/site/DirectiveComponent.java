@@ -11,15 +11,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.constants.CommonConstants;
 
 /**
  * 
  * DirectiveComponent 指令处理组件
  *
  */
-public class DirectiveComponent implements Base {
+public class DirectiveComponent {
     private String directiveRemoveRegex;
     private String methodRemoveRegex;
     protected final Log log = LogFactory.getLog(getClass());
@@ -29,7 +29,7 @@ public class DirectiveComponent implements Base {
     private Map<String, BaseMethod> methodMap = new HashMap<>();
 
     public String getDirectiveName(String className) {
-        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, BLANK));
+        return StringUtils.uncapitalize(className.replaceAll(directiveRemoveRegex, CommonConstants.BLANK));
     }
 
     @Autowired
@@ -53,7 +53,7 @@ public class DirectiveComponent implements Base {
                 .append(taskDirectiveMap.keySet()).toString());
         for (BaseMethod method : methodList) {
             if (null == method.getName()) {
-                method.setName(StringUtils.uncapitalize(method.getClass().getSimpleName().replaceAll(methodRemoveRegex, BLANK)));
+                method.setName(StringUtils.uncapitalize(method.getClass().getSimpleName().replaceAll(methodRemoveRegex, CommonConstants.BLANK)));
             }
             methodMap.put(method.getName(), method);
         }

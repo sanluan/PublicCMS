@@ -11,7 +11,6 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -22,7 +21,7 @@ import com.publiccms.logic.component.site.SiteComponent;
  * MultiSiteWebHttpRequestHandler 多站点静态资源处理器
  * 
  */
-public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler implements Base {
+public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
     private SiteComponent siteComponent;
 
@@ -42,7 +41,7 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler implem
     @Override
     protected Resource getResource(HttpServletRequest request) throws IOException {
         String path = urlPathHelper.getLookupPathForRequest(request);
-        if (path.endsWith(SEPARATOR)) {
+        if (path.endsWith(CommonConstants.SEPARATOR)) {
             path += CommonConstants.getDefaultPage();
         }
         Resource resource = new FileSystemResource(

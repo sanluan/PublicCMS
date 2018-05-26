@@ -1,8 +1,8 @@
 <#macro extendsFieldType inputName value=''>
-<#local inputTypes={'text':'输入框','number':'数字','file':'文件','image':'图片','password':'密码','editor':'编辑器','textarea':'文本域','date':'日期','datetime':'时间','template':'模板路径','boolean':'是否','user':'用户','content':'内容','category':'分类','dictionary':'数据字典','categoryType':'分类类型','tagType':'标签类型'}/>
+<#local inputTypes={'text':'输入框','number':'数字','file':'文件','image':'图片','password':'密码','editor':'百度编辑器','ckeditor':'CK编辑器','textarea':'文本域','date':'日期','datetime':'时间','template':'模板路径','boolean':'是否','user':'用户','content':'内容','category':'分类','dictionary':'数据字典','categoryType':'分类类型','tagType':'标签类型'}/>
 <select class="combox" name="${inputName!}" onchange="if($(this).val()=='dictionary'){$(this).closest('tr').find('a.btnLook').show().prev().addClass('required').show();}else{$(this).closest('tr').find('a.btnLook').hide().prev().removeClass('required').hide();}">
-	<#list inputTypes as a,inputType>
-	<option value="${a}"${(a=value)?then(' selected="true"','')?no_esc}>${inputType}</option>
-	</#list>
+    <#list inputTypes as a,inputType>
+    <option value="${a}"${(a=value)?then(' selected="true"','')?no_esc}>${inputType}</option>
+    </#list>
 </select>
 </#macro>

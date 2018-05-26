@@ -1,37 +1,37 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<meta charset="utf-8">
-	<title>用户报表</title>
-	<link href="${res}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-	<link href="${res}/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
-	<script src="${res}/js/jquery-1.9.1.min.js"></script>
-	<script src="${res}/bootstrap/js/bootstrap.min.js"></script>
-	<script src="${res}/js/echarts.common.min.js"></script>
+    <meta charset="utf-8">
+    <title>用户报表</title>
+    <link href="${res}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="${res}/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
+    <script src="${res}/js/jquery-1.9.1.min.js"></script>
+    <script src="${res}/bootstrap/js/bootstrap.min.js"></script>
+    <script src="${res}/js/echarts.common.min.js"></script>
 </head>
 <body>
 <div class="container theme-showcase" role="main">
-	<div class="page-header">
-		<a href=""><h1>用户数据监控</h1></a>
-	</div>
-	<div class="row">
-		<div id="register" class="col-lg-4 col-md-6"></div>
-		<div id="login" class="col-lg-4 col-md-6"></div>
-		<div id="operate" class="col-lg-4 col-md-6"></div>
-	</div>
+    <div class="page-header">
+        <a href=""><h1>用户数据监控</h1></a>
+    </div>
+    <div class="row">
+        <div id="register" class="col-lg-4 col-md-6"></div>
+        <div id="login" class="col-lg-4 col-md-6"></div>
+        <div id="operate" class="col-lg-4 col-md-6"></div>
+    </div>
 <script>
 document.getElementById('register').style.height=document.getElementById('register').offsetWidth+'px';
 document.getElementById('login').style.height=document.getElementById('login').offsetWidth+'px';
 document.getElementById('operate').style.height=document.getElementById('operate').offsetWidth+'px';
 echarts.init(document.getElementById('register')).setOption({
-	title: {
+    title: {
         text: '注册用户',
         subtext: '总数:<@_sysUserList count=0>${page.totalCount}</@_sysUserList>',
         x:'center'
     },
     tooltip : {
         trigger: 'axis',
-       	axisPointer: {
+           axisPointer: {
            type: 'cross'
         }
     },
@@ -49,10 +49,10 @@ echarts.init(document.getElementById('register')).setOption({
     },
     series: [
     {
-   	    name:'注册用户',
-   	    type:'line',
-   	    data:[<#list 30..0 as a><@_sysUserList startRegisteredDate=(.now?long-a*86400000)?number_to_date?string endRegisteredDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_sysUserList><#sep>,</#list>]
-   	}]
+           name:'注册用户',
+           type:'line',
+           data:[<#list 30..0 as a><@_sysUserList startRegisteredDate=(.now?long-a*86400000)?number_to_date?string endRegisteredDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_sysUserList><#sep>,</#list>]
+       }]
 });
 echarts.init(document.getElementById('login')).setOption({
     title: {

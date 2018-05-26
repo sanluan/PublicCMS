@@ -7,7 +7,6 @@ import java.util.Locale;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysSite;
@@ -19,7 +18,7 @@ import com.publiccms.views.pojo.entities.ExtendField;
  *
  */
 @Component
-public class LoginConfigComponent implements Config, Base {
+public class LoginConfigComponent implements Config {
     /**
      * 
      */
@@ -46,10 +45,14 @@ public class LoginConfigComponent implements Config, Base {
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, true, LanguagesUtils.getMessage(
-                CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_REGISTER_URL), null, null));
-        extendFieldList.add(new ExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT, false, LanguagesUtils.getMessage(
-                CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + DOT + CONFIG_LOGIN_PATH), null, null));
+        extendFieldList.add(new ExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, true,
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL),
+                null, null));
+        extendFieldList.add(new ExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT, false,
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGIN_PATH),
+                null, null));
         return extendFieldList;
     }
 }

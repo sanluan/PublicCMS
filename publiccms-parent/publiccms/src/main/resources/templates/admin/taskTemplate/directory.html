@@ -1,5 +1,5 @@
 <h2 class="contentTitle">
-	<a class="button" href="taskTemplate/run.html" target="navTab" rel="taskTemplate/run">执行脚本</a>
-	<#if path?has_content><a class="button" href="taskTemplate/content.html?path=${path?url}/" target="ajax" rel="taskTemplateBox">在这里创建脚本</a></#if>
-	<#if path?has_content><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list" title="确定要删除该目录吗?" target="ajaxTodo">删除目录</a></#if>
+    <a class="button" href="taskTemplate/run.html" target="navTab" rel="taskTemplate/run">执行脚本</a>
+    <#if path?has_content><a class="button" href="taskTemplate/content.html?path=${path?url}/" target="ajax" rel="taskTemplateBox">在这里创建脚本</a></#if>
+    <#if path?has_content><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该目录吗?" target="ajaxTodo">删除目录</a></#if>
 </h2>

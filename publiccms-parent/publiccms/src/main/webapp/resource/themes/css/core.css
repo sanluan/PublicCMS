@@ -35,9 +35,9 @@ header .nav ul { display:none; width:100px; border:solid 1px #06223e; overflow:h
 header .nav ul li { margin-top:5px; line-height:26px;}
 header .nav ul li a { color:#000;}
 header .nav .selected ul {display:block;}
-#navMenu{ float:left;display:block;position:absolute;top:33px;left:200px;z-index:1;}
-#navMenu li{ float:left;margin:0px 1px;border-style: solid;border-width: 1px;border-radius: 2px;}
-#navMenu li a{ font-size:14px;font-weight:bold;line-height:32px;text-decoration:none;padding:8px 12px;}
+#navMenu{ float:left;display:block;position:absolute;top:32px;left:200px;z-index:1;}
+#navMenu li{ float:left;margin:0px 1px;}
+#navMenu li a{ font-size:15px;font-weight:bold;line-height:36px;text-decoration:none;padding:8px 12px;border-style: solid;border-width: 1px;border-radius: 5px;}
 
 /* Tabs */
 .tabs{ background-position:0 100%;background-repeat:repeat-x;}
@@ -161,10 +161,7 @@ table.list th.asc{ background:url(../default/images/order_up.gif) no-repeat righ
 table.list th.desc{ background:url(../default/images/order_down.gif) no-repeat right;cursor:pointer;}
 table.list tbody { background-color:#fff;}
 table.list .right { text-align:right;}
-table.list .trbg { background-color:#f8f8f8;}
-table.list .hover { background-color:#fff5c0;}
-table.list .selected { background-color:#CDE8FF;}
-table.list a { color:#3C7FB1;}
+table.list .center { text-align:center;}
 table.list a:hover { text-decoration:underline;}
 table.list td span.error { z-index:-1}
 table.nowrap tbody tr { border-bottom:solid 1px #ededed;}
@@ -240,7 +237,7 @@ a.toggleCollapse{ text-decoration:none;}
 #splitBarProxy{ display:none;overflow:hidden;width:2px;border-style:solid;border-color:#c0c0c0;background:#CCC;border-width:1px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
 
 .themeList li div{ background:url(../default/images/themeButton.png) no-repeat;}
-.themeList{ width:100px;position:absolute;right:0px;bottom:0px;padding:7px;}
+.themeList{ width:80px;position:absolute;right:0px;bottom:0px;padding:7px;}
 .themeList li{ float:left;padding:0 3px;}
 .themeList li div{ display:block;overflow:hidden;width:13px;height:11px;text-indent:-100px;cursor:pointer;}
 .themeList li.azure div{ background-position:0 0;}

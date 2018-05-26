@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
@@ -133,7 +134,7 @@ public class UeditorAdminController extends AbstractController {
             try {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
                 logUploadService.save(
-                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 false, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", file.getSize());
@@ -168,7 +169,7 @@ public class UeditorAdminController extends AbstractController {
             try {
                 FileUtils.writeByteArrayToFile(dest, data);
                 logUploadService.save(
-                        new LogUpload(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 true, dest.length(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", data.length);
@@ -213,7 +214,7 @@ public class UeditorAdminController extends AbstractController {
                         String fileName = fileComponent.getUploadFileName(suffix);
                         File dest = new File(siteComponent.getWebFilePath(site, fileName));
                         FileUtils.copyInputStreamToFile(entity.getContent(), dest);
-                        logUploadService.save(new LogUpload(site.getId(), getAdminFromSession(session).getId(),
+                        logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, true, dest.length(), RequestUtils.getIpAddress(request),
                                 CommonUtils.getDate(), fileName));
                         Map<String, Object> map = getResultMap(true);
@@ -249,7 +250,7 @@ public class UeditorAdminController extends AbstractController {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(getSite(request).getId(), getAdminFromSession(session).getId(), null, null,
+        PageHandler page = logUploadService.getPage(getSite(request).getId(), ControllerUtils.getAdminFromSession(session).getId(), null, null,
                 null, null, null, start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);

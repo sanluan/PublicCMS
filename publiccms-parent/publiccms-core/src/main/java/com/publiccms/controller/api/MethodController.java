@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppToken;
@@ -44,7 +45,7 @@ public class MethodController extends AbstractController {
     public static final Map<String, String> NEED_APP_TOKEN_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
-            put(ERROR, ApiController.NEED_APP_TOKEN);
+            put(CommonConstants.ERROR, ApiController.NEED_APP_TOKEN);
         }
     };
 
@@ -85,13 +86,13 @@ public class MethodController extends AbstractController {
                     map.put("result", method.exec(null));
                     return map;
                 } else {
-                    map.put(ERROR, "paramtersError");
+                    map.put(CommonConstants.ERROR, "paramtersError");
                     return map;
                 }
             } catch (TemplateModelException e) {
                 log.error(e.getMessage(), e);
                 Map<String, String> map = new HashMap<>();
-                map.put(ERROR, ApiController.EXCEPTION);
+                map.put(CommonConstants.ERROR, ApiController.EXCEPTION);
                 return map;
             }
         } else {

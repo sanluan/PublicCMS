@@ -16,11 +16,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.oauth.Oauth;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.oauth.AbstractOauth;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -69,9 +72,9 @@ public class OauthController extends AbstractController {
             String state = UUID.randomUUID().toString();
             RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
             RequestUtils.addCookie(request.getContextPath(), response, RETURN_URL, returnUrl, null, null);
-            return REDIRECT + oauthComponent.getAuthorizeUrl(site.getId(), state);
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + oauthComponent.getAuthorizeUrl(site.getId(), state);
         }
-        return REDIRECT + site.getDynamicPath();
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
     }
 
     /**
@@ -103,11 +106,11 @@ public class OauthController extends AbstractController {
                     SysUserToken entity = sysUserTokenService.getEntity(oauthAccess.getOpenId());
                     if (null != entity) {
                         if (entity.getChannel().equals(channel)) {
-                            setUserToSession(session, sysUserService.getEntity(entity.getUserId()));
-                            return REDIRECT + returnUrl;
+                            ControllerUtils.setUserToSession(session, sysUserService.getEntity(entity.getUserId()));
+                            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                         }
                     } else {
-                        SysUser user = getUserFromSession(session);
+                        SysUser user = ControllerUtils.getUserFromSession(session);
                         if (null == user) {
                             OauthUser oauthUser = oauthComponent.getUserInfo(site.getId(), oauthAccess);
                             Map<String, String> config = configComponent.getConfigData(site.getId(), AbstractOauth.CONFIG_CODE);
@@ -119,16 +122,16 @@ public class OauthController extends AbstractController {
                                 model.addAttribute("gender", oauthUser.getGender());
                                 model.addAttribute("channel", channel);
                                 model.addAttribute("returnUrl", returnUrl);
-                                return REDIRECT + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
+                                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
                             }
                         } else {
-                            String authToken = new StringBuilder(channel).append(DOT).append(site.getId()).append(DOT)
+                            String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId()).append(CommonConstants.DOT)
                                     .append(oauthAccess.getOpenId()).toString();
                             entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, CommonUtils.getDate(),
                                     RequestUtils.getIpAddress(request));
                             sysUserTokenService.save(entity);
-                            setUserToSession(session, user);
-                            return REDIRECT + returnUrl;
+                            ControllerUtils.setUserToSession(session, user);
+                            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                         }
                     }
                 }
@@ -136,7 +139,7 @@ public class OauthController extends AbstractController {
                 log.error(e);
             }
         }
-        return REDIRECT + site.getDynamicPath();
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
     }
 
     @Autowired

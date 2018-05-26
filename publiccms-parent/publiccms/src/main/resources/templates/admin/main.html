@@ -1,97 +1,97 @@
 <div class="pageFormContent" layoutH="19">
-	<div class="unit">
-		<p>
-			<label>我的待审核:</label>
-			<a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="我的内容" target="navTab" rel="myself/contentList">
-				<@_contentList advanced=true status=2 userId=admin.id>
-					${page.totalCount}篇
-				</@_contentList>
-			</a>
-		</p>
-		<p>
-			<label>我的草稿:</label>
-			<a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="我的内容" target="navTab" rel="myself/contentList">
-				<@_contentList advanced=true status=0 userId=admin.id>
-					${page.totalCount}篇
-				</@_contentList>
-			</a>
-		</p>
-		<p>
-			<a class="button" href="main.html" target="navTab" rel="main">刷新</a>
-		</p>
-	</div>
-	<div class="divider"></div>
-	<div class="unit">
-		<p>
-			<label>登录次数:</label>
-			<a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
-		</p>
-		<p>
-			<label>上次登录日期:</label>
-			<a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.lastLoginDate!}</a>
-		</p>
-		<p>
-			<label>上次登录IP:</label>
-			<a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.lastLoginIp!}</a>
-		</p>
-		<p>
-			<label>我的登录授权:</label>
-			<a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> 我的登录授权" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
-		</p>
-	</div>
-	<div class="divider"></div>
+    <div class="unit">
+        <p>
+            <label>我的待审核:</label>
+            <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="我的内容" target="navTab" rel="myself/contentList">
+                <@_contentList advanced=true status=2 userId=admin.id>
+                    ${page.totalCount}篇
+                </@_contentList>
+            </a>
+        </p>
+        <p>
+            <label>我的草稿:</label>
+            <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="我的内容" target="navTab" rel="myself/contentList">
+                <@_contentList advanced=true status=0 userId=admin.id>
+                    ${page.totalCount}篇
+                </@_contentList>
+            </a>
+        </p>
+        <p>
+            <a class="button" href="main.html" target="navTab" rel="main">刷新</a>
+        </p>
+    </div>
+    <div class="divider"></div>
+    <div class="unit">
+        <p>
+            <label>登录次数:</label>
+            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
+        </p>
+        <p>
+            <label>上次登录日期:</label>
+            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.lastLoginDate!}</a>
+        </p>
+        <p>
+            <label>上次登录IP:</label>
+            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.lastLoginIp!}</a>
+        </p>
+        <p>
+            <label>我的登录授权:</label>
+            <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> 我的登录授权" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
+        </p>
+    </div>
+    <div class="divider"></div>
 <@_masterSite>
-	<@_systemProperties>
-	<div class="unit">
-		<p>
-			<label>操作系统:</label>${.vars['os.name']!}(${.vars['os.arch']!})
-		</p>
-		<p>
-			<label>操作系统版本:</label>${.vars['os.version']!}
-		</p>
-		<p>
-			<label>操作系统用户:</label>${.vars['user.name']!}
-		</p>
-		<p>
-			<label>操作系统时区:</label>${.vars['user.timezone']!}
-		</p>
-		<p>
-			<label>文件编码:</label>${.vars['file.encoding']!}
-		</p>
-	</div>
-	<div class="divider"></div>
-	<div class="unit">
-		<p>
-			<label>JRE名称:</label>${.vars['java.runtime.name']!}
-		</p>
-		<p>
-			<label>JRE版本:</label>${.vars['java.runtime.version']!}(${.vars['java.vm.info']!})
-		</p>
-		<p>
-			<label>JVM名称:</label>${.vars['java.vm.name']!}
-		</p>
-		<p>
-			<label>JVM版本:</label>${.vars['java.vm.version']!}
-		</p>
-	</div>
-	<div class="divider"></div>
-	<div class="unit">
-		<p>
-			<label>用户目录:</label>${.vars['user.home']!}
-		</p>
-		<p>
-			<label>工作目录:</label>${.vars['user.dir']!}
-		</p>
-		<p>
-			<label>临时文件目录:</label>${.vars['java.io.tmpdir']!}
-		</p>
-		<p>
-			<label>文件分隔符:</label>${.vars['file.separator']!}
-		</p>
-	</div>
-	<div class="divider"></div>
-	</@_systemProperties>
-	<div class="unit">
+    <@_systemProperties>
+    <div class="unit">
+        <p>
+            <label>操作系统:</label>${.vars['os.name']!}(${.vars['os.arch']!})
+        </p>
+        <p>
+            <label>操作系统版本:</label>${.vars['os.version']!}
+        </p>
+        <p>
+            <label>操作系统用户:</label>${.vars['user.name']!}
+        </p>
+        <p>
+            <label>操作系统时区:</label>${.vars['user.timezone']!}
+        </p>
+        <p>
+            <label>文件编码:</label>${.vars['file.encoding']!}
+        </p>
+    </div>
+    <div class="divider"></div>
+    <div class="unit">
+        <p>
+            <label>JRE名称:</label>${.vars['java.runtime.name']!}
+        </p>
+        <p>
+            <label>JRE版本:</label>${.vars['java.runtime.version']!}(${.vars['java.vm.info']!})
+        </p>
+        <p>
+            <label>JVM名称:</label>${.vars['java.vm.name']!}
+        </p>
+        <p>
+            <label>JVM版本:</label>${.vars['java.vm.version']!}
+        </p>
+    </div>
+    <div class="divider"></div>
+    <div class="unit">
+        <p>
+            <label>用户目录:</label>${.vars['user.home']!}
+        </p>
+        <p>
+            <label>工作目录:</label>${.vars['user.dir']!}
+        </p>
+        <p>
+            <label>临时文件目录:</label>${.vars['java.io.tmpdir']!}
+        </p>
+        <p>
+            <label>文件分隔符:</label>${.vars['file.separator']!}
+        </p>
+    </div>
+    <div class="divider"></div>
+    </@_systemProperties>
+    <div class="unit">
         <p>
             <label>站点个数:</label>
             <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="站点管理" target="navTab" rel="sysSite/list"><@_sysSiteList count=0>${page.totalCount}</@_sysSiteList></a>
@@ -104,18 +104,18 @@
     <div class="divider"></div>
 </@_masterSite>
 <@_version>
-	<div class="unit">
-		<p id="cmsVersion">
-			<label>Public CMS:</label>
-			<a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="PublicCMS官网">${cms}</a>
-		</p>
-	<@_sysAuthorized roleIds=admin.roles url='sysCluster/list'>
-		<p>
-			<label>${master?string('管理节点','普通节点')}:</label>
-			<a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="节点列表" target="navTab" rel="sysCluster/list">${cluster}</a>
-		</p>
-	</@_sysAuthorized>
-	<@_masterSite>
+    <div class="unit">
+        <p id="cmsVersion">
+            <label>Public CMS:</label>
+            <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="PublicCMS官网">${cms}</a>
+        </p>
+    <@_sysAuthorized roleIds=admin.roles url='sysCluster/list'>
+        <p>
+            <label>${master?string('管理节点','普通节点')}:</label>
+            <a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="节点列表" target="navTab" rel="sysCluster/list">${cluster}</a>
+        </p>
+    </@_sysAuthorized>
+    <@_masterSite>
         <@_disk>
         <p>
             <label>数据目录:</label>
@@ -125,15 +125,15 @@
             <label>磁盘空间:</label><@t.fileSize totalSpace/>
         </p>
         </@_disk>
-		<script>
-			$.getJSON('//cms.publiccms.com/api/directive/version?callback=?',function(data){
-				if($('#cmsVersion a').eq(0).text()!==data.cms){
-					$('#cmsVersion a').eq(0).append('[<em style="color:red">有新版本</em>]');
-				}
-			});
-		</script>
-	</@_masterSite>
-	</div>
-	<div class="divider"></div>
+        <script>
+            $.getJSON('//cms.publiccms.com/api/directive/version?callback=?',function(data){
+                if($('#cmsVersion a').eq(0).text()!==data.cms){
+                    $('#cmsVersion a').eq(0).append('[<em style="color:red">有新版本</em>]');
+                }
+            });
+        </script>
+    </@_masterSite>
+    </div>
+    <div class="divider"></div>
 </@_version>
 </div>

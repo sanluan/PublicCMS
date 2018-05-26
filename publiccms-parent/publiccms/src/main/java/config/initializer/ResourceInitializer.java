@@ -16,14 +16,14 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.support.HttpRequestHandlerServlet;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
 
 /**
  * 
  * ResourceInitializer Servlet3.0 工程入口类
  *
  */
-public class ResourceInitializer implements WebApplicationInitializer, Base {
+public class ResourceInitializer implements WebApplicationInitializer {
 
     public void onStartup(ServletContext servletContext) throws ServletException {
         Dynamic registration = servletContext.addServlet("defaultServlet", new HttpRequestHandlerServlet());
@@ -60,7 +60,7 @@ public class ResourceInitializer implements WebApplicationInitializer, Base {
 
     protected Filter[] getServletFilters() {
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding(DEFAULT_CHARSET_NAME);
+        characterEncodingFilter.setEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
         characterEncodingFilter.setForceEncoding(true);
         return new Filter[] { characterEncodingFilter };
     }

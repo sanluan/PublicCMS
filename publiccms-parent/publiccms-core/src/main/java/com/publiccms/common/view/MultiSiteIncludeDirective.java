@@ -3,7 +3,7 @@ package com.publiccms.common.view;
 import java.io.IOException;
 import java.util.Map;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
 import com.publiccms.entities.sys.SysSite;
@@ -20,7 +20,7 @@ import freemarker.template.TemplateModel;
  * MultiSiteIncludeDirective
  * 
  */
-public class MultiSiteIncludeDirective implements TemplateDirectiveModel, Base {
+public class MultiSiteIncludeDirective implements TemplateDirectiveModel {
 
     private SysSite site;
 
@@ -37,7 +37,7 @@ public class MultiSiteIncludeDirective implements TemplateDirectiveModel, Base {
         @SuppressWarnings("unchecked")
         String path = TemplateModelUtils.converString(((Map<String, TemplateModel>) parameters).get("path"));
         if (CommonUtils.notEmpty(path) && null != environment) {
-            environment.include(SiteComponent.getFullFileName(site, path), DEFAULT_CHARSET_NAME, true);
+            environment.include(SiteComponent.getFullFileName(site, path), CommonConstants.DEFAULT_CHARSET_NAME, true);
         }
     }
 }

@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `log_upload` (
   KEY `site_id` (`site_id`),
   KEY `channel` (`channel`),
   KEY `image` (`image`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='上传日志' AUTO_INCREMENT=1 ;
+) DEFAULT CHARSET=utf8 COMMENT='上传日志' AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS `sys_cluster` (
   `uuid` varchar(40) NOT NULL COMMENT 'uuid',
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `sys_cluster` (
   `master` tinyint(1) NOT NULL COMMENT '是否管理',
   PRIMARY KEY  (`uuid`),
   KEY `create_date` (`create_date`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='服务器集群' ;
+) DEFAULT CHARSET=utf8 COMMENT='服务器集群' ;
 
 UPDATE  `sys_moudle` SET  `parent_id` =  '30' WHERE  `sys_moudle`.`parent_id` =29;
 insert into `sys_moudle`(`id`,`name`,`url`,`authorized_url`,`parent_id`,`sort`) values ('40','修改模板元数据','cmsTemplate/metadata','cmsTemplate/saveMetadata','39','0');
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `sys_config` (
   `data` longtext NOT NULL COMMENT '值',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `site_id` (`site_id`,`code`,`subcode`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT='站点配置' AUTO_INCREMENT=1 ;
+) DEFAULT CHARSET=utf8 COMMENT='站点配置' AUTO_INCREMENT=1 ;
 
 -- 20160727 --
 ALTER TABLE `cms_category` ADD COLUMN `only_url`  tinyint(1) NOT NULL COMMENT '外链' AFTER `path`;

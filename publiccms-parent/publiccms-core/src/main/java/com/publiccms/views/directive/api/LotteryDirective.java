@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -40,7 +41,7 @@ public class LotteryDirective extends AbstractAppDirective {
                     CmsLotteryUser entity = new CmsLotteryUser(lotteryId, user.getId(), false, false,
                             RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate());
                     entity.setUserId(user.getId());
-                    if (lottery.getFractions() > random.nextInt(lottery.getNumerator())
+                    if (lottery.getFractions() > CommonConstants.random.nextInt(lottery.getNumerator())
                             && lotteryService.updateLastGift(lotteryId) && lottery.getLotteryCount() > lotteryUserService
                                     .getPage(lotteryId, null, true, null, null, null, null, null).getTotalCount()) {
                         entity.setWinning(true);

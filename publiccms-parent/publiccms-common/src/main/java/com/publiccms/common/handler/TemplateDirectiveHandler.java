@@ -12,7 +12,6 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.base.BaseHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.TemplateModelUtils;
@@ -32,7 +31,7 @@ import freemarker.template.TemplateModelException;
  * TemplateDirectiveHandler
  *
  */
-public class TemplateDirectiveHandler extends BaseHandler implements Base {
+public class TemplateDirectiveHandler extends BaseHandler {
     private Map<String, TemplateModel> parameters;
     private TemplateModel[] loopVars;
     private TemplateDirectiveBody templateDirectiveBody;

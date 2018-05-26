@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -67,7 +68,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public PageHandler query(Short siteId, String text, Long[] tagIds, Integer categoryId, Boolean containChild,
             Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, Integer pageIndex,
             Integer pageSize) {
-        return dao.query(siteId, text, arrayToDelimitedString(tagIds, BLANK_SPACE),
+        return dao.query(siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
                 getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, pageIndex,
                 pageSize);
     }
@@ -87,7 +88,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, Long[] tagIds,
             Date startPublishDate, Date endPublishDate, Integer pageIndex, Integer pageSize) {
-        return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, BLANK_SPACE), startPublishDate,
+        return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), startPublishDate,
                 endPublishDate, pageIndex, pageSize);
     }
 
@@ -143,10 +144,9 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param userId
      * @param ids
-     * @param refresh
      * @return results list
      */
-    public List<CmsContent> check(short siteId, Long userId, Serializable[] ids, Boolean refresh) {
+    public List<CmsContent> check(short siteId, Long userId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
@@ -154,12 +154,6 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entity.setCheckUserId(userId);
                 entity.setCheckDate(CommonUtils.getDate());
                 entityList.add(entity);
-                if (null != refresh && refresh) {
-                    Date now = CommonUtils.getDate();
-                    if (now.after(entity.getPublishDate())) {
-                        entity.setPublishDate(now);
-                    }
-                }
             }
         }
         return entityList;
@@ -286,7 +280,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null), null, null, null, null, null)
+                            entity.getId(), null, null, null, null, null, null, null, null, null), null, null, null, null, null)
                                     .getList()) {
                         child.setDisabled(true);
                         entityList.add(child);
@@ -306,7 +300,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             CmsCategory category = categoryDao.getEntity(categoryId);
             if (null != category && CommonUtils.notEmpty(category.getChildIds())) {
                 String[] categoryStringIds = ArrayUtils.add(
-                        StringUtils.splitByWholeSeparator(category.getChildIds(), COMMA_DELIMITED), String.valueOf(categoryId));
+                        StringUtils.splitByWholeSeparator(category.getChildIds(), CommonConstants.COMMA_DELIMITED), String.valueOf(categoryId));
                 categoryIds = new Integer[categoryStringIds.length + 1];
                 for (int i = 0; i < categoryStringIds.length; i++) {
                     categoryIds[i] = Integer.parseInt(categoryStringIds[i]);
@@ -331,7 +325,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null), false, null, null, null, null)
+                            entity.getId(), null, null, null, null, null, null, null, null, null), false, null, null, null, null)
                                     .getList()) {
                         child.setDisabled(false);
                         entityList.add(child);
@@ -356,7 +350,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null), false, null, null, null, null)
+                            entity.getId(), null, null, null, null ,null, null, null, null, null), false, null, null, null, null)
                                     .getList()) {
                         delete(child.getId());
                     }

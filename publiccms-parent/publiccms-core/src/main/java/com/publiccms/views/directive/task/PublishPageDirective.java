@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
@@ -32,7 +33,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        String path = handler.getString("path", SEPARATOR);
+        String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
         String fullPath = siteComponent.getWebTemplateFilePath(site, path);
         File file = new File(fullPath);
@@ -55,7 +56,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
     }
 
     private Map<String, Boolean> deal(SysSite site, String path) {
-        path = path.replace("\\", SEPARATOR).replace("//", SEPARATOR);
+        path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
         Map<String, CmsPageMetadata> metadataMap = metadataComponent
                 .getTemplateMetadataMap(siteComponent.getWebTemplateFilePath(site, path));
@@ -63,7 +64,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, filePath + SEPARATOR));
+                map.putAll(deal(site, filePath + CommonConstants.SEPARATOR));
             } else {
                 CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {

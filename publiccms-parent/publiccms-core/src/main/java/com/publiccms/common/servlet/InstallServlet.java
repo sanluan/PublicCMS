@@ -25,7 +25,6 @@ import org.apache.ibatis.jdbc.ScriptRunner;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.publiccms.common.base.AbstractCmsUpgrader;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
@@ -42,7 +41,7 @@ import freemarker.template.TemplateException;
  * InstallServlet
  *
  */
-public class InstallServlet extends HttpServlet implements Base {
+public class InstallServlet extends HttpServlet {
 
     /**
      *
@@ -161,7 +160,7 @@ public class InstallServlet extends HttpServlet implements Base {
         CmsDataSource.initDefautlDataSource();
         File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
         try (FileOutputStream outputStream = new FileOutputStream(file);) {
-            outputStream.write(CmsVersion.getVersion().getBytes(DEFAULT_CHARSET));
+            outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
         }
         log.info("PublicCMS " + CmsVersion.getVersion() + " started!");
     }
@@ -235,11 +234,11 @@ public class InstallServlet extends HttpServlet implements Base {
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql");) {
-            runner.runScript(new InputStreamReader(inputStream, DEFAULT_CHARSET));
+            runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
         }
         if (useSimple) {
             try (InputStream simpleInputStream = getClass().getResourceAsStream("/initialization/sql/simpledata.sql")) {
-                runner.runScript(new InputStreamReader(simpleInputStream, DEFAULT_CHARSET));
+                runner.runScript(new InputStreamReader(simpleInputStream, CommonConstants.DEFAULT_CHARSET));
             }
         }
         return stringWriter.toString();

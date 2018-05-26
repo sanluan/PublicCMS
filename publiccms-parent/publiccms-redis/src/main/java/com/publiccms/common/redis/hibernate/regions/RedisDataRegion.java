@@ -8,7 +8,7 @@ import org.apache.commons.logging.LogFactory;
 import org.hibernate.cache.CacheException;
 import org.hibernate.cache.spi.Region;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.redis.DatabaseRedisClient;
 import com.publiccms.common.redis.hibernate.ConfigurableRedisRegionFactory;
 import com.publiccms.common.redis.hibernate.strategy.RedisAccessStrategyFactory;
@@ -19,7 +19,7 @@ import com.publiccms.common.redis.hibernate.timestamper.CacheTimestamper;
  * RedisDataRegion
  * 
  */
-public abstract class RedisDataRegion implements Region, Base {
+public abstract class RedisDataRegion implements Region {
     protected final Log log = LogFactory.getLog(getClass());
 
     private static final String EXPIRE_IN_SECONDS = "redis.expiryInSeconds";
@@ -46,7 +46,7 @@ public abstract class RedisDataRegion implements Region, Base {
         this.redisClient = redisClient;
         this.regionName = regionName;
         this.expireInSeconds = Integer
-                .valueOf(props.getProperty(EXPIRE_IN_SECONDS + DOT + regionName, getDefaultExpireInSeconds(props)));
+                .valueOf(props.getProperty(EXPIRE_IN_SECONDS + CommonConstants.DOT + regionName, getDefaultExpireInSeconds(props)));
         this.cacheTimestamper = configurableRedisRegionFactory.createCacheTimestamper(redisClient, regionName);
     }
 

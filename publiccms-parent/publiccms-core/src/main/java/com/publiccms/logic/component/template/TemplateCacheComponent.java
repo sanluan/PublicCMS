@@ -15,7 +15,6 @@ import org.springframework.ui.ModelMap;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.AbstractFreemarkerView;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.servlet.WebDispatcherServlet;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
@@ -35,7 +34,7 @@ import freemarker.template.TemplateModel;
  *
  */
 @Component
-public class TemplateCacheComponent implements Cache, Base {
+public class TemplateCacheComponent implements Cache {
 
     protected final Log log = LogFactory.getLog(getClass());
     /**

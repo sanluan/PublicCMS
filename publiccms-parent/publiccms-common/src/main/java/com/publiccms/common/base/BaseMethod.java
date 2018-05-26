@@ -20,7 +20,7 @@ import freemarker.template.TemplateModelException;
  * BaseMethod FreeMarker自定义方法基类
  *
  */
-public abstract class BaseMethod implements TemplateMethodModelEx, Base {
+public abstract class BaseMethod implements TemplateMethodModelEx {
     protected final Log log = LogFactory.getLog(getClass());
     private String name;
 

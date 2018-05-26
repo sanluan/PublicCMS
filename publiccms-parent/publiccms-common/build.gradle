@@ -30,7 +30,7 @@ dependencies {
 
         "org.mybatis:mybatis:${mybatisVersion}",
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-        "org.mybatis:mybatis-spring:1.3.1",
+        "org.mybatis:mybatis-spring:1.3.2",
 
         "org.hibernate:hibernate-search-orm:${hibernateSearchVersion}",
         "org.hibernate:hibernate-ehcache:${hibernateVersion}",
@@ -44,7 +44,7 @@ dependencies {
         // http://mvnrepository.com/artifact/javax.transaction/jta
 	    "javax.transaction:jta:1.1",
 	    // http://mvnrepository.com/artifact/javax.mail/mail
-	    "javax.mail:mail:1.4.7",
+	    "javax.mail:javax.mail-api:1.6.1",
         // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         "javax.servlet:javax.servlet-api:3.1.0"
     )

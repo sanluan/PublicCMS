@@ -19,6 +19,7 @@ import org.hibernate.search.query.dsl.QueryBuilder;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
@@ -189,6 +190,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null != queryEntitry.getHasFiles()) {
             queryHandler.condition("bean.hasFiles = :hasFiles").setParameter("hasFiles", queryEntitry.getHasFiles());
         }
+        if (null != queryEntitry.getHasCover()) {
+            if (queryEntitry.getHasCover()) {
+                queryHandler.condition("bean.cover is not null");
+            } else {
+                queryHandler.condition("bean.cover is null");
+            }
+        }
         if (CommonUtils.notEmpty(queryEntitry.getTitle())) {
             queryHandler.condition("(bean.title like :title)").setParameter("title", like(queryEntitry.getTitle()));
         }
@@ -207,7 +215,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             orderType = ORDERTYPE_DESC;
         }
         if (null == orderField) {
-            orderField = BLANK;
+            orderField = CommonConstants.BLANK;
         }
         switch (orderField) {
         case "scores":

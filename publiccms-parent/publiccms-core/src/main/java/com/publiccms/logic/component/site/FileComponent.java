@@ -16,7 +16,7 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -27,7 +27,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
  *
  */
 @Component
-public class FileComponent implements Base {
+public class FileComponent {
     private static final String FILE_NAME_FORMAT_STRING = "yyyy/MM-dd/HH-mm-ssSSSS";
 
     /**
@@ -70,23 +70,35 @@ public class FileComponent implements Base {
      */
     public boolean createFile(File file, String content) throws IOException {
         if (CommonUtils.empty(file)) {
-            FileUtils.writeStringToFile(file, content, DEFAULT_CHARSET);
+            FileUtils.writeStringToFile(file, content, CommonConstants.DEFAULT_CHARSET);
             return true;
         }
         return false;
     }
 
     /**
-     * 删除文件或目录
+     * 移动文件或目录
      *
      * @param filePath
-     * @return whether to delete successfully
+     * @param backupFilePath
+     * @return whether to move successfully
      */
-    public boolean deleteFile(String filePath) {
+    public boolean moveFile(String filePath, String backupFilePath) {
         File file = new File(filePath);
         if (CommonUtils.notEmpty(file)) {
-            FileUtils.deleteQuietly(file);
-            return true;
+            File backupFile = new File(backupFilePath);
+            try {
+                if(backupFile.exists()) {
+                    FileUtils.deleteQuietly(backupFile);
+                }
+                if (file.isDirectory()) {
+                    FileUtils.moveDirectory(file, backupFile);
+                } else {
+                    FileUtils.moveFile(file, backupFile);
+                }
+                return true;
+            } catch (IOException e) {
+            }
         }
         return false;
     }
@@ -95,14 +107,20 @@ public class FileComponent implements Base {
      * 修改文件内容
      *
      * @param file
+     * @param historyFilePath
      * @param content
      * @return whether to modify successfully
      * @throws IOException
      */
-    public boolean updateFile(File file, String content) throws IOException {
-        if (CommonUtils.notEmpty(file) && CommonUtils.notEmpty(content)) {
+    public boolean updateFile(File file, String historyFilePath, String content) throws IOException {
+        if (CommonUtils.notEmpty(file) && null != content) {
+            File history = new File(historyFilePath);
+            if (null != history.getParentFile()) {
+                history.getParentFile().mkdirs();
+            }
+            FileUtils.copyFile(file, history);
             try (FileOutputStream outputStream = new FileOutputStream(file);) {
-                outputStream.write(content.getBytes(DEFAULT_CHARSET));
+                outputStream.write(content.getBytes(CommonConstants.DEFAULT_CHARSET));
             }
             return true;
         }
@@ -119,7 +137,7 @@ public class FileComponent implements Base {
         File file = new File(filePath);
         try {
             if (file.isFile()) {
-                return FileUtils.readFileToString(file, DEFAULT_CHARSET);
+                return FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
             }
         } catch (IOException e) {
             return null;
@@ -136,7 +154,7 @@ public class FileComponent implements Base {
     public String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder("upload/");
         sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
-        return sb.append(random.nextInt()).append(suffix).toString();
+        return sb.append(CommonConstants.random.nextInt()).append(suffix).toString();
     }
 
     /**
@@ -146,7 +164,7 @@ public class FileComponent implements Base {
      * @return suffix
      */
     public String getSuffix(String originalFilename) {
-        return originalFilename.substring(originalFilename.lastIndexOf(DOT), originalFilename.length());
+        return originalFilename.substring(originalFilename.lastIndexOf(CommonConstants.DOT), originalFilename.length());
     }
 
     /**

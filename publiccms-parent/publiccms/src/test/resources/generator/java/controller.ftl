@@ -14,6 +14,7 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 
 <#include "../include_imports/entity.ftl">
 import com.publiccms.entities.sys.SysSite;
@@ -30,17 +31,21 @@ import com.publiccms.logic.service.log.LogLoginService;
 @RequestMapping("${entityName?uncap_first}")
 public class ${entityName}${controllerSuffix} extends AbstractController {
 
-	private String[] ignoreProperties = new String[]{"id"};
-	
-	/**
+    private String[] ignoreProperties = new String[]{"id"};
+    
+    /**
      * @param entity
+     * @param csrfToken
      * @param request
      * @param session
      * @return operate result
      */
     @RequestMapping("save")
-    public String save(${entityName} entity, HttpServletRequest request, HttpSession session) {
-    	SysSite site = getSite(request);
+    public String save(${entityName} entity, String csrfToken, HttpServletRequest request, HttpSession session) {
+    	if (ControllerUtils.verifyNotEquals("csrfToken", ControllerUtils.getAdminToken(request), csrfToken, model)) {
+                return CommonConstants.TEMPLATE_ERROR;
+        }
+        SysSite site = getSite(request);
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             logOperateService.save(
@@ -52,24 +57,28 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
                     .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.${entityName?uncap_first}", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
-	/**
+    /**
      * @param ids
+     * @param csrfToken
      * @param request
      * @param session
      * @return operate result
      */
     @RequestMapping("delete")
-    public String delete(Integer[] ids, HttpServletRequest request, HttpSession session) {
-    	SysSite site = getSite(request);
-    	if (CommonUtils.notEmpty(ids)) {
-	        service.delete(ids);
-	        logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+    public String delete(Integer[] ids, String csrfToken, HttpServletRequest request, HttpSession session) {
+    	if (ControllerUtils.verifyNotEquals("csrfToken", ControllerUtils.getAdminToken(request), csrfToken, model)) {
+                return CommonConstants.TEMPLATE_ERROR;
+        }
+        SysSite site = getSite(request);
+        if (CommonUtils.notEmpty(ids)) {
+            service.delete(ids);
+            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.${entityName?uncap_first}", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
     
     @Autowired

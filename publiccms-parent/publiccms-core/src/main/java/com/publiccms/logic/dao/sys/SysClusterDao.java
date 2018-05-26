@@ -2,12 +2,13 @@ package com.publiccms.logic.dao.sys;
 
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysCluster;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.entities.sys.SysCluster;
 
 /**
  *
@@ -44,7 +45,7 @@ public class SysClusterDao extends BaseDao<SysCluster> {
             orderType = ORDERTYPE_DESC;
         }
         if (null == orderField) {
-            orderField = BLANK;
+            orderField = CommonConstants.BLANK;
         }
         switch (orderField) {
         case "createDate":

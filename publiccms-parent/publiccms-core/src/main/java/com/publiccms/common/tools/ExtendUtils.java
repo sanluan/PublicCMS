@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.views.pojo.entities.ExtendData;
 import com.publiccms.views.pojo.entities.ExtendField;
@@ -16,7 +16,7 @@ import com.publiccms.views.pojo.entities.ExtendField;
  * ExtendUtils
  * 
  */
-public class ExtendUtils implements Base {
+public class ExtendUtils {
 
     /**
      * @param extendDataList
@@ -74,7 +74,7 @@ public class ExtendUtils implements Base {
     public static Map<String, String> getExtendMap(String data) {
         if (CommonUtils.notEmpty(data)) {
             try {
-                return objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
+                return CommonConstants.objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
 
                 });
             } catch (IOException | ClassCastException e) {
@@ -91,7 +91,7 @@ public class ExtendUtils implements Base {
      */
     public static String getExtendString(Map<String, String> map) {
         try {
-            return objectMapper.writeValueAsString(map);
+            return CommonConstants.objectMapper.writeValueAsString(map);
         } catch (IOException e) {
             return null;
         }

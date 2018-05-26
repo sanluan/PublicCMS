@@ -18,7 +18,6 @@ import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -51,7 +50,7 @@ import freemarker.template.TemplateModelException;
  * 模板处理组件 Template Component
  *
  */
-public class TemplateComponent implements Cache, Base {
+public class TemplateComponent implements Cache {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 包含目录 include directory
@@ -107,8 +106,9 @@ public class TemplateComponent implements Cache, Base {
             AbstractFreemarkerView.exposeSite(model, site);
             filePath = FreeMarkerUtils.generateStringByString(filePath, webConfiguration, model);
             model.put("url", site.getSitePath() + filePath);
+            model.put("pageIndex", pageIndex);
             if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
-                int index = filePath.lastIndexOf(DOT);
+                int index = filePath.lastIndexOf(CommonConstants.DOT);
                 filePath = filePath.substring(0, index) + '_' + pageIndex + filePath.substring(index, filePath.length());
             }
             FreeMarkerUtils.generateFileByFile(templatePath, siteComponent.getWebFilePath(site, filePath), webConfiguration,
@@ -216,7 +216,7 @@ public class TemplateComponent implements Cache, Base {
             model.put("page", page);
             model.put("text", texts[page.getPageIndex() - 1]);
         }
-        return createStaticFile(site, templatePath, filePath, 1, null, model);
+        return createStaticFile(site, templatePath, filePath, pageIndex, null, model);
     }
 
     /**
@@ -289,13 +289,11 @@ public class TemplateComponent implements Cache, Base {
 
         if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
-                model.put("pageIndex", i);
                 createStaticFile(site, templatePath, filePath, i, null, model);
             }
         }
 
-        model.put("pageIndex", pageIndex);
-        return createStaticFile(site, templatePath, filePath, 1, null, model);
+        return createStaticFile(site, templatePath, filePath, pageIndex, null, model);
     }
 
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
@@ -320,7 +318,7 @@ public class TemplateComponent implements Cache, Base {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, model);
-            String placeTemplatePath = INCLUDE_DIRECTORY + SEPARATOR + templatePath;
+            String placeTemplatePath = INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + templatePath;
             FreeMarkerUtils.generateFileByFile(SiteComponent.getFullFileName(site, placeTemplatePath),
                     siteComponent.getWebFilePath(site, placeTemplatePath), webConfiguration, model);
         }
@@ -413,6 +411,7 @@ public class TemplateComponent implements Cache, Base {
     public void clear() {
         adminConfiguration.clearTemplateCache();
         clearTemplateCache();
+        clearTaskTemplateCache();
     }
 
     /**
@@ -423,6 +422,7 @@ public class TemplateComponent implements Cache, Base {
     public void clearTemplateCache() {
         webConfiguration.clearTemplateCache();
     }
+
     /**
      * 清理任务计划模板缓存
      * 

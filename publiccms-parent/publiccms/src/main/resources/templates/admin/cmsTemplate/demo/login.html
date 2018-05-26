@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>${metadata.alias!}</title>
-	<script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
-	<style>
-		.red{color:#f00;}
-	</style>
+    <title>${metadata.alias!}</title>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+    <style>
+        .red{color:#f00;}
+    </style>
 </head>
 <body>
-	<header>
-		<h1>${(site.name)!}</h1>
-	</header>
-	<nav>
-		<a href="${base}">Home</a>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
 <@_categoryList>
-	<#list page.list as a>
-		<a href="${a.url!}" target="_blank">${a.name}</a>
-	</#list>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
 </@_categoryList>
-	</nav>
-	<main>
-		<#if user?has_content>
-    		<p>${user.nickName},您已经登录了!  您可以<a href="javascript:logout();">退出登录</a></p>
-    	<#else>
-	    	<form action="${site.dynamicPath}doLogin.do" method="post">
-				<#if error??>
-					<p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
-				</#if>
-				<p><input type="text" name="username" placeholder="用户名" title="用户名"/></p>
-				<p><input type="password" name="password" placeholder="密码" title="密码"/></p>
-				<p>
-					<input type="hidden" name="returnUrl" value="${site.sitePath}"/>
-					<input type="submit" value="登  录"/>
-				</p>
-				<p>没有账号?请<a href="register.html">注册</a></p>
-			</form>
-    	</#if>
-	</main>
-	<footer>
-		Copyright &copy; ${.now?string('yyyy')}
-	</footer>
+    </nav>
+    <main>
+        <#if user?has_content>
+            <p>${user.nickName},您已经登录了!  您可以<a href="javascript:logout();">退出登录</a></p>
+        <#else>
+            <form action="${site.dynamicPath}doLogin.do" method="post">
+                <#if error??>
+                    <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
+                </#if>
+                <p><input type="text" name="username" placeholder="用户名" title="用户名"/></p>
+                <p><input type="password" name="password" placeholder="密码" title="密码"/></p>
+                <p>
+                    <input type="hidden" name="returnUrl" value="${site.sitePath}"/>
+                    <input type="submit" value="登  录"/>
+                </p>
+                <p>没有账号?请<a href="register.html">注册</a></p>
+            </form>
+        </#if>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
 <script>
 function logout(){
-	$.post("${site.dynamicPath}doLogout.do",function(){
-		window.location.href='${site.sitePath}';
-	});
+    $.post("${site.dynamicPath}doLogout.do",function(){
+        window.location.href='${site.sitePath}';
+    });
 }
 </script>
 </body>

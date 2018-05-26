@@ -1,54 +1,54 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-	<title>${metadata.alias!}</title>
-	<script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
-	<style>
-		.red{color:#f00;}
-	</style>
+    <title>${metadata.alias!}</title>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+    <style>
+        .red{color:#f00;}
+    </style>
 </head>
 <body>
-	<header>
-		<h1>${(site.name)!}</h1>
-	</header>
-	<nav>
-		<a href="${base}">Home</a>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
 <@_categoryList>
-	<#list page.list as a>
-		<a href="${a.url!}" target="_blank">${a.name}</a>
-	</#list>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
 </@_categoryList>
-	</nav>
-	<main>
-		<#if user??>
-			<p>${user.nickName},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
-		<#else>
-			<form action="${site.dynamicPath}doRegister.do" method="post">
-				<#if error??>
-					<p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
-				</#if>
-				<p><input type="text" name="name" placeholder="用户名" title="用户名" value="${name!}"/></p>
-				<p>4位以上数字、字母、下划线,不以数字开始</p>
-				<p><input type="text" name="nickName" placeholder="昵称" title="昵称" value="${nickname!}"/></p>
-				<p>2位以上数字、字母、汉字、下划线</p>
-				<p><input type="password" name="password" placeholder="密码" title="密码"/></p>
-				<p><input type="password" name="repassword" placeholder="重复密码" title="重复密码"/></p>
-				<p>
-					<input type="hidden" name="returnUrl" value="${site.sitePath}"/>
-					<input type="submit" value="注册"/>
-				</p>
-				<p>已有账号?请<a href="login.html">登录</a></p>
-			</form>
-		</#if>
-	</main>
-	<footer>
-		Copyright &copy; ${.now?string('yyyy')}
-	</footer>
+    </nav>
+    <main>
+        <#if user??>
+            <p>${user.nickName},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
+        <#else>
+            <form action="${site.dynamicPath}doRegister.do" method="post">
+                <#if error??>
+                    <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
+                </#if>
+                <p><input type="text" name="name" placeholder="用户名" title="用户名" value="${name!}"/></p>
+                <p>4位以上数字、字母、下划线,不以数字开始</p>
+                <p><input type="text" name="nickName" placeholder="昵称" title="昵称" value="${nickname!}"/></p>
+                <p>2位以上数字、字母、汉字、下划线</p>
+                <p><input type="password" name="password" placeholder="密码" title="密码"/></p>
+                <p><input type="password" name="repassword" placeholder="重复密码" title="重复密码"/></p>
+                <p>
+                    <input type="hidden" name="returnUrl" value="${site.sitePath}"/>
+                    <input type="submit" value="注册"/>
+                </p>
+                <p>已有账号?请<a href="login.html">登录</a></p>
+            </form>
+        </#if>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
 <script>
 function logout(){
-	$.post("${site.dynamicPath}doLogout.do",function(){
-		window.location.href='${site.sitePath}';
-	});
+    $.post("${site.dynamicPath}doLogout.do",function(){
+        window.location.href='${site.sitePath}';
+    });
 }
 </script>
 </body>

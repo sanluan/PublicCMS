@@ -16,7 +16,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-	private String alias;
+    private String alias;
     private Integer size;
     private Long[] adminIds;
     private boolean allowContribute;

@@ -4,47 +4,47 @@
 #tagTypes span{margin-right:8px;padding:3px;border:1px solid #aaa;}
 </style>
 <dl class="nowrap tagTypes">
-	<dt>标签分类:</dt>
-	<dd>
-		<div id="tagTypes"></div>
-		<input name="type[].id" type="hidden"/>
-		<input name="type[].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="type[]" suggestUrl="common/tagTypeSuggest.html"/>
-		<a class="button" href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;">增加</a>
-	</dd>
+    <dt>标签分类:</dt>
+    <dd>
+        <div id="tagTypes"></div>
+        <input name="type[].id" type="hidden"/>
+        <input name="type[].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="type[]" suggestUrl="common/tagTypeSuggest.html"/>
+        <a class="button" href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;">增加</a>
+    </dd>
 </dl>
 <script>
 function addTagType($id,$name){
-	if($name){
-		$name=$name.trim();
-	}
-	if($('#tagTypes span',navTab.getCurrentPanel()).size()>10){
-		alertMsg.error('标签分类不能超过10个');
-	}else{
-		if($id&&$name){
-			$('#tagTypes',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-		}else if($name){
-			$('#tagTypes',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].name\" value=\""+$name+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-		}
-		reIndexTagType();
-	}
-	$('input[name=\'type[].id\']',navTab.getCurrentPanel()).val('');
-	$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val('');
+    if($name){
+        $name=$name.trim();
+    }
+    if($('#tagTypes span',navTab.getCurrentPanel()).size()>10){
+        alertMsg.error('标签分类不能超过10个');
+    }else{
+        if($id&&$name){
+            $('#tagTypes',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        }else if($name){
+            $('#tagTypes',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].name\" value=\""+$name+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        }
+        reIndexTagType();
+    }
+    $('input[name=\'type[].id\']',navTab.getCurrentPanel()).val('');
+    $('input[name=\'type[].name\']',navTab.getCurrentPanel()).val('');
 }
 function reIndexTagType(){
-	$('#tagTypes span',navTab.getCurrentPanel()).each(function(tagIndex){
-		$('input[name$=\\.id]',this).attr('name','tagTypes['+tagIndex+'].id');
-		$('input[name$=\\.name]',this).attr('name','tagTypes['+tagIndex+'].name');
-	});
+    $('#tagTypes span',navTab.getCurrentPanel()).each(function(tagIndex){
+        $('input[name$=\\.id]',this).attr('name','tagTypes['+tagIndex+'].id');
+        $('input[name$=\\.name]',this).attr('name','tagTypes['+tagIndex+'].name');
+    });
 }
 $('.tagTypes',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     reIndexTagType();
     return false;
 })
-	<@_tagType ids=typeIds>
-		<#list map as k,tagType>
-		addTagType('${k}','${tagType.name?js_string}');
-		</#list>
-	</@_tagType>
+    <@_tagType ids=typeIds>
+        <#list map as k,tagType>
+        addTagType('${k}','${tagType.name?js_string}');
+        </#list>
+    </@_tagType>
 </script>
 </#macro>

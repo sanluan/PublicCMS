@@ -6,7 +6,7 @@ buildscript {
 	/**
 	dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.4.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.13.RELEASE")
     }*/
 }
 
@@ -26,10 +26,10 @@ subprojects{
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "4.3.14.RELEASE"
+        springVersion = "4.3.17.RELEASE"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "1.5.10.RELEASE"
+        springBootVersion = "1.5.13.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.5"
@@ -37,14 +37,14 @@ subprojects{
         jacksonVersion = "2.8.11"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.1.12.Final"
+        hibernateVersion = "5.1.13.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "5.6.4.Final"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
-        freemarkerVersion = "2.3.27-incubating"
+        freemarkerVersion = "2.3.28"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.4.5"
+        mybatisVersion = "3.4.6"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "5.5.5"
         // http://mvnrepository.com/artifact/redis.clients/jedis

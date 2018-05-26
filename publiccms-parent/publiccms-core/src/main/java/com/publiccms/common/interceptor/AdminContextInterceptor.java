@@ -9,9 +9,8 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -26,7 +25,7 @@ import com.publiccms.logic.service.sys.SysUserService;
  * AdminContextInterceptor
  *
  */
-public class AdminContextInterceptor extends WebContextInterceptor implements Base {
+public class AdminContextInterceptor extends WebContextInterceptor {
     private String adminBasePath;
     private String loginUrl;
     private String loginJsonUrl;
@@ -50,7 +49,7 @@ public class AdminContextInterceptor extends WebContextInterceptor implements Ba
         if (adminBasePath.equals(path)) {
             try {
                 StringBuilder sb = new StringBuilder(ctxPath);
-                sb.append(adminBasePath).append(SEPARATOR);
+                sb.append(adminBasePath).append(CommonConstants.SEPARATOR);
                 response.sendRedirect(sb.toString());
                 return false;
             } catch (IOException e) {
@@ -59,7 +58,7 @@ public class AdminContextInterceptor extends WebContextInterceptor implements Ba
         } else if (verifyNeedLogin(path)) {
             HttpSession session = request.getSession();
             SysSite site = siteComponent.getSite(request.getServerName());
-            SysUser user = initUser(AbstractController.getAdminFromSession(session), LogLoginService.CHANNEL_WEB_MANAGER,
+            SysUser user = initUser(ControllerUtils.getAdminFromSession(session), LogLoginService.CHANNEL_WEB_MANAGER,
                     CommonConstants.getCookiesAdmin(), site, request, response);
             if (null == user) {
                 try {
@@ -79,9 +78,10 @@ public class AdminContextInterceptor extends WebContextInterceptor implements Ba
                     return true;
                 }
             } else if (verifyNeedAuthorized(path)) {
-                if (!SEPARATOR.equals(path)) {
-                    int index = path.lastIndexOf(DOT);
-                    path = path.substring(path.indexOf(SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
+                if (!CommonConstants.SEPARATOR.equals(path)) {
+                    int index = path.lastIndexOf(CommonConstants.DOT);
+                    path = path.substring(path.indexOf(CommonConstants.SEPARATOR) > 0 ? 0 : 1,
+                            index > -1 ? index : path.length());
                     if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
                         try {
                             StringBuilder sb = new StringBuilder(ctxPath);
@@ -98,7 +98,7 @@ public class AdminContextInterceptor extends WebContextInterceptor implements Ba
             user.setNickName(entity.getNickName());
             user.setRoles(entity.getRoles());
             user.setDeptId(entity.getDeptId());
-            AbstractController.setAdminToSession(session, user);
+            ControllerUtils.setAdminToSession(session, user);
         }
         return true;
     }
