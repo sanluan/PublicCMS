@@ -12,30 +12,32 @@ PublicCMS是采用2018年最新主流技术开发的开源JAVACMS系统。架构
 
 https://pan.baidu.com/s/1QIPaIhuASKC_16ZJ6v4SgQ 密码:eo4r
 
-## 获取稳定版源码
+## 获取源码
 
-https://git.oschina.net/sanluan/PublicCMS
+https://gitee.com/sanluan/PublicCMS
 https://github.com/sanluan/PublicCMS
 
-## 参与研发
+## 参与开发
 
-https://git.oschina.net/sanluan/PublicCMS-preview
-https://github.com/sanluan/PublicCMS-preview
+切换到develop分支
 
-## 授权协议变更
+## 授权协议
 
-PublicCMS已经修改授权协议为非商用免费，商用付费
+版本:V1.0,V2016,V2017 完全免费授权协议:MIT
+版本:V4.0 商用付费授权协议:详情参见LICENSE
 
 ## 目录说明
 
 * data\publiccms	PublicCMS数据目录
 * doc			文档
 * publiccms-parent	工程源码
+* license.dat 试用授权
 
 ## 部署运行
 
 * 根据文档部署工程
-* 数据脚本内置管理员账号admin，密码admin
+* 启动后访问程序页面,根据页面提示配置并初始化数据库
+* 管理后台访问相对路径为/admin/,数据脚本内置管理员账号admin，密码admin
 
 ## 演示
 
