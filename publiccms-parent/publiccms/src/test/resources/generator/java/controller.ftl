@@ -35,14 +35,15 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
     
     /**
      * @param entity
-     * @param csrfToken
+     * @param _csrf
      * @param request
      * @param session
      * @return operate result
      */
     @RequestMapping("save")
-    public String save(${entityName} entity, String csrfToken, HttpServletRequest request, HttpSession session) {
-    	if (ControllerUtils.verifyNotEquals("csrfToken", ControllerUtils.getAdminToken(request), csrfToken, model)) {
+    public String save(${entityName} entity, String _csrf, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
+    	if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
                 return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
@@ -62,14 +63,14 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
 
     /**
      * @param ids
-     * @param csrfToken
+     * @param _csrf
      * @param request
      * @param session
      * @return operate result
      */
     @RequestMapping("delete")
-    public String delete(Integer[] ids, String csrfToken, HttpServletRequest request, HttpSession session) {
-    	if (ControllerUtils.verifyNotEquals("csrfToken", ControllerUtils.getAdminToken(request), csrfToken, model)) {
+    public String delete(Integer[] ids, String _csrf, HttpServletRequest request, HttpSession session) {
+    	if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
                 return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);

@@ -57,6 +57,7 @@ public class PlaceController extends AbstractController {
      * @param entity
      * @param returnUrl
      * @param placeParamters
+     * @param _csrf 
      * @param request
      * @param session
      * @param response
@@ -64,7 +65,7 @@ public class PlaceController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "save")
-    public String save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParamters placeParamters,
+    public String save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParamters placeParamters, String _csrf,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
@@ -75,8 +76,9 @@ public class PlaceController extends AbstractController {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
             SysUser user = ControllerUtils.getUserFromSession(session);
-            if (ControllerUtils.verifyCustom("contribute", null == metadata || !metadata.isAllowContribute()
-                    || 0 >= metadata.getSize() || (null == user && !metadata.isAllowAnonymous()), model)) {
+            if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
+                    || ControllerUtils.verifyCustom("contribute", null == metadata || !metadata.isAllowContribute()
+                            || 0 >= metadata.getSize() || (null == user && !metadata.isAllowAnonymous()), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             if (null != entity.getId()) {
