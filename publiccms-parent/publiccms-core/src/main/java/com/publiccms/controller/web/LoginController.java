@@ -2,6 +2,7 @@ package com.publiccms.controller.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -114,22 +115,22 @@ public class LoginController extends AbstractController {
      * @param request
      * @param session
      * @param response
-     * @param model
      * @return result
      */
     @RequestMapping("loginStatus")
     @ResponseBody
-    public ModelMap loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
+    public Map<String,Object> loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
         SysUser user = ControllerUtils.getUserFromSession(session);
+        Map<String,Object> result= new HashMap<>();
         if (null != user) {
-            model.addAttribute("id", user.getId());
-            model.addAttribute("name", user.getName());
-            model.addAttribute("nickname", user.getNickName());
-            model.addAttribute("email", user.getEmail());
-            model.addAttribute("emailChecked", user.isEmailChecked());
-            model.addAttribute("superuserAccess", user.isSuperuserAccess());
+            result.put("id", user.getId());
+            result.put("name", user.getName());
+            result.put("nickname", user.getNickName());
+            result.put("email", user.getEmail());
+            result.put("emailChecked", user.isEmailChecked());
+            result.put("superuserAccess", user.isSuperuserAccess());
         }
-        return model;
+        return result;
     }
 
     /**
