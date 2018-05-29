@@ -234,7 +234,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param id
      * @param modelId
      */
-    public void changeModel(Integer id, String modelId) {
+    public void changeModel(Serializable id, String modelId) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setModelId(modelId);

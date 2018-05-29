@@ -452,7 +452,7 @@ public class CmsContentAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("changeModel")
-    public String changeModel(Integer id, String modelId, String _csrf, HttpServletRequest request, HttpSession session,
+    public String changeModel(Long id, String modelId, String _csrf, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -462,7 +462,7 @@ public class CmsContentAdminController extends AbstractController {
             service.changeModel(id, modelId);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "changeModel.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), new StringBuilder(id).append(" to ").append(modelId).toString()));
+                    CommonUtils.getDate(), new StringBuilder().append(id).append(" to ").append(modelId).toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
