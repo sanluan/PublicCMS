@@ -796,6 +796,7 @@ INSERT INTO `sys_module` VALUES ('136', '节点管理', 'sysCluster/list', NULL,
 INSERT INTO `sys_module` VALUES ('138', '修改配置', 'sysConfigData/edit', 'sysConfigData/save', null, '101', '1', '0');
 INSERT INTO `sys_module` VALUES ('139', '清空配置', null, 'sysConfigData/delete', null, '101', '1', '0');
 INSERT INTO `sys_module` VALUES ('140', '站点配置', 'sysConfig/list', null, '<i class=\"icon-cogs icon-large\"></i>', '62', '1', '0');
+INSERT INTO `sys_module` VALUES ('141', '修改内容模型', 'cmsContent/changeModelParameters', 'cmsContent/changeModel', null, '12', '0', '0');
 INSERT INTO `sys_module` VALUES ('142', '保存配置', null, 'sysConfig/save', null, '140', '1', '0');
 INSERT INTO `sys_module` VALUES ('143', '修改配置', 'sysConfig/add', null, null, '140', '1', '0');
 INSERT INTO `sys_module` VALUES ('144', '删除配置', null, 'sysConfig/delete', null, '140', '1', '0');

@@ -92,7 +92,7 @@
                     <a href="cmsCategory/add.html?copyId=${a.id}" target="navTab" rel="cmsCategory/add">复制分类</a>
                 </#if>
                 <#if authorizedMap['cmsCategory/changeTypeParameters']>
-                    <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" target="dialog" rel="push">修改类型</a>
+                    <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" target="dialog" rel="cmsCategory/changeTypeParameters">修改类型</a>
                 </#if>
                 <#if authorizedMap['cmsPlace/push']>
                     <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" target="dialog" rel="push">推荐</a>

@@ -444,6 +444,31 @@ public class CmsContentAdminController extends AbstractController {
 
     /**
      * @param id
+     * @param modelId
+     * @param _csrf
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("changeModel")
+    public String changeModel(Integer id, String modelId, String _csrf, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        SysSite site = getSite(request);
+        if (CommonUtils.notEmpty(id) && CommonUtils.notEmpty(modelId)) {
+            service.changeModel(id, modelId);
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "changeModel.content", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), new StringBuilder(id).append(" to ").append(modelId).toString()));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param id
      * @param sort
      * @param _csrf
      * @param request

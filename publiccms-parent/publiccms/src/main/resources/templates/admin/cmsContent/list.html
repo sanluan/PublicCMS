@@ -185,6 +185,9 @@
                     <#if authorizedMap['cmsContent/add']>
                         <a href="cmsContent/add.html?id=${a.id}" target="navTab" rel="cmsContent/edit" title="修改内容">修改</a>
                     </#if>
+                    <#if authorizedMap['cmsCategory/changeModelParameters']>
+	                    <a href="cmsCategory/changeModelParameters.html?id=${a.id}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" rel="cmsContent/changeModelParameters">修改内容模型</a>
+	                </#if>
                     <#if authorizedMap['cmsContent/delete']>
                         <a href="cmsContent/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要删除这条记录么?" target="ajaxTodo">删除</a>
                     </#if>

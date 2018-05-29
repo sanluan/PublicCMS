@@ -229,6 +229,17 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
         return entity;
     }
+    
+    /**
+     * @param id
+     * @param modelId
+     */
+    public void changeModel(Integer id, String modelId) {
+        CmsContent entity = getEntity(id);
+        if (null != entity) {
+            entity.setModelId(modelId);
+        }
+    }
 
     /**
      * @param siteId

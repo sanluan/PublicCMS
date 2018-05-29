@@ -333,7 +333,7 @@ public abstract class BaseDao<E> {
     }
 
     /**
-     * @param entityList
+     * @param entity
      */
     protected void index(E entity) {
         getFullTextSession().index(entity);
