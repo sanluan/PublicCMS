@@ -7,8 +7,7 @@
         <div class="tabsHeaderContent">
             <ul>
                 <li><a href="javascript:;" onclick="return false;">输出变量</a></li>
-                <li><a href="javascript:;" onclick="return false;">常用指令</a></li>
-                <li><a href="javascript:;" onclick="return false;">常用方法</a></li>
+                <li><a href="javascript:;" onclick="return false;">常用指令、方法</a></li>
                 <li><a href="javascript:;" onclick="return false;">配置参数</a></li>
                 <li><a href="javascript:;" onclick="return false;">投稿表单</a></li>
             </ul>
@@ -16,7 +15,7 @@
     </div>
     <div class="tabsContent">
         <div class="pageFormContent" layoutH="37">
-            <ul class="tree treeFolder">
+            <ul class="tree">
             <#if metadata?has_content>
                 <li>
                     <a href="javascript:;" onclick="return false;">模板属性</a>
@@ -83,7 +82,7 @@
             </ul>
         </div>
         <div class="pageFormContent" layoutH="37">
-            <ul class="tree treeFolder">
+            <ul class="tree">
             <#if task?has_content>
                 <li>
                     <a href="javascript:;" onclick="return false;">任务计划专用指令</a>
@@ -137,10 +136,6 @@
                         <li><a href="javascript:;" <@getAction r'<@_sendEmail email=email title=title templatePath=templatePath content=content><#if result>发送成功</#if></@_sendEmail>' 'email,title不能为空,content和templatePath不能同时为空'/>>发送邮件</a></li>
                     </ul>
                 </li>
-            </ul>
-        </div>
-        <div class="pageFormContent" layoutH="37">
-            <ul class="tree treeFolder">
                 <li>
                     <a href="javascript:;" onclick="return false;">获取扩展数据</a>
                     <ul>
@@ -174,7 +169,7 @@
             </ul>
         </div>
         <div class="pageFormContent" layoutH="37">
-            <ul class="tree treeFolder">
+            <ul class="tree">
 <@_sysConfigList>
     <#list list as a>
                 <li>
@@ -188,7 +183,7 @@
             </ul>
         </div>
         <div class="pageFormContent" layoutH="37">
-            <ul class="tree treeFolder">
+            <ul class="tree">
                 <li>
                     <a href="javascript:;" onclick="return false;">内容投稿</a>
                     <ul>
