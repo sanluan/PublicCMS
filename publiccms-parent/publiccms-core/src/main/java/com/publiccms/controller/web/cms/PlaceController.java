@@ -57,7 +57,7 @@ public class PlaceController extends AbstractController {
      * @param entity
      * @param returnUrl
      * @param placeParamters
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param response
@@ -76,9 +76,13 @@ public class PlaceController extends AbstractController {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
             SysUser user = ControllerUtils.getUserFromSession(session);
-            if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
-                    || ControllerUtils.verifyCustom("contribute", null == metadata || !metadata.isAllowContribute()
-                            || 0 >= metadata.getSize() || (null == user && !metadata.isAllowAnonymous()), model)) {
+            if (ControllerUtils.verifyCustom("contribute",
+                    null == metadata || !metadata.isAllowContribute() || 0 >= metadata.getSize(), model)
+                    || ControllerUtils.verifyCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            }
+            if (!metadata.isAllowAnonymous()
+                    && ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             if (null != entity.getId()) {
