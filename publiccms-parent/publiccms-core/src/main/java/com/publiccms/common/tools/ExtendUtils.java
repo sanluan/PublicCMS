@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,6 +42,20 @@ public class ExtendUtils {
             }
         }
         return map;
+    }
+
+    /**
+     * @param extendFieldList
+     * @return extent data map
+     */
+    public static List<ExtendData> getDefaultExtentDataList(List<ExtendField> extendFieldList) {
+        List<ExtendData> extendDataList = new ArrayList<>();
+        if (CommonUtils.notEmpty(extendFieldList)) {
+            for (ExtendField extend : extendFieldList) {
+                extendDataList.add(new ExtendData(extend.getId().getCode(), extend.getDefaultValue()));
+            }
+        }
+        return extendDataList;
     }
 
     /**

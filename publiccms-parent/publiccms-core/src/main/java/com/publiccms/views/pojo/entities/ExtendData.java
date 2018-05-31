@@ -3,6 +3,7 @@ package com.publiccms.views.pojo.entities;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  *
  * ExtendData
@@ -10,6 +11,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExtendData implements java.io.Serializable {
+
+    /**
+     * 
+     */
+    public ExtendData() {
+    }
+
+    /**
+     * @param name
+     * @param value
+     */
+    public ExtendData(String name, String value) {
+        this.name = name;
+        this.value = value;
+    }
 
     /**
      * 
@@ -47,7 +63,7 @@ public class ExtendData implements java.io.Serializable {
     }
 
     /**
-     * @param values 
+     * @param values
      */
     public void setValues(String[] values) {
         this.value = StringUtils.arrayToCommaDelimitedString(values);

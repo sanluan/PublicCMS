@@ -17,6 +17,7 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
@@ -326,6 +327,9 @@ public class CmsTemplateAdminController extends AbstractController {
                 }
                 CmsPageMetadata oldmetadata = metadataComponent.getTemplateMetadata(filePath);
                 metadata.setExtendDataList(oldmetadata.getExtendDataList());
+                if (CommonUtils.empty(metadata.getExtendDataList())) {
+                    metadata.setExtendDataList(ExtendUtils.getDefaultExtentDataList(metadata.getExtendList()));
+                }
                 metadataComponent.updateTemplateMetadata(filePath, metadata);
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();
