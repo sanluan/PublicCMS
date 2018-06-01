@@ -45,7 +45,7 @@
             <#break>
         <#case 'textarea'>
             <#if 'view'=type>
-                ${(value)!}
+                <pre>${(value)!}</pre>
             <#else>
                 <textarea name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" </#if>cols="80" rows="4">${(value)!}</textarea>
             </#if>
