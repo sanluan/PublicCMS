@@ -30,6 +30,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
      */
     private static final long serialVersionUID = 1L;
     private int size = 100;
+    private static JedisPool JEDISPOOL;
     private JedisPool jedisPool;
     private String name;
     private byte[] byteName;
@@ -166,7 +167,9 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
 
     @Override
     public void init(String entityName, Integer cacheSize, Properties properties) {
-        init(entityName, cacheSize, RedisUtils.createJedisPool(properties));
+        synchronized (JEDISPOOL) {
+            init(entityName, cacheSize, null == JEDISPOOL ? RedisUtils.createJedisPool(properties) : JEDISPOOL);
+        }
     }
 
     public void init(String entityName, Integer cacheSize, JedisPool pool) {

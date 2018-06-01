@@ -129,15 +129,13 @@ public class DatabaseRedisClient {
      * @return
      */
     public RedisCacheEntity<Object, Object> getCache(String region) {
-        synchronized (regionMap) {
-            RedisCacheEntity<Object, Object> cache = regionMap.get(region);
-            if (null == cache) {
-                cache = new RedisCacheEntity<>();
-                cache.init(region, null, jedisPool);
-                regionMap.put(region, cache);
-            }
-            return cache;
+        RedisCacheEntity<Object, Object> cache = regionMap.get(region);
+        if (null == cache) {
+            cache = new RedisCacheEntity<>();
+            cache.init(region, null, jedisPool);
+            regionMap.put(region, cache);
         }
+        return cache;
     }
 
     /**
