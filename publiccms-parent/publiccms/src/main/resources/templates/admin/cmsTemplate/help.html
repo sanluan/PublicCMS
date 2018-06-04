@@ -15,7 +15,7 @@
     </div>
     <div class="tabsContent">
         <div class="pageFormContent" layoutH="37">
-            <ul class="tree">
+            <ul class="tree treeFolder">
             <#if metadata?has_content>
                 <li>
                     <a href="javascript:;" onclick="return false;">模板属性</a>
@@ -82,7 +82,7 @@
             </ul>
         </div>
         <div class="pageFormContent" layoutH="37">
-            <ul class="tree">
+            <ul class="tree treeFolder">
             <#if task?has_content>
                 <li>
                     <a href="javascript:;" onclick="return false;">任务计划专用指令</a>
@@ -106,22 +106,22 @@
                         <li><a href="javascript:;" <@getAction r'<@_categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryList>' 'parentId:父分类ID,typeId:分类类型ID,allowContribute:["true":允许投稿,"false":不允许投稿,默认全部],pageIndex:页码,count:每页数据条数'/>>分类</a></li>
                         <li><a href="javascript:;" <@getAction r'<@_categoryTypeList pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryTypeList>' 'pageIndex:页码,count:每页数据条数'/>>分类类型</a></li>
                         <li><a href="javascript:;" <@getAction r'<@_placeList path=path orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_placeList>'/>>推荐位数据列表</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_search word=word tagId=tagId categoryId=categoryId containChild=containChild categoryIds=categoryIds modelIds=modelIds startPublishDate=startPublishDate pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_search>' 'word:关键词,tagId:标签ID,categoryId:分类ID,containChild:是否包含子分类,categoryIds:多个分类ID,modelIds:多个模型ID'/>>搜索</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_facetSearch>'/>>高级搜索</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_search word=word tagId=tagId categoryId=categoryId containChild=containChild categoryIds=categoryIds modelIds=modelIds startPublishDate=startPublishDate pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_search>' 'word:关键词,tagId:标签ID,categoryId:分类ID,containChild:是否包含子分类,categoryIds:多个分类ID,modelIds:多个模型ID,startPublishDate:开始日期,orderField:排序字段["publishDate":发布日期逆序]'/>>搜索</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_facetSearch>' 'word:关键词,tagId:标签ID,categoryId:分类ID,modelId:模型ID,startPublishDate:开始日期,endPublishDate:结束日期,orderField:排序字段["publishDate":发布日期逆序]'/>>高级搜索</a></li>
                         <li><a href="javascript:;" <@getAction r'<@_modelList parentId=parentId hasChild=hasChild onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles><#list page.list as a>${a.id}:${a.name}<#sep>,</#list></@_modelList>'/>>模型</a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:;" onclick="return false;">获取单条/多条数据</a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<@_content id=id><a href="${object.url!}">${object.title}</a></@_content>'/>>内容</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_content ids=ids><#list map as k,content><a href="${content.url!}">${content.title}</a><#sep>,</#list></@_content>'/>>多条内容</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_category id=id><a href="${object.url!}">${object.name}</a></@_category>'/>>分类</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_category ids=ids><#list map as k,category><a href="${category.url!}">${category.name}</a><#sep>,</#list></@_category>'/>>多个分类</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_tag id=id>${object.name}</@_tag>'/>>标签</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_tag ids=ids><#list map as k,tag>${tag.name}<#sep>,</#list></@_tag>'/>>多个标签</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_sysUser id=id>${object.nickName}</@_sysUser>'/>>用户</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_sysUser ids=ids><#list map as k,user>${user.nickName}<#sep>,</#list></@_sysUser>'/>>多个用户</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_content id=id><a href="${object.url!}">${object.title}</a></@_content>' 'id:内容ID'/>>内容</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_content ids=ids><#list map as k,content><a href="${content.url!}">${content.title}</a><#sep>,</#list></@_content>' 'ids:多个内容ID'/>>多条内容</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_category id=id><a href="${object.url!}">${object.name}</a></@_category>' 'id:分类ID'/>>分类</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_category ids=ids><#list map as k,category><a href="${category.url!}">${category.name}</a><#sep>,</#list></@_category>' 'ids:多个分类ID'/>>多个分类</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_tag id=id>${object.name}</@_tag>' 'id:标签ID'/>>标签</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_tag ids=ids><#list map as k,tag>${tag.name}<#sep>,</#list></@_tag>' 'ids:多个标签ID'/>>多个标签</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_sysUser id=id>${object.nickName}</@_sysUser>' 'id:用户ID'/>>用户</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_sysUser ids=ids><#list map as k,user>${user.nickName}<#sep>,</#list></@_sysUser>' 'ids:多个用户ID'/>>多个用户</a></li>
                     </ul>
                 </li>
                 <li>
@@ -169,13 +169,23 @@
             </ul>
         </div>
         <div class="pageFormContent" layoutH="37">
-            <ul class="tree">
+            <ul class="tree treeFolder">
 <@_sysConfigList>
     <#list list as a>
+    	<#if 'siteAttribute' != a.code>
                 <li>
-<#assign field><@_sysConfigFieldList code=a.code><#list list as extend>object.${extend.id.code}:${extend.name}<#sep>,<#else>没有字段</#list></@_sysConfigFieldList></#assign>
                     <a href="javascript:;" <@getAction r'<@_sysConfigData code="'+a.code+r'"></@_sysConfigData>' field/>>${a.code}:${a.description!}</a>
+                    <ul>
+                    	<@_sysConfigFieldList code=a.code>
+                    		<#list list as extend>
+                    	<li><a href="javascript:;" <@getAction r'<@_sysConfigData code="'+a.code+r'">${'+extend.id.code+r'!}</@_sysConfigData>' a.description+':'+extend.name/>>${extend.name}</a></li>
+                    		<#else>
+                    	<li>没有字段</li>
+                    		</#list>
+                    	</@_sysConfigFieldList>
+                    </ul>
                 </li>
+         </#if>
     <#else>
                 <li><a href="javascript:;" onclick="return false;">没有配置项</a></li>
     </#list>
@@ -183,7 +193,7 @@
             </ul>
         </div>
         <div class="pageFormContent" layoutH="37">
-            <ul class="tree">
+            <ul class="tree treeFolder">
                 <li>
                     <a href="javascript:;" onclick="return false;">内容投稿</a>
                     <ul>
