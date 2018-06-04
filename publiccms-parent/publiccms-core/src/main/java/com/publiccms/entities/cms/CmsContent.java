@@ -23,6 +23,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.SortableField;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.hibernate.search.bridge.builtin.ShortBridge;
@@ -114,6 +115,7 @@ public class CmsContent implements java.io.Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Field(analyze = Analyze.NO)
     @DateBridge(resolution = Resolution.MILLISECOND)
+    @SortableField
     private Date publishDate;
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;

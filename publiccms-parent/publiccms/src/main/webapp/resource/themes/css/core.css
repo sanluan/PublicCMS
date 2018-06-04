@@ -369,7 +369,7 @@ a.btnAttach{ background-position:-182px 3px}
 .alert .confirm h1{ background-position:2px 8px;}
 .alert p{ margin:10px;}
 
-.alert .toolBar{ display:block;overflow:hidden;height:25px;padding-top:5px;text-align:right;}
+.alert .toolBar{ display:block;overflow:hidden;height:30px;padding-top:5px;text-align:right;}
 .alert .toolBar ul{ float:right;}
 .alert .toolBar li{ float:left;}
 .alert .toolBar .button, .alert .toolBar .buttonActive{ margin-left:5px;}
