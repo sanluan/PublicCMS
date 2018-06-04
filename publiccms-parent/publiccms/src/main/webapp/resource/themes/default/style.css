@@ -117,6 +117,6 @@ table.list .selected a{ color:#ffffff;}
 .formBar,.divider{ border-color:#5A6D95;}
 
 /* combox */
-.combox .select a{ color:#183152;}
+.combox .select a,table.list .combox .select a{ color:#183152;}
 .comboxop{ border-color:#B8D0D6;}
 .combox, .combox div, .combox div a{ background-image:url(./images/search-bg.gif);background-repeat:no-repeat;}
