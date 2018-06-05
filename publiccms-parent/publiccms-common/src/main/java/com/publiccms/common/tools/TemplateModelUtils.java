@@ -194,7 +194,7 @@ public class TemplateModelUtils {
             return values;
         }
         String str = converString(model);
-        if (CommonUtils.notEmpty(str)) {
+        if (null != str) {
             if (0 <= str.indexOf(Constants.COMMA_DELIMITED)) {
                 return StringUtils.split(str, Constants.COMMA_DELIMITED);
             } else {
@@ -246,7 +246,7 @@ public class TemplateModelUtils {
                 if (DateFormatUtils.FULL_DATE_LENGTH == temp.length()) {
                     return DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING).parse(temp);
                 } else if (DateFormatUtils.SHORT_DATE_LENGTH == temp.length()) {
-                        return DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING).parse(temp);
+                    return DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING).parse(temp);
                 } else {
                     try {
                         return new Date(Long.parseLong(temp));

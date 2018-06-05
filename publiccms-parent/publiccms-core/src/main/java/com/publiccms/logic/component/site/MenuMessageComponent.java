@@ -40,18 +40,21 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
         Map<Locale, MessageFormat> messageFormatMap = messageFormatCaches.get(code);
         if (null == messageFormatMap) {
             messageFormatMap = new HashMap<>();
-            MessageFormat messageFormat = messageFormatMap.get(locale);
-            if (null == messageFormat) {
-                String message = resolveCodeWithoutArguments(code, locale);
-                if (null != message) {
-                    messageFormat = createMessageFormat(message, locale);
-                    messageFormatMap.put(locale, messageFormat);
-                    return messageFormat;
-                }
-            }
             messageFormatCaches.put(code, messageFormatMap);
         }
-        return null;
+        MessageFormat messageFormat = messageFormatMap.get(locale);
+        if (null == messageFormat) {
+            String message = resolveCodeWithoutArguments(code, locale);
+            if (null != message) {
+                messageFormat = createMessageFormat(message, locale);
+                messageFormatMap.put(locale, messageFormat);
+                return messageFormat;
+            } else {
+                return null;
+            }
+        } else {
+            return messageFormat;
+        }
     }
 
     @Override

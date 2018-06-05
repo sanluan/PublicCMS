@@ -14,27 +14,33 @@
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
-        <dl class="nowrap">
+        <dl>
             <dt>ID:</dt>
             <dd>
                 <input class="required" remote="sysModule/virify.do?oldId=${id!}" data-msg-remote="ID已存在" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt>父模块:</dt>
-            <dd>
-                <input name="parentId" type="hidden" value="${parentId!}" />
-                <input name="parentName" readonly="readonly" type="text" size="50" value="${(module.name)!}"/>
-                <a class="btnLook" href="sysModule/lookup.html" lookupGroup="">选择</a>
-            </dd>
-        </dl>
-        <dl class="nowrap">
-            <dt>默认名称:</dt>
-            <dd>
-                <input class="required" name="name" type="text" size="50" maxlength="100" value="${(a.name)!}"/>
                 <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/>菜单</label>
             </dd>
         </dl>
+        <dl>
+            <dt>父模块:</dt>
+            <dd>
+                <input name="parentId" type="hidden" value="${parentId!}" />
+                <input name="parentName" readonly="readonly" type="text" size="20" value="${(module.name)!}"/>
+                <a class="btnLook" href="sysModule/lookup.html" lookupGroup="">选择</a>
+            </dd>
+        </dl>
+      <fieldset>
+      	<legend>名称:</legend>
+      	<#list langs as k,v>
+	        <dl class="nowrap">
+	            <dt>${v}:</dt>
+	            <dd>
+	            	<input type="hidden" name="langList[${k?index}].id.lang" value="${k}"/>
+	            	<input class="required" name="langList[${k?index}].value" type="text" size="20" maxlength="100" value="<@_sysModuleLang moduleId=id lang=k>${object.value!}</@_sysModuleLang>"/>
+	            </dd>
+	        </dl>
+        </#list>
+      </fieldset>
     <#if deep lte 2>
         <dl class="nowrap">
             <dt>附加图标:</dt>
@@ -48,14 +54,14 @@
             <dt>页面地址:</dt>
             <dd>
                 <input name="url" type="text" size="30" value="${(a.url)!}"/>
-                <span class="info">此模块的展示页面，不带后缀</span>
+                <span class="info">此模块的展示页面，不带后缀。当用户所属角色显示所有模块时，将拥有这个地址权限</span>
             </dd>
         </dl>
         <dl class="nowrap">
             <dt>授权访问地址:</dt>
             <dd>
                 <textarea name="authorizedUrl" cols="80" rows="8">${(a.authorizedUrl)!}</textarea>
-                <span class="info">此模块需要授权的URL请求路径，使用逗号分隔，不带后缀</span>
+                <span class="info">此模块需要授权的URL请求路径，不带后缀，使用逗号分隔。仅拥有所有权限或被授权管理该模块的角色拥有这些地址权限</span>
             </dd>
         </dl>
         <dl>

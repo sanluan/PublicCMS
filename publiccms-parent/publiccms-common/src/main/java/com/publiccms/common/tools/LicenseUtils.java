@@ -42,7 +42,7 @@ public class LicenseUtils {
             try {
                 BufferedReader br = new BufferedReader(new StringReader(licenseText));
                 String temp = null;
-                while ((temp = br.readLine()) != null) {
+                while (null != (temp = br.readLine())) {
                     String[] values = StringUtils.split(temp, "=", 2);
                     if (values.length == 2) {
                         license.put(values[0], values[1]);

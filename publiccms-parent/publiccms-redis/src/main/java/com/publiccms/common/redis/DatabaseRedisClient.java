@@ -142,14 +142,14 @@ public class DatabaseRedisClient {
      * @return
      */
     public boolean isShutdown() {
-        return jedisPool != null && jedisPool.isClosed();
+        return null != jedisPool && jedisPool.isClosed();
     }
 
     /**
      * 
      */
     public void shutdown() {
-        if (jedisPool != null) {
+        if (null != jedisPool) {
             jedisPool.destroy();
         }
     }

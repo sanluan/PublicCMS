@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,11 +25,14 @@ import com.publiccms.entities.sys.SysModule;
 import com.publiccms.entities.sys.SysRole;
 import com.publiccms.entities.sys.SysRoleModule;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.sys.SysModuleLangService;
 import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleModuleService;
 import com.publiccms.logic.service.sys.SysRoleService;
+import com.publiccms.views.pojo.model.SysModuleParamters;
 
 /**
  *
@@ -41,6 +45,8 @@ public class SysModuleAdminController extends AbstractController {
     @Autowired
     private SysModuleService service;
     @Autowired
+    private SysModuleLangService sysModuleLangService;
+    @Autowired
     private SysRoleService roleService;
     @Autowired
     private SysModuleService moduleService;
@@ -48,9 +54,12 @@ public class SysModuleAdminController extends AbstractController {
     private SysRoleModuleService roleModuleService;
     @Autowired
     private SysRoleAuthorizedService roleAuthorizedService;
+    @Autowired
+    private MenuMessageComponent menuMessageComponent;
 
     /**
      * @param entity
+     * @param moduleParamters
      * @param oldId
      * @param _csrf
      * @param request
@@ -59,13 +68,14 @@ public class SysModuleAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysModule entity, String oldId, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String save(SysModule entity, @ModelAttribute SysModuleParamters moduleParamters, String oldId, String _csrf,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
+        entity.setName("#");
         if (CommonUtils.notEmpty(oldId)) {
             if (!entity.getId().equals(oldId)
                     && ControllerUtils.verifyHasExist("module", service.getEntity(entity.getId()), model)) {
@@ -80,16 +90,19 @@ public class SysModuleAdminController extends AbstractController {
                 List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService
                         .getPage(null, entity.getId(), null, null).getList();
                 dealRoleAuthorized(roleModuleList);
+                sysModuleLangService.save(oldId, entity.getId(), moduleParamters.getLangList());
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.module", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             service.save(entity);
+            sysModuleLangService.save(null, entity.getId(), moduleParamters.getLangList());
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
         }
+        menuMessageComponent.clear();
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -130,6 +143,8 @@ public class SysModuleAdminController extends AbstractController {
         SysModule entity = service.getEntity(id);
         if (null != entity) {
             service.delete(id);
+            service.updateParentId(id, null);
+            sysModuleLangService.delete(id);
             @SuppressWarnings("unchecked")
             List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, id, null, null).getList();
             roleModuleService.deleteByModuleId(id);
@@ -138,6 +153,7 @@ public class SysModuleAdminController extends AbstractController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.module", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
+        menuMessageComponent.clear();
         return CommonConstants.TEMPLATE_DONE;
     }
 

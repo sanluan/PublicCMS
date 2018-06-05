@@ -52,7 +52,7 @@ public class IndexAdminController extends AbstractController {
      */
     @RequestMapping("changeLocale")
     public String changeLocale(String lang, HttpServletRequest request, HttpServletResponse response) {
-        if (lang != null) {
+        if (null != lang) {
             LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
             if (null != localeResolver) {
                 localeResolver.setLocale(request, response, StringUtils.parseLocaleString(lang));
