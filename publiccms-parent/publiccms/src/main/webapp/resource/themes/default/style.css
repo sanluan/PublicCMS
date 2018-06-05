@@ -9,6 +9,7 @@ a{ color:#48597A;}
 /* Header */
 header,footer{ border-color:#293950;background-color:#293950;color:#a4a4a4;}
 header a,footer a{ color:#ffffff;}
+header .nav ul{background:#ffffff;border-color:#293950;}
 main{ background-color:#48597A;color:#293950;}
 
 /* NavMenu */

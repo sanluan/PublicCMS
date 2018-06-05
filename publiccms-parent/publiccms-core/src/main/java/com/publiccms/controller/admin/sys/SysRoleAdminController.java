@@ -57,14 +57,14 @@ public class SysRoleAdminController extends AbstractController {
     /**
      * @param entity
      * @param moduleIds
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysRole entity, Integer[] moduleIds, String _csrf, HttpServletRequest request, HttpSession session,
+    public String save(SysRole entity, String[] moduleIds, String _csrf, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -91,7 +91,7 @@ public class SysRoleAdminController extends AbstractController {
             service.save(entity);
             if (CommonUtils.notEmpty(moduleIds)) {
                 List<SysRoleModule> list = new ArrayList<>();
-                for (int moduleId : moduleIds) {
+                for (String moduleId : moduleIds) {
                     list.add(new SysRoleModule(new SysRoleModuleId(entity.getId(), moduleId)));
                 }
                 roleModuleService.save(list);
@@ -101,13 +101,13 @@ public class SysRoleAdminController extends AbstractController {
                     JsonUtils.getString(entity)));
         }
         roleAuthorizedService.dealRoleModules(entity.getId(), entity.isShowAllModule(), moduleService.getEntitys(moduleIds),
-                moduleService.getPageUrl(null));
+                entity.isShowAllModule() ? moduleService.getPageUrl(null) : null);
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param id
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model

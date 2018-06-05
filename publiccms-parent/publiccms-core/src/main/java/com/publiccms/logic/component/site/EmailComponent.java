@@ -91,20 +91,25 @@ public class EmailComponent implements SiteCache, Config {
      * @param config
      * @return mail sender
      */
-    public synchronized JavaMailSender getMailSender(short siteId, Map<String, String> config) {
+    public JavaMailSender getMailSender(short siteId, Map<String, String> config) {
         JavaMailSenderImpl javaMailSender = cache.get(siteId);
         if (null == javaMailSender) {
-            javaMailSender = new JavaMailSenderImpl();
-            javaMailSender.setDefaultEncoding(config.get(CONFIG_DEFAULTENCODING));
-            javaMailSender.setHost(config.get(CONFIG_HOST));
-            javaMailSender.setPort(Integer.parseInt(config.get(CONFIG_PORT)));
-            javaMailSender.setUsername(config.get(CONFIG_USERNAME));
-            javaMailSender.setPassword(config.get(CONFIG_PASSWORD));
-            Properties properties = new Properties();
-            properties.setProperty("mail.smtp.auth", config.get(CONFIG_AUTH));
-            properties.setProperty("mail.smtp.timeout", config.get(CONFIG_TIMEOUT));
-            javaMailSender.setJavaMailProperties(properties);
-            cache.put(siteId, javaMailSender);
+            synchronized (cache) {
+                javaMailSender = cache.get(siteId);
+                if (null == javaMailSender) {
+                    javaMailSender = new JavaMailSenderImpl();
+                    javaMailSender.setDefaultEncoding(config.get(CONFIG_DEFAULTENCODING));
+                    javaMailSender.setHost(config.get(CONFIG_HOST));
+                    javaMailSender.setPort(Integer.parseInt(config.get(CONFIG_PORT)));
+                    javaMailSender.setUsername(config.get(CONFIG_USERNAME));
+                    javaMailSender.setPassword(config.get(CONFIG_PASSWORD));
+                    Properties properties = new Properties();
+                    properties.setProperty("mail.smtp.auth", config.get(CONFIG_AUTH));
+                    properties.setProperty("mail.smtp.timeout", config.get(CONFIG_TIMEOUT));
+                    javaMailSender.setJavaMailProperties(properties);
+                    cache.put(siteId, javaMailSender);
+                }
+            }
         }
         return javaMailSender;
     }

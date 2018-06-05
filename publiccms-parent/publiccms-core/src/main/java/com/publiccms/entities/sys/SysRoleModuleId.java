@@ -19,12 +19,12 @@ public class SysRoleModuleId implements java.io.Serializable {
     @GeneratorColumn(title = "角色", condition = true)
     private int roleId;
     @GeneratorColumn(title = "模块", condition = true)
-    private int moduleId;
+    private String moduleId;
 
     public SysRoleModuleId() {
     }
 
-    public SysRoleModuleId(int roleId, int moduleId) {
+    public SysRoleModuleId(int roleId, String moduleId) {
         this.roleId = roleId;
         this.moduleId = moduleId;
     }
@@ -38,12 +38,12 @@ public class SysRoleModuleId implements java.io.Serializable {
         this.roleId = roleId;
     }
 
-    @Column(name = "module_id", nullable = false)
-    public int getModuleId() {
+    @Column(name = "module_id", nullable = false, length = 20)
+    public String getModuleId() {
         return this.moduleId;
     }
 
-    public void setModuleId(int moduleId) {
+    public void setModuleId(String moduleId) {
         this.moduleId = moduleId;
     }
 
@@ -56,14 +56,16 @@ public class SysRoleModuleId implements java.io.Serializable {
             return false;
         SysRoleModuleId castOther = (SysRoleModuleId) other;
 
-        return (this.getRoleId() == castOther.getRoleId()) && (this.getModuleId() == castOther.getModuleId());
+        return (this.getRoleId() == castOther.getRoleId())
+                && ((this.getModuleId() == castOther.getModuleId()) || (this.getModuleId() != null
+                        && castOther.getModuleId() != null && this.getModuleId().equals(castOther.getModuleId())));
     }
 
     public int hashCode() {
         int result = 17;
 
         result = 37 * result + this.getRoleId();
-        result = 37 * result + this.getModuleId();
+        result = 37 * result + (getModuleId() == null ? 0 : this.getModuleId().hashCode());
         return result;
     }
 

@@ -1,5 +1,6 @@
 package com.publiccms.logic.service.sys;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,8 +32,27 @@ public class SysModuleService extends BaseService<SysModule> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer parentId, Boolean menu, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(String parentId, Boolean menu, Integer pageIndex, Integer pageSize) {
         return dao.getPage(parentId, menu, pageIndex, pageSize);
+    }
+    
+    public SysModule update(Serializable id, SysModule newEntity) {
+        delete(id);
+        save(newEntity);
+        return newEntity;
+    }
+
+    /**
+     * @param oldParentId
+     * @param parentId
+     */
+    @SuppressWarnings("unchecked")
+    public void updateParentId(String oldParentId, String parentId) {
+        if (CommonUtils.notEmpty(oldParentId)) {
+            for (SysModule entity : (List<SysModule>) getPage(oldParentId, null, null, PageHandler.MAX_PAGE_SIZE).getList()) {
+                entity.setParentId(parentId);
+            }
+        }
     }
 
     /**
@@ -40,9 +60,9 @@ public class SysModuleService extends BaseService<SysModule> {
      * @return
      */
     @SuppressWarnings("unchecked")
-    public Set<String> getPageUrl(Integer parentId) {
+    public Set<String> getPageUrl(String parentId) {
         Set<String> urls = new HashSet<>();
-        for (SysModule entity : (List<SysModule>) getPage(parentId, null, null, null).getList()) {
+        for (SysModule entity : (List<SysModule>) getPage(parentId, null, null, PageHandler.MAX_PAGE_SIZE).getList()) {
             if (CommonUtils.notEmpty(entity.getUrl())) {
                 int index = entity.getUrl().indexOf("?");
                 urls.add(entity.getUrl().substring(0, index > 0 ? index : entity.getUrl().length()));
@@ -54,5 +74,5 @@ public class SysModuleService extends BaseService<SysModule> {
 
     @Autowired
     private SysModuleDao dao;
-    
+
 }

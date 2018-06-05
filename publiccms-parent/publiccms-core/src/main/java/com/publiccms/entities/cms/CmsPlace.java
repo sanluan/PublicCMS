@@ -38,7 +38,7 @@ public class CmsPlace implements java.io.Serializable {
     @GeneratorColumn(title = "路径", condition = true)
     private String path;
     @GeneratorColumn(title = "推荐用户", condition = true)
-    private long userId;
+    private Long userId;
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
     @GeneratorColumn(title = "项目ID", condition = true)
@@ -64,11 +64,10 @@ public class CmsPlace implements java.io.Serializable {
     public CmsPlace() {
     }
 
-    public CmsPlace(short siteId, String path, long userId, String title, Date createDate, Date publishDate, int status, int clicks,
+    public CmsPlace(short siteId, String path, String title, Date createDate, Date publishDate, int status, int clicks,
             boolean disabled) {
         this.siteId = siteId;
         this.path = path;
-        this.userId = userId;
         this.title = title;
         this.createDate = createDate;
         this.publishDate = publishDate;
@@ -77,7 +76,7 @@ public class CmsPlace implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsPlace(short siteId, String path, long userId, String itemType, Long itemId, String title, String url, String cover,
+    public CmsPlace(short siteId, String path, Long userId, String itemType, Long itemId, String title, String url, String cover,
             Date createDate, Date publishDate, int status, int clicks, boolean disabled) {
         this.siteId = siteId;
         this.path = path;
@@ -124,12 +123,12 @@ public class CmsPlace implements java.io.Serializable {
         this.path = path;
     }
 
-    @Column(name = "user_id", nullable = false)
-    public long getUserId() {
+    @Column(name = "user_id")
+    public Long getUserId() {
         return this.userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

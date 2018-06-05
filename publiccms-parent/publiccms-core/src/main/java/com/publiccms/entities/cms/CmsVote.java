@@ -35,6 +35,9 @@ public class CmsVote implements java.io.Serializable {
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    @GeneratorColumn(title = "开始日期", condition = true, order = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date startDate;
     @GeneratorColumn(title = "结束日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date endDate;
@@ -54,8 +57,10 @@ public class CmsVote implements java.io.Serializable {
     public CmsVote() {
     }
 
-    public CmsVote(short siteId, Date endDate, int maxVote, int userCounts, String url, String title, boolean disabled) {
+    public CmsVote(short siteId, Date startDate, Date endDate, int maxVote, int userCounts, String url, String title,
+            boolean disabled) {
         this.siteId = siteId;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.maxVote = maxVote;
         this.userCounts = userCounts;
@@ -64,9 +69,10 @@ public class CmsVote implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsVote(short siteId, Date endDate, int maxVote, int userCounts, String url, String title, String description,
-            boolean disabled) {
+    public CmsVote(short siteId, Date startDate, Date endDate, int maxVote, int userCounts, String url, String title,
+            String description, boolean disabled) {
         this.siteId = siteId;
+        this.startDate = startDate;
         this.endDate = endDate;
         this.maxVote = maxVote;
         this.userCounts = userCounts;
@@ -95,6 +101,16 @@ public class CmsVote implements java.io.Serializable {
 
     public void setSiteId(short siteId) {
         this.siteId = siteId;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "start_date", nullable = false, length = 19)
+    public Date getStartDate() {
+        return this.startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

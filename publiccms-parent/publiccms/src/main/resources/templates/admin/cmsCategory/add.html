@@ -161,6 +161,7 @@ function clickAddTagType(){
                         <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
         </#if>
+        				<label>&nbsp;</label>
                         <@childModel a/>
                     </dd>
                 </dl>

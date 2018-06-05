@@ -25,17 +25,17 @@ public class SysRoleModuleDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer[] roleIds = handler.getIntegerArray("roleIds");
-        Integer moduleId = handler.getInteger("moduleId");
+        String moduleId = handler.getString("moduleId");
         if (CommonUtils.notEmpty(roleIds)) {
             if (CommonUtils.notEmpty(moduleId)) {
                 SysRoleModule entity = service.getEntity(roleIds, moduleId);
                 handler.put("object", entity).render();
             } else {
-                Integer[] moduleIds = handler.getIntegerArray("moduleIds");
+                String[] moduleIds = handler.getStringArray("moduleIds");
                 if (CommonUtils.notEmpty(moduleIds)) {
                     Map<String, Boolean> map = new LinkedHashMap<>();
                     if (sysRoleService.showAllModule(roleIds)) {
-                        for (Integer id : moduleIds) {
+                        for (String id : moduleIds) {
                             map.put(String.valueOf(id), true);
                         }
                     } else {

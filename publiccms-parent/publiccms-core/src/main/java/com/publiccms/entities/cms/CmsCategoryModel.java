@@ -45,7 +45,7 @@ public class CmsCategoryModel implements java.io.Serializable {
     @EmbeddedId
 
     @AttributeOverrides({ @AttributeOverride(name = "categoryId", column = @Column(name = "category_id", nullable = false)),
-            @AttributeOverride(name = "modelId", column = @Column(name = "model_id", nullable = false)) })
+            @AttributeOverride(name = "modelId", column = @Column(name = "model_id", nullable = false, length = 20)) })
     public CmsCategoryModelId getId() {
         return this.id;
     }

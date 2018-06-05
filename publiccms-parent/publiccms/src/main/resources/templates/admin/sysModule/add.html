@@ -5,7 +5,7 @@
 <@_sysModule id=parentId!><#assign module=object/></@_sysModule>
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
 <form method="post" action="sysModule/save.do?callbackType=closeCurrent&navTabId=sysModule/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="id" type="hidden" value="${id!}" />
+    <input name="oldId" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
@@ -15,6 +15,12 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
+            <dt>ID:</dt>
+            <dd>
+                <input class="required" remote="sysModule/virify.do?oldId=${id!}" data-msg-remote="ID已存在" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
+            </dd>
+        </dl>
+        <dl class="nowrap">
             <dt>父模块:</dt>
             <dd>
                 <input name="parentId" type="hidden" value="${parentId!}" />
@@ -23,7 +29,7 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>名称:</dt>
+            <dt>默认名称:</dt>
             <dd>
                 <input class="required" name="name" type="text" size="50" maxlength="100" value="${(a.name)!}"/>
                 <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/>菜单</label>

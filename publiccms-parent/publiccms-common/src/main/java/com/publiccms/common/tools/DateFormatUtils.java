@@ -37,7 +37,7 @@ public class DateFormatUtils {
         Map<String, DateFormat> map = threadLocal.get();
         DateFormat format = null;
         if (map == null) {
-            map = new HashMap<String, DateFormat>();
+            map = new HashMap<>();
             format = new SimpleDateFormat(pattern);
             map.put(pattern, format);
             threadLocal.set(map);

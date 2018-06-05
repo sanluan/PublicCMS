@@ -376,7 +376,7 @@ public class TemplateComponent implements Cache {
         webFile.mkdirs();
         webConfiguration.setDirectoryForTemplateLoading(webFile);
         copyConfig(adminConfiguration, webConfiguration);
-        Map<String, Object> webFreemarkerVariables = new HashMap<String, Object>(freemarkerVariables);
+        Map<String, Object> webFreemarkerVariables = new HashMap<>(freemarkerVariables);
         webFreemarkerVariables.put(TemplateCacheComponent.CONTENT_CACHE, new NoCacheDirective());
         webConfiguration.setAllSharedVariables(new SimpleHash(webFreemarkerVariables, webConfiguration.getObjectWrapper()));
 

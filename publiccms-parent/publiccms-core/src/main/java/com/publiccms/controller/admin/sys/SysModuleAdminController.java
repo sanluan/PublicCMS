@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
@@ -48,25 +49,32 @@ public class SysModuleAdminController extends AbstractController {
     @Autowired
     private SysRoleAuthorizedService roleAuthorizedService;
 
-    private String[] ignoreProperties = new String[] { "id" };
-
     /**
      * @param entity
-     * @param _csrf 
+     * @param oldId
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysModule entity, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(SysModule entity, String oldId, String _csrf, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (null != entity.getId()) {
-            entity = service.update(entity.getId(), entity, ignoreProperties);
+        if (CommonUtils.notEmpty(oldId)) {
+            if (!entity.getId().equals(oldId)
+                    && ControllerUtils.verifyHasExist("module", service.getEntity(entity.getId()), model)) {
+                return CommonConstants.TEMPLATE_ERROR;
+            }
+            entity = service.update(oldId, entity);
+            if (!entity.getId().equals(oldId)) {
+                service.updateParentId(oldId, entity.getId());
+            }
             if (null != entity) {
                 @SuppressWarnings("unchecked")
                 List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService
@@ -87,15 +95,33 @@ public class SysModuleAdminController extends AbstractController {
 
     /**
      * @param id
-     * @param _csrf 
+     * @param oldId
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("virify")
+    @ResponseBody
+    public boolean virify(String id, String oldId, ModelMap model) {
+        if (CommonUtils.notEmpty(id)) {
+            if (CommonUtils.notEmpty(oldId) && !id.equals(oldId)
+                    && ControllerUtils.verifyHasExist("module", service.getEntity(id), model)
+                    || CommonUtils.empty(oldId) && ControllerUtils.verifyHasExist("module", service.getEntity(id), model)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param id
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
-    @SuppressWarnings("unchecked")
     @RequestMapping("delete")
-    public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(String id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
@@ -104,6 +130,7 @@ public class SysModuleAdminController extends AbstractController {
         SysModule entity = service.getEntity(id);
         if (null != entity) {
             service.delete(id);
+            @SuppressWarnings("unchecked")
             List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, id, null, null).getList();
             roleModuleService.deleteByModuleId(id);
             dealRoleAuthorized(roleModuleList);
@@ -116,9 +143,8 @@ public class SysModuleAdminController extends AbstractController {
 
     @SuppressWarnings("unchecked")
     private void dealRoleAuthorized(List<SysRoleModule> roleModuleList) {
-        Set<String> pageUrls = moduleService.getPageUrl(null);
         for (SysRoleModule roleModule : roleModuleList) {
-            Set<Integer> moduleIds = new HashSet<Integer>();
+            Set<String> moduleIds = new HashSet<>();
             for (SysRoleModule roleModule2 : (List<SysRoleModule>) roleModuleService
                     .getPage(roleModule.getId().getRoleId(), null, null, null).getList()) {
                 moduleIds.add(roleModule2.getId().getModuleId());
@@ -126,7 +152,8 @@ public class SysModuleAdminController extends AbstractController {
             SysRole role = roleService.getEntity(roleModule.getId().getRoleId());
             if (!moduleIds.isEmpty() && null != role && !role.isOwnsAllRight()) {
                 roleAuthorizedService.dealRoleModules(roleModule.getId().getRoleId(), role.isShowAllModule(),
-                        service.getEntitys(moduleIds.toArray(new Integer[moduleIds.size()])), pageUrls);
+                        service.getEntitys(moduleIds.toArray(new Integer[moduleIds.size()])),
+                        role.isShowAllModule() ? moduleService.getPageUrl(null) : null);
             }
         }
     }

@@ -52,13 +52,13 @@ $(function(){
     <a class="logo" href="./"><img src="${res}/themes/logo.png"/></a>
     <ul class="nav">
         <li><i class="icon-user icon-large"></i> ${(admin.nickName)!}</li>
-        <!-- <li id="switchEnvBox"><i class="icon-wrench icon-large"></i> <a href="javascript:">切换语言</a>
+        <li id="switchEnvBox"><i class="icon-wrench icon-large"></i> <a href="javascript:">切换语言</a>
             <ul>
-                <li><a href="changeLocale?lang=zh" target="ajaxTodo">中文</a></li>
-                <li><a href="changeLocale?lang=en" target="ajaxTodo">English</a></li>
+            <#list langs as k,v>
+                <li><a href="changeLocale?lang=${k}" target="ajaxTodo">${v}</a></li>
+            </#list>
             </ul>
         </li>
-        -->
         <li>
             <i class="icon-home icon-large"></i> <a href="${site.dynamicPath!}" target="_blank">网站首页</a>
             <#if site.useStatic>
@@ -85,7 +85,7 @@ $(function(){
         <#if (roleModuleMap[a.id?string])??&&roleModuleMap[a.id?string]>
             <#if !parentId?has_content><#assign parentId=a.id/></#if>
             <li>
-                <a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}" parentId="${a.id}">${(a.attached?no_esc)!} ${a.name}</a>
+                <a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}" parentId="${a.id}">${(a.attached?no_esc)!} <@t.menu a.id/></a>
             </li>
         </#if>
     </#list>

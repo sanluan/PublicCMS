@@ -26,7 +26,7 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer roleId, Integer moduleId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer roleId, String moduleId, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysRoleModule bean");
         if (CommonUtils.notEmpty(roleId)) {
             queryHandler.condition("bean.id.roleId = :roleId").setParameter("roleId", roleId);
@@ -42,7 +42,7 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
      * @param moduleId
      * @return entity
      */
-    public SysRoleModule getEntity(Integer[] roleIds, Integer moduleId) {
+    public SysRoleModule getEntity(Integer[] roleIds, String moduleId) {
         if (CommonUtils.notEmpty(roleIds) && CommonUtils.notEmpty(moduleId)) {
             QueryHandler queryHandler = getQueryHandler("from SysRoleModule bean");
             queryHandler.condition("bean.id.roleId in (:roleIds)").setParameter("roleIds", roleIds);
@@ -58,7 +58,7 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
      * @return entitys list
      */
     @SuppressWarnings("unchecked")
-    public List<SysRoleModule> getEntitys(Integer[] roleIds, Integer[] moduleIds) {
+    public List<SysRoleModule> getEntitys(Integer[] roleIds, String[] moduleIds) {
         if (CommonUtils.notEmpty(roleIds) && CommonUtils.notEmpty(moduleIds)) {
             QueryHandler queryHandler = getQueryHandler("from SysRoleModule bean");
             queryHandler.condition("bean.id.roleId in (:roleIds)").setParameter("roleIds", roleIds);
@@ -85,7 +85,7 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
      * @param moduleId
      * @return number of data deleted
      */
-    public int deleteByModuleId(Integer moduleId) {
+    public int deleteByModuleId(String moduleId) {
         if (CommonUtils.notEmpty(moduleId)) {
             QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleModule bean where bean.id.moduleId = :moduleId");
             queryHandler.setParameter("moduleId", moduleId);

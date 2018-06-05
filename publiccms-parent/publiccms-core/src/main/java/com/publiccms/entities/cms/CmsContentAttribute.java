@@ -62,6 +62,7 @@ public class CmsContentAttribute implements java.io.Serializable {
     }
 
     @Id
+
     @Column(name = "content_id", unique = true, nullable = false)
     public long getContentId() {
         return this.contentId;

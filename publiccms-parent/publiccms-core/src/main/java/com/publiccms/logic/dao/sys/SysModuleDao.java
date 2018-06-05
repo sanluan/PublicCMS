@@ -23,7 +23,7 @@ public class SysModuleDao extends BaseDao<SysModule> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Integer parentId, Boolean menu, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(String parentId, Boolean menu, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysModule bean");
         if (CommonUtils.notEmpty(parentId)) {
             queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", parentId);
@@ -44,6 +44,9 @@ public class SysModuleDao extends BaseDao<SysModule> {
         }
         if (CommonUtils.empty(entity.getUrl())) {
             entity.setUrl(null);
+        }
+        if (CommonUtils.empty(entity.getParentId())) {
+            entity.setParentId(null);
         }
         return entity;
     }

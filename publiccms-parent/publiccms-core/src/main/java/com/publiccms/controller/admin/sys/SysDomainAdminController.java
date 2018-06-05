@@ -36,7 +36,7 @@ public class SysDomainAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param id
+     * @param oldName
      * @param _csrf
      * @param request
      * @param session
@@ -44,7 +44,7 @@ public class SysDomainAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysDomain entity, String id, String _csrf, HttpServletRequest request, HttpSession session,
+    public String save(SysDomain entity, String oldName, String _csrf, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
@@ -53,12 +53,12 @@ public class SysDomainAdminController extends AbstractController {
                 || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(entity.getName()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (CommonUtils.notEmpty(id)) {
-            if (!entity.getName().equals(id)
+        if (CommonUtils.notEmpty(oldName)) {
+            if (!entity.getName().equals(oldName)
                     && ControllerUtils.verifyHasExist("domain", service.getEntity(entity.getName()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            entity = service.update(id, entity);
+            entity = service.update(oldName, entity);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.domain", RequestUtils.getIpAddress(request),
@@ -82,15 +82,14 @@ public class SysDomainAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("saveConfig")
-    public String saveConfig(SysDomain entity, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String saveConfig(SysDomain entity, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(entity.getName())) {
             SysSite site = getSite(request);
             SysDomain oldEntity = service.getEntity(entity.getName());
@@ -111,34 +110,30 @@ public class SysDomainAdminController extends AbstractController {
 
     /**
      * @param name
-     * @param domainName
-     * @param id
+     * @param domain
+     * @param oldName
      * @param model
      * @return view name
      */
     @RequestMapping("virify")
     @ResponseBody
-    public boolean virify(String name, String domainName, String id, ModelMap model) {
+    public boolean virify(String name, String domain, String oldName, ModelMap model) {
         if (CommonUtils.notEmpty(name)) {
-            if (CommonUtils.notEmpty(id) && !name.equals(service.getEntity(id).getName())
+            if (CommonUtils.notEmpty(oldName) && !name.equals(oldName)
                     && ControllerUtils.verifyHasExist("domain", service.getEntity(name), model)
-                    || CommonUtils.empty(id) && ControllerUtils.verifyHasExist("domain", service.getEntity(name), model)) {
+                    || CommonUtils.empty(oldName) && ControllerUtils.verifyHasExist("domain", service.getEntity(name), model)) {
                 return false;
             }
         }
-        if (CommonUtils.notEmpty(domainName)) {
-            if (CommonUtils.notEmpty(id) && !domainName.equals(service.getEntity(id).getName())
-                    && ControllerUtils.verifyHasExist("domain", service.getEntity(domainName), model)
-                    || CommonUtils.empty(id) && ControllerUtils.verifyHasExist("domain", service.getEntity(domainName), model)) {
-                return false;
-            }
+        if (CommonUtils.notEmpty(domain) && ControllerUtils.verifyHasExist("domain", service.getEntity(domain), model)) {
+            return false;
         }
         return true;
     }
 
     /**
      * @param id
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model

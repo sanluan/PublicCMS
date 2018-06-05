@@ -227,7 +227,7 @@ public class CmsContent implements java.io.Serializable {
         return this.userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -403,13 +403,23 @@ public class CmsContent implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "publish_date", length = 19)
+    @Column(name = "publish_date", nullable = false, length = 19)
     public Date getPublishDate() {
         return this.publishDate;
     }
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "check_date", length = 19)
+    public Date getCheckDate() {
+        return this.checkDate;
+    }
+
+    public void setCheckDate(Date checkDate) {
+        this.checkDate = checkDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -420,16 +430,6 @@ public class CmsContent implements java.io.Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "check_date", nullable = false, length = 19)
-    public Date getCheckDate() {
-        return this.checkDate;
-    }
-
-    public void setCheckDate(Date checkDate) {
-        this.checkDate = checkDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

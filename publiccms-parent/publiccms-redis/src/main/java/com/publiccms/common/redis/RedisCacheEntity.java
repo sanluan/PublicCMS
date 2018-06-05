@@ -167,9 +167,14 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
 
     @Override
     public void init(String entityName, Integer cacheSize, Properties properties) {
-        synchronized (JEDISPOOL) {
-            init(entityName, cacheSize, null == JEDISPOOL ? RedisUtils.createJedisPool(properties) : JEDISPOOL);
+        if (null == JEDISPOOL) {
+            synchronized (JEDISPOOL) {
+                if (null == JEDISPOOL) {
+                    JEDISPOOL = RedisUtils.createJedisPool(properties);
+                }
+            }
         }
+        init(entityName, cacheSize, JEDISPOOL);
     }
 
     public void init(String entityName, Integer cacheSize, JedisPool pool) {

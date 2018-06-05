@@ -41,6 +41,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.search.MultiTokenizerFactory;
 import com.publiccms.logic.component.site.DirectiveComponent;
+import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 
@@ -161,15 +162,18 @@ public class ApplicationConfig {
 
     /**
      * 国际化处理
+     * 
+     * @param menuMessageComponent 
      *
      * @return message source
      */
     @Bean
-    public MessageSource messageSource() {
+    public MessageSource messageSource(MenuMessageComponent menuMessageComponent) {
         ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
         bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), ","));
         bean.setCacheSeconds(300);
         bean.setUseCodeAsDefaultMessage(true);
+        bean.setParentMessageSource(menuMessageComponent);
         return bean;
     }
 

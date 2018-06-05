@@ -37,7 +37,7 @@
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
-                <th width="30">ID</th>
+                <th width="150">ID</th>
                 <th>名称</th>
                 <th>是否菜单</th>
                 <th>地址</th>
@@ -53,7 +53,7 @@
             <@_sysModule ids=t.moduleIds!><#assign moduleMap=map!/></@_sysModule>
 
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
+            <tr target="sid" rel="${a.id?url}">
                 <td>${a.id!}</td>
                 <td>${a.name!}</td>
                 <td>${a.menu?then('菜单','仅权限')}</td>
