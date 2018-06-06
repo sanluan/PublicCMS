@@ -67,7 +67,7 @@ $(function(){
         </li>
     <@_sysAuthorized roleIds=admin.roles url='clearCache'>
         <li>
-            <i class="icon-refresh icon-large"></i> <a href="clearCache" target="ajaxTodo">刷新缓存</a>
+            <i class="icon-refresh icon-large"></i> <a href="clearCache" target="ajaxTodo"><@t.menu 'clearCache'/></a>
         </li>
     </@_sysAuthorized>
         <li>
@@ -93,7 +93,7 @@ $(function(){
 <@_masterSite>
     <@_sysAuthorized roleIds=admin.roles url='sysSite/menu'>
         <li>
-            <a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> 站点</a>
+            <a href="sysSite/menu.html"><i class="icon-sitemap icon-large"></i> <@t.menu 'site'/></a>
         </li>
     </@_sysAuthorized>
 </@_masterSite>

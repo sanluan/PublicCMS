@@ -48,17 +48,12 @@
         </thead>
         <tbody>
             <#list page.list as a>
-                <@t.merge 'moduleIds' a.parentId!/>
-            </#list>
-            <@_sysModule ids=t.moduleIds!><#assign moduleMap=map!/></@_sysModule>
-
-            <#list page.list as a>
             <tr target="sid" rel="${a.id?url}">
                 <td>${a.id!}</td>
                 <td><@t.menu a.id/></td>
                 <td>${a.menu?then('菜单','仅权限')}</td>
                 <td>${a.url!}</td>
-                <td>${(moduleMap[a.parentId?string].name)!}</td>
+                <td><#if a.parentId?has_content><@t.menu a.parentId/></#if></td>
                 <td>${a.sort!}</td>
                 <td>
                     <#if deep lte 2>

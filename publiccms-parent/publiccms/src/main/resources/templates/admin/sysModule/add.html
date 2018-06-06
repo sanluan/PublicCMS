@@ -25,7 +25,7 @@
             <dt>父模块:</dt>
             <dd>
                 <input name="parentId" type="hidden" value="${parentId!}" />
-                <input name="parentName" readonly="readonly" type="text" size="20" value="${(module.name)!}"/>
+                <input name="parentName" readonly="readonly" type="text" size="20" value="<@t.menu module.id/>"/>
                 <a class="btnLook" href="sysModule/lookup.html" lookupGroup="">选择</a>
             </dd>
         </dl>

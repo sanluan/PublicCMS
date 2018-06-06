@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysModuleLang;
+import com.publiccms.entities.sys.SysModuleLangId;
 import com.publiccms.logic.dao.sys.SysModuleLangDao;
 
 /**
@@ -41,13 +42,12 @@ public class SysModuleLangService extends BaseService<SysModuleLang> {
     public void save(String oldId, String moduleId, List<SysModuleLang> entityList) {
         if (CommonUtils.notEmpty(entityList)) {
             for (SysModuleLang entity : entityList) {
-                if (CommonUtils.notEmpty(oldId)) {
-                    entity.getId().setModuleId(oldId);
-                    delete(entity.getId());
+                if (CommonUtils.notEmpty(oldId) && !oldId.equals(moduleId)) {
+                    delete(new SysModuleLangId(oldId, entity.getId().getLang()));
                 }
-                entity.getId().setModuleId(moduleId);
-                SysModuleLang oldEntity = getEntity(entity.getId());
+                SysModuleLang oldEntity = getEntity(new SysModuleLangId(moduleId, entity.getId().getLang()));
                 if (null == oldEntity) {
+                    entity.getId().setModuleId(moduleId);
                     save(entity);
                 } else {
                     oldEntity.setValue(entity.getValue());
