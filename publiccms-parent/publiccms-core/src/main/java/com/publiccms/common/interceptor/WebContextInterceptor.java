@@ -57,8 +57,8 @@ public class WebContextInterceptor extends BaseInterceptor {
                         try {
                             Long userId = Long.parseLong(userData[0]);
                             SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
-                            if (null != userToken && null != site && !site.isDisabled() && site.getId() == userToken.getSiteId()
-                                    && userId == userToken.getUserId() && channel.equals(userToken.getChannel())
+                            if (null != userToken && null != site && !site.isDisabled() && userToken.getSiteId() == site.getId()
+                                    && userToken.getUserId() == userId && channel.equals(userToken.getChannel())
                                     && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
                                 user.setPassword(null);
                                 String ip = RequestUtils.getIpAddress(request);

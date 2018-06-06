@@ -55,7 +55,7 @@ public class SingletonRedisRegionFactory extends AbstractRedisRegionFactory {
     @Override
     public void stop() {
         if (null != redisClient) {
-            if (referenceCount.decrementAndGet() == 0) {
+            if (0 == referenceCount.decrementAndGet()) {
                 log.debug("RedisRegionFactory is stopping...");
                 try {
                     redisClient.shutdown();

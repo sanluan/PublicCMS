@@ -78,7 +78,7 @@ public class WechatOauthComponent extends AbstractOauth {
                 Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
                 });
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("nickname"), (String) map.get("headimgurl"),
-                        (Integer) map.get("sex") == 1 ? "m" : "f");
+                        1 == (Integer) map.get("sex") ? "m" : "f");
             }
         }
         return null;

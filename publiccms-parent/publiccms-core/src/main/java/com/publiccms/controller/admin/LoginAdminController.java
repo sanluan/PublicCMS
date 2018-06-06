@@ -176,7 +176,7 @@ public class LoginAdminController extends AbstractController {
     @RequestMapping(value = "logout", method = RequestMethod.GET)
     public String logout(Long userId, HttpServletRequest request, HttpServletResponse response) {
         SysUser admin = ControllerUtils.getAdminFromSession(request.getSession());
-        if (null != userId && null != admin && userId == admin.getId()) {
+        if (null != userId && null != admin && userId.equals(admin.getId())) {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesAdmin());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
                 String value = userCookie.getValue();

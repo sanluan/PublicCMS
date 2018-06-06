@@ -45,8 +45,8 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         SysApp app = null;
         SysUser user = null;
-        if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
-                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName()))) {
+        if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
+                .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName()))) {
             if (null == app) {
                 handler.put("error", ApiController.NEED_APP_TOKEN).render();
             } else {
@@ -76,7 +76,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
         Long authUserId = handler.getLong("authUserId");
         if (CommonUtils.notEmpty(authToken) && null != authUserId) {
             SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
-            if (null != sysUserToken && sysUserToken.getUserId() == authUserId) {
+            if (null != sysUserToken && authUserId.equals(sysUserToken.getUserId())) {
                 return sysUserService.getEntity(sysUserToken.getUserId());
             }
         }

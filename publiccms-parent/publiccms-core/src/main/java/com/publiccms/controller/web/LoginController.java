@@ -119,9 +119,9 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping("loginStatus")
     @ResponseBody
-    public Map<String,Object> loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+    public Map<String, Object> loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
         SysUser user = ControllerUtils.getUserFromSession(session);
-        Map<String,Object> result= new HashMap<>();
+        Map<String, Object> result = new HashMap<>();
         if (null != user) {
             result.put("id", user.getId());
             result.put("name", user.getName());
@@ -206,7 +206,7 @@ public class LoginController extends AbstractController {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(request.getSession());
-        if (null != userId && null != user && userId == user.getId()) {
+        if (null != userId && null != user && userId.equals(user.getId())) {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
                 String value = userCookie.getValue();
