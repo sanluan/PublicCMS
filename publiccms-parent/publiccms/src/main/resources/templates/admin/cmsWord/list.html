@@ -61,7 +61,7 @@
                 <td>${a.searchCount!}</td>
                 <td>${a.createDate!}</td>
                 <td>
-                    <a href="cmsWord/add.html?id=${a.id}" target="dialog" rel="cmsWord_edit">修改</a>
+                    <a href="cmsWord/add.html?id=${a.id}" target="dialog" rel="cmsWord_edit"><@t.page 'button.edit'/></a>
                     <#if a.hidden>
                         <a href="cmsWord/show.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要显示该关键词吗?" target="ajaxTodo">显示</a>
                     <#else>

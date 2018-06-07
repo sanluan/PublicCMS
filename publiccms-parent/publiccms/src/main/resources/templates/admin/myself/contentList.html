@@ -46,7 +46,7 @@
                 <li class="line">line</li>
             </#if>
             <li><a href="cmsContent/add.html?id={sid}&navTabId=myself/contentList" target="navTab" rel="myself/contentList/edit"><i class="icon-edit icon-large"></i> 修改内容</a></li>
-            <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
             <li class="line">line</li>
             <li><a href="cmsContent/refresh.do?_csrf=<@_csrfToken admin=true/>" title="确定要刷新这些记录么?" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
             <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="确定要生成这些记录么?" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> 批量生成</a></li>

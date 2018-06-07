@@ -96,11 +96,11 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="editor"/>编辑</label>
+                    <label><input name="fieldList" type="checkbox" value="editor"/><@t.page 'button.edit'/></label>
                 </dt>
                 <dd>
                     <label>文字:</label>
-                    <input name="fieldTextMap[editor]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['editor'])!'编辑'}"/>
+                    <input name="fieldTextMap[editor]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['editor'])!t.getPageMessage('button.edit')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="editor"/>必填</label>
                 </dd>
             </dl>

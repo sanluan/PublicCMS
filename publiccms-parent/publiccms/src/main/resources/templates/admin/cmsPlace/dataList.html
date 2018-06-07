@@ -50,7 +50,7 @@
                 <li><a href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> 发布</a></li>
             </#if>
             <li class="line">line</li>
-            <li><a href="cmsPlace/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="cmsPlace/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
             <li class="line">line</li>
             <li><a href="cmsPlace/clear.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" title="确定要清空这些记录么?" target="ajaxTodo"><i class="icon-wrench icon-large"></i> 全部清空</a></li>
         </ul>
@@ -86,7 +86,7 @@
                 <td>${a.clicks}</td>
                 <td><@t.m 'status.place.data.'+a.status/></td>
                 <td>
-                    <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="修改推荐位数据">修改</a>
+                    <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="修改推荐位数据"><@t.page 'button.edit'/></a>
                     <#if 0=a.status>
                         <a href="cmsPlace/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要审核这条记录么?" target="ajaxTodo">审核</a>
                     </#if>
