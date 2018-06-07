@@ -6,7 +6,7 @@
 	<input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
     <input name="path" type="hidden" value="${(path)!}" />
     <input name="returnUrl" type="hidden" value="这里是您的表单提交之后的页面地址" />
-    <p><label>标题:</label><input name="title" type="text" size="60" value=""/></p>
+    <p><label><@t.page 'common.title'/>:</label><input name="title" type="text" size="60" value=""/></p>
     <p><label>地址:</label><input name="url" type="text" value=""/></p>
     <p><label>图片:</label><input name="cover" type="text" size="60" value=""/></p>
     <#include "../include_page/extendData.html"/>

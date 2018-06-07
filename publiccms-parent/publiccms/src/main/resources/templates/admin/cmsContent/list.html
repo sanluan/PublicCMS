@@ -38,7 +38,7 @@
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
                 </li>
                 <li>
-                    <label>标题:</label><input type="text" size="20" name="title" value="${title!}" />
+                    <label><@t.page 'common.title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
                 </li>
                 <li style="width:auto">
                     <label>模型:</label>
@@ -48,7 +48,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -109,7 +109,7 @@
         </#if>
         <#if authorizedMap['cmsContent/delete']>
             <li class="line">line</li>
-            <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="确定要删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
         </#if>
         </ul>
     </div>
@@ -118,7 +118,7 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
-                <th width="150">标题</th>
+                <th width="150"><@t.page 'common.title'/></th>
                 <th width="40">发布</th>
                 <th width="30">分类</th>
                 <th width="30">模型</th>
@@ -129,7 +129,7 @@
                 <th width="70">创建日期</th>
                 <th width="40" orderField="default" class="<#if !orderField??||'default'==orderField>desc<#else>order</#if>">置顶级别</th>
                 <th width="50">状态/审核用户</th>
-                <th width="100">操作</th>
+                <th width="100"><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -188,10 +188,10 @@
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/add']>
-                        <a href="cmsContent/add.html?id=${a.id}" target="navTab" rel="cmsContent/edit" title="修改内容">修改</a>
+                        <a href="cmsContent/add.html?id=${a.id}" target="navTab" rel="cmsContent/edit" title="<@t.menu 'content_edit'/>">修改</a>
                     </#if>
                     <#if authorizedMap['cmsContent/delete']>
-                        <a href="cmsContent/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要删除这条记录么?" target="ajaxTodo">删除</a>
+                        <a href="cmsContent/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo">删除</a>
                     </#if>
                 </td>
             </tr>

@@ -4,8 +4,8 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_
     <input type="hidden" name="csrfToken" value="<#noparse><@_csrfToken admin=true/></#noparse>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">保存</button></li>
-            <li><button type="button" class="button close">取消</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageContent">

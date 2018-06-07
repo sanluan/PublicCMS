@@ -5,7 +5,7 @@
         <ul>
             <#if template?has_content><li><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该脚本吗?" target="ajaxTodo">删除</a></li></#if>
             <li><a class="button" href="taskTemplate/run.html?path=${path?url}" target="navTab" rel="taskTemplate/run">执行脚本</a></li>
-            <li><button type="submit" class="buttonActive">保存</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
         </ul>
     </div>
     <h2 class="contentTitle">

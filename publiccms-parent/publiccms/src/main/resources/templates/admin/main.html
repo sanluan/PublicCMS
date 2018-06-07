@@ -1,42 +1,40 @@
 <div class="pageFormContent" layoutH="19">
     <div class="unit">
         <p>
-            <label>我的待审核:</label>
-            <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="我的内容" target="navTab" rel="myself/contentList">
-                <@_contentList advanced=true status=2 userId=admin.id>
-                    ${page.totalCount}篇
+            <label>我的待审核内容数:</label>
+            <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.menu 'myself_content'/>" target="navTab" rel="myself/contentList">
+                <@_contentList advanced=true status=2 userId=admin.id count=0>
+                    ${page.totalCount}
                 </@_contentList>
             </a>
         </p>
         <p>
-            <label>我的草稿:</label>
-            <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="我的内容" target="navTab" rel="myself/contentList">
-                <@_contentList advanced=true status=0 userId=admin.id>
-                    ${page.totalCount}篇
+            <label>我的草稿数:</label>
+            <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.menu 'myself_content'/>" target="navTab" rel="myself/contentList">
+                <@_contentList advanced=true status=0 userId=admin.id count=0>
+                    ${page.totalCount}
                 </@_contentList>
             </a>
         </p>
         <p>
-            <a class="button" href="main.html" target="navTab" rel="main">刷新</a>
+            <a class="button" href="main.html" target="navTab" rel="main"><@t.page 'button.refresh'/></a>
         </p>
     </div>
     <div class="divider"></div>
     <div class="unit">
         <p>
             <label>登录次数:</label>
-            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
+            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="<@t.menu 'myself_log_login'/>" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
         </p>
         <p>
-            <label>上次登录日期:</label>
-            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.lastLoginDate!}</a>
+            <label>上次登录日期:</label>${admin.lastLoginDate!}
         </p>
         <p>
-            <label>上次登录IP:</label>
-            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.lastLoginIp!}</a>
+            <label>上次登录IP:</label>${admin.lastLoginIp!}
         </p>
         <p>
             <label>我的登录授权:</label>
-            <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> 我的登录授权" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
+            <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> <@t.menu 'myself_token'/>" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
         </p>
     </div>
     <div class="divider"></div>
@@ -56,7 +54,7 @@
             <label>操作系统时区:</label>${.vars['user.timezone']!}
         </p>
         <p>
-            <label>文件编码:</label>${.vars['file.encoding']!}
+            <label>操作系统文件编码:</label>${.vars['file.encoding']!}
         </p>
     </div>
     <div class="divider"></div>

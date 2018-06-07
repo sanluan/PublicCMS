@@ -10,14 +10,14 @@
             <li><a class="button" href="sysConfigData/delete.do?code=${code}&navTabId=sysConfigData/edit&_csrf=<@_csrfToken admin=true/>" title="确定要 清空配置么?" target="ajaxTodo">清空配置</a></li>
         </#if>
         <#if authorizedMap['sysConfigData/save']>
-            <li><button type="submit" class="buttonActive">保存</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
         </#if>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>配置项描述:</dt>
+            <dt><@t.page 'common.description'/>:</dt>
             <dd>
                 ${(a.description)!}
             </dd>

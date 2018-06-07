@@ -9,7 +9,7 @@
         <div class="formBar">
             <ul>
                 <li><button type="submit" class="buttonActive">推荐</button></li>
-                <li><button type="button" class="button close">关闭</button></li>
+                <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
             </ul>
         </div>
         <div class="pageFormContent" layoutH="60">
@@ -18,13 +18,13 @@
                 <dd>${(content.title)!}</dd>
             </dl>
             <dl class="nowrap">
-                <dt>推荐标题:</dt>
+                <dt><@t.page 'common.title'/>:</dt>
                 <dd>
                     <input class="required" type="text" name="title" maxlength="255" size="60" value="${(related.title)!}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
-                <dt>推荐描述:</dt>
+                <dt><@t.page 'common.description'/>:</dt>
                 <dd>
                     <textarea class="required" name="description" maxlength="300" cols="80" rows="4">${(related.description)!}</textarea>
                 </dd>

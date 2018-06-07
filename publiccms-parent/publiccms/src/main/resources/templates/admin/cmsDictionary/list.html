@@ -15,7 +15,9 @@
             </ul>
             <div class="subBar">
                 <ul>
-                    <li><button type="submit" class="buttonActive">搜索</button></li>
+                    <li>
+                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -30,7 +32,7 @@
             <li><a href="cmsDictionary/add.html?id={sid}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit icon-large"></i> 修改</a></li>
         </#if>
         <#if authorizedMap['cmsDictionary/delete']>
-            <li><a href="cmsDictionary/delete.do?_csrf=<@_csrfToken admin=true/>" title="确定要删除该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="cmsDictionary/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
         </#if>
         </ul>
     </div>
@@ -38,9 +40,9 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>名称</th>
+                <th><@t.page 'common.name'/></th>
                 <th>字典类型</th>
-                <th>操作</th>
+                <th><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -51,7 +53,7 @@
                 <td>${a.multiple?then('多选','单选')}</td>
                 <td>
                 <#if authorizedMap['cmsDictionary/delete']>
-                    <a href="cmsDictionary/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要删除这条记录么?" target="ajaxTodo">删除</a>
+                    <a href="cmsDictionary/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo">删除</a>
                 </#if>
                 </td>
             </tr>

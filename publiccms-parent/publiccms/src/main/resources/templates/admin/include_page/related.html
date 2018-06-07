@@ -4,9 +4,9 @@
         <tr>
             <th type="lookup" name="contentRelateds[#index#].title" size="30" fieldClass="required" fieldAttrs="{maxlength:255,width:1080,height:500}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId">选择</th>
             <th type="text" name="contentRelateds[#index#].url" size="40" fieldClass="required" fieldAttrs="{maxlength:2048}">地址</th>
-            <th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:300,rows:2,cols:60}">描述</th>
+            <th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:300,rows:2,cols:60}"><@t.page 'common.description'/></th>
             <th type="text" name="contentRelateds[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5">排序</th>
-            <th type="del" width="60">操作</th>
+            <th type="del" width="60"><@t.page 'common.operate'/></th>
         </tr>
     </thead>
     <tbody>

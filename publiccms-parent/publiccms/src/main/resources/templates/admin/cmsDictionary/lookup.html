@@ -16,7 +16,7 @@
                 <ul>
                     <li>
                         <button type="button" class="button" onclick="$.bringBack({'${field!'dictionaryId'}':'','dictionaryName':''});return false;">清空选择</button>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -28,7 +28,7 @@
         <thead>
             <tr>
                 <th>选择</th>
-                <th>名称</th>
+                <th><@t.page 'common.name'/></th>
                 <th>允许多选</th>
             </tr>
         </thead>

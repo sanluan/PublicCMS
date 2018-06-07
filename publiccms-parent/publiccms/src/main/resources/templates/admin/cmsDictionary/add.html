@@ -4,14 +4,14 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">保存</button></li>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageContent">
         <div class="pageFormContent" layoutH="60">
             <dl class="nowrap">
-                <dt>名称:</dt>
+                <dt><@t.page 'common.name'/>:</dt>
                 <dd>
                     <input class="required" name="name" type="text" size="20" maxlength="100" value="${(a.name)!}"/>
                     <label><input name="multiple" type="checkbox"${((a.multiple)?has_content&&a.multiple)?then(' checked="true"','')?no_esc}/>多选</label>
@@ -22,7 +22,7 @@
                     <tr>
                         <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{maxlength:50}">值</th>
                         <th type="text" name="dataList[#index#].text" size="50" fieldClass="required" fieldAttrs="{maxlength:100}">文字</th>
-                        <th type="del" width="60">操作</th>
+                        <th type="del" width="60"><@t.page 'common.operate'/></th>
                     </tr>
                 </thead>
                 <tbody>

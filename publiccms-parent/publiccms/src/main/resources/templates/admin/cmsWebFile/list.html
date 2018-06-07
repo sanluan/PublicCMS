@@ -17,7 +17,7 @@
             <li><a href="cmsWebFile/directory.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i> 创建目录</a></li>
             <li><a href="cmsWebFile/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-upload icon-large"></i> 上传文件</a></li>
             <li><a href="cmsWebFile/zip.do?path=${(path?url)!'/'}&_csrf=<@_csrfToken admin=true/>" title="确定要压缩这个目录吗?" target="ajaxTodo"><i class="icon-upload icon-large"></i> 压缩当前目录</a></li>
-            <li><a href="cmsWebFile/delete.do?_csrf=<@_csrfToken admin=true/>" title="确定要删除这些文件吗?" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="cmsWebFile/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete_file'/>" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i> 批量删除</a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="65">
@@ -25,11 +25,11 @@
             <tr>
                 <th width="20"><input type="checkbox" group="paths" class="checkboxCtrl"></th>
                 <th width="30"></th>
-                <th>名称</th>
+                <th><@t.page 'common.name'/></th>
                 <th>修改日期</th>
                 <th>创建日期</th>
                 <th>文件大小</th>
-                <th>操作</th>
+                <th><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>

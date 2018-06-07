@@ -16,7 +16,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -28,21 +28,21 @@
         <ul class="toolBar">
             <li><a href="cmsVote/add.html" target="navTab" rel="cmsVote/add"><i class="icon-plus-sign-alt icon-large"></i> 添加投票</a></li>
             <li><a href="cmsVote/add.html?id={sid}" target="navTab" rel="cmsVote/edit"><i class="icon-edit icon-large"></i> 修改投票</a></li>
-            <li><a href="cmsVote/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="cmsVote/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th>ID</th>
-                <th>标题</th>
+                <th><@t.page 'common.title'/></th>
                 <th>最大投票数</th>
                 <th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">结束</th>
                 
                 <th>网址</th>
-                <th>描述</th>
+                <th><@t.page 'common.description'/></th>
                 <th>参与人数</th>
-                <th>操作</th>
+                <th><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>

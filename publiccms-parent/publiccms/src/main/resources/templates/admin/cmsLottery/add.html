@@ -4,13 +4,13 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">保存</button></li>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>标题:</dt>
+            <dt><@t.page 'common.title'/>:</dt>
             <dd><input class="required" name="title" type="text" size="60" value="${(a.title)!}"/></dd>
         </dl>
         <dl>
@@ -54,7 +54,7 @@
             <dd><input name="url" type="text" maxlength="255" size="60" value="${(a.url)!}"/></dd>
         </dl>
         <dl class="nowrap">
-            <dt>描述:</dt>
+            <dt><@t.page 'common.description'/>:</dt>
             <dd><textarea name="description" maxlength="300" cols="80" rows="5"/>${(a.description)!}</textarea></dd>
         </dl>
     </div>

@@ -6,14 +6,14 @@
         <div class="formBar">
             <ul>
             <@_sysAuthorized roleIds=admin.roles url='cmsCategoryType/save'>
-                <li><button type="submit" class="buttonActive">保存</button></li>
+                <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
             </@_sysAuthorized>
-                <li><button type="button" class="button close">关闭</button></li>
+                <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
             </ul>
         </div>
         <div class="pageFormContent" layoutH="60">
             <dl>
-                <dt>名称:</dt>
+                <dt><@t.page 'common.name'/>:</dt>
                 <dd><input class="required" name="name" type="text" size="20" value="${(a.name)!}"/></dd>
             </dl>
             <dl class="nowrap">

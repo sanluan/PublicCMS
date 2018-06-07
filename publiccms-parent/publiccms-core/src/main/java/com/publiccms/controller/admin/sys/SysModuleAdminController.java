@@ -75,7 +75,6 @@ public class SysModuleAdminController extends AbstractController {
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        entity.setName("#");
         if (CommonUtils.notEmpty(oldId)) {
             if (!entity.getId().equals(oldId)
                     && ControllerUtils.verifyHasExist("module", service.getEntity(entity.getId()), model)) {
@@ -168,7 +167,7 @@ public class SysModuleAdminController extends AbstractController {
             SysRole role = roleService.getEntity(roleModule.getId().getRoleId());
             if (!moduleIds.isEmpty() && null != role && !role.isOwnsAllRight()) {
                 roleAuthorizedService.dealRoleModules(roleModule.getId().getRoleId(), role.isShowAllModule(),
-                        service.getEntitys(moduleIds.toArray(new Integer[moduleIds.size()])),
+                        service.getEntitys(moduleIds.toArray(new String[moduleIds.size()])),
                         role.isShowAllModule() ? moduleService.getPageUrl(null) : null);
             }
         }

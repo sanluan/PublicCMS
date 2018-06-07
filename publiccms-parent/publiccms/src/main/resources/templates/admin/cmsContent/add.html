@@ -20,16 +20,19 @@ function clickAddTag(){
     <div class="formBar">
         <ul>
             <li>
-                <label><input type="checkbox" name="draft"/>保存为草稿</label>
+                <label><input type="checkbox" name="draft"/>草稿</label>
             </li>
             <@_sysAuthorized roleIds=admin.roles url='cmsContent/check'>
                 <li>
-                    <label><input type="checkbox" name="checked" onclick="if($(this).is(':checked')){$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();}else{$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();}"/>直接审核通过</label>
+                    <label>
+                        <input type="checkbox" name="checked" onclick="if($(this).is(':checked')){$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();}else{$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();}"/>
+                        审核通过
+                    </label>
                 </li>
             <#if a?has_content&&1=a.status><script>$('input[name=checked]',navTab.getCurrentPanel()).click();</script></#if>
             </@_sysAuthorized>
-            <li><button type="submit" class="buttonActive">保存</button></li>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="tabs">

@@ -21,14 +21,14 @@
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label>名称:</label>
+                    <label><@t.page 'common.name'/>:</label>
                     <input type="text" name="name" value="${(name)!}" />
                 </li>
             </ul>
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -44,21 +44,21 @@
             </#if>
             <li><a href="sysDept/add.html?parentId=${parentId!}" target="navTab" rel="sysDept/add"><i class="icon-plus-sign-alt icon-large"></i> 添加部门</a></li>
             <li><a href="sysDept/add.html?id={sid}" target="navTab" rel="sysDept/edit"><i class="icon-edit icon-large"></i> 修改部门</a></li>
-            <li><a href="sysDept/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="sysDept/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th width="30">ID</th>
-                <th>名称</th>
+                <th><@t.page 'common.name'/></th>
                 <th>父部门</th>
-                <th>描述</th>
+                <th><@t.page 'common.description'/></th>
                 <th>负责人</th>
                 <th>拥有全部分类</th>
                 <th>最大内容置顶级别</th>
                 <th>拥有全部页面</th>
-                <th>操作</th>
+                <th><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>

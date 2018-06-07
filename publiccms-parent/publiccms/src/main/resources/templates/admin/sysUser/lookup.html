@@ -10,7 +10,7 @@
             <table class="searchContent">
                 <tr>
                     <td>
-                        <label>名称:</label>
+                        <label><@t.page 'common.name'/>:</label>
                         <input type="text" name="name" value="${(name)!}" />
                     </td>
                     <td>
@@ -54,7 +54,7 @@
                 <ul>
                     <li>
                         <button type="button" class="button" onclick="$.bringBack({'${field!'userId'}':'','${nickNameField!'nickName'}':''});return false;">清空选择</button>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>

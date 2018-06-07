@@ -8,8 +8,8 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">保存</button></li>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
@@ -26,7 +26,7 @@
                 </dd>
             </dl>
             <dl class="nowrap">
-                <dt>模型名称:</dt>
+                <dt><@t.page 'common.name'/>:</dt>
                 <dd>
                     <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
                 </dd>
@@ -106,11 +106,11 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="description"/>描述</label>
+                    <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'common.description'/></label>
                 </dt>
                 <dd>
                     <label>文字:</label>
-                    <input name="fieldTextMap[description]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['description'])!'描述'}"/>
+                    <input name="fieldTextMap[description]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['description'])!t.getPageMessage('description')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="description"/>必填</label>
                 </dd>
             </dl>

@@ -8,7 +8,7 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>名称:</label>
+                    <label><@t.page 'common.name'/>:</label>
                     <input type="text" name="name" value="${(name)!}" />
                 </li>
                 <#include "../include_page/disabled.html"/>
@@ -42,7 +42,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -71,7 +71,7 @@
                 <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次登录日期</th>
                 <th orderField="loginCount" class="<#if orderField??&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">登录次数</th>
                 <th orderField="registeredDate" class="<#if orderField??&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">注册日期</th>
-                <th>操作</th>
+                <th><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>

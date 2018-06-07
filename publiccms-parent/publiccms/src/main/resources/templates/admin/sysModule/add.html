@@ -9,8 +9,8 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">保存</button></li>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
@@ -22,15 +22,15 @@
             </dd>
         </dl>
         <dl>
-            <dt>父模块:</dt>
+            <dt><@t.page 'module.parent'/>:</dt>
             <dd>
                 <input name="parentId" type="hidden" value="${parentId!}" />
-                <input name="parentName" readonly="readonly" type="text" size="20" value="<@t.menu module.id/>"/>
+                <input name="parentName" readonly="readonly" type="text" size="20" value="<@t.menu (module.id)!/>"/>
                 <a class="btnLook" href="sysModule/lookup.html" lookupGroup="">选择</a>
             </dd>
         </dl>
       <fieldset>
-      	<legend>名称:</legend>
+      	<legend><@t.page 'common.name'/>:</legend>
       	<#list langs as k,v>
 	        <dl class="nowrap">
 	            <dt>${v}:</dt>
@@ -65,7 +65,7 @@
             </dd>
         </dl>
         <dl>
-            <dt>排序:</dt>
+            <dt><@t.page 'common.sort'/>:</dt>
             <dd><input class="required digits" name="sort" type="number" size="3" value="${(a.sort)!0}"/></dd>
         </dl>
     </div>

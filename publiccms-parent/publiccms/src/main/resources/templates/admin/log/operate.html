@@ -15,7 +15,7 @@
                     <input type="text" name="channel" value="${channel!}" />
                 </li>
                 <li>
-                    <label>操作编码:</label>
+                    <label><@t.page 'common.code'/>:</label>
                     <input type="text" name="operate" value="${operate!}" />
                 </li>
                 <li>
@@ -32,7 +32,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -42,7 +42,7 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="logOperate/delete.do?_csrf=<@_csrfToken admin=true/>" title="确定要删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="logOperate/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
@@ -52,7 +52,7 @@
                 <th>用户ID</th>
                 <th>用户昵称</th>
                 <th>渠道</th>
-                <th>操作/编码</th>
+                <th><@t.page 'common.operate'/>/<@t.page 'common.code'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">操作日期</th>
                 <th>内容</th>
             </tr>

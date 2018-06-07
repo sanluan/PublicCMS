@@ -29,7 +29,7 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 /* Menu */
 header .logo{ float:left;width:200px;height:100%;}
 header .logo img{ width:100%;}
-header .nav{ display:block;position:absolute;right:0px;z-index:1;}
+header .nav{ display:block;position:absolute;right:0px;z-index:2;}
 header .nav li{ float:left;padding:0 5px;line-height:37px;position: relative;}
 header .nav ul { display:none;width:100px; border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;position:absolute;top:30px; right:0;}
 header .nav ul li { margin-top:2px;line-height:26px;padding-left:10px;}
@@ -56,7 +56,7 @@ header .nav .selected ul {display:block;}
 .tabsPage .tabsPageHeaderMargin{ margin:0 71px 0 71px;}
 .tabsPage .tabsPageHeader ul{ display:block;width:10000px;z-index:1;position:absolute;}
 .tabsPage .tabsPageHeader li{ float:left;display:block;height:100%;margin-left:1px;border-right-style:solid;border-right-width:1px;position:relative;}
-.tabsPage .tabsPageHeader li a{ font-size:13px;display:inline-block;max-width:112px;padding:0 10px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tabsPage .tabsPageHeader li a{ font-size:12px;display:inline-block;max-width:112px;padding:0 10px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tabsPage .tabsPageHeader li a:hover{ text-decoration:none;}
 .tabsPage .tabsPageHeader li.selected a{ font-weight:bold;}
 .tabsPage .tabsPageHeader li .close{ padding:0;padding-right: 10px;}

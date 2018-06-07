@@ -15,7 +15,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -47,7 +47,7 @@
         </#if>
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/delete.do?_csrf=<@_csrfToken admin=true/>" title="确定要删除该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="cmsCategory/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
         </#if>
         </ul>
     </div>
@@ -56,7 +56,7 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
-                <th>名称</th>
+                <th><@t.page 'common.name'/></th>
                 <th>编码</th>
                 <th>分类类型</th>
                 <th>父分类</th>
@@ -64,7 +64,7 @@
                 <th>是否允许投稿</th>
                 <th>是否前台隐藏</th>
                 <th>排序</th>
-                <th>操作</th>
+                <th><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>

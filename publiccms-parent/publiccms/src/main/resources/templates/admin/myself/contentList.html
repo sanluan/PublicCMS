@@ -21,7 +21,7 @@
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
                 </li>
                 <li>
-                    <label>标题:</label><input type="text" size="20" name="title" value="${title!}" />
+                    <label><@t.page 'common.title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
                 </li>
                 <li style="width:auto">
                     <label>模型:</label>
@@ -31,7 +31,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -46,7 +46,7 @@
                 <li class="line">line</li>
             </#if>
             <li><a href="cmsContent/add.html?id={sid}&navTabId=myself/contentList" target="navTab" rel="myself/contentList/edit"><i class="icon-edit icon-large"></i> 修改内容</a></li>
-            <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="确定要删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
             <li class="line">line</li>
             <li><a href="cmsContent/refresh.do?_csrf=<@_csrfToken admin=true/>" title="确定要刷新这些记录么?" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
             <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="确定要生成这些记录么?" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> 批量生成</a></li>
@@ -57,7 +57,7 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
-                <th width="250">标题</th>
+                <th width="250"><@t.page 'common.title'/></th>
                 <th width="30">分类</th>
                 <th width="30">模型</th>
                 <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
@@ -66,7 +66,7 @@
                 <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
                 <th width="70">创建日期</th>
                 <th width="50">状态/审核用户</th>
-                <th width="40">操作</th>
+                <th width="40"><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>

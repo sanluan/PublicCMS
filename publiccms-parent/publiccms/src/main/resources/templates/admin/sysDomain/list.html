@@ -25,7 +25,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -39,7 +39,7 @@
                 <li><a href="sysDomain/add.html?siteId=${siteId!}" target="navTab" rel="sysDomain/add"><i class="icon-plus-sign-alt icon-large"></i> 添加域名</a></li>
             </#if>
             <li><a href="sysDomain/add.html?id={sid}" target="navTab" rel="sysDomain/edit"><i class="icon-edit icon-large"></i> 修改域名</a></li>
-            <li><a href="sysDomain/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要删除该条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="sysDomain/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">

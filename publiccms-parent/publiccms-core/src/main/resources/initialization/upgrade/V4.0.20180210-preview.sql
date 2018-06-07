@@ -41,3 +41,5 @@ CREATE TABLE `sys_module_lang` (
   PRIMARY KEY (`module_id`,`lang`) USING BTREE
 ) DEFAULT CHARSET=utf8 COMMENT='模块语言';
 INSERT INTO `sys_module_lang` SELECT `id`,'',`name` FROM `sys_module`;
+INSERT INTO `sys_module_lang` SELECT `id`,'en',`name` FROM `sys_module`;
+ALTER TABLE `sys_module` DROP COLUMN `name`;

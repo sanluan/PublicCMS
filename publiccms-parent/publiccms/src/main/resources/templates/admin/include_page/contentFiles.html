@@ -4,9 +4,9 @@
     <thead>
         <tr>
             <th type="attach" name="${name}[#index#].filePath" size="50" fieldClass="required" lookupGroup="${name}[#index#]" lookupUrl="common/upload.html?field=filePath">文件路径</th>
-            <th type="textarea" name="${name}[#index#].description" fieldAttrs="{maxlength:280,rows:3,cols:50}">描述</th>
+            <th type="textarea" name="${name}[#index#].description" fieldAttrs="{maxlength:280,rows:3,cols:50}"><@t.page 'common.description'/></th>
             <th type="text" name="${name}[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5">排序</th>
-            <th type="del" width="60">操作</th>
+            <th type="del" width="60"><@t.page 'common.operate'/></th>
         </tr>
     </thead>
     <tbody>

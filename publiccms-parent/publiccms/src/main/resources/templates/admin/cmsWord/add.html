@@ -4,13 +4,13 @@
     <input name="id" type="hidden" value="${id!}" />
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">保存</button></li>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>名称:</dt>
+            <dt><@t.page 'common.name'/>:</dt>
             <dd>
                 <input class="required" name="name" type="text" size="30" value="${(a.name)!}"/>
                 <label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')?no_esc}/>隐藏</label>

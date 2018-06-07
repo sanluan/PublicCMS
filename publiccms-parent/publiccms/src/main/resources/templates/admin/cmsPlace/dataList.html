@@ -31,7 +31,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="submit" class="buttonActive">搜索</button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -50,7 +50,7 @@
                 <li><a href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> 发布</a></li>
             </#if>
             <li class="line">line</li>
-            <li><a href="cmsPlace/delete.do?_csrf=<@_csrfToken admin=true/>" title="确定要删除这些记录么?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="cmsPlace/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
             <li class="line">line</li>
             <li><a href="cmsPlace/clear.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" title="确定要清空这些记录么?" target="ajaxTodo"><i class="icon-wrench icon-large"></i> 全部清空</a></li>
         </ul>
@@ -60,13 +60,13 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
-                <th>标题</th>
+                <th><@t.page 'common.title'/></th>
                 <th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
                 <th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
                 <th width="100">发布用户</th>
                 <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
                 <th width="50">状态</th>
-                <th width="100">操作</th>
+                <th width="100"><@t.page 'common.operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@
                     <#if 0=a.status>
                         <a href="cmsPlace/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要审核这条记录么?" target="ajaxTodo">审核</a>
                     </#if>
-                    <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要删除这条记录么?" target="ajaxTodo">删除</a>
+                    <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo">删除</a>
                 </td>
             </tr>
     </#list>

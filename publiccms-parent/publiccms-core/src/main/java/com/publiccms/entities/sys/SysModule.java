@@ -23,8 +23,6 @@ public class SysModule implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private String id;
-    @GeneratorColumn(title = "名称")
-    private String name;
     @GeneratorColumn(title = "地址")
     private String url;
     @GeneratorColumn(title = "授权地址")
@@ -41,17 +39,15 @@ public class SysModule implements java.io.Serializable {
     public SysModule() {
     }
 
-    public SysModule(String id, String name, boolean menu, int sort) {
+    public SysModule(String id, boolean menu, int sort) {
         this.id = id;
-        this.name = name;
         this.menu = menu;
         this.sort = sort;
     }
 
-    public SysModule(String id, String name, String url, String authorizedUrl, String attached, String parentId, boolean menu,
+    public SysModule(String id, String url, String authorizedUrl, String attached, String parentId, boolean menu,
             int sort) {
         this.id = id;
-        this.name = name;
         this.url = url;
         this.authorizedUrl = authorizedUrl;
         this.attached = attached;
@@ -68,15 +64,6 @@ public class SysModule implements java.io.Serializable {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    @Column(name = "name", nullable = false, length = 100)
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     @Column(name = "url")

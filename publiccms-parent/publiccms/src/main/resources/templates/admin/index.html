@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>管理后台 - ${site.name}</title>
+    <title>${site.name} - <@t.page 'management_system'/></title>
     <link href="${res}/codemirror/lib/codemirror.css" rel="stylesheet" >
     <link href="${res}/codemirror/addon/hint/show-hint.css" rel="stylesheet" >
     <link href="${res}/themes/css/core.css" rel="stylesheet" media="screen"/>
@@ -22,21 +22,22 @@
     <script src="${res}/js/jquery.bgiframe.js"></script>
 
     <script src="${res}/js/dwz.min.js"></script>
-    <script src="${res}/js/dwz.regional.zh.js"></script>
+    <script src="${res}/js/<@t.page 'dwz_regional_js'/>"></script>
 
     <script>
     var base="${base}/admin";
     window.UEDITOR_HOME_URL="${res}/ueditor/";
     window.CKEDITOR_BASEPATH="${res}/ckeditor/";
+    window.CKEDITOR_LANGUAGE="<@t.page 'ckeditor.lang'/>";
 $(function(){
-    DWZ.init("${res}/dwz.frag.html", {
+    DWZ.init("${base}/admin/dwz.frag.html", {
         ckeditorResources:["${res}/ckeditor/ckeditor.js"],
-        ueditorResources:["${res}/ueditor/ueditor.config.js","${res}/ueditor/ueditor.all.min.js","${res}/ueditor/lang/zh-cn/zh-cn.js"],
+        ueditorResources:["${res}/ueditor/ueditor.config.js","${res}/ueditor/ueditor.all.min.js","${res}/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
         codemirrorResources:['${res}/codemirror/lib/codemirror.js','${res}/codemirror/mode/xml/xml.js','${res}/codemirror/mode/javascript/javascript.js','${res}/codemirror/mode/css/css.js',
             '${res}/codemirror/mode/htmlmixed/htmlmixed.js','${res}/codemirror/mode/freemarker/freemarker.js','${res}/codemirror/mode/freemarkermixed/freemarkermixed.js',
             '${res}/codemirror/mode/nginx/nginx.js','${res}/codemirror/addon/hint/show-hint.js','${res}/codemirror/addon/hint/javascript-hint.js','${res}/codemirror/addon/hint/html-hint.js',
             '${res}/codemirror/addon/hint/css-hint.js','${res}/codemirror/addon/hint/xml-hint.js'],
-        loginUrl:"login_dialog.html", loginTitle:"登录",
+        loginUrl:"login_dialog.html", loginTitle:"<@t.page 'login'/>",
         pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"}, //【可选】
         debug:false,    // 调试模式 【true|false】
         callback:function(){
@@ -52,7 +53,7 @@ $(function(){
     <a class="logo" href="./"><img src="${res}/themes/logo.png"/></a>
     <ul class="nav">
         <li><i class="icon-user icon-large"></i> ${(admin.nickName)!}</li>
-        <li id="switchEnvBox"><i class="icon-wrench icon-large"></i> <a href="javascript:">切换语言</a>
+        <li id="switchEnvBox"><i class="icon-wrench icon-large"></i> <a href="javascript:"><@t.page 'change_locale'/></a>
             <ul>
             <#list langs as k,v>
                 <li><a href="changeLocale?lang=${k}" target="ajaxTodo">${v}</a></li>
@@ -60,18 +61,18 @@ $(function(){
             </ul>
         </li>
         <li>
-            <i class="icon-home icon-large"></i> <a href="${site.dynamicPath!}" target="_blank">网站首页</a>
+            <i class="icon-home icon-large"></i> <a href="${site.dynamicPath!}" target="_blank"><@t.page 'dynamic_website'/></a>
             <#if site.useStatic>
-                | <a href="${site.sitePath!}" target="_blank">静态首页</a>
+                | <a href="${site.sitePath!}" target="_blank"><@t.page 'website'/></a>
             </#if>
         </li>
     <@_sysAuthorized roleIds=admin.roles url='clearCache'>
         <li>
-            <i class="icon-refresh icon-large"></i> <a href="clearCache" target="ajaxTodo"><@t.menu 'clearCache'/></a>
+            <i class="icon-refresh icon-large"></i> <a href="clearCache" target="ajaxTodo"><@t.menu 'clearcache'/></a>
         </li>
     </@_sysAuthorized>
         <li>
-            <i class="icon-signout icon-large"></i> <a href="logout.do?userId=${admin.id}">退出</a>
+            <i class="icon-signout icon-large"></i> <a href="logout.do?userId=${admin.id}"><@t.page 'logout'/></a>
         </li>
     </ul>
     <ul id="navMenu">
@@ -115,7 +116,7 @@ $(function(){
         <div class="tabsPageHeader">
             <div class="tabsPageHeaderContent">
                 <ul class="navTab-tab">
-                    <li tabid="main" class="main"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> 工作台</a></li>
+                    <li tabid="main" class="main"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> <@t.page 'workgin_table'/></a></li>
                 </ul>
             </div>
             <a href="javascript:;" onclick="return false;" class="toggleCollapse"><i class="icon icon-chevron-sign-left icon-large"></i></a>
@@ -124,7 +125,7 @@ $(function(){
             <a href="javascript:;" onclick="return false;" class="tabsMore"><i class="icon-th-list icon-large"></i></a>
         </div>
         <ul class="tabsMoreList">
-            <li><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> 工作台</a></li>
+            <li><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> <@t.page 'workgin_table'/></a></li>
         </ul>
         <div class="navTab-panel tabsPageContent layoutBox">
             <div class="page unitBox">
@@ -136,22 +137,22 @@ $(function(){
 <footer>
 <@_version>
     <#if authorizationEdition>
-        <a href="common/license.html" target="dialog" mask="true">授权: ${getLicense().authorization!}</a>
+        <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
     <#else>
         未授权
         <@_masterSite>
             <@_sysAuthorized roleIds=admin.roles url='sysSite/uploadLicense'>
-        <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="上传License">升级</a>
+        <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="<@t.menu 'license'/>"><@t.page 'license.upgrade'/></a>
             </@_sysAuthorized>
         </@_masterSite>
     </#if>
 </@_version>
     Copyright &copy; ${.now?string('yyyy')}
     <ul class="themeList" id="themeList">
-        <li theme="default"><div>藏蓝</div></li>
-        <li theme="azure"><div>天蓝</div></li>
-        <li theme="silver"><div>银色</div></li>
-        <li theme="purple"><div>紫色</div></li>
+        <li theme="default"><div></div></li>
+        <li theme="azure"><div></div></li>
+        <li theme="silver"><div></div></li>
+        <li theme="purple"><div></div></li>
     </ul>
 </footer>
 </body>

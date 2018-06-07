@@ -19,14 +19,14 @@
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
                 </li>
                 <li>
-                    <label>标题:</label>
+                    <label><@t.page 'common.title'/>:</label>
                     <input type="text" size="40" name="title" value="${title!}" />
                 </li>
             </ul>
             <div class="subBar">
                     <ul>
                         <li>
-                            <button type="submit" class="buttonActive">搜索</button>
+                            <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                         </li>
                     </ul>
                 </div>
@@ -39,7 +39,7 @@
             <tr>
                 <th>使用</th>
                 <th width="30">ID</th>
-                <th>标题</th>
+                <th><@t.page 'common.title'/></th>
                 <th>发布用户</th>
                 <th>分类</th>
                 <th>模型</th>
@@ -49,7 +49,7 @@
                 <th width="60" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
                 <th width="60">创建日期</th>
                 <th width="50">状态/审核用户</th>
-                <th width="40">子内容</th>
+                <th width="40"><@t.page 'content.child'/></th>
             </tr>
         </thead>
         <tbody>

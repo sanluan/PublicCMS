@@ -3,7 +3,7 @@
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive">上传</button></li>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
@@ -14,7 +14,24 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>License:</dt>
+            <dt>授权状态:</dt>
+            <dd>
+                <@_version>
+	    			<#if authorizationEdition>
+				        <a href="common/license.html" target="dialog" mask="true">授权: ${getLicense().authorization!}</a>
+				    <#else>
+				        未授权
+				        <@_masterSite>
+				            <@_sysAuthorized roleIds=admin.roles url='sysSite/uploadLicense'>
+				        <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="上传License">升级</a>
+				            </@_sysAuthorized>
+				        </@_masterSite>
+				    </#if>
+				</@_version>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt>授权文件(license.dat):</dt>
             <dd>
                 <input type="file" name="file" class="required" size="30" />
             </dd>

@@ -17,13 +17,13 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">保存</button></li>
-            <li><button type="button" class="button close">关闭</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>标题:</dt>
+            <dt><@t.page 'common.title'/>:</dt>
             <dd>
                 <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!title!}"/>
                 <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" >选择</a>
