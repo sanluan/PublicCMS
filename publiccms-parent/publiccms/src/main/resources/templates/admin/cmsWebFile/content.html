@@ -2,10 +2,10 @@
 <#assign editorType={'css':'css','js':'javascript','xml':'xml'}/>
 <#assign fileType=path?keep_after_last('.')?lower_case/>
 <form method="post" action="cmsWebFile/save.do<#if !content?has_content>?callbackType=closeCurrent&navTabId=cmsWebFile/list</#if>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><a class="button" href="cmsWebFile/delete.do?paths=${(path?url)!}&callbackType=closeCurrent&navTabId=cmsWebFile/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该文件吗?" target="ajaxTodo">删除</a></li>
+            <li><a class="button" href="cmsWebFile/delete.do?paths=${(path?url)!}&callbackType=closeCurrent&navTabId=cmsWebFile/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该文件吗?" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
         </ul>
     </div>
@@ -14,7 +14,7 @@
     </h2>
     <div class="pageFormContent" layoutH="109">
         <div class="clearfix">
-            <label>路径:</label>
+            <label><@t.page 'path'/>:</label>
             <input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}<#if !content?has_content>/filename.html</#if>"/>
         </div>
         <div>

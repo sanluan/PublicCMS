@@ -21,7 +21,7 @@
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
                 </li>
                 <li>
-                    <label><@t.page 'common.title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
+                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
                 </li>
                 <li style="width:auto">
                     <label>模型:</label>
@@ -57,7 +57,7 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
-                <th width="250"><@t.page 'common.title'/></th>
+                <th width="250"><@t.page 'title'/></th>
                 <th width="30">分类</th>
                 <th width="30">模型</th>
                 <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
@@ -66,7 +66,7 @@
                 <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
                 <th width="70">创建日期</th>
                 <th width="50">状态/审核用户</th>
-                <th width="40"><@t.page 'common.operate'/></th>
+                <th width="40"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>

@@ -5,7 +5,7 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'common.name'/>:</label>
+                    <label><@t.page 'name'/>:</label>
                     <input type="text" size="20" name="name" value="${name!}" />
                 </li>
             </ul>
@@ -24,18 +24,18 @@
         <ul class="toolBar">
             <li><a href="sysSite/add.html" target="navTab" rel="sysSite/add"><i class="icon-plus-sign-alt icon-large"></i> 添加站点</a></li>
             <li><a href="sysSite/add.html?id={sid}" target="navTab" rel="sysSite/edit"><i class="icon-edit icon-large"></i> 修改站点</a></li>
-            <li><a href="sysSite/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="sysSite/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th width="30">ID</th>
-                <th><@t.page 'common.name'/></th>
+                <th><@t.page 'name'/></th>
                 <th>动态站点地址</th>
                 <th>启用静态化</th>
                 <th>静态站点地址</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -44,7 +44,7 @@
                 <td>${a.id}</td>
                 <td>${a.name!} <#if site.id=a.id>[当前站点]</#if></td>
                 <td><a href="${a.dynamicPath!}" target="_blank">${a.dynamicPath!}</a></td>
-                <td>${a.useStatic?then('是','否')} ${a.useSsi?then('[已启用SSI]','')}</td>
+                <td>${a.useStatic?then(t.getPageMessage('yes'),t.getPageMessage('no'))} ${a.useSsi?then('['+t.getPageMessage('ssi_enabled')+']','')}</td>
                 <td><a href="${a.sitePath!}" target="_blank">${a.sitePath!}</a></td>
                 <td>
                     <a href="sysDomain/add.html?siteId=${a.id!}" target="navTab" rel="sysDomain/add">添加域名</a>

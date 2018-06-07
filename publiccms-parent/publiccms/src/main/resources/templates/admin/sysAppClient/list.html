@@ -16,7 +16,7 @@
                     <input type="text" name="userId" value="${userId!}" />
                 </li>
                 <li>
-                    <label>上次登录:</label>
+                    <label><@t.page 'user.last_login_date'/>:</label>
                     <input type="text" name="startLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
                     <span>-</span>
                     <input type="text" name="endLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
@@ -42,8 +42,8 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysAppClient/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要启用该客户端吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> 启用</a></li>
-            <li><a href="sysAppClient/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要禁用该客户端吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 禁用</a></li>
+            <li><a href="sysAppClient/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要启用该客户端吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'enable'/></a></li>
+            <li><a href="sysAppClient/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要禁用该客户端吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'disable'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
@@ -55,10 +55,10 @@
                 <th>用户ID</th>
                 <th>用户昵称</th>
                 <th>版本</th>
-                <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次登录日期</th>
-                <th>上次登录IP</th>
+                <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
+                <th><@t.page 'user.last_login_ip'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
-                <th>已禁用</th>
+                <th><@t.page 'disabled'/></th>
             </tr>
         </thead>
         <tbody>
@@ -77,7 +77,7 @@
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.createDate!}</td>
-                <td>${(a.disabled)?then('<font color="red">禁用</font>','正常')?no_esc}</td>
+                <td>${(a.disabled)?then('<font color="red">'+t.getPageMessage('disable')+'</font>',t.getPageMessage('normal'))?no_esc}</td>
             </tr>
             </#list>
         </tbody>

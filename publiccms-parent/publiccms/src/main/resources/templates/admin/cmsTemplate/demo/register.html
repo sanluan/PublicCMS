@@ -27,7 +27,7 @@
                 <#if error??>
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>
-                <p><input type="text" name="name" placeholder="用户名" title="用户名" value="${name!}"/></p>
+                <p><input type="text" name="name" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${name!}"/></p>
                 <p>4位以上数字、字母、下划线,不以数字开始</p>
                 <p><input type="text" name="nickName" placeholder="昵称" title="昵称" value="${nickname!}"/></p>
                 <p>2位以上数字、字母、汉字、下划线</p>

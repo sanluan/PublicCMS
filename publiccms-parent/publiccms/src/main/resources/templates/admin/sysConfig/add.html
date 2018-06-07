@@ -2,7 +2,7 @@
     <#assign a=object/>
 </@_sysConfig>
 <form method="post" action="sysConfig/save.do?callbackType=${closeCurrent!'closeCurrent'}&navTabId=sysConfig/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
@@ -11,7 +11,7 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt><@t.page 'common.code'/>:</dt>
+            <dt><@t.page 'code'/>:</dt>
             <dd>
                 <input name="configCode" type="hidden" value="${code!}"/>
                 <#if a?has_content&&!a.customed>
@@ -22,7 +22,7 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt><@t.page 'common.description'/>:</dt>
+            <dt><@t.page 'description'/>:</dt>
             <dd>
                 <#if a?has_content&&!a.customed>
                     <textarea class="required readonly" readonly="readonly" name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea>

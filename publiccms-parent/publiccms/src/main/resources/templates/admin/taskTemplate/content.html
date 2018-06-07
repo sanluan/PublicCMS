@@ -3,7 +3,7 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <#if template?has_content><li><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该脚本吗?" target="ajaxTodo">删除</a></li></#if>
+            <#if template?has_content><li><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该脚本吗?" target="ajaxTodo"><@t.page 'button.delete'/></a></li></#if>
             <li><a class="button" href="taskTemplate/run.html?path=${path?url}" target="navTab" rel="taskTemplate/run">执行脚本</a></li>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
         </ul>
@@ -14,7 +14,7 @@
     </h2>
     <div class="pageFormContent" layoutH="109">
         <div class="clearfix">
-            <label>路径:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
+            <label><@t.page 'path'/>:</label><input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}"/>
         </div>
            <div>
             <textarea name="content" class="code" mode="freemarkermixed">${(template)!}</textarea>

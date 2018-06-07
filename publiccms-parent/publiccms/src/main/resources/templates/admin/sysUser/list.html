@@ -8,7 +8,7 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'common.name'/>:</label>
+                    <label><@t.page 'name'/>:</label>
                     <input type="text" name="name" value="${(name)!}" />
                 </li>
                 <#include "../include_page/disabled.html"/>
@@ -33,7 +33,7 @@
                     <input type="text" name="endRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
                 </li>
                 <li>
-                    <label>上次登录:</label>
+                    <label><@t.page 'user.last_login_date'/>:</label>
                     <input type="text" name="startLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
                     <span>-</span>
                     <input type="text" name="endLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
@@ -54,24 +54,24 @@
         <ul class="toolBar">
             <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> 添加用户</a></li>
             <li><a href="sysUser/add.html?id={sid}" target="navTab" rel="sysUser/edit"><i class="icon-edit icon-large"></i> 修改用户</a></li>
-            <li><a href="sysUser/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要启用该用户吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> 启用</a></li>
-            <li><a href="sysUser/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要禁用该用户吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 禁用</a></li>
+            <li><a href="sysUser/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要启用该用户吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'enable'/></a></li>
+            <li><a href="sysUser/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要禁用该用户吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'disable'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th width="30">ID</th>
-                <th>用户名</th>
+                <th><@t.page 'user.username'/></th>
                 <th>用户昵称</th>
                 <th>邮箱</th>
                 <th>已验证邮箱</th>
-                <th>已禁用</th>
-                <th>上次登录IP</th>
-                <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次登录日期</th>
-                <th orderField="loginCount" class="<#if orderField??&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">登录次数</th>
+                <th><@t.page 'disabled'/></th>
+                <th><@t.page 'user.last_login_ip'/></th>
+                <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
+                <th orderField="loginCount" class="<#if orderField??&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.login_count'/></th>
                 <th orderField="registeredDate" class="<#if orderField??&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">注册日期</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -82,7 +82,7 @@
                 <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">管理员</font>]','')?no_esc}</td>
                 <td>${(a.email)!}</td>
                 <td>${a.emailChecked?then('已验证','未验证')}</td>
-                <td>${(a.disabled)?then('<font color="red">禁用</font>','正常')?no_esc}</td>
+                <td>${(a.disabled)?then('<font color="red">'+t.getPageMessage('disable')+'</font>',t.getPageMessage('normal'))?no_esc}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.loginCount!}</td>

@@ -60,13 +60,13 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
-                <th><@t.page 'common.title'/></th>
+                <th><@t.page 'title'/></th>
                 <th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
                 <th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
                 <th width="100">发布用户</th>
                 <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
                 <th width="50">状态</th>
-                <th width="100"><@t.page 'common.operate'/></th>
+                <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -90,7 +90,7 @@
                     <#if 0=a.status>
                         <a href="cmsPlace/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要审核这条记录么?" target="ajaxTodo">审核</a>
                     </#if>
-                    <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo">删除</a>
+                    <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>
             </tr>
     </#list>

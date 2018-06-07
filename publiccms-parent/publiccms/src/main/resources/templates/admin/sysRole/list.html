@@ -6,7 +6,7 @@
         <ul class="toolBar">
             <li><a href="sysRole/add.html" target="navTab" rel="sysRole/add"><i class="icon-plus-sign-alt icon-large"></i> 添加角色</a></li>
             <li><a href="sysRole/add.html?id={sid}" target="navTab" rel="sysRole/edit"><i class="icon-edit icon-large"></i> 修改角色</a></li>
-            <li><a href="sysRole/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="sysRole/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
 <@_sysRoleList pageIndex=pageNum count=numPerPage>
@@ -14,7 +14,7 @@
         <thead>
             <tr>
                 <th width="30">ID</th>
-                <th><@t.page 'common.name'/></th>
+                <th><@t.page 'name'/></th>
                 <th>拥有所有功能权限</th>
                 <th>显示所有模块</th>
             </tr>

@@ -10,10 +10,10 @@ function checkFileType(){
 }
 </script>
 <form action="cmsTemplate/doUpload.do?callbackType=closeCurrent&navTabId=cmsTemplate/list" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
-	<input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive" onclick="return checkFileType();">上传</button></li>
+            <li><button type="submit" class="buttonActive" onclick="return checkFileType();"><@t.page 'upload'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>

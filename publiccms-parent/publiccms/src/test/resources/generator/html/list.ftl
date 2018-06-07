@@ -32,11 +32,11 @@
     <div class="panelBar">
         <ul class="toolBar">
         ${'<#'}if authorizedMap['${entityName?uncap_first}/add']>
-            <li><a href="${entityName?uncap_first}/add.html" target="navTab" rel="${entityName?uncap_first}/add"><i class="icon-plus-sign-alt icon-large"></i> 添加</a></li>
-            <li><a href="${entityName?uncap_first}/add.html?id={sid}" target="navTab" rel="${entityName?uncap_first}/edit"><i class="icon-edit icon-large"></i> 修改</a></li>
+            <li><a href="${entityName?uncap_first}/add.html" target="navTab" rel="${entityName?uncap_first}/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
+            <li><a href="${entityName?uncap_first}/add.html?id={sid}" target="navTab" rel="${entityName?uncap_first}/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
         ${'</#'}if>
         ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
-            <li><a href="${entityName?uncap_first}/delete.do?csrfToken=<#noparse><@_csrfToken admin=true/></#noparse>" title="确定要删除该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量删除</a></li>
+            <li><a href="${entityName?uncap_first}/delete.do?csrfToken=<#noparse><@_csrfToken admin=true/></#noparse>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
         ${'</#'}if>
         </ul>
     </div>
@@ -59,7 +59,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
                 </#list>
                 <td>
                 ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
-                    <a href="${entityName?uncap_first}/delete.do?ids=<#noparse>${a.id}</#noparse>?csrfToken=<#noparse><@_csrfToken admin=true/></#noparse>" title="确定要删除这条记录么?"  target="ajaxTodo">删除</a>
+                    <a href="${entityName?uncap_first}/delete.do?ids=<#noparse>${a.id}</#noparse>?csrfToken=<#noparse><@_csrfToken admin=true/></#noparse>" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
                 ${'</#'}if>
                 </td>
             <#noparse>

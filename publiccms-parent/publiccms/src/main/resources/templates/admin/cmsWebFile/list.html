@@ -4,7 +4,7 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>路径:</label><label>${path?has_content?then(path+'/','/')}</label>
+                    <label><@t.page 'path'/>:</label><label>${path?has_content?then(path+'/','/')}</label>
                 </li>
             </ul>
         </div>
@@ -25,11 +25,11 @@
             <tr>
                 <th width="20"><input type="checkbox" group="paths" class="checkboxCtrl"></th>
                 <th width="30"></th>
-                <th><@t.page 'common.name'/></th>
+                <th><@t.page 'name'/></th>
                 <th>修改日期</th>
                 <th>创建日期</th>
                 <th>文件大小</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>

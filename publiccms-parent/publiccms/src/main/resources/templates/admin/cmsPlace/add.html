@@ -23,14 +23,14 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt><@t.page 'common.title'/>:</dt>
+            <dt><@t.page 'title'/>:</dt>
             <dd>
                 <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!title!}"/>
                 <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" >选择</a>
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>地址:</dt>
+            <dt><@t.page 'address'/>:</dt>
             <dd><input name="url" type="text" maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
         </dl>
         <dl>

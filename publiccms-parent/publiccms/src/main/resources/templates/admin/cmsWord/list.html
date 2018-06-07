@@ -6,7 +6,7 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'common.name'/>:</label>
+                    <label><@t.page 'name'/>:</label>
                     <input type="text" name="name" value="${(name)!}" />
                 </li>
                 <li>
@@ -40,17 +40,17 @@
             <li><a href="cmsWord/add.html?id={sid}" target="navTab" rel="cmsWord/edit"><i class="icon-edit icon-large"></i> 修改搜索词</a></li>
             <li><a href="cmsWord/hidden.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要隐藏该关键词吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> 隐藏</a></li>
             <li><a href="cmsWord/show.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要显示该关键词吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 显示</a></li>
-            <li><a href="cmsWord/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="cmsWord/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th>ID</th>
-                <th><@t.page 'common.name'/></th>
+                <th><@t.page 'name'/></th>
                 <th orderField="searchCount" class="<#if orderField??&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">热度</th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -67,7 +67,7 @@
                     <#else>
                         <a href="cmsWord/hidden.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要隐藏该关键词吗?" target="ajaxTodo">隐藏</a>
                     </#if>
-                    <a href="cmsWord/delete.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo">删除</a>
+                    <a href="cmsWord/delete.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

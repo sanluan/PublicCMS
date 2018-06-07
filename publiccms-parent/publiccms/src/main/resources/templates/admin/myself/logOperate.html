@@ -11,7 +11,7 @@
                     <input type="text" name="content" value="${content!}" />
                 </li>
                 <li>
-                    <label><@t.page 'common.operate'/>:</label>
+                    <label><@t.page 'operate'/>:</label>
                     <input type="text" name="operate" value="${operate!}" />
                 </li>
                 <li>
@@ -41,7 +41,7 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">操作日期</th>
                 <th>内容</th>
             </tr>

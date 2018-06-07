@@ -20,7 +20,7 @@
                     </select>
                 </li>
                 <li>
-                    <label>文件路径:</label>
+                    <label><@t.page 'file_path'/>:</label>
                     <input type="text" name="filePath" value="${filePath!}" />
                 </li>
             </ul>
@@ -51,7 +51,7 @@
                 <th orderField="fileSize" class="<#if orderField??&&'fileSize'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">文件大小</th>
                 <th>IP</th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">操作日期</th>
-                <th>文件路径</th>
+                <th><@t.page 'file_path'/></th>
             </tr>
         </thead>
         <tbody>
@@ -70,7 +70,7 @@
                     ${a.channel!}
                 </td>
                 <td>
-                    ${a.image?then('是','否')}
+                    ${a.image?then(t.getPageMessage('yes'),t.getPageMessage('no'))}
                 </td>
                 <td><@t.fileSize a.fileSize/></td>
                 <td>${a.ip!}</td>

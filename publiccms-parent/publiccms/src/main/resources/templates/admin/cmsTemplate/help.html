@@ -38,14 +38,14 @@
                     <a href="javascript:;" onclick="return false;">静态化内容模板数据</a>
                     <ul>
                         <li><a href="javascript:;" <@getAction r'${(content.title)!}'/>>内容标题</a></li>
-                        <li><a href="javascript:;" <@getAction r'${(content.url)!}'/>>链接地址</a></li>
+                        <li><a href="javascript:;" <@getAction r'${(content.url)!}'/>><@t.page 'url'/></a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:;" onclick="return false;">静态化分类模板数据</a>
                     <ul>
                         <li><a href="javascript:;" <@getAction r'${(category.title)!}'/>>分类名称</a></li>
-                        <li><a href="javascript:;" <@getAction r'${(category.url)!}'/>>链接地址</a></li>
+                        <li><a href="javascript:;" <@getAction r'${(category.url)!}'/>><@t.page 'url'/></a></li>
                     </ul>
                 </li>
                 <li>
@@ -62,7 +62,7 @@
                         <li><a href="javascript:;" <@getAction r'${site.sitePath!}'/>>静态站点访问地址</a></li>
                         <li><a href="javascript:;" <@getAction r'${site.useSsi?string}'/>>启用服务器端包含</a></li>
                         <li><a href="javascript:;" <@getAction r'${site.dynamicPath!}'/>>动态站点访问地址</a></li>
-                        <li><a href="javascript:;" <@getAction r'${site.disabled?string}'/>>已禁用</a></li>
+                        <li><a href="javascript:;" <@getAction r'${site.disabled?string}'/>><@t.page 'disabled'/></a></li>
                     </ul>
                 </li>
                 <li>
@@ -172,17 +172,17 @@
             <ul class="tree treeFolder">
 <@_sysConfigList>
     <#list list as a>
-    	<#if 'siteAttribute' != a.code>
+        <#if 'siteAttribute' != a.code>
                 <li>
                     <a href="javascript:;" <@getAction r'<@_sysConfigData code="'+a.code+r'"></@_sysConfigData>' field/>>${a.code}:${a.description!}</a>
                     <ul>
-                    	<@_sysConfigFieldList code=a.code>
-                    		<#list list as extend>
-                    	<li><a href="javascript:;" <@getAction r'<@_sysConfigData code="'+a.code+r'">${'+extend.id.code+r'!}</@_sysConfigData>' a.description+':'+extend.name/>>${extend.name}</a></li>
-                    		<#else>
-                    	<li>没有字段</li>
-                    		</#list>
-                    	</@_sysConfigFieldList>
+                        <@_sysConfigFieldList code=a.code>
+                            <#list list as extend>
+                        <li><a href="javascript:;" <@getAction r'<@_sysConfigData code="'+a.code+r'">${'+extend.id.code+r'!}</@_sysConfigData>' a.description+':'+extend.name/>>${extend.name}</a></li>
+                            <#else>
+                        <li>没有字段</li>
+                            </#list>
+                        </@_sysConfigFieldList>
                     </ul>
                 </li>
          </#if>

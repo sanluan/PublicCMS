@@ -10,7 +10,7 @@
             <table class="searchContent">
                 <tr>
                     <td>
-                        <label><@t.page 'common.name'/>:</label>
+                        <label><@t.page 'name'/>:</label>
                         <input type="text" name="name" value="${(name)!}" />
                     </td>
                     <td>
@@ -43,7 +43,7 @@
                         <input type="text" name="endRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
                     </td>
                     <td colspan="2">
-                        <label>上次登录:</label>
+                        <label><@t.page 'user.last_login_date'/>:</label>
                         <input type="text" name="startLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
                         <span>-</span>
                         <input type="text" name="endLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
@@ -66,13 +66,13 @@
         <thead>
             <tr>
                 <th>选择</th>
-                <th>用户名</th>
+                <th><@t.page 'user.username'/></th>
                 <th>用户昵称</th>
                 <th>邮箱</th>
                 <th>已验证邮箱</th>
-                <th>上次登录日期</th>
-                <th>上次登录IP</th>
-                <th>登录次数</th>
+                <th><@t.page 'user.last_login_date'/></th>
+                <th><@t.page 'user.last_login_ip'/></th>
+                <th><@t.page 'user.login_count'/></th>
                 <th>注册日期</th>
             </tr>
         </thead>

@@ -26,7 +26,7 @@
             <li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i> 添加模型</a></li>
             <li><a href="cmsModel/add.html?id={sid}" target="navTab" rel="cmsModel/edit"><i class="icon-edit icon-large"></i> 修改模型</a></li>
             <@_sysAuthorized roleIds=admin.roles url='cmsModel/delete'>
-                <li><a href="cmsModel/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+                <li><a href="cmsModel/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
             </@_sysAuthorized>
         </ul>
     </div>
@@ -35,12 +35,12 @@
         <thead>
             <tr>
                 <th width="80">ID</th>
-                <th><@t.page 'common.name'/></th>
+                <th><@t.page 'name'/></th>
                 <th>链接</th>
-                <th>内容页面模板路径</th>
+                <th><@t.page 'template_path'/></th>
                 <th>拥有图片列表</th>
                 <th>拥有附件列表</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>

@@ -13,11 +13,11 @@
         </div>
         <div class="pageFormContent" layoutH="60">
             <dl>
-                <dt><@t.page 'common.name'/>:</dt>
+                <dt><@t.page 'name'/>:</dt>
                 <dd><input class="required" name="name" type="text" size="20" value="${(a.name)!}"/></dd>
             </dl>
             <dl class="nowrap">
-                <dt>排序:</dt>
+                <dt><@t.page 'sort'/>:</dt>
                 <dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!(category.sort)!0}"/></dd>
             </dl>
             <#include "../include_page/extends.html"/>

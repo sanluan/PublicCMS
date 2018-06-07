@@ -16,7 +16,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
             </div>
@@ -40,9 +40,9 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th><@t.page 'common.name'/></th>
+                <th><@t.page 'name'/></th>
                 <th>字典类型</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -53,7 +53,7 @@
                 <td>${a.multiple?then('多选','单选')}</td>
                 <td>
                 <#if authorizedMap['cmsDictionary/delete']>
-                    <a href="cmsDictionary/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo">删除</a>
+                    <a href="cmsDictionary/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </#if>
                 </td>
             </tr>

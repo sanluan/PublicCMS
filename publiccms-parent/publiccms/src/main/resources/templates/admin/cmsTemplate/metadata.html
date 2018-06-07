@@ -1,12 +1,12 @@
 <@_metadata path=path><#assign a=object/></@_metadata>
 <form method="post" action="cmsTemplate/saveMetaData.do?navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <#if !a?has_content>
                 <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true">模板示例</a></li>
             <#else>
-                <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
+                <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该模板吗?" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
                 <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">模板内容编辑</a></li>
             </#if>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
@@ -14,7 +14,7 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>路径:</dt></dt>
+            <dt><@t.page 'path'/>:</dt></dt>
             <dd>
                 <input name="path" class="required" type="text" size="50" value="${(path)!}"/>
             </dd>

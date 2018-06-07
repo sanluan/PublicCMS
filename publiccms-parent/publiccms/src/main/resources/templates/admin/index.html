@@ -52,27 +52,32 @@ $(function(){
 <header>
     <a class="logo" href="./"><img src="${res}/themes/logo.png"/></a>
     <ul class="nav">
-        <li><i class="icon-user icon-large"></i> ${(admin.nickName)!}</li>
-        <li id="switchEnvBox"><i class="icon-wrench icon-large"></i> <a href="javascript:"><@t.page 'change_locale'/></a>
+        <li>
+            <a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i> <@t.page 'dynamic_website'/></a>
+            <#if site.useStatic>
+                | <a href="${site.sitePath!}" target="_blank"><i class="icon-home icon-large"></i> <@t.page 'website'/></a>
+            </#if>
+        </li>
+        <li class="switchBox">
+            <a href="javascript:"><i class="icon-wrench icon-large"></i> <@t.page 'change_locale'/></a>
             <ul>
             <#list langs as k,v>
                 <li><a href="changeLocale?lang=${k}" target="ajaxTodo">${v}</a></li>
             </#list>
             </ul>
         </li>
-        <li>
-            <i class="icon-home icon-large"></i> <a href="${site.dynamicPath!}" target="_blank"><@t.page 'dynamic_website'/></a>
-            <#if site.useStatic>
-                | <a href="${site.sitePath!}" target="_blank"><@t.page 'website'/></a>
-            </#if>
-        </li>
     <@_sysAuthorized roleIds=admin.roles url='clearCache'>
         <li>
-            <i class="icon-refresh icon-large"></i> <a href="clearCache" target="ajaxTodo"><@t.menu 'clearcache'/></a>
+            <a href="clearCache" target="ajaxTodo"><i class="icon-refresh icon-large"></i> <@t.menu 'clearcache'/></a>
         </li>
     </@_sysAuthorized>
-        <li>
-            <i class="icon-signout icon-large"></i> <a href="logout.do?userId=${admin.id}"><@t.page 'logout'/></a>
+        <li class="switchBox">
+            <a href="javascript:"><i class="icon-user icon-large"></i> ${(admin.nickName)!}</a>
+            <ul>
+                <li>
+                    <i class="icon-signout icon-large"></i> <a href="logout.do?userId=${admin.id}"><@t.page 'logout'/></a>
+                </li>
+            </ul>
         </li>
     </ul>
     <ul id="navMenu">

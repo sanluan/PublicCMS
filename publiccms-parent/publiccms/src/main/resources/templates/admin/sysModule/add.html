@@ -30,15 +30,15 @@
             </dd>
         </dl>
       <fieldset>
-      	<legend><@t.page 'common.name'/>:</legend>
-      	<#list langs as k,v>
-	        <dl class="nowrap">
-	            <dt>${v}:</dt>
-	            <dd>
-	            	<input type="hidden" name="langList[${k?index}].id.lang" value="${k}"/>
-	            	<input class="required" name="langList[${k?index}].value" type="text" size="20" maxlength="100" value="<@_sysModuleLang moduleId=id lang=k>${object.value!}</@_sysModuleLang>"/>
-	            </dd>
-	        </dl>
+          <legend><@t.page 'name'/>:</legend>
+          <#list langs as k,v>
+            <dl class="nowrap">
+                <dt>${v}:</dt>
+                <dd>
+                    <input type="hidden" name="langList[${k?index}].id.lang" value="${k}"/>
+                    <input class="required" name="langList[${k?index}].value" type="text" size="20" maxlength="100" value="<@_sysModuleLang moduleId=id lang=k>${object.value!}</@_sysModuleLang>"/>
+                </dd>
+            </dl>
         </#list>
       </fieldset>
     <#if deep lte 2>
@@ -65,7 +65,7 @@
             </dd>
         </dl>
         <dl>
-            <dt><@t.page 'common.sort'/>:</dt>
+            <dt><@t.page 'sort'/>:</dt>
             <dd><input class="required digits" name="sort" type="number" size="3" value="${(a.sort)!0}"/></dd>
         </dl>
     </div>

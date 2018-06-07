@@ -26,14 +26,14 @@
                 </dd>
             </dl>
             <dl class="nowrap">
-                <dt><@t.page 'common.name'/>:</dt>
+                <dt><@t.page 'name'/>:</dt>
                 <dd>
                     <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
                 </dd>
             </dl>
         <#if site.useStatic>
             <dl class="onlyUrl nowrap">
-                <dt>默认模板路径:</dt>
+                <dt><@t.page 'template_path'/>:</dt>
                 <dd>
                     <input name="templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
                     <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="">选择默认静态化模板路径</a>
@@ -106,7 +106,7 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'common.description'/></label>
+                    <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'description'/></label>
                 </dt>
                 <dd>
                     <label>文字:</label>

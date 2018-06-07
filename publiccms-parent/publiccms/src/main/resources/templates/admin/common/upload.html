@@ -27,10 +27,10 @@ function selectFile(path){
 }
 </script>
 <form action="file/doUpload.do" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
-	<input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive" onclick="return checkFileType();">上传</button></li>
+            <li><button type="submit" class="buttonActive" onclick="return checkFileType();"><@t.page 'upload'/></button></li>
             <li><button type="button" class="button" onclick="$.bringBack({'${field}':''});return false;">清空字段</button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>

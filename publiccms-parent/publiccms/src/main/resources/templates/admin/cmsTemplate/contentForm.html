@@ -7,7 +7,7 @@
 <#assign formContent>
     <#if category.allowContribute>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save.do">
-	<input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
+    <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
     <input name="returnUrl" type="hidden" value="这里是您的表单提交之后的页面地址" />
     <input name="categoryId" type="hidden" value="${category.id!}"/>
     <input name="modelId" type="hidden" value="${model.id!}"/>

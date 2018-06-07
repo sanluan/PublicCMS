@@ -10,14 +10,14 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt><@t.page 'common.title'/>:</dt>
+            <dt><@t.page 'title'/>:</dt>
             <dd>
                 <input class="required" name="title" type="text" size="80" maxlength="255" value="${(a.title)!}"/>
                 <label><input name="anonymous" type="checkbox" />允许匿名</label>
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt><@t.page 'common.description'/>:</dt>
+            <dt><@t.page 'description'/>:</dt>
             <dd>
                 <textarea class="required" name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea>
             </dd>
@@ -45,7 +45,7 @@
             <dd><input class="required digtal" name="maxVote" type="number" size="5" value="${(a.maxVote)!}"/></dd>
         </dl>
         <dl class="nowrap">
-            <dt>地址:</dt>
+            <dt><@t.page 'address'/>:</dt>
             <dd><input class="required" name="url" type="text" size="80" maxlength="255" value="${(a.url)!}"/></dd>
         </dl>
     </div>

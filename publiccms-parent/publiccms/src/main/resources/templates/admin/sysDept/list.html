@@ -21,7 +21,7 @@
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label><@t.page 'common.name'/>:</label>
+                    <label><@t.page 'name'/>:</label>
                     <input type="text" name="name" value="${(name)!}" />
                 </li>
             </ul>
@@ -44,21 +44,21 @@
             </#if>
             <li><a href="sysDept/add.html?parentId=${parentId!}" target="navTab" rel="sysDept/add"><i class="icon-plus-sign-alt icon-large"></i> 添加部门</a></li>
             <li><a href="sysDept/add.html?id={sid}" target="navTab" rel="sysDept/edit"><i class="icon-edit icon-large"></i> 修改部门</a></li>
-            <li><a href="sysDept/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="sysDept/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th width="30">ID</th>
-                <th><@t.page 'common.name'/></th>
+                <th><@t.page 'name'/></th>
                 <th>父部门</th>
-                <th><@t.page 'common.description'/></th>
+                <th><@t.page 'description'/></th>
                 <th>负责人</th>
                 <th>拥有全部分类</th>
                 <th>最大内容置顶级别</th>
                 <th>拥有全部页面</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>

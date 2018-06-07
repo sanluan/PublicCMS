@@ -15,7 +15,7 @@
                     <input type="text" name="channel" value="${channel!}" />
                 </li>
                 <li>
-                    <label><@t.page 'common.code'/>:</label>
+                    <label><@t.page 'code'/>:</label>
                     <input type="text" name="operate" value="${operate!}" />
                 </li>
                 <li>
@@ -52,7 +52,7 @@
                 <th>用户ID</th>
                 <th>用户昵称</th>
                 <th>渠道</th>
-                <th><@t.page 'common.operate'/>/<@t.page 'common.code'/></th>
+                <th><@t.page 'operate'/>/<@t.page 'code'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">操作日期</th>
                 <th>内容</th>
             </tr>

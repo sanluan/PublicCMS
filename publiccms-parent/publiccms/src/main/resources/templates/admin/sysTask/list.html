@@ -29,7 +29,7 @@
         <ul class="toolBar">
             <li><a href="sysTask/add.html" target="navTab" rel="sysTask/add"><i class="icon-plus-sign-alt icon-large"></i> 添加任务计划</a></li>
             <li><a href="sysTask/add.html?id={sid}" target="navTab" rel="sysTask/edit"><i class="icon-edit icon-large"></i> 修改任务计划</a></li>
-            <li><a href="sysTask/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="sysTask/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
@@ -41,7 +41,7 @@
                 <th>表达式</th>
                 <th>任务计划脚本</th>
                 <th>状态</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>

@@ -33,20 +33,20 @@
         <ul class="toolBar">
             <li><a href="cmsLottery/add.html" target="navTab" rel="cmsLottery/add"><i class="icon-plus-sign-alt icon-large"></i> 添加抽奖</a></li>
             <li><a href="cmsLottery/add.html?id={sid}" target="navTab" rel="cmsLottery/edit"><i class="icon-edit icon-large"></i> 修改抽奖</a></li>
-            <li><a href="cmsLottery/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="cmsLottery/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th>ID</th>
-                <th><@t.page 'common.title'/></th>
+                <th><@t.page 'title'/></th>
                 <th orderField="startDate" class="<#if orderField??&&'startDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">开始日期</th>
                 <th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">结束日期</th>
                 <th>抽奖次数</th>
                 <th>礼品剩余/总量</th>
                 <th>概率</th>
-                <th><@t.page 'common.operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>

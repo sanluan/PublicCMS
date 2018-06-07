@@ -36,7 +36,7 @@ function siteDefaultConfig${id!}(type){
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt><@t.page 'common.name'/>:</dt>
+            <dt><@t.page 'name'/>:</dt>
             <dd>
                 <input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
                 <label><input name="useStatic" onchange="if($(this).is(':checked')){$('.useSsi').show();}else{$('.useSsi').hide();}" type="checkbox"/>启用静态化</label>
@@ -82,13 +82,13 @@ function siteDefaultConfig${id!}(type){
                     </dd>
                 </dl>
                 <dl class="nowrap">
-                    <dt>管理员用户名:</dt>
+                    <dt><@t.page 'user.username'/>:</dt>
                     <dd>
                         <input class="required" name="userName" type="text" maxlength="45" size="20" value="admin"/>
                     </dd>
                 </dl>
                 <dl class="nowrap">
-                    <dt>管理员密码:</dt>
+                    <dt>密码:</dt>
                     <dd>
                         <input class="required" name="password" type="password" maxlength="255" size="20" value=""/>
                     </dd>

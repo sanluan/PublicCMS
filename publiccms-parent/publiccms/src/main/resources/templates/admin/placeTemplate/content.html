@@ -1,12 +1,12 @@
 <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
 <form method="post" action="cmsTemplate/savePlace.do" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
             <#if site.useSsi>
                 <li><a class="button" href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo">发布</a></li>
             </#if>
-            <li><a class="button" href="cmsTemplate/deletePlace.do?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该页面片段吗?" target="ajaxTodo">删除</a></li>
+            <li><a class="button" href="cmsTemplate/deletePlace.do?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该页面片段吗?" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
     <@_sysAuthorized roleIds=admin.roles url='cmsPlace/dataList'>
         <@_sysDeptPage deptId=admin.deptId!'' pages='/include'+path>
             <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="推荐位:${(a.alias)!}">推荐位管理</a></li>

@@ -26,7 +26,7 @@
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
                 </li>
                 <li>
-                    <label><@t.page 'common.title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
+                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
                 </li>
                 <li style="width:auto">
                     <label>模型:</label>
@@ -56,7 +56,7 @@
         </#if>
         <#if authorizedMap['cmsContent/realDelete']>
             <li class="line">line</li>
-            <li><a href="cmsContent/realDelete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> 批量彻底删除</a></li>
+            <li><a href="cmsContent/realDelete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
         </#if>
         </ul>
     </div>
@@ -65,7 +65,7 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
-                <th width="250"><@t.page 'common.title'/></th>
+                <th width="250"><@t.page 'title'/></th>
                 <th width="40">发布</th>
                 <th width="30">分类</th>
                 <th width="30">模型</th>
@@ -75,7 +75,7 @@
                 <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
                 <th width="70">创建日期</th>
                 <th width="50">状态/审核用户</th>
-                <th width="100"><@t.page 'common.operate'/></th>
+                <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -122,7 +122,7 @@
                         <a href="cmsContent/recycle.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要还原这条记录么?" target="ajaxTodo">还原</a>
                     </#if>
                     <#if authorizedMap['cmsContent/realDelete']>
-                        <a href="cmsContent/realDelete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo">彻底删除</a>
+                        <a href="cmsContent/realDelete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                     </#if>
                 </td>
             </tr>

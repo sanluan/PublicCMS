@@ -52,7 +52,7 @@ function clickAddTagType(){
                 </dl>
                 <div class="divider"></div>
                 <dl class="nowrap">
-                    <dt><@t.page 'common.name'/>:</dt>
+                    <dt><@t.page 'name'/>:</dt>
                     <dd>
                         <input class="required" name="name" type="text" maxlength="50" size="20" value="${(a.name)!}"/>
                         <label><input name="onlyUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.onlyUrl',navTab.getCurrentPanel()).hide();$('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.onlyUrl').show();}"/>外链</label>
@@ -61,7 +61,7 @@ function clickAddTagType(){
                     </dd>
                 </dl>
                 <dl class="nowrap">
-                    <dt><@t.page 'common.code'/>:</dt>
+                    <dt><@t.page 'code'/>:</dt>
                     <dd><input class="required" name="code" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/></dd>
                 </dl>
 <#include "../include_page/tagTypes.html"/>
@@ -92,7 +92,7 @@ function clickAddTagType(){
                     </dd>
                 </dl>
                 <dl>
-                    <dt>排序:</dt>
+                    <dt><@t.page 'sort'/>:</dt>
                     <dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!0}"/></dd>
                 </dl>
 <#if categoryType?has_content&&categoryType.extendId?has_content>
@@ -104,7 +104,7 @@ function clickAddTagType(){
             </div>
             <div class="pageFormContent onlyUrl" layoutH="96">
                 <dl class="nowrap">
-                    <dt><@t.page 'common.title'/>:</dt>
+                    <dt><@t.page 'title'/>:</dt>
                     <dd><input name="title" type="text" maxlength="80" size="50" value="${(attribute.title)!}"/></dd>
                 </dl>
                 <dl class="nowrap">
@@ -115,7 +115,7 @@ function clickAddTagType(){
                     </dd>
                 </dl>
                 <dl class="nowrap">
-                    <dt><@t.page 'common.description'/>:</dt>
+                    <dt><@t.page 'description'/>:</dt>
                     <dd>
                         <textarea name="description" maxlength="300" cols="80" rows="2">${(attribute.description)!}</textarea>
                         <span class="info">请填写与分类内容相关的描述，字数控制应该70-100个汉字或者140-200个英文字符</span>
@@ -161,7 +161,7 @@ function clickAddTagType(){
                         <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
         </#if>
-        				<label>&nbsp;</label>
+                        <label>&nbsp;</label>
                         <@childModel a/>
                     </dd>
                 </dl>

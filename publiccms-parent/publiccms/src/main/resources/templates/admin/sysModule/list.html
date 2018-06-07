@@ -1,8 +1,3 @@
-<#if parentId?has_content>
-    <@_sysModule id=parentId>
-        <#assign parent=object/>
-    </@_sysModule>
-</#if>
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
 <@_sysModuleList advanced=true parentId=parentId pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
@@ -10,9 +5,9 @@
         <#include "../include_page/paramters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
-            <#if parent?has_content>
+            <#if parentId?has_content>
                 <li>
-                    <label>父模块:</label><label>${(parent.name)!}</label>
+                    <label><@t.page 'module.parent'/>:</label><label><@t.menu parentId/></label>
                 </li>
             </#if>
                 <li></li>
@@ -23,27 +18,27 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <#if parent?has_content>
-                <li><a href="sysModule/list.html?parentId=${(parent.parentId)!}&deep=${deep-1}" target="navTab" rel="sysModule/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
+            <#if parentId?has_content>
+                <li><a href="sysModule/list.html?parentId=<@_sysModule id=parentId>${object.parentId!}&</@_sysModule>deep=${deep-1}" target="navTab" rel="sysModule/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
             <#if deep lte 3>
-                <li><a href="sysModule/add.html?parentId=${parentId!}&deep=${deep}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i> 添加模块</a></li>
+                <li><a href="sysModule/add.html?parentId=${parentId!}&deep=${deep}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'module.add'/></a></li>
             </#if>
-            <li><a href="sysModule/add.html?id={sid}&deep=${deep}" target="navTab" rel="sysModule/edit"><i class="icon-edit icon-large"></i> 修改模块</a></li>
-            <li><a href="sysModule/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
+            <li><a href="sysModule/add.html?id={sid}&deep=${deep}" target="navTab" rel="sysModule/edit"><i class="icon-edit icon-large"></i> <@t.page 'module.edit'/></a></li>
+            <li><a href="sysModule/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th width="150">ID</th>
-                <th><@t.page 'common.name'/></th>
+                <th><@t.page 'name'/></th>
                 <th>是否菜单</th>
-                <th>地址</th>
+                <th><@t.page 'address'/></th>
                 <th>父模块</th>
-                <th orderField="sort" class="<#if orderField??&&'sort'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">排序</th>
-                <th><@t.page 'common.operate'/></th>
+                <th orderField="sort" class="<#if orderField??&&'sort'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'sort'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -57,7 +52,7 @@
                 <td>${a.sort!}</td>
                 <td>
                     <#if deep lte 2>
-                        <a href="sysModule/list.html?parentId=${a.id}&deep=${(deep!'0')?number+1}" target="navTab" rel="sysModule/list" title="子模块管理">子模块管理</a>
+                        <a href="sysModule/list.html?parentId=${a.id}&deep=${(deep!'0')?number+1}" target="navTab" rel="sysModule/list"><@t.page 'module.child_management'/></a>
                     </#if>
                 </td>
             </tr>

@@ -27,7 +27,7 @@
                 <#if error??>
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>
-                <p><input type="text" name="username" placeholder="用户名" title="用户名"/></p>
+                <p><input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>"/></p>
                 <p><input type="password" name="password" placeholder="密码" title="密码"/></p>
                 <p>
                     <input type="hidden" name="returnUrl" value="${site.sitePath}"/>

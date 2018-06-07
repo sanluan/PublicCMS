@@ -74,11 +74,11 @@
             <#break>
         <#case 'boolean'>
             <#if 'view'=type>
-                <#if value?has_content>${('true'=value)?then('是','否')}</#if>
+                <#if value?has_content>${('true'=value)?then(t.getPageMessage('yes'),t.getPageMessage('no'))}</#if>
             <#else>
                 <select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
-                    <option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')?no_esc}>是</option>
-                    <option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')?no_esc}>否</option>
+                    <option value="true"${(value?has_content&&'true'=value)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
+                    <option value="false"${(!value?has_content||'false'=value)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
                 </select>
             </#if>
             <#break>
