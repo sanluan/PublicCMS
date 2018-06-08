@@ -370,7 +370,7 @@ public class CmsContentAdminController extends AbstractController {
         if (null != entity) {
             SysSite site = getSite(request);
             CmsContent content = service.getEntity(entity.getContentId());
-            if (site.getId() == content.getSiteId()) {
+            if (null == content || site.getId() == content.getSiteId()) {
                 cmsContentRelatedService.delete(id);
                 publish(new Long[] { entity.getContentId() }, _csrf, request, session, model);
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

@@ -3,8 +3,8 @@
     <div class="unit">
 <@_contentRelatedList relatedContentId=contentId>
         <p>
-            <label><@t.page 'content'/>:</label>${page.totalCount}
-            <a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" rel="push">推荐到内容</a>
+            <label><@t.page 'content'/>:</label><label><@t.page 'total_count' page.totalCount/></label>
+            <a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" rel="push"><@t.page 'button.push'/></a>
         </p>
         <p>
     <#list page.list as a>
@@ -12,7 +12,7 @@
     </#list>
     <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
     <#list page.list as a>
-            <a href="${(contentMap[a.contentId?string].url)!}" target="_blank">${(contentMap[a.contentId?string].title)!}</a> (${(a.clicks)!}) <a href="cmsContent/unrelated.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/> target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
+            <a href="${(contentMap[a.contentId?string].url)!}" target="_blank">${(contentMap[a.contentId?string].title)!}</a> (${(a.clicks)!}) <a href="cmsContent/unrelated.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
     </#list>
         </p>
 </@_contentRelatedList>
@@ -21,8 +21,8 @@
     <div class="unit">
 <@_placeList itemType='content' itemId=contentId>
         <p>
-            <label>推荐位:</label>${page.totalCount}
-            <a class="button" href="cmsPlace/push.html?itemType=content&itemId=${contentId}" target="dialog" rel="push">推荐到推荐位</a>
+            <label>推荐位:</label><label><@t.page 'total_count' page.totalCount/></label>
+            <a class="button" href="cmsPlace/push.html?itemType=content&itemId=${contentId}" target="dialog" rel="push"><@t.page 'button.push'/></a>
         </p>
         <p>
     <#list page.list as a>

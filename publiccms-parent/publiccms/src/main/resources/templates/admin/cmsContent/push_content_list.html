@@ -36,7 +36,7 @@
     <table class="list" width="100%" layoutH="66" targetType="dialog" rel="push_content_list">
         <thead>
             <tr>
-                <th>使用</th>
+                <th><@t.page 'use'/></th>
                 <th width="30">ID</th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'content.promulgator'/></th>
@@ -67,7 +67,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" rel="push"><@t.page 'push'/></a>
+                    <a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" rel="push"><@t.page 'button.push'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>
