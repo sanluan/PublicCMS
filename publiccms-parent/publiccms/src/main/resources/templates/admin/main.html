@@ -1,10 +1,10 @@
 <div class="pageFormContent" layoutH="19">
 <fieldset>
-    <legend><@t.menu 'myself_menu'/></legend>
+    <legend><@t.page 'my_account'/></legend>
     <div class="unit">
         <p>
             <label><@t.page 'myself.my_pending_content'/>:</label>
-            <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.menu 'myself_content'/>" target="navTab" rel="myself/contentList">
+            <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
                 <@_contentList advanced=true status=2 userId=admin.id count=0>
                     ${page.totalCount}
                 </@_contentList>
@@ -12,7 +12,7 @@
         </p>
         <p>
             <label><@t.page 'myself.my_draft'/>:</label>
-            <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.menu 'myself_content'/>" target="navTab" rel="myself/contentList">
+            <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
                 <@_contentList advanced=true status=0 userId=admin.id count=0>
                     ${page.totalCount}
                 </@_contentList>
@@ -26,7 +26,7 @@
     <div class="unit">
         <p>
             <label><@t.page 'user.login_count'/>:</label>
-            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="<@t.menu 'myself_log_login'/>" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
+            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="<@t.page 'my_login_log'/>" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
         </p>
         <p>
             <label><@t.page 'user.last_login_date'/>:</label>${admin.lastLoginDate!}
@@ -35,8 +35,8 @@
             <label><@t.page 'user.last_login_ip'/>:</label>${admin.lastLoginIp!}
         </p>
         <p>
-            <label><@t.menu 'myself_token'/>:</label>
-            <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> <@t.menu 'myself_token'/>" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
+            <label><@t.page 'my_login_token'/>:</label>
+            <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> <@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
         </p>
     </div>
 </fieldset>
@@ -103,8 +103,8 @@
         <legend><@t.page 'system'/></legend>
         <div class="unit">
             <p id="cmsVersion">
-                <label><@t.menu 'official'/>:</label>
-                <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.menu 'official_website'/>">${cms}</a>
+                <label><@t.page 'publiccms'/>:</label>
+                <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.page 'publiccms_website'/>">${cms}</a>
             </p>
             <script>
                 $.getJSON('//cms.publiccms.com/api/directive/version?callback=?',function(data){
@@ -117,15 +117,15 @@
             </script>
         <@_sysAuthorized roleIds=admin.roles url='sysCluster/list'>
             <p>
-                <label>${master?then(t.getPageMessage('cluster.master'),t.getPageMessage('cluster.normal'))}:</label>
-                <a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="<@t.menu 'cluster_list'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
+                <label>${master?then(t.pageMessage('cluster.master'),t.pageMessage('cluster.normal'))}:</label>
+                <a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="<@t.page 'cluster.management'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
             </p>
         </@_sysAuthorized>
     <@_masterSite>
         <@_disk>
             <p>
                 <label><@t.page 'data.directory'/>:</label>
-                <a href="report/cms.html" icon="<i class='icon-check-sign icon-large'></i>" title="<@t.menu 'report_cms'/>" target="navTab" rel="report/cms" external="true">${(rootPath)!}</a>
+                <a href="report/cms.html" icon="<i class='icon-check-sign icon-large'></i>" title="<@t.page 'system_monitor'/>" target="navTab" rel="report/cms" external="true">${(rootPath)!}</a>
             </p>
             <p>
                 <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>

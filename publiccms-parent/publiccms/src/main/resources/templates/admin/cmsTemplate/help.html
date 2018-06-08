@@ -101,7 +101,7 @@
                 <li>
                     <a href="javascript:;" onclick="return false;">获取数据列表</a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_contentList>' 'categoryId:分类ID,containChild:包含子分类内容,modelId:模型ID,parentId:父内容ID,onlyUrl:["true":仅外链,"false":非外链,默认全部],hasImages:["true":仅图集,"false":非图集,默认全部],hasFiles:["true":仅带附件,"false":非带附件,默认全部],hasCover:["true":仅带封面,"false":不带封面,默认全部],orderField:排序字段["scores":'+t.getPageMessage('content.score')+',"comments":评论,"clicks":点击,"publishDate":发布日期,"checkDate":审核日期,"updateDate":更新日期,默认排序+发布日期倒序],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>><@t.page 'content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_contentList>' 'categoryId:分类ID,containChild:包含子分类内容,modelId:模型ID,parentId:父内容ID,onlyUrl:["true":仅外链,"false":非外链,默认全部],hasImages:["true":仅图集,"false":非图集,默认全部],hasFiles:["true":仅带附件,"false":非带附件,默认全部],hasCover:["true":仅带封面,"false":不带封面,默认全部],orderField:排序字段["scores":'+t.pageMessage('content.score')+',"comments":评论,"clicks":点击,"publishDate":发布日期,"checkDate":审核日期,"updateDate":更新日期,默认排序+发布日期倒序],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>><@t.page 'content'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_contentFileList contentId=contentId image=image orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a>${a.filePath}</#list></@_contentFileList>' 'orderField:排序字段["size":大小,"click":点击,默认排序字段顺序],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>>内容附件</a></li>
                         <li><a href="javascript:;" <@getAction r'<@_categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryList>' 'parentId:父分类ID,typeId:分类类型ID,allowContribute:["true":允许投稿,"false":不允许投稿,默认全部],pageIndex:页码,count:每页数据条数'/>><@t.page 'category'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_categoryTypeList pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryTypeList>' 'pageIndex:页码,count:每页数据条数'/>>分类类型</a></li>
@@ -236,7 +236,7 @@
                 </li>
             </#if>
         <#else>
-            <li><a>空目录</a></li>
+            <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_templateList>
 </#macro>

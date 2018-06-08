@@ -52,7 +52,7 @@
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td><@t.m 'operate.'+a.operate/></td>
                 <td>${a.createDate!}</td>
-                <td><@t.cut a.content 60 '...<a href="log/operateView.html?id=${a.id}" target="dialog" rel="operateTask">查看更多</a>'?no_esc/></td>
+                <td><@t.cut a.content 60 '...<a href="log/operateView.html?id=${a.id}" target="dialog" rel="operateTask">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>
             </tr>
             </#list>
         </tbody>

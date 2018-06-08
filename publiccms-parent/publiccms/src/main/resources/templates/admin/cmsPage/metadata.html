@@ -12,18 +12,18 @@
         <input name="path" type="hidden" value="${path}"/>
         <#if site.useStatic&&(a.publishPath)?has_content>
             <dl class="nowrap">
-                <dt>静态页面:</dt>
+                <dt><@t.page 'static_page'/>:</dt>
                 <dd>
                     <label><a class="button" href="cmsTemplate/publish.do?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo">生成页面</a></label>
-                    <label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank">查看页面</a></label>
+                    <label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank"><@t.page 'button.view_page'/></a></label>
                 </dd>
             </dl>
         </#if>
         <#if !a?has_content||a.useDynamic?has_content&&a.useDynamic>
             <dl class="nowrap">
-                <dt>动态页面:</dt>
+                <dt><@t.page 'dynamic_page'/>:</dt>
                 <dd>
-                    <label><a class="button" href="${site.dynamicPath+path}<#if a.acceptParamters?has_content>?<#list a.acceptParamters?split(',') as p>${p}={value}${p?counter}<#sep>&</#list></#if>" target="_blank">查看页面</a></label>
+                    <label><a class="button" href="${site.dynamicPath+path}<#if a.acceptParamters?has_content>?<#list a.acceptParamters?split(',') as p>${p}={value}${p?counter}<#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
                     <#if 10 lte (a.cacheTime)!0>
                         <label><a class="button" href="cmsPage/clearCache.do?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a></label>
                     </#if>

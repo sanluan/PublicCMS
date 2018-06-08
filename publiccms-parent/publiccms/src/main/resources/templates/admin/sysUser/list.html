@@ -82,7 +82,7 @@
                 <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">管理员</font>]','')?no_esc}</td>
                 <td>${(a.email)!}</td>
                 <td>${a.emailChecked?then('已验证','未验证')}</td>
-                <td>${(a.disabled)?then('<font color="red">'+t.getPageMessage('disable')+'</font>',t.getPageMessage('normal'))?no_esc}</td>
+                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disable')+'</font>',t.pageMessage('normal'))?no_esc}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.loginCount!}</td>

@@ -83,8 +83,8 @@
                 <td>${(typeMap[a.typeId?string].name)!}</td>
                 <td>${(parentMap[a.parentId?string].name)!}</td>
                 <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then("[包含子分类内容]",''))!}</#if></td>
-                <td>${a.allowContribute?then(t.getPageMessage('category.allow_contribute'),t.getPageMessage('category.forbid_contribute'))}</td>
-                <td>${a.hidden?then(t.getPageMessage('hidden'),t.getPageMessage('show'))}</td>
+                <td>${a.allowContribute?then(t.pageMessage('category.allow_contribute'),t.pageMessage('category.forbid_contribute'))}</td>
+                <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.sort!}</td>
                 <td>
                 <#if authorizedMap['cmsCategory/add']>

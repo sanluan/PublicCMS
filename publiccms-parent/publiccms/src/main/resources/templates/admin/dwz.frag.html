@@ -6,7 +6,7 @@
                 <a class="maximize" href="#maximize"></a>
                 <a class="restore" href="#restore"></a>
                 <a class="minimize" href="#minimize"></a>
-                <h1>弹出窗口</h1>
+                <h1><@t.page 'dialog'/></h1>
             </div>
         </div>
     </div>
@@ -82,25 +82,25 @@
 <!-- dwz.pagination -->
 <textarea id="pagination"><ul>
     <li class="j-first">
-        <a class="first" href="javascript:;"><span>首页</span></a>
-        <span class="first"><span>首页</span></span>
+        <a class="first" href="javascript:;"><span><@t.page 'first_page'/></span></a>
+        <span class="first"><span><@t.page 'first_page'/></span></span>
     </li>
     <li class="j-prev">
-        <a class="previous" href="javascript:;"><span>上一页</span></a>
-        <span class="previous"><span>上一页</span></span>
+        <a class="previous" href="javascript:;"><span><@t.page 'pre_page'/></span></a>
+        <span class="previous"><span><@t.page 'pre_page'/></span></span>
     </li>
     #pageNumFrag#
     <li class="j-next">
-        <a class="next" href="javascript:;"><span>下一页</span></a>
-        <span class="next"><span>下一页</span></span>
+        <a class="next" href="javascript:;"><span><@t.page 'next_page'/></span></a>
+        <span class="next"><span><@t.page 'next_page'/></span></span>
     </li>
     <li class="j-last">
-        <a class="last" href="javascript:;"><span>末页</span></a>
-        <span class="last"><span>末页</span></span>
+        <a class="last" href="javascript:;"><span><@t.page 'last_page'/></span></a>
+        <span class="last"><span><@t.page 'last_page'/></span></span>
     </li>
     <li class="jumpto">
         <input class="textInput" type="text" size="4" value="#currentPage#" />
-        <input class="goto" type="button" value="确定" />
+        <input class="goto" type="button" value="<@t.page 'goto'/>" />
     </li>
 </ul></textarea>
 <textarea id="alertBoxFrag"><div id="alertMsgBox" class="alert">
@@ -136,10 +136,9 @@
             </table>
         </div>
         <div class="body">
-            <dl class="dayNames"><dt>日</dt><dt>一</dt><dt>二</dt><dt>三</dt><dt>四</dt><dt>五</dt><dt>六</dt></dl>
-            <dl class="days">日期列表选项</dl>
+            <dl class="dayNames"></dl>
+            <dl class="days"></dl>
             <div style="clear:both;height:0;line-height:0"></div>
-
         </div>
 
         <div class="foot">
@@ -153,8 +152,8 @@
                     <td><ul><li class="up">&and;</li><li class="down">&or;</li></ul></td>
                 </tr>
             </table>
-            <button type="button" class="clearBut">清空</button>
-            <button type="button" class="okBut">确定</button>
+            <button type="button" class="clearBut"><@t.page 'button.clear'/></button>
+            <button type="button" class="okBut"><@t.page 'button.ok'/></button>
         <div>
         <div class="tm">
             <ul class="hh">
@@ -209,14 +208,14 @@
     </div>
 </div></textarea>
 <textarea id="navTabCM"><ul id="navTabCM">
-    <li rel="reload">刷新标签页</li>
-    <li rel="closeCurrent">关闭标签页</li>
-    <li rel="closeOther">关闭其它标签页</li>
-    <li rel="closeAll">关闭全部标签页</li>
+    <li rel="reload"><@t.page 'navtab.reload'/></li>
+    <li rel="closeCurrent"><@t.page 'navtab.close'/></li>
+    <li rel="closeOther"><@t.page 'navtab.close_other'/></li>
+    <li rel="closeAll"><@t.page 'navtab.close_all'/></li>
 </ul></textarea>
 <textarea id="dialogCM"><ul id="dialogCM">
-    <li rel="closeCurrent">关闭弹出窗口</li>
-    <li rel="closeOther">关闭其它弹出窗口</li>
-    <li rel="closeAll">关闭全部弹出窗口</li>
+    <li rel="closeCurrent"><@t.page 'dialog.close'/></li>
+    <li rel="closeOther"><@t.page 'dialog.close_other'/></li>
+    <li rel="closeAll"><@t.page 'dialog.close_all'/></li>
 </ul></textarea>
 <textarea id="externalFrag"><iframe src="{url}" style="width:100%;height:{height};" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe></textarea>

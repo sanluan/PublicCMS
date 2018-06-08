@@ -100,7 +100,7 @@ public class LoginAdminController extends AbstractController {
                     .append(CommonConstants.getCookiesUserSplit())
                     .append(URLEncoder.encode(user.getNickName(), CommonConstants.DEFAULT_CHARSET_NAME));
             RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesAdmin(), sb.toString(),
-                    Integer.MAX_VALUE, null);
+                    30 * 24 * 3600, null);
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }

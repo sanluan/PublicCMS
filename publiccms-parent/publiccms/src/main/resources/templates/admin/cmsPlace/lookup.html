@@ -10,7 +10,7 @@
             </#if>
             </li>
         <#else>
-            <li><a>空目录</a></li>
+            <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_categoryList>
 </#macro>
@@ -26,7 +26,7 @@
             </#if>
             </li>
         <#else>
-            <li><a>空目录</a></li>
+            <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_categoryList>
 </#macro>
@@ -46,18 +46,18 @@
                 <#else>
                     <#if site.useStatic&&(metadataMap[a.fileName].publishPath)?has_content>
                         <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(metadataMap[a.fileName].alias)!}',url:'${site.sitePath+metadataMap[a.fileName].publishPath}'});return false;">
-                            [静态页面] ${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
+                            [<@t.page 'static_page'/>] ${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
                         </a>
                     </#if>
                     <#if (metadataMap[a.fileName].useDynamic)?has_content&&metadataMap[a.fileName].useDynamic>
                         <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(metadataMap[a.fileName].alias)!}',url:'${site.dynamicPath+path}<#if (metadataMap[a.fileName].acceptParamters)?has_content><#list metadataMap[a.fileName].acceptParamters?split(',') as a><#if a?is_first>?<#else>#</#if>${a}=</#list></#if>'});return false;">
-                            [动态页面] ${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
+                            [<@t.page 'dynamic_page'/>] ${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
                         </a>
                     </#if>
                 </#if>
             </li>
         <#else>
-            <li><a>空目录</a></li>
+            <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_templateList>
 </#macro>

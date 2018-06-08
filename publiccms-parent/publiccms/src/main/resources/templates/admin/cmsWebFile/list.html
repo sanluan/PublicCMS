@@ -77,7 +77,7 @@
                         <#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
                           <a href="cmsWebFile/content.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit icon-large'></i>" title="文件编辑:${filePath}"><@t.page 'button.edit'/></a>
                         </#if>
-                        <a href="${site.sitePath+filePath?keep_after('/')}" target="_blank" title="查看">查看</a>
+                        <a href="${site.sitePath+filePath?keep_after('/')}" target="_blank"><@t.page 'button.view'/></a>
                     </#if>
                 </td>
             </tr>

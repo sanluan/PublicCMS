@@ -70,7 +70,7 @@
                     ${a.channel!}
                 </td>
                 <td>
-                    ${a.image?then(t.getPageMessage('yes'),t.getPageMessage('no'))}
+                    ${a.image?then(t.pageMessage('yes'),t.pageMessage('no'))}
                 </td>
                 <td><@t.fileSize a.fileSize/></td>
                 <td>${a.ip!}</td>

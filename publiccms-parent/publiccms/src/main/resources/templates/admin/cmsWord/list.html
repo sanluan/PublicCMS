@@ -57,7 +57,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}${a.hidden?then('['+t.getPageMessage('hidden')+']','')}</td>
+                <td>${(a.name)!}${a.hidden?then('['+t.pageMessage('hidden')+']','')}</td>
                 <td>${a.searchCount!}</td>
                 <td>${a.createDate!}</td>
                 <td>

@@ -77,7 +77,7 @@
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.createDate!}</td>
-                <td>${(a.disabled)?then('<font color="red">'+t.getPageMessage('disable')+'</font>',t.getPageMessage('normal'))?no_esc}</td>
+                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disable')+'</font>',t.pageMessage('normal'))?no_esc}</td>
             </tr>
             </#list>
         </tbody>

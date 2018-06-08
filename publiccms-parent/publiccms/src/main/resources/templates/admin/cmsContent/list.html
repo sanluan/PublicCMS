@@ -148,7 +148,7 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="center">${a.id}</td>
-                <td>${(a.copied?then('['+t.getPageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
+                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
                 <td class="center">
                     ${(userMap[a.userId?string].nickName)!}
                 </td>
@@ -188,7 +188,7 @@
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/add']>
-                        <a href="cmsContent/add.html?id=${a.id}" target="navTab" rel="cmsContent/edit" title="<@t.menu 'content_edit'/>"><@t.page 'button.edit'/></a>
+                        <a href="cmsContent/add.html?id=${a.id}" target="navTab" rel="cmsContent/edit" title="<@t.page 'content.edit'/>"><@t.page 'button.edit'/></a>
                     </#if>
                     <#if authorizedMap['cmsContent/delete']>
                         <a href="cmsContent/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>

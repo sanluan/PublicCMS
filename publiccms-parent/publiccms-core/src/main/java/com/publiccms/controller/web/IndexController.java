@@ -14,6 +14,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -82,7 +84,8 @@ public class IndexController extends AbstractController {
             requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR, requestPath.length() - 2))
                     + CommonConstants.getDefaultSubfix();
         } else {
-            requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR)) + CommonConstants.getDefaultSubfix();
+            requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR))
+                    + CommonConstants.getDefaultSubfix();
         }
         return getViewName(id, pageIndex, requestPath, body, request, response, model);
     }
@@ -104,6 +107,30 @@ public class IndexController extends AbstractController {
             requestPath += CommonConstants.getDefaultPage();
         }
         return getViewName(null, null, requestPath, body, request, response, model);
+    }
+
+    /**
+     * 修改语言
+     * 
+     * @param lang
+     * @param returnUrl
+     * @param request
+     * @param response
+     * @return view name
+     */
+    @RequestMapping("changeLocale")
+    public String changeLocale(String lang, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
+        SysSite site = getSite(request);
+        if (CommonUtils.empty(returnUrl)) {
+            returnUrl = site.getDynamicPath();
+        }
+        if (null != lang) {
+            LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+            if (null != localeResolver) {
+                localeResolver.setLocale(request, response, org.springframework.util.StringUtils.parseLocaleString(lang));
+            }
+        }
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     private String getViewName(Long id, Integer pageIndex, String requestPath, String body, HttpServletRequest request,
