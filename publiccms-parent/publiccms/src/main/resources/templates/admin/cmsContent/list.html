@@ -28,11 +28,11 @@
                     <#include "../include_page/status.html"/>
                 </li>
                 <li>
-                    <label>发布用户:</label>
+                    <label><@t.page 'content.promulgator'/>:</label>
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label>发布日期:</label>
+                    <label><@t.page 'publish_date'/>:</label>
                     <input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
                     <span>-</span>
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
@@ -41,7 +41,7 @@
                     <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
                 </li>
                 <li style="width:auto">
-                    <label>模型:</label>
+                    <label><@t.page 'model'/>:</label>
                     <#include "../include_page/modelId.html"/>
                 </li>
             </ul>
@@ -60,7 +60,7 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
+                <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
 <#if authorizedMap['cmsContent/add']>
@@ -71,41 +71,41 @@
                 <@_categoryModelList modelId=a.id categoryId=categoryId>
                     <#if page.totalCount gt 0>
                         <#assign size++/>
-            <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus-sign-alt icon-large"></i> 添加${(a.name)!}</a></li>
+            <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
                     </#if>
                 </@_categoryModelList>
                 <#if size gte 5&&a?has_next>
-            <li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> 添加更多内容</a></li>
+            <li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'content.add_more'/></a></li>
                     <#break>
                 </#if>
             </#list>
             <#if size=0>
-                <li><a><i class="icon-ban-circle icon-large"></i> 该分类没有可发布内容</a></li>
+                <li><a><i class="icon-ban-circle icon-large"></i> <@t.page 'content.no_model'/></a></li>
             </#if>
         </@_modelList>
     </#if>
-            <li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> 修改内容</a></li>
+            <li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> <@t.page 'content.edit'/></a></li>
         <#if authorizedMap['cmsContent/changeModelParameters']>
             <li>
-                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" rel="cmsContent_changeModelParameters"><i class="icon-list-alt icon-large"></i> 修改内容模型</a>
+                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" rel="cmsContent_changeModelParameters"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
             </li>
         </#if>
             <li class="line">line</li>
 </#if>
         <#if authorizedMap['cmsContent/check']>
-            <li><a href="cmsContent/check.do?_csrf=<@_csrfToken admin=true/>" title="确定要审核这些记录么?" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核</a></li>
+            <li><a href="cmsContent/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/uncheck']>
-            <li><a href="cmsContent/uncheck.do?_csrf=<@_csrfToken admin=true/>" title="确定要撤销审核这些记录么?" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量撤销审核</a></li>
+            <li><a href="cmsContent/uncheck.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/refresh'] && !site.useStatic>
-            <li><a href="cmsContent/refresh.do?_csrf=<@_csrfToken admin=true/>" title="确定要刷新这些记录么?" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
+            <li><a href="cmsContent/refresh.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/publish']>
-            <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="确定要生成这些记录么?" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> 批量生成</a></li>
+            <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/moveParameters']>
-            <li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> 批量移动</a></li>
+            <li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> <@t.page 'button.batch_move'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/delete']>
             <li class="line">line</li>
@@ -119,16 +119,16 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
                 <th width="150"><@t.page 'title'/></th>
-                <th width="40">发布</th>
-                <th width="30">分类</th>
-                <th width="30">模型</th>
-                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
-                <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
-                <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
-                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
-                <th width="70">创建日期</th>
-                <th width="40" orderField="default" class="<#if !orderField??||'default'==orderField>desc<#else>order</#if>">置顶级别</th>
-                <th width="50">状态/审核用户</th>
+                <th width="40"><@t.page 'content.promulgator'/></th>
+                <th width="30"><@t.page 'category'/></th>
+                <th width="30"><@t.page 'model'/></th>
+                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
+                <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
+                <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
+                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="70"><@t.page 'create_date'/></th>
+                <th width="40" orderField="default" class="<#if !orderField??||'default'==orderField>desc<#else>order</#if>"><@t.page 'content.top_level'/></th>
+                <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -148,7 +148,7 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="center">${a.id}</td>
-                <td>${(a.copied?then('[转载]',''))!}<a href="cmsContent/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
+                <td>${(a.copied?then('['+t.getPageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
                 <td class="center">
                     ${(userMap[a.userId?string].nickName)!}
                 </td>
@@ -170,21 +170,21 @@
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list">子内容管理</a>
+                        <a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a>
                     </#if>
                     <#if 1=a.status>
                         <#if authorizedMap['cmsContent/push']>
                             <#if dept?has_content>
-                                <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" target="dialog" width="500" height="150" mask="true">置顶</a>
+                                <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" target="dialog" width="500" height="150" mask="true"><@t.page 'top'/></a>
                             </#if>
-                            <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push">推荐</a>
+                            <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push"><@t.page 'push'/></a>
                         </#if>
                         <#if authorizedMap['cmsContent/uncheck']>
-                            <a href="cmsContent/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要撤销审核这条记录么?" target="ajaxTodo">撤销</a>
+                            <a href="cmsContent/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>
                         </#if>
                     <#elseif 2=a.status>
                         <#if authorizedMap['cmsContent/check']>
-                            <a href="cmsContent/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要审核这条记录么?" target="ajaxTodo">审核</a>
+                            <a href="cmsContent/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/add']>

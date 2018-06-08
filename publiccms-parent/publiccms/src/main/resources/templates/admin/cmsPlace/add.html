@@ -34,7 +34,7 @@
             <dd><input name="url" type="text" maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
         </dl>
         <dl>
-            <dt>发布日期:</dt>
+            <dt><@t.page 'publish_date'/>:</dt>
             <dd>
                 <input type="text" name="publishDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
                 <a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>

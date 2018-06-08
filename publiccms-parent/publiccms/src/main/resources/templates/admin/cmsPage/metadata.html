@@ -25,7 +25,7 @@
                 <dd>
                     <label><a class="button" href="${site.dynamicPath+path}<#if a.acceptParamters?has_content>?<#list a.acceptParamters?split(',') as p>${p}={value}${p?counter}<#sep>&</#list></#if>" target="_blank">查看页面</a></label>
                     <#if 10 lte (a.cacheTime)!0>
-                        <label><a class="button" href="cmsPage/clearCache.do?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo">清除缓存</a></label>
+                        <label><a class="button" href="cmsPage/clearCache.do?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a></label>
                     </#if>
                 </dd>
             </dl>

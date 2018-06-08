@@ -1,7 +1,7 @@
 <div class="pageFormContent" layoutH="19">
     <ul class="tree treeFolder expand">
         <li>
-            <a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'',categoryTypeName:''});return false;">清空选择</a>
+            <a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'',categoryTypeName:''});return false;"><@t.page 'button.clear_select'/></a>
         </li>
 <@_categoryTypeList parentId=parentId count=500>
     <#list page.list as a>

@@ -20,13 +20,13 @@ function clickAddTag(){
     <div class="formBar">
         <ul>
             <li>
-                <label><input type="checkbox" name="draft"/>草稿</label>
+                <label><input type="checkbox" name="draft"/><@t.page 'draft'/></label>
             </li>
             <@_sysAuthorized roleIds=admin.roles url='cmsContent/check'>
                 <li>
                     <label>
                         <input type="checkbox" name="checked" onclick="if($(this).is(':checked')){$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().hide();}else{$('input[name=draft]',navTab.getCurrentPanel()).parent().parent().show();}"/>
-                        审核通过
+                        <@t.page 'check_passed'/>
                     </label>
                 </li>
             <#if a?has_content&&1=a.status><script>$('input[name=checked]',navTab.getCurrentPanel()).click();</script></#if>
@@ -39,8 +39,8 @@ function clickAddTag(){
         <div class="tabsHeader">
             <div class="tabsHeaderContent">
                 <ul>
-                    <li><a href="javascript:;" onclick="return false;">基础信息</a></li>
-                    <li><a href="javascript:;" onclick="return false;">推荐信息</a></li>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'recommend_info'/></a></li>
                 </ul>
             </div>
         </div>
@@ -51,21 +51,21 @@ function clickAddTag(){
             <#assign requiredFieldList=model.requiredFieldList![]/>
             <@_content id=parentId>
                 <dl class="nowrap">
-                    <dt>父内容:</dt>
+                    <dt><@t.page 'content.parent'/>:</dt>
                     <dd>
                         ${(object.title)!}
                     </dd>
                 </dl>
             </@_content>
             <dl>
-                <dt>分类:</dt>
+                <dt><@t.page 'category'/>:</dt>
                 <dd>
                     <input name="categoryId" type="hidden" value="${categoryId!}"/>
                     ${(category.name)!}
                 </dd>
             </dl>
             <dl>
-                <dt>模型:</dt>
+                <dt><@t.page 'model'/>:</dt>
                 <dd>
                     <input name="modelId" type="hidden" value="${modelId!}"/>
                     ${(model.name)!}
@@ -140,16 +140,16 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                 </dl>
             </#if>
                 <dl>
-                    <dt>定时发布:</dt>
+                    <dt><@t.page 'content.timming'/>:</dt>
                     <dd>
                       <input name="timing" type="checkbox" onclick="if($(this).is(':checked')){$('#publishDate',navTab.getCurrentPanel()).show();$('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid')}else{$('#publishDate',navTab.getCurrentPanel()).hide();$('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid')}"/>
                     </dd>
                 </dl>
                 <dl id="publishDate" style="display:none">
-                    <dt>发布日期:</dt>
+                    <dt><@t.page 'publish_date'/>:</dt>
                     <dd>
                         <input type="text" name="publishDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
-                        <a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
+                        <a class="inputDateButton" href="javascript:;" onclick="return false;"></a>
                     </dd>
                 </dl>
             <#if a?has_content&&a.publishDate gt .now>
@@ -162,7 +162,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
                     <dd>
                         <input name="cover"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
-                        <a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">${model.coverText!}</a>
+                        <a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">${(model.fieldTextMap['cover'])!}</a>
                         <#include "../include_page/preview.html"/>
                         <@preview 'content' 'input[name=cover]'/>
                     </dd>
@@ -199,8 +199,45 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
         </#if>
             </div>
             <div class="pageFormContent" layoutH="96">
-                <#include "../include_page/related.html"/>
-                <@related id!/>
+				<table class="list nowrap itemDetail" addButton="<@t.page 'content.new_recommend'/>" width="100%">
+				    <thead>
+				        <tr>
+				            <th type="lookup" name="contentRelateds[#index#].title" size="30" fieldClass="required" fieldAttrs="{maxlength:255,width:1080,height:500}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId"><@t.page 'content.select'/></th>
+				            <th type="text" name="contentRelateds[#index#].url" size="40" fieldClass="required" fieldAttrs="{maxlength:2048}"><@t.page 'address'/></th>
+				            <th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:300,rows:2,cols:60}"><@t.page 'description'/></th>
+				            <th type="text" name="contentRelateds[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
+				            <th type="del" width="60"><@t.page 'operate'/></th>
+				        </tr>
+				    </thead>
+				    <tbody>
+				<#if id?has_content>
+				    <@_contentRelatedList contentId=id>
+				        <#list page.list as related>
+				            <tr>
+				                <td>
+				                    <input type="hidden" name="contentRelateds[${related?index}].id" value="${related.id}"/>
+				                    <input type="hidden" name="contentRelateds[${related?index}].relatedContentId" value="${related.relatedContentId!}"/>
+				                    <input class="required" type="text" name="contentRelateds[${related?index}].title" value="${related.title}" size="30" maxlength="255" class="required" />
+				                    <a class="btnLook" href="cmsContent/lookup.html" lookupGroup="contentRelateds[${related?index}]" lookupPk="relatedContentId" width="1080" height="500"><@t.page 'content.select'/></a>
+				                </td>
+				                <td>
+				                    <input class="required" type="text" name="contentRelateds[${related?index}].url" value="${(related.url)!}" size="40" maxlength="2048"/>
+				                </td>
+				                <td>
+				                    <textarea name="contentRelateds[${related?index}].description" rows="2" cols="60" maxlength="300">${(related.description)!}</textarea>
+				                </td>
+				                <td>
+				                    <input class="required digits" type="text" name="contentRelateds[${related?index}].sort" value="${related.sort!}" size="5" maxlength="5"/>
+				                </td>
+				                <td>
+				                    <a href="javascript:void(0)" class="btnDel"><@t.page 'button.delete'/></a>
+				                </td>
+				            </tr>
+				        </#list>
+				    </@_contentRelatedList>
+				</#if>
+				    </tbody>
+				</table>
             </div>
         </div>
     </div>

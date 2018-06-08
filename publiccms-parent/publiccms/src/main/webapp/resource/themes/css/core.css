@@ -28,7 +28,7 @@ footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;
 
 /* Menu */
 header .logo{ float:left;width:200px;height:100%;}
-header .logo img{ width:100%;}
+header .logo img{ max-height:100%;max-width:100%;}
 header .nav{ display:block;position:absolute;right:0px;z-index:2;}
 header .nav li{ float:left;padding:0 5px;line-height:37px;position: relative;}
 header .nav ul { display:none;width:100px; border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;position:absolute;top:30px; right:0;}

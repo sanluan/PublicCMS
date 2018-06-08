@@ -5,7 +5,7 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>状态:</label>
+                    <label><@t.page 'status'/>:</label>
                     <select class="combox" name="status">
                         <option value=""${(!status?has_content)?then(' selected="true"','')?no_esc}>请选择</option>
                         <option value="0"${(status??&&"0"==status)?then(' selected="true"','')?no_esc}><@t.m 'status.task.'+0/></option>
@@ -40,7 +40,7 @@
                 <th>说明</th>
                 <th>表达式</th>
                 <th>任务计划脚本</th>
-                <th>状态</th>
+                <th><@t.page 'status'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

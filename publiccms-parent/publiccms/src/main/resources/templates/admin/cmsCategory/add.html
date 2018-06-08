@@ -26,7 +26,7 @@ function clickAddTagType(){
         <div class="tabsHeader">
             <div class="tabsHeaderContent">
                 <ul>
-                    <li><a href="javascript:;" onclick="return false;">基础信息</a></li>
+                    <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
                     <li class="onlyUrl"><a href="javascript:;" onclick="return false;">SEO优化</a></li>
                     <li><a href="javascript:;" onclick="return false;">可发布内容模型</a></li>
                     <li class="categoryModelContent"><a href="javascript:;" onclick="return false;">内容扩展字段</a></li>
@@ -40,7 +40,7 @@ function clickAddTagType(){
                     <dd>
                         <input name="parentId" type="hidden" value="${parentId!}" />
                         <input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
-                        <a class="btnLook" href="cmsCategory/lookup.html?categoryId=${parentId!}" lookupGroup="">选择</a>
+                        <a class="btnLook" href="cmsCategory/lookup.html?categoryId=${parentId!}" lookupGroup=""></a>
                     </dd>
                 </dl>
                 <dl>
@@ -56,7 +56,7 @@ function clickAddTagType(){
                     <dd>
                         <input class="required" name="name" type="text" maxlength="50" size="20" value="${(a.name)!}"/>
                         <label><input name="onlyUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.onlyUrl',navTab.getCurrentPanel()).hide();$('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.onlyUrl').show();}"/>外链</label>
-                        <label><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')?no_esc}/>允许投稿</label>
+                        <label><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')?no_esc}/><@t.page 'category.allow_contribute'/></label>
                         <label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')?no_esc}/>前台隐藏</label>
                     </dd>
                 </dl>
@@ -85,7 +85,7 @@ function clickAddTagType(){
                 </dl>
                 <div class="divider"></div>
                 <dl class="nowrap onlyUrl">
-                    <dt>每页数据:</dt>
+                    <dt><@t.page 'category.page_size'/>:</dt>
                     <dd>
                         <input class="required digits" name="pageSize" type="number" size="4" value="${(a.pageSize)!(category.pageSize)!20}"/>
                         <label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/>包含子分类内容</label>

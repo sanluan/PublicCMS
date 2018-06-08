@@ -24,7 +24,7 @@ function callback(fileUrl){
         <div class="col-md-1"></div>
         <div class="col-md-5">文件名</div>
         <div class="col-md-2"><@t.page 'modified_date'/></div>
-        <div class="col-md-2">创建日期</div>
+        <div class="col-md-2"><@t.page 'create_date'/></div>
         <div class="col-md-2">文件大小</div>
     </div>
 <#if path?has_content>
@@ -33,7 +33,7 @@ function callback(fileUrl){
             [目录]
         </div>
         <div class="col-md-5">
-            <a href="?path=${path?keep_before_last('/')}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self" title="返回上一级">返回上级..</a>
+            <a href="?path=${path?keep_before_last('/')}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self"><@t.page 'button.return'/></a>
         </div>
         <div class="col-md-2">
         </div>

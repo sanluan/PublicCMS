@@ -8,11 +8,11 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>模型:</label>
+                    <label><@t.page 'model'/>:</label>
                     <#include "../include_page/modelId.html"/>
                 </li>
                 <li>
-                    <label>发布日期:</label>
+                    <label><@t.page 'publish_date'/>:</label>
                     <input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
                     <span>-</span>
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
@@ -39,15 +39,15 @@
                 <th>使用</th>
                 <th width="30">ID</th>
                 <th><@t.page 'title'/></th>
-                <th>发布用户</th>
-                <th>分类</th>
-                <th>模型</th>
-                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
-                <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
-                <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
-                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
-                <th width="70">创建日期</th>
-                <th width="50">状态/审核用户</th>
+                <th><@t.page 'content.promulgator'/></th>
+                <th><@t.page 'category'/></th>
+                <th><@t.page 'model'/></th>
+                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
+                <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
+                <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
+                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="70"><@t.page 'create_date'/></th>
+                <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="40"><@t.page 'content.child'/></th>
             </tr>
         </thead>
@@ -67,7 +67,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" rel="push">推荐</a>
+                    <a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" rel="push"><@t.page 'push'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>

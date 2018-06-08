@@ -19,6 +19,11 @@ import com.publiccms.views.pojo.entities.ExtendField;
  */
 @Component
 public class SiteAttributeComponent implements Config {
+    public static final String CONFIG_LOGO = "logo";
+    /**
+     * 
+     */
+    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE_SITEA_TTRIBUTE;
 
     @Override
     public String getCode(SysSite site) {
@@ -27,12 +32,18 @@ public class SiteAttributeComponent implements Config {
 
     @Override
     public String getCodeDescription(SysSite site, Locale locale) {
-        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIGPREFIX + CONFIG_CODE_SITEA_TTRIBUTE);
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
+        extendFieldList.add(new ExtendField(CONFIG_LOGO, INPUTTYPE_IMAGE, false,
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO),
+                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO + CommonConstants.DOT + "description"),
+                null));
         return extendFieldList;
     }
 }

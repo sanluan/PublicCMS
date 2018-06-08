@@ -6,9 +6,9 @@
             <ul class="searchContent">
                 <li>
                     <select class="combox" name="allowContribute">
-                        <option value="">是否允许投稿</option>
-                        <option value="true"${(allowContribute?has_content&&"true"==allowContribute)?then(' selected="true"','')?no_esc}>允许投稿</option>
-                        <option value="false"${(allowContribute?has_content&&"false"==allowContribute)?then(' selected="true"','')?no_esc}>禁止投稿</option>
+                        <option value=""><@t.page 'category.contribute'/></option>
+                        <option value="true"${(allowContribute?has_content&&"true"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'category.allow_contribute'/></option>
+                        <option value="false"${(allowContribute?has_content&&"false"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'category.forbid_contribute'/></option>
                     </select>
                 </li>
             </ul>
@@ -27,23 +27,23 @@
     <div class="panelBar">
         <ul class="toolBar">
 <#if authorizedMap['cmsCategory/add']>
-            <li><a href="cmsCategory/add.html?parentId=${categoryId!}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> 添加分类</a></li>
+            <li><a href="cmsCategory/add.html?parentId=${categoryId!}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'category.add'/></a></li>
     <@_categoryTypeList count=5>
         <#list page.list as a>
-            <li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> 添加${(a.name)!}</a></li>
+            <li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
         </#list>
         <#if page.totalCount gt 5>
-            <li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> 添加更多分类</a></li>
+            <li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'category.add_more'/></a></li>
         </#if>
     </@_categoryTypeList>
-            <li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类"><i class="icon-edit icon-large"></i> 修改分类</a></li>
+            <li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
             <li class="line">line</li>
 </#if>
         <#if authorizedMap['cmsCategory/publish']>
-            <li><a href="cmsCategory/publish.do?_csrf=<@_csrfToken admin=true/>" title="确定要生成该些记录吗?" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> 批量生成分类首页</a></li>
+            <li><a href="cmsCategory/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/moveParameters']>
-            <li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> 批量移动</a></li>
+            <li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> <@t.page 'button.batch_move'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>
@@ -57,12 +57,12 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
                 <th><@t.page 'name'/></th>
-                <th>编码</th>
-                <th>分类类型</th>
-                <th>父分类</th>
-                <th>每页数据</th>
-                <th>是否允许投稿</th>
-                <th>是否前台隐藏</th>
+                <th><@t.page 'code'/></th>
+                <th><@t.page 'category_type'/></th>
+                <th><@t.page 'category.parent'/></th>
+                <th><@t.page 'category.page_size'/></th>
+                <th><@t.page 'category.contribute'/></th>
+                <th><@t.page 'display'/></th>
                 <th><@t.page 'sort'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
@@ -83,22 +83,22 @@
                 <td>${(typeMap[a.typeId?string].name)!}</td>
                 <td>${(parentMap[a.parentId?string].name)!}</td>
                 <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then("[包含子分类内容]",''))!}</#if></td>
-                <td>${a.allowContribute?then('允许','禁止')}</td>
-                <td>${a.hidden?then('隐藏','显示')}</td>
+                <td>${a.allowContribute?then(t.getPageMessage('category.allow_contribute'),t.getPageMessage('category.forbid_contribute'))}</td>
+                <td>${a.hidden?then(t.getPageMessage('hidden'),t.getPageMessage('show'))}</td>
                 <td>${a.sort!}</td>
                 <td>
                 <#if authorizedMap['cmsCategory/add']>
-                    <a href="cmsCategory/add.html?parentId=${a.id}" target="navTab" rel="cmsCategory/add">添加子分类</a>
-                    <a href="cmsCategory/add.html?copyId=${a.id}" target="navTab" rel="cmsCategory/add">复制分类</a>
+                    <a href="cmsCategory/add.html?parentId=${a.id}" target="navTab" rel="cmsCategory/add"><@t.page 'category.add_child'/></a>
+                    <a href="cmsCategory/add.html?copyId=${a.id}" target="navTab" rel="cmsCategory/add"><@t.page 'category.copy'/></a>
                 </#if>
                 <#if authorizedMap['cmsCategory/changeTypeParameters']>
-                    <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" target="dialog" rel="cmsCategory_changeTypeParameters">修改类型</a>
+                    <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" target="dialog" rel="cmsCategory_changeTypeParameters"><@t.page 'category.change_type'/></a>
                 </#if>
                 <#if authorizedMap['cmsPlace/push']>
-                    <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" target="dialog" rel="push">推荐</a>
+                    <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" target="dialog" rel="push"><@t.page 'push'/></a>
                 </#if>
                 <#if authorizedMap['cmsCategory/publishParameters']&&!a.onlyUrl>
-                    <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" target="dialog" width="400" height="150" mask="true">生成</a>
+                    <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" target="dialog" width="400" height="150" mask="true"><@t.page 'button.publish'/></a>
                 </#if>
                 </td>
             </tr>

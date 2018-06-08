@@ -31,7 +31,7 @@
                 </dd>
             </dl>
             <dl>
-                <dt>模型:</dt>
+                <dt><@t.page 'model'/>:</dt>
                 <dd>
                     ${(model.name)!}
                 </dd>
@@ -43,14 +43,14 @@
                 </dd>
             </dl>
             <dl>
-                <dt>状态:</dt>
+                <dt><@t.page 'status'/>:</dt>
                 <dd>
                     <@t.m 'status.content.'+(a.status)!/>
                 </dd>
             </dl>
         <#if 1=a.status>
             <dl>
-                <dt>审核用户:</dt>
+                <dt><@t.page 'inspector'/>:</dt>
                 <dd>
                      <@_sysUser id=a.checkUserId>${(object.nickName)!}</@_sysUser>
                 </dd>
@@ -126,7 +126,7 @@
             </dl>
         </#if>
             <dl>
-                <dt>发布日期:</dt>
+                <dt><@t.page 'publish_date'/>:</dt>
                 <dd>
                     ${(a.publishDate)!}
                 </dd>

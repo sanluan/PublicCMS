@@ -28,7 +28,7 @@
     <div class="panelBar">
         <ul class="toolBar">
         <#if authorizedMap['cmsDictionary/add']>
-            <li><a href="cmsDictionary/add.html" target="navTab" rel="cmsDictionary/add"><i class="icon-plus-sign-alt icon-large"></i> 添加</a></li>
+            <li><a href="cmsDictionary/add.html" target="navTab" rel="cmsDictionary/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
             <li><a href="cmsDictionary/add.html?id={sid}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
         </#if>
         <#if authorizedMap['cmsDictionary/delete']>

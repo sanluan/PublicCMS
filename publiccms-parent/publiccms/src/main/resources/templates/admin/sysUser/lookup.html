@@ -14,7 +14,7 @@
                         <input type="text" name="name" value="${(name)!}" />
                     </td>
                     <td>
-                        <label>状态:</label>
+                        <label><@t.page 'status'/>:</label>
                         <select class="combox" name="disable">
                             <option value="false"${(!disable?has_content||"false"==disable)?then(' selected="true"','')?no_esc}>正常</option>
                             <option value="true"${(disable?has_content&&"true"==disable)?then(' selected="true"','')?no_esc}>禁用</option>
@@ -53,7 +53,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="button" class="button" onclick="$.bringBack({'${field!'userId'}':'','${nickNameField!'nickName'}':''});return false;">清空选择</button>
+                        <button type="button" class="button" onclick="$.bringBack({'${field!'userId'}':'','${nickNameField!'nickName'}':''});return false;"><@t.page 'button.clear_select'/></button>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>

@@ -15,7 +15,7 @@
                     <#include "../include_page/status.html"/>
                 </li>
                 <li>
-                    <label>发布日期:</label>
+                    <label><@t.page 'publish_date'/>:</label>
                     <input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
                     <span>-</span>
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
@@ -24,7 +24,7 @@
                     <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
                 </li>
                 <li style="width:auto">
-                    <label>模型:</label>
+                    <label><@t.page 'model'/>:</label>
                     <#include "../include_page/modelId.html"/>
                 </li>
             </ul>
@@ -42,14 +42,14 @@
     <div class="panelBar">
         <ul class="toolBar">
             <#if parent?has_content>
-                <li><a href="myself/contentList.html?parentId=${(parent.parentId)!}" target="navTab" rel="myself/contentList"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
+                <li><a href="myself/contentList.html?parentId=${(parent.parentId)!}" target="navTab" rel="myself/contentList"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
-            <li><a href="cmsContent/add.html?id={sid}&navTabId=myself/contentList" target="navTab" rel="myself/contentList/edit"><i class="icon-edit icon-large"></i> 修改内容</a></li>
+            <li><a href="cmsContent/add.html?id={sid}&navTabId=myself/contentList" target="navTab" rel="myself/contentList/edit"><i class="icon-edit icon-large"></i> <@t.page 'content.edit'/></a></li>
             <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
             <li class="line">line</li>
-            <li><a href="cmsContent/refresh.do?_csrf=<@_csrfToken admin=true/>" title="确定要刷新这些记录么?" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
-            <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="确定要生成这些记录么?" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> 批量生成</a></li>
+            <li><a href="cmsContent/refresh.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
+            <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
@@ -58,14 +58,14 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
                 <th width="250"><@t.page 'title'/></th>
-                <th width="30">分类</th>
-                <th width="30">模型</th>
-                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">分数</th>
-                <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">评论数</th>
-                <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
-                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
-                <th width="70">创建日期</th>
-                <th width="50">状态/审核用户</th>
+                <th width="30"><@t.page 'category'/></th>
+                <th width="30"><@t.page 'model'/></th>
+                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
+                <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
+                <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
+                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="70"><@t.page 'create_date'/></th>
+                <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="40"><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -105,7 +105,7 @@
                         <a href="myself/contentList.html?parentId=${a.id}" target="navTab" rel="myself/contentList">子内容管理</a>
                     </#if>
                     <#if 1==a.status>
-                        <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push">推荐</a>
+                        <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push"><@t.page 'push'/></a>
                     </#if>
                 </td>
             </tr>

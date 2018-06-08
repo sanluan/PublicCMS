@@ -44,7 +44,7 @@
             <dd><input name="ownsAllCategory" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllCategory',navTab.getCurrentPanel()).hide();}else{$('.ownsAllCategory',navTab.getCurrentPanel()).show();}"/></dd>
         </dl>
         <dl>
-            <dt>最大内容置顶级别:</dt>
+            <dt><@t.page 'content.max_top_level'/>:</dt>
             <dd><input class="required digits" type="number" name="sort" name="maxSort" max="2100000000" value="${(a.maxSort)!100}"/></dd>
         </dl>
         <dl class="nowrap">

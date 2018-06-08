@@ -5,7 +5,7 @@
         <div id="tags${typeId!}" class="tagsBox"></div>
         <input name="tag[${typeId!}].id" type="hidden"/>
         <input name="tag[${typeId!}].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="tag[${typeId!}]" suggestUrl="common/tagSuggest.html?typeId=${typeId!}"/>
-        <a class="button" href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val());return false;">增加</a>
+        <a class="button" href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val());return false;"><@t.page 'button.add'/></a>
     </dd>
 </dl>
 </#macro>

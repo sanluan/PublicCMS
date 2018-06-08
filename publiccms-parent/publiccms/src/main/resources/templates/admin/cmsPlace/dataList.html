@@ -18,11 +18,11 @@
                     </#list>
                 </li>
                 <li>
-                    <label>发布用户:</label>
+                    <label><@t.page 'content.promulgator'/>:</label>
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label>发布日期:</label>
+                    <label><@t.page 'publish_date'/>:</label>
                     <input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
                     <span>-</span>
                     <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
@@ -43,8 +43,8 @@
         <ul class="toolBar">
             <li><a href="cmsPlace/add.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i> 添加推荐位数据</a></li>
             <li><a href="cmsPlace/add.html?id={sid}" target="navTab" rel="cmsPlace/edit"><i class="icon-edit icon-large"></i> 修改推荐位数据</a></li>
-            <li><a href="cmsPlace/refresh.do?_csrf=<@_csrfToken admin=true/>" title="确定要刷新这些记录么?" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> 批量刷新</a></li>
-            <li><a href="cmsPlace/check.do?_csrf=<@_csrfToken admin=true/>" title="确定要审核这些记录么?" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> 批量审核</a></li>
+            <li><a href="cmsPlace/refresh.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
+            <li><a href="cmsPlace/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
             <#if site.useSsi>
                 <li class="line">line</li>
                 <li><a href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> 发布</a></li>
@@ -61,11 +61,11 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30">ID</th>
                 <th><@t.page 'title'/></th>
-                <th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">发布日期</th>
-                <th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
-                <th width="100">发布用户</th>
-                <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">点击数</th>
-                <th width="50">状态</th>
+                <th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th width="100"><@t.page 'content.promulgator'/></th>
+                <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
+                <th width="50"><@t.page 'status'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>

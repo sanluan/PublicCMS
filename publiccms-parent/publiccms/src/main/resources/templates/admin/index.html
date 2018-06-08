@@ -50,7 +50,7 @@ $(function(){
 </head>
 <body scroll="no">
 <header>
-    <a class="logo" href="./"><img src="${res}/themes/logo.png"/></a>
+    <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/themes/logo.png</#if>"/></a>
     <ul class="nav">
         <li>
             <a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i> <@t.page 'dynamic_website'/></a>
@@ -68,7 +68,7 @@ $(function(){
         </li>
     <@_sysAuthorized roleIds=admin.roles url='clearCache'>
         <li>
-            <a href="clearCache" target="ajaxTodo"><i class="icon-refresh icon-large"></i> <@t.menu 'clearcache'/></a>
+            <a href="clearCache" target="ajaxTodo"><i class="icon-refresh icon-large"></i> <@t.page 'button.clear_cache'/></a>
         </li>
     </@_sysAuthorized>
         <li class="switchBox">
