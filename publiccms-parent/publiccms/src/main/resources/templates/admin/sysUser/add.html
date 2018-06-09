@@ -40,7 +40,7 @@
             <dd><input<#if !a??> class="required"</#if> name="repassword" type="password" maxlength="30" size="20" value=""/></dd>
         </dl>
         <dl class="nowrap">
-            <dt>用户昵称:</dt>
+            <dt><@t.page 'user.nickname'/>:</dt>
             <dd><input class="required" name="nickName" type="text" size="20" maxlength="30" value="${(a.nickName)!}"/></dd>
         </dl>
         <dl class="nowrap">

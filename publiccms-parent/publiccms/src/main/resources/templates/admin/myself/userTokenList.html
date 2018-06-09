@@ -5,7 +5,7 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>渠道:</label>
+                    <label><@t.page 'channel'/>:</label>
                     <input type="text" name="channel" value="${(channel)!}" />
                 </li>
             </ul>
@@ -28,10 +28,10 @@
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
-                <th>用户ID</th>
-                <th>渠道</th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">授权日期</th>
-                <th>登录IP</th>
+                <th><@t.page 'user.id'/></th>
+                <th><@t.page 'channel'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'authorize_date'/></th>
+                <th><@t.page 'log.login_ip'/></th>
             </tr>
         </thead>
         <tbody>

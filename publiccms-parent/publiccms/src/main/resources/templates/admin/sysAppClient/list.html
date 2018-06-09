@@ -8,11 +8,11 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>渠道:</label>
+                    <label><@t.page 'channel'/>:</label>
                     <input type="text" name="channel" value="${channel!}" />
                 </li>
                 <li>
-                    <label>用户ID:</label>
+                    <label><@t.page 'user.id'/>:</label>
                     <input type="text" name="userId" value="${userId!}" />
                 </li>
                 <li>
@@ -49,11 +49,11 @@
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>渠道</th>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'channel'/></th>
                 <th>唯一标识符</th>
-                <th>用户ID</th>
-                <th>用户昵称</th>
+                <th><@t.page 'user.id'/></th>
+                <th><@t.page 'user.nickname'/></th>
                 <th>版本</th>
                 <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
                 <th><@t.page 'user.last_login_ip'/></th>

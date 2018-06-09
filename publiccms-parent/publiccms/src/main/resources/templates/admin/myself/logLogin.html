@@ -7,25 +7,25 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>登录结果:</label>
+                    <label><@t.page 'result'/>:</label>
                     <select class="combox" name="result">
-                        <option value=""${(!result?has_content)?then(' selected="true"','')?no_esc}>不限</option>
-                        <option value="true"${(result?has_content&&"true"==result)?then(' selected="true"','')?no_esc}>成功</option>
-                        <option value="false"${(result?has_content&&"false"==result)?then(' selected="true"','')?no_esc}>失败</option>
+                        <option value=""${(!result?has_content)?then(' selected="true"','')?no_esc}><@t.page 'unrestricted'/></option>
+                        <option value="true"${(result?has_content&&"true"==result)?then(' selected="true"','')?no_esc}><@t.page 'success'/></option>
+                        <option value="false"${(result?has_content&&"false"==result)?then(' selected="true"','')?no_esc}><@t.page 'fail'/></option>
                     </select>
                 </li>
                 <li>
-                    <label>渠道:</label>
+                    <label><@t.page 'channel'/>:</label>
                     <input type="text" name="channel" value="${channel!}" />
                 </li>
                 <li>
-                    <label>登录日期:</label>
+                    <label><@t.page 'log.login_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
                 </li>
                 <li>
-                    <label>IP:</label>
+                    <label><@t.page 'log.login_ip'/>:</label>
                     <input type="text" name="ip" value="${ip!}" />
                 </li>
             </ul>
@@ -50,11 +50,11 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'user.username'/></th>
-                <th>登录渠道</th>
-                <th>IP</th>
-                <th>登录结果</th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">登录日期</th>
-                <th>错误密码</th>
+                <th><@t.page 'channel'/></th>
+                <th><@t.page 'log.login_ip'/></th>
+                <th><@t.page 'result'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.login_date'/></th>
+                <th><@t.page 'log.error_password'/></th>
             </tr>
         </thead>
         <tbody>
@@ -64,7 +64,7 @@
                 <td>${(a.name)!}</td>
                 <td>${a.channel!}</td>
                 <td>${a.ip!}</td>
-                <td>${a.result?then('成功','失败')}</td>
+                <td>${a.result?then(t.pageMessage('success'),t.pageMessage('fail'))}</td>
                 <td>${a.createDate!}</td>
                 <td>${(a.errorPassword)!}</td>
             </tr>

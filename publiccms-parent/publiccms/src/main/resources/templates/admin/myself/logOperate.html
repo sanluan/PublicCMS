@@ -1,4 +1,4 @@
-<@_logOperateList content=content operate=operate
+<@_logOperateList content=content operate=operate channel=channel
             userId=admin.id  startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
@@ -7,15 +7,19 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>内容:</label>
-                    <input type="text" name="content" value="${content!}" />
+                    <label><@t.page 'channel'/>:</label>
+                    <input type="text" name="channel" value="${channel!}" />
                 </li>
                 <li>
-                    <label><@t.page 'operate'/>:</label>
+                    <label><@t.page 'code'/>:</label>
                     <input type="text" name="operate" value="${operate!}" />
                 </li>
                 <li>
-                    <label>操作日期:</label>
+                    <label><@t.page 'log.content'/>:</label>
+                    <input type="text" name="content" value="${content!}" />
+                </li>
+                <li>
+                    <label><@t.page 'log.create_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
@@ -41,16 +45,28 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th><@t.page 'operate'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">操作日期</th>
-                <th>内容</th>
+                <th><@t.page 'channel'/></th>
+                <th><@t.page 'operate'/>/<@t.page 'code'/></th>
+                <th><@t.page 'log.operate_ip'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.create_date'/></th>
+                <th><@t.page 'log.content'/></th>
             </tr>
         </thead>
         <tbody>
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td><@t.m 'operate.'+a.operate/></td>
+                <td>
+                    ${a.channel!}
+                </td>
+                <td>
+                	<@t.m 'operate.'+a.operate/>
+                	/
+                    ${a.operate}
+                </td>
+                <td>
+                    ${a.ip!}
+                </td>
                 <td>${a.createDate!}</td>
                 <td><@t.cut a.content 60 '...<a href="log/operateView.html?id=${a.id}" target="dialog" rel="operateTask">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>
             </tr>

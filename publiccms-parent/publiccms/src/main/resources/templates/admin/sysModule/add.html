@@ -15,7 +15,7 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl>
-            <dt>ID:</dt>
+            <dt><@t.page 'id'/>:</dt>
             <dd>
                 <input class="required" remote="sysModule/virify.do?oldId=${id!}" data-msg-remote="ID已存在" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
                 <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/>菜单</label>

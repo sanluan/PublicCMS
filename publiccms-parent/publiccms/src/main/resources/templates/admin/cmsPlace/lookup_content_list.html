@@ -36,7 +36,7 @@
         <thead>
             <tr>
                 <th><@t.page 'use'/></th>
-                <th width="30">ID</th>
+                <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'content.promulgator'/></th>
                 <th><@t.page 'category'/></th>
@@ -46,7 +46,7 @@
                 <th width="40" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
                 <th width="40"><@t.page 'status'/></th>
-                <th width="60">子内容</th>
+                <th width="60"><@t.page 'content.child'/></th>
             </tr>
         </thead>
         <tbody>

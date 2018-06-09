@@ -91,9 +91,9 @@
                         <li><a href="javascript:;" <@getAction r'<@_indexContent id=id ids=ids/>'/>>重建索引</a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids pageIndex=pageIndex totalPage=totalPage>生成失败分类ID:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishCategory>' 'totalPage为空时只生成1页'/>>重新生成分类页面</a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids>生成失败内容ID:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishCategory>'/>>重新生成内容页面</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_publishPage path=path>生成失败的模板:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishPage>'/>>重新生成页面</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_publishPage path=path>生成失败的模板:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishPage>'/>><@t.page 'publish_page'/></a></li>
                     <#if site.useSsi>
-                        <li><a href="javascript:;" <@getAction r'<@_publishPlace path=path>生成失败的页面片段:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishPlace>'/>>重新生成页面片段</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_publishPlace path=path>生成失败的页面片段:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishPlace>'/>><@t.page 'publish_place'/></a></li>
                     </#if>
                     </ul>
                 </li>

@@ -46,7 +46,7 @@
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
-                <th>ID</th>
+                <th><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
                 <th orderField="searchCount" class="<#if orderField??&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>

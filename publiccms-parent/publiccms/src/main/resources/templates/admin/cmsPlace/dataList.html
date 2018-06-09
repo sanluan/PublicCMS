@@ -47,7 +47,7 @@
             <li><a href="cmsPlace/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
             <#if site.useSsi>
                 <li class="line">line</li>
-                <li><a href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> 发布</a></li>
+                <li><a href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.publish'/></a></li>
             </#if>
             <li class="line">line</li>
             <li><a href="cmsPlace/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
@@ -59,7 +59,7 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th width="30">ID</th>
+                <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'title'/></th>
                 <th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
                 <th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>

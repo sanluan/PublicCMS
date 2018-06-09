@@ -13,8 +13,8 @@
             </dd>
         </dl>
         <dl>
-            <dt>执行结果:</dt>
-            <dd>${a.success?string('成功','失败')}</dd>
+            <dt><@t.page 'result'/>:</dt>
+            <dd>${a.success?string(t.pageMessage('success'),t.pageMessage('fail'))}</dd>
         </dl>
         <dl>
             <dt>开始时间:</dt>
@@ -29,7 +29,7 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>执行结果:</dt>
+            <dt><@t.page 'result'/>:</dt>
             <dd>
                 <textarea name="description" cols="80" rows="20">${(a.result)!}</textarea>
             </dd>

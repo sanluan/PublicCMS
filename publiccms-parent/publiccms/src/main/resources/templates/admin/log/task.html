@@ -11,11 +11,11 @@
                 </li>
             </#if>
                 <li>
-                    <label>执行结果:</label>
+                    <label><@t.page 'result'/>:</label>
                     <select class="combox" name="success">
-                        <option value=""${(!success?has_content)?then(' selected="true"','')?no_esc}>不限</option>
-                        <option value="true"${(success?has_content&&"true"=success)?then(' selected="true"','')?no_esc}>成功</option>
-                        <option value="false"${(success?has_content&&"false"=success)?then(' selected="true"','')?no_esc}>失败</option>
+                        <option value=""${(!success?has_content)?then(' selected="true"','')?no_esc}><@t.page 'unrestricted'/></option>
+                        <option value="true"${(success?has_content&&"true"=success)?then(' selected="true"','')?no_esc}><@t.page 'success'/></option>
+                        <option value="false"${(success?has_content&&"false"=success)?then(' selected="true"','')?no_esc}><@t.page 'fail'/></option>
                     </select>
                 </li>
                 <li>
@@ -48,7 +48,7 @@
                 <th>任务</th>
                 <th>开始时间</th>
                 <th>结束时间</th>
-                <th>结果</th>
+                <th><@t.page 'result'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -66,9 +66,9 @@
                 <td>${a.begintime!}</td>
                 <td>${a.endtime!}</td>
                 <td>
-                    ${a.success?string('成功','失败')}
+                    ${a.success?string(t.pageMessage('success'),t.pageMessage('fail'))}
                 </td>
-                <td><a href="log/taskView.html?id=${a.id}" target="dialog" rel="viewTask">结果详情</a></td>
+                <td><a href="log/taskView.html?id=${a.id}" target="dialog" rel="viewTask"><@t.page 'button.view_more'/></a></td>
             </tr>
             </#list>
         </tbody>

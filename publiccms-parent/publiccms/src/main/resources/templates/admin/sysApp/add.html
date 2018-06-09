@@ -12,7 +12,7 @@
         <input name="appKey" type="hidden" value="${(a.appKey)!getUUID()}"/>
         <input name="appSecret" type="hidden" value="${(a.appSecret)!getUUID()}"/>
         <dl class="nowrap">
-            <dt>渠道:</dt>
+            <dt><@t.page 'channel'/>:</dt>
             <dd><input class="required" name="channel" type="text" size="30" value="${(a.channel)!}"/></dd>
         </dl>
         <fieldset class="ownsAllRight">

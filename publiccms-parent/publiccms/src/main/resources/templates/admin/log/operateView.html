@@ -10,13 +10,13 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl>
-            <dt>用户ID:</dt>
+            <dt><@t.page 'user.id'/>:</dt>
             <dd>
                 ${a.userId!}
             </dd>
         </dl>
         <dl>
-            <dt>用户昵称:</dt>
+            <dt><@t.page 'user.nickname'/>:</dt>
             <dd>
                 ${(user.nickName)!}
             </dd>
@@ -28,7 +28,7 @@
             </dd>
         </dl>
         <dl>
-            <dt>操作日期:</dt>
+            <dt><@t.page 'log.create_date'/>:</dt>
             <dd>
                 ${a.createDate!}
             </dd>

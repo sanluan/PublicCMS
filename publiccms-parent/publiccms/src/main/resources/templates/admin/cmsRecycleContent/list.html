@@ -52,7 +52,7 @@
             <li class="line">line</li>
         </#if>
         <#if authorizedMap['cmsContent/recycle']>
-            <li><a href="cmsContent/recycle.do?_csrf=<@_csrfToken admin=true/>" title="确定要还原这些记录么?" target="selectedTodo" rel="ids"><i class="icon-reply-all icon-large"></i> 批量还原</a></li>
+            <li><a href="cmsContent/recycle.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_recycle'/>" target="selectedTodo" rel="ids"><i class="icon-reply-all icon-large"></i> <@t.page 'button.batch_recycle'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/realDelete']>
             <li class="line">line</li>
@@ -64,7 +64,7 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th width="30">ID</th>
+                <th width="30"><@t.page 'id'/></th>
                 <th width="250"><@t.page 'title'/></th>
                 <th width="40"><@t.page 'content.promulgator'/></th>
                 <th width="30"><@t.page 'category'/></th>
@@ -116,10 +116,10 @@
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsRecycleContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsRecycleContent/list">子内容管理</a>
+                        <a href="cmsRecycleContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsRecycleContent/list"><@t.page 'content.child'/></a>
                     </#if>
                     <#if authorizedMap['cmsContent/recycle']>
-                        <a href="cmsContent/recycle.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要还原这条记录么?" target="ajaxTodo">还原</a>
+                        <a href="cmsContent/recycle.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><@t.page 'button.recycle'/></a>
                     </#if>
                     <#if authorizedMap['cmsContent/realDelete']>
                         <a href="cmsContent/realDelete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>

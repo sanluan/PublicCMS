@@ -18,14 +18,9 @@
             <dd>
                 <@_version>
                     <#if authorizationEdition>
-                        <a href="common/license.html" target="dialog" mask="true">授权: ${getLicense().authorization!}</a>
+                        <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
                     <#else>
-                        未授权
-                        <@_masterSite>
-                            <@_sysAuthorized roleIds=admin.roles url='sysSite/uploadLicense'>
-                        <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense" icon="<i class='icon-archive icon-large'></i>" title="上传License">升级</a>
-                            </@_sysAuthorized>
-                        </@_masterSite>
+                        <@t.page 'license.no'/>
                     </#if>
                 </@_version>
             </dd>
