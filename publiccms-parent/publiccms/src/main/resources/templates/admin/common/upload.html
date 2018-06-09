@@ -41,6 +41,7 @@ function selectFile(path){
             <dt>附件:</dt>
             <dd>
                 <input type="hidden" name="field" value="${field!'fileName'}"/>
+                <input type="hidden" name="originalField" value="${originalField!}"/>
                 <input type="hidden" name="onlyImage" value="${onlyImage!'false'}"/>
                 <input type="file" name="file" class="required" size="30" />
             </dd>

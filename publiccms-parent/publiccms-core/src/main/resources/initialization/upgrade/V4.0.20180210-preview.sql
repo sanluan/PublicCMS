@@ -39,7 +39,7 @@ ALTER TABLE `sys_role_module` MODIFY COLUMN `module_id` varchar(30) NOT NULL COM
 CREATE TABLE `sys_module_lang` (
   `module_id` varchar(30) NOT NULL COMMENT '模块ID',
   `lang` varchar(20) NOT NULL COMMENT '语言',
-  `value` varchar(255) DEFAULT NULL COMMENT '值',
+  `value` varchar(100) DEFAULT NULL COMMENT '值',
   PRIMARY KEY (`module_id`,`lang`) USING BTREE
 ) DEFAULT CHARSET=utf8 COMMENT='模块语言';
 
@@ -267,15 +267,15 @@ INSERT INTO `sys_module_lang` VALUES ('page_list', 'en', 'Page management');
 INSERT INTO `sys_module_lang` VALUES ('page_menu', 'en', 'Page maintenance');
 INSERT INTO `sys_module_lang` VALUES ('page_publish', 'en', 'Publish');
 INSERT INTO `sys_module_lang` VALUES ('page_save', 'en', 'Save configuration');
-INSERT INTO `sys_module_lang` VALUES ('place_add', 'en', 'Add/edit place data');
-INSERT INTO `sys_module_lang` VALUES ('place_check', 'en', 'Check place data');
-INSERT INTO `sys_module_lang` VALUES ('place_clear', 'en', 'Clear place data');
-INSERT INTO `sys_module_lang` VALUES ('place_data_list', 'en', 'Place data');
-INSERT INTO `sys_module_lang` VALUES ('place_delete', 'en', 'Delete place data');
-INSERT INTO `sys_module_lang` VALUES ('place_list', 'en', 'Place management');
+INSERT INTO `sys_module_lang` VALUES ('place_add', 'en', 'Add/edit');
+INSERT INTO `sys_module_lang` VALUES ('place_check', 'en', 'Check');
+INSERT INTO `sys_module_lang` VALUES ('place_clear', 'en', 'Clear');
+INSERT INTO `sys_module_lang` VALUES ('place_data_list', 'en', 'Page fragment data');
+INSERT INTO `sys_module_lang` VALUES ('place_delete', 'en', 'data');
+INSERT INTO `sys_module_lang` VALUES ('place_list', 'en', 'Page fragment management');
 INSERT INTO `sys_module_lang` VALUES ('place_publish', 'en', 'Publish');
-INSERT INTO `sys_module_lang` VALUES ('place_refresh', 'en', 'Refresh place data');
-INSERT INTO `sys_module_lang` VALUES ('place_view', 'en', 'View place data');
+INSERT INTO `sys_module_lang` VALUES ('place_refresh', 'en', 'Refresh');
+INSERT INTO `sys_module_lang` VALUES ('place_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('report_cms', 'en', 'System monitor');
 INSERT INTO `sys_module_lang` VALUES ('report_user', 'en', 'User report');
 INSERT INTO `sys_module_lang` VALUES ('system_menu', 'en', 'System maintenance');
@@ -303,12 +303,12 @@ INSERT INTO `sys_module_lang` VALUES ('task_list', 'en', 'Task management');
 INSERT INTO `sys_module_lang` VALUES ('app_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('webfile_list', 'en', 'Website file management');
 INSERT INTO `sys_module_lang` VALUES ('template_list', 'en', 'Template management');
-INSERT INTO `sys_module_lang` VALUES ('place_template_list', 'en', 'Place template management');
+INSERT INTO `sys_module_lang` VALUES ('place_template_list', 'en', 'Page fragment template');
 INSERT INTO `sys_module_lang` VALUES ('model_list', 'en', 'Model management');
 INSERT INTO `sys_module_lang` VALUES ('task_template_list', 'en', 'Task template management');
 INSERT INTO `sys_module_lang` VALUES ('model_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('place_template_metadata', 'en', 'Edit metadata');
-INSERT INTO `sys_module_lang` VALUES ('place_template_content', 'en', 'Edit');
+INSERT INTO `sys_module_lang` VALUES ('place_template_content', 'en', 'Edit template');
 INSERT INTO `sys_module_lang` VALUES ('template_content', 'en', 'Edit');
 INSERT INTO `sys_module_lang` VALUES ('template_content', '', '修改');
 INSERT INTO `sys_module_lang` VALUES ('template_delete', '', '删除');
