@@ -13,7 +13,7 @@
                     <#list 0..1 as s>
                         <label style="width:auto">
                             <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
-                            <span><@t.m 'status.place.data.'+s/></span>
+                            <span><@t.page 'status.place.data.'+s/></span>
                         </label>
                     </#list>
                 </li>
@@ -84,7 +84,7 @@
                 <td>${a.createDate}</td>
                 <td>${(userMap[a.userId?string].nickName)!}</td>
                 <td>${a.clicks}</td>
-                <td><@t.m 'status.place.data.'+a.status/></td>
+                <td><@t.page 'status.place.data.'+a.status/></td>
                 <td>
                     <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="修改推荐位数据"><@t.page 'button.edit'/></a>
                     <#if 0=a.status>

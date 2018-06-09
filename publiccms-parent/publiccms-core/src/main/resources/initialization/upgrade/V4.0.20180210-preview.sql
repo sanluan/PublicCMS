@@ -487,3 +487,11 @@ INSERT INTO `sys_module` VALUES ('myself_content', 'myself/contentList', NULL, '
 INSERT INTO `sys_module` VALUES ('myself_log_login', 'myself/logLogin', NULL, '<i class=\"icon-signin icon-large\"></i>', 'myself_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('myself_log_operate', 'myself/logOperate', NULL, '<i class=\"icon-list-alt icon-large\"></i>', 'myself_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, '<i class=\"icon-cogs icon-large\"></i>', NULL, 1, 6);
+-- 20180609 --
+ALTER TABLE `log_upload` 
+    CHANGE COLUMN `image` `file_type` varchar(20) NOT NULL COMMENT '文件类型' AFTER `channel`,
+    ADD COLUMN `original_name` varchar(255) NULL COMMENT '原文件名' AFTER `channel`;
+UPDATE `log_upload` SET file_type = 'image' WHERE file_type = '1';
+UPDATE `log_upload` SET file_type = 'image' WHERE file_path like '%.png' or file_path like '%.jpg' or file_path like '%.gif' or file_path like '%.bmp';
+UPDATE `log_upload` SET file_type = 'video' WHERE file_path like '%.mp4' or file_path like '%.3gp';
+UPDATE `log_upload` SET file_type = 'other' WHERE file_type = '0';

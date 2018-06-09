@@ -17,7 +17,7 @@
                     <label><input name="multiple" type="checkbox"${((a.multiple)?has_content&&a.multiple)?then(' checked="true"','')?no_esc}/>多选</label>
                 </dd>
             </dl>
-            <table class="list nowrap itemDetail" addButton="新增字典数据" width="100%">
+            <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                 <thead>
                     <tr>
                         <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{maxlength:50}">值</th>

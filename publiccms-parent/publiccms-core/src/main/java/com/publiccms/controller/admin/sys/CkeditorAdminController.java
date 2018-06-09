@@ -57,9 +57,9 @@ public class CkeditorAdminController extends AbstractController {
             String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(upload, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(
-                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                false, upload.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix), upload.getSize(),
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put(RESULT_FILENAME, originalName);
                 map.put(RESULT_URL, fileName);

@@ -95,7 +95,7 @@
                 <td>${a.publishDate!}</td>
                 <td>${a.createDate!}<#if a.updateDate??>/${a.updateDate}</#if></td>
                 <td>
-                    <@t.m 'status.content.'+a.status/>
+                    <@t.page 'status.content.'+a.status/>
                     <#if 2==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
                 <td>

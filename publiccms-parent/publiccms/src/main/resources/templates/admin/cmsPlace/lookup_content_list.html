@@ -91,7 +91,7 @@
                 <td>${a.clicks!}</td>
                 <td>${a.publishDate!}</td>
                 <td>
-                    <@t.m 'status.content.'+a.status/>
+                    <@t.page 'status.content.'+a.status/>
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>

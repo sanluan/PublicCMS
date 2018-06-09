@@ -222,8 +222,8 @@ public class SysSiteAdminController extends AbstractController {
             try {
                 fileComponent.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, false, file.getSize(), RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
+                        LogLoginService.CHANNEL_WEB_MANAGER, "license.dat", LogUploadService.FILE_TYPE_OTHER, file.getSize(),
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
                 return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);

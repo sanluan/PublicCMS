@@ -1,6 +1,6 @@
 <#include "../include_page/extendsFieldType.html"/>
 <#macro extends name extendList=[]>
-<table class="list nowrap itemDetail" addButton="新增扩展字段" width="100%">
+<table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
     <thead>
         <tr>
             <th type="text" name="${name}[#index#].id.code" size="10" fieldClass="required letterstart"><@t.page 'code'/></th>

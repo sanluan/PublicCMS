@@ -88,7 +88,7 @@ public class FileComponent {
         if (CommonUtils.notEmpty(file)) {
             File backupFile = new File(backupFilePath);
             try {
-                if(backupFile.exists()) {
+                if (backupFile.exists()) {
                     FileUtils.deleteQuietly(backupFile);
                 }
                 if (file.isDirectory()) {
@@ -164,7 +164,8 @@ public class FileComponent {
      * @return suffix
      */
     public String getSuffix(String originalFilename) {
-        return originalFilename.substring(originalFilename.lastIndexOf(CommonConstants.DOT), originalFilename.length());
+        return originalFilename.substring(originalFilename.lastIndexOf(CommonConstants.DOT), originalFilename.length())
+                .toLowerCase();
     }
 
     /**

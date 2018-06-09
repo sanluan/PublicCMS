@@ -99,11 +99,13 @@ public class CmsWebFileAdminController extends AbstractController {
         if (null != file && !file.isEmpty()) {
             try {
                 SysSite site = getSite(request);
-                path = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
+                String originalName = file.getOriginalFilename();
+                path = path + CommonConstants.SEPARATOR + originalName;
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, path));
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, false, file.getSize(), RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), path));
+                        LogLoginService.CHANNEL_WEB_MANAGER, originalName,
+                        LogUploadService.getFileType(fileComponent.getSuffix(originalName)), file.getSize(),
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);

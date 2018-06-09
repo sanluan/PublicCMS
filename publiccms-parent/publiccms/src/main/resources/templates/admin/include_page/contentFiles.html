@@ -1,6 +1,7 @@
 <#macro contentFiles image contentId=''>
     <#local name=image?then('images','files')/>
-<table class="list nowrap itemDetail ${name}" addButton="新增${image?then('图片','附件')}" width="100%">
+    <#local fileTypes=image?then('image','video,audio,other')/>
+<table class="list nowrap itemDetail ${name}" addButton="<@t.page 'button.new_line'/>" width="100%">
     <thead>
         <tr>
             <th type="attach" name="${name}[#index#].filePath" size="50" fieldClass="required" lookupGroup="${name}[#index#]" lookupUrl="common/upload.html?field=filePath&originalField=description${image?then('&onlyImage=true','')}"><@t.page 'file_path'/></th>
@@ -11,13 +12,13 @@
     </thead>
     <tbody>
 <#if contentId?has_content>
-    <@_contentFileList contentId=contentId image=image>
+    <@_contentFileList contentId=contentId fileTypes=fileTypes>
         <#list page.list as file>
             <tr>
                 <td>
                     <input type="hidden" name="${name}[${file?index}].id" value="${file.id}"/>
                     <input type="text" name="${name}[${file?index}].filePath" value="${(file.filePath)!}" size="50" class="required" />
-                    <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&onlyImage=true','')}" width="560" height="300" >${image?then('图片','附件')}</a>
+                    <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&onlyImage=true','')}" width="560" height="300" >${image?then(t.pageMessage('upload.image'),t.pageMessage('upload.file'))}</a>
                 </td>
                 <td>
                     <textarea name="${name}[${file?index}].description" rows="3" cols="50" maxlength="280">${(file.description)!}</textarea>

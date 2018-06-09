@@ -45,7 +45,7 @@
             <dl>
                 <dt><@t.page 'status'/>:</dt>
                 <dd>
-                    <@t.m 'status.content.'+(a.status)!/>
+                    <@t.page 'status.content.'+(a.status)!/>
                 </dd>
             </dl>
         <#if 1=a.status>
@@ -160,7 +160,7 @@
             <dl class="nowrap">
                 <dt>图片列表:</dt>
                 <dd>
-            <@_contentFileList contentId=a.id image=true>
+            <@_contentFileList contentId=a.id fileTypes='image'>
                 <#list page.list as file>
                     <div class="thumbnail">
                         <img src="${site.sitePath+(file.filePath)!}" style="max-width:200px;max-height:200px;"/>
@@ -174,7 +174,7 @@
                 <dl class="nowrap">
                     <dt>附件列表:</dt>
                     <dd>
-                <@_contentFileList contentId=a.id image=false>
+                <@_contentFileList contentId=a.id fileTypes='video,audio,other'>
                     <#list page.list as file>
                         <a href="${site.sitePath+(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
                     </#list>

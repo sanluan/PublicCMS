@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -133,9 +134,9 @@ public class UeditorAdminController extends AbstractController {
             String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(
-                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                false, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix), file.getSize(),
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", file.getSize());
                 map.put("title", originalName);
@@ -168,9 +169,9 @@ public class UeditorAdminController extends AbstractController {
             File dest = new File(siteComponent.getWebFilePath(site, fileName));
             try {
                 FileUtils.writeByteArrayToFile(dest, data);
-                logUploadService.save(
-                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                true, dest.length(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, LogUploadService.FILE_TYPE_IMAGE,
+                        dest.length(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", data.length);
                 map.put("title", dest.getName());
@@ -215,8 +216,8 @@ public class UeditorAdminController extends AbstractController {
                         File dest = new File(siteComponent.getWebFilePath(site, fileName));
                         FileUtils.copyInputStreamToFile(entity.getContent(), dest);
                         logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                                LogLoginService.CHANNEL_WEB_MANAGER, true, dest.length(), RequestUtils.getIpAddress(request),
-                                CommonUtils.getDate(), fileName));
+                                LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, LogUploadService.getFileType(suffix),
+                                dest.length(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         Map<String, Object> map = getResultMap(true);
                         map.put("size", entity.getContentLength());
                         map.put("title", dest.getName());
@@ -250,8 +251,8 @@ public class UeditorAdminController extends AbstractController {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(getSite(request).getId(), ControllerUtils.getAdminFromSession(session).getId(), null, null,
-                null, null, null, start / 20 + 1, 20);
+        PageHandler page = logUploadService.getPage(getSite(request).getId(),
+                ControllerUtils.getAdminFromSession(session).getId(), null, null, null, null, null, null, start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
         List<Map<String, Object>> list = new ArrayList<>();

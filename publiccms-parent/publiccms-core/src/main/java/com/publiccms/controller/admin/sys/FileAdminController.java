@@ -40,16 +40,15 @@ public class FileAdminController extends AbstractController {
      * @param file
      * @param field
      * @param originalField
-     * @param onlyImage
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
-    public String upload(MultipartFile file, String field, String originalField, Boolean onlyImage, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String upload(MultipartFile file, String field, String originalField, String _csrf,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -62,13 +61,13 @@ public class FileAdminController extends AbstractController {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
                 model.put("field", field);
                 model.put(field, fileName);
-                if(CommonUtils.notEmpty(originalField)){
+                if (CommonUtils.notEmpty(originalField)) {
                     model.put("originalField", originalField);
                     model.put(originalField, originalName);
                 }
-                logUploadService.save(
-                        new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                onlyImage, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix), file.getSize(),
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
                 return "common/uploadResult";

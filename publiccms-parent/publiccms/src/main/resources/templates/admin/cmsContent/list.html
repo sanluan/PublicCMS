@@ -165,7 +165,7 @@
                 <td class="center">${a.createDate!}</td>
                 <td class="center">${a.sort!}</td>
                 <td>
-                    <@t.m 'status.content.'+a.status/>
+                    <@t.page 'status.content.'+a.status/>
                     <#if 1=a.status>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
                 <td>

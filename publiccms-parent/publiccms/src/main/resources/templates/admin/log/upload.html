@@ -1,4 +1,4 @@
-<@_logUploadList userId=userId channel=channel image=image filePath=filePath orderType=orderType pageIndex=pageNum count=numPerPage>
+<@_logUploadList userId=userId channel=channel fileTypes=fileTypes originalName=originalName filePath=filePath orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
     <form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/paramters.html"/>
@@ -13,11 +13,17 @@
                     <input type="text" name="channel" value="${channel!}" />
                 </li>
                 <li>
-                    <select class="combox" name="image">
-                        <option value="">是否图片</option>
-                        <option value="false"${(image?has_content&&'false'=image)?then(' selected="true"','')?no_esc}>文件</option>
-                        <option value="true"${(image?has_content&&'true'=image)?then(' selected="true"','')?no_esc}>图片</option>
-                    </select>
+                    <label><@t.page 'file_type'/>:</label>
+                    <#list ['image','video','audio','other'] as a>
+				        <label style="width:auto">
+				            <input <@t.compare fileTypes a 'checked="checked"'/> name="fileTypes" value="${a}" type="checkbox"/>
+				            <span><@t.page 'file_type.'+a/></span>
+				        </label>
+				    </#list>
+                </li>
+                <li>
+                    <label><@t.page 'file.original_name'/>:</label>
+                    <input type="text" name="originalName" value="${originalName!}" />
                 </li>
                 <li>
                     <label><@t.page 'file_path'/>:</label>
@@ -47,8 +53,9 @@
                 <th><@t.page 'user.id'/></th>
                 <th><@t.page 'user.nickname'/></th>
                 <th><@t.page 'channel'/></th>
-                <th>是否图片</th>
-                <th orderField="fileSize" class="<#if orderField??&&'fileSize'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">文件大小</th>
+                <th><@t.page 'file_type'/></th>
+                <th><@t.page 'file.original_name'/></th>
+                <th orderField="fileSize" class="<#if orderField??&&'fileSize'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'file.size'/></th>
                 <th>IP</th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.create_date'/></th>
                 <th><@t.page 'file_path'/></th>
@@ -70,8 +77,9 @@
                     ${a.channel!}
                 </td>
                 <td>
-                    ${a.image?then(t.pageMessage('yes'),t.pageMessage('no'))}
+                    <@t.page 'file_type.'+a.fileType/>
                 </td>
+                <td>${a.originalName!}</td>
                 <td><@t.fileSize a.fileSize/></td>
                 <td>${a.ip!}</td>
                 <td>${a.createDate!}</td>
