@@ -116,11 +116,11 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="cover"/>封面图</label>
+                    <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/></label>
                 </dt>
                 <dd>
                     <label>文字:</label>
-                    <input name="fieldTextMap[cover]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['cover'])!'封面图'}"/>
+                    <input name="fieldTextMap[cover]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="cover"/>必填</label>
                 </dd>
             </dl>

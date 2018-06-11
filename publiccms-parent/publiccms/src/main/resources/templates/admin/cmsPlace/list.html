@@ -15,7 +15,7 @@
                     <#elseif 0=((metaDataMap[a.fileName].size)!0)>
                         <a href="cmsPlace/publish_place.html?path=${path?url}" target="ajax" rel="placeBox">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
                     <#else>
-                        <a href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList">推荐位:${(metaDataMap[a.fileName].alias)!a.fileName}</a>
+                        <a href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList"><@t.page 'place_data.place'/>:${(metaDataMap[a.fileName].alias)!a.fileName}</a>
                     </#if>
                 </li>
             </#if>

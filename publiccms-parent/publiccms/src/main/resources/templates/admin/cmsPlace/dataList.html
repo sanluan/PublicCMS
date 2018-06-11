@@ -7,7 +7,7 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>有效数据条数:</label><label>${(a.size)!} ${(a.allowContribute?then('[允许投稿]',''))!}</label>
+                    <label><@t.page 'place_data.page_size'/>:</label><label>${(a.size)!} ${(a.allowContribute?then('['+t.pageMessage('allow_contribute')+']',''))!}</label>
                 </li>
                 <li class="width:auto">
                     <#list 0..1 as s>
@@ -41,8 +41,8 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="cmsPlace/add.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i> 添加推荐位数据</a></li>
-            <li><a href="cmsPlace/add.html?id={sid}" target="navTab" rel="cmsPlace/edit"><i class="icon-edit icon-large"></i> 修改推荐位数据</a></li>
+            <li><a href="cmsPlace/add.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'place_data.add'/></a></li>
+            <li><a href="cmsPlace/add.html?id={sid}" target="navTab" rel="cmsPlace/edit"><i class="icon-edit icon-large"></i> <@t.page 'place_data.edit'/></a></li>
             <li><a href="cmsPlace/refresh.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
             <li><a href="cmsPlace/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
             <#if site.useSsi>
@@ -52,7 +52,7 @@
             <li class="line">line</li>
             <li><a href="cmsPlace/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
             <li class="line">line</li>
-            <li><a href="cmsPlace/clear.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" title="确定要清空这些记录么?" target="ajaxTodo"><i class="icon-wrench icon-large"></i> 全部清空</a></li>
+            <li><a href="cmsPlace/clear.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.clear_all'/>" target="ajaxTodo"><i class="icon-wrench icon-large"></i> <@t.page 'button.clear_all'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
@@ -86,9 +86,9 @@
                 <td>${a.clicks}</td>
                 <td><@t.page 'status.place.data.'+a.status/></td>
                 <td>
-                    <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="修改推荐位数据"><@t.page 'button.edit'/></a>
+                    <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="<@t.page 'place_data.edit'/>"><@t.page 'button.edit'/></a>
                     <#if 0=a.status>
-                        <a href="cmsPlace/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要审核这条记录么?" target="ajaxTodo">审核</a>
+                        <a href="cmsPlace/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>
                     </#if>
                     <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>

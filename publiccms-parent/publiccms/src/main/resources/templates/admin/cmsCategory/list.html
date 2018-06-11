@@ -6,9 +6,9 @@
             <ul class="searchContent">
                 <li>
                     <select class="combox" name="allowContribute">
-                        <option value=""><@t.page 'category.contribute'/></option>
-                        <option value="true"${(allowContribute?has_content&&"true"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'category.allow_contribute'/></option>
-                        <option value="false"${(allowContribute?has_content&&"false"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'category.forbid_contribute'/></option>
+                        <option value=""><@t.page 'contribute'/></option>
+                        <option value="true"${(allowContribute?has_content&&"true"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'allow_contribute'/></option>
+                        <option value="false"${(allowContribute?has_content&&"false"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'forbid_contribute'/></option>
                     </select>
                 </li>
             </ul>
@@ -61,7 +61,7 @@
                 <th><@t.page 'category_type'/></th>
                 <th><@t.page 'category.parent'/></th>
                 <th><@t.page 'category.page_size'/></th>
-                <th><@t.page 'category.contribute'/></th>
+                <th><@t.page 'contribute'/></th>
                 <th><@t.page 'display'/></th>
                 <th><@t.page 'sort'/></th>
                 <th><@t.page 'operate'/></th>
@@ -83,7 +83,7 @@
                 <td>${(typeMap[a.typeId?string].name)!}</td>
                 <td>${(parentMap[a.parentId?string].name)!}</td>
                 <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then("[包含子分类内容]",''))!}</#if></td>
-                <td>${a.allowContribute?then(t.pageMessage('category.allow_contribute'),t.pageMessage('category.forbid_contribute'))}</td>
+                <td>${a.allowContribute?then(t.pageMessage('allow_contribute'),t.pageMessage('forbid_contribute'))}</td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.sort!}</td>
                 <td>

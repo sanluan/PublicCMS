@@ -29,11 +29,11 @@
                 <span class="placeExtend">
                     <label>
                         <input name="allowContribute" type="checkbox" onclick="if($(this).is(':checked')){$('.allowContribute',navTab.getCurrentPanel()).show()}else{$('.allowContribute',navTab.getCurrentPanel()).hide()}"/>
-                        允许投稿
+                        <@t.page 'allow_contribute'/>
                     </label>
                     <label class="allowContribute" style="display:none">
                         <input name="allowAnonymous" type="checkbox"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
-                        允许匿名提交
+                        <@t.page 'allow_anonymous_contribute'/>
                     </label>
                 </span>
             </dd>
@@ -44,13 +44,13 @@
             </script>
         </#if>
         <dl class="nowrap">
-            <dt>有效数据条数:</dt>
+            <dt><@t.page 'place_data.page_size'/>:</dt>
             <dd>
                 <input name="size" class="required digits" onchange="checkPageSize();" type="number" value="${(a.size)!5}"/>
             </dd>
         </dl>
         <dl class="nowrap placeExtend">
-            <dt>数据管理人员:</dt>
+            <dt>前台维护人员:</dt>
             <dd>
                 <input name="userId" type="hidden"/>
                 <input name="nickName" type="hidden" onchange="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());"/>

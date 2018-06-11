@@ -56,7 +56,7 @@ function clickAddTagType(){
                     <dd>
                         <input class="required" name="name" type="text" maxlength="50" size="20" value="${(a.name)!}"/>
                         <label><input name="onlyUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.onlyUrl',navTab.getCurrentPanel()).hide();$('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.onlyUrl').show();}"/>外链</label>
-                        <label><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')?no_esc}/><@t.page 'category.allow_contribute'/></label>
+                        <label><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')?no_esc}/><@t.page 'allow_contribute'/></label>
                         <label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')?no_esc}/>前台隐藏</label>
                     </dd>
                 </dl>
