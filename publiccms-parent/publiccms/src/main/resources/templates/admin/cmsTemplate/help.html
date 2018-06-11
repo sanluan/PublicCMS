@@ -58,7 +58,7 @@
                     <ul>
                         <li><a href="javascript:;" <@getAction r'${site.id!}'/>>站点ID</a></li>
                         <li><a href="javascript:;" <@getAction r'${site.name!}'/>>站点名称</a></li>
-                        <li><a href="javascript:;" <@getAction r'${site.useStatic?string}'/>>启用静态化</a></li>
+                        <li><a href="javascript:;" <@getAction r'${site.useStatic?string}'/>><@t.page 'site.enable_static'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${site.sitePath!}'/>>静态站点访问地址</a></li>
                         <li><a href="javascript:;" <@getAction r'${site.useSsi?string}'/>>启用服务器端包含</a></li>
                         <li><a href="javascript:;" <@getAction r'${site.dynamicPath!}'/>>动态站点访问地址</a></li>
