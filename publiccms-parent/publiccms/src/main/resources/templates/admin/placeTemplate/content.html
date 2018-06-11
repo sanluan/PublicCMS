@@ -12,15 +12,15 @@
             <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="推荐位:${(a.alias)!}">推荐位管理</a></li>
         </@_sysDeptPage>
     </@_sysAuthorized>
-            <li><a class="button" href="placeTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">元数据管理</a></li>
+            <li><a class="button" href="placeTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">metadata</a></li>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
         </ul>
     </div>
     <h2 class="contentTitle">
-         <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">引用模板</a>
-         <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true">页面片段</a>
-         <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true">网站文件</a>
-        <a class="button" href="cmsTemplate/help.html?path=${'/include'+(path?url)!}" target="dialog" mask="true">模板帮助</a>
+         <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true"><@t.page 'template.fragment'/></a>
+         <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
+         <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
+        <a class="button" href="cmsTemplate/help.html?path=${'/include'+(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
     </h2>
     <div class="pageFormContent" layoutH="109">
            <div>

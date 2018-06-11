@@ -652,7 +652,7 @@ CREATE TABLE `sys_module` (
   PRIMARY KEY  (`id`),
   KEY `parent_id` (`parent_id`,`menu`),
   KEY `sort` (`sort`)
-) AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 COMMENT='模块';
+) DEFAULT CHARSET=utf8 COMMENT='模块';
 
 -- ----------------------------
 -- Records of sys_module

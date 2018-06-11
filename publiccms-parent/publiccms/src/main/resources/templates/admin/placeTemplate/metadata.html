@@ -23,7 +23,7 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>别名:</dt></dt>
+            <dt><@t.page 'alias'/>:</dt></dt>
             <dd>
                 <input class="required" name="alias" type="text" maxlength="50" size="20" value="${(a.alias)!}"/>
                 <span class="placeExtend">
@@ -59,7 +59,7 @@
             </dd>
         </dl>
         <fieldset class="placeExtend">
-            <legend>列表数据扩展字段</legend>
+            <legend><@t.page 'place_data.extend_field'/></legend>
             <#include '../include_page/extends.html'/>
             <#assign extendList=(a.extendList)![]/>
             <@extends 'extendList' extendList/>

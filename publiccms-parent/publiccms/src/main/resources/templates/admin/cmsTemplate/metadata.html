@@ -7,7 +7,7 @@
                 <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true">模板示例</a></li>
             <#else>
                 <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该模板吗?" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
-                <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">模板内容编辑</a></li>
+                <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
             </#if>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
         </ul>
@@ -20,7 +20,7 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>别名:</dt></dt>
+            <dt><@t.page 'alias'/>:</dt></dt>
             <dd>
                 <input name="alias" type="text" maxlength="40" size="20" value="${(a.alias)!}"/>
                 <#if site.useStatic>
@@ -31,15 +31,15 @@
                 </#if>
                 <label>
                     <input name="useDynamic" type="checkbox" onchange="if($(this).is(':checked')){$('.useDynamic',navTab.getCurrentPanel()).show();}else{$('.useDynamic',navTab.getCurrentPanel()).hide();}"/>
-                    允许动态访问
+                    <@t.page 'allow_dynamic'/>
                 </label>
             </dd>
         </dl>
     <#if site.useStatic>
         <fieldset class="useStatic" style="display:none">
-            <legend>静态化配置</legend>
+            <legend><@t.page 'static_config'/></legend>
             <dl class="nowrap">
-                <dt>发布路径:</dt>
+                <dt><@t.page 'publish_path'/>:</dt>
                 <dd>
                     <input name="publishPath" type="text" maxlength="50" size="50" value="${(a.publishPath)!}"/>
                 </dd>
@@ -47,23 +47,23 @@
         </fieldset>
     </#if>
         <fieldset class="useDynamic" style="display:none">
-            <legend>动态访问配置</legend>
+            <legend><@t.page 'dynamic_config'/></legend>
             <dl class="nowrap">
-                <dt>需要登录:</dt>
+                <dt><@t.page 'dynamic_config.need_login'/>:</dt>
                 <dd>
                     <label><input name="needLogin" type="checkbox"/></label>
                     <span class="info">勾选后当用户未登录时，将跳转到<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i> ">站点配置</a>中的登录页面地址</span>
                 </dd>
             </dl>
             <dl class="nowrap">
-                <dt>可接受请求参数:</dt>
+                <dt><@t.page 'dynamic_config.accept_parameter'/>:</dt>
                 <dd>
                     <input name="acceptParamters" type="text" value="${(a.acceptParamters)!}"/>
                     <span class="info">逗号分隔，用于控制模板中可直接使用哪些请求参数,REST风格默认参数名为{id}_{pageIndex}</span>
                 </dd>
             </dl>
             <dl class="nowrap">
-                <dt>需要请求报文体:</dt>
+                <dt><@t.page 'dynamic_config.need_body'/>:</dt>
                 <dd>
                     <label><input name="needBody" type="checkbox"/></label>
                     <span class="info">勾选后，可以从模板中取得请求报文体:body</span>
@@ -78,7 +78,7 @@
                 </dd>
             </dl>
             <dl class="nowrap">
-                <dt>缓存时间(秒):</dt>
+                <dt><@t.page 'dynamic_config.cache'/>:</dt>
                 <dd>
                     <input name="cacheTime" class="required digits" type="text" value="${(a.cacheTime)!0}"/>
                     <span class="info">值大于0时，模板将被缓存,您可以使用noCache指令指定不使用缓存的模板片段:<#noparse>&lt;@noCache&gt;登录用户:${user.nickName}&lt;/@noCache&gt;</#noparse></span>
@@ -100,7 +100,7 @@
 </#if>
 </script>
         <fieldset>
-            <legend>元数据扩展字段</legend>
+            <legend><@t.page 'metadata.extend_field'/></legend>
             <#include '../include_page/extends.html'/>
             <#assign extendList=(a.extendList)![]/>
             <@extends 'extendList' extendList/>

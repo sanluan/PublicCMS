@@ -8,6 +8,7 @@
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 <main>
     <div class="container">
+		<h3>请先加好本站链接</h3>
 		<#assign path='/index.html/cfdc226d-8abc-48ec-810d-f3941b175b20.html'/>
 		<@import path="ftl/tools.ftl" namespace="t"/>
 		
@@ -20,6 +21,7 @@
 		<#else>
 			<form method="post" action="${site.dynamicPath}place/save.do" onsubmit="return check();">
 				<input name="path" type="hidden" value="${path}" />
+				<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
 				<input name="returnUrl" type="hidden" value="${site.dynamicPath}friendlink.html?result=true" />
 				<p><label>友链标题:</label><input name="title" type="text" size="60" maxlength="60" value=""/></p>
 				<p><label>网站地址:</label><input name="url" type="text" size="60"  maxlength="60" value=""/></p>
@@ -36,7 +38,7 @@
 				<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
 				<#list page.list as a>
 						<p>
-							<a href="${a.url}" target="_blank">${a.title}</a> [${(userMap[a.userId?string].nickName)!}]
+							<a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickName)!}]
 						<#if 0=a.status>
 							<a href="${site.dynamicPath}place/check.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">审核</a> 
 						</#if>

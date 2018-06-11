@@ -10,7 +10,25 @@
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 <main>
 	<div class="container">
-		${user.nickName},你好
+		<div class="data-list left-content">
+			<h3>我的内容投稿</h3>
+			<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
+			<@_contentList advanced=true userId=user.id>
+				<#list page.list as a>
+					<@t.merge 'categoryIds' a.categoryId!/>
+				</#list>
+            <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
+				<#list page.list as a>
+					<p>【${(categoryMap[a.categoryId?string].name)!}】[<@t.m 'status.content.'+a.status/>]${(a.title)!}  (${a.clicks!}) </p>
+				</#list>
+			</@_contentList>
+			<h3>我的其他投稿</h3>
+			<@_placeList advanced=true userId=user.id>
+				<#list page.list as a>
+					<p>【<@_placeMetadata path=a.path>${object.alias!}</@_placeMetadata>】 [<@t.m 'status.place.data.'+a.status/>]  ${(a.title)!}(${a.clicks!}) </p>
+				</#list>
+			</@_placeList>
+		</div>
 	</div>
 	<div class="clearfix-before"></div>
 </main>

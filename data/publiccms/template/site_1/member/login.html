@@ -9,7 +9,7 @@
 <main>
     <div class="container">
     	<#if user?has_content>
-    		<p class="message">${user.nickName},您已经登录了!  您可以<a href="sso.html?returnUrl=${(returnUrl?url)!}">同步登陆状态</a>，也可以选择<a href="logout.html">退出登录</a></p>
+    		<p class="message">${user.nickName},您已经登录了!  <a href="logout.html">退出登录</a></p>
     	<#else>
 	    	<form action="${site.dynamicPath}doLogin.do" method="post" class="center">
 				<@import path="/ftl/tools.ftl" namespace="t"/>
@@ -22,7 +22,7 @@
 				<p><input type="text" name="username" class="input-text" placeholder="用户名" title="用户名"/></p>
 				<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
 				<p class="text-center">
-					<input type="hidden" name="returnUrl" value="sso.html?returnUrl=${(returnUrl?url)!}"/>
+					<input type="hidden" name="returnUrl" value="${site.sitePath!}"/>
 					<input type="submit" class="button" value="登  录"/>
 				</p>
 				<p class="message">没有账号?请<a href="register.html?returnUrl=${(returnUrl?url)!}">注册</a></p>

@@ -29,7 +29,7 @@ function clickAddTagType(){
                     <li><a href="javascript:;" onclick="return false;"><@t.page 'base_info'/></a></li>
                     <li class="onlyUrl"><a href="javascript:;" onclick="return false;">SEO优化</a></li>
                     <li><a href="javascript:;" onclick="return false;">可发布内容模型</a></li>
-                    <li class="categoryModelContent"><a href="javascript:;" onclick="return false;">内容扩展字段</a></li>
+                    <li class="categoryModelContent"><a href="javascript:;" onclick="return false;"><@t.page 'content.extend_field'/></a></li>
                 </ul>
             </div>
         </div>
@@ -221,7 +221,7 @@ $('input[name=onlyUrl]',navTab.getCurrentPanel()).click();
 </#if>
 <#include "../include_page/extends.html"/>
                 <fieldset>
-                    <legend>内容扩展字段(以下字段名无效:source,sourceUrl,text)</legend>
+                    <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.invalid'/>:source,sourceUrl,text)</legend>
                     <@extends 'contentExtends' contentExtendList![]/>
                 </fieldset>
             </div>

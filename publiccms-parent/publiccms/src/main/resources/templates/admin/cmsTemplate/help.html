@@ -28,7 +28,7 @@
                 </#if>
                 <#if metadata.extendList?has_content>
                     <#list metadata.extendList as extend>
-                        <li><a href="javascript:;" <@getAction r'${(metadata.extendData.'+extend.id.code+r')!}'/>>扩展字段:${extend.name}</a></li>
+                        <li><a href="javascript:;" <@getAction r'${(metadata.extendData.'+extend.id.code+r')!}'/>><@t.page 'extend_field'/>:${extend.name}</a></li>
                     </#list>
                 </#if>
                     </ul>

@@ -27,7 +27,7 @@
     </@_sysExtendFieldList>
 </#if>
             <fieldset>
-                <legend>分类扩展字段(以下字段名无效:title,keywords,description)</legend>
+                <legend><@t.page 'category.extend_field'/>(<@t.page 'extend_field.invalid'/>:title,keywords,description)</legend>
                 <@extends 'categoryExtends' categoryExtendList![]/>
             </fieldset>
         </div>

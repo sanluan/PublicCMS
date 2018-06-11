@@ -82,7 +82,7 @@
                     ${a.result?then(t.pageMessage('success'),t.pageMessage('fail'))}
                 </td>
                 <td>${a.createDate!}</td>
-                <td>${(a.errorPassword)!}</td>
+                <td><#if !a.result><@t.secrecy a.errorPassword 2/></#if></td>
             </tr>
             </#list>
         </tbody>
