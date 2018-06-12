@@ -84,7 +84,7 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td>${(a.copied?then('[转载]',''))!}<a href="${a.url!}" target="_blank">${(a.title)!}</a></td>
+                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="${a.url!}" target="_blank">${(a.title)!}</a></td>
                 <td>
                     ${(categoryMap[a.categoryId?string].name)!}
                 </td>
@@ -102,7 +102,7 @@
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="myself/contentList.html?parentId=${a.id}" target="navTab" rel="myself/contentList">子内容管理</a>
+                        <a href="myself/contentList.html?parentId=${a.id}" target="navTab" rel="myself/contentList"><@t.page 'content.child_management'/></a>
                     </#if>
                     <#if 1==a.status>
                         <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push"><@t.page 'button.push'/></a>

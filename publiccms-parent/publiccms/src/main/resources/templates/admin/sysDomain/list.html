@@ -11,7 +11,7 @@
             <ul class="searchContent">
                 <#if sysSite?has_content>
                     <li>
-                        <label>站点:</label><label>${sysSite.name}</label>
+                        <label><@t.page 'site'/>:</label><label>${sysSite.name}</label>
                     </li>
                 </#if>
                 <li>
@@ -45,9 +45,9 @@
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
-                <th>域名</th>
-                <th>站点ID</th>
-                <th>站点</th>
+                <th><@t.page 'domain'/></th>
+                <th><@t.page 'site.id'/></th>
+                <th><@t.page 'site'/></th>
                 <th>模板根目录</th>
             </tr>
         </thead>

@@ -16,11 +16,11 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>父部门:</dt>
+            <dt><@t.page 'dept.parent'/>:</dt>
             <dd>
                 <input name="parentId" type="hidden" value="${parentId!}"/>
                 <input name="parentName" readonly="readonly" type="text" size="10" value="${(parentName)!}"/>
-                <a class="btnLook" href="sysDept/lookup.html" lookupGroup="">选择</a>
+                <a class="btnLook" href="sysDept/lookup.html" lookupGroup=""><@t.page 'dept.select'/></a>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -36,7 +36,7 @@
             <dd>
                 <input name="userId" value="${userId!}" type="hidden"/>
                 <input name="nickName" readonly="readonly" size="10" value="${(user.nickName)!}" type="text"/>
-                <a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>    
+                <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>    
             </dd>
         </dl>
         <dl>

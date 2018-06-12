@@ -68,12 +68,12 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;" title="选择">选择</a>
+                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><@t.page 'content.select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>
                     <a href="${a.url!}" target="_blank">
-                        ${(a.copied?then('[转载]',''))!}${a.title!}
+                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${a.title!}
                     </a>
                 </td>
                 <td>
@@ -100,7 +100,7 @@
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">子内容列表</a>
+                        <a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list"><@t.page 'content.child_management'/></a>
                     </#if>
                 </td>
             </tr>

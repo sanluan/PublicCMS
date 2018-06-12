@@ -65,7 +65,7 @@
     <table class="list" width="100%" layoutH="96">
         <thead>
             <tr>
-                <th>选择</th>
+                <th><@t.page 'user.select'/></th>
                 <th><@t.page 'user.username'/></th>
                 <th><@t.page 'user.nickname'/></th>
                 <th>邮箱</th>
@@ -80,7 +80,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nickNameField!'nickName'}':'${(a.nickName?js_string)!}'});return false;" title="选择">选择</a>
+                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nickNameField!'nickName'}':'${(a.nickName?js_string)!}'});return false;"><@t.page 'user.select'/></a>
                 </td>
                 <td>${(a.name)!}</td>
                 <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">管理员</font>]','')?no_esc}</td>

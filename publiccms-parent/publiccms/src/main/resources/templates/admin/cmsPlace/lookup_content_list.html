@@ -65,12 +65,12 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}',cover:'${(a.cover!)?js_string}',publishDate:'${(a.publishDate)!}'}); return false;" title="选择">选择</a>
+                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}',cover:'${(a.cover!)?js_string}',publishDate:'${(a.publishDate)!}'}); return false;"><@t.page 'content.select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>
                     <a href="${a.url!}" target="_blank">
-                        ${(a.copied?then('[转载]',''))!}${a.title!}
+                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${a.title!}
                     </a>
                 </td>
                 <td>

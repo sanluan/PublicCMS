@@ -14,14 +14,14 @@
                 <dt><@t.page 'name'/>:</dt>
                 <dd>
                     <input class="required" name="name" type="text" size="20" maxlength="100" value="${(a.name)!}"/>
-                    <label><input name="multiple" type="checkbox"${((a.multiple)?has_content&&a.multiple)?then(' checked="true"','')?no_esc}/>多选</label>
+                    <label><input name="multiple" type="checkbox"${((a.multiple)?has_content&&a.multiple)?then(' checked="true"','')?no_esc}/><@t.page 'multiple_select'/></label>
                 </dd>
             </dl>
             <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                 <thead>
                     <tr>
-                        <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{maxlength:50}">值</th>
-                        <th type="text" name="dataList[#index#].text" size="50" fieldClass="required" fieldAttrs="{maxlength:100}">文字</th>
+                        <th type="text" name="dataList[#index#].id.value" size="20" fieldClass="required" fieldAttrs="{maxlength:50}"><@t.page 'value'/></th>
+                        <th type="text" name="dataList[#index#].text" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'text'/></th>
                         <th type="del" width="60"><@t.page 'operate'/></th>
                     </tr>
                 </thead>

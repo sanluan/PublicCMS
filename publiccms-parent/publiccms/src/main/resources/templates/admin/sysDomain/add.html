@@ -11,14 +11,14 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>站点:</dt>
+            <dt><@t.page 'site'/>:</dt>
             <dd>
                 <input name="siteId" type="hidden" value="${(a.siteId)!siteId!site.id}" />
                 <@_sysSite id=(a.siteId)!siteId!site.id>${(object.name)!}</@_sysSite>
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>域名:</dt>
+            <dt><@t.page 'domain'/>:</dt>
             <dd>
                 <input class="required domain" remote="sysDomain/virify.do?oldName=${id!}" name="name" data-msg-remote="域名已存在" type="text" size="20" maxlength="255" value="${(a.name)!}"/>
                 <input name="wild" type="checkbox"${(a?has_content&&a.wild)?then(' checked="checked"','')?no_esc}/>通配域名</label>

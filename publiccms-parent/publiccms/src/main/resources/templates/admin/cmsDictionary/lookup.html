@@ -6,9 +6,9 @@
             <ul class="searchContent">
                 <li>
                     <select class="combox" name="multiple">
-                        <option value=""${(!multiple?has_content)?then(' selected="true"','')?no_esc}>字典类型</option>
-                        <option value="false"${(multiple??&&"false"=multiple)?then(' selected="true"','')?no_esc}>单选</option>
-                        <option value="true"${(multiple??&&"true"=multiple)?then(' selected="true"','')?no_esc}>多选</option>
+                        <option value=""${(!multiple?has_content)?then(' selected="true"','')?no_esc}><@t.page 'dictionary.type'/></option>
+                        <option value="false"${(multiple??&&"false"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'single_select'/></option>
+                        <option value="true"${(multiple??&&"true"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'multiple_select'/></option>
                     </select>
                 </li>
             </ul>
@@ -27,19 +27,19 @@
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
-                <th>选择</th>
+                <th><@t.page 'dictionary.select'/></th>
                 <th><@t.page 'name'/></th>
-                <th>允许多选</th>
+                <th><@t.page 'dictionary.type'/></th>
             </tr>
         </thead>
         <tbody>
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({'${field!'dictionaryId'}':'${a.id}','dictionaryName':'${(a.name?js_string)!}'});return false;" title="选择">选择</a>
+                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({'${field!'dictionaryId'}':'${a.id}','dictionaryName':'${(a.name?js_string)!}'});return false;"><@t.page 'dictionary.select'/></a>
                 </td>
                 <td>${a.name!}</td>
-                <td>${a.multiple?then('多选','单选')}</td>
+                <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
             </tr>
             </#list>
         </tbody>

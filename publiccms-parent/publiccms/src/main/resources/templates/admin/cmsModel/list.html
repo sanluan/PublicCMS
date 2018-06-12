@@ -48,10 +48,10 @@
             <tr target="sid" rel="${a.id?url}">
                 <td>${a.id!}</td>
                 <td>${(a.name)!}</td>
-                <td>${a.onlyUrl?then('是','')}</td>
+                <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
                 <td>${(a.templatePath)!}</td>
-                <td>${a.hasImages?then('是','')}</td>
-                <td>${a.hasFiles?then('是','')}</td>
+                <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
+                <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>
                 <td>
                     <#if a.hasChild>
                         <a href="cmsModel/list.html?parentId=${a.id?url}" target="navTab" rel="cmsModel/list">子模型管理</a>

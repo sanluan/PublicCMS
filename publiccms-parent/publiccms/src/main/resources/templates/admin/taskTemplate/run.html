@@ -8,10 +8,10 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>模板:</dt>
+            <dt><@t.page 'template'/>:</dt>
             <dd>
                 <input name="filePath" class="required" type="text" maxlength="255" size="40" value="${path!}"/>
-                <a class="btnLook" href="taskTemplate/lookup.html?field=filePath" lookupGroup="">选择</a>
+                <a class="btnLook" href="taskTemplate/lookup.html?field=filePath" lookupGroup=""><@t.page 'template.select'/></a>
             </dd>
         </dl>
 <@_logOperateList operate='run.task.template' count=10>
@@ -21,7 +21,7 @@
     <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
     <#list page.list as a>
         <dl>
-            <dt>用户:</dt>
+            <dt><@t.page 'user'/>:</dt>
             <dd>
                 ${(userMap[a.userId?string].nickName)!}
             </dd>

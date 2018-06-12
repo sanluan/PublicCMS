@@ -11,10 +11,10 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>父部门:</label>
+                    <label><@t.page 'dept.parent'/>:</label>
                     <input name="parentId" type="hidden" value="${parentId!}"/>
                     <input readonly="readonly" name="parentName" type="text" size="10" value="${(parent.name)!}"/>
-                    <a class="btnLook" href="sysDept/lookup.html" width="920" warn="请选择部门" lookupGroup="">选择部门</a>
+                    <a class="btnLook" href="sysDept/lookup.html" width="920" lookupGroup=""><@t.page 'dept.select'/></a>
                 </li>
                 <li>
                     <label>负责人:</label>
@@ -52,7 +52,7 @@
             <tr>
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
-                <th>父部门</th>
+                <th><@t.page 'dept.parent'/></th>
                 <th><@t.page 'description'/></th>
                 <th>负责人</th>
                 <th>拥有全部分类</th>
@@ -74,9 +74,9 @@
                 <td>${a.parentId!}</td>
                 <td>${a.description!}</td>
                 <td>${(userMap[a.userId?string].nickName)!}</td>
-                <td>${a.ownsAllCategory?then('是','')}</td>
+                <td>${a.ownsAllCategory?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.maxSort}</td>
-                <td>${a.ownsAllPage?then('是','')}</td>
+                <td>${a.ownsAllPage?then(t.pageMessage('yes'),'')}</td>
                 <td>
                     <a href="sysDept/list.html?parentId=${a.id}" target="navTab" rel="sysDept/list">子部门管理</a>
                 <#if a.userId?has_content&&a.userId=admin.id>

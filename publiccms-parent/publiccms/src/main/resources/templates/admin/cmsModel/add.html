@@ -19,7 +19,7 @@
                 <dt><@t.page 'id'/>:</dt>
                 <dd>
                     <input class="required" name="id" type="text" maxlength="20" size="20" value="${(a.id)!}"/>
-                    <label><input name="onlyUrl" type="checkbox"/>网址</label>
+                    <label><input name="onlyUrl" type="checkbox"/><@t.page 'url'/></label>
                     <label><input name="hasChild" type="checkbox"/>拥有子模型</label>
                     <label><input name="hasImages" type="checkbox"/>拥有图片列表</label>
                     <label><input name="hasFiles" type="checkbox"/>拥有附件列表</label>
@@ -49,7 +49,7 @@
                     <label>标题文字:</label>
                 </dt>
                 <dd>
-                    <input name="fieldTextMap[title]" class="required" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['title'])!'标题'}"/>
+                    <input name="fieldTextMap[title]" class="required" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
                 </dd>
             </dl>
             <dl class="nowrap urlText" style="display:none">
@@ -57,16 +57,16 @@
                     <label>网址文字:</label>
                 </dt>
                 <dd>
-                    <input name="fieldTextMap[url]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['url'])!'网址'}"/>
+                    <input name="fieldTextMap[url]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="copied"/>转载</label>
+                    <label><input name="fieldList" type="checkbox" value="copied"/><@t.page 'copied'/></label>
                 </dt>
                 <dd>
                     <label>转载文字:</label>
-                    <input name="fieldTextMap[copied]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['copied'])!'转载'}"/>
+                    <input name="fieldTextMap[copied]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['copied'])!t.pageMessage('copied')}"/>
                     <label>来源文字:</label>
                     <input name="fieldTextMap[source]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['source'])!'来源'}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="source"/><@t.page 'required'/></label>
@@ -80,7 +80,7 @@
                     <label><input name="fieldList" type="checkbox" value="tag"/>标签</label>
                 </dt>
                 <dd>
-                    <label>文字:</label>
+                    <label><@t.page 'text'/>:</label>
                     <input name="fieldTextMap[tag]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['tag'])!'标签'}"/>
                 </dd>
             </dl>
@@ -89,7 +89,7 @@
                     <label><input name="fieldList" type="checkbox" value="author"/>作者</label>
                 </dt>
                 <dd>
-                    <label>文字:</label>
+                    <label><@t.page 'text'/>:</label>
                     <input name="fieldTextMap[author]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['author'])!'作者'}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="author"/><@t.page 'required'/></label>
                 </dd>
@@ -99,7 +99,7 @@
                     <label><input name="fieldList" type="checkbox" value="editor"/><@t.page 'button.edit'/></label>
                 </dt>
                 <dd>
-                    <label>文字:</label>
+                    <label><@t.page 'text'/>:</label>
                     <input name="fieldTextMap[editor]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['editor'])!t.pageMessage('button.edit')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="editor"/><@t.page 'required'/></label>
                 </dd>
@@ -109,7 +109,7 @@
                     <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'description'/></label>
                 </dt>
                 <dd>
-                    <label>文字:</label>
+                    <label><@t.page 'text'/>:</label>
                     <input name="fieldTextMap[description]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
                 </dd>
@@ -119,7 +119,7 @@
                     <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/></label>
                 </dt>
                 <dd>
-                    <label>文字:</label>
+                    <label><@t.page 'text'/>:</label>
                     <input name="fieldTextMap[cover]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
                 </dd>
@@ -129,7 +129,7 @@
                     <label><input name="fieldList" type="checkbox" value="content"/>正文</label>
                 </dt>
                 <dd>
-                    <label>文字:</label><input name="fieldTextMap[content]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['content'])!'正文'}"/>
+                    <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['content'])!'正文'}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="content"/><@t.page 'required'/></label>
                     <label>编辑器类型:</label>
                     <#assign editorTypes={'ueditor':'百度编辑器','ckeditor':'CKeditor'}/>

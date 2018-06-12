@@ -17,7 +17,7 @@
                 <a href="${site.sitePath+value}" target="_blank">${(value)!}</a>
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}"/>
-                <#if 'customform'!=type><a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="560" height="300">附件</a></#if>
+                <#if 'customform'!=type><a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="560" height="300"><@t.page 'attach'/></a></#if>
             </#if>
             <#break>
         <#case 'image'>
@@ -28,7 +28,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyImage=true" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
                     </#if>
@@ -69,7 +69,7 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}" type="text" maxlength="255" size="40" value="${(value)!}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName?url}" lookupGroup="">选择模板</a>
+                <a class="btnLook" href="cmsTemplate/lookup.html?field=${inputName?url}" lookupGroup=""><@t.page 'template.select'/></a>
             </#if>
             <#break>
         <#case 'boolean'>
@@ -89,7 +89,7 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(user.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="sysUser/lookup.html?field=value" width="920" warn="请选择用户" lookupGroup="${name}[${index}]">选择用户</a>
+                <a class="btnLook" href="sysUser/lookup.html?field=value" width="920" lookupGroup="${name}[${index}]"><@t.page 'user.select'/></a>
             </#if>
             <#break>
         <#case 'content'>
@@ -99,7 +99,7 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].title" readonly="readonly" size="30" value="${(content.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsContent/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择内容</a>
+                <a class="btnLook" href="cmsContent/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'content.select'/></a>
             </#if>
             <#break>
         <#case 'category'>
@@ -109,7 +109,7 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(category.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsCategory/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择分类</a>
+                <a class="btnLook" href="cmsCategory/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
             </#if>
             <#break>
         <#case 'categoryType'>
@@ -119,7 +119,7 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].categoryTypeName" readonly="readonly" size="30" value="${(categoryType.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsCategoryType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择分类</a>
+                <a class="btnLook" href="cmsCategoryType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
             </#if>
             <#break>
         <#case 'tagType'>
@@ -129,7 +129,7 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].tagTypeName" readonly="readonly" size="30" value="${(tagType.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsTagType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500">选择分类</a>
+                <a class="btnLook" href="cmsTagType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
             </#if>
             <#break>
         <#case 'dictionary'>
@@ -162,7 +162,7 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="10" value="${(value)!}"/>
-                <#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
+                <#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;"><@t.page 'select_date'/></a></#if>
             </#if>
             <#break>
         <#case 'datetime'>
@@ -170,7 +170,7 @@
                 ${(value)!}
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
-                <#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a></#if>
+                <#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;"><@t.page 'select_date'/></a></#if>
             </#if>
             <#break>
         <#default>

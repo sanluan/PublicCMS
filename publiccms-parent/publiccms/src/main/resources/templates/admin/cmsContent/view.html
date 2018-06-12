@@ -25,7 +25,7 @@
             </dl>
         </@_content>
             <dl>
-                <dt>分类:</dt>
+                <dt><@t.page 'category'/>:</dt>
                 <dd>
                     ${(category.name)!}
                 </dd>
@@ -39,7 +39,7 @@
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['title'])!}:</dt>
                 <dd>
-                    ${(a.copied?then('[转载]',''))!}${(a.title)!}
+                    ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${(a.title)!}
                 </dd>
             </dl>
             <dl>
@@ -57,7 +57,7 @@
             </dl>
         </#if>
             <dl class="nowrap">
-                <dt><#if model.onlyUrl>${(model.fieldTextMap['url'])!}<#else>网址</#if>:</dt>
+                <dt><#if model.onlyUrl>${(model.fieldTextMap['url'])!}<#else><@t.page 'url'/></#if>:</dt>
                 <dd>
                     <a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
                 </dd>
@@ -158,7 +158,7 @@
             <#include "../include_page/contentFiles.html"/>
             <#if model.hasImages>
             <dl class="nowrap">
-                <dt>图片列表:</dt>
+                <dt><@t.page 'image_list'/>:</dt>
                 <dd>
             <@_contentFileList contentId=a.id fileTypes='image'>
                 <#list page.list as file>
@@ -172,7 +172,7 @@
             </#if>
             <#if model.hasFiles>
                 <dl class="nowrap">
-                    <dt>附件列表:</dt>
+                    <dt><@t.page 'attach_list':</dt>
                     <dd>
                 <@_contentFileList contentId=a.id fileTypes='video,audio,other'>
                     <#list page.list as file>
@@ -196,7 +196,7 @@
         <@_contentRelatedList contentId=a.id>
             <#if page.totalCount gt 0>
             <dl class="nowrap">
-                <dt>推荐内容:</dt>
+                <dt><@t.page 'recommend_info'/>:</dt>
                 <dd>
                     <#list page.list as a>
                         <a href="${(a.url)!}" target="_blank">${(a.title)!}</a>

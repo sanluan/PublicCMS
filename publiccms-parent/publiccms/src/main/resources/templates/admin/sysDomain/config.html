@@ -11,14 +11,14 @@
         </div>
         <div class="pageFormContent" layoutH="60">
             <dl class="nowrap">
-                <dt>域名:</dt>
+                <dt><@t.page 'domain'/>:</dt>
                 <dd><input type="text" class="readonly" readonly="readonly" value="${(a.name)!}"/></dd>
             </dl>
             <dl class="nowrap">
                 <dt>模板根目录:</dt>
                 <dd>
                     <input name="path" type="text" size="50" maxlength="255" value="${(a.path)!}"/>
-                    <a class="btnLook" href="cmsTemplate/directoryLookup.html?field=path" lookupGroup="">选择</a>
+                    <a class="btnLook" href="cmsTemplate/directoryLookup.html?field=path" lookupGroup=""><@t.page 'template.directory.select'/></a>
                 </dd>
             </dl>
         </div>

@@ -7,7 +7,7 @@
     <ul class="tree treeFolder expand">
 <@_modelList parentId=parentId>
     <#list page.list as a>
-        <li><a href="cmsContent/changeModel.do?id=${id!}&modelId=${a.id}&_csrf=<@_csrfToken admin=true/>" title="确定要改为${(a.name)!}么?" target="ajaxTodo">改为${(a.name)!}</a></li>
+        <li><a href="cmsContent/changeModel.do?id=${id!}&modelId=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.change_type'/>" target="ajaxTodo"><@t.page 'change_type_to' a.name!/></a></li>
     </#list>
 </@_modelList>
     </ul>

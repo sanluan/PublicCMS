@@ -1,7 +1,7 @@
 <form action="loginDialog.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">登录</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'login'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
@@ -11,8 +11,8 @@
             <dd><input type="text" name="username" title="<@t.page 'user.username'/>"/></dd>
         </dl>
         <dl class="nowrap">
-            <dt>密码:</dt>
-            <dd><input type="password" name="password" title="密码"/></dd>
+            <dt><@t.page 'password'/>:</dt>
+            <dd><input type="password" name="password" title="<@t.page 'password'/>"/></dd>
         </dl>
     </div>
 <script>

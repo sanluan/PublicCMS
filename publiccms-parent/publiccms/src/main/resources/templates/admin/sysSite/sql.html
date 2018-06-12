@@ -22,7 +22,7 @@
     <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
     <#list page.list as a>
         <dl>
-            <dt>用户:</dt>
+            <dt><@t.page 'user'/>:</dt>
             <dd>
                 ${(userMap[a.userId?string].nickName)!}
             </dd>

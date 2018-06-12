@@ -21,7 +21,7 @@
     </nav>
     <main>
         <#if user??>
-            <p>${user.nickName},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
+            <p>${user.nickName},您已经登录了! 您可以选择<a href="logout.html"><@t.page 'logout'/></a></p>
         <#else>
             <form action="${site.dynamicPath}doRegister.do" method="post">
                 <#if error??>
@@ -29,15 +29,15 @@
                 </#if>
                 <p><input type="text" name="name" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${name!}"/></p>
                 <p>4位以上数字、字母、下划线,不以数字开始</p>
-                <p><input type="text" name="nickName" placeholder="昵称" title="昵称" value="${nickname!}"/></p>
+                <p><input type="text" name="nickName" placeholder="<@t.page 'user.nickname'/>" title="<@t.page 'user.nickname'/>" value="${nickname!}"/></p>
                 <p>2位以上数字、字母、汉字、下划线</p>
-                <p><input type="password" name="password" placeholder="密码" title="密码"/></p>
-                <p><input type="password" name="repassword" placeholder="重复密码" title="重复密码"/></p>
+                <p><input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/></p>
+                <p><input type="password" name="repassword" placeholder="<@t.page 'repeat_password'/>" title="<@t.page 'repeat_password'/>"/></p>
                 <p>
                     <input type="hidden" name="returnUrl" value="${site.sitePath}"/>
-                    <input type="submit" value="注册"/>
+                    <input type="submit" value="<@t.page 'register'/>"/>
                 </p>
-                <p>已有账号?请<a href="login.html">登录</a></p>
+                <p>已有账号?请<a href="login.html"><@t.page 'login'/></a></p>
             </form>
         </#if>
     </main>

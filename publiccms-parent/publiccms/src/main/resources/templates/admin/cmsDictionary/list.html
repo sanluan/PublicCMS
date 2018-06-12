@@ -7,9 +7,9 @@
             <ul class="searchContent">
                 <li>
                     <select class="combox" name="multiple">
-                        <option value=""${(!multiple?has_content)?then(' selected="true"','')?no_esc}>字典类型</option>
-                        <option value="false"${(multiple??&&"false"=multiple)?then(' selected="true"','')?no_esc}>单选</option>
-                        <option value="true"${(multiple??&&"true"=multiple)?then(' selected="true"','')?no_esc}>多选</option>
+                        <option value=""${(!multiple?has_content)?then(' selected="true"','')?no_esc}><@t.page 'dictionary.type'/></option>
+                        <option value="false"${(multiple??&&"false"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'single_select'/></option>
+                        <option value="true"${(multiple??&&"true"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'multiple_select'/></option>
                     </select>
                 </li>
             </ul>
@@ -41,7 +41,7 @@
             <tr>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
-                <th>字典类型</th>
+                <th><@t.page 'dictionary.type'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -50,7 +50,7 @@
             <tr target="sid" rel="${a.id}">
                 <td>${a.id}</td>
                 <td>${a.name!}</td>
-                <td>${a.multiple?then('多选','单选')}</td>
+                <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
                 <td>
                 <#if authorizedMap['cmsDictionary/delete']>
                     <a href="cmsDictionary/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>

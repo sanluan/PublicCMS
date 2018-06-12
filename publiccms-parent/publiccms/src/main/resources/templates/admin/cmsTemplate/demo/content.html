@@ -36,7 +36,7 @@
             <div>${text?no_esc!}</div>
         <#if content.tags?has_content>
             <div>
-                标签:
+                <@t.page 'tag'/>:
                 <@_tag ids=content.tags>
                     <#list map as key,tag>
                         <em>${tag.name}</em>
@@ -47,9 +47,9 @@
             <div>
                 <#assign url='?id=${id}'/>
                 <#if !page.firstPage>
-                    <a href="${getPage(url,page.prePage,'pageIndex')}">上一页</a>
+                    <a href="${getPage(url,page.prePage,'pageIndex')}"><@t.page 'pre_page'/></a>
                 <#else>
-                    <span>上一页</span>
+                    <span><@t.page 'pre_page'/></span>
                 </#if>
                 <#list 1..page.totalCount as n>
                     <#if n=page.pageIndex>
@@ -59,9 +59,9 @@
                     </#if>
                 </#list>
                 <#if !page.lastPage>
-                    <a href="${getPage(url,page.nextPage,'pageIndex')}">下一页</a>
+                    <a href="${getPage(url,page.nextPage,'pageIndex')}"><@t.page 'next_page'/></a>
                 <#else>
-                    <span>下一页</span>
+                    <span><@t.page 'next_page'/></span>
                 </#if>
             </div>
             <script>

@@ -195,45 +195,6 @@ CREATE TABLE `cms_dictionary_data` (
 ) DEFAULT CHARSET=utf8 COMMENT='字典数据';
 
 -- ----------------------------
--- Table structure for cms_lottery
--- ----------------------------
-DROP TABLE IF EXISTS `cms_lottery`;
-CREATE TABLE `cms_lottery` (
-  `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `start_date` datetime NOT NULL COMMENT '开始日期',
-  `end_date` datetime NOT NULL COMMENT '结束日期',
-  `total_gift` int(11) NOT NULL COMMENT '奖品总数',
-  `last_gift` int(11) NOT NULL COMMENT '剩余数量',
-  `lottery_count` int(11) NOT NULL COMMENT '可抽奖次数',
-  `fractions` int(11) NOT NULL COMMENT '概率分子',
-  `numerator` int(11) NOT NULL COMMENT '概率分母',
-  `url` varchar(2048) default NULL COMMENT '地址',
-  `title` varchar(100) NOT NULL COMMENT '标题',
-  `description` varchar(300) default NULL COMMENT '描述',
-  `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
-  PRIMARY KEY  (`id`),
-  KEY `start_date` (`site_id`,`start_date`,`end_date`,`disabled`)
-) DEFAULT CHARSET=utf8 COMMENT='抽奖';
-
--- ----------------------------
--- Table structure for cms_lottery_user
--- ----------------------------
-DROP TABLE IF EXISTS `cms_lottery_user`;
-CREATE TABLE `cms_lottery_user` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `lottery_id` bigint(20) NOT NULL COMMENT '抽奖ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `winning` tinyint(1) NOT NULL COMMENT '是否中奖',
-  `confirmed` tinyint(1) NOT NULL COMMENT '已确认',
-  `confirm_date` datetime default NULL COMMENT '确认日期',
-  `ip` varchar(64) NOT NULL COMMENT 'IP',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`id`),
-  KEY `lottery_id` (`lottery_id`,`user_id`,`winning`,`confirmed`,`create_date`)
-) DEFAULT CHARSET=utf8 COMMENT='抽奖用户';
-
--- ----------------------------
 -- Table structure for cms_place
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_place`;
@@ -301,54 +262,6 @@ CREATE TABLE `cms_tag_type` (
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
 ) DEFAULT CHARSET=utf8 COMMENT='标签类型';
-
--- ----------------------------
--- Table structure for cms_vote
--- ----------------------------
-DROP TABLE IF EXISTS `cms_vote`;
-CREATE TABLE `cms_vote` (
-  `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `end_date` datetime NOT NULL COMMENT '结束日期',
-  `max_vote` int(11) NOT NULL COMMENT '最大投票数',
-  `user_counts` int(11) NOT NULL COMMENT '参与用户数',
-  `url` varchar(2048) NOT NULL COMMENT '地址',
-  `title` varchar(100) NOT NULL COMMENT '标题',
-  `description` varchar(300) default NULL COMMENT '描述',
-  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
-  PRIMARY KEY  (`id`),
-  KEY `disabled` (`site_id`,`end_date`,`disabled`)
-) DEFAULT CHARSET=utf8 COMMENT='投票';
-
--- ----------------------------
--- Table structure for cms_vote_item
--- ----------------------------
-DROP TABLE IF EXISTS `cms_vote_item`;
-CREATE TABLE `cms_vote_item` (
-  `id` bigint(20) NOT NULL auto_increment,
-  `vote_id` int(11) NOT NULL COMMENT '投票',
-  `title` varchar(100) NOT NULL COMMENT '标题',
-  `description` varchar(300) default NULL COMMENT '描述',
-  `scores` int(11) NOT NULL COMMENT '票数',
-  `sort` int(11) NOT NULL COMMENT '顺序',
-  PRIMARY KEY  (`id`),
-  KEY `vote_id` (`vote_id`,`scores`,`sort`)
-) DEFAULT CHARSET=utf8 COMMENT='投票选项';
-
--- ----------------------------
--- Table structure for cms_vote_user
--- ----------------------------
-DROP TABLE IF EXISTS `cms_vote_user`;
-CREATE TABLE `cms_vote_user` (
-  `id` bigint(20) NOT NULL auto_increment COMMENT 'ID',
-  `vote_id` int(11) NOT NULL COMMENT '投票ID',
-  `user_id` bigint(20) NOT NULL default '0' COMMENT '用户ID',
-  `item_ids` text NOT NULL COMMENT '投票选项',
-  `ip` varchar(64) NOT NULL COMMENT 'IP',
-  `create_date` datetime NOT NULL COMMENT '创建日期',
-  PRIMARY KEY  (`id`),
-  KEY `vote_id` (`vote_id`,`user_id`,`ip`)
-) DEFAULT CHARSET=utf8 COMMENT='投票用户';
 
 -- ----------------------------
 -- Table structure for cms_word
@@ -712,13 +625,10 @@ INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDict
 INSERT INTO `sys_module` VALUES ('task_template_content', 'taskTemplate/content', 'taskTemplate/save,taskTemplate/chipLookup,cmsTemplate/help,placeTemplate/form,cmsWebFile/contentForm', NULL, 'task_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_disable', NULL, 'sysAppClient/disable', NULL, 'app_client_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_user_list', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, 'dept_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('vote_add', 'cmsVote/add', 'cmsVote/save', NULL, 'vote_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, '<i class=\"icon-search icon-large\"></i>', 'operation_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('place_delete', NULL, 'cmsPlace/delete', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_refresh', NULL, 'cmsPlace/refresh', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check', NULL, 'place_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('lottery_user_delete', NULL, 'cmsLotteryUser/delete', NULL, 'lottery_user_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('vote_delete', NULL, 'cmsVote/delete', NULL, 'vote_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_content', 'cmsTemplate/content', 'cmsTemplate/save,cmsTemplate/chipLookup,cmsWebFile/lookup,placeTemplate/form,cmsWebFile/contentForm,cmsTemplate/demo,cmsTemplate/help,cmsTemplate/upload,cmsTemplate/doUpload', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_view', 'cmsPlace/view', NULL, NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_publish', NULL, 'cmsTemplate/publish', NULL, 'page_list', 0, 0);
@@ -731,9 +641,6 @@ INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebF
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_unzip', NULL, 'cmsWebFile/unzip,cmsWebFile/unzipHere', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_edit', 'sysConfigData/edit', 'sysConfigData/save', NULL, 'config_data_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('lottery_add', 'cmsLottery/add', 'cmsLottery/save', NULL, 'lottery_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('vote_view', 'cmsVote/view', NULL, NULL, 'vote_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('vote_user_list', 'cmsVoteUser/list', 'sysUser/lookup', NULL, 'vote_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, '<i class=\"icon-user icon-large\"></i>', NULL, 1, 1);
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, '<i class=\"icon-book icon-large\"></i>', NULL, 1, 2);
 INSERT INTO `sys_module` VALUES ('page', NULL, NULL, '<i class=\"icon-globe icon-large\"></i>', NULL, 1, 3);
@@ -760,11 +667,8 @@ INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'p
 INSERT INTO `sys_module` VALUES ('place_data_list', 'cmsPlace/dataList', NULL, NULL, 'place_list', 0, 1);
 INSERT INTO `sys_module` VALUES ('operation_menu', NULL, NULL, '<i class=\"icon-home icon-large\"></i>', 'operation', 1, 2);
 INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,sysUser/lookup,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', '<i class=\"icon-globe icon-large\"></i>', 'page_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('vote_list', 'cmsVote/list', NULL, '<i class=\"icon-hand-right icon-large\"></i>', 'operation_menu', 1, 4);
-INSERT INTO `sys_module` VALUES ('lottery_delete', NULL, 'cmsLottery/delete', NULL, 'lottery_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('operation_system', NULL, NULL, '<i class=\"icon-cog icon-large\"></i>', 'operation', 1, 1);
 INSERT INTO `sys_module` VALUES ('report_user', 'report/user', NULL, '<i class=\"icon-male icon-large\"></i>', 'operation_system', 1, 2);
-INSERT INTO `sys_module` VALUES ('lottery_user_list', 'cmsLotteryUser/list', 'sysUser/lookup', '<i class=\"icon-smile icon-large\"></i>', 'operation_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('report_cms', 'report/cms', NULL, '<i class=\"icon-check-sign icon-large\"></i>', 'operation_system', 1, 1);
 INSERT INTO `sys_module` VALUES ('config_data_delete', NULL, 'sysConfigData/delete', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_move', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', '', 'category_menu', 0, 0);
@@ -777,7 +681,6 @@ INSERT INTO `sys_module` VALUES ('log_menu', NULL, NULL, '<i class=\"icon-list-a
 INSERT INTO `sys_module` VALUES ('log_task_view', 'log/taskView', NULL, NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('task_delete', NULL, 'sysTask/delete', NULL, 'task_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('lottery_list', 'cmsLottery/list', NULL, '<i class=\"icon-ticket icon-large\"></i>', 'operation_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('log_upload', 'log/upload', 'sysUser/lookup', '<i class=\"icon-list-alt icon-large\"></i>', 'log_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('cluster_list', 'sysCluster/list', NULL, '<i class=\"icon-code-fork icon-large\"></i>', 'system_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, '<i class=\"icon-qrcode icon-large\"></i>', 'system_menu', 1, 3);
@@ -842,7 +745,6 @@ INSERT INTO `sys_module_lang` VALUES ('tag_type_list', '', '标签分类');
 INSERT INTO `sys_module_lang` VALUES ('user_menu', '', '用户管理');
 INSERT INTO `sys_module_lang` VALUES ('category_type_add', '', '增加/修改');
 INSERT INTO `sys_module_lang` VALUES ('webfile_upload', 'en', 'Upload');
-INSERT INTO `sys_module_lang` VALUES ('lottery_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('webfile_directory', 'en', 'Create Directory');
 INSERT INTO `sys_module_lang` VALUES ('app_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('file_menu', 'en', 'File maintenance');
@@ -864,12 +766,10 @@ INSERT INTO `sys_module_lang` VALUES ('task_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('task_pause', 'en', 'Pause');
 INSERT INTO `sys_module_lang` VALUES ('task_resume', 'en', 'Resume');
 INSERT INTO `sys_module_lang` VALUES ('domain_config', 'en', 'Edit');
-INSERT INTO `sys_module_lang` VALUES ('vote_add', '', '增加/修改');
 INSERT INTO `sys_module_lang` VALUES ('word_list', '', '搜索词管理');
 INSERT INTO `sys_module_lang` VALUES ('place_delete', '', '删除推荐位数据');
 INSERT INTO `sys_module_lang` VALUES ('place_refresh', '', '刷新推荐位数据');
 INSERT INTO `sys_module_lang` VALUES ('place_check', '', '审核推荐位数据');
-INSERT INTO `sys_module_lang` VALUES ('vote_delete', '', '删除');
 INSERT INTO `sys_module_lang` VALUES ('place_view', '', '查看推荐位数据');
 INSERT INTO `sys_module_lang` VALUES ('page_publish', '', '生成页面');
 INSERT INTO `sys_module_lang` VALUES ('myself_menu', '', '与我相关');
@@ -877,8 +777,6 @@ INSERT INTO `sys_module_lang` VALUES ('page_menu', '', '页面维护');
 INSERT INTO `sys_module_lang` VALUES ('tag_list', '', '标签管理');
 INSERT INTO `sys_module_lang` VALUES ('webfile_zip', 'en', 'Compress');
 INSERT INTO `sys_module_lang` VALUES ('config_data_edit', '', '修改');
-INSERT INTO `sys_module_lang` VALUES ('vote_view', '', '查看');
-INSERT INTO `sys_module_lang` VALUES ('vote_user_list', '', '投票用户');
 INSERT INTO `sys_module_lang` VALUES ('myself', '', '个人');
 INSERT INTO `sys_module_lang` VALUES ('content', '', '内容');
 INSERT INTO `sys_module_lang` VALUES ('page', '', '页面');
@@ -908,11 +806,8 @@ INSERT INTO `sys_module_lang` VALUES ('place_clear', '', '清空推荐位数据'
 INSERT INTO `sys_module_lang` VALUES ('place_data_list', '', '推荐位数据');
 INSERT INTO `sys_module_lang` VALUES ('operation_menu', '', '运营管理');
 INSERT INTO `sys_module_lang` VALUES ('page_list', '', '页面管理');
-INSERT INTO `sys_module_lang` VALUES ('vote_list', '', '投票管理');
-INSERT INTO `sys_module_lang` VALUES ('lottery_delete', '', '删除');
 INSERT INTO `sys_module_lang` VALUES ('operation_system', '', '系统管理');
 INSERT INTO `sys_module_lang` VALUES ('report_user', '', '用户数据监控');
-INSERT INTO `sys_module_lang` VALUES ('lottery_user_list', '', '抽奖用户管理');
 INSERT INTO `sys_module_lang` VALUES ('report_cms', '', '系统监控');
 INSERT INTO `sys_module_lang` VALUES ('config_data_delete', '', '清空配置');
 INSERT INTO `sys_module_lang` VALUES ('category_move', '', '移动');
@@ -929,9 +824,6 @@ INSERT INTO `sys_module_lang` VALUES ('myself_content_publish', 'en', 'test');
 INSERT INTO `sys_module_lang` VALUES ('myself_content_delete', 'en', 'test');
 INSERT INTO `sys_module_lang` VALUES ('myself_content_add', 'en', 'test');
 INSERT INTO `sys_module_lang` VALUES ('myself_content', 'en', 'My content');
-INSERT INTO `sys_module_lang` VALUES ('lottery_user_list', 'en', 'Lottery user management');
-INSERT INTO `sys_module_lang` VALUES ('lottery_delete', 'en', 'Delete');
-INSERT INTO `sys_module_lang` VALUES ('lottery_add', '', '增加/修改');
 INSERT INTO `sys_module_lang` VALUES ('log_upload', 'en', 'Upload log');
 INSERT INTO `sys_module_lang` VALUES ('log_task', 'en', 'Task log');
 INSERT INTO `sys_module_lang` VALUES ('log_operate', 'en', 'Operate log');
@@ -1022,8 +914,6 @@ INSERT INTO `sys_module_lang` VALUES ('config_add', '', '添加/修改');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_delete', '', '删除');
 INSERT INTO `sys_module_lang` VALUES ('dept_add', '', '增加/修改');
 INSERT INTO `sys_module_lang` VALUES ('place_template_content', '', '修改');
-INSERT INTO `sys_module_lang` VALUES ('lottery_user_delete', '', '删除');
-INSERT INTO `sys_module_lang` VALUES ('lottery_list', '', '抽奖管理');
 INSERT INTO `sys_module_lang` VALUES ('myself_content_refresh', 'en', 'test');
 INSERT INTO `sys_module_lang` VALUES ('myself_log_login', 'en', 'My login log');
 INSERT INTO `sys_module_lang` VALUES ('myself_log_operate', 'en', 'My operate log');
@@ -1057,11 +947,6 @@ INSERT INTO `sys_module_lang` VALUES ('tag_type_delete', 'en', 'test');
 INSERT INTO `sys_module_lang` VALUES ('tag_type_list', 'en', 'Tag type');
 INSERT INTO `sys_module_lang` VALUES ('tag_type_save', 'en', 'test');
 INSERT INTO `sys_module_lang` VALUES ('user_menu', 'en', 'User maintenance');
-INSERT INTO `sys_module_lang` VALUES ('vote_add', 'en', 'Add/edit');
-INSERT INTO `sys_module_lang` VALUES ('vote_delete', 'en', 'Delete');
-INSERT INTO `sys_module_lang` VALUES ('vote_list', 'en', 'Vote management');
-INSERT INTO `sys_module_lang` VALUES ('vote_user_list', 'en', 'Vote user');
-INSERT INTO `sys_module_lang` VALUES ('vote_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'en', 'Search word management');
 INSERT INTO `sys_module_lang` VALUES ('myself', 'en', 'Myself');
 INSERT INTO `sys_module_lang` VALUES ('config_list', '', '站点配置');
@@ -1100,8 +985,6 @@ INSERT INTO `sys_module_lang` VALUES ('dept_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('user_disable', 'en', 'Disable');
 INSERT INTO `sys_module_lang` VALUES ('task_runonce', 'en', 'Run once');
 INSERT INTO `sys_module_lang` VALUES ('task_recreate', 'en', 'Recreate');
-INSERT INTO `sys_module_lang` VALUES ('lottery_list', 'en', 'Lottery management');
-INSERT INTO `sys_module_lang` VALUES ('lottery_user_delete', 'en', 'delete');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('dictionary_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('config_add', 'en', 'Add/edit');

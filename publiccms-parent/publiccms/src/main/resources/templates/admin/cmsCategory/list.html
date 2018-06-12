@@ -36,7 +36,7 @@
             <li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'category.add_more'/></a></li>
         </#if>
     </@_categoryTypeList>
-            <li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" title="修改分类"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
+            <li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
             <li class="line">line</li>
 </#if>
         <#if authorizedMap['cmsCategory/publish']>
@@ -78,11 +78,11 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td><a href="${a.url!}" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then("[外链]",''))!}</td>
+                <td><a href="${a.url!}" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('outer_chain')+']',''))!}</td>
                 <td>${a.code!}</td>
                 <td>${(typeMap[a.typeId?string].name)!}</td>
                 <td>${(parentMap[a.parentId?string].name)!}</td>
-                <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then("[包含子分类内容]",''))!}</#if></td>
+                <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then('['+t.pageMessage('category.contain_child')+']',''))!}</#if></td>
                 <td>${a.allowContribute?then(t.pageMessage('allow_contribute'),t.pageMessage('forbid_contribute'))}</td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.sort!}</td>

@@ -9,7 +9,7 @@
     </div>
     <div class="pageFormContent" layoutH="19">
         <dl>
-            <dt>生成页数:</dt>
+            <dt><@t.page 'category.publish_page_count'/>:</dt>
             <@_contentList categoryId=id containChild=containChild count=pageSize>
             <dd><input class="required digits" type="number" name="max" max="${page.totalPage}" min="1" value="${page.totalPage}"/></dd>
             </@_contentList>

@@ -64,7 +64,7 @@
                 <td class="tree"><div class="folder_expandable"></div></td>
                 <td>
                     <a href="cmsWebFile/lookup.html?path=${path?keep_before_last('/')?url}&editor=${editor!'cmsTemplateEditor'}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${path?keep_before_last('/')}">
-                        返回上级..
+                        <@t.page 'button.return'/>
                     </a>
                 </td>
                 <td></td>
@@ -78,7 +78,7 @@
             <tr>
                 <td>
                     <#if !a.directory>
-                        <a class="btnSelect" href="javascript:;" onclick="DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${useFile(filePath?keep_after('/'),a.fileName,fullPath!)}');$.pdialog.closeCurrent();return false;" title="选择">选择</a>
+                        <a class="btnSelect" href="javascript:;" onclick="DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${useFile(filePath?keep_after('/'),a.fileName,fullPath!)}');$.pdialog.closeCurrent();return false;"><@t.page 'select'/></a>
                     </#if>
                 </td>
                 <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>

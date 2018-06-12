@@ -72,7 +72,7 @@
                 <td>${a.id}</td>
                 <td>
                     <a href="${a.url!}" target="_blank">
-                        ${(a.copied?then('[转载]',''))!}${a.title!}
+                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${a.title!}
                     </a>
                 </td>
                 <td>
@@ -99,7 +99,7 @@
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsContent/push_content_list.html?contentId=${contentId!}&parentId=${a.id}&categoryId=${a.categoryId}" target="ajax" rel="push_content_list">子内容列表</a>
+                        <a href="cmsContent/push_content_list.html?contentId=${contentId!}&parentId=${a.id}&categoryId=${a.categoryId}" target="ajax" rel="push_content_list"><@t.page 'content.child_management'/></a>
                     </#if>
                 </td>
             </tr>

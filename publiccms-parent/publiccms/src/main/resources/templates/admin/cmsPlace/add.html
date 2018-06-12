@@ -26,7 +26,7 @@
             <dt><@t.page 'title'/>:</dt>
             <dd>
                 <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!title!}"/>
-                <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" >选择</a>
+                <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" ><@t.page 'select'/></a>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -37,14 +37,14 @@
             <dt><@t.page 'publish_date'/>:</dt>
             <dd>
                 <input type="text" name="publishDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
-                <a class="inputDateButton" href="javascript:;" onclick="return false;">选择</a>
+                <a class="inputDateButton" href="javascript:;" onclick="return false;"><@t.page 'select_date'/></a>
             </dd>
         </dl>
         <dl class="nowrap">
             <dt><@t.page 'cover'/>:</dt>
             <dd>
                 <input name="cover" value="${(a.cover)!(content.cover)!}" maxlength="300" size="40" type="text"/>
-                <a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+                <a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
                 <#include "../include_page/preview.html"/>
                 <@preview 'page' 'input[name=cover]'/>
             </dd>

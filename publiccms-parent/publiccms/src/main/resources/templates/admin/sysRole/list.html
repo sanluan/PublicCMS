@@ -4,8 +4,8 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysRole/add.html" target="navTab" rel="sysRole/add"><i class="icon-plus-sign-alt icon-large"></i> 添加角色</a></li>
-            <li><a href="sysRole/add.html?id={sid}" target="navTab" rel="sysRole/edit"><i class="icon-edit icon-large"></i> 修改角色</a></li>
+            <li><a href="sysRole/add.html" target="navTab" rel="sysRole/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'role.add'/></a></li>
+            <li><a href="sysRole/add.html?id={sid}" target="navTab" rel="sysRole/edit"><i class="icon-edit icon-large"></i> <@t.page 'role.edit'/></a></li>
             <li><a href="sysRole/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
@@ -24,8 +24,8 @@
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
                 <td>${(a.name)!}</td>
-                <td>${a.ownsAllRight?then('是','')}</td>
-                <td>${a.showAllModule?then('是','')}</td>
+                <td>${a.ownsAllRight?then(t.pageMessage('yes'),'')}</td>
+                <td>${a.showAllModule?then(t.pageMessage('yes'),'')}</td>
             </tr>
             </#list>
         </tbody>
