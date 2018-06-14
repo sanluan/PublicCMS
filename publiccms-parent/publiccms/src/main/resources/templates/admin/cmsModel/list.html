@@ -9,7 +9,7 @@
             <ul class="searchContent">
                 <li>
                     <#if parent?has_content>
-                       <label>父模型:</label><label>${(parent.name)!}</label>
+                       <label><@t.page 'model.parent'/>:</label><label>${(parent.name)!}</label>
                     </#if>
                 </li>
             </ul>
@@ -36,10 +36,10 @@
             <tr>
                 <th width="80"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
-                <th>链接</th>
+                <th><@t.page 'url'/></th>
                 <th><@t.page 'template_path'/></th>
-                <th>拥有图片列表</th>
-                <th>拥有附件列表</th>
+                <th><@t.page 'model.has_images'/></th>
+                <th><@t.page 'model.has_attachs'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -54,7 +54,7 @@
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>
                 <td>
                     <#if a.hasChild>
-                        <a href="cmsModel/list.html?parentId=${a.id?url}" target="navTab" rel="cmsModel/list">子模型管理</a>
+                        <a href="cmsModel/list.html?parentId=${a.id?url}" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a>
                     </#if>
                 </td>
             </tr>

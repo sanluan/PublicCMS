@@ -38,17 +38,17 @@ function use(path,description){
 </script>
 <div class="pageFormContent" layoutH="19">
     <dl class="nowrap">
-        <dt>引用方式</dt>
+        <dt><@t.page 'use_way'/></dt>
         <dd>
             <label style="width:auto;">
                 <input name="use" type="radio" onchange="check()" value="include" checked="true"/>
-                包含
+                <@t.page 'include'/>
             </label>
             <label style="width:auto;">
                 <input name="use" type="radio" onchange="check()" value="import"/>
-                导入
+                <@t.page 'import'/>
             </label>
-            <div style="display:none"><label style="width:auto;">命名空间:</label><input name="namespace" type="text" maxlength="10" size="10" value="t"/></div>
+            <div style="display:none"><label style="width:auto;"><@t.page 'name_space'/>:</label><input name="namespace" type="text" maxlength="10" size="10" value="t"/></div>
         </dd>
     </dl>
     <ul class="tree treeFolder">

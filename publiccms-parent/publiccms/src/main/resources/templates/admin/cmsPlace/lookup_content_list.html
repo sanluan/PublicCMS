@@ -95,7 +95,7 @@
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsPlace/lookup_content_list.html?parentId=${a.id}&categoryId=${a.categoryId}" target="ajax" rel="lookup_content_list">子内容列表</a>
+                        <a href="cmsPlace/lookup_content_list.html?parentId=${a.id}&categoryId=${a.categoryId}" target="ajax" rel="lookup_content_list"><@t.page 'content.child_management'/></a>
                     </#if>
                 </td>
             </tr>

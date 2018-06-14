@@ -9,7 +9,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${site.useStatic?then(site.sitePath,base)}">首页</a>
+        <a href="${site.useStatic?then(site.sitePath,base)}"><@t.page 'home_page'/></a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -17,7 +17,7 @@
 </@_categoryList>
     </nav>
     <main>
-        <h2>最新内容</h2>
+        <h2><@t.page 'latest_content'/></h2>
 <@_contentList onlyUrl=false count=10>
     <#list page.list as a>
         <article>
@@ -30,7 +30,7 @@
     </#list>
 </@_contentList>
         <aside>
-            <h3>热门内容</h3>
+            <h3><@t.page 'popular_content'/></h3>
             <ul>
 <@_contentList orderField='clicks' count=10>
     <#list page.list as a>

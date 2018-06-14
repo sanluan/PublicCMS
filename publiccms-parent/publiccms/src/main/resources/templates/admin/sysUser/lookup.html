@@ -1,5 +1,5 @@
 <@_sysUserList startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
-            superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=disable
+            superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=false
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
     <form id="pagerForm" onsubmit="return dialogSearch(this);" action="sysUser/lookup.html" method="post">
@@ -14,30 +14,23 @@
                         <input type="text" name="name" value="${(name)!}" />
                     </td>
                     <td>
-                        <label><@t.page 'status'/>:</label>
-                        <select class="combox" name="disable">
-                            <option value="false"${(!disable?has_content||"false"==disable)?then(' selected="true"','')?no_esc}>正常</option>
-                            <option value="true"${(disable?has_content&&"true"==disable)?then(' selected="true"','')?no_esc}>禁用</option>
-                        </select>
-                    </td>
-                    <td>
                         <select class="combox" name="superuserAccess">
-                            <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}>用户身份</option>
-                            <option value="false"${(superuserAccess?has_content&&"false"==superuserAccess)?then(' selected="true"','')?no_esc}>普通用户</option>
-                            <option value="true"${(superuserAccess?has_content&&"true"==superuserAccess)?then(' selected="true"','')?no_esc}>管理员</option>
+                            <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
+                            <option value="false"${(superuserAccess?has_content&&"false"==superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
+                            <option value="true"${(superuserAccess?has_content&&"true"==superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
                         </select>
                     </td>
                     <td>
                         <select class="combox" name="emailChecked">
-                            <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}>邮箱验证状态</option>
-                            <option value="false"${(emailChecked?has_content&&"false"==emailChecked)?then(' selected="true"','')?no_esc}>未验证</option>
-                            <option value="true"${(emailChecked?has_content&&"true"==emailChecked)?then(' selected="true"','')?no_esc}>已验证</option>
+                            <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
+                            <option value="false"${(emailChecked?has_content&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
+                            <option value="true"${(emailChecked?has_content&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
                         </select>
                     </td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <label>注册日期:</label>
+                        <label><@t.page 'user.register_date'/>:</label>
                         <input type="text" name="startRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
                         <span>-</span>
                         <input type="text" name="endRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
@@ -68,12 +61,12 @@
                 <th><@t.page 'user.select'/></th>
                 <th><@t.page 'user.username'/></th>
                 <th><@t.page 'user.nickname'/></th>
-                <th>邮箱</th>
-                <th>已验证邮箱</th>
+                <th><@t.page 'email'/></th>
+                <th><@t.page 'email.verification_status'/></th>
                 <th><@t.page 'user.last_login_date'/></th>
                 <th><@t.page 'user.last_login_ip'/></th>
                 <th><@t.page 'user.login_count'/></th>
-                <th>注册日期</th>
+                <th><@t.page 'user.register_date'/></th>
             </tr>
         </thead>
         <tbody>
@@ -83,9 +76,9 @@
                     <a class="btnSelect" href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nickNameField!'nickName'}':'${(a.nickName?js_string)!}'});return false;"><@t.page 'user.select'/></a>
                 </td>
                 <td>${(a.name)!}</td>
-                <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">管理员</font>]','')?no_esc}</td>
+                <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
                 <td>${(a.email)!}</td>
-                <td>${a.emailChecked?then('已验证','未验证')}</td>
+                <td>${a.emailChecked?then(t.pageMessage('email.verified'),t.pageMessage('email.unverified'))}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.loginCount!}</td>

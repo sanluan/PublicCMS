@@ -21,7 +21,7 @@ function templateDefaultConfig(type){
     case 'index':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/index.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('首页');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'home_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
     <#if site.useStatic>
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
@@ -31,42 +31,42 @@ function templateDefaultConfig(type){
     case 'random':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/random.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('随机推荐');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'random_content_page'/>'');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
         break;
     case 'content':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('内容页');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'content_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('id,pageIndex');
         break;
     case 'category':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('分类页');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'category_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('id,pageIndex');
         break;
     case 'search':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/search.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('搜索页');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'search_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('word,pageIndex,tagId');
         break;
     case 'login':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/login.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('登录页');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'login_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('error,message');
         break;
     case 'register':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/register.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('注册页');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'register_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('error,message,name,nickname');
         break;
 <#if site.useStatic>
@@ -74,14 +74,14 @@ function templateDefaultConfig(type){
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/staticContent.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('静态化内容页');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'static_content_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
         break;
     case 'staticCategory':
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/staticCategory.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('静态化分类页');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'static_category_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
         break;
 </#if>
@@ -90,7 +90,7 @@ function templateDefaultConfig(type){
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.json');
         $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('内容接口');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'content_interface'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('id');
         break;
     case 'contentListJson':
@@ -98,7 +98,7 @@ function templateDefaultConfig(type){
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/contentList.json');
         $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('内容列表接口');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'content_list_interface'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('categoryId,containChild,modelId,parentId,userId,orderField,orderType,pageIndex,count');
         break;
     case 'categoryListJson':
@@ -106,7 +106,7 @@ function templateDefaultConfig(type){
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/categoryList.json');
         $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('分类列表接口');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'category_list_interface'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('parentId,allowContribute,pageIndex,count');
         break;
     }
@@ -116,19 +116,19 @@ function templateDefaultConfig(type){
 </script>
 <div class="pageFormContent" layoutH="19">
     <ul class="tree treeFolder">
-        <li><a href="javascript:;" onclick="templateDefaultConfig('index');">首页</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('random');">随机推荐</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('content');">内容页</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('category');">分类页</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('search');">搜索页面</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('login');">登录页面</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('register');">注册页面</a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('index');"><@t.page 'home_page'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('random');"><@t.page 'random_content_page'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('content');"><@t.page 'content_page'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('category');"><@t.page 'category_page'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('search');"><@t.page 'search_page'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('login');"><@t.page 'login_page'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('register');"><@t.page 'register_page'/></a></li>
     <#if site.useStatic>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('staticContent');">静态化内容页</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('staticCategory');">静态化分类页</a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('staticContent');"><@t.page 'static_content_page'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('staticCategory');"><@t.page 'static_category_page'/></a></li>
     </#if>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('contentJson');">内容接口</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('contentListJson');">内容列表接口</a></li>
-        <li><a href="javascript:;" onclick="templateDefaultConfig('categoryListJson');">分类列表接口</a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('contentJson');"><@t.page 'content_interface'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('contentListJson');"><@t.page 'content_list_interface'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('categoryListJson');"><@t.page 'category_list_interface'/></a></li>
     </ul>
 </div>

@@ -14,15 +14,15 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <fieldset>
-            <legend>模型属性</legend>
+            <legend><@t.page 'base_info'/></legend>
             <dl class="nowrap">
                 <dt><@t.page 'id'/>:</dt>
                 <dd>
                     <input class="required" name="id" type="text" maxlength="20" size="20" value="${(a.id)!}"/>
                     <label><input name="onlyUrl" type="checkbox"/><@t.page 'url'/></label>
-                    <label><input name="hasChild" type="checkbox"/>拥有子模型</label>
-                    <label><input name="hasImages" type="checkbox"/>拥有图片列表</label>
-                    <label><input name="hasFiles" type="checkbox"/>拥有附件列表</label>
+                    <label><input name="hasChild" type="checkbox"/><@t.page 'model.has_child'/></label>
+                    <label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label>
+                    <label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_files'/></label>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -36,17 +36,17 @@
                 <dt><@t.page 'template_path'/>:</dt>
                 <dd>
                     <input name="templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-                    <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup="">选择默认静态化模板路径</a>
-                    <span class="info">静态化过程以分类与模型映射模板路径为准，此处选择仅为简化后面操作</span>
+                    <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
+                    <span class="info"><@t.page 'model.template_path.description'/></span>
                 </dd>
             </dl>
         </#if>
         </fieldset>
         <fieldset class="systemField">
-            <legend>内容系统字段</legend>
+            <legend><@t.page 'model.system_field'/></legend>
             <dl class="nowrap">
                 <dt>
-                    <label>标题文字:</label>
+                    <label><@t.page 'model.title'/>:</label>
                 </dt>
                 <dd>
                     <input name="fieldTextMap[title]" class="required" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
@@ -54,7 +54,7 @@
             </dl>
             <dl class="nowrap urlText" style="display:none">
                 <dt>
-                    <label>网址文字:</label>
+                    <label><@t.page 'model.url'/>:</label>
                 </dt>
                 <dd>
                     <input name="fieldTextMap[url]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
@@ -65,32 +65,32 @@
                     <label><input name="fieldList" type="checkbox" value="copied"/><@t.page 'copied'/></label>
                 </dt>
                 <dd>
-                    <label>转载文字:</label>
+                    <label><@t.page 'model.copied'/>:</label>
                     <input name="fieldTextMap[copied]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['copied'])!t.pageMessage('copied')}"/>
-                    <label>来源文字:</label>
-                    <input name="fieldTextMap[source]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['source'])!'来源'}"/>
+                    <label><@t.page 'model.source'/>:</label>
+                    <input name="fieldTextMap[source]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['source'])!t.pageMessage('content.source')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="source"/><@t.page 'required'/></label>
-                    <label>来源网址文字:</label>
-                    <input name="fieldTextMap[sourceUrl]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['sourceUrl'])!'来源网址'}"/>
+                    <label><@t.page 'model.source_url'/>:</label>
+                    <input name="fieldTextMap[sourceUrl]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['sourceUrl'])!t.pageMessage('content.source_url')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="sourceUrl"/><@t.page 'required'/></label>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="tag"/>标签</label>
+                    <label><input name="fieldList" type="checkbox" value="tag"/><@t.page 'tag'/></label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[tag]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['tag'])!'标签'}"/>
+                    <input name="fieldTextMap[tag]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['tag'])!t.pageMessage('tag')}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="author"/>作者</label>
+                    <label><input name="fieldList" type="checkbox" value="author"/><@t.page 'content.author'/></label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[author]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['author'])!'作者'}"/>
+                    <input name="fieldTextMap[author]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['author'])!t.pageMessage(''content.author'')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="author"/><@t.page 'required'/></label>
                 </dd>
             </dl>
@@ -126,13 +126,13 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="content"/>正文</label>
+                    <label><input name="fieldList" type="checkbox" value="content"/><@t.page 'content.text'/></label>
                 </dt>
                 <dd>
-                    <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['content'])!'正文'}"/>
+                    <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="content"/><@t.page 'required'/></label>
-                    <label>编辑器类型:</label>
-                    <#assign editorTypes={'ueditor':'百度编辑器','ckeditor':'CKeditor'}/>
+                    <label><@t.page 'editor_type'/>:</label>
+                    <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor')}/>
                     <select class="combox" name="editorType">
                         <#list editorTypes as k,v>
                         <option value="${k}"${(k=(a.editorType)!)?then(' selected="true"','')?no_esc}>${v}</option>

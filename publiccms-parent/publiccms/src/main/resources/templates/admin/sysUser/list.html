@@ -14,20 +14,20 @@
                 <#include "../include_page/disabled.html"/>
                 <li>
                     <select class="combox" name="superuserAccess">
-                        <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}>用户身份</option>
-                        <option value="false"${(superuserAccess??&&"false"=superuserAccess)?then(' selected="true"','')?no_esc}>普通用户</option>
-                        <option value="true"${(superuserAccess??&&"true"=superuserAccess)?then(' selected="true"','')?no_esc}>管理员</option>
+                        <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
+                        <option value="false"${(superuserAccess??&&"false"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
+                        <option value="true"${(superuserAccess??&&"true"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
                     </select>
                 </li>
                 <li>
                     <select class="combox" name="emailChecked">
-                        <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}>邮箱验证状态</option>
-                        <option value="false"${(emailChecked??&&"false"==emailChecked)?then(' selected="true"','')?no_esc}>已验证</option>
-                        <option value="true"${(emailChecked??&&"true"==emailChecked)?then(' selected="true"','')?no_esc}>未验证</option>
+                        <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
+                        <option value="false"${(emailChecked??&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
+                        <option value="true"${(emailChecked??&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
                     </select>
                 </li>
                 <li>
-                    <label>注册日期:</label>
+                    <label><@t.page 'user.register_date'/>:</label>
                     <input type="text" name="startRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
                     <span>-</span>
                     <input type="text" name="endRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
@@ -52,10 +52,10 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> 添加用户</a></li>
-            <li><a href="sysUser/add.html?id={sid}" target="navTab" rel="sysUser/edit"><i class="icon-edit icon-large"></i> 修改用户</a></li>
-            <li><a href="sysUser/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要启用该用户吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'enable'/></a></li>
-            <li><a href="sysUser/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要禁用该用户吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'disable'/></a></li>
+            <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
+            <li><a href="sysUser/add.html?id={sid}" target="navTab" rel="sysUser/edit"><i class="icon-edit icon-large"></i> <@t.page 'user.edit'/></a></li>
+            <li><a href="sysUser/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'enable'/></a></li>
+            <li><a href="sysUser/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'disable'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
@@ -64,13 +64,13 @@
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'user.username'/></th>
                 <th><@t.page 'user.nickname'/></th>
-                <th>邮箱</th>
-                <th>已验证邮箱</th>
+                <th><@t.page 'email'/></th>
+                <th><@t.page 'email.verification_status'/></th>
                 <th><@t.page 'disabled'/></th>
                 <th><@t.page 'user.last_login_ip'/></th>
                 <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
                 <th orderField="loginCount" class="<#if orderField??&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.login_count'/></th>
-                <th orderField="registeredDate" class="<#if orderField??&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">注册日期</th>
+                <th orderField="registeredDate" class="<#if orderField??&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.register_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -79,9 +79,9 @@
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
                 <td>${(a.name)!}</td>
-                <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">管理员</font>]','')?no_esc}</td>
+                <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
                 <td>${(a.email)!}</td>
-                <td>${a.emailChecked?then('已验证','未验证')}</td>
+                <td>${a.emailChecked?then(t.pageMessage('email.verified'),t.pageMessage('email.unverified'))}</td>
                 <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disable')+'</font>',t.pageMessage('normal'))?no_esc}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.lastLoginDate!}</td>
@@ -89,11 +89,11 @@
                 <td>${a.registeredDate!}</td>
                 <td>
                     <a href="log/login.html?userId=${a.id}" target="navTab" rel="log/login">
-                        登录日志
+                        <@t.page 'log.login'/>
                     </a>
                     <#if a.superuserAccess>
                         <a href="log/operate.html?userId=${a.id}" target="navTab" rel="log/operate">
-                            后台操作日志
+                            <@t.page 'log.operate'/>
                         </a>
                     </#if>
                 </td>

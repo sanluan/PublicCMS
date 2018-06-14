@@ -2,7 +2,7 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">执行</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'task_template.exec'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
@@ -27,14 +27,14 @@
             </dd>
         </dl>
         <dl>
-            <dt>执行日期:</dt>
+            <dt><@t.page 'task_template.exec_date'/>:</dt>
             <dd>
                 ${a.createDate!}
             </dd>
         </dl>
         <#assign content=a.content?eval/>
         <dl class="nowrap">
-            <dt>脚本:</dt>
+            <dt><@t.page 'task_template'/>:</dt>
             <dd>
                 ${(content.filePath)!}
             </dd>
