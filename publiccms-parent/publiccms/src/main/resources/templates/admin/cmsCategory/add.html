@@ -134,7 +134,7 @@ function clickAddTagType(){
 			<label>${a.id}:${a.name!}</label>
 			<input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
 			<input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
-			<input name="categoryModelList[${modelIndex}].categoryModel.templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+			<input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
 			<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
 			<@childModel a index+1/>
 		</li>
@@ -154,7 +154,7 @@ function clickAddTagType(){
 					</dt>
 		<#if site.useStatic>
 					<dd <#if a.onlyUrl> style="display:none"</#if>>
-						<label>静态化模板路径:</label><input name="categoryModelList[${modelIndex}].categoryModel.templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+						<label>静态化模板路径:</label><input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
 						<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
 						<@childModel a/>
 					</dd>
@@ -199,7 +199,7 @@ checkCategoryModel();
 	<@_categoryModelList categoryId=id!copyId>
 		<#list page.list as a>
 			$('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().find('input[type=checkbox]').click();
-			$('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().parent().find('input[name$=\\[${a.id.modelId}\\]\\.categoryModel\\.templatePath]').val('${(a.templatePath)!}');
+			$('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
 		</#list>
 	</@_categoryModelList>
 </#if>

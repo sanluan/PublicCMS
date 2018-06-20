@@ -71,6 +71,9 @@ public class SiteComponent implements Cache, Base {
      * @return
      */
     public static String getFullFileName(SysSite site, String path) {
+        if (path.contains("..")) {
+            path = path.replace("..", BLANK);
+        }
         if (path.startsWith(SEPARATOR) || path.startsWith("\\")) {
             return SITE_PATH_PREFIX + site.getId() + path;
         }
