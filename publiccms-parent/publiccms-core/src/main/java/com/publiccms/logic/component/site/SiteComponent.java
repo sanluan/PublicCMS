@@ -66,15 +66,14 @@ public class SiteComponent implements Cache {
     private String webFilePath;
     private String taskTemplateFilePath;
     private String webTemplateFilePath;
-    
+
     private String webBackupFilePath;
     private String webTemplateBackupFilePath;
     private String taskTemplateBackupFilePath;
-    
+
     private String webHistoryFilePath;
     private String webTemplateHistoryFilePath;
     private String taskTemplateHistoryFilePath;
-    
 
     private short defaultSiteId;
     private Set<Short> masterSiteIdSet = new HashSet<>();
@@ -89,6 +88,9 @@ public class SiteComponent implements Cache {
      * @return full file name
      */
     public static String getFullFileName(SysSite site, String path) {
+        if (null == path || path.contains("..")) {
+            throw new IllegalArgumentException();
+        }
         if (path.startsWith(CommonConstants.SEPARATOR) || path.startsWith("\\")) {
             return SITE_PATH_PREFIX + site.getId() + path;
         }
