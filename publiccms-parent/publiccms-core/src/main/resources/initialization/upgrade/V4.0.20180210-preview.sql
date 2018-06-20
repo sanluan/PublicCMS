@@ -24,10 +24,9 @@ UPDATE `sys_module` SET `parent_id` = 149 WHERE  `id` in (150,151,152,153,154);
 UPDATE `sys_module` SET `parent_id` = 99 WHERE  `id` in (145,146);
 -- 20180504 --
 UPDATE `sys_module` SET `authorized_url` = 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete' WHERE  `id` = 23;
-ALTER TABLE `sys_extend_field` DROP COLUMN `dictionary_type`;
 INSERT INTO `sys_module` VALUES ('141', '修改内容模型', 'cmsContent/changeModelParameters', 'cmsContent/changeModel', null, '12', '0', '0');
 -- 20180605 --
-DELETE FROM `sys_moudle` WHERE id < 1000;
+DELETE FROM `sys_module` WHERE id < 1000;
 ALTER TABLE `sys_module` 
 	MODIFY COLUMN `id` varchar(30) NOT NULL FIRST,
 	MODIFY COLUMN `parent_id` varchar(30) NULL DEFAULT NULL COMMENT '父模块' AFTER `attached`;
