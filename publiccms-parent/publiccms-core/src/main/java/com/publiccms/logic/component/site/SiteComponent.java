@@ -88,8 +88,8 @@ public class SiteComponent implements Cache {
      * @return full file name
      */
     public static String getFullFileName(SysSite site, String path) {
-        if (null == path || path.contains("..")) {
-            throw new IllegalArgumentException();
+        if (path.contains("..")) {
+            path = path.replace("..", CommonConstants.BLANK);
         }
         if (path.startsWith(CommonConstants.SEPARATOR) || path.startsWith("\\")) {
             return SITE_PATH_PREFIX + site.getId() + path;
