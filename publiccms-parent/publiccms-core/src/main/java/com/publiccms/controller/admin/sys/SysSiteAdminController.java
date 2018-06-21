@@ -76,7 +76,7 @@ public class SysSiteAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param domainName
+     * @param domain
      * @param roleName
      * @param deptName
      * @param userName
@@ -88,7 +88,7 @@ public class SysSiteAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysSite entity, String domainName, String roleName, String deptName, String userName, String password,
+    public String save(SysSite entity, String domain, String roleName, String deptName, String userName, String password,
             String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
@@ -107,15 +107,14 @@ public class SysSiteAdminController extends AbstractController {
             }
         } else {
             if (ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
-                    || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domainName), model)
+                    || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model)
                     || ControllerUtils.verifyNotEmpty("userName", userName, model)
                     || ControllerUtils.verifyNotEmpty("password", password, model)
-                    || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domainName), model)) {
+                    || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.save(entity);
-            SysDomain domain = new SysDomain(domainName, entity.getId(), false);
-            domainService.save(domain);
+            domainService.save(new SysDomain(domain, entity.getId(), false));
             SysDept dept = new SysDept(entity.getId(), deptName, true, 0, true);
             deptService.save(dept);// 初始化部门
             SysRole role = new SysRole(entity.getId(), roleName, true, true);

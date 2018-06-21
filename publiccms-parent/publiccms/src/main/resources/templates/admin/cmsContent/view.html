@@ -172,7 +172,7 @@
             </#if>
             <#if model.hasFiles>
                 <dl class="nowrap">
-                    <dt><@t.page 'attach_list':</dt>
+                    <dt><@t.page 'attach_list'/>:</dt>
                     <dd>
                 <@_contentFileList contentId=a.id fileTypes='video,audio,other'>
                     <#list page.list as file>
