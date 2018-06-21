@@ -10,7 +10,7 @@ PublicCMS是采用2017年最新主流技术开发的免费开源JAVACMS系统。
 
 ## 视频、文档及一键运行包下载
 
-http://pan.baidu.com/s/1eSG6l5S
+https://pan.baidu.com/s/1QIPaIhuASKC_16ZJ6v4SgQ 密码:eo4r
 
 ## 获取稳定版源码
 
