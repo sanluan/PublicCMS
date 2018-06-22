@@ -31,7 +31,7 @@ function templateDefaultConfig(type){
     case 'random':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/random.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'random_content_page'/>'');
+        $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'random_content_page'/>');
         $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
         break;
     case 'content':

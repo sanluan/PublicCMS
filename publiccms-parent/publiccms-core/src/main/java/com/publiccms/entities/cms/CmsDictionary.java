@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -26,6 +27,9 @@ public class CmsDictionary implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private Long id;
+    @GeneratorColumn(title = "站点", condition = true)
+    @JsonIgnore
+    private short siteId;
     @GeneratorColumn(title = "名称")
     private String name;
     @GeneratorColumn(title = "允许多选", condition = true)
@@ -34,7 +38,8 @@ public class CmsDictionary implements java.io.Serializable {
     public CmsDictionary() {
     }
 
-    public CmsDictionary(String name, boolean multiple) {
+    public CmsDictionary(short siteId, String name, boolean multiple) {
+        this.siteId = siteId;
         this.name = name;
         this.multiple = multiple;
     }
@@ -49,6 +54,15 @@ public class CmsDictionary implements java.io.Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Column(name = "site_id", nullable = false)
+    public short getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(short siteId) {
+        this.siteId = siteId;
     }
 
     @Column(name = "name", nullable = false, length = 100)

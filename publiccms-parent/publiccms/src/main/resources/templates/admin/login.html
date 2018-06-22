@@ -17,6 +17,11 @@
                 <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
             </p>
         </form>
+        <p>
+            <#list langs as k,v>
+                <a href="../changeLocale?lang=${k}&returnUrl=${'/admin/'?url}">${v}</a>
+            </#list>
+        </p>
     </div>
     <p class="login_msg">
         <#if error??>

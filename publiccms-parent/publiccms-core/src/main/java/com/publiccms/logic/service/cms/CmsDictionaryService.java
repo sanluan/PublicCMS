@@ -22,14 +22,15 @@ import com.publiccms.common.handler.PageHandler;
 public class CmsDictionaryService extends BaseService<CmsDictionary> {
 
     /**
+     * @param siteId
      * @param multiple
      * @param pageIndex
      * @param pageSize
-     * @return  results page
+     * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Boolean multiple, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(multiple, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Boolean multiple, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, multiple, pageIndex, pageSize);
     }
 
     @Autowired

@@ -9,7 +9,7 @@
     <#assign text=temp.text/>
 </@_content>
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <title>${content.title} - ${category.name}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
@@ -21,7 +21,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}"><@t.page 'home_page'/></a>
+        <a href="${base}">Home page</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -32,11 +32,11 @@
     <main>
         <article>
             <h1><a href="${content.url!}">${content.title}</a></h1>
-            <p><#if content.copied>来源:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></p>
+            <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
             <div>${text?no_esc!}</div>
         <#if content.tags?has_content>
             <div>
-                <@t.page 'tag'/>:
+                Tags:
                 <@_tag ids=content.tags>
                     <#list map as key,tag>
                         <em>${tag.name}</em>
@@ -47,9 +47,9 @@
             <div>
                 <#assign url='?id=${id}'/>
                 <#if !page.firstPage>
-                    <a href="${getPage(url,page.prePage,'pageIndex')}"><@t.page 'pre_page'/></a>
+                    <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
                 <#else>
-                    <span><@t.page 'pre_page'/></span>
+                    <span>Previous page</span>
                 </#if>
                 <#list 1..page.totalCount as n>
                     <#if n=page.pageIndex>
@@ -59,9 +59,9 @@
                     </#if>
                 </#list>
                 <#if !page.lastPage>
-                    <a href="${getPage(url,page.nextPage,'pageIndex')}"><@t.page 'next_page'/></a>
+                    <a href="${getPage(url,page.nextPage,'pageIndex')}">Next page</a>
                 <#else>
-                    <span><@t.page 'next_page'/></span>
+                    <span>Next page</span>
                 </#if>
             </div>
             <script>
@@ -71,7 +71,7 @@
             </script>
         </article>
         <aside>
-            <h3><@t.page 'popular_content'/></h3>
+            <h3>Popular content</h3>
             <ul>
 <@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
     <#list page.list as a>
@@ -83,7 +83,7 @@
     </main>
 <#else>
     <main>
-        <h2>没有此内容</h2>
+        <h2>Content does not exist</h2>
     </main>
 </#if>
     <footer>

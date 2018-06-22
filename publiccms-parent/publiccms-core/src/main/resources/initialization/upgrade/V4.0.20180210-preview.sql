@@ -470,3 +470,8 @@ DROP TABLE IF EXISTS `cms_lottery_user`;
 DROP TABLE IF EXISTS `cms_vote`;
 DROP TABLE IF EXISTS `cms_vote_item`;
 DROP TABLE IF EXISTS `cms_vote_user`;
+-- 20180622 --
+ALTER TABLE `cms_dictionary` 
+    ADD COLUMN `site_id` smallint(6) NOT NULL DEFAULT 1 COMMENT '站点ID' AFTER `id`,
+    DROP INDEX `multiple`,
+    ADD INDEX `siteId`(`site_id`, `multiple`) USING BTREE;

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <title>${metadata.alias!}</title>
     <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
@@ -21,19 +21,19 @@
     </nav>
     <main>
         <#if user?has_content>
-            <p>${user.nickName},您已经登录了!  您可以<a href="javascript:logout();"><@t.page 'logout'/></a></p>
+            <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
         <#else>
             <form action="${site.dynamicPath}doLogin.do" method="post">
                 <#if error??>
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>
-                <p><input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>"/></p>
-                <p><input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/></p>
+                <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
+                <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p>
                     <input type="hidden" name="returnUrl" value="${site.sitePath}"/>
-                    <input type="submit" value="<@t.page 'login'/>"/>
+                    <input type="submit" value="Login"/>
                 </p>
-                <p>没有账号?请<a href="register.html"><@t.page 'register'/></a></p>
+                <p>No account?<a href="register.html">Please register</a></p>
             </form>
         </#if>
     </main>

@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <title>${metadata.alias!}${word?has_content?then(' - '+word,'')}</title>
     <meta name="keywords" content="<#list getKeywords(word) as a>${a}<#sep>,</#list>"/>
-    <meta name="description" content="${site.name} - 搜索"/>
+    <meta name="description" content="${site.name} - Search"/>
 </head>
 <body>
     <header>
         <form method="get">
             <input type="text" name="word" value="${word!}"/>
-            <input type="submit" value="搜索"/>
+            <input type="submit" value="Search"/>
         </form>
     </header>
     <nav>
@@ -23,7 +23,7 @@
     <main>
 <@_search word=word tagId=tagId pageIndex=pageIndex count=10>
     <#if page.totalCount gt 0>
-        <h1>搜索结果</h1>
+        <h1>Results</h1>
     <#list page.list as a>
         <article>
             <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
@@ -35,9 +35,9 @@
     </#list>
         <div>
             <#if !page.firstPage>
-                <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.prePage}"><@t.page 'pre_page'/></a>
+                <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.prePage}">Previous page</a>
             <#else>
-                <span><@t.page 'pre_page'/></span>
+                <span>Previous page</span>
             </#if>
             <#assign start=1/>
             <#if (page.pageIndex-5) gt start>
@@ -61,15 +61,15 @@
                 ... <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
             </#if>
             <#if !page.lastPage>
-                <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.nextPage}"><@t.page 'next_page'/></a>
+                <a href="?word=${word!}&tagId=${tagId!}&pageIndex=${page.nextPage}">Next page</a>
             <#else>
-                <span><@t.page 'next_page'/></span>
+                <span>Next page</span>
             </#if>
         </div>
     </#if>
 </@_search>
         <aside>
-            <h3><@t.page 'popular_content'/></h3>
+            <h3>Popular content</h3>
             <ul>
 <@_contentList orderField='clicks' count=10>
     <#list page.list as a>

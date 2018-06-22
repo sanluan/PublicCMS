@@ -32,7 +32,7 @@ import com.publiccms.views.pojo.model.CmsDictionaryParamters;
 @RequestMapping("cmsDictionary")
 public class CmsDictionaryAdminController extends AbstractController {
 
-    private String[] ignoreProperties = new String[] { "id" };
+    private String[] ignoreProperties = new String[] { "id", "siteId" };
 
     /**
      * @param entity
@@ -44,8 +44,8 @@ public class CmsDictionaryAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsDictionary entity, CmsDictionaryParamters dictionaryParamters, String _csrf,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(CmsDictionary entity, CmsDictionaryParamters dictionaryParamters, String _csrf, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -57,6 +57,7 @@ public class CmsDictionaryAdminController extends AbstractController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
+            entity.setSiteId(site.getId());
             service.save(entity);
             dataService.save(entity.getId(), dictionaryParamters.getDataList());
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

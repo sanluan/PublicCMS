@@ -177,10 +177,11 @@ CREATE TABLE `cms_content_related` (
 DROP TABLE IF EXISTS `cms_dictionary`;
 CREATE TABLE `cms_dictionary` (
   `id` bigint(20) NOT NULL auto_increment,
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(100) NOT NULL COMMENT '名称',
   `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
   PRIMARY KEY  (`id`),
-  KEY `multiple` (`multiple`)
+  KEY `site_id` (`site_id`,`multiple`)
 ) DEFAULT CHARSET=utf8 COMMENT='字典';
 
 -- ----------------------------

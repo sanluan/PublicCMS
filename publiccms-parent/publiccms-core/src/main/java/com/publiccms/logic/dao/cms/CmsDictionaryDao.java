@@ -16,13 +16,17 @@ import com.publiccms.common.handler.QueryHandler;
 public class CmsDictionaryDao extends BaseDao<CmsDictionary> {
 
     /**
+     * @param siteId 
      * @param multiple
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Boolean multiple, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Boolean multiple, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionary bean");
+        if (null != siteId) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
         if (null != multiple) {
             queryHandler.condition("bean.multiple = :multiple").setParameter("multiple", multiple);
         }

@@ -3,7 +3,7 @@
     <#assign attribute=getCategoryAttribute(id)/>
 </@_category>
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>${(category.name)!}</title>
@@ -15,7 +15,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}"><@t.page 'home_page'/></a>
+        <a href="${base}">Home page</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -24,7 +24,7 @@
     </nav>
 <#if category?has_content>
     <main>
-        <h1><@t.page 'latest_content'/></h1>
+        <h1>Latest content</h1>
 <@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
     <#list page.list as a>
         <section>
@@ -38,9 +38,9 @@
         <div>
             <#assign url='?id=${id}'/>
             <#if !page.firstPage>
-                <a href="${getPage(url,page.prePage,'pageIndex')}"><@t.page 'pre_page'/></a>
+                <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
             <#else>
-                <span><@t.page 'pre_page'/></span>
+                <span>Previous page</span>
             </#if>
             <#assign start=1/>
             <#if (page.pageIndex-5) gt start>
@@ -64,14 +64,14 @@
                 ... <a href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
             </#if>
             <#if !page.lastPage>
-                <a href="${getPage(url,page.nextPage,'pageIndex')}"><@t.page 'next_page'/></a>
+                <a href="${getPage(url,page.nextPage,'pageIndex')}">Next page</a>
             <#else>
-                <span><@t.page 'next_page'/></span>
+                <span>Next page</span>
             </#if>
         </div>
 </@_contentList>
         <aside>
-            <h3><@t.page 'popular_content'/></h3>
+            <h3>Popular content</h3>
             <ul>
 <@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
     <#list page.list as a>
@@ -83,7 +83,7 @@
     </main>
 <#else>
     <main>
-        <h2><@t.page 'category.not_exist'/></h2>
+        <h2>Category does not exist</h2>
     </main>
 </#if>
     <footer>
