@@ -556,7 +556,7 @@ CREATE TABLE `sys_extend_field` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_module`;
 CREATE TABLE `sys_module` (
-  `id` varchar(30) NOT NULL auto_increment,
+  `id` varchar(30) NOT NULL,
   `url` varchar(255) default NULL COMMENT '链接地址',
   `authorized_url` text COMMENT '授权地址',
   `attached` varchar(300) default NULL COMMENT '标题附加',
