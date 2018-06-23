@@ -17,7 +17,7 @@ var i=0;
 var sitePath = '${base}/';
 var apiArray=['api/directive/','api/method/','api/']
 var apisArray=['api/directives','api/methods','api/apis'];
-var supportShowParamtersArray=[true,false,true];
+var supportShowParametersArray=[true,false,true];
 
 function invoke(){
     $('#rawJson').val('loading...');
@@ -48,7 +48,7 @@ function getSymbol(value){
         }
     }
 }
-function use(action,needAppToken,needUserToken,minParamters){
+function use(action,needAppToken,needUserToken,minParameters){
     $('#sendData').val(sitePath+apiArray[i]+action);
     if('true'==needAppToken){
         $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken={AppToken}');
@@ -56,22 +56,22 @@ function use(action,needAppToken,needUserToken,minParamters){
     if('true'==needUserToken){
         $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken={用户登录Token}&authUserId={用户ID}');
     }
-    if(minParamters != 'undefined'){
-        for (var j = 1; j <= minParamters; j++) {
-            $('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'paramters=value' + j);
+    if(minParameters != 'undefined'){
+        for (var j = 1; j <= minParameters; j++) {
+            $('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'parameters=value' + j);
         }
-    }else if($('input[name=showParamters]').is(':checked')&&$('input[name=showParamters]').is(':visible')){
-        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParamters=true');
+    }else if($('input[name=showParameters]').is(':checked')&&$('input[name=showParameters]').is(':visible')){
+        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
     }
     $('#buttons').show();
     return false;
 }
 function init(){
     i=$('input:radio[name=api]:checked').val();
-    if(supportShowParamtersArray[i]){
-        $('input[name=showParamters]').parent().show();
+    if(supportShowParametersArray[i]){
+        $('input[name=showParameters]').parent().show();
     }else{
-        $('input[name=showParamters]').parent().hide();
+        $('input[name=showParameters]').parent().hide();
     }
     $('#interfaes').empty();
     $.ajax({
@@ -87,17 +87,17 @@ function init(){
                 if('true'==data.needUserToken){
                     style+='border:1px solid #0f0;';
                 }
-                $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParamters+'\');">'+data.name+'</a> ');
+                $('#interfaes').append(' <a href="javascript:;" style="'+style+'" onclick="return use(\''+data.name+'\',\''+data.needAppToken+'\',\''+data.needUserToken+'\',\''+data.minParameters+'\');">'+data.name+'</a> ');
             });
         }
     });
 }
 $(function(){
-    $('input[name=showParamters]').click(function(){
+    $('input[name=showParameters]').click(function(){
         if($(this).is(':checked')){
-            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParamters=true');
+            $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
         }else{
-            $('#sendData').val($('#sendData').val().replace('&showParamters=true','').replace('?showParamters=true',''));
+            $('#sendData').val($('#sendData').val().replace('&showParameters=true','').replace('?showParameters=true',''));
         }
     });
     $('input:radio[name=api]').eq(0).click();
@@ -114,7 +114,7 @@ $(function(){
         <p>
             <label>地址：</label>
             <textarea cols="100" rows="2" id="sendData"></textarea>
-            <label><input name="showParamters" type="checkbox" checked="checked"/>返回请求参数</label>
+            <label><input name="showParameters" type="checkbox" checked="checked"/>返回请求参数</label>
         </p>
         <p id="buttons" style="display:none"><input type="button" value="发送请求" onclick="invoke()"/></p>
         <p>

@@ -33,7 +33,7 @@
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
     <#else>
-该分类不允许前台提交，请先修改分类设置
+<@t.m 'verify.custom.contribute'/>
     </#if>
 </#assign>
     </@_model>
@@ -52,7 +52,7 @@
         </dd>
     </dl>
     <dl class="nowrap">
-        <dt>表单代码:</dt>
+        <dt><@t.page 'source_code'/>:</dt>
         <dd>
             <textarea cols="80" rows="20"><@html_escape>${(formContent)!}</@html_escape></textarea>
         </dd>

@@ -6,10 +6,10 @@ import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
- * SysConfigParamters
+ * SysConfigParameters
  * 
  */
-public class SysConfigParamters implements java.io.Serializable {
+public class SysConfigParameters implements java.io.Serializable {
 
     /**
      * 

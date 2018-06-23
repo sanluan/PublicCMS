@@ -8,13 +8,13 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>获取授权:</dt>
+            <dt><@t.page 'license.award'/>:</dt>
             <dd>
                 <a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i> <@t.menu 'official_website'/></a>
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>授权状态:</dt>
+            <dt><@t.page 'license.status'/>:</dt>
             <dd>
                 <@_version>
                     <#if authorizationEdition>
@@ -26,7 +26,7 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>授权文件(license.dat):</dt>
+            <dt><@t.page 'license.file'/>:</dt>
             <dd>
                 <input type="file" name="file" class="required" size="30" />
             </dd>

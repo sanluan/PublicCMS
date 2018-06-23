@@ -9,10 +9,10 @@ import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
- * CmsContentParamters
+ * CmsContentParameters
  * 
  */
-public class CmsContentParamters implements java.io.Serializable {
+public class CmsContentParameters implements java.io.Serializable {
 
     /**
      * 

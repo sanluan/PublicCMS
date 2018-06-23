@@ -1,6 +1,6 @@
 <div class="pageHeader">
     <form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
-        <#noparse><#include "../include_page/paramters.html"/></#noparse>
+        <#noparse><#include "../include_page/parameters.html"/></#noparse>
         <div class="searchBar">
             <ul class="searchContent">
             <#list conditionList as a><#if "Date"=a.type>
@@ -40,14 +40,14 @@
         ${'</#'}if>
         </ul>
     </div>
-${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_condition/paramter.ftl">>
+${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_condition/parameter.ftl">>
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
                 <#list columnList as a>
                 <th<#if a.order> orderField="${a.name}" class="<#noparse><#if orderField??&&</#noparse>'${a.name}'<#noparse>==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if></#noparse>"</#if>>${a.title}</th>
                 </#list>
-                <th>操作</th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>

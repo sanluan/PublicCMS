@@ -56,7 +56,7 @@ public class HttpParameterHandler extends BaseHandler {
         this.callback = callback;
         this.response = response;
         this.mediaType = mediaType;
-        regristerParamters();
+        regristerParameters();
     }
 
     @Override
@@ -104,7 +104,7 @@ public class HttpParameterHandler extends BaseHandler {
 
     @Override
     public Short getShort(String name) {
-        regristerParamter(PARAMETER_TYPE_STRING, name);
+        regristerParameter(PARAMETER_TYPE_STRING, name);
         String result = getStringWithoutRegrister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
@@ -118,7 +118,7 @@ public class HttpParameterHandler extends BaseHandler {
 
     @Override
     public Long getLong(String name) {
-        regristerParamter(PARAMETER_TYPE_LONG, name);
+        regristerParameter(PARAMETER_TYPE_LONG, name);
         String result = getStringWithoutRegrister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
@@ -132,7 +132,7 @@ public class HttpParameterHandler extends BaseHandler {
 
     @Override
     public Double getDouble(String name) {
-        regristerParamter(PARAMETER_TYPE_DOUBLE, name);
+        regristerParameter(PARAMETER_TYPE_DOUBLE, name);
         String result = getStringWithoutRegrister(name);
         if (CommonUtils.notEmpty(result)) {
             try {

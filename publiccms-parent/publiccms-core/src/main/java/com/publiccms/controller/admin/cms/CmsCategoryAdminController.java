@@ -40,8 +40,8 @@ import com.publiccms.logic.service.cms.CmsTagTypeService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
-import com.publiccms.views.pojo.model.CmsCategoryModelParamters;
-import com.publiccms.views.pojo.model.CmsCategoryParamters;
+import com.publiccms.views.pojo.model.CmsCategoryModelParameters;
+import com.publiccms.views.pojo.model.CmsCategoryParameters;
 
 import freemarker.template.TemplateException;
 
@@ -78,7 +78,7 @@ public class CmsCategoryAdminController extends AbstractController {
     /**
      * @param entity
      * @param attribute
-     * @param categoryParamters
+     * @param categoryParameters
      * @param _csrf 
      * @param request
      * @param session
@@ -86,7 +86,7 @@ public class CmsCategoryAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsCategory entity, CmsCategoryAttribute attribute, @ModelAttribute CmsCategoryParamters categoryParamters,
+    public String save(CmsCategory entity, CmsCategoryAttribute attribute, @ModelAttribute CmsCategoryParameters categoryParameters,
             String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -125,28 +125,28 @@ public class CmsCategoryAdminController extends AbstractController {
                     (Integer) extendService.save(new SysExtend("category", entity.getId())));
         }
 
-        Integer[] tagTypeIds = tagTypeService.update(site.getId(), categoryParamters.getTagTypes());
+        Integer[] tagTypeIds = tagTypeService.update(site.getId(), categoryParameters.getTagTypes());
         service.updateTagTypeIds(entity.getId(), arrayToCommaDelimitedString(tagTypeIds));// 更新保存标签分类
 
-        List<CmsCategoryModelParamters> categoryModelList = categoryParamters.getCategoryModelList();
+        List<CmsCategoryModelParameters> categoryModelList = categoryParameters.getCategoryModelList();
         if (CommonUtils.notEmpty(categoryModelList)) {
-            for (CmsCategoryModelParamters cmsCategoryModelParamters : categoryModelList) {
-                if (null != cmsCategoryModelParamters.getCategoryModel()) {
-                    cmsCategoryModelParamters.getCategoryModel().getId().setCategoryId(entity.getId());
-                    if (cmsCategoryModelParamters.isUse()) {
-                        categoryModelService.updateCategoryModel(cmsCategoryModelParamters.getCategoryModel());
+            for (CmsCategoryModelParameters cmsCategoryModelParameters : categoryModelList) {
+                if (null != cmsCategoryModelParameters.getCategoryModel()) {
+                    cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(entity.getId());
+                    if (cmsCategoryModelParameters.isUse()) {
+                        categoryModelService.updateCategoryModel(cmsCategoryModelParameters.getCategoryModel());
                     } else {
-                        categoryModelService.delete(cmsCategoryModelParamters.getCategoryModel().getId());
+                        categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
                     }
                 }
             }
         }
-        extendFieldService.update(entity.getExtendId(), categoryParamters.getContentExtends());// 修改或增加内容扩展字段
+        extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
 
         CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());
         if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendId())) {
             List<SysExtendField> categoryTypeExtendList = extendFieldService.getList(categoryType.getExtendId());
-            Map<String, String> map = ExtendUtils.getSysExtentDataMap(categoryParamters.getExtendDataList(),
+            Map<String, String> map = ExtendUtils.getSysExtentDataMap(categoryParameters.getExtendDataList(),
                     categoryTypeExtendList);
             attribute.setData(ExtendUtils.getExtendString(map));
         } else {

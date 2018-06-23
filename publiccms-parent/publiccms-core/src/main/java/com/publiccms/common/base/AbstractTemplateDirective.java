@@ -56,13 +56,13 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
         if (null != request) {
             Enumeration<String> parameters = request.getParameterNames();
             while (parameters.hasMoreElements()) {
-                String paramterName = parameters.nextElement();
-                String[] values = request.getParameterValues(paramterName);
+                String parameterName = parameters.nextElement();
+                String[] values = request.getParameterValues(parameterName);
                 if (CommonUtils.notEmpty(values)) {
                     if (1 < values.length) {
-                        model.put(paramterName, values);
+                        model.put(parameterName, values);
                     } else {
-                        model.put(paramterName, values[0]);
+                        model.put(parameterName, values[0]);
                     }
                 }
             }

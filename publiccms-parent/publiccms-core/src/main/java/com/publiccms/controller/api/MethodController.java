@@ -74,19 +74,19 @@ public class MethodController extends AbstractController {
                     }
                 }
                 Map<String, Object> map = new HashMap<>();
-                String[] paramters = request.getParameterValues("paramters");
-                if (CommonUtils.notEmpty(paramters) && paramters.length >= method.minParamtersNumber()) {
+                String[] parameters = request.getParameterValues("parameters");
+                if (CommonUtils.notEmpty(parameters) && parameters.length >= method.minParametersNumber()) {
                     List<TemplateModel> list = new ArrayList<>();
-                    for (String paramter : paramters) {
-                        list.add(getObjectWrapper().wrap(paramter));
+                    for (String parameter : parameters) {
+                        list.add(getObjectWrapper().wrap(parameter));
                     }
                     map.put("result", method.exec(list));
                     return map;
-                } else if (CommonUtils.empty(paramters) && 0 == method.minParamtersNumber()) {
+                } else if (CommonUtils.empty(parameters) && 0 == method.minParametersNumber()) {
                     map.put("result", method.exec(null));
                     return map;
                 } else {
-                    map.put(CommonConstants.ERROR, "paramtersError");
+                    map.put(CommonConstants.ERROR, "parametersError");
                     return map;
                 }
             } catch (TemplateModelException e) {
@@ -124,7 +124,7 @@ public class MethodController extends AbstractController {
             if (entry.getValue().httpEnabled()) {
                 Map<String, String> resultMap = new HashMap<>();
                 resultMap.put("name", entry.getKey());
-                resultMap.put("minParamters", String.valueOf(entry.getValue().minParamtersNumber()));
+                resultMap.put("minParameters", String.valueOf(entry.getValue().minParametersNumber()));
                 resultMap.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
                 resultMap.put("needUserToken", String.valueOf(false));
                 methodList.add(resultMap);

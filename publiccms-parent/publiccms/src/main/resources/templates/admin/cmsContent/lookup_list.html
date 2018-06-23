@@ -1,7 +1,7 @@
 <@_contentList categoryId=categoryId modelId=modelId title=title parentId=parentId containChild=true userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
     <form id="pagerForm" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
-        <#include "../include_page/paramters.html"/>
+        <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'relatedContentId'}"/>
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
         <input type="hidden" name="userId" value="${userId!}"/>

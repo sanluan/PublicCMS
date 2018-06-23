@@ -57,7 +57,7 @@ import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.ExtendField;
-import com.publiccms.views.pojo.model.CmsContentParamters;
+import com.publiccms.views.pojo.model.CmsContentParameters;
 
 /**
  *
@@ -104,7 +104,7 @@ public class CmsContentAdminController extends AbstractController {
      *
      * @param entity
      * @param attribute
-     * @param contentParamters
+     * @param contentParameters
      * @param draft
      * @param checked
      * @param _csrf
@@ -114,7 +114,7 @@ public class CmsContentAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
+    public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters,
             Boolean draft, Boolean checked, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -184,18 +184,18 @@ public class CmsContentAdminController extends AbstractController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.content",
                     RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
-        Long[] tagIds = tagService.update(site.getId(), contentParamters.getTags());
+        Long[] tagIds = tagService.update(site.getId(), contentParameters.getTags());
         service.updateTagIds(entity.getId(), arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));// 更新保存标签
         if (entity.isHasImages() || entity.isHasFiles()) {
-            contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,
-                    entity.isHasImages() ? contentParamters.getImages() : null);// 更新保存图集，附件
+            contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParameters.getFiles() : null,
+                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
         }
 
         List<ExtendField> modelExtendList = cmsModel.getExtendList();
-        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParamters.getModelExtendDataList(), modelExtendList);
+        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
         if (null != category && null != extendService.getEntity(category.getExtendId())) {
             List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
-            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParamters.getCategoryExtendDataList(),
+            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
                     categoryExtendList);
             if (CommonUtils.notEmpty(map)) {
                 map.putAll(categoryMap);
@@ -212,7 +212,7 @@ public class CmsContentAdminController extends AbstractController {
 
         attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
 
-        cmsContentRelatedService.update(entity.getId(), user.getId(), contentParamters.getContentRelateds());// 更新保存推荐内容
+        cmsContentRelatedService.update(entity.getId(), user.getId(), contentParameters.getContentRelateds());// 更新保存推荐内容
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
         if (null != checked && checked) {
             service.check(site.getId(), user.getId(), new Long[] { entity.getId() });

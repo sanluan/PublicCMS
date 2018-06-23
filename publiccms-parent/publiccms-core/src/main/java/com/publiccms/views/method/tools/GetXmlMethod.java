@@ -50,7 +50,7 @@ public class GetXmlMethod extends BaseMethod {
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 1;
     }
 }

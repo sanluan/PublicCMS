@@ -58,7 +58,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_config.accept_parameter'/>:</dt>
                 <dd>
-                    <input name="acceptParamters" type="text" value="${(a.acceptParamters)!}"/>
+                    <input name="acceptParameters" type="text" value="${(a.acceptParameters)!}"/>
                     <span class="info">逗号分隔，用于控制模板中可直接使用哪些请求参数,REST风格默认参数名为{id}_{pageIndex}</span>
                 </dd>
             </dl>
@@ -73,7 +73,7 @@
                 <dt>content-type:</dt>
                 <dd>
                     <input name="contentType" type="text" value="${(a.contentType)!}"/>
-                    <a class="btnLook" href="cmsTemplate/contentTypeLookup.html" warn="请选择content-type" lookupGroup="">选择content-type</a>
+                    <a class="btnLook" href="cmsTemplate/contentTypeLookup.html" lookupGroup="">选择content-type</a>
                     <span class="info">为空时默认:text/html; charset=UTF-8</span>
                 </dd>
             </dl>

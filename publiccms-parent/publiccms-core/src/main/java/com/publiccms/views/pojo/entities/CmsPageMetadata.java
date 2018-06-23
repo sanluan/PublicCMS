@@ -25,7 +25,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     private boolean useDynamic;
     private boolean needLogin;
     private boolean needBody;
-    private String acceptParamters;
+    private String acceptParameters;
     private Integer cacheTime;
     private String contentType;
     private List<ExtendField> extendList;
@@ -83,15 +83,29 @@ public class CmsPageMetadata implements java.io.Serializable {
     /**
      * @return
      */
-    public String getAcceptParamters() {
-        return acceptParamters;
+    public String getAcceptParameters() {
+        return acceptParameters;
     }
 
     /**
-     * @param acceptParamters
+     * @param acceptParameters
      */
-    public void setAcceptParamters(String acceptParamters) {
-        this.acceptParamters = acceptParamters;
+    public void setAcceptParameters(String acceptParameters) {
+        this.acceptParameters = acceptParameters;
+    }
+    
+    /**
+     * @return the acceptParamters
+     */
+    public String getAcceptParamters() {
+        return acceptParameters;
+    }
+
+    /**
+     * @param acceptParameters the acceptParameters to set
+     */
+    public void setAcceptParamters(String acceptParameters) {
+        this.acceptParameters = acceptParameters;
     }
 
     /**

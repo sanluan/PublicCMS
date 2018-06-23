@@ -168,9 +168,9 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     }
 
     /**
-     * @return min paramters number
+     * @return min parameters number
      */
-    public abstract int minParamtersNumber();
+    public abstract int minParametersNumber();
 
     /**
      * @return whether to need app token

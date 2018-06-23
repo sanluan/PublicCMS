@@ -21,7 +21,7 @@ import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
-import com.publiccms.views.pojo.model.CmsPlaceParamters;
+import com.publiccms.views.pojo.model.CmsPlaceParameters;
 
 /**
  * 
@@ -38,7 +38,7 @@ public class CmsPageAdminController extends AbstractController {
 
     /**
      * @param path
-     * @param placeParamters
+     * @param placeParameters
      * @param _csrf
      * @param request
      * @param session
@@ -46,7 +46,7 @@ public class CmsPageAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String saveMetadata(String path, @ModelAttribute CmsPlaceParamters placeParamters, String _csrf,
+    public String saveMetadata(String path, @ModelAttribute CmsPlaceParameters placeParameters, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -55,7 +55,7 @@ public class CmsPageAdminController extends AbstractController {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, path);
             CmsPageMetadata oldmetadata = metadataComponent.getTemplateMetadata(filePath);
-            oldmetadata.setExtendDataList(placeParamters.getExtendDataList());
+            oldmetadata.setExtendDataList(placeParameters.getExtendDataList());
             metadataComponent.updateTemplateMetadata(filePath, oldmetadata);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.template.data", RequestUtils.getIpAddress(request),

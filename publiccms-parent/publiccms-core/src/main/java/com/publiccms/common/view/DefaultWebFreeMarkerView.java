@@ -15,7 +15,7 @@ import com.publiccms.common.tools.ControllerUtils;
 public class DefaultWebFreeMarkerView extends AbstractFreemarkerView {
     @Override
     protected void exposeHelpers(Map<String, Object> model, HttpServletRequest request) throws Exception {
-        exposeParamters(model,request);
+        exposeParameters(model,request);
         model.put(CONTEXT_USER, ControllerUtils.getUserFromSession(request.getSession()));
         super.exposeHelpers(model, request);
     }

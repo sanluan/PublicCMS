@@ -22,7 +22,7 @@ function templateDefaultConfig(type){
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/index.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'home_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
     <#if site.useStatic>
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=publishPath]',navTab.getCurrentPanel()).val('index.html');
@@ -32,42 +32,42 @@ function templateDefaultConfig(type){
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/random.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'random_content_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
         break;
     case 'content':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'content_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
         break;
     case 'category':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'category_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
         break;
     case 'search':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/search.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'search_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('word,pageIndex,tagId');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('word,pageIndex,tagId');
         break;
     case 'login':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/login.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'login_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('error,message');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message');
         break;
     case 'register':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/register.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'register_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('error,message,name,nickname');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message,name,nickname');
         break;
 <#if site.useStatic>
     case 'staticContent':
@@ -75,14 +75,14 @@ function templateDefaultConfig(type){
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/staticContent.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'static_content_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
         break;
     case 'staticCategory':
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/staticCategory.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'static_category_page'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
         break;
 </#if>
     case 'contentJson':
@@ -91,7 +91,7 @@ function templateDefaultConfig(type){
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.json');
         $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'content_interface'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('id');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id');
         break;
     case 'contentListJson':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
@@ -99,7 +99,7 @@ function templateDefaultConfig(type){
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/contentList.json');
         $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'content_list_interface'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('categoryId,containChild,modelId,parentId,userId,orderField,orderType,pageIndex,count');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('categoryId,containChild,modelId,parentId,userId,orderField,orderType,pageIndex,count');
         break;
     case 'categoryListJson':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
@@ -107,7 +107,7 @@ function templateDefaultConfig(type){
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/categoryList.json');
         $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
         $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page 'category_list_interface'/>');
-        $('input[name=acceptParamters]',navTab.getCurrentPanel()).val('parentId,allowContribute,pageIndex,count');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('parentId,allowContribute,pageIndex,count');
         break;
     }
     $('textarea[name=content]',navTab.getCurrentPanel()).val($('textarea[name='+type+']',$.pdialog.getCurrent()).val());

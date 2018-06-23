@@ -2,16 +2,16 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive">执行</button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.exec'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl class="nowrap">
-            <dt>SQL语句:</dt>
+            <dt>SQL:</dt>
             <dd>
                 <textarea class="required" name="sql" maxlength="500" cols="80" rows="4"></textarea>
-                <a class="btnLook" href="sysSite/sqlExample.html" width="920" warn="请选择SQL模板" lookupGroup="">选择SQL模板</a>
+                <a class="btnLook" href="sysSite/sqlExample.html" width="920" lookupGroup="">选择SQL模板</a>
                 <span class="info">仅能执行单条sql</span>
             </dd>
         </dl>
@@ -28,14 +28,14 @@
             </dd>
         </dl>
         <dl>
-            <dt>执行日期:</dt>
+            <dt><@t.page 'exec_date'/>:</dt>
             <dd>
                 ${a.createDate!}
             </dd>
         </dl>
         <#assign content=a.content?eval/>
         <dl class="nowrap">
-            <dt>详情:</dt>
+            <dt><@t.page 'log.content'/>:</dt>
             <dd>
                 ${(content.sql)!}
             </dd>

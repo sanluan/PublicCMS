@@ -51,13 +51,13 @@ public class WeiboOauthComponent extends AbstractOauth {
     public OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException {
         OauthConfig config = getConfig(siteId);
         if (CommonUtils.notEmpty(code) && null != config) {
-            Map<String, String> paramters = new HashMap<>();
-            paramters.put("client_id", config.getAppKey());
-            paramters.put("client_secret", config.getAppSecret());
-            paramters.put("grant_type", "authorization_code");
-            paramters.put("redirect_uri", config.getReturnUrl());
-            paramters.put("code", code);
-            String html = post("https://api.weibo.com/oauth2/access_token", paramters);
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("client_id", config.getAppKey());
+            parameters.put("client_secret", config.getAppSecret());
+            parameters.put("grant_type", "authorization_code");
+            parameters.put("redirect_uri", config.getReturnUrl());
+            parameters.put("code", code);
+            String html = post("https://api.weibo.com/oauth2/access_token", parameters);
             if (CommonUtils.notEmpty(html)) {
                 Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
                 });

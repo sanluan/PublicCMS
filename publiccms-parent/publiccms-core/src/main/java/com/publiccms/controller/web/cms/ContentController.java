@@ -47,7 +47,7 @@ import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.entities.ExtendField;
-import com.publiccms.views.pojo.model.CmsContentParamters;
+import com.publiccms.views.pojo.model.CmsContentParameters;
 
 /**
  * 
@@ -86,7 +86,7 @@ public class ContentController extends AbstractController {
      * 
      * @param entity
      * @param attribute
-     * @param contentParamters
+     * @param contentParameters
      * @param returnUrl
      * @param _csrf 
      * @param request
@@ -96,7 +96,7 @@ public class ContentController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParamters contentParamters,
+    public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters,
             String returnUrl, String _csrf, HttpServletRequest request, HttpSession session, HttpServletResponse response,
             ModelMap model) {
         SysSite site = getSite(request);
@@ -145,18 +145,18 @@ public class ContentController extends AbstractController {
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         if (entity.isHasImages() || entity.isHasFiles()) {
-            contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParamters.getFiles() : null,
-                    entity.isHasImages() ? contentParamters.getImages() : null);// 更新保存图集，附件
+            contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParameters.getFiles() : null,
+                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
         }
 
         if (null != attribute.getText()) {
             attribute.setWordCount(HtmlUtils.removeHtmlTag(attribute.getText()).length());
         }
         List<ExtendField> modelExtendList = cmsModel.getExtendList();
-        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParamters.getModelExtendDataList(), modelExtendList);
+        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
         if (null != category && null != extendService.getEntity(category.getExtendId())) {
             List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
-            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParamters.getCategoryExtendDataList(),
+            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
                     categoryExtendList);
             if (CommonUtils.notEmpty(map)) {
                 map.putAll(categoryMap);

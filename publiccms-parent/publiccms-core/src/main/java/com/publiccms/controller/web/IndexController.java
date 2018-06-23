@@ -152,12 +152,12 @@ public class IndexController extends AbstractController {
                     return sb.append(site.getDynamicPath()).toString();
                 }
             }
-            String[] acceptParamters = StringUtils.split(metadata.getAcceptParamters(), CommonConstants.COMMA_DELIMITED);
-            if (CommonUtils.notEmpty(acceptParamters)) {
-                billingRequestParamtersToModel(request, acceptParamters, model);
-                if (null != id && ArrayUtils.contains(acceptParamters, "id")) {
+            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
+            if (CommonUtils.notEmpty(acceptParameters)) {
+                billingRequestParametersToModel(request, acceptParameters, model);
+                if (null != id && ArrayUtils.contains(acceptParameters, "id")) {
                     model.addAttribute("id", id.toString());
-                    if (null != pageIndex && ArrayUtils.contains(acceptParamters, "pageIndex")) {
+                    if (null != pageIndex && ArrayUtils.contains(acceptParameters, "pageIndex")) {
                         model.addAttribute("pageIndex", pageIndex.toString());
                     }
                 }
@@ -177,7 +177,7 @@ public class IndexController extends AbstractController {
                         || CommonUtils.notEmpty(pragma) && "no-cache".equalsIgnoreCase(pragma)) {
                     cacheMillisTime = 0;
                 }
-                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, cacheMillisTime, acceptParamters,
+                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, cacheMillisTime, acceptParameters,
                         request, model);
             }
         } else {
@@ -189,14 +189,14 @@ public class IndexController extends AbstractController {
         return requestPath;
     }
 
-    private void billingRequestParamtersToModel(HttpServletRequest request, String[] acceptParamters, ModelMap model) {
-        for (String paramterName : acceptParamters) {
-            String[] values = request.getParameterValues(paramterName);
+    private void billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, ModelMap model) {
+        for (String parameterName : acceptParameters) {
+            String[] values = request.getParameterValues(parameterName);
             if (CommonUtils.notEmpty(values)) {
                 if (1 < values.length) {
-                    model.addAttribute(paramterName, values);
+                    model.addAttribute(parameterName, values);
                 } else {
-                    model.addAttribute(paramterName, values[0]);
+                    model.addAttribute(parameterName, values[0]);
                 }
             }
         }

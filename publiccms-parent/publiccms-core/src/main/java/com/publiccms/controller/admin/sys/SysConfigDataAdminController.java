@@ -28,7 +28,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysConfigDataService;
-import com.publiccms.views.pojo.model.SysConfigParamters;
+import com.publiccms.views.pojo.model.SysConfigParameters;
 
 /**
  *
@@ -43,7 +43,7 @@ public class SysConfigDataAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param sysConfigParamters
+     * @param sysConfigParameters
      * @param _csrf
      * @param request
      * @param session
@@ -51,7 +51,7 @@ public class SysConfigDataAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysConfigData entity, @ModelAttribute SysConfigParamters sysConfigParamters, String _csrf,
+    public String save(SysConfigData entity, @ModelAttribute SysConfigParameters sysConfigParameters, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -64,7 +64,7 @@ public class SysConfigDataAdminController extends AbstractController {
                     && ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getId().getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            Map<String, String> map = ExtendUtils.getExtentDataMap(sysConfigParamters.getExtendDataList(),
+            Map<String, String> map = ExtendUtils.getExtentDataMap(sysConfigParameters.getExtendDataList(),
                     configComponent.getFieldList(site, entity.getId().getCode(), null, RequestContextUtils.getLocale(request)));
             entity.setData(ExtendUtils.getExtendString(map));
             if (null != oldEntity) {

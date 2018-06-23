@@ -50,7 +50,7 @@
                         </a>
                     </#if>
                     <#if (metadataMap[a.fileName].useDynamic)?has_content&&metadataMap[a.fileName].useDynamic>
-                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(metadataMap[a.fileName].alias)!}',url:'${site.dynamicPath+path}<#if (metadataMap[a.fileName].acceptParamters)?has_content><#list metadataMap[a.fileName].acceptParamters?split(',') as a><#if a?is_first>?<#else>#</#if>${a}=</#list></#if>'});return false;">
+                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(metadataMap[a.fileName].alias)!}',url:'${site.dynamicPath+path}<#if (metadataMap[a.fileName].acceptParameters)?has_content><#list metadataMap[a.fileName].acceptParameters?split(',') as a><#if a?is_first>?<#else>#</#if>${a}=</#list></#if>'});return false;">
                             [<@t.page 'dynamic_page'/>] ${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
                         </a>
                     </#if>

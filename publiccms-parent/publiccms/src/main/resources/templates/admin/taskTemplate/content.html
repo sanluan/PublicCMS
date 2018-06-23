@@ -4,7 +4,6 @@
     <div class="formBar">
         <ul>
             <#if template?has_content><li><a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li></#if>
-            <li><a class="button" href="taskTemplate/run.html?path=${path?url}" target="navTab" rel="taskTemplate/run"><@t.page 'task_template.exec'/></a></li>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
         </ul>
     </div>

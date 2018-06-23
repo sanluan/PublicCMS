@@ -32,7 +32,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
-import com.publiccms.views.pojo.model.CmsPlaceParamters;
+import com.publiccms.views.pojo.model.CmsPlaceParameters;
 
 /**
  *
@@ -56,7 +56,7 @@ public class PlaceController extends AbstractController {
     /**
      * @param entity
      * @param returnUrl
-     * @param placeParamters
+     * @param placeParameters
      * @param _csrf
      * @param request
      * @param session
@@ -65,7 +65,7 @@ public class PlaceController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "save")
-    public String save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParamters placeParamters, String _csrf,
+    public String save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParameters placeParameters, String _csrf,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
@@ -106,7 +106,7 @@ public class PlaceController extends AbstractController {
                 logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB, "save.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
             }
-            Map<String, String> map = ExtendUtils.getExtentDataMap(placeParamters.getExtendDataList(),
+            Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
                     metadataComponent.getPlaceMetadata(filePath).getExtendList());
             String extentString = ExtendUtils.getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);

@@ -38,20 +38,20 @@ public class GetHtmlMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         String url = getString(0, arguments);
-        TemplateHashModelEx paramters = getMap(1, arguments);
+        TemplateHashModelEx parameters = getMap(1, arguments);
         String body = getString(1, arguments);
         String html = null;
         if (CommonUtils.notEmpty(url)) {
             try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
                 HttpUriRequest request;
-                if (null != paramters || CommonUtils.notEmpty(body)) {
+                if (null != parameters || CommonUtils.notEmpty(body)) {
                     HttpPost httppost = new HttpPost(url);
-                    if (null != paramters) {
+                    if (null != parameters) {
                         List<NameValuePair> nvps = new ArrayList<>();
-                        TemplateModelIterator it = paramters.keys().iterator();
+                        TemplateModelIterator it = parameters.keys().iterator();
                         while (it.hasNext()) {
                             String key = TemplateModelUtils.converString(it.next());
-                            nvps.add(new BasicNameValuePair(key, TemplateModelUtils.converString(paramters.get(key))));
+                            nvps.add(new BasicNameValuePair(key, TemplateModelUtils.converString(parameters.get(key))));
                         }
                         httppost.setEntity(new UrlEncodedFormEntity(nvps, CommonConstants.DEFAULT_CHARSET));
                     } else {
@@ -83,7 +83,7 @@ public class GetHtmlMethod extends BaseMethod {
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 1;
     }
 }

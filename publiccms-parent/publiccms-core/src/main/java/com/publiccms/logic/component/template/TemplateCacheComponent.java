@@ -60,31 +60,31 @@ public class TemplateCacheComponent implements Cache {
      * @param requestPath
      * @param fullTemplatePath
      * @param cacheMillisTime
-     * @param acceptParamters
+     * @param acceptParameters
      * @param request
      * @param modelMap
      * @return cached path
      */
-    public String getCachedPath(String requestPath, String fullTemplatePath, int cacheMillisTime, String[] acceptParamters,
+    public String getCachedPath(String requestPath, String fullTemplatePath, int cacheMillisTime, String[] acceptParameters,
             HttpServletRequest request, ModelMap modelMap) {
         ModelMap model = (ModelMap) modelMap.clone();
         AbstractFreemarkerView.exposeAttribute(model, request.getScheme(), request.getServerName(), request.getServerPort(),
                 request.getContextPath());
         model.addAttribute(CACHE_VAR, true);
-        return createCache(requestPath, fullTemplatePath, fullTemplatePath + getRequestParamtersString(request, acceptParamters),
+        return createCache(requestPath, fullTemplatePath, fullTemplatePath + getRequestParametersString(request, acceptParameters),
                 cacheMillisTime, model);
     }
 
-    private String getRequestParamtersString(HttpServletRequest request, String[] acceptParamters) {
+    private String getRequestParametersString(HttpServletRequest request, String[] acceptParameters) {
         StringBuilder sb = new StringBuilder();
         sb.append("/default.html");
-        if (null != acceptParamters) {
-            for (String paramterName : acceptParamters) {
-                String[] values = request.getParameterValues(paramterName);
+        if (null != acceptParameters) {
+            for (String parameterName : acceptParameters) {
+                String[] values = request.getParameterValues(parameterName);
                 if (CommonUtils.notEmpty(values)) {
                     for (int i = 0; i < values.length; i++) {
                         sb.append("_");
-                        sb.append(paramterName);
+                        sb.append(parameterName);
                         sb.append("=");
                         sb.append(values[i]);
                     }

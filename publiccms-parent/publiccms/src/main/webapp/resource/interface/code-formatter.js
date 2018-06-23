@@ -13,8 +13,7 @@ function process(json,$canvasObj) {
         $canvasObj.html("<pre class='code-container'>" + processObject(obj[0], 0, false, false, false)
                 + "</pre>");
     } catch (e) {
-        alert("JSON数据格式不正确:\n" + e.message);
-        $canvasObj.html("");
+        $canvasObj.html("Incorrect data format:\n" + e.message);
     }
 }
 window._dateObj = new Date();

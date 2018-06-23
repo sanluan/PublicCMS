@@ -8,10 +8,10 @@ import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
- * CmsCategoryParamters
+ * CmsCategoryParameters
  * 
  */
-public class CmsCategoryParamters implements java.io.Serializable {
+public class CmsCategoryParameters implements java.io.Serializable {
 
     /**
      * 
@@ -20,7 +20,7 @@ public class CmsCategoryParamters implements java.io.Serializable {
     private List<CmsTagType> tagTypes;
     private List<SysExtendField> contentExtends;
     private List<ExtendData> extendDataList;
-    private List<CmsCategoryModelParamters> categoryModelList;
+    private List<CmsCategoryModelParameters> categoryModelList;
 
     /**
      * @return
@@ -67,14 +67,14 @@ public class CmsCategoryParamters implements java.io.Serializable {
     /**
      * @return
      */
-    public List<CmsCategoryModelParamters> getCategoryModelList() {
+    public List<CmsCategoryModelParameters> getCategoryModelList() {
         return categoryModelList;
     }
 
     /**
      * @param categoryModelList
      */
-    public void setCategoryModelList(List<CmsCategoryModelParamters> categoryModelList) {
+    public void setCategoryModelList(List<CmsCategoryModelParameters> categoryModelList) {
         this.categoryModelList = categoryModelList;
     }
 }

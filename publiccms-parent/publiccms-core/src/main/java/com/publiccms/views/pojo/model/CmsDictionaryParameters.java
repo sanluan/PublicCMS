@@ -6,10 +6,10 @@ import com.publiccms.entities.cms.CmsDictionaryData;
 
 /**
  *
- * CmsDictionaryParamters
+ * CmsDictionaryParameters
  * 
  */
-public class CmsDictionaryParamters implements java.io.Serializable {
+public class CmsDictionaryParameters implements java.io.Serializable {
 
     /**
      * 

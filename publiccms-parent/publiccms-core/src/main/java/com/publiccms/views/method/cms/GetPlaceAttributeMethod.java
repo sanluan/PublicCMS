@@ -40,7 +40,7 @@ public class GetPlaceAttributeMethod extends BaseMethod {
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 1;
     }
 

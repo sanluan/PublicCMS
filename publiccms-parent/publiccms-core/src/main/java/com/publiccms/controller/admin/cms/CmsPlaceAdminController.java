@@ -27,7 +27,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.model.CmsPlaceParamters;
+import com.publiccms.views.pojo.model.CmsPlaceParameters;
 
 /**
  * 
@@ -49,7 +49,7 @@ public class CmsPlaceAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param placeParamters
+     * @param placeParameters
      * @param _csrf
      * @param request
      * @param session
@@ -57,7 +57,7 @@ public class CmsPlaceAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String save(CmsPlace entity, @ModelAttribute CmsPlaceParamters placeParamters, String _csrf,
+    public String save(CmsPlace entity, @ModelAttribute CmsPlaceParameters placeParameters, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -89,7 +89,7 @@ public class CmsPlaceAdminController extends AbstractController {
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
             }
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-            Map<String, String> map = ExtendUtils.getExtentDataMap(placeParamters.getExtendDataList(),
+            Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
                     metadataComponent.getPlaceMetadata(filePath).getExtendList());
             String extentString = ExtendUtils.getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);

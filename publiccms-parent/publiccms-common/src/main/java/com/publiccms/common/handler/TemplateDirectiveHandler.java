@@ -50,7 +50,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
         this.loopVars = loopVars;
         this.templateDirectiveBody = templateDirectiveBody;
         this.environment = environment;
-        regristerParamters();
+        regristerParameters();
     }
 
     @Override
@@ -126,19 +126,19 @@ public class TemplateDirectiveHandler extends BaseHandler {
 
     @Override
     public Short getShort(String name) throws TemplateModelException {
-        regristerParamter(PARAMETER_TYPE_SHORT, name);
+        regristerParameter(PARAMETER_TYPE_SHORT, name);
         return TemplateModelUtils.converShort(parameters.get(name));
     }
 
     @Override
     public Long getLong(String name) throws TemplateModelException {
-        regristerParamter(PARAMETER_TYPE_LONG, name);
+        regristerParameter(PARAMETER_TYPE_LONG, name);
         return TemplateModelUtils.converLong(parameters.get(name));
     }
 
     @Override
     public Double getDouble(String name) throws TemplateModelException {
-        regristerParamter(PARAMETER_TYPE_DOUBLE, name);
+        regristerParameter(PARAMETER_TYPE_DOUBLE, name);
         return TemplateModelUtils.converDouble(parameters.get(name));
     }
 

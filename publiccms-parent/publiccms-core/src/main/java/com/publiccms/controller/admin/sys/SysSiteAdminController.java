@@ -128,7 +128,11 @@ public class SysSiteAdminController extends AbstractController {
                     JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        return CommonConstants.TEMPLATE_DONEANDREFRESH;
+        if (!getSite(request).getId().equals(site.getId()) || site.getId().equals(entity.getId())) {
+            return CommonConstants.TEMPLATE_DONEANDREFRESH;
+        } else {
+            return CommonConstants.TEMPLATE_DONE;
+        }
     }
 
     /**

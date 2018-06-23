@@ -28,7 +28,7 @@ public class GetLicenseMethod extends BaseMethod {
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 0;
     }
 }

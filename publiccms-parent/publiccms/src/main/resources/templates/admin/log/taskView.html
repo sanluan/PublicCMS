@@ -7,7 +7,7 @@
     </div>
     <div class="pageFormContent" layoutH="60">
         <dl>
-            <dt>任务计划:</dt>
+            <dt><@t.page 'task'/>:</dt>
             <dd>
                 <@_sysTask id=a.taskId>${(object.name)!}</@_sysTask>
             </dd>
@@ -17,13 +17,13 @@
             <dd>${a.success?string(t.pageMessage('success'),t.pageMessage('fail'))}</dd>
         </dl>
         <dl>
-            <dt>开始时间:</dt>
+            <dt><@t.page 'start_time'/>:</dt>
             <dd>
                 ${a.begintime!}
             </dd>
         </dl>
         <dl>
-            <dt>结束时间:</dt>
+            <dt><@t.page 'end_time'/>:</dt>
             <dd>
                 ${a.endtime!}
             </dd>

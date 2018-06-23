@@ -45,14 +45,14 @@ public class HqlService extends BaseService<Object> {
 
     /**
      * @param hql
-     * @param paramters
+     * @param parameters
      * @param pageIndex
      * @param pageSize
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(String hql, Map<String, Object> paramters, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(hql, paramters, pageIndex, pageSize);
+    public PageHandler getPage(String hql, Map<String, Object> parameters, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(hql, parameters, pageIndex, pageSize);
     }
 
     /**

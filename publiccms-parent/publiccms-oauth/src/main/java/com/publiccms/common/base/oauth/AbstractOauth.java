@@ -115,11 +115,11 @@ public abstract class AbstractOauth implements Config, Oauth {
         return html;
     }
 
-    protected String post(String url, Map<String, String> paramters) throws ClientProtocolException, IOException {
+    protected String post(String url, Map<String, String> parameters) throws ClientProtocolException, IOException {
         String html = null;
         HttpPost request = new HttpPost(url);
         List<NameValuePair> nvps = new ArrayList<>();
-        for (Entry<String, String> entry : paramters.entrySet()) {
+        for (Entry<String, String> entry : parameters.entrySet()) {
             nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
         request.setEntity(new UrlEncodedFormEntity(nvps, CommonConstants.DEFAULT_CHARSET));

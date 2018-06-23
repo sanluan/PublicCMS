@@ -21,7 +21,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.model.CmsDictionaryParamters;
+import com.publiccms.views.pojo.model.CmsDictionaryParameters;
 
 /**
  *
@@ -36,7 +36,7 @@ public class CmsDictionaryAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param dictionaryParamters
+     * @param dictionaryParameters
      * @param _csrf
      * @param request
      * @param session
@@ -44,7 +44,7 @@ public class CmsDictionaryAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsDictionary entity, CmsDictionaryParamters dictionaryParamters, String _csrf, HttpServletRequest request,
+    public String save(CmsDictionary entity, CmsDictionaryParameters dictionaryParameters, String _csrf, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -52,14 +52,14 @@ public class CmsDictionaryAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
-            dataService.update(entity.getId(), dictionaryParamters.getDataList());
+            dataService.update(entity.getId(), dictionaryParameters.getDataList());
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
-            dataService.save(entity.getId(), dictionaryParamters.getDataList());
+            dataService.save(entity.getId(), dictionaryParameters.getDataList());
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));

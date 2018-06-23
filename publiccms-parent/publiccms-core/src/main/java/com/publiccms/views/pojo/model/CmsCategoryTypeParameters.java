@@ -6,10 +6,10 @@ import com.publiccms.entities.sys.SysExtendField;
 
 /**
  *
- * CmsCategoryTypeParamters
+ * CmsCategoryTypeParameters
  * 
  */
-public class CmsCategoryTypeParamters implements java.io.Serializable {
+public class CmsCategoryTypeParameters implements java.io.Serializable {
 
     /**
      * 

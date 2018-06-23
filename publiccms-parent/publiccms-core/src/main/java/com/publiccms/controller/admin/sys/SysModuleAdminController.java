@@ -32,7 +32,7 @@ import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleModuleService;
 import com.publiccms.logic.service.sys.SysRoleService;
-import com.publiccms.views.pojo.model.SysModuleParamters;
+import com.publiccms.views.pojo.model.SysModuleParameters;
 
 /**
  *
@@ -59,7 +59,7 @@ public class SysModuleAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param moduleParamters
+     * @param moduleParameters
      * @param oldId
      * @param _csrf
      * @param request
@@ -68,7 +68,7 @@ public class SysModuleAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysModule entity, @ModelAttribute SysModuleParamters moduleParamters, String oldId, String _csrf,
+    public String save(SysModule entity, @ModelAttribute SysModuleParameters moduleParameters, String oldId, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
@@ -89,14 +89,14 @@ public class SysModuleAdminController extends AbstractController {
                 List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService
                         .getPage(null, entity.getId(), null, null).getList();
                 dealRoleAuthorized(roleModuleList);
-                sysModuleLangService.save(oldId, entity.getId(), moduleParamters.getLangList());
+                sysModuleLangService.save(oldId, entity.getId(), moduleParameters.getLangList());
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.module", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             service.save(entity);
-            sysModuleLangService.save(null, entity.getId(), moduleParamters.getLangList());
+            sysModuleLangService.save(null, entity.getId(), moduleParameters.getLangList());
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));

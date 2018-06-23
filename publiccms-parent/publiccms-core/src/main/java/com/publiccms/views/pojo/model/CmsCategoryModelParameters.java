@@ -4,10 +4,10 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 
 /**
  *
- * CmsCategoryModelParamters
+ * CmsCategoryModelParameters
  * 
  */
-public class CmsCategoryModelParamters implements java.io.Serializable {
+public class CmsCategoryModelParameters implements java.io.Serializable {
     /**
      * 
      */

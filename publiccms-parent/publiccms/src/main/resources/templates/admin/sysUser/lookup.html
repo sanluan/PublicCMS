@@ -3,7 +3,7 @@
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
     <form id="pagerForm" onsubmit="return dialogSearch(this);" action="sysUser/lookup.html" method="post">
-        <#include "../include_page/paramters.html"/>
+        <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'userId'}"/>
         <input type="hidden" name="nickNameField" value="${nickNameField!'nickName'}"/>
         <div class="searchBar">

@@ -24,7 +24,7 @@ import com.publiccms.logic.service.cms.CmsCategoryTypeService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
-import com.publiccms.views.pojo.model.CmsCategoryTypeParamters;
+import com.publiccms.views.pojo.model.CmsCategoryTypeParameters;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 /**
@@ -48,7 +48,7 @@ public class CmsCategoryTypeAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param categoryTypeParamters
+     * @param categoryTypeParameters
      * @param _csrf
      * @param request
      * @param session
@@ -56,7 +56,7 @@ public class CmsCategoryTypeAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsCategoryType entity, @ModelAttribute CmsCategoryTypeParamters categoryTypeParamters, String _csrf,
+    public String save(CmsCategoryType entity, @ModelAttribute CmsCategoryTypeParameters categoryTypeParameters, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -84,7 +84,7 @@ public class CmsCategoryTypeAdminController extends AbstractController {
             entity = service.updateExtendId(entity.getId(),
                     (Integer) extendService.save(new SysExtend("categoryType", entity.getId())));
         }
-        extendFieldService.update(entity.getExtendId(), categoryTypeParamters.getCategoryExtends());// 修改或增加分类类型扩展字段
+        extendFieldService.update(entity.getExtendId(), categoryTypeParameters.getCategoryExtends());// 修改或增加分类类型扩展字段
         return CommonConstants.TEMPLATE_DONE;
     }
 

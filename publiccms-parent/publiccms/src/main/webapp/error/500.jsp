@@ -20,7 +20,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-<title>500 服务器错误</title>
+<title>500 Error</title>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 </head>
@@ -40,8 +40,8 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 </head>
 <body>
 	<div style="margin:0 auto;width:500px;">
-		<div style="background-color:#f0f0f0;" onclick="dokeydown()">服务器错误</div>
-		<div>系统发生错误,请返回重试或查看其他内容!<br /><br /><a href="<%=basePath%>">返回首页</a></div>
+		<div style="background-color:#f0f0f0;" onclick="dokeydown()">服务器错误,Server Error</div>
+		<div>系统发生错误,请返回重试或查看其他内容!<br />An error has occurred. Please go back and try again or check out the other content!<br /><a href="<%=basePath%>">返回首页</a><br /><a href="<%=basePath%>">Return home</a></div>
 		<div style="display: none;" id=divexception>
 			<textarea rows="40" style="width:100%">
 <%

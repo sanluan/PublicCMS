@@ -6,10 +6,10 @@ import com.publiccms.entities.sys.SysModuleLang;
 
 /**
  *
- * SysConfigParamters
+ * SysConfigParameters
  * 
  */
-public class SysModuleParamters implements java.io.Serializable {
+public class SysModuleParameters implements java.io.Serializable {
 
     /**
      * 
