@@ -18,7 +18,7 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>拥有所有功能权限:</dt>
+            <dt><@t.page 'module.own_all_right'/>:</dt>
             <dd>
                 <input name="ownsAllRight" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllRight',navTab.getCurrentPanel()).hide();}else{$('.ownsAllRight').show();}"/>
             </dd>
@@ -38,16 +38,16 @@
     </@_sysModuleList>
 </#macro>
         <fieldset class="ownsAllRight">
-            <legend>模块授权</legend>
+            <legend><@t.page 'module'/></legend>
             <dl class="nowrap">
-                <dt>显示所有模块:</dt>
+                <dt><@t.page 'module.show_all_module'/>:</dt>
                 <dd>
                     <input name="showAllModule" type="checkbox"/>
                 </dd>
             </dl>
             <ul class="tree treeFolder treeCheck">
                 <li>
-                    <a href="javascript:;" onclick="return false;">所有模块</a>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'module.all'/></a>
                     <@moduleTree/>
                 </li>
             </ul>

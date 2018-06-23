@@ -11,8 +11,8 @@
             <dt>SQL:</dt>
             <dd>
                 <textarea class="required" name="sql" maxlength="500" cols="80" rows="4"></textarea>
-                <a class="btnLook" href="sysSite/sqlExample.html" width="920" lookupGroup="">选择SQL模板</a>
-                <span class="info">仅能执行单条sql</span>
+                <a class="btnLook" href="sysSite/sqlExample.html" width="920" lookupGroup=""><@t.page 'sql.select'/></a>
+                <span class="info"><@t.page 'sql.description'/></span>
             </dd>
         </dl>
 <@_logOperateList operate='execSql.site' count=10>

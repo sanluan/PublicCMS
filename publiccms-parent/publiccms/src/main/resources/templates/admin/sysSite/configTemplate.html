@@ -9,11 +9,11 @@
         <dt><@t.page 'site'/>:</dt>
         <dd>
             ${(a.name)!}
-            <span class="info">以下Nginx配置根据您的站点当前配置信息及绑定的域名动态生成</span>
+            <span class="info"><@t.page 'server_config.nginx_description'/></span>
         </dd>
     </dl>
     <dl class="nowrap">
-        <dt>Nginx配置:</dt>
+        <dt><@t.page 'server_config.nginx'/>:</dt>
         <dd>
             <textarea name="description" class="code" mode="nginx"><@_disk>
 <#assign rootPath=rootPath?replace('\\','/')/>
@@ -26,7 +26,7 @@
 <@_sysDomainList advanced=true siteId=siteId>
     <#if page.totalCount gt 0>
         <#if (a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))||a.useSsi>
-#${a.name} 站点配置
+#${a.name} <@t.page 'server_config.site'/>
 server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
     server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}<#sep> </#if><#if d.wild>*.${d.name} </#if></#list>;
@@ -51,7 +51,7 @@ server {
     }
             </#if>
             <#if (a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))>
-    #${a.name} 静态站点配置
+    #${a.name} <@t.page 'server_config.static'/>
     location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
         alias   ${rootPath}/web/site_${siteId}/;
         index  index.html;
@@ -62,7 +62,7 @@ server {
     </#if>
 </@_sysDomainList>
 <#if !((a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath)))>
-#${a.name} 静态站点配置
+#${a.name} <@t.page 'server_config.static'/>
 server {
     listen       ${sitePort?has_content?then(sitePort,80)};
     server_name  ${sitePath};
@@ -85,7 +85,7 @@ server {
     }
 }
 </#if></@_disk></textarea>
-            <span class="info">本站点配置应该包含在nginx配置文件 http包中,点击这里查看<a href="sysSite/nginxCommon.html" target="dialog" rel="nginx_common">Nginx通用配置</a></span>
+            <span class="info"><@t.page 'server_config.nginx_config_description'/><a href="sysSite/nginxCommon.html" target="dialog" rel="nginx_common"><@t.page 'server_config.nginx_common'/></a></span>
         </dd>
     </dl>
 </div>

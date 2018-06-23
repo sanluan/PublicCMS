@@ -17,8 +17,8 @@
         <dl>
             <dt><@t.page 'id'/>:</dt>
             <dd>
-                <input class="required" remote="sysModule/virify.do?oldId=${id!}" data-msg-remote="ID已存在" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
-                <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/>菜单</label>
+                <input class="required" remote="sysModule/virify.do?oldId=${id!}" data-msg-remote="<@t.m 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
+                <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/><@t.page 'module.menu'/></label>
             </dd>
         </dl>
         <dl>
@@ -26,7 +26,7 @@
             <dd>
                 <input name="parentId" type="hidden" value="${parentId!}" />
                 <input name="parentName" readonly="readonly" type="text" size="20" value="<@t.menu (module.id)!/>"/>
-                <a class="btnLook" href="sysModule/lookup.html" lookupGroup="">选择</a>
+                <a class="btnLook" href="sysModule/lookup.html" lookupGroup=""><@t.page 'module.select'/></a>
             </dd>
         </dl>
       <fieldset>
@@ -43,10 +43,10 @@
       </fieldset>
     <#if deep lte 2>
         <dl class="nowrap">
-            <dt>附加图标:</dt>
+            <dt><@t.page 'page.icons'/>:</dt>
             <dd>
                 <input name="attached" type="text" size="50" maxlength="300" value="${(a.attached)!}"/>
-                <a class="btnLook" href="sysModule/icons.html?field=attached" lookupGroup="">选择图标</a>
+                <a class="btnLook" href="sysModule/icons.html?field=attached" lookupGroup=""><@t.page 'icons.select'/></a>
             </dd>
         </dl>
     </#if>

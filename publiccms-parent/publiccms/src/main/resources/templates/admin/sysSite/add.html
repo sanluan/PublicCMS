@@ -65,20 +65,20 @@ function siteDefaultConfig${id!}(type){
                 <dl class="nowrap">
                     <dt><@t.page 'domain'/>:</dt>
                     <dd>
-                        <input class="required domain" remote="sysDomain/virify.do" name="domain" data-msg-remote="域名已存在" type="text" maxlength="50" size="20" value=""/>
+                        <input class="required domain" remote="sysDomain/virify.do" name="domain" data-msg-remote="<@t.m 'verify.hasExist.domain'/>" type="text" maxlength="50" size="20" value=""/>
                         <span class="info"><@t.page 'domain.description'/></span>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt><@t.page 'role'/>:</dt>
                     <dd>
-                        <input class="required" name="roleName" type="text" maxlength="50" size="20" value="站长"/>
+                        <input class="required" name="roleName" type="text" maxlength="50" size="20" value="<@t.page 'site.default_role'/>"/>
                     </dd>
                 </dl>
                 <dl class="nowrap">
                     <dt><@t.page 'dept'/>:</dt>
                     <dd>
-                        <input class="required" name="deptName" type="text" maxlength="50" size="20" value="技术部"/>
+                        <input class="required" name="deptName" type="text" maxlength="50" size="20" value="<@t.page 'site.default_dept'/>"/>
                     </dd>
                 </dl>
                 <dl class="nowrap">

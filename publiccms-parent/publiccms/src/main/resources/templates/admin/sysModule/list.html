@@ -34,7 +34,7 @@
             <tr>
                 <th width="150"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
-                <th>是否菜单</th>
+                <th><@t.page 'module.is_menu'/></th>
                 <th><@t.page 'address'/></th>
                 <th><@t.page 'module.parent'/></th>
                 <th orderField="sort" class="<#if orderField??&&'sort'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'sort'/></th>
@@ -46,7 +46,7 @@
             <tr target="sid" rel="${a.id?url}">
                 <td>${a.id!}</td>
                 <td><@t.menu a.id/></td>
-                <td>${a.menu?then('菜单','仅权限')}</td>
+                <td>${a.menu?then(t.pageMessage('module.menu'),t.pageMessage('module.not_menu'))}</td>
                 <td>${a.url!}</td>
                 <td><#if a.parentId?has_content><@t.menu a.parentId/></#if></td>
                 <td>${a.sort!}</td>

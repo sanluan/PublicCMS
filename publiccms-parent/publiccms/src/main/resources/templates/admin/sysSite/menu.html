@@ -17,7 +17,7 @@
                 <a href="sysSite/sql.html" target="navTab" rel="sysSite/sql"><i class="icon-bug icon-large"></i> <@t.menu 'site_sql'/></a>
             </li>
             <li>
-                <a href="sysSite/reCreateIndex?_csrf=<@_csrfToken admin=true/>" target="ajaxTodo" title="确定要重建全文索引吗?" ><i class="icon-refresh icon-large"></i> <@t.menu 'site_recreate_index'/></a>
+                <a href="sysSite/reCreateIndex?_csrf=<@_csrfToken admin=true/>" target="ajaxTodo" title="<@t.page 'confirm.recreate_index'/>" ><i class="icon-refresh icon-large"></i> <@t.menu 'site_recreate_index'/></a>
             </li>
             <li>
                 <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense"><i class="icon-archive icon-large"></i> <@t.menu 'license'/></a>
