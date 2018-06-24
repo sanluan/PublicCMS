@@ -25,10 +25,10 @@
     </div>
     <p class="login_msg">
         <#if error??>
-            <@t.m error/>
+            <@t.message error/>
         </#if>
         <#if message??>
-            <@t.m "message."+message/>
+            <@t.message "message."+message/>
         </#if>
     </p>
 </div>

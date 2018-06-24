@@ -85,7 +85,7 @@
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.task_directive'/></a>
                     <ul>
-                    	<li><a href="javascript:;" <@getAction r'<@_clearLog clearDate=clearDate>登陆日志清理条数：${result.loginLog},操作日志清理条数：${result.operateLog},任务计划日志清理条数：${result.taskLog}</@_clearLog>'/>>清理日志</a></li>
+                    	<li><a href="javascript:;" <@getAction r'<@_clearLog clearDate=clearDate>Login log cleaning:${result.loginLog},Operate log cleaning:${result.operateLog},Task log cleaning:${result.taskLog}</@_clearLog>'/>><@t.page 'help.clear_log'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_indexContent id=id ids=ids/>'/>><@t.page 'help.recreate_index'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids pageIndex=pageIndex totalPage=totalPage>Publish failed category ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids>Publish failed content ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
@@ -99,70 +99,70 @@
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.list_directive'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_contentList>' 'categoryId:'+t.pageMessage('category.id')+',containChild:'+t.pageMessage('category.contain_child')+',modelId:模型ID,parentId:'+t.pageMessage('content.parent.id')+',onlyUrl:["true":仅外链,"false":非外链,默认全部],hasImages:["true":仅图集,"false":非图集,默认全部],hasFiles:["true":仅带附件,"false":非带附件,默认全部],hasCover:["true":仅带封面,"false":不带封面,默认全部],orderField:排序字段["scores":'+t.pageMessage('content.score')+',"comments":评论,"clicks":点击,"publishDate":发布日期,"checkDate":审核日期,"updateDate":更新日期,默认排序+发布日期倒序],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>><@t.page 'content'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_contentFileList contentId=contentId fileTypes=fileTypes orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a>${a.filePath}</#list></@_contentFileList>' 'contentId:'+t.pageMessage('content.id')+',fileTypes:文件类型["image":图片,"video":视频,"audio":音频,"other":其他],orderField:排序字段["size":大小,"click":点击,默认排序字段顺序],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>>内容附件</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryList>' 'parentId:'+t.pageMessage('category.parent.id')+',typeId:分类类型ID,allowContribute:["true":'+t.pageMessage('allow_contribute')+',"false":'+t.pageMessage('forbid_contribute')+',默认全部],pageIndex:页码,count:每页数据条数'/>><@t.page 'category'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_categoryTypeList pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryTypeList>' 'pageIndex:页码,count:每页数据条数'/>>分类类型</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_placeList path=path orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_placeList>'/>>推荐位数据列表</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_search word=word tagId=tagId categoryId=categoryId containChild=containChild categoryIds=categoryIds modelIds=modelIds startPublishDate=startPublishDate pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_search>' 'word:'+t.pageMessage('keywords')+',tagId:标签ID,categoryId:'+t.pageMessage('category.id')+',containChild:是否包含子分类,categoryIds:'+t.pageMessage('category.multiple_id')+',modelIds:多个模型ID,startPublishDate:开始日期,orderField:排序字段["publishDate":发布日期逆序],pageIndex:页码,count:每页数据条数'/>>搜索</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_facetSearch>' 'word:'+t.pageMessage('keywords')+',tagId:标签ID,categoryId:'+t.pageMessage('category.id')+',modelId:模型ID,startPublishDate:开始日期,endPublishDate:结束日期,orderField:排序字段["publishDate":发布日期逆序],pageIndex:页码,count:每页数据条数'/>>高级搜索</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_wordList startCreateDate=startCreateDate endCreateDate=endCreateDate orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a>${a.name!}:${a.searchCount}</a></#list></@_wordList>' 'startPublishDate:开始日期,endPublishDate:结束日期,orderField:排序字段["searchCount":搜索次数,"createDate":创建日期],orderType:排序类型["asc":正序,"desc":倒序],pageIndex:页码,count:每页数据条数'/>><@t.page 'search_word'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_modelList parentId=parentId hasChild=hasChild onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles><#list page.list as a>${a.id}:${a.name}<#sep>,</#list></@_modelList>'/>>模型</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_contentList>' t.pageMessage('help.directive.content_list.description')/>><@t.page 'content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_contentFileList contentId=contentId fileTypes=fileTypes orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a>${a.filePath}</#list></@_contentFileList>' t.pageMessage('help.directive.content_file_list.description')/>><@t.page 'content_file'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryList>' t.pageMessage('help.directive.category_list.description')/>><@t.page 'category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_categoryTypeList pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.name}</a></#list></@_categoryTypeList>' t.pageMessage('help.directive.category_type_list.description')/>><@t.page 'category_type'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_placeList path=path orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_placeList>' t.pageMessage('help.directive.place_list.description')/>><@t.page 'place_data'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_search word=word tagId=tagId categoryId=categoryId containChild=containChild categoryIds=categoryIds modelIds=modelIds startPublishDate=startPublishDate pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_search>' t.pageMessage('help.directive.search.description')/>><@t.page 'search'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=pageIndex count=count><#list page.list as a><a href="${a.url!}">${a.title}</a></#list></@_facetSearch>' t.pageMessage('help.directive.facet_search.description')/>><@t.page 'facet_search'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_wordList startCreateDate=startCreateDate endCreateDate=endCreateDate orderField=orderField orderType=orderType pageIndex=pageIndex count=count><#list page.list as a>${a.name!}:${a.searchCount}</a></#list></@_wordList>' t.pageMessage('help.directive.word_list.description')/>><@t.page 'search_word'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_modelList parentId=parentId hasChild=hasChild onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles><#list page.list as a>${a.id}:${a.name}<#sep>,</#list></@_modelList>' t.pageMessage('help.directive.model_list.description')/>><@t.page 'model'/></a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.entity_directive'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<@_content id=id><a href="${object.url!}">${object.title}</a></@_content>' 'id:'+t.pageMessage('content.id')+''/>><@t.page 'content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_content id=id><a href="${object.url!}">${object.title}</a></@_content>' 'id:'+t.pageMessage('content.id')/>><@t.page 'content'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_content ids=ids><#list map as k,content><a href="${content.url!}">${content.title}</a><#sep>,</#list></@_content>' 'ids:'+t.pageMessage('content.multiple_id')/>><@t.page 'content.multiple'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_category id=id><a href="${object.url!}">${object.name}</a></@_category>' 'id:'+t.pageMessage('category.id')/>><@t.page 'category'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_category ids=ids><#list map as k,category><a href="${category.url!}">${category.name}</a><#sep>,</#list></@_category>' 'ids:'+t.pageMessage('category.multiple_id')/>><@t.page 'category.multiple'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_tag id=id>${object.name}</@_tag>' 'id:标签ID'/>>标签</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_tag ids=ids><#list map as k,tag>${tag.name}<#sep>,</#list></@_tag>' 'ids:多个标签ID'/>>多个标签</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_sysUser id=id>${object.nickName}</@_sysUser>' 'id:用户ID'/>>用户</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_sysUser ids=ids><#list map as k,user>${user.nickName}<#sep>,</#list></@_sysUser>' 'ids:多个用户ID'/>>多个用户</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_tag id=id>${object.name}</@_tag>' 'id:'+t.pageMessage('tag.id')/>><@t.page 'tag'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_tag ids=ids><#list map as k,tag>${tag.name}<#sep>,</#list></@_tag>' 'ids'+t.pageMessage('tag.multiple_id')/>><@t.page 'tag.multiple'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_sysUser id=id>${object.nickName}</@_sysUser>' 'id:'+t.pageMessage('user.id')/>><@t.page 'user'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_sysUser ids=ids><#list map as k,user>${user.nickName}<#sep>,</#list></@_sysUser>' 'ids:'+t.pageMessage('user.multiple_id')/>><@t.page 'user.multiple'/></a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.tool_directive'/></a>
                     <ul>
                     <#if site.useStatic>
-                        <li><a href="javascript:;" <@getAction r'<@_createCategoryFile id=id templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createCategoryFile>'/>>生成静态化分类页面</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_createContentFile id=id templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createContentFile>'/>>生成静态化内容页面</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_createTemplateFile templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createTemplateFile>'/>>生成静态化页面</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_createCategoryFile id=id templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createCategoryFile>'/>><@t.page 'help.directive.publish_category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_createContentFile id=id templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createContentFile>'/>><@t.page 'help.directive.publish_content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_createTemplateFile templatePath=templatePath filePath=filePath pageIndex=pageIndex>${url}</@_createTemplateFile>'/>><@t.page 'help.directive.publish_page'/></a></li>
                     </#if>
-                        <li><a href="javascript:;" <@getAction r'<@_userAgent>${object.deviceType}</@_userAgent>' 'object.deviceType:设备类型'/>>UserAgent指令</a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_sendEmail email=email title=title templatePath=templatePath content=content><#if result>发送成功</#if></@_sendEmail>' 'email,title不能为空,content和templatePath不能同时为空'/>>发送邮件</a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_userAgent>${object.deviceType}</@_userAgent>' t.pageMessage('help.directive.useragent.description')/>><@t.page 'help.directive.useragent'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_sendEmail email=email title=title templatePath=templatePath content=content><#if result>success</#if></@_sendEmail>' t.pageMessage('help.directive.email.description')/>><@t.page 'help.directive.email'/></a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.attribute_method'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getContentAttribute(contentId)/>' '内容扩展数据(参数为内容Id)'/>>内容扩展数据</a></li>
-                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getContentAttributes(contentIds)/>' '多个内容扩展数据(参数为多个内容ID以逗号分隔组成的字符串)'/>>多个内容扩展数据</a></li>
-                        <li><a href="javascript:;" <@getAction r'<#assign contentPage=getContentPage(text,pageIndex)/>' '内容正文分页结果(参数为内容正文,页码)'/>>内容正文分页结果</a></li>
-                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getCategoryAttribute(categoryId)/>' '分类扩展数据(参数为分类ID)'/>>分类扩展数据</a></li>
-                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getCategoryAttributes(categoryIds)/>' '多个分类扩展数据(参数为多个分类ID以逗号分隔组成的字符串)'/>>多个分类扩展数据</a></li>
-                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getPlaceAttribute(placeId)/>' '推荐位数据扩展(参数为推荐位数据ID)'/>>推荐位数据扩展</a></li>
-                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getPlaceAttributes(placeIds)/>' '多个推荐位数据扩展(参数为多个推荐位数据ID以逗号分隔组成的字符串)'/>>多个推荐位扩展数据</a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getContentAttribute(contentId)/>' t.pageMessage('help.method.content.description')/>><@t.page 'help.method.content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getContentAttributes(contentIds)/>' t.pageMessage('help.method.contents.description')/>><@t.page 'help.method.contents'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign contentPage=getContentPage(text,pageIndex)/>' t.pageMessage('help.method.content_text.description')/>><@t.page 'help.method.content_text'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getCategoryAttribute(categoryId)/>' t.pageMessage('help.method.category.description')/>><@t.page 'help.method.category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getCategoryAttributes(categoryIds)/>' t.pageMessage('help.method.categorys.description')/>><@t.page 'help.method.categorys'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attribute=getPlaceAttribute(placeId)/>' t.pageMessage('help.method.place_data.description')/>><@t.page 'help.method.place_data'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#assign attributeMap=getPlaceAttributes(placeIds)/>' t.pageMessage('method.place_datas.description')/>><@t.page 'help.method.place_datas'/></a></li>
                     </ul>
                 </li>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.tool_method'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'${getDate(.now,"thisSunday")}' '日期处理(参数1为日期，参数2[thisSunday:本周日,thisMonday:本周一,lastMonday:上周一,lastSunday:上周日]，少于两个参数输出当前时间)'/>>日期处理</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getDateNumber(.now)}' '日期转数字(参数1为日期)，可替换为${.now?long}'/>>日期转数字</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getHtml(url,parameter)}' '获取远程文本内容(参数1为网址，参数2为参数组成的map或字符串消息体，参数2可以为空)'/>>获取远程文本内容</a></li>
-                        <li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' '获取文字中的关键词(参数1为字符串内容)'/>>获取文字中的关键词</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getMd5(value)}' '输出文本MD5加密结果(参数1为字符串)'/>>输出文本MD5加密结果</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getPage(url,pageIndex,pageParameter)}' '获取静态化页面分页地址(参数1为页面地址，参数2为页码，参数3为页码参数名可以为空)'/>>获取页面分页地址</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getRandom(number)}' '输出随机数(参数1为最大值，参数可以为空)'/>>输出随机数</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' '输出文本SHA-1加密结果(参数1为字符串)'/>>输出文本SHA-1加密结果</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getSleep(second)}' '睡眠一段时间(参数1睡眠时间)'/>>睡眠一段时间</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getTemplateResult(template)}' '输出模板渲染结果(参数1为Freemarker模板字符串)'/>>输出模板渲染结果</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getTextFromHtml(html)}' '输出HTML中的文本(参数1为html格式字符串)'/>>输出HTML中的文本</a></li>
-                        <li><a href="javascript:;" <@getAction r'${getUUID()}' '输出UUID'/>>输出UUID</a></li>
-                        <li><a href="javascript:;" <@getAction r'getXml(xml)' '获取xml节点(参数1为xml格式字符串)'/>>获取xml节点</a></li>
+                        <li><a href="javascript:;" <@getAction r'${getDate(.now,"thisSunday")}' t.pageMessage('help.method.date.description')/>><@t.page 'help.method.date'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getHtml(url,parameter)}' t.pageMessage('help.method.html.description')/>><@t.page 'help.method.html'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' t.pageMessage('help.method.keywords.description')/>><@t.page 'help.method.'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getMd5(value)}' t.pageMessage('help.method.md5.description')/>><@t.page 'help.method.md5'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getPage(url,pageIndex,pageParameter)}' t.pageMessage('help.method.page.description')/>><@t.page 'help.method.page'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getRandom(number)}' t.pageMessage('help.method.random.description')/>><@t.page 'help.method.random'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' t.pageMessage('help.method.sha1.description')/>><@t.page 'help.method.sha1'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' t.pageMessage('help.method.sha2.description')/>><@t.page 'help.method.sha2'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getSleep(second)}' t.pageMessage('help.method.sleep.description')/>><@t.page 'help.method.sleep'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getTemplateResult(template)}' t.pageMessage('help.method.template_result.description')/>><@t.page 'help.method.template_result'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getTextFromHtml(html)}' t.pageMessage('help.method.text_from_html.description')/>><@t.page 'help.method.text_from_html'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getUUID()}' t.pageMessage('help.method.uuid.description')/>><@t.page 'help.method.uuid'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'getXml(xml)' t.pageMessage('help.method.xml.description')/>><@t.page 'help.method.xml'/></a></li>
                     </ul>
                 </li>
             </ul>
@@ -190,7 +190,7 @@
         <div class="pageFormContent" layoutH="37">
             <ul class="tree treeFolder">
                 <li>
-                    <a href="javascript:;" onclick="return false;">内容投稿</a>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'help.content_contribute'/></a>
                     <ul>
                 <@_categoryList queryAll=true allowContribute=true count=500>
                     <#list page.list as a>
@@ -214,29 +214,29 @@
                 </li>
 <#macro placeTree filepath=''>
     <@_templateList path='/include'+filepath>
-        <@_placeMetadata dir=filepath><#local metaDataMap=object/></@_placeMetadata>
         <#list list as a>
-
             <#local path=filepath+'/'+a.fileName>
-            <#if a.directory>
-                <li>
-                    <a href="javascript:;" onclick="return false;">${a.fileName}</a>
-                    <ul><@placeTree path/></ul>
-                </li>
-            <#elseif metaDataMap[a.fileName]?has_content&&metaDataMap[a.fileName].allowContribute>
-                <li>
-                    <a href="placeTemplate/form.html?path=${(path?url)!}" target="dialog" mask="true">
-                        ${(metaDataMap[a.fileName].alias)!a.fileName}
-                    </a>
-                </li>
-            </#if>
+            <@_placeMetadata path=path>
+	            <#if a.directory>
+	                <li>
+	                    <a href="javascript:;" onclick="return false;">${a.fileName}</a>
+	                    <ul><@placeTree path/></ul>
+	                </li>
+	            <#elseif object.allowContribute>
+	                <li>
+	                    <a href="placeTemplate/form.html?path=${(path?url)!}" target="dialog" mask="true">
+	                        ${(object.alias)!a.fileName}
+	                    </a>
+	                </li>
+	            </#if>
+	        </@_placeMetadata>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_templateList>
 </#macro>
                 <li>
-                    <a href="javascript:;" onclick="return false;">推荐位投稿</a>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'help.place_contribute'/></a>
                     <ul><@placeTree/></ul>
                 </li>
             </ul>

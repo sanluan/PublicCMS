@@ -77,6 +77,7 @@ public class SysSiteAdminController extends AbstractController {
     /**
      * @param entity
      * @param domain
+     * @param wild 
      * @param roleName
      * @param deptName
      * @param userName
@@ -88,8 +89,8 @@ public class SysSiteAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysSite entity, String domain, String roleName, String deptName, String userName, String password,
-            String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(SysSite entity, String domain, Boolean wild, String roleName, String deptName, String userName,
+            String password, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
@@ -114,7 +115,10 @@ public class SysSiteAdminController extends AbstractController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.save(entity);
-            domainService.save(new SysDomain(domain, entity.getId(), false));
+            if (null == wild) {
+                wild = false;
+            }
+            domainService.save(new SysDomain(domain, entity.getId(), wild));
             SysDept dept = new SysDept(entity.getId(), deptName, true, 0, true);
             deptService.save(dept);// 初始化部门
             SysRole role = new SysRole(entity.getId(), roleName, true, true);

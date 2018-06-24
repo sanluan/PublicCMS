@@ -17,7 +17,7 @@
         <dl>
             <dt><@t.page 'id'/>:</dt>
             <dd>
-                <input class="required" remote="sysModule/virify.do?oldId=${id!}" data-msg-remote="<@t.m 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
+                <input class="required" remote="sysModule/virify.do?oldId=${id!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
                 <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/><@t.page 'module.menu'/></label>
             </dd>
         </dl>
@@ -51,17 +51,17 @@
         </dl>
     </#if>
         <dl class="nowrap">
-            <dt>页面地址:</dt>
+            <dt><@t.page 'module.page_url'/>:</dt>
             <dd>
                 <input name="url" type="text" size="30" value="${(a.url)!}"/>
-                <span class="info">此模块的展示页面，不带后缀。当用户所属角色显示所有模块时，将拥有这个地址权限</span>
+                <span class="info"><@t.page 'module.page_url.description'/></span>
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt>授权访问地址:</dt>
+            <dt><@t.page 'module.authorize_url'/>:</dt>
             <dd>
                 <textarea name="authorizedUrl" cols="80" rows="8">${(a.authorizedUrl)!}</textarea>
-                <span class="info">此模块需要授权的URL请求路径，不带后缀，使用逗号分隔。仅拥有所有权限或被授权管理该模块的角色拥有这些地址权限</span>
+                <span class="info"><@t.page 'module.authorize_url.description'/></span>
             </dd>
         </dl>
         <dl>

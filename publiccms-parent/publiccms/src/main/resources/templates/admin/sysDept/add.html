@@ -32,7 +32,7 @@
             <dd><textarea name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea></dd>
         </dl>
         <dl class="nowrap">
-            <dt>负责人:</dt>
+            <dt><@t.page 'dept.master'/>:</dt>
             <dd>
                 <input name="userId" value="${userId!}" type="hidden"/>
                 <input name="nickName" readonly="readonly" size="10" value="${(user.nickName)!}" type="text"/>
@@ -40,15 +40,15 @@
             </dd>
         </dl>
         <dl>
-            <dt>拥有全部分类:</dt>
+            <dt><@t.page 'dept.own_all_category'/>:</dt>
             <dd><input name="ownsAllCategory" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllCategory',navTab.getCurrentPanel()).hide();}else{$('.ownsAllCategory',navTab.getCurrentPanel()).show();}"/></dd>
         </dl>
         <dl>
             <dt><@t.page 'content.max_top_level'/>:</dt>
-            <dd><input class="required digits" type="number" name="sort" name="maxSort" max="2100000000" value="${(a.maxSort)!100}"/></dd>
+            <dd><input class="required digits" type="number" name="maxSort" max="2100000000" value="${(a.maxSort)!100}"/></dd>
         </dl>
         <dl class="nowrap">
-            <dt>拥有全部页面:</dt>
+            <dt><@t.page 'dept.own_all_page'/>:</dt>
             <dd><input name="ownsAllPage" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllPage',navTab.getCurrentPanel()).hide();}else{$('.ownsAllPage',navTab.getCurrentPanel()).show();}"/></dd>
         </dl>
 <#macro categoryTree parentId=''>
@@ -68,25 +68,26 @@
     </@_categoryList>
 </#macro>
         <fieldset class="ownsAllCategory">
-            <legend><i class="icon-folder-open icon-large"></i> 分类授权</legend>
+            <legend><i class="icon-folder-open icon-large"></i> <@t.page 'dept.category_authorize'/></legend>
             <ul class="tree treeFolder treeCheck expand">
                 <li>
-                    <a href="javascript:;" onclick="return false;">所有分类</a>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'category.all'/></a>
                     <ul><@categoryTree/></ul>
                 </li>
             </ul>
         </fieldset>
 <#macro pageTree filepath=''>
     <@_templateList path=filepath>
-        <@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
-                <a tname="pages" tvalue="${path}">${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}</a>
+                <@_metadata path=path>
+                    <a tname="pages" tvalue="${path}">${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}</a>
+                </@_metadata>
                 <#if a.directory>
-                <ul>
-                    <@pageTree path/>
-                </ul>
+	                <ul>
+	                    <@pageTree path/>
+	                </ul>
                 </#if>
             </li>
         <#else>
@@ -95,7 +96,7 @@
     </@_templateList>
 </#macro>
         <fieldset class="ownsAllPage">
-            <legend>页面授权</legend>
+            <legend><@t.page 'dept.page_authorize'/></legend>
             <ul class="tree treeFolder treeCheck expand">
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'page.all'/></a>

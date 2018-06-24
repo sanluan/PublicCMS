@@ -32,29 +32,30 @@
 </#macro>
 <#macro pageTree filepath=''>
     <@_templateList path=filepath>
-        <@_metadata dir=filepath><#local metadataMap=object/></@_metadata>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <li>
+            <@_metadata path=path>
                 <#if a.directory>
                     <a href="javascript:;" onclick="return false;">
-                        ${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
+                        ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
                     </a>
                     <ul>
                         <@pageTree path/>
                     </ul>
                 <#else>
-                    <#if site.useStatic&&(metadataMap[a.fileName].publishPath)?has_content>
-                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(metadataMap[a.fileName].alias)!}',url:'${site.sitePath+metadataMap[a.fileName].publishPath}'});return false;">
-                            [<@t.page 'static_page'/>] ${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
+                    <#if site.useStatic&&(object.publishPath)?has_content>
+                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.sitePath+object.publishPath}'});return false;">
+                            [<@t.page 'static_page'/>] ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
                         </a>
                     </#if>
-                    <#if (metadataMap[a.fileName].useDynamic)?has_content&&metadataMap[a.fileName].useDynamic>
-                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(metadataMap[a.fileName].alias)!}',url:'${site.dynamicPath+path}<#if (metadataMap[a.fileName].acceptParameters)?has_content><#list metadataMap[a.fileName].acceptParameters?split(',') as a><#if a?is_first>?<#else>#</#if>${a}=</#list></#if>'});return false;">
-                            [<@t.page 'dynamic_page'/>] ${a.fileName} ${(metadataMap[a.fileName].alias)?has_content?then('('+metadataMap[a.fileName].alias+')','')}
+                    <#if (object.useDynamic)?has_content&&object.useDynamic>
+                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.dynamicPath+path}<#if (object.acceptParameters)?has_content><#list object.acceptParameters?split(',') as a><#if a?is_first>?<#else>#</#if>${a}=</#list></#if>'});return false;">
+                            [<@t.page 'dynamic_page'/>] ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
                         </a>
                     </#if>
                 </#if>
+            </@_metadata>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>

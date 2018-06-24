@@ -78,7 +78,7 @@
                 <td>${(a.name)!}</td>
                 <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
                 <td>${(a.email)!}</td>
-                <td>${a.emailChecked?then(t.pageMessage('email.verified'),t.pageMessage('email.unverified'))}</td>
+                <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.loginCount!}</td>

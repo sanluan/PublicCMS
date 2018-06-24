@@ -15,7 +15,7 @@
                 <dd><input type="text" class="readonly" readonly="readonly" value="${(a.name)!}"/></dd>
             </dl>
             <dl class="nowrap">
-                <dt>模板根目录:</dt>
+                <dt><@t.page 'domain.template_directory'/>:</dt>
                 <dd>
                     <input name="path" type="text" size="50" maxlength="255" value="${(a.path)!}"/>
                     <a class="btnLook" href="cmsTemplate/directoryLookup.html?field=path" lookupGroup=""><@t.page 'template.directory.select'/></a>

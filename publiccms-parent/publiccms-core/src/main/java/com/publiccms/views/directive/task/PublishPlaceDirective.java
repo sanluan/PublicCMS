@@ -62,17 +62,14 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         String realPath = siteComponent.getWebTemplateFilePath(site,
                 TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
         List<FileInfo> list = fileComponent.getFileList(realPath);
-        Map<String, CmsPlaceMetadata> metadataMap = metadataComponent.getPlaceMetadataMap(realPath);
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
                 map.putAll(deal(site, filePath + CommonConstants.SEPARATOR));
             } else {
                 try {
-                    CmsPlaceMetadata metadata = metadataMap.get(fileInfo.getFileName());
-                    if (null == metadata) {
-                        metadata = new CmsPlaceMetadata();
-                    }
+                    CmsPlaceMetadata metadata = metadataComponent
+                            .getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, filePath));
                     templateComponent.staticPlace(site, filePath, metadata);
                     map.put(filePath, true);
                 } catch (IOException | TemplateException e) {

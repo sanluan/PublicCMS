@@ -8,7 +8,7 @@
     <#if category.allowContribute>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save.do">
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
-    <input name="returnUrl" type="hidden" value="${site.sitePath}" />
+    <input name="returnUrl" type="hidden" value="${site.dynamicPath}" />
     <input name="categoryId" type="hidden" value="${category.id!}"/>
     <input name="modelId" type="hidden" value="${model.id!}"/>
 <#if fieldList?seq_contains('author')>
@@ -33,7 +33,7 @@
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
     <#else>
-<@t.m 'verify.custom.contribute'/>
+<@t.message 'verify.custom.contribute'/>
     </#if>
 </#assign>
     </@_model>

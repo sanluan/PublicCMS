@@ -6,10 +6,10 @@
             <#if site.useSsi>
                 <li><a class="button" href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
             </#if>
-            <li><a class="button" href="cmsTemplate/deletePlace.do?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该页面片段吗?" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsTemplate/deletePlace.do?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
     <@_sysAuthorized roleIds=admin.roles url='cmsPlace/dataList'>
         <@_sysDeptPage deptId=admin.deptId!'' pages='/include'+path>
-            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(a.alias)!}">推荐位管理</a></li>
+            <li><a class="button" href="cmsPlace/dataList.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/dataList" title="<@t.page 'place_data.place'/>:${(a.alias)!}"><@t.page 'place.management'/></a></li>
         </@_sysDeptPage>
     </@_sysAuthorized>
             <li><a class="button" href="placeTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'metadata'/></a></li>

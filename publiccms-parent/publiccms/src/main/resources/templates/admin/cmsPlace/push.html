@@ -1,6 +1,5 @@
 <#macro placeTree filepath=''>
     <@_templateList path='/include'+filepath>
-        <@_placeMetadata dir=filepath><#local metaDataMap=object/></@_placeMetadata>
         <#list list as a>
             <@t.merge 'pages' '/include'+filepath+'/'+a.fileName/>
         </#list>
@@ -8,16 +7,18 @@
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <#if (deptPageMap['/include'+path])?has_content&&deptPageMap['/include'+path]>
-                <#if a.directory>
-                    <li>
-                        <a href="javascript:;" onclick="return false;">${a.fileName}</a>
-                        <ul><@placeTree path/></ul>
-                    </li>
-                <#elseif 0!=((metaDataMap[a.fileName].size)!0)>
-                    <li>
-                        <a href="cmsPlace/add.html?path=${path?url}&itemType=${itemType}&itemId=${itemId!}" target="navTab" rel="cmsPlace/add">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
-                    </li>
-                </#if>
+                <@_placeMetadata path=path>
+	                <#if a.directory>
+	                    <li>
+	                        <a href="javascript:;" onclick="return false;">${a.fileName}</a>
+	                        <ul><@placeTree path/></ul>
+	                    </li>
+	                <#elseif 0!=((object.size)!0)>
+	                    <li>
+	                        <a href="cmsPlace/add.html?path=${path?url}&itemType=${itemType}&itemId=${itemId!}" target="navTab" rel="cmsPlace/add">${(object.alias)!a.fileName}</a>
+	                    </li>
+	                </#if>
+                </@_placeMetadata>
             </#if>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>

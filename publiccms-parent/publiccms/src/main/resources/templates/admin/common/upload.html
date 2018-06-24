@@ -7,7 +7,7 @@ function checkFileType(){
     if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
         return true;
     }
-    alertMsg.error('请选择图片');
+    alertMsg.error('<@t.page 'upload.image_warn'/>');
     return false;
 <#else>
     return true;
@@ -19,7 +19,7 @@ function selectFile(path){
     if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
         return true;
     }
-    alertMsg.error('请选择图片');
+    alertMsg.error('<@t.page 'upload.image_warn'/>');
     return false;
 <#else>
     return true;

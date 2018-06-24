@@ -22,13 +22,9 @@ public class MetadataDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
-        String dir = handler.getString("dir");
         if (CommonUtils.notEmpty(path) && !path.endsWith(CommonConstants.SEPARATOR)) {
             handler.put("object",
                             metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), path)))
-                    .render();
-        } else if (null != dir) {
-            handler.put("object", metadataComponent.getTemplateMetadataMap(siteComponent.getWebTemplateFilePath(getSite(handler), dir)))
                     .render();
         }
     }

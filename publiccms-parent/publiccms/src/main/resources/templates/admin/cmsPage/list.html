@@ -1,6 +1,5 @@
 <#macro pageTree filepath=''>
     <@_templateList path=filepath>
-        <@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
         <#list list as a>
             <@t.merge 'pages' filepath+'/'+a.fileName/>
         </#list>
@@ -14,7 +13,9 @@
                     <ul><@pageTree path/></ul>
                 <#else>
                     <a href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="pageBox">
-                        ${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
+                        <@_metadata path=path>
+                            ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
+                        </@_metadata>
                     </a>
                 </#if>
                 </li>

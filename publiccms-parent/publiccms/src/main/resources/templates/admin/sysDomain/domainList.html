@@ -5,14 +5,14 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysDomain/config.html?id={sid}" target="navTab" rel="sysDomain/config"><i class="icon-edit icon-large"></i> 修改动态域名</a></li>
+            <li><a href="sysDomain/config.html?id={sid}" target="navTab" rel="sysDomain/config"><i class="icon-edit icon-large"></i> <@t.page 'page.domain.edit'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="57">
         <thead>
             <tr>
                 <th><@t.page 'domain'/></th>
-                <th>模板根路径</th>
+                <th><@t.page 'domain.template_directory'/></th>
             </tr>
         </thead>
         <tbody>

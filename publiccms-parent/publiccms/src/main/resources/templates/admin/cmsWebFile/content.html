@@ -5,7 +5,7 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><a class="button" href="cmsWebFile/delete.do?paths=${(path?url)!}&callbackType=closeCurrent&navTabId=cmsWebFile/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该文件吗?" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsWebFile/delete.do?paths=${(path?url)!}&callbackType=closeCurrent&navTabId=cmsWebFile/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
         </ul>
     </div>

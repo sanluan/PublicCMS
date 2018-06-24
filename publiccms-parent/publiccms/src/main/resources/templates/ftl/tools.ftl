@@ -1,5 +1,5 @@
 <#ftl>
-<#macro m code>${springMacroRequestContext.getMessage(code)}</#macro>
+<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
 <#macro ma code args><#if args?is_enumerable>${springMacroRequestContext.getMessage(code, args)}<#else>${springMacroRequestContext.getMessage(code, [args])}</#if></#macro>
 <#macro menu code args=''><#if args?is_enumerable>${springMacroRequestContext.getMessage('menu.'+code)}<#elseif args?has_content>${springMacroRequestContext.getMessage('menu.'+code, [args])}<#else>${springMacroRequestContext.getMessage('menu.'+code)}</#if></#macro>
 <#macro page code args=''><#if args?is_enumerable>${springMacroRequestContext.getMessage('page.'+code)}<#elseif args?has_content>${springMacroRequestContext.getMessage('page.'+code, [args])}<#else>${springMacroRequestContext.getMessage('page.'+code)}</#if></#macro>

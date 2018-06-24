@@ -58,19 +58,18 @@ public class PublishPageDirective extends AbstractTaskDirective {
     private Map<String, Boolean> deal(SysSite site, String path) {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        Map<String, CmsPageMetadata> metadataMap = metadataComponent
-                .getTemplateMetadataMap(siteComponent.getWebTemplateFilePath(site, path));
         List<FileInfo> list = fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, path));
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
                 map.putAll(deal(site, filePath + CommonConstants.SEPARATOR));
             } else {
-                CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
+                CmsPageMetadata metadata = metadataComponent
+                        .getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, filePath));
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {
-                        templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, filePath), metadata.getPublishPath(), null,
-                                metadata, null);
+                        templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, filePath),
+                                metadata.getPublishPath(), null, metadata, null);
                         map.put(filePath, true);
                     } catch (IOException | TemplateException e) {
                         map.put(filePath, false);

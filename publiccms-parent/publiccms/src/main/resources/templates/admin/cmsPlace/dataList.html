@@ -7,7 +7,8 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'place_data.page_size'/>:</label><label>${(a.size)!} ${(a.allowContribute?then('['+t.pageMessage('allow_contribute')+']',''))!}</label>
+                    <label><@t.page 'place_data.page_size'/>:</label>
+                    <label>${(a.size)!} ${(a.allowContribute?then('['+t.pageMessage('allow_contribute')+']',''))!}</label>
                 </li>
                 <li class="width:auto">
                     <#list 0..1 as s>

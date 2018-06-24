@@ -29,7 +29,7 @@ function addTag(typeId,$id,$name){
         $name=$name.trim();
     }
     if($('#tags'+typeId+' span',navTab.getCurrentPanel()).size()>20){
-        alertMsg.error('标签不能超过20个');
+        alertMsg.error('<@t.page 'tag.warn' 20/>');
     }else{
         if($id&&$name){
             $('#tags'+typeId,navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tags[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");

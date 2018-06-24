@@ -16,9 +16,9 @@
                 </#if>
                 <li>
                     <select class="combox" name="wild">
-                        <option value=""${(!wild?has_content)?then(' selected="true"','')?no_esc}>域名类型</option>
-                        <option value="false"${(wild??&&"false"=wild)?then(' selected="true"','')?no_esc}>普通域名</option>
-                        <option value="true"${(wild??&&"true"=wild)?then(' selected="true"','')?no_esc}>通配域名</option>
+                        <option value=""${(!wild?has_content)?then(' selected="true"','')?no_esc}><@t.page 'domain.type'/></option>
+                        <option value="false"${(wild??&&"false"=wild)?then(' selected="true"','')?no_esc}><@t.page 'domain.normal'/></option>
+                        <option value="true"${(wild??&&"true"=wild)?then(' selected="true"','')?no_esc}><@t.page 'domain.wild'/></option>
                     </select>
                 </li>
             </ul>
@@ -48,7 +48,7 @@
                 <th><@t.page 'domain'/></th>
                 <th><@t.page 'site.id'/></th>
                 <th><@t.page 'site'/></th>
-                <th>模板根目录</th>
+                <th><@t.page 'domain.template_directory'/></th>
             </tr>
         </thead>
         <tbody>
@@ -59,7 +59,7 @@
             <@_sysSite ids=t.siteIds!><#assign siteMap=map!/></@_sysSite>
             <#list page.list as a>
             <tr target="sid" rel="${a.name}">
-                <td><a href="http://${(a.name)!}">${(a.name)!}</a> ${a.wild?then('[通配域名]','')}</td>
+                <td><a href="http://${(a.name)!}">${(a.name)!}</a> ${a.wild?then('['+t.pageMessage('domain.wild')+']','')}</td>
                 <td>${a.siteId!}</td>
                 <td>${(siteMap[a.siteId?string].name)!}</td>
                 <td>${(a.path)!}</td>

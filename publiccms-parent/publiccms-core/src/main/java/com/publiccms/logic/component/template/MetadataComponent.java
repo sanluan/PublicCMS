@@ -151,7 +151,7 @@ public class MetadataComponent implements Cache {
      * @param dirPath
      * @return place metadata map
      */
-    public Map<String, CmsPlaceMetadata> getPlaceMetadataMap(String dirPath) {
+    private Map<String, CmsPlaceMetadata> getPlaceMetadataMap(String dirPath) {
         Map<String, CmsPlaceMetadata> metadataMap = placeCache.get(dirPath);
         if (null == metadataMap) {
             File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
@@ -176,7 +176,7 @@ public class MetadataComponent implements Cache {
      * @param dirPath
      * @return template metadata map
      */
-    public Map<String, CmsPageMetadata> getTemplateMetadataMap(String dirPath) {
+    private Map<String, CmsPageMetadata> getTemplateMetadataMap(String dirPath) {
         Map<String, CmsPageMetadata> metadataMap = pageCache.get(dirPath);
         if (null == metadataMap) {
             File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);

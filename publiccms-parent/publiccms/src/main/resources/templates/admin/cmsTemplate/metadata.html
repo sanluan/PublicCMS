@@ -6,7 +6,7 @@
             <#if !a?has_content>
                 <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
             <#else>
-                <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="确定要删除该模板吗?" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
+                <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
                 <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
             </#if>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
@@ -52,36 +52,36 @@
                 <dt><@t.page 'dynamic_config.need_login'/>:</dt>
                 <dd>
                     <label><input name="needLogin" type="checkbox"/></label>
-                    <span class="info">勾选后当用户未登录时，将跳转到<a href="sysConfigData/edit.html?code=site" target="navTab" rel="sysConfigData/edit" icon="<i class='icon-edit icon-large'></i> ">站点配置</a>中的登录页面地址</span>
+                    <span class="info"><@t.page 'dynamic_config.need_login.description'/></span>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_config.accept_parameter'/>:</dt>
                 <dd>
                     <input name="acceptParameters" type="text" value="${(a.acceptParameters)!}"/>
-                    <span class="info">逗号分隔，用于控制模板中可直接使用哪些请求参数,REST风格默认参数名为{id}_{pageIndex}</span>
+                    <span class="info"><@t.page 'dynamic_config.accept_parameter.description'/></span>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_config.need_body'/>:</dt>
                 <dd>
                     <label><input name="needBody" type="checkbox"/></label>
-                    <span class="info">勾选后，可以从模板中取得请求报文体:body</span>
+                    <span class="info"><@t.page 'dynamic_config.need_body.description'/></span>
                 </dd>
             </dl>
             <dl class="nowrap">
-                <dt>content-type:</dt>
+                <dt><@t.page 'dynamic_config.content-type'/>:</dt>
                 <dd>
                     <input name="contentType" type="text" value="${(a.contentType)!}"/>
-                    <a class="btnLook" href="cmsTemplate/contentTypeLookup.html" lookupGroup="">选择content-type</a>
-                    <span class="info">为空时默认:text/html; charset=UTF-8</span>
+                    <a class="btnLook" href="cmsTemplate/contentTypeLookup.html" lookupGroup=""><@t.page 'dynamic_config.content-type.select'/></a>
+                    <span class="info"><@t.page 'dynamic_config.content-type.description'/></span>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_config.cache'/>:</dt>
                 <dd>
                     <input name="cacheTime" class="required digits" type="text" value="${(a.cacheTime)!0}"/>
-                    <span class="info">值大于0时，模板将被缓存,您可以使用noCache指令指定不使用缓存的模板片段:<#noparse>&lt;@noCache&gt;登录用户:${user.nickName}&lt;/@noCache&gt;</#noparse></span>
+                    <span class="info"><@t.page 'dynamic_config.cache.description'/></span>
                 </dd>
             </dl>
         </fieldset>

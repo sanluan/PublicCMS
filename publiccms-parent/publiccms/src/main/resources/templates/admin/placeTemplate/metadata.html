@@ -50,7 +50,7 @@
             </dd>
         </dl>
         <dl class="nowrap placeExtend">
-            <dt>前台维护人员:</dt>
+            <dt><@t.page 'place_data.master'/>:</dt>
             <dd>
                 <input name="userId" type="hidden"/>
                 <input name="nickName" type="hidden" onchange="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());"/>
@@ -105,13 +105,10 @@ checkPageSize();
     <ul>
     <#items as a>
         <li>
-            <#-- ${a.url} 为不带计数的链接 -->
-            <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">
-                <figure>
-                    <img src="${site.sitePath+a.cover!}">
-                    <figcaption>${a.title}</figcaption>
-                </figure>
-            </a>
+            <figure>
+                <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${site.sitePath+a.cover!}"></a>
+                <figcaption><a href="${a.url}" target="_blank">${a.title}</a></figcaption>
+            </figure>
         </li>
     </#items>
     </ul>

@@ -22,8 +22,8 @@
                 <li>
                     <select class="combox" name="emailChecked">
                         <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
-                        <option value="false"${(emailChecked??&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
-                        <option value="true"${(emailChecked??&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
+                        <option value="false"${(emailChecked??&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'unverified'/></option>
+                        <option value="true"${(emailChecked??&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'verified'/></option>
                     </select>
                 </li>
                 <li>
@@ -54,8 +54,8 @@
         <ul class="toolBar">
             <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
             <li><a href="sysUser/add.html?id={sid}" target="navTab" rel="sysUser/edit"><i class="icon-edit icon-large"></i> <@t.page 'user.edit'/></a></li>
-            <li><a href="sysUser/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'enable'/></a></li>
-            <li><a href="sysUser/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'disable'/></a></li>
+            <li><a href="sysUser/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'button.enable'/></a></li>
+            <li><a href="sysUser/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.disable'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
@@ -81,8 +81,8 @@
                 <td>${(a.name)!}</td>
                 <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
                 <td>${(a.email)!}</td>
-                <td>${a.emailChecked?then(t.pageMessage('email.verified'),t.pageMessage('email.unverified'))}</td>
-                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disable')+'</font>',t.pageMessage('normal'))?no_esc}</td>
+                <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>
+                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.loginCount!}</td>

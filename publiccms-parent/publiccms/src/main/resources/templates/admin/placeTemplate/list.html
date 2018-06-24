@@ -1,15 +1,14 @@
 <#macro placeTree filepath=''>
     <@_templateList path='/include'+filepath>
-        <@_placeMetadata dir=filepath><#local metaDataMap=object/></@_placeMetadata>
         <#list list as a>
             <li>
-            <#local path=filepath+'/'+a.fileName>
-            <#if a.directory>
-                <a href="placeTemplate/directory.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">${a.fileName}</a>
-                <ul><@placeTree path/></ul>
-            <#else>
-                <a href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">${(metaDataMap[a.fileName].alias)!a.fileName}</a>
-            </#if>
+	            <#local path=filepath+'/'+a.fileName>
+	            <#if a.directory>
+	                <a href="placeTemplate/directory.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">${a.fileName}</a>
+	                <ul><@placeTree path/></ul>
+	            <#else>
+	               <a href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@_placeMetadata path=path>${(object.alias)!a.fileName}</@_placeMetadata></a>
+	            </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>

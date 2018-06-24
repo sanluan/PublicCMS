@@ -5,7 +5,7 @@
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save.do">
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
     <input name="path" type="hidden" value="${(path)!}" />
-    <input name="returnUrl" type="hidden" value="这里是您的表单提交之后的页面地址" />
+    <input name="returnUrl" type="hidden" value="${site.dynamicPath}" />
     <p><label><@t.page 'title'/>:</label><input name="title" type="text" size="60" value=""/></p>
     <p><label><@t.page 'address'/>:</label><input name="url" type="text" value=""/></p>
     <p><label><@t.page 'cover'/>:</label><input name="cover" type="text" size="60" value=""/></p>
@@ -16,7 +16,7 @@
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
         <#else>
-该推荐位不允许前台提交，请先修改推荐位元数据
+<@t.message 'verify.custom.contribute'/>
     </#if>
 </#assign>
 </@_placeMetadata>
@@ -28,7 +28,7 @@
         </dd>
     </dl>
     <dl class="nowrap">
-        <dt>表单代码:</dt>
+        <dt><@t.page 'source_code'/>:</dt>
         <dd>
             <textarea cols="80" rows="20">${(formContent)!}</textarea>
         </dd>

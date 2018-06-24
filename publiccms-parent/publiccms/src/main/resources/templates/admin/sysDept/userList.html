@@ -14,13 +14,13 @@
                 <#include "../include_page/disabled.html"/>
                 <li>
                     <select class="combox" name="emailChecked">
-                        <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}>邮箱验证状态</option>
-                        <option value="false"${(emailChecked??&&"false"==emailChecked)?then(' selected="true"','')?no_esc}>已验证</option>
-                        <option value="true"${(emailChecked??&&"true"==emailChecked)?then(' selected="true"','')?no_esc}>未验证</option>
+                        <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/>/option>
+                        <option value="false"${(emailChecked??&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'verified'/></option>
+                        <option value="true"${(emailChecked??&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'unverified'/></option>
                     </select>
                 </li>
                 <li>
-                    <label>注册日期:</label>
+                    <label><@t.page 'user.register_date'/>:</label>
                     <input type="text" name="startRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
                     <span>-</span>
                     <input type="text" name="endRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
@@ -45,10 +45,10 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="sysDept/addUser.html?deptId=${deptId!}" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> 添加用户</a></li>
-            <li><a href="sysDept/addUser.html?id={sid}" target="navTab" rel="sysUser/edit"><i class="icon-edit icon-large"></i> 修改用户</a></li>
-            <li><a href="sysDept/enableUser.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要启用该用户吗?" target="ajaxTodo"><i class="icon-circle icon-large"></i> 启用</a></li>
-            <li><a href="sysDept/disableUser.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="确定要禁用该用户吗?" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> 禁用</a></li>
+            <li><a href="sysDept/addUser.html?deptId=${deptId!}" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
+            <li><a href="sysDept/addUser.html?id={sid}" target="navTab" rel="sysUser/edit"><i class="icon-edit icon-large"></i> <@t.page 'user.edit'/></a></li>
+            <li><a href="sysDept/enableUser.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'button.enable'/></a></li>
+            <li><a href="sysDept/disableUser.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.disable'/></a></li>
         </ul>
     </div>
     <table class="list" width="100%" layoutH="99">
@@ -57,13 +57,13 @@
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'user.username'/></th>
                 <th><@t.page 'user.nickname'/></th>
-                <th>邮箱</th>
-                <th>已验证邮箱</th>
+                <th><@t.page 'email'/></th>
+                <th><@t.page 'email.verification_status'/></th>
                 <th><@t.page 'disabled'/></th>
                 <th><@t.page 'user.last_login_ip'/></th>
                 <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
                 <th orderField="loginCount" class="<#if orderField??&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.login_count'/></th>
-                <th orderField="registeredDate" class="<#if orderField??&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">注册日期</th>
+                <th orderField="registeredDate" class="<#if orderField??&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.register_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -74,18 +74,18 @@
                 <td>${(a.name)!}</td>
                 <td>${(a.nickName)!}</td>
                 <td>${(a.email)!}</td>
-                <td>${a.emailChecked?then('已验证','未验证')}</td>
-                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disable')+'</font>',t.pageMessage('normal'))?no_esc}</td>
+                <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>
+                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate!}</td>
                 <td>
                     <a href="log/login.html?userId=${a.id}" target="navTab" rel="log/login">
-                        登录日志
+                        <@t.page 'log.login'/>
                     </a>
                     <a href="log/operate.html?userId=${a.id}" target="navTab" rel="log/operate">
-                        后台操作日志
+                        <@t.page 'log.operate'/>
                     </a>
                 </td>
             </tr>

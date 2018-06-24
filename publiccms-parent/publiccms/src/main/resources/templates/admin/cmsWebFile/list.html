@@ -4,7 +4,8 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'path'/>:</label><label>${path?has_content?then(path+'/','/')}</label>
+                    <label><@t.page 'path'/>:</label>
+                    <label>${path?has_content?then(path+'/','/')}</label>
                 </li>
             </ul>
         </div>
@@ -13,10 +14,10 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-            <li><a href="cmsWebFile/content.html?path=${(path?url)!}" target="navTab" rel="cmsWebFile/content"><i class="icon-plus-sign-alt icon-large"></i> 创建文件</a></li>
-            <li><a href="cmsWebFile/directory.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i> 创建目录</a></li>
+            <li><a href="cmsWebFile/content.html?path=${(path?url)!}" target="navTab" rel="cmsWebFile/content"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.create_file'/></a></li>
+            <li><a href="cmsWebFile/directory.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i> <@t.page 'button.create_directory'/></a></li>
             <li><a href="cmsWebFile/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-upload icon-large"></i> <@t.page 'button.upload_file'/></a></li>
-            <li><a href="cmsWebFile/zip.do?path=${(path?url)!'/'}&_csrf=<@_csrfToken admin=true/>" title="确定要压缩这个目录吗?" target="ajaxTodo"><i class="icon-upload icon-large"></i> 压缩当前目录</a></li>
+            <li><a href="cmsWebFile/zip.do?path=${(path?url)!'/'}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><i class="icon-upload icon-large"></i> <@t.page 'button.compress_current_directory'/></a></li>
             <li><a href="cmsWebFile/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete_file'/>" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
@@ -68,14 +69,14 @@
                 <td><@t.fileSize a.size/></td>
                 <td>
                     <#if a.directory>
-                        <a href="cmsWebFile/zip.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="确定要压缩这个目录吗?" target="ajaxTodo">压缩目录</a>
+                        <a href="cmsWebFile/zip.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><@t.page 'compress'/></a>
                     <#else>
                         <#if a.fileName?ends_with('.zip')>
-                            <a href="cmsWebFile/unzip.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="确定要解压缩这个文件么?" target="ajaxTodo">解压缩</a>
-                            <a href="cmsWebFile/unzipHere.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="确定要解压缩这个文件到当前目录么?" target="ajaxTodo">解压缩到当前目录</a>
+                            <a href="cmsWebFile/unzip.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.decompress'/>" target="ajaxTodo"><@t.page 'decompress'/></a>
+                            <a href="cmsWebFile/unzipHere.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.decompress_here'/>" target="ajaxTodo"><@t.page 'decompress_here'/></a>
                         </#if>
                         <#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
-                          <a href="cmsWebFile/content.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit icon-large'></i>" title="文件编辑:${filePath}"><@t.page 'button.edit'/></a>
+                          <a href="cmsWebFile/content.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'button.edit'/>:${filePath}"><@t.page 'button.edit'/></a>
                         </#if>
                         <a href="${site.sitePath+filePath?keep_after('/')}" target="_blank"><@t.page 'button.view'/></a>
                     </#if>

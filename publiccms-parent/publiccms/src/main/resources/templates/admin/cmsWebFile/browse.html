@@ -2,7 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>文件浏览</title>
+    <title><@t.page 'file.view'/></title>
     <link href="${res}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
     <link href="${res}/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
     <script src="${res}/js/jquery-1.9.1.min.js"></script>
@@ -22,7 +22,7 @@ function callback(fileUrl){
     </div>
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-5">文件名</div>
+        <div class="col-md-5"><@t.page 'file.name'/></div>
         <div class="col-md-2"><@t.page 'modified_date'/></div>
         <div class="col-md-2"><@t.page 'create_date'/></div>
         <div class="col-md-2"><@t.page 'file.size'/></div>

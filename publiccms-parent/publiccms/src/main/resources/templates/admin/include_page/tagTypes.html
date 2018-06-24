@@ -18,7 +18,7 @@ function addTagType($id,$name){
         $name=$name.trim();
     }
     if($('#tagTypes span',navTab.getCurrentPanel()).size()>10){
-        alertMsg.error('标签分类不能超过10个');
+        alertMsg.error('<@t.page 'tag_type.warn' 10/>');
     }else{
         if($id&&$name){
             $('#tagTypes',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");

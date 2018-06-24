@@ -5,7 +5,7 @@ function checkFileType(){
     if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
         return true;
     }
-    alertMsg.error('请选择文本类型模板文件');
+    alertMsg.error('<@t.page 'upload.template_warn'/>');
     return false;
 }
 </script>

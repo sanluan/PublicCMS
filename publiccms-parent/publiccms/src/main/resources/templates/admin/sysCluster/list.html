@@ -6,16 +6,16 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>心跳时间:</label>
+                    <label><@t.page 'cluster.heartbeat_time'/>:</label>
                     <input type="text" name="startHeartbeatDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startHeartbeatDate!}" />
                     <span>-</span>
                     <input type="text" name="endHeartbeatDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endHeartbeatDate!}" />
                 </li>
                 <li>
                     <select class="combox" name="master">
-                        <option value=""${(!master?has_content)?then(' selected="true"','')?no_esc}>节点属性</option>
-                        <option value="false"${(master??&&"false"=master)?then(' selected="true"','')?no_esc}>普通节点</option>
-                        <option value="true"${(master??&&"true"=master)?then(' selected="true"','')?no_esc}>管理节点</option>
+                        <option value=""${(!master?has_content)?then(' selected="true"','')?no_esc}><@t.page 'cluster.type'/></option>
+                        <option value="false"${(master??&&"false"=master)?then(' selected="true"','')?no_esc}><@t.page 'cluster.normal'/></option>
+                        <option value="true"${(master??&&"true"=master)?then(' selected="true"','')?no_esc}><@t.page 'cluster.master'/></option>
                     </select>
                 </li>
             </ul>
@@ -36,9 +36,9 @@
         <thead>
             <tr>
                 <th><@t.page 'id'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">启动时间</th>
-                <th orderField="heartbeatDate" class="<#if orderField??&&'heartbeatDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">心跳时间</th>
-                <th>节点类型</th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'cluster.startup_date'/></th>
+                <th orderField="heartbeatDate" class="<#if orderField??&&'heartbeatDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'cluster.heartbeat_time'/></th>
+                <th><@t.page 'cluster.type'/></th>
             </tr>
         </thead>
         <tbody>
@@ -47,7 +47,7 @@
                 <td>${a.uuid!}</td>
                 <td>${a.createDate!}</td>
                 <td>${a.heartbeatDate!}</td>
-                <td>${a.master?string('管理节点','普通节点')}</td>
+                <td>${a.master?string(t.pageMessage('cluster.master'),t.pageMessage('cluster.normal'))}</td>
             </tr>
             </#list>
         </tbody>

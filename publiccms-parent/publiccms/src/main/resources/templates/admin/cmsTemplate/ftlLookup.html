@@ -1,6 +1,5 @@
 <#macro chipTree filepath>
     <@_templateList path=filepath>
-        <@_metadata dir=filepath><#local metaDataMap=object/></@_metadata>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
@@ -10,9 +9,11 @@
                     <@chipTree path/>
                 </ul>
             <#else>
-                <a href="javascript:;" onclick="use('${path}','${(metaDataMap[a.fileName].alias)?has_content?then('<#-- '+metaDataMap[a.fileName].alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
-                    ${a.fileName} ${(metaDataMap[a.fileName].alias)?has_content?then('('+metaDataMap[a.fileName].alias+')','')}
-                </a>
+                <@_metadata path=path>
+	                <a href="javascript:;" onclick="use('${path}','${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
+	                    ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
+	                </a>
+	            </@_metadata>
             </#if>
             </li>
         <#else>
