@@ -1004,13 +1004,12 @@ CREATE TABLE `sys_role` (
   `show_all_module` tinyint(1) NOT NULL COMMENT '显示全部模块',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='角色';
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', '1', '超级管理员', '1', '0');
-INSERT INTO `sys_role` VALUES ('2', '2', '站长', '1', '0');
 
 -- ----------------------------
 -- Table structure for sys_role_authorized
@@ -1070,13 +1069,12 @@ CREATE TABLE `sys_site` (
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`disabled`)
-) AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='站点';
+) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='站点';
 
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
 INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '1', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
-INSERT INTO `sys_site` VALUES ('2', '演示站点1', '0', '//site2.dev.publiccms.com:8080/publiccms/webfile/', '0', '//site2.dev.publiccms.com:8080/publiccms/', '0');
 
 -- ----------------------------
 -- Table structure for sys_task
@@ -1141,7 +1139,6 @@ CREATE TABLE `sys_user` (
 -- Records of sys_user
 -- ----------------------------
 INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
-INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2', '2', '', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
 
 
 -- ----------------------------

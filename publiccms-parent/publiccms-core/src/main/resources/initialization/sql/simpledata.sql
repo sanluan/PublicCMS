@@ -198,5 +198,19 @@ INSERT INTO `cms_place_attribute` VALUES ('40', '{\"price\":\"Beyond Price\",\"d
 -- ----------------------------
 -- Records of cms_tag
 -- ----------------------------
-
 INSERT INTO `cms_tag` VALUES ('1', '1', 'PublicCMS', null, 0);
+
+-- ----------------------------
+-- Records of sys_role
+-- ----------------------------
+INSERT INTO `sys_role` VALUES ('2', '2', '站长', '1', '0');
+
+-- ----------------------------
+-- Records of sys_site
+-- ----------------------------
+INSERT INTO `sys_site` VALUES ('2', '演示站点1', '0', '//site2.dev.publiccms.com:8080/publiccms/webfile/', '0', '//site2.dev.publiccms.com:8080/publiccms/', '0');
+
+-- ----------------------------
+-- Records of sys_user
+-- ----------------------------
+INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2', '2', '', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
