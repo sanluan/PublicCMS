@@ -38,12 +38,17 @@ public class ThumbDirective extends AbstractTemplateDirective {
             if (thumbFile.exists()) {
                 handler.print(thumbPath);
             } else {
-                try (FileOutputStream outputStream = new FileOutputStream(thumbFile);) {
-                    Thumbnails.of(siteComponent.getWebFilePath(site, path)).size(width, height).toOutputStream(outputStream);
-                    handler.print(thumbPath);
-                } catch (IOException e) {
+                File sourceFile = new File(siteComponent.getWebFilePath(site, path));
+                if (sourceFile.exists()) {
+                    try (FileOutputStream outputStream = new FileOutputStream(thumbFile);) {
+                        Thumbnails.of(sourceFile).size(width, height).toOutputStream(outputStream);
+                        handler.print(thumbPath);
+                    } catch (IOException e) {
+                        handler.print(site.getSitePath() + path);
+                        log.error(e.getMessage());
+                    }
+                } else {
                     handler.print(site.getSitePath() + path);
-                    log.error(e.getMessage());
                 }
             }
         }

@@ -14,7 +14,7 @@
         </dl>
         <dl>
             <dt><@t.page 'result'/>:</dt>
-            <dd>${a.success?string(t.pageMessage('success'),t.pageMessage('fail'))}</dd>
+            <dd><#if a.endtime?has_content>${a.success?string(t.pageMessage('success'),t.pageMessage('fail'))}</#if></dd>
         </dl>
         <dl>
             <dt><@t.page 'start_time'/>:</dt>
