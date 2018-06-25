@@ -21,7 +21,7 @@
             <dd>
                 <input class="required domain" remote="sysDomain/virify.do?oldName=${id!}" name="name" data-msg-remote="<@t.message 'verify.hasExist.domain'/>" type="text" size="20" maxlength="255" value="${(a.name)!}"/>
                 <label><input name="wild" type="checkbox"${(a?has_content&&a.wild)?then(' checked="checked"','')?no_esc}/><@t.page 'domain.wild'/></label>
-                <span class="info"><@t.page 'page.domain.description'/></span>
+                <span class="info"><@t.page 'domain.description'/></span>
             </dd>
         </dl>
         <dl class="nowrap">

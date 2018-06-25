@@ -55,7 +55,7 @@
                 </#if>
             </#if>
                 <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'help.site_properties'/></a>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'help.site_attribute'/></a>
                     <ul>
                         <li><a href="javascript:;" <@getAction r'${site.id!}'/>><@t.page 'site.id'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${site.name!}'/>><@t.page 'name'/></a></li>
@@ -66,7 +66,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'help.site_extend_properties'/></a>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'help.site_extend_attribute'/></a>
                     <ul>
                 <@_sysConfigFieldList code='siteAttribute'>
                     <#list list as extend>
