@@ -25,12 +25,12 @@
     <script src="${res}/js/<@t.page 'dwz_regional_js'/>"></script>
 
     <script>
-    var base="${base}/admin";
+    var base="${adminBase}";
     window.UEDITOR_HOME_URL="${res}/ueditor/";
     window.CKEDITOR_BASEPATH="${res}/ckeditor/";
     window.CKEDITOR_LANGUAGE="<@t.page 'ckeditor.lang'/>";
 $(function(){
-    DWZ.init("${base}/admin/common/dwz.frag.html", {
+    DWZ.init("${adminBase}/common/dwz.frag.html", {
         ckeditorResources:["${res}/ckeditor/ckeditor.js"],
         ueditorResources:["${res}/ueditor/ueditor.config.js","${res}/ueditor/ueditor.all.min.js","${res}/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
         codemirrorResources:['${res}/codemirror/lib/codemirror.js','${res}/codemirror/mode/xml/xml.js','${res}/codemirror/mode/javascript/javascript.js','${res}/codemirror/mode/css/css.js',

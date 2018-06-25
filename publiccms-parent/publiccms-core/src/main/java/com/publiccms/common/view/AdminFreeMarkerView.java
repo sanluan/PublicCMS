@@ -16,7 +16,7 @@ import com.publiccms.common.tools.ControllerUtils;
 public class AdminFreeMarkerView extends AbstractFreemarkerView {
     @Override
     protected void exposeHelpers(Map<String, Object> model, HttpServletRequest request) throws Exception {
-        exposeParameters(model,request);
+        exposeParameters(model, request);
         model.put(CONTEXT_ADMIN, ControllerUtils.getAdminFromSession(request.getSession()));
         super.exposeHelpers(model, request);
     }

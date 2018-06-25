@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.base.AbstractController;
@@ -46,18 +47,23 @@ public class IndexAdminController extends AbstractController {
      * 修改语言
      * 
      * @param lang
+     * @param returnUrl
      * @param request
      * @param response
      * @return view name
      */
     @RequestMapping("changeLocale")
-    public String changeLocale(String lang, HttpServletRequest request, HttpServletResponse response) {
+    public String changeLocale(String lang, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
         if (null != lang) {
             LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
             if (null != localeResolver) {
                 localeResolver.setLocale(request, response, StringUtils.parseLocaleString(lang));
             }
         }
-        return CommonConstants.TEMPLATE_DONEANDREFRESH;
+        if (CommonUtils.empty(returnUrl)) {
+            return CommonConstants.TEMPLATE_DONEANDREFRESH;
+        } else {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        }
     }
 }

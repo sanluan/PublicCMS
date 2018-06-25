@@ -56,6 +56,10 @@ public class TemplateComponent implements Cache {
      * 包含目录 include directory
      */
     public static String INCLUDE_DIRECTORY = "include";
+    /**
+     * 管理后台上下文路径 Context Management Context Path Context
+     */
+    public static final String CONTEXT_ADMIN_CONTEXT_PATH = "adminContextPath";
 
     private String directivePrefix;
 
@@ -389,6 +393,13 @@ public class TemplateComponent implements Cache {
             freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
         }
         taskConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, taskConfiguration.getObjectWrapper()));
+    }
+
+    public void setAdminContextPath(String adminContextPath) {
+        try {
+            adminConfiguration.setSharedVariable(CONTEXT_ADMIN_CONTEXT_PATH, adminContextPath);
+        } catch (TemplateModelException e) {
+        }
     }
 
     private void copyConfig(Configuration source, Configuration target) {

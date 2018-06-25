@@ -39,6 +39,10 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      */
     public static final String CONTEXT_BASE = "base";
     /**
+     * Base Context
+     */
+    public static final String CONTEXT_ADMNIN_BASE = "adminBase";
+    /**
      * Include Context
      */
     public static final String CONTEXT_INCLUDE = "include";

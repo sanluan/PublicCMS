@@ -33,7 +33,7 @@ public class AdminInitializer extends BaseServletInitializer implements WebAppli
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] { AdminConfig.ADMIN_BASE_PATH + "/*" };
+        return new String[] { AdminConfig.ADMIN_CONTEXT_PATH + "/*" };
     }
 
 }

@@ -3,7 +3,6 @@ package config.spring;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -31,8 +30,6 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.publiccms.common.cache.CacheEntityFactory;
@@ -62,15 +59,6 @@ public class ApplicationConfig {
 
     @Autowired
     private Environment env;
-
-    @Bean
-    public LocaleResolver localeResolver() {
-        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
-        localeResolver.setCookieName("cms.locale");
-        localeResolver.setCookieMaxAge(30 * 24 * 3600);
-        localeResolver.setDefaultLocale(Locale.forLanguageTag(env.getProperty("cms.defaultLocale")));
-        return localeResolver;
-    }
 
     /**
      * 数据源

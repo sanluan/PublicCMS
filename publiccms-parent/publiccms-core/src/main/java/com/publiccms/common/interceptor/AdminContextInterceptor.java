@@ -26,7 +26,7 @@ import com.publiccms.logic.service.sys.SysUserService;
  *
  */
 public class AdminContextInterceptor extends WebContextInterceptor {
-    private String adminBasePath;
+    private String adminContextPath;
     private String loginUrl;
     private String loginJsonUrl;
     private String unauthorizedUrl;
@@ -46,10 +46,10 @@ public class AdminContextInterceptor extends WebContextInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String path = urlPathHelper.getLookupPathForRequest(request);
         String ctxPath = urlPathHelper.getOriginatingContextPath(request);
-        if (adminBasePath.equals(path)) {
+        if (adminContextPath.equals(path)) {
             try {
                 StringBuilder sb = new StringBuilder(ctxPath);
-                sb.append(adminBasePath).append(CommonConstants.SEPARATOR);
+                sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
                 response.sendRedirect(sb.toString());
                 return false;
             } catch (IOException e) {
@@ -85,7 +85,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                     if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
                         try {
                             StringBuilder sb = new StringBuilder(ctxPath);
-                            sb.append(adminBasePath).append(unauthorizedUrl);
+                            sb.append(adminContextPath).append(unauthorizedUrl);
                             response.sendRedirect(sb.toString());
                             return false;
                         } catch (IOException e) {
@@ -107,12 +107,12 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             HttpServletResponse response) throws IOException {
         if ("XMLHttpRequest".equalsIgnoreCase(requestedWith)) {
             StringBuilder sb = new StringBuilder(ctxPath);
-            sb.append(adminBasePath).append(loginJsonUrl);
+            sb.append(adminContextPath).append(loginJsonUrl);
             response.sendRedirect(sb.toString());
         } else {
             StringBuilder sb = new StringBuilder(ctxPath);
-            sb.append(adminBasePath).append(loginUrl).append("?returnUrl=");
-            sb.append(RequestUtils.getEncodePath(adminBasePath + path, queryString));
+            sb.append(adminContextPath).append(loginUrl).append("?returnUrl=");
+            sb.append(RequestUtils.getEncodePath(adminContextPath + path, queryString));
             response.sendRedirect(sb.toString());
         }
     }
@@ -160,11 +160,11 @@ public class AdminContextInterceptor extends WebContextInterceptor {
     }
 
     /**
-     * @param adminBasePath
-     *            the adminBasePath to set
+     * @param adminContextPath
+     *            the adminContextPath to set
      */
-    public void setAdminBasePath(String adminBasePath) {
-        this.adminBasePath = adminBasePath;
+    public void setAdminContextPath(String adminContextPath) {
+        this.adminContextPath = adminContextPath;
     }
 
     /**
