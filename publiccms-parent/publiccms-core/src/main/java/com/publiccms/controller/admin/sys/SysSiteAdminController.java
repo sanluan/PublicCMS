@@ -77,7 +77,7 @@ public class SysSiteAdminController extends AbstractController {
     /**
      * @param entity
      * @param domain
-     * @param wild 
+     * @param wild
      * @param roleName
      * @param deptName
      * @param userName
@@ -132,7 +132,8 @@ public class SysSiteAdminController extends AbstractController {
                     JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        if (!getSite(request).getId().equals(site.getId()) || site.getId().equals(entity.getId())) {
+        if (!getSite(request).getId().equals(site.getId()) || site.getId().equals(entity.getId())
+                && (!site.getSitePath().equals(entity.getSitePath()) || !site.getDynamicPath().equals(entity.getDynamicPath()))) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
             return CommonConstants.TEMPLATE_DONE;
