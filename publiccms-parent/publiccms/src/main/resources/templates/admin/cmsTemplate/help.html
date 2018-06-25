@@ -55,7 +55,7 @@
                 </#if>
             </#if>
                 <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'help.site_attribute'/></a>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'help.site_properties'/></a>
                     <ul>
                         <li><a href="javascript:;" <@getAction r'${site.id!}'/>><@t.page 'site.id'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${site.name!}'/>><@t.page 'name'/></a></li>
@@ -66,7 +66,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'help.site_extend_attribute'/></a>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'help.site_extend_properties'/></a>
                     <ul>
                 <@_sysConfigFieldList code='siteAttribute'>
                     <#list list as extend>
@@ -86,7 +86,7 @@
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.task_directive'/></a>
                     <ul>
                     	<li><a href="javascript:;" <@getAction r'<@_clearLog clearDate=clearDate>Login log cleaning:${result.loginLog},Operate log cleaning:${result.operateLog},Task log cleaning:${result.taskLog}</@_clearLog>'/>><@t.page 'help.clear_log'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_indexContent id=id ids=ids/>'/>><@t.page 'help.recreate_index'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_indexContent id=id ids=ids/>'/>><@t.page 'help.rebuild_index'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids pageIndex=pageIndex totalPage=totalPage>Publish failed category ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids>Publish failed content ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishPage path=path>Publish failed templates:<#list map?keys as k><#if !map[k]>${k},</#if></#list></@_publishPage>'/>><@t.page 'publish_page'/></a></li>
@@ -154,11 +154,11 @@
                         <li><a href="javascript:;" <@getAction r'${getHtml(url,parameter)}' t.pageMessage('help.method.html.description')/>><@t.page 'help.method.html'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' t.pageMessage('help.method.keywords.description')/>><@t.page 'help.method.'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getMd5(value)}' t.pageMessage('help.method.md5.description')/>><@t.page 'help.method.md5'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' t.pageMessage('help.method.sha1.description')/>><@t.page 'help.method.sha1'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getSha2Encode(value)}' t.pageMessage('help.method.sha2.description')/>><@t.page 'help.method.sha2'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getPage(url,pageIndex,pageParameter)}' t.pageMessage('help.method.page.description')/>><@t.page 'help.method.page'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getRandom(number)}' t.pageMessage('help.method.random.description')/>><@t.page 'help.method.random'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' t.pageMessage('help.method.sha1.description')/>><@t.page 'help.method.sha1'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' t.pageMessage('help.method.sha2.description')/>><@t.page 'help.method.sha2'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'${getSleep(second)}' t.pageMessage('help.method.sleep.description')/>><@t.page 'help.method.sleep'/></a></li>
+                       <li><a href="javascript:;" <@getAction r'${getSleep(second)}' t.pageMessage('help.method.sleep.description')/>><@t.page 'help.method.sleep'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getTemplateResult(template)}' t.pageMessage('help.method.template_result.description')/>><@t.page 'help.method.template_result'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getTextFromHtml(html)}' t.pageMessage('help.method.text_from_html.description')/>><@t.page 'help.method.text_from_html'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getUUID()}' t.pageMessage('help.method.uuid.description')/>><@t.page 'help.method.uuid'/></a></li>

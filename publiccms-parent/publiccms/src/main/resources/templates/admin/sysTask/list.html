@@ -60,7 +60,7 @@
                     <#elseif a.status=2>
                         <a href="sysTask/resume.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.resume'/>" target="ajaxTodo"><@t.page 'button.resume'/></a>
                     <#elseif a.status=3||a.status=1>
-                        <a href="sysTask/recreate.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.recreate'/>" target="ajaxTodo"><@t.page 'button.recreate'/></a>
+                        <a href="sysTask/recreate.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.reinitialize'/>" target="ajaxTodo"><@t.page 'button.reinitialize'/></a>
                     </#if>
                     <a href="log/task.html?taskId=${a.id}" target="navTab" rel="logTask" title="<@t.page 'log.task'/>"><@t.page 'button.view_log'/></a>
                 </td>
