@@ -19,7 +19,7 @@
         </form>
         <p>
             <#list langs as k,v>
-                <a href="${adminBase}/changeLocale?lang=${k}&returnUrl=/">${v}</a>
+                <a href="${adminBase}/changeLocale?lang=${k}&returnUrl=${adminBase?url}/">${v}</a>
             </#list>
         </p>
     </div>
