@@ -33,7 +33,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.search.MultiTokenizerFactory;
@@ -75,13 +74,7 @@ public class ApplicationConfig {
         // } catch (IOException e1) {
         // e1.printStackTrace();
         // }
-        if (CmsVersion.isInitialized()) {
-            try {
-                CmsDataSource.initDefautlDataSource();
-            } catch (IOException | PropertyVetoException e) {
-                CmsVersion.setInitialized(false);
-            }
-        }
+        CmsDataSource.initDefautlDataSource();
         return bean;
     }
 
@@ -261,6 +254,9 @@ public class ApplicationConfig {
     }
 
     private String getDirPath(String path) {
+        if (null == CommonConstants.CMS_FILEPATH) {
+            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", env.getProperty("cms.filePath"));
+        }
         String filePath = CommonConstants.CMS_FILEPATH + path;
         File dir = new File(filePath);
         dir.mkdirs();

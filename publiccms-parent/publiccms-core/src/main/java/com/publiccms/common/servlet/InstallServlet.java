@@ -1,7 +1,7 @@
 package com.publiccms.common.servlet;
 
-import java.beans.PropertyVetoException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -142,7 +142,7 @@ public class InstallServlet extends HttpServlet {
                     try {
                         start();
                         step = "startSuccess";
-                    } catch (PropertyVetoException e) {
+                    } catch (IOException e) {
                         map.put("message", "failed");
                         map.put("error", e.getMessage());
                     }
@@ -155,7 +155,7 @@ public class InstallServlet extends HttpServlet {
         }
     }
 
-    private void start() throws IOException, PropertyVetoException {
+    private void start() throws FileNotFoundException, IOException {
         CmsVersion.setInitialized(true);
         CmsDataSource.initDefautlDataSource();
         File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
