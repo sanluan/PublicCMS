@@ -51,14 +51,14 @@ function getSymbol(value){
 function use(action,needAppToken,needUserToken,minParameters){
     $('#sendData').val(sitePath+apiArray[i]+action);
     if('true'==needAppToken){
-        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken={AppToken}');
+        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'appToken=_AppToken_');
     }
     if('true'==needUserToken){
-        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken={User Token}&authUserId={User ID}');
+        $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'authToken=_UserToken_&authUserId=_UserID_');
     }
     if(minParameters != 'undefined'){
         for (var j = 1; j <= minParameters; j++) {
-            $('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'parameters=value' + j);
+            $('#sendData').val($('#sendData').val() + getSymbol($('#sendData').val()) + 'parameters=_value' + j+'_');
         }
     }else if($('input[name=showParameters]').is(':checked')&&$('input[name=showParameters]').is(':visible')){
         $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
