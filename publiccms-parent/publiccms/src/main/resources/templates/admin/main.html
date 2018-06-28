@@ -115,13 +115,11 @@
                     }
                 });
             </script>
-        <@_sysAuthorized roleIds=admin.roles url='sysCluster/list'>
+    <@_masterSite>
             <p>
                 <label>${master?then(t.pageMessage('cluster.master'),t.pageMessage('cluster.normal'))}:</label>
-                <a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="<@t.page 'cluster.management'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
+                <a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="<@t.menu 'cluster'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
             </p>
-        </@_sysAuthorized>
-    <@_masterSite>
         <@_disk>
             <p>
                 <label><@t.page 'data.directory'/>:</label>

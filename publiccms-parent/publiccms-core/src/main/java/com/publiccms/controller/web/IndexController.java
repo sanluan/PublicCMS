@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -44,6 +45,8 @@ public class IndexController extends AbstractController {
     private TemplateCacheComponent templateCacheComponent;
     @Autowired
     private ConfigComponent configComponent;
+    @Autowired
+    private LocaleResolver localeResolver;
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
     /**
@@ -151,8 +154,8 @@ public class IndexController extends AbstractController {
                         || CommonUtils.notEmpty(pragma) && "no-cache".equalsIgnoreCase(pragma)) {
                     cacheMillisTime = 0;
                 }
-                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, cacheMillisTime, acceptParameters,
-                        request, model);
+                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, localeResolver.resolveLocale(request),
+                        cacheMillisTime, acceptParameters, request, model);
             }
         } else {
             try {

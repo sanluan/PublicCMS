@@ -682,7 +682,6 @@ INSERT INTO `sys_module` VALUES ('log_task_view', 'log/taskView', NULL, NULL, 'l
 INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('task_delete', NULL, 'sysTask/delete', NULL, 'task_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_upload', 'log/upload', 'sysUser/lookup', '<i class=\"icon-list-alt icon-large\"></i>', 'log_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('cluster_list', 'sysCluster/list', NULL, '<i class=\"icon-code-fork icon-large\"></i>', 'system_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, '<i class=\"icon-qrcode icon-large\"></i>', 'system_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('task_list', 'sysTask/list', NULL, '<i class=\"icon-time icon-large\"></i>', 'system_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('task_resume', NULL, 'sysTask/resume', NULL, 'task_list', 0, 0);
@@ -817,7 +816,6 @@ INSERT INTO `sys_module_lang` VALUES ('category_type_change', '', '修改类型'
 INSERT INTO `sys_module_lang` VALUES ('log_menu', '', '日志管理');
 INSERT INTO `sys_module_lang` VALUES ('system_menu', '', '系统维护');
 INSERT INTO `sys_module_lang` VALUES ('log_upload', '', '文件上传日志');
-INSERT INTO `sys_module_lang` VALUES ('cluster_list', '', '节点管理');
 INSERT INTO `sys_module_lang` VALUES ('myself_content_push', 'en', 'test');
 INSERT INTO `sys_module_lang` VALUES ('myself_content_publish', 'en', 'test');
 INSERT INTO `sys_module_lang` VALUES ('myself_content_delete', 'en', 'test');
@@ -849,7 +847,6 @@ INSERT INTO `sys_module_lang` VALUES ('content', 'en', 'Content');
 INSERT INTO `sys_module_lang` VALUES ('config_data_list', 'en', 'Site configuration');
 INSERT INTO `sys_module_lang` VALUES ('config_data_edit', 'en', 'Edit');
 INSERT INTO `sys_module_lang` VALUES ('config_data_delete', 'en', 'Clear config data');
-INSERT INTO `sys_module_lang` VALUES ('cluster_list', 'en', 'Cluster management');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'en', 'Clear cache');
 INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'en', 'Category type');
 INSERT INTO `sys_module_lang` VALUES ('category_type_delete', 'en', 'test');

@@ -5,7 +5,7 @@
 </div>
 <div class="pageFormContent" layoutH="60">
     <ul class="tree treeFolder expand">
-        <li><a href="cmsCategory/changeType.do?id=${id!}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.change_type_normal'/>" target="ajaxTodo"><@t.page 'category.change_type'/></a></li>
+        <li><a href="cmsCategory/changeType.do?id=${id!}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.change_type'/>" target="ajaxTodo"><@t.page 'category.change_type'/></a></li>
 <@_categoryTypeList>
     <#list page.list as a>
         <li><a href="cmsCategory/changeType.do?id=${id!}&typeId=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.change_type'/>" target="ajaxTodo"><@t.page 'change_type_to' a.name!/></a></li>
