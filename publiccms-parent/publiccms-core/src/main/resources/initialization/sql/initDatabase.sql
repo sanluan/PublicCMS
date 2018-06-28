@@ -670,7 +670,6 @@ INSERT INTO `sys_module` VALUES ('operation_menu', NULL, NULL, '<i class=\"icon-
 INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,sysUser/lookup,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', '<i class=\"icon-globe icon-large\"></i>', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('operation_system', NULL, NULL, '<i class=\"icon-cog icon-large\"></i>', 'operation', 1, 1);
 INSERT INTO `sys_module` VALUES ('report_user', 'report/user', NULL, '<i class=\"icon-male icon-large\"></i>', 'operation_system', 1, 2);
-INSERT INTO `sys_module` VALUES ('report_cms', 'report/cms', NULL, '<i class=\"icon-check-sign icon-large\"></i>', 'operation_system', 1, 1);
 INSERT INTO `sys_module` VALUES ('config_data_delete', NULL, 'sysConfigData/delete', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_move', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', '', 'category_menu', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_push', 'cmsCategory/push_page', 'cmsPlace/push,cmsPlace/add,cmsPlace/save', '', 'category_menu', 0, 0);
@@ -809,7 +808,6 @@ INSERT INTO `sys_module_lang` VALUES ('operation_menu', '', '运营管理');
 INSERT INTO `sys_module_lang` VALUES ('page_list', '', '页面管理');
 INSERT INTO `sys_module_lang` VALUES ('operation_system', '', '系统管理');
 INSERT INTO `sys_module_lang` VALUES ('report_user', '', '用户数据监控');
-INSERT INTO `sys_module_lang` VALUES ('report_cms', '', '系统监控');
 INSERT INTO `sys_module_lang` VALUES ('config_data_delete', '', '清空配置');
 INSERT INTO `sys_module_lang` VALUES ('category_move', '', '移动');
 INSERT INTO `sys_module_lang` VALUES ('category_push', '', '推荐');
@@ -938,7 +936,6 @@ INSERT INTO `sys_module_lang` VALUES ('place_list', 'en', 'Page fragment managem
 INSERT INTO `sys_module_lang` VALUES ('place_publish', 'en', 'Publish');
 INSERT INTO `sys_module_lang` VALUES ('place_refresh', 'en', 'Refresh');
 INSERT INTO `sys_module_lang` VALUES ('place_view', 'en', 'View');
-INSERT INTO `sys_module_lang` VALUES ('report_cms', 'en', 'System monitor');
 INSERT INTO `sys_module_lang` VALUES ('report_user', 'en', 'User report');
 INSERT INTO `sys_module_lang` VALUES ('system_menu', 'en', 'System maintenance');
 INSERT INTO `sys_module_lang` VALUES ('tag_add', 'en', 'Add/edit');

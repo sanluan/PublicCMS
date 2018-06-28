@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="<@t.page 'lang'/>">
 <head>
     <meta charset="utf-8">
     <title><@t.page 'report.cms'/></title>
@@ -148,7 +148,7 @@ if(window.memoryInterval){
     clearInterval(window.memoryInterval);
 }
 function refreshMemory(){
-    $.getJSON("../common/memory.html", function(data) {
+    $.getJSON("../sysSite/memory.html", function(data) {
         memoryChart.time.push(data.time);
         memoryChart.data.usedMemory.push(memoryChart.toDecimal((data.totalMemory-data.freeMemory)/1048576));
         memoryChart.data.freeMemory.push(memoryChart.toDecimal((data.maxMemory-data.totalMemory)/1048576));

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="utf-8">
     <title>${metadata.alias!}</title>
@@ -9,7 +9,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${site.useStatic?then(site.sitePath,base)}">Home page</a>
+        <a href="${site.useStatic?then(site.sitePath,base)}">首页</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -17,7 +17,7 @@
 </@_categoryList>
     </nav>
     <main>
-        <h2>Latest content</h2>
+        <h2>最新内容</h2>
 <@_contentList onlyUrl=false count=10>
     <#list page.list as a>
         <article>
@@ -30,7 +30,7 @@
     </#list>
 </@_contentList>
         <aside>
-            <h3>Popular content</h3>
+            <h3>热门内容</h3>
             <ul>
 <@_contentList orderField='clicks' count=10>
     <#list page.list as a>
@@ -42,9 +42,9 @@
     </main>
     <footer>
         <#if base?has_content>
-            <a href="?locale=zh_CN">中文</a>
+            <a href="?locale=en">English</a>
         <#else>
-            <a href="index_zh_CN.html">中文</a>
+            <a href="index.html">English</a>
         </#if>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
