@@ -18,7 +18,7 @@
     <@_categoryList parentId=parentId>
         <#list page.list as a>
             <li>
-                <a href="javascript:;" onclick="$.bringBack({itemType:'category',itemId:'${a.id}',title:'${a.name}',url:'${a.url}'});return false;">${a.name!}</a>
+                <a href="javascript:;" onclick="$.bringBack({itemType:'category',itemId:'${a.id}',title:'${(a.name?js_string)!}',url:'${a.url!}'});return false;">${a.name!}</a>
             <#if a.childIds?has_content>
                 <ul>
                     <@lookupTree a.id/>

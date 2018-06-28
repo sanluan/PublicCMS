@@ -107,7 +107,7 @@ checkPageSize();
         <li>
             <figure>
                 <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${site.sitePath+a.cover!}"></a>
-                <figcaption><a href="${a.url}" target="_blank">${a.title}</a></figcaption>
+                <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a></figcaption>
             </figure>
         </li>
     </#items>
