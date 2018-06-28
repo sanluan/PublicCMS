@@ -169,7 +169,7 @@ public class InstallServlet extends HttpServlet implements Base {
     /**
      * 配置数据库
      */
-    private void configDatabase(HttpServletRequest request, Map<String, Object> map) {
+    private static void configDatabase(HttpServletRequest request, Map<String, Object> map) {
         Connection connection = null;
         try {
             Properties dbconfig = loadAllProperties(DATABASE_CONFIG_TEMPLATE);
@@ -212,7 +212,7 @@ public class InstallServlet extends HttpServlet implements Base {
      * @throws ServletException
      * @throws IOException
      */
-    private void checkDatabse(Map<String, Object> map) {
+    private static void checkDatabse(Map<String, Object> map) {
         Connection connection = null;
         try {
             String databaseConfiFile = CMS_FILEPATH + DATABASE_CONFIG_FILENAME;

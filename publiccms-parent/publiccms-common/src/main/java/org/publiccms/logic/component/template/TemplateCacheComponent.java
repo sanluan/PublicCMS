@@ -78,7 +78,7 @@ public class TemplateCacheComponent implements Cache, Base {
                 cacheMillisTime, model);
     }
 
-    private String getRequestParamtersString(HttpServletRequest request, String acceptParamters) {
+    private static String getRequestParamtersString(HttpServletRequest request, String acceptParamters) {
         StringBuilder sb = new StringBuilder();
         sb.append("/default.html");
         for (String paramterName : split(acceptParamters, COMMA_DELIMITED)) {
@@ -127,7 +127,7 @@ public class TemplateCacheComponent implements Cache, Base {
         }
     }
 
-    private boolean checkCacheFile(String cacheFilePath, int millisTime) {
+    private static boolean checkCacheFile(String cacheFilePath, int millisTime) {
         File dest = new File(cacheFilePath);
         if (dest.exists()) {
             if (dest.lastModified() > (System.currentTimeMillis() - millisTime)) {

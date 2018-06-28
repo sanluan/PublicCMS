@@ -396,7 +396,7 @@ public class TemplateComponent implements Cache {
         taskConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, taskConfiguration.getObjectWrapper()));
     }
 
-    private void copyConfig(Configuration source, Configuration target) {
+    private static void copyConfig(Configuration source, Configuration target) {
         target.setNewBuiltinClassResolver(source.getNewBuiltinClassResolver());
         target.setTemplateUpdateDelayMilliseconds(source.getTemplateUpdateDelayMilliseconds());
         target.setDefaultEncoding(source.getDefaultEncoding());

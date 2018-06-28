@@ -21,8 +21,6 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
 
     /**
      * @param dictionaryId
-     * @param pageIndex
-     * @param pageSize
      * @return
      */
     @SuppressWarnings("unchecked")
