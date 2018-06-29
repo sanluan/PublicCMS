@@ -5,7 +5,7 @@
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save.do">
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
     <input name="path" type="hidden" value="${(path)!}" />
-    <input name="returnUrl" type="hidden" value="${site.dynamicPath}" />
+    <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>" />
     <p><label><@t.page 'title'/>:</label><input name="title" type="text" size="60" value=""/></p>
     <p><label><@t.page 'address'/>:</label><input name="url" type="text" value=""/></p>
     <p><label><@t.page 'cover'/>:</label><input name="cover" type="text" size="60" value=""/></p>
@@ -15,6 +15,28 @@
     <@extendData 'extendDataList' extendList extendValues 'customform'/>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
+    ${'<#assign path=\''?no_esc+path+'\'/>'?no_esc}
+<#noparse>
+    <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+    <#if user?has_content&&(a.adminIds)?has_content&&a.adminIds?seq_contains(user.id)>
+        <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+        <@_placeList path=path advanced=true pageIndex=pageNum count=numPerPage>
+            <#list page.list as a>
+                <@merge 'userIds' a.userId!/>
+            </#list>
+            <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
+                    <p>
+                        <a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickName)!}]
+                    <#if 0=a.status>
+                        <a href="${site.dynamicPath}place/check.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">Check</a> 
+                    </#if>
+                        <a href="${site.dynamicPath}place/delete.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">Delete</a> 
+                    </p>
+            </#list>
+        </@_placeList>
+    </#if>
+</#noparse>
         <#else>
 <@t.message 'verify.custom.contribute'/>
     </#if>

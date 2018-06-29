@@ -36,6 +36,7 @@ import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.search.MultiTokenizerFactory;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -68,12 +69,6 @@ public class ApplicationConfig {
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
         CmsDataSource bean = new CmsDataSource(getDirPath("") + CmsDataSource.DATABASE_CONFIG_FILENAME);
-        // try {
-        // bean.put("other",
-        // CmsDataSource.initDataSource(loadAllProperties("config/database-other.properties")));
-        // } catch (IOException e1) {
-        // e1.printStackTrace();
-        // }
         CmsDataSource.initDefautlDataSource();
         return bean;
     }
@@ -210,6 +205,9 @@ public class ApplicationConfig {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
         bean.setTemplateLoaderPath("classpath:/templates/");
         Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
+        if(CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))) {
+            properties.put("locale", env.getProperty("cms.defaultLocale"));
+        }
         bean.setFreemarkerSettings(properties);
         return bean;
     }

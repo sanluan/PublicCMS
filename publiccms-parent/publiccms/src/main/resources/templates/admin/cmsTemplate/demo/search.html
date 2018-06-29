@@ -21,12 +21,17 @@
 </@_categoryList>
     </nav>
     <main>
+<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
 <@_search word=word tagId=tagId pageIndex=pageIndex count=10>
     <#if page.totalCount gt 0>
         <h1>Results</h1>
     <#list page.list as a>
+        <@merge 'categoryIds' a.categoryId!/>
+    </#list>
+    <@_category ids=categoryIds><#assign categoryMap=map/></@_category>
+    <#list page.list as a>
         <article>
-            <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
+            <h3>[<a href="${(categoryMap[a.categoryId?string].url)!}" target="_blank">${(categoryMap[a.categoryId?string].name)!}</a>]<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
             <p>
                 <#if a.cover?has_content><img src="${site.sitePath+a.cover}" alt="${a.title}"/></#if>
                 ${a.description!}
