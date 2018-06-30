@@ -59,7 +59,7 @@
             <@_sysSite ids=t.siteIds!><#assign siteMap=map!/></@_sysSite>
             <#list page.list as a>
             <tr target="sid" rel="${a.name}">
-                <td><a href="http://${(a.name)!}">${(a.name)!}</a> ${a.wild?then('['+t.pageMessage('domain.wild')+']','')}</td>
+                <td>${(a.name)!} ${a.wild?then('['+t.pageMessage('domain.wild')+']','')}</td>
                 <td>${a.siteId!}</td>
                 <td>${(siteMap[a.siteId?string].name)!}</td>
                 <td>${(a.path)!}</td>

@@ -502,10 +502,9 @@ CREATE TABLE `sys_domain` (
 -- ----------------------------
 -- Records of sys_domain
 -- ----------------------------
-INSERT INTO `sys_domain` VALUES ('dev.publiccms.com', '1', '0', '');
+INSERT INTO `sys_domain` VALUES ('dev.publiccms.com', '1', '1', '');
 INSERT INTO `sys_domain` VALUES ('member.dev.publiccms.com', '1', '0', '/member/');
 INSERT INTO `sys_domain` VALUES ('search.dev.publiccms.com', '1', '0', '/search/');
-INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', '2', '0', '');
 
 -- ----------------------------
 -- Table structure for sys_email_token

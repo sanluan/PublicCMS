@@ -201,6 +201,11 @@ INSERT INTO `cms_place_attribute` VALUES ('40', '{\"price\":\"Beyond Price\",\"d
 INSERT INTO `cms_tag` VALUES ('1', '1', 'PublicCMS', null, 0);
 
 -- ----------------------------
+-- Records of sys_domain
+-- ----------------------------
+INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', '2', '1', '');
+
+-- ----------------------------
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('2', '2', '站长', '1', '0');
