@@ -19,13 +19,13 @@
 				</#list>
             <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
 				<#list page.list as a>
-					<p>【${(categoryMap[a.categoryId?string].name)!}】[<@t.m 'status.content.'+a.status/>]${(a.title)!}  (${a.clicks!}) </p>
+					<p>【${(categoryMap[a.categoryId?string].name)!}】[<@t.m 'page.status.content.'+a.status/>]${(a.title)!}  (${a.clicks!}) </p>
 				</#list>
 			</@_contentList>
 			<h3>我的其他投稿</h3>
 			<@_placeList advanced=true userId=user.id>
 				<#list page.list as a>
-					<p>【<@_placeMetadata path=a.path>${object.alias!}</@_placeMetadata>】 [<@t.m 'status.place.data.'+a.status/>]  ${(a.title)!}(${a.clicks!}) </p>
+					<p>【<@_placeMetadata path=a.path>${object.alias!}</@_placeMetadata>】 [<@t.m 'page.status.place.data.'+a.status/>]  ${(a.title)!}(${a.clicks!}) </p>
 				</#list>
 			</@_placeList>
 		</div>

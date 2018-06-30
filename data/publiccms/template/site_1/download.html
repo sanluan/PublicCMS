@@ -9,21 +9,16 @@
 <main>
     <div class="container">
 		<div class="data-list left-content">
-			<h3>下载链接</h3>
-			<@_placeList path='/index.html/c6ae8ea8-103d-4c93-8ff2-79d67a38b3ae.html'>
-				<#list page.list as a>
-					<p><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></p>
-				</#list>
-			</@_placeList>
-			<h3>源码托管</h3>
-			<@_placeList path='/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html'>
-				<#list page.list as a>
-					<p><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></p>
-				</#list>
-			</@_placeList>
+			 <@_includePlace path="/index.html/2ac8682d-d844-4d95-921d-8c92b89e515c.html"/> <#-- 开源中国 -->
+			<@_includePlace path="/index.html/30ef2211-1197-4725-b253-e5dc12af1b21.html"/> <#-- github -->
 		</div>
 		<aside>
-            <@_includePlace path="/index.html/2ac8682d-d844-4d95-921d-8c92b89e515c.html"/> <#-- 开源中国 -->
+			<div>
+				<h3>文档视频下载</h3>
+				<div class="page">
+						<a href="https://pan.baidu.com/s/1QIPaIhuASKC_16ZJ6v4SgQ">百度网盘</a>密码:eo4r
+				</div>
+			</div>
 		</aside>
     </div>
 	<div class="clearfix-before"></div>

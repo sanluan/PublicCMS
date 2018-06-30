@@ -20,6 +20,7 @@
 			<div class="bdsharebuttonbox"><a href="#" class="bds_more" data-cmd="more"></a><a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a><a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a><a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a></div>
 <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":["renren","bdxc","kaixin001","tqf","tieba","douban","sqq","fx","mail","isohu","ty","copy"],"bdPic":"","bdStyle":"1","bdSize":"24"},"share":{},"image":{"viewList":["qzone","tsina","weixin"],"viewText":"分享到：","viewSize":"24"}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 			<div id="content">${text?no_esc!}</div>
+			<div><@_tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="//search.publiccms.com/?tagId=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@_tag></div>
 			<@include path="/ftl/content_page.ftl"/>
 			<div id="SOHUCS" class="comment" sid="${content.id}"></div>
 			<script charset="utf-8"src="//changyan.sohu.com/upload/changyan.js"></script>
@@ -34,7 +35,7 @@
 			<@_includePlace path="/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
 			<@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
 			<div style="border-bottom: 1px solid #eee;">
-				<h3>相关推荐</h3>
+				<a href="${siteAttribute.searchPath!}?tagId=${content.tagIds}" target="_blank"><h3>相关推荐</h3></a>
 				<ul>
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <@_contentRelatedList contentId=content.id count=10>
