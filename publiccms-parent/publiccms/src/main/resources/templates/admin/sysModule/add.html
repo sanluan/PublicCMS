@@ -25,7 +25,7 @@
             <dt><@t.page 'module.parent'/>:</dt>
             <dd>
                 <input name="parentId" type="hidden" value="${parentId!}" />
-                <input name="parentName" readonly="readonly" type="text" size="20" value="<@t.menu (module.id)!/>"/>
+                <input name="parentName" readonly="readonly" type="text" size="20" value="<#if module?has_content><@t.menu (module.id)!/></#if>"/>
                 <a class="btnLook" href="sysModule/lookup.html" lookupGroup=""><@t.page 'module.select'/></a>
             </dd>
         </dl>
