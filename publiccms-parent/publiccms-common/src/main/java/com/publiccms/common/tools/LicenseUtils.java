@@ -84,8 +84,9 @@ public class LicenseUtils {
             try {
                 if (now.after(
                         DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING).parse(license.getStartDate()))
-                        && now.before(DateUtils.addDays(DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING)
-                                .parse(license.getEndDate()), 1))) {
+                        && (DateFormatUtils.SHORT_DATE_LENGTH != license.getEndDate().length() || now
+                                .before(DateUtils.addDays(DateFormatUtils.getDateFormat(DateFormatUtils.SHORT_DATE_FORMAT_STRING)
+                                        .parse(license.getEndDate()), 1)))) {
                     return true;
                 }
             } catch (ParseException e) {
