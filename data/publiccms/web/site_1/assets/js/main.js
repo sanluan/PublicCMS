@@ -9,8 +9,10 @@ $(function(){
 	$(window).scroll(function(){
 		if(headerHeight-$(window).scrollTop()>0){
 			$('header').removeClass('fixed-position');
+			$('main').removeClass('no-header');
 		} else {
 			$('header').addClass('fixed-position');
+			$('main').addClass('no-header');
 		}
 	});
 	$('.wechat').click(function(){
@@ -26,11 +28,11 @@ $(function(){
 	if (CMS_PATH) {
 		$.getJSON(CMS_PATH+'loginStatus?callback=?', function(data){
 			if(data.id){
-				$('.tools .user').hide();
-				$('.tools .user-logout .nickname').text(data.nickname);
-				$('.tools .user-logout').show();
+				$('.user').hide();
+				$('.user-logout .nickname').text(data.nickname);
+				$('.user-logout').show();
 				if(data.superuserAccess&&true==data.superuserAccess){
-					$('.tools .user-logout .master').show();
+					$('.user-logout .master').show();
 				}
 			}			
 		});
