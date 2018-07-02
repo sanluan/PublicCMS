@@ -72,6 +72,9 @@ public class PlaceController extends AbstractController {
             returnUrl = site.getDynamicPath();
         }
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
+            if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
+                entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
+            }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);

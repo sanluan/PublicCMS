@@ -63,6 +63,9 @@ public class CmsPlaceAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
+            if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
+                entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
+            }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
             SysSite site = getSite(request);
             Long userId = ControllerUtils.getAdminFromSession(session).getId();
@@ -171,7 +174,7 @@ public class CmsPlaceAdminController extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
-     * @param model 
+     * @param model
      * @return view name
      */
     @RequestMapping("delete")

@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 	<title>${metadata.alias!}</title>
-	<@_includePlace path="/index.html/3f9a648b-7360-41b5-86e5-6b4b108268f1.html"/> <#-- 头部Header -->
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
@@ -10,16 +10,16 @@
     <div class="container">
 		<h3>展示您的成果，有助于吸引更多的客户！</h3>
 		<@import path="ftl/tools.ftl" namespace="t"/>
-		
+
 		<#if error?has_content>
 			<p style="color:red"><@t.m error/></p>
 		</#if>
-		
+
 		<#if result?has_content&&!error?has_content>
 			<p style="color:red">提交成功，请等待管理员审核！</p>
 		<#else>
 			<form method="post" action="${site.dynamicPath}content/save.do" onsubmit="return check();">
-				<input type="hidden" name="_csrf" value="de0be804-8208-4c4f-a2da-b31d67d92780"/>
+				<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
 				<input name="returnUrl" type="hidden" value="${site.dynamicPath}case.html?result=true" />
 				<input name="categoryId" type="hidden" value="19"/>
 				<input name="modelId" type="hidden" value="1"/>
@@ -38,7 +38,7 @@
 				<p><input type="submit" value="提交"/></p>
 			</form>
 		</#if>
-		
+
 		<#if user?has_content>
 			<@_contentList categoryId=19 advanced=true userId=user.id>
 				<#list page.list as a>
@@ -48,7 +48,7 @@
 		</#if>
     </div>
 </main>
-<@_includePlace path="/index.html/6369e868-50b9-4245-9d39-fd440384a685.html"/> <#-- 尾部Footer -->
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 <script type="text/javascript">
 	$(function(){$('.login-form input').eq(0).focus();});
 	function check(){

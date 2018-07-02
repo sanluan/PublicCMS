@@ -50,7 +50,7 @@ $(function(){
 </head>
 <body scroll="no">
 <header>
-    <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/themes/logo.png</#if>"/></a>
+    <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo.png</#if>"/></a>
     <ul class="nav">
         <li>
             <a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i> <@t.page 'dynamic_website'/></a>

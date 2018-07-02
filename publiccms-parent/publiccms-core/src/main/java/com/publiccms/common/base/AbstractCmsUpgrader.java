@@ -1,7 +1,6 @@
 package com.publiccms.common.base;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,7 +21,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.views.pojo.entities.CmsModel;
-import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  *
@@ -77,58 +75,6 @@ public abstract class AbstractCmsUpgrader {
      */
     public abstract void setDataBaseUrl(Properties dbconfig, String host, String port, String database)
             throws IOException, URISyntaxException;
-
-    protected void updateModelToFile(Connection connection) throws SQLException {
-        try (Statement statement = connection.createStatement();
-                ResultSet rs = statement.executeQuery("select * from cms_model");) {
-            while (rs.next()) {
-                CmsModel entity = new CmsModel();
-                String filePath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
-                        + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("site_id")
-                        + CommonConstants.SEPARATOR + SiteComponent.MODEL_FILE;
-                File file = new File(filePath);
-                file.getParentFile().mkdirs();
-                Map<String, CmsModel> modelMap;
-                try {
-                    modelMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, CmsModel>>() {
-                    });
-                } catch (IOException | ClassCastException e) {
-                    modelMap = new HashMap<>();
-                }
-                entity.setId(rs.getString("id"));
-                entity.setHasChild(rs.getBoolean("has_child"));
-                entity.setHasFiles(rs.getBoolean("has_files"));
-                entity.setHasImages(rs.getBoolean("has_images"));
-                entity.setName(rs.getString("name"));
-                entity.setOnlyUrl(rs.getBoolean("only_url"));
-                if (null != rs.getString("parent_id")) {
-                    entity.setParentId(String.valueOf(rs.getString("parent_id")));
-                }
-                entity.setTemplatePath((String) rs.getString("template_path"));
-                if (null != rs.getString("extend_id")) {
-                    List<ExtendField> extendList = new ArrayList<>();
-                    try (Statement extendFieldStatement = connection.createStatement();
-                            ResultSet extendFieldRs = extendFieldStatement.executeQuery(
-                                    "select * from sys_extend_field where extend_id = " + rs.getString("extend_id"));) {
-                        while (extendFieldRs.next()) {
-                            ExtendField e = new ExtendField(extendFieldRs.getString("code"),
-                                    extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
-                                    extendFieldRs.getString("name"), extendFieldRs.getString("description"),
-                                    extendFieldRs.getString("default_value"));
-                            extendList.add(e);
-                        }
-                    }
-                    entity.setExtendList(extendList);
-                }
-                modelMap.put(entity.getId(), entity);
-                try (FileOutputStream outputStream = new FileOutputStream(file);) {
-                    CommonConstants.objectMapper.writeValue(outputStream, modelMap);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 
     protected void updateModelAddFieldList(Connection connection) {
         try (Statement statement = connection.createStatement();
