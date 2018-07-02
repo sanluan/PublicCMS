@@ -90,7 +90,7 @@
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[author]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['author'])!t.pageMessage(''content.author'')}"/>
+                    <input name="fieldTextMap[author]" type="text" maxlength="10" size="10" value="${(a.fieldTextMap['author'])!t.pageMessage('content.author')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="author"/><@t.page 'required'/></label>
                 </dd>
             </dl>
