@@ -18,7 +18,7 @@ function siteDefaultConfig${id!}(type){
         $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
     }
     <#if !a??>
-        $('input[name=domainName]',navTab.getCurrentPanel()).val("${base?keep_after('//')?keep_before('/')?keep_before(':')}");
+        $('input[name=domain]',navTab.getCurrentPanel()).val("${base?keep_after('//')?keep_before('/')?keep_before(':')}");
     </#if>
     $('.info',navTab.getCurrentPanel()).show();
 }
