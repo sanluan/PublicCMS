@@ -405,7 +405,7 @@ INSERT INTO `sys_module` VALUES ('config_data_list', 'sysConfigData/list', NULL,
 INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, '<i class=\"icon-cogs icon-large\"></i>', 'config_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('config_list_data_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'config_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('config_menu', NULL, NULL, '<i class=\"icon-gear icon-large\"></i>', 'develop', 1, 1);
+INSERT INTO `sys_module` VALUES ('config_menu', NULL, NULL, '<i class=\"icon-gear icon-large\"></i>', 'develop', 1, 2);
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, '<i class=\"icon-book icon-large\"></i>', NULL, 1, 2);
 INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,cmsContent/save,ueditor', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check', '', 'content_menu', 1, 0);
@@ -432,13 +432,13 @@ INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/lookup,sysU
 INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', 'sysDept/lookup,sysUser/lookup', '<i class=\"icon-group icon-large\"></i>', 'user_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('dept_user_list', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, 'dept_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, '<i class=\"icon-puzzle-piece icon-large\"></i>', NULL, 1, 7);
+INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, '<i class=\"icon-folder-close-alt icon-large\"></i>', NULL, 1, 7);
 INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/save', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, '<i class=\"icon-book icon-large\"></i>', 'system_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, '<i class=\"icon-qrcode icon-large\"></i>', 'system_menu', 1, 3);
-INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, '<i class=\"icon-folder-close-alt icon-large\"></i>', 'develop', 1, 0);
+INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, '<i class=\"icon-folder-close-alt icon-large\"></i>', 'develop', 1, 1);
 INSERT INTO `sys_module` VALUES ('log_login', 'log/login', 'sysUser/lookup', '<i class=\"icon-signin icon-large\"></i>', 'log_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('log_login_delete', NULL, 'logLogin/delete', NULL, 'log_login', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_menu', NULL, NULL, '<i class=\"icon-list-alt icon-large\"></i>', 'maintenance', 1, 3);
@@ -516,7 +516,7 @@ INSERT INTO `sys_module` VALUES ('task_template_content', 'taskTemplate/content'
 INSERT INTO `sys_module` VALUES ('task_template_delete', NULL, 'taskTemplate/delete', NULL, 'task_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('task_template_fragment', 'taskTemplate/chipLookup', NULL, NULL, 'task_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('task_template_help', 'cmsTemplate/help', NULL, NULL, 'task_template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('task_template_list', 'taskTemplate/list', NULL, '<i class=\"icon-time icon-large\"></i>', 'file_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('task_template_list', 'taskTemplate/list', NULL, '<i class=\"icon-time icon-large\"></i>', 'file_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('template_content', 'cmsTemplate/content', 'cmsTemplate/save,cmsTemplate/chipLookup,cmsWebFile/lookup,placeTemplate/form,cmsWebFile/contentForm,cmsTemplate/demo,cmsTemplate/help,cmsTemplate/upload,cmsTemplate/doUpload', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_content-type', 'cmsTemplate/contentTypeLookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_content_form', 'cmsTemplate/contentForm', NULL, NULL, 'template_list', 0, 0);
@@ -538,11 +538,12 @@ INSERT INTO `sys_module` VALUES ('user_list', 'sysUser/list', NULL, '<i class=\"
 INSERT INTO `sys_module` VALUES ('user_menu', NULL, NULL, '<i class=\"icon-user icon-large\"></i>', 'maintenance', 1, 1);
 INSERT INTO `sys_module` VALUES ('webfile_content', 'cmsWebFile/content', 'cmsWebFile/save', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_directory', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', NULL, 'webfile_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, '<i class=\"icon-globe icon-large\"></i>', 'file_menu', 1, 6);
+INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, '<i class=\"icon-globe icon-large\"></i>', 'file_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('webfile_unzip', NULL, 'cmsWebFile/unzip,cmsWebFile/unzipHere', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, '<i class=\"icon-search icon-large\"></i>', 'content_extend', 1, 2);
+
 -- 20180609 --
 ALTER TABLE `log_upload` 
     CHANGE COLUMN `image` `file_type` varchar(20) NOT NULL COMMENT '文件类型' AFTER `channel`,
