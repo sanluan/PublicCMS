@@ -236,9 +236,11 @@ a.toggleCollapse{ text-decoration:none;}
 #splitBar{ display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
 #splitBarProxy{ display:none;overflow:hidden;width:2px;border-style:solid;border-color:#c0c0c0;background:#CCC;border-width:1px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
 
+.langList{ position:absolute;left:0px;bottom:0px;padding:0px 7px;}
+.langList li{ float:left;padding:0px 3px;}
 .themeList li div{ background:url(../default/images/themeButton.png) no-repeat;}
 .themeList{ width:80px;position:absolute;right:0px;bottom:0px;padding:7px;}
-.themeList li{ float:left;padding:0 3px;}
+.themeList li{ float:left;padding:0px 3px;}
 .themeList li div{ display:block;overflow:hidden;width:13px;height:11px;text-indent:-100px;cursor:pointer;}
 .themeList li.azure div{ background-position:0 0;}
 .themeList li.azure .selected{ background-position:0 -20px;}

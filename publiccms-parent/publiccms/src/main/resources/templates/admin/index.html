@@ -58,14 +58,6 @@ $(function(){
                 | <a href="${site.sitePath!}" target="_blank"><i class="icon-home icon-large"></i> <@t.page 'website'/></a>
             </#if>
         </li>
-        <li class="switchBox">
-            <a href="javascript:"><i class="icon-wrench icon-large"></i> <@t.page 'change_locale'/></a>
-            <ul>
-            <#list langs as k,v>
-                <li><a href="changeLocale?lang=${k}" target="ajaxTodo">${v}</a></li>
-            </#list>
-            </ul>
-        </li>
     <@_sysAuthorized roleIds=admin.roles url='clearCache'>
         <li>
             <a href="clearCache" target="ajaxTodo"><i class="icon-refresh icon-large"></i> <@t.page 'button.clear_cache'/></a>
@@ -140,6 +132,14 @@ $(function(){
     </div>
 </main>
 <footer>
+    <ul class="langList">
+        <li><@t.page 'change_locale'/></li>
+    <#list langs as k,v>
+        <#if .locale!=k>
+            <li><a href="changeLocale?lang=${k}" target="ajaxTodo">${v}</a></li>
+        </#if>
+    </#list>
+    </ul>
 <@_version>
     <#if authorizationEdition>
         <a href="common/license.html" target="dialog" mask="true"><@t.page 'license'/>: ${getLicense().authorization!}</a>
