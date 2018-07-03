@@ -709,7 +709,7 @@ CREATE TABLE `sys_module_lang` (
   `module_id` varchar(30) NOT NULL COMMENT '模块ID',
   `lang` varchar(20) NOT NULL COMMENT '语言',
   `value` varchar(100) DEFAULT NULL COMMENT '值',
-  PRIMARY KEY (`module_id`,`lang`) USING BTREE
+  PRIMARY KEY (`module_id`,`lang`)
 ) DEFAULT CHARSET=utf8 COMMENT='模块语言';
 
 -- ----------------------------
