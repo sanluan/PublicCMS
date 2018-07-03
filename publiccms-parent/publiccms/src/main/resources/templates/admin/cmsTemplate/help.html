@@ -1,4 +1,4 @@
-<#if !task?has_content>
+<#if path?has_content>
     <@_metadata path=path><#assign metadata=object/></@_metadata>
 </#if>
 <#macro getAction code description=''>onclick="DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('<#if description?has_content>${r'<#--'} ${description} ${r'-->'}\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"</#macro>
@@ -9,7 +9,7 @@
                 <li><a href="javascript:;" onclick="return false;"><@t.page 'help.echo'/></a></li>
                 <li><a href="javascript:;" onclick="return false;"><@t.page 'help.directive_and_method'/></a></li>
                 <li><a href="javascript:;" onclick="return false;"><@t.page 'help.config'/></a></li>
-                <li><a href="javascript:;" onclick="return false;"><@t.page 'help.contribute_form'/></a></li>
+                <#if path?has_content><li><a href="javascript:;" onclick="return false;"><@t.page 'help.contribute_form'/></a></li></#if>
             </ul>
         </div>
     </div>
@@ -75,13 +75,16 @@
                 </@_sysConfigFieldList>
                     </ul>
                 </li>
+                <#if metadata.useDynamic?has_content&&metadata.useDynamic>
+                <li><a href="javascript:;" <@getAction r'${(user.nickName)!}'/>><@t.page 'current_user'/></a></li>
+                </#if>
                 <li><a href="javascript:;" <@getAction r'<#list .dataModel?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_data_model')/>><@t.page 'help.echo_data_model'/></a></li>
                 <li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_namespace')/>><@t.page 'help.echo_namespace'/></a></li>
             </ul>
         </div>
         <div class="pageFormContent" layoutH="37">
             <ul class="tree treeFolder">
-            <#if task?has_content>
+            <#if type?has_content&&'task'=type>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.task_directive'/></a>
                     <ul>
@@ -187,6 +190,7 @@
 </@_sysConfigList>
             </ul>
         </div>
+    <#if path?has_content>
         <div class="pageFormContent" layoutH="37">
             <ul class="tree treeFolder">
                 <li>
@@ -241,5 +245,6 @@
                 </li>
             </ul>
         </div>
+    </#if>
     </div>
 </div>
