@@ -1,5 +1,5 @@
 <#macro placeTree filepath=''>
-    <@_templateList path='/include'+filepath>
+    <@_templateList path='/include'+filepath orderField='createDate'>
         <#list list as a>
             <@t.merge 'pages' '/include'+filepath+'/'+a.fileName/>
         </#list>

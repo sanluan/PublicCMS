@@ -31,7 +31,7 @@
     </@_categoryList>
 </#macro>
 <#macro pageTree filepath=''>
-    <@_templateList path=filepath>
+    <@_templateList path=filepath orderField='createDate'>
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <li>

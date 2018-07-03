@@ -1,5 +1,5 @@
 <#macro placeTree filepath=''>
-    <@_templateList path='/include'+filepath>
+    <@_templateList path='/include'+filepath orderField='createDate'>
         <#list list as a>
             <@t.merge 'pages' '/include'+filepath+'/'+a.fileName/>
         </#list>
@@ -15,7 +15,7 @@
                     <#elseif 0=((object.size)!0)>
                         <a href="cmsPlace/publish_place.html?path=${path?url}" target="ajax" rel="placeBox">${(object.alias)!a.fileName}</a>
                     <#else>
-                        <a href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList:${path!}"><@t.page 'place_data.place'/>:${(object.alias)!a.fileName}</a>
+                        <a href="cmsPlace/dataList.html?path=${path?url}" target="navTab" rel="cmsPlace/dataList"><@t.page 'place_data.place'/>:${(object.alias)!a.fileName}</a>
                     </#if>
                 </@_placeMetadata>
                 </li>

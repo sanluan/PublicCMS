@@ -1,5 +1,5 @@
 <#macro chipTree filepath prefix suffix>
-    <@_templateList path='include'+filepath>
+    <@_templateList path='include'+filepath orderField='createDate'>
         <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
