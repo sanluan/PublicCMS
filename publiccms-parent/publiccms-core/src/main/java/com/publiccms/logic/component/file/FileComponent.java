@@ -1,4 +1,4 @@
-package com.publiccms.logic.component.site;
+package com.publiccms.logic.component.file;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -9,6 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -29,32 +31,53 @@ import com.publiccms.logic.component.template.TemplateComponent;
 @Component
 public class FileComponent {
     private static final String FILE_NAME_FORMAT_STRING = "yyyy/MM-dd/HH-mm-ssSSSS";
+    private static final String ORDERFIELD_FILENAME = "fileName";
+    private static final String ORDERFIELD_FILESIZE = "fileSize";
+    private static final String ORDERFIELD_CREATEDATE = "createDate";
+    private static final String ORDERFIELD_MODIFIEDDATE = "modifiedDate";
+    private final FileInfoComparator FILENAME_COMPARATOR = new FileInfoComparator();
+    private final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
+    private final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);
+    private final FileInfoComparator MODIFIEDDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_MODIFIEDDATE);
 
     /**
      * 获取目录下文件列表
      *
      * @param dirPath
+     * @param orderField
      * @return file info list
      */
-    public List<FileInfo> getFileList(String dirPath) {
+    public List<FileInfo> getFileList(String dirPath, String orderField) {
         List<FileInfo> fileList = new ArrayList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dirPath))) {
-            List<FileInfo> tempList = new ArrayList<>();
             for (Path entry : stream) {
                 Path fileNamePath = entry.getFileName();
                 if (null != fileNamePath) {
                     String fileName = fileNamePath.toString();
                     if (!fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
-                        if (attrs.isDirectory()) {
-                            fileList.add(new FileInfo(fileName, true, attrs));
-                        } else {
-                            tempList.add(new FileInfo(fileName, false, attrs));
-                        }
+                        fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs));
                     }
                 }
             }
-            fileList.addAll(tempList);
+            if (null == orderField) {
+                orderField = ORDERFIELD_FILENAME;
+            }
+            Comparator<FileInfo> comparator;
+            switch (orderField) {
+            case ORDERFIELD_MODIFIEDDATE:
+                comparator = MODIFIEDDATE_COMPARATOR;
+                break;
+            case ORDERFIELD_CREATEDATE:
+                comparator = CREATEDATE_COMPARATOR;
+                break;
+            case ORDERFIELD_FILESIZE:
+                comparator = FILESIZE_COMPARATOR;
+                break;
+            default:
+                comparator = FILENAME_COMPARATOR;
+            }
+            Collections.sort(fileList, comparator);
         } catch (IOException e) {
         }
         return fileList;
@@ -182,6 +205,45 @@ public class FileComponent {
         dest.getParentFile().mkdirs();
         file.transferTo(dest);
         return dest.getName();
+    }
+
+    public class FileInfoComparator implements Comparator<FileInfo> {
+        private String mode = ORDERFIELD_FILENAME;
+
+        public FileInfoComparator() {
+        }
+
+        public FileInfoComparator(String mode) {
+            if (null != mode) {
+                this.mode = mode;
+            }
+        }
+
+        @Override
+        public int compare(FileInfo o1, FileInfo o2) {
+            if (o1.isDirectory() && !o2.isDirectory()) {
+                return -1;
+            } else if (!o1.isDirectory() && o2.isDirectory()) {
+                return 1;
+            } else {
+                int result = 0;
+                switch (mode) {
+                case ORDERFIELD_MODIFIEDDATE:
+                    result = o2.getLastModifiedTime().compareTo(o1.getLastModifiedTime());
+                    break;
+                case ORDERFIELD_CREATEDATE:
+                    result = o2.getCreationTime().compareTo(o1.getCreationTime());
+                    break;
+                case ORDERFIELD_FILESIZE:
+                    result = Long.compare(o2.getSize(), o1.getSize());
+                    break;
+                default:
+                    result = o1.getFileName().toLowerCase().compareTo(o2.getFileName().toLowerCase());
+                }
+                return result;
+            }
+        }
+
     }
 
     /**

@@ -13,8 +13,8 @@ import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
-import com.publiccms.logic.component.site.FileComponent.FileInfo;
+import com.publiccms.logic.component.file.FileComponent;
+import com.publiccms.logic.component.file.FileComponent.FileInfo;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
@@ -58,7 +58,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         Map<String, Boolean> map = new LinkedHashMap<>();
         String realPath = siteComponent.getWebTemplateFilePath(site,
                 TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
-        List<FileInfo> list = fileComponent.getFileList(realPath);
+        List<FileInfo> list = fileComponent.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {

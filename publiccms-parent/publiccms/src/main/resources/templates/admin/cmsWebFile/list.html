@@ -1,6 +1,7 @@
 <#assign editableSubfix=['css','js','html','shtml','htm','xml','txt']/>
 <div class="pageHeader">
     <form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+        <input type="hidden" name="orderField" value="${orderField!}" />
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
@@ -26,15 +27,15 @@
             <tr>
                 <th width="20"><input type="checkbox" group="paths" class="checkboxCtrl"></th>
                 <th width="30"></th>
-                <th><@t.page 'name'/></th>
-                <th><@t.page 'modified_date'/></th>
-                <th><@t.page 'create_date'/></th>
-                <th><@t.page 'file.size'/></th>
+                <th orderField="fileName" class="<#if !orderField??||'fileName'==orderField>asc<#else>order</#if>"><@t.page 'name'/></th>
+                <th orderField="modifiedDate" class="<#if orderField??&&'modifiedDate'==orderField>desc<#else>order</#if>"><@t.page 'modified_date'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField>desc<#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="fileSize" class="<#if orderField??&&'fileSize'==orderField>desc<#else>order</#if>"><@t.page 'file.size'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
-    <@_webFileList path=path>
+    <@_webFileList path=path orderField=orderField>
         <#if path?has_content>
             <tr>
                 <td></td>

@@ -14,8 +14,8 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
-import com.publiccms.logic.component.site.FileComponent.FileInfo;
+import com.publiccms.logic.component.file.FileComponent;
+import com.publiccms.logic.component.file.FileComponent.FileInfo;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -58,7 +58,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
     private Map<String, Boolean> deal(SysSite site, String path) {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        List<FileInfo> list = fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, path));
+        List<FileInfo> list = fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, path), null);
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
