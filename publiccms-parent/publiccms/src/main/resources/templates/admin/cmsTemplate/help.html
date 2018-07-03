@@ -53,6 +53,9 @@
                     <li><a href="javascript:;" <@getAction r'${url!}'/>><@t.page 'help.page_url'/></a></li>
                 </li>
                 </#if>
+                <#if metadata.useDynamic?has_content&&metadata.useDynamic>
+                    <li><a href="javascript:;" <@getAction r'${(user.nickName)!}'/>><@t.page 'current_user'/></a></li>
+                </#if>
             </#if>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.site_attribute'/></a>
@@ -75,9 +78,6 @@
                 </@_sysConfigFieldList>
                     </ul>
                 </li>
-                <#if metadata.useDynamic?has_content&&metadata.useDynamic>
-                <li><a href="javascript:;" <@getAction r'${(user.nickName)!}'/>><@t.page 'current_user'/></a></li>
-                </#if>
                 <li><a href="javascript:;" <@getAction r'<#list .dataModel?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_data_model')/>><@t.page 'help.echo_data_model'/></a></li>
                 <li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_namespace')/>><@t.page 'help.echo_namespace'/></a></li>
             </ul>
