@@ -1,0 +1,19 @@
+<#list page.list>
+    <div class="infinite-carousel">
+        <div class="wrapper">
+            <ul>
+    <#items as a>
+        <li>
+			<div onmouseover="this.className='on-div'" onmouseout="this.className=''">
+				<img src="${site.sitePath+a.cover!}" width="217" height="117" alt="${a.title!}"/>
+				<a href="${a.url!}" target="_blank" title="${a.title!}"></a>
+			</div>
+		</li>
+    </#items>
+   		    </ul>
+        </div>
+        <div class="infinite-carousel-bg"></div>
+        <a id="prev" class="btn_icon" href="javascript:;"></a>
+        <a id="next" class="btn_icon" href="javascript:;"></a>
+    </div>
+</#list>

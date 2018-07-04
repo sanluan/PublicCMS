@@ -1,0 +1,24 @@
+<footer>
+		<p><a href="#">人才中心</a>|<a href="#">联系我们</a>|<a href="#">网站导航</a>|<a href="#">法律声明</a></p>
+		Copyright 2007-2008 某某集团有限公司 版权所有 闽ICP备07####743号 ****@****.com<br />地址:上海市长宁区虹桥路1452号古XXXXXX中心16楼 电话:021-999999999 传真:021-999999999 邮编:200051<br />
+</footer>
+<script type="text/javascript" src="${site.sitePath}assets/js/jquery.js"></script>
+<script type="text/javascript" src="${site.sitePath}assets/js/roll.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".nav ul li a").mouseover(function() {
+		$(this).parent().find(".subnav").slideDown('fast').show();
+		$(this).parent().hover(function() {}, function(){
+			$(this).parent().find(".subnav").slideUp('fast');
+		});
+	});
+});
+//鼠标经过li切换背景、字体 颜色
+$(".tab-list li").hover(function () {
+	$(this).addClass("li_color");   //鼠标经过时增加样式P02
+},
+function () {
+	$(this).removeClass("li_color"); //鼠标离开时移除样式P02
+});
+<@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
+</script>

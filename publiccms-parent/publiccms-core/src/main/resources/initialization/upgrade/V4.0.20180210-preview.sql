@@ -547,7 +547,9 @@ INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, '<i class=\"
 -- 20180609 --
 ALTER TABLE `log_upload` 
     CHANGE COLUMN `image` `file_type` varchar(20) NOT NULL COMMENT '文件类型' AFTER `channel`,
-    ADD COLUMN `original_name` varchar(255) NULL COMMENT '原文件名' AFTER `channel`;
+    ADD COLUMN `original_name` varchar(255) NULL COMMENT '原文件名' AFTER `channel`,
+    DROP INDEX `image`,
+    ADD INDEX `file_type`(`file_type`);
 UPDATE `log_upload` SET file_type = 'image' WHERE file_type = '1';
 UPDATE `log_upload` SET file_type = 'image' WHERE file_path like '%.png' or file_path like '%.jpg' or file_path like '%.gif' or file_path like '%.bmp';
 UPDATE `log_upload` SET file_type = 'video' WHERE file_path like '%.mp4' or file_path like '%.3gp';

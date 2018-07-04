@@ -1,7 +1,7 @@
 <@_content id=id>
 	<#assign content=object/>
 	<#assign arrtibute=getContentAttribute(id)/>
-	<@_category id=content.categoryId>
+    <@_category id=object.categoryId>
 		<#assign category=object/>
 	<@_category id=category.parentId>
 		<#assign parent=object/>
@@ -9,7 +9,7 @@
 	</@_category>
 </@_content>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
@@ -21,9 +21,9 @@
 <body>
 	<@_includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
 
-	<div class="banner" style="background:url(${site.sitePath!}assets/images/banner.gif) no-repeat top;"></div>
+	<div class="banner" style="background:url(${site.sitePath}assets/images/banner.gif) no-repeat top;"></div>
 
-	<@_includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
+	<@_includePlace path="/1478e1a7-2fcc-452e-841b-2eecc067d7c4.html"/> <#-- 英文导航 -->
 
 	<main class="container">
 		<div class="left">
@@ -35,23 +35,22 @@
 			</#list>
 		</@_categoryList>
 			</ul>
-			<h2><div><strong>相关链接</strong></div></h2>
-			<select class="friend-link" onchange="javascript:window.open(this.options[this.selectedIndex].value)">
-				<option value="">友情链接</option>
+			<h2><strong>Related Links</strong></h2>
+			<select class="friend-link" onchange="javascript:if(this.options[this.selectedIndex].value){window.open(this.options[this.selectedIndex].value)}">
+                <option value="">Friend Link</option>
 				<@_includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
 			</select>
 			<@_includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
 		</div>
 		<div class="breadcrumb">
-			<h3><span>当前位置：<a href="${base!}">首页</a> > <a href="${(category.url)!}">${(category.name)!}</a></span>${content.title}</h3>
+			<h3><span>Position：<a href="${base!}">Home</a> > <a href="${(category.url)!}">${(category.name)!}</a></span>${content.title}</h3>
 			<div class="content">
 				${(arrtibute.text?no_esc)!}
 			</div>
 		</div>
 	</main>
-	
+
 	<@_includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
-	
 	<script>
 		$('a[data-id=${parent.id}]').addClass('selected');
 		$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){});

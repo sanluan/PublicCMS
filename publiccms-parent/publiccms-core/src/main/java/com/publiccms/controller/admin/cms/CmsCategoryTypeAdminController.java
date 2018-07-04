@@ -80,11 +80,13 @@ public class CmsCategoryTypeAdminController extends AbstractController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.categoryType", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        if (null == extendService.getEntity(entity.getExtendId())) {
-            entity = service.updateExtendId(entity.getId(),
-                    (Integer) extendService.save(new SysExtend("categoryType", entity.getId())));
+        if (CommonUtils.notEmpty(categoryTypeParameters.getCategoryExtends()) || CommonUtils.notEmpty(entity.getExtendId())) {
+            if (null == extendService.getEntity(entity.getExtendId())) {
+                entity = service.updateExtendId(entity.getId(),
+                        (Integer) extendService.save(new SysExtend("categoryType", entity.getId())));
+            }
+            extendFieldService.update(entity.getExtendId(), categoryTypeParameters.getCategoryExtends());// 修改或增加分类类型扩展字段
         }
-        extendFieldService.update(entity.getExtendId(), categoryTypeParameters.getCategoryExtends());// 修改或增加分类类型扩展字段
         return CommonConstants.TEMPLATE_DONE;
     }
 

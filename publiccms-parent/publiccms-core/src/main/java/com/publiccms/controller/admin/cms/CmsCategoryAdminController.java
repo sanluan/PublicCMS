@@ -79,15 +79,16 @@ public class CmsCategoryAdminController extends AbstractController {
      * @param entity
      * @param attribute
      * @param categoryParameters
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsCategory entity, CmsCategoryAttribute attribute, @ModelAttribute CmsCategoryParameters categoryParameters,
-            String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(CmsCategory entity, CmsCategoryAttribute attribute,
+            @ModelAttribute CmsCategoryParameters categoryParameters, String _csrf, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -120,10 +121,6 @@ public class CmsCategoryAdminController extends AbstractController {
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.category", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        if (null == extendService.getEntity(entity.getExtendId())) {
-            entity = service.updateExtendId(entity.getId(),
-                    (Integer) extendService.save(new SysExtend("category", entity.getId())));
-        }
 
         Integer[] tagTypeIds = tagTypeService.update(site.getId(), categoryParameters.getTagTypes());
         service.updateTagTypeIds(entity.getId(), arrayToCommaDelimitedString(tagTypeIds));// 更新保存标签分类
@@ -141,7 +138,13 @@ public class CmsCategoryAdminController extends AbstractController {
                 }
             }
         }
-        extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
+        if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || CommonUtils.notEmpty(entity.getExtendId())) {
+            if (null == extendService.getEntity(entity.getExtendId())) {
+                entity = service.updateExtendId(entity.getId(),
+                        (Integer) extendService.save(new SysExtend("category", entity.getId())));
+            }
+            extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
+        }
 
         CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());
         if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendId())) {
@@ -165,7 +168,7 @@ public class CmsCategoryAdminController extends AbstractController {
     /**
      * @param ids
      * @param parentId
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
@@ -210,7 +213,7 @@ public class CmsCategoryAdminController extends AbstractController {
     /**
      * @param ids
      * @param max
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
@@ -244,7 +247,7 @@ public class CmsCategoryAdminController extends AbstractController {
     /**
      * @param id
      * @param typeId
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
@@ -282,10 +285,10 @@ public class CmsCategoryAdminController extends AbstractController {
 
     /**
      * @param ids
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
-     * @param model 
+     * @param model
      * @return view name
      */
     @RequestMapping("delete")

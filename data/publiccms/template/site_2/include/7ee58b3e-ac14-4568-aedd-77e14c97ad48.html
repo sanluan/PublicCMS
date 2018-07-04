@@ -1,0 +1,43 @@
+<footer>
+		<p><a href="#">Talent Center</a>|<a href="#">Contact us</a>|<a href="#">Site map</a>|<a href="#">Legal Notices</a></p>
+				Copyright 2007-2008 XX Group Co., Ltd. All rights reserved 沪ICP备07####743号 ****@****.com<br />Address: Floor 16, Old XXXXXX Center, No.1452, Hongqiao Road, Changning District, Shanghai Tel:021-999999999 Fax:021-999999999 Postal code:200051<br />
+</footer>
+<script type="text/javascript" src="${site.sitePath}assets/js/jquery.js"></script>
+<script type="text/javascript" src="${site.sitePath}assets/js/roll.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".nav ul li a").mouseover(function() {
+		$(this).parent().find(".subnav").slideDown('fast').show();
+		$(this).parent().hover(function() {
+		}, function(){
+			$(this).parent().find(".subnav").slideUp('slow');
+		});
+		})
+});
+function setTab(m,n){
+	var menu=document.getElementById("tab"+m).getElementsByTagName("span");   //获取ID为tab+m标签下的li标签
+	var showdiv=document.getElementById("tablist"+m).getElementsByTagName("ul");   //获取ID为tablist+m标签下的div标签
+	for(i=0;i<menu.length;i++) 	{
+		menu[i].className=i==n?"on":"";   //如果i=n;那么menu[i].classname为now
+		showdiv[i].style.display=i==n?"block":"none";   //如果如果i=n;那么showdiv[i].style.display为block"
+	}
+}
+	//鼠标经过切换父div背景
+	$(function(){
+		$("#T1").mouseover(function () {
+				$(this).parent("div").removeClass("hover");
+		});
+		$("#T2").mouseover(function () {
+				$(this).parent("div").addClass("hover");
+		});
+	});
+	//鼠标经过li切换背景、字体 颜色
+	$("#tablist1 li").hover(
+		function () {
+			$(this).addClass("li_color");   //鼠标经过时增加样式P02
+		},
+		function () {
+			$(this).removeClass("li_color"); //鼠标离开时移除样式P02
+		}
+	);
+</script>

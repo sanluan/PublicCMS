@@ -355,7 +355,8 @@ CREATE TABLE `log_upload` (
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '操作渠道',
-  `image` tinyint(1) NOT NULL COMMENT '图片',
+  `original_name` varchar(255) DEFAULT NULL COMMENT '原文件名',
+  `file_type` varchar(20) NOT NULL COMMENT '文件类型',
   `file_size` bigint(20) NOT NULL COMMENT '文件大小',
   `ip` varchar(64) default NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -366,7 +367,7 @@ CREATE TABLE `log_upload` (
   KEY `ip` (`ip`),
   KEY `site_id` (`site_id`),
   KEY `channel` (`channel`),
-  KEY `image` (`image`),
+  KEY `file_type` (`file_type`),
   KEY `file_size` (`file_size`)
 ) DEFAULT CHARSET=utf8 COMMENT='上传日志';
 
