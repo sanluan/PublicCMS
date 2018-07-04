@@ -200,38 +200,25 @@ INSERT INTO `cms_category_type` VALUES (1, 2, '带文章的分类', 0, 81);
 INSERT INTO `cms_place` VALUES ('1', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '142', 'PublicCMS后台截图', '//www.publiccms.com/introduction/2015/08-11/142.html', 'upload/2017/01-15/17-35-240834-18490682.jpg', '2016-03-21 21:25:19', '2016-03-21 21:24:54', '1', '6', '0');
 INSERT INTO `cms_place` VALUES ('2', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '159', '美食', '//www.publiccms.com/picture/2015/08-13/159.html', 'upload/2017/01-15/17-35-150887-240130090.jpg', '2016-03-21 21:26:26', '2016-03-21 21:26:08', '1', '4', '0');
 INSERT INTO `cms_place` VALUES ('3', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '9', '昂科拉', '//www.publiccms.com/car/2015/08-06/9.html', 'upload/2017/01-15/17-35-0606061972977756.jpg', '2016-03-21 21:28:57', '2016-03-21 21:28:36', '1', '8', '0');
-INSERT INTO `cms_place` VALUES ('4', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '179', 'PublicCMS系统使用手册下载', '//www.publiccms.com/introduction/2015/10-09/179.html', 'upload/2017/01-15/17-34-560426-203327271.jpg', '2016-03-21 21:30:25', '2016-03-21 21:43:45', '1', '18', '0');
+INSERT INTO `cms_place` VALUES ('4', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '179', 'PublicCMS系统使用手册下载', '//www.publiccms.com/introduction/2015/10-09/179.html', 'upload/2017/01-15/21-49-430428-1960110600.jpg', '2016-03-21 21:30:25', '2016-03-21 21:43:45', '1', '18', '0');
 INSERT INTO `cms_place` VALUES ('5', '1', '/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html', '1', 'content', '195', '我们的婚纱照', '//www.publiccms.com/picture/2015/11-15/195.html', 'upload/2017/01-15/17-34-450591-326203189.jpg', '2016-03-21 21:31:04', '2016-03-20 21:30:46', '1', '4', '0');
-INSERT INTO `cms_place` VALUES ('6', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, 'Public CMS QQ群', 'http://shang.qq.com/wpa/qunwpa?idkey=8a633f84fb2475068182d3c447319977faca6a14dc3acf8017a160d65962a175', '', '2016-03-21 22:10:33', '2016-03-21 22:10:26', '1', '3', '0');
-INSERT INTO `cms_place` VALUES ('7', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, 'FreeMarker语法在线测试', 'http://sanluan.com/freemarker_test.html', '', '2016-03-21 22:11:57', '2016-03-21 22:11:47', '1', '4', '0');
-INSERT INTO `cms_place` VALUES ('8', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, '百度搜索：PublicCMS', 'https://www.baidu.com/s?wd=publiccms', '', '2016-03-21 22:12:12', '2016-03-21 22:12:00', '1', '3', '0');
-INSERT INTO `cms_place` VALUES ('9', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, 'FreeMarker2.3.23中文手册', 'http://www.kerneler.com/freemarker2.3.23/', '', '2016-03-21 22:12:24', '2016-03-21 22:12:14', '1', '5', '0');
-INSERT INTO `cms_place` VALUES ('10', '1', '/index.html/11847f87-7f1b-4891-ace4-818659ce397b.html', '1', 'custom', null, 'FreeMarker2.3.23视频教程', 'http://www.elsyy.com/course/6841', '', '2016-03-21 22:12:51', '2016-03-21 22:12:37', '1', '4', '0');
-INSERT INTO `cms_place` VALUES ('11', '1', '/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html', '1', 'custom', null, '管理后台', '//cms.publiccms.com/admin/', '', '2016-03-21 22:13:54', '2016-03-21 22:13:49', '1', '0', '1');
-INSERT INTO `cms_place` VALUES ('12', '1', '/index.html/5cf1b463-8d14-4ba4-a904-890ec224dc99.html', '1', 'custom', null, '后台UI', '//image.publiccms.com/ui/', '', '2016-03-21 22:14:06', '2016-03-21 22:13:56', '1', '22', '0');
-INSERT INTO `cms_place` VALUES ('17', '1', '/index.html/d1bef19f-ec32-4c3b-90f9-b25ca0fe19e3.html', '1', 'custom', null, '成品网站模板超市', 'http://demo.edge-cloud.cn/', '', '2016-03-23 11:12:03', '2016-03-23 11:12:32', '1', '6', '1');
-INSERT INTO `cms_place` VALUES ('18', '1', '/index.html/d1bef19f-ec32-4c3b-90f9-b25ca0fe19e3.html', '1', 'custom', null, 'QQ联系作者', 'http://wpa.qq.com/msgrd?v=3&uin=315415433&site=qq&menu=yes', '', '2016-03-23 11:12:23', '2016-03-23 11:12:05', '1', '4', '0');
-INSERT INTO `cms_place` VALUES ('19', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', '1', 'custom', null, 'PublicCMS@Github', 'https://github.com/sanluan/PublicCMS.', '', '2016-03-23 11:13:33', '2016-03-23 11:13:25', '1', '3', '0');
-INSERT INTO `cms_place` VALUES ('20', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', '1', 'custom', null, 'PublicCMS@开源中国', 'http://git.oschina.net/sanluan/PublicCMS', '', '2016-03-23 11:13:48', '2016-03-23 11:13:35', '1', '5', '0');
-INSERT INTO `cms_place` VALUES ('21', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', '1', 'custom', null, 'PublicCMS@CSDN', 'https://code.csdn.net/zyyy358/publiccms', '', '2016-03-23 11:14:03', '2016-03-23 11:13:50', '1', '3', '0');
-INSERT INTO `cms_place` VALUES ('22', '1', '/index.html/895b6167-c2ce-43ad-b936-b1a10cd1ad5d.html', '1', 'custom', null, 'PublicCMS-preview@开源中国', 'http://git.oschina.net/sanluan/PublicCMS-preview', '', '2016-03-23 11:14:30', '2016-03-23 11:14:09', '1', '5', '0');
-INSERT INTO `cms_place` VALUES ('25', '1', '/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', '1', 'content', '4', '唯美动漫图片', '//www.publiccms.com/8/4.html', '2015/08/07/11-24-1308292097994334.jpg', '2016-03-23 11:22:57', '2016-03-23 11:22:04', '1', '4', '0');
-INSERT INTO `cms_place` VALUES ('26', '1', '/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', '1', 'content', '9', '昂科拉', '//www.publiccms.com/6/9.html', '2015/08/07/11-24-3602801209954489.jpg', '2016-03-23 11:23:55', '2016-03-23 11:23:31', '1', '2', '0');
-INSERT INTO `cms_place` VALUES ('27', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '19', '微软：不要在Win10中使用第三方“隐私保护”工具', '//www.publiccms.com/2015/08/06/19.html', '', '2016-03-23 11:27:26', '2016-03-23 11:27:06', '1', '0', '0');
-INSERT INTO `cms_place` VALUES ('28', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '30', '女子吃了泡发2天的木耳 致多器官衰竭不治身亡', '//www.publiccms.com/2015/08-07/30.html', '', '2016-03-23 11:27:42', '2016-03-23 11:27:28', '1', '3', '0');
-INSERT INTO `cms_place` VALUES ('29', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '22', '江苏仪征新集一玩具厂起大火 火光冲天', '//www.publiccms.com/7/22.html', '', '2016-03-23 11:27:55', '2016-03-23 11:27:44', '1', '3', '0');
-INSERT INTO `cms_place` VALUES ('30', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '142', 'PublicCMS后台截图', '//www.publiccms.com/9/142.html', '', '2016-03-23 11:28:08', '2016-03-23 11:27:57', '1', '6', '0');
-INSERT INTO `cms_place` VALUES ('31', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '18', 'PublicCMS进入测试阶段，即将正式发布', '//www.publiccms.com/9/18.html', '', '2016-03-23 11:28:21', '2016-03-23 11:28:14', '1', '7', '0');
-INSERT INTO `cms_place` VALUES ('32', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '217', '酷冷至尊烈焰枪旗舰版机械键盘 有线104键游戏全背光 樱桃轴正品', 'http://s.click.taobao.com/t?e=m%3D2%26s%3Dk%2FRaMwaPpnYcQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMV3pVOinSGgeRitN3%2FurF3zO1KWqeCJhFmPYiLpdxhFe%2B6GA20g%2FvatSQhIbbzwChQUDqeizZVd13GFiMU8U2DTHAGIcyZQCxSGFCzYOOqAQ&pvid=50_106.2.199.138_346_1458707425019', '', '2016-03-28 11:21:01', '2016-03-28 11:17:37', '1', '3', '0');
-INSERT INTO `cms_place` VALUES (33, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '投资管理', '#', 'assets/images/201210310952338421.gif', '2018-06-30 10:27:04', '2018-06-30 10:26:49', 1, 0, 0);
-INSERT INTO `cms_place` VALUES (34, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '置业建设', '#', 'assets/images/201210310953075326.gif', '2018-06-30 10:27:31', '2018-06-30 10:27:10', 1, 0, 0);
-INSERT INTO `cms_place` VALUES (35, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '能源光电', '#', 'assets/images/201210310953287112.gif', '2018-06-30 10:28:57', '2018-06-30 10:28:40', 1, 0, 0);
-INSERT INTO `cms_place` VALUES (36, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '现代物流', '#', 'assets/images/201210310953526760.gif', '2018-06-30 10:29:30', '2018-06-30 10:29:03', 1, 0, 0);
-INSERT INTO `cms_place` VALUES (37, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '生物制药', '#', 'assets/images/201209291145162884.gif', '2018-06-30 10:30:19', '2018-06-30 10:30:00', 1, 21, 0);
-INSERT INTO `cms_place` VALUES (38, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '现代农业', '#', 'assets/images/201210091631452563.gif', '2018-06-30 10:30:35', '2018-06-30 10:30:26', 1, 0, 0);
-INSERT INTO `cms_place` VALUES (39, 2, '/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html', 2, 'custom', NULL, 'PublicCMS', 'http://www.publiccms.com/', '', '2018-06-30 10:32:37', '2018-06-30 10:32:25', 1, 2, 0);
-INSERT INTO `cms_place` VALUES (40, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 'custom', NULL, 'OA', '#', 'assets/images/l_1.gif', '2018-07-03 17:43:36', '2018-07-03 17:43:12', 1, 0, 0);
-INSERT INTO `cms_place` VALUES (41, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 'custom', NULL, '联系我们', '#', 'assets/images/l_2.gif', '2018-07-03 17:45:32', '2018-07-03 17:45:11', 1, 0, 0);
+INSERT INTO `cms_place` VALUES ('6', '1', '/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', '1', 'content', '4', '唯美动漫图片', '//www.publiccms.com/8/4.html', 'upload/2017/01-15/11-24-1308292097994334.jpg', '2016-03-23 11:22:57', '2016-03-23 11:22:04', '1', '4', '0');
+INSERT INTO `cms_place` VALUES ('7', '1', '/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html', '1', 'content', '9', '昂科拉', '//www.publiccms.com/6/9.html', 'upload/2017/01-15/11-24-3602801209954489.jpg', '2016-03-23 11:23:55', '2016-03-23 11:23:31', '1', '2', '0');
+INSERT INTO `cms_place` VALUES ('8', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '19', '微软：不要在Win10中使用第三方“隐私保护”工具', '//www.publiccms.com/2015/08/06/19.html', '', '2016-03-23 11:27:26', '2016-03-23 11:27:06', '1', '0', '0');
+INSERT INTO `cms_place` VALUES ('9', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '30', '女子吃了泡发2天的木耳 致多器官衰竭不治身亡', '//www.publiccms.com/2015/08-07/30.html', '', '2016-03-23 11:27:42', '2016-03-23 11:27:28', '1', '3', '0');
+INSERT INTO `cms_place` VALUES ('10', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '22', '江苏仪征新集一玩具厂起大火 火光冲天', '//www.publiccms.com/7/22.html', '', '2016-03-23 11:27:55', '2016-03-23 11:27:44', '1', '3', '0');
+INSERT INTO `cms_place` VALUES ('11', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '142', 'PublicCMS后台截图', '//www.publiccms.com/9/142.html', '', '2016-03-23 11:28:08', '2016-03-23 11:27:57', '1', '6', '0');
+INSERT INTO `cms_place` VALUES ('12', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '18', 'PublicCMS进入测试阶段，即将正式发布', '//www.publiccms.com/9/18.html', '', '2016-03-23 11:28:21', '2016-03-23 11:28:14', '1', '7', '0');
+INSERT INTO `cms_place` VALUES ('13', '1', '/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html', '1', 'content', '217', '酷冷至尊烈焰枪旗舰版机械键盘 有线104键游戏全背光 樱桃轴正品', 'http://s.click.taobao.com/t?e=m%3D2%26s%3Dk%2FRaMwaPpnYcQipKwQzePOeEDrYVVa64K7Vc7tFgwiFRAdhuF14FMV3pVOinSGgeRitN3%2FurF3zO1KWqeCJhFmPYiLpdxhFe%2B6GA20g%2FvatSQhIbbzwChQUDqeizZVd13GFiMU8U2DTHAGIcyZQCxSGFCzYOOqAQ&pvid=50_106.2.199.138_346_1458707425019', '', '2016-03-28 11:21:01', '2016-03-28 11:17:37', '1', '3', '0');
+INSERT INTO `cms_place` VALUES (14, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '投资管理', '#', 'assets/images/201210310952338421.gif', '2018-06-30 10:27:04', '2018-06-30 10:26:49', 1, 0, 0);
+INSERT INTO `cms_place` VALUES (15, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '置业建设', '#', 'assets/images/201210310953075326.gif', '2018-06-30 10:27:31', '2018-06-30 10:27:10', 1, 0, 0);
+INSERT INTO `cms_place` VALUES (16, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '能源光电', '#', 'assets/images/201210310953287112.gif', '2018-06-30 10:28:57', '2018-06-30 10:28:40', 1, 0, 0);
+INSERT INTO `cms_place` VALUES (17, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '现代物流', '#', 'assets/images/201210310953526760.gif', '2018-06-30 10:29:30', '2018-06-30 10:29:03', 1, 0, 0);
+INSERT INTO `cms_place` VALUES (18, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '生物制药', '#', 'assets/images/201209291145162884.gif', '2018-06-30 10:30:19', '2018-06-30 10:30:00', 1, 21, 0);
+INSERT INTO `cms_place` VALUES (19, 2, '/ab53b388-be0e-4674-b631-e1de625c74ac.html', 2, 'custom', NULL, '现代农业', '#', 'assets/images/201210091631452563.gif', '2018-06-30 10:30:35', '2018-06-30 10:30:26', 1, 0, 0);
+INSERT INTO `cms_place` VALUES (20, 2, '/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html', 2, 'custom', NULL, 'PublicCMS', 'http://www.publiccms.com/', '', '2018-06-30 10:32:37', '2018-06-30 10:32:25', 1, 2, 0);
+INSERT INTO `cms_place` VALUES (21, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 'custom', NULL, 'OA', '#', 'assets/images/l_1.gif', '2018-07-03 17:43:36', '2018-07-03 17:43:12', 1, 0, 0);
+INSERT INTO `cms_place` VALUES (22, 2, '/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html', 2, 'custom', NULL, '联系我们', '#', 'assets/images/l_2.gif', '2018-07-03 17:45:32', '2018-07-03 17:45:11', 1, 0, 0);
 
 -- ----------------------------
 -- Records of cms_place_attribute
@@ -248,33 +235,21 @@ INSERT INTO `cms_place_attribute` VALUES ('9', '{}');
 INSERT INTO `cms_place_attribute` VALUES ('10', '{}');
 INSERT INTO `cms_place_attribute` VALUES ('11', '{}');
 INSERT INTO `cms_place_attribute` VALUES ('12', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('17', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('18', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('19', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('20', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('21', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('22', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('25', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('26', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('27', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('28', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('29', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('30', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('31', '{}');
-INSERT INTO `cms_place_attribute` VALUES ('32', '{}');
-INSERT INTO `cms_place_attribute` VALUES (33, '{}');
-INSERT INTO `cms_place_attribute` VALUES (34, '{}');
-INSERT INTO `cms_place_attribute` VALUES (35, '{}');
-INSERT INTO `cms_place_attribute` VALUES (36, '{}');
-INSERT INTO `cms_place_attribute` VALUES (37, '{}');
-INSERT INTO `cms_place_attribute` VALUES (38, '{}');
-INSERT INTO `cms_place_attribute` VALUES (39, '{}');
-INSERT INTO `cms_place_attribute` VALUES (40, '{}');
-INSERT INTO `cms_place_attribute` VALUES (41, '{}');
+INSERT INTO `cms_place_attribute` VALUES ('13', '{}');
+INSERT INTO `cms_place_attribute` VALUES (14, '{}');
+INSERT INTO `cms_place_attribute` VALUES (15, '{}');
+INSERT INTO `cms_place_attribute` VALUES (16, '{}');
+INSERT INTO `cms_place_attribute` VALUES (17, '{}');
+INSERT INTO `cms_place_attribute` VALUES (18, '{}');
+INSERT INTO `cms_place_attribute` VALUES (19, '{}');
+INSERT INTO `cms_place_attribute` VALUES (20, '{}');
+INSERT INTO `cms_place_attribute` VALUES (21, '{}');
+INSERT INTO `cms_place_attribute` VALUES (22, '{}');
+
 -- ----------------------------
--- Records of cms_tag
+-- Records of sys_config_data
 -- ----------------------------
-INSERT INTO `cms_tag` VALUES ('1', '1', 'PublicCMS', null, 0);
+INSERT INTO `sys_config_data`(`site_id`, `code`, `data`) VALUES (2, 'siteAttribute', '{\"logo\":\"assets/images/logo.gif\",\"parentId\":\"71\",\"parentId_en\":\"72\"}');
 
 -- ----------------------------
 -- Records of sys_extend
@@ -295,6 +270,11 @@ INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', '2', '1', '');
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('2', '2', '站长', '1', '0');
+
+-- ----------------------------
+-- Records of sys_role_user
+-- ----------------------------
+INSERT INTO `sys_role_user` VALUES ('2', '2');
 
 -- ----------------------------
 -- Records of sys_site

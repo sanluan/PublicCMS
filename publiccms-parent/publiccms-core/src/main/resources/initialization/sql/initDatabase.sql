@@ -1140,7 +1140,6 @@ CREATE TABLE `sys_role_user` (
 -- Records of sys_role_user
 -- ----------------------------
 INSERT INTO `sys_role_user` VALUES ('1', '1');
-INSERT INTO `sys_role_user` VALUES ('2', '2');
 
 -- ----------------------------
 -- Table structure for sys_site
