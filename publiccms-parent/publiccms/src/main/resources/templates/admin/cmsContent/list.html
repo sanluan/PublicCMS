@@ -2,9 +2,6 @@
     <#assign dept=object/>
     <#assign containChild=object.ownsAllCategory/>
 </@_sysDept>
-<@_category id=categoryId>
-    <#assign containChild=object.containChild&&containChild?has_content&&containChild/>
-</@_category>
 <@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!><#assign deptCategory=object!/></@_sysDeptCategory>
 <#if !dept?has_content||(!dept.ownsAllCategory&&!deptCategory?has_content)>
     <#assign error='verify.notEquals.siteId'/>

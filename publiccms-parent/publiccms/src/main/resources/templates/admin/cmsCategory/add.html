@@ -57,7 +57,7 @@ function clickAddTagType(){
                 <dl class="nowrap">
                     <dt><@t.page 'name'/>:</dt>
                     <dd>
-                        <input class="required" name="name" type="text" maxlength="50" size="20" value="${(a.name)!}"/>
+                        <input class="required" name="name" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.name)!}</#if>"/>
                         <label class="advanced"><input name="onlyUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.onlyUrl',navTab.getCurrentPanel()).hide();$('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.onlyUrl',navTab.getCurrentPanel()).show();}"/><@t.page 'outer_chain'/></label>
                         <label class="advanced"><input name="allowContribute" type="checkbox"${(a?has_content&&a.allowContribute)?then(' checked="checked"','')?no_esc}/><@t.page 'allow_contribute'/></label>
                         <label><input name="hidden" type="checkbox"${(a?has_content&&a.hidden)?then(' checked="checked"','')?no_esc}/><@t.page 'front_hidden'/></label>
