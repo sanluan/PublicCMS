@@ -23,7 +23,7 @@
 	<@_includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
 
 	<main class="container">
-		<div class="left">		
+		<div class="left">
 			<h2><div><strong>${parent.name!}</strong></div></h2>
 			<ul class="left-nav">
 		<@_categoryList parentId=category.parentId>
@@ -43,7 +43,7 @@
 		<div class="breadcrumb">
 			<h3><span>当前位置：<a href="${base!}">首页</a> > <a href="${(category.url)!}">${category.name}</a></span>${category.name}</h3>
 			<div class="content">
-				${(arrtibute.article?no_esc)!}
+				${(attribute.article?no_esc)!}
 			</div>
 		</div>
 	</main>
