@@ -23,8 +23,8 @@ https://pan.baidu.com/s/1QIPaIhuASKC_16ZJ6v4SgQ 密码:eo4r
 
 ## 授权协议
 
-版本:V1.0,V2016,V2017 完全免费授权协议:MIT
-版本:V4.0 商用付费授权协议:详情参见LICENSE
+* 版本:V1.0,V2016,V2017 完全免费授权协议:MIT
+* 版本:V4.0 商用付费授权协议:详情参见LICENSE
 
 ## 目录说明
 
@@ -44,8 +44,8 @@ mvnw clean package
 cd publiccms/target
 java -jar publiccms.war
 ```
-访问程序页面http://localhost:8080/publiccms/,根据页面提示配置并初始化数据库
-管理后台访问相对路径为http://localhost:8080/publiccms/,数据脚本内置管理员账号admin，密码admin
+访问程序页面http://localhost:8080/publiccms/ ,根据页面提示配置并初始化数据库
+管理后台访问相对路径为http://localhost:8080/publiccms/admin/ ,数据脚本内置管理员账号/密码:admin/admin,登录后请务必修改密码
 * 直接下载网盘中可执行程序
 本地准备java,mysql环境,下载可执行程序压缩解压缩后运行startup.bat或startup.sh
 
