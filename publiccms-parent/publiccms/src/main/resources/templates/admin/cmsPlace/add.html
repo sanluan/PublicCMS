@@ -1,6 +1,8 @@
 <@_place id=id>
     <#assign a=object/>
 </@_place>
+<@_placeMetadata path=(a.path)!path!><#assign metadata=object/></@_placeMetadata>
+<#if metadata?has_content>
 <#if !a?has_content&&itemType?has_content>
 <#switch itemType>
     <#case 'content'>
@@ -22,17 +24,21 @@
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
+        <#assign fieldList=metadata.fieldList![]/>
+        <#assign requiredFieldList=metadata.requiredFieldList![]/>
         <dl class="nowrap">
-            <dt><@t.page 'title'/>:</dt>
+            <dt>${(metadata.fieldTextMap['title'])!t.pageMessage('title')}:</dt>
             <dd>
                 <input class="required" name="title" type="text" maxlength="255" size="60" value="${(a.title)!(content.title)!(category.name)!title!}"/>
                 <a class="btnLook" href="cmsPlace/lookup.html" lookupGroup="" width="1200" ><@t.page 'select'/></a>
             </dd>
         </dl>
+    <#if fieldList?seq_contains('url')>
         <dl class="nowrap">
-            <dt><@t.page 'address'/>:</dt>
-            <dd><input name="url" type="text" maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
+            <dt>${(metadata.fieldTextMap['url'])}:</dt>
+            <dd><input name="url" type="text"<#if requiredFieldList?seq_contains('url')> class="required"</#if> maxlength="1000" size="60" value="${(a.url)!(content.url)!(category.url)!url!}"/></dd>
         </dl>
+    </#if>
         <dl>
             <dt><@t.page 'publish_date'/>:</dt>
             <dd>
@@ -40,15 +46,17 @@
                 <a class="inputDateButton" href="javascript:;" onclick="return false;"><@t.page 'select_date'/></a>
             </dd>
         </dl>
+    <#if fieldList?seq_contains('cover')>
         <dl class="nowrap">
-            <dt><@t.page 'cover'/>:</dt>
+            <dt>${(metadata.fieldTextMap['cover'])}:</dt>
             <dd>
-                <input name="cover" value="${(a.cover)!(content.cover)!}" maxlength="300" size="40" type="text"/>
+                <input name="cover" value="${(a.cover)!(content.cover)!}"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> maxlength="300" size="40" type="text"/>
                 <a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
                 <#include "../include_page/preview.html"/>
                 <@preview 'page' 'input[name=cover]'/>
             </dd>
         </dl>
+    </#if>
         <#include "../include_page/extendData.html"/>
         <@_placeMetadata path=(a.path)!path!''><#assign metadata=object/></@_placeMetadata>
         <#assign extendList=(metadata.extendList)![]/>
@@ -56,3 +64,6 @@
         <@extendData 'extendDataList' extendList attribute/>
     </div>
 </form>
+<#else>
+    
+</#if>

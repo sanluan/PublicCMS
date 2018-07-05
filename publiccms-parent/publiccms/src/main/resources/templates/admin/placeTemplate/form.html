@@ -2,13 +2,19 @@
     <#assign a=object/>
 <#assign formContent>
     <#if a.allowContribute>
+        <#assign fieldList=a.fieldList![]/>
+        <#assign requiredFieldList=a.requiredFieldList![]/>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save.do">
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
     <input name="path" type="hidden" value="${(path)!}" />
     <input name="returnUrl" type="hidden" value="<#noparse>${site.dynamicPath}</#noparse>" />
-    <p><label><@t.page 'title'/>:</label><input name="title" type="text" size="60" value=""/></p>
-    <p><label><@t.page 'address'/>:</label><input name="url" type="text" value=""/></p>
-    <p><label><@t.page 'cover'/>:</label><input name="cover" type="text" size="60" value=""/></p>
+    <p><label>${(a.fieldTextMap['title'])!}:</label><input name="title" type="text" size="60" value=""/></p>
+<#if fieldList?seq_contains('url')>
+    <p><label>${(a.fieldTextMap['url'])!}:</label><input name="url" type="text" size="60" maxlength="1000"/></p>
+</#if>
+<#if fieldList?seq_contains('cover')>
+    <p><label>${(a.fieldTextMap['cover'])!}:</label><input name="cover" type="text" size="60" maxlength="1000" value=""/></p>
+</#if>
     <#include "../include_page/extendData.html"/>
     <#assign extendList=(a.extendList)![]/>
     <#assign extendValues=getPlaceAttribute((a.id)!)!{}/>

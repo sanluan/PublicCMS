@@ -37,7 +37,7 @@
     </@_sysConfigFieldList>
 </#if>
         <fieldset>
-            <legend><@t.page 'extend_field'/></legend>
+            <legend><@t.page 'extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
             <#include "../include_page/extends.html"/>
             <@extends 'extendList' extendList![]/>
         </fieldset>

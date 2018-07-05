@@ -58,13 +58,65 @@
                 <div id="adminIds"></div>
             </dd>
         </dl>
+         <fieldset class="placeExtend systemField">
+            <legend><@t.page 'place.system_field'/></legend>
+            <dl class="nowrap">
+                <dt>
+                    <label><@t.page 'field.title'/>:</label>
+                </dt>
+                <dd>
+                    <input name="fieldTextMap[title]" class="required" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt>
+                    <label><input name="fieldList" type="checkbox" value="url"/><@t.page 'field.url'/></label>
+                </dt>
+                <dd>
+                    <label><@t.page 'text'/>:</label>
+                    <input name="fieldTextMap[url]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
+                    <label><input name="requiredFieldList" type="checkbox" value="url"/><@t.page 'required'/></label>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt>
+                    <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/></label>
+                </dt>
+                <dd>
+                    <label><@t.page 'text'/>:</label>
+                    <input name="fieldTextMap[cover]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
+                    <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
+                </dd>
+            </dl>
+        </fieldset>
         <fieldset class="placeExtend">
-            <legend><@t.page 'place_data.extend_field'/></legend>
+            <legend><@t.page 'place_data.extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
             <#include '../include_page/extends.html'/>
             <#assign extendList=(a.extendList)![]/>
             <@extends 'extendList' extendList/>
         </fieldset>
 <script>
+$('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
+    var box = $(this).parent().parent().parent();
+    box.find('dd').hide();
+    $(this).click(function(){
+        if( $(this).is(':checked') ) {
+            box.find('dd').show().find('input[type=text]').addClass('required');
+        } else {
+            box.find('dd').hide().find('input[type=text]').removeClass('required').val('');
+        }
+    });
+});
+<#if (a.fieldList)?has_content>
+<#list a.fieldList as field>
+    $('input[name=fieldList][value=${field}]',navTab.getCurrentPanel()).click();
+</#list>
+</#if>
+<#if (a.requiredFieldList)?has_content>
+<#list a.requiredFieldList as field>
+    $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).click();
+</#list>
+</#if>
 function checkPageSize(){
     if(parseInt($('input[name=size]',navTab.getCurrentPanel()).val())>0){
         $('.placeExtend',navTab.getCurrentPanel()).show();
@@ -72,7 +124,7 @@ function checkPageSize(){
         $('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).removeAttr('disabled');
     } else {
         $('.placeExtend',navTab.getCurrentPanel()).hide();
-        $('textarea[name=content]',navTab.getCurrentPanel()).val('');
+        $('textarea[name=content]',navTab.getCurrentPanel()).val('<@t.page 'place'/>');
         $('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).attr('disabled','disabled');
     }
 }
@@ -106,8 +158,10 @@ checkPageSize();
     <#items as a>
         <li>
             <figure>
+                <!-- ${a.itemType!} : ${a.itemId!} -->
                 <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${site.sitePath+a.cover!}"></a>
-                <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a></figcaption>
+                <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
+                <@t.page 'extend_field'/>:<#assign attribute=getPlaceAttribute(a.id)/>
             </figure>
         </li>
     </#items>
