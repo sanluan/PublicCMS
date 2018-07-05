@@ -45,14 +45,19 @@ public class ExtendUtils {
     }
 
     /**
+     * @param extendData
      * @param extendFieldList
      * @return extent data map
      */
-    public static List<ExtendData> getDefaultExtentDataList(List<ExtendField> extendFieldList) {
+    public static List<ExtendData> getDefaultExtentDataList(Map<String, String> extendData, List<ExtendField> extendFieldList) {
         List<ExtendData> extendDataList = new ArrayList<>();
         if (CommonUtils.notEmpty(extendFieldList)) {
             for (ExtendField extend : extendFieldList) {
-                extendDataList.add(new ExtendData(extend.getId().getCode(), extend.getDefaultValue()));
+                if (null == extendData.get(extend.getId().getCode())) {
+                    extendDataList.add(new ExtendData(extend.getId().getCode(), extend.getDefaultValue()));
+                } else {
+                    extendDataList.add(new ExtendData(extend.getId().getCode(), extendData.get(extend.getId().getCode())));
+                }
             }
         }
         return extendDataList;

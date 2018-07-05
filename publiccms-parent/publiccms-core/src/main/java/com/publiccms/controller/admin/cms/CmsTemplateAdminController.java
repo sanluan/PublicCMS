@@ -326,10 +326,8 @@ public class CmsTemplateAdminController extends AbstractController {
                     fileComponent.createFile(templateFile, content);
                 }
                 CmsPageMetadata oldmetadata = metadataComponent.getTemplateMetadata(filePath);
-                metadata.setExtendDataList(oldmetadata.getExtendDataList());
-                if (CommonUtils.empty(metadata.getExtendDataList())) {
-                    metadata.setExtendDataList(ExtendUtils.getDefaultExtentDataList(metadata.getExtendList()));
-                }
+                metadata.setExtendDataList(
+                        ExtendUtils.getDefaultExtentDataList(oldmetadata.getExtendData(), metadata.getExtendList()));
                 metadataComponent.updateTemplateMetadata(filePath, metadata);
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();
