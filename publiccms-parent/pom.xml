@@ -4,7 +4,7 @@
 	<groupId>com.publiccms</groupId>
 	<artifactId>publiccms-parent</artifactId>
 	<packaging>pom</packaging>
-	<version>V4.0.20180210</version>
+	<version>V4.0.180707</version>
 	<modules>
 		<module>publiccms-oauth</module>
 		<module>publiccms-redis</module>

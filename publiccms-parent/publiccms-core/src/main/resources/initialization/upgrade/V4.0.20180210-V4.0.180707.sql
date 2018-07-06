@@ -565,3 +565,5 @@ ALTER TABLE `cms_dictionary`
     ADD COLUMN `site_id` smallint(6) NOT NULL DEFAULT 1 COMMENT '站点ID' AFTER `id`,
     DROP INDEX `multiple`,
     ADD INDEX `siteId`(`site_id`, `multiple`) USING BTREE;
+-- 20180706 --
+ALTER TABLE `sys_extend_field` DROP COLUMN `dictionary_type`;

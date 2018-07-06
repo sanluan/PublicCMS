@@ -201,7 +201,7 @@ CREATE TABLE `cms_dictionary_data` (
 DROP TABLE IF EXISTS `cms_place`;
 CREATE TABLE `cms_place` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `path` varchar(255) NOT NULL COMMENT '模板路径',
   `user_id` bigint(20) default NULL COMMENT '提交用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
@@ -270,8 +270,8 @@ CREATE TABLE `cms_tag_type` (
 DROP TABLE IF EXISTS `cms_word`;
 CREATE TABLE `cms_word` (
   `id` bigint(20) NOT NULL auto_increment,
-  `name` varchar(255) NOT NULL COMMENT '名称',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `name` varchar(255) NOT NULL COMMENT '名称',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -493,7 +493,7 @@ CREATE TABLE `sys_dept_page` (
 DROP TABLE IF EXISTS `sys_domain`;
 CREATE TABLE `sys_domain` (
   `name` varchar(255) NOT NULL COMMENT '域名',
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `wild` tinyint(1) NOT NULL COMMENT '通配域名',
   `path` varchar(255) default NULL COMMENT '路径',
   PRIMARY KEY  (`name`),
