@@ -35,9 +35,8 @@ public class RedisRegionFactory extends AbstractRedisRegionFactory {
 
         this.options = option;
         try {
-            if (redisClient == null) {
-                String configurationResourceName = (String) properties
-                        .get("hibernate.redis.configurationResourceName");
+            if (null == redisClient) {
+                String configurationResourceName = (String) properties.get("hibernate.redis.configurationResourceName");
                 if (null != configurationResourceName) {
                     Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
                     this.redisClient = new DatabaseRedisClient(RedisUtils.createJedisPool(redisProperties));
@@ -53,16 +52,15 @@ public class RedisRegionFactory extends AbstractRedisRegionFactory {
 
     @Override
     public void stop() {
-        if (redisClient == null)
-            return;
-
-        try {
-            redisClient.shutdown();
-            redisClient = null;
-            cacheTimestamper = null;
-            log.info("RedisRegionFactory is stopped.");
-        } catch (Exception ignored) {
-            log.error("Fail to stop RedisRegionFactory.", ignored);
+        if (null != redisClient) {
+            try {
+                redisClient.shutdown();
+                redisClient = null;
+                cacheTimestamper = null;
+                log.info("RedisRegionFactory is stopped.");
+            } catch (Exception ignored) {
+                log.error("Fail to stop RedisRegionFactory.", ignored);
+            }
         }
     }
 }

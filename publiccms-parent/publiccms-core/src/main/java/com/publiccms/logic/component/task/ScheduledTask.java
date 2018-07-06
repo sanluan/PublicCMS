@@ -17,7 +17,7 @@ import org.quartz.TriggerKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.log.LogTask;
 import com.publiccms.entities.sys.SysSite;
@@ -32,7 +32,7 @@ import com.publiccms.logic.service.sys.SysTaskService;
  *
  */
 @Component
-public class ScheduledTask implements Base {
+public class ScheduledTask {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 
@@ -99,7 +99,7 @@ public class ScheduledTask implements Base {
             try {
                 CronTrigger trigger = (CronTrigger) scheduler.getTrigger(triggerKey);
                 CronScheduleBuilder scheduleBuilder = CronScheduleBuilder
-                        .cronSchedule(site.getId() % 60 + BLANK_SPACE + cronExpression);
+                        .cronSchedule(site.getId() % 60 + CommonConstants.BLANK_SPACE + cronExpression);
                 if (null == trigger) {
                     JobDetail jobDetail = JobBuilder.newJob(ScheduledJob.class).withIdentity(taskName).build();
                     jobDetail.getJobDataMap().put(ID, id);

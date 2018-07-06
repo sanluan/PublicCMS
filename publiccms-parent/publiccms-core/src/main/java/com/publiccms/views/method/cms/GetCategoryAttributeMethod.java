@@ -45,7 +45,7 @@ public class GetCategoryAttributeMethod extends BaseMethod {
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 1;
     }
 

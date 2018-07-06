@@ -43,11 +43,11 @@ public class GetContentAttributesMethod extends BaseMethod {
     
     @Override
     public boolean needAppToken() {
-        return true;
+        return false;
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 1;
     }
 

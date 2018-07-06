@@ -1,0 +1,62 @@
+<@_category id=id>
+	<#assign category=object/>
+	<#-- 分类扩展数据(参数为分类ID) -->
+	<#assign attribute=getCategoryAttribute(id)/>
+	<@_category id=category.parentId>
+		<#assign parent=object/>
+	</@_category>
+</@_category>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
+	<title>${(attribute.title)!} ${(category.name)!} - ${site.name!}</title>
+	<meta name="keywords" content="${(attribute.keyworks)!}" />
+	<meta name="description" content="${(attribute.description)!}" />
+	<@_includePlace path="/194ca327-6b34-431d-a2d2-90f94b25e950.html"/> <#-- Head META -->
+</head>
+<body>
+	<@_includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
+
+	<div class="banner" style="background:url(${site.sitePath!}assets/images/201209101507042748.gif) no-repeat top;"></div>
+
+	<@_includePlace path="/1478e1a7-2fcc-452e-841b-2eecc067d7c4.html"/> <#-- 英文导航 -->
+	
+    <main class="container">
+		<div class="left">
+			<h2><div><strong>${parent.name!}</strong></div></h2>
+			<ul class="left-nav">
+		<@_categoryList parentId=category.parentId>
+			<#list page.list as a>
+				<li><a href="${a.url!}">${a.name}</a></li>
+			</#list>
+		</@_categoryList>
+            </ul>
+			<h2><strong>Related Links</strong></h2>
+			<select class="friend-link" onchange="javascript:if(this.options[this.selectedIndex].value){window.open(this.options[this.selectedIndex].value)}">
+                <option value="">Friend Link</option>
+				<@_includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
+			</select>
+			<@_includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
+		</div>
+        <div class="breadcrumb">
+			<h3><span>Position：<a href="${base!}">Home</a> > <a href="${(category.url)!}">${category.name}</a></span>${category.name}</h3>
+			<@_contentList categoryId=id pageIndex=pageIndex count=category.pageSize>
+				<ul class="content-list">
+					<#list page.list as a><li><span class="title"><a href="${a.url!}">${a.title}</a></span>[${a.publishDate?string('yyyy-MM-dd')}]</li></#list>
+				</ul>
+				<div class="page">
+					<span>${page.totalPage} </span><span>${page.totalCount} items</span><span>Current ${page.pageIndex} page</span><a href="?id=${id!}">First</a><a href="?id=${id}&pageIndex=${page.nextPage}" class="number">Next</a>
+					<a href="?id=${id}&pageIndex=${page.totalPage}">Last page</a>
+				</div>
+			</@_contentList>
+        </div>
+    </main>
+	
+	<@_includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
+	<script>
+			$('a[data-id=${parent.id}]').addClass('selected');
+	</script>
+</body>
+</html>

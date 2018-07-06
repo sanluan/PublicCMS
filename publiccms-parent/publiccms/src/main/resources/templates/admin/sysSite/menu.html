@@ -1,37 +1,43 @@
 <div class="accordion">
-	<div class="accordionHeader">
-		<h2><i class="icon-sitemap icon-large"></i> 站点管理 <i class="icon icon-chevron-up"></i></h2>
-	</div>
-	<div class="accordionContent">
-		<ul class="tree">
-			<li>
-				<a href="sysSite/list.html" target="navTab" rel="sysSite/list"><i class="icon-sitemap icon-large"></i> 站点管理</a>
-			</li>
-			<li>
-				<a href="sysDomain/list.html" target="navTab" rel="sysDomain/list"><i class="icon-qrcode icon-large"></i> 域名管理</a>
-			</li>
-			<li>
-				<a href="sysModule/list.html" target="navTab" rel="sysModule/list"><i class="icon-th icon-large"></i> 模块管理</a>
-			</li>
-			<li>
-				<a href="sysSite/sql.html" target="navTab" rel="sysSite/sql"><i class="icon-bug icon-large"></i> 执行SQL</a>
-			</li>
-			<li>
-				<a href="sysSite/reCreateIndex" target="ajaxTodo" title="确定要重建全文索引吗?" ><i class="icon-refresh icon-large"></i> 重建全文索引</a>
-			</li>
-			<li>
-                <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense"><i class="icon-archive icon-large"></i> 修改License</a>
+    <div class="accordionHeader">
+        <h2><i class="icon-sitemap icon-large"></i> <@t.menu 'site_menu'/> <i class="icon icon-chevron-up"></i></h2>
+    </div>
+    <div class="accordionContent">
+        <ul class="tree">
+            <li>
+                <a href="sysSite/list.html" target="navTab" rel="sysSite/list"><i class="icon-sitemap icon-large"></i> <@t.menu 'site_list'/></a>
             </li>
-		</ul>
-	</div>
-	<div class="accordionHeader">
-		<h2><i class="icon-home icon-large"></i> PublicCMS <i class="icon icon-chevron-up"></i></h2>
-	</div>
-	<div class="accordionContent">
-		<ul class="tree">
-			<li>
-				<a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i> PublicCMS官网</a>
-			</li>
-		</ul>
-	</div>
+            <li>
+                <a href="sysDomain/list.html" target="navTab" rel="sysDomain/list"><i class="icon-qrcode icon-large"></i> <@t.menu 'site_domain_list'/></a>
+            </li>
+            <li>
+                <a href="sysModule/list.html" target="navTab" rel="sysModule/list"><i class="icon-th icon-large"></i> <@t.menu 'module_list'/></a>
+            </li>
+            <li>
+                <a href="sysSite/sql.html" target="navTab" rel="sysSite/sql"><i class="icon-bug icon-large"></i> <@t.menu 'site_sql'/></a>
+            </li>
+            <li>
+                <a href="sysSite/reCreateIndex?_csrf=<@_csrfToken admin=true/>" target="ajaxTodo" title="<@t.page 'confirm.recreate_index'/>"><i class="icon-refresh icon-large"></i> <@t.menu 'site_recreate_index'/></a>
+            </li>
+            <li>
+                <a href="sysSite/monitor.html" target="navTab" rel="sysSite/monitor" external="true"><i class="icon-check-sign icon-large"></i> <@t.menu 'monitor'/></a>
+            </li>
+            <li>
+                <a href="sysCluster/list.html" target="navTab" rel="sysCluster/list"><i class="icon-code-fork icon-large"></i> <@t.menu 'cluster'/></a>
+            </li>
+            <li>
+                <a href="sysSite/uploadLicense.html" target="navTab" rel="sysSite/uploadLicense"><i class="icon-archive icon-large"></i> <@t.menu 'license'/></a>
+            </li>
+        </ul>
+    </div>
+    <div class="accordionHeader">
+        <h2><i class="icon-home icon-large"></i> <@t.menu 'official'/> <i class="icon icon-chevron-up"></i></h2>
+    </div>
+    <div class="accordionContent">
+        <ul class="tree">
+            <li>
+                <a href="//www.publiccms.com" target="navTab" rel="publiccms.com"><i class="icon-globe icon-large"></i> <@t.menu 'official_website'/></a>
+            </li>
+        </ul>
+    </div>
 </div>

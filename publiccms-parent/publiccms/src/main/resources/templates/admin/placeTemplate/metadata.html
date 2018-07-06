@@ -4,117 +4,169 @@
 #adminIds span{margin-right:8px;padding:3px;border:1px solid #aaa;}
 </style>
 <form method="post" action="cmsTemplate/savePlaceMetaData.do?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<div class="formBar">
-		<ul>
-			<li><button type="submit" class="buttonActive">保存</button></li>
-		</ul>
-	</div>
-	<div class="pageFormContent" layoutH="60">
-		<dl class="nowrap">
-			<dt>路径:</dt></dt>
-			<dd>
-			<#if path?has_content>
-				${path}
-				<input name="path" type="hidden" value="${path}" size="40"/>
-			<#else>
-				<input name="path" type="text" value="/${getUUID()}.html" size="40"/>
-			</#if>
-			</dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>别名:</dt></dt>
-			<dd>
-				<input class="required" name="alias" type="text" maxlength="50" size="20" value="${(a.alias)!}"/>
-				<span class="placeExtend">
-					<label>
-						<input name="allowContribute" type="checkbox" onclick="if($(this).is(':checked')){$('.allowContribute',navTab.getCurrentPanel()).show()}else{$('.allowContribute',navTab.getCurrentPanel()).hide()}"/>
-						允许投稿
-					</label>
-					<label class="allowContribute" style="display:none">
-						<input name="allowAnonymous" type="checkbox"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
-						允许匿名提交
-					</label>
-				</span>
-			</dd>
-		</dl>
-		<#if a?has_content&&a.allowContribute>
-			<script>
-				$('input[name=allowContribute]',navTab.getCurrentPanel()).click();
-			</script>
-		</#if>
-		<dl class="nowrap">
-			<dt>有效数据条数:</dt>
-			<dd>
-				<input name="size" class="required digits" onchange="checkPageSize();" type="number" value="${(a.size)!5}"/>
-			</dd>
-		</dl>
-		<dl class="nowrap placeExtend">
-			<dt>数据管理人员:</dt>
-			<dd>
-				<input name="userId" type="hidden"/>
-				<input name="nickName" type="hidden" onchange="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());"/>
-				<a class="btnLook" href="sysUser/lookup.html" width="920" warn="请选择用户" lookupGroup="">选择用户</a>
-				<div id="adminIds"></div>
-			</dd>
-		</dl>
-		<fieldset class="placeExtend">
-			<legend>列表数据扩展字段</legend>
-			<#include '../include_page/extends.html'/>
-			<#assign extendList=(a.extendList)![]/>
-			<@extends 'extendList' extendList/>
-		</fieldset>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH="60">
+        <dl class="nowrap">
+            <dt><@t.page 'path'/>:</dt></dt>
+            <dd>
+            <#if path?has_content>
+                ${path}
+                <input name="path" type="hidden" value="${path}" size="40"/>
+            <#else>
+                <input name="path" type="text" value="/${getUUID()}.html" size="40"/>
+            </#if>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'alias'/>:</dt></dt>
+            <dd>
+                <input class="required" name="alias" type="text" maxlength="50" size="20" value="${(a.alias)!}"/>
+                <span class="placeExtend">
+                    <label>
+                        <input name="allowContribute" type="checkbox" onclick="if($(this).is(':checked')){$('.allowContribute',navTab.getCurrentPanel()).show()}else{$('.allowContribute',navTab.getCurrentPanel()).hide()}"/>
+                        <@t.page 'allow_contribute'/>
+                    </label>
+                    <label class="allowContribute" style="display:none">
+                        <input name="allowAnonymous" type="checkbox"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
+                        <@t.page 'allow_anonymous_contribute'/>
+                    </label>
+                </span>
+            </dd>
+        </dl>
+        <#if a?has_content&&a.allowContribute>
+            <script>
+                $('input[name=allowContribute]',navTab.getCurrentPanel()).click();
+            </script>
+        </#if>
+        <dl class="nowrap">
+            <dt><@t.page 'place_data.page_size'/>:</dt>
+            <dd>
+                <input name="size" class="required digits" onchange="checkPageSize();" type="number" value="${(a.size)!0}"/>
+            </dd>
+        </dl>
+        <dl class="nowrap placeExtend">
+            <dt><@t.page 'place_data.master'/>:</dt>
+            <dd>
+                <input name="userId" type="hidden"/>
+                <input name="nickName" type="hidden" onchange="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());"/>
+                <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
+                <div id="adminIds"></div>
+            </dd>
+        </dl>
+         <fieldset class="placeExtend systemField">
+            <legend><@t.page 'place.system_field'/></legend>
+            <dl class="nowrap">
+                <dt>
+                    <label><@t.page 'field.title'/>:</label>
+                </dt>
+                <dd>
+                    <input name="fieldTextMap[title]" class="required" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt>
+                    <label><input name="fieldList" type="checkbox" value="url"/><@t.page 'field.url'/></label>
+                </dt>
+                <dd>
+                    <label><@t.page 'text'/>:</label>
+                    <input name="fieldTextMap[url]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
+                    <label><input name="requiredFieldList" type="checkbox" value="url"/><@t.page 'required'/></label>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt>
+                    <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/></label>
+                </dt>
+                <dd>
+                    <label><@t.page 'text'/>:</label>
+                    <input name="fieldTextMap[cover]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
+                    <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
+                </dd>
+            </dl>
+        </fieldset>
+        <fieldset class="placeExtend">
+            <legend><@t.page 'place_data.extend_field'/>(<@t.page 'metadata.default_value_description'/>)</legend>
+            <#include '../include_page/extends.html'/>
+            <#assign extendList=(a.extendList)![]/>
+            <@extends 'extendList' extendList/>
+        </fieldset>
 <script>
+$('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
+    var box = $(this).parent().parent().parent();
+    box.find('dd').hide();
+    $(this).click(function(){
+        if( $(this).is(':checked') ) {
+            box.find('dd').show().find('input[type=text]').addClass('required');
+        } else {
+            box.find('dd').hide().find('input[type=text]').removeClass('required').val('');
+        }
+    });
+});
+<#if (a.fieldList)?has_content>
+<#list a.fieldList as field>
+    $('input[name=fieldList][value=${field}]',navTab.getCurrentPanel()).click();
+</#list>
+</#if>
+<#if (a.requiredFieldList)?has_content>
+<#list a.requiredFieldList as field>
+    $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).click();
+</#list>
+</#if>
 function checkPageSize(){
-	if(parseInt($('input[name=size]',navTab.getCurrentPanel()).val())>0){
-		$('.placeExtend',navTab.getCurrentPanel()).show();
-		$('textarea[name=content]',navTab.getCurrentPanel()).val($('#content',navTab.getCurrentPanel()).val());
-		$('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).removeAttr('disabled');
-	} else {
-		$('.placeExtend',navTab.getCurrentPanel()).hide();
-		$('textarea[name=content]',navTab.getCurrentPanel()).val('');
-		$('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).attr('disabled','disabled');
-	}
+    if(parseInt($('input[name=size]',navTab.getCurrentPanel()).val())>0){
+        $('.placeExtend',navTab.getCurrentPanel()).show();
+        $('textarea[name=content]',navTab.getCurrentPanel()).val($('#content',navTab.getCurrentPanel()).val());
+        $('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).removeAttr('disabled');
+    } else {
+        $('.placeExtend',navTab.getCurrentPanel()).hide();
+        $('textarea[name=content]',navTab.getCurrentPanel()).val('<@t.page 'place'/>');
+        $('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).attr('disabled','disabled');
+    }
 }
 function addUser(id,name){
-	if(name){
-		name=name.trim();
-	}
-	if(id&&name){
-		$('#adminIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"adminIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-	}
-	$('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
-	$('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
+    if(name){
+        name=name.trim();
+    }
+    if(id&&name){
+        $('#adminIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"adminIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+    }
+    $('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
+    $('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
 }
 $('#adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
-	$(this).parent().remove();
-	return false;
+    $(this).parent().remove();
+    return false;
 });
 checkPageSize();
 <#if (a.adminIds)?has_content>
-	<@_sysUser ids=a.adminIds>
-		<#list map as k,user>
-		addUser('${k}','${user.nickName}');
-		</#list>
-	</@_sysUser>
+    <@_sysUser ids=a.adminIds>
+        <#list map as k,user>
+        addUser('${k}','${user.nickName}');
+        </#list>
+    </@_sysUser>
 </#if>
 </script>
-		<textarea name="content" style="display:none"></textarea>
-		<textarea id="content" style="display:none"><#noparse>
+        <textarea name="content" style="display:none"></textarea>
+        <textarea id="content" style="display:none"><#noparse>
 <#list page.list>
-	<ul>
-	<#items as a>
-		<li>
-		    <#-- ${a.url} 为不带计数的链接 -->
-            <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">
-				<figure>
-	                <img src="${site.sitePath+a.cover!}">
-	                <figcaption>${a.title}</figcaption>
-	            </figure>
-	        </a>
+    <ul>
+    <#items as a>
+        <li>
+            <figure>
+                <!-- ${a.itemType!} : ${a.itemId!} -->
+                <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${site.sitePath+a.cover!}"></a>
+                <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
+                <@t.page 'extend_field'/>:<#assign attribute=getPlaceAttribute(a.id)/>
+            </figure>
         </li>
-	</#items>
-	</ul>
+    </#items>
+    </ul>
 </#list>
 </#noparse></textarea>
-	</div>
+    </div>
 </form>

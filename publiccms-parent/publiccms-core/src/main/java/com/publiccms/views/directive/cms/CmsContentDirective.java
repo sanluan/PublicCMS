@@ -49,5 +49,4 @@ public class CmsContentDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentService service;
-
 }

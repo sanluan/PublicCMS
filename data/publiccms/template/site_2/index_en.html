@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
+	<title>${site.name!}</title>
+	<meta name="keywords" content="${(metadata.extendData.keywords)!}" />
+	<meta name="description" content="${(metadata.extendData.description)!}" />
+	<@_includePlace path="/194ca327-6b34-431d-a2d2-90f94b25e950.html"/> <#-- Head META -->
+</head>
+<body>
+	<@_includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
+
+	<div class="index-bg" style="background:urL(${site.sitePath}assets/images/index.jpg) repeat-x center top; text-align:center;"></div>
+
+	<@_includePlace path="/1478e1a7-2fcc-452e-841b-2eecc067d7c4.html"/> <#-- 英文导航 -->
+
+	<main class="container">
+		<div class="introduction-box">
+			<h2><strong>ABOUT XXXX</strong></h2>
+			<div class="clear"></div>
+			<div class="introduction">
+				<p>${(metadata.extendData.introduction_en?no_esc)!}</p>
+			</div>
+            <img name="" src="${site.sitePath}assets/images/201209291602208653.jpg" alt="">
+		</div>
+		<@_category id=(metadata.extendData.category_en)!>
+		<div class="content-list-box">
+			<h2>
+				<div id="tab1">
+					<span onmouseover="setTab(1,0)" class="on" id="T1">${object.name!}<a href="${object.url}" title="${object.name!}">More</a></span>
+				</div>
+			</h2>
+			<div id="tablist1">
+			<@_contentList categoryId=object.id containChild=true count=count>
+			<#if page.totalCount gt 0>
+				<ul>
+				<#list page.list as a>
+                    <li><span class="title"><a href="${a.url!}" target="_blank">${a.title!}</a></span>${a.publishDate?string('yyyy-MM-dd')}</li>
+			    </#list>
+				</ul>
+			</#if>
+			</@_contentList>
+			</div>
+		</div>
+	</@_category>
+		<div class="aside-box">
+			<h2><strong>Related Links</strong></h2>
+			<select class="friend-link" onchange="javascript:if(this.options[this.selectedIndex].value){window.open(this.options[this.selectedIndex].value)}">
+                <option value="">Friend Link</option>
+                <@_includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
+			</select>
+			<@_includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
+		</div>
+	</main>
+    <@_includePlace path="/ab53b388-be0e-4674-b631-e1de625c74ac.html"/> <#-- 首页推荐 -->
+	<@_includePlace path="/7ee58b3e-ac14-4568-aedd-77e14c97ad48.html"/> <#-- English Footer -->
+</body>
+</html>

@@ -35,7 +35,7 @@ public abstract class BaseHandler implements RenderHandler {
      * Controller parameters
      * 
      */
-    public static final String PARAMETERS_CONTROLLER = "showParamters";
+    public static final String PARAMETERS_CONTROLLER = "showParameters";
     /**
      * String类型参数
      * 
@@ -122,33 +122,33 @@ public abstract class BaseHandler implements RenderHandler {
     public static final String PARAMETER_TYPE_STRINGARRAY = "stringArray";
     protected Map<String, Object> map = new LinkedHashMap<>();
     protected List<Map<String, Object>> parameterList;
-    protected boolean regristerParamters;
+    protected boolean regristerParameters;
     protected boolean renderd = false;
 
     /**
      * 注册参数
      * 
-     * Regrister paramters
+     * Regrister parameters
      */
-    public void regristerParamters() {
-        this.regristerParamters = getBooleanWithoutRegrister(PARAMETERS_CONTROLLER, false);
-        if (regristerParamters) {
+    public void regristerParameters() {
+        this.regristerParameters = getBooleanWithoutRegrister(PARAMETERS_CONTROLLER, false);
+        if (regristerParameters) {
             parameterList = new ArrayList<>();
             put(PARAMETERS_NAME, parameterList);
         }
     }
 
-    protected void regristerParamter(String type, String name) {
-        regristerParamter(type, name, null);
+    protected void regristerParameter(String type, String name) {
+        regristerParameter(type, name, null);
     }
 
-    protected void regristerParamter(String type, String name, Object defaultValue) {
-        if (regristerParamters) {
-            HashMap<String, Object> paramter = new HashMap<>();
-            paramter.put("name", name);
-            paramter.put("type", type);
-            paramter.put("defaultValue", defaultValue);
-            parameterList.add(paramter);
+    protected void regristerParameter(String type, String name, Object defaultValue) {
+        if (regristerParameters) {
+            HashMap<String, Object> parameter = new HashMap<>();
+            parameter.put("name", name);
+            parameter.put("type", type);
+            parameter.put("defaultValue", defaultValue);
+            parameterList.add(parameter);
         }
     }
 
@@ -179,7 +179,7 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public String getString(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_STRING, name);
+        regristerParameter(PARAMETER_TYPE_STRING, name);
         return getStringWithoutRegrister(name);
     }
 
@@ -187,7 +187,7 @@ public abstract class BaseHandler implements RenderHandler {
     public String getString(String name, String defaultValue) throws Exception {
         try {
             String result = getString(name);
-            regristerParamter(PARAMETER_TYPE_STRING, name, defaultValue);
+            regristerParameter(PARAMETER_TYPE_STRING, name, defaultValue);
             return CommonUtils.notEmpty(result) ? result : defaultValue;
         } catch (Exception e) {
             return defaultValue;
@@ -196,7 +196,7 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public Character getCharacter(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_CHAR, name);
+        regristerParameter(PARAMETER_TYPE_CHAR, name);
         String result = getStringWithoutRegrister(name);
         if (CommonUtils.notEmpty(result)) {
             return result.charAt(0);
@@ -206,14 +206,14 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public Integer getInteger(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_INTEGER, name);
+        regristerParameter(PARAMETER_TYPE_INTEGER, name);
         return getIntegerWithoutRegrister(name);
     }
 
     @Override
     public int getInteger(String name, int defaultValue) {
         try {
-            regristerParamter(PARAMETER_TYPE_INTEGER, name, defaultValue);
+            regristerParameter(PARAMETER_TYPE_INTEGER, name, defaultValue);
             Integer result = getIntegerWithoutRegrister(name);
             return CommonUtils.notEmpty(result) ? result : defaultValue;
         } catch (Exception e) {
@@ -223,7 +223,7 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public Integer[] getIntegerArray(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_INTEGERARRAY, name);
+        regristerParameter(PARAMETER_TYPE_INTEGERARRAY, name);
         String[] arr = getStringArrayWithoutRegrister(name);
         if (CommonUtils.notEmpty(arr)) {
             Set<Integer> set = new TreeSet<>();
@@ -245,7 +245,7 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public Long[] getLongArray(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_LONGARRAY, name);
+        regristerParameter(PARAMETER_TYPE_LONGARRAY, name);
         String[] arr = getStringArrayWithoutRegrister(name);
         if (CommonUtils.notEmpty(arr)) {
             Set<Long> set = new TreeSet<>();
@@ -267,7 +267,7 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public Short[] getShortArray(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_SHORTARRAY, name);
+        regristerParameter(PARAMETER_TYPE_SHORTARRAY, name);
         String[] arr = getStringArrayWithoutRegrister(name);
         if (CommonUtils.notEmpty(arr)) {
             Set<Short> set = new TreeSet<>();
@@ -298,25 +298,25 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public Boolean getBoolean(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_BOOLEAN, name);
+        regristerParameter(PARAMETER_TYPE_BOOLEAN, name);
         return getBooleanWithoutRegrister(name);
     }
 
     @Override
     public boolean getBoolean(String name, boolean defaultValue) throws Exception {
-        regristerParamter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
+        regristerParameter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
         return getBooleanWithoutRegrister(name, defaultValue);
     }
 
     @Override
     public Date getDate(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_DATE, name);
+        regristerParameter(PARAMETER_TYPE_DATE, name);
         return getDateWithoutRegrister(name);
     }
 
     @Override
     public Date getDate(String name, Date defaultValue) throws Exception {
-        regristerParamter(PARAMETER_TYPE_DATE, name, defaultValue);
+        regristerParameter(PARAMETER_TYPE_DATE, name, defaultValue);
         try {
             Date result = getDateWithoutRegrister(name);
             return null != result ? result : defaultValue;
@@ -327,7 +327,7 @@ public abstract class BaseHandler implements RenderHandler {
 
     @Override
     public String[] getStringArray(String name) throws Exception {
-        regristerParamter(PARAMETER_TYPE_STRINGARRAY, name);
+        regristerParameter(PARAMETER_TYPE_STRINGARRAY, name);
         return getStringArrayWithoutRegrister(name);
     }
 

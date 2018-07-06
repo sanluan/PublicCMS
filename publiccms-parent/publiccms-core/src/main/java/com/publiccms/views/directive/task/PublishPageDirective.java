@@ -1,6 +1,5 @@
 package com.publiccms.views.directive.task;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -10,11 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTaskDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.FileComponent;
-import com.publiccms.logic.component.site.FileComponent.FileInfo;
+import com.publiccms.logic.component.file.FileComponent;
+import com.publiccms.logic.component.file.FileComponent.FileInfo;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -32,13 +32,12 @@ public class PublishPageDirective extends AbstractTaskDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        String path = handler.getString("path", SEPARATOR);
+        String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        String fullPath = siteComponent.getWebTemplateFilePath(site, path);
-        File file = new File(fullPath);
-        if (file.isFile()) {
+        String filePath = siteComponent.getWebTemplateFilePath(site, path);
+        if (fileComponent.isFile(filePath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
-            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(fullPath);
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
             if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
                     templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, path), metadata.getPublishPath(),
@@ -49,27 +48,26 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 }
                 handler.put("map", map).render();
             }
-        } else if (file.isDirectory()) {
+        } else if (fileComponent.isDirectory(filePath)) {
             handler.put("map", deal(site, path)).render();
         }
     }
 
     private Map<String, Boolean> deal(SysSite site, String path) {
-        path = path.replace("\\", SEPARATOR).replace("//", SEPARATOR);
+        path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        Map<String, CmsPageMetadata> metadataMap = metadataComponent
-                .getTemplateMetadataMap(siteComponent.getWebTemplateFilePath(site, path));
-        List<FileInfo> list = fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, path));
+        List<FileInfo> list = fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, path), null);
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
-                map.putAll(deal(site, filePath + SEPARATOR));
+                map.putAll(deal(site, filePath + CommonConstants.SEPARATOR));
             } else {
-                CmsPageMetadata metadata = metadataMap.get(fileInfo.getFileName());
+                CmsPageMetadata metadata = metadataComponent
+                        .getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, filePath));
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {
-                        templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, filePath), metadata.getPublishPath(), null,
-                                metadata, null);
+                        templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, filePath),
+                                metadata.getPublishPath(), null, metadata, null);
                         map.put(filePath, true);
                     } catch (IOException | TemplateException e) {
                         map.put(filePath, false);

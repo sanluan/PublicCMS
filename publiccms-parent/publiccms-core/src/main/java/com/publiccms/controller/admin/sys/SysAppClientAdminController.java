@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -33,47 +34,55 @@ public class SysAppClientAdminController extends AbstractController {
 
     /**
      * @param id
+     * @param _csrf 
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
-    public String enable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String enable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         SysAppClient entity = service.getEntity(id);
         if (null != entity.getId()) {
             SysSite site = getSite(request);
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getId().getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "enable.appclient", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param id
+     * @param _csrf 
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
-    public String disable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String disable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = getSite(request);
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getId().getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "disable.appclient", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 }

@@ -21,7 +21,7 @@ public class GetSleepMethod extends BaseMethod {
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         Integer time = getInteger(0, arguments);
-        if (CommonUtils.notEmpty(time) && time < 60) {
+        if (CommonUtils.notEmpty(time) && time <= 60) {
             try {
                 Thread.sleep(time * 1000);
             } catch (InterruptedException e) {
@@ -42,7 +42,7 @@ public class GetSleepMethod extends BaseMethod {
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 1;
     }
 }

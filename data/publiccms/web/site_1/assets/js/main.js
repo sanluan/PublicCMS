@@ -9,22 +9,33 @@ $(function(){
 	$(window).scroll(function(){
 		if(headerHeight-$(window).scrollTop()>0){
 			$('header').removeClass('fixed-position');
+			$('main').removeClass('no-header');
 		} else {
 			$('header').addClass('fixed-position');
+			$('main').addClass('no-header');
 		}
 	});
+	$('.wechat').click(function(){
+		$('.dialog').show();
+	});
+	$('.dialog .box').click(function(){
+		$('.dialog').hide();
+	});
+	$('.dialog .background').click(function(){
+		$('.dialog').hide();
+	});
 	// 登陆状态显示
-	var cookie = $.cookie("PUBLICCMS_USER");
-	if (cookie) {
-		var userdata = cookie.split('##');
-		if(userdata.length > 2) {
-			$('.tools .user').hide();
-			$('.tools .user-logout .nickname').text(decodeURIComponent(userdata[3]));
-			$('.tools .user-logout').show();
-			if(userdata[2]&&'true'==userdata[2]){
-				$('.tools .user-logout .master').show();
-			}
-		}
+	if (CMS_PATH) {
+		$.getJSON(CMS_PATH+'loginStatus?callback=?', function(data){
+			if(data.id){
+				$('.user').hide();
+				$('.user-logout .nickname').text(data.nickname);
+				$('.user-logout').show();
+				if(data.superuserAccess&&true==data.superuserAccess){
+					$('.user-logout .master').show();
+				}
+			}			
+		});
 	}
 	// 登陆链接增加返回地址
 	if(0>window.location.href.indexOf('returnUrl')){

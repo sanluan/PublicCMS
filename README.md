@@ -8,34 +8,69 @@
 
 PublicCMS是采用2018年最新主流技术开发的开源JAVACMS系统。架构科学，轻松支持上千万数据、千万PV；支持全站静态化，SSI，动态页面局部静态化等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。
 
+## 获取源码
+
+https://gitee.com/sanluan/PublicCMS
+https://github.com/sanluan/PublicCMS
+
 ## 视频、文档及一键运行包下载
 
 https://pan.baidu.com/s/1QIPaIhuASKC_16ZJ6v4SgQ 密码:eo4r
 
-## 获取稳定版源码
+## 参与开发
 
-https://git.oschina.net/sanluan/PublicCMS
-https://github.com/sanluan/PublicCMS
+切换到develop分支
 
-## 参与研发
+## 授权协议
 
-https://git.oschina.net/sanluan/PublicCMS-preview
-https://github.com/sanluan/PublicCMS-preview
-
-## 授权协议变更
-
-PublicCMS已经修改授权协议为非商用免费，商用付费
+* 版本:V1.0,V2016,V2017 完全免费授权协议:MIT
+* 版本:V4.0 商用付费授权协议:详情参见LICENSE
 
 ## 目录说明
 
 * data\publiccms	PublicCMS数据目录
 * doc			文档
+* docker  docker构建目录
 * publiccms-parent	工程源码
+* license.dat 试用授权
 
-## 部署运行
+## 快速编译与运行
 
-* 根据文档部署工程
-* 数据脚本内置管理员账号admin，密码admin
+* 编译运行
+
+```
+cd publiccms-parent
+mvnw clean package
+cd publiccms/target
+java -jar publiccms.war
+```
+访问程序页面http://localhost:8080/publiccms/ ,根据页面提示配置并初始化数据库
+管理后台访问相对路径为http://localhost:8080/publiccms/admin/ ,数据脚本内置管理员账号/密码:admin/admin,登录后请务必修改密码
+* 直接下载网盘中可执行程序
+本地准备java,mysql环境,下载可执行程序压缩解压缩后运行startup.bat或startup.sh
+
+## 定制运行方式
+
+* windows启动命令
+
+```
+java -jar -Dcms.port=8080 -Dcms.contextPath=/publiccms -Dcms.filePath="%cd%\data\publiccms" publiccms.war
+```
+* linux启动命令
+```
+java -jar -server -Dcms.port=8080 -Dcms.contextPath=/publiccms -Dcms.filePath="`pwd`/data/publiccms" publiccms.war
+```
+其中-Dcms.port为程序启动监听端口,-Dcms.contextPath为上下文路径(使用-Dcms.contextPath="",上下文路径为/),-Dcms.filePath为数据目录的绝对路径
+* tomcat中运行
+将publiccms.war.original重命名为publiccms.war或ROOT.war(上下文路径为/),移动文件到tomcat的webapps目录下,此时-Dcms.filePath参数依旧有效
+* docker中运行
+复制publiccms.war,data目录到docker目录中,执行
+```
+docker build -t mypubliccms .
+docker run -d -e "PORT=8080" -e "CONTEXTPATH=/publiccms" -e "FILEPATH=/data/publiccms" -p 8080:8080 -v /data/publiccms:/data/publiccms mypubliccms
+
+```
+其中PORT为程序启动监听端口,CONTEXTPATH为上下文路径(使用"CONTEXTPATH=",上下文路径为/),FILEPATH为数据目录的绝对路径
 
 ## 演示
 

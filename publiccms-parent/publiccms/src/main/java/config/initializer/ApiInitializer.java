@@ -2,7 +2,6 @@ package config.initializer;
 
 import org.springframework.web.WebApplicationInitializer;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.base.BaseServletInitializer;
 
 import config.spring.ApiConfig;
@@ -12,7 +11,7 @@ import config.spring.ApiConfig;
  * <p>WebInitializer</p>
  *
  */
-public class ApiInitializer extends BaseServletInitializer implements WebApplicationInitializer, Base {
+public class ApiInitializer extends BaseServletInitializer implements WebApplicationInitializer {
 
     @Override
     protected Class<?>[] getServletConfigClasses() {

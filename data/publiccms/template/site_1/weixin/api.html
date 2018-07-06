@@ -1,1 +1,0 @@
-<#if echostr?has_content><#assign str=''/><#list [metadata.extendData.token,timestamp,nonce]?sort as a><#assign str+=a/></#list><#if signature?upper_case=getSha1(str)>${echostr}<#else>error</#if><#else><#assign xml=getXml(body)/><#if 'event'=xml.xml.MsgType><#include "event."+xml.xml.Event+".html"/><#else><#include "message.html"/></#if></#if>

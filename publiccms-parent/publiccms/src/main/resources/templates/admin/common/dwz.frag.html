@@ -1,0 +1,218 @@
+<textarea id="dialogFrag"><div class="dialog" style="top:150px; left:300px;">
+    <div class="dialogHeader" onselectstart="return false;" oncopy="return false;" onpaste="return false;" oncut="return false;">
+        <div class="dialogHeader_r">
+            <div class="dialogHeader_c">
+                <a class="close" href="#close"></a>
+                <a class="maximize" href="#maximize"></a>
+                <a class="restore" href="#restore"></a>
+                <a class="minimize" href="#minimize"></a>
+                <h1><@t.page 'dialog'/></h1>
+            </div>
+        </div>
+    </div>
+    <div class="dialogContent layoutBox unitBox"></div>
+    <div class="dialogFooter">
+        <div class="dialogFooter_r">
+            <div class="dialogFooter_c"></div>
+        </div>
+    </div>
+    <div class="resizable_h_l" tar="nw"></div>
+    <div class="resizable_h_r" tar="ne"></div>
+    <div class="resizable_h_c" tar="n"></div>
+    <div class="resizable_c_l" tar="w" style="height:300px;"></div>
+    <div class="resizable_c_r" tar="e" style="height:300px;"></div>
+    <div class="resizable_f_l" tar="sw"></div>
+    <div class="resizable_f_r" tar="se"></div>
+    <div class="resizable_f_c" tar="s"></div>
+</div></textarea>
+<textarea id="dialogProxy"><div id="dialogProxy" class="dialog dialogProxy">
+    <div class="dialogHeader">
+        <div class="dialogHeader_r">
+            <div class="dialogHeader_c">
+                <h1></h1>
+            </div>
+        </div>
+    </div>
+    <div class="dialogContent"></div>
+    <div class="dialogFooter">
+        <div class="dialogFooter_r">
+            <div class="dialogFooter_c">
+            </div>
+        </div>
+    </div>
+</div></textarea>
+<textarea id="taskbar"><div id="taskbar" style="left:0px; display:none;">
+    <div class="taskbarContent">
+        <ul></ul>
+    </div>
+    <div class="taskbarLeft taskbarLeftDisabled" style="display:none;"></div>
+    <div class="taskbarRight" style="display:none;"></div>
+</div></textarea>
+<textarea id="dwzFrag"><div id="splitBar"></div>
+<div id="splitBarProxy"></div>
+
+<div class="resizable"></div>
+<div class="shadow" style="width:508px; top:148px; left:296px;">
+    <div class="shadow_h">
+        <div class="shadow_h_l"></div>
+        <div class="shadow_h_r"></div>
+        <div class="shadow_h_c"></div>
+    </div>
+    <div class="shadow_c">
+        <div class="shadow_c_l" style="height:296px;"></div>
+        <div class="shadow_c_r" style="height:296px;"></div>
+        <div class="shadow_c_c" style="height:296px;"></div>
+    </div>
+    <div class="shadow_f">
+        <div class="shadow_f_l"></div>
+        <div class="shadow_f_r"></div>
+        <div class="shadow_f_c"></div>
+    </div>
+</div>
+<div id="alertBackground" class="alertBackground"></div>
+<div id="dialogBackground" class="dialogBackground"></div>
+
+<div id='background'></div>
+<div id='progressBar'>
+    <i class="icon-spinner icon-spin"></i>
+</div></textarea>
+<!-- dwz.pagination -->
+<textarea id="pagination"><ul>
+    <li class="j-first">
+        <a class="first" href="javascript:;"><span><@t.page 'first_page'/></span></a>
+        <span class="first"><span><@t.page 'first_page'/></span></span>
+    </li>
+    <li class="j-prev">
+        <a class="previous" href="javascript:;"><span><@t.page 'pre_page'/></span></a>
+        <span class="previous"><span><@t.page 'pre_page'/></span></span>
+    </li>
+    #pageNumFrag#
+    <li class="j-next">
+        <a class="next" href="javascript:;"><span><@t.page 'next_page'/></span></a>
+        <span class="next"><span><@t.page 'next_page'/></span></span>
+    </li>
+    <li class="j-last">
+        <a class="last" href="javascript:;"><span><@t.page 'last_page'/></span></a>
+        <span class="last"><span><@t.page 'last_page'/></span></span>
+    </li>
+    <li class="jumpto">
+        <input class="textInput" type="text" size="4" value="#currentPage#" />
+        <input class="goto" type="button" value="<@t.page 'goto'/>" />
+    </li>
+</ul></textarea>
+<textarea id="alertBoxFrag"><div id="alertMsgBox" class="alert">
+    <div class="alertContent">
+        <div class="#type#">
+            <div class="alertInner">
+                <h1>#title#</h1>
+                <div class="msg">#message#</div>
+            </div>
+            <div class="toolBar">
+                <ul>#butFragment#</ul>
+            </div>
+        </div>
+    </div>
+    <div class="alertFooter">
+        <div class="alertFooter_r">
+            <div class="alertFooter_c"></div>
+        </div>
+    </div>
+</div></textarea>
+<textarea id="alertButFrag"><li>
+    <a class="button" rel="#callback#" onclick="alertMsg.close()" href="javascript:">#butMsg#</a>
+</li></textarea>
+<textarea id="calendarFrag"><div id="calendar">
+    <div class="main">
+        <div class="head">
+            <table width="100%" border="0" cellpadding="0" cellspacing="2">
+            <tr>
+                <td><select name="year"></select></td>
+                <td><select name="month"></select></td>
+                <td width="20"><span class="close">×</span></td>
+            </tr>
+            </table>
+        </div>
+        <div class="body">
+            <dl class="dayNames"></dl>
+            <dl class="days"></dl>
+            <div style="clear:both;height:0;line-height:0"></div>
+        </div>
+
+        <div class="foot">
+            <table class="time">
+                <tr>
+                    <td>
+                        <input type="text" class="hh" maxlength="2" start="0" end="23"/>:
+                        <input type="text" class="mm" maxlength="2" start="0" end="59"/>:
+                        <input type="text" class="ss" maxlength="2" start="0" end="59"/>
+                    </td>
+                    <td><ul><li class="up">&and;</li><li class="down">&or;</li></ul></td>
+                </tr>
+            </table>
+            <button type="button" class="clearBut"><@t.page 'button.clear'/></button>
+            <button type="button" class="okBut"><@t.page 'button.ok'/></button>
+        <div>
+        <div class="tm">
+            <ul class="hh">
+                <li>00</li>
+                <li>01</li>
+                <li>02</li>
+                <li>03</li>
+                <li>04</li>
+                <li>05</li>
+                <li>06</li>
+                <li>07</li>
+                <li>08</li>
+                <li>09</li>
+                <li>10</li>
+                <li>11</li>
+                <li>12</li>
+                <li>13</li>
+                <li>14</li>
+                <li>15</li>
+                <li>16</li>
+                <li>17</li>
+                <li>18</li>
+                <li>19</li>
+                <li>20</li>
+                <li>21</li>
+                <li>22</li>
+                <li>23</li>
+            </ul>
+            <ul class="mm">
+                <li>00</li>
+                <li>05</li>
+                <li>10</li>
+                <li>15</li>
+                <li>20</li>
+                <li>25</li>
+                <li>30</li>
+                <li>35</li>
+                <li>40</li>
+                <li>45</li>
+                <li>50</li>
+                <li>55</li>
+            </ul>
+            <ul class="ss">
+                <li>00</li>
+                <li>10</li>
+                <li>20</li>
+                <li>30</li>
+                <li>40</li>
+                <li>50</li>
+            </ul>
+        </div>
+    </div>
+</div></textarea>
+<textarea id="navTabCM"><ul id="navTabCM">
+    <li rel="reload"><@t.page 'navtab.reload'/></li>
+    <li rel="closeCurrent"><@t.page 'navtab.close'/></li>
+    <li rel="closeOther"><@t.page 'navtab.close_other'/></li>
+    <li rel="closeAll"><@t.page 'navtab.close_all'/></li>
+</ul></textarea>
+<textarea id="dialogCM"><ul id="dialogCM">
+    <li rel="closeCurrent"><@t.page 'dialog.close'/></li>
+    <li rel="closeOther"><@t.page 'dialog.close_other'/></li>
+    <li rel="closeAll"><@t.page 'dialog.close_all'/></li>
+</ul></textarea>
+<textarea id="externalFrag"><iframe src="{url}" style="width:100%;height:{height};" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe></textarea>

@@ -2,6 +2,7 @@ package com.publiccms.logic.component.template;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,6 @@ import org.springframework.ui.ModelMap;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.AbstractFreemarkerView;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.servlet.WebDispatcherServlet;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
@@ -35,7 +35,7 @@ import freemarker.template.TemplateModel;
  *
  */
 @Component
-public class TemplateCacheComponent implements Cache, Base {
+public class TemplateCacheComponent implements Cache {
 
     protected final Log log = LogFactory.getLog(getClass());
     /**
@@ -60,32 +60,33 @@ public class TemplateCacheComponent implements Cache, Base {
      * 
      * @param requestPath
      * @param fullTemplatePath
+     * @param locale
      * @param cacheMillisTime
-     * @param acceptParamters
+     * @param acceptParameters
      * @param request
      * @param modelMap
      * @return cached path
      */
-    public String getCachedPath(String requestPath, String fullTemplatePath, int cacheMillisTime, String[] acceptParamters,
-            HttpServletRequest request, ModelMap modelMap) {
+    public String getCachedPath(String requestPath, String fullTemplatePath, Locale locale, int cacheMillisTime,
+            String[] acceptParameters, HttpServletRequest request, ModelMap modelMap) {
         ModelMap model = (ModelMap) modelMap.clone();
         AbstractFreemarkerView.exposeAttribute(model, request.getScheme(), request.getServerName(), request.getServerPort(),
                 request.getContextPath());
         model.addAttribute(CACHE_VAR, true);
-        return createCache(requestPath, fullTemplatePath, fullTemplatePath + getRequestParamtersString(request, acceptParamters),
-                cacheMillisTime, model);
+        return createCache(requestPath, fullTemplatePath,
+                fullTemplatePath + getRequestParametersString(request, acceptParameters), locale, cacheMillisTime, model);
     }
 
-    private String getRequestParamtersString(HttpServletRequest request, String[] acceptParamters) {
+    private String getRequestParametersString(HttpServletRequest request, String[] acceptParameters) {
         StringBuilder sb = new StringBuilder();
         sb.append("/default.html");
-        if (null != acceptParamters) {
-            for (String paramterName : acceptParamters) {
-                String[] values = request.getParameterValues(paramterName);
+        if (null != acceptParameters) {
+            for (String parameterName : acceptParameters) {
+                String[] values = request.getParameterValues(parameterName);
                 if (CommonUtils.notEmpty(values)) {
                     for (int i = 0; i < values.length; i++) {
                         sb.append("_");
-                        sb.append(paramterName);
+                        sb.append(parameterName);
                         sb.append("=");
                         sb.append(values[i]);
                     }
@@ -109,7 +110,7 @@ public class TemplateCacheComponent implements Cache, Base {
         deleteCachedFile(getCachedFilePath(""));
     }
 
-    private String createCache(String requestPath, String fullTemplatePath, String cachePath, int cacheMillisTime,
+    private String createCache(String requestPath, String fullTemplatePath, String cachePath, Locale locale, int cacheMillisTime,
             ModelMap model) {
         String cachedFilePath = getCachedFilePath(cachePath);
         String cachedtemplatePath = CACHE_FILE_DIRECTORY + cachePath;
@@ -119,7 +120,7 @@ public class TemplateCacheComponent implements Cache, Base {
         }
         try {
             FreeMarkerUtils.generateFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getWebConfiguration(), model);
-            templateComponent.getWebConfiguration().removeTemplateFromCache(cachedtemplatePath);
+            templateComponent.getWebConfiguration().removeTemplateFromCache(cachedtemplatePath, locale);
             return cachedPath;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
@@ -128,12 +129,14 @@ public class TemplateCacheComponent implements Cache, Base {
     }
 
     private boolean checkCacheFile(String cacheFilePath, int millisTime) {
-        File dest = new File(cacheFilePath);
-        if (dest.exists()) {
-            if (dest.lastModified() > (System.currentTimeMillis() - millisTime)) {
-                return true;
-            } else {
-                dest.setLastModified(System.currentTimeMillis());
+        if (0 < millisTime) {
+            File dest = new File(cacheFilePath);
+            if (dest.exists()) {
+                if (dest.lastModified() > (System.currentTimeMillis() - millisTime)) {
+                    return true;
+                } else {
+                    dest.setLastModified(System.currentTimeMillis());
+                }
             }
         }
         return false;

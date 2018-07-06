@@ -30,7 +30,7 @@
             default : queryHandler.order("bean.id " + orderType);
         }
     <#else>
-    	<#list columnList as a><#if a.order>
+        <#list columnList as a><#if a.order>
         queryHandler.order("bean.${a.name} " + orderType);
         <#break/>
         </#if></#list>

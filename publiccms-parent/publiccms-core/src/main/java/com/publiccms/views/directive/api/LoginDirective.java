@@ -8,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogLogin;
@@ -37,7 +37,7 @@ public class LoginDirective extends AbstractAppDirective {
         boolean result = false;
         if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password)) {
             SysSite site = getSite(handler);
-            if (AbstractController.verifyNotEMail(username)) {
+            if (ControllerUtils.verifyNotEMail(username)) {
                 user = service.findByName(site.getId(), username);
             } else {
                 user = service.findByEmail(site.getId(), username);

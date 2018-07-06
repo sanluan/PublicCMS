@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
@@ -28,6 +29,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.EmailTemplateConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
@@ -65,6 +67,7 @@ public class UserController extends AbstractController {
      * @param password
      * @param repassword
      * @param returnUrl
+     * @param _csrf
      * @param request
      * @param session
      * @param response
@@ -72,17 +75,19 @@ public class UserController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
-    public String changePassword(String oldpassword, String password, String repassword, String returnUrl,
+    public String changePassword(String oldpassword, String password, String repassword, String returnUrl, String _csrf,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
-        SysUser user = getUserFromSession(session);
-        if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("password", password, model)
+        SysUser user = ControllerUtils.getUserFromSession(session);
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
+                || ControllerUtils.verifyNotEmpty("user", user, model)
+                || ControllerUtils.verifyNotEmpty("password", password, model)
                 || ControllerUtils.verifyNotEquals("repassword", password, repassword, model) || ControllerUtils
                         .verifyNotEquals("password", user.getPassword(), VerificationUtils.md5Encode(oldpassword), model)) {
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
             if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
@@ -94,18 +99,19 @@ public class UserController extends AbstractController {
                     }
                 }
             }
-            clearUserToSession(request.getContextPath(), session, response);
+            ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
             service.updatePassword(user.getId(), VerificationUtils.md5Encode(password));
-            model.addAttribute(MESSAGE, SUCCESS);
+            model.addAttribute(CommonConstants.MESSAGE, CommonConstants.SUCCESS);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "changepassword",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
 
     /**
      * @param email
      * @param returnUrl
+     * @param _csrf
      * @param request
      * @param session
      * @param response
@@ -113,7 +119,7 @@ public class UserController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "saveEmail", method = RequestMethod.POST)
-    public String saveEmail(String email, String returnUrl, HttpServletRequest request, HttpSession session,
+    public String saveEmail(String email, String returnUrl, String _csrf, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
@@ -122,12 +128,14 @@ public class UserController extends AbstractController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
         String emailPath = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_PATH);
-        SysUser user = getUserFromSession(session);
-        if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("email", email, model)
+        SysUser user = ControllerUtils.getUserFromSession(session);
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
+                || ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("email", email, model)
                 || ControllerUtils.verifyNotEmpty("email.config", emailTitle, model)
-                || ControllerUtils.verifyNotEmpty("email.config", emailPath, model) || verifyNotEMail("email", email, model)
+                || ControllerUtils.verifyNotEmpty("email.config", emailPath, model)
+                || ControllerUtils.verifyNotEMail("email", email, model)
                 || ControllerUtils.verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             SysEmailToken sysEmailToken = new SysEmailToken();
             sysEmailToken.setUserId(user.getId());
@@ -144,14 +152,14 @@ public class UserController extends AbstractController {
                         FreeMarkerUtils.generateStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
                         FreeMarkerUtils.generateStringByFile(siteComponent.getWebTemplateFilePath(site, emailPath),
                                 templateComponent.getWebConfiguration(), emailModel))) {
-                    model.addAttribute(MESSAGE, "sendEmail.success");
+                    model.addAttribute(CommonConstants.MESSAGE, "sendEmail.success");
                 } else {
-                    model.addAttribute(MESSAGE, "sendEmail.error");
+                    model.addAttribute(CommonConstants.MESSAGE, "sendEmail.error");
                 }
             } catch (IOException | TemplateException | MessagingException e) {
-                model.addAttribute(ERROR, "sendEmail.error");
+                model.addAttribute(CommonConstants.ERROR, "sendEmail.error");
             }
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
 
@@ -174,13 +182,13 @@ public class UserController extends AbstractController {
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (ControllerUtils.verifyNotEmpty("verifyEmail.authToken", authToken, model)
                 || ControllerUtils.verifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             sysEmailTokenService.delete(sysEmailToken.getAuthToken());
             service.checked(sysEmailToken.getUserId(), sysEmailToken.getEmail());
-            clearUserTimeToSession(session);
-            model.addAttribute(MESSAGE, "verifyEmail.success");
-            return REDIRECT + returnUrl;
+            ControllerUtils.clearUserTimeToSession(session);
+            model.addAttribute(CommonConstants.MESSAGE, "verifyEmail.success");
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
 
@@ -188,15 +196,25 @@ public class UserController extends AbstractController {
      * @param authToken
      * @param returnUrl
      * @param request
+     * @param session
+     * @param model
      * @return view name
      */
     @RequestMapping(value = "deleteToken", method = RequestMethod.POST)
-    public String deleteToken(String authToken, String returnUrl, HttpServletRequest request) {
+    public String deleteToken(String authToken, String returnUrl, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
-        sysUserTokenService.delete(authToken);
-        return REDIRECT + returnUrl;
+        SysUserToken entity = sysUserTokenService.getEntity(authToken);
+        Long userId = ControllerUtils.getAdminFromSession(session).getId();
+        if (null != entity) {
+            if (ControllerUtils.verifyNotEquals("userId", userId, entity.getUserId(), model)) {
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            }
+            sysUserTokenService.delete(authToken);
+        }
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 }

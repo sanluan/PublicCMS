@@ -1,4 +1,4 @@
-﻿maven(使用以下文件：.mvn,pom.xml,mvnw,mvnw.cmd)
+maven(使用以下文件：.mvn,pom.xml,mvnw,mvnw.cmd)
 
 已安装maven完整命令行为  mvn clean
 未安装maven完整命令行为 mvnw clean

@@ -35,6 +35,7 @@ public class SysApp implements java.io.Serializable {
     private String channel;
     @GeneratorColumn(title = "授权KEY")
     private String appKey;
+    @JsonIgnore
     @GeneratorColumn(title = "授权密码")
     private String appSecret;
     @GeneratorColumn(title = "授权接口")

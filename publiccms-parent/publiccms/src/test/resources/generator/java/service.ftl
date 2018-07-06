@@ -23,7 +23,7 @@ import com.publiccms.common.handler.PageHandler;
 @Transactional
 public class ${entityName}${serviceSuffix} extends BaseService<${entityName}> {
 
-	<#include "../include_condition/comment.ftl">
+    <#include "../include_condition/comment.ftl">
     @Transactional(readOnly = true)
     public PageHandler getPage(<#include "../include_condition/condition.ftl">) {
         return dao.getPage(<#include "../include_condition/invoke.ftl">);

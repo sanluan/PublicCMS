@@ -1,0 +1,19 @@
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
+<div class="pageFormContent" layoutH="60">
+    <ul class="tree treeFolder expand">
+<@_modelList parentId=parentId>
+    <#list page.list as a>
+        <li><a href="cmsContent/changeModel.do?id=${id!}&modelId=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.change_type'/>" target="ajaxTodo"><@t.page 'change_type_to' a.name!/></a></li>
+    </#list>
+</@_modelList>
+    </ul>
+</div>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+    $.pdialog.closeCurrent();
+});
+</script>

@@ -44,7 +44,8 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             try {
                 page = service.facetQuery(site.getId(), handler.getStringArray("categoryId"), handler.getStringArray("modelId"),
                         word, tagIds, handler.getDate("startPublishDate"),
-                        handler.getDate("endPublishDate", CommonUtils.getDate()), pageIndex, count);
+                        handler.getDate("endPublishDate", CommonUtils.getMinuteDate()), handler.getString("orderField"),
+                        pageIndex, count);
             } catch (Exception e) {
                 page = new FacetPageHandler(pageIndex, count, 0, null);
             }

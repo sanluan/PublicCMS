@@ -2,6 +2,7 @@ package com.publiccms.controller.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -17,6 +18,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractController;
@@ -76,10 +78,10 @@ public class LoginController extends AbstractController {
         password = StringUtils.trim(password);
         if (ControllerUtils.verifyNotEmpty("username", username, model)
                 || ControllerUtils.verifyNotEmpty("password", password, model)) {
-            return REDIRECT + loginPath;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
         } else {
             SysUser user;
-            if (verifyNotEMail(username)) {
+            if (ControllerUtils.verifyNotEMail(username)) {
                 user = service.findByName(site.getId(), username);
             } else {
                 user = service.findByEmail(site.getId(), username);
@@ -93,10 +95,10 @@ public class LoginController extends AbstractController {
                 }
                 logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false,
                         CommonUtils.getDate(), password));
-                return REDIRECT + loginPath;
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             } else {
                 user.setPassword(null);
-                setUserToSession(request.getSession(), user);
+                ControllerUtils.setUserToSession(request.getSession(), user);
                 String authToken = UUID.randomUUID().toString();
                 addLoginStatus(user, authToken, request, response);
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
@@ -104,7 +106,7 @@ public class LoginController extends AbstractController {
                 service.updateLoginStatus(user.getId(), ip);
                 logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true,
                         CommonUtils.getDate(), null));
-                return REDIRECT + returnUrl;
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
         }
     }
@@ -113,22 +115,22 @@ public class LoginController extends AbstractController {
      * @param request
      * @param session
      * @param response
-     * @param model
      * @return result
      */
     @RequestMapping("loginStatus")
     @ResponseBody
-    public ModelMap loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
-        SysUser user = getUserFromSession(session);
+    public Map<String, Object> loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+        SysUser user = ControllerUtils.getUserFromSession(session);
+        Map<String, Object> result = new HashMap<>();
         if (null != user) {
-            model.addAttribute("id", user.getId());
-            model.addAttribute("name", user.getName());
-            model.addAttribute("nickname", user.getNickName());
-            model.addAttribute("email", user.getEmail());
-            model.addAttribute("emailChecked", user.isEmailChecked());
-            model.addAttribute("superuserAccess", user.isSuperuserAccess());
+            result.put("id", user.getId());
+            result.put("name", user.getName());
+            result.put("nickname", user.getNickName());
+            result.put("email", user.getEmail());
+            result.put("emailChecked", user.isEmailChecked());
+            result.put("superuserAccess", user.isSuperuserAccess());
         }
-        return model;
+        return result;
     }
 
     /**
@@ -157,15 +159,15 @@ public class LoginController extends AbstractController {
         if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
                 || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
                 || ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
-                || verifyNotUserName("username", entity.getName(), model)
-                || verifyNotNickName("nickname", entity.getNickName(), model)
+                || ControllerUtils.verifyNotUserName("username", entity.getName(), model)
+                || ControllerUtils.verifyNotNickName("nickname", entity.getNickName(), model)
                 || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)
                 || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
                 || ControllerUtils.verifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()),
                         model)) {
             model.addAttribute("name", entity.getName());
             model.addAttribute("nickname", entity.getNickName());
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             String ip = RequestUtils.getIpAddress(request);
             entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
@@ -173,39 +175,51 @@ public class LoginController extends AbstractController {
             entity.setSiteId(site.getId());
             service.save(entity);
             entity.setPassword(null);
-            setUserToSession(request.getSession(), entity);
+            ControllerUtils.setUserToSession(request.getSession(), entity);
             String authToken = UUID.randomUUID().toString();
             addLoginStatus(entity, authToken, request, response);
             sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB,
                     CommonUtils.getDate(), ip));
             if (null != channel && null != openId) {
-                String oauthToken = new StringBuilder(channel).append(DOT).append(site.getId()).append(DOT).append(openId)
-                        .toString();
+                String oauthToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
+                        .append(CommonConstants.DOT).append(openId).toString();
                 sysUserTokenService
                         .save(new SysUserToken(oauthToken, site.getId(), entity.getId(), channel, CommonUtils.getDate(), ip));
             }
-            return REDIRECT + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
 
     /**
+     * @param userId
+     * @param returnUrl
      * @param request
      * @param response
      * @param model
+     * @return view name
      */
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
-    public void logout(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-        Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
-        if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
-            String value = userCookie.getValue();
-            if (null != value) {
-                String[] userData = value.split(CommonConstants.getCookiesUserSplit());
-                if (userData.length > 1) {
-                    sysUserTokenService.delete(userData[1]);
+    public String logout(Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response,
+            ModelMap model) {
+        SysSite site = getSite(request);
+        if (CommonUtils.empty(returnUrl)) {
+            returnUrl = site.getDynamicPath();
+        }
+        SysUser user = ControllerUtils.getUserFromSession(request.getSession());
+        if (null != userId && null != user && userId.equals(user.getId())) {
+            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
+            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
+                String value = userCookie.getValue();
+                if (null != value) {
+                    String[] userData = value.split(CommonConstants.getCookiesUserSplit());
+                    if (userData.length > 1) {
+                        sysUserTokenService.delete(userData[1]);
+                    }
                 }
             }
+            ControllerUtils.clearUserToSession(request.getContextPath(), request.getSession(), response);
         }
-        clearUserToSession(request.getContextPath(), request.getSession(), response);
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     private void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response) {
@@ -214,9 +228,9 @@ public class LoginController extends AbstractController {
             sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
                     .append(CommonConstants.getCookiesUserSplit()).append(user.isSuperuserAccess())
                     .append(CommonConstants.getCookiesUserSplit())
-                    .append(URLEncoder.encode(user.getNickName(), DEFAULT_CHARSET_NAME));
+                    .append(URLEncoder.encode(user.getNickName(), CommonConstants.DEFAULT_CHARSET_NAME));
             RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesUser(), sb.toString(),
-                    Integer.MAX_VALUE, null);
+                    30 * 24 * 3600, null);
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }
@@ -229,7 +243,7 @@ public class LoginController extends AbstractController {
      */
     public boolean verifyNotEnablie(SysUser user, ModelMap model) {
         if (user.isDisabled()) {
-            model.addAttribute(ERROR, "verify.user.notEnablie");
+            model.addAttribute(CommonConstants.ERROR, "verify.user.notEnablie");
             return true;
         }
         return false;

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Random recommendation</title>
+</head>
+<body>
+    <main>
+<@_contentList count=10>
+    <@_contentList pageIndex=getRandom(page.totalPage) count=10>
+        <#list page.list as a>
+            <section>
+                <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
+                <p>
+                    <#if a.cover?has_content><img src="${site.sitePath+a.cover}" alt="${a.title}"/></#if>
+                    ${a.description!}
+                </p>
+            </section>
+        </#list>
+    </@_contentList>
+</@_contentList>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+</body>
+</html>

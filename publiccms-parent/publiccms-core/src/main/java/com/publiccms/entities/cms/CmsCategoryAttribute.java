@@ -50,6 +50,7 @@ public class CmsCategoryAttribute implements java.io.Serializable {
     }
 
     @Id
+
     @Column(name = "category_id", unique = true, nullable = false)
     public int getCategoryId() {
         return this.categoryId;

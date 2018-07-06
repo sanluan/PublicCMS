@@ -1,5 +1,8 @@
 package com.publiccms.logic.component;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.task.ScheduledTask;
@@ -8,8 +11,6 @@ import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysTaskService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * 

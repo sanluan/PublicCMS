@@ -18,6 +18,7 @@ public class CmsContentQuery implements java.io.Serializable {
     private Boolean onlyUrl;
     private Boolean hasImages;
     private Boolean hasFiles;
+    private Boolean hasCover;
     private String title;
     private Long userId;
     private Date startPublishDate;
@@ -29,7 +30,7 @@ public class CmsContentQuery implements java.io.Serializable {
 
     public CmsContentQuery(Short siteId, Integer[] status, Integer categoryId, Integer[] categoryIds, Boolean disabled,
             String[] modelIds, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
-            String title, Long userId, Date startPublishDate, Date endPublishDate) {
+            Boolean hasCover, String title, Long userId, Date startPublishDate, Date endPublishDate) {
         super();
         this.siteId = siteId;
         this.status = status;
@@ -42,6 +43,7 @@ public class CmsContentQuery implements java.io.Serializable {
         this.onlyUrl = onlyUrl;
         this.hasImages = hasImages;
         this.hasFiles = hasFiles;
+        this.hasCover = hasCover;
         this.title = title;
         this.userId = userId;
         this.startPublishDate = startPublishDate;
@@ -271,5 +273,19 @@ public class CmsContentQuery implements java.io.Serializable {
      */
     public void setEndPublishDate(Date endPublishDate) {
         this.endPublishDate = endPublishDate;
+    }
+
+    /**
+     * @return the hasCover
+     */
+    public Boolean getHasCover() {
+        return hasCover;
+    }
+
+    /**
+     * @param hasCover
+     */
+    public void setHasCover(Boolean hasCover) {
+        this.hasCover = hasCover;
     }
 }

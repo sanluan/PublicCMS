@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -39,16 +40,16 @@ public class SysUserTokenAdminController extends AbstractController {
     public String delete(String authToken, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         SysUserToken entity = service.getEntity(authToken);
-        Long userId = getAdminFromSession(session).getId();
+        Long userId = ControllerUtils.getAdminFromSession(session).getId();
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", userId, entity.getUserId(), model)) {
-                return TEMPLATE_ERROR;
+            if (ControllerUtils.verifyNotEquals("userId", userId, entity.getUserId(), model)) {
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(authToken);
             logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.usertoken",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     @Autowired

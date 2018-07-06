@@ -8,8 +8,6 @@ import java.io.ObjectOutputStream;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.publiccms.common.base.Base;
-
 /**
  *
  * BinarySerializer
@@ -17,7 +15,7 @@ import com.publiccms.common.base.Base;
  * @param <T>
  * 
  */
-public class BinarySerializer<T> implements Serializer<T>, Base {
+public class BinarySerializer<T> implements Serializer<T> {
     protected final Log log = LogFactory.getLog(getClass());
 
     @Override

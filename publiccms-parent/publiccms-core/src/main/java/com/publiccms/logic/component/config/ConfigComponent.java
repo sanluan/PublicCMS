@@ -16,9 +16,9 @@ import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.SiteCache;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.sys.SysConfigData;
@@ -35,7 +35,7 @@ import com.publiccms.views.pojo.entities.SysConfig;
  *
  */
 @Component
-public class ConfigComponent implements SiteCache, Base {
+public class ConfigComponent implements SiteCache {
     @Autowired
     private SysConfigDataService service;
     @Autowired(required = false)
@@ -155,7 +155,7 @@ public class ConfigComponent implements SiteCache, Base {
         File file = new File(siteComponent.getConfigFilePath(site));
         if (CommonUtils.notEmpty(file)) {
             try {
-                modelMap = objectMapper.readValue(file, new TypeReference<Map<String, SysConfig>>() {
+                modelMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, SysConfig>>() {
                 });
             } catch (IOException | ClassCastException e) {
                 modelMap = new HashMap<>();
@@ -179,7 +179,7 @@ public class ConfigComponent implements SiteCache, Base {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file);) {
-            objectMapper.writeValue(outputStream, modelMap);
+            CommonConstants.objectMapper.writeValue(outputStream, modelMap);
         } catch (IOException e) {
             return false;
         }

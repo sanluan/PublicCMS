@@ -1,83 +1,64 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--><html class="no-js"> <!--<![endif]-->
+<html lang="zh-CN">
 <head>
-	<title>${(metadata.extendData.title)!}</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
+	<title>${site.name!}</title>
 	<meta name="keywords" content="${(metadata.extendData.keywords)!}" />
 	<meta name="description" content="${(metadata.extendData.description)!}" />
-<@_includePlace path="/index.html/885f27db-b93d-4642-9b95-9dcf2a418844.html"/> <#-- Head Meta -->
+	<@_includePlace path="/194ca327-6b34-431d-a2d2-90f94b25e950.html"/> <#-- Head META -->
 </head>
 <body>
-<div id="fh5co-page">
-	<@_includePlace path="/index.html/3fa1a038-e006-459b-a94d-65ec19a6df16.html"/> <#-- 导航 -->
-	
-	<aside id="fh5co-hero" clsas="js-fullheight">
-		<div class="flexslider js-fullheight">
-			<@_includePlace path="/index.html/0a05d34a-d102-4604-9ba8-86c9536c4222.html"/> <#-- 焦点图 -->
-	  	</div>
-	</aside>
+	<@_includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
 
-<@_categoryList>
-	<#list page.list as category>
-	<div id="best-deal">
-		<div class="container">
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading animate-box fadeIn animated-fast" data-animate-effect="fadeIn">
-					<#assign attribute=getCategoryAttribute(category.id)/>
-					<h2>${attribute.title!}</h2>
-					<p>${attribute.description!}</p>
-				</div>
+	<div class="index-bg" style="background:urL(${site.sitePath}assets/images/index.jpg) repeat-x center top; text-align:center;"></div>
 
-		<@_contentList categoryId=category.id  count=3>
-			<#list page.list as a>
-				<#assign attribute=getContentAttribute(a.id)/>
-				<div class="col-md-4 item-block animate-box fadeIn animated-fast" data-animate-effect="fadeIn">
-					<div class="fh5co-property">
-						<figure>
-							<img src="${site.sitePath+a.cover!}" alt="${a.title}" class="img-responsive">
-							<a class="tag">${attribute.place!}</a>
-						</figure>
-						<div class="fh5co-property-innter">
-							<h3><a href="${a.url!}">${a.title}</a></h3>
-							<div class="price-status">
-		                 		<span class="price">${attribute.price!}</span>
-							</div>
-							<p>${a.description!}</p>
-						</div>
-					</div>
+	<@_includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
+
+	<main class="container">
+		<div class="introduction-box">
+			<h2><div><strong>今日某某</strong></div></h2>
+			<div class="clear"></div>
+			<div class="introduction">
+				<p>${(metadata.extendData.introduction?no_esc)!}</p>
+			</div>
+            <img name="" src="${site.sitePath}assets/images/201209291602208653.jpg" alt="">
+		</div>
+	<@_category id=(metadata.extendData.category)!>
+		<div class="content-list-box">
+			<h2>
+				<div>
+					<span class="on">${object.name!}<a href="${object.url}" title="${object.name!}">More</a></span>
 				</div>
-			</#list>
+			</h2>
+			<div class="tab-list">
+		<@_contentList categoryId=object.id containChild=true count=count>
+			<#if page.totalCount gt 0>
+				<ul>
+				<#list page.list as a>
+                    <li><span class="title"><a href="${a.url!}" target="_blank">${a.title!}</a></span>${a.publishDate?string('yyyy-MM-dd')}</li>
+			    </#list>
+				</ul>
+			</#if>
 		</@_contentList>
+			</div>
+		</div>
+	</@_category>
+		<div class="aside-box">
+			<h2><div><strong>相关链接</strong></div></h2>
+			<select class="friend-link" onchange="javascript:if(this.options[this.selectedIndex].value){window.open(this.options[this.selectedIndex].value)}">
+                <option value="">友情连接</option>
+				<@_includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
+			</select>
+			<@_includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
+		</div>
+	</main>
 
-			</div>
-		</div>
-	</div>
-	</#list>
-</@_categoryList>
-	
-	<div class="fh5co-section-with-image">
-		<img src="${site.sitePath}assets/images/image_1.jpg" alt="" class="img-responsive">
-		<div class="fh5co-box animate-box fadeInUp animated-fast" style="margin-top: -183px;">
-			<h2>Healthy，comfort &amp; happiness</h2>
-			<p>没有人能阻止一颗追求幸福的心。喧嚣的人潮、拥挤的城市、被污染的空气，不，这都不是我们想要的，追寻吧，寻找那片蔚蓝清爽的天空。过健康舒适的生活。</p>
-			<p><a href="#" class="btn btn-primary btn-outline with-arrow">联系我们 <i class="icon-arrow-right"></i></a></p>
-		</div>
-	</div>	
-		
-	<div class="fh5co-cta" style="background-image: url(${site.sitePath}assets/images/slide_4.jpg);">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="col-md-12 text-center animate-box" data-animate-effect="fadeIn">
-				<h3>我们每一天都在让自己进步，欢迎一起寻找属于自己的天空</h3>
-				<p><a href="#" class="btn btn-primary btn-outline with-arrow">联系我们<i class="icon-arrow-right"></i></a></p>
-			</div>
-		</div>
-	</div>
-	
-	<@_includePlace path="/index.html/1edfb072-0c53-4062-b457-034b6cad77ab.html"/> <#-- Footer -->
-</div>
+    <@_includePlace path="/ab53b388-be0e-4674-b631-e1de625c74ac.html"/> <#-- 首页推荐 -->
+
+	<@_includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
+	<script>
+			$('a[data-id=home]').addClass('selected');
+	</script>
 </body>
 </html>
-

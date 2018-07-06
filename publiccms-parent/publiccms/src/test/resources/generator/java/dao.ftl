@@ -6,6 +6,7 @@ package ${base}.${daoPack};
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -18,8 +19,8 @@ import com.publiccms.common.tools.CommonUtils;
  */
 @Repository
 public class ${entityName}${daoSuffix} extends BaseDao<${entityName}> {
-	
-	<#include "../include_condition/comment.ftl">
+    
+    <#include "../include_condition/comment.ftl">
     public PageHandler getPage(<#include "../include_condition/condition.ftl">) {
         QueryHandler queryHandler = getQueryHandler("from ${entityName} bean");
         <#include "../include_condition/hql.ftl">

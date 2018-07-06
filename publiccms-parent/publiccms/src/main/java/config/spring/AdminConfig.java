@@ -1,19 +1,26 @@
 package config.spring;
 
-import com.publiccms.common.interceptor.AdminContextInterceptor;
-import com.publiccms.common.view.AdminFreeMarkerView;
-import com.publiccms.logic.component.cache.CacheComponent;
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+
+import com.publiccms.common.interceptor.AdminContextInterceptor;
+import com.publiccms.common.view.AdminFreeMarkerView;
+import com.publiccms.logic.component.cache.CacheComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
  * AdminServlet配置类
@@ -27,14 +34,23 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
         @ComponentScan.Filter(value = { Controller.class }) })
 public class AdminConfig extends WebMvcConfigurerAdapter {
     /**
-     * 管理后台路径 Management Path
+     * 管理后台上下文路径 Management Context Path
      */
-    public static final String ADMIN_BASE_PATH = "/admin";
+    public static final String ADMIN_CONTEXT_PATH = "/admin";
 
     @Autowired
     private CacheComponent cacheComponent;
     @Autowired
     private AdminContextInterceptor adminInitializingInterceptor;
+
+    @Bean
+    public LocaleResolver localeResolver(Environment env) {
+        CookieLocaleResolver localeResolver = new CookieLocaleResolver();
+        localeResolver.setCookieName("cms.locale");
+        localeResolver.setCookieMaxAge(30 * 24 * 3600);
+        localeResolver.setDefaultLocale(Locale.forLanguageTag(env.getProperty("cms.defaultLocale")));
+        return localeResolver;
+    }
 
     /**
      * 视图层解析器,SpringBoot不支持jsp的加载路径
@@ -72,12 +88,15 @@ public class AdminConfig extends WebMvcConfigurerAdapter {
     /**
      * 拦截器
      * 
+     * @param templateComponent
+     * 
      * @return admin servlet interceptor
      */
     @Bean
-    public AdminContextInterceptor adminInitializingInterceptor() {
+    public AdminContextInterceptor adminInitializingInterceptor(TemplateComponent templateComponent) {
+        templateComponent.setAdminContextPath(ADMIN_CONTEXT_PATH);
         AdminContextInterceptor bean = new AdminContextInterceptor();
-        bean.setAdminBasePath(ADMIN_BASE_PATH);
+        bean.setAdminContextPath(ADMIN_CONTEXT_PATH);
         bean.setLoginUrl("/login.html");
         bean.setUnauthorizedUrl("/common/unauthorizedUrl.html");
         bean.setLoginJsonUrl("/common/ajaxTimeout.html");

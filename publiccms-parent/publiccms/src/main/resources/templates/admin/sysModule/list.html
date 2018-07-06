@@ -1,74 +1,64 @@
-<#if parentId?has_content>
-	<@_sysModule id=parentId>
-		<#assign parent=object/>
-	</@_sysModule>
-</#if>
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
 <@_sysModuleList advanced=true parentId=parentId pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-	<form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
-		<#include "../include_page/paramters.html"/>
-		<div class="searchBar">
-			<ul class="searchContent">
-			<#if parent?has_content>
-				<li>
-					<label>父模块:</label><label>${(parent.name)!}</label>
-				</li>
-			</#if>
-				<li></li>
-			</ul>
-		</div>
-	</form>
+    <form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+            <#if parentId?has_content>
+                <li>
+                    <label><@t.page 'module.parent'/>:</label><label><@t.menu parentId/></label>
+                </li>
+            </#if>
+                <li></li>
+            </ul>
+        </div>
+    </form>
 </div>
 <div class="pageContent">
-	<div class="panelBar">
-		<ul class="toolBar">
-			<#if parent?has_content>
-				<li><a href="sysModule/list.html?parentId=${(parent.parentId)!}&deep=${deep-1}" target="navTab" rel="sysModule/list"><i class="icon-circle-arrow-up icon-large"></i> 返回上一级</a></li>
-				<li class="line">line</li>
-			</#if>
-			<#if deep lte 3>
-				<li><a href="sysModule/add.html?parentId=${parentId!}&deep=${deep}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i> 添加模块</a></li>
-			</#if>
-			<li><a href="sysModule/add.html?id={sid}&deep=${deep}" target="navTab" rel="sysModule/edit"><i class="icon-edit icon-large"></i> 修改模块</a></li>
-			<li><a href="sysModule/delete.do?id={sid}" title="确定要删除这条记录吗?" target="ajaxTodo"><i class="icon-trash icon-large"></i> 删除</a></li>
-		</ul>
-	</div>
-	<table class="list" width="100%" layoutH="99">
-		<thead>
-			<tr>
-				<th width="30">ID</th>
-				<th>名称</th>
-				<th>是否菜单</th>
-				<th>地址</th>
-				<th>父模块</th>
-				<th orderField="sort" class="<#if orderField??&&'sort'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">排序</th>
-				<th>操作</th>
-			</tr>
-		</thead>
-		<tbody>
-			<#list page.list as a>
-				<@t.merge 'moduleIds' a.parentId!/>
-			</#list>
-			<@_sysModule ids=t.moduleIds!><#assign moduleMap=map!/></@_sysModule>
-
-			<#list page.list as a>
-			<tr target="sid" rel="${a.id}">
-				<td>${a.id!}</td>
-				<td>${a.name!}</td>
-				<td>${a.menu?then('菜单','仅权限')}</td>
-				<td>${a.url!}</td>
-				<td>${(moduleMap[a.parentId?string].name)!}</td>
-				<td>${a.sort!}</td>
-				<td>
-					<#if deep lte 2>
-						<a href="sysModule/list.html?parentId=${a.id}&deep=${(deep!'0')?number+1}" target="navTab" rel="sysModule/list" title="子模块管理">子模块管理</a>
-					</#if>
-				</td>
-			</tr>
-			</#list>
-		</tbody>
-	</table>
-	<#include "../include_page/page.html"/>
+    <div class="panelBar">
+        <ul class="toolBar">
+            <#if parentId?has_content>
+                <li><a href="sysModule/list.html?parentId=<@_sysModule id=parentId>${object.parentId!}&</@_sysModule>deep=${deep-1}" target="navTab" rel="sysModule/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
+                <li class="line">line</li>
+            </#if>
+            <#if deep lte 3>
+                <li><a href="sysModule/add.html?parentId=${parentId!}&deep=${deep}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'module.add'/></a></li>
+            </#if>
+            <li><a href="sysModule/add.html?id={sid}&deep=${deep}" target="navTab" rel="sysModule/edit"><i class="icon-edit icon-large"></i> <@t.page 'module.edit'/></a></li>
+            <li><a href="sysModule/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+        </ul>
+    </div>
+    <table class="list" width="100%" layoutH="99">
+        <thead>
+            <tr>
+                <th width="150"><@t.page 'id'/></th>
+                <th><@t.page 'name'/></th>
+                <th><@t.page 'module.is_menu'/></th>
+                <th><@t.page 'address'/></th>
+                <th><@t.page 'module.parent'/></th>
+                <th orderField="sort" class="<#if orderField??&&'sort'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'sort'/></th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id?url}">
+                <td>${a.id!}</td>
+                <td><@t.menu a.id/></td>
+                <td>${a.menu?then(t.pageMessage('module.menu'),t.pageMessage('module.not_menu'))}</td>
+                <td>${a.url!}</td>
+                <td><#if a.parentId?has_content><@t.menu a.parentId/></#if></td>
+                <td>${a.sort!}</td>
+                <td>
+                    <#if deep lte 2>
+                        <a href="sysModule/list.html?parentId=${a.id}&deep=${(deep!'0')?number+1}" target="navTab" rel="sysModule/list"><@t.page 'module.child_management'/></a>
+                    </#if>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
 </div>
 </@_sysModuleList>

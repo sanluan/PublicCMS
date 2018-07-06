@@ -1,16 +1,16 @@
 <div class="pageFormContent" layoutH="19">
-	<ul class="tree treeFolder expand">
-		<li>
-			<a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'',categoryTypeName:''});return false;">清空选择</a>
-		</li>
-<@_categoryTypeList parentId=parentId>
-	<#list page.list as a>
-		<li>
-			<a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'${a.id}', categoryTypeName:'${a.name}'});return false;">${a.name!}</a>
-		</li>
-	<#else>
-		<li><a>空目录</a></li>
-	</#list>
+    <ul class="tree treeFolder expand">
+        <li>
+            <a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'',categoryTypeName:''});return false;"><@t.page 'button.clear_select'/></a>
+        </li>
+<@_categoryTypeList parentId=parentId count=500>
+    <#list page.list as a>
+        <li>
+            <a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'${a.id}', categoryTypeName:'${a.name}'});return false;">${a.name!}</a>
+        </li>
+    <#else>
+        <li><a><@t.page 'empty_directory'/></a></li>
+    </#list>
 </@_categoryTypeList>
-	</ul>
+    </ul>
 </div>

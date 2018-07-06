@@ -1,37 +1,60 @@
 <@_metadata path=path><#assign a=object/></@_metadata>
 <form method="post" action="cmsPage/save.do?rel=pageBox" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<div class="formBar">
-		<ul>
-			<li>
-				<#if (a.extendList)?has_content><button type="submit" class="buttonActive">保存</button></#if>
-			</li>
-		</ul>
-	</div>
-	<div class="pageFormContent" layoutH="60">
-		<input name="path" type="hidden" value="${path}"/>
-		<#if site.useStatic&&(a.publishPath)?has_content>
-			<dl class="nowrap">
-				<dt>静态页面:</dt>
-				<dd>
-                    <label><a class="button" href="cmsTemplate/publish.do?path=${path}" target="ajaxTodo">生成页面</a></label>
-					<label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank">查看页面</a></label>
-				</dd>
-			</dl>
-		</#if>
-		<#if !a?has_content||a.useDynamic?has_content&&a.useDynamic>
-			<dl class="nowrap">
-				<dt>动态页面:</dt>
-				<dd>
-					<label><a class="button" href="${site.dynamicPath+path}<#if a.acceptParamters?has_content>?<#list a.acceptParamters?split(',') as p>${p}={value}${p?counter}<#sep>&</#list></#if>" target="_blank">查看页面</a></label>
-					<#if 10 lte (a.cacheTime)!0>
-						<label><a class="button" href="cmsPage/clearCache.do?path=${path}" target="ajaxTodo">清除缓存</a></label>
-					</#if>
-				</dd>
-			</dl>
-		</#if>
-		<#include "../include_page/extendData.html"/>
-		<#assign extendList=(a.extendList)![]/>
-		<#assign attribute=(a.extendData)!{}/>
-		<@extendData 'extendDataList' extendList attribute/>
-	</div>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li>
+                <#if (a.extendList)?has_content><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></#if>
+            </li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH="60">
+        <input name="path" type="hidden" value="${path}"/>
+        <#if site.useStatic&&(a.publishPath)?has_content>
+            <dl class="nowrap">
+                <dt><@t.page 'static_page'/>:</dt>
+                <dd>
+                    <label><a class="button" href="cmsTemplate/publish.do?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a></label>
+                    <label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank"><@t.page 'button.view_page'/></a></label>
+                </dd>
+            </dl>
+        </#if>
+        <#if !a?has_content||a.useDynamic?has_content&&a.useDynamic>
+            <dl class="nowrap">
+                <dt><@t.page 'dynamic_page'/>:</dt>
+                <dd>
+                    <label><a class="button" href="${site.dynamicPath+path}<#if a.acceptParameters?has_content>?<#list a.acceptParameters?split(',') as p>${p}=_value${p?counter}_<#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
+                    <#if 10 lte (a.cacheTime)!0>
+                        <label><a class="button" href="cmsPage/clearCache.do?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a></label>
+                    </#if>
+                </dd>
+            </dl>
+        </#if>
+        <#include "../include_page/extendData.html"/>
+        <#assign extendList=(a.extendList)![]/>
+        <#assign attribute=(a.extendData)!{}/>
+        <@extendData 'extendDataList' extendList attribute/>
+    <@_templatePlaceList path=path>
+        <#if list?has_content>
+        <dl class="nowrap">
+            <dt><@t.page 'place'/>:</dt>
+            <dd>
+                <#list list as a>
+                    <@_placeMetadata path=a>
+                <#if 0=((object.size)!0)>
+                    <p>
+                        <a href="cmsPlace/publish_place.html?path=${a?url}" target="dialog" rel="place">${(object.alias)!a}</a>
+                    </p>
+                <#else>
+                    <p>
+                        <a href="cmsPlace/dataList.html?path=${a?url}" target="navTab" rel="cmsPlace/dataList:${a!}"><@t.page 'place_data.place'/>:${(object.alias)!a}</a>
+                    </p>
+                </#if>
+                    </@_placeMetadata>
+                </#list>
+            </dd>
+        </dl>
+        </#if>
+    </@_templatePlaceList>
+    </div>
 </form>

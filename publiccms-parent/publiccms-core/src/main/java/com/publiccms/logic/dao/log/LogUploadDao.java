@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -22,7 +23,8 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      * @param siteId
      * @param userId
      * @param channel
-     * @param image
+     * @param fileTypes
+     * @param originalName
      * @param filePath
      * @param orderField
      * @param orderType
@@ -30,8 +32,8 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, String channel, Boolean image, String filePath, String orderField,
-            String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, String channel, String[] fileTypes, String originalName, String filePath,
+            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogUpload bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -42,8 +44,11 @@ public class LogUploadDao extends BaseDao<LogUpload> {
         if (CommonUtils.notEmpty(channel)) {
             queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
         }
-        if (null != image) {
-            queryHandler.condition("bean.image = :image").setParameter("image", image);
+        if (null != fileTypes) {
+            queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
+        }
+        if (CommonUtils.notEmpty(originalName)) {
+            queryHandler.condition("bean.originalName like :originalName").setParameter("originalName", like(originalName));
         }
         if (CommonUtils.notEmpty(filePath)) {
             queryHandler.condition("bean.filePath like :filePath").setParameter("filePath", like(filePath));
@@ -52,7 +57,7 @@ public class LogUploadDao extends BaseDao<LogUpload> {
             orderType = ORDERTYPE_DESC;
         }
         if (null == orderField) {
-            orderField = BLANK;
+            orderField = CommonConstants.BLANK;
         }
         switch (orderField) {
         case "createDate":

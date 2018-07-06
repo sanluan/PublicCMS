@@ -1,106 +1,108 @@
 <@_sysSite id=id><#assign a=object/></@_sysSite>
 <script>
 function siteDefaultConfig${id!}(type){
-	if('static'==type){
-		if(!$('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
-	        $('input[name=useStatic]',navTab.getCurrentPanel()).click();
-	    }
-	    if($('input[name=useSsi]',navTab.getCurrentPanel()).is(":checked")){
-	        $('input[name=useSsi]',navTab.getCurrentPanel()).click();
-	    }
-	    $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
-	    $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
-	}else{
-		if($('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
-	        $('input[name=useStatic]',navTab.getCurrentPanel()).click();
-	    }
-	    $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
-	    $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
-	}
-	<#if !a??>
-		$('input[name=domainName]',navTab.getCurrentPanel()).val("${base?keep_after('//')?keep_before('/')?keep_before(':')}");
-	</#if>
-	$('.info',navTab.getCurrentPanel()).show();
+    if('static'==type){
+        if(!$('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
+            $('input[name=useStatic]',navTab.getCurrentPanel()).click();
+        }
+        if($('input[name=useSsi]',navTab.getCurrentPanel()).is(":checked")){
+            $('input[name=useSsi]',navTab.getCurrentPanel()).click();
+        }
+        $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
+        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
+    }else{
+        if($('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
+            $('input[name=useStatic]',navTab.getCurrentPanel()).click();
+        }
+        $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
+        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
+    }
+    <#if !a??>
+        $('input[name=domain]',navTab.getCurrentPanel()).val("${base?keep_after('//')?keep_before('/')?keep_before(':')}");
+    </#if>
+    $('.info',navTab.getCurrentPanel()).show();
 }
 </script>
 <form method="post" action="sysSite/save.do?callbackType=closeCurrent&navTabId=sysSite/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<input name="id" type="hidden" value="${id!}" />
-	<div class="formBar">
-		<ul>
-		    <li><button type="button" class="button" onclick="siteDefaultConfig${id!}('static');return false;">默认静态化配置</button></li>
-            <li><button type="button" class="button" onclick="siteDefaultConfig${id!}();return false;">默认动态配置</button></li>
-			<li><button type="submit" class="buttonActive">保存</button></li>
-			<li><button type="button" class="button close">关闭</button></li>
-		</ul>
-	</div>
-	<div class="pageFormContent" layoutH="60">
-		<dl class="nowrap">
-			<dt>名称:</dt>
-			<dd>
-				<input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
-				<label><input name="useStatic" onchange="if($(this).is(':checked')){$('.useSsi').show();}else{$('.useSsi').hide();}" type="checkbox"/>启用静态化</label>
-				<span class="info" style="display:none">默认配置根据您当前访问的域名自动生成,并不是最佳的运行方式,建议仅在开发阶段使用</span>
-			</dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>动态站点地址:</dt>
-			<dd>
-				<input class="required" name="dynamicPath" type="text" maxlength="255" size="60" value="${(a.dynamicPath)!}"/>
-				<span class="info">默认地址为 [协议头:]//域名[:端口]/[上下文/],也可以配置为反向代理后动态站点的访问地址</span>
-			</dd>
-		</dl>
-		<dl class="nowrap">
-			<dt>静态站点地址:</dt>
-			<dd>
-				<input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
-				<label style="display:none" class="useSsi"><input name="useSsi" type="checkbox"/>启用SSI</label>
-				<span class="info">默认地址为 [协议头:]//域名[:端口]/[上下文/]webfile/,也可以配置为其他方式发布的静态文件访问地址</span>
-				<span style="display:none" class="info useSsi">启用SSI后应该使用支持SSI的容器发布静态页面、反向代理动态页面</span>
-			</dd>
-		</dl>
-		<#if !a??>
-			<fieldset>
-				<legend>初始化信息</legend>
-				<dl class="nowrap">
-					<dt>域名:</dt>
-					<dd>
-						<input class="required domain" remote="sysDomain/virify.do" name="domainName" type="text" maxlength="50" size="20" value=""/>
-						<span class="info">不包含协议头，不包含端口，不包含路径，不能和已有域名重复，域名需要先解析到服务器IP地址，保存后请使用此域名访问您的新站点</span>
-					</dd>
-				</dl>
-				<dl class="nowrap">
-					<dt>角色名:</dt>
-					<dd>
-						<input class="required" name="roleName" type="text" maxlength="50" size="20" value="站长"/>
-					</dd>
-				</dl>
-				<dl class="nowrap">
-					<dt>部门名:</dt>
-					<dd>
-						<input class="required" name="deptName" type="text" maxlength="50" size="20" value="技术部"/>
-					</dd>
-				</dl>
-				<dl class="nowrap">
-					<dt>管理员用户名:</dt>
-					<dd>
-						<input class="required" name="userName" type="text" maxlength="45" size="20" value="admin"/>
-					</dd>
-				</dl>
-				<dl class="nowrap">
-					<dt>管理员密码:</dt>
-					<dd>
-						<input class="required" name="password" type="password" maxlength="255" size="20" value=""/>
-					</dd>
-				</dl>
-			</fieldset>
-		</#if>
-		<script>
-			<#if a?has_content&&a.useStatic>
-				$('input[name=useStatic]',navTab.getCurrentPanel()).click();
-			</#if>
-			<#if a?has_content&&a.useSsi>
-				$('input[name=useSsi]',navTab.getCurrentPanel()).click();
-			</#if>
-		</script>
-	</div>
+    <input name="id" type="hidden" value="${id!}" />
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="button" class="button" onclick="siteDefaultConfig${id!}('static');return false;"><@t.page 'site.default_static_config'/></button></li>
+            <li><button type="button" class="button" onclick="siteDefaultConfig${id!}();return false;"><@t.page 'site.default_dynamic_config'/></button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH="60">
+        <dl class="nowrap">
+            <dt><@t.page 'name'/>:</dt>
+            <dd>
+                <input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
+                <label><input name="useStatic" onchange="if($(this).is(':checked')){$('.useSsi').show();}else{$('.useSsi').hide();}" type="checkbox"/><@t.page 'site.enable_static'/></label>
+                <span class="info" style="display:none"><@t.page 'site.config.description'/></span>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'site.dynamic_path'/>:</dt>
+            <dd>
+                <input class="required" name="dynamicPath" type="text" maxlength="255" size="60" value="${(a.dynamicPath)!}"/>
+                <span class="info"><@t.page 'site.site_path.description'/></span>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'site.site_path'/>:</dt>
+            <dd>
+                <input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
+                <label style="display:none" class="useSsi"><input name="useSsi" type="checkbox"/><@t.page 'site.enable_ssi'/></label>
+                <span class="info"><@t.page 'site.dynamic_path.description'/></span>
+                <span style="display:none" class="info useSsi"><@t.page 'site.enable_ssi.description'/></span>
+            </dd>
+        </dl>
+        <#if !a??>
+            <fieldset>
+                <legend><@t.page 'site.init'/></legend>
+                <dl class="nowrap">
+                    <dt><@t.page 'domain'/>:</dt>
+                    <dd>
+                        <input class="required domain" remote="sysDomain/virify.do" name="domain" data-msg-remote="<@t.message 'verify.hasExist.domain'/>" type="text" maxlength="50" size="20" value=""/>
+                        <label><input name="wild" type="checkbox"/><@t.page 'domain.wild'/></label>
+                        <span class="info"><@t.page 'domain.description'/></span>
+                    </dd>
+                </dl>
+                <dl class="nowrap">
+                    <dt><@t.page 'role'/>:</dt>
+                    <dd>
+                        <input class="required" name="roleName" type="text" maxlength="50" size="20" value="<@t.page 'site.default_role'/>"/>
+                    </dd>
+                </dl>
+                <dl class="nowrap">
+                    <dt><@t.page 'dept'/>:</dt>
+                    <dd>
+                        <input class="required" name="deptName" type="text" maxlength="50" size="20" value="<@t.page 'site.default_dept'/>"/>
+                    </dd>
+                </dl>
+                <dl class="nowrap">
+                    <dt><@t.page 'user.username'/>:</dt>
+                    <dd>
+                        <input class="required" name="userName" type="text" maxlength="45" size="20" value="admin"/>
+                    </dd>
+                </dl>
+                <dl class="nowrap">
+                    <dt><@t.page 'password'/>:</dt>
+                    <dd>
+                        <input class="required" name="password" type="password" maxlength="255" size="20" value=""/>
+                    </dd>
+                </dl>
+            </fieldset>
+        </#if>
+        <script>
+            <#if a?has_content&&a.useStatic>
+                $('input[name=useStatic]',navTab.getCurrentPanel()).click();
+            </#if>
+            <#if a?has_content&&a.useSsi>
+                $('input[name=useSsi]',navTab.getCurrentPanel()).click();
+            </#if>
+        </script>
+    </div>
 </form>

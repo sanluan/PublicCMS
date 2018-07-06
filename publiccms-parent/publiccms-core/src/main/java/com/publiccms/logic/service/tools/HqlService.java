@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.dao.tools.HqlDao;
@@ -44,14 +45,14 @@ public class HqlService extends BaseService<Object> {
 
     /**
      * @param hql
-     * @param paramters
+     * @param parameters
      * @param pageIndex
      * @param pageSize
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(String hql, Map<String, Object> paramters, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(hql, paramters, pageIndex, pageSize);
+    public PageHandler getPage(String hql, Map<String, Object> parameters, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(hql, parameters, pageIndex, pageSize);
     }
 
     /**
@@ -62,7 +63,7 @@ public class HqlService extends BaseService<Object> {
         Set<String> list = new LinkedHashSet<>();
         if (CommonUtils.notEmpty(text)) {
             try (StringReader stringReader = new StringReader(text);
-                    TokenStream tokenStream = dao.getAnalyzer().tokenStream(BLANK, stringReader)) {
+                    TokenStream tokenStream = dao.getAnalyzer().tokenStream(CommonConstants.BLANK, stringReader)) {
                 CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
                 tokenStream.reset();
                 while (tokenStream.incrementToken()) {

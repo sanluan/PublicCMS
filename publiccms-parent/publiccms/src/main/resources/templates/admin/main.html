@@ -1,139 +1,178 @@
 <div class="pageFormContent" layoutH="19">
-	<div class="unit">
-		<p>
-			<label>我的待审核:</label>
-			<a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="我的内容" target="navTab" rel="myself/contentList">
-				<@_contentList advanced=true status=2 userId=admin.id>
-					${page.totalCount}篇
-				</@_contentList>
-			</a>
-		</p>
-		<p>
-			<label>我的草稿:</label>
-			<a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="我的内容" target="navTab" rel="myself/contentList">
-				<@_contentList advanced=true status=0 userId=admin.id>
-					${page.totalCount}篇
-				</@_contentList>
-			</a>
-		</p>
-		<p>
-			<a class="button" href="main.html" target="navTab" rel="main">刷新</a>
-		</p>
-	</div>
-	<div class="divider"></div>
-	<div class="unit">
-		<p>
-			<label>登录次数:</label>
-			<a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
-		</p>
-		<p>
-			<label>上次登录日期:</label>
-			<a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.lastLoginDate!}</a>
-		</p>
-		<p>
-			<label>上次登录IP:</label>
-			<a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="我的登录日志" target="navTab" rel="myself/logLogin">${admin.lastLoginIp!}</a>
-		</p>
-		<p>
-			<label>我的登录授权:</label>
-			<a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> 我的登录授权" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
-		</p>
-	</div>
-	<div class="divider"></div>
-<@_masterSite>
-	<@_systemProperties>
-	<div class="unit">
-		<p>
-			<label>操作系统:</label>${.vars['os.name']!}(${.vars['os.arch']!})
-		</p>
-		<p>
-			<label>操作系统版本:</label>${.vars['os.version']!}
-		</p>
-		<p>
-			<label>操作系统用户:</label>${.vars['user.name']!}
-		</p>
-		<p>
-			<label>操作系统时区:</label>${.vars['user.timezone']!}
-		</p>
-		<p>
-			<label>文件编码:</label>${.vars['file.encoding']!}
-		</p>
-	</div>
-	<div class="divider"></div>
-	<div class="unit">
-		<p>
-			<label>JRE名称:</label>${.vars['java.runtime.name']!}
-		</p>
-		<p>
-			<label>JRE版本:</label>${.vars['java.runtime.version']!}(${.vars['java.vm.info']!})
-		</p>
-		<p>
-			<label>JVM名称:</label>${.vars['java.vm.name']!}
-		</p>
-		<p>
-			<label>JVM版本:</label>${.vars['java.vm.version']!}
-		</p>
-	</div>
-	<div class="divider"></div>
-	<div class="unit">
-		<p>
-			<label>用户目录:</label>${.vars['user.home']!}
-		</p>
-		<p>
-			<label>工作目录:</label>${.vars['user.dir']!}
-		</p>
-		<p>
-			<label>临时文件目录:</label>${.vars['java.io.tmpdir']!}
-		</p>
-		<p>
-			<label>文件分隔符:</label>${.vars['file.separator']!}
-		</p>
-	</div>
-	<div class="divider"></div>
-	</@_systemProperties>
-	<div class="unit">
+<fieldset>
+    <legend><@t.page 'my_account'/></legend>
+    <div class="unit">
         <p>
-            <label>站点个数:</label>
-            <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="站点管理" target="navTab" rel="sysSite/list"><@_sysSiteList count=0>${page.totalCount}</@_sysSiteList></a>
+            <label><@t.page 'myself.my_pending_content'/>:</label>
+            <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
+                <@_contentList advanced=true status=2 userId=admin.id count=0>
+                    ${page.totalCount}
+                </@_contentList>
+            </a>
         </p>
         <p>
-            <label>域名个数:</label>
-            <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="域名管" target="navTab" rel="sysDomain/list"><@_sysDomainList advanced=true count=0>${page.totalCount}</@_sysDomainList></a>
+            <label><@t.page 'myself.my_draft'/>:</label>
+            <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
+                <@_contentList advanced=true status=0 userId=admin.id count=0>
+                    ${page.totalCount}
+                </@_contentList>
+            </a>
+        </p>
+        <p>
+            <a class="button" href="main.html" target="navTab" rel="main"><@t.page 'button.refresh'/></a>
         </p>
     </div>
     <div class="divider"></div>
+    <div class="unit">
+        <p>
+            <label><@t.page 'user.login_count'/>:</label>
+            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="<@t.page 'my_login_log'/>" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
+        </p>
+        <p>
+            <label><@t.page 'user.last_login_date'/>:</label>${admin.lastLoginDate!}
+        </p>
+        <p>
+            <label><@t.page 'user.last_login_ip'/>:</label>${admin.lastLoginIp!}
+        </p>
+        <p>
+            <label><@t.page 'my_login_token'/>:</label>
+            <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> <@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
+        </p>
+    </div>
+</fieldset>
+<@_sysAuthorized roleIds=admin.roles url='report/user'>
+	<fieldset>
+	    <legend><@t.page 'report.user'/></legend>
+	    <div class="unit">
+	        <p>
+	            <label><@t.page 'register'/>:</label>
+	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+	                <@_sysUserList startRegisteredDate=.now?long?number_to_date?string>
+	                   ${page.totalCount}
+	                </@_sysUserList>
+	            </a>
+	        </p>
+	        <p>
+	            <label><@t.page 'login'/>:</label>
+	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+	                <@_logLoginList startCreateDate=.now?long?number_to_date?string>
+	                   ${page.totalCount}
+	                </@_logLoginList>
+	            </a>
+	        </p>
+	        <p>
+	            <label><@t.page 'operate'/>:${.now?long?number_to_date?string}</label>
+	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+	                <@_logOperateList startCreateDate=.now?long?number_to_date?string>
+	                   ${page.totalCount}
+	                </@_logOperateList>
+	            </a>
+	        </p>
+	    </div>
+	</fieldset>
+</@_sysAuthorized>
+<@_masterSite>
+    <@_systemProperties>
+        <fieldset>
+            <legend><@t.page 'os'/></legend>
+            <div class="unit">
+                <p>
+                    <label><@t.page 'name'/>:</label>${.vars['os.name']!}(${.vars['os.arch']!})
+                </p>
+                <p>
+                    <label><@t.page 'version'/>:</label>${.vars['os.version']!}
+                </p>
+                <p>
+                    <label><@t.page 'user'/>:</label>${.vars['user.name']!}
+                </p>
+                <p>
+                    <label><@t.page 'timezone'/>:</label>${.vars['user.timezone']!}
+                </p>
+                <p>
+                    <label><@t.page 'file.encoding'/>:</label>${.vars['file.encoding']!}
+                </p>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><@t.page 'jre'/></legend>
+            <div class="unit">
+                <p>
+                    <label><@t.page 'name'/>:</label>${.vars['java.runtime.name']!}
+                </p>
+                <p>
+                    <label><@t.page 'version'/>:</label>${.vars['java.runtime.version']!}(${.vars['java.vm.info']!})
+                </p>
+                <p>
+                    <label><@t.page 'vm.name'/>:</label>${.vars['java.vm.name']!}
+                </p>
+                <p>
+                    <label><@t.page 'vm.version'/>:</label>${.vars['java.vm.version']!}
+                </p>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend><@t.page 'file.system'/></legend>
+            <div class="unit">
+                <p>
+                    <label><@t.page 'file.user.home'/>:</label>${.vars['user.home']!}
+                </p>
+                <p>
+                    <label><@t.page 'file.user.dir'/>:</label>${.vars['user.dir']!}
+                </p>
+                <p>
+                    <label><@t.page 'file.temp.dir'/>:</label>${.vars['java.io.tmpdir']!}
+                </p>
+                <p>
+                    <label><@t.page 'file.separator'/>:</label>${.vars['file.separator']!}
+                </p>
+            </div>
+        </fieldset>
+    </@_systemProperties>
 </@_masterSite>
 <@_version>
-	<div class="unit">
-		<p id="cmsVersion">
-			<label>Public CMS:</label>
-			<a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="PublicCMS官网">${cms}</a>
-		</p>
-	<@_sysAuthorized roleIds=admin.roles url='sysCluster/list'>
-		<p>
-			<label>${master?string('管理节点','普通节点')}:</label>
-			<a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="节点列表" target="navTab" rel="sysCluster/list">${cluster}</a>
-		</p>
-	</@_sysAuthorized>
-	<@_masterSite>
+    <fieldset>
+        <legend><@t.page 'system'/></legend>
+        <div class="unit">
+            <p id="cmsVersion">
+                <label><@t.page 'publiccms'/>:</label>
+                <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.page 'publiccms_website'/>">${cms}</a>
+            </p>
+            <script>
+                $.getJSON('//cms.publiccms.com/api/directive/version?callback=?',function(data){
+                    if($('#cmsVersion a').eq(0).text()!==data.cms){
+                        $('#cmsVersion a').eq(0).append('[<em style="color:red"><@t.page 'version.old'/></em>]');
+                    } else {
+                        $('#cmsVersion a').eq(0).append('[<em style="color:green"><@t.page 'version.new'/></em>]');
+                    }
+                });
+            </script>
+    <@_masterSite>
+            <p>
+                <label>${master?then(t.pageMessage('cluster.master'),t.pageMessage('cluster.normal'))}:</label>
+                <a href="sysCluster/list.html" icon="<i class='icon-code-fork icon-large'></i>" title="<@t.menu 'cluster'/>" target="navTab" rel="sysCluster/list">${cluster}</a>
+            </p>
         <@_disk>
-        <p>
-            <label>数据目录:</label>
-            <a href="report/cms.html" icon="<i class='icon-check-sign icon-large'></i>" title="系统监控" target="navTab" rel="report/cms" external="true">${(rootPath)!}</a>
-        </p>
-        <p>
-            <label>磁盘空间:</label><@t.fileSize totalSpace/>
-        </p>
+            <p>
+                <label><@t.page 'data.directory'/>:</label>
+                <a href="report/cms.html" icon="<i class='icon-check-sign icon-large'></i>" title="<@t.page 'system_monitor'/>" target="navTab" rel="report/cms" external="true">${(rootPath)!}</a>
+            </p>
+            <p>
+                <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>
+            </p>
         </@_disk>
-		<script>
-			$.getJSON('//cms.publiccms.com/api/directive/version?callback=?',function(data){
-				if($('#cmsVersion a').eq(0).text()!==data.cms){
-					$('#cmsVersion a').eq(0).append('[<em style="color:red">有新版本</em>]');
-				}
-			});
-		</script>
-	</@_masterSite>
-	</div>
-	<div class="divider"></div>
+            <div class="divider"></div>
+            <div class="unit">
+                <p>
+                    <label><@t.page 'site.count'/>:</label>
+                    <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@_sysSiteList count=0>${page.totalCount}</@_sysSiteList></a>
+                </p>
+                <p>
+                    <label><@t.page 'domain.count'/>:</label>
+                    <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@_sysDomainList advanced=true count=0>${page.totalCount}</@_sysDomainList></a>
+                </p>
+            </div>
+    </@_masterSite>
+        </div>
+    </fieldset>
 </@_version>
 </div>

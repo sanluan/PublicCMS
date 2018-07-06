@@ -24,14 +24,14 @@ public class SysModuleDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        String id = handler.getString("id");
         if (CommonUtils.notEmpty(id)) {
             SysModule entity = service.getEntity(id);
             if (null != entity) {
                 handler.put("object", entity).render();
             }
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            String[] ids = handler.getStringArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysModule> entityList = service.getEntitys(ids);
                 Map<String, SysModule> map = new LinkedHashMap<>();

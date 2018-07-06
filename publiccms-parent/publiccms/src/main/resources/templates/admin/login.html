@@ -1,30 +1,35 @@
 <!doctype html>
-<html lang="zh">
+<html lang="<@t.page 'lang'/>">
 <head>
     <meta charset="UTF-8">
-    <title>管理后台 - ${site.name} - 登录页面</title>
+    <title>${site.name} - <@t.page 'management_system'/> - <@t.page 'login_page'/></title>
     <link rel="stylesheet" href="${res}/login/login.css">
 </head>
 <body onload="document.getElementsByTagName('input')[0].focus();">
 <div class="login_body">
     <div class="login_form clearfix">
-		<form action="login.do" method="post">
-			<p class="logo"><img src="${res}/themes/logo.png"/></p>
-	        <p><input type="text" name="username" placeholder="帐号" title="账号"/></p>
-	        <p><input type="password" name="password" placeholder="密码" title="密码"/></p>
-	        <p>
-	        	<input type="submit" value="登  录"/>
-	        	<input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
-	        </p>
-		</form>
+        <form action="${adminBase}/login.do" method="post">
+            <p class="logo"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo.png</#if>"/></p>
+            <p><input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>"/></p>
+            <p><input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/></p>
+            <p>
+                <input type="submit" value="<@t.page 'login'/>"/>
+                <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
+            </p>
+        </form>
+        <p>
+            <#list langs as k,v>
+                <a href="${adminBase}/changeLocale?lang=${k}&returnUrl=${adminBase?url}/">${v}</a>
+            </#list>
+        </p>
     </div>
     <p class="login_msg">
-    	<#if error??>
-			<@t.m error/>
-		</#if>
-		<#if message??>
-			<@t.m "message."+message/>
-		</#if>
+        <#if error??>
+            <@t.message error/>
+        </#if>
+        <#if message??>
+            <@t.message "message."+message/>
+        </#if>
     </p>
 </div>
 </body>

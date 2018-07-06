@@ -7,6 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 </head>
 <body>
-	对不起，您请求的页面没有找到!
+	<p>对不起，您请求的页面没有找到!</p>
+	<p>Sorry, the page you requested is not found!</p>
 </body>
 </html>

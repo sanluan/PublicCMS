@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.redis.serializer.BinarySerializer;
 import com.publiccms.common.redis.serializer.StringSerializer;
 import com.publiccms.common.tools.RedisUtils;
@@ -24,12 +24,13 @@ import redis.clients.jedis.JedisPool;
  * @param <V>
  *
  */
-public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializable, Base {
+public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializable {
     /**
      *
      */
     private static final long serialVersionUID = 1L;
     private int size = 100;
+    private static JedisPool JEDISPOOL;
     private JedisPool jedisPool;
     private String name;
     private byte[] byteName;
@@ -161,12 +162,19 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     private byte[] getKey(K key) {
-        return stringSerializer.serialize(name + DOT + key);
+        return stringSerializer.serialize(name + CommonConstants.DOT + key);
     }
 
     @Override
     public void init(String entityName, Integer cacheSize, Properties properties) {
-        init(entityName, cacheSize, RedisUtils.createJedisPool(properties));
+        if (null == JEDISPOOL) {
+            synchronized (JEDISPOOL) {
+                if (null == JEDISPOOL) {
+                    JEDISPOOL = RedisUtils.createJedisPool(properties);
+                }
+            }
+        }
+        init(entityName, cacheSize, JEDISPOOL);
     }
 
     public void init(String entityName, Integer cacheSize, JedisPool pool) {

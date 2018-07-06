@@ -135,7 +135,7 @@ public class LogOperate implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, length = 65535)
     public String getContent() {
         return this.content;
     }

@@ -3,7 +3,6 @@ package config.spring;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -31,17 +30,15 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
-import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntityFactory;
-import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.search.MultiTokenizerFactory;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.DirectiveComponent;
+import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 
@@ -58,17 +55,10 @@ import com.publiccms.logic.component.template.TemplateComponent;
 @PropertySource({ "classpath:" + CommonConstants.CMS_CONFIG_FILE })
 @EnableTransactionManagement
 @EnableScheduling
-public class ApplicationConfig implements Base {
+public class ApplicationConfig {
 
     @Autowired
     private Environment env;
-
-    @Bean
-    public LocaleResolver localeResolver() {
-        SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-        localeResolver.setDefaultLocale(Locale.forLanguageTag(env.getProperty("cms.defaultLocale")));
-        return localeResolver;
-    }
 
     /**
      * 数据源
@@ -79,19 +69,7 @@ public class ApplicationConfig implements Base {
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
         CmsDataSource bean = new CmsDataSource(getDirPath("") + CmsDataSource.DATABASE_CONFIG_FILENAME);
-        // try {
-        // bean.put("other",
-        // CmsDataSource.initDataSource(loadAllProperties("config/database-other.properties")));
-        // } catch (IOException e1) {
-        // e1.printStackTrace();
-        // }
-        if (CmsVersion.isInitialized()) {
-            try {
-                CmsDataSource.initDefautlDataSource();
-            } catch (IOException | PropertyVetoException e) {
-                CmsVersion.setInitialized(false);
-            }
-        }
+        CmsDataSource.initDefautlDataSource();
         return bean;
     }
 
@@ -162,15 +140,18 @@ public class ApplicationConfig implements Base {
 
     /**
      * 国际化处理
+     * 
+     * @param menuMessageComponent
      *
      * @return message source
      */
     @Bean
-    public MessageSource messageSource() {
+    public MessageSource messageSource(MenuMessageComponent menuMessageComponent) {
         ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
         bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), ","));
         bean.setCacheSeconds(300);
         bean.setUseCodeAsDefaultMessage(true);
+        bean.setParentMessageSource(menuMessageComponent);
         return bean;
     }
 
@@ -224,6 +205,9 @@ public class ApplicationConfig implements Base {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
         bean.setTemplateLoaderPath("classpath:/templates/");
         Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
+        if(CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))) {
+            properties.put("locale", env.getProperty("cms.defaultLocale"));
+        }
         bean.setFreemarkerSettings(properties);
         return bean;
     }
@@ -251,7 +235,7 @@ public class ApplicationConfig implements Base {
     @Bean
     public CommonsMultipartResolver multipartResolver() {
         CommonsMultipartResolver bean = new CommonsMultipartResolver();
-        bean.setDefaultEncoding(DEFAULT_CHARSET_NAME);
+        bean.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
         bean.setMaxUploadSize(Long.parseLong(env.getProperty("cms.multipart.maxUploadSize")) * 1024 * 1024);
         return bean;
     }
@@ -268,6 +252,9 @@ public class ApplicationConfig implements Base {
     }
 
     private String getDirPath(String path) {
+        if (null == CommonConstants.CMS_FILEPATH) {
+            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", env.getProperty("cms.filePath"));
+        }
         String filePath = CommonConstants.CMS_FILEPATH + path;
         File dir = new File(filePath);
         dir.mkdirs();

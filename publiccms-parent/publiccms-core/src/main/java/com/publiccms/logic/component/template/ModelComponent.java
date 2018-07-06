@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.api.SiteCache;
-import com.publiccms.common.base.Base;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -27,7 +27,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
  *
  */
 @Component
-public class ModelComponent implements SiteCache, Base {
+public class ModelComponent implements SiteCache {
 
     private CacheEntity<Short, Map<String, CmsModel>> modelCache;
     /**
@@ -73,7 +73,7 @@ public class ModelComponent implements SiteCache, Base {
             File file = new File(siteComponent.getModelFilePath(site));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    modelMap = objectMapper.readValue(file, new TypeReference<Map<String, CmsModel>>() {
+                    modelMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, CmsModel>>() {
                     });
                 } catch (IOException | ClassCastException e) {
                     modelMap = new HashMap<>();
@@ -99,7 +99,7 @@ public class ModelComponent implements SiteCache, Base {
             file.getParentFile().mkdirs();
         }
         try (FileOutputStream outputStream = new FileOutputStream(file);) {
-            objectMapper.writeValue(file, modelMap);
+            CommonConstants.objectMapper.writeValue(file, modelMap);
         } catch (IOException e) {
             return false;
         }

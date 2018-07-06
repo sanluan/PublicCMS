@@ -17,9 +17,9 @@ import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.util.IntrospectorCleanupListener;
 
-import com.publiccms.common.base.Base;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.proxy.UsernamePasswordAuthenticator;
 import com.publiccms.common.servlet.InstallHttpRequestHandler;
 import com.publiccms.common.servlet.InstallServlet;
@@ -29,7 +29,7 @@ import com.publiccms.common.servlet.InstallServlet;
  * InstallationInitializer
  *
  */
-public class InitializationInitializer implements WebApplicationInitializer, Base {
+public class InitializationInitializer implements WebApplicationInitializer {
     protected final Log log = LogFactory.getLog(getClass());
     /**
      * 安装Servlet映射路径
@@ -42,61 +42,38 @@ public class InitializationInitializer implements WebApplicationInitializer, Bas
 
     @Override
     public void onStartup(ServletContext servletcontext) throws ServletException {
-        servletcontext.addListener(IntrospectorCleanupListener.class);
-
         try {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
-            // 检查路径是否存在- 2017-06-17
-            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", config.getProperty("cms.filePath"));
-            checkFilePath(servletcontext);
             initProxy(config);
-            File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
+            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", config.getProperty("cms.filePath"));
+            String absolutePath = new File(CommonConstants.CMS_FILEPATH).getAbsolutePath();
+            File file = new File(absolutePath + CommonConstants.INSTALL_LOCK_FILENAME);
             if (file.exists()) {
-                String version = FileUtils.readFileToString(file, DEFAULT_CHARSET);
+                String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
                 if (CmsVersion.getVersion().equals(version)) {
                     CmsVersion.setInitialized(true);
-                    log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + CommonConstants.CMS_FILEPATH);
+                    CmsDataSource.initDefautlDataSource();
+                    log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + absolutePath);
                 } else {
                     createInstallServlet(servletcontext, config, InstallServlet.STEP_CHECKDATABASE, version);
-                    log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CommonConstants.CMS_FILEPATH
+                    log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + absolutePath
                             + ", please upgrade your database!");
                 }
             } else {
                 createInstallServlet(servletcontext, config, null, null);
-                log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CommonConstants.CMS_FILEPATH
+                log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + absolutePath
                         + ", please configure your database information and initialize the database!");
             }
         } catch (IOException e) {
             throw new ServletException(e);
         }
+        servletcontext.addListener(IntrospectorCleanupListener.class);
     }
 
     private void createInstallServlet(ServletContext servletcontext, Properties config, String startStep, String version) {
         Dynamic registration = servletcontext.addServlet("install", new InstallServlet(config, startStep, version));
         registration.setLoadOnStartup(1);
         registration.addMapping(new String[] { INSTALL_SERVLET_MAPPING });
-    }
-
-    /**
-     * 检查CMS路径变量
-     * 
-     * @param servletcontext
-     * @param defaultPath
-     * @throws ServletException
-     */
-    private void checkFilePath(ServletContext servletcontext) throws ServletException {
-        File cmsDataFolder = new File(CommonConstants.CMS_FILEPATH);
-        if (!cmsDataFolder.exists()) {
-            // 尝试创建
-            log.warn("The directory " + CommonConstants.CMS_FILEPATH + " does not exist, try to create the directory.");
-            try {
-                cmsDataFolder.mkdirs();
-            } catch (Exception e) {
-                CommonConstants.CMS_FILEPATH = new File(servletcontext.getRealPath("/"), "cms_filepath_temp").getPath();
-                log.warn("the cms.filePath parameter is invalid , " + CommonConstants.CMS_FILEPATH
-                        + " will be use as the default cms.filepath.");
-            }
-        }
     }
 
     /**

@@ -50,6 +50,11 @@ public interface Config {
      * 
      */
     public static final String INPUTTYPE_EDITOR = "editor";
+    
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CKEDITOR = "ckeditor";
 
     /**
      * 

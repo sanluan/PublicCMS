@@ -8,7 +8,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.Constants;
 
 /**
  * Request工具类
@@ -16,7 +16,7 @@ import com.publiccms.common.base.Base;
  * RequestUtils
  * 
  */
-public class RequestUtils implements Base {
+public class RequestUtils {
     /**
      * @param parameterMap
      * @param key
@@ -43,7 +43,7 @@ public class RequestUtils implements Base {
             if (CommonUtils.notEmpty(queryString)) {
                 url += "?" + queryString;
             }
-            url = URLEncoder.encode(url, DEFAULT_CHARSET_NAME);
+            url = URLEncoder.encode(url, Constants.DEFAULT_CHARSET_NAME);
         } catch (UnsupportedEncodingException e) {
             url = "";
         }
@@ -102,7 +102,7 @@ public class RequestUtils implements Base {
         if (CommonUtils.notEmpty(domain)) {
             cookie.setDomain(domain);
         }
-        cookie.setPath(CommonUtils.empty(contextPath) ? SEPARATOR : contextPath);
+        cookie.setPath(CommonUtils.empty(contextPath) ? Constants.SEPARATOR : contextPath);
         response.addCookie(cookie);
         return cookie;
     }
@@ -116,7 +116,7 @@ public class RequestUtils implements Base {
     public static void cancleCookie(String contextPath, HttpServletResponse response, String name, String domain) {
         Cookie cookie = new Cookie(name, null);
         cookie.setMaxAge(0);
-        cookie.setPath(CommonUtils.empty(contextPath) ? SEPARATOR : contextPath);
+        cookie.setPath(CommonUtils.empty(contextPath) ? Constants.SEPARATOR : contextPath);
         if (CommonUtils.notEmpty(domain)) {
             cookie.setDomain(domain);
         }

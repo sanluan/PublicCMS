@@ -19,7 +19,7 @@ import com.publiccms.common.tools.CommonUtils;
  * 
  */
 @Transactional
-public abstract class BaseService<E> implements Base {
+public abstract class BaseService<E> {
     protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     protected BaseDao<E> dao;

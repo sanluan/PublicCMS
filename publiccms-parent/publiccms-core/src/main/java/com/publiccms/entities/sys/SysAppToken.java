@@ -44,6 +44,7 @@ public class SysAppToken implements java.io.Serializable {
     }
 
     @Id
+
     @Column(name = "auth_token", unique = true, nullable = false, length = 40)
     public String getAuthToken() {
         return this.authToken;

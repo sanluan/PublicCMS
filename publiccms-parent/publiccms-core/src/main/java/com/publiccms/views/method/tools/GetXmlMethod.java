@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.springframework.stereotype.Component;
@@ -23,12 +24,25 @@ import freemarker.template.TemplateModelException;
  */
 @Component
 public class GetXmlMethod extends BaseMethod {
+    private boolean uninitialized = true;
 
     @SuppressWarnings("unchecked")
     @Override
     public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
         String str = getString(0, arguments);
         if (CommonUtils.notEmpty(str)) {
+            if (uninitialized) {
+                try {
+                    DocumentBuilderFactory dbf = NodeModel.getDocumentBuilderFactory();
+                    dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                    dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", false);
+                    dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                    dbf.setXIncludeAware(false);
+                    dbf.setExpandEntityReferences(false);
+                    uninitialized = false;
+                } catch (ParserConfigurationException e) {
+                }
+            }
             InputSource is = new InputSource(new StringReader(str));
             try {
                 return NodeModel.parse(is);
@@ -50,7 +64,7 @@ public class GetXmlMethod extends BaseMethod {
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 1;
     }
 }

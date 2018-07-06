@@ -86,8 +86,8 @@ public class CmsCategory implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsCategory(short siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds, String code,
-            String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url, String contentPath,
+    public CmsCategory(short siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds,
+            String code, String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url, String contentPath,
             boolean containChild, Integer pageSize, boolean allowContribute, int sort, boolean hidden, boolean disabled,
             Integer extendId) {
         this.siteId = siteId;

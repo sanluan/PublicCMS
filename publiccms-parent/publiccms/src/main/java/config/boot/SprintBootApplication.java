@@ -56,7 +56,7 @@ public class SprintBootApplication {
             factory = new TomcatEmbeddedServletContainerFactory();
         }
         factory.setPort(Integer.valueOf(System.getProperty("cms.port", "8080")));
-        factory.setContextPath(System.getProperty("cms.contextPath", ""));
+        factory.setContextPath(System.getProperty("cms.contextPath", "/publiccms"));
         factory.setDisplayName("PublicCMS");
         factory.setSessionTimeout(20, TimeUnit.MINUTES);
         return factory;

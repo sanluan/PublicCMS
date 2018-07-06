@@ -8,16 +8,17 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.publiccms.common.base.AbstractAppDirective;
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.logic.component.site.DirectiveComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.HttpParameterHandler;
+import com.publiccms.logic.component.site.DirectiveComponent;
 
 /**
  *
@@ -54,7 +55,7 @@ public class ApiController extends AbstractController {
     public static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
-            put(ERROR, INTERFACE_NOT_FOUND);
+            put(CommonConstants.ERROR, INTERFACE_NOT_FOUND);
         }
     };
 
@@ -63,7 +64,7 @@ public class ApiController extends AbstractController {
      *
      * @return result
      */
-    @RequestMapping({ SEPARATOR, "/**" })
+    @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
     @ResponseBody
     public Map<String, String> api() {
         return NOT_FOUND_MAP;
@@ -82,17 +83,18 @@ public class ApiController extends AbstractController {
         try {
             AbstractAppDirective directive = appDirectiveMap.get(api);
             if (null != directive) {
-                directive.execute(mappingJackson2HttpMessageConverter, jsonMediaType, request, callback, response);
+                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, callback,
+                        response);
             } else {
-                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType,
-                        request, callback, response);
-                handler.put(ERROR, INTERFACE_NOT_FOUND).render();
+                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+                        CommonConstants.jsonMediaType, request, callback, response);
+                handler.put(CommonConstants.ERROR, INTERFACE_NOT_FOUND).render();
             }
         } catch (Exception e) {
-            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType, request,
-                    callback, response);
+            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+                    CommonConstants.jsonMediaType, request, callback, response);
             try {
-                handler.put(ERROR, EXCEPTION).render();
+                handler.put(CommonConstants.ERROR, EXCEPTION).render();
             } catch (Exception renderException) {
                 log.error(renderException.getMessage());
             }
@@ -121,7 +123,7 @@ public class ApiController extends AbstractController {
     @Autowired(required = false)
     public void init(DirectiveComponent directiveComponent, List<AbstractAppDirective> directiveList) {
         for (AbstractAppDirective appDirective : directiveList) {
-			if (null == appDirective.getName()) {
+            if (null == appDirective.getName()) {
                 appDirective.setName(directiveComponent.getDirectiveName(appDirective.getClass().getSimpleName()));
             }
             appDirectiveMap.put(appDirective.getName(), appDirective);

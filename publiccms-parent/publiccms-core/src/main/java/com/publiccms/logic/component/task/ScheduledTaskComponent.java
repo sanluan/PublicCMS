@@ -80,8 +80,8 @@ public class ScheduledTaskComponent {
                 cacheComponent.clear();
             }
             if (CmsVersion.isMaster()) {
-                // 清理3个月前的Token
-                userTokenService.delete(DateUtils.addMonths(CommonUtils.getDate(), -3));
+                // 清理30前的Token
+                userTokenService.delete(DateUtils.addDays(CommonUtils.getDate(), -30));
             }
         }
     }

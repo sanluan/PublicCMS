@@ -2,14 +2,14 @@ package com.publiccms.common.tools;
 
 import java.io.IOException;
 
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.Constants;
 
 /**
  * 
  * JsonUtils
  * 
  */
-public final class JsonUtils implements Base {
+public final class JsonUtils {
 
     /**
      * @param object
@@ -17,7 +17,7 @@ public final class JsonUtils implements Base {
      */
     public static String getString(Object object) {
         try {
-            return objectMapper.writeValueAsString(object);
+            return Constants.objectMapper.writeValueAsString(object);
         } catch (IOException e) {
             return null;
         }

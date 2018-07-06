@@ -1,5 +1,5 @@
 <h2 class="contentTitle">
-	<#if path?has_content><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}/" target="ajax" rel="cmsTemplateBox">在这里创建模板</a></#if>
-	<a class="button" href="cmsTemplate/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200">上传模板</a>
-	<#if path?has_content><a class="button" href="cmsTemplate/delete.do?path=${path?url}&navTabId=cmsTemplate/list" title="确定要删除该目录吗?" target="ajaxTodo">删除目录</a></#if>
+    <#if path?has_content><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}/" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create_here'/></a></#if>
+    <a class="button" href="cmsTemplate/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><@t.page 'template.upload'/></a>
+    <#if path?has_content><a class="button" href="cmsTemplate/delete.do?path=${path?url}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a></#if>
 </h2>

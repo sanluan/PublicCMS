@@ -1,6 +1,7 @@
 package com.publiccms.views.pojo.entities;
 
 import java.util.List;
+import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -16,12 +17,14 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-	private String alias;
+    private String alias;
     private Integer size;
     private Long[] adminIds;
     private boolean allowContribute;
     private boolean allowAnonymous;
-
+    private List<String> fieldList;
+    private List<String> requiredFieldList;
+    private Map<String,String> fieldTextMap;
     private List<ExtendField> extendList;
 
     /**
@@ -106,5 +109,47 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      */
     public Long[] getAdminIds() {
         return adminIds;
+    }
+
+    /**
+     * @return the fieldList
+     */
+    public List<String> getFieldList() {
+        return fieldList;
+    }
+
+    /**
+     * @param fieldList the fieldList to set
+     */
+    public void setFieldList(List<String> fieldList) {
+        this.fieldList = fieldList;
+    }
+
+    /**
+     * @return the requiredFieldList
+     */
+    public List<String> getRequiredFieldList() {
+        return requiredFieldList;
+    }
+
+    /**
+     * @param requiredFieldList the requiredFieldList to set
+     */
+    public void setRequiredFieldList(List<String> requiredFieldList) {
+        this.requiredFieldList = requiredFieldList;
+    }
+
+    /**
+     * @return the fieldTextMap
+     */
+    public Map<String, String> getFieldTextMap() {
+        return fieldTextMap;
+    }
+
+    /**
+     * @param fieldTextMap the fieldTextMap to set
+     */
+    public void setFieldTextMap(Map<String, String> fieldTextMap) {
+        this.fieldTextMap = fieldTextMap;
     }
 }

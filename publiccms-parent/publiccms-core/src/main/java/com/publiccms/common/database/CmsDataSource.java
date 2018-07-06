@@ -12,6 +12,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.datasource.MultiDataSource;
 import com.publiccms.common.tools.VerificationUtils;
@@ -32,6 +33,7 @@ public class CmsDataSource extends MultiDataSource {
     public static final String DATABASE_CONFIG_TEMPLATE = "config/database-template.properties";
     private static CmsDataSource cmsDataSource;
     private String dbconfigFilePath;
+    private static boolean initialized = false;
 
     private Map<Object, Object> dataSources = new HashMap<>();
 
@@ -82,21 +84,32 @@ public class CmsDataSource extends MultiDataSource {
         dataSource.setMaxPoolSize(Integer.parseInt(properties.getProperty("cpool.maxPoolSize")));
         dataSource.setMaxIdleTime(Integer.parseInt(properties.getProperty("cpool.maxIdleTime")));
         dataSource.setAcquireIncrement(Integer.parseInt(properties.getProperty("cpool.acquireIncrement")));
-        dataSource.setMaxIdleTimeExcessConnections(Integer.parseInt(properties.getProperty("cpool.maxIdleTimeExcessConnections")));
+        dataSource
+                .setMaxIdleTimeExcessConnections(Integer.parseInt(properties.getProperty("cpool.maxIdleTimeExcessConnections")));
         return dataSource;
     }
 
     /**
-     * @throws IOException
-     * @throws PropertyVetoException
+     * 
      */
-    public static void initDefautlDataSource() throws IOException, PropertyVetoException {
-        Properties properties = loadDatabaseConfig(cmsDataSource.dbconfigFilePath);
-        DataSource dataSource = initDataSource(properties);
-        cmsDataSource.getDataSources().put("default", dataSource);
-        cmsDataSource.setTargetDataSources(cmsDataSource.getDataSources());
-        cmsDataSource.setDefaultTargetDataSource(dataSource);
-        cmsDataSource.init();
+    public static void initDefautlDataSource() {
+        if (null != cmsDataSource) {
+            synchronized (cmsDataSource) {
+                if (!initialized && CmsVersion.isInitialized()) {
+                    try {
+                        Properties properties = loadDatabaseConfig(cmsDataSource.dbconfigFilePath);
+                        DataSource dataSource = initDataSource(properties);
+                        cmsDataSource.getDataSources().put("default", dataSource);
+                        cmsDataSource.setTargetDataSources(cmsDataSource.getDataSources());
+                        cmsDataSource.setDefaultTargetDataSource(dataSource);
+                        cmsDataSource.init();
+                        initialized = true;
+                    } catch (IOException | PropertyVetoException e) {
+                        CmsVersion.setInitialized(false);
+                    }
+                }
+            }
+        }
     }
 
     @Override

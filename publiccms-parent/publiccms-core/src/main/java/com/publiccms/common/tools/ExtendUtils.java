@@ -1,12 +1,13 @@
 package com.publiccms.common.tools;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.publiccms.common.base.Base;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.views.pojo.entities.ExtendData;
 import com.publiccms.views.pojo.entities.ExtendField;
@@ -16,7 +17,7 @@ import com.publiccms.views.pojo.entities.ExtendField;
  * ExtendUtils
  * 
  */
-public class ExtendUtils implements Base {
+public class ExtendUtils {
 
     /**
      * @param extendDataList
@@ -41,6 +42,25 @@ public class ExtendUtils implements Base {
             }
         }
         return map;
+    }
+
+    /**
+     * @param extendData
+     * @param extendFieldList
+     * @return extent data map
+     */
+    public static List<ExtendData> getDefaultExtentDataList(Map<String, String> extendData, List<ExtendField> extendFieldList) {
+        List<ExtendData> extendDataList = new ArrayList<>();
+        if (CommonUtils.notEmpty(extendFieldList)) {
+            for (ExtendField extend : extendFieldList) {
+                if (null == extendData.get(extend.getId().getCode())) {
+                    extendDataList.add(new ExtendData(extend.getId().getCode(), extend.getDefaultValue()));
+                } else {
+                    extendDataList.add(new ExtendData(extend.getId().getCode(), extendData.get(extend.getId().getCode())));
+                }
+            }
+        }
+        return extendDataList;
     }
 
     /**
@@ -74,7 +94,7 @@ public class ExtendUtils implements Base {
     public static Map<String, String> getExtendMap(String data) {
         if (CommonUtils.notEmpty(data)) {
             try {
-                return objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
+                return CommonConstants.objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
 
                 });
             } catch (IOException | ClassCastException e) {
@@ -91,7 +111,7 @@ public class ExtendUtils implements Base {
      */
     public static String getExtendString(Map<String, String> map) {
         try {
-            return objectMapper.writeValueAsString(map);
+            return CommonConstants.objectMapper.writeValueAsString(map);
         } catch (IOException e) {
             return null;
         }

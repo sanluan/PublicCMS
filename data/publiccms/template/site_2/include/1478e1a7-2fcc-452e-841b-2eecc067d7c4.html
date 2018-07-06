@@ -1,0 +1,22 @@
+<div class="nav">
+	<ul class="nav_ul">
+		<li><a href="${site.dynamicPath!}" data-id="home">Home</a></li>
+		<@_categoryList parentId=(siteAttribute.parentId_en)!''>
+			<#list page.list as a>
+				<li>
+					<a href="${a.url!}" data-id="${a.id}">${a.name}</a>
+					<#if a.childIds?has_content>
+						<@_categoryList parentId=a.id>
+							<ul class="subnav">
+							<#list page.list as a>
+								<li><a href="${a.url!}">${a.name}</a></li>
+							</#list>
+							</ul>
+						</@_categoryList>
+					</#if>
+				</li>
+			</#list>
+		</@_categoryList>
+	</ul>
+</div>
+<div class="container"><img src="${site.sitePath}assets/images/t_pic.gif" align="top" alt=""/></div>

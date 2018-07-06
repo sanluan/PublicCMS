@@ -26,7 +26,7 @@ public class SysModuleListDirective extends AbstractTemplateDirective {
         if (!handler.getBoolean("advanced", false)) {
             menu = handler.getBoolean("menu", true);
         }
-        PageHandler page = service.getPage(handler.getInteger("parentId"), menu, handler.getInteger("pageIndex", 1),
+        PageHandler page = service.getPage(handler.getString("parentId"), menu, handler.getInteger("pageIndex", 1),
                 handler.getInteger("count", 30));
         handler.put("page", page).render();
     }

@@ -14,12 +14,15 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
@@ -42,6 +45,8 @@ public class IndexController extends AbstractController {
     private TemplateCacheComponent templateCacheComponent;
     @Autowired
     private ConfigComponent configComponent;
+    @Autowired
+    private LocaleResolver localeResolver;
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
     /**
@@ -76,11 +81,12 @@ public class IndexController extends AbstractController {
             @RequestBody(required = false) String body, HttpServletRequest request, HttpServletResponse response,
             ModelMap model) {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
-        if (requestPath.endsWith(SEPARATOR)) {
-            requestPath = requestPath.substring(0, requestPath.lastIndexOf(SEPARATOR, requestPath.length() - 2))
+        if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
+            requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR, requestPath.length() - 2))
                     + CommonConstants.getDefaultSubfix();
         } else {
-            requestPath = requestPath.substring(0, requestPath.lastIndexOf(SEPARATOR)) + CommonConstants.getDefaultSubfix();
+            requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR))
+                    + CommonConstants.getDefaultSubfix();
         }
         return getViewName(id, pageIndex, requestPath, body, request, response, model);
     }
@@ -94,11 +100,11 @@ public class IndexController extends AbstractController {
      * @param model
      * @return view name
      */
-    @RequestMapping({ SEPARATOR, "/**" })
+    @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
     public String page(@RequestBody(required = false) String body, HttpServletRequest request, HttpServletResponse response,
             ModelMap model) {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
-        if (requestPath.endsWith(SEPARATOR)) {
+        if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
             requestPath += CommonConstants.getDefaultPage();
         }
         return getViewName(null, null, requestPath, body, request, response, model);
@@ -112,10 +118,10 @@ public class IndexController extends AbstractController {
         String templatePath = siteComponent.getWebTemplateFilePath() + fullRequestPath;
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {
-            if (metadata.isNeedLogin() && null == getUserFromSession(request.getSession())) {
+            if (metadata.isNeedLogin() && null == ControllerUtils.getUserFromSession(request.getSession())) {
                 Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                 String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
-                StringBuilder sb = new StringBuilder(REDIRECT);
+                StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
                 if (CommonUtils.notEmpty(loginPath)) {
                     return sb.append(loginPath).append("?returnUrl=")
                             .append(RequestUtils.getEncodePath(requestPath, request.getQueryString())).toString();
@@ -123,12 +129,12 @@ public class IndexController extends AbstractController {
                     return sb.append(site.getDynamicPath()).toString();
                 }
             }
-            String[] acceptParamters = StringUtils.split(metadata.getAcceptParamters(), COMMA_DELIMITED);
-            if (CommonUtils.notEmpty(acceptParamters)) {
-                billingRequestParamtersToModel(request, acceptParamters, model);
-                if (null != id && ArrayUtils.contains(acceptParamters, "id")) {
+            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
+            if (CommonUtils.notEmpty(acceptParameters)) {
+                billingRequestParametersToModel(request, acceptParameters, model);
+                if (null != id && ArrayUtils.contains(acceptParameters, "id")) {
                     model.addAttribute("id", id.toString());
-                    if (null != pageIndex && ArrayUtils.contains(acceptParamters, "pageIndex")) {
+                    if (null != pageIndex && ArrayUtils.contains(acceptParameters, "pageIndex")) {
                         model.addAttribute("pageIndex", pageIndex.toString());
                     }
                 }
@@ -148,8 +154,8 @@ public class IndexController extends AbstractController {
                         || CommonUtils.notEmpty(pragma) && "no-cache".equalsIgnoreCase(pragma)) {
                     cacheMillisTime = 0;
                 }
-                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, cacheMillisTime, acceptParamters,
-                        request, model);
+                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, localeResolver.resolveLocale(request),
+                        cacheMillisTime, acceptParameters, request, model);
             }
         } else {
             try {
@@ -160,14 +166,14 @@ public class IndexController extends AbstractController {
         return requestPath;
     }
 
-    private void billingRequestParamtersToModel(HttpServletRequest request, String[] acceptParamters, ModelMap model) {
-        for (String paramterName : acceptParamters) {
-            String[] values = request.getParameterValues(paramterName);
+    private void billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, ModelMap model) {
+        for (String parameterName : acceptParameters) {
+            String[] values = request.getParameterValues(parameterName);
             if (CommonUtils.notEmpty(values)) {
                 if (1 < values.length) {
-                    model.addAttribute(paramterName, values);
+                    model.addAttribute(parameterName, values);
                 } else {
-                    model.addAttribute(paramterName, values[0]);
+                    model.addAttribute(parameterName, values[0]);
                 }
             }
         }

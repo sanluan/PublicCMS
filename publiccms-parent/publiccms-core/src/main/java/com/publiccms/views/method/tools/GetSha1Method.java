@@ -34,7 +34,7 @@ public class GetSha1Method extends BaseMethod {
     }
 
     @Override
-    public int minParamtersNumber() {
+    public int minParametersNumber() {
         return 1;
     }
 }

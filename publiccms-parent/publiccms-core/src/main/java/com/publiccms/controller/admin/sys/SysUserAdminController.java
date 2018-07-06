@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -47,14 +48,18 @@ public class SysUserAdminController extends AbstractController {
      * @param entity
      * @param repassword
      * @param roleIds
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysUser entity, String repassword, Integer[] roleIds, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String save(SysUser entity, String repassword, Integer[] roleIds, String _csrf, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         SysSite site = getSite(request);
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
@@ -62,9 +67,9 @@ public class SysUserAdminController extends AbstractController {
         repassword = StringUtils.trim(repassword);
         if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
                 || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
-                || verifyNotUserName("username", entity.getName(), model)
-                || verifyNotNickName("nickname", entity.getNickName(), model)) {
-            return TEMPLATE_ERROR;
+                || ControllerUtils.verifyNotUserName("username", entity.getName(), model)
+                || ControllerUtils.verifyNotNickName("nickname", entity.getNickName(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
         }
         if (entity.isSuperuserAccess()) {
             entity.setRoles(arrayToCommaDelimitedString(roleIds));
@@ -76,18 +81,18 @@ public class SysUserAdminController extends AbstractController {
         if (null != entity.getId()) {
             SysUser oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             SysUser user = service.getEntity(entity.getId());
             if ((!user.getName().equals(entity.getName())
                     && ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model))
                     || (!user.getNickName().equals(entity.getNickName()) && ControllerUtils.verifyHasExist("nickname",
                             service.findByNickName(site.getId(), entity.getNickName()), model))) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             if (CommonUtils.notEmpty(entity.getPassword())) {
                 if (ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
-                    return TEMPLATE_ERROR;
+                    return CommonConstants.TEMPLATE_ERROR;
                 }
                 entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
             } else {
@@ -99,7 +104,7 @@ public class SysUserAdminController extends AbstractController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 roleUserService.dealRoleUsers(entity.getId(), roleIds);
-                logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.user", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
@@ -107,7 +112,7 @@ public class SysUserAdminController extends AbstractController {
             if (ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
                     || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)
                     || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
-                return TEMPLATE_ERROR;
+                return CommonConstants.TEMPLATE_ERROR;
             }
             entity.setSiteId(site.getId());
             entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
@@ -117,62 +122,66 @@ public class SysUserAdminController extends AbstractController {
                     roleUserService.save(new SysRoleUser(new SysRoleUserId(roleId, entity.getId())));
                 }
             }
-            logOperateService
-                    .save(new LogOperate(site.getId(), getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "save.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param id
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
-    public String enable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
-            return TEMPLATE_ERROR;
+    public String enable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = getSite(request);
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
+                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "enable.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param id
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
-    public String disable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyEquals("admin.operate", getAdminFromSession(session).getId(), id, model)) {
-            return TEMPLATE_ERROR;
+    public String disable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = getSite(request);
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-                return TEMPLATE_ERROR;
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
+                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+                return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);
-            logOperateService.save(new LogOperate(site.getId(), getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "disable.user", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        return TEMPLATE_DONE;
+        return CommonConstants.TEMPLATE_DONE;
     }
 }

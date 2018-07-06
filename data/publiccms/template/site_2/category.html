@@ -1,103 +1,56 @@
 <@_category id=id>
 	<#assign category=object/>
 	<#assign attribute=getCategoryAttribute(id)/>
+	<@_category id=category.parentId>
+		<#assign parent=object/>
+	</@_category>
 </@_category>
 <!DOCTYPE html>
-<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]><html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<html lang="zh-CN">
 <head>
-	<title>${(attribute.title!category.name)!}</title>
-	<meta name="keywords" content="${(attribute.description)!}" />
-	<meta name="description" content="${(attribute.keywords)!}" />
-<@_includePlace path="/index.html/885f27db-b93d-4642-9b95-9dcf2a418844.html"/> <#-- Head Meta -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1.0">
+	<title>${(attribute.title)!} ${(category.name)!} - ${site.name!}</title>
+	<meta name="keywords" content="${(attribute.keyworks)!}" />
+	<meta name="description" content="${(attribute.description)!}" />
+	<@_includePlace path="/194ca327-6b34-431d-a2d2-90f94b25e950.html"/> <#-- Head META -->
 </head>
 <body>
-<div id="fh5co-page">
-	<@_includePlace path="/index.html/3fa1a038-e006-459b-a94d-65ec19a6df16.html"/> <#-- 导航 -->
+	<@_includePlace path="/0dff168a-bc70-40d3-bf8f-c209dd598e5b.html"/> <#-- Header -->
 
-	<div class="fh5co-page-title" style="background-image: url(${site.sitePath}images/slide_6.jpg);">
-		<div class="overlay"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col-md-12 animate-box">
-					<h1><span class="colored">${(category.name)!}</span></h1>
-				</div>
+	<div class="banner" style="background:url(${site.sitePath!}assets/images/banner.gif) no-repeat top;"></div>
+
+	<@_includePlace path="/b7da840c-9f97-486c-af7c-7ff114b60c26.html"/> <#-- 中文导航 -->
+
+	<main class="container">
+		<div class="left">
+			<h2><div><strong>${parent.name!}</strong></div></h2>
+			<ul class="left-nav">
+		<@_categoryList parentId=category.parentId>
+			<#list page.list as a>
+				<li><a href="${a.url!}">${a.name}</a></li>
+			</#list>
+		</@_categoryList>
+			</ul>
+
+		<h2><div><strong>相关链接</strong></div></h2>
+		<select class="friend-link" onchange="javascript:window.open(this.options[this.selectedIndex].value)">
+			<option value="">友情链接</option>
+			<@_includePlace path="/505ddbed-f6ff-4a53-b5a8-0b2d7479a2ec.html"/> <#-- 友情链接 -->
+		</select>
+		<@_includePlace path="/e2ef0223-ddd3-4a95-bc65-c7eb796c911a.html"/> <#-- 内部链接 -->
+		</div>
+		<div class="breadcrumb">
+			<h3><span>当前位置：<a href="${base!}">首页</a> > <a href="${(category.url)!}">${category.name}</a></span>${category.name}</h3>
+			<div class="content">
+				${(attribute.article?no_esc)!}
 			</div>
 		</div>
-	</div>
+	</main>
 
-	<div id="best-deal">
-		<div class="container">
-<#if category?has_content>
-	<@_contentList categoryId=id pageIndex=pageIndex count=category.pageSize>
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2 text-center fh5co-heading animate-box" data-animate-effect="fadeIn">
-					<h2>${(attribute.title)!}</h2>
-					<p>${(attribute.description)!}</p>
-				</div>
-
-		<#list page.list as a>
-				<div class="col-md-4 item-block animate-box" data-animate-effect="fadeIn">
-					<div class="fh5co-property">
-						<figure>
-							<img src="${site.sitePath}${a.cover!}" alt="${a.title!}" class="img-responsive">
-						</figure>
-						<div class="fh5co-property-innter">
-							<h3><a href="${a.url}">${a.title!}</a></h3>
-							<div class="price-status">
-		               </div>
-		               <p>${a.description}</p>
-	            	</div>
-					</div>
-				</div>
-		</#list>
-
-			</div>
-			<div class="row">
-				<div class="col-md-12 text-center animate-box" data-animate-effect="fadeIn">
-					<nav>
-					  <ul class="pagination">
-						<li<#if page.firstPage> class="disabled"</#if>>
-					      <a href="?id=${id}&pageIndex=${page.prePage}" aria-label="Previous">
-					        <span aria-hidden="true">&laquo;</span>
-					      </a>
-					    </li>
-<#assign start=1/>
-<#if (page.pageIndex-5) gt start>
-	<#assign start=page.pageIndex-4/>
-</#if>
-<#assign end=page.totalPage/>
-<#if (page.pageIndex+5) lt end>
-	<#assign end=page.pageIndex+4/>
-</#if>
-<#if start gt 1>
-						<li><a href="?id=${id}&pageIndex=1">1</a></li>
-						<li>...</li>
-</#if>
-<#list start..end as n>
-						<li<#if n=page.pageIndex>  class="active"</#if>><a href="?id=${id}&pageIndex=${n}">${n}</a></li>
-</#list>
-<#if end lt page.totalPage>
-						<li>...</li>
-						<li><a href="?id=${id}&pageIndex=${page.totalPage}">${page.totalPage}</a></li>
-</#if>
-					    <li<#if page.lastPage> class="disabled"</#if>>
-					      <a href="?id=${id}&pageIndex=${page.nextPage}" aria-label="Next">
-					        <span aria-hidden="true">&raquo;</span>
-					      </a>
-					    </li>
-					  </ul>
-					</nav>
-				</div>
-			</div>
-	</@_contentList>
-</#if>
-		</div>
-	</div>
-	
-	<@_includePlace path="/index.html/1edfb072-0c53-4062-b457-034b6cad77ab.html"/> <#-- Footer -->
-</div>
+	<@_includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
+	<script>
+			$('a[data-id=${parent.id}]').addClass('selected');
+	</script>
 </body>
 </html>

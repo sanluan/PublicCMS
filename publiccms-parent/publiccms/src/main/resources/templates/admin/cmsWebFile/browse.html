@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="<@t.page 'lang'/>">
 <head>
     <meta charset="utf-8">
-    <title>文件浏览</title>
+    <title><@t.page 'file.view'/></title>
     <link href="${res}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
     <link href="${res}/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
     <script src="${res}/js/jquery-1.9.1.min.js"></script>
@@ -18,22 +18,22 @@ function callback(fileUrl){
 <body>
 <div class="container theme-showcase" role="main">
     <div class="page-header">
-        <h1>网站文件</h1>
+        <h1><@t.page 'webfile'/></h1>
     </div>
     <div class="row">
         <div class="col-md-1"></div>
-        <div class="col-md-5">文件名</div>
-        <div class="col-md-2">修改日期</div>
-        <div class="col-md-2">创建日期</div>
-        <div class="col-md-2">文件大小</div>
+        <div class="col-md-5"><@t.page 'file.name'/></div>
+        <div class="col-md-2"><@t.page 'modified_date'/></div>
+        <div class="col-md-2"><@t.page 'create_date'/></div>
+        <div class="col-md-2"><@t.page 'file.size'/></div>
     </div>
 <#if path?has_content>
     <div class="row">
         <div class="col-md-1">
-            [目录]
+            [<@t.page 'directory'/>]
         </div>
         <div class="col-md-5">
-            <a href="?path=${path?keep_before_last('/')}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self" title="返回上一级">返回上级..</a>
+            <a href="?path=${path?keep_before_last('/')}&CKEditorFuncNum=${CKEditorFuncNum!}&type=${type!}" target="_self"><@t.page 'button.return'/></a>
         </div>
         <div class="col-md-2">
         </div>
@@ -50,7 +50,7 @@ function callback(fileUrl){
     <div class="row">
         <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
         <div class="col-md-1">
-            <#if a.directory>[目录]</#if>
+            <#if a.directory>[<@t.page 'directory'/>]</#if>
         </div>
         <div class="col-md-5">
             <#if a.directory>

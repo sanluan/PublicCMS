@@ -32,11 +32,11 @@ public class CmsWord implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private Long id;
-    @GeneratorColumn(title = "名称", condition = true, like = true)
-    private String name;
     @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
+    @GeneratorColumn(title = "名称", condition = true, like = true)
+    private String name;    
     @GeneratorColumn(title = "搜索次数", order = true)
     private int searchCount;
     @GeneratorColumn(title = "隐藏", condition = true)
@@ -47,9 +47,9 @@ public class CmsWord implements java.io.Serializable {
     public CmsWord() {
     }
 
-    public CmsWord(String name, short siteId, int searchCount, boolean hidden, Date createDate) {
-        this.name = name;
+    public CmsWord(short siteId, String name, int searchCount, boolean hidden, Date createDate) {
         this.siteId = siteId;
+        this.name = name;
         this.searchCount = searchCount;
         this.hidden = hidden;
         this.createDate = createDate;
@@ -67,15 +67,6 @@ public class CmsWord implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name = "name", nullable = false)
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     @Column(name = "site_id", nullable = false)
     public short getSiteId() {
         return this.siteId;
@@ -83,6 +74,15 @@ public class CmsWord implements java.io.Serializable {
 
     public void setSiteId(short siteId) {
         this.siteId = siteId;
+    }
+
+    @Column(name = "name", nullable = false)
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Column(name = "search_count", nullable = false)

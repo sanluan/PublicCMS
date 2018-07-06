@@ -8,16 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
+import org.springframework.web.util.UrlPathHelper;
 
-import com.publiccms.common.base.AbstractController;
-import com.publiccms.common.base.BaseInterceptor;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysSite;
@@ -33,7 +35,9 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  * WebContextInterceptor 权限拦截器
  *
  */
-public class WebContextInterceptor extends BaseInterceptor {
+public class WebContextInterceptor extends HandlerInterceptorAdapter {
+    protected UrlPathHelper urlPathHelper = new UrlPathHelper();
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     private SysUserService sysUserService;
     @Autowired
@@ -50,7 +54,7 @@ public class WebContextInterceptor extends BaseInterceptor {
         String contextPath = request.getContextPath();
         if (null == user) {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), cookiesName);
-            if (null != userCookie && StringUtils.isNotBlank(userCookie.getValue())) {
+            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
                 String value = userCookie.getValue();
                 if (null != value) {
                     String[] userData = value.split(CommonConstants.getCookiesUserSplit());
@@ -58,8 +62,8 @@ public class WebContextInterceptor extends BaseInterceptor {
                         try {
                             Long userId = Long.parseLong(userData[0]);
                             SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
-                            if (null != userToken && null != site && !site.isDisabled() && site.getId() == userToken.getSiteId()
-                                    && userId == userToken.getUserId() && channel.equals(userToken.getChannel())
+                            if (null != userToken && null != site && !site.isDisabled() && userToken.getSiteId() == site.getId()
+                                    && userToken.getUserId() == userId && channel.equals(userToken.getChannel())
                                     && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
                                 user.setPassword(null);
                                 String ip = RequestUtils.getIpAddress(request);
@@ -89,10 +93,10 @@ public class WebContextInterceptor extends BaseInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
         HttpSession session = request.getSession();
         SysSite site = siteComponent.getSite(request.getServerName());
-        SysUser user = initUser(AbstractController.getUserFromSession(session), LogLoginService.CHANNEL_WEB,
+        SysUser user = initUser(ControllerUtils.getUserFromSession(session), LogLoginService.CHANNEL_WEB,
                 CommonConstants.getCookiesUser(), site, request, response);
         if (null != user) {
-            Date date = AbstractController.getUserTimeFromSession(session);
+            Date date = ControllerUtils.getUserTimeFromSession(session);
             if (null == date || date.before(DateUtils.addSeconds(new Date(), -30))) {
                 SysUser entity = sysUserService.getEntity(user.getId());
                 if (null != entity && !entity.isDisabled() && null != site && !site.isDisabled()
@@ -102,10 +106,10 @@ public class WebContextInterceptor extends BaseInterceptor {
                     user.setEmail(entity.getEmail());
                     user.setEmailChecked(entity.isEmailChecked());
                     user.setSuperuserAccess(entity.isSuperuserAccess());
-                    AbstractController.setUserToSession(session, user);
+                    ControllerUtils.setUserToSession(session, user);
                 } else {
                     Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
-                    if (null != userCookie && StringUtils.isNotBlank(userCookie.getValue())) {
+                    if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
                         String value = userCookie.getValue();
                         if (null != value) {
                             String[] userData = value.split(CommonConstants.getCookiesUserSplit());
@@ -114,7 +118,7 @@ public class WebContextInterceptor extends BaseInterceptor {
                             }
                         }
                     }
-                    AbstractController.clearUserToSession(request.getContextPath(), session, response);
+                    ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
                 }
             }
         }

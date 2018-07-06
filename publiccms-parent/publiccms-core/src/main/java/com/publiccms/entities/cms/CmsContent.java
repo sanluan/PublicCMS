@@ -23,6 +23,7 @@ import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.FieldBridge;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
+import org.hibernate.search.annotations.SortableField;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.hibernate.search.bridge.builtin.ShortBridge;
@@ -114,6 +115,7 @@ public class CmsContent implements java.io.Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Field(analyze = Analyze.NO)
     @DateBridge(resolution = Resolution.MILLISECOND)
+    @SortableField
     private Date publishDate;
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
@@ -225,7 +227,7 @@ public class CmsContent implements java.io.Serializable {
         return this.userId;
     }
 
-    public void setUserId(Long userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 
@@ -401,13 +403,23 @@ public class CmsContent implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "publish_date", length = 19)
+    @Column(name = "publish_date", nullable = false, length = 19)
     public Date getPublishDate() {
         return this.publishDate;
     }
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "check_date", length = 19)
+    public Date getCheckDate() {
+        return this.checkDate;
+    }
+
+    public void setCheckDate(Date checkDate) {
+        this.checkDate = checkDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -418,16 +430,6 @@ public class CmsContent implements java.io.Serializable {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
-    }
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "check_date", nullable = false, length = 19)
-    public Date getCheckDate() {
-        return this.checkDate;
-    }
-
-    public void setCheckDate(Date checkDate) {
-        this.checkDate = checkDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

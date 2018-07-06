@@ -41,6 +41,7 @@ public class CmsPlaceAttribute implements java.io.Serializable {
     }
 
     @Id
+
     @Column(name = "place_id", unique = true, nullable = false)
     public long getPlaceId() {
         return this.placeId;

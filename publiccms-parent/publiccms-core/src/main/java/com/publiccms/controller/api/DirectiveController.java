@@ -19,6 +19,7 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.directive.HttpDirective;
 import com.publiccms.common.handler.HttpParameterHandler;
@@ -49,17 +50,18 @@ public class DirectiveController extends AbstractController {
             HttpDirective directive = actionMap.get(action);
             if (null != directive) {
                 request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, getSite(request));
-                directive.execute(mappingJackson2HttpMessageConverter, jsonMediaType, request, callback, response);
+                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, callback,
+                        response);
             } else {
-                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType,
-                        request, callback, response);
-                handler.put(ERROR, ApiController.INTERFACE_NOT_FOUND).render();
+                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+                        CommonConstants.jsonMediaType, request, callback, response);
+                handler.put(CommonConstants.ERROR, ApiController.INTERFACE_NOT_FOUND).render();
             }
         } catch (Exception e) {
-            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter, jsonMediaType, request,
-                    callback, response);
+            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+                    CommonConstants.jsonMediaType, request, callback, response);
             try {
-                handler.put(ERROR, ApiController.EXCEPTION).render();
+                handler.put(CommonConstants.ERROR, ApiController.EXCEPTION).render();
             } catch (Exception renderException) {
                 log.error(renderException.getMessage());
             }
@@ -86,21 +88,25 @@ public class DirectiveController extends AbstractController {
      */
     @Autowired
     public void init(DirectiveComponent directiveComponent) {
-        actionMap.putAll(directiveComponent.getTemplateDirectiveMap());
         for (Entry<String, AbstractTemplateDirective> entry : directiveComponent.getTemplateDirectiveMap().entrySet()) {
-            Map<String, String> map = new HashMap<>();
-            map.put("name", entry.getKey());
-            map.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
-            map.put("needUserToken", String.valueOf(entry.getValue().needUserToken()));
-            actionList.add(map);
+            if (entry.getValue().httpEnabled()) {
+                Map<String, String> map = new HashMap<>();
+                map.put("name", entry.getKey());
+                map.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
+                map.put("needUserToken", String.valueOf(entry.getValue().needUserToken()));
+                actionList.add(map);
+                actionMap.put(entry.getKey(), entry.getValue());
+            }
         }
-        actionMap.putAll(directiveComponent.getTaskDirectiveMap());
         for (Entry<String, AbstractTaskDirective> entry : directiveComponent.getTaskDirectiveMap().entrySet()) {
-            Map<String, String> map = new HashMap<>();
-            map.put("name", entry.getKey());
-            map.put("needAppToken", String.valueOf(true));
-            map.put("needUserToken", String.valueOf(false));
-            actionList.add(map);
+            if (entry.getValue().httpEnabled()) {
+                Map<String, String> map = new HashMap<>();
+                map.put("name", entry.getKey());
+                map.put("needAppToken", String.valueOf(true));
+                map.put("needUserToken", String.valueOf(false));
+                actionList.add(map);
+                actionMap.put(entry.getKey(), entry.getValue());
+            }
         }
     }
 }

@@ -38,8 +38,10 @@ public class LogUpload implements java.io.Serializable {
     private long userId;
     @GeneratorColumn(title = "渠道", condition = true)
     private String channel;
-    @GeneratorColumn(title = "是否图片", condition = true)
-    private boolean image;
+    @GeneratorColumn(title = "原文件名", condition = true, like = true)
+    private String originalName;
+    @GeneratorColumn(title = "文件类型", condition = true)
+    private String fileType;
     @GeneratorColumn(title = "站点", order = true)
     private long fileSize;
     @GeneratorColumn(title = "IP")
@@ -52,22 +54,24 @@ public class LogUpload implements java.io.Serializable {
     public LogUpload() {
     }
 
-    public LogUpload(short siteId, long userId, String channel, boolean image, long fileSize, Date createDate, String filePath) {
+    public LogUpload(short siteId, long userId, String channel, String fileType, long fileSize, Date createDate,
+            String filePath) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
-        this.image = image;
+        this.fileType = fileType;
         this.fileSize = fileSize;
         this.createDate = createDate;
         this.filePath = filePath;
     }
 
-    public LogUpload(short siteId, long userId, String channel, boolean image, long fileSize, String ip, Date createDate,
-            String filePath) {
+    public LogUpload(short siteId, long userId, String channel, String originalName, String fileType, long fileSize, String ip,
+            Date createDate, String filePath) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
-        this.image = image;
+        this.originalName = originalName;
+        this.fileType = fileType;
         this.fileSize = fileSize;
         this.ip = ip;
         this.createDate = createDate;
@@ -113,13 +117,22 @@ public class LogUpload implements java.io.Serializable {
         this.channel = channel;
     }
 
-    @Column(name = "image", nullable = false)
-    public boolean isImage() {
-        return this.image;
+    @Column(name = "original_name")
+    public String getOriginalName() {
+        return this.originalName;
     }
 
-    public void setImage(boolean image) {
-        this.image = image;
+    public void setOriginalName(String originalName) {
+        this.originalName = originalName;
+    }
+
+    @Column(name = "file_type", nullable = false, length = 20)
+    public String getFileType() {
+        return this.fileType;
+    }
+
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
     @Column(name = "file_size", nullable = false)

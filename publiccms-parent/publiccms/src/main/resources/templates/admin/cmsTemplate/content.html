@@ -1,26 +1,27 @@
 <form method="post" action="cmsTemplate/save.do" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-	<div class="formBar">
-		<ul>
-            <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list" title="确定要删除该模板吗?" target="ajaxTodo">删除</a></li>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
     <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
         <@_sysDeptPage deptId=admin.deptId!'' pages=path>
-            <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">页面管理</a></li>
+            <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
         </@_sysDeptPage>
     </@_sysAuthorized>
-            <li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">元数据管理</a></li>
-			<li><button type="submit" class="buttonActive">保存</button></li>
-		</ul>
-	</div>
-	<h2 class="contentTitle">
-	 	<a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true">引用模板</a>
-	 	<a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true">页面片段</a>
-	 	<a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true">网站文件</a>
-	 	<a class="button" href="cmsTemplate/help.html?path=${(path?url)!}" target="dialog" mask="true">模板帮助</a>
-	</h2>
-	<div class="pageFormContent" layoutH="109">
-   		<div>
-			<input name="path" type="hidden" value="${path}"/>
-			<textarea name="content" class="code" mode="freemarkermixed"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
-		</div>
-	</div>
+            <li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'metadata'/></a></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+        </ul>
+    </div>
+    <h2 class="contentTitle">
+         <a class="button" href="cmsTemplate/ftlLookup.html" target="dialog" mask="true"><@t.page 'template.fragment'/></a>
+         <a class="button" href="placeTemplate/lookup.html" target="dialog" mask="true"><@t.page 'place'/></a>
+         <a class="button" href="cmsWebFile/lookup.html" target="dialog" mask="true"><@t.page 'webfile'/></a>
+         <a class="button" href="cmsTemplate/help.html?path=${(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
+    </h2>
+    <div class="pageFormContent" layoutH="109">
+           <div>
+            <input name="path" type="hidden" value="${path}"/>
+            <textarea name="content" class="code" mode="freemarkermixed"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
+        </div>
+    </div>
 </form>

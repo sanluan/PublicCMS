@@ -31,7 +31,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Integer roleId, Integer moduleId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Integer roleId, String moduleId, Integer pageIndex, Integer pageSize) {
         return dao.getPage(roleId, moduleId, pageIndex, pageSize);
     }
 
@@ -39,7 +39,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @param roleId
      * @param moduleIds
      */
-    public void updateRoleModules(Integer roleId, Integer[] moduleIds) {
+    public void updateRoleModules(Integer roleId, String[] moduleIds) {
         if (CommonUtils.notEmpty(roleId)) {
             @SuppressWarnings("unchecked")
             List<SysRoleModule> list = (List<SysRoleModule>) getPage(roleId, null, null, null).getList();
@@ -51,7 +51,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
                 }
             }
             if (CommonUtils.notEmpty(moduleIds)) {
-                for (int moduleId : moduleIds) {
+                for (String moduleId : moduleIds) {
                     save(new SysRoleModule(new SysRoleModuleId(roleId, moduleId)));
                 }
             }
@@ -64,7 +64,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @return
      */
     @Transactional(readOnly = true)
-    public List<SysRoleModule> getEntitys(Integer[] roleIds, Integer[] moduleIds) {
+    public List<SysRoleModule> getEntitys(Integer[] roleIds, String[] moduleIds) {
         return dao.getEntitys(roleIds, moduleIds);
     }
 
@@ -74,7 +74,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @return
      */
     @Transactional(readOnly = true)
-    public SysRoleModule getEntity(Integer[] roleIds, Integer moduleId) {
+    public SysRoleModule getEntity(Integer[] roleIds, String moduleId) {
         return dao.getEntity(roleIds, moduleId);
     }
 
@@ -90,7 +90,7 @@ public class SysRoleModuleService extends BaseService<SysRoleModule> {
      * @param moduleId
      * @return
      */
-    public int deleteByModuleId(Integer moduleId) {
+    public int deleteByModuleId(String moduleId) {
         return dao.deleteByModuleId(moduleId);
     }
 
