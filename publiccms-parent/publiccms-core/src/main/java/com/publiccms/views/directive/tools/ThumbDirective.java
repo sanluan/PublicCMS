@@ -1,7 +1,5 @@
 package com.publiccms.views.directive.tools;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +11,6 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.file.FileComponent;
-
-import net.coobird.thumbnailator.Thumbnails;
 
 /**
  *
@@ -33,22 +29,21 @@ public class ThumbDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(width) && CommonUtils.notEmpty(height)) {
             String thumbPath = path.substring(0, path.lastIndexOf(CommonConstants.DOT)) + "_" + width + "_" + height
                     + fileComponent.getSuffix(path);
-            File thumbFile = new File(siteComponent.getWebFilePath(site, thumbPath));
-            thumbPath = site.getSitePath() + thumbPath;
-            if (thumbFile.exists()) {
+            String thumbFilePath = siteComponent.getWebFilePath(site, thumbPath);
+            if (fileComponent.exists(thumbFilePath)) {
                 handler.print(thumbPath);
             } else {
-                File sourceFile = new File(siteComponent.getWebFilePath(site, path));
-                if (sourceFile.exists()) {
-                    try (FileOutputStream outputStream = new FileOutputStream(thumbFile);) {
-                        Thumbnails.of(sourceFile).size(width, height).toOutputStream(outputStream);
+                String sourceFilePath = siteComponent.getWebFilePath(site, path);
+                if (fileComponent.exists(sourceFilePath)) {
+                    try {
+                        fileComponent.thumb(sourceFilePath, thumbFilePath, width, height);
                         handler.print(thumbPath);
                     } catch (IOException e) {
-                        handler.print(site.getSitePath() + path);
+                        handler.print(path);
                         log.error(e.getMessage());
                     }
                 } else {
-                    handler.print(site.getSitePath() + path);
+                    handler.print(path);
                 }
             }
         }

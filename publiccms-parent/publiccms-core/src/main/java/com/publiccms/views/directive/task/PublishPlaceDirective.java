@@ -1,6 +1,5 @@
 package com.publiccms.views.directive.task;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -34,20 +33,19 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
         if (site.isUseSsi()) {
-            String fullPath = siteComponent.getWebTemplateFilePath(site,
+            String filePath = siteComponent.getWebTemplateFilePath(site,
                     TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
-            File file = new File(fullPath);
-            if (file.isFile()) {
+            if (fileComponent.isFile(filePath)) {
                 Map<String, Boolean> map = new LinkedHashMap<>();
                 try {
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(fullPath);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
                     templateComponent.staticPlace(site, path, metadata);
                     map.put(path, true);
                 } catch (IOException | TemplateException e) {
                     map.put(path, false);
                 }
                 handler.put("map", map).render();
-            } else if (file.isDirectory()) {
+            } else if (fileComponent.isDirectory(filePath)) {
                 handler.put("map", dealDir(site, path)).render();
             }
         }

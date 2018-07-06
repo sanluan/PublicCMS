@@ -44,23 +44,24 @@ public class InitializationInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletcontext) throws ServletException {
         try {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
-            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", config.getProperty("cms.filePath"));
             initProxy(config);
-            File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
+            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", config.getProperty("cms.filePath"));
+            String absolutePath = new File(CommonConstants.CMS_FILEPATH).getAbsolutePath();
+            File file = new File(absolutePath + CommonConstants.INSTALL_LOCK_FILENAME);
             if (file.exists()) {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
                 if (CmsVersion.getVersion().equals(version)) {
                     CmsVersion.setInitialized(true);
                     CmsDataSource.initDefautlDataSource();
-                    log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + CommonConstants.CMS_FILEPATH);
+                    log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + absolutePath);
                 } else {
                     createInstallServlet(servletcontext, config, InstallServlet.STEP_CHECKDATABASE, version);
-                    log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CommonConstants.CMS_FILEPATH
+                    log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + absolutePath
                             + ", please upgrade your database!");
                 }
             } else {
                 createInstallServlet(servletcontext, config, null, null);
-                log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CommonConstants.CMS_FILEPATH
+                log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + absolutePath
                         + ", please configure your database information and initialize the database!");
             }
         } catch (IOException e) {

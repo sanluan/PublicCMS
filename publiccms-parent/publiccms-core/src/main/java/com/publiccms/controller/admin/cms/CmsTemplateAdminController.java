@@ -1,6 +1,5 @@
 package com.publiccms.controller.admin.cms;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -77,21 +76,19 @@ public class CmsTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, path);
-                File templateFile = new File(filePath);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
-                if (CommonUtils.notEmpty(templateFile)) {
+                if (fileComponent.createFile(filePath, content)) {
+                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "save.web.template", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
+                } else {
                     String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site, path);
-                    fileComponent.updateFile(templateFile, historyFilePath, content);
+                    fileComponent.updateFile(filePath, historyFilePath, content);
                     if (CommonUtils.notEmpty(metadata.getCacheTime()) && metadata.getCacheTime() > 0) {
                         templateCacheComponent.deleteCachedFile(SiteComponent.getFullFileName(site, path));
                     }
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.web.template", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), path));
-                } else {
-                    fileComponent.createFile(templateFile, content);
-                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "save.web.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTemplateCache();
@@ -127,18 +124,16 @@ public class CmsTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                File templateFile = new File(filePath);
-                if (CommonUtils.notEmpty(templateFile)) {
-                    String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site,
-                            TemplateComponent.INCLUDE_DIRECTORY + path);
-                    fileComponent.updateFile(templateFile, historyFilePath, content);
-                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.place.template", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), path));
-                } else {
-                    fileComponent.createFile(templateFile, content);
+                if (fileComponent.createFile(filePath, content)) {
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.place.template", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
+                } else {
+                    String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site,
+                            TemplateComponent.INCLUDE_DIRECTORY + path);
+                    fileComponent.updateFile(filePath, historyFilePath, content);
+                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.place.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTemplateCache();
@@ -277,10 +272,7 @@ public class CmsTemplateAdminController extends AbstractController {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             try {
-                File templateFile = new File(filePath);
-                if (CommonUtils.empty(templateFile)) {
-                    fileComponent.createFile(templateFile, content);
-                }
+                fileComponent.createFile(filePath, content);
                 metadataComponent.updatePlaceMetadata(filePath, metadata);
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.template.meta", RequestUtils.getIpAddress(request),
@@ -321,10 +313,7 @@ public class CmsTemplateAdminController extends AbstractController {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, path);
             try {
-                File templateFile = new File(filePath);
-                if (CommonUtils.empty(templateFile)) {
-                    fileComponent.createFile(templateFile, content);
-                }
+                fileComponent.createFile(filePath, content);
                 CmsPageMetadata oldmetadata = metadataComponent.getTemplateMetadata(filePath);
                 metadata.setExtendDataList(
                         ExtendUtils.getDefaultExtentDataList(oldmetadata.getExtendData(), metadata.getExtendList()));

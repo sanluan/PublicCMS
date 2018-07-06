@@ -1,6 +1,5 @@
 package com.publiccms.views.directive.task;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,11 +34,10 @@ public class PublishPageDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        String fullPath = siteComponent.getWebTemplateFilePath(site, path);
-        File file = new File(fullPath);
-        if (file.isFile()) {
+        String filePath = siteComponent.getWebTemplateFilePath(site, path);
+        if (fileComponent.isFile(filePath)) {
             Map<String, Boolean> map = new LinkedHashMap<>();
-            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(fullPath);
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
             if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
                     templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, path), metadata.getPublishPath(),
@@ -50,7 +48,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
                 }
                 handler.put("map", map).render();
             }
-        } else if (file.isDirectory()) {
+        } else if (fileComponent.isDirectory(filePath)) {
             handler.put("map", deal(site, path)).render();
         }
     }

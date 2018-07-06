@@ -3,6 +3,7 @@ package com.publiccms.logic.component.file;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,6 +23,8 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.logic.component.template.TemplateComponent;
+
+import net.coobird.thumbnailator.Thumbnails;
 
 /**
  *
@@ -83,15 +86,75 @@ public class FileComponent {
         return fileList;
     }
 
+    public void thumb(String sourceFilePath, String thumbFilePath, Integer width, Integer height) throws IOException {
+        try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath);) {
+            Thumbnails.of(sourceFilePath).size(width, height).toOutputStream(outputStream);
+        }
+    }
+
+    /**
+     * @param filePath
+     * @param data
+     * @throws IOException
+     */
+    public void writeByteArrayToFile(String filePath, byte[] data) throws IOException {
+        FileUtils.writeByteArrayToFile(new File(filePath), data);
+    }
+
+    /**
+     * @param source
+     * @param destination
+     * @throws IOException
+     */
+    public void copyInputStreamToFile(InputStream source, String destination) throws IOException {
+        File dest = new File(destination);
+        FileUtils.copyInputStreamToFile(source, dest);
+    }
+
+    /**
+     * @param filePath
+     */
+    public void mkdirs(String filePath) {
+        File file = new File(filePath);
+        file.mkdirs();
+    }
+
+    /**
+     * @param filePath
+     * @return
+     */
+    public boolean isDirectory(String filePath) {
+        File file = new File(filePath);
+        return CommonUtils.notEmpty(file) && file.isDirectory();
+    }
+
+    /**
+     * @param filePath
+     * @return
+     */
+    public boolean isFile(String filePath) {
+        File file = new File(filePath);
+        return CommonUtils.notEmpty(file) && file.isDirectory();
+    }
+
+    /**
+     * @param filePath
+     * @return
+     */
+    public boolean exists(String filePath) {
+        return CommonUtils.notEmpty(new File(filePath));
+    }
+
     /**
      * 写入文件
      *
-     * @param file
+     * @param filePath
      * @param content
      * @return whether to create successfully
      * @throws IOException
      */
-    public boolean createFile(File file, String content) throws IOException {
+    public boolean createFile(String filePath, String content) throws IOException {
+        File file = new File(filePath);
         if (CommonUtils.empty(file)) {
             FileUtils.writeStringToFile(file, content, CommonConstants.DEFAULT_CHARSET);
             return true;
@@ -128,14 +191,15 @@ public class FileComponent {
 
     /**
      * 修改文件内容
-     *
-     * @param file
+     * 
+     * @param filePath
      * @param historyFilePath
      * @param content
      * @return whether to modify successfully
      * @throws IOException
      */
-    public boolean updateFile(File file, String historyFilePath, String content) throws IOException {
+    public boolean updateFile(String filePath, String historyFilePath, String content) throws IOException {
+        File file = new File(filePath);
         if (CommonUtils.notEmpty(file) && null != content) {
             File history = new File(historyFilePath);
             if (null != history.getParentFile()) {

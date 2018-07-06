@@ -1,6 +1,5 @@
 package com.publiccms.controller.admin.sys;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +9,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -166,15 +164,14 @@ public class UeditorAdminController extends AbstractController {
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
             String fileName = fileComponent.getUploadFileName(SCRAW_TYPE);
-            File dest = new File(siteComponent.getWebFilePath(site, fileName));
             try {
-                FileUtils.writeByteArrayToFile(dest, data);
+                fileComponent.writeByteArrayToFile(siteComponent.getWebFilePath(site, fileName), data);
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, LogUploadService.FILE_TYPE_IMAGE,
-                        dest.length(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, LogUploadService.FILE_TYPE_IMAGE, data.length,
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", data.length);
-                map.put("title", dest.getName());
+                map.put("title", fileName.substring(fileName.lastIndexOf(CommonConstants.SEPARATOR)));
                 map.put("url", fileName);
                 map.put("type", SCRAW_TYPE);
                 map.put("original", "scraw" + SCRAW_TYPE);
@@ -213,14 +210,13 @@ public class UeditorAdminController extends AbstractController {
                             suffix = ".jpg";
                         }
                         String fileName = fileComponent.getUploadFileName(suffix);
-                        File dest = new File(siteComponent.getWebFilePath(site, fileName));
-                        FileUtils.copyInputStreamToFile(entity.getContent(), dest);
+                        fileComponent.copyInputStreamToFile(entity.getContent(), siteComponent.getWebFilePath(site, fileName));
                         logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                                 LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, LogUploadService.getFileType(suffix),
-                                dest.length(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                                entity.getContentLength(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         Map<String, Object> map = getResultMap(true);
                         map.put("size", entity.getContentLength());
-                        map.put("title", dest.getName());
+                        map.put("title", fileName.substring(fileName.lastIndexOf(CommonConstants.SEPARATOR)));
                         map.put("url", fileName);
                         map.put("source", image);
                         list.add(map);

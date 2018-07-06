@@ -1,6 +1,5 @@
 package com.publiccms.controller.admin.sys;
 
-import java.io.File;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,17 +53,15 @@ public class TaskTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getTaskTemplateFilePath(site, path);
-                File templateFile = new File(filePath);
-                if (CommonUtils.notEmpty(templateFile)) {
-                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path);
-                    fileComponent.updateFile(templateFile, historyFilePath, content);
-                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.task.template", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), path));
-                } else {
-                    fileComponent.createFile(templateFile, content);
+                if (fileComponent.createFile(filePath, content)) {
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.task.template", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), path));
+                } else {
+                    String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path);
+                    fileComponent.updateFile(filePath, historyFilePath, content);
+                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, "update.task.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTaskTemplateCache();
