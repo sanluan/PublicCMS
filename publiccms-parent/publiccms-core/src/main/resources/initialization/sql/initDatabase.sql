@@ -34,7 +34,7 @@ CREATE TABLE `cms_category` (
   KEY `type_id` (`type_id`),
   KEY `allow_contribute` (`allow_contribute`),
   KEY `hidden` (`hidden`)
-) DEFAULT CHARSET=utf8 COMMENT='分类';
+) COMMENT='分类';
 
 -- ----------------------------
 -- Table structure for cms_category_attribute
@@ -47,7 +47,7 @@ CREATE TABLE `cms_category_attribute` (
   `description` varchar(300) default NULL COMMENT '描述',
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`category_id`)
-) DEFAULT CHARSET=utf8 COMMENT='分类扩展';
+) COMMENT='分类扩展';
 
 -- ----------------------------
 -- Table structure for cms_category_model
@@ -58,7 +58,7 @@ CREATE TABLE `cms_category_model` (
   `model_id` varchar(20) NOT NULL COMMENT '模型编码',
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
   PRIMARY KEY  (`category_id`,`model_id`)
-) DEFAULT CHARSET=utf8 COMMENT='分类模型';
+) COMMENT='分类模型';
 
 -- ----------------------------
 -- Table structure for cms_category_type
@@ -72,7 +72,7 @@ CREATE TABLE `cms_category_type` (
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) DEFAULT CHARSET=utf8 COMMENT='分类类型';
+) COMMENT='分类类型';
 
 -- ----------------------------
 -- Table structure for cms_content
@@ -114,7 +114,7 @@ CREATE TABLE `cms_content` (
   KEY `scores` (`scores`,`comments`,`clicks`),
   KEY `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`),
   KEY `only_url` (`only_url`,`has_images`,`has_files`,`user_id`)
-) DEFAULT CHARSET=utf8 COMMENT='内容';
+) COMMENT='内容';
 
 -- ----------------------------
 -- Table structure for cms_content_attribute
@@ -128,7 +128,7 @@ CREATE TABLE `cms_content_attribute` (
   `text` longtext COMMENT '内容',
   `word_count` int(11) NOT NULL COMMENT '字数',
   PRIMARY KEY  (`content_id`)
-) DEFAULT CHARSET=utf8 COMMENT='内容扩展';
+) COMMENT='内容扩展';
 
 -- ----------------------------
 -- Table structure for cms_content_file
@@ -151,7 +151,7 @@ CREATE TABLE `cms_content_file` (
   KEY `size` (`size`),
   KEY `clicks` (`clicks`),
   KEY `user_id` (`user_id`)
-) DEFAULT CHARSET=utf8 COMMENT='内容附件';
+) COMMENT='内容附件';
 
 -- ----------------------------
 -- Table structure for cms_content_related
@@ -169,7 +169,7 @@ CREATE TABLE `cms_content_related` (
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
   KEY `user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`)
-) DEFAULT CHARSET=utf8 COMMENT='推荐推荐';
+) COMMENT='推荐推荐';
 
 -- ----------------------------
 -- Table structure for cms_dictionary
@@ -182,7 +182,7 @@ CREATE TABLE `cms_dictionary` (
   `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`,`multiple`)
-) DEFAULT CHARSET=utf8 COMMENT='字典';
+) COMMENT='字典';
 
 -- ----------------------------
 -- Table structure for cms_dictionary_data
@@ -193,7 +193,7 @@ CREATE TABLE `cms_dictionary_data` (
   `value` varchar(50) NOT NULL COMMENT '值',
   `text` varchar(100) NOT NULL COMMENT '文字',
   PRIMARY KEY  (`dictionary_id`,`value`)
-) DEFAULT CHARSET=utf8 COMMENT='字典数据';
+) COMMENT='字典数据';
 
 -- ----------------------------
 -- Table structure for cms_place
@@ -202,7 +202,7 @@ DROP TABLE IF EXISTS `cms_place`;
 CREATE TABLE `cms_place` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `path` varchar(255) NOT NULL COMMENT '模板路径',
+  `path` varchar(100) NOT NULL COMMENT '模板路径',
   `user_id` bigint(20) default NULL COMMENT '提交用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
   `item_id` bigint(20) default NULL COMMENT '推荐项目ID',
@@ -225,7 +225,7 @@ CREATE TABLE `cms_place` (
   KEY `item_type` (`item_type`),
   KEY `user_id` (`user_id`),
   KEY `clicks` (`clicks`)
-) DEFAULT CHARSET=utf8 COMMENT='页面数据';
+) COMMENT='页面数据';
 
 -- ----------------------------
 -- Table structure for cms_place_attribute
@@ -235,7 +235,7 @@ CREATE TABLE `cms_place_attribute` (
   `place_id` bigint(20) NOT NULL COMMENT '位置ID',
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`place_id`)
-) DEFAULT CHARSET=utf8 COMMENT='推荐位数据扩展';
+) COMMENT='推荐位数据扩展';
 
 -- ----------------------------
 -- Table structure for cms_tag
@@ -249,7 +249,7 @@ CREATE TABLE `cms_tag` (
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) DEFAULT CHARSET=utf8 COMMENT='标签';
+) COMMENT='标签';
 
 -- ----------------------------
 -- Table structure for cms_tag_type
@@ -262,7 +262,7 @@ CREATE TABLE `cms_tag_type` (
   `count` int(11) NOT NULL COMMENT '标签数',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) DEFAULT CHARSET=utf8 COMMENT='标签类型';
+) COMMENT='标签类型';
 
 -- ----------------------------
 -- Table structure for cms_word
@@ -271,7 +271,7 @@ DROP TABLE IF EXISTS `cms_word`;
 CREATE TABLE `cms_word` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `name` varchar(255) NOT NULL COMMENT '名称',
+  `name` varchar(100) NOT NULL COMMENT '名称',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -280,7 +280,7 @@ CREATE TABLE `cms_word` (
   KEY `hidden` (`hidden`),
   KEY `create_date` (`create_date`),
   KEY `search_count` (`search_count`)
-) DEFAULT CHARSET=utf8 COMMENT='搜索词';
+) COMMENT='搜索词';
 
 -- ----------------------------
 -- Table structure for log_login
@@ -303,7 +303,7 @@ CREATE TABLE `log_login` (
   KEY `ip` (`ip`),
   KEY `site_id` (`site_id`),
   KEY `channel` (`channel`)
-) DEFAULT CHARSET=utf8 COMMENT='登录日志';
+) COMMENT='登录日志';
 
 -- ----------------------------
 -- Table structure for log_operate
@@ -325,7 +325,7 @@ CREATE TABLE `log_operate` (
   KEY `ip` (`ip`),
   KEY `site_id` (`site_id`),
   KEY `channel` (`channel`)
-) DEFAULT CHARSET=utf8 COMMENT='操作日志';
+) COMMENT='操作日志';
 
 -- ----------------------------
 -- Table structure for log_task
@@ -344,7 +344,7 @@ CREATE TABLE `log_task` (
   KEY `success` (`success`),
   KEY `site_id` (`site_id`),
   KEY `begintime` (`begintime`)
-) DEFAULT CHARSET=utf8 COMMENT='任务计划日志';
+) COMMENT='任务计划日志';
 
 -- ----------------------------
 -- Table structure for log_upload
@@ -369,7 +369,7 @@ CREATE TABLE `log_upload` (
   KEY `channel` (`channel`),
   KEY `file_type` (`file_type`),
   KEY `file_size` (`file_size`)
-) DEFAULT CHARSET=utf8 COMMENT='上传日志';
+) COMMENT='上传日志';
 
 -- ----------------------------
 -- Table structure for sys_app
@@ -385,7 +385,7 @@ CREATE TABLE `sys_app` (
   PRIMARY KEY  (`id`),
   UNIQUE KEY `key` (`app_key`),
   KEY `site_id` (`site_id`)
-) DEFAULT CHARSET=utf8 COMMENT='应用';
+) COMMENT='应用';
 
 -- ----------------------------
 -- Table structure for sys_app_client
@@ -403,7 +403,7 @@ CREATE TABLE `sys_app_client` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   PRIMARY KEY  (`site_id`,`channel`,`uuid`),
   KEY `user_id` (`user_id`,`disabled`,`create_date`)
-) DEFAULT CHARSET=utf8 COMMENT='应用客户端';
+) COMMENT='应用客户端';
 
 -- ----------------------------
 -- Table structure for sys_app_token
@@ -416,7 +416,7 @@ CREATE TABLE `sys_app_token` (
   PRIMARY KEY  (`auth_token`),
   KEY `app_id` (`app_id`),
   KEY `create_date` (`create_date`)
-) DEFAULT CHARSET=utf8 COMMENT='应用授权';
+) COMMENT='应用授权';
 
 -- ----------------------------
 -- Table structure for sys_cluster
@@ -430,7 +430,7 @@ CREATE TABLE `sys_cluster` (
   `cms_version` varchar(20) default NULL,
   PRIMARY KEY  (`uuid`),
   KEY `create_date` (`create_date`)
-) DEFAULT CHARSET=utf8 COMMENT='服务器集群';
+) COMMENT='服务器集群';
 
 -- ----------------------------
 -- Table structure for sys_config_data
@@ -441,7 +441,7 @@ CREATE TABLE `sys_config_data` (
   `code` varchar(50) NOT NULL COMMENT '配置项编码',
   `data` longtext NOT NULL COMMENT '值',
   PRIMARY KEY  (`site_id`,`code`)
-) DEFAULT CHARSET=utf8 COMMENT='站点配置';
+) COMMENT='站点配置';
 
 -- ----------------------------
 -- Table structure for sys_dept
@@ -459,7 +459,7 @@ CREATE TABLE `sys_dept` (
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='部门';
+) AUTO_INCREMENT=3 COMMENT='部门';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -475,7 +475,7 @@ CREATE TABLE `sys_dept_category` (
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
   `category_id` int(11) NOT NULL COMMENT '分类ID',
   PRIMARY KEY  (`dept_id`,`category_id`)
-) DEFAULT CHARSET=utf8 COMMENT='部门分类';
+) COMMENT='部门分类';
 
 -- ----------------------------
 -- Table structure for sys_dept_page
@@ -483,22 +483,22 @@ CREATE TABLE `sys_dept_category` (
 DROP TABLE IF EXISTS `sys_dept_page`;
 CREATE TABLE `sys_dept_page` (
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
-  `page` varchar(255) NOT NULL COMMENT '页面',
+  `page` varchar(100) NOT NULL COMMENT '页面',
   PRIMARY KEY  (`dept_id`,`page`)
-) DEFAULT CHARSET=utf8 COMMENT='部门页面';
+) COMMENT='部门页面';
 
 -- ----------------------------
 -- Table structure for sys_domain
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_domain`;
 CREATE TABLE `sys_domain` (
-  `name` varchar(255) NOT NULL COMMENT '域名',
+  `name` varchar(100) NOT NULL COMMENT '域名',
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `wild` tinyint(1) NOT NULL COMMENT '通配域名',
-  `path` varchar(255) default NULL COMMENT '路径',
+  `path` varchar(100) default NULL COMMENT '路径',
   PRIMARY KEY  (`name`),
   KEY `site_id` (`site_id`)
-) DEFAULT CHARSET=utf8 COMMENT='域名';
+) COMMENT='域名';
 
 -- ----------------------------
 -- Records of sys_domain
@@ -519,7 +519,7 @@ CREATE TABLE `sys_email_token` (
   PRIMARY KEY  (`auth_token`),
   KEY `create_date` (`create_date`),
   KEY `user_id` (`user_id`)
-) DEFAULT CHARSET=utf8 COMMENT='邮件地址验证日志';
+) COMMENT='邮件地址验证日志';
 
 -- ----------------------------
 -- Table structure for sys_extend
@@ -530,7 +530,7 @@ CREATE TABLE `sys_extend` (
   `item_type` varchar(20) NOT NULL COMMENT '扩展类型',
   `item_id` int(11) NOT NULL COMMENT '扩展项目ID',
   PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8 COMMENT='扩展';
+) COMMENT='扩展';
 
 -- ----------------------------
 -- Table structure for sys_extend_field
@@ -549,7 +549,7 @@ CREATE TABLE `sys_extend_field` (
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
   KEY `sort` (`sort`)
-) DEFAULT CHARSET=utf8 COMMENT='扩展字段';
+) COMMENT='扩展字段';
 
 -- ----------------------------
 -- Table structure for sys_module
@@ -566,7 +566,7 @@ CREATE TABLE `sys_module` (
   PRIMARY KEY  (`id`),
   KEY `parent_id` (`parent_id`,`menu`),
   KEY `sort` (`sort`)
-) DEFAULT CHARSET=utf8 COMMENT='模块';
+) COMMENT='模块';
 
 -- ----------------------------
 -- Records of sys_module
@@ -745,7 +745,7 @@ CREATE TABLE `sys_module_lang` (
   `lang` varchar(20) NOT NULL COMMENT '语言',
   `value` varchar(100) DEFAULT NULL COMMENT '值',
   PRIMARY KEY (`module_id`,`lang`)
-) DEFAULT CHARSET=utf8 COMMENT='模块语言';
+) COMMENT='模块语言';
 
 -- ----------------------------
 -- Records of sys_module_lang
@@ -1091,7 +1091,7 @@ CREATE TABLE `sys_role` (
   `show_all_module` tinyint(1) NOT NULL COMMENT '显示全部模块',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
-) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色';
+) AUTO_INCREMENT=2 COMMENT='角色';
 
 -- ----------------------------
 -- Records of sys_role
@@ -1104,9 +1104,9 @@ INSERT INTO `sys_role` VALUES ('1', '1', '超级管理员', '1', '0');
 DROP TABLE IF EXISTS `sys_role_authorized`;
 CREATE TABLE `sys_role_authorized` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
-  `url` varchar(255) NOT NULL COMMENT '授权地址',
+  `url` varchar(100) NOT NULL COMMENT '授权地址',
   PRIMARY KEY  (`role_id`,`url`)
-) DEFAULT CHARSET=utf8 COMMENT='角色授权地址';
+) COMMENT='角色授权地址';
 
 -- ----------------------------
 -- Records of sys_role_authorized
@@ -1120,7 +1120,7 @@ CREATE TABLE `sys_role_module` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `module_id` varchar(30) NOT NULL COMMENT '模块ID',
   PRIMARY KEY  (`role_id`,`module_id`)
-) DEFAULT CHARSET=utf8 COMMENT='角色授权模块';
+) COMMENT='角色授权模块';
 
 -- ----------------------------
 -- Records of sys_role_module
@@ -1134,7 +1134,7 @@ CREATE TABLE `sys_role_user` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   PRIMARY KEY  (`role_id`,`user_id`)
-) DEFAULT CHARSET=utf8 COMMENT='用户角色';
+) COMMENT='用户角色';
 
 -- ----------------------------
 -- Records of sys_role_user
@@ -1155,7 +1155,7 @@ CREATE TABLE `sys_site` (
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
   KEY `disabled` (`disabled`)
-) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='站点';
+) AUTO_INCREMENT=2 COMMENT='站点';
 
 -- ----------------------------
 -- Records of sys_site
@@ -1179,7 +1179,7 @@ CREATE TABLE `sys_task` (
   KEY `status` (`status`),
   KEY `site_id` (`site_id`),
   KEY `update_date` (`update_date`)
-) AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COMMENT='任务计划';
+) AUTO_INCREMENT=8 COMMENT='任务计划';
 
 -- ----------------------------
 -- Records of sys_task
@@ -1219,7 +1219,7 @@ CREATE TABLE `sys_user` (
   KEY `lastLoginDate` (`last_login_date`),
   KEY `email_checked` (`email_checked`),
   KEY `dept_id` (`dept_id`)
-) AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='用户';
+) AUTO_INCREMENT=2 COMMENT='用户';
 
 -- ----------------------------
 -- Records of sys_user
@@ -1243,7 +1243,7 @@ CREATE TABLE `sys_user_token` (
   KEY `create_date` (`create_date`),
   KEY `channel` (`channel`),
   KEY `site_id` (`site_id`)
-) DEFAULT CHARSET=utf8 COMMENT='用户令牌';
+) COMMENT='用户令牌';
 
 -- ----------------------------
 -- Records of sys_user_token

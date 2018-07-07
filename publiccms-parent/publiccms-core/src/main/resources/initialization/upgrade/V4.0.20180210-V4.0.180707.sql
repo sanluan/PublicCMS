@@ -1,6 +1,6 @@
 UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,cmsContent/recycle,cmsContent/realDelete' WHERE  `id` = 117;
-ALTER TABLE `sys_user` MODIFY COLUMN `last_login_ip` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '最后登录ip' AFTER `last_login_date`;
-ALTER TABLE `sys_user_token` MODIFY COLUMN `login_ip` varchar(64) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '登陆IP' AFTER `create_date`;
+ALTER TABLE `sys_user` MODIFY COLUMN `last_login_ip` varchar(64) NULL DEFAULT NULL COMMENT '最后登录ip' AFTER `last_login_date`;
+ALTER TABLE `sys_user_token` MODIFY COLUMN `login_ip` varchar(64) NOT NULL COMMENT '登陆IP' AFTER `create_date`;
 -- 20180414 --
 DROP TABLE IF EXISTS `home_active`;
 DROP TABLE IF EXISTS `home_article`;
@@ -27,7 +27,7 @@ UPDATE `sys_module` SET `authorized_url` = 'cmsContent/push_content,cmsContent/p
 INSERT INTO `sys_module` VALUES ('141', '修改内容模型', 'cmsContent/changeModelParameters', 'cmsContent/changeModel', null, '12', '0', '0');
 -- 20180605 --
 DELETE FROM `sys_module` WHERE id < 1000;
-ALTER TABLE `sys_module` 
+ALTER TABLE `sys_module`
 	MODIFY COLUMN `id` varchar(30) NOT NULL FIRST,
 	MODIFY COLUMN `parent_id` varchar(30) NULL DEFAULT NULL COMMENT '父模块' AFTER `attached`;
 ALTER TABLE `sys_role` MODIFY COLUMN `show_all_module` tinyint(1) NOT NULL COMMENT '显示全部模块' AFTER `owns_all_right`;
@@ -40,7 +40,7 @@ CREATE TABLE `sys_module_lang` (
   `lang` varchar(20) NOT NULL COMMENT '语言',
   `value` varchar(100) DEFAULT NULL COMMENT '值',
   PRIMARY KEY (`module_id`,`lang`) USING BTREE
-) DEFAULT CHARSET=utf8 COMMENT='模块语言';
+) COMMENT='模块语言';
 
 INSERT INTO `sys_module_lang` SELECT `id`,'',`name` FROM `sys_module` where id >= 1000;
 INSERT INTO `sys_module_lang` SELECT `id`,'en',`name` FROM `sys_module` where id >= 1000;
@@ -378,7 +378,7 @@ ALTER TABLE `sys_module` DROP COLUMN `name`,
 	DROP INDEX `parent_id`,
 	DROP INDEX `url`,
 	ADD INDEX `parent_id`(`parent_id`, `menu`);
-	
+
 INSERT INTO `sys_module` VALUES ('app_add', 'sysApp/add', 'sysApp/save', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_disable', NULL, 'sysAppClient/disable', NULL, 'app_client_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_enable', NULL, 'sysAppClient/enable', NULL, 'app_client_list', 0, 0);
@@ -545,7 +545,7 @@ INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'w
 INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, '<i class=\"icon-search icon-large\"></i>', 'content_extend', 1, 2);
 
 -- 20180609 --
-ALTER TABLE `log_upload` 
+ALTER TABLE `log_upload`
     CHANGE COLUMN `image` `file_type` varchar(20) NOT NULL COMMENT '文件类型' AFTER `channel`,
     ADD COLUMN `original_name` varchar(255) NULL COMMENT '原文件名' AFTER `channel`,
     DROP INDEX `image`,
@@ -561,7 +561,7 @@ DROP TABLE IF EXISTS `cms_vote`;
 DROP TABLE IF EXISTS `cms_vote_item`;
 DROP TABLE IF EXISTS `cms_vote_user`;
 -- 20180622 --
-ALTER TABLE `cms_dictionary` 
+ALTER TABLE `cms_dictionary`
     ADD COLUMN `site_id` smallint(6) NOT NULL DEFAULT 1 COMMENT '站点ID' AFTER `id`,
     DROP INDEX `multiple`,
     ADD INDEX `siteId`(`site_id`, `multiple`);

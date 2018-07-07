@@ -64,7 +64,12 @@ java -jar -server -Dcms.port=8080 -Dcms.contextPath=/publiccms -Dcms.filePath="`
 * tomcat中运行
 将publiccms.war.original重命名为publiccms.war或ROOT.war(上下文路径为/),移动文件到tomcat的webapps目录下,此时-Dcms.filePath参数依旧有效
 * docker中运行
-复制publiccms.war,data目录到docker目录中,执行
+直接执行:
+```
+docker run --name=publiccms -d -e "PORT=8080" -e "CONTEXTPATH=/publiccms" -e "FILEPATH=/data/publiccms" -p 8080:8080 -v /data/publiccms:/data/publiccms sanluan/publiccms
+
+```
+自行构建镜像:复制publiccms.war,data目录到docker目录中,执行
 ```
 docker build -t mypubliccms .
 docker run -d -e "PORT=8080" -e "CONTEXTPATH=/publiccms" -e "FILEPATH=/data/publiccms" -p 8080:8080 -v /data/publiccms:/data/publiccms mypubliccms
@@ -82,3 +87,11 @@ docker run -d -e "PORT=8080" -e "CONTEXTPATH=/publiccms" -e "FILEPATH=/data/publ
 ## Public CMS架构图
 
 ![](doc/structure.png)
+
+## Public CMS管理后台
+
+![](doc/management.png)
+
+## Public CMS Management
+
+![](doc/management_en.png)
