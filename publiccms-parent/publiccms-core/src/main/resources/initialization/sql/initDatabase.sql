@@ -545,7 +545,7 @@ CREATE TABLE `sys_extend_field` (
   `description` varchar(100) default NULL COMMENT '解释',
   `input_type` varchar(20) NOT NULL COMMENT '表单类型',
   `default_value` varchar(50) default NULL COMMENT '默认值',
-  `dictionary_id` varchar(20) default NULL,
+  `dictionary_id` bigint(20) default NULL COMMENT '数据字典ID',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
   KEY `sort` (`sort`)
