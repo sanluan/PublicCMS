@@ -134,7 +134,7 @@ public class FileComponent {
      */
     public boolean isFile(String filePath) {
         File file = new File(filePath);
-        return CommonUtils.notEmpty(file) && file.isDirectory();
+        return CommonUtils.notEmpty(file) && file.isFile();
     }
 
     /**
