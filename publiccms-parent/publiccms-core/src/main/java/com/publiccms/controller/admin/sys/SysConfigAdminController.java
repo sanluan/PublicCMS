@@ -50,6 +50,9 @@ public class SysConfigAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(configCode)) {
             Map<String, SysConfig> map = configComponent.getMap(site);
             map.remove(configCode);
@@ -83,6 +86,9 @@ public class SysConfigAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         Map<String, SysConfig> modelMap = configComponent.getMap(site);
         SysConfig entity = modelMap.remove(code);
         if (null != entity) {

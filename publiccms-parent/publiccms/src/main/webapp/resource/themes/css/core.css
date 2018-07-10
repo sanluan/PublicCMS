@@ -221,7 +221,7 @@ label.alt{ display:block;overflow:hidden;position:absolute;line-height:20px}
 .nowrap span.error{ position:static;}
 
 /* Button */
-.button,.buttonActive{ display:inline-block;height:30px;padding:0px 20px;border:none;border-radius:2px;cursor:pointer;text-align:center;line-height:30px;white-space:nowrap;font-size:14px;letter-spacing:.03em;overflow:hidden;}
+.button,.buttonActive,.buttonDisabled{ display:inline-block;height:30px;padding:0px 20px;border:none;border-radius:2px;cursor:pointer;text-align:center;line-height:30px;white-space:nowrap;font-size:14px;letter-spacing:.03em;overflow:hidden;}
 button.button,button.buttonActive{ height:30px;}
 .button:hover{ text-decoration:none;}
 .buttonActive{ font-weight:bold;}

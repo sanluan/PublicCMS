@@ -23,14 +23,15 @@ public class SysSiteService extends BaseService<SysSite> {
 
     /**
      * @param disabled
+     * @param parentId 
      * @param name
      * @param pageIndex
      * @param pageSize
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Boolean disabled, String name, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(disabled, name, pageIndex, pageSize);
+    public PageHandler getPage(Boolean disabled, Short parentId, String name, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(disabled, parentId, name, pageIndex, pageSize);
     }
 
     /**
@@ -44,8 +45,8 @@ public class SysSiteService extends BaseService<SysSite> {
         }
         return entity;
     }
-    
+
     @Autowired
     private SysSiteDao dao;
-    
+
 }

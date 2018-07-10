@@ -26,6 +26,8 @@ public class SysSite implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private Short id;
+    @GeneratorColumn(title = "父站点ID", condition = true)
+    private Short parentId;
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;
     @GeneratorColumn(title = "启用静态化")
@@ -51,6 +53,17 @@ public class SysSite implements java.io.Serializable {
         this.disabled = disabled;
     }
 
+    public SysSite(Short parentId, String name, boolean useStatic, String sitePath, boolean useSsi, String dynamicPath,
+            boolean disabled) {
+        this.parentId = parentId;
+        this.name = name;
+        this.useStatic = useStatic;
+        this.sitePath = sitePath;
+        this.useSsi = useSsi;
+        this.dynamicPath = dynamicPath;
+        this.disabled = disabled;
+    }
+
     @Id
     @GeneratedValue(generator = "cmsGenerator")
     @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
@@ -61,6 +74,15 @@ public class SysSite implements java.io.Serializable {
 
     public void setId(Short id) {
         this.id = id;
+    }
+
+    @Column(name = "parent_id")
+    public Short getParentId() {
+        return this.parentId;
+    }
+
+    public void setParentId(Short parentId) {
+        this.parentId = parentId;
     }
 
     @Column(name = "name", nullable = false, length = 50)

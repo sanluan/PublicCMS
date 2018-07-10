@@ -1,4 +1,7 @@
-<@_sysSite id=id><#assign a=object/></@_sysSite>
+<@_sysSite id=id>
+    <#assign a=object/>
+</@_sysSite>
+<@_sysSite id=(a.parentId)!parentId><#assign parent=object/></@_sysSite>
 <script>
 function siteDefaultConfig${id!}(type){
     if('static'==type){
@@ -35,6 +38,16 @@ function siteDefaultConfig${id!}(type){
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">
+    <#if parent?has_content>
+        <dl class="nowrap">
+            <dt><@t.page 'site.parent'/>:</dt>
+            <dd>
+                <input class="disabled" type="text" size="30" value="${(parent.name)!}"/>
+                <input name="parentId" type="hidden" value="${(parent.id)!}"/>
+                <span class="info"><@t.page 'site.parent.description'/></span>
+            </dd>
+        </dl>
+    </#if>
         <dl class="nowrap">
             <dt><@t.page 'name'/>:</dt>
             <dd>

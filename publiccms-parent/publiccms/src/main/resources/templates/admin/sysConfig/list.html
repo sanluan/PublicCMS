@@ -21,7 +21,7 @@
                 <td>${(a.description)!}</td>
                 <td>
                     <a href="sysConfig/add.html?code=${a.code}" target="navTab" rel="sysConfig/edit"><@t.page 'config.edit'/></a>
-                <#if a.customed>
+                <#if a.customed&&!site.parentId?has_conent>
                     <a href="sysConfig/delete.do?code=${a.code}&navTabId=sysConfig/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'config.delete'/></a>
                 </#if>
                 </td>

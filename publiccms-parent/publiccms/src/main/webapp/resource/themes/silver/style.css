@@ -84,6 +84,7 @@ input.disabled, textarea.disabled{ border-color:#9eabb3 #d5dbdf #d5dbdf #9eabb3;
 /* Button */
 .panelBar .toolBar li a:hover,.button, .buttonActive { color:#183152;background-color:#C1C1C1;}
 .panelBar .toolBar li a:hover,.button:hover,.buttonActive:hover{ color:#fff;}
+.buttonDisabled{ background-color:#ccc;}
 /* ----------------------------------------------------------------- Pages */
 /* Layout */
 #splitBar,#sidebar .collapse{ background-color:#EDEDED;}

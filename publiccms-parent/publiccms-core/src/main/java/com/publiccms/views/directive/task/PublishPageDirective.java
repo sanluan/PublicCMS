@@ -40,7 +40,7 @@ public class PublishPageDirective extends AbstractTaskDirective {
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
             if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
-                    templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, path), metadata.getPublishPath(),
+                    templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site, path), metadata.getPublishPath(),
                             null, metadata, null);
                     map.put(path, true);
                 } catch (IOException | TemplateException e) {
@@ -66,8 +66,8 @@ public class PublishPageDirective extends AbstractTaskDirective {
                         .getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, filePath));
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {
-                        templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, filePath),
-                                metadata.getPublishPath(), null, metadata, null);
+                        String templatePath = SiteComponent.getFullTemplatePath(site, filePath);
+                        templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null, metadata, null);
                         map.put(filePath, true);
                     } catch (IOException | TemplateException e) {
                         map.put(filePath, false);

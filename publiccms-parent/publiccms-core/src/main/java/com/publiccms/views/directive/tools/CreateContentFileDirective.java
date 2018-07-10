@@ -34,7 +34,7 @@ public class CreateContentFileDirective extends AbstractTemplateDirective {
         Integer pageIndex = handler.getInteger("pageIndex");
         if (CommonUtils.notEmpty(id) && CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filePath)) {
             SysSite site = getSite(handler);
-            String templateFullPath = SiteComponent.getFullFileName(site, templatePath);
+            String templateFullPath = SiteComponent.getFullTemplatePath(site, templatePath);
             try {
                 CmsContent content = contentService.getEntity(id);
                 if (null != content && site.getId() == content.getSiteId()) {

@@ -25,9 +25,11 @@
             </#if>
             <li><a href="cmsModel/add.html?parentId=${(parent.id?url)!}" target="navTab" rel="cmsModel/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'module.add'/></a></li>
             <li><a href="cmsModel/add.html?id={sid}" target="navTab" rel="cmsModel/edit"><i class="icon-edit icon-large"></i> <@t.page 'module.edit'/></a></li>
+        <#if !site.parentId?has_conent>
             <@_sysAuthorized roleIds=admin.roles url='cmsModel/delete'>
                 <li><a href="cmsModel/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
             </@_sysAuthorized>
+        </#if>
         </ul>
     </div>
 <@_modelList parentId=parentId hasChild=hasChild>

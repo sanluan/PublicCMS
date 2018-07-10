@@ -56,7 +56,7 @@ public class SysSiteServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     public void queryTest() {
-        PageHandler page = siteService.getPage(null, null, null, null);
+        PageHandler page = siteService.getPage(null, null, null, null, null);
         for (SysSite site : (List<SysSite>) page.getList()) {
             System.out.println(site.getName());
         }

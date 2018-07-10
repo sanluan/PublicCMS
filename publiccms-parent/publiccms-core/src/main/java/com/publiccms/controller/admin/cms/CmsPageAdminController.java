@@ -79,7 +79,7 @@ public class CmsPageAdminController extends AbstractController {
         }
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(request);
-            templateCacheComponent.deleteCachedFile(SiteComponent.getFullFileName(site, path));
+            templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "clear.pageCache", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), path));

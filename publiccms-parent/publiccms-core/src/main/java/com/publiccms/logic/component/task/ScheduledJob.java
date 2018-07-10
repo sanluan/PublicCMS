@@ -32,7 +32,8 @@ public class ScheduledJob extends QuartzJobBean {
         Integer taskId = (Integer) context.getJobDetail().getJobDataMap().get(ScheduledTask.ID);
         SysTask task = BeanComponent.getSysTaskService().getEntity(taskId);
         if (null != task) {
-            if (ScheduledTask.TASK_STATUS_READY == task.getStatus() && BeanComponent.getSysTaskService().updateStatusToRunning(task.getId())) {
+            if (ScheduledTask.TASK_STATUS_READY == task.getStatus()
+                    && BeanComponent.getSysTaskService().updateStatusToRunning(task.getId())) {
                 LogTask entity = new LogTask(task.getSiteId(), task.getId(), new Date(), false);
                 BeanComponent.getLogTaskService().save(entity);
                 boolean success = false;
@@ -43,8 +44,9 @@ public class ScheduledJob extends QuartzJobBean {
                     map.put("task", task);
                     SysSite site = BeanComponent.getSiteService().getEntity(task.getSiteId());
                     AbstractFreemarkerView.exposeSite(map, site);
-                    String fulllPath = SiteComponent.getFullFileName(site, task.getFilePath());
-                    result = FreeMarkerUtils.generateStringByFile(fulllPath, BeanComponent.getTemplateComponent().getTaskConfiguration(), map);
+                    String templatePath = SiteComponent.getFullTemplatePath(site, task.getFilePath());
+                    result = FreeMarkerUtils.generateStringByFile(templatePath,
+                            BeanComponent.getTemplateComponent().getTaskConfiguration(), map);
                 } catch (IOException | TemplateException e) {
                     result = e.getMessage();
                 }

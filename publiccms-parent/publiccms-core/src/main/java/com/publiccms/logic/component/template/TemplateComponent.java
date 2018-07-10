@@ -142,8 +142,9 @@ public class TemplateComponent implements Cache {
             if (null != categoryModel && null != category && !entity.isOnlyUrl()) {
                 try {
                     if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
-                        String url = site.getSitePath() + createContentFile(site, entity, category, true,
-                                SiteComponent.getFullFileName(site, categoryModel.getTemplatePath()), null, null);
+                        String templatePath = SiteComponent.getFullTemplatePath(site, categoryModel.getTemplatePath());
+                        String url = site.getSitePath()
+                                + createContentFile(site, entity, category, true, templatePath, null, null);
                         contentService.updateUrl(entity.getId(), url, true);
                     } else {
                         Map<String, Object> model = new HashMap<>();
@@ -238,9 +239,9 @@ public class TemplateComponent implements Cache {
         } else if (CommonUtils.notEmpty(entity.getPath())) {
             try {
                 if (site.isUseStatic() && CommonUtils.notEmpty(entity.getTemplatePath())) {
+                    String templatePath = SiteComponent.getFullTemplatePath(site, entity.getTemplatePath());
                     String url = site.getSitePath()
-                            + createCategoryFile(site, entity, SiteComponent.getFullFileName(site, entity.getTemplatePath()),
-                                    entity.getPath(), pageIndex, totalPage);
+                            + createCategoryFile(site, entity, templatePath, entity.getPath(), pageIndex, totalPage);
                     categoryService.updateUrl(entity.getId(), url, true);
                 } else {
                     Map<String, Object> model = new HashMap<>();
@@ -323,8 +324,9 @@ public class TemplateComponent implements Cache {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, model);
             String placeTemplatePath = INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + templatePath;
-            FreeMarkerUtils.generateFileByFile(SiteComponent.getFullFileName(site, placeTemplatePath),
-                    siteComponent.getWebFilePath(site, placeTemplatePath), webConfiguration, model);
+            String templateFullPath = SiteComponent.getFullTemplatePath(site, placeTemplatePath);
+            FreeMarkerUtils.generateFileByFile(templateFullPath, siteComponent.getWebFilePath(site, placeTemplatePath),
+                    webConfiguration, model);
         }
     }
 
@@ -359,8 +361,8 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, model);
-            FreeMarkerUtils.generateStringByFile(writer, SiteComponent.getFullFileName(site, INCLUDE_DIRECTORY + templatePath),
-                    webConfiguration, model);
+            String templateFullPath = SiteComponent.getFullTemplatePath(site, INCLUDE_DIRECTORY + templatePath);
+            FreeMarkerUtils.generateStringByFile(writer, templateFullPath, webConfiguration, model);
         }
     }
 

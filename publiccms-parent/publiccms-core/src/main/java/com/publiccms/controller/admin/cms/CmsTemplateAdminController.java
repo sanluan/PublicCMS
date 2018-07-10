@@ -73,6 +73,9 @@ public class CmsTemplateAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, path);
@@ -85,7 +88,7 @@ public class CmsTemplateAdminController extends AbstractController {
                     String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site, path);
                     fileComponent.updateFile(filePath, historyFilePath, content);
                     if (CommonUtils.notEmpty(metadata.getCacheTime()) && metadata.getCacheTime() > 0) {
-                        templateCacheComponent.deleteCachedFile(SiteComponent.getFullFileName(site, path));
+                        templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
                     }
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.web.template", RequestUtils.getIpAddress(request),
@@ -121,6 +124,9 @@ public class CmsTemplateAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
@@ -165,9 +171,12 @@ public class CmsTemplateAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
+        SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (null != file && !file.isEmpty()) {
             try {
-                SysSite site = getSite(request);
                 path = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
                 fileComponent.upload(file, siteComponent.getWebTemplateFilePath(site, path));
                 CmsPageMetadata metadata = new CmsPageMetadata();
@@ -200,12 +209,15 @@ public class CmsTemplateAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
+        SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
             if (CommonUtils.notEmpty(metadata.getCacheTime()) && metadata.getCacheTime() > 0) {
-                templateCacheComponent.deleteCachedFile(SiteComponent.getFullFileName(site, path));
+                templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
             }
             String backupFilePath = siteComponent.getWebTemplateBackupFilePath(site, path);
             if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.moveFile(filePath, backupFilePath), model)) {
@@ -235,8 +247,11 @@ public class CmsTemplateAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
+        SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             String backupFilePath = siteComponent.getWebTemplateBackupFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.moveFile(filePath, backupFilePath), model)) {
@@ -394,8 +409,8 @@ public class CmsTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, path));
             if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
-                templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, path), metadata.getPublishPath(),
-                        null, metadata, null);
+                String templatePath = SiteComponent.getFullTemplatePath(site, path);
+                templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null, metadata, null);
             }
         }
     }

@@ -20,7 +20,7 @@ import freemarker.template.TemplateModel;
  * 
  */
 public class MultiSiteImportDirective implements TemplateDirectiveModel {
-    
+
     private SysSite site;
 
     /**
@@ -38,7 +38,7 @@ public class MultiSiteImportDirective implements TemplateDirectiveModel {
         @SuppressWarnings("unchecked")
         String namespace = TemplateModelUtils.converString(((Map<String, TemplateModel>) parameters).get("namespace"));
         if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(namespace) && null != environment) {
-            environment.importLib(SiteComponent.getFullFileName(site, path), namespace);
+            environment.importLib(SiteComponent.getFullTemplatePath(site, path), namespace);
         }
     }
 }
