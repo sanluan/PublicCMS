@@ -29,7 +29,7 @@
 #${a.name} <@t.page 'server_config.site'/>
 server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
-    server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}<#sep> </#if><#if d.wild>*.${d.name} </#if></#list>;
+    server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>;
             <#if a.useSsi>
     ssi on;
     ssi_silent_errors on;
