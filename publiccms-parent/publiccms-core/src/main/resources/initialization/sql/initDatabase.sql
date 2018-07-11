@@ -1147,7 +1147,8 @@ INSERT INTO `sys_role_user` VALUES ('1', '1');
 DROP TABLE IF EXISTS `sys_site`;
 CREATE TABLE `sys_site` (
   `id` smallint(6) NOT NULL auto_increment,
-  `name` varchar(50) NOT NULL,
+  `parent_id` smallint(6) DEFAULT NULL COMMENT '父站点ID',
+  `name` varchar(50) NOT NULL COMMENT '站点名',
   `use_static` tinyint(1) NOT NULL COMMENT '启用静态化',
   `site_path` varchar(255) NOT NULL COMMENT '站点地址',
   `use_ssi` tinyint(1) NOT NULL COMMENT '启用服务器端包含',
