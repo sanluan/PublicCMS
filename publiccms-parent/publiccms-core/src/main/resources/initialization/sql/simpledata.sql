@@ -51,7 +51,7 @@ INSERT INTO `cms_category` VALUES (103, 2, 'Development goals', 74, 1, NULL, '',
 INSERT INTO `cms_category` VALUES (104, 2, 'News', 72, NULL, '105,106', '', 'news', NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>en/news/${page.list[0].id}</#if></@_categoryList>', 0, 0, '//site2.dev.publiccms.com:8080/publiccms/en/news/105', '', 0, 20, 0, 0, 0, 0, null);
 INSERT INTO `cms_category` VALUES (105, 2, 'Industry News', 104, NULL, NULL, '', 'industry', NULL, 'en/news/${category.id}', 0, 0, '//site2.dev.publiccms.com:8080/publiccms/en/news/105', '', 0, 20, 0, 0, 0, 0, null);
 INSERT INTO `cms_category` VALUES (106, 2, 'Company news', 104, NULL, NULL, '', 'company', NULL, 'en/news/${category.id}', 0, 0, '//site2.dev.publiccms.com:8080/publiccms/en/news/106', '', 0, 20, 0, 0, 0, 0, null);
-INSERT INTO `cms_category` VALUES (107, 2, 'Industry', 72, NULL, '108,109,110,111,112,113', '', 'group_industry', NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>en/category/${page.list[0].id}</#if></@_categoryList>', 0, 0, '//site2.dev.publiccms.com:8080/publiccms/en/category/108', '', 0, 20, 0, 0, 0, 0, 1null13);
+INSERT INTO `cms_category` VALUES (107, 2, 'Industry', 72, NULL, '108,109,110,111,112,113', '', 'group_industry', NULL, '<@_categoryList parentId=category.id><#if page.totalCount gt 0>en/category/${page.list[0].id}</#if></@_categoryList>', 0, 0, '//site2.dev.publiccms.com:8080/publiccms/en/category/108', '', 0, 20, 0, 0, 0, 0, null);
 INSERT INTO `cms_category` VALUES (108, 2, 'Investment Management', 107, 1, NULL, '', 'investment', NULL, 'en/category/${category.id}', 0, 0, '//site2.dev.publiccms.com:8080/publiccms/en/category/108', '', 0, 20, 0, 0, 0, 0, null);
 INSERT INTO `cms_category` VALUES (109, 2, 'Home ownership', 107, 1, NULL, '', 'ownership', NULL, 'en/category/${category.id}', 0, 0, '//site2.dev.publiccms.com:8080/publiccms/en/category/109', '', 0, 20, 0, 0, 0, 0, null);
 INSERT INTO `cms_category` VALUES (110, 2, 'Energy photoelectric', 107, 1, NULL, '', 'photoelectric', NULL, 'en/category/${category.id}', 0, 0, '//site2.dev.publiccms.com:8080/publiccms/en/category/110', '', 0, 20, 0, 0, 0, 0, null);
@@ -279,7 +279,7 @@ INSERT INTO `sys_role_user` VALUES ('2', '2');
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('2', '演示站点1', '0', '//site2.dev.publiccms.com:8080/publiccms/webfile/', '0', '//site2.dev.publiccms.com:8080/publiccms/', '0');
+INSERT INTO `sys_site` VALUES ('2', null ,'演示站点1', '0', '//site2.dev.publiccms.com:8080/publiccms/webfile/', '0', '//site2.dev.publiccms.com:8080/publiccms/', '0');
 
 -- ----------------------------
 -- Records of sys_user

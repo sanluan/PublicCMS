@@ -1161,7 +1161,7 @@ CREATE TABLE `sys_site` (
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '1', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
+INSERT INTO `sys_site` VALUES ('1', null ,'PublicCMS', '1', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
 
 -- ----------------------------
 -- Table structure for sys_task

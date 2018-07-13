@@ -64,6 +64,13 @@
                 <textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="ckeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
+        <#case 'kindeditor'>
+            <#if 'view'=type>
+                ${(value?no_esc)!}
+            <#else>
+                <textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="kindeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
+            </#if>
+            <#break>
         <#case 'template'>
             <#if 'view'=type>
                 ${(value)!}

@@ -31,7 +31,7 @@ import com.publiccms.logic.service.log.LogUploadService;
  */
 @Controller
 @RequestMapping("ckeditor")
-public class CkeditorAdminController extends AbstractController {
+public class CkEditorAdminController extends AbstractController {
     @Autowired
     private FileComponent fileComponent;
     @Autowired
