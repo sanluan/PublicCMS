@@ -275,8 +275,7 @@ public class CmsContentAdminController extends AbstractController {
         }
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
-            Long userId = ControllerUtils.getAdminFromSession(session).getId();
-            List<CmsContent> entityList = service.uncheck(site.getId(), userId, ids);
+            List<CmsContent> entityList = service.uncheck(site.getId(), ids);
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : entityList) {
                 if (null != entity && site.getId() == entity.getSiteId()) {
@@ -290,7 +289,7 @@ public class CmsContentAdminController extends AbstractController {
             for (CmsCategory category : categoryService.getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
                 templateComponent.createCategoryFile(site, category, null, null);
             }
-            logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "uncheck.content",
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER, "uncheck.content",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;

@@ -81,7 +81,7 @@ public class CkEditorAdminController extends AbstractController {
         return "common/ckuploadResult";
     }
 
-    private Map<String, Object> getResultMap(boolean success) {
+    private static Map<String, Object> getResultMap(boolean success) {
         Map<String, Object> map = new HashMap<>();
         if (success) {
             map.put(RESULT_UPLOADED, 1);

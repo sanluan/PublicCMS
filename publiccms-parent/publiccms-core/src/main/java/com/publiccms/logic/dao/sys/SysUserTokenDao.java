@@ -52,7 +52,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
      */
     public int delete(Date createDate) {
         if (null != createDate) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from SysUserToken bean");
+            QueryHandler queryHandler = getQueryHandler("delete from SysUserToken bean");
             queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
             return delete(queryHandler);
         }
@@ -65,7 +65,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
      */
     public int delete(Long userId) {
         if (CommonUtils.notEmpty(userId)) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from SysUserToken bean");
+            QueryHandler queryHandler = getQueryHandler("delete from SysUserToken bean");
             queryHandler.condition("bean.userId <= :userId").setParameter("userId", userId);
             return delete(queryHandler);
         }

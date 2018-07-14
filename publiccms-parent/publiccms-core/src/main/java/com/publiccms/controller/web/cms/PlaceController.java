@@ -60,13 +60,12 @@ public class PlaceController extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save")
     public String save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParameters placeParameters, String _csrf,
-            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -122,13 +121,11 @@ public class PlaceController extends AbstractController {
      * @param returnUrl
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response,
-            ModelMap model) {
+    public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -155,13 +152,11 @@ public class PlaceController extends AbstractController {
      * @param returnUrl
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping("check")
-    public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response,
-            ModelMap model) {
+    public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -186,11 +181,10 @@ public class PlaceController extends AbstractController {
     /**
      * @param id
      * @param request
-     * @param response
      * @return view name
      */
     @RequestMapping("click")
-    public String click(Long id, HttpServletRequest request, HttpServletResponse response) {
+    public String click(Long id, HttpServletRequest request) {
         SysSite site = getSite(request);
         CmsPlaceStatistics placeStatistics = statisticsComponent.placeClicks(id);
         if (null != placeStatistics && null != placeStatistics.getEntity()

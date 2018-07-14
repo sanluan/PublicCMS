@@ -163,11 +163,10 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param userId
      * @param ids
      * @return results list
      */
-    public List<CmsContent> uncheck(short siteId, Long userId, Serializable[] ids) {
+    public List<CmsContent> uncheck(short siteId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (null != entity && siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()) {

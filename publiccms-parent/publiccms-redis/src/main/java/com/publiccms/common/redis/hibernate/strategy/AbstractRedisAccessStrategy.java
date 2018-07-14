@@ -67,7 +67,7 @@ public abstract class AbstractRedisAccessStrategy<T extends RedisTransactionalDa
      * 
      * @return
      */
-    public final SoftLock lockRegion() {
+    public SoftLock lockRegion() {
         return null;
     }
 

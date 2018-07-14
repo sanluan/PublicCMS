@@ -1,8 +1,10 @@
-<@_content id=id>
+<#assign ids=(id!';')?split(';')/>
+<@_content id=ids[0]>
     <#assign content=object/>
     <@_category id=object.categoryId>
         <#assign category=object/>
     </@_category>
+<#if ids[1]=getMd5(category.code+content.id)>
     <#assign attribute=getContentAttribute(content.id)/>
     <#assign temp=getContentPage(attribute.text!'',pageIndex)/>
     <#assign page=temp.page/>
@@ -90,4 +92,5 @@
     </footer>
 </body>
 </html>
+</#if>
 </@_content>

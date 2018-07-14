@@ -263,7 +263,7 @@ public class UeditorAdminController extends AbstractController {
         return map;
     }
 
-    private Map<String, Object> getResultMap(boolean success) {
+    private static Map<String, Object> getResultMap(boolean success) {
         Map<String, Object> map = new HashMap<>();
         if (success) {
             map.put("state", "SUCCESS");

@@ -30,6 +30,7 @@ public class WeiboOauthComponent extends AbstractOauth {
     /*
      * http://open.weibo.com/wiki/Oauth2/authorize
      */
+    @Override
     public String getAuthorizeUrl(short siteId, String state, boolean mobile) {
         OauthConfig config = getConfig(siteId);
         if (null != config) {
@@ -70,6 +71,7 @@ public class WeiboOauthComponent extends AbstractOauth {
     /*
      * http://open.weibo.com/wiki/2/users/show
      */
+    @Override
     public OauthUser getUserInfo(short siteId, OauthAccess oauthInfo) throws ClientProtocolException, IOException {
         if (null != oauthInfo) {
             StringBuilder sb = new StringBuilder("https://api.weibo.com/2/users/show.json?access_token=");

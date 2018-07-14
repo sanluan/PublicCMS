@@ -40,7 +40,7 @@ public class SysRoleUserDao extends BaseDao<SysRoleUser> {
      */
     public int deleteByRoleId(Integer roleId) {
         if (CommonUtils.notEmpty(roleId)) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleUser bean where bean.id.roleId = :roleId");
+            QueryHandler queryHandler = getQueryHandler("delete from SysRoleUser bean where bean.id.roleId = :roleId");
             queryHandler.setParameter("roleId", roleId);
             return delete(queryHandler);
         }
@@ -53,7 +53,7 @@ public class SysRoleUserDao extends BaseDao<SysRoleUser> {
      */
     public int deleteByUserId(Long userId) {
         if (CommonUtils.notEmpty(userId)) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleUser bean where bean.id.userId = :userId");
+            QueryHandler queryHandler = getQueryHandler("delete from SysRoleUser bean where bean.id.userId = :userId");
             queryHandler.setParameter("userId", userId);
             return delete(queryHandler);
         }

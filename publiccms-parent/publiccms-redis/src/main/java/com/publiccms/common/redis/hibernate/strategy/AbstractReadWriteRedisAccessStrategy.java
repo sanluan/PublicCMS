@@ -28,6 +28,7 @@ public abstract class AbstractReadWriteRedisAccessStrategy<T extends RedisTransa
         this.versionComparator = region.getCacheDataDescription().getVersionComparator();
     }
 
+    @Override
     public boolean putFromLoad(SessionImplementor session, Object key, Object value, long txTimestamp, Object version,
             boolean minimalPutOverride) {
         region.put(key, value);

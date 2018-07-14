@@ -149,6 +149,7 @@ public abstract class AbstractOauth implements Config, Oauth {
         return oauthInfo;
     }
 
+    @Override
     public OauthAccess getOpenId(short siteId, String code) throws ClientProtocolException, IOException {
         return getOpenId(siteId, getAccessToken(siteId, code));
     }

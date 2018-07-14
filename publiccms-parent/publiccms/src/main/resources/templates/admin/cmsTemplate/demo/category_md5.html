@@ -1,6 +1,8 @@
-<@_category id=id>
+<#assign ids=(id!';')?split(';')/>
+<@_category id=ids[0]>
     <#assign category=object/>
     <#assign attribute=getCategoryAttribute(category.id)/>
+<#if ids[1]=getMd5(category.code+category.id)>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -90,4 +92,5 @@
     </footer>
 </body>
 </html>
+</#if>
 </@_category>

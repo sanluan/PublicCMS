@@ -30,30 +30,37 @@ public class MybatisRedisCache implements Cache {
         this.id = id;
     }
 
+    @Override
     public String getId() {
         return this.id;
     }
 
+    @Override
     public void putObject(Object key, Object value) {
         redisClient.set(id, key, value);
     }
 
+    @Override
     public Object getObject(Object key) {
         return redisClient.get(id, key);
     }
 
+    @Override
     public Object removeObject(Object key) {
         return redisClient.del(id, key);
     }
 
+    @Override
     public void clear() {
         redisClient.flushDb();
     }
 
+    @Override
     public int getSize() {
         return new Long(redisClient.dbSize()).intValue();
     }
 
+    @Override
     public ReadWriteLock getReadWriteLock() {
         return readWriteLock;
     }

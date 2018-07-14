@@ -83,13 +83,12 @@ public class OauthController extends AbstractController {
      * @param code
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "callback/{channel}")
     public String callback(@PathVariable("channel") String channel, String state, String code, HttpServletRequest request,
-            HttpSession session, HttpServletResponse response, ModelMap model) {
+            HttpSession session, ModelMap model) {
         Oauth oauthComponent = oauthChannelMap.get(channel);
         SysSite site = getSite(request);
         Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);

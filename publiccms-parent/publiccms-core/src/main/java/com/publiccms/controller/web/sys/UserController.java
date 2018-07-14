@@ -114,13 +114,12 @@ public class UserController extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "saveEmail", method = RequestMethod.POST)
     public String saveEmail(String email, String returnUrl, String _csrf, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
+            ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -168,13 +167,12 @@ public class UserController extends AbstractController {
      * @param returnUrl
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "verifyEmail", method = RequestMethod.POST)
     public String verifyEmail(String authToken, String returnUrl, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
+            ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();

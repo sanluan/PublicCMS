@@ -40,7 +40,7 @@ public class KindEditorAdminController extends AbstractController {
 	private static final String RESULT_URL = "url";
 
 	/**
-	 * @param upload
+	 * @param imgFile 
 	 * @param request
 	 * @param session
 	 * @param model
@@ -74,7 +74,7 @@ public class KindEditorAdminController extends AbstractController {
 		return "common/kinduploadResult";
 	}
 
-	private Map<String, Object> getResultMap(boolean success) {
+	private static Map<String, Object> getResultMap(boolean success) {
 		Map<String, Object> map = new HashMap<>();
 		if (success) {
 			map.put(CommonConstants.ERROR, 0);

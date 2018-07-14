@@ -112,14 +112,12 @@ public class LoginController extends AbstractController {
     }
 
     /**
-     * @param request
      * @param session
-     * @param response
      * @return result
      */
     @RequestMapping("loginStatus")
     @ResponseBody
-    public Map<String, Object> loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+    public Map<String, Object> loginStatus(HttpSession session) {
         SysUser user = ControllerUtils.getUserFromSession(session);
         Map<String, Object> result = new HashMap<>();
         if (null != user) {
@@ -195,12 +193,10 @@ public class LoginController extends AbstractController {
      * @param returnUrl
      * @param request
      * @param response
-     * @param model
      * @return view name
      */
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
-    public String logout(Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response,
-            ModelMap model) {
+    public String logout(Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();

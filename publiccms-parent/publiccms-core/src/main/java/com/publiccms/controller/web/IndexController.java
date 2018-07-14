@@ -166,7 +166,7 @@ public class IndexController extends AbstractController {
         return requestPath;
     }
 
-    private void billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, ModelMap model) {
+    private static void billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, ModelMap model) {
         for (String parameterName : acceptParameters) {
             String[] values = request.getParameterValues(parameterName);
             if (CommonUtils.notEmpty(values)) {

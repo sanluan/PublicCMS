@@ -404,7 +404,7 @@ public class TemplateComponent implements Cache {
         }
     }
 
-    private void copyConfig(Configuration source, Configuration target) {
+    private static void copyConfig(Configuration source, Configuration target) {
         target.setNewBuiltinClassResolver(source.getNewBuiltinClassResolver());
         target.setTemplateUpdateDelayMilliseconds(source.getTemplateUpdateDelayMilliseconds());
         target.setDefaultEncoding(source.getDefaultEncoding());

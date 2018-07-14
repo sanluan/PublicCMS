@@ -128,6 +128,7 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
     @GeneratorColumn(title = "已删除", condition = true)
+    @JsonIgnore
     private boolean disabled;
 
     public CmsContent() {

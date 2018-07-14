@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -39,6 +40,7 @@ public class SysSite implements java.io.Serializable {
     @GeneratorColumn(title = "动态站点地址")
     private String dynamicPath;
     @GeneratorColumn(title = "禁用", condition = true)
+    @JsonIgnore
     private boolean disabled;
 
     public SysSite() {

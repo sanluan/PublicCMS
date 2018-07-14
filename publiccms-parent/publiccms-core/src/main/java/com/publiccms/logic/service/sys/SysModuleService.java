@@ -36,6 +36,7 @@ public class SysModuleService extends BaseService<SysModule> {
         return dao.getPage(parentId, menu, pageIndex, pageSize);
     }
     
+    @Override
     public SysModule update(Serializable id, SysModule newEntity) {
         delete(id);
         save(newEntity);

@@ -74,7 +74,7 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
      */
     public int deleteByRoleId(Integer roleId) {
         if (CommonUtils.notEmpty(roleId)) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleModule bean where bean.id.roleId = :roleId");
+            QueryHandler queryHandler = getQueryHandler("delete from SysRoleModule bean where bean.id.roleId = :roleId");
             queryHandler.setParameter("roleId", roleId);
             return delete(queryHandler);
         }
@@ -87,7 +87,7 @@ public class SysRoleModuleDao extends BaseDao<SysRoleModule> {
      */
     public int deleteByModuleId(String moduleId) {
         if (CommonUtils.notEmpty(moduleId)) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleModule bean where bean.id.moduleId = :moduleId");
+            QueryHandler queryHandler = getQueryHandler("delete from SysRoleModule bean where bean.id.moduleId = :moduleId");
             queryHandler.setParameter("moduleId", moduleId);
             return delete(queryHandler);
         }

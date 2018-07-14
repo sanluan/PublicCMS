@@ -13,6 +13,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -39,6 +40,7 @@ public class SysAppClient implements java.io.Serializable {
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
     @GeneratorColumn(title = "已禁用", condition = true)
+    @JsonIgnore
     private boolean disabled;
 
     public SysAppClient() {

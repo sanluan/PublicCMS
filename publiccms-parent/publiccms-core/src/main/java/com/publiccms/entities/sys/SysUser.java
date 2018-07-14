@@ -53,6 +53,7 @@ public class SysUser implements java.io.Serializable {
     @GeneratorColumn(title = "是否管理员", condition = true)
     private boolean superuserAccess;
     @GeneratorColumn(title = "已禁用", condition = true)
+    @JsonIgnore
     private boolean disabled;
     @GeneratorColumn(title = "上次登录日期", condition = true, order = true)
     private Date lastLoginDate;

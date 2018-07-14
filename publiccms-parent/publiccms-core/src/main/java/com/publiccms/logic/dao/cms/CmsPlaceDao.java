@@ -92,7 +92,7 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      */
     public int delete(short siteId, String path) {
         if (CommonUtils.notEmpty(path)) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from CmsPlace bean");
+            QueryHandler queryHandler = getQueryHandler("delete from CmsPlace bean");
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             queryHandler.condition("bean.path = :path").setParameter("path", path);
             return delete(queryHandler);

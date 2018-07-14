@@ -67,6 +67,7 @@ public class RedisAccessStrategyFactoryImpl implements RedisAccessStrategyFactor
     /**
      * {@inheritDoc}
      */
+    @Override
     public NaturalIdRegionAccessStrategy createNaturalIdRegionAccessStrategy(RedisNaturalIdRegion naturalIdRegion,
             AccessType accessType) {
         switch (accessType) {

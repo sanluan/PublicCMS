@@ -47,6 +47,7 @@ public class MultiTokenizerFactory extends TokenizerFactory {
         }
     }
 
+    @Override
     public Tokenizer create(AttributeFactory factory) {
         return tokenizerFactory.create(factory);
     }

@@ -16,6 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.search.FullTextQuery;
@@ -66,11 +67,11 @@ public abstract class BaseDao<E> {
     /**
      * 查询处理器
      * 
-     * @param sql
+     * @param hql
      * @return queryhandler
      */
-    public static QueryHandler getQueryHandler(String sql) {
-        return new QueryHandler(sql);
+    public static QueryHandler getQueryHandler(String hql) {
+        return new QueryHandler(hql);
     }
 
     /**
@@ -80,26 +81,6 @@ public abstract class BaseDao<E> {
      */
     public static QueryHandler getQueryHandler() {
         return new QueryHandler();
-    }
-
-    /**
-     * 删除查询处理器
-     * 
-     * @param sql
-     * @return delete queryhandler
-     */
-    public static QueryHandler getDeleteQueryHandler(String sql) {
-        return getQueryHandler("delete").append(sql);
-    }
-
-    /**
-     * 统计查询处理器
-     * 
-     * @param sql
-     * @return count queryhandler
-     */
-    public static QueryHandler getCountQueryHandler(String sql) {
-        return getQueryHandler("select count(*)").append(sql);
     }
 
     /**
@@ -258,15 +239,17 @@ public abstract class BaseDao<E> {
 
     /**
      * @param queryHandler
+     * @param countHql
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
+    protected PageHandler getPage(QueryHandler queryHandler, String countHql, Integer pageIndex, Integer pageSize,
+            Integer maxResults) {
         PageHandler page;
         if (CommonUtils.notEmpty(pageSize)) {
-            page = new PageHandler(pageIndex, pageSize, countResult(queryHandler), maxResults);
+            page = new PageHandler(pageIndex, pageSize, countResult(queryHandler, countHql), maxResults);
             queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
             if (0 != pageSize) {
                 page.setList(getList(queryHandler));
@@ -282,6 +265,17 @@ public abstract class BaseDao<E> {
      * @param queryHandler
      * @param pageIndex
      * @param pageSize
+     * @param maxResults
+     * @return results page
+     */
+    protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize, Integer maxResults) {
+        return getPage(queryHandler, null, pageIndex, pageSize, maxResults);
+    }
+
+    /**
+     * @param queryHandler
+     * @param pageIndex
+     * @param pageSize
      * @return page
      */
     protected PageHandler getPage(QueryHandler queryHandler, Integer pageIndex, Integer pageSize) {
@@ -290,10 +284,14 @@ public abstract class BaseDao<E> {
 
     /**
      * @param query
+     * @param countHql
      * @return number of results
      */
-    protected long countResult(QueryHandler queryHandler) {
-        List<?> list = getCountQuery(queryHandler).list();
+    protected long countResult(QueryHandler queryHandler, String countHql) {
+        if (CommonUtils.empty(countHql)) {
+            countHql = queryHandler.getCountSql();
+        }
+        List<?> list = queryHandler.getQuery(getSession(), countHql).list();
         if (list.isEmpty()) {
             return 0;
         } else {
@@ -328,8 +326,8 @@ public abstract class BaseDao<E> {
         return queryHandler.getQuery(getSession());
     }
 
-    private Query getCountQuery(QueryHandler queryHandler) {
-        return queryHandler.getCountQuery(getSession());
+    protected SQLQuery getSqlQuery(String sql) {
+        return getSession().createSQLQuery(sql);
     }
 
     /**

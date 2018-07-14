@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -88,17 +87,15 @@ public class ContentController extends AbstractController {
      * @param attribute
      * @param contentParameters
      * @param returnUrl
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters,
-            String returnUrl, String _csrf, HttpServletRequest request, HttpSession session, HttpServletResponse response,
-            ModelMap model) {
+            String returnUrl, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -179,11 +176,10 @@ public class ContentController extends AbstractController {
      * 
      * @param id
      * @param request
-     * @param response
      * @return view name
      */
     @RequestMapping("related/redirect")
-    public String relatedRedirect(Long id, HttpServletRequest request, HttpServletResponse response) {
+    public String relatedRedirect(Long id, HttpServletRequest request) {
         CmsContentRelatedStatistics contentRelatedStatistics = statisticsComponent.relatedClicks(id);
         SysSite site = getSite(request);
         if (null != contentRelatedStatistics && null != contentRelatedStatistics.getEntity()) {
@@ -198,11 +194,10 @@ public class ContentController extends AbstractController {
      * 
      * @param id
      * @param request
-     * @param response
      * @return view name
      */
     @RequestMapping("redirect")
-    public String contentRedirect(Long id, HttpServletRequest request, HttpServletResponse response) {
+    public String contentRedirect(Long id, HttpServletRequest request) {
         CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
         SysSite site = getSite(request);
         if (null != contentStatistics && null != contentStatistics.getEntity()
@@ -217,12 +212,11 @@ public class ContentController extends AbstractController {
      * 内容点击
      * 
      * @param id
-     * @param response
      * @return click
      */
     @RequestMapping("click")
     @ResponseBody
-    public int click(Long id, HttpServletResponse response) {
+    public int click(Long id) {
         CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
         if (null != contentStatistics && null != contentStatistics.getEntity()) {
             return contentStatistics.getEntity().getClicks() + contentStatistics.getClicks();

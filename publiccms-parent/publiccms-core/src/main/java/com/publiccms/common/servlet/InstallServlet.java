@@ -91,10 +91,12 @@ public class InstallServlet extends HttpServlet {
         freemarkerConfiguration.setNumberFormat("#");
     }
 
+    @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request, response);
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (CmsVersion.isInitialized()) {
             response.sendRedirect(request.getContextPath());
@@ -198,7 +200,7 @@ public class InstallServlet extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    private void checkDatabse(Map<String, Object> map) {
+    private static void checkDatabse(Map<String, Object> map) {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
             map.put("message", "success");

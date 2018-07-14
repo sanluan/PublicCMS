@@ -77,7 +77,7 @@ public class TemplateCacheComponent implements Cache {
                 fullTemplatePath + getRequestParametersString(request, acceptParameters), locale, cacheMillisTime, model);
     }
 
-    private String getRequestParametersString(HttpServletRequest request, String[] acceptParameters) {
+    private static String getRequestParametersString(HttpServletRequest request, String[] acceptParameters) {
         StringBuilder sb = new StringBuilder();
         sb.append("/default.html");
         if (null != acceptParameters) {
@@ -128,7 +128,7 @@ public class TemplateCacheComponent implements Cache {
         }
     }
 
-    private boolean checkCacheFile(String cacheFilePath, int millisTime) {
+    private static boolean checkCacheFile(String cacheFilePath, int millisTime) {
         if (0 < millisTime) {
             File dest = new File(cacheFilePath);
             if (dest.exists()) {

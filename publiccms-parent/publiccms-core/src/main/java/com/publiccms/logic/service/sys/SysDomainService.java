@@ -35,6 +35,7 @@ public class SysDomainService extends BaseService<SysDomain> {
         return dao.getPage(siteId, wild, pageIndex, pageSize);
     }
 
+    @Override
     public SysDomain update(Serializable id, SysDomain newEntity) {
         delete(id);
         save(newEntity);

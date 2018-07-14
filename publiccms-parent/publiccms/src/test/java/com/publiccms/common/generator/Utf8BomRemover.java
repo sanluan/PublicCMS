@@ -15,11 +15,12 @@ public class Utf8BomRemover extends DirectoryWalker<String> {
         walk(rootDir, null);
     }
 
+    @Override
     protected void handleFile(File file, int depth, Collection<String> results) throws IOException {
         removeBom(file);
     }
 
-    private void removeBom(File file) throws IOException {
+    private static void removeBom(File file) throws IOException {
         byte[] bs = FileUtils.readFileToByteArray(file);
         if (bs.length >= 3 && bs[0] == -17 && bs[1] == -69 && bs[2] == -65) {
             byte[] nbs = new byte[bs.length - 3];

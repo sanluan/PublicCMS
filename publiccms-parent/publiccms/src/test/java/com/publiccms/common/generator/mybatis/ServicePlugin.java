@@ -33,10 +33,12 @@ public class ServicePlugin extends PluginAdapter {
     /**
      * This plugin is always valid - no properties are required
      */
+    @Override
     public boolean validate(List<String> warnings) {
         return true;
     }
 
+    @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         String packageName = interfaze.getType().getPackageName();
         String shortName = interfaze.getType().getShortName();
@@ -138,6 +140,7 @@ public class ServicePlugin extends PluginAdapter {
         return true;
     }
 
+    @Override
     public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles() {
         List<GeneratedJavaFile> listGjf = new ArrayList<>();
         for (TopLevelClass topLevelClazz : services) {
@@ -149,6 +152,7 @@ public class ServicePlugin extends PluginAdapter {
         return listGjf;
     }
 
+    @Override
     public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(IntrospectedTable introspectedTable) {
         return contextGenerateAdditionalJavaFiles();
     }

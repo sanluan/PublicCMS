@@ -126,6 +126,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
         }
     }
 
+    @Override
     public void delete(Serializable id) {
         CmsPlace entity = getEntity(id);
         if (null != entity) {

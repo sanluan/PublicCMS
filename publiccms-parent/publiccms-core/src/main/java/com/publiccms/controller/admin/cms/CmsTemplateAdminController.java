@@ -385,12 +385,11 @@ public class CmsTemplateAdminController extends AbstractController {
      * @param path
      * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("publish")
-    public String publish(String path, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String publish(String path, String _csrf, HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }

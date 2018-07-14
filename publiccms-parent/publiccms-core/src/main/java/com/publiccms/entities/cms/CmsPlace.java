@@ -59,6 +59,7 @@ public class CmsPlace implements java.io.Serializable {
     @GeneratorColumn(title = "点击数", order = true)
     private int clicks;
     @GeneratorColumn(title = "已删除", condition = true)
+    @JsonIgnore
     private boolean disabled;
 
     public CmsPlace() {

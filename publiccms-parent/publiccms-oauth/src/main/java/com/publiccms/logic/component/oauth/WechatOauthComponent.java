@@ -33,6 +33,7 @@ public class WechatOauthComponent extends AbstractOauth {
      * resource/res_list&verify=1&id=open1419316505&token=&lang=zh_CN
      * 
      */
+    @Override
     public String getAuthorizeUrl(short siteId, String state, boolean mobile) {
         OauthConfig config = getConfig(siteId);
         if (null != config) {
