@@ -101,7 +101,7 @@
         <#if authorizedMap['cmsContent/publish']>
             <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
         </#if>
-        <#if authorizedMap['cmsContent/moveParameters']>
+        <#if !parentId?has_content&&authorizedMap['cmsContent/moveParameters']>
             <li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> <@t.page 'button.batch_move'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/delete']>
