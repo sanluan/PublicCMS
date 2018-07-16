@@ -424,7 +424,6 @@ public class CmsContentAdminController extends AbstractController {
 		if (CommonUtils.notEmpty(ids) && null != category && site.getId() == category.getSiteId()) {
 			StringBuilder sb = new StringBuilder();
 			Set<Integer> categoryIdSet = new HashSet<>();
-			categoryIdSet.add(categoryId);
 			for (CmsContent entity : service.getEntitys(ids)) {
 				if (move(site, entity, categoryId)) {
 					categoryIdSet.add(entity.getCategoryId());
@@ -433,6 +432,7 @@ public class CmsContentAdminController extends AbstractController {
 				}
 			}
 			if (!categoryIdSet.isEmpty()) {
+				categoryIdSet.add(categoryId);
 				Integer[] categoryIds = categoryIdSet.toArray(new Integer[categoryIdSet.size()]);
 				for (CmsCategory entity : categoryService.getEntitys(categoryIds)) {
 					templateComponent.createCategoryFile(site, entity, null, null);
