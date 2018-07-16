@@ -7,3 +7,8 @@
 **/.svn/
 **/.idea/
 **/*.iml
+/data/publiccms/database.properties
+/data/publiccms/install.lock
+/data/publiccms/indexes/
+/data/publiccms/backup/
+/data/publiccms/history/
