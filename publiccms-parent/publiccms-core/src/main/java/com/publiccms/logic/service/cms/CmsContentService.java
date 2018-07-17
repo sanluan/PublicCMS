@@ -131,6 +131,7 @@ public class CmsContentService extends BaseService<CmsContent> {
 	/**
 	 * @param siteId
 	 * @param ids
+	 * @return results list
 	 */
 	public List<CmsContent> refresh(short siteId, Serializable[] ids) {
 		List<CmsContent> entityList = new ArrayList<>();

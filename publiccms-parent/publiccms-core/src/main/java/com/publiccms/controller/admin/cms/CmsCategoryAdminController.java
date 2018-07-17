@@ -100,7 +100,7 @@ public class CmsCategoryAdminController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                if (null != oldEntity.getParentId() && oldEntity.getParentId() != entity.getParentId()) {
+                if (null != oldEntity.getParentId() && !oldEntity.getParentId().equals(entity.getParentId())) {
                     service.generateChildIds(site.getId(), oldEntity.getParentId());
                     service.generateChildIds(site.getId(), entity.getParentId());
                 } else if (null != entity.getParentId() && null == oldEntity.getParentId()) {
