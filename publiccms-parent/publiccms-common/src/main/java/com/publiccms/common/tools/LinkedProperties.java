@@ -24,7 +24,7 @@ public class LinkedProperties extends Properties {
     }
 
     @Override
-    public Object put(Object key, Object value) {
+    public synchronized Object put(Object key, Object value) {
         keys.add(key);
         return super.put(key, value);
     }
