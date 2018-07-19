@@ -14,7 +14,7 @@
                 <#else>
                     <a href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="pageBox">
                         <@_metadata path=path>
-                            ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
+                            ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </@_metadata>
                     </a>
                 </#if>
