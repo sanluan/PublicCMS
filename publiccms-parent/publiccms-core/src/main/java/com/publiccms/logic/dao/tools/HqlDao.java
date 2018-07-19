@@ -58,7 +58,7 @@ public class HqlDao extends BaseDao<Object> {
      * @return analyzer
      */
     public Analyzer getAnalyzer() {
-        return super.getFullTextSession().getSearchFactory().getAnalyzer("default");
+        return super.getFullTextSession().getSearchFactory().getAnalyzer("cms");
     }
 
     @Override
