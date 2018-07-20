@@ -142,7 +142,7 @@ function clickAddTagType(){
             <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
                 <#if site.useStatic>
             <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-            <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup=""><@t.page 'template.select'/></a>
+            <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList${('['+modelIndex+']')?url}.categoryModel.templatePath" lookupGroup=""><@t.page 'template.select'/></a>
                 </#if>
             <@childModel a index+1/>
         </li>
@@ -164,7 +164,7 @@ function clickAddTagType(){
         <#if site.useStatic>
                         <label><@t.page 'category.template_path'/>:</label>
                         <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-                        <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup=""><@t.page 'template.select'/></a>
+                        <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList${('['+modelIndex+']')?url}.categoryModel.templatePath" lookupGroup=""><@t.page 'template.select'/></a>
         </#if>
                         <label>&nbsp;</label>
                         <@childModel a/>

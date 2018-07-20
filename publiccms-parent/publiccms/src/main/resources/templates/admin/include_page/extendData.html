@@ -90,7 +90,7 @@
             </#if>
             <#break>
         <#case 'user'>
-            <@_sysUser id=value><#assign user=object/></@_sysUser>
+            <@_sysUser id=value><#local user=object/></@_sysUser>
             <#if 'view'=type>
                 ${(value)!}:${(user.nickName)!}
             <#else>
@@ -100,7 +100,7 @@
             </#if>
             <#break>
         <#case 'content'>
-            <@_content id=value><#assign content=object/></@_content>
+            <@_content id=value><#local content=object/></@_content>
             <#if 'view'=type>
                 ${(value)!}:${(content.title)!}
             <#else>
@@ -110,7 +110,7 @@
             </#if>
             <#break>
         <#case 'category'>
-            <@_category id=value><#assign category=object/></@_category>
+            <@_category id=value><#local category=object/></@_category>
             <#if 'view'=type>
                 ${(value)!}:${(category.name)!}
             <#else>
@@ -120,7 +120,7 @@
             </#if>
             <#break>
         <#case 'categoryType'>
-            <@_categoryType id=value><#assign categoryType=object/></@_categoryType>
+            <@_categoryType id=value><#local categoryType=object/></@_categoryType>
             <#if 'view'=type>
                 ${(value)!}:${(categoryType.name)!}
             <#else>
@@ -130,7 +130,7 @@
             </#if>
             <#break>
         <#case 'tagType'>
-            <@_tagType id=value><#assign tagType=object/></@_tagType>
+            <@_tagType id=value><#local tagType=object/></@_tagType>
             <#if 'view'=type>
                 ${(value)!}:${(tagType.name)!}
             <#else>
@@ -140,13 +140,13 @@
             </#if>
             <#break>
         <#case 'dictionary'>
-            <@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
+            <@_dictionary id=extend.dictionaryId><#local dictionary=object/></@_dictionary>
             <#if dictionary?has_content>
                 <#if 'view'=type>
                     <#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
                 <#else>
                     <#if dictionary.multiple>
-                        <#assign values=value?split(',')/>
+                        <#local values=value?split(',')/>
                         <@_dictionaryDataList dictionaryId=extend.dictionaryId>
                             <#list list as d>
                                 <label><input name="${name}[${index}].values" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>${d.text}</label>
@@ -190,7 +190,7 @@
 </#macro>
 <#macro extendData name extendList extendValues type='form' fromIndex=0>
     <#list extendList as e>
-    <#assign value=extendValues[e.id.code]!''/>
+    <#local value=extendValues[e.id.code]!''/>
         <#if 'customform'=type>
     <p><label>${(e.name)}:</label><@input name e e?index+fromIndex value type/></p>
         <#else>
