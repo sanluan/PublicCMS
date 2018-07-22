@@ -69,7 +69,7 @@ public class ModelComponent implements SiteCache {
      */
     public Map<String, CmsModel> getMap(SysSite site) {
         Map<String, CmsModel> modelMap = modelCache.get(site.getId());
-        if (CommonUtils.empty(modelMap)) {
+        if (null == modelMap) {
             File file = new File(siteComponent.getModelFilePath(site));
             if (CommonUtils.notEmpty(file)) {
                 try {

@@ -126,11 +126,11 @@ public class ConfigComponent implements SiteCache {
      */
     public Map<String, String> getConfigData(short siteId, String code) {
         Map<String, Map<String, String>> siteMap = cache.get(siteId);
-        if (CommonUtils.empty(siteMap)) {
+        if (null == siteMap) {
             siteMap = new HashMap<>();
         }
         Map<String, String> configMap = siteMap.get(code);
-        if (CommonUtils.empty(configMap)) {
+        if (null == configMap) {
             SysConfigData entity = service.getEntity(new SysConfigDataId(siteId, code));
             if (null != entity && CommonUtils.notEmpty(entity.getData())) {
                 configMap = ExtendUtils.getExtendMap(entity.getData());

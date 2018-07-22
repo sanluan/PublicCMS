@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -50,6 +52,7 @@ public class TemplateCacheComponent implements Cache {
      * 
      */
     public static final String CACHE_FILE_DIRECTORY = "/cache";
+    private final Lock lock = new ReentrantLock();
     @Autowired
     private SiteComponent siteComponent;
     @Autowired
@@ -115,16 +118,19 @@ public class TemplateCacheComponent implements Cache {
         String cachedFilePath = getCachedFilePath(cachePath);
         String cachedtemplatePath = CACHE_FILE_DIRECTORY + cachePath;
         String cachedPath = WebDispatcherServlet.GLOBLE_URL_PREFIX + cachedtemplatePath;
-        if (checkCacheFile(cachedFilePath, cacheMillisTime)) {
-            return cachedPath;
-        }
         try {
+            lock.lock();
+            if (checkCacheFile(cachedFilePath, cacheMillisTime)) {
+                return cachedPath;
+            }
             FreeMarkerUtils.generateFileByFile(fullTemplatePath, cachedFilePath, templateComponent.getWebConfiguration(), model);
             templateComponent.getWebConfiguration().removeTemplateFromCache(cachedtemplatePath, locale);
             return cachedPath;
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             return requestPath;
+        } finally {
+            lock.unlock();
         }
     }
 

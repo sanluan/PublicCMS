@@ -184,7 +184,7 @@ public class CmsPageMetadata implements java.io.Serializable {
      */
     @JsonIgnore
     public Map<String, String> getExtendData() {
-        if (CommonUtils.empty(extendData)) {
+        if (null == extendData) {
             extendData = new HashMap<>();
             if (CommonUtils.notEmpty(extendDataList)) {
                 for (ExtendData extend : extendDataList) {

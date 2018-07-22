@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.nio.channels.FileLock;
 import java.util.Collections;
 import java.util.Map;
 
@@ -80,15 +79,10 @@ public class FreeMarkerUtils {
             if (null != parent) {
                 parent.mkdirs();
             }
-            try (FileOutputStream outputStream = new FileOutputStream(destFile, append);
-                    FileLock fileLock = outputStream.getChannel().tryLock();) {
-                if (null == fileLock) {
-                    log.warn(destFilePath + " locked by others!");
-                } else {
-                    Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
-                    t.process(model, out);
-                    log.info(destFilePath + " saved!");
-                }
+            try (FileOutputStream outputStream = new FileOutputStream(destFile, append);) {
+                Writer out = new OutputStreamWriter(outputStream, Constants.DEFAULT_CHARSET);
+                t.process(model, out);
+                log.info(destFilePath + " saved!");
             }
         } else {
             log.error(destFilePath + " already exists!");
