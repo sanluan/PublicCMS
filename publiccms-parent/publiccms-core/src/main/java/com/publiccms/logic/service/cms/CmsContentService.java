@@ -320,9 +320,9 @@ public class CmsContentService extends BaseService<CmsContent> {
                     categoryIds[i] = Integer.parseInt(categoryStringIds[i]);
                 }
                 categoryIds[categoryStringIds.length] = categoryId;
-            } else {
-                categoryIds = new Integer[] { categoryId };
             }
+        } else {
+            categoryIds = new Integer[] { categoryId };
         }
         return categoryIds;
     }
