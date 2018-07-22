@@ -32,7 +32,7 @@ subprojects{
         springBootVersion = "1.5.13.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
-        httpclientVersion = "4.5.5"
+        httpclientVersion = "4.5.6"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
         jacksonVersion = "2.8.11"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
@@ -40,7 +40,7 @@ subprojects{
         hibernateVersion = "5.1.13.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "5.6.4.Final"
+        hibernateSearchVersion = "5.6.5.Final"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.28"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis

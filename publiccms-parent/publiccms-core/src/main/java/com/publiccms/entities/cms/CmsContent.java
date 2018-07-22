@@ -28,6 +28,7 @@ import org.hibernate.search.annotations.SortableField;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.hibernate.search.bridge.builtin.ShortBridge;
+import org.hibernate.search.elasticsearch.analyzer.ElasticsearchTokenizerFactory;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -44,7 +45,7 @@ import com.publiccms.common.search.MultiTokenizerFactory;
 @Table(name = "cms_content")
 @DynamicUpdate
 @AnalyzerDefs({ @AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class)),
-		//@AnalyzerDef(name = "default", tokenizer = @TokenizerDef(factory = ElasticsearchTokenizerFactory.class))
+		@AnalyzerDef(name = "default", tokenizer = @TokenizerDef(factory = ElasticsearchTokenizerFactory.class))
 })
 @Analyzer(definition = "cms")
 @ClassBridge(impl = CmsContentBridge.class)
