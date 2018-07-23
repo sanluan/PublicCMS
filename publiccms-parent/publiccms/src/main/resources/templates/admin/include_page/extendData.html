@@ -17,7 +17,7 @@
 				<a href="${site.sitePath+value}" target="_blank">${(value)!}</a>
 			<#else>
 				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
-				<#if 'customform'!=type><a class="btnAttach" href="common/upload.html?field=${inputName}" lookupGroup="" width="560" height="300">附件</a></#if>
+				<#if 'customform'!=type><a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="560" height="300">附件</a></#if>
 			</#if>
 			<#break>
 		<#case 'image'>
@@ -28,7 +28,7 @@
 			<#else>
 				<input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}" readonly="readonly"/>
 				<#if 'customform'!=type>
-					<a class="btnAttach" href="common/upload.html?field=${inputName}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
+					<a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyImage=true" lookupGroup="" width="560" height="300">图片</a>
 					<#if !preview?has_content>
 						<#include "../include_page/preview.html"/>
 					</#if>
@@ -76,7 +76,7 @@
 			</#if>
 			<#break>
 		<#case 'user'>
-			<@_sysUser id=value><#assign user=object/></@_sysUser>
+			<@_sysUser id=value><#local user=object/></@_sysUser>
 			<#if 'view'=type>
 				${(value)!}:${(user.nickName)!}
 			<#else>
@@ -86,7 +86,7 @@
 			</#if>
 			<#break>
 		<#case 'content'>
-			<@_content id=value><#assign content=object/></@_content>
+			<@_content id=value><#local content=object/></@_content>
 			<#if 'view'=type>
 				${(value)!}:${(content.title)!}
 			<#else>
@@ -96,7 +96,7 @@
 			</#if>
 			<#break>
 		<#case 'category'>
-		<@_category id=value><#assign category=object/></@_category>
+		<@_category id=value><#local category=object/></@_category>
 			<#if 'view'=type>
 				${(value)!}:${(category.name)!}
 			<#else>
@@ -106,13 +106,13 @@
 			</#if>
 			<#break>
 		<#case 'dictionary'>
-			<@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
+			<@_dictionary id=extend.dictionaryId><#local dictionary=object/></@_dictionary>
 			<#if dictionary?has_content>
 				<#if 'view'=type>
 					<#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map?keys as k>${map[k].text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
 				<#else>
 					<#if dictionary.multiple>
-						<#assign values=value?split(',')/>
+						<#local values=value?split(',')/>
 						<@_dictionaryDataList dictionaryId=extend.dictionaryId>
 							<#list list as d>
 								<label><input name="${name}[${index}].values" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>${d.text}</label>
