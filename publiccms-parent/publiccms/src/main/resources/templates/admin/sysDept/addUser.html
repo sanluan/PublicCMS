@@ -54,5 +54,19 @@
         </@_sysRole>
             </ul>
         </fieldset>
+<#if a?has_content&&a.superuserAccess>
+<script>
+    $('input[name=superuserAccess]',navTab.getCurrentPanel()).click();
+<#if a.roles?has_content>
+    <#list a.roles?split(',') as role>
+    	if($('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).length) {
+    		$('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+    	} else {
+    		$('form',navTab.getCurrentPanel()).prepend('<input name="roleIds" value="${role}" type="hidden"/>');
+    	}
+    </#list>
+</#if>
+</script>
+</#if>
     </div>
 </form>
