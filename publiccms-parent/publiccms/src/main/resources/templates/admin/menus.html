@@ -1,39 +1,3 @@
-<#macro contentCategoryTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId count=500>
-        <#list page.list as a>
-            <@t.merge 'categoryIds' a.id!/>
-        </#list>
-        <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
-        <#list page.list as a>
-            <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
-                <li>
-                    <a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'content.management'/>">${(a.name)!}</a>
-                <#if a.childIds?has_content>
-                    <ul>
-                        <@contentCategoryTree a.id/>
-                    </ul>
-                </#if>
-                </li>
-            </#if>
-        <#else>
-            <li><a><@t.page 'empty_directory'/></a></li>
-        </#list>
-    </@_categoryList>
-</#macro>
-<#macro categoryTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId count=500>
-        <#list page.list as a>
-            <#if a.childIds?has_content>
-            <li>
-                <a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" icon="<i class='icon-folder-open icon-large'></i>" title="<@t.page 'category.management'/>">${(a.name)!}</a>
-                <ul>
-                    <@categoryTree a.id/>
-                </ul>
-            </li>
-            </#if>
-        </#list>
-    </@_categoryList>
-</#macro>
 <div class="accordion">
 <@_sysModuleList parentId=parentId>
     <#list page.list as a>
@@ -60,7 +24,21 @@
                         <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
                     </#if>
                     <ul>
-                        <@contentCategoryTree/>
+                        <@_categoryList advanced=true parentId=parentId count=500>
+					        <#list page.list as a>
+					            <@t.merge 'categoryIds' a.id!/>
+					        </#list>
+					        <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+					        <#list page.list as a>
+					            <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
+					                <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
+					                    <a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'content.management'/>">${(a.name)!}</a>
+					                </li>
+					            </#if>
+					        <#else>
+					            <li><a><@t.page 'empty_directory'/></a></li>
+					        </#list>
+					    </@_categoryList>
                     </ul>
                 </li>
             </ul>
@@ -70,7 +48,15 @@
                 <li>
                     <a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list" icon="<i class='icon-folder-open icon-large'></i>" title="<@t.page 'category.management'/>"><@t.page 'category.parent'/></a>
                     <ul>
-                        <@categoryTree/>
+                        <@_categoryList advanced=true parentId=parentId count=500>
+					        <#list page.list as a>
+					            <#if a.childIds?has_content>
+					            <li _src="common/categoryTree.html?parentId=${a.id}">
+					                <a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" icon="<i class='icon-folder-open icon-large'></i>" title="<@t.page 'category.management'/>">${(a.name)!}</a>
+					            </li>
+					            </#if>
+					        </#list>
+					    </@_categoryList>
                     </ul>
                 </li>
             </ul>
