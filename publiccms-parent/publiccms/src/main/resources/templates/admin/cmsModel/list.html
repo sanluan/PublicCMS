@@ -39,7 +39,6 @@
                 <th width="80"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
                 <th><@t.page 'url'/></th>
-                <th><@t.page 'template_path'/></th>
                 <th><@t.page 'model.has_images'/></th>
                 <th><@t.page 'model.has_attachs'/></th>
                 <th><@t.page 'operate'/></th>
@@ -51,7 +50,6 @@
                 <td>${a.id!}</td>
                 <td>${(a.name)!}</td>
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
-                <td>${(a.templatePath)!}</td>
                 <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>
                 <td>
