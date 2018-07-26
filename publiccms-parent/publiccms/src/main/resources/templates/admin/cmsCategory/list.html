@@ -88,7 +88,7 @@
                 <td>${a.sort!}</td>
                 <td>
                 <#if authorizedMap['cmsCategory/add']>
-                    <a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><@t.page 'category.add_child'/></a>
+                    <a href="cmsCategory/addMore.html?parentId=${a.id}" target="dialog" mask="true"><@t.page 'category.add_child'/></a>
                     <a href="cmsCategory/add.html?copyId=${a.id}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'category.add'/>"><@t.page 'category.copy'/></a>
                 </#if>
                 <#if authorizedMap['cmsCategory/changeTypeParameters']>
