@@ -94,10 +94,10 @@ header .nav .selected ul {display:block;}
 .tree .folder_expandable{ background-position:0 0;}
 .tree .folder_collapsable{ background-position:0 -50px;}
 .tree .file{ background-position:0 -100px;}
-.tree .unchecked{ background-position:0 0;}
-.tree .hover .unchecked{ background-position:0 -50px;}
-.tree .checked{ background-position:0 -100px;}
-.tree .hover .checked{ background-position:0 -150px;}
+.tree .unchecked{ background-position:0 -3px;}
+.tree .hover .unchecked{ background-position:0 -53px;}
+.tree .checked{ background-position:0 -103px;}
+.tree .hover .checked{ background-position:0 -153px;}
 .tree .indeterminate{ background-position:0 -200px;}
 .tree .hover .indeterminate{ background-position:0 -250px;}
 .tree div div{ background-image:url(../default/images/tree/tree.png);background-repeat:no-repeat;}
