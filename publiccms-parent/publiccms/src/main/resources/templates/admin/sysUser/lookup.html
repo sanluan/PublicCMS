@@ -2,7 +2,7 @@
             superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=false
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-    <form id="pagerForm" onsubmit="return dialogSearch(this);" action="sysUser/lookup.html" method="post">
+    <form class="pagerForm" onsubmit="return dialogSearch(this);" action="sysUser/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'userId'}"/>
         <input type="hidden" name="nickNameField" value="${nickNameField!'nickName'}"/>

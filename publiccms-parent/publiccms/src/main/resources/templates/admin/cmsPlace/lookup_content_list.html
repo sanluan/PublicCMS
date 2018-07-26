@@ -1,6 +1,6 @@
 <@_contentList categoryId=categoryId modelId=modelId title=title parentId=parentId userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-    <form id="pagerForm" action="cmsPlace/lookup_content_list.html" onsubmit="return divSearch(this, 'lookup_content_list');" method="post">
+    <form class="pagerForm" action="cmsPlace/lookup_content_list.html" onsubmit="return divSearch(this, 'lookup_content_list');" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="userId" value="${userId!}"/>
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
