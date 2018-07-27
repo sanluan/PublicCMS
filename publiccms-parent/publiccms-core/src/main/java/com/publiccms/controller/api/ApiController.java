@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,6 +27,7 @@ import com.publiccms.logic.component.site.DirectiveComponent;
  *
  */
 @Controller
+@CrossOrigin
 public class ApiController extends AbstractController {
 	private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
 	private List<Map<String, String>> appList = new ArrayList<>();
