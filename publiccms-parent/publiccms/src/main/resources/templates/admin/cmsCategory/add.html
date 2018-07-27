@@ -135,7 +135,7 @@ function clickAddTagType(){
 			<input name="categoryModelList[${modelIndex}].use" type="hidden" value="false"/>
 			<input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
 			<input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-			<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
+			<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList${('['+modelIndex+']')?url}.categoryModel.templatePath" lookupGroup="">选择</a>
 			<@childModel a index+1/>
 		</li>
 			</#list>
@@ -155,7 +155,7 @@ function clickAddTagType(){
 		<#if site.useStatic>
 					<dd <#if a.onlyUrl> style="display:none"</#if>>
 						<label>静态化模板路径:</label><input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
-						<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList[${modelIndex}].categoryModel.templatePath" lookupGroup="">选择</a>
+						<a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList${('['+modelIndex+']')?url}.categoryModel.templatePath" lookupGroup="">选择</a>
 						<@childModel a/>
 					</dd>
 		</#if>
