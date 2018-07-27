@@ -12,7 +12,7 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
@@ -32,7 +32,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
-public class AdminConfig extends WebMvcConfigurerAdapter {
+public class AdminConfig implements WebMvcConfigurer {
     /**
      * 管理后台上下文路径 Management Context Path
      */

@@ -21,8 +21,8 @@ public abstract class BaseHttpDirective implements HttpDirective, Directive {
     
     @Override
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-            String callback, HttpServletResponse response) throws IOException, Exception {
-        execute(new HttpParameterHandler(httpMessageConverter, mediaType, request, callback, response));
+            HttpServletResponse response) throws IOException, Exception {
+        execute(new HttpParameterHandler(httpMessageConverter, mediaType, request, response));
     }
 
     public String getName() {

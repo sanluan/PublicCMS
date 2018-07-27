@@ -5,8 +5,6 @@ import java.io.Writer;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,16 +29,10 @@ import com.publiccms.common.tools.DateFormatUtils;
  */
 public class HttpParameterHandler extends BaseHandler {
 
-    /**
-     * 
-     */
-    public static final Pattern FUNCTIONNAME_PATTERN = Pattern.compile("[0-9A-Za-z_\\.]*");
-
     private MediaType mediaType;
     private HttpMessageConverter<Object> httpMessageConverter;
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private String callback;
 
     /**
      * @param httpMessageConverter
@@ -50,10 +42,9 @@ public class HttpParameterHandler extends BaseHandler {
      * @param response
      */
     public HttpParameterHandler(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType,
-            HttpServletRequest request, String callback, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
         this.httpMessageConverter = httpMessageConverter;
         this.request = request;
-        this.callback = callback;
         this.response = response;
         this.mediaType = mediaType;
         regristerParameters();
@@ -62,14 +53,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public void render() throws HttpMessageNotWritableException, IOException {
         if (!renderd) {
-            MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(map);
-            if (CommonUtils.notEmpty(callback)) {
-                Matcher m = FUNCTIONNAME_PATTERN.matcher(callback);
-                if (m.matches()) {
-                    mappingJacksonValue.setJsonpFunction(callback);
-                }
-            }
-            httpMessageConverter.write(mappingJacksonValue, mediaType, new ServletServerHttpResponse(response));
+            httpMessageConverter.write(new MappingJacksonValue(map), mediaType, new ServletServerHttpResponse(response));
             renderd = true;
         }
     }

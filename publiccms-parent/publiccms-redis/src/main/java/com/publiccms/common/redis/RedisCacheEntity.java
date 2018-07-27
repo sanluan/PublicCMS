@@ -186,4 +186,8 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
         this.jedisPool = pool;
     }
 
+	public String getName() {
+		return name;
+	}
+
 }

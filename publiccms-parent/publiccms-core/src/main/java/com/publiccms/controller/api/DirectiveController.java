@@ -32,81 +32,80 @@ import com.publiccms.logic.component.site.DirectiveComponent;
  */
 @Controller
 public class DirectiveController extends AbstractController {
-    private Map<String, BaseTemplateDirective> actionMap = new HashMap<>();
-    private List<Map<String, String>> actionList = new ArrayList<>();
+	private Map<String, BaseTemplateDirective> actionMap = new HashMap<>();
+	private List<Map<String, String>> actionList = new ArrayList<>();
 
-    /**
-     * 接口指令统一分发
-     * 
-     * @param action
-     * @param callback
-     * @param request
-     * @param response
-     */
-    @RequestMapping("directive/{action}")
-    public void directive(@PathVariable String action, String callback, HttpServletRequest request,
-            HttpServletResponse response) {
-        try {
-            HttpDirective directive = actionMap.get(action);
-            if (null != directive) {
-                request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, getSite(request));
-                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, callback,
-                        response);
-            } else {
-                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
-                        CommonConstants.jsonMediaType, request, callback, response);
-                handler.put(CommonConstants.ERROR, ApiController.INTERFACE_NOT_FOUND).render();
-            }
-        } catch (Exception e) {
-            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
-                    CommonConstants.jsonMediaType, request, callback, response);
-            try {
-                handler.put(CommonConstants.ERROR, ApiController.EXCEPTION).render();
-            } catch (Exception renderException) {
-                log.error(renderException.getMessage());
-            }
-            log.error(e.getMessage(), e);
-        }
-    }
+	/**
+	 * 接口指令统一分发
+	 * 
+	 * @param action
+	 * @param callback
+	 * @param request
+	 * @param response
+	 */
+	@RequestMapping("directive/{action}")
+	public void directive(@PathVariable String action, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			HttpDirective directive = actionMap.get(action);
+			if (null != directive) {
+				request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, getSite(request));
+				directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request,
+						response);
+			} else {
+				HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+						CommonConstants.jsonMediaType, request, response);
+				handler.put(CommonConstants.ERROR, ApiController.INTERFACE_NOT_FOUND).render();
+			}
+		} catch (Exception e) {
+			HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+					CommonConstants.jsonMediaType, request, response);
+			try {
+				handler.put(CommonConstants.ERROR, ApiController.EXCEPTION).render();
+			} catch (Exception renderException) {
+				log.error(renderException.getMessage());
+			}
+			log.error(e.getMessage(), e);
+		}
+	}
 
-    /**
-     * 接口列表
-     * 
-     * @return result
-     */
-    @RequestMapping("directives")
-    @ResponseBody
-    public List<Map<String, String>> directives() {
-        return actionList;
-    }
+	/**
+	 * 接口列表
+	 * 
+	 * @return result
+	 */
+	@RequestMapping("directives")
+	@ResponseBody
+	public List<Map<String, String>> directives() {
+		return actionList;
+	}
 
-    /**
-     * 接口初始化
-     * 
-     * @param directiveComponent
-     * 
-     */
-    @Autowired
-    public void init(DirectiveComponent directiveComponent) {
-        for (Entry<String, AbstractTemplateDirective> entry : directiveComponent.getTemplateDirectiveMap().entrySet()) {
-            if (entry.getValue().httpEnabled()) {
-                Map<String, String> map = new HashMap<>();
-                map.put("name", entry.getKey());
-                map.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
-                map.put("needUserToken", String.valueOf(entry.getValue().needUserToken()));
-                actionList.add(map);
-                actionMap.put(entry.getKey(), entry.getValue());
-            }
-        }
-        for (Entry<String, AbstractTaskDirective> entry : directiveComponent.getTaskDirectiveMap().entrySet()) {
-            if (entry.getValue().httpEnabled()) {
-                Map<String, String> map = new HashMap<>();
-                map.put("name", entry.getKey());
-                map.put("needAppToken", String.valueOf(true));
-                map.put("needUserToken", String.valueOf(false));
-                actionList.add(map);
-                actionMap.put(entry.getKey(), entry.getValue());
-            }
-        }
-    }
+	/**
+	 * 接口初始化
+	 * 
+	 * @param directiveComponent
+	 * 
+	 */
+	@Autowired
+	public void init(DirectiveComponent directiveComponent) {
+		for (Entry<String, AbstractTemplateDirective> entry : directiveComponent.getTemplateDirectiveMap().entrySet()) {
+			if (entry.getValue().httpEnabled()) {
+				Map<String, String> map = new HashMap<>();
+				map.put("name", entry.getKey());
+				map.put("needAppToken", String.valueOf(entry.getValue().needAppToken()));
+				map.put("needUserToken", String.valueOf(entry.getValue().needUserToken()));
+				actionList.add(map);
+				actionMap.put(entry.getKey(), entry.getValue());
+			}
+		}
+		for (Entry<String, AbstractTaskDirective> entry : directiveComponent.getTaskDirectiveMap().entrySet()) {
+			if (entry.getValue().httpEnabled()) {
+				Map<String, String> map = new HashMap<>();
+				map.put("name", entry.getKey());
+				map.put("needAppToken", String.valueOf(true));
+				map.put("needUserToken", String.valueOf(false));
+				actionList.add(map);
+				actionMap.put(entry.getKey(), entry.getValue());
+			}
+		}
+	}
 }

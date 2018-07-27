@@ -3,7 +3,7 @@ package com.publiccms.common.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 
 import com.publiccms.common.constants.Constants;
@@ -61,7 +61,7 @@ public class QueryHandler {
      * @param session
      * @return query
      */
-    public Query getQuery(Session session) {
+    public Query<?> getQuery(Session session) {
         return getQuery(session, getSql());
     }
 
@@ -173,8 +173,8 @@ public class QueryHandler {
         return this;
     }
 
-    public Query getQuery(Session session, String sql) {
-        Query query = session.createQuery(sql);
+    public Query<?> getQuery(Session session, String sql) {
+        Query<?> query = session.createQuery(sql);
         if (null != map) {
             for (String key : map.keySet()) {
                 query.setParameter(key, map.get(key));
