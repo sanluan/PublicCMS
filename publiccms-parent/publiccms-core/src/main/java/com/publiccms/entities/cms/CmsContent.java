@@ -15,7 +15,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
-import org.hibernate.search.annotations.AnalyzerDefs;
 import org.hibernate.search.annotations.ClassBridge;
 import org.hibernate.search.annotations.DateBridge;
 import org.hibernate.search.annotations.Facet;
@@ -43,10 +42,9 @@ import com.publiccms.common.search.MultiTokenizerFactory;
 @Entity
 @Table(name = "cms_content")
 @DynamicUpdate
-@AnalyzerDefs({ @AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class)),
-//		@AnalyzerDef(name = "default", tokenizer = @TokenizerDef(factory = ElasticsearchTokenizerFactory.class))
-})
-@Analyzer(definition = "cms")
+@AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class))
+@Analyzer(definition = "cms") // Comment this line to enable elasticsearch
+//@Analyzer(definition = "default") // Uncomment this line to enable elasticsearch 
 @ClassBridge(impl = CmsContentBridge.class)
 @Indexed(interceptor = CmsContentInterceptor.class)
 public class CmsContent implements java.io.Serializable {
