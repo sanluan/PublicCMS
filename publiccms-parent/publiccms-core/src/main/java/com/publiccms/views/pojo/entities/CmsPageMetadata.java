@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -16,196 +15,179 @@ import com.publiccms.common.tools.CommonUtils;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CmsPageMetadata implements java.io.Serializable {
 
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    private String alias;
-    private String publishPath;
-    private boolean useDynamic;
-    private boolean needLogin;
-    private boolean needBody;
-    private String acceptParameters;
-    private Integer cacheTime;
-    private String contentType;
-    private List<ExtendField> extendList;
-    private List<ExtendData> extendDataList;
-    private Map<String, String> extendData;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private String alias;
+	private String publishPath;
+	private boolean useDynamic;
+	private boolean needLogin;
+	private boolean needBody;
+	private String acceptParameters;
+	private Integer cacheTime;
+	private String contentType;
+	private List<ExtendField> extendList;
 
-    /**
-     * 
-     */
-    public CmsPageMetadata() {
-    }
+	/**
+	 * 
+	 */
+	public CmsPageMetadata() {
+	}
 
-    /**
-     * @return
-     */
-    public String getAlias() {
-        return alias;
-    }
+	/**
+	 * @return
+	 */
+	public String getAlias() {
+		return alias;
+	}
 
-    /**
-     * @param alias
-     */
-    public void setAlias(String alias) {
-        this.alias = alias;
-    }
+	/**
+	 * @param alias
+	 */
+	public void setAlias(String alias) {
+		this.alias = alias;
+	}
 
-    /**
-     * @return
-     */
-    public String getPublishPath() {
-        return publishPath;
-    }
+	/**
+	 * @return
+	 */
+	public String getPublishPath() {
+		return publishPath;
+	}
 
-    /**
-     * @param publishPath
-     */
-    public void setPublishPath(String publishPath) {
-        this.publishPath = publishPath;
-    }
+	/**
+	 * @param publishPath
+	 */
+	public void setPublishPath(String publishPath) {
+		this.publishPath = publishPath;
+	}
 
-    /**
-     * @return
-     */
-    public boolean isNeedLogin() {
-        return needLogin;
-    }
+	/**
+	 * @return
+	 */
+	public boolean isNeedLogin() {
+		return needLogin;
+	}
 
-    /**
-     * @param needLogin
-     */
-    public void setNeedLogin(boolean needLogin) {
-        this.needLogin = needLogin;
-    }
+	/**
+	 * @param needLogin
+	 */
+	public void setNeedLogin(boolean needLogin) {
+		this.needLogin = needLogin;
+	}
 
-    /**
-     * @return
-     */
-    public String getAcceptParameters() {
-        return acceptParameters;
-    }
+	/**
+	 * @return
+	 */
+	public String getAcceptParameters() {
+		return acceptParameters;
+	}
 
-    /**
-     * @param acceptParameters
-     */
-    public void setAcceptParameters(String acceptParameters) {
-        this.acceptParameters = acceptParameters;
-    }
-    
-    /**
-     * @return the acceptParamters
-     */
-    public String getAcceptParamters() {
-        return acceptParameters;
-    }
+	/**
+	 * @param acceptParameters
+	 */
+	public void setAcceptParameters(String acceptParameters) {
+		this.acceptParameters = acceptParameters;
+	}
 
-    /**
-     * @param acceptParameters the acceptParameters to set
-     */
-    public void setAcceptParamters(String acceptParameters) {
-        this.acceptParameters = acceptParameters;
-    }
+	/**
+	 * @return the acceptParamters
+	 */
+	public String getAcceptParamters() {
+		return acceptParameters;
+	}
 
-    /**
-     * @return
-     */
-    public Integer getCacheTime() {
-        return cacheTime;
-    }
+	/**
+	 * @param acceptParameters the acceptParameters to set
+	 */
+	public void setAcceptParamters(String acceptParameters) {
+		this.acceptParameters = acceptParameters;
+	}
 
-    /**
-     * @param cacheTime
-     */
-    public void setCacheTime(Integer cacheTime) {
-        this.cacheTime = cacheTime;
-    }
+	/**
+	 * @return
+	 */
+	public Integer getCacheTime() {
+		return cacheTime;
+	}
 
-    /**
-     * @return the contentType
-     */
-    public String getContentType() {
-        return contentType;
-    }
+	/**
+	 * @param cacheTime
+	 */
+	public void setCacheTime(Integer cacheTime) {
+		this.cacheTime = cacheTime;
+	}
 
-    /**
-     * @param contentType
-     *            the contentType to set
-     */
-    public void setContentType(String contentType) {
-        this.contentType = contentType;
-    }
+	/**
+	 * @return the contentType
+	 */
+	public String getContentType() {
+		return contentType;
+	}
 
-    /**
-     * @return
-     */
-    public boolean isUseDynamic() {
-        return useDynamic;
-    }
+	/**
+	 * @param contentType the contentType to set
+	 */
+	public void setContentType(String contentType) {
+		this.contentType = contentType;
+	}
 
-    /**
-     * @param useDynamic
-     */
-    public void setUseDynamic(boolean useDynamic) {
-        this.useDynamic = useDynamic;
-    }
+	/**
+	 * @return
+	 */
+	public boolean isUseDynamic() {
+		return useDynamic;
+	}
 
-    /**
-     * @return
-     */
-    public boolean isNeedBody() {
-        return needBody;
-    }
+	/**
+	 * @param useDynamic
+	 */
+	public void setUseDynamic(boolean useDynamic) {
+		this.useDynamic = useDynamic;
+	}
 
-    /**
-     * @param needBody
-     */
-    public void setNeedBody(boolean needBody) {
-        this.needBody = needBody;
-    }
+	/**
+	 * @return
+	 */
+	public boolean isNeedBody() {
+		return needBody;
+	}
 
-    /**
-     * @return
-     */
-    public List<ExtendField> getExtendList() {
-        return extendList;
-    }
+	/**
+	 * @param needBody
+	 */
+	public void setNeedBody(boolean needBody) {
+		this.needBody = needBody;
+	}
 
-    /**
-     * @param extendList
-     */
-    public void setExtendList(List<ExtendField> extendList) {
-        this.extendList = extendList;
-    }
+	/**
+	 * @return
+	 */
+	public List<ExtendField> getExtendList() {
+		return extendList;
+	}
 
-    /**
-     * @return
-     */
-    @JsonIgnore
-    public Map<String, String> getExtendData() {
-        if (null == extendData) {
-            extendData = new HashMap<>();
-            if (CommonUtils.notEmpty(extendDataList)) {
-                for (ExtendData extend : extendDataList) {
-                    extendData.put(extend.getName(), extend.getValue());
-                }
-            }
-        }
-        return extendData;
-    }
+	/**
+	 * @param extendList
+	 */
+	public void setExtendList(List<ExtendField> extendList) {
+		this.extendList = extendList;
+	}
 
-    /**
-     * @return
-     */
-    public List<ExtendData> getExtendDataList() {
-        return extendDataList;
-    }
-
-    /**
-     * @param extendDataList
-     */
-    public void setExtendDataList(List<ExtendData> extendDataList) {
-        this.extendDataList = extendDataList;
-    }
+	@JsonIgnore
+	public Map<String, Object> getAsMap(CmsPageData data) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("alias", getAlias());
+		map.put("publishPath", getPublishPath());
+		map.put("useDynamic", isUseDynamic());
+		map.put("needLogin", isNeedLogin());
+		map.put("needBody", isNeedBody());
+		map.put("acceptParameters", getAcceptParameters());
+		map.put("cacheTime", getCacheTime());
+		map.put("contentTyp", getContentType());
+		map.put("extendList", getExtendList());
+		map.put("extendData", data.getExtendData());
+		return map;
+	}
 }

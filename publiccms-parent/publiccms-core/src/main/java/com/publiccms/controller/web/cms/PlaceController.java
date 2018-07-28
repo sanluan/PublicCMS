@@ -32,7 +32,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
-import com.publiccms.views.pojo.model.CmsPlaceParameters;
+import com.publiccms.views.pojo.model.ExtendDataParameters;
 
 /**
  *
@@ -64,7 +64,7 @@ public class PlaceController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "save")
-    public String save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParameters placeParameters, String _csrf,
+    public String save(CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {

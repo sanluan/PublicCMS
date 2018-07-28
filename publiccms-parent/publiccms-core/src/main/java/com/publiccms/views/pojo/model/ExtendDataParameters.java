@@ -6,10 +6,10 @@ import com.publiccms.views.pojo.entities.ExtendData;
 
 /**
  *
- * CmsPlaceParameters
+ * ExtendDataParameters
  * 
  */
-public class CmsPlaceParameters implements java.io.Serializable {
+public class ExtendDataParameters implements java.io.Serializable {
 
     /**
      * 
