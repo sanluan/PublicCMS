@@ -18,33 +18,33 @@ import com.publiccms.common.tools.RedisUtils;
  */
 public class SingletonRedisRegionFactory extends RedisRegionFactory {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	private final AtomicInteger referenceCount = new AtomicInteger();
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private final AtomicInteger referenceCount = new AtomicInteger();
 
-	protected RedisClient resolveRedisClient(SessionFactoryOptions settings,
-			@SuppressWarnings("rawtypes") Map configValues) throws IOException {
-		String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
-		if (null != configurationResourceName) {
-			try {
-				referenceCount.incrementAndGet();
-				Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
-				return new RedisClient(RedisUtils.createJedisPool(redisProperties));
-			} catch (RuntimeException e) {
-				referenceCount.decrementAndGet();
-				throw e;
-			}
-		} else {
-			return null;
-		}
-	}
+    protected RedisClient resolveRedisClient(SessionFactoryOptions settings,
+            @SuppressWarnings("rawtypes") Map configValues) throws IOException {
+        String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
+        if (null != configurationResourceName) {
+            try {
+                referenceCount.incrementAndGet();
+                Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
+                return new RedisClient(RedisUtils.createJedisPool(redisProperties));
+            } catch (RuntimeException e) {
+                referenceCount.decrementAndGet();
+                throw e;
+            }
+        } else {
+            return null;
+        }
+    }
 
-	@Override
-	protected void releaseFromUse() {
-		if (0 == referenceCount.decrementAndGet()) {
-			super.releaseFromUse();
-		}
-	}
+    @Override
+    protected void releaseFromUse() {
+        if (0 == referenceCount.decrementAndGet()) {
+            super.releaseFromUse();
+        }
+    }
 }

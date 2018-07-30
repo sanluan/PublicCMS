@@ -34,131 +34,131 @@ import com.publiccms.common.tools.RedisUtils;
  * 
  */
 public class RedisRegionFactory extends RegionFactoryTemplate {
-	protected final Log log = LogFactory.getLog(getClass());
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    protected final Log log = LogFactory.getLog(getClass());
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
 
-	private final CacheKeysFactory cacheKeysFactory;
-	/**
-	 * {@link RedisClient} instance.
-	 */
-	protected volatile RedisClient redisClient;
+    private final CacheKeysFactory cacheKeysFactory;
+    /**
+     * {@link RedisClient} instance.
+     */
+    protected volatile RedisClient redisClient;
 
-	public RedisRegionFactory() {
-		this(DefaultCacheKeysFactory.INSTANCE);
-	}
+    public RedisRegionFactory() {
+        this(DefaultCacheKeysFactory.INSTANCE);
+    }
 
-	public RedisRegionFactory(CacheKeysFactory cacheKeysFactory) {
-		this.cacheKeysFactory = cacheKeysFactory;
-	}
+    public RedisRegionFactory(CacheKeysFactory cacheKeysFactory) {
+        this.cacheKeysFactory = cacheKeysFactory;
+    }
 
-	@Override
-	protected CacheKeysFactory getImplicitCacheKeysFactory() {
-		return cacheKeysFactory;
-	}
+    @Override
+    protected CacheKeysFactory getImplicitCacheKeysFactory() {
+        return cacheKeysFactory;
+    }
 
-	@Override
-	public DomainDataRegion buildDomainDataRegion(DomainDataRegionConfig regionConfig,
-			DomainDataRegionBuildingContext buildingContext) {
-		return new DomainDataRegionImpl(regionConfig, this,
-				createDomainDataStorageAccess(regionConfig, buildingContext), cacheKeysFactory, buildingContext);
-	}
+    @Override
+    public DomainDataRegion buildDomainDataRegion(DomainDataRegionConfig regionConfig,
+            DomainDataRegionBuildingContext buildingContext) {
+        return new DomainDataRegionImpl(regionConfig, this,
+                createDomainDataStorageAccess(regionConfig, buildingContext), cacheKeysFactory, buildingContext);
+    }
 
-	@Override
-	protected DomainDataStorageAccess createDomainDataStorageAccess(DomainDataRegionConfig regionConfig,
-			DomainDataRegionBuildingContext buildingContext) {
-		return new RedisDomainDataStorageAccessImpl(redisClient,
-				getOrCreateCache(regionConfig.getRegionName(), buildingContext.getSessionFactory()));
-	}
+    @Override
+    protected DomainDataStorageAccess createDomainDataStorageAccess(DomainDataRegionConfig regionConfig,
+            DomainDataRegionBuildingContext buildingContext) {
+        return new RedisDomainDataStorageAccessImpl(redisClient,
+                getOrCreateCache(regionConfig.getRegionName(), buildingContext.getSessionFactory()));
+    }
 
-	@Override
-	protected StorageAccess createQueryResultsRegionStorageAccess(String regionName,
-			SessionFactoryImplementor sessionFactory) {
-		String defaultedRegionName = defaultRegionName(regionName, sessionFactory,
-				DEFAULT_QUERY_RESULTS_REGION_UNQUALIFIED_NAME, LEGACY_QUERY_RESULTS_REGION_UNQUALIFIED_NAMES);
-		return new RedisDomainDataStorageAccessImpl(redisClient, getOrCreateCache(defaultedRegionName, sessionFactory));
-	}
+    @Override
+    protected StorageAccess createQueryResultsRegionStorageAccess(String regionName,
+            SessionFactoryImplementor sessionFactory) {
+        String defaultedRegionName = defaultRegionName(regionName, sessionFactory,
+                DEFAULT_QUERY_RESULTS_REGION_UNQUALIFIED_NAME, LEGACY_QUERY_RESULTS_REGION_UNQUALIFIED_NAMES);
+        return new RedisDomainDataStorageAccessImpl(redisClient, getOrCreateCache(defaultedRegionName, sessionFactory));
+    }
 
-	@Override
-	protected StorageAccess createTimestampsRegionStorageAccess(String regionName,
-			SessionFactoryImplementor sessionFactory) {
-		String defaultedRegionName = defaultRegionName(regionName, sessionFactory,
-				DEFAULT_UPDATE_TIMESTAMPS_REGION_UNQUALIFIED_NAME, LEGACY_UPDATE_TIMESTAMPS_REGION_UNQUALIFIED_NAMES);
-		return new RedisDomainDataStorageAccessImpl(redisClient, getOrCreateCache(defaultedRegionName, sessionFactory));
-	}
+    @Override
+    protected StorageAccess createTimestampsRegionStorageAccess(String regionName,
+            SessionFactoryImplementor sessionFactory) {
+        String defaultedRegionName = defaultRegionName(regionName, sessionFactory,
+                DEFAULT_UPDATE_TIMESTAMPS_REGION_UNQUALIFIED_NAME, LEGACY_UPDATE_TIMESTAMPS_REGION_UNQUALIFIED_NAMES);
+        return new RedisDomainDataStorageAccessImpl(redisClient, getOrCreateCache(defaultedRegionName, sessionFactory));
+    }
 
-	protected final String defaultRegionName(String regionName, SessionFactoryImplementor sessionFactory,
-			String defaultRegionName, List<String> legacyDefaultRegionNames) {
-		if (defaultRegionName.equals(regionName) && !cacheExists(regionName, sessionFactory)) {
+    protected final String defaultRegionName(String regionName, SessionFactoryImplementor sessionFactory,
+            String defaultRegionName, List<String> legacyDefaultRegionNames) {
+        if (defaultRegionName.equals(regionName) && !cacheExists(regionName, sessionFactory)) {
 
-			for (String legacyDefaultRegionName : legacyDefaultRegionNames) {
-				if (cacheExists(legacyDefaultRegionName, sessionFactory)) {
-					SecondLevelCacheLogger.INSTANCE.usingLegacyCacheName(defaultRegionName, legacyDefaultRegionName);
-					return legacyDefaultRegionName;
-				}
-			}
-		}
+            for (String legacyDefaultRegionName : legacyDefaultRegionNames) {
+                if (cacheExists(legacyDefaultRegionName, sessionFactory)) {
+                    SecondLevelCacheLogger.INSTANCE.usingLegacyCacheName(defaultRegionName, legacyDefaultRegionName);
+                    return legacyDefaultRegionName;
+                }
+            }
+        }
 
-		return regionName;
-	}
+        return regionName;
+    }
 
-	protected RedisCacheEntity<Object, Object> getOrCreateCache(String unqualifiedRegionName,
-			SessionFactoryImplementor sessionFactory) {
-		verifyStarted();
-		assert !RegionNameQualifier.INSTANCE.isQualified(unqualifiedRegionName,
-				sessionFactory.getSessionFactoryOptions());
+    protected RedisCacheEntity<Object, Object> getOrCreateCache(String unqualifiedRegionName,
+            SessionFactoryImplementor sessionFactory) {
+        verifyStarted();
+        assert !RegionNameQualifier.INSTANCE.isQualified(unqualifiedRegionName,
+                sessionFactory.getSessionFactoryOptions());
 
-		final String qualifiedRegionName = RegionNameQualifier.INSTANCE.qualify(unqualifiedRegionName,
-				sessionFactory.getSessionFactoryOptions());
-		return redisClient.createOrGetCache(qualifiedRegionName);
-	}
+        final String qualifiedRegionName = RegionNameQualifier.INSTANCE.qualify(unqualifiedRegionName,
+                sessionFactory.getSessionFactoryOptions());
+        return redisClient.createOrGetCache(qualifiedRegionName);
+    }
 
-	protected boolean cacheExists(String unqualifiedRegionName, SessionFactoryImplementor sessionFactory) {
-		final String qualifiedRegionName = RegionNameQualifier.INSTANCE.qualify(unqualifiedRegionName,
-				sessionFactory.getSessionFactoryOptions());
-		return null != redisClient.createOrGetCache(qualifiedRegionName);
-	}
+    protected boolean cacheExists(String unqualifiedRegionName, SessionFactoryImplementor sessionFactory) {
+        final String qualifiedRegionName = RegionNameQualifier.INSTANCE.qualify(unqualifiedRegionName,
+                sessionFactory.getSessionFactoryOptions());
+        return null != redisClient.createOrGetCache(qualifiedRegionName);
+    }
 
-	protected boolean isStarted() {
-		return super.isStarted() && null != redisClient;
-	}
+    protected boolean isStarted() {
+        return super.isStarted() && null != redisClient;
+    }
 
-	@Override
-	protected void prepareForUse(SessionFactoryOptions settings, @SuppressWarnings("rawtypes") Map configValues) {
-		try {
-			this.redisClient = resolveRedisClient(settings, configValues);
-			if (this.redisClient == null) {
-				throw new CacheException("Could not start Redis Client");
-			}
-			log.info("RedisRegionFactory is started.");
-		} catch (Exception e) {
-			throw new CacheException(e);
-		}
-	}
+    @Override
+    protected void prepareForUse(SessionFactoryOptions settings, @SuppressWarnings("rawtypes") Map configValues) {
+        try {
+            this.redisClient = resolveRedisClient(settings, configValues);
+            if (this.redisClient == null) {
+                throw new CacheException("Could not start Redis Client");
+            }
+            log.info("RedisRegionFactory is started.");
+        } catch (Exception e) {
+            throw new CacheException(e);
+        }
+    }
 
-	protected RedisClient resolveRedisClient(SessionFactoryOptions settings,
-			@SuppressWarnings("rawtypes") Map configValues) throws IOException {
-		String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
-		if (null != configurationResourceName) {
-			Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
-			return new RedisClient(RedisUtils.createJedisPool(redisProperties));
-		} else {
-			return null;
-		}
-	}
+    protected RedisClient resolveRedisClient(SessionFactoryOptions settings,
+            @SuppressWarnings("rawtypes") Map configValues) throws IOException {
+        String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
+        if (null != configurationResourceName) {
+            Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
+            return new RedisClient(RedisUtils.createJedisPool(redisProperties));
+        } else {
+            return null;
+        }
+    }
 
-	@Override
-	protected void releaseFromUse() {
-		if (null != redisClient) {
-			try {
-				redisClient.shutdown();
-				redisClient = null;
-				log.info("RedisRegionFactory is stopped.");
-			} catch (Exception ignored) {
-				log.error("Fail to stop RedisRegionFactory.", ignored);
-			}
-		}
-	}
+    @Override
+    protected void releaseFromUse() {
+        if (null != redisClient) {
+            try {
+                redisClient.shutdown();
+                redisClient = null;
+                log.info("RedisRegionFactory is stopped.");
+            } catch (Exception ignored) {
+                log.error("Fail to stop RedisRegionFactory.", ignored);
+            }
+        }
+    }
 }

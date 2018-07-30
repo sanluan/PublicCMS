@@ -18,20 +18,20 @@ import com.publiccms.logic.service.log.LogOperateService;
  * 
  */
 public abstract class AbstractController {
-	protected final Log log = LogFactory.getLog(getClass());
+    protected final Log log = LogFactory.getLog(getClass());
 
-	@Autowired
-	protected LogOperateService logOperateService;
-	@Autowired
-	protected SiteComponent siteComponent;
-	@Autowired
-	protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
+    @Autowired
+    protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
-	protected SysDomain getDomain(HttpServletRequest request) {
-		return siteComponent.getDomain(request.getServerName());
-	}
+    protected SysDomain getDomain(HttpServletRequest request) {
+        return siteComponent.getDomain(request.getServerName());
+    }
 
-	protected SysSite getSite(HttpServletRequest request) {
-		return siteComponent.getSite(request.getServerName());
-	}
+    protected SysSite getSite(HttpServletRequest request) {
+        return siteComponent.getSite(request.getServerName());
+    }
 }

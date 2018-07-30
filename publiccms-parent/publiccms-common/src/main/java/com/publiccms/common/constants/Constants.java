@@ -52,9 +52,9 @@ public class Constants {
      */
     public static final String DOT = ".";
     /**
-     * 点
+     * 下划线
      * 
-     * dot
+     * underline
      */
     public static final String UNDERLINE = "_";
     /**

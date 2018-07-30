@@ -111,7 +111,7 @@ public class TemplateCacheComponent implements Cache {
 
     @Override
     public void clear() {
-        deleteCachedFile(getCachedFilePath(""));
+        deleteCachedFile(getCachedFilePath(CommonConstants.BLANK));
     }
 
     private String createCache(String requestPath, String fullTemplatePath, String cachePath, Locale locale, int cacheMillisTime,

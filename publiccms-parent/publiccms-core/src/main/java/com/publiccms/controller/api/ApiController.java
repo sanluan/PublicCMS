@@ -29,112 +29,112 @@ import com.publiccms.logic.component.site.DirectiveComponent;
 @Controller
 @CrossOrigin
 public class ApiController extends AbstractController {
-	private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
-	private List<Map<String, String>> appList = new ArrayList<>();
-	/**
-	 *
-	 */
-	public final static String INTERFACE_NOT_FOUND = "interfaceNotFound";
-	/**
-	 *
-	 */
-	public final static String NEED_APP_TOKEN = "needAppToken";
-	/**
-	 *
-	 */
-	public final static String UN_AUTHORIZED = "unAuthorized";
-	/**
-	 *
-	 */
-	public final static String NEED_LOGIN = "needLogin";
-	/**
-	 *
-	 */
-	public final static String EXCEPTION = "exception";
-	/**
-	 *
-	 */
-	public static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
-		private static final long serialVersionUID = 1L;
-		{
-			put(CommonConstants.ERROR, INTERFACE_NOT_FOUND);
-		}
-	};
+    private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
+    private List<Map<String, String>> appList = new ArrayList<>();
+    /**
+     *
+     */
+    public final static String INTERFACE_NOT_FOUND = "interfaceNotFound";
+    /**
+     *
+     */
+    public final static String NEED_APP_TOKEN = "needAppToken";
+    /**
+     *
+     */
+    public final static String UN_AUTHORIZED = "unAuthorized";
+    /**
+     *
+     */
+    public final static String NEED_LOGIN = "needLogin";
+    /**
+     *
+     */
+    public final static String EXCEPTION = "exception";
+    /**
+     *
+     */
+    public static final Map<String, String> NOT_FOUND_MAP = new HashMap<String, String>() {
+        private static final long serialVersionUID = 1L;
+        {
+            put(CommonConstants.ERROR, INTERFACE_NOT_FOUND);
+        }
+    };
 
-	/**
-	 * 接口请求统一分发
-	 *
-	 * @return result
-	 */
-	@RequestMapping({ CommonConstants.SEPARATOR, "/**" })
-	@ResponseBody
-	public Map<String, String> api() {
-		return NOT_FOUND_MAP;
-	}
+    /**
+     * 接口请求统一分发
+     *
+     * @return result
+     */
+    @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
+    @ResponseBody
+    public Map<String, String> api() {
+        return NOT_FOUND_MAP;
+    }
 
-	/**
-	 * 接口指令统一分发
-	 *
-	 * @param api
-	 * @param callback
-	 * @param request
-	 * @param response
-	 */
-	@RequestMapping("{api}")
-	public void api(@PathVariable String api, HttpServletRequest request, HttpServletResponse response) {
-		try {
-			AbstractAppDirective directive = appDirectiveMap.get(api);
-			if (null != directive) {
-				directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request,
-						response);
-			} else {
-				HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
-						CommonConstants.jsonMediaType, request, response);
-				handler.put(CommonConstants.ERROR, INTERFACE_NOT_FOUND).render();
-			}
-		} catch (Exception e) {
-			HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
-					CommonConstants.jsonMediaType, request, response);
-			try {
-				handler.put(CommonConstants.ERROR, EXCEPTION).render();
-			} catch (Exception renderException) {
-				log.error(renderException.getMessage());
-			}
-			log.error(e.getMessage(), e);
-		}
-	}
+    /**
+     * 接口指令统一分发
+     *
+     * @param api
+     * @param callback
+     * @param request
+     * @param response
+     */
+    @RequestMapping("{api}")
+    public void api(@PathVariable String api, HttpServletRequest request, HttpServletResponse response) {
+        try {
+            AbstractAppDirective directive = appDirectiveMap.get(api);
+            if (null != directive) {
+                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request,
+                        response);
+            } else {
+                HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+                        CommonConstants.jsonMediaType, request, response);
+                handler.put(CommonConstants.ERROR, INTERFACE_NOT_FOUND).render();
+            }
+        } catch (Exception e) {
+            HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
+                    CommonConstants.jsonMediaType, request, response);
+            try {
+                handler.put(CommonConstants.ERROR, EXCEPTION).render();
+            } catch (Exception renderException) {
+                log.error(renderException.getMessage());
+            }
+            log.error(e.getMessage(), e);
+        }
+    }
 
-	/**
-	 * 接口列表
-	 *
-	 * @return result
-	 */
-	@RequestMapping("apis")
-	@ResponseBody
-	public List<Map<String, String>> apis() {
-		return appList;
-	}
+    /**
+     * 接口列表
+     *
+     * @return result
+     */
+    @RequestMapping("apis")
+    @ResponseBody
+    public List<Map<String, String>> apis() {
+        return appList;
+    }
 
-	/**
-	 * 接口初始化
-	 *
-	 * @param directiveComponent
-	 * @param directiveList
-	 *
-	 */
-	@Autowired(required = false)
-	public void init(DirectiveComponent directiveComponent, List<AbstractAppDirective> directiveList) {
-		for (AbstractAppDirective appDirective : directiveList) {
-			if (null == appDirective.getName()) {
-				appDirective.setName(directiveComponent.getDirectiveName(appDirective.getClass().getSimpleName()));
-			}
-			appDirectiveMap.put(appDirective.getName(), appDirective);
+    /**
+     * 接口初始化
+     *
+     * @param directiveComponent
+     * @param directiveList
+     *
+     */
+    @Autowired(required = false)
+    public void init(DirectiveComponent directiveComponent, List<AbstractAppDirective> directiveList) {
+        for (AbstractAppDirective appDirective : directiveList) {
+            if (null == appDirective.getName()) {
+                appDirective.setName(directiveComponent.getDirectiveName(appDirective.getClass().getSimpleName()));
+            }
+            appDirectiveMap.put(appDirective.getName(), appDirective);
 
-			Map<String, String> map = new HashMap<>();
-			map.put("name", appDirective.getName());
-			map.put("needAppToken", String.valueOf(appDirective.needAppToken()));
-			map.put("needUserToken", String.valueOf(appDirective.needUserToken()));
-			appList.add(map);
-		}
-	}
+            Map<String, String> map = new HashMap<>();
+            map.put("name", appDirective.getName());
+            map.put("needAppToken", String.valueOf(appDirective.needAppToken()));
+            map.put("needUserToken", String.valueOf(appDirective.needUserToken()));
+            appList.add(map);
+        }
+    }
 }

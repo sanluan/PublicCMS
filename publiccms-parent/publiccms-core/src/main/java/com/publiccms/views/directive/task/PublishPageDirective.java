@@ -31,64 +31,64 @@ import freemarker.template.TemplateException;
 @Component
 public class PublishPageDirective extends AbstractTaskDirective {
 
-	@Override
-	public void execute(RenderHandler handler) throws IOException, Exception {
-		String path = handler.getString("path", CommonConstants.SEPARATOR);
-		SysSite site = getSite(handler);
-		String filePath = siteComponent.getWebTemplateFilePath(site, path);
-		if (fileComponent.isFile(filePath)) {
-			Map<String, Boolean> map = new LinkedHashMap<>();
-			CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
-			if (CommonUtils.notEmpty(metadata.getPublishPath())) {
-				try {
-					CmsPageData data = metadataComponent
-							.getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, filePath));
-					templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site, path),
-							metadata.getPublishPath(), null, metadata.getAsMap(data), null);
-					map.put(path, true);
-				} catch (IOException | TemplateException e) {
-					map.put(path, false);
-				}
-				handler.put("map", map).render();
-			}
-		} else if (fileComponent.isDirectory(filePath)) {
-			handler.put("map", deal(site, path)).render();
-		}
-	}
+    @Override
+    public void execute(RenderHandler handler) throws IOException, Exception {
+        String path = handler.getString("path", CommonConstants.SEPARATOR);
+        SysSite site = getSite(handler);
+        String filePath = siteComponent.getWebTemplateFilePath(site, path);
+        if (fileComponent.isFile(filePath)) {
+            Map<String, Boolean> map = new LinkedHashMap<>();
+            CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
+            if (CommonUtils.notEmpty(metadata.getPublishPath())) {
+                try {
+                    CmsPageData data = metadataComponent
+                            .getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, filePath));
+                    templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site, path),
+                            metadata.getPublishPath(), null, metadata.getAsMap(data), null);
+                    map.put(path, true);
+                } catch (IOException | TemplateException e) {
+                    map.put(path, false);
+                }
+                handler.put("map", map).render();
+            }
+        } else if (fileComponent.isDirectory(filePath)) {
+            handler.put("map", deal(site, path)).render();
+        }
+    }
 
-	private Map<String, Boolean> deal(SysSite site, String path) {
-		path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
-		Map<String, Boolean> map = new LinkedHashMap<>();
-		List<FileInfo> list = fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, path), null);
-		for (FileInfo fileInfo : list) {
-			String filePath = path + fileInfo.getFileName();
-			if (fileInfo.isDirectory()) {
-				map.putAll(deal(site, filePath + CommonConstants.SEPARATOR));
-			} else {
-				CmsPageMetadata metadata = metadataComponent
-						.getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, filePath));
-				if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
-					try {
-						String templatePath = SiteComponent.getFullTemplatePath(site, filePath);
-						CmsPageData data = metadataComponent
-								.getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, filePath));
-						templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
-								metadata.getAsMap(data), null);
-						map.put(filePath, true);
-					} catch (IOException | TemplateException e) {
-						map.put(filePath, false);
-					}
-				}
-			}
-		}
-		return map;
-	}
+    private Map<String, Boolean> deal(SysSite site, String path) {
+        path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
+        Map<String, Boolean> map = new LinkedHashMap<>();
+        List<FileInfo> list = fileComponent.getFileList(siteComponent.getWebTemplateFilePath(site, path), null);
+        for (FileInfo fileInfo : list) {
+            String filePath = path + fileInfo.getFileName();
+            if (fileInfo.isDirectory()) {
+                map.putAll(deal(site, filePath + CommonConstants.SEPARATOR));
+            } else {
+                CmsPageMetadata metadata = metadataComponent
+                        .getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, filePath));
+                if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
+                    try {
+                        String templatePath = SiteComponent.getFullTemplatePath(site, filePath);
+                        CmsPageData data = metadataComponent
+                                .getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, filePath));
+                        templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
+                                metadata.getAsMap(data), null);
+                        map.put(filePath, true);
+                    } catch (IOException | TemplateException e) {
+                        map.put(filePath, false);
+                    }
+                }
+            }
+        }
+        return map;
+    }
 
-	@Autowired
-	private FileComponent fileComponent;
-	@Autowired
-	private TemplateComponent templateComponent;
-	@Autowired
-	private MetadataComponent metadataComponent;
+    @Autowired
+    private FileComponent fileComponent;
+    @Autowired
+    private TemplateComponent templateComponent;
+    @Autowired
+    private MetadataComponent metadataComponent;
 
 }

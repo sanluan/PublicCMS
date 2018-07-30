@@ -15,42 +15,42 @@ import com.publiccms.common.redis.RedisCacheEntity;
  * 
  */
 public class RedisDomainDataStorageAccessImpl implements DomainDataStorageAccess {
-	protected final Log log = LogFactory.getLog(getClass());
-	protected final RedisClient redisClient;
-	protected final RedisCacheEntity<Object, Object> cache;
+    protected final Log log = LogFactory.getLog(getClass());
+    protected final RedisClient redisClient;
+    protected final RedisCacheEntity<Object, Object> cache;
 
-	public RedisDomainDataStorageAccessImpl(RedisClient redisClient, RedisCacheEntity<Object, Object> cache) {
-		this.redisClient = redisClient;
-		this.cache = cache;
-	}
+    public RedisDomainDataStorageAccessImpl(RedisClient redisClient, RedisCacheEntity<Object, Object> cache) {
+        this.redisClient = redisClient;
+        this.cache = cache;
+    }
 
-	@Override
-	public boolean contains(Object key) {
-		return cache.contains(key.toString());
-	}
+    @Override
+    public boolean contains(Object key) {
+        return cache.contains(key.toString());
+    }
 
-	@Override
-	public Object getFromCache(Object key, SharedSessionContractImplementor session) {
-		return cache.get(key);
-	}
+    @Override
+    public Object getFromCache(Object key, SharedSessionContractImplementor session) {
+        return cache.get(key);
+    }
 
-	@Override
-	public void putIntoCache(Object key, Object value, SharedSessionContractImplementor session) {
-		cache.put(key, value);
-	}
+    @Override
+    public void putIntoCache(Object key, Object value, SharedSessionContractImplementor session) {
+        cache.put(key, value);
+    }
 
-	@Override
-	public void evictData(Object key) {
-		cache.remove(key);
-	}
+    @Override
+    public void evictData(Object key) {
+        cache.remove(key);
+    }
 
-	@Override
-	public void evictData() {
-		cache.clear();
-	}
+    @Override
+    public void evictData() {
+        cache.clear();
+    }
 
-	@Override
-	public void release() {
-		redisClient.removeRegion(cache.getName());
-	}
+    @Override
+    public void release() {
+        redisClient.removeRegion(cache.getName());
+    }
 }

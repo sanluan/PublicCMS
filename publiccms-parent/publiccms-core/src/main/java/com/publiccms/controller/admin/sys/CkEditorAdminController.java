@@ -32,62 +32,62 @@ import com.publiccms.logic.service.log.LogUploadService;
 @Controller
 @RequestMapping("ckeditor")
 public class CkEditorAdminController extends AbstractController {
-	@Autowired
-	private FileComponent fileComponent;
-	@Autowired
-	protected LogUploadService logUploadService;
+    @Autowired
+    private FileComponent fileComponent;
+    @Autowired
+    protected LogUploadService logUploadService;
 
-	private static final String RESULT_UPLOADED = "uploaded";
-	private static final String RESULT_FILENAME = "fileName";
-	private static final String RESULT_URL = "url";
+    private static final String RESULT_UPLOADED = "uploaded";
+    private static final String RESULT_FILENAME = "fileName";
+    private static final String RESULT_URL = "url";
 
-	/**
-	 * @param upload
-	 * @param request
-	 * @param session
-	 * @param model
-	 * @return view name
-	 */
-	@RequestMapping("upload")
-	public String upload(MultipartFile upload, HttpServletRequest request, HttpSession session, ModelMap model) {
-		SysSite site = getSite(request);
-		if (null != upload && !upload.isEmpty()) {
-			String originalName = upload.getOriginalFilename();
-			String suffix = fileComponent.getSuffix(originalName);
-			String fileName = fileComponent.getUploadFileName(originalName, suffix);
-			try {
-				fileComponent.upload(upload, siteComponent.getWebFilePath(site, fileName));
-				logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-						LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix),
-						upload.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-				Map<String, Object> map = getResultMap(true);
-				map.put(RESULT_FILENAME, originalName);
-				map.put(RESULT_URL, fileName);
-				model.addAttribute("result", map);
-			} catch (IllegalStateException | IOException e) {
-				Map<String, Object> map = getResultMap(false);
-				Map<String, String> messageMap = new HashMap<>();
-				messageMap.put(CommonConstants.MESSAGE, e.getMessage());
-				map.put(CommonConstants.ERROR, messageMap);
-				model.addAttribute("result", map);
-			}
-		} else {
-			Map<String, Object> map = getResultMap(false);
-			Map<String, String> messageMap = new HashMap<>();
-			messageMap.put(CommonConstants.MESSAGE, "no file");
-			map.put(CommonConstants.ERROR, messageMap);
-			model.addAttribute("result", map);
-		}
-		return "common/ckuploadResult";
-	}
+    /**
+     * @param upload
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("upload")
+    public String upload(MultipartFile upload, HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysSite site = getSite(request);
+        if (null != upload && !upload.isEmpty()) {
+            String originalName = upload.getOriginalFilename();
+            String suffix = fileComponent.getSuffix(originalName);
+            String fileName = fileComponent.getUploadFileName(originalName, suffix);
+            try {
+                fileComponent.upload(upload, siteComponent.getWebFilePath(site, fileName));
+                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix),
+                        upload.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                Map<String, Object> map = getResultMap(true);
+                map.put(RESULT_FILENAME, originalName);
+                map.put(RESULT_URL, fileName);
+                model.addAttribute("result", map);
+            } catch (IllegalStateException | IOException e) {
+                Map<String, Object> map = getResultMap(false);
+                Map<String, String> messageMap = new HashMap<>();
+                messageMap.put(CommonConstants.MESSAGE, e.getMessage());
+                map.put(CommonConstants.ERROR, messageMap);
+                model.addAttribute("result", map);
+            }
+        } else {
+            Map<String, Object> map = getResultMap(false);
+            Map<String, String> messageMap = new HashMap<>();
+            messageMap.put(CommonConstants.MESSAGE, "no file");
+            map.put(CommonConstants.ERROR, messageMap);
+            model.addAttribute("result", map);
+        }
+        return "common/ckuploadResult";
+    }
 
-	private static Map<String, Object> getResultMap(boolean success) {
-		Map<String, Object> map = new HashMap<>();
-		if (success) {
-			map.put(RESULT_UPLOADED, 1);
-		} else {
-			map.put(RESULT_UPLOADED, 0);
-		}
-		return map;
-	}
+    private static Map<String, Object> getResultMap(boolean success) {
+        Map<String, Object> map = new HashMap<>();
+        if (success) {
+            map.put(RESULT_UPLOADED, 1);
+        } else {
+            map.put(RESULT_UPLOADED, 0);
+        }
+        return map;
+    }
 }

@@ -17,29 +17,29 @@ import org.hibernate.service.ServiceRegistry;
  *
  */
 public class IDSequenceStyleGenerator extends SequenceStyleGenerator {
-	/**
-	 * 
-	 */
-	public static final String CONFIG_TARGET_TABLE = "target_table";
-	/**
-	 * 
-	 */
-	public static final String DEF_SEQUENCE_SUFFIX = "_ID_SEQ";
+    /**
+     * 
+     */
+    public static final String CONFIG_TARGET_TABLE = "target_table";
+    /**
+     * 
+     */
+    public static final String DEF_SEQUENCE_SUFFIX = "_ID_SEQ";
 
-	@Override
-	protected QualifiedName determineSequenceName(Properties params, Dialect dialect, JdbcEnvironment jdbcEnv,
-			ServiceRegistry serviceRegistry) {
-		String tableName = ConfigurationHelper.getString(CONFIG_TARGET_TABLE, params);
-		if (null == tableName) {
-			return super.determineSequenceName(params, dialect, jdbcEnv, serviceRegistry);
-		} else {
-			Identifier catalog = jdbcEnv.getIdentifierHelper()
-					.toIdentifier(ConfigurationHelper.getString(CATALOG, params));
-			Identifier schema = jdbcEnv.getIdentifierHelper()
-					.toIdentifier(ConfigurationHelper.getString(SCHEMA, params));
-			return new QualifiedNameParser.NameParts(catalog, schema,
-					jdbcEnv.getIdentifierHelper().toIdentifier(tableName.toUpperCase() + DEF_SEQUENCE_SUFFIX));
-		}
-	}
+    @Override
+    protected QualifiedName determineSequenceName(Properties params, Dialect dialect, JdbcEnvironment jdbcEnv,
+            ServiceRegistry serviceRegistry) {
+        String tableName = ConfigurationHelper.getString(CONFIG_TARGET_TABLE, params);
+        if (null == tableName) {
+            return super.determineSequenceName(params, dialect, jdbcEnv, serviceRegistry);
+        } else {
+            Identifier catalog = jdbcEnv.getIdentifierHelper()
+                    .toIdentifier(ConfigurationHelper.getString(CATALOG, params));
+            Identifier schema = jdbcEnv.getIdentifierHelper()
+                    .toIdentifier(ConfigurationHelper.getString(SCHEMA, params));
+            return new QualifiedNameParser.NameParts(catalog, schema,
+                    jdbcEnv.getIdentifierHelper().toIdentifier(tableName.toUpperCase() + DEF_SEQUENCE_SUFFIX));
+        }
+    }
 
 }

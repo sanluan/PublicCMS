@@ -52,7 +52,7 @@ public class CmsCopyright implements Copyright {
                 || -1 < domain.toLowerCase().indexOf(".dev.") || "localhost".equals(domain)) {
             return true;
         } else {
-            String[] licenseDomains = StringUtils.split(licenseDomain, ",");
+            String[] licenseDomains = StringUtils.split(licenseDomain, CommonConstants.COMMA_DELIMITED);
             int index;
             while (0 < (index = domain.indexOf(CommonConstants.DOT))) {
                 if (ArrayUtils.contains(licenseDomains, domain)) {

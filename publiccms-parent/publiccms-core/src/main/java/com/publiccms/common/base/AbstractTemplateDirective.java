@@ -36,126 +36,126 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  *
  */
 public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
-	/**
-	 * @param handler
-	 * @return site
-	 * @throws Exception
-	 */
-	protected SysSite getSite(RenderHandler handler) throws Exception {
-		return (SysSite) handler.getAttribute(AbstractFreemarkerView.CONTEXT_SITE);
-	}
+    /**
+     * @param handler
+     * @return site
+     * @throws Exception
+     */
+    protected SysSite getSite(RenderHandler handler) throws Exception {
+        return (SysSite) handler.getAttribute(AbstractFreemarkerView.CONTEXT_SITE);
+    }
 
-	/**
-	 * @param model
-	 * @param handler
-	 * @throws IOException
-	 * @throws Exception
-	 */
-	protected void expose(RenderHandler handler, Map<String, Object> model) throws IOException, Exception {
-		HttpServletRequest request = handler.getRequest();
-		if (null != request) {
-			Enumeration<String> parameters = request.getParameterNames();
-			while (parameters.hasMoreElements()) {
-				String parameterName = parameters.nextElement();
-				String[] values = request.getParameterValues(parameterName);
-				if (CommonUtils.notEmpty(values)) {
-					if (1 < values.length) {
-						model.put(parameterName, values);
-					} else {
-						model.put(parameterName, values[0]);
-					}
-				}
-			}
-			AbstractFreemarkerView.exposeAttribute(model, request.getScheme(), request.getServerName(),
-					request.getServerPort(), request.getContextPath());
-		} else {
-			AbstractFreemarkerView.exposeSite(model, getSite(handler));
-		}
-	}
+    /**
+     * @param model
+     * @param handler
+     * @throws IOException
+     * @throws Exception
+     */
+    protected void expose(RenderHandler handler, Map<String, Object> model) throws IOException, Exception {
+        HttpServletRequest request = handler.getRequest();
+        if (null != request) {
+            Enumeration<String> parameters = request.getParameterNames();
+            while (parameters.hasMoreElements()) {
+                String parameterName = parameters.nextElement();
+                String[] values = request.getParameterValues(parameterName);
+                if (CommonUtils.notEmpty(values)) {
+                    if (1 < values.length) {
+                        model.put(parameterName, values);
+                    } else {
+                        model.put(parameterName, values[0]);
+                    }
+                }
+            }
+            AbstractFreemarkerView.exposeAttribute(model, request.getScheme(), request.getServerName(),
+                    request.getServerPort(), request.getContextPath());
+        } else {
+            AbstractFreemarkerView.exposeSite(model, getSite(handler));
+        }
+    }
 
-	@Override
-	public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType,
-			HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
-		HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, response);
-		SysApp app = null;
-		if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
-				|| !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED),
-						getName()))) {
-			if (null == app) {
-				handler.put("error", ApiController.NEED_APP_TOKEN).render();
-			} else {
-				handler.put("error", ApiController.UN_AUTHORIZED).render();
-			}
-		} else if (needUserToken() && null == getUser(handler)) {
-			handler.put("error", ApiController.NEED_LOGIN).render();
-		} else {
-			execute(handler);
-			handler.render();
-		}
-	}
+    @Override
+    public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType,
+            HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+        HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, response);
+        SysApp app = null;
+        if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis())
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED),
+                        getName()))) {
+            if (null == app) {
+                handler.put("error", ApiController.NEED_APP_TOKEN).render();
+            } else {
+                handler.put("error", ApiController.UN_AUTHORIZED).render();
+            }
+        } else if (needUserToken() && null == getUser(handler)) {
+            handler.put("error", ApiController.NEED_LOGIN).render();
+        } else {
+            execute(handler);
+            handler.render();
+        }
+    }
 
-	/**
-	 * @param handler
-	 * @return user
-	 * @throws Exception
-	 */
-	protected SysUser getUser(RenderHandler handler) throws Exception {
-		String authToken = handler.getString("authToken");
-		Long authUserId = handler.getLong("authUserId");
-		if (CommonUtils.notEmpty(authToken) && null != authUserId) {
-			SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
-			if (null != sysUserToken && authUserId.equals(sysUserToken.getUserId())) {
-				return sysUserService.getEntity(sysUserToken.getUserId());
-			}
-		}
-		return null;
-	}
+    /**
+     * @param handler
+     * @return user
+     * @throws Exception
+     */
+    protected SysUser getUser(RenderHandler handler) throws Exception {
+        String authToken = handler.getString("authToken");
+        Long authUserId = handler.getLong("authUserId");
+        if (CommonUtils.notEmpty(authToken) && null != authUserId) {
+            SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
+            if (null != sysUserToken && authUserId.equals(sysUserToken.getUserId())) {
+                return sysUserService.getEntity(sysUserToken.getUserId());
+            }
+        }
+        return null;
+    }
 
-	/**
-	 * @return whether to enable http
-	 */
-	public boolean httpEnabled() {
-		return true;
-	}
+    /**
+     * @return whether to enable http
+     */
+    public boolean httpEnabled() {
+        return true;
+    }
 
-	/**
-	 * @return whether need the app token
-	 */
-	public boolean needAppToken() {
-		return false;
-	}
+    /**
+     * @return whether need the app token
+     */
+    public boolean needAppToken() {
+        return false;
+    }
 
-	/**
-	 * @return whether need the user token
-	 */
-	public boolean needUserToken() {
-		return false;
-	}
+    /**
+     * @return whether need the user token
+     */
+    public boolean needUserToken() {
+        return false;
+    }
 
-	/**
-	 * @param handler
-	 * @return
-	 * @throws Exception
-	 */
-	protected SysApp getApp(RenderHandler handler) throws Exception {
-		SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
-		if (null != appToken) {
-			SysApp app = appService.getEntity(appToken.getAppId());
-			if (app.getSiteId() == getSite(handler).getId()) {
-				return app;
-			}
-		}
-		return null;
-	}
+    /**
+     * @param handler
+     * @return
+     * @throws Exception
+     */
+    protected SysApp getApp(RenderHandler handler) throws Exception {
+        SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
+        if (null != appToken) {
+            SysApp app = appService.getEntity(appToken.getAppId());
+            if (app.getSiteId() == getSite(handler).getId()) {
+                return app;
+            }
+        }
+        return null;
+    }
 
-	@Autowired
-	private SysAppTokenService appTokenService;
-	@Autowired
-	private SysAppService appService;
-	@Autowired
-	private SysUserTokenService sysUserTokenService;
-	@Autowired
-	private SysUserService sysUserService;
-	@Autowired
-	protected SiteComponent siteComponent;
+    @Autowired
+    private SysAppTokenService appTokenService;
+    @Autowired
+    private SysAppService appService;
+    @Autowired
+    private SysUserTokenService sysUserTokenService;
+    @Autowired
+    private SysUserService sysUserService;
+    @Autowired
+    protected SiteComponent siteComponent;
 }

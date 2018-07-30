@@ -74,7 +74,7 @@ public abstract class AbstractOauth implements Config, Oauth {
      */
     public AbstractOauth(String channel) {
         this.channel = channel;
-        this.prefix = channel + "_";
+        this.prefix = channel + CommonConstants.UNDERLINE;
     }
 
     @Override

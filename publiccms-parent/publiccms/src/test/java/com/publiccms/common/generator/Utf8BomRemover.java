@@ -6,9 +6,11 @@ import java.util.Collection;
 import org.apache.commons.io.DirectoryWalker;
 import org.apache.commons.io.FileUtils;
 
+import com.publiccms.common.constants.CommonConstants;
+
 public class Utf8BomRemover extends DirectoryWalker<String> {
     public static void main(String[] args) throws IOException {
-        new Utf8BomRemover().start(new File(new File("").getAbsolutePath()).getParentFile());
+        new Utf8BomRemover().start(new File(new File(CommonConstants.BLANK).getAbsolutePath()).getParentFile());
     }
 
     public void start(File rootDir) throws IOException {
