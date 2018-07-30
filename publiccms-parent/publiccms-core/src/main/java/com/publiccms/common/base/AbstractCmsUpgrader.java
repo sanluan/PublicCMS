@@ -1,17 +1,27 @@
 package com.publiccms.common.base;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.MetadataComponent;
+import com.publiccms.views.pojo.entities.CmsPageData;
 
 /**
  *
@@ -44,7 +54,8 @@ public abstract class AbstractCmsUpgrader {
      * @throws SQLException
      * @throws IOException
      */
-    public abstract void update(Connection connection, String fromVersion) throws SQLException, IOException;
+    public abstract void update(StringWriter stringWriter, Connection connection, String fromVersion)
+            throws SQLException, IOException;
 
     /**
      * @return version list
@@ -67,10 +78,43 @@ public abstract class AbstractCmsUpgrader {
     public abstract void setDataBaseUrl(Properties dbconfig, String host, String port, String database)
             throws IOException, URISyntaxException;
 
-    protected void runScript(Connection connection, String fromVersion, String toVersion) throws SQLException, IOException {
+    protected void updateMetadata(StringWriter stringWriter, Connection connection) {
+        try (Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery("select * from sys_site");) {
+            while (rs.next()) {
+                String filePath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
+                        + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("id")
+                        + CommonConstants.SEPARATOR + MetadataComponent.METADATA_FILE;
+                File file = new File(filePath);
+                try {
+                    Map<String, CmsPageData> dataMap = CommonConstants.objectMapper.readValue(file,
+                            new TypeReference<Map<String, CmsPageData>>() {
+                            });
+                    try {
+                        CommonConstants.objectMapper.writeValue(new File(CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR
+                                + SiteComponent.TEMPLATE_PATH + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX
+                                + rs.getString("id") + CommonConstants.SEPARATOR + MetadataComponent.DATA_FILE), dataMap);
+                    } catch (IOException e) {
+                        stringWriter.write(e.getMessage());
+                        stringWriter.write(System.lineSeparator());
+                    }
+                } catch (IOException | ClassCastException e) {
+                    stringWriter.write(e.getMessage());
+                    stringWriter.write(System.lineSeparator());
+                }
+            }
+        } catch (SQLException e) {
+            stringWriter.write(e.getMessage());
+            stringWriter.write(System.lineSeparator());
+            e.printStackTrace();
+        }
+    }
+
+    protected void runScript(StringWriter stringWriter, Connection connection, String fromVersion, String toVersion)
+            throws SQLException, IOException {
         ScriptRunner runner = new ScriptRunner(connection);
         runner.setLogWriter(null);
-        runner.setErrorLogWriter(null);
+        runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
         try (InputStream inputStream = getClass()
                 .getResourceAsStream("/initialization/upgrade/" + fromVersion + "-" + toVersion + ".sql");) {

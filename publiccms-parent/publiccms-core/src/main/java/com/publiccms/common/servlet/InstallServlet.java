@@ -212,15 +212,15 @@ public class InstallServlet extends HttpServlet {
     /**
      * 初始化数据库
      *
-     * @param type
+     * @param useSimple
      * @param map
      * @throws IOException
      */
-    private void initDatabase(String type, Map<String, Object> map) throws Exception {
+    private void initDatabase(String useSimple, Map<String, Object> map) throws Exception {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
             try {
-                map.put("history", install(connection, null != type));
+                map.put("history", install(connection, null != useSimple));
                 map.put("message", "success");
             } catch (Exception e) {
                 map.put("message", "failed");
@@ -253,11 +253,14 @@ public class InstallServlet extends HttpServlet {
         if (cmsUpgrader.getVersionList().contains(version)) {
             String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
             try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
+                StringWriter stringWriter = new StringWriter();
                 try {
-                    cmsUpgrader.update(connection, version);
+                    cmsUpgrader.update(stringWriter, connection, version);
+                    map.put("history", stringWriter.toString());
                     map.put("message", "success");
                 } catch (Exception e) {
                     fromVersion = cmsUpgrader.getVersion();
+                    map.put("history", stringWriter.toString());
                     throw e;
                 }
             }

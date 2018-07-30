@@ -1,6 +1,7 @@
 package com.publiccms.common.database;
 
 import java.io.IOException;
+import java.io.StringWriter;
 import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,7 +10,6 @@ import java.util.List;
 import java.util.Properties;
 
 import com.publiccms.common.base.AbstractCmsUpgrader;
-import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -27,12 +27,12 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
      *
      */
     private final static String VERSION_20170318 = "V2017.0318", VERSION_20170520 = "V2017.0520", VERSION_20170708 = "V2017.0708",
-            VERSION_20180210 = "V4.0.20180210";
+            VERSION_20180210 = "V4.0.20180210", VERSION_180707 = "V4.0.180707";
     /**
      *
      */
     private final static List<String> VERSION_LIST = Arrays
-            .asList(new String[] { VERSION_20170318, VERSION_20170520, VERSION_20170708, VERSION_20180210 });
+            .asList(new String[] { VERSION_20170318, VERSION_20170520, VERSION_20170708, VERSION_20180210, VERSION_180707 });
 
     public CmsUpgrader(Properties config) {
         super(config);
@@ -43,16 +43,19 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
      * @throws IOException
      */
     @Override
-    public void update(Connection connection, String fromVersion) throws SQLException, IOException {
+    public void update(StringWriter stringWriter, Connection connection, String fromVersion) throws SQLException, IOException {
         switch (fromVersion) {
         case VERSION_20170318:
-            runScript(connection, VERSION_20170318, VERSION_20170520);
+            runScript(stringWriter, connection, VERSION_20170318, VERSION_20170520);
         case VERSION_20170520:
-            runScript(connection, VERSION_20170520, VERSION_20170708);
+            runScript(stringWriter, connection, VERSION_20170520, VERSION_20170708);
         case VERSION_20170708:
-            runScript(connection, VERSION_20170708, VERSION_20180210);
+            runScript(stringWriter, connection, VERSION_20170708, VERSION_20180210);
         case VERSION_20180210:
-            runScript(connection, VERSION_20180210, CmsVersion.getVersion());
+            runScript(stringWriter, connection, VERSION_20180210, VERSION_180707);
+        case VERSION_180707:
+            updateMetadata(stringWriter, connection);
+            runScript(stringWriter, connection, VERSION_180707, "develop");
             break;
         }
     }
