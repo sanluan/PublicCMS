@@ -18,6 +18,7 @@ import org.springframework.ui.ModelMap;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.AbstractFreemarkerView;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.servlet.WebDispatcherServlet;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
@@ -88,7 +89,7 @@ public class TemplateCacheComponent implements Cache {
                 String[] values = request.getParameterValues(parameterName);
                 if (CommonUtils.notEmpty(values)) {
                     for (int i = 0; i < values.length; i++) {
-                        sb.append("_");
+                        sb.append(CommonConstants.UNDERLINE);
                         sb.append(parameterName);
                         sb.append("=");
                         sb.append(values[i]);

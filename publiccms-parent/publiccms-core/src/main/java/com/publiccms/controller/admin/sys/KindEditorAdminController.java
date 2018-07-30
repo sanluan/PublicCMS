@@ -52,7 +52,7 @@ public class KindEditorAdminController extends AbstractController {
 		if (null != imgFile && !imgFile.isEmpty()) {
 			String originalName = imgFile.getOriginalFilename();
 			String suffix = fileComponent.getSuffix(originalName);
-			String fileName = fileComponent.getUploadFileName(suffix);
+			String fileName = fileComponent.getUploadFileName(originalName,suffix);
 			try {
 				fileComponent.upload(imgFile, siteComponent.getWebFilePath(site, fileName));
 				logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

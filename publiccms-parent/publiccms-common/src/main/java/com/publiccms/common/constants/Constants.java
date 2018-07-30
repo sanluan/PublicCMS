@@ -52,6 +52,12 @@ public class Constants {
      */
     public static final String DOT = ".";
     /**
+     * 点
+     * 
+     * dot
+     */
+    public static final String UNDERLINE = "_";
+    /**
      * 空格
      * 
      * blank space
