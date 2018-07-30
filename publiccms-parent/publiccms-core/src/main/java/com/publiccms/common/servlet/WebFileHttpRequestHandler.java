@@ -13,8 +13,8 @@ import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
-
 
 /**
  *
@@ -44,12 +44,18 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
         if (path.endsWith(CommonConstants.SEPARATOR)) {
             path += CommonConstants.getDefaultPage();
         }
-        Resource resource = new FileSystemResource(
-                siteComponent.getWebFilePath(siteComponent.getSite(request.getServerName()), path));
-        if (resource.exists() && resource.isReadable()) {
-            return resource;
-        } else {
-            return null;
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site, path));
+        if (resource.exists()) {
+            if (resource.isReadable()) {
+                return resource;
+            }
+        } else if (null != site.getParentId()) {
+            resource = new FileSystemResource(siteComponent.getParentSiteWebFilePath(site, path));
+            if (resource.exists() && resource.isReadable()) {
+                return resource;
+            }
         }
+        return null;
     }
 }

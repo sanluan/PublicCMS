@@ -194,6 +194,15 @@ public class SiteComponent implements Cache {
     public String getWebFilePath(SysSite site, String filePath) {
         return webFilePath + getFullFileName(site.getId(), filePath);
     }
+    
+    /**
+     * @param site
+     * @param filePath
+     * @return web file path
+     */
+    public String getParentSiteWebFilePath(SysSite site, String filePath) {
+        return webFilePath + getFullFileName(site.getParentId(), filePath);
+    }
 
     /**
      * @param site
