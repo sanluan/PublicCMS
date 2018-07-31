@@ -8,8 +8,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
-import org.springframework.lang.Nullable;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -39,11 +37,6 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
         response.addHeader(CommonConstants.getXPowered(), CmsVersion.getVersion());
         super.handleRequest(request, response);
 
-    }
-
-    @Override
-    protected void setHeaders(HttpServletResponse response, Resource resource, @Nullable MediaType mediaType) throws IOException {
-        super.setHeaders(response, resource, mediaType);
     }
 
     @Override
