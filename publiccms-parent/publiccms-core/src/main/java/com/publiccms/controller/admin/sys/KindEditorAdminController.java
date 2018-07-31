@@ -40,7 +40,7 @@ public class KindEditorAdminController extends AbstractController {
     private static final String RESULT_URL = "url";
 
     /**
-     * @param imgFile 
+     * @param imgFile
      * @param request
      * @param session
      * @param model
@@ -52,7 +52,7 @@ public class KindEditorAdminController extends AbstractController {
         if (null != imgFile && !imgFile.isEmpty()) {
             String originalName = imgFile.getOriginalFilename();
             String suffix = fileComponent.getSuffix(originalName);
-            String fileName = fileComponent.getUploadFileName(originalName,suffix);
+            String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(imgFile, siteComponent.getWebFilePath(site, fileName));
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
@@ -68,7 +68,7 @@ public class KindEditorAdminController extends AbstractController {
             }
         } else {
             Map<String, Object> map = getResultMap(false);
-            map.put(CommonConstants.MESSAGE,  "no file");
+            map.put(CommonConstants.MESSAGE, "no file");
             model.addAttribute("result", map);
         }
         return "common/kinduploadResult";

@@ -238,17 +238,11 @@ public class FileComponent {
      * @param suffix
      * @return upload file name
      */
-    public String getUploadFileName(String originalFilename, String suffix) {
+    public String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder("upload/");
         sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
-        if (CommonUtils.empty(originalFilename)) {
-            return sb.append(CommonConstants.random.nextInt()).append(suffix).toString();
-        } else {
-            if (originalFilename.contains("..")) {
-                originalFilename = originalFilename.replace("..", CommonConstants.BLANK);
-            }
-            return sb.append(CommonConstants.UNDERLINE).append(originalFilename).toString();
-        }
+        sb.append(CommonConstants.random.nextInt()).append(suffix);
+        return sb.toString();
     }
 
     /**

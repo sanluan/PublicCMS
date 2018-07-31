@@ -56,7 +56,7 @@ public class FileAdminController extends AbstractController {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = fileComponent.getSuffix(originalName);
-            String fileName = fileComponent.getUploadFileName(originalName,suffix);
+            String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
                 model.put("field", field);

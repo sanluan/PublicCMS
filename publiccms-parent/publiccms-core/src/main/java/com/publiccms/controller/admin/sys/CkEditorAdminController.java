@@ -54,12 +54,12 @@ public class CkEditorAdminController extends AbstractController {
         if (null != upload && !upload.isEmpty()) {
             String originalName = upload.getOriginalFilename();
             String suffix = fileComponent.getSuffix(originalName);
-            String fileName = fileComponent.getUploadFileName(originalName, suffix);
+            String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(upload, siteComponent.getWebFilePath(site, fileName));
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix),
-                        upload.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix), upload.getSize(),
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put(RESULT_FILENAME, originalName);
                 map.put(RESULT_URL, fileName);

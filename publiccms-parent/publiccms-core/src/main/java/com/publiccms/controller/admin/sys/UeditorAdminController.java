@@ -61,12 +61,11 @@ public class UeditorAdminController extends AbstractController {
 
     private static final String[] IMAGE_ALLOW_FILES = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
 
-    private static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb",
-            ".mpeg", ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
-    private static final String[] ALLOW_FILES = ArrayUtils.addAll(
-            ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
-            new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls",
-                    ".xlsx", ".ppt", ".pptx", ".pdf", ".txt", ".md", ".xml" });
+    private static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
+            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
+    private static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
+            new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
+                    ".pptx", ".pdf", ".txt", ".md", ".xml" });
     private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() {
         private static final long serialVersionUID = 1L;
         {
@@ -130,12 +129,12 @@ public class UeditorAdminController extends AbstractController {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = fileComponent.getSuffix(originalName);
-            String fileName = fileComponent.getUploadFileName(originalName, suffix);
+            String fileName = fileComponent.getUploadFileName(suffix);
             try {
                 fileComponent.upload(file, siteComponent.getWebFilePath(site, fileName));
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix),
-                        file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix), file.getSize(),
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", file.getSize());
                 map.put("title", originalName);
@@ -164,15 +163,15 @@ public class UeditorAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
-            String fileName = fileComponent.getUploadFileName(null, SCRAW_TYPE);
+            String fileName = fileComponent.getUploadFileName(SCRAW_TYPE);
             try {
                 fileComponent.writeByteArrayToFile(siteComponent.getWebFilePath(site, fileName), data);
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, LogUploadService.FILE_TYPE_IMAGE,
-                        data.length, RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, LogUploadService.FILE_TYPE_IMAGE, data.length,
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", data.length);
-                map.put("title", fileName.substring(fileName.lastIndexOf(CommonConstants.SEPARATOR)));
+                map.put("title", fileName);
                 map.put("url", fileName);
                 map.put("type", SCRAW_TYPE);
                 map.put("original", "scraw" + SCRAW_TYPE);
@@ -210,17 +209,14 @@ public class UeditorAdminController extends AbstractController {
                         if (CommonUtils.empty(suffix)) {
                             suffix = ".jpg";
                         }
-                        String fileName = fileComponent.getUploadFileName(null, suffix);
-                        fileComponent.copyInputStreamToFile(entity.getContent(),
-                                siteComponent.getWebFilePath(site, fileName));
-                        logUploadService
-                                .save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                                        LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK,
-                                        LogUploadService.getFileType(suffix), entity.getContentLength(),
-                                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        String fileName = fileComponent.getUploadFileName(suffix);
+                        fileComponent.copyInputStreamToFile(entity.getContent(), siteComponent.getWebFilePath(site, fileName));
+                        logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                                LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, LogUploadService.getFileType(suffix),
+                                entity.getContentLength(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         Map<String, Object> map = getResultMap(true);
                         map.put("size", entity.getContentLength());
-                        map.put("title", fileName.substring(fileName.lastIndexOf(CommonConstants.SEPARATOR)));
+                        map.put("title", fileName);
                         map.put("url", fileName);
                         map.put("source", image);
                         list.add(map);
@@ -252,8 +248,7 @@ public class UeditorAdminController extends AbstractController {
             start = 0;
         }
         PageHandler page = logUploadService.getPage(getSite(request).getId(),
-                ControllerUtils.getAdminFromSession(session).getId(), null, null, null, null, null, null,
-                start / 20 + 1, 20);
+                ControllerUtils.getAdminFromSession(session).getId(), null, null, null, null, null, null, start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
         List<Map<String, Object>> list = new ArrayList<>();
