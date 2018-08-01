@@ -2,6 +2,7 @@ package com.publiccms.common.constants;
 
 import java.nio.charset.Charset;
 import java.util.Random;
+import java.util.function.BinaryOperator;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -69,4 +70,11 @@ public class Constants {
      * comma delimited
      */
     public static final String COMMA_DELIMITED = ",";
+
+    /**
+     * @return deafult meger function
+     */
+    public static <T> BinaryOperator<T> defaultMegerFunction() {
+        return (first, second) -> first;
+    }
 }
