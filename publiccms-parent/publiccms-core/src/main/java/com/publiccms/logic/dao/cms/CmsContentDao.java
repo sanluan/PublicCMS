@@ -254,7 +254,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             if (ORDERTYPE_DESC.equals(orderType)) {
                 queryHandler.order("bean.sort desc");
             }
-            queryHandler.order("bean.publishDate desc");
+            queryHandler.order("bean.publishDate " + orderType);
         }
         queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
