@@ -592,7 +592,7 @@ INSERT INTO `sys_module` VALUES ('category_type_list', 'cmsCategoryType/list', N
 INSERT INTO `sys_module` VALUES ('clearcache', NULL, 'clearCache', '', NULL, 0, 10);
 INSERT INTO `sys_module` VALUES ('config_add', 'sysConfig/add', 'sysConfig/save', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_delete', NULL, 'sysConfigData/delete', NULL, 'config_data_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('config_data_edit', 'sysConfigData/edit', 'sysConfigData/save', NULL, 'config_data_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('config_data_edit', NULL, 'sysConfigData/save,sysConfigData/edit', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_list', 'sysConfigData/list', NULL, '<i class=\"icon-cog icon-large\"></i>', 'system_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, '<i class=\"icon-cogs icon-large\"></i>', 'config_menu', 1, 2);

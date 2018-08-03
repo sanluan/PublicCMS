@@ -5,3 +5,4 @@ ALTER TABLE `sys_site`
 -- 20180714 --
 UPDATE `sys_moudle` SET `authorized_url` =  'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload' WHERE  `sys_moudle`.`id` ='content_add';
 UPDATE `sys_moudle` SET `authorized_url` =  'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload' WHERE  `sys_moudle`.`id` ='myself_content_add';
+UPDATE `sys_moudle` SET `authorized_url` =  'sysConfigData/save,sysConfigData/edit',url = NULL WHERE  `sys_moudle`.`id` ='config_data_edit';
