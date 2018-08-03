@@ -33,7 +33,7 @@ public class SysAppAdminController extends AbstractController {
     @Autowired
     private SysAppService service;
 
-    private String[] ignoreProperties = new String[] { "id", "siteId", "channel" };
+    private String[] ignoreProperties = new String[] { "id", "siteId", "channel", "appSecret" };
 
     /**
      * @param entity

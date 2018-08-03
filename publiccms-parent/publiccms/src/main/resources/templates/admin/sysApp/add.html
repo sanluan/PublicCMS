@@ -10,7 +10,9 @@
     <div class="pageFormContent" layoutH="60">
         <input name="id" type="hidden" value="${id!}" />
         <input name="appKey" type="hidden" value="${(a.appKey)!getUUID()}"/>
-        <input name="appSecret" type="hidden" value="${(a.appSecret)!getUUID()}"/>
+    <#if !a?has_content>
+        <input name="appSecret" type="hidden" value="${getUUID()}"/>
+    </#if>
         <dl class="nowrap">
             <dt><@t.page 'channel'/>:</dt>
             <dd><input class="required" name="channel" type="text" size="30" value="${(a.channel)!}"/></dd>
