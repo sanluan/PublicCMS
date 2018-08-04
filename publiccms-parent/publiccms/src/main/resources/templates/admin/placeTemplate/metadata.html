@@ -7,12 +7,14 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
+        <#if a?has_content>
             <li><a class="button" href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.content'/></a></li>
-    <#if site.parentId?has_content>
-        <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
-    <#else>
+        </#if>
+        <#if site.parentId?has_content>
+            <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
+        <#else>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
-    </#if>
+        </#if>
         </ul>
     </div>
     <div class="pageFormContent" layoutH="60">

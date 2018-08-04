@@ -41,35 +41,35 @@
     </div>
 </fieldset>
 <@_sysAuthorized roleIds=admin.roles url='report/user'>
-	<fieldset>
-	    <legend><@t.page 'report.user'/></legend>
-	    <div class="unit">
-	        <p>
-	            <label><@t.page 'register'/>:</label>
-	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-	                <@_sysUserList startRegisteredDate=.now?long?number_to_date?string>
-	                   ${page.totalCount}
-	                </@_sysUserList>
-	            </a>
-	        </p>
-	        <p>
-	            <label><@t.page 'login'/>:</label>
-	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-	                <@_logLoginList startCreateDate=.now?long?number_to_date?string>
-	                   ${page.totalCount}
-	                </@_logLoginList>
-	            </a>
-	        </p>
-	        <p>
-	            <label><@t.page 'operate'/>:${.now?long?number_to_date?string}</label>
-	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-	                <@_logOperateList startCreateDate=.now?long?number_to_date?string>
-	                   ${page.totalCount}
-	                </@_logOperateList>
-	            </a>
-	        </p>
-	    </div>
-	</fieldset>
+    <fieldset>
+        <legend><@t.page 'report.user'/></legend>
+        <div class="unit">
+            <p>
+                <label><@t.page 'register'/>:</label>
+                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                    <@_sysUserList startRegisteredDate=.now?long?number_to_date?string>
+                       ${page.totalCount}
+                    </@_sysUserList>
+                </a>
+            </p>
+            <p>
+                <label><@t.page 'login'/>:</label>
+                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                    <@_logLoginList startCreateDate=.now?long?number_to_date?string>
+                       ${page.totalCount}
+                    </@_logLoginList>
+                </a>
+            </p>
+            <p>
+                <label><@t.page 'operate'/>:${.now?long?number_to_date?string}</label>
+                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                    <@_logOperateList startCreateDate=.now?long?number_to_date?string>
+                       ${page.totalCount}
+                    </@_logOperateList>
+                </a>
+            </p>
+        </div>
+    </fieldset>
 </@_sysAuthorized>
 <@_masterSite>
     <@_systemProperties>

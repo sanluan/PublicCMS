@@ -85,9 +85,9 @@
                     <a tname="pages" tvalue="${path}">${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}</a>
                 </@_metadata>
                 <#if a.directory>
-	                <ul>
-	                    <@pageTree path/>
-	                </ul>
+                    <ul>
+                        <@pageTree path/>
+                    </ul>
                 </#if>
             </li>
         <#else>
