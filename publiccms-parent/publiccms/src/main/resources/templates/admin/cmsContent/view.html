@@ -160,7 +160,7 @@
 			<dl class="nowrap">
 				<dt>图片列表:</dt>
 				<dd>
-			<@_contentFileList contentId=contentId image=true>
+			<@_contentFileList contentId=a.id image=true>
 				<#list page.list as file>
 					<div class="thumbnail">
 						<img src="${(site.sitePath+file.filePath)!}" style="max-width:200px;max-height:200px;"/>
@@ -174,7 +174,7 @@
 				<dl class="nowrap">
 					<dt>附件列表:</dt>
 					<dd>
-				<@_contentFileList contentId=contentId image=false>
+				<@_contentFileList contentId=a.id image=false>
 					<#list page.list as file>
 						<a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
 					</#list>
