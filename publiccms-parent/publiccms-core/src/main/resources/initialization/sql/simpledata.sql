@@ -279,7 +279,7 @@ INSERT INTO `sys_role_user` VALUES ('2', '2');
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('2', null ,'演示站点1', '0', '//site2.dev.publiccms.com:8080/publiccms/webfile/', '0', '//site2.dev.publiccms.com:8080/publiccms/', '0');
+INSERT INTO `sys_site` VALUES ('2', '演示站点1', '0', '//site2.dev.publiccms.com:8080/publiccms/webfile/', '0', '//site2.dev.publiccms.com:8080/publiccms/', '0');
 
 -- ----------------------------
 -- Records of sys_user
