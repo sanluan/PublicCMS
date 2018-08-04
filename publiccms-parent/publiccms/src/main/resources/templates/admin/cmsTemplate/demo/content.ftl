@@ -13,5 +13,14 @@
     editor:"${object.editor}",
     publishDate:"${object.publishDate}",
     text:"${(attribute.text?json_string)!}"
+<#if object.hasFiles>
+    ,files:[<@_contentFileList contentId=object.id fileTypes='video,audio,other'><#list page.list as file>
+                    {filePath:"${(file.filePath)!}"}<#sep>,
+</#list></@_contentFileList>]</#if>
+<#if object.hasImages>
+    ,images:[<@_contentFileList contentId=object.id fileTypes='image'>
+                <#list page.list as file>
+                    {filePath:"${(file.filePath)!}"}<#sep>,
+                </#list></@_contentFileList>]</#if>
 </@_content>
 }

@@ -154,9 +154,8 @@
             <#assign extendValue=attribute!{}/>
             <@extendData 'modelExtendDataList' extendList extendValue 'view'/>
         </#if>
-        <#if model?has_content&&(model.hasImages||model.hasFiles)>
-            <#include "../include_page/contentFiles.html"/>
-            <#if model.hasImages>
+        <#if a?has_content&&(a.hasImages||a.hasFiles)>
+            <#if a.hasImages>
             <dl class="nowrap">
                 <dt><@t.page 'image_list'/>:</dt>
                 <dd>
@@ -170,7 +169,7 @@
                 </dd>
             </dl>
             </#if>
-            <#if model.hasFiles>
+            <#if a.hasFiles>
                 <dl class="nowrap">
                     <dt><@t.page 'attach_list'/>:</dt>
                     <dd>
