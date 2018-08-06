@@ -26,6 +26,7 @@ import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysConfigDataService;
 import com.publiccms.views.pojo.model.SysConfigParameters;
@@ -73,7 +74,6 @@ public class SysConfigDataAdminController extends AbstractController {
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.configData", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), JsonUtils.getString(entity)));
-                    configComponent.removeCache(site.getId(), entity.getId().getCode());
                 }
             } else {
                 entity.getId().setSiteId(site.getId());
@@ -81,8 +81,9 @@ public class SysConfigDataAdminController extends AbstractController {
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "save.configData", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
-                configComponent.removeCache(site.getId(), entity.getId().getCode());
             }
+            configComponent.removeCache(site.getId(), entity.getId().getCode());
+            corsConfigComponent.clear(site.getId());
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -114,6 +115,8 @@ public class SysConfigDataAdminController extends AbstractController {
 
     @Autowired
     private ConfigComponent configComponent;
+    @Autowired
+    private CorsConfigComponent corsConfigComponent;
     @Autowired
     private SysConfigDataService service;
 }

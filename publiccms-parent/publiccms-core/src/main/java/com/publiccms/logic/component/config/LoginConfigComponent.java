@@ -31,7 +31,7 @@ public class LoginConfigComponent implements Config {
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, true,
+        extendFieldList.add(new ExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, false,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL),
                 null, null));

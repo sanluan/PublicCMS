@@ -77,7 +77,13 @@ public class CorsConfigComponent implements SiteCache, Config {
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
                     config.setAllowCredentials("true".equals(configData.get(CONFIG_ALLOW_CREDENTIALS)));
                 }
-                config.setMaxAge(Long.parseLong(configData.get(CONFIG_MAXAGE)));
+                if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
+                    try {
+                        config.setMaxAge(Long.parseLong(configData.get(CONFIG_MAXAGE)));
+                    } catch (NumberFormatException e) {
+
+                    }
+                }
             }
             cache.put(site.getId(), config);
         }
