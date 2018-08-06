@@ -25,7 +25,6 @@ function invoke(){
         url: $('#sendData').val(),
         type: 'GET',
         contentType:'application/json; charset=UTF-8',
-        dataType: 'jsonp',
         success: function (data) {
             $('#rawJson').val(JSON.stringify(data));
             process(JSON.stringify(data),$('.code-canvas'));

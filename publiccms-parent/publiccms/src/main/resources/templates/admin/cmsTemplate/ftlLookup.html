@@ -10,10 +10,10 @@
                 </ul>
             <#else>
                 <@_metadata path=path>
-	                <a href="javascript:;" onclick="use('${path}','${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
-	                    ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
-	                </a>
-	            </@_metadata>
+                    <a href="javascript:;" onclick="use('${path}','${(object.alias)?has_content?then('<#-- '+object.alias+' -->','')?js_string}');$.pdialog.closeCurrent();return false;">
+                        ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                    </a>
+                </@_metadata>
             </#if>
             </li>
         <#else>

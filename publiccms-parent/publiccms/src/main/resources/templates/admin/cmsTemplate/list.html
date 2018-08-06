@@ -4,10 +4,10 @@
             <li>
                 <#local path=filepath+'/'+a.fileName>
                 <@_metadata path=path>
-	                <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">
-	                    ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
-	                </a>
-	            </@_metadata>
+                    <a href="cmsTemplate/${a.directory?then('directory','content')}.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox">
+                        ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
+                    </a>
+                </@_metadata>
             <#if a.directory>
                 <ul>
                     <@templateTree path/>

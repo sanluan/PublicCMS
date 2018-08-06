@@ -5,7 +5,7 @@
 </div>
 <div class="pageFormContent" layoutH="60">
     <ul class="tree treeFolder expand">
-    	<li><a href="cmsCategory/add.html?parentId=${parentId!}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt icon-large'></i>"><@t.page 'category.add'/></a></li>
+        <li><a href="cmsCategory/add.html?parentId=${parentId!}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt icon-large'></i>"><@t.page 'category.add'/></a></li>
 <@_categoryTypeList>
     <#list page.list as a>
         <li><a href="cmsCategory/add.html?parentId=${parentId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt icon-large'></i>"><@t.page 'button.button.add_some_things' a.name/></a></li>

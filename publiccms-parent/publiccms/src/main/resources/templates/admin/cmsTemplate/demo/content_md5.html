@@ -35,6 +35,24 @@
             <h1><a href="${content.url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
             <div>${text?no_esc!}</div>
+        <#if content.hasFiles>
+            <div>
+                <@_contentFileList contentId=content.id fileTypes='video,audio,other'>
+                    <#list page.list as file>
+                        <a href="${site.sitePath+(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
+                    </#list>
+                </@_contentFileList>
+            </div>
+        </#if>
+        <#if content.hasImages>
+            <div>
+             <@_contentFileList contentId=content.id fileTypes='image'>
+                 <#list page.list as file>
+                     <img src="${site.sitePath+(file.filePath)!}" style="max-width:200px;max-height:200px;border:1px slid;"/>
+                 </#list>
+             </@_contentFileList>
+            </div>
+        </#if>
         <#if content.tags?has_content>
             <div>
                 Tags:

@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -79,7 +80,7 @@ public class FileComponent {
             default:
                 comparator = FILENAME_COMPARATOR;
             }
-            fileList.stream().sorted(comparator);
+            Collections.sort(fileList, comparator);
         } catch (IOException e) {
         }
         return fileList;
