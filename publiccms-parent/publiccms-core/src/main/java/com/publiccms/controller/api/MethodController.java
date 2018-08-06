@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,7 +34,6 @@ import freemarker.template.TemplateModelException;
  *
  */
 @RestController
-@CrossOrigin
 public class MethodController extends AbstractController {
     private Map<String, BaseMethod> methodMap;
     private List<Map<String, String>> methodList = new ArrayList<>();

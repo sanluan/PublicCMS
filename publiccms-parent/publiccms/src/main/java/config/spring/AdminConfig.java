@@ -93,7 +93,7 @@ public class AdminConfig implements WebMvcConfigurer {
      * @return admin servlet interceptor
      */
     @Bean
-    public AdminContextInterceptor adminInitializingInterceptor(TemplateComponent templateComponent) {
+    public AdminContextInterceptor adminInterceptor(TemplateComponent templateComponent) {
         templateComponent.setAdminContextPath(ADMIN_CONTEXT_PATH);
         AdminContextInterceptor bean = new AdminContextInterceptor();
         bean.setAdminContextPath(ADMIN_CONTEXT_PATH);

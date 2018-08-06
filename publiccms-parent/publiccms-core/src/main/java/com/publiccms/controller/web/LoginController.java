@@ -15,7 +15,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -118,7 +117,6 @@ public class LoginController extends AbstractController {
      */
     @RequestMapping("loginStatus")
     @ResponseBody
-    @CrossOrigin
     public Map<String, Object> loginStatus(HttpSession session) {
         SysUser user = ControllerUtils.getUserFromSession(session);
         Map<String, Object> result = new HashMap<>();

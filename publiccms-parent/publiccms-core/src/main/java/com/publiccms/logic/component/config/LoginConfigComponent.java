@@ -27,20 +27,6 @@ public class LoginConfigComponent implements Config {
      * 
      */
     public static final String CONFIG_REGISTER_URL = "register_url";
-    /**
-     * 
-     */
-    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE_SITE;
-
-    @Override
-    public String getCode(SysSite site) {
-        return CONFIG_CODE_SITE;
-    }
-
-    @Override
-    public String getCodeDescription(SysSite site, Locale locale) {
-        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
-    }
 
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
