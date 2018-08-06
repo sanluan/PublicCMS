@@ -26,7 +26,7 @@ $(function(){
 	});
 	// 登陆状态显示
 	if (CMS_PATH) {
-		$.getJSON(CMS_PATH+'loginStatus?callback=?', function(data){
+		$.getJSON(CMS_PATH+'loginStatus', function(data){
 			if(data.id){
 				$('.user').hide();
 				$('.user-logout .nickname').text(data.nickname);

@@ -63,7 +63,7 @@
 			$(this).wrapAll("<a href=\"" + link + "\" title=\"点击查看下一页\"></a>");
 		});
 	}
-	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){
+	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
 		$('article .author em').text(data.clicks);
 	});
 </script>
