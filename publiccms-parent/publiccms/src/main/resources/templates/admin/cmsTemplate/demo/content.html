@@ -64,7 +64,7 @@
                 </#if>
             </div>
             <script>
-                $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){
+                $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
                     $('article p em').text(data.clicks);
                 });
             </script>
