@@ -99,7 +99,7 @@ public class CorsConfigComponent implements SiteCache, Config {
     @Autowired
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-        cache = cacheEntityFactory.createCacheEntity("cors");
+        cache = cacheEntityFactory.createCacheEntity("cors", CacheEntityFactory.MEMORY_CACHE_ENTITY);
     }
 
     @Override
