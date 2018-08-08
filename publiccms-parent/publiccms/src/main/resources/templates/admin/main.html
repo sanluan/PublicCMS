@@ -138,7 +138,7 @@
                 <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.page 'publiccms_website'/>">${cms}</a>
             </p>
             <script>
-                $.getJSON('//cms.publiccms.com/api/directive/version?callback=?',function(data){
+                $.getJSON('//cms.publiccms.com/api/directive/version',function(data){
                     if($('#cmsVersion a').eq(0).text()!==data.cms){
                         $('#cmsVersion a').eq(0).append('[<em style="color:red"><@t.page 'version.old'/></em>]');
                     } else {

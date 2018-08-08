@@ -44,6 +44,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             "editor", "onlyUrl", "hasImages", "hasFiles", "url", "description", "tagIds", "publishDate" };
 
     /**
+     * @param projection
      * @param siteId
      * @param text
      * @param tagIds
