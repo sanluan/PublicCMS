@@ -1,4 +1,4 @@
-<#assign ids=(id!';')?split(';')/>
+<#assign ids=(id!'_')?split('_')/>
 <@_category id=ids[0]>
     <#assign category=object/>
     <#assign attribute=getCategoryAttribute(category.id)/>
