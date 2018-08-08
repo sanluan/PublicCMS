@@ -51,6 +51,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public static final int STATUS_PEND = 2;
 
     /**
+     * @param projection
      * @param siteId
      * @param text
      * @param tagIds
@@ -66,10 +67,10 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler query(Short siteId, String text, Long[] tagIds, Integer categoryId, Boolean containChild,
-            Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, String orderField,
-            Integer pageIndex, Integer pageSize) {
-        return dao.query(siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
+    public PageHandler query(boolean projection, Short siteId, String text, Long[] tagIds, Integer categoryId,
+            Boolean containChild, Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate,
+            String orderField, Integer pageIndex, Integer pageSize) {
+        return dao.query(projection, siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
                 getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, orderField,
                 pageIndex, pageSize);
     }

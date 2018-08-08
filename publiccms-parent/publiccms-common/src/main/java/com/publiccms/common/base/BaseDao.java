@@ -19,7 +19,7 @@ import org.hibernate.query.Query;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -390,7 +390,7 @@ public abstract class BaseDao<E> {
         if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
-        page.setList(fullTextQuery.list());
+        page.setList(fullTextQuery.getResultList());
         return page;
     }
 
@@ -462,7 +462,7 @@ public abstract class BaseDao<E> {
         if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
-        page.setList(fullTextQuery.list());
+        page.setList(fullTextQuery.getResultList());
         return page;
     }
 

@@ -56,7 +56,7 @@ public class CorsConfigComponent implements SiteCache, Config {
             Map<String, String> configData = configComponent.getConfigData(site.getId(), CONFIG_CODE_SITE);
             config = new CorsConfiguration();
             config.applyPermitDefaultValues();
-            if (CommonUtils.notEmpty(configData)) {
+            if (null != configData) {
                 config = new CorsConfiguration();
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_ORIGINS))) {
                     config.setAllowedOrigins(Arrays
