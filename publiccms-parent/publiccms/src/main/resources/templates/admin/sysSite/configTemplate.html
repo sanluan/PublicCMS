@@ -23,17 +23,16 @@
 <#assign sitePath=a.sitePath?keep_after('//')?keep_before('/')?keep_before(':')/>
 <#assign siteLocation=a.sitePath?keep_after('//')?keep_after('/')/>
 <#assign sitePort=a.sitePath?keep_after('//')?keep_before('/')?keep_after(':')/>
-<@_sysDomainList advanced=true siteId=siteId>
-    <#if page.totalCount gt 0>
-        <#if (a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))||a.useSsi>
+<#if dynamicPath!=sitePath||dynamicPort!=sitePort||dynamicPath=sitePath&&dynamicLocation!=siteLocation||a.useSsi>
+    <@_sysDomainList advanced=true siteId=siteId>
 #${a.name} <@t.page 'server_config.site'/>
 server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
     server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>;
-            <#if a.useSsi>
+        <#if a.useSsi>
     ssi on;
     ssi_silent_errors on;
-            </#if>
+        </#if>
     location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} {
         proxy_redirect off;
         proxy_set_header Host $host:$server_port;
@@ -45,23 +44,22 @@ server {
         proxy_read_timeout 10;
         proxy_pass http://cms;
     }
-            <#if a.useSsi>
+        <#if a.useSsi>
     location /include/ {
         alias ${rootPath}/web/site_${siteId}/include/;
     }
-            </#if>
-            <#if (a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath))>
+        </#if>
+        <#if dynamicPath=sitePath&&dynamicLocation!=siteLocation>
     #${a.name} <@t.page 'server_config.static'/>
     location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
         alias   ${rootPath}/web/site_${siteId}/;
         index  index.html;
     }
-            </#if>
-}
         </#if>
-    </#if>
-</@_sysDomainList>
-<#if !((a.dynamicPath!=a.sitePath&&a.dynamicPath?starts_with(a.sitePath))||(a.dynamicPath!=a.sitePath&&a.sitePath?starts_with(a.dynamicPath)))>
+}
+    </@_sysDomainList>
+</#if>
+<#if dynamicPath!=sitePath||dynamicPort!=sitePort||!(dynamicPath=sitePath&&dynamicLocation!=siteLocation)>
 #${a.name} <@t.page 'server_config.static'/>
 server {
     listen       ${sitePort?has_content?then(sitePort,80)};
