@@ -27,6 +27,7 @@ import com.publiccms.entities.sys.SysConfigDataId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.CorsConfigComponent;
+import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysConfigDataService;
 import com.publiccms.views.pojo.model.SysConfigParameters;
@@ -83,7 +84,12 @@ public class SysConfigDataAdminController extends AbstractController {
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             configComponent.removeCache(site.getId(), entity.getId().getCode());
-            corsConfigComponent.clear(site.getId());
+            if (emailComponent.getCode(site).equals(entity.getId().getCode())) {
+                emailComponent.clear(site.getId());
+            } else if (corsConfigComponent.getCode(site).equals(entity.getId().getCode())) {
+                corsConfigComponent.clear(site.getId());
+            }
+
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -93,7 +99,7 @@ public class SysConfigDataAdminController extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
-     * @param model 
+     * @param model
      * @return view name
      */
     @RequestMapping("delete")
@@ -117,6 +123,8 @@ public class SysConfigDataAdminController extends AbstractController {
     private ConfigComponent configComponent;
     @Autowired
     private CorsConfigComponent corsConfigComponent;
+    @Autowired
+    private EmailComponent emailComponent;
     @Autowired
     private SysConfigDataService service;
 }

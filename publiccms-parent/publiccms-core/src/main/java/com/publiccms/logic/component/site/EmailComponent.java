@@ -73,6 +73,10 @@ public class EmailComponent implements SiteCache, Config {
     /**
      * 
      */
+    public static final String CONFIG_SSL = "ssl";
+    /**
+     * 
+     */
     public static final String CONFIG_FROMADDRESS = "fromAddress";
     /**
      * 
@@ -104,6 +108,9 @@ public class EmailComponent implements SiteCache, Config {
                     javaMailSender.setUsername(config.get(CONFIG_USERNAME));
                     javaMailSender.setPassword(config.get(CONFIG_PASSWORD));
                     Properties properties = new Properties();
+                    if ("true".equalsIgnoreCase(config.get(CONFIG_SSL))) {
+                        properties.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+                    }
                     properties.setProperty("mail.smtp.auth", config.get(CONFIG_AUTH));
                     properties.setProperty("mail.smtp.timeout", config.get(CONFIG_TIMEOUT));
                     javaMailSender.setJavaMailProperties(properties);
@@ -203,6 +210,9 @@ public class EmailComponent implements SiteCache, Config {
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_AUTH),
                 null, null));
+        extendFieldList.add(
+                new ExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, LanguagesUtils.getMessage(CommonConstants.applicationContext,
+                        locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null, null));
         extendFieldList.add(new ExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_FROMADDRESS),
@@ -251,17 +261,13 @@ class SendTask implements Runnable {
     @Override
     public void run() {
         int i = 0;
-        while (i < 3) {
+        while (i < 2) {
             try {
                 mailSender.send(message);
                 break;
             } catch (Exception e) {
+                log.error(e.getMessage());
                 i++;
-                try {
-                    Thread.sleep(1000 * 60);
-                } catch (InterruptedException e1) {
-                    log.error(e1.getMessage());
-                }
             }
         }
     }

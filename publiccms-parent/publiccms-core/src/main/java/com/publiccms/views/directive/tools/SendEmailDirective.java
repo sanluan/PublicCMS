@@ -13,7 +13,11 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.EmailComponent;
+import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.views.pojo.entities.CmsPageData;
+import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 /**
  *
@@ -34,7 +38,12 @@ public class SendEmailDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(templatePath)) {
                 Map<String, Object> model = new HashMap<>();
                 expose(handler, model);
-                content = FreeMarkerUtils.generateStringByFile(siteComponent.getWebTemplateFilePath(site, templatePath),
+                CmsPageMetadata metadata = metadataComponent
+                        .getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, templatePath));
+                CmsPageData data = metadataComponent
+                        .getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, templatePath));
+                model.put("metadata", metadata.getAsMap(data));
+                content = FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, templatePath),
                         templateComponent.getWebConfiguration(), model);
             }
             if (CommonUtils.notEmpty(content)) {
@@ -52,4 +61,6 @@ public class SendEmailDirective extends AbstractTemplateDirective {
     private EmailComponent emailComponent;
     @Autowired
     private TemplateComponent templateComponent;
+    @Autowired
+    private MetadataComponent metadataComponent;
 }
