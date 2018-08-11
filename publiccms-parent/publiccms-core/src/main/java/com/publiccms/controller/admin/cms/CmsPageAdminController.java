@@ -15,11 +15,16 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
+import com.publiccms.entities.sys.SysDept;
+import com.publiccms.entities.sys.SysDeptPageId;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.sys.SysDeptPageService;
+import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
@@ -33,6 +38,10 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
 public class CmsPageAdminController extends AbstractController {
     @Autowired
     private MetadataComponent metadataComponent;
+    @Autowired
+    private SysDeptPageService sysDeptPageService;
+    @Autowired
+    private SysDeptService sysDeptService;
     @Autowired
     private TemplateCacheComponent templateCacheComponent;
 
@@ -51,15 +60,25 @@ public class CmsPageAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
+        SysUser user = ControllerUtils.getAdminFromSession(session);
+        SysDept dept = sysDeptService.getEntity(user.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
+                || ControllerUtils
+                        .verifyCustom("noright",
+                                !(dept.isOwnsAllPage()
+                                        || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(), path))),
+                                model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getCurrentSiteWebTemplateFilePath(site, path);
             CmsPageData pageDate = new CmsPageData();
             pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
             metadataComponent.updateTemplateData(filePath, pageDate);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.template.data", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -73,9 +92,19 @@ public class CmsPageAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("clearCache")
-    public String clearCache(String path, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String clearCache(String path, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        SysUser user = ControllerUtils.getAdminFromSession(session);
+        SysDept dept = sysDeptService.getEntity(user.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
+                || ControllerUtils
+                        .verifyCustom("noright",
+                                !(dept.isOwnsAllPage()
+                                        || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(), path))),
+                                model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {

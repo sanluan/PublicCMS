@@ -51,6 +51,10 @@
             <dt><@t.page 'dept.own_all_page'/>:</dt>
             <dd><input name="ownsAllPage" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllPage',navTab.getCurrentPanel()).hide();}else{$('.ownsAllPage',navTab.getCurrentPanel()).show();}"/></dd>
         </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'dept.own_all_config'/>:</dt>
+            <dd><input name="ownsAllConfig" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllConfig',navTab.getCurrentPanel()).hide();}else{$('.ownsAllConfig',navTab.getCurrentPanel()).show();}"/></dd>
+        </dl>
 <#macro categoryTree parentId=''>
     <@_categoryList parentId=parentId>
         <#list page.list as a>
@@ -105,6 +109,23 @@
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'place.all'/></a>
                     <ul><@pageTree '/include'/></ul>
+                </li>
+            </ul>
+        </fieldset>
+        <fieldset class="ownsAllConfig">
+            <legend><@t.page 'dept.config_authorize'/></legend>
+            <ul class="tree treeFolder treeCheck expand">
+                <li>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'config.all'/></a>
+                    <ul>
+                <@_sysConfigList advanced=true>
+                    <#list list as a>
+                        <li>
+                            <a tname="configs" tvalue="${a.id}">${(a.code)!} ${a.customed?then('','['+t.pageMessage('config.system_item')+']')}</a>
+                        </li>
+                    </#list>
+                </@_sysConfigList>
+                    </ul>
                 </li>
             </ul>
         </fieldset>

@@ -171,12 +171,12 @@ public class EmailComponent implements SiteCache, Config {
     }
 
     @Override
-    public String getCode(SysSite site) {
+    public String getCode(SysSite site, boolean showAll) {
         return CONFIG_CODE;
     }
 
     @Override
-    public String getCodeDescription(SysSite site, Locale locale) {
+    public String getCodeDescription(Locale locale) {
         return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 

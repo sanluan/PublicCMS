@@ -62,7 +62,7 @@ public interface Config {
      * 
      */
     public static final String INPUTTYPE_CKEDITOR = "ckeditor";
-    
+
     /**
      * 
      */
@@ -128,11 +128,29 @@ public interface Config {
      */
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale);
 
-    public default String getCode(SysSite site) {
+    /**
+     * @param site
+     * @param showAll
+     * @return config code or null
+     */
+    public default String getCode(SysSite site, boolean showAll) {
         return CONFIG_CODE_SITE;
     }
 
-    public default String getCodeDescription(SysSite site, Locale locale) {
+    /**
+     * @param site
+     * @return config code or null
+     */
+    public default String getCode(SysSite site) {
+        return getCode(site, false);
+    }
+
+    /**
+     * @param site
+     * @param locale
+     * @return
+     */
+    public default String getCodeDescription(Locale locale) {
         return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 }

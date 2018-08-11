@@ -260,6 +260,11 @@ INSERT INTO `sys_extend` VALUES (1, 'categoryType', 1);
 INSERT INTO `sys_extend_field` VALUES (1, 'article', 1, NULL, '内容', '', 'editor', '', NULL, 0);
 
 -- ----------------------------
+-- Records of sys_dept
+-- ----------------------------
+INSERT INTO `sys_dept` VALUES ('2', '2', '技术部', null, '', '3', '1000', '1', '1', '1');
+
+-- ----------------------------
 -- Records of sys_domain
 -- ----------------------------
 INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', '2', '1', '');
@@ -282,4 +287,4 @@ INSERT INTO `sys_site` VALUES ('2', null ,'演示站点1', '0', '//site2.dev.pub
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2', '2', '', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2', '1', '2', '', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');

@@ -77,6 +77,7 @@ public class SysUserAdminController extends AbstractController {
             roleIds = null;
             entity.setRoles(null);
             entity.setDeptId(null);
+            entity.setOwnsAllContent(false);
         }
         if (null != entity.getId()) {
             SysUser oldEntity = service.getEntity(entity.getId());

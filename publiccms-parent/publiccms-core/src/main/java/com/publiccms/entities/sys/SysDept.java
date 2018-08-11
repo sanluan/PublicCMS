@@ -37,34 +37,38 @@ public class SysDept implements java.io.Serializable {
     private String description;
     @GeneratorColumn(title = "负责人", condition = true)
     private Long userId;
-    @GeneratorColumn(title = "拥有全部分类")
-    private boolean ownsAllCategory;
     @GeneratorColumn(title = "最大内容置顶级别")
     private int maxSort;
+    @GeneratorColumn(title = "拥有全部分类")
+    private boolean ownsAllCategory;
     @GeneratorColumn(title = "拥有全部页面")
     private boolean ownsAllPage;
+    @GeneratorColumn(title = "拥有全部配置")
+    private boolean ownsAllConfig;
 
     public SysDept() {
     }
 
-    public SysDept(short siteId, String name, boolean ownsAllCategory, int maxSort, boolean ownsAllPage) {
+    public SysDept(short siteId, String name, int maxSort, boolean ownsAllCategory, boolean ownsAllPage, boolean ownsAllConfig) {
         this.siteId = siteId;
         this.name = name;
-        this.ownsAllCategory = ownsAllCategory;
         this.maxSort = maxSort;
+        this.ownsAllCategory = ownsAllCategory;
         this.ownsAllPage = ownsAllPage;
+        this.ownsAllConfig = ownsAllConfig;
     }
 
-    public SysDept(short siteId, String name, Integer parentId, String description, Long userId, boolean ownsAllCategory,
-            int maxSort, boolean ownsAllPage) {
+    public SysDept(short siteId, String name, Integer parentId, String description, Long userId, int maxSort, boolean ownsAllCategory,
+            boolean ownsAllPage, boolean ownsAllConfig) {
         this.siteId = siteId;
         this.name = name;
         this.parentId = parentId;
         this.description = description;
         this.userId = userId;
-        this.ownsAllCategory = ownsAllCategory;
         this.maxSort = maxSort;
+        this.ownsAllCategory = ownsAllCategory;
         this.ownsAllPage = ownsAllPage;
+        this.ownsAllConfig = ownsAllConfig;
     }
 
     @Id
@@ -124,15 +128,6 @@ public class SysDept implements java.io.Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "owns_all_category", nullable = false)
-    public boolean isOwnsAllCategory() {
-        return this.ownsAllCategory;
-    }
-
-    public void setOwnsAllCategory(boolean ownsAllCategory) {
-        this.ownsAllCategory = ownsAllCategory;
-    }
-
     @Column(name = "max_sort", nullable = false)
     public int getMaxSort() {
         return this.maxSort;
@@ -140,6 +135,15 @@ public class SysDept implements java.io.Serializable {
 
     public void setMaxSort(int maxSort) {
         this.maxSort = maxSort;
+    }
+    
+    @Column(name = "owns_all_category", nullable = false)
+    public boolean isOwnsAllCategory() {
+        return this.ownsAllCategory;
+    }
+
+    public void setOwnsAllCategory(boolean ownsAllCategory) {
+        this.ownsAllCategory = ownsAllCategory;
     }
 
     @Column(name = "owns_all_page", nullable = false)
@@ -151,4 +155,12 @@ public class SysDept implements java.io.Serializable {
         this.ownsAllPage = ownsAllPage;
     }
 
+    @Column(name = "owns_all_config", nullable = false)
+    public boolean isOwnsAllConfig() {
+        return this.ownsAllConfig;
+    }
+
+    public void setOwnsAllConfig(boolean ownsAllConfig) {
+        this.ownsAllConfig = ownsAllConfig;
+    }
 }

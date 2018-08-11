@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.hibernate.boot.spi.SessionFactoryOptions;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import com.publiccms.common.redis.RedisClient;
@@ -24,8 +23,7 @@ public class SingletonRedisRegionFactory extends RedisRegionFactory {
     private static final long serialVersionUID = 1L;
     private final AtomicInteger referenceCount = new AtomicInteger();
 
-    protected RedisClient resolveRedisClient(SessionFactoryOptions settings,
-            @SuppressWarnings("rawtypes") Map configValues) throws IOException {
+    protected RedisClient resolveRedisClient(@SuppressWarnings("rawtypes") Map configValues) throws IOException {
         String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
         if (null != configurationResourceName) {
             try {

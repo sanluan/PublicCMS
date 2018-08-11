@@ -62,8 +62,8 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
     @Override
     public DomainDataRegion buildDomainDataRegion(DomainDataRegionConfig regionConfig,
             DomainDataRegionBuildingContext buildingContext) {
-        return new DomainDataRegionImpl(regionConfig, this,
-                createDomainDataStorageAccess(regionConfig, buildingContext), cacheKeysFactory, buildingContext);
+        return new DomainDataRegionImpl(regionConfig, this, createDomainDataStorageAccess(regionConfig, buildingContext),
+                cacheKeysFactory, buildingContext);
     }
 
     @Override
@@ -74,16 +74,14 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
     }
 
     @Override
-    protected StorageAccess createQueryResultsRegionStorageAccess(String regionName,
-            SessionFactoryImplementor sessionFactory) {
-        String defaultedRegionName = defaultRegionName(regionName, sessionFactory,
-                DEFAULT_QUERY_RESULTS_REGION_UNQUALIFIED_NAME, LEGACY_QUERY_RESULTS_REGION_UNQUALIFIED_NAMES);
+    protected StorageAccess createQueryResultsRegionStorageAccess(String regionName, SessionFactoryImplementor sessionFactory) {
+        String defaultedRegionName = defaultRegionName(regionName, sessionFactory, DEFAULT_QUERY_RESULTS_REGION_UNQUALIFIED_NAME,
+                LEGACY_QUERY_RESULTS_REGION_UNQUALIFIED_NAMES);
         return new RedisDomainDataStorageAccessImpl(redisClient, getOrCreateCache(defaultedRegionName, sessionFactory));
     }
 
     @Override
-    protected StorageAccess createTimestampsRegionStorageAccess(String regionName,
-            SessionFactoryImplementor sessionFactory) {
+    protected StorageAccess createTimestampsRegionStorageAccess(String regionName, SessionFactoryImplementor sessionFactory) {
         String defaultedRegionName = defaultRegionName(regionName, sessionFactory,
                 DEFAULT_UPDATE_TIMESTAMPS_REGION_UNQUALIFIED_NAME, LEGACY_UPDATE_TIMESTAMPS_REGION_UNQUALIFIED_NAMES);
         return new RedisDomainDataStorageAccessImpl(redisClient, getOrCreateCache(defaultedRegionName, sessionFactory));
@@ -107,8 +105,7 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
     protected RedisCacheEntity<Object, Object> getOrCreateCache(String unqualifiedRegionName,
             SessionFactoryImplementor sessionFactory) {
         verifyStarted();
-        assert !RegionNameQualifier.INSTANCE.isQualified(unqualifiedRegionName,
-                sessionFactory.getSessionFactoryOptions());
+        assert !RegionNameQualifier.INSTANCE.isQualified(unqualifiedRegionName, sessionFactory.getSessionFactoryOptions());
 
         final String qualifiedRegionName = RegionNameQualifier.INSTANCE.qualify(unqualifiedRegionName,
                 sessionFactory.getSessionFactoryOptions());
@@ -128,7 +125,7 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
     @Override
     protected void prepareForUse(SessionFactoryOptions settings, @SuppressWarnings("rawtypes") Map configValues) {
         try {
-            this.redisClient = resolveRedisClient(settings, configValues);
+            this.redisClient = resolveRedisClient(configValues);
             if (this.redisClient == null) {
                 throw new CacheException("Could not start Redis Client");
             }
@@ -138,8 +135,7 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
         }
     }
 
-    protected RedisClient resolveRedisClient(SessionFactoryOptions settings,
-            @SuppressWarnings("rawtypes") Map configValues) throws IOException {
+    protected RedisClient resolveRedisClient(@SuppressWarnings("rawtypes") Map configValues) throws IOException {
         String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
         if (null != configurationResourceName) {
             Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);

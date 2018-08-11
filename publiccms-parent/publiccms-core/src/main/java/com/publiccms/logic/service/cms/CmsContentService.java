@@ -23,6 +23,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
 import com.publiccms.logic.dao.cms.CmsContentDao;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
@@ -128,15 +129,17 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
+     * @param user
      * @param ids
      * @return results list
      */
-    public List<CmsContent> refresh(short siteId, Serializable[] ids) {
+    public List<CmsContent> refresh(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         List<CmsContent> list = getEntitys(ids);
         Collections.reverse(list);
         for (CmsContent entity : list) {
-            if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
+            if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 Date now = CommonUtils.getDate();
                 if (now.after(entity.getPublishDate())) {
                     entity.setPublishDate(now);
@@ -149,16 +152,17 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param userId
+     * @param user
      * @param ids
      * @return results list
      */
-    public List<CmsContent> check(short siteId, Long userId, Serializable[] ids) {
+    public List<CmsContent> check(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
+            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 entity.setStatus(STATUS_NORMAL);
-                entity.setCheckUserId(userId);
+                entity.setCheckUserId(user.getId());
                 entity.setCheckDate(CommonUtils.getDate());
                 entityList.add(entity);
             }
@@ -168,13 +172,15 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
+     * @param user
      * @param ids
      * @return results list
      */
-    public List<CmsContent> uncheck(short siteId, Serializable[] ids) {
+    public List<CmsContent> uncheck(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()) {
+            if (null != entity && siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 entity.setStatus(STATUS_PEND);
                 entityList.add(entity);
             }
@@ -287,14 +293,16 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
+     * @param user
      * @param ids
      * @return list of data deleted
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> delete(short siteId, Serializable[] ids) {
+    public List<CmsContent> delete(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (siteId == entity.getSiteId() && !entity.isDisabled()) {
+            if (siteId == entity.getSiteId() && !entity.isDisabled()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
                             entity.getId(), null, null, null, null, null, null, null, null, null), null, null, null, null, null)

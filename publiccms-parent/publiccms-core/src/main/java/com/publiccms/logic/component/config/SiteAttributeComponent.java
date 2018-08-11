@@ -1,4 +1,4 @@
-package com.publiccms.logic.component.site;
+package com.publiccms.logic.component.config;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +26,12 @@ public class SiteAttributeComponent implements Config {
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE_SITEA_TTRIBUTE;
 
     @Override
-    public String getCode(SysSite site) {
+    public String getCode(SysSite site, boolean showAll) {
         return CONFIG_CODE_SITEA_TTRIBUTE;
     }
 
     @Override
-    public String getCodeDescription(SysSite site, Locale locale) {
+    public String getCodeDescription(Locale locale) {
         return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 

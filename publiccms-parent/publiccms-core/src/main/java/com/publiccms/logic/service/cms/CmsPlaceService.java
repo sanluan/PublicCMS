@@ -99,10 +99,10 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      */
-    public void check(short siteId, Serializable[] ids) {
+    public void check(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
-            if (siteId == entity.getSiteId() && STATUS_CONTRIBUTE == entity.getStatus()) {
+            if (siteId == entity.getSiteId() && STATUS_CONTRIBUTE == entity.getStatus() && path.equals(entity.getPath())) {
                 entity.setStatus(STATUS_NORMAL);
                 if (now.after(entity.getPublishDate())) {
                     entity.setPublishDate(now);
@@ -115,10 +115,10 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      */
-    public void refresh(short siteId, Serializable[] ids) {
+    public void refresh(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
-            if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
+            if (null != entity && siteId == entity.getSiteId() && path.equals(entity.getPath())) {
                 if (now.after(entity.getPublishDate())) {
                     entity.setPublishDate(now);
                 }
@@ -138,9 +138,9 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param siteId
      * @param ids
      */
-    public void delete(short siteId, Serializable[] ids) {
+    public void delete(short siteId, Serializable[] ids, String path) {
         for (CmsPlace entity : getEntitys(ids)) {
-            if (siteId == entity.getSiteId() && !entity.isDisabled()) {
+            if (siteId == entity.getSiteId() && !entity.isDisabled() && path.equals(entity.getPath())) {
                 entity.setDisabled(true);
             }
         }

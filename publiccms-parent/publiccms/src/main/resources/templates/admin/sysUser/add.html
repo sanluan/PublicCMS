@@ -18,6 +18,7 @@
             <dd>
                 <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
                 <label><input name="superuserAccess" type="checkbox" onclick="if($(this).is(':checked')){$('.superuserAccess',navTab.getCurrentPanel()).show();}else{$('.superuserAccess',navTab.getCurrentPanel()).hide();}"/><@t.page 'admin'/></label>
+                <label class="superuserAccess" style="display:none"><input name="superuserAccess" type="checkbox"<#if !a?has_content||a.ownsAllContent> checked="true"</#if>/><@t.page 'user.own_all_content'/></label>
             </dd>
         </dl>
         <dl class="nowrap superuserAccess" style="display:none">
@@ -26,6 +27,7 @@
                 <input name="deptId" type="hidden" value="${(dept.id)!}"/>
                 <input readonly="readonly" name="deptName" type="text" size="10" value="${(dept.name)!}"/>
                 <a class="btnLook" href="sysDept/lookup.html" width="920" lookupGroup=""><@t.page 'dept.select'/></a>
+                <span class="info"><@t.page 'user.dept.description'/></span>
             </dd>
         </dl>
         <dl class="nowrap">

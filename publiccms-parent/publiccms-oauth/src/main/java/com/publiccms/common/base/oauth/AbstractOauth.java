@@ -164,12 +164,12 @@ public abstract class AbstractOauth implements Config, Oauth {
     public abstract OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException;
 
     @Override
-    public String getCode(SysSite site) {
+    public String getCode(SysSite site, boolean showAll) {
         return CONFIG_CODE;
     }
 
     @Override
-    public String getCodeDescription(SysSite site, Locale locale) {
+    public String getCodeDescription(Locale locale) {
         return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 

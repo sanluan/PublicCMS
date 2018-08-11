@@ -26,6 +26,10 @@ public class EmailTemplateConfigComponent implements Config {
     /**
      * 
      */
+    public static final String CONFIG_CODE = "email_verification";
+    /**
+     * 
+     */
     public static final String CONFIG_EMAIL_TITLE = "email_title";
     /**
      * 
@@ -34,26 +38,31 @@ public class EmailTemplateConfigComponent implements Config {
     /**
      * 
      */
-    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + EmailComponent.CONFIG_CODE;
+    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
 
     @Autowired
     private ConfigComponent configComponent;
 
     @Override
-    public String getCode(SysSite site) {
-        return EmailComponent.CONFIG_CODE;
+    public String getCode(SysSite site, boolean showAll) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
+        if (CommonUtils.notEmpty(config) || showAll) {
+            return CONFIG_CODE;
+        } else {
+            return null;
+        }
     }
 
     @Override
-    public String getCodeDescription(SysSite site, Locale locale) {
+    public String getCodeDescription(Locale locale) {
         return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
-        List<ExtendField> extendFieldList = new ArrayList<>();
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
+            List<ExtendField> extendFieldList = new ArrayList<>();
             extendFieldList.add(new ExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, false,
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                             CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_TITLE),
@@ -62,7 +71,9 @@ public class EmailTemplateConfigComponent implements Config {
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                             CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH),
                     null, null));
+            return extendFieldList;
+        } else {
+            return null;
         }
-        return extendFieldList;
     }
 }

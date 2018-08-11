@@ -78,7 +78,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
+                <td>${(a.name)!}${(a.ownsAllContent)?then('[<font color="red">'+t.pageMessage('user.own_all_content')+'</font>]','')?no_esc}</td>
                 <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
                 <td>${(a.email)!}</td>
                 <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>

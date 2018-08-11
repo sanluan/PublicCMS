@@ -457,6 +457,7 @@ CREATE TABLE `sys_dept` (
   `max_sort` INT NOT NULL DEFAULT 1000 COMMENT  '最大内容置顶级别',
   `owns_all_category` tinyint(1) NOT NULL COMMENT '拥有全部分类权限',
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
+  `owns_all_config` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有全部配置权限',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
 ) AUTO_INCREMENT=3 COMMENT='部门';
@@ -464,8 +465,7 @@ CREATE TABLE `sys_dept` (
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES ('1', '1', '技术部', null, '', '1', '1000', '1', '1');
-INSERT INTO `sys_dept` VALUES ('2', '2', '技术部', null, '', '3', '1000', '1', '1');
+INSERT INTO `sys_dept` VALUES ('1', '1', '技术部', null, '', '1', '1000', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for sys_dept_category
@@ -487,6 +487,14 @@ CREATE TABLE `sys_dept_page` (
   PRIMARY KEY  (`dept_id`,`page`)
 ) COMMENT='部门页面';
 
+-- ----------------------------
+-- Table structure for sys_dept_config
+-- ----------------------------
+CREATE TABLE `sys_dept_config` (
+  `dept_id` int(11) NOT NULL COMMENT '部门ID',
+  `config` varchar(100) NOT NULL COMMENT '配置',
+  PRIMARY KEY (`dept_id`,`config`) 
+) COMMENT='部门配置';
 -- ----------------------------
 -- Table structure for sys_domain
 -- ----------------------------
@@ -1203,6 +1211,7 @@ CREATE TABLE `sys_user` (
   `password` varchar(32) NOT NULL COMMENT '密码',
   `nick_name` varchar(45) NOT NULL COMMENT '昵称',
   `dept_id` int(11) default NULL COMMENT '部门',
+  `owns_all_content` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有所有内容权限',
   `roles` text COMMENT '角色',
   `email` varchar(100) default NULL COMMENT '邮箱地址',
   `email_checked` tinyint(1) NOT NULL COMMENT '已验证邮箱',
@@ -1225,7 +1234,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
 
 
 -- ----------------------------

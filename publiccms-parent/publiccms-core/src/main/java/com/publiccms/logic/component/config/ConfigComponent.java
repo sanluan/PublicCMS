@@ -58,8 +58,9 @@ public class ConfigComponent implements SiteCache {
         }
         if (CommonUtils.notEmpty(configPluginList)) {
             for (Config configPlugin : configPluginList) {
-                if (configPlugin.getCode(site).equals(code)) {
-                    configInfo = new ConfigInfo(code, configPlugin.getCodeDescription(site, locale));
+                String configCode = configPlugin.getCode(site);
+                if (null != configCode && configCode.equals(code)) {
+                    configInfo = new ConfigInfo(code, configPlugin.getCodeDescription(locale));
                 }
             }
         }
@@ -71,14 +72,14 @@ public class ConfigComponent implements SiteCache {
      * @param locale
      * @return config list
      */
-    public List<ConfigInfo> getConfigList(SysSite site, Locale locale) {
+    public List<ConfigInfo> getConfigList(SysSite site, Locale locale, boolean showAll) {
         List<ConfigInfo> configList = new ArrayList<>();
         List<String> configCodeList = new ArrayList<>();
         if (CommonUtils.notEmpty(configPluginList)) {
             for (Config config : configPluginList) {
-                String code = config.getCode(site);
-                if (!configCodeList.contains(code)) {
-                    configList.add(new ConfigInfo(config.getCode(site), config.getCodeDescription(site, locale)));
+                String code = config.getCode(site, showAll);
+                if (CommonUtils.notEmpty(code) && !configCodeList.contains(code)) {
+                    configList.add(new ConfigInfo(code, config.getCodeDescription(locale)));
                     configCodeList.add(code);
                 }
             }
@@ -105,8 +106,12 @@ public class ConfigComponent implements SiteCache {
         List<ExtendField> fieldList = new ArrayList<>();
         if ((null == customed || !customed) && CommonUtils.notEmpty(configPluginList)) {
             for (Config config : configPluginList) {
-                if (config.getCode(site).equals(code)) {
-                    fieldList.addAll(config.getExtendFieldList(site, locale));
+                String configCode = config.getCode(site);
+                if (null != configCode && configCode.equals(code)) {
+                    List<ExtendField> extendFieldList = config.getExtendFieldList(site, locale);
+                    if (null != extendFieldList) {
+                        fieldList.addAll(extendFieldList);
+                    }
                 }
             }
         }
