@@ -121,7 +121,7 @@
                 <@_sysConfigList advanced=true>
                     <#list list as a>
                         <li>
-                            <a tname="configs" tvalue="${a.id}">${(a.code)!} ${a.customed?then('','['+t.pageMessage('config.system_item')+']')}</a>
+                            <a tname="configs" tvalue="${a.code}">${(a.code)!} ${a.customed?then('','['+t.pageMessage('config.system_item')+']')}</a>
                         </li>
                     </#list>
                 </@_sysConfigList>
@@ -147,6 +147,14 @@
     $('.ownsAllCategory .tree li a[tname=categoryIds][tvalue=${a.id.categoryId}]',navTab.getCurrentPanel()).prop('checked',true);
         </#list>
     </@_sysDeptCategoryList>
+    <#if a.ownsAllConfig>
+    $('input[name=ownsAllConfig]',navTab.getCurrentPanel()).click();
+    </#if>
+    <@_sysDeptConfigList deptId=a.id>
+        <#list page.list as a>
+    $('.ownsAllConfig .tree li a[tname=configs][tvalue=${a.id.config?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+        </#list>
+    </@_sysDeptConfigList>
 </script>
 </#if>
     </div>

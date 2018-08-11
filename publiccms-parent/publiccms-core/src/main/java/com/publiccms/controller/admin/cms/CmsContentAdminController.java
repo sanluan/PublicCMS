@@ -434,7 +434,8 @@ public class CmsContentAdminController extends AbstractController {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.getEntitys(ids)) {
                 if (null != entity && entity.getCategoryId() != categoryId && site.getId() == entity.getSiteId()
-                        && null == entity.getParentId() && entity.getUserId() == user.getId() && move(site, entity, categoryId)) {
+                        && null == entity.getParentId() && (user.isOwnsAllContent() || entity.getUserId() == user.getId())
+                        && move(site, entity, categoryId)) {
                     categoryIdSet.add(entity.getCategoryId());
                 } else {
                     sb.append(entity.getId()).append(CommonConstants.COMMA_DELIMITED);
@@ -604,7 +605,7 @@ public class CmsContentAdminController extends AbstractController {
         SysUser user = ControllerUtils.getAdminFromSession(session);
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
-            for (CmsContent entity : service.delete(site.getId(),user, ids)) {
+            for (CmsContent entity : service.delete(site.getId(), user, ids)) {
                 categoryIdSet.add(entity.getCategoryId());
             }
             if (!categoryIdSet.isEmpty()) {

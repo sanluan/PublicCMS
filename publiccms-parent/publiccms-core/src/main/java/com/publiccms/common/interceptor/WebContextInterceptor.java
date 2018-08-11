@@ -101,12 +101,8 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
                 SysUser entity = sysUserService.getEntity(user.getId());
                 if (null != entity && !entity.isDisabled() && null != site && !site.isDisabled()
                         && site.getId() == entity.getSiteId()) {
-                    user.setName(entity.getName());
-                    user.setNickName(entity.getNickName());
-                    user.setEmail(entity.getEmail());
-                    user.setEmailChecked(entity.isEmailChecked());
-                    user.setSuperuserAccess(entity.isSuperuserAccess());
-                    ControllerUtils.setUserToSession(session, user);
+                    entity.setPassword(null);
+                    ControllerUtils.setUserToSession(session, entity);
                 } else {
                     Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
                     if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {

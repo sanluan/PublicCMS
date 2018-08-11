@@ -114,7 +114,7 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
             </#if>
             <#if fieldList?seq_contains('tag')>
                  <#include "../include_page/tags.html"/>
-                 <#assign tagTypeIds=category.tagTypeIds!''/>
+                 <#assign tagTypeIds=(category.tagTypeIds)!''/>
                  <#assign tagIds=(a.tagIds)!''/>
                  <#assign tagText=(model.fieldTextMap['tag'])!''/>
                  <@tags tagText tagTypeIds tagIds/>

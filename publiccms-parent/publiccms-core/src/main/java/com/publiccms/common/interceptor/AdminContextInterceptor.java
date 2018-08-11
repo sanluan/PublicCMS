@@ -94,11 +94,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                     }
                 }
             }
-            user.setName(entity.getName());
-            user.setNickName(entity.getNickName());
-            user.setRoles(entity.getRoles());
-            user.setDeptId(entity.getDeptId());
-            ControllerUtils.setAdminToSession(session, user);
+            entity.setPassword(null);
+            ControllerUtils.setAdminToSession(session, entity);
         }
         return true;
     }
