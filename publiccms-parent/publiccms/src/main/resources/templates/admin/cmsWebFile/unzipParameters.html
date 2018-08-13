@@ -1,0 +1,28 @@
+<div class="pageFormContent" layoutH="19">
+    <form action="cmsWebFile/unzip.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+        <input type="hidden" name="path" value="${path!}"/>
+        <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+        <div class="formBar">
+            <ul>
+                <li><button type="submit" class="buttonActive"><@t.page 'button.decompress'/></button></li>
+                <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+            </ul>
+        </div>
+        <div class="pageFormContent" layoutH="19">
+            <dl class="nowrap">
+                <dt><@t.page 'decompress.position'/>:</dt>
+                <dd>
+                    <label><input type="radio" name="here" value="false" checked="checked"/>${path?keep_before_last('.')}/</label>
+                    <label><input type="radio" name="here" value="true"/>${path?keep_before_last('/')}/</label>
+                </dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'file.encoding'/>:</dt>
+                <dd>
+                    <label><input type="radio" name="encoding" value="utf-8" checked="checked"/><@t.page 'file.encoding.utf8'/></label>
+                    <label><input type="radio" name="encoding" value="gbk"/><@t.page 'file.encoding.gbk'/></label>
+                </dd>
+            </dl>
+        </div>
+    </form>
+</div>

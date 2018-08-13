@@ -26,10 +26,6 @@ import com.publiccms.common.constants.Constants;
  *
  */
 public class ZipUtils {
-    static {
-        System.setProperty("sun.zip.encoding", System.getProperty("sun.jnu.encoding"));
-    }
-    private static final String ENCODING = System.getProperty("sun.jnu.encoding");
 
     /**
      * @param sourceFilePath
@@ -59,7 +55,7 @@ public class ZipUtils {
                         ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                         FileLock fileLock = outputStream.getChannel().tryLock();) {
                     if (null != fileLock) {
-                        zipOutputStream.setEncoding(ENCODING);
+                        zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
                         compress(Paths.get(sourceFilePath), zipOutputStream, Constants.BLANK);
                         return true;
                     }
@@ -118,20 +114,20 @@ public class ZipUtils {
      * @param zipFilePath
      * @throws IOException
      */
-    public static void unzipHere(String zipFilePath) throws IOException {
+    public static void unzipHere(String zipFilePath, String encoding) throws IOException {
         int index = zipFilePath.lastIndexOf(Constants.SEPARATOR);
         if (0 > index) {
             index = zipFilePath.lastIndexOf("\\");
         }
-        unzip(zipFilePath, zipFilePath.substring(0, index), true);
+        unzip(zipFilePath, zipFilePath.substring(0, index), encoding, true);
     }
 
     /**
      * @param zipFilePath
      * @throws IOException
      */
-    public static void unzip(String zipFilePath) throws IOException {
-        unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), true);
+    public static void unzip(String zipFilePath, String encoding) throws IOException {
+        unzip(zipFilePath, zipFilePath.substring(0, zipFilePath.lastIndexOf(Constants.DOT)), encoding, true);
     }
 
     /**
@@ -140,8 +136,8 @@ public class ZipUtils {
      * @param overwrite
      * @throws IOException
      */
-    public static void unzip(String zipFilePath, String targetPath, boolean overwrite) throws IOException {
-        ZipFile zipFile = new ZipFile(zipFilePath, ENCODING);
+    public static void unzip(String zipFilePath, String targetPath, String encoding, boolean overwrite) throws IOException {
+        ZipFile zipFile = new ZipFile(zipFilePath, encoding);
         Enumeration<? extends ZipEntry> entryEnum = zipFile.getEntries();
         if (null != entryEnum) {
             while (entryEnum.hasMoreElements()) {
