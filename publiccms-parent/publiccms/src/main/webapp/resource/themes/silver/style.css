@@ -21,11 +21,11 @@ footer{border-color:#C1C1C1;background-color:#F1F1F1;}
 .tabsPage .tabsPageHeader li a{ color:#183152;}
 .tabsPage .tabsPageHeader li.selected{ background:#ffffff;}
 .tabsPage .tabsPageHeader li a.close:hover{ color:#ffffff;}
-.tabsPage .tabsPageHeader li a:hover{ color:#F1F1F1;}
+.tabsPage .tabsPageHeader li a:hover{ color:#C1C1C1;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ color:#183152;}
 .toggleCollapse,.tabsPage .tabsLeft{ border-right-color:#C1C1C1;}
 .tabsPage .tabsRight,.tabsPage .tabsMore{ border-left-color:#C1C1C1;}
-.tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{ color:#F1F1F1;}
+.tabsPage .tabsLeftDisabled,.tabsPage .tabsRightDisabled{ color:#C1C1C1;}
 .tabsPage .tabsMoreList{ border-color:#C1C1C1;background-color:#FFF;}
 .tabsPage{ border-color:#C1C1C1;background-color:#FFF;}
 

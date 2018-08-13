@@ -12,15 +12,17 @@
             <dl class="nowrap">
                 <dt><@t.page 'decompress.position'/>:</dt>
                 <dd>
-                    <label><input type="radio" name="here" value="false" checked="checked"/>${path?keep_before_last('.')}/</label>
-                    <label><input type="radio" name="here" value="true"/>${path?keep_before_last('/')}/</label>
+                    <label style="width:auto;"><input type="radio" name="here" value="false" checked="checked"/><@t.page 'decompress.position.new'/>: ${path?keep_before_last('.')}/</label>
+                    <br/>
+                    <label style="width:auto;"><input type="radio" name="here" value="true"/><@t.page 'decompress.position.here'/>: ${path?keep_before_last('/')}/</label>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt><@t.page 'file.encoding'/>:</dt>
                 <dd>
-                    <label><input type="radio" name="encoding" value="utf-8" checked="checked"/><@t.page 'file.encoding.utf8'/></label>
-                    <label><input type="radio" name="encoding" value="gbk"/><@t.page 'file.encoding.gbk'/></label>
+                    <label style="width:auto;"><input type="radio" name="encoding" value="utf-8" checked="checked"/><@t.page 'file.encoding.utf8'/></label>
+                    <br/>
+                    <label style="width:auto;"><input type="radio" name="encoding" value="gbk"/><@t.page 'file.encoding.gbk'/></label>
                 </dd>
             </dl>
         </div>
