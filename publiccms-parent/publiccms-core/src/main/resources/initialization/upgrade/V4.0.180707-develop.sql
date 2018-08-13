@@ -14,4 +14,4 @@ CREATE TABLE `sys_dept_config` (
   PRIMARY KEY (`dept_id`,`config`) 
 ) COMMENT='部门配置';
 ALTER TABLE `sys_user` ADD COLUMN `owns_all_content` tinyint(1) NOT NULL DEFAULT 1 COMMENT '拥有所有内容权限' AFTER `dept_id`;
-update `sys_user` set `owns_all_content` = '0' where `superuser_access` = '0';
+UPDATE `sys_user` SET `owns_all_content` = '0' WHERE `superuser_access` = '0';

@@ -88,21 +88,23 @@ public class CmsWebFileAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("doUpload")
-    public String upload(MultipartFile file, String path, String _csrf, HttpServletRequest request, HttpSession session,
+    public String upload(MultipartFile[] files, String path, String _csrf, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (null != file && !file.isEmpty()) {
+        if (null != files) {
+            SysSite site = getSite(request);
             try {
-                SysSite site = getSite(request);
-                String originalName = file.getOriginalFilename();
-                path = path + CommonConstants.SEPARATOR + originalName;
-                fileComponent.upload(file, siteComponent.getWebFilePath(site, path));
-                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, originalName,
-                        LogUploadService.getFileType(fileComponent.getSuffix(originalName)), file.getSize(),
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+                for (MultipartFile file : files) {
+                    String originalName = file.getOriginalFilename();
+                    String filePath = path + CommonConstants.SEPARATOR + originalName;
+                    fileComponent.upload(file, siteComponent.getWebFilePath(site, filePath));
+                    logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                            LogLoginService.CHANNEL_WEB_MANAGER, originalName,
+                            LogUploadService.getFileType(fileComponent.getSuffix(originalName)), file.getSize(),
+                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), filePath));
+                }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -110,6 +112,7 @@ public class CmsWebFileAdminController extends AbstractController {
             }
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**

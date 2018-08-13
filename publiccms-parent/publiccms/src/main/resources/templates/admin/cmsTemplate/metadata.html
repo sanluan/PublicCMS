@@ -23,6 +23,7 @@
             <dt><@t.page 'path'/>:</dt></dt>
             <dd>
                 <input name="path" class="required" type="text" size="50" value="${(path)!}"/>
+                <span class="info"><@t.page 'template_path.description'/></span>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -111,6 +112,9 @@
             <#assign extendList=(a.extendList)![]/>
             <@extends 'extendList' extendList/>
         </fieldset>
+<#if a?has_content>
+        <textarea name="content" style="display:none"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
+<#else>
         <textarea name="content" style="display:none">&lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;New PublicCMS Template&lt;/title&gt;
@@ -126,5 +130,6 @@
 </@_version>
 &lt;/body&gt;
 &lt;/html&gt;</textarea>
+</#if>
     </div>
 </form>
