@@ -13,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -53,7 +52,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public void render() throws HttpMessageNotWritableException, IOException {
         if (!renderd) {
-            httpMessageConverter.write(new MappingJacksonValue(map), mediaType, new ServletServerHttpResponse(response));
+            httpMessageConverter.write(map, mediaType, new ServletServerHttpResponse(response));
             renderd = true;
         }
     }
@@ -69,13 +68,13 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    protected String getStringWithoutRegrister(String name) {
+    protected String getStringWithoutRegister(String name) {
         return request.getParameter(name);
     }
 
     @Override
-    protected Integer getIntegerWithoutRegrister(String name) {
-        String result = getStringWithoutRegrister(name);
+    protected Integer getIntegerWithoutRegister(String name) {
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Integer.valueOf(result);
@@ -89,7 +88,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public Short getShort(String name) {
         regristerParameter(PARAMETER_TYPE_STRING, name);
-        String result = getStringWithoutRegrister(name);
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Short.valueOf(result);
@@ -103,7 +102,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public Long getLong(String name) {
         regristerParameter(PARAMETER_TYPE_LONG, name);
-        String result = getStringWithoutRegrister(name);
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Long.valueOf(result);
@@ -117,7 +116,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public Double getDouble(String name) {
         regristerParameter(PARAMETER_TYPE_DOUBLE, name);
-        String result = getStringWithoutRegrister(name);
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Double.valueOf(result);
@@ -129,7 +128,7 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    protected String[] getStringArrayWithoutRegrister(String name) {
+    protected String[] getStringArrayWithoutRegister(String name) {
         String[] values = request.getParameterValues(name);
         if (CommonUtils.notEmpty(values) && 1 == values.length && 0 <= values[0].indexOf(Constants.COMMA_DELIMITED)) {
             return StringUtils.split(values[0], Constants.COMMA_DELIMITED);
@@ -138,8 +137,8 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    protected Boolean getBooleanWithoutRegrister(String name) {
-        String result = getStringWithoutRegrister(name);
+    protected Boolean getBooleanWithoutRegister(String name) {
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             return Boolean.valueOf(result);
         }
@@ -147,8 +146,8 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    public Date getDateWithoutRegrister(String name) throws ParseException {
-        String result = getStringWithoutRegrister(name);
+    public Date getDateWithoutRegister(String name) throws ParseException {
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             String temp = StringUtils.trimToEmpty(result);
             if (DateFormatUtils.FULL_DATE_LENGTH == temp.length()) {

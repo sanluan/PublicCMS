@@ -128,10 +128,10 @@ public abstract class BaseHandler implements RenderHandler {
     /**
      * 注册参数
      * 
-     * Regrister parameters
+     * Register parameters
      */
     public void regristerParameters() {
-        this.regristerParameters = getBooleanWithoutRegrister(PARAMETERS_CONTROLLER, false);
+        this.regristerParameters = getBooleanWithoutRegister(PARAMETERS_CONTROLLER, false);
         if (regristerParameters) {
             parameterList = new ArrayList<>();
             put(PARAMETERS_NAME, parameterList);
@@ -167,20 +167,20 @@ public abstract class BaseHandler implements RenderHandler {
         return map.size();
     }
 
-    protected abstract Integer getIntegerWithoutRegrister(String name) throws Exception;
+    protected abstract Integer getIntegerWithoutRegister(String name) throws Exception;
 
-    protected abstract String[] getStringArrayWithoutRegrister(String name) throws Exception;
+    protected abstract String[] getStringArrayWithoutRegister(String name) throws Exception;
 
-    protected abstract String getStringWithoutRegrister(String name) throws Exception;
+    protected abstract String getStringWithoutRegister(String name) throws Exception;
 
-    protected abstract Boolean getBooleanWithoutRegrister(String name) throws Exception;
+    protected abstract Boolean getBooleanWithoutRegister(String name) throws Exception;
 
-    protected abstract Date getDateWithoutRegrister(String name) throws Exception;
+    protected abstract Date getDateWithoutRegister(String name) throws Exception;
 
     @Override
     public String getString(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_STRING, name);
-        return getStringWithoutRegrister(name);
+        return getStringWithoutRegister(name);
     }
 
     @Override
@@ -197,7 +197,7 @@ public abstract class BaseHandler implements RenderHandler {
     @Override
     public Character getCharacter(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_CHAR, name);
-        String result = getStringWithoutRegrister(name);
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             return result.charAt(0);
         }
@@ -207,14 +207,14 @@ public abstract class BaseHandler implements RenderHandler {
     @Override
     public Integer getInteger(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_INTEGER, name);
-        return getIntegerWithoutRegrister(name);
+        return getIntegerWithoutRegister(name);
     }
 
     @Override
     public int getInteger(String name, int defaultValue) {
         try {
             regristerParameter(PARAMETER_TYPE_INTEGER, name, defaultValue);
-            Integer result = getIntegerWithoutRegrister(name);
+            Integer result = getIntegerWithoutRegister(name);
             return CommonUtils.notEmpty(result) ? result : defaultValue;
         } catch (Exception e) {
             return defaultValue;
@@ -224,7 +224,7 @@ public abstract class BaseHandler implements RenderHandler {
     @Override
     public Integer[] getIntegerArray(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_INTEGERARRAY, name);
-        String[] arr = getStringArrayWithoutRegrister(name);
+        String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
             Set<Integer> set = new TreeSet<>();
             for (String s : arr) {
@@ -246,7 +246,7 @@ public abstract class BaseHandler implements RenderHandler {
     @Override
     public Long[] getLongArray(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_LONGARRAY, name);
-        String[] arr = getStringArrayWithoutRegrister(name);
+        String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
             Set<Long> set = new TreeSet<>();
             for (String s : arr) {
@@ -268,7 +268,7 @@ public abstract class BaseHandler implements RenderHandler {
     @Override
     public Short[] getShortArray(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_SHORTARRAY, name);
-        String[] arr = getStringArrayWithoutRegrister(name);
+        String[] arr = getStringArrayWithoutRegister(name);
         if (CommonUtils.notEmpty(arr)) {
             Set<Short> set = new TreeSet<>();
             for (String s : arr) {
@@ -287,9 +287,9 @@ public abstract class BaseHandler implements RenderHandler {
         return null;
     }
 
-    protected boolean getBooleanWithoutRegrister(String name, boolean defaultValue) {
+    protected boolean getBooleanWithoutRegister(String name, boolean defaultValue) {
         try {
-            Boolean result = getBooleanWithoutRegrister(name);
+            Boolean result = getBooleanWithoutRegister(name);
             return null != result ? result : defaultValue;
         } catch (Exception e) {
             return defaultValue;
@@ -299,26 +299,26 @@ public abstract class BaseHandler implements RenderHandler {
     @Override
     public Boolean getBoolean(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_BOOLEAN, name);
-        return getBooleanWithoutRegrister(name);
+        return getBooleanWithoutRegister(name);
     }
 
     @Override
     public boolean getBoolean(String name, boolean defaultValue) throws Exception {
         regristerParameter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
-        return getBooleanWithoutRegrister(name, defaultValue);
+        return getBooleanWithoutRegister(name, defaultValue);
     }
 
     @Override
     public Date getDate(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_DATE, name);
-        return getDateWithoutRegrister(name);
+        return getDateWithoutRegister(name);
     }
 
     @Override
     public Date getDate(String name, Date defaultValue) throws Exception {
         regristerParameter(PARAMETER_TYPE_DATE, name, defaultValue);
         try {
-            Date result = getDateWithoutRegrister(name);
+            Date result = getDateWithoutRegister(name);
             return null != result ? result : defaultValue;
         } catch (Exception e) {
             return defaultValue;
@@ -328,7 +328,7 @@ public abstract class BaseHandler implements RenderHandler {
     @Override
     public String[] getStringArray(String name) throws Exception {
         regristerParameter(PARAMETER_TYPE_STRINGARRAY, name);
-        return getStringArrayWithoutRegrister(name);
+        return getStringArrayWithoutRegister(name);
     }
 
     @Override
