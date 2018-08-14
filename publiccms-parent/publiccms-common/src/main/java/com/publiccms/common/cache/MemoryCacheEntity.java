@@ -42,12 +42,12 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public void put(K key, V value, Integer expiry) {
+    public void put(K key, V value, Integer expiryInSeconds) {
         lock.writeLock().lock();
         try {
             CacheValue<V> cacheValue = new CacheValue<V>(value);
-            if (null != expiry) {
-                cacheValue.setExpiryDate(System.currentTimeMillis() + expiry);
+            if (null != expiryInSeconds) {
+                cacheValue.setExpiryDate(System.currentTimeMillis() + (expiryInSeconds * 1000));
             }
             cachedMap.put(key, cacheValue);
         } finally {
