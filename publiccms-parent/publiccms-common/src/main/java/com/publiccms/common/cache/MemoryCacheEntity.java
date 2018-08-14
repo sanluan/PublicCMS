@@ -60,13 +60,17 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
         lock.readLock().lock();
         try {
             CacheValue<V> cacheValue = cachedMap.get(key);
-            if (null == cacheValue.getExpiryDate()) {
-                return cacheValue.getValue();
-            } else if (System.currentTimeMillis() < cacheValue.getExpiryDate()) {
-                return cacheValue.getValue();
-            } else {
-                cachedMap.remove(key);
+            if (null == cacheValue) {
                 return null;
+            } else {
+                if (null == cacheValue.getExpiryDate()) {
+                    return cacheValue.getValue();
+                } else if (System.currentTimeMillis() < cacheValue.getExpiryDate()) {
+                    return cacheValue.getValue();
+                } else {
+                    cachedMap.remove(key);
+                    return null;
+                }
             }
         } finally {
             lock.readLock().unlock();
