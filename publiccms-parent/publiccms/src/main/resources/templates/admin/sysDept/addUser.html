@@ -16,6 +16,9 @@
             <dt><@t.page 'user.username'/>:</dt>
             <dd>
                 <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
+            <#if admin.ownsAllContent>
+                <label><input name="ownsAllContent" type="checkbox"<#if !a?has_content||a.ownsAllContent> checked="true"</#if>/><@t.page 'user.own_all_content'/></label>
+            </#if>
             </dd>
         </dl>
         <dl class="nowrap">
