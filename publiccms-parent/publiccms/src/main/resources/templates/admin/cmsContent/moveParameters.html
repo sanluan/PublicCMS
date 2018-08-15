@@ -31,23 +31,21 @@ if(0==$('#idsToMove input',$.pdialog.getCurrent()).length){
     $.pdialog.closeCurrent();
 }
 </script>
-<div class="pageContent">
-    <form action="cmsContent/move.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
-        <input type="hidden" name="categoryId" value=""/>
-        <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-        <div id="idsToMove"></div>
-        <div class="formBar">
-            <ul>
-                <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-            </ul>
-        </div>
-        <div class="pageFormContent" layoutH="60">
-            <ul class="tree treeFolder expand">
-                <li>
-                    <a href="javascript:;" onclick="return false;"><@t.page 'category.select'/></a>
-                    <ul><@categoryTree/></ul>
-                </li>
-            </ul>
-        </div>
-    </form>
-</div>
+<form action="cmsContent/move.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="categoryId" value=""/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div id="idsToMove"></div>
+    <div class="formBar">
+        <ul>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH="60">
+        <ul class="tree treeFolder expand">
+            <li>
+                <a href="javascript:;" onclick="return false;"><@t.page 'category.select'/></a>
+                <ul><@categoryTree/></ul>
+            </li>
+        </ul>
+    </div>
+</form>
