@@ -157,6 +157,7 @@
                         <li><a href="javascript:;" <@getAction r'${getHtml(url,parameter)}' t.pageMessage('help.method.html.description')/>><@t.page 'help.method.html'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' t.pageMessage('help.method.keywords.description')/>><@t.page 'help.method.'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getMd5(value)}' t.pageMessage('help.method.md5.description')/>><@t.page 'help.method.md5'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getHash(value)}' t.pageMessage('help.method.hash.description')/>><@t.page 'help.method.hash'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' t.pageMessage('help.method.sha1.description')/>><@t.page 'help.method.sha1'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getSha2Encode(value)}' t.pageMessage('help.method.sha2.description')/>><@t.page 'help.method.sha2'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getPage(url,pageIndex,pageParameter)}' t.pageMessage('help.method.page.description')/>><@t.page 'help.method.page'/></a></li>
