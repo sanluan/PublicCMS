@@ -187,6 +187,40 @@ public class CmsPlaceAdminController extends AbstractController {
         }
         return CommonConstants.TEMPLATE_DONE;
     }
+    
+    /**
+     * @param path
+     * @param ids
+     * @param _csrf
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("uncheck")
+    public String uncheck(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        SysUser user = ControllerUtils.getAdminFromSession(session);
+        SysDept dept = sysDeptService.getEntity(user.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
+                || ControllerUtils.verifyCustom("noright",
+                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
+                                CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
+                        model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        if (CommonUtils.notEmpty(ids)) {
+            SysSite site = getSite(request);
+            service.check(site.getId(), ids, path);
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, ',')));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
 
     /**
      * @param path

@@ -27,11 +27,15 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * 
      */
-    public static final int STATUS_CONTRIBUTE = 0;
+    public static final int STATUS_DRAFT = 0;
     /**
      * 
      */
     public static final int STATUS_NORMAL = 1;
+    /**
+     * 
+     */
+    public static final int STATUS_PEND = 2;
     /**
      * 
      */
@@ -86,8 +90,22 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      */
     public void check(Serializable id) {
         CmsPlace entity = getEntity(id);
-        if (null != entity) {
+        if (null != entity && STATUS_PEND == entity.getStatus()) {
             entity.setStatus(STATUS_NORMAL);
+            Date now = CommonUtils.getDate();
+            if (now.after(entity.getPublishDate())) {
+                entity.setPublishDate(now);
+            }
+        }
+    }
+
+    /**
+     * @param id
+     */
+    public void uncheck(Serializable id) {
+        CmsPlace entity = getEntity(id);
+        if (null != entity && STATUS_NORMAL == entity.getStatus()) {
+            entity.setStatus(STATUS_PEND);
             Date now = CommonUtils.getDate();
             if (now.after(entity.getPublishDate())) {
                 entity.setPublishDate(now);
@@ -102,8 +120,24 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     public void check(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
-            if (siteId == entity.getSiteId() && STATUS_CONTRIBUTE == entity.getStatus() && path.equals(entity.getPath())) {
+            if (siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus() && path.equals(entity.getPath())) {
                 entity.setStatus(STATUS_NORMAL);
+                if (now.after(entity.getPublishDate())) {
+                    entity.setPublishDate(now);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param siteId
+     * @param ids
+     */
+    public void uncheck(short siteId, Serializable[] ids, String path) {
+        Date now = CommonUtils.getDate();
+        for (CmsPlace entity : getEntitys(ids)) {
+            if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus() && path.equals(entity.getPath())) {
+                entity.setStatus(STATUS_PEND);
                 if (now.after(entity.getPublishDate())) {
                     entity.setPublishDate(now);
                 }

@@ -34,10 +34,12 @@
             <#list page.list as a>
                     <p>
                         <a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickName)!}]
-                    <#if 0=a.status>
-                        <a href="${site.dynamicPath}place/check.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">Check</a> 
+                    <#if 2=a.status>
+                        <a href="${site.dynamicPath}place/check.do?id=${a.id}&returnUrl=${site.dynamicPath}">Check</a> 
+                    <#elseif 1=a.status>
+                        <a href="${site.dynamicPath}place/uncheck.do?id=${a.id}&returnUrl=${site.dynamicPath}">Uncheck</a> 
                     </#if>
-                        <a href="${site.dynamicPath}place/delete.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">Delete</a> 
+                        <a href="${site.dynamicPath}place/delete.do?id=${a.id}&returnUrl=${site.dynamicPath}">Delete</a>
                     </p>
             </#list>
         </@_placeList>

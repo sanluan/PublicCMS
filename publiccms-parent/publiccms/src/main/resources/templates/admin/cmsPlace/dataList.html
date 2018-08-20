@@ -11,7 +11,7 @@
                     <label>${(a.size)!} ${(a.allowContribute?then('['+t.pageMessage('allow_contribute')+']',''))!}</label>
                 </li>
                 <li class="width:auto">
-                    <#list 0..1 as s>
+                    <#list 0..2 as s>
                         <label style="width:auto">
                             <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
                             <span><@t.page 'status.place.data.'+s/></span>
@@ -46,6 +46,7 @@
             <li><a href="cmsPlace/add.html?id={sid}" target="navTab" rel="cmsPlace/edit"><i class="icon-edit icon-large"></i> <@t.page 'place_data.edit'/></a></li>
             <li><a href="cmsPlace/refresh.do?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
             <li><a href="cmsPlace/check.do?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
+            <li><a href="cmsPlace/uncheck.do?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
             <#if site.useSsi>
                 <li class="line">line</li>
                 <li><a href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.publish'/></a></li>
@@ -88,8 +89,10 @@
                 <td><@t.page 'status.place.data.'+a.status/></td>
                 <td>
                     <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="<@t.page 'place_data.edit'/>"><@t.page 'button.edit'/></a>
-                    <#if 0=a.status>
+                    <#if 2=a.status>
                         <a href="cmsPlace/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>
+                    <#elseif 1=a.status>
+                        <a href="cmsPlace/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>
                     </#if>
                     <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>

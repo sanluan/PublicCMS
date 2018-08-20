@@ -17,3 +17,5 @@ ALTER TABLE `sys_user` ADD COLUMN `owns_all_content` tinyint(1) NOT NULL DEFAULT
 UPDATE `sys_user` SET `owns_all_content` = '0' WHERE `superuser_access` = '0';
 -- 20180813 --
 UPDATE `sys_module` SET `authorized_url` =  'cmsWebFile/unzip',url = 'cmsWebFile/unzipParameters' WHERE `id` ='webfile_unzip';
+-- 20180820 --
+UPDATE `sys_module` SET `authorized_url` =  'cmsPlace/check,cmsPlace/uncheck' WHERE `id` ='place_check';
