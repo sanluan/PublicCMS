@@ -190,7 +190,7 @@ INSERT INTO `cms_category_model` VALUES (93, 'article', NULL);
 -- ----------------------------
 -- Records of cms_category_type
 -- ----------------------------
-INSERT INTO `cms_category_type` VALUES (1, 2, '带文章的分类', 0, 81);
+INSERT INTO `cms_category_type` VALUES (1, 2, '带文章的分类', 0, 1);
 
 -- ----------------------------
 -- Records of cms_place
