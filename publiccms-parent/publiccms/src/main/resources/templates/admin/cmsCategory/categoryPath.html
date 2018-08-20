@@ -9,8 +9,12 @@
         </#if>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>}</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'category.id'/>}</a>
+<<<<<<< HEAD
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}_${getMd5(category.code+category.id)}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>_<@t.page 'help.method.md5'/>(<@t.page 'category.code'/>+<@t.page 'category.id'/>)}</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}-${getHash(category.code+category.id)}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>-<@t.page 'help.method.hash'/>(<@t.page 'category.code'/>+<@t.page 'category.id'/>)}</a>
+=======
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}-${getMd5(category.code+category.id)}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>-<@t.page 'help.method.md5'/>(<@t.page 'category.code'/>+<@t.page 'category.id'/>)}</a>
+>>>>>>> branch 'develop' of https://gitee.com/sanluan/PublicCMS.git
         </li>
     </ul>
 </div>

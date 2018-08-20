@@ -18,6 +18,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.log.LogOperate;
@@ -83,7 +84,7 @@ public class CmsPlaceAdminController extends AbstractController {
                     || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                     || ControllerUtils.verifyCustom("noright",
                             !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
-                                    CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))),
+                                    CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + JsonUtils.getString(entity)))),
                             model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -107,7 +108,7 @@ public class CmsPlaceAdminController extends AbstractController {
                 entity.setStatus(CmsPlaceService.STATUS_NORMAL);
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
+                        "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             Map<String, String> map = ExtendUtils.getExtentDataMap(extendDataParameters.getExtendDataList(),
@@ -164,6 +165,40 @@ public class CmsPlaceAdminController extends AbstractController {
      */
     @RequestMapping("check")
     public String check(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        SysUser user = ControllerUtils.getAdminFromSession(session);
+        SysDept dept = sysDeptService.getEntity(user.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+                || ControllerUtils.verifyNotEmpty("deptId", dept, model)
+                || ControllerUtils.verifyCustom("noright",
+                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
+                                CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
+                        model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        if (CommonUtils.notEmpty(ids)) {
+            SysSite site = getSite(request);
+            service.check(site.getId(), ids, path);
+            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, ',')));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+    
+    /**
+     * @param path
+     * @param ids
+     * @param _csrf
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("uncheck")
+    public String uncheck(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }

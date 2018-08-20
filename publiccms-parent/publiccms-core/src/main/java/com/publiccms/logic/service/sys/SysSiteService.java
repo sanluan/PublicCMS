@@ -1,8 +1,5 @@
 package com.publiccms.logic.service.sys;
 
-import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.dao.sys.SysSiteDao;
-
 // Generated 2015-7-3 16:18:22 by com.publiccms.common.source.SourceGenerator
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +8,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.dao.sys.SysSiteDao;
 
 /**
  *
@@ -23,7 +22,7 @@ public class SysSiteService extends BaseService<SysSite> {
 
     /**
      * @param disabled
-     * @param parentId 
+     * @param parentId
      * @param name
      * @param pageIndex
      * @param pageSize
@@ -38,7 +37,7 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param id
      * @return
      */
-    public SysSite delete(Integer id) {
+    public SysSite delete(Short id) {
         SysSite entity = getEntity(id);
         if (null != entity) {
             entity.setDisabled(true);

@@ -305,7 +305,7 @@ fieldset legend:hover{ background-color:#dddddd;}
 .dialog .pageHeader{ border-style:solid;border-width:1px;margin:0}
 .dialog .pageContent{ border-style:solid;border-width:0 1px;}
 .dialog .viewInfo{ border-style:solid;border-width:1px 0 0 0;}
-.dialog .formBar{ border-style:solid;border-width:1px 0;}
+.dialog .formBar{ border-style:solid;}
 
 
 .combox{ float:left;margin-right:3px;background-position:100% -25px;}

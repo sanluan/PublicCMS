@@ -105,7 +105,7 @@
                         <a href="myself/contentList.html?parentId=${a.id}" target="navTab" rel="myself/contentList"><@t.page 'content.child_management'/></a>
                     </#if>
                     <#if 1==a.status>
-                        <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push"><@t.page 'button.push'/></a>
+                        <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>
                     </#if>
                 </td>
             </tr>

@@ -115,12 +115,12 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    protected String getStringWithoutRegrister(String name) throws TemplateModelException {
+    protected String getStringWithoutRegister(String name) throws TemplateModelException {
         return TemplateModelUtils.converString(parameters.get(name));
     }
 
     @Override
-    public Integer getIntegerWithoutRegrister(String name) throws TemplateModelException {
+    public Integer getIntegerWithoutRegister(String name) throws TemplateModelException {
         return TemplateModelUtils.converInteger(parameters.get(name));
     }
 
@@ -143,17 +143,17 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    protected String[] getStringArrayWithoutRegrister(String name) throws TemplateModelException {
+    protected String[] getStringArrayWithoutRegister(String name) throws TemplateModelException {
         return TemplateModelUtils.converStringArray(parameters.get(name));
     }
 
     @Override
-    protected Boolean getBooleanWithoutRegrister(String name) throws TemplateModelException {
+    protected Boolean getBooleanWithoutRegister(String name) throws TemplateModelException {
         return TemplateModelUtils.converBoolean(parameters.get(name));
     }
 
     @Override
-    public Date getDateWithoutRegrister(String name) throws TemplateModelException, ParseException {
+    public Date getDateWithoutRegister(String name) throws TemplateModelException, ParseException {
         return TemplateModelUtils.converDate(parameters.get(name));
     }
 

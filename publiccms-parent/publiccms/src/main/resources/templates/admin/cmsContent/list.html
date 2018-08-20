@@ -87,7 +87,7 @@
             <li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> <@t.page 'content.edit'/></a></li>
         <#if authorizedMap['cmsContent/changeModelParameters']>
             <li>
-                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" rel="cmsContent_changeModelParameters"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
+                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" mask="true"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
             </li>
         </#if>
             <li class="line">line</li>
@@ -177,7 +177,7 @@
                             <#if dept?has_content>
                                 <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" target="dialog" width="500" height="150" mask="true"><@t.page 'top'/></a>
                             </#if>
-                            <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push"><@t.page 'button.push'/></a>
+                            <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>
                         </#if>
                         <#if authorizedMap['cmsContent/uncheck']>
                             <a href="cmsContent/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>

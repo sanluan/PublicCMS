@@ -166,6 +166,9 @@ public class SysDeptAdminController extends AbstractController {
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
+            if (!admin.isOwnsAllContent()) {
+                entity.setOwnsAllContent(oldEntity.isOwnsAllContent());
+            }
             SysUser user = userService.getEntity(entity.getId());
             if ((!user.getName().equals(entity.getName())
                     && ControllerUtils.verifyHasExist("username", userService.findByName(site.getId(), entity.getName()), model))
@@ -195,6 +198,9 @@ public class SysDeptAdminController extends AbstractController {
                     || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model) || ControllerUtils
                             .verifyHasExist("username", userService.findByName(site.getId(), entity.getName()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
+            }
+            if (!admin.isOwnsAllContent()) {
+                entity.setOwnsAllContent(false);
             }
             entity.setDeptId(dept.getId());
             entity.setSiteId(site.getId());

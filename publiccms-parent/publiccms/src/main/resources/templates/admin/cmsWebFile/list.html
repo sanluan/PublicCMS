@@ -73,8 +73,7 @@
                         <a href="cmsWebFile/zip.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><@t.page 'button.compress'/></a>
                     <#else>
                         <#if a.fileName?ends_with('.zip')>
-                            <a href="cmsWebFile/unzip.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.decompress'/>" target="ajaxTodo"><@t.page 'button.decompress'/></a>
-                            <a href="cmsWebFile/unzipHere.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.decompress_here'/>" target="ajaxTodo"><@t.page 'button.decompress_here'/></a>
+                            <a href="cmsWebFile/unzipParameters.html?path=${filePath?url}"  target="dialog" mask="true"><@t.page 'button.decompress'/></a>
                         </#if>
                         <#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
                           <a href="cmsWebFile/content.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'button.edit'/>:${filePath}"><@t.page 'button.edit'/></a>

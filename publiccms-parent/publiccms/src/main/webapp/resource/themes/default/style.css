@@ -21,8 +21,7 @@ main{ background-color:#48597A;color:#293950;}
 .tabsPage .tabsPageHeader li{ border-right-color:#5A6D95;}
 .tabsPage .tabsPageHeader li a{ color:#183152;}
 .tabsPage .tabsPageHeader li.selected{ background:#ffffff;}
-.tabsPage .tabsPageHeader li a:hover{ color:#ffffff;}
-.tabsPage .tabsPageHeader li.selected a:hover{ color:#d7ebf1;}
+.tabsPage .tabsPageHeader li a:hover{ color:#5A6D95;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ color:#183152;}
 .toggleCollapse,.tabsPage .tabsLeft{ border-right-color:#5A6D95;}
 .tabsPage .tabsRight,.tabsPage .tabsMore{ border-left-color:#5A6D95;}

@@ -75,6 +75,7 @@ public class PlaceController extends AbstractController {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
             }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
+            entity.setStatus(CmsPlaceService.STATUS_PEND);
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
             SysUser user = ControllerUtils.getUserFromSession(session);
@@ -172,6 +173,37 @@ public class PlaceController extends AbstractController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             service.check(id);
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        }
+    }
+    
+    /**
+     * @param id
+     * @param returnUrl
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("uncheck")
+    public String uncheck(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysSite site = getSite(request);
+        if (CommonUtils.empty(returnUrl)) {
+            returnUrl = site.getDynamicPath();
+        }
+        CmsPlace entity = service.getEntity(id);
+        SysUser user = ControllerUtils.getUserFromSession(session);
+        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+        if (ControllerUtils.verifyCustom("manage",
+                null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
+                        || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
+                model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        } else {
+            service.uncheck(id);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

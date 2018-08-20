@@ -14,4 +14,10 @@ CREATE TABLE `sys_dept_config` (
   PRIMARY KEY (`dept_id`,`config`) 
 ) COMMENT='部门配置';
 ALTER TABLE `sys_user` ADD COLUMN `owns_all_content` tinyint(1) NOT NULL DEFAULT 1 COMMENT '拥有所有内容权限' AFTER `dept_id`;
-update `sys_user` set `owns_all_content` = '0' where `superuser_access` = '0';
+UPDATE `sys_user` SET `owns_all_content` = '0' WHERE `superuser_access` = '0';
+-- 20180813 --
+UPDATE `sys_module` SET `authorized_url` =  'cmsWebFile/unzip',url = 'cmsWebFile/unzipParameters' WHERE `id` ='webfile_unzip';
+-- 20180820 --
+UPDATE `sys_module` SET `authorized_url` =  'cmsPlace/check,cmsPlace/uncheck' WHERE `id` ='place_check';
+-- 20180821 --
+UPDATE `sys_module` SET `authorized_url` =  'cmsTemplate/help,cmsTemplate/savePlace,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsWebFile/contentForm,placeTemplate/form' WHERE `id` ='place_template_content';

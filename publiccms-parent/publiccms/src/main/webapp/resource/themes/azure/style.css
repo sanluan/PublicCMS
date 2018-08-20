@@ -20,8 +20,7 @@ footer{ border-color:#88a0be;background-color:#b0cdf5;}
 .tabsPage .tabsPageHeader li{ border-right-color:#88a0be;}
 .tabsPage .tabsPageHeader li a{ color:#15428B;}
 .tabsPage .tabsPageHeader li.selected{ background:#ffffff;}
-.tabsPage .tabsPageHeader li a:hover{ color:#ffffff;}
-.tabsPage .tabsPageHeader li.selected a:hover{ color:#b0cdf5;}
+.tabsPage .tabsPageHeader li a:hover{ color:#88a0be;}
 .tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ color:#15428B;}
 .toggleCollapse,.tabsPage .tabsLeft{ border-right-color:#88a0be;}
 .tabsPage .tabsRight,.tabsPage .tabsMore{ border-left-color:#88a0be;}

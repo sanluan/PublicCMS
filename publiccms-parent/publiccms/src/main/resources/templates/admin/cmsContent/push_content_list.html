@@ -67,7 +67,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" rel="push"><@t.page 'button.push'/></a>
+                    <a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" mask="true"><@t.page 'button.push'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>

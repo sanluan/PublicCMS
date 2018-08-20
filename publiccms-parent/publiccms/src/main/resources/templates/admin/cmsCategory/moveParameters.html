@@ -27,9 +27,9 @@ if(0==$('#idsToMove input',$.pdialog.getCurrent()).length){
 </script>
 <div class="pageFormContent" layoutH="19">
     <form action="cmsCategory/move.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
-    <input type="hidden" name="parentId" value=""/>
-    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <div id="idsToMove"></div>
+        <input type="hidden" name="parentId" value=""/>
+        <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+        <div id="idsToMove"></div>
         <ul class="tree treeFolder expand">
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'category.parent.select'/></a>

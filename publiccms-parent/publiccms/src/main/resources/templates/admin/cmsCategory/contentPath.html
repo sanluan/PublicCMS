@@ -9,8 +9,12 @@
         </#if>
             <a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content.html?id=${content.id}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>.html?id={<@t.page 'content.id'/>}</a>
             <a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content/${content.id}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'content.id'/>}</a>
+<<<<<<< HEAD
             <a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content.html?id=${content.id}_${getMd5(category.code+content.id)}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>.html?id={<@t.page 'content.id'/>_<@t.page 'help.method.md5'/>(<@t.page 'category.code'/>+<@t.page 'content.id'/>)}</a>
             <a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content.html?id=${content.id}-${getHash(category.code+content.id)}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>.html?id={<@t.page 'content.id'/>-<@t.page 'help.method.hash'/>(<@t.page 'category.code'/>+<@t.page 'content.id'/>)}</a>
+=======
+            <a href="javascript:;" onclick="$('input[data-model]',navTab.getCurrentPanel()).val('');$.bringBack({contentPath:'<#noparse>content.html?id=${content.id}-${getMd5(category.code+content.id)}</#noparse>'});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>.html?id={<@t.page 'content.id'/>-<@t.page 'help.method.md5'/>(<@t.page 'category.code'/>+<@t.page 'content.id'/>)}</a>
+>>>>>>> branch 'develop' of https://gitee.com/sanluan/PublicCMS.git
         </li>
     </ul>
 </div>

@@ -47,13 +47,13 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     @Override
-    public void put(K key, V value, Integer expiry) {
+    public void put(K key, V value, Integer expiryInSeconds) {
         Jedis jedis = jedisPool.getResource();
-        if (null == expiry) {
+        if (null == expiryInSeconds) {
             jedis.set(getKey(key), valueSerializer.serialize(value));
             jedis.zadd(byteName, System.currentTimeMillis(), keySerializer.serialize(key));
         } else {
-            jedis.setex(getKey(key), expiry, valueSerializer.serialize(value));
+            jedis.setex(getKey(key), expiryInSeconds, valueSerializer.serialize(value));
         }
         jedis.close();
     }
@@ -168,7 +168,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     @Override
     public void init(String entityName, Integer cacheSize, Properties properties) {
         if (null == JEDISPOOL) {
-            synchronized (JEDISPOOL) {
+            synchronized (this) {
                 if (null == JEDISPOOL) {
                     JEDISPOOL = RedisUtils.createJedisPool(properties);
                 }

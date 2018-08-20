@@ -1,4 +1,4 @@
-package config.boot;
+package boot;
 
 import java.time.Duration;
 
