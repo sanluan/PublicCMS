@@ -185,7 +185,7 @@ public class CmsPageMetadata implements java.io.Serializable {
         map.put("needBody", isNeedBody());
         map.put("acceptParameters", getAcceptParameters());
         map.put("cacheTime", getCacheTime());
-        map.put("contentTyp", getContentType());
+        map.put("contentType", getContentType());
         map.put("extendList", getExtendList());
         map.put("extendData", data.getExtendData());
         return map;
