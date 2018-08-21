@@ -26,7 +26,7 @@ public class SysAppTokenService extends BaseService<SysAppToken> {
      * @param appId
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Integer appId, Integer pageIndex, Integer pageSize) {
@@ -34,11 +34,11 @@ public class SysAppTokenService extends BaseService<SysAppToken> {
     }
 
     /**
-     * @param createDate
-     * @return
+     * @param now
+     * @return number of data deleted
      */
-    public int delete(Date createDate) {
-        return dao.delete(createDate);
+    public int delete(Date now) {
+        return dao.delete(now);
     }
 
     @Autowired

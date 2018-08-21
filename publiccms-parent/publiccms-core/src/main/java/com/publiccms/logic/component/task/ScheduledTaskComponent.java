@@ -47,14 +47,15 @@ public class ScheduledTaskComponent {
     private StatisticsComponent statisticsComponent;
 
     /**
-     * 每分钟清理半小时前的token
+     * 10分钟清理过期token
      */
-    @Scheduled(fixedDelay = 60 * 1000L)
+    @Scheduled(fixedDelay = 10 * 60 * 1000L)
     public void clearAppToken() {
-        if (CmsVersion.isInitialized() && CmsVersion.isMaster()) {
-            Date date = DateUtils.addMinutes(CommonUtils.getDate(), -30);
-            appTokenService.delete(date);
-            emailTokenService.delete(date);
+        if (CmsVersion.isMaster()) {
+            Date now = CommonUtils.getDate();
+            appTokenService.delete(now);
+            emailTokenService.delete(now);
+            userTokenService.delete(now);
         }
     }
 
@@ -79,10 +80,6 @@ public class ScheduledTaskComponent {
             synchronized (cacheComponent) {
                 cacheComponent.clear();
             }
-            if (CmsVersion.isMaster()) {
-                // 清理30前的Token
-                userTokenService.delete(DateUtils.addDays(CommonUtils.getDate(), -30));
-            }
         }
     }
 
@@ -91,7 +88,7 @@ public class ScheduledTaskComponent {
      */
     @Scheduled(cron = "0 0 0 1 * ?")
     public void clearLog() {
-        if (CmsVersion.isInitialized() && CmsVersion.isMaster()) {
+        if (CmsVersion.isMaster()) {
             Date date = DateUtils.addYears(CommonUtils.getDate(), -2);
             logLoginService.delete(null, date);
             logOperateService.delete(null, date);

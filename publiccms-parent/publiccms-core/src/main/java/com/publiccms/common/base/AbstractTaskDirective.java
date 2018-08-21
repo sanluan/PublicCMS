@@ -40,14 +40,14 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
     }
 
     @Override
-    public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType,
-            HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
+    public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
+            HttpServletResponse response) throws IOException, Exception {
         HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, response);
         SysApp app = null;
         if (null == (app = getApp(handler))) {
             handler.put("error", ApiController.NEED_APP_TOKEN).render();
-        } else if (CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils
-                .contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName())) {
+        } else if (CommonUtils.empty(app.getAuthorizedApis())
+                || !ArrayUtils.contains(StringUtils.split(app.getAuthorizedApis(), CommonConstants.COMMA_DELIMITED), getName())) {
             handler.put("error", ApiController.UN_AUTHORIZED).render();
         } else {
             execute(handler);
@@ -57,7 +57,7 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
 
     protected SysApp getApp(RenderHandler handler) throws Exception {
         SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
-        if (null != appToken) {
+        if (null != appToken && (null == appToken.getExpiryDate() || CommonUtils.getDate().before(appToken.getExpiryDate()))) {
             SysApp app = appService.getEntity(appToken.getAppId());
             if (app.getSiteId() == getSite(handler).getId()) {
                 return app;

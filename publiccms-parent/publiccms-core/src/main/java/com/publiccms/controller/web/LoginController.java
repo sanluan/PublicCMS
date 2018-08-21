@@ -2,6 +2,7 @@ package com.publiccms.controller.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -101,8 +103,9 @@ public class LoginController extends AbstractController {
                 ControllerUtils.setUserToSession(request.getSession(), user);
                 String authToken = UUID.randomUUID().toString();
                 addLoginStatus(user, authToken, request, response);
-                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
-                        CommonUtils.getDate(), ip));
+                Date now = CommonUtils.getDate();
+                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
+                        DateUtils.addDays(now, 30), ip));
                 service.updateLoginStatus(user.getId(), ip);
                 logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true,
                         CommonUtils.getDate(), null));
@@ -176,8 +179,9 @@ public class LoginController extends AbstractController {
             ControllerUtils.setUserToSession(request.getSession(), entity);
             String authToken = UUID.randomUUID().toString();
             addLoginStatus(entity, authToken, request, response);
-            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB,
-                    CommonUtils.getDate(), ip));
+            Date now = CommonUtils.getDate();
+            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB, now,
+                    DateUtils.addDays(now, 30), ip));
             if (null != channel && null != openId) {
                 String oauthToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
                         .append(CommonConstants.DOT).append(openId).toString();

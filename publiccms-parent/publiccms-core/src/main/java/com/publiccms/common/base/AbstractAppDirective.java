@@ -62,7 +62,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
 
     protected SysApp getApp(RenderHandler handler) throws Exception {
         SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
-        if (null != appToken) {
+        if (null != appToken && (null == appToken.getExpiryDate() || CommonUtils.getDate().before(appToken.getExpiryDate()))) {
             SysApp app = appService.getEntity(appToken.getAppId());
             if (app.getSiteId() == getSite(handler).getId()) {
                 return app;
@@ -76,7 +76,9 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
         Long authUserId = handler.getLong("authUserId");
         if (CommonUtils.notEmpty(authToken) && null != authUserId) {
             SysUserToken sysUserToken = sysUserTokenService.getEntity(authToken);
-            if (null != sysUserToken && authUserId.equals(sysUserToken.getUserId())) {
+            if (null != sysUserToken
+                    && (null == sysUserToken.getExpiryDate() || CommonUtils.getDate().before(sysUserToken.getExpiryDate()))
+                    && authUserId.equals(sysUserToken.getUserId())) {
                 return sysUserService.getEntity(sysUserToken.getUserId());
             }
         }

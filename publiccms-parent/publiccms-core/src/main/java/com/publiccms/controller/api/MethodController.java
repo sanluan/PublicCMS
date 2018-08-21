@@ -63,7 +63,7 @@ public class MethodController extends AbstractController {
             try {
                 if (method.needAppToken()) {
                     SysAppToken token = appTokenService.getEntity(appToken);
-                    if (null == token) {
+                    if (null == token || null != token.getExpiryDate() && CommonUtils.getDate().after(token.getExpiryDate())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                     SysApp app = appService.getEntity(token.getAppId());

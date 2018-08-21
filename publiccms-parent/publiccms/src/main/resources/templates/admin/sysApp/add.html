@@ -17,6 +17,10 @@
             <dt><@t.page 'channel'/>:</dt>
             <dd><input class="required" name="channel" type="text" size="30" value="${(a.channel)!}"/></dd>
         </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'expiry_minutes'/>:</dt>
+            <dd><input name="expiryMinutes" type="number" size="30" value="${(a.expiryMinutes)!}" min="1"/></dd>
+        </dl>
         <fieldset class="ownsAllRight">
             <legend><@t.page 'app.interface'/></legend>
             <ul id="authorizedApis" class="treeFolder treeCheck expand">

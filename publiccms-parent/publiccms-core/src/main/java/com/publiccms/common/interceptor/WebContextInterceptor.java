@@ -64,6 +64,8 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
                             SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
                             if (null != userToken && null != site && !site.isDisabled() && userToken.getSiteId() == site.getId()
                                     && userToken.getUserId() == userId && channel.equals(userToken.getChannel())
+                                    && (null == userToken.getExpiryDate()
+                                            || CommonUtils.getDate().before(userToken.getExpiryDate()))
                                     && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
                                 user.setPassword(null);
                                 String ip = RequestUtils.getIpAddress(request);

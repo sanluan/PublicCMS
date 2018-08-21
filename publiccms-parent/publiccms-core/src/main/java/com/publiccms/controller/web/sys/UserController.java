@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -140,6 +141,7 @@ public class UserController extends AbstractController {
             sysEmailToken.setUserId(user.getId());
             sysEmailToken.setAuthToken(UUID.randomUUID().toString());
             sysEmailToken.setEmail(email);
+            sysEmailToken.setExpiryDate(DateUtils.addMinutes(CommonUtils.getDate(), 30));
             sysEmailTokenService.save(sysEmailToken);
             try {
                 Map<String, Object> emailModel = new HashMap<>();
@@ -178,6 +180,9 @@ public class UserController extends AbstractController {
             returnUrl = site.getDynamicPath();
         }
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
+        if (null != sysEmailToken && CommonUtils.getDate().after(sysEmailToken.getExpiryDate())) {
+            sysEmailToken = null;
+        }
         if (ControllerUtils.verifyNotEmpty("verifyEmail.authToken", authToken, model)
                 || ControllerUtils.verifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

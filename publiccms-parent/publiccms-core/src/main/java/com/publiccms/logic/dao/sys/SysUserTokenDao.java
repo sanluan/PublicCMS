@@ -47,13 +47,14 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
     }
 
     /**
-     * @param createDate
+     * @param now
      * @return number of data deleted
      */
-    public int delete(Date createDate) {
-        if (null != createDate) {
+    public int delete(Date now) {
+        if (null != now) {
             QueryHandler queryHandler = getQueryHandler("delete from SysUserToken bean");
-            queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
+            queryHandler.condition("bean.expiryDate is not null");
+            queryHandler.condition("bean.expiryDate <= :expiryDate").setParameter("expiryDate", now);
             return delete(queryHandler);
         }
         return 0;

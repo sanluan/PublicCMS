@@ -1,8 +1,10 @@
 package com.publiccms.views.directive.api;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,9 +32,14 @@ public class AppTokenDirective extends AbstractAppDirective {
         SysApp entity = appService.getEntity(handler.getString("appKey"));
         if (null != entity) {
             if (entity.getAppSecret().equalsIgnoreCase(handler.getString("appSecret"))) {
-                SysAppToken token = new SysAppToken(UUID.randomUUID().toString(), entity.getId(), CommonUtils.getDate());
+                Date now = CommonUtils.getDate();
+                SysAppToken token = new SysAppToken(UUID.randomUUID().toString(), entity.getId(), now);
+                if (null != entity.getExpiryMinutes()) {
+                    token.setExpiryDate(DateUtils.addMinutes(now, entity.getExpiryMinutes()));
+                }
                 appTokenService.save(token);
                 handler.put("appToken", token.getAuthToken());
+                handler.put("expiryDate", token.getExpiryDate());
             } else {
                 handler.put("error", SECRET_ERROR);
             }

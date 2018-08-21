@@ -1,6 +1,7 @@
 package com.publiccms.controller.web.oauth;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -121,13 +123,15 @@ public class OauthController extends AbstractController {
                                 model.addAttribute("gender", oauthUser.getGender());
                                 model.addAttribute("channel", channel);
                                 model.addAttribute("returnUrl", returnUrl);
-                                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
+                                return UrlBasedViewResolver.REDIRECT_URL_PREFIX
+                                        + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
                             }
                         } else {
-                            String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId()).append(CommonConstants.DOT)
-                                    .append(oauthAccess.getOpenId()).toString();
-                            entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, CommonUtils.getDate(),
-                                    RequestUtils.getIpAddress(request));
+                            String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
+                                    .append(CommonConstants.DOT).append(oauthAccess.getOpenId()).toString();
+                            Date now = CommonUtils.getDate();
+                            entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, now,
+                                    DateUtils.addDays(now, 30), RequestUtils.getIpAddress(request));
                             sysUserTokenService.save(entity);
                             ControllerUtils.setUserToSession(session, user);
                             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

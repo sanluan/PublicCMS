@@ -382,6 +382,7 @@ CREATE TABLE `sys_app` (
   `app_key` varchar(50) NOT NULL COMMENT 'APP key',
   `app_secret` varchar(50) NOT NULL COMMENT 'APP secret',
   `authorized_apis`  text NULL COMMENT '授权API',
+  `expiry_minutes` int(11) DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `key` (`app_key`),
   KEY `site_id` (`site_id`)
@@ -413,6 +414,7 @@ CREATE TABLE `sys_app_token` (
   `auth_token` varchar(40) NOT NULL COMMENT '授权验证',
   `app_id` int(11) NOT NULL COMMENT '应用ID',
   `create_date` datetime NOT NULL COMMENT '创建日期',
+  `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
   KEY `app_id` (`app_id`),
   KEY `create_date` (`create_date`)
@@ -524,6 +526,7 @@ CREATE TABLE `sys_email_token` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `email` varchar(100) NOT NULL COMMENT '邮件地址',
   `create_date` datetime NOT NULL COMMENT '创建日期',
+  `expiry_date` datetime NOT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
   KEY `create_date` (`create_date`),
   KEY `user_id` (`user_id`)
@@ -583,6 +586,7 @@ INSERT INTO `sys_module` VALUES ('app_add', 'sysApp/add', 'sysApp/save', NULL, '
 INSERT INTO `sys_module` VALUES ('app_client_disable', NULL, 'sysAppClient/disable', NULL, 'app_client_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_enable', NULL, 'sysAppClient/enable', NULL, 'app_client_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_list', 'sysAppClient/list', NULL, '<i class=\"icon-coffee icon-large\"></i>', 'user_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysApp/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, '<i class=\"icon-linux icon-large\"></i>', 'system_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('category', NULL, NULL, '<i class=\"icon-folder-open icon-large\"></i>', NULL, 1, 5);
@@ -766,6 +770,8 @@ INSERT INTO `sys_module_lang` VALUES ('app_client_enable', '', '启用');
 INSERT INTO `sys_module_lang` VALUES ('app_client_enable', 'en', 'Enable');
 INSERT INTO `sys_module_lang` VALUES ('app_client_list', '', '客户端管理');
 INSERT INTO `sys_module_lang` VALUES ('app_client_list', 'en', 'Application client management');
+INSERT INTO `sys_module_lang` VALUES ('app_issue', '', '颁发Token');
+INSERT INTO `sys_module_lang` VALUES ('app_issue', 'en', 'Issue Token');
 INSERT INTO `sys_module_lang` VALUES ('app_delete', '', '删除');
 INSERT INTO `sys_module_lang` VALUES ('app_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('app_list', '', '应用授权');
@@ -1247,6 +1253,7 @@ CREATE TABLE `sys_user_token` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `create_date` datetime NOT NULL COMMENT '创建日期',
+  `expiry_date` datetime NOT NULL COMMENT '过期日期',
   `login_ip` varchar(64) NOT NULL COMMENT '登录IP',
   PRIMARY KEY  (`auth_token`),
   KEY `user_id` (`user_id`),

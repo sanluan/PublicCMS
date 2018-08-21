@@ -2,6 +2,7 @@ package com.publiccms.controller.admin;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -91,8 +93,9 @@ public class LoginAdminController extends AbstractController {
         ControllerUtils.setAdminToSession(session, user);
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
-        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                CommonUtils.getDate(), ip));
+        Date now = CommonUtils.getDate();
+        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, now,
+                DateUtils.addDays(now, 30), ip));
         try {
             StringBuilder sb = new StringBuilder();
             sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
