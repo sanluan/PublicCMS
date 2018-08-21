@@ -1,8 +1,5 @@
 package com.publiccms.controller.web.cms;
 
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -19,8 +16,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.ExtendUtils;
-import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
@@ -29,23 +24,17 @@ import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentAttributeService;
-import com.publiccms.logic.service.cms.CmsContentFileService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysExtendFieldService;
-import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
-import com.publiccms.views.pojo.entities.ExtendField;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 
 /**
@@ -66,14 +55,6 @@ public class ContentController extends AbstractController {
     private CmsCategoryService categoryService;
     @Autowired
     private ModelComponent modelComponent;
-    @Autowired
-    private CmsContentAttributeService attributeService;
-    @Autowired
-    private SysExtendService extendService;
-    @Autowired
-    private SysExtendFieldService extendFieldService;
-    @Autowired
-    private CmsContentFileService contentFileService;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "createDate", "clicks",
             "comments", "scores", "childs", "checkUserId" };
@@ -94,8 +75,9 @@ public class ContentController extends AbstractController {
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters,
-            String returnUrl, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(CmsContent entity, Boolean draft, CmsContentAttribute attribute,
+            @ModelAttribute CmsContentParameters contentParameters, String returnUrl, String _csrf, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -117,10 +99,7 @@ public class ContentController extends AbstractController {
                 || ControllerUtils.verifyNotEmpty("model", cmsModel, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
-        entity.setHasFiles(cmsModel.isHasFiles());
-        entity.setHasImages(cmsModel.isHasImages());
-        entity.setOnlyUrl(cmsModel.isOnlyUrl());
-        entity.setStatus(CmsContentService.STATUS_PEND);
+        CmsContentService.initContent(entity, cmsModel, draft, false, attribute, CommonUtils.getDate());
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -141,33 +120,7 @@ public class ContentController extends AbstractController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.content",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        if (entity.isHasImages() || entity.isHasFiles()) {
-            contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParameters.getFiles() : null,
-                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
-        }
-
-        if (null != attribute.getText()) {
-            attribute.setWordCount(HtmlUtils.removeHtmlTag(attribute.getText()).length());
-        }
-        List<ExtendField> modelExtendList = cmsModel.getExtendList();
-        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
-        if (null != category && null != extendService.getEntity(category.getExtendId())) {
-            List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
-            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
-                    categoryExtendList);
-            if (CommonUtils.notEmpty(map)) {
-                map.putAll(categoryMap);
-            } else {
-                map = categoryMap;
-            }
-        }
-
-        if (CommonUtils.notEmpty(map)) {
-            attribute.setData(ExtendUtils.getExtendString(map));
-        } else {
-            attribute.setData(null);
-        }
-        attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
+        service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel, category, attribute);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 

@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -21,12 +22,21 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
 import com.publiccms.logic.dao.cms.CmsContentDao;
+import com.publiccms.logic.service.sys.SysExtendFieldService;
+import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.ExtendField;
+import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
@@ -37,7 +47,18 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @Service
 @Transactional
 public class CmsContentService extends BaseService<CmsContent> {
-
+    @Autowired
+    private SysExtendService extendService;
+    @Autowired
+    private SysExtendFieldService extendFieldService;
+    @Autowired
+    private CmsTagService tagService;
+    @Autowired
+    private CmsContentFileService contentFileService;
+    @Autowired
+    private CmsContentAttributeService attributeService;
+    @Autowired
+    private CmsContentRelatedService cmsContentRelatedService;
     /**
      * 
      */
@@ -126,6 +147,66 @@ public class CmsContentService extends BaseService<CmsContent> {
         queryEntity.setCategoryIds(getCategoryIds(containChild, queryEntity.getCategoryId(), queryEntity.getCategoryIds()));
         return dao.getPage(queryEntity, orderField, orderType, pageIndex, pageSize);
     }
+    
+    public static void initContent(CmsContent entity, CmsModel cmsModel, Boolean draft, Boolean checked, CmsContentAttribute attribute,
+            Date now) {
+        entity.setHasFiles(cmsModel.isHasFiles());
+        entity.setHasImages(cmsModel.isHasImages());
+        entity.setOnlyUrl(cmsModel.isOnlyUrl());
+        if ((null == checked || !checked) && null != draft && draft) {
+            entity.setStatus(CmsContentService.STATUS_DRAFT);
+        } else {
+            entity.setStatus(CmsContentService.STATUS_PEND);
+        }
+        if (null == entity.getPublishDate()) {
+            entity.setPublishDate(now);
+        }
+
+        if (null != attribute.getText()) {
+            String text = HtmlUtils.removeHtmlTag(attribute.getText());
+            attribute.setWordCount(text.length());
+            if (CommonUtils.empty(entity.getDescription())) {
+                entity.setDescription(StringUtils.substring(text, 0, 300));
+            }
+        }
+    }
+
+    public void saveTagAndAttribute(Short siteId, Long userId, Long id, CmsContentParameters contentParameters, CmsModel cmsModel,
+            CmsCategory category, CmsContentAttribute attribute) {
+        Long[] tagIds = tagService.update(siteId, contentParameters.getTags());
+        CmsContent entity = getEntity(id);
+        if (null != entity) {
+            entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
+        }
+        if (entity.isHasImages() || entity.isHasFiles()) {
+            contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
+                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
+        }
+
+        List<ExtendField> modelExtendList = cmsModel.getExtendList();
+        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
+        if (null != category && null != extendService.getEntity(category.getExtendId())) {
+            List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
+            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
+                    categoryExtendList);
+            if (CommonUtils.notEmpty(map)) {
+                map.putAll(categoryMap);
+            } else {
+                map = categoryMap;
+            }
+        }
+
+        if (CommonUtils.notEmpty(map)) {
+            attribute.setData(ExtendUtils.getExtendString(map));
+        } else {
+            attribute.setData(null);
+        }
+
+        attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
+        if (CommonUtils.notEmpty(contentParameters.getContentRelateds())) {
+            cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
+        }
+    }
 
     /**
      * @param siteId
@@ -186,19 +267,6 @@ public class CmsContentService extends BaseService<CmsContent> {
             }
         }
         return entityList;
-    }
-
-    /**
-     * @param id
-     * @param tagIds
-     * @return result
-     */
-    public CmsContent updateTagIds(Serializable id, String tagIds) {
-        CmsContent entity = getEntity(id);
-        if (null != entity) {
-            entity.setTagIds(tagIds);
-        }
-        return entity;
     }
 
     /**

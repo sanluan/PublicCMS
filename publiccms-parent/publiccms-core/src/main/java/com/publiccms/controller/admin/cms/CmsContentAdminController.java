@@ -1,11 +1,8 @@
 package com.publiccms.controller.admin.cms;
 
-import static org.springframework.util.StringUtils.arrayToDelimitedString;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +21,6 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.ExtendUtils;
-import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -38,25 +33,18 @@ import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategoryId;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsContentAttributeService;
-import com.publiccms.logic.service.cms.CmsContentFileService;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import com.publiccms.logic.service.sys.SysExtendFieldService;
-import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsModel;
-import com.publiccms.views.pojo.entities.ExtendField;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 
 /**
@@ -76,23 +64,13 @@ public class CmsContentAdminController extends AbstractController {
     @Autowired
     private CmsContentRelatedService cmsContentRelatedService;
     @Autowired
-    private CmsTagService tagService;
-    @Autowired
-    private CmsContentFileService contentFileService;
-    @Autowired
     private CmsCategoryModelService categoryModelService;
     @Autowired
     private ModelComponent modelComponent;
     @Autowired
     private CmsCategoryService categoryService;
     @Autowired
-    private CmsContentAttributeService attributeService;
-    @Autowired
     private TemplateComponent templateComponent;
-    @Autowired
-    private SysExtendService extendService;
-    @Autowired
-    private SysExtendFieldService extendFieldService;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "sort", "createDate", "clicks",
             "comments", "scores", "childs", "checkUserId" };
@@ -137,32 +115,14 @@ public class CmsContentAdminController extends AbstractController {
         if (null != category && site.getId() != category.getSiteId()) {
             category = null;
         }
-        CmsModel cmsModel = modelComponent.getMap(site).get(entity.getModelId());
 
+        CmsModel cmsModel = modelComponent.getMap(site).get(entity.getModelId());
         if (ControllerUtils.verifyNotEmpty("category", category, model)
                 || ControllerUtils.verifyNotEmpty("model", cmsModel, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        entity.setHasFiles(cmsModel.isHasFiles());
-        entity.setHasImages(cmsModel.isHasImages());
-        entity.setOnlyUrl(cmsModel.isOnlyUrl());
-        if ((null == checked || !checked) && null != draft && draft) {
-            entity.setStatus(CmsContentService.STATUS_DRAFT);
-        } else {
-            entity.setStatus(CmsContentService.STATUS_PEND);
-        }
         Date now = CommonUtils.getDate();
-        if (null == entity.getPublishDate()) {
-            entity.setPublishDate(now);
-        }
-
-        if (null != attribute.getText()) {
-            String text = HtmlUtils.removeHtmlTag(attribute.getText());
-            attribute.setWordCount(text.length());
-            if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(StringUtils.substring(text, 0, 300));
-            }
-        }
+        CmsContentService.initContent(entity, cmsModel, draft, checked, attribute, now);
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
@@ -186,35 +146,7 @@ public class CmsContentAdminController extends AbstractController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.content",
                     RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
-        Long[] tagIds = tagService.update(site.getId(), contentParameters.getTags());
-        service.updateTagIds(entity.getId(), arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));// 更新保存标签
-        if (entity.isHasImages() || entity.isHasFiles()) {
-            contentFileService.update(entity.getId(), user.getId(), entity.isHasFiles() ? contentParameters.getFiles() : null,
-                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
-        }
-
-        List<ExtendField> modelExtendList = cmsModel.getExtendList();
-        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
-        if (null != category && null != extendService.getEntity(category.getExtendId())) {
-            List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
-            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
-                    categoryExtendList);
-            if (CommonUtils.notEmpty(map)) {
-                map.putAll(categoryMap);
-            } else {
-                map = categoryMap;
-            }
-        }
-
-        if (CommonUtils.notEmpty(map)) {
-            attribute.setData(ExtendUtils.getExtendString(map));
-        } else {
-            attribute.setData(null);
-        }
-
-        attributeService.updateAttribute(entity.getId(), attribute);// 更新保存扩展字段，文本字段
-
-        cmsContentRelatedService.update(entity.getId(), user.getId(), contentParameters.getContentRelateds());// 更新保存推荐内容
+        service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel, category, attribute);
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
         if (null != checked && checked) {
             service.check(site.getId(), user, new Long[] { entity.getId() });
