@@ -14,6 +14,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,6 +48,7 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  */
 @Controller
 public class LoginController extends AbstractController {
+    protected static final Log log = LogFactory.getLog(LoginController.class);
     @Autowired
     private SysUserService service;
     @Autowired
@@ -102,10 +105,12 @@ public class LoginController extends AbstractController {
                 user.setPassword(null);
                 ControllerUtils.setUserToSession(request.getSession(), user);
                 String authToken = UUID.randomUUID().toString();
-                addLoginStatus(user, authToken, request, response);
+                int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                        LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                addLoginStatus(user, authToken, request, response, expiryMinutes);
                 Date now = CommonUtils.getDate();
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
-                        DateUtils.addDays(now, 30), ip));
+                        DateUtils.addMinutes(now, expiryMinutes), ip));
                 service.updateLoginStatus(user.getId(), ip);
                 logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true,
                         CommonUtils.getDate(), null));
@@ -178,10 +183,13 @@ public class LoginController extends AbstractController {
             entity.setPassword(null);
             ControllerUtils.setUserToSession(request.getSession(), entity);
             String authToken = UUID.randomUUID().toString();
-            addLoginStatus(entity, authToken, request, response);
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+            addLoginStatus(entity, authToken, request, response, expiryMinutes);
             Date now = CommonUtils.getDate();
             sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB, now,
-                    DateUtils.addDays(now, 30), ip));
+                    DateUtils.addMinutes(now, expiryMinutes), ip));
             if (null != channel && null != openId) {
                 String oauthToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
                         .append(CommonConstants.DOT).append(openId).toString();
@@ -222,7 +230,8 @@ public class LoginController extends AbstractController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
-    private void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response) {
+    public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
+            int expiryMinutes) {
         try {
             StringBuilder sb = new StringBuilder();
             sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
@@ -230,7 +239,7 @@ public class LoginController extends AbstractController {
                     .append(CommonConstants.getCookiesUserSplit())
                     .append(URLEncoder.encode(user.getNickName(), CommonConstants.DEFAULT_CHARSET_NAME));
             RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesUser(), sb.toString(),
-                    30 * 24 * 3600, null);
+                    expiryMinutes * 60, null);
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }

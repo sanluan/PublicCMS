@@ -56,21 +56,6 @@ public interface Config {
     /**
      * 
      */
-    public static final String INPUTTYPE_EDITOR = "editor";
-
-    /**
-     * 
-     */
-    public static final String INPUTTYPE_CKEDITOR = "ckeditor";
-
-    /**
-     * 
-     */
-    public static final String INPUTTYPE_KINDEDITOR = "kindeditor";
-
-    /**
-     * 
-     */
     public static final String INPUTTYPE_TEXTAREA = "textarea";
 
     /**
@@ -88,14 +73,6 @@ public interface Config {
      */
     public static final String INPUTTYPE_USER = "user";
 
-    /**
-     * 
-     */
-    public static final String INPUTTYPE_CONTENT = "content";
-    /**
-     * 
-     */
-    public static final String INPUTTYPE_CATEGORY = "category";
     /**
      * 
      */

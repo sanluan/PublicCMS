@@ -38,7 +38,15 @@ public class EmailTemplateConfigComponent implements Config {
     /**
      * 
      */
+    public static final String CONFIG_EXPIRY_MINUTES = "expiry_minutes";
+    /**
+     * 
+     */
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
+    /**
+     * default expiry minutes
+     */
+    public static final int DEFAULT_EXPIRY_MINUTES = 30;
 
     @Autowired
     private ConfigComponent configComponent;
@@ -71,6 +79,10 @@ public class EmailTemplateConfigComponent implements Config {
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                             CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH),
                     null, null));
+            extendFieldList.add(new ExtendField(CONFIG_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false,
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                            CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES),
+                    null, "30"));
             return extendFieldList;
         } else {
             return null;

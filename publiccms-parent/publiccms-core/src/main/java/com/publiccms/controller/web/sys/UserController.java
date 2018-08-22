@@ -33,6 +33,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.EmailTemplateConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -137,11 +138,13 @@ public class UserController extends AbstractController {
                 || ControllerUtils.verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
+            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
             SysEmailToken sysEmailToken = new SysEmailToken();
             sysEmailToken.setUserId(user.getId());
             sysEmailToken.setAuthToken(UUID.randomUUID().toString());
             sysEmailToken.setEmail(email);
-            sysEmailToken.setExpiryDate(DateUtils.addMinutes(CommonUtils.getDate(), 30));
+            sysEmailToken.setExpiryDate(DateUtils.addMinutes(CommonUtils.getDate(), expiryMinutes));
             sysEmailTokenService.save(sysEmailToken);
             try {
                 Map<String, Object> emailModel = new HashMap<>();
@@ -149,6 +152,7 @@ public class UserController extends AbstractController {
                 emailModel.put("site", site);
                 emailModel.put("email", email);
                 emailModel.put("authToken", sysEmailToken.getAuthToken());
+                emailModel.put("expiryDate", sysEmailToken.getExpiryDate());
                 if (emailComponent.sendHtml(site.getId(), email,
                         FreeMarkerUtils.generateStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
                         FreeMarkerUtils.generateStringByFile(siteComponent.getWebTemplateFilePath(site, emailPath),

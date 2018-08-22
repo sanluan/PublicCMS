@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,8 @@ import com.publiccms.logic.component.site.DirectiveComponent;
 public class ApiController extends AbstractController {
     private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
     private List<Map<String, String>> appList = new ArrayList<>();
+    @Autowired
+    protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
     /**
      *
      */
@@ -83,8 +86,7 @@ public class ApiController extends AbstractController {
         try {
             AbstractAppDirective directive = appDirectiveMap.get(api);
             if (null != directive) {
-                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request,
-                        response);
+                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             } else {
                 HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
                         CommonConstants.jsonMediaType, request, response);

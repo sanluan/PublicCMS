@@ -151,6 +151,18 @@ public class ConfigComponent implements SiteCache {
     @Autowired
     private SiteComponent siteComponent;
 
+    public static int getInt(String value, int defaultValue) {
+        if (CommonUtils.empty(value)) {
+            return defaultValue;
+        } else {
+            try {
+                return Integer.parseInt(value);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+
     /**
      * @param site
      * @return config map

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.api.oauth.Oauth;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.oauth.AbstractOauth;
@@ -27,6 +28,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.controller.web.LoginController;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
@@ -90,7 +92,7 @@ public class OauthController extends AbstractController {
      */
     @RequestMapping(value = "callback/{channel}")
     public String callback(@PathVariable("channel") String channel, String state, String code, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            HttpSession session, HttpServletResponse response, ModelMap model) {
         Oauth oauthComponent = oauthChannelMap.get(channel);
         SysSite site = getSite(request);
         Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);
@@ -130,10 +132,13 @@ public class OauthController extends AbstractController {
                             String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
                                     .append(CommonConstants.DOT).append(oauthAccess.getOpenId()).toString();
                             Date now = CommonUtils.getDate();
+                            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
                             entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, now,
-                                    DateUtils.addDays(now, 30), RequestUtils.getIpAddress(request));
+                                    DateUtils.addMinutes(now, expiryMinutes), RequestUtils.getIpAddress(request));
                             sysUserTokenService.save(entity);
-                            ControllerUtils.setUserToSession(session, user);
+                            LoginController.addLoginStatus(user, authToken, request, response, expiryMinutes);
                             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                         }
                     }

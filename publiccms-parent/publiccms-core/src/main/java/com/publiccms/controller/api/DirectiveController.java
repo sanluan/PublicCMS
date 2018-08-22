@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,6 +35,8 @@ import com.publiccms.logic.component.site.DirectiveComponent;
 public class DirectiveController extends AbstractController {
     private Map<String, BaseTemplateDirective> actionMap = new HashMap<>();
     private List<Map<String, String>> actionList = new ArrayList<>();
+    @Autowired
+    protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
 
     /**
      * 接口指令统一分发
@@ -49,8 +52,7 @@ public class DirectiveController extends AbstractController {
             HttpDirective directive = actionMap.get(action);
             if (null != directive) {
                 request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, getSite(request));
-                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request,
-                        response);
+                directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             } else {
                 HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
                         CommonConstants.jsonMediaType, request, response);
