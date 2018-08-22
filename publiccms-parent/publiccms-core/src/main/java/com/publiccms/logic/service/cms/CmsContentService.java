@@ -23,7 +23,6 @@ import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
-import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
@@ -148,29 +147,6 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.getPage(queryEntity, orderField, orderType, pageIndex, pageSize);
     }
     
-    public static void initContent(CmsContent entity, CmsModel cmsModel, Boolean draft, Boolean checked, CmsContentAttribute attribute,
-            Date now) {
-        entity.setHasFiles(cmsModel.isHasFiles());
-        entity.setHasImages(cmsModel.isHasImages());
-        entity.setOnlyUrl(cmsModel.isOnlyUrl());
-        if ((null == checked || !checked) && null != draft && draft) {
-            entity.setStatus(CmsContentService.STATUS_DRAFT);
-        } else {
-            entity.setStatus(CmsContentService.STATUS_PEND);
-        }
-        if (null == entity.getPublishDate()) {
-            entity.setPublishDate(now);
-        }
-
-        if (null != attribute.getText()) {
-            String text = HtmlUtils.removeHtmlTag(attribute.getText());
-            attribute.setWordCount(text.length());
-            if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(StringUtils.substring(text, 0, 300));
-            }
-        }
-    }
-
     public void saveTagAndAttribute(Short siteId, Long userId, Long id, CmsContentParameters contentParameters, CmsModel cmsModel,
             CmsCategory category, CmsContentAttribute attribute) {
         Long[] tagIds = tagService.update(siteId, contentParameters.getTags());

@@ -21,6 +21,7 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -122,7 +123,7 @@ public class CmsContentAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         Date now = CommonUtils.getDate();
-        CmsContentService.initContent(entity, cmsModel, draft, checked, attribute, now);
+        initContent(entity, cmsModel, draft, checked, attribute, now);
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
@@ -156,6 +157,29 @@ public class CmsContentAdminController extends AbstractController {
             templateComponent.createCategoryFile(site, category, null, null);
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+    
+    public static void initContent(CmsContent entity, CmsModel cmsModel, Boolean draft, Boolean checked, CmsContentAttribute attribute,
+            Date now) {
+        entity.setHasFiles(cmsModel.isHasFiles());
+        entity.setHasImages(cmsModel.isHasImages());
+        entity.setOnlyUrl(cmsModel.isOnlyUrl());
+        if ((null == checked || !checked) && null != draft && draft) {
+            entity.setStatus(CmsContentService.STATUS_DRAFT);
+        } else {
+            entity.setStatus(CmsContentService.STATUS_PEND);
+        }
+        if (null == entity.getPublishDate()) {
+            entity.setPublishDate(now);
+        }
+
+        if (null != attribute.getText()) {
+            String text = HtmlUtils.removeHtmlTag(attribute.getText());
+            attribute.setWordCount(text.length());
+            if (CommonUtils.empty(entity.getDescription())) {
+                entity.setDescription(StringUtils.substring(text, 0, 300));
+            }
+        }
     }
 
     /**

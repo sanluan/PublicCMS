@@ -1,8 +1,17 @@
 <script>
 var imagesSuffix=["png","gif","jpg","jpeg","bmp"];
+var videosSuffix=["ogg","webm","mpeg","mpg","mov","rm","ram","avi","wmv","mp4"];
 function checkFileType(){
 <#if onlyImage?has_content>
     <#assign fileTypes='image'/>
+    var filenames=$('input[name=file]',$.pdialog.getCurrent()).val().toLowerCase().split('.');
+    if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+        return true;
+    }
+    alertMsg.error('<@t.page 'upload.image_warn'/>');
+    return false;
+<#elseif onlyVideo?has_content>
+    <#assign fileTypes='video'/>
     var filenames=$('input[name=file]',$.pdialog.getCurrent()).val().toLowerCase().split('.');
     if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
         return true;
@@ -42,7 +51,7 @@ function selectFile(path){
             <dd>
                 <input type="hidden" name="field" value="${field!'fileName'}"/>
                 <input type="hidden" name="originalField" value="${originalField!}"/>
-                <input type="file" name="file" class="required" size="30" />
+                <input type="file" name="file" class="required" size="30"<#if onlyImage?has_content> accept="image/*"<#elseif onlyVideo?has_content> accept="video/*"</#if>/>
             </dd>
         </dl>
         <ul class="tree" style="height:200px">

@@ -18,6 +18,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.controller.admin.cms.CmsContentAdminController;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
@@ -99,7 +100,7 @@ public class ContentController extends AbstractController {
                 || ControllerUtils.verifyNotEmpty("model", cmsModel, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
-        CmsContentService.initContent(entity, cmsModel, draft, false, attribute, CommonUtils.getDate());
+        CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, CommonUtils.getDate());
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
