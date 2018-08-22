@@ -51,7 +51,7 @@ $(function(){
         debug:false, 
         callback:function(){
             initEnv();
-            $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"default"}); 
+            $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"toptry"}); 
         }
     });
 });
@@ -69,16 +69,19 @@ $(function(){
         </li>
     <@_sysAuthorized roleIds=admin.roles url='clearCache'>
         <li>
-            <a href="clearCache" target="ajaxTodo"><i class="icon-refresh icon-large"></i> <@t.page 'button.clear_cache'/></a>
+            <a href="clearCache" target="ajaxTodo" title="<@t.page 'button.clear_cache'/>"><i class="icon-refresh icon-large"></i> </a>
         </li>
     </@_sysAuthorized>
         <li class="switchBox">
             <a href="javascript:"><i class="icon-user icon-large"></i> ${(admin.nickName)!}</a>
-            <ul>
+            <!-- <ul>
                 <li>
                     <i class="icon-signout icon-large"></i> <a href="logout.do?userId=${admin.id}"><@t.page 'logout'/></a>
                 </li>
-            </ul>
+            </ul> -->
+        </li>
+        <li>
+            <a href="logout.do?userId=${admin.id}"><i class="icon-signout icon-large"></i> <@t.page 'logout'/></a>
         </li>
     </ul>
     <ul id="navMenu">
@@ -134,18 +137,37 @@ $(function(){
             <li><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> <@t.page 'workgin_table'/></a></li>
         </ul>
         <div class="navTab-panel tabsPageContent layoutBox">
-            <div class="page unitBox">
+            <div class="page unitBox work-bench">
                 <#include "main.html"/>
             </div>
         </div>
     </div>
 </main>
 <footer>
-    <ul class="langList">
-        <li><@t.page 'change_locale'/></li>
+   <ul class="langList">
     <#list langs as k,v>
         <#if .locale!=k>
-            <li><a href="changeLocale?lang=${k}" target="ajaxTodo">${v}</a></li>
+            <li>
+            	<a href="changeLocale?lang=${k}" target="ajaxTodo">
+            		<#if k==''>
+            			<img src="${res}/themes/toptry/images/ch.png" />
+            		<#else>
+            			<img src="${res}/themes/toptry/images/${k}.png" />
+            		</#if>
+            		${v}
+            	</a>
+            </li>
+        <#else>
+        	<li class="current-lang">
+            	<a href="changeLocale?lang=${k}" target="ajaxTodo">
+            		<#if k==''>
+            			<img src="${res}/themes/toptry/images/ch.png" />
+            		<#else>
+            			<img src="${res}/themes/toptry/images/${k}.png" />
+            		</#if>
+            		${v}
+            	</a>
+            </li>
         </#if>
     </#list>
     </ul>
@@ -163,6 +185,7 @@ $(function(){
 </@_version>
     Copyright &copy; ${.now?string('yyyy')}
     <ul class="themeList" id="themeList">
+        <li theme="toptry"><div></div></li>
         <li theme="default"><div></div></li>
         <li theme="azure"><div></div></li>
         <li theme="silver"><div></div></li>
