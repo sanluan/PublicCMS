@@ -96,29 +96,39 @@ public class OauthController extends AbstractController {
         Oauth oauthComponent = oauthChannelMap.get(channel);
         SysSite site = getSite(request);
         Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);
+        Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
+        RequestUtils.cancleCookie(request.getContextPath(), response, STATE_COOKIE_NAME, null);
+        RequestUtils.cancleCookie(request.getContextPath(), response, RETURN_URL, null);
         if (null != oauthComponent && oauthComponent.enabled(site.getId()) && null != stateCookie && null != state
                 && state.equals(stateCookie.getValue())) {
             try {
                 OauthAccess oauthAccess = oauthComponent.getOpenId(site.getId(), code);
                 if (null != oauthAccess && null != oauthAccess.getOpenId()) {
-                    Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
                     String returnUrl = site.getDynamicPath();
                     if (null != cookie && null != cookie.getValue()) {
                         returnUrl = cookie.getValue();
                     }
-                    SysUserToken entity = sysUserTokenService.getEntity(oauthAccess.getOpenId());
+                    String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(oauthAccess.getOpenId())
+                            .toString();
+                    Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                    int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                            LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                    SysUserToken entity = sysUserTokenService.getEntity(authToken);
                     if (null != entity) {
                         if (entity.getChannel().equals(channel)) {
-                            ControllerUtils.setUserToSession(session, sysUserService.getEntity(entity.getUserId()));
+                            SysUser user = sysUserService.getEntity(entity.getUserId());
+                            ControllerUtils.setUserToSession(session, user);
+                            LoginController.addLoginStatus(user, authToken, request, response, expiryMinutes);
                             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                         }
                     } else {
                         SysUser user = ControllerUtils.getUserFromSession(session);
                         if (null == user) {
                             OauthUser oauthUser = oauthComponent.getUserInfo(site.getId(), oauthAccess);
-                            Map<String, String> config = configComponent.getConfigData(site.getId(), AbstractOauth.CONFIG_CODE);
-                            if (null != oauthUser && CommonUtils.notEmpty(config)
-                                    && CommonUtils.notEmpty(config.get(LoginConfigComponent.CONFIG_REGISTER_URL))) {
+                            Map<String, String> oauthConfig = configComponent.getConfigData(site.getId(),
+                                    AbstractOauth.CONFIG_CODE);
+                            if (null != oauthUser && CommonUtils.notEmpty(oauthConfig)
+                                    && CommonUtils.notEmpty(oauthConfig.get(LoginConfigComponent.CONFIG_REGISTER_URL))) {
                                 model.addAttribute("nickname", oauthUser.getNickname());
                                 model.addAttribute("openId", oauthUser.getOpenId());
                                 model.addAttribute("avatar", oauthUser.getAvatar());
@@ -126,15 +136,10 @@ public class OauthController extends AbstractController {
                                 model.addAttribute("channel", channel);
                                 model.addAttribute("returnUrl", returnUrl);
                                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX
-                                        + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
+                                        + oauthConfig.get(LoginConfigComponent.CONFIG_REGISTER_URL);
                             }
                         } else {
-                            String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
-                                    .append(CommonConstants.DOT).append(oauthAccess.getOpenId()).toString();
                             Date now = CommonUtils.getDate();
-                            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
                             entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, now,
                                     DateUtils.addMinutes(now, expiryMinutes), RequestUtils.getIpAddress(request));
                             sysUserTokenService.save(entity);
