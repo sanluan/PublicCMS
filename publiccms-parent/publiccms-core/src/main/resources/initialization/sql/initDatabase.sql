@@ -1253,7 +1253,7 @@ CREATE TABLE `sys_user_token` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `create_date` datetime NOT NULL COMMENT '创建日期',
-  `expiry_date` datetime NOT NULL COMMENT '过期日期',
+  `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   `login_ip` varchar(64) NOT NULL COMMENT '登录IP',
   PRIMARY KEY  (`auth_token`),
   KEY `user_id` (`user_id`),

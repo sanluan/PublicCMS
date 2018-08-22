@@ -106,7 +106,7 @@ function templateDefaultConfig(type,name){
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/register.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message,name,nickname');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message,name,nickname,openId,channel,returnUrl');
         break;
 <#if site.useStatic>
     case 'staticContent':

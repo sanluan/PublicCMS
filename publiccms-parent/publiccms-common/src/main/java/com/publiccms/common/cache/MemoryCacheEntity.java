@@ -93,7 +93,13 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     public V remove(K key) {
         lock.writeLock().lock();
         try {
-            return cachedMap.remove(key).getValue();
+            CacheValue<V> cacheValue = cachedMap.remove(key);
+            if (null == cacheValue || System.currentTimeMillis() > cacheValue.getExpiryDate()) {
+                return null;
+            } else {
+                return cacheValue.getValue();
+            }
+
         } finally {
             lock.writeLock().unlock();
         }

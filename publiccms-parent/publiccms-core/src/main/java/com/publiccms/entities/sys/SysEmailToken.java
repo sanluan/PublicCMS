@@ -34,17 +34,10 @@ public class SysEmailToken implements java.io.Serializable {
     private String email;
     @GeneratorColumn(title = "创建日期")
     private Date createDate;
-    @GeneratorColumn(title = "过期日期", condition = true, order = true)
+    @GeneratorColumn(title = "过期日期")
     private Date expiryDate;
 
     public SysEmailToken() {
-    }
-
-    public SysEmailToken(String authToken, long userId, String email, Date createDate) {
-        this.authToken = authToken;
-        this.userId = userId;
-        this.email = email;
-        this.createDate = createDate;
     }
 
     public SysEmailToken(String authToken, long userId, String email, Date createDate, Date expiryDate) {

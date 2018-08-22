@@ -5,6 +5,7 @@ import java.util.Date;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -27,7 +28,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, String channel, String orderType, Integer pageIndex,
+    public PageHandler getPage(Short siteId, Long userId, String channel, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysUserToken bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -42,7 +43,16 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.createDate " + orderType);
+        if (null == orderField) {
+            orderField = CommonConstants.BLANK;
+        }
+        switch (orderField) {
+        case "expiryDate":
+            queryHandler.order("bean.expiryDate " + orderType);
+            break;
+        default:
+            queryHandler.order("bean.createDate " + orderType);
+        }
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

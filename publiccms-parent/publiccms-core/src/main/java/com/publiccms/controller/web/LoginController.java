@@ -182,22 +182,24 @@ public class LoginController extends AbstractController {
             service.save(entity);
             entity.setPassword(null);
             ControllerUtils.setUserToSession(request.getSession(), entity);
-            String authToken = UUID.randomUUID().toString();
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                     LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
-            addLoginStatus(entity, authToken, request, response, expiryMinutes);
             Date now = CommonUtils.getDate();
-            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB, now,
-                    DateUtils.addMinutes(now, expiryMinutes), ip));
-            if (null != channel && null != openId) {
-                String oauthToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
+            String authToken;
+            Date expiryDate = null;
+            if (null == channel || null == openId) {
+                authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
                         .append(CommonConstants.DOT).append(openId).toString();
-                sysUserTokenService
-                        .save(new SysUserToken(oauthToken, site.getId(), entity.getId(), channel, CommonUtils.getDate(), ip));
+            } else {
+                authToken = UUID.randomUUID().toString();
+                channel = LogLoginService.CHANNEL_WEB;
+                expiryDate = DateUtils.addMinutes(now, expiryMinutes);
             }
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            addLoginStatus(entity, authToken, request, response, expiryMinutes);
+            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), channel, now, expiryDate, ip));
         }
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     /**

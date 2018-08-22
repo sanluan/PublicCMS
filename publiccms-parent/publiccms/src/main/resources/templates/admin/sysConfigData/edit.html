@@ -1,7 +1,7 @@
 <@_sysConfig code=code><#assign a=object/></@_sysConfig>
 <@_sysConfigData code=code><#assign attribute=object/></@_sysConfigData>
 <@_sysAuthorized roleIds=admin.roles urls='sysConfigData/delete,sysConfigData/save'><#assign authorizedMap=map/></@_sysAuthorized>
-<form method="post" action="sysConfigData/save.do?navTabId=sysConfigData/edit" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" action="sysConfigData/save.do?callbackType=closeCurrent&navTabId=sysConfigData/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id.code" type="hidden" value="${code!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">

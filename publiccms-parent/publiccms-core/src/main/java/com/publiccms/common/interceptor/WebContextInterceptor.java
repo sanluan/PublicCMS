@@ -63,7 +63,9 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
                             Long userId = Long.parseLong(userData[0]);
                             SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
                             if (null != userToken && null != site && !site.isDisabled() && userToken.getSiteId() == site.getId()
-                                    && userToken.getUserId() == userId && channel.equals(userToken.getChannel())
+                                    && userToken.getUserId() == userId
+                                    && (channel.equals(userToken.getChannel())
+                                            || !channel.equals(LogLoginService.CHANNEL_WEB_MANAGER))
                                     && (null == userToken.getExpiryDate()
                                             || CommonUtils.getDate().before(userToken.getExpiryDate()))
                                     && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {

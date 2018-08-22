@@ -28,23 +28,27 @@
     <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
-                <th><@t.page 'user.id'/></th>
                 <th><@t.page 'channel'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'authorize_date'/></th>
+                <th orderField="expiryDate" class="<#if orderField??&&'expiryDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'expiry_date'/></th>
                 <th><@t.page 'log.login_ip'/></th>
             </tr>
         </thead>
         <tbody>
             <#list page.list as a>
             <tr target="sid" rel="${a.authToken}">
-                <td>${a.userId!}</td>
                 <td>${a.channel!}</td>
                 <td>${a.createDate!}</td>
+                <td>${a.expiryDate!}</td>
                 <td>${a.loginIp!}</td>
             </tr>
             </#list>
         </tbody>
     </table>
+    <script>
+        $('table>tbody>tr[rel="<@_csrfToken admin=true/>"]>td:eq(0)',navTab.getCurrentPanel()).append('<@t.page 'current_token'/>');
+        $('table>tbody>tr[rel="<@_csrfToken/>"]>td:eq(0)',navTab.getCurrentPanel()).append('<@t.page 'current_token'/>');
+    </script>
     <#include "../include_page/page.html"/>
 </div>
 </@_sysUserTokenList>

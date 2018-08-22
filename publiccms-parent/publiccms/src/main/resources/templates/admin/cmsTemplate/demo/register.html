@@ -28,13 +28,13 @@
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>
                 <p><input type="text" name="name" placeholder="User name" title="User name" value="${name!}"/></p>
-                <p>More than 4 digits, letters, underscores, not starting with numbers</p>
                 <p><input type="text" name="nickName" placeholder="Nickname" title="Nickname" value="${nickname!}"/></p>
-                <p>2 or more digits, letters, Chinese characters, underline</p>
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p><input type="password" name="repassword" placeholder="Repeat password" title="Repeat password"/></p>
                 <p>
                     <input type="hidden" name="returnUrl" value="${site.sitePath}"/>
+                    <input type="hidden" name="channel" value="${channel!}"/>
+                    <input type="hidden" name="openId" value="${openId!}"/>
                     <input type="submit" value="Register"/>
                 </p>
                 <p>Already have an account?<a href="login.html">Please login</a></p>
