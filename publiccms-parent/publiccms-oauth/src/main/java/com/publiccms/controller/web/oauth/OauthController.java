@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,11 +28,13 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.controller.web.LoginController;
+import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 import com.publiccms.view.pojo.oauth.OauthAccess;
@@ -59,6 +60,8 @@ public class OauthController extends AbstractController {
     private SysUserTokenService sysUserTokenService;
     @Autowired
     private SysUserService sysUserService;
+    @Autowired
+    private LogLoginService logLoginService;
 
     /**
      * @param channel
@@ -105,7 +108,7 @@ public class OauthController extends AbstractController {
                 OauthAccess oauthAccess = oauthComponent.getOpenId(site.getId(), code);
                 if (null != oauthAccess && null != oauthAccess.getOpenId()) {
                     String returnUrl = site.getDynamicPath();
-                    if (null != cookie && null != cookie.getValue()) {
+                    if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
                         returnUrl = cookie.getValue();
                     }
                     String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(oauthAccess.getOpenId())
@@ -119,6 +122,8 @@ public class OauthController extends AbstractController {
                             SysUser user = sysUserService.getEntity(entity.getUserId());
                             ControllerUtils.setUserToSession(session, user);
                             LoginController.addLoginStatus(user, authToken, request, response, expiryMinutes);
+                            logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(),
+                                    RequestUtils.getIpAddress(request), channel, true, CommonUtils.getDate(), null));
                             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                         }
                     } else {
@@ -128,21 +133,29 @@ public class OauthController extends AbstractController {
                             Map<String, String> oauthConfig = configComponent.getConfigData(site.getId(),
                                     AbstractOauth.CONFIG_CODE);
                             if (null != oauthUser && CommonUtils.notEmpty(oauthConfig)
-                                    && CommonUtils.notEmpty(oauthConfig.get(LoginConfigComponent.CONFIG_REGISTER_URL))) {
+                                    && CommonUtils.notEmpty(config.get(LoginConfigComponent.CONFIG_REGISTER_URL))) {
                                 model.addAttribute("nickname", oauthUser.getNickname());
                                 model.addAttribute("openId", oauthUser.getOpenId());
-                                model.addAttribute("avatar", oauthUser.getAvatar());
-                                model.addAttribute("gender", oauthUser.getGender());
                                 model.addAttribute("channel", channel);
                                 model.addAttribute("returnUrl", returnUrl);
                                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX
-                                        + oauthConfig.get(LoginConfigComponent.CONFIG_REGISTER_URL);
+                                        + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
                             }
                         } else {
                             Date now = CommonUtils.getDate();
                             entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, now,
-                                    DateUtils.addMinutes(now, expiryMinutes), RequestUtils.getIpAddress(request));
+                                    RequestUtils.getIpAddress(request));
                             sysUserTokenService.save(entity);
+                            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
+                            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
+                                String value = userCookie.getValue();
+                                if (null != value) {
+                                    String[] userData = value.split(CommonConstants.getCookiesUserSplit());
+                                    if (userData.length > 1) {
+                                        sysUserTokenService.delete(userData[1]);
+                                    }
+                                }
+                            }
                             LoginController.addLoginStatus(user, authToken, request, response, expiryMinutes);
                             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                         }
@@ -155,10 +168,12 @@ public class OauthController extends AbstractController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
     }
 
-    @Autowired
+    @Autowired(required = false)
     public void init(List<Oauth> oauthList) {
-        for (Oauth oauth : oauthList) {
-            oauthChannelMap.put(oauth.getChannel(), oauth);
+        if (null != oauthList) {
+            for (Oauth oauth : oauthList) {
+                oauthChannelMap.put(oauth.getChannel(), oauth);
+            }
         }
     }
 }

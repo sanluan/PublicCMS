@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.views.pojo.entities.ExtendField;
 
@@ -32,17 +31,15 @@ public class SiteAttributeComponent implements Config {
 
     @Override
     public String getCodeDescription(Locale locale) {
-        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
+        return getMessage(locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new ExtendField(CONFIG_LOGO, INPUTTYPE_IMAGE, false,
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO),
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO + CommonConstants.DOT + "description"),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 null));
         return extendFieldList;
     }

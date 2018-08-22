@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.views.pojo.entities.ExtendField;
@@ -63,7 +62,7 @@ public class EmailTemplateConfigComponent implements Config {
 
     @Override
     public String getCodeDescription(Locale locale) {
-        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
+        return getMessage(locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override
@@ -71,18 +70,12 @@ public class EmailTemplateConfigComponent implements Config {
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             List<ExtendField> extendFieldList = new ArrayList<>();
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                            CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_TITLE),
-                    null, null));
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_PATH, INPUTTYPE_TEMPLATE, false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                            CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH),
-                    null, null));
-            extendFieldList.add(new ExtendField(CONFIG_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false,
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                            CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES),
-                    null, "30"));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, false, CONFIG_EMAIL_TITLE,
+                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_TITLE), null));
+            extendFieldList.add(new ExtendField(CONFIG_EMAIL_PATH, INPUTTYPE_TEMPLATE, false, CONFIG_EMAIL_PATH,
+                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH), null));
+            extendFieldList.add(new ExtendField(CONFIG_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES,
+                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES), "30"));
             return extendFieldList;
         } else {
             return null;

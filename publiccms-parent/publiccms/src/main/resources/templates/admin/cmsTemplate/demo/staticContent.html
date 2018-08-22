@@ -53,6 +53,9 @@
             </div>
         </#if>
             <div>
+                <@_contentList parentId=content.parentId endPublishDate=content.publishDate pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous</a></#list></#if></@_contentList>
+            </div>
+            <div>
                 <#if !page.firstPage>
                     <a href="${getPage(url,page.prePage)}">Previous page</a>
                 <#else>

@@ -31,6 +31,10 @@ public interface Config {
     /**
      * 
      */
+    public static final String CONFIG_CODE_DESCRIPTION_SUFFIX = CommonConstants.DOT + "description";
+    /**
+     * 
+     */
     public static final String CONFIG_CODE_SITEA_TTRIBUTE = "siteAttribute";
 
     /**
@@ -112,6 +116,15 @@ public interface Config {
      */
     public default String getCode(SysSite site, boolean showAll) {
         return CONFIG_CODE_SITE;
+    }
+
+    /**
+     * @param site
+     * @param showAll
+     * @return config code or null
+     */
+    public default String getMessage(Locale locale, String code) {
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, code);
     }
 
     /**

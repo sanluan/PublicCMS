@@ -39,7 +39,7 @@ public class SysUserToken implements java.io.Serializable {
     private String channel;
     @GeneratorColumn(title = "授权日期", order = true)
     private Date createDate;
-    @GeneratorColumn(title = "过期日期", condition = true, order = true)
+    @GeneratorColumn(title = "过期日期", order = true)
     private Date expiryDate;
     @GeneratorColumn(title = "登录IP")
     private String loginIp;
@@ -114,7 +114,7 @@ public class SysUserToken implements java.io.Serializable {
     }
 
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "expiry_date", nullable = false, length = 19)
+    @Column(name = "expiry_date", length = 19)
     public Date getExpiryDate() {
         return this.expiryDate;
     }

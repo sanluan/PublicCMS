@@ -177,46 +177,35 @@ public class EmailComponent implements SiteCache, Config {
 
     @Override
     public String getCodeDescription(Locale locale) {
-        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
+        return getMessage(locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true,
+        extendFieldList.add(new ExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true, CONFIG_DEFAULTENCODING,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULTENCODING),
+                CommonConstants.DEFAULT_CHARSET_NAME));
+        extendFieldList.add(new ExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true, CONFIG_HOST, LanguagesUtils.getMessage(
+                CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_HOST), null));
+        extendFieldList.add(new ExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true, CONFIG_PORT,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULTENCODING),
-                null, CommonConstants.DEFAULT_CHARSET_NAME));
-        extendFieldList.add(
-                new ExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                        locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_HOST), null, null));
-        extendFieldList.add(
-                new ExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                        locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PORT), null, String.valueOf(25)));
-        extendFieldList.add(new ExtendField(CONFIG_USERNAME, INPUTTYPE_TEXT, true,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PORT),
+                String.valueOf(25)));
+        extendFieldList.add(new ExtendField(CONFIG_USERNAME, INPUTTYPE_TEXT, true, CONFIG_USERNAME,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_USERNAME), null));
+        extendFieldList.add(new ExtendField(CONFIG_PASSWORD, INPUTTYPE_PASSWORD, true, CONFIG_PASSWORD,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PASSWORD), null));
+        extendFieldList.add(new ExtendField(CONFIG_TIMEOUT, INPUTTYPE_NUMBER, true, CONFIG_TIMEOUT,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_USERNAME),
-                null, null));
-        extendFieldList.add(new ExtendField(CONFIG_PASSWORD, INPUTTYPE_PASSWORD, true,
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PASSWORD),
-                null, null));
-        extendFieldList
-                .add(new ExtendField(
-                        CONFIG_TIMEOUT, INPUTTYPE_NUMBER, true, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                                locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_TIMEOUT),
-                        null, String.valueOf(3000)));
-        extendFieldList.add(new ExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true,
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_AUTH),
-                null, null));
-        extendFieldList.add(
-                new ExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, LanguagesUtils.getMessage(CommonConstants.applicationContext,
-                        locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null, null));
-        extendFieldList.add(new ExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true,
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_FROMADDRESS),
-                null, null));
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_TIMEOUT),
+                String.valueOf(3000)));
+        extendFieldList.add(new ExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true, CONFIG_AUTH,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_AUTH), null));
+        extendFieldList.add(new ExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, CONFIG_FROMADDRESS, LanguagesUtils.getMessage(
+                CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null));
+        extendFieldList.add(new ExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true, CONFIG_FROMADDRESS,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_FROMADDRESS), null));
         return extendFieldList;
     }
 

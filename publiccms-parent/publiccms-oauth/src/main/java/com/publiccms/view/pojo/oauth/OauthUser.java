@@ -13,8 +13,6 @@ public class OauthUser implements Serializable {
 
     private String openId;
     private String nickname;
-    private String avatar;
-    private String gender;
 
     /**
      * @param openId
@@ -22,11 +20,9 @@ public class OauthUser implements Serializable {
      * @param avatar
      * @param gender
      */
-    public OauthUser(String openId, String nickname, String avatar, String gender) {
+    public OauthUser(String openId, String nickname) {
         this.openId = openId;
         this.nickname = nickname;
-        this.avatar = avatar;
-        this.gender = gender;
     }
     
     /**
@@ -55,34 +51,6 @@ public class OauthUser implements Serializable {
      */
     public void setNickname(String nickname) {
         this.nickname = nickname;
-    }
-
-    /**
-     * @return
-     */
-    public String getAvatar() {
-        return avatar;
-    }
-
-    /**
-     * @param avatar
-     */
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
-
-    /**
-     * @return
-     */
-    public String getGender() {
-        return gender;
-    }
-
-    /**
-     * @param gender
-     */
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
 }

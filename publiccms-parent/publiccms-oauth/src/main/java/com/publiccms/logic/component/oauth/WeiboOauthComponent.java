@@ -62,7 +62,7 @@ public class WeiboOauthComponent extends AbstractOauth {
             if (CommonUtils.notEmpty(html)) {
                 Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
                 });
-                return new OauthAccess(code, (String) map.get("access_token"), String.valueOf((Integer) map.get("uid")));
+                return new OauthAccess(code, (String) map.get("access_token"), String.valueOf(map.get("uid")));
             }
         }
         return null;
@@ -80,8 +80,7 @@ public class WeiboOauthComponent extends AbstractOauth {
             Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
             });
             if (null != map.get("id")) {
-                return new OauthUser(oauthInfo.getOpenId(), (String) map.get("screen_name"), (String) map.get("avatar_large"),
-                        (String) map.get("gender"));
+                return new OauthUser(oauthInfo.getOpenId(), (String) map.get("screen_name"));
             }
         }
         return null;
