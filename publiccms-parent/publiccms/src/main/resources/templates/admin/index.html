@@ -73,12 +73,7 @@ $(function(){
         </li>
     </@_sysAuthorized>
         <li class="switchBox">
-            <a href="javascript:"><i class="icon-user icon-large"></i> ${(admin.nickName)!}</a>
-            <!-- <ul>
-                <li>
-                    <i class="icon-signout icon-large"></i> <a href="logout.do?userId=${admin.id}"><@t.page 'logout'/></a>
-                </li>
-            </ul> -->
+            <i class="icon-user icon-large"></i> ${(admin.nickName)!}
         </li>
         <li>
             <a href="logout.do?userId=${admin.id}"><i class="icon-signout icon-large"></i> <@t.page 'logout'/></a>
@@ -187,7 +182,6 @@ $(function(){
     <ul class="themeList" id="themeList">
         <li theme="toptry"><div></div></li>
         <li theme="default"><div></div></li>
-        <li theme="azure"><div></div></li>
         <li theme="silver"><div></div></li>
         <li theme="purple"><div></div></li>
     </ul>
