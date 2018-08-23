@@ -248,7 +248,7 @@ a.toggleCollapse{ text-decoration:none;}
 .themeList li.default .selected{ background-position:-60px -20px;}
 
 /* Pages default */
-.page{ display:block;overflow:hidden;float:left;width:100%;height:100%;}
+.page{ display:block;overflow:hidden;float:left;width:100%;height:100%;-webkit-overflow-scrolling: touch;}
 .pageHeader{ display:block;overflow:hidden;padding:5px;position:relative;}
 .searchBar ul.searchContent{ display:block;overflow:hidden;height:30px;padding-right:80px;background: url(../default/images/order_down.gif) no-repeat top right;}
 .searchBar ul.searchContentHover{ height:auto;background: url(../default/images/order_up.gif) no-repeat top right;}
