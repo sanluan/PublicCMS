@@ -478,6 +478,7 @@ body,html{color:#31353e}
 *,body{font-family:microsoft yahei,Arial}
 .left-page-content{border-right:1px solid #e4e9f2;float:left;display:block;overflow:auto;width:240px;line-height:21px}
 body #splitBar,body #splitBarProxy{top:60px}
+input[type="checkbox"]{width:14px;height:14px;}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-button:vertical{display:none}
 ::-webkit-scrollbar-corner,::-webkit-scrollbar-track{background-color:rgba(98,98,98,.2);border-radius:10px}
@@ -558,7 +559,7 @@ a.button,button.button{border:1px solid #dde2ec;font-size:13px;font-weight:400}
 .panelBar .toolBar li a>i{color:#3587ef;margin-right:6px}
 .panelBar .toolBar li.line{border:none;background:#e4e9f2;position:relative;top:3px}
 table.list,table.list td{border-color:#e4e9f2}
-table.list td{padding:5px 2px}
+table.list td{padding:4px 2px}
 table.list th{font-weight:400;color:#31353e;padding:5px 2px}
 .panelBar .pages{height:100%}
 .panelBar .pages .combox .select a{height:26px;line-height:26px}
