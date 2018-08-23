@@ -144,23 +144,13 @@ $(function(){
         <#if .locale!=k>
             <li>
             	<a href="changeLocale?lang=${k}" target="ajaxTodo">
-            		<#if k==''>
-            			<img src="${res}/themes/toptry/images/ch.png" />
-            		<#else>
-            			<img src="${res}/themes/toptry/images/${k}.png" />
-            		</#if>
-            		${v}
+            		<img src="${res}/themes/images/${k?has_content?then(k,'ch')}.png" alt="${v}"/>${v}
             	</a>
             </li>
         <#else>
         	<li class="current-lang">
             	<a href="changeLocale?lang=${k}" target="ajaxTodo">
-            		<#if k==''>
-            			<img src="${res}/themes/toptry/images/ch.png" />
-            		<#else>
-            			<img src="${res}/themes/toptry/images/${k}.png" />
-            		</#if>
-            		${v}
+            		<img src="${res}/themes/images/${k?has_content?then(k,'ch')}.png" alt="${v}"/>${v}
             	</a>
             </li>
         </#if>
@@ -182,8 +172,6 @@ $(function(){
     <ul class="themeList" id="themeList">
         <li theme="toptry"><div></div></li>
         <li theme="default"><div></div></li>
-        <li theme="silver"><div></div></li>
-        <li theme="purple"><div></div></li>
     </ul>
 </footer>
 </body>
