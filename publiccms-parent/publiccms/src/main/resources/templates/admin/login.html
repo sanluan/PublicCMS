@@ -7,11 +7,18 @@
 </head>
 <body onload="document.getElementsByTagName('input')[0].focus();">
 <div class="login_body">
+	<div class="login_body_left"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo-ver.png</#if>"/></div>
     <div class="login_form clearfix">
         <form action="${adminBase}/login.do" method="post">
-            <p class="logo"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo.png</#if>"/></p>
-            <p><input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>"/></p>
-            <p><input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/></p>
+            <p class="logo">Public CMS</p>
+            <p>
+            	<i class="iconfont iconfont-user"></i>
+            	<input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>"/>
+            </p>
+            <p>
+            	<i class="iconfont iconfont-key"></i>
+            	<input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/>
+            </p>
             <p>
                 <input type="submit" value="<@t.page 'login'/>"/>
                 <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
@@ -19,7 +26,11 @@
         </form>
         <p>
             <#list langs as k,v>
-                <a href="${adminBase}/changeLocale?lang=${k}&returnUrl=${adminBase?url}/">${v}</a>
+            	<#if .locale!=k>
+		            <a href="${adminBase}/changeLocale?lang=${k}&returnUrl=${adminBase?url}/">${v}</a>
+		        <#else>
+		        	<a class="current-lang" href="${adminBase}/changeLocale?lang=${k}&returnUrl=${adminBase?url}/">${v}</a>
+		        </#if>
             </#list>
         </p>
     </div>
