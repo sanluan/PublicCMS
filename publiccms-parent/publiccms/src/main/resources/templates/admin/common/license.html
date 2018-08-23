@@ -1,8 +1,3 @@
-<div class="formBar">
-    <ul>
-        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-    </ul>
-</div>
 <div class="pageFormContent" layoutH="50">
 <#assign license = getLicense()/>
 <#if license?has_content>
@@ -48,4 +43,9 @@
         });
     </script>
 </#if>
-</div>        
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

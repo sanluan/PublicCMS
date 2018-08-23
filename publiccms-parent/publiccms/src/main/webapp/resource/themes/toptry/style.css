@@ -553,9 +553,6 @@ footer a {
     color: #4d84ff;
     text-decoration: none;
 }
-.themeList{
-    display:none;
-}
 
 /* 弹窗样式 */
 body .alert .alertContent {
@@ -674,6 +671,9 @@ body .dialog .dialogHeader .minimize{
 .dialog .dialogHeader_c a:hover {
     color: #3587ef;
     text-decoration: none;
+}
+.dialog .panelFooter_r, .dialog .dialogFooter_c{
+    height:0px;
 }
 body #taskbar{
     background: #131a23;
