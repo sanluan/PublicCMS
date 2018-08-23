@@ -389,7 +389,7 @@ body .searchBar ul.searchContentHover{
 }
 .searchBar ul.searchContent:before{
     content: "\e631";
-    font-family:"iconfont" !important;
+    font-family:"iconfont";
     font-size: 18px;
     position: absolute;
     right: 0px;
@@ -474,7 +474,7 @@ body table.list th.order, body table.list th.asc, body table.list th.desc{
 }
 table.list th.order:before, table.list th.asc:before, table.list th.desc:before{
     content: "\e623";
-    font-family:"iconfont" !important;
+    font-family:"iconfont";
     font-size: 16px;
     position: absolute;
     right: 3px;
@@ -496,7 +496,7 @@ body a.btnLook{
 }
 a.btnLook:before{
     content: "\e66a";
-    font-family:"iconfont" !important;
+    font-family:"iconfont";
     font-size: 20px;
     line-height: 28px;
     position: absolute;
@@ -623,7 +623,7 @@ body .dialog .dialogHeader h1{
 body .dialog .dialogContent{
     border: none;
     padding: 0px;
-    width: 100% !important;
+    width: 100%;
 }
 body .dialog .dialogContent .pageFormContent{
 	margin-right: 5px;
@@ -641,7 +641,7 @@ body .alert h1 {
 }
 body .dialog .dialogHeader .close, body .dialog .dialogHeader .maximize, body .dialog .dialogHeader .minimize, body .dialog .dialogHeader .restore{
     background: none;
-    font-family:"iconfont" !important;
+    font-family:"iconfont";
     font-size:20px;
     background: none;
     text-indent: 0px;
@@ -698,8 +698,8 @@ body #taskbar .selected, body #taskbar .hover{
     color: #fff;
 }
 .icon-remove:before{
-    content: "\e61a" !important;
-    font-family:"iconfont" !important;
+    content: "\e61a";
+    font-family:"iconfont";
     font-size:16px;
 }
 body #taskbar .close{
@@ -739,14 +739,14 @@ body .tree div div {
 }
 .tree .folder_collapsable, .tree .end_collapsable, .tree .folder_expandable, .tree .end_expandable, .tree .collapsable, .tree .expandable, .tree .file,
 .tree .last_collapsable, .tree .last_expandable{
-    font-family:"iconfont" !important;
+    font-family:"iconfont";
     font-size:16px;
     font-style:normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     line-height: 30px;
     width: 25px;
-    background: none !important;
+    background: none;
 }
 .tree .folder_collapsable:before{
     content: "\e67d";

@@ -481,38 +481,38 @@ a.btnAttach{ background-position:-182px 3px}
 
 /* 部分图标修改 */
 .icon-chevron-down:before, .icon-chevron-up:before, .icon-backward:before, .icon-forward:before, .icon-refresh:before{
-    font-family:"iconfont" !important;
+    font-family:"iconfont";
     line-height: 45px;
-    vertical-align: unset !important;
+    vertical-align: unset;
 }
 .icon-chevron-up:before{
-    content: "\e654" !important;
+    content: "\e654";
 }
 .icon-chevron-down:before{
-    content: "\e668" !important;
+    content: "\e668";
 }
 .icon-backward:before{
-    content: "\e6ea" !important;
-    font-size: 20px !important;
+    content: "\e6ea";
+    font-size: 20px;
 }
 .icon-forward:before{
-    content: "\e616" !important;
-    font-size: 20px !important;
+    content: "\e616";
+    font-size: 20px;
 }
 .icon-chevron-sign-left:before{
-    content: "\e7ab" !important;
-    font-family:"iconfont" !important;
+    content: "\e7ab";
+    font-family:"iconfont";
 }
 .icon-chevron-sign-right:before{
-    content: "\e61b" !important;
-    font-family:"iconfont" !important;
+    content: "\e61b";
+    font-family:"iconfont";
 }
 .icon-th-list:before{
-    content: "\e629" !important;
-    font-family:"iconfont" !important;
-    font-size: 20px !important;
+    content: "\e629";
+    font-family:"iconfont";
+    font-size: 20px;
 }
 .icon-refresh:before{
-    content: "\e606" !important;
-    line-height: normal !important;
+    content: "\e606";
+    line-height: normal;
 }
