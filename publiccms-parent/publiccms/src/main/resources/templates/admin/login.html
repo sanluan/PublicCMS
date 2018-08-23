@@ -10,7 +10,7 @@
 	<div class="login_body_left"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo-ver.png</#if>"/></div>
     <div class="login_form clearfix">
         <form action="${adminBase}/login.do" method="post">
-            <p class="logo">Public CMS</p>
+            <p class="logo">${site.name}</p>
             <p>
             	<i class="iconfont iconfont-user"></i>
             	<input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>"/>

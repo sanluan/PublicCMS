@@ -23,7 +23,7 @@ body:before{content:"";height:100%;right:0;left:50%;position:absolute;background
 .login_body_left{width:220px;height:100%;float:left;background:url(./pcms.png) no-repeat -126px 123%;background-color:#354052;background-size:auto 50%}
 .login_body_left img{position:relative;top:50%;left:50%;-webkit-transform:translate(-50%,-50%);-moz-transform:translate(-50%,-50%);-o-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
 .login_form{width:460px;float:left;padding:40px 80px;box-sizing:border-box;background:#fff;height:100%}
-.login_form .logo{color:#667ea7;font-size:32px;margin-bottom:40px}
+.login_form .logo{color:#667ea7;font-size:32px;margin-bottom:40px;word-wrap: break-word;}
 .login_form input{height:38px;width:100%;line-height:26px;font-size:14px;color:#333;border-color:#dde2ec;box-sizing:border-box;border-radius:4px;padding-left:40px}
 .login_form p{position:relative;margin:30px 0}
 .login_form p>i{position:absolute;left:11px;color:#afc2da;line-height:38px;font-size:20px}
