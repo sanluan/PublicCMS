@@ -41,7 +41,7 @@ main{ background-color:#48597A;color:#293950;}
 /* Dialog */
 .dialog .dialogHeader, .dialog .dialogHeader_r,
 .dialog .dialogFooter, .dialog .dialogFooter_r{ background-image:url(./images/dialogpanel.png);background-repeat:no-repeat;}
-.dialog .dialogHeader_c,.dialog .dialogFooter_c{ background-image:url(./images/dialogpanel.png);}
+.dialog .dialogHeader_c,.dialog .dialogFooter_c{ background-image:url(./images/dialogpanel.png);height:5px;}
 .dialog .dialogHeader h1, .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize, .resizable_f_r{ background-image:url(./images/dialogpanel_icon.png);background-repeat:no-repeat;}
 .dialog .dialogHeader h1{ color:#183152;}
 .dialog .dialogContent{ border-color:#5A6D95;background-color:#eef4f5;}

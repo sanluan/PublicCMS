@@ -1,18 +1,18 @@
 <form action="cmsCategory/publish.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="ids" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <div class="formBar">
-        <ul>
-            <li><button type="submit" class="buttonActive"><@t.page 'button.publish'/></button></li>
-            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-        </ul>
-    </div>
-    <div class="pageFormContent" layoutH="19">
+    <div class="pageFormContent" layoutH="50">
         <dl>
             <dt><@t.page 'category.publish_page_count'/>:</dt>
             <@_contentList categoryId=id containChild=containChild count=pageSize>
             <dd><input class="required digits" type="number" name="max" max="${page.totalPage}" min="1" value="${page.totalPage}"/></dd>
             </@_contentList>
         </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.publish'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
     </div>
 </form>

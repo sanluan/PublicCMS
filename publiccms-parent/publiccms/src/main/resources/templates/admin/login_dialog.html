@@ -1,11 +1,5 @@
 <form action="loginDialog.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
-    <div class="formBar">
-        <ul>
-            <li><button type="submit" class="buttonActive"><@t.page 'login'/></button></li>
-            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-        </ul>
-    </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <dl class="nowrap">
             <dt><@t.page 'user.username'/>:</dt>
             <dd><input type="text" name="username" title="<@t.page 'user.username'/>"/></dd>
@@ -14,6 +8,12 @@
             <dt><@t.page 'password'/>:</dt>
             <dd><input type="password" name="password" title="<@t.page 'password'/>"/></dd>
         </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'login'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
     </div>
 <script>
     $('input[name=username]')[0].focus();

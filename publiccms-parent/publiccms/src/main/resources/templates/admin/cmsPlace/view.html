@@ -1,12 +1,7 @@
 <@_place id=id>
     <#assign a=object/>
 </@_place>
-<div class="formBar">
-    <ul>
-        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-    </ul>
-</div>
-<div class="pageFormContent" layoutH="60">
+<div class="pageFormContent" layoutH="50">
     <dl class="nowrap">
         <dt><@t.page 'title'/>:</dt>
         <dd>
@@ -41,4 +36,9 @@
     <#assign attribute=getPlaceAttribute((a.id)!)!{}/>
     <@extendData 'extendDataList' metadata.extendList attribute 'view'/>
 </#if>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
 </div>

@@ -1,10 +1,5 @@
 <@_logTask id=id><#assign a=object/></@_logTask>
-<div class="formBar">
-    <ul>
-        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-    </ul>
-</div>
-<div class="pageFormContent" layoutH="60">
+<div class="pageFormContent" layoutH="50">
     <dl>
         <dt><@t.page 'task'/>:</dt>
         <dd>
@@ -33,4 +28,9 @@
             <textarea name="description" cols="80" rows="20">${(a.result)!}</textarea>
         </dd>
     </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
 </div>

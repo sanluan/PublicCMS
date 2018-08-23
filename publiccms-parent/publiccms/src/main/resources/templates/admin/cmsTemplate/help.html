@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="tabsContent">
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder">
             <#if metadata?has_content>
                 <li>
@@ -82,7 +82,7 @@
                 <li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_namespace')/>><@t.page 'help.echo_namespace'/></a></li>
             </ul>
         </div>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder">
             <#if type?has_content&&'task'=type>
                 <li>
@@ -171,7 +171,7 @@
                 </li>
             </ul>
         </div>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder">
 <@_sysConfigList>
     <#list list as a>
@@ -192,7 +192,7 @@
             </ul>
         </div>
     <#if path?has_content>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder">
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.content_contribute'/></a>

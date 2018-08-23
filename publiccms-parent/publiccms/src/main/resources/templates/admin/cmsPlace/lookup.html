@@ -73,8 +73,8 @@
         </div>
     </div>
     <div class="tabsContent">
-        <div class="pageContent" layoutH="37">
-            <div class="unitBox" layoutH="37" style="float:left; display:block; overflow:auto; width:180px;border-right:solid 1px #CCC;">
+        <div class="pageContent" layoutH="40">
+            <div class="unitBox left-page-content" layoutH="40">
                 <ul class="tree treeFolder">
                     <li>
                         <a href="cmsPlace/lookup_content_list.html" target="ajax" rel="lookup_content_list"><@t.page 'category'/></a>
@@ -84,16 +84,16 @@
                     </li>
                  </ul>
             </div>
-            <div id="lookup_content_list" class="unitBox" style="margin-left:180px;">
+            <div id="lookup_content_list" class="unitBox">
                 <#include "lookup_content_list.html"/>
             </div>
         </div>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder expand">
                 <@lookupTree/>
             </ul>
         </div>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder expand">
                 <@pageTree/>
             </ul>

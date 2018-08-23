@@ -15,12 +15,6 @@
     </@_categoryList>
 </#macro>
 <div class="pageContent">
-    <div class="formBar">
-        <ul>
-            <li><button class="button" type="button" onclick="$.bringBack({'${field!'relatedContentId'}':'', url:'', title:'', description:''}); return false;"><@t.page 'button.clear_select'/></li>
-            <li><button class="close button" type="button"><@t.page 'button.close'/></li>
-        </ul>
-    </div>
     <div class="unitBox" layoutH="0" style="float:left; display:block; overflow:auto; width:180px;border-right:solid 1px #CCC;background:#ffffff">
         <ul class="tree treeFolder">
             <li>
@@ -33,5 +27,11 @@
     </div>
     <div id="content_list" class="unitBox" style="margin-left:180px;">
         <#include "lookup_list.html"/>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button class="button" type="button" onclick="$.bringBack({'${field!'relatedContentId'}':'', url:'', title:'', description:''}); return false;"><@t.page 'button.clear_select'/></li>
+            <li><button class="close button" type="button"><@t.page 'button.close'/></li>
+        </ul>
     </div>
 </div>

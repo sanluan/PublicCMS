@@ -40,7 +40,7 @@ footer{ border-color:#d679d6;background-color:#ffddfc;}
 /* Dialog */
 .dialog .dialogHeader, .dialog .dialogHeader_r,
 .dialog .dialogFooter, .dialog .dialogFooter_r{ background-image:url(./images/dialogpanel.png);background-repeat:no-repeat;}
-.dialog .dialogHeader_c,.dialog .dialogFooter_c{ background-image:url(./images/dialogpanel.png);}
+.dialog .dialogHeader_c,.dialog .dialogFooter_c{ background-image:url(./images/dialogpanel.png);height:5px;}
 .dialog .dialogHeader h1, .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize, .resizable_f_r{ background-image:url(./images/dialogpanel_icon.png);background-repeat:no-repeat;}
 .dialog .dialogHeader h1{ color:#2d3f00;}
 .dialog .dialogContent{ border-color:#d679d6;background-color:#ffddfc;}

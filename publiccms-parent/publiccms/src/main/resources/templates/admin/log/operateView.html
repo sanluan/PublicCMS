@@ -2,12 +2,7 @@
     <#assign a=object/>
     <@_sysUser id=a.userId><#assign user=object/></@_sysUser>
 </@_logOperate>
-<div class="formBar">
-    <ul>
-        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-    </ul>
-</div>
-<div class="pageFormContent" layoutH="60">
+<div class="pageFormContent" layoutH="50">
     <dl>
         <dt><@t.page 'user.id'/>:</dt>
         <dd>
@@ -38,4 +33,9 @@
             <textarea name="content" cols="80" rows="20">${(a.content)!}</textarea>
         </dd>
     </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
 </div>

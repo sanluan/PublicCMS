@@ -293,6 +293,8 @@ a.toggleCollapse{ text-decoration:none;}
 #content p{float: none;display: block;min-width: initial;padding: 0;}
 .CodeMirror{height:100%;line-height:16px;}
 
+.left-page-content{ float: left;display: block;overflow: auto;width:240px;line-height: 21px;}
+
 fieldset{ padding:3px;margin:0 0 5px 0;border:1px dotted #B8D0D6;}
 fieldset legend{ padding:2px;border:1px dotted #B8D0D6;font-weight:bold;}
 fieldset legend:hover{ background-color:#dddddd;}
@@ -401,7 +403,7 @@ a.btnAttach{ background-position:-182px 3px}
 .dialog .dialogHeader .minimize{ background-position:0 -300px;right:42px;}
 .dialog .dialogHeader .minimize:hover{ background-position:0 -350px;}
 .dialog .dialogContent{ display:block;overflow:hidden;padding:5px 5px 1px 5px;border-style:solid;border-width:0 1px;}
-.dialog .panelFooter_r, .dialog .dialogFooter_c{ display:block;overflow:hidden;height:5px;}
+.dialog .panelFooter_r, .dialog .dialogFooter_c{ display:block;overflow:hidden;height:0px;}
 .dialog .dialogFooter{ padding-left:5px;background-position:0 -150px;}
 .dialog .dialogFooter_r{ padding-right:5px;background-position:100% -200px;}
 .dialog .dialogFooter_c{ padding:0;background-position:0 -250px;background-repeat:repeat-x;}

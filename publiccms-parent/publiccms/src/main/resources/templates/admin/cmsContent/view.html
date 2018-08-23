@@ -7,12 +7,7 @@
 </@_content>
 <@_category id=categoryId!><#assign category=object/></@_category>
 <@_model id=modelId!><#assign model=object/></@_model>
-<div class="formBar">
-    <ul>
-        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-    </ul>
-</div>
-<div class="pageFormContent" layoutH="60">
+<div class="pageFormContent" layoutH="50">
     <#if model?has_content>
         <#assign fieldList=model.fieldList![]/>
         <@_content id=parentId>
@@ -204,4 +199,9 @@
             </#if>
         </@_contentRelatedList>
     </#if>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
 </div>

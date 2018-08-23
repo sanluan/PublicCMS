@@ -17,11 +17,6 @@ a{
 }
 .left-page-content{
     border-right: 1px solid #e4e9f2;
-    float: left;
-    display: block;
-    overflow: auto;
-    width:240px;
-    line-height: 21px;
 }
 body #splitBar, body #splitBarProxy{
     top: 60px;

@@ -1,12 +1,6 @@
 <form action="cmsWebFile/doUpload.do?callbackType=closeCurrent&navTabId=cmsWebFile/list" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, dialogAjaxDone)">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <div class="formBar">
-        <ul>
-            <li><button type="submit" class="buttonActive"><@t.page 'upload'/></button></li>
-            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-        </ul>
-    </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <dl>
             <dt><@t.page 'file'/>:</dt>
             <dd>
@@ -14,5 +8,11 @@
                 <input type="file" name="files" class="required" size="30" multiple="multiple"/>
             </dd>
         </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'upload'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
     </div>
 </form>

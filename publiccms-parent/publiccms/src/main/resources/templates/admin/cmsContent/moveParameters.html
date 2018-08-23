@@ -35,17 +35,17 @@ if(0==$('#idsToMove input',$.pdialog.getCurrent()).length){
     <input type="hidden" name="categoryId" value=""/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div id="idsToMove"></div>
-    <div class="formBar">
-        <ul>
-            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-        </ul>
-    </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <ul class="tree treeFolder expand">
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'category.select'/></a>
                 <ul><@categoryTree/></ul>
             </li>
+        </ul>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
 </form>

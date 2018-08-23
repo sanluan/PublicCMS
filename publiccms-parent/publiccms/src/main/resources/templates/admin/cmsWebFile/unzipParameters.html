@@ -1,13 +1,7 @@
 <form action="cmsWebFile/unzip.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="path" value="${path!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <div class="formBar">
-        <ul>
-            <li><button type="submit" class="buttonActive"><@t.page 'button.decompress'/></button></li>
-            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-        </ul>
-    </div>
-    <div class="pageFormContent" layoutH="19">
+    <div class="pageFormContent" layoutH="50">
         <dl class="nowrap">
             <dt><@t.page 'decompress.position'/>:</dt>
             <dd>
@@ -24,5 +18,11 @@
                 <label style="width:auto;"><input type="radio" name="encoding" value="gbk"/><@t.page 'file.encoding.gbk'/></label>
             </dd>
         </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.decompress'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
     </div>
 </form>
