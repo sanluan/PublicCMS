@@ -638,6 +638,9 @@ body .dialog .dialogContent{
     padding: 0px;
     width: 100% !important;
 }
+body .dialog .dialogContent .pageFormContent{
+	margin-right: 5px;
+}
 body .dialog .dialogHeader, body .dialog .dialogHeader_r, body .dialog .dialogHeader_c{
     height: 40px;
 }
