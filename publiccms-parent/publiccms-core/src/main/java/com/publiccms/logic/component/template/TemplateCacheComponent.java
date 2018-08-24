@@ -74,8 +74,7 @@ public class TemplateCacheComponent implements Cache {
     public String getCachedPath(String requestPath, String fullTemplatePath, Locale locale, int cacheMillisTime,
             String[] acceptParameters, HttpServletRequest request, ModelMap modelMap) {
         ModelMap model = (ModelMap) modelMap.clone();
-        AbstractFreemarkerView.exposeAttribute(model, request.getScheme(), request.getServerName(), request.getServerPort(),
-                request.getContextPath());
+        AbstractFreemarkerView.exposeAttribute(model, request);
         model.addAttribute(CACHE_VAR, true);
         return createCache(requestPath, fullTemplatePath,
                 fullTemplatePath + getRequestParametersString(request, acceptParameters), locale, cacheMillisTime, model);

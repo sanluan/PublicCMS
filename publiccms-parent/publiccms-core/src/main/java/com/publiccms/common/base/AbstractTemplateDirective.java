@@ -66,8 +66,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
                     }
                 }
             }
-            AbstractFreemarkerView.exposeAttribute(model, request.getScheme(), request.getServerName(), request.getServerPort(),
-                    request.getContextPath());
+            AbstractFreemarkerView.exposeAttribute(model, request);
         } else {
             AbstractFreemarkerView.exposeSite(model, getSite(handler));
         }

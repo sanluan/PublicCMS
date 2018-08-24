@@ -53,7 +53,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
 
     @Override
     protected void exposeHelpers(Map<String, Object> model, HttpServletRequest request) throws Exception {
-        exposeAttribute(model, request.getScheme(), request.getServerName(), request.getServerPort(), request.getContextPath());
+        exposeAttribute(model, request);
         super.exposeHelpers(model, request);
     }
 
@@ -64,17 +64,18 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * @param serverPort
      * @param contextPath
      */
-    public static void exposeAttribute(Map<String, Object> model, String scheme, String serverName, int serverPort,
-            String contextPath) {
-        if (80 == serverPort && "http".equals(scheme) || 443 == serverPort && "https".equals(scheme)) {
-            model.put(CONTEXT_BASE, new StringBuilder(scheme).append("://").append(serverName).append(contextPath).toString());
+    public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
+        if (80 == request.getServerPort() && "http".equals(request.getScheme())
+                || 443 == request.getServerPort() && "https".equals(request.getScheme())) {
+            model.put(CONTEXT_BASE, new StringBuilder(request.getScheme()).append("://").append(request.getServerName())
+                    .append(request.getContextPath()).toString());
         } else {
-            model.put(CONTEXT_BASE, new StringBuilder(scheme).append("://").append(serverName).append(":").append(serverPort)
-                    .append(contextPath).toString());
+            model.put(CONTEXT_BASE, new StringBuilder(request.getScheme()).append("://").append(request.getServerName())
+                    .append(":").append(request.getServerPort()).append(request.getContextPath()).toString());
         }
 
-        model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(serverName));
-        exposeSite(model, BeanComponent.getSiteComponent().getSite(serverName));
+        model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(request.getServerName()));
+        exposeSite(model, BeanComponent.getSiteComponent().getSite(request.getServerName()));
     }
 
     /**
