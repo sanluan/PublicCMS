@@ -1,6 +1,7 @@
 a{color:#448af3}
 .left-page-content{border-color:#e4e9f2}
 header{background:#131a23;color:#afc5f6}
+header .nav ul{background:#667ea7;}
 #navMenu li.selected,#navMenu li:hover{background:#2c3343}
 header a{color:#afc5f6}
 #navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff}
