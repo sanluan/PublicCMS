@@ -624,11 +624,12 @@ body .dialog .dialogHeader .minimize{right:65px}
 .accordionContent .tree div.selected div{color:#fff}
 .tree div div{background:0 0}
 .tree a{color:#333}
-.tree .collapsable,.tree .end_collapsable,.tree .end_expandable,.tree .expandable,.tree .file,.tree .folder_collapsable,.tree .folder_expandable,.tree .last_collapsable,.tree .last_expandable{font-family:iconfont!important;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:30px;width:25px;background:0 0!important}
+.tree .collapsable,.tree .end_collapsable,.tree .end_expandable,.tree .expandable,.tree .file,.tree .folder_collapsable,.tree .folder_expandable,.tree .last_collapsable,.tree .last_expandable, .tree .first_collapsable, .tree .first_expandable{font-family:iconfont!important;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:30px;width:25px;background:0 0!important}
 .tree .folder_collapsable:before{content:"\e67d"}
-.tree .collapsable:before,.tree .end_collapsable:before,.tree .last_collapsable:before{content:"\e668"}
-.tree .file:before,.tree .folder_expandable:before{content:"\e60f"}
-.tree .end_expandable:before,.tree .expandable:before,.tree .last_expandable:before{content:"\e603"}
+.tree .collapsable:before,.tree .end_collapsable:before,.tree .last_collapsable:before, .tree .first_collapsable:before{content:"\e668"}
+.tree .folder_expandable:before{content:"\e60f"}
+.tree .file:before{content:"\e686"}
+.tree .end_expandable:before,.tree .expandable:before,.tree .last_expandable:before, .tree .first_expandable:before{content:"\e603"}
 /* 部分图标修改 */
 .icon-backward:before,.icon-chevron-down:before,.icon-chevron-up:before,.icon-forward:before,.icon-refresh:before{font-family:iconfont!important;line-height:45px;vertical-align:unset!important}
 .icon-chevron-up:before{content:"\e654"!important}
