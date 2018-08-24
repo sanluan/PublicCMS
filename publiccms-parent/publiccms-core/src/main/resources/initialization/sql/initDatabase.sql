@@ -586,7 +586,7 @@ INSERT INTO `sys_module` VALUES ('app_add', 'sysApp/add', 'sysApp/save', NULL, '
 INSERT INTO `sys_module` VALUES ('app_client_disable', NULL, 'sysAppClient/disable', NULL, 'app_client_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_enable', NULL, 'sysAppClient/enable', NULL, 'app_client_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_list', 'sysAppClient/list', NULL, '<i class=\"icon-coffee icon-large\"></i>', 'user_menu', 1, 4);
-INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysApp/issue', NULL, 'app_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, '<i class=\"icon-linux icon-large\"></i>', 'system_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('category', NULL, NULL, '<i class=\"icon-folder-open icon-large\"></i>', NULL, 1, 5);

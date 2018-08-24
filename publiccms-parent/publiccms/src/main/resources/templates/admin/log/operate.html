@@ -1,4 +1,4 @@
-<@_logOperateList content=content operate=operate channel=channel
+<@_logOperateList content=content operate=operate channel=channel ip=ip
             userId=userId startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
@@ -19,14 +19,18 @@
                     <input type="text" name="operate" value="${operate!}" />
                 </li>
                 <li>
-                    <label><@t.page 'log.content'/>:</label>
-                    <input type="text" name="content" value="${content!}" />
+                    <label><@t.page 'log.operate_ip'/>:</label>
+                    <input type="text" name="ip" value="${ip!}" />
                 </li>
                 <li>
                     <label><@t.page 'log.create_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
+                </li>
+                <li>
+                    <label><@t.page 'log.content'/>:</label>
+                    <input type="text" name="content" value="${content!}" />
                 </li>
             </ul>
             <div class="subBar">

@@ -29,6 +29,6 @@ ALTER TABLE `sys_app` ADD COLUMN `expiry_minutes` int(0) NULL COMMENT '过期时
 UPDATE `sys_user_token` SET `expiry_date` = date_add(`create_date`, interval 30 day);
 UPDATE `sys_app_token` SET `expiry_date` = date_add(`create_date`, interval 30 minute);
 UPDATE `sys_app` SET `expiry_minutes` = '30';
-INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysApp/issue', NULL, 'app_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module_lang` VALUES ('app_issue', '', '颁发Token');
 INSERT INTO `sys_module_lang` VALUES ('app_issue', 'en', 'Issue Token');
