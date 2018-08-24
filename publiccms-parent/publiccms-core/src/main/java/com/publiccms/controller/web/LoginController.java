@@ -92,28 +92,26 @@ public class LoginController extends AbstractController {
                 user = service.findByEmail(site.getId(), username);
             }
             String ip = RequestUtils.getIpAddress(request);
+            Date now = CommonUtils.getDate();
             if (ControllerUtils.verifyNotExist("username", user, model) || ControllerUtils.verifyNotEquals("password",
                     VerificationUtils.md5Encode(password), user.getPassword(), model) || verifyNotEnablie(user, model)) {
                 Long userId = null;
                 if (null != user) {
                     userId = user.getId();
                 }
-                logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false,
-                        CommonUtils.getDate(), password));
+                logLoginService.save(
+                        new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             } else {
-                user.setPassword(null);
-                ControllerUtils.setUserToSession(request.getSession(), user);
                 String authToken = UUID.randomUUID().toString();
                 int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                         LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 addLoginStatus(user, authToken, request, response, expiryMinutes);
-                Date now = CommonUtils.getDate();
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
                         DateUtils.addMinutes(now, expiryMinutes), ip));
                 service.updateLoginStatus(user.getId(), ip);
-                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true,
-                        CommonUtils.getDate(), null));
+                logLoginService.save(
+                        new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true, now, null));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
         }
@@ -180,8 +178,6 @@ public class LoginController extends AbstractController {
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
             service.save(entity);
-            entity.setPassword(null);
-            ControllerUtils.setUserToSession(request.getSession(), entity);
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                     LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
@@ -235,6 +231,8 @@ public class LoginController extends AbstractController {
     public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
             int expiryMinutes) {
         try {
+            user.setPassword(null);
+            ControllerUtils.setUserToSession(request.getSession(), user);
             StringBuilder sb = new StringBuilder();
             sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
                     .append(CommonConstants.getCookiesUserSplit()).append(user.isSuperuserAccess())

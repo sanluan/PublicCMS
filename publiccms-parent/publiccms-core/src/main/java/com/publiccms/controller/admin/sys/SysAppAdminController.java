@@ -67,7 +67,6 @@ public class SysAppAdminController extends AbstractController {
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
-            entity.setAppSecret(null);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.app", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));
@@ -95,7 +94,6 @@ public class SysAppAdminController extends AbstractController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(id);
-            entity.setAppSecret(null);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.app", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     JsonUtils.getString(entity)));

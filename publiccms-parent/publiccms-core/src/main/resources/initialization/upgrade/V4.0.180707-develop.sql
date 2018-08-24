@@ -24,7 +24,7 @@ UPDATE `sys_module` SET `authorized_url` =  'cmsTemplate/help,cmsTemplate/savePl
 DELETE FROM `sys_email_token`;
 ALTER TABLE `sys_email_token` ADD COLUMN `expiry_date` datetime(0) NOT NULL COMMENT '过期日期' AFTER `create_date`;
 ALTER TABLE `sys_user_token` ADD COLUMN `expiry_date` datetime(0) DEFAULT NULL COMMENT '过期日期' AFTER `create_date`;
-ALTER TABLE `sys_app_token` ADD COLUMN `expiry_date` datetime(0) NULL COMMENT '过期日期' AFTER `create_date`;
+ALTER TABLE `sys_app_token` ADD COLUMN `expiry_date` datetime(0) DEFAULT NULL COMMENT '过期日期' AFTER `create_date`;
 ALTER TABLE `sys_app` ADD COLUMN `expiry_minutes` int(0) NULL COMMENT '过期时间' AFTER `authorized_apis`;
 UPDATE `sys_user_token` SET `expiry_date` = date_add(`create_date`, interval 30 day);
 UPDATE `sys_app_token` SET `expiry_date` = date_add(`create_date`, interval 30 minute);

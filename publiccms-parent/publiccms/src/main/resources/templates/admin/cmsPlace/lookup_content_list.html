@@ -12,9 +12,9 @@
                 </li>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
                     <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
                 </li>
                 <li>
                     <label><@t.page 'title'/>:</label>

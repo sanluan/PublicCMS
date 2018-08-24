@@ -7,9 +7,9 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'cluster.heartbeat_time'/>:</label>
-                    <input type="text" name="startHeartbeatDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startHeartbeatDate!}" />
+                    <input type="text" name="startHeartbeatDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startHeartbeatDate!}" />
                     <span>-</span>
-                    <input type="text" name="endHeartbeatDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endHeartbeatDate!}" />
+                    <input type="text" name="endHeartbeatDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endHeartbeatDate!}" />
                 </li>
                 <li>
                     <select class="combox" name="master">

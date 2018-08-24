@@ -1,9 +1,9 @@
 <form action="sysApp/issue.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
-    <input type="hidden" name="ids" value="${id!}"/>
+    <input type="hidden" name="id" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="submit" class="buttonActive"><@t.page 'button.publish'/></button></li>
+            <li><button type="submit" class="buttonActive"><@t.page 'app.issue'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
@@ -11,7 +11,7 @@
         <dl>
             <dt><@t.page 'expiry_date'/>:</dt>
             <dd>
-                <input type="text" name="expiryDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss"/>
+                <input type="text" name="expiryDate" class="date" size="20" minDate="{%y}-%M-{%d}" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss"/>
                 <a class="inputDateButton" href="javascript:;" onclick="return false;"></a>
              </dd>
         </dl>

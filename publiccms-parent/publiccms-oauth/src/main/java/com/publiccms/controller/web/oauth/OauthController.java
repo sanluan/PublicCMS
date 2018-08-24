@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -98,37 +99,33 @@ public class OauthController extends AbstractController {
             HttpSession session, HttpServletResponse response, ModelMap model) {
         Oauth oauthComponent = oauthChannelMap.get(channel);
         SysSite site = getSite(request);
-        Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
-        RequestUtils.cancleCookie(request.getContextPath(), response, STATE_COOKIE_NAME, null);
         RequestUtils.cancleCookie(request.getContextPath(), response, RETURN_URL, null);
+        String returnUrl;
+        if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
+            returnUrl = cookie.getValue();
+        } else {
+            returnUrl = site.getDynamicPath();
+        }
+
+        Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);
+        RequestUtils.cancleCookie(request.getContextPath(), response, STATE_COOKIE_NAME, null);
         if (null != oauthComponent && oauthComponent.enabled(site.getId()) && null != stateCookie && null != state
                 && state.equals(stateCookie.getValue())) {
             try {
                 OauthAccess oauthAccess = oauthComponent.getOpenId(site.getId(), code);
                 if (null != oauthAccess && null != oauthAccess.getOpenId()) {
-                    String returnUrl = site.getDynamicPath();
-                    if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
-                        returnUrl = cookie.getValue();
-                    }
                     String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(oauthAccess.getOpenId())
                             .toString();
                     Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                     int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                             LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                    String ip = RequestUtils.getIpAddress(request);
+                    Date now = CommonUtils.getDate();
                     SysUserToken entity = sysUserTokenService.getEntity(authToken);
-                    if (null != entity) {
-                        if (entity.getChannel().equals(channel)) {
-                            SysUser user = sysUserService.getEntity(entity.getUserId());
-                            ControllerUtils.setUserToSession(session, user);
-                            LoginController.addLoginStatus(user, authToken, request, response, expiryMinutes);
-                            logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(),
-                                    RequestUtils.getIpAddress(request), channel, true, CommonUtils.getDate(), null));
-                            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-                        }
-                    } else {
+                    if (null == entity) {
                         SysUser user = ControllerUtils.getUserFromSession(session);
-                        if (null == user) {
+                        if (null == user) { // 未登录则注册用户
                             OauthUser oauthUser = oauthComponent.getUserInfo(site.getId(), oauthAccess);
                             Map<String, String> oauthConfig = configComponent.getConfigData(site.getId(),
                                     AbstractOauth.CONFIG_CODE);
@@ -141,31 +138,28 @@ public class OauthController extends AbstractController {
                                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX
                                         + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
                             }
-                        } else {
-                            Date now = CommonUtils.getDate();
-                            entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, now,
-                                    RequestUtils.getIpAddress(request));
+                        } else { // 如果用户已经登录,则绑定用户
+                            entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, now, ip);
                             sysUserTokenService.save(entity);
-                            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
-                            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
-                                String value = userCookie.getValue();
-                                if (null != value) {
-                                    String[] userData = value.split(CommonConstants.getCookiesUserSplit());
-                                    if (userData.length > 1) {
-                                        sysUserTokenService.delete(userData[1]);
-                                    }
-                                }
-                            }
-                            LoginController.addLoginStatus(user, authToken, request, response, expiryMinutes);
                             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                         }
+                    } else if (entity.getChannel().equals(channel)) {// 有授权则登录
+                        SysUser user = sysUserService.getEntity(entity.getUserId());
+                        String loginToken = UUID.randomUUID().toString();
+                        sysUserTokenService.save(new SysUserToken(loginToken, site.getId(), user.getId(),
+                                LogLoginService.CHANNEL_WEB, now, DateUtils.addMinutes(now, expiryMinutes), ip));
+                        LoginController.addLoginStatus(user, loginToken, request, response, expiryMinutes);
+                        sysUserService.updateLoginStatus(user.getId(), ip);
+                        logLoginService
+                                .save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true, now, null));
+                        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                     }
                 }
             } catch (IOException e) {
                 log.error(e);
             }
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     @Autowired(required = false)

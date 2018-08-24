@@ -21,6 +21,7 @@
         <thead>
             <tr>
                 <th><@t.page 'app.token'/></th>
+                <th><@t.page 'expiry_date'/></th>
                 <th><@t.page 'authorize_date'/></th>
             </tr>
         </thead>
@@ -28,6 +29,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.authToken}">
                 <td>${a.authToken!}</td>
+                <td>${a.expiryDate!}</td>
                 <td>${a.createDate!}</td>
             </tr>
             </#list>
