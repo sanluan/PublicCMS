@@ -47,11 +47,11 @@ $(function(){
             '${res}/codemirror/mode/nginx/nginx.js','${res}/codemirror/addon/hint/show-hint.js','${res}/codemirror/addon/hint/javascript-hint.js','${res}/codemirror/addon/hint/html-hint.js',
             '${res}/codemirror/addon/hint/css-hint.js','${res}/codemirror/addon/hint/xml-hint.js'],
         loginUrl:"login_dialog.html", loginTitle:"<@t.page 'login'/>",
-        pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"}, 
-        debug:false, 
+        pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"},
+        debug:false,
         callback:function(){
             initEnv();
-            $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"toptry"}); 
+            $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"toptry"});
         }
     });
 });
