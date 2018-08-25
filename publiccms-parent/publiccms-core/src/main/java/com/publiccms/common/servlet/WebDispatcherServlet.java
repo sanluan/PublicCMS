@@ -12,7 +12,6 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.logic.component.site.SiteComponent;
 
 /**
@@ -59,7 +58,7 @@ public class WebDispatcherServlet extends ErrorToNotFoundDispatcherServlet {
         String multiSiteViewName;
         if (viewName.startsWith(UrlBasedViewResolver.REDIRECT_URL_PREFIX)) {
             if (viewName.startsWith(SPECIAL_REDIRECT_URL)) {
-                multiSiteViewName = viewName.substring(0, REDIRECT_URL_PREFIX_LENGTH) + RequestUtils.getScheme(request)
+                multiSiteViewName = viewName.substring(0, REDIRECT_URL_PREFIX_LENGTH) + request.getScheme()
                         + viewName.substring(REDIRECT_URL_PREFIX_LENGTH - 1);
             } else {
                 multiSiteViewName = viewName;

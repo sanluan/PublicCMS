@@ -145,19 +145,4 @@ public class RequestUtils {
         }
         return null;
     }
-
-    /**
-     * @param request
-     * @return ip address
-     */
-    public static String getScheme(HttpServletRequest request) {
-        if (null != request) {
-            String scheme = request.getHeader("X-Forwarded-Proto");
-            if (CommonUtils.notEmpty(scheme)) {
-                return scheme;
-            }
-            return request.getScheme();
-        }
-        return null;
-    }
 }

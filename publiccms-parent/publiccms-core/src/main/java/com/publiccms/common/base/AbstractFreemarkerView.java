@@ -9,7 +9,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.entities.sys.SysSite;
@@ -66,17 +65,19 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * @param contextPath
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
-        String schema = RequestUtils.getScheme(request);
-        if (80 == request.getServerPort() && "http".equals(schema) || 443 == request.getServerPort() && "https".equals(schema)) {
-            model.put(CONTEXT_BASE, new StringBuilder(schema).append("://").append(request.getServerName())
-                    .append(request.getContextPath()).toString());
+        String scheme = request.getScheme();
+        int port = request.getServerPort();
+        String serverName = request.getServerName();
+        if (80 == port && "http".equals(scheme) || 443 == port && "https".equals(scheme)) {
+            model.put(CONTEXT_BASE,
+                    new StringBuilder(scheme).append("://").append(serverName).append(request.getContextPath()).toString());
         } else {
-            model.put(CONTEXT_BASE, new StringBuilder(schema).append("://").append(request.getServerName()).append(":")
-                    .append(request.getServerPort()).append(request.getContextPath()).toString());
+            model.put(CONTEXT_BASE, new StringBuilder(scheme).append("://").append(serverName).append(":").append(port)
+                    .append(request.getContextPath()).toString());
         }
 
-        model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(request.getServerName()));
-        exposeSite(model, BeanComponent.getSiteComponent().getSite(request.getServerName()));
+        model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(serverName));
+        exposeSite(model, BeanComponent.getSiteComponent().getSite(serverName));
     }
 
     /**

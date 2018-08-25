@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true"%>
-<%@ page language="java" import="com.publiccms.common.tools.RequestUtils" pageEncoding="UTF-8"%> 
 <%  
-String basePath = RequestUtils.getScheme(request) + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";  
+String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";  
 %>
 <%!String exceptionMsgForInner(Throwable e) {
 	String errorMessage = e.getLocalizedMessage();
