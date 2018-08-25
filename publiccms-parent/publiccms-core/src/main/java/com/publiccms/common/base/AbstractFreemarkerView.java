@@ -66,7 +66,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * @param contextPath
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
-        String schema = RequestUtils.getSchema(request);
+        String schema = RequestUtils.getScheme(request);
         if (80 == request.getServerPort() && "http".equals(schema) || 443 == request.getServerPort() && "https".equals(schema)) {
             model.put(CONTEXT_BASE, new StringBuilder(schema).append("://").append(request.getServerName())
                     .append(request.getContextPath()).toString());

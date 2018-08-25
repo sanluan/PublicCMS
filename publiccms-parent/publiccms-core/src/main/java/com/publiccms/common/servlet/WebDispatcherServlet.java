@@ -59,7 +59,7 @@ public class WebDispatcherServlet extends ErrorToNotFoundDispatcherServlet {
         String multiSiteViewName;
         if (viewName.startsWith(UrlBasedViewResolver.REDIRECT_URL_PREFIX)) {
             if (viewName.startsWith(SPECIAL_REDIRECT_URL)) {
-                multiSiteViewName = viewName.substring(0, REDIRECT_URL_PREFIX_LENGTH) + RequestUtils.getSchema(request)
+                multiSiteViewName = viewName.substring(0, REDIRECT_URL_PREFIX_LENGTH) + RequestUtils.getScheme(request)
                         + viewName.substring(REDIRECT_URL_PREFIX_LENGTH - 1);
             } else {
                 multiSiteViewName = viewName;
