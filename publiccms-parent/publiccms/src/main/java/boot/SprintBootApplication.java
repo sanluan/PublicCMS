@@ -5,7 +5,6 @@ import java.time.Duration;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
-import org.apache.catalina.valves.RemoteIpValve;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
@@ -54,11 +53,7 @@ public class SprintBootApplication {
         } else if ("undertow".equalsIgnoreCase(server)) {
             factory = new UndertowServletWebServerFactory();
         } else {
-            TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-            RemoteIpValve valve = new RemoteIpValve();
-            valve.setProtocolHeader("X-Forwarded-Proto");
-            tomcat.addEngineValves(valve);
-            factory = tomcat;
+            factory = new TomcatServletWebServerFactory();
         }
         factory.setPort(Integer.valueOf(System.getProperty("cms.port", "8080")));
         factory.setContextPath(System.getProperty("cms.contextPath", "/publiccms"));

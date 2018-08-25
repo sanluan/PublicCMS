@@ -9,6 +9,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.entities.sys.SysSite;
@@ -65,13 +66,13 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * @param contextPath
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
-        if (80 == request.getServerPort() && "http".equals(request.getScheme())
-                || 443 == request.getServerPort() && "https".equals(request.getScheme())) {
-            model.put(CONTEXT_BASE, new StringBuilder(request.getScheme()).append("://").append(request.getServerName())
+        String schema = RequestUtils.getSchema(request);
+        if (80 == request.getServerPort() && "http".equals(schema) || 443 == request.getServerPort() && "https".equals(schema)) {
+            model.put(CONTEXT_BASE, new StringBuilder(schema).append("://").append(request.getServerName())
                     .append(request.getContextPath()).toString());
         } else {
-            model.put(CONTEXT_BASE, new StringBuilder(request.getScheme()).append("://").append(request.getServerName())
-                    .append(":").append(request.getServerPort()).append(request.getContextPath()).toString());
+            model.put(CONTEXT_BASE, new StringBuilder(schema).append("://").append(request.getServerName()).append(":")
+                    .append(request.getServerPort()).append(request.getContextPath()).toString());
         }
 
         model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(request.getServerName()));
