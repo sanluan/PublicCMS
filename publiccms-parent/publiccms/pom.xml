@@ -8,23 +8,23 @@
 	<parent>
 		<groupId>com.publiccms</groupId>
 		<artifactId>publiccms-parent</artifactId>
-		<version>V4.0.180707</version>
+		<version>V4.0.180825</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>com.publiccms</groupId>
 			<artifactId>publiccms-core</artifactId>
-			<version>V4.0.180707</version>
+			<version>V4.0.180825</version>
 		</dependency>
 		<dependency>
 			<groupId>com.publiccms</groupId>
 			<artifactId>publiccms-oauth</artifactId>
-			<version>V4.0.180707</version>
+			<version>V4.0.180825</version>
 		</dependency>
 		<dependency>
 			<groupId>com.publiccms</groupId>
 			<artifactId>publiccms-redis</artifactId>
-			<version>V4.0.180707</version>
+			<version>V4.0.180825</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>

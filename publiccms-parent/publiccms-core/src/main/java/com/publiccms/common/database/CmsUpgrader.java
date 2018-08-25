@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 import com.publiccms.common.base.AbstractCmsUpgrader;
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -55,7 +56,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             runScript(stringWriter, connection, VERSION_20180210, VERSION_180707);
         case VERSION_180707:
             updateMetadata(stringWriter, connection);
-            runScript(stringWriter, connection, VERSION_180707, "develop");
+            runScript(stringWriter, connection, VERSION_180707, CmsVersion.getVersion());
             break;
         }
     }
