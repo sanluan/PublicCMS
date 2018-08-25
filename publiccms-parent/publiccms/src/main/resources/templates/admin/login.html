@@ -7,7 +7,7 @@
 </head>
 <body onload="document.getElementsByTagName('input')[0].focus();">
 <div class="login_body">
-	<div class="login_body_left"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo-ver.png</#if>"/></div>
+	<div class="login_body_left"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo.png</#if>"/></div>
     <div class="login_form clearfix">
         <form action="${adminBase}/login.do" method="post">
             <p class="logo">${site.name}</p>
@@ -23,6 +23,14 @@
                 <input type="submit" value="<@t.page 'login'/>"/>
                 <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
             </p>
+            <p class="login_msg">
+                <#if error??>
+                    <@t.message error/>
+                </#if>
+                <#if message??>
+                    <@t.message "message."+message/>
+                </#if>
+            </p>
         </form>
         <p>
             <#list langs as k,v>
@@ -34,14 +42,6 @@
             </#list>
         </p>
     </div>
-    <p class="login_msg">
-        <#if error??>
-            <@t.message error/>
-        </#if>
-        <#if message??>
-            <@t.message "message."+message/>
-        </#if>
-    </p>
 </div>
 </body>
 </html>
