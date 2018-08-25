@@ -1,8 +1,10 @@
 package com.publiccms.views.directive.api;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.UUID;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -43,11 +45,11 @@ public class AutoLoginDirective extends AbstractAppDirective {
                 if (null != user && !user.isDisabled()) {
                     String authToken = UUID.randomUUID().toString();
                     String ip = RequestUtils.getIpAddress(handler.getRequest());
-                    sysUserTokenService
-                            .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), CommonUtils.getDate(), ip));
+                    Date now = CommonUtils.getDate();
+                    sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now,
+                            DateUtils.addDays(now, 30), ip));
                     service.updateLoginStatus(user.getId(), ip);
-                    logLoginService
-                            .save(new LogLogin(site.getId(), uuid, user.getId(), ip, app.getChannel(), true, CommonUtils.getDate(), null));
+                    logLoginService.save(new LogLogin(site.getId(), uuid, user.getId(), ip, app.getChannel(), true, now, null));
                     user.setPassword(null);
                     result = true;
                     handler.put("authToken", authToken).put("user", user);

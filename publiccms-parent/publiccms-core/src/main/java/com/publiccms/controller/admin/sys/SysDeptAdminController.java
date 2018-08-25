@@ -26,6 +26,8 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategory;
 import com.publiccms.entities.sys.SysDeptCategoryId;
+import com.publiccms.entities.sys.SysDeptConfig;
+import com.publiccms.entities.sys.SysDeptConfigId;
 import com.publiccms.entities.sys.SysDeptPage;
 import com.publiccms.entities.sys.SysDeptPageId;
 import com.publiccms.entities.sys.SysRoleUser;
@@ -34,6 +36,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
+import com.publiccms.logic.service.sys.SysDeptConfigService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysRoleUserService;
@@ -57,6 +60,8 @@ public class SysDeptAdminController extends AbstractController {
     private SysDeptCategoryService sysDeptCategoryService;
     @Autowired
     private SysDeptPageService sysDeptPageService;
+    @Autowired
+    private SysDeptConfigService sysDeptConfigService;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
     private String[] userIgnoreProperties = new String[] { "id", "superuserAccess", "registeredDate", "siteId", "authToken",
@@ -66,15 +71,15 @@ public class SysDeptAdminController extends AbstractController {
      * @param entity
      * @param categoryIds
      * @param pages
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysDept entity, Integer[] categoryIds, String[] pages, String _csrf, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String save(SysDept entity, Integer[] categoryIds, String[] pages, String[] configs, String _csrf,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -92,6 +97,7 @@ public class SysDeptAdminController extends AbstractController {
             }
             sysDeptCategoryService.updateDeptCategorys(entity.getId(), categoryIds);
             sysDeptPageService.updateDeptPages(entity.getId(), pages);
+            sysDeptConfigService.updateDeptConfigs(entity.getId(), configs);
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
@@ -112,6 +118,13 @@ public class SysDeptAdminController extends AbstractController {
                 }
                 sysDeptPageService.save(list);
             }
+            if (CommonUtils.notEmpty(configs)) {
+                List<SysDeptConfig> list = new ArrayList<>();
+                for (String config : configs) {
+                    list.add(new SysDeptConfig(new SysDeptConfigId(entity.getId(), config)));
+                }
+                sysDeptConfigService.save(list);
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -120,7 +133,7 @@ public class SysDeptAdminController extends AbstractController {
      * @param entity
      * @param repassword
      * @param roleIds
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
@@ -153,6 +166,9 @@ public class SysDeptAdminController extends AbstractController {
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
+            if (!admin.isOwnsAllContent()) {
+                entity.setOwnsAllContent(oldEntity.isOwnsAllContent());
+            }
             SysUser user = userService.getEntity(entity.getId());
             if ((!user.getName().equals(entity.getName())
                     && ControllerUtils.verifyHasExist("username", userService.findByName(site.getId(), entity.getName()), model))
@@ -183,6 +199,9 @@ public class SysDeptAdminController extends AbstractController {
                             .verifyHasExist("username", userService.findByName(site.getId(), entity.getName()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
+            if (!admin.isOwnsAllContent()) {
+                entity.setOwnsAllContent(false);
+            }
             entity.setDeptId(dept.getId());
             entity.setSiteId(site.getId());
             entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
@@ -203,7 +222,7 @@ public class SysDeptAdminController extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
-     * @param model 
+     * @param model
      * @return view name
      */
     @RequestMapping("delete")
@@ -212,15 +231,14 @@ public class SysDeptAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
-        List<Integer> list = service.delete(site.getId(), id);
-        if (0 < list.size()) {
-            for (Integer childId : list) {
-                sysDeptCategoryService.delete(childId, null);
-                sysDeptPageService.delete(childId, null);
-            }
+        SysDept entity = service.delete(site.getId(), id);
+        if (null != entity) {
+            sysDeptCategoryService.delete(entity.getId(), null);
+            sysDeptPageService.delete(entity.getId(), null);
+            sysDeptConfigService.delete(entity.getId(), null);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.dept", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    id.toString()));
+                    JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -235,9 +253,8 @@ public class SysDeptAdminController extends AbstractController {
      */
     @RequestMapping(value = "enableUser", method = RequestMethod.POST)
     public String enable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)
-                || ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id,
-                        model)) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model) || ControllerUtils
+                .verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = userService.getEntity(id);
@@ -267,9 +284,8 @@ public class SysDeptAdminController extends AbstractController {
      */
     @RequestMapping(value = "disableUser", method = RequestMethod.POST)
     public String disable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)
-                || ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id,
-                        model)) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model) || ControllerUtils
+                .verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = userService.getEntity(id);

@@ -3,20 +3,27 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <#if !a?has_content>
-                <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
-            <#else>
-                <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
-                <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
+        <#if !a?has_content>
+            <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
+        <#else>
+            <#if !site.parentId?has_content>
+                 <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
             </#if>
+            <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
+        </#if>
+        <#if site.parentId?has_content>
+            <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
+        <#else>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+        </#if>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <dl class="nowrap">
             <dt><@t.page 'path'/>:</dt></dt>
             <dd>
                 <input name="path" class="required" type="text" size="50" value="${(path)!}"/>
+                <span class="info"><@t.page 'template_path.description'/></span>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -105,6 +112,9 @@
             <#assign extendList=(a.extendList)![]/>
             <@extends 'extendList' extendList/>
         </fieldset>
+<#if a?has_content>
+        <textarea name="content" style="display:none"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
+<#else>
         <textarea name="content" style="display:none">&lt;html&gt;
 &lt;head&gt;
     &lt;title&gt;New PublicCMS Template&lt;/title&gt;
@@ -120,5 +130,6 @@
 </@_version>
 &lt;/body&gt;
 &lt;/html&gt;</textarea>
+</#if>
     </div>
 </form>

@@ -31,6 +31,7 @@ public class AdminDispatcherServlet extends DispatcherServlet {
         this.installHandler = installHandler;
     }
 
+    @Override
     protected void doService(HttpServletRequest request, HttpServletResponse response) throws Exception {
         if (CmsVersion.isInitialized()) {
             super.doService(request, response);

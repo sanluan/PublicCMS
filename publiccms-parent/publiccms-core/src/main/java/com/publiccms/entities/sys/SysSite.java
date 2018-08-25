@@ -9,6 +9,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -26,6 +27,8 @@ public class SysSite implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private Short id;
+    @GeneratorColumn(title = "父站点ID", condition = true)
+    private Short parentId;
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;
     @GeneratorColumn(title = "启用静态化")
@@ -37,12 +40,24 @@ public class SysSite implements java.io.Serializable {
     @GeneratorColumn(title = "动态站点地址")
     private String dynamicPath;
     @GeneratorColumn(title = "禁用", condition = true)
+    @JsonIgnore
     private boolean disabled;
 
     public SysSite() {
     }
 
     public SysSite(String name, boolean useStatic, String sitePath, boolean useSsi, String dynamicPath, boolean disabled) {
+        this.name = name;
+        this.useStatic = useStatic;
+        this.sitePath = sitePath;
+        this.useSsi = useSsi;
+        this.dynamicPath = dynamicPath;
+        this.disabled = disabled;
+    }
+
+    public SysSite(Short parentId, String name, boolean useStatic, String sitePath, boolean useSsi, String dynamicPath,
+            boolean disabled) {
+        this.parentId = parentId;
         this.name = name;
         this.useStatic = useStatic;
         this.sitePath = sitePath;
@@ -61,6 +76,15 @@ public class SysSite implements java.io.Serializable {
 
     public void setId(Short id) {
         this.id = id;
+    }
+
+    @Column(name = "parent_id")
+    public Short getParentId() {
+        return this.parentId;
+    }
+
+    public void setParentId(Short parentId) {
+        this.parentId = parentId;
     }
 
     @Column(name = "name", nullable = false, length = 50)

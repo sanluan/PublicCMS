@@ -50,6 +50,9 @@ public class TaskTemplateAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getTaskTemplateFilePath(site, path);
@@ -87,8 +90,11 @@ public class TaskTemplateAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
+        SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = getSite(request);
             String filePath = siteComponent.getTaskTemplateFilePath(site, path);
             String backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site, path);
             if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.moveFile(filePath, backupFilePath), model)) {

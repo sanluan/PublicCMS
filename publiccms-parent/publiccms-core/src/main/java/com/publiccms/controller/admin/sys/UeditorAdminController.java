@@ -171,7 +171,7 @@ public class UeditorAdminController extends AbstractController {
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", data.length);
-                map.put("title", fileName.substring(fileName.lastIndexOf(CommonConstants.SEPARATOR)));
+                map.put("title", fileName);
                 map.put("url", fileName);
                 map.put("type", SCRAW_TYPE);
                 map.put("original", "scraw" + SCRAW_TYPE);
@@ -216,7 +216,7 @@ public class UeditorAdminController extends AbstractController {
                                 entity.getContentLength(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         Map<String, Object> map = getResultMap(true);
                         map.put("size", entity.getContentLength());
-                        map.put("title", fileName.substring(fileName.lastIndexOf(CommonConstants.SEPARATOR)));
+                        map.put("title", fileName);
                         map.put("url", fileName);
                         map.put("source", image);
                         list.add(map);
@@ -263,7 +263,7 @@ public class UeditorAdminController extends AbstractController {
         return map;
     }
 
-    private Map<String, Object> getResultMap(boolean success) {
+    private static Map<String, Object> getResultMap(boolean success) {
         Map<String, Object> map = new HashMap<>();
         if (success) {
             map.put("state", "SUCCESS");

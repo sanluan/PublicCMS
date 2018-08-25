@@ -50,7 +50,7 @@ public class HqlDao extends BaseDao<Object> {
      * @return number of data deleted
      */
     public int delete(String hql) {
-        QueryHandler queryHandler = getDeleteQueryHandler(hql);
+        QueryHandler queryHandler = getQueryHandler(hql);
         return delete(queryHandler);
     }
 
@@ -58,7 +58,7 @@ public class HqlDao extends BaseDao<Object> {
      * @return analyzer
      */
     public Analyzer getAnalyzer() {
-        return super.getFullTextSession().getSearchFactory().getAnalyzer("default");
+        return super.getFullTextSession().getSearchFactory().getAnalyzer("cms");
     }
 
     @Override

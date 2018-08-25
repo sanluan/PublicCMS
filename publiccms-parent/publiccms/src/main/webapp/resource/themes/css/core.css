@@ -1,475 +1,665 @@
 @charset "utf-8";
-
 /* Core Code */
-html, body, *{ padding:0;margin:0;font-size:12px;font-family:Arial, sans-serif;word-break:break-all;}
-input[type="checkbox"] { margin:5px;width:16px;height:16px;}
-.clearfix { *zoom: 1;}
-.clearfix:after {display:block; content:"."; height:0; clear:both; visibility:hidden;}
+html, body, *{padding:0;margin:0;font-size:12px;font-family:Arial, sans-serif;word-break:break-all}
+input[type="checkbox"] {margin:5px;width:16px;height:16px}
+.clearfix {*zoom: 1}
+.clearfix:after {display:block; content:"."; height:0; clear:both; visibility:hidden}
 /* Remember to define focus styles! */
-:focus{ outline:0;}
-body{ width:100%;height:100%;color:black;overflow:hidden;}
-ul, ol{ list-style:none;}
+:focus{outline:0}
+body{width:100%;height:100%;overflow:hidden}
+ul, ol{list-style:none}
 /* Tables still need 'cellspacing="0"' in the markup. */
-table{ border-collapse:separate;border-spacing:0;}
-caption, th, td{ font-weight:normal;}
+table{border-collapse:separate;border-spacing:0}
+caption, th, td{font-weight:normal}
 
 /* Remove possible quote marks (") from <q>, <blockquote>. */
 blockquote:before, blockquote:after,
-q:before, q:after{ content:"";}
-blockquote, q{ quotes:"" "";}
+q:before, q:after{content:""}
+blockquote, q{quotes:"" ""}
 
-img{ border:none;}
-a{ text-decoration:none;}
-a:hover{ text-decoration:underline;}
+img{border:none}
+a{text-decoration:none}
+a:hover{text-decoration:underline}
 
-header{ display:block;overflow:hidden;height:69px;position:relative;border-bottom-width:1px;border-bottom-style:solid;}
-main{ overflow:hidden;}
-footer{ text-align:center;width:100%;height:25px;line-height:25px;padding:0 5px;z-index:-1;border-top-width:1px;border-top-style:solid;}
+header{display:block;overflow:hidden;height:69px;position:relative;border-bottom-width:1px;border-bottom-style:solid}
+main{overflow:hidden}
+footer{text-align:center;width:100%;height:38px;line-height:40px;padding:0 5px;z-index:-1;border-top-width:1px;border-top-style:solid;font-size:13px}
 
 /* Menu */
-header .logo{ float:left;width:200px;height:100%;}
-header .logo img{ max-height:100%;max-width:100%;}
-header .nav{ display:block;position:absolute;right:0px;z-index:2;}
-header .nav li{ float:left;padding:0 5px;line-height:37px;position: relative;}
-header .nav ul { display:none;width:100px; border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;position:absolute;top:30px; right:0;}
-header .nav ul li { margin-top:2px;line-height:26px;padding-left:10px;}
-header .nav ul li a { color:#000;}
-header .nav .selected ul {display:block;}
-#navMenu{ float:left;display:block;position:absolute;top:32px;left:200px;z-index:1;}
-#navMenu li{ float:left;margin:0px 1px;}
-#navMenu li a{ font-size:15px;font-weight:bold;line-height:36px;text-decoration:none;padding:8px 12px;border-style: solid;border-width: 1px;border-radius: 5px;}
+header .logo{float:left;width:200px;height:100%}
+header .logo img{max-height:100%;max-width:100%}
+header .nav{display:block;position:absolute;right:0px;z-index:2}
+header .nav li{float:left;padding:0 5px;line-height:37px;position: relative}
+header .nav ul {display:none;width:100px; border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;position:absolute;top:30px; right:0}
+header .nav ul li {margin-top:2px;line-height:26px;padding-left:10px}
+header .nav .selected ul {display:block}
+#navMenu{float:left;display:block;position:absolute;top:32px;left:200px;z-index:1}
+#navMenu li{float:left;margin:0px 1px}
+#navMenu li a{font-size:15px;font-weight:bold;line-height:36px;text-decoration:none;padding:8px 12px;border-style: solid;border-width: 1px;border-radius: 5px}
 
 /* Tabs */
-.tabs{ background-position:0 100%;background-repeat:repeat-x;}
-.tabs .tabsHeader{ display:block;overflow:hidden;height:35px;padding-left:5px;background-position:0 0;}
-.tabs .tabsHeaderContent{ display:block;overflow:hidden;height:100%;}
-.tabs .tabsHeader ul{ display:block;height:100%;}
-.tabs .tabsHeader li{ float:left;display:block;height:100%;margin-right:2px;line-height:35px;}
-.tabs .tabsHeader li a{ float:left;display:block;height:100%;padding:0 15px;line-height:35px;}
-.tabs .tabsHeader li a:hover{ text-decoration:none;}
-.tabs .tabsHeader li.selected{ border-style:solid;border-width:1px;background:#fff;}
-.tabs .tabsContent{ display:block;overflow:auto;}
+.tabs{background-position:0 100%;background-repeat:repeat-x}
+.tabs .tabsHeader{display:block;overflow:hidden;height:35px;padding-left:5px;background-position:0 0}
+.tabs .tabsHeaderContent{display:block;overflow:hidden;height:100%}
+.tabs .tabsHeader ul{display:block;height:100%}
+.tabs .tabsHeader li{float:left;display:block;height:100%;margin-right:2px;line-height:35px}
+.tabs .tabsHeader li a{float:left;display:block;height:100%;padding:0 15px;line-height:35px}
+.tabs .tabsHeader li a:hover{text-decoration:none}
+.tabs .tabsHeader li.selected{border-style:solid;border-width:1px;background:#fff}
+.tabs .tabsContent{display:block;overflow:auto}
 
-.tabsPage{ margin-left:202px;border-left-style: solid;border-left-width: 1px;}
-.tabsPage .tabsPageHeader{ display:block;height:35px;border-bottom-style:solid;border-bottom-width:1px;position:relative;}
-.tabsPage .tabsPageHeaderContent{ display:block;overflow:hidden;height: 100%;margin-left:70px;margin-right:72px;position:relative;}
-.tabsPage .tabsPageHeaderMargin{ margin:0 71px 0 71px;}
-.tabsPage .tabsPageHeader ul{ display:block;width:10000px;z-index:1;position:absolute;}
-.tabsPage .tabsPageHeader li{ float:left;display:block;height:100%;margin-left:1px;border-right-style:solid;border-right-width:1px;position:relative;}
-.tabsPage .tabsPageHeader li a{ font-size:12px;display:inline-block;max-width:112px;padding:0 10px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.tabsPage .tabsPageHeader li a:hover{ text-decoration:none;}
-.tabsPage .tabsPageHeader li.selected a{ font-weight:bold;}
-.tabsPage .tabsPageHeader li .close{ padding:0;padding-right: 10px;}
-.tabsPage .tabsMove{ height:100%;position:absolute;top:0;right:0;z-index:2;}
-.toggleCollapse,.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{ text-decoration:none;display:block;overflow:hidden;width:35px;text-align: center;height:35px;line-height:35px;position:absolute;z-index:2;}
-.toggleCollapse{ top:0px;left:0;border-right-style:solid;border-right-width:1px;}
-.tabsPage .tabsLeft{ top:0px;left:35px;border-right-style:solid;border-right-width:1px;}
-.tabsPage .tabsRight{ top:0px;right:35px;border-left-style:solid;border-left-width:1px;}
-.tabsPage .tabsMore{ top:0px;right:0;border-left-style:solid;border-left-width:1px;}
-.tabsPage .tabsMoreList{ display:none;overflow-x:hidden;overflow-y:auto;width:170px;max-height:380px;padding:2px;border-style:solid;border-width:1px;position:absolute;top:110px;right:0;z-index:3;}
-.tabsPage .tabsMoreList li{ display:block;overflow:hidden;height:30px;line-height:21px;}
-.tabsPage .tabsMoreList li a{ display:block;width:148px;height:28px;padding:0 10px;border:solid 1px #FFF;white-space:nowrap;line-height:28px;}
-.tabsPage .tabsMoreList li a:hover{ border-color:#ececec;text-decoration:none;background:#f5f5f5;}
-.tabsPage .tabsMoreList li.selected a{ font-weight:bold;border-color:#dfe5ed;background:#e8edf3;}
-.tabsPage .tabsPageContent{ display:block;overflow:hidden;position:relative;}
+.tabsPage{margin-left:202px;border-left-style: solid;border-left-width: 1px}
+.tabsPage .tabsPageHeader{display:block;height:35px;border-bottom-style:solid;border-bottom-width:1px;position:relative}
+.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height: 100%;margin-left:70px;margin-right:72px;position:relative}
+.tabsPage .tabsPageHeaderMargin{margin:0 81px 0 81px}
+.tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute}
+.tabsPage .tabsPageHeader li{float:left;display:block;height:100%;margin-left:1px;border-right-style:solid;border-right-width:1px;position:relative}
+.tabsPage .tabsPageHeader li a{font-size:12px;display:inline-block;max-width:112px;padding:0 10px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tabsPage .tabsPageHeader li a:hover{text-decoration:none}
+.tabsPage .tabsPageHeader li.selected a{font-weight:bold}
+.tabsPage .tabsPageHeader li .close{padding:0;padding-right: 10px}
+.tabsPage .tabsMove{height:100%;position:absolute;top:0;right:0;z-index:2}
+.toggleCollapse,.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:35px;text-align: center;height:35px;line-height:35px;position:absolute;z-index:2}
+.toggleCollapse{top:0px;left:0;border-right-style:solid;border-right-width:1px}
+.tabsPage .tabsLeft{top:0px;left:35px;border-right-style:solid;border-right-width:1px}
+.tabsPage .tabsRight{top:0px;right:35px;border-left-style:solid;border-left-width:1px}
+.tabsPage .tabsMore{top:0px;right:0;border-left-style:solid;border-left-width:1px}
+.tabsPage .tabsMoreList{display:none;overflow-x:hidden;overflow-y:auto;width:170px;max-height:380px;padding:2px;border-style:solid;border-width:1px;position:absolute;top:110px;right:0;z-index:3}
+.tabsPage .tabsMoreList li{display:block;overflow:hidden;height:30px;line-height:21px}
+.tabsPage .tabsMoreList li a{display:block;width:148px;height:28px;padding:0 10px;border:solid 1px #FFF;white-space:nowrap;line-height:28px}
+.tabsPage .tabsMoreList li a:hover{border-color:#ececec;text-decoration:none;background:#f5f5f5}
+.tabsPage .tabsMoreList li.selected a{font-weight:bold;border-color:#dfe5ed;background:#e8edf3}
+.tabsPage .tabsPageContent{display:block;overflow:hidden;position:relative}
 
 /* Tree */
-.tree li{ clear:both;display:block;line-height:30px;cursor:pointer;}
-.tree div, .tree a, .tree span{ display:inherit;height:30px;line-height:30px;}
-.tree div{ overflow:hidden;}
-.tree div div{ float:left;display:block;overflow:hidden;width:30px;height:30px;border:none;background-position:0 -100px;}
-.tree a, .tree a:hover{ text-decoration:none;}
-.tree .collapsable{ background-position:0 -300px;}
-.tree .first_collapsable{ background-position:0 -250px;}
-.tree .last_collapsable{ background-position:0 -350px;}
-.tree .expandable{ background-position:0 -100px;}
-.tree .first_expandable{ background-position:0 -50px;}
-.tree .last_expandable{ background-position:0 -150px;}
-.tree .end_expandable{ background-position:0 0;}
-.tree .end_collapsable{ background-position:0 -200px;}
-.tree .indent{ background:none;}
-.tree .line{ background-position:0 -400px;}
-.tree .node{ background-position:0 -450px;}
-.tree .last .node{ background-position:0 -500px;}
-.tree .folder_expandable{ background-position:0 0;}
-.tree .folder_collapsable{ background-position:0 -50px;}
-.tree .file{ background-position:0 -100px;}
-.tree .unchecked{ background-position:0 0;}
-.tree .hover .unchecked{ background-position:0 -50px;}
-.tree .checked{ background-position:0 -100px;}
-.tree .hover .checked{ background-position:0 -150px;}
-.tree .indeterminate{ background-position:0 -200px;}
-.tree .hover .indeterminate{ background-position:0 -250px;}
-.tree div div{ background-image:url(../default/images/tree/tree.png);background-repeat:no-repeat;}
-.tree .folder_collapsable, .tree .folder_expandable, .tree .file{ background-image:url(../default/images/tree/folder.png);background-repeat:no-repeat;}
-.tree .checked, .tree .unchecked, .tree .indeterminate{ background-image:url(../default/images/tree/check.png);background-repeat:no-repeat;}
+.tree li{clear:both;display:block;line-height:30px;cursor:pointer}
+.tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px}
+.tree div{overflow:hidden}
+.tree div div{float:left;display:block;overflow:hidden;width:30px;height:30px;border:none;background-position:0 -100px}
+.tree a, .tree a:hover{text-decoration:none}
+.tree .collapsable{background-position:0 -300px}
+.tree .first_collapsable{background-position:0 -250px}
+.tree .last_collapsable{background-position:0 -350px}
+.tree .expandable{background-position:0 -100px}
+.tree .first_expandable{background-position:0 -50px}
+.tree .last_expandable{background-position:0 -150px}
+.tree .end_expandable{background-position:0 0}
+.tree .end_collapsable{background-position:0 -200px}
+.tree .indent{background:none}
+.tree .line{background-position:0 -400px}
+.tree .node{background-position:0 -450px}
+.tree .last .node{background-position:0 -500px}
+.tree .folder_expandable{background-position:0 0}
+.tree .folder_collapsable{background-position:0 -50px}
+.tree .file{background-position:0 -100px}
+.tree .unchecked{background-position:0 -3px}
+.tree .hover .unchecked{background-position:0 -53px}
+.tree .checked{background-position:0 -103px}
+.tree .hover .checked{background-position:0 -153px}
+.tree .indeterminate{background-position:0 -200px}
+.tree .hover .indeterminate{background-position:0 -250px}
+.tree div div{background-image:url(../default/images/tree/tree.png);background-repeat:no-repeat}
+.tree .folder_collapsable, .tree .folder_expandable, .tree .file{background-image:url(../default/images/tree/folder.png);background-repeat:no-repeat}
+.tree .checked, .tree .unchecked, .tree .indeterminate{background-image:url(../default/images/tree/check.png);background-repeat:no-repeat}
 
 /* Accordion */
-.accordion{ display:block;}
-.accordion .accordionHeader{ display:block;overflow:hidden;cursor:pointer;border-bottom-width:1px;border-bottom-style:solid;}
-.accordion .accordionHeader h2{ display:block;overflow:hidden;padding:0 5px 0 5px;height:35px;line-height:35px;}
-.accordion .accordionHeader h2 .icon{ float:right;line-height:35px;}
-.accordion .accordionContent{ display:block;overflow:auto;border-style:solid;border-width:0 0 1px 0;}
+.accordion{display:block}
+.accordion .accordionHeader{display:block;overflow:hidden;cursor:pointer;border-bottom-width:1px;border-bottom-style:solid}
+.accordion .accordionHeader h2{display:block;overflow:hidden;padding:0 5px 0 5px;height:35px;line-height:35px}
+.accordion .accordionHeader h2 .icon{float:right;line-height:35px}
+.accordion .accordionContent{display:block;overflow:auto;border-style:solid;border-width:0 0 1px 0}
 
 /* Grid */
-.panelBar{ display:block;overflow:hidden;height:28px;border-style:solid;border-width:1px 0;background-repeat:repeat-x;}
-.panelBar ul{ padding:1px 5px;}
-.panelBar li{ float:left;display:block;overflow:hidden;height:26px;padding:0 5px;}
-.panelBar .toolBar li a:hover{ border-radius:2px;}
-.panelBar .toolBar li a{ line-height:22px;display:block;overflow:hidden;padding:2px 5px;text-decoration:none;}
-.panelBar .toolBar li.line{ display:block;overflow:hidden;height:24px;width:1px;border-radius:1px;border-width:1px;border-style:solid;padding:0;text-indent:-1000px;}
+.panelBar{display:block;overflow:hidden;height:28px;border-style:solid;border-width:1px 0;background-repeat:repeat-x}
+.panelBar ul{padding:1px 5px}
+.panelBar li{float:left;display:block;overflow:hidden;height:26px;padding:0 5px}
+.panelBar .toolBar li a:hover{border-radius:2px}
+.panelBar .toolBar li a{line-height:22px;display:block;overflow:hidden;padding:2px 5px;text-decoration:none}
+.panelBar .toolBar li.line{display:block;overflow:hidden;height:24px;width:1px;border-radius:1px;border-width:1px;border-style:solid;padding:0;text-indent:-1000px}
 
-.panelBar .pages{ float:left;overflow:hidden;height:21px;padding:2px 5px;}
-.panelBar .pages span{ float:left;line-height:21px;}
-.panelBar .pages select{ float:left;margin:0 3px;font-size:12px;}
+.panelBar .pages{float:left;overflow:hidden;height:21px;padding:2px 5px}
+.panelBar .pages span{float:left;line-height:21px}
+.panelBar .pages select{float:left;margin:0 3px;font-size:12px}
 
-.pagination{ float:right;padding-left:7px;background-position:0 -199px;}
-.pagination li, .pagination li.hover{ padding:0 0 0 5px;background-position:0 -100px;}
-.pagination a, .pagination li.hover a, .pagination li span{ float:left;display:block;padding:0 5px 0 0;text-decoration:none;line-height:23px;background-position:100% -150px;}
-.pagination li.selected a{ color:red;font-weight:bold;}
-.pagination span, .pagination li.hover span{ float:left;display:block;height:23px;line-height:23px;cursor:pointer;}
+.pagination{float:right;padding-left:7px;background-position:0 -199px}
+.pagination li, .pagination li.hover{padding:0 0 0 5px;background-position:0 -100px}
+.pagination a, .pagination li.hover a, .pagination li span{float:left;display:block;padding:0 5px 0 0;text-decoration:none;line-height:23px;background-position:100% -150px}
+.pagination li.selected a{color:red;font-weight:bold}
+.pagination span, .pagination li.hover span{float:left;display:block;height:23px;line-height:23px;cursor:pointer}
 
-.pagination input{ height:20px;line-height:20px;}
-.pagination li .first span, .panelBar li .previous span{ padding:0 0 0 10px;}
-.pagination li .next span, .panelBar li .last span{ padding:0 10px 0 0;}
-.pagination li .first span{ background-position:0 -244px;}
-.pagination li .previous span{ background-position:0 -294px;}
-.pagination li .next span{ background-position:100% -344px;}
-.pagination li .last span{ background-position:100% -394px;}
-.pagination li .last{ margin-right:5px;}
+.pagination input{height:20px;line-height:20px}
+.pagination li .first span, .panelBar li .previous span{padding:0 0 0 10px}
+.pagination li .next span, .panelBar li .last span{padding:0 10px 0 0}
+.pagination li .first span{background-position:0 -244px}
+.pagination li .previous span{background-position:0 -294px}
+.pagination li .next span{background-position:100% -344px}
+.pagination li .last span{background-position:100% -394px}
+.pagination li .last{margin-right:5px}
 
-.pagination li.disabled{ background:none;}
-.pagination li.disabled span, .grid .pagination li.disabled a{ background-position:0 100px;cursor:default;}
-.pagination li.disabled span span{ color:#666;}
-.pagination li.disabled .first span{ background-position:0 -444px;}
-.pagination li.disabled .previous span{ background-position:0 -494px;}
-.pagination li.disabled .next span{ background-position:100% -544px;}
-.pagination li.disabled .last span{ background-position:100% -594px;}
-.pagination li.disabled .last{ margin-right:5px;}
+.pagination li.disabled{background:none}
+.pagination li.disabled span, .grid .pagination li.disabled a{background-position:0 100px;cursor:default}
+.pagination li.disabled span span{color:#666}
+.pagination li.disabled .first span{background-position:0 -444px}
+.pagination li.disabled .previous span{background-position:0 -494px}
+.pagination li.disabled .next span{background-position:100% -544px}
+.pagination li.disabled .last span{background-position:100% -594px}
+.pagination li.disabled .last{margin-right:5px}
 
-.pagination li.jumpto{ padding:2px 2px 0 7px;background-position:0 -200px;}
-.pagination li.jumpto .textInput{ float:left;width:30px;padding:1px;border-color:#acaeaf;}
-.pagination li.jumpto .goto{ float:left;display:block;overflow:hidden;width:16px;height:19px;border:0;text-indent:-1000px;background-position:0 -650px;cursor:pointer;}
+.pagination li.jumpto{padding:2px 2px 0 7px;background-position:0 -200px}
+.pagination li.jumpto .textInput{float:left;width:30px;padding:1px;border-color:#acaeaf}
+.pagination li.jumpto .goto{float:left;display:block;overflow:hidden;width:16px;height:19px;border:0;text-indent:-1000px;background-position:0 -650px;cursor:pointer}
 
 /* CSS Table */
-table.list { border-collapse:collapse;border:solid 1px #ededed;position:relative;}
-table.list thead tr { background:url("../default/images/tableth.png") repeat-x scroll 0 0 #F0EFF0;}
-table.list th { padding:1px 2px;line-height:26px;border-right:solid 1px #D0D0D0;border-bottom:solid 1px #D0D0D0;font-weight:bolder;}
-table.list td { padding:1px 2px;line-height:26px;border-right:solid 1px #ededed;}
-table.list th.order{ background:url(../default/images/order.gif) no-repeat right;cursor:pointer;}
-table.list th.asc{ background:url(../default/images/order_up.gif) no-repeat right;cursor:pointer;}
-table.list th.desc{ background:url(../default/images/order_down.gif) no-repeat right;cursor:pointer;}
-table.list tbody { background-color:#fff;}
-table.list .right { text-align:right;}
-table.list .center { text-align:center;}
-table.list a:hover { text-decoration:underline;}
-table.list td span.error { z-index:-1}
-table.nowrap tbody tr { border-bottom:solid 1px #ededed;}
+table.list {border-collapse:collapse;border:solid 1px #ededed;position:relative}
+table.list thead tr {background:url("../default/images/tableth.png") repeat-x scroll 0 0 #F0EFF0}
+table.list th {padding:1px 2px;line-height:26px;border-right:solid 1px #D0D0D0;border-bottom:solid 1px #D0D0D0;font-weight:bolder}
+table.list td {padding:1px 2px;line-height:26px;border-right:solid 1px #ededed}
+table.list th.order{background:url(../default/images/order.gif) no-repeat right;cursor:pointer}
+table.list th.asc{background:url(../default/images/order_up.gif) no-repeat right;cursor:pointer}
+table.list th.desc{background:url(../default/images/order_down.gif) no-repeat right;cursor:pointer}
+table.list .right {text-align:right}
+table.list .center {text-align:center}
+table.list a:hover {text-decoration:underline}
+table.list td span.error {z-index:-1}
+table.nowrap tbody tr {border-bottom:solid 1px #ededed}
 
 
 /* Taskbar */
-#taskbar{ overflow:hidden;height:26px;border-style:solid;border-width:0;border-color:#0f3255;background-color:#112746;background-repeat:repeat-x;position:absolute;z-index:30;}
-#taskbar .taskbarContent{ display:block;overflow:hidden;height:26px;position:relative;}
-#taskbar .taskbarMargin{ margin:0 20px;}
-#taskbar ul{ position:absolute;width:10000px;}
-#taskbar li{ float:left;height:25px;margin-left:2px;padding-left:5px;background-position:0 -50px;position:relative;cursor:pointer;}
-#taskbar li .taskbutton{ float:left;display:block;overflow:hidden;height:25px;background-position:100% -100px;}
-#taskbar li .taskbutton span{ display:block;overflow:hidden;width:70px;height:25px;line-height:26px;padding:0 25px 0 0;}
+#taskbar{overflow:hidden;height:26px;border-style:solid;border-width:0;border-color:#0f3255;background-color:#112746;background-repeat:repeat-x;position:absolute;z-index:30}
+#taskbar .taskbarContent{display:block;overflow:hidden;height:26px;position:relative}
+#taskbar .taskbarMargin{margin:0 20px}
+#taskbar ul{position:absolute;width:10000px}
+#taskbar li{float:left;height:25px;margin-left:2px;padding-left:5px;background-position:0 -50px;position:relative;cursor:pointer}
+#taskbar li .taskbutton{float:left;display:block;overflow:hidden;height:25px;background-position:100% -100px}
+#taskbar li .taskbutton span{display:block;overflow:hidden;width:70px;height:25px;line-height:26px;padding:0 25px 0 0}
 
-#taskbar .selected{ background-position:0 -250px;}
-#taskbar .selected .taskbutton{ background-position:100% -300px;}
-#taskbar .hover{ background-position:0 -150px;}
-#taskbar .hover .taskbutton{ background-position:100% -200px;}
+#taskbar .selected{background-position:0 -250px}
+#taskbar .selected .taskbutton{background-position:100% -300px}
+#taskbar .hover{background-position:0 -150px}
+#taskbar .hover .taskbutton{background-position:100% -200px}
 
-#taskbar .close, #taskbar .restore, #taskbar .minimize{ display:block;overflow:hidden;width:11px;height:11px;padding:0;text-indent:-1000px;position:absolute;top:5px;}
-#taskbar .close{ right:3px;}
-#taskbar .closeHover{ background-position:0 -50px;}
-#taskbar .restore{ right:14px;background-position:0 -100px;}
-#taskbar .restoreHover{ background-position:0 -150px;}
-#taskbar .minimize{ right:14px;background-position:0 -200px;}
-#taskbar .minimizeHover{ background-position:0 -250px;}
+#taskbar .close, #taskbar .restore, #taskbar .minimize{display:block;overflow:hidden;width:11px;height:11px;padding:0;text-indent:-1000px;position:absolute;top:5px}
+#taskbar .close{right:3px}
+#taskbar .closeHover{background-position:0 -50px}
+#taskbar .restore{right:14px;background-position:0 -100px}
+#taskbar .restoreHover{background-position:0 -150px}
+#taskbar .minimize{right:14px;background-position:0 -200px}
+#taskbar .minimizeHover{background-position:0 -250px}
 
-#taskbar .taskbarLeft, #taskbar .taskbarRight{ display:block;overflow:hidden;width:18px;height:29px;text-indent:-1000px;position:absolute;top:0;}
-#taskbar .taskbarLeft{ background-position:0 0;left:2px;cursor:pointer;}
-#taskbar .taskbarLeftHover{ background-position:0 -50px;}
-#taskbar .taskbarLeftDisabled{ background-position:0 -100px;cursor:default;}
-#taskbar .taskbarRight{ background-position:0 -150px;right:2px;cursor:pointer;}
-#taskbar .taskbarRightHover{ background-position:0 -200px;}
-#taskbar .taskbarRightDisabled{ background-position:0 -250px;cursor:default;}
+#taskbar .taskbarLeft, #taskbar .taskbarRight{display:block;overflow:hidden;width:18px;height:29px;text-indent:-1000px;position:absolute;top:0}
+#taskbar .taskbarLeft{background-position:0 0;left:2px;cursor:pointer}
+#taskbar .taskbarLeftHover{background-position:0 -50px}
+#taskbar .taskbarLeftDisabled{background-position:0 -100px;cursor:default}
+#taskbar .taskbarRight{background-position:0 -150px;right:2px;cursor:pointer}
+#taskbar .taskbarRightHover{background-position:0 -200px}
+#taskbar .taskbarRightDisabled{background-position:0 -250px;cursor:default}
 
 /* ProgressBar */
-#progressBar{ display:block;width:28px;height:28px;font-size:28px;position:absolute;top:50%;left:50%;margin-left:-14px;margin-top:-14px;z-index:2001;}
-#background{ display:block;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:2000;}
-.alertBackground{ display:none;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:1010;}
-.dialogBackground{ display:none;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:900;}
+#progressBar{display:block;width:28px;height:28px;font-size:28px;position:absolute;top:50%;left:50%;margin-left:-14px;margin-top:-14px;z-index:2001}
+#background{display:block;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:2000}
+.alertBackground{display:none;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:1010}
+.dialogBackground{display:none;width:100%;height:100%;opacity:0.4;filter:alpha(opacity=40);background:#FFF;position:absolute;top:0;left:0;z-index:900}
 
 /* ----------------------------------------------------------------- Form */
 /* TextInput */
 .textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
-textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled{ padding:2px;margin:0;line-height:22px;font-size:14px;border-style:solid;border-width:1px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;}
-input.required, textarea.required{ background-position:100% 0;}
-input.gray, textarea.gray{ color:gray;}
-select{ border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0}
+textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled{padding:2px;margin:0;line-height:22px;font-size:14px;border-style:solid;border-width:1px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+input.required, textarea.required{background-position:100% 0}
+input.gray, textarea.gray{color:gray}
+select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0}
 
-.inputButton{ float:left;display:block;overflow:hidden;text-indent:-1000px;width:16px;height:21px;}
-.inputButton:hover{ background-position:0 -50px;}
-.inputDateButton{ float:left;display:block;overflow:hidden;text-indent:-1000px;width: 16px;height: 28px;background-position:0 -100px;}
-.inputDateButton:hover{ background-position:0 -150px;}
+.inputButton{float:left;display:block;overflow:hidden;text-indent:-1000px;width:16px;height:21px}
+.inputButton:hover{background-position:0 -50px}
+.inputDateButton{float:left;display:block;overflow:hidden;text-indent:-1000px;width: 16px;height: 28px;background-position:0 -100px}
+.inputDateButton:hover{background-position:0 -150px}
 
-span.error{ display:block;overflow:hidden;width:165px;height:21px;padding:0 3px;line-height:21px;background:#F00;color:#FFF;position:absolute;top:5px;left:318px;}
-label.alt{ display:block;overflow:hidden;position:absolute;line-height:20px}
-.nowrap span.error{ position:static;}
+span.error{display:block;overflow:hidden;width:165px;height:21px;padding:0 3px;line-height:21px;background:#F00;color:#FFF;position:absolute;top:5px;left:318px}
+label.alt{display:block;overflow:hidden;position:absolute;line-height:20px}
+.nowrap span.error{position:static}
 
 /* Button */
-.button,.buttonActive{ display:inline-block;height:30px;padding:0px 20px;border:none;border-radius:2px;cursor:pointer;text-align:center;line-height:30px;white-space:nowrap;font-size:14px;letter-spacing:.03em;overflow:hidden;}
-button.button,button.buttonActive{ height:30px;}
-.button:hover{ text-decoration:none;}
-.buttonActive{ font-weight:bold;}
+.button,.buttonActive,.buttonDisabled{display:inline-block;height:30px;padding:0px 20px;border:none;border-radius:2px;cursor:pointer;text-align:center;line-height:30px;white-space:nowrap;font-size:14px;letter-spacing:.03em;overflow:hidden}
+button.button,button.buttonActive{height:30px}
+.button:hover{text-decoration:none}
+.buttonActive{font-weight:bold}
 /* ----------------------------------------------------------------- Pages */
 /* Layout */
-#leftside{ position:relative;}
-#sidebar{ width:200px;position:absolute;top:0px;left:0px;z-index:20;overflow:hidden;}
-#sidebar #menu{ overflow:auto;}
-a.toggleCollapse{ text-decoration:none;}
-#sidebar_s{ display:none;width:35px;height:35px;position:absolute;top:0px;left:0;z-index:21;text-align: center}
-#sidebar_s a{ text-decoration:none;line-height:35px;}
-#splitBar{ display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
-#splitBarProxy{ display:none;overflow:hidden;width:2px;border-style:solid;border-color:#c0c0c0;background:#CCC;border-width:1px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
+#leftside{position:relative}
+#sidebar{width:200px;position:absolute;top:0px;left:0px;z-index:20;overflow:hidden}
+#sidebar #menu{overflow:auto}
+a.toggleCollapse{text-decoration:none}
+#sidebar_s{display:none;width:35px;line-height:35px;height:35px;position:absolute;cursor:pointer;top:0px;left:0;z-index:21;text-align: center}
+#sidebar_s a{text-decoration:none;line-height:35px}
+#splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20}
+#splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-color:#c0c0c0;background:#CCC;border-width:1px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20}
 
-.langList{ position:absolute;left:0px;bottom:0px;padding:0px 7px;}
-.langList li{ float:left;padding:0px 3px;}
-.themeList li div{ background:url(../default/images/themeButton.png) no-repeat;}
-.themeList{ width:80px;position:absolute;right:0px;bottom:0px;padding:7px;}
-.themeList li{ float:left;padding:0px 3px;}
-.themeList li div{ display:block;overflow:hidden;width:13px;height:11px;text-indent:-100px;cursor:pointer;}
-.themeList li.azure div{ background-position:0 0;}
-.themeList li.azure .selected{ background-position:0 -20px;}
-.themeList li.purple div{ background-position:-20px 0;}
-.themeList li.purple .selected{ background-position:-20px -20px;}
-.themeList li.silver div{ background-position:-40px 0;}
-.themeList li.silver .selected{ background-position:-40px -20px;}
-.themeList li.default div{ background-position:-60px 0;}
-.themeList li.default .selected{ background-position:-60px -20px;}
+.langList{position:absolute;right:0px;bottom:0px;padding:0px 7px}
+.langList li{float:right;padding:0px 10px}
+.langList a img{height: 20px;position: relative;top: 5px;border-radius: 50%;margin-right: 5px}
+.themeList li div{background:url(../default/images/themeButton.png) no-repeat}
+.themeList{position:absolute;left:0px;bottom:0px;padding:12px}
+.themeList li{float:left;padding:0px 3px}
+.themeList li div{display:block;overflow:hidden;width:13px;height:11px;text-indent:-100px;cursor:pointer}
+.themeList li.toptry div{background-position:0 0}
+.themeList li.toptry .selected{background-position:0 -20px}
+.themeList li.default div{background-position:-60px 0}
+.themeList li.default .selected{background-position:-60px -20px}
 
 /* Pages default */
-.page{ display:block;overflow:hidden;float:left;width:100%;height:100%;}
-.pageHeader{ display:block;overflow:hidden;padding:5px;position:relative;}
-.searchBar ul.searchContent{ display:block;overflow:hidden;height:30px;padding-right:80px;background: url(../default/images/order_down.gif) no-repeat top right;}
-.searchBar ul.searchContentHover{ height:auto;background: url(../default/images/order_up.gif) no-repeat top right;}
-.searchBar input,.searchBar span{ float:left;}
-.searchBar span{ line-height:28px;}
-.searchBar ul.searchContent li{ float:left;white-space:nowrap;display:block;overflow:hidden;height:28px;padding:2px 0;}
-.searchBar label{ float:left;padding:0 10px;line-height:28px;}
-.searchBar .subBar{ height:30px;position:absolute;top:4px;right:20px;}
-.searchBar .subBar ul{ float:right;}
-.searchBar .subBar li{ float:left;margin-left:5px;}
-.pageContent{ display:block;overflow:auto;position:relative;}
+.page{display:block;overflow:hidden;float:left;width:100%;height:100%;-webkit-overflow-scrolling: touch}
+.pageHeader{display:block;overflow:hidden;padding:5px;position:relative}
+.searchBar ul.searchContent{display:block;overflow:hidden;height:30px;padding-right:80px;background: url(../default/images/order_down.gif) no-repeat top right}
+.searchBar ul.searchContentHover{height:auto;background: url(../default/images/order_up.gif) no-repeat top right}
+.searchBar input,.searchBar span{float:left}
+.searchBar span{line-height:28px}
+.searchBar ul.searchContent li{float:left;white-space:nowrap;display:block;overflow:hidden;height:28px;padding:2px 0}
+.searchBar label{float:left;padding:0 10px;line-height:28px}
+.searchBar .subBar{height:30px;position:absolute;top:4px;right:20px}
+.searchBar .subBar ul{float:right}
+.searchBar .subBar li{float:left;margin-left:5px}
+.pageContent{display:block;overflow:auto;position:relative}
 
-.dateRange input{ width:72px;}
-.dateRange .limit{ text-align:center;width:15px;line-height:21px;}
+.dateRange input{width:72px}
+.dateRange .limit{text-align:center;width:15px;line-height:21px}
 
 /* Pages Form */
-.pageForm{ display:block;overflow:auto;}
-.pageFormContent{ display:block;overflow:auto;padding:10px 5px;position:relative;height:100%;}
-.pageFormContent div.unit{ display:block;margin:0;padding:5px 0;position:relative;clear:both;}
-.pageFormContent p{ float:left;display:block;min-width:380px;margin:0;padding:5px 0;position:relative;}
-.pageFormContent p.nowrap{ width:100%}
-.pageFormContent .radioGroup{ float:left;display:block;overflow:hidden;}
-.pageFormContent label{ float:left;width:120px;padding:0px 10px;}
-.pageFormContent label.radioButton{ float:left;width:auto;padding:0 10px 0 0;}
-.pageFormContent .textInput{ float:left;}
-.pageFormContent select{ float:left;}
-.pageFormContent .inputInfo{ padding:0 5px;line-height:21px;}
-.pageFormContent span.unit, .pageFormContent a.unit{ padding:0 5px;line-height:21px;}
-.pageFormContent span.info{ color:#7F7F7F;display:block;line-height:21px;}
-.pageFormContent span.info:before {display:block; content:"."; height:0; clear:both; visibility:hidden;}
+.pageForm{display:block;overflow:auto}
+.pageFormContent{display:block;overflow:auto;padding:10px 5px;position:relative;height:100%}
+.pageFormContent div.unit{display:block;margin:0;padding:5px 0;position:relative;clear:both}
+.pageFormContent p{float:left;display:block;min-width:380px;margin:0;padding:5px 0;position:relative}
+.pageFormContent p.nowrap{width:100%}
+.pageFormContent .radioGroup{float:left;display:block;overflow:hidden}
+.pageFormContent label{float:left;width:120px;padding:0px 10px}
+.pageFormContent label.radioButton{float:left;width:auto;padding:0 10px 0 0}
+.pageFormContent .textInput{float:left}
+.pageFormContent select{float:left}
+.pageFormContent .inputInfo{padding:0 5px;line-height:21px}
+.pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:21px}
+.pageFormContent span.info{color:#7F7F7F;display:block;line-height:21px}
+.pageFormContent span.info:before {display:block; content:"."; height:0; clear:both; visibility:hidden}
 
-.pageFormContent dl{ float:left;line-height:22px;display:block;width:50%;margin:0;padding:5px 0;position:relative;}
-.pageFormContent dt{ float:left;width:120px;padding:0 5px;}
-.pageFormContent dd{ float:left;display:block;}
-.pageFormContent dl.nowrap, .nowrap dl{ width:100%;height:auto;clear:both;}
-#content{width:800px;}
-#content p{float: none;display: block;min-width: initial;padding: 0;}
-.CodeMirror{height:100%;line-height:16px;}
+.pageFormContent dl{float:left;line-height:22px;display:block;width:50%;margin:0;padding:5px 0;position:relative}
+.pageFormContent dt{float:left;width:120px;padding:0 5px}
+.pageFormContent dd{float:left;display:block}
+.pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both}
+#content{width:800px}
+#content p{float: none;display: block;min-width: initial;padding: 0}
+.CodeMirror{height:100%;line-height:16px}
 
-fieldset{ padding:3px;margin:0 0 5px 0;border:1px dotted #B8D0D6;}
-fieldset legend{ padding:2px;border:1px dotted #B8D0D6;font-weight:bold;}
-fieldset legend:hover{ background-color:#dddddd;}
+.left-page-content{float: left;display: block;overflow: auto;width:240px;line-height: 21px}
 
-.formBar{ clear:both;padding:5px;height:30px;border-style:solid;border-width:0 0 1px 0;}
-.formBar ul{ float:right;}
-.formBar li{ float:left;margin-left:5px;}
-.divider{ clear:both;display:block;overflow:hidden;text-indent:-1000px;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dotted;border-width:0 0 1px 0;}
+fieldset{padding:3px;margin:0 0 5px 0;border:1px dotted #B8D0D6}
+fieldset legend{padding:2px;border:1px dotted #B8D0D6;font-weight:bold}
+fieldset legend:hover{background-color:#dddddd}
+
+.formBar{clear:both;padding:5px;height:30px;border-style:solid;border-width:0 0 1px 0}
+.formBar ul{float:right}
+.formBar li{float:left;margin-left:5px}
+.divider{clear:both;display:block;overflow:hidden;text-indent:-1000px;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dotted;border-width:0 0 1px 0}
 
 /* Pages dialog */
-.dialog .pageHeader{ border-style:solid;border-width:1px;margin:0}
-.dialog .pageContent{ border-style:solid;border-width:0 1px;}
-.dialog .viewInfo{ border-style:solid;border-width:1px 0 0 0;}
-.dialog .formBar{ border-style:solid;border-width:1px 0;}
+.dialog .pageHeader{border-style:solid;border-width:1px;margin:0}
+.dialog .pageContent{border-style:solid;border-width:0 1px}
+.dialog .viewInfo{border-style:solid;border-width:1px 0 0 0}
+.dialog .formBar{border-style:solid}
 
 
-.combox{ float:left;margin-right:3px;background-position:100% -25px;}
-.combox select{ display:none}
-.combox .select{ float:left;}
-.combox .select a{ float:left;display:block;overflow:hidden;height:23px;padding:0 25px 0 6px;line-height:21px;text-decoration:none;font-size:12px;background-position:100% -50px;}
-.comboxop{ position:absolute;z-index:1001;display:none;padding:4px;border-style:solid;border-width:1px 2px 2px 1px;background:#fff;position:absolute;top:22px;left:1px;}
-.comboxop a{ width:50px;height:21px;padding:0 5px;line-height:21px;text-align:left;color:#000;background:none;}
-.comboxop a:hover{ background:#e0e0e0;}
-.comboxop .selected{ background:#e0e0e0;}
-.comboxop li{ text-align:left;}
+.combox{float:left;margin-right:3px;background-position:100% -25px}
+.combox select{display:none}
+.combox .select{float:left}
+.combox .select a{float:left;display:block;overflow:hidden;height:23px;padding:0 25px 0 6px;line-height:21px;text-decoration:none;font-size:12px;background-position:100% -50px}
+.comboxop{position:absolute;z-index:1001;display:none;padding:4px;border-style:solid;border-width:1px 2px 2px 1px;background:#fff;position:absolute;top:22px;left:1px}
+.comboxop a{width:50px;height:21px;padding:0 5px;line-height:21px;text-align:left;color:#000;background:none}
+.comboxop a:hover{background:#e0e0e0}
+.comboxop .selected{background:#e0e0e0}
+.comboxop li{text-align:left}
 
 /* contentTitle */
-h2.contentTitle{ padding:5px 10px;line-height:24px;font-size:14px;border-bottom:solid 1px #CCC;}
-h3.contentTitle{ line-height:24px;font-size:13px;border-bottom:solid 1px #CCC;clear:both;}
-.dialog h2.contentTitle{ border:none}
+h2.contentTitle{padding:5px 10px;line-height:24px;font-size:14px;border-bottom:solid 1px #CCC}
+h3.contentTitle{line-height:24px;font-size:13px;border-bottom:solid 1px #CCC;clear:both}
+.dialog h2.contentTitle{border:none}
 
 /* rightMenu */
-#contextmenu{ display:none;position:absolute;z-index:500;left:0;top:0;}
-#contextmenu ul{ list-style:none;padding:1px;margin:0;background-color:#fff;border:1px solid #999;width:150px;}
-#contextmenu li{ display:block;color:#000;padding:3px;margin:0;border:1px solid #fff;background-color:transparent;text-align:left;cursor:default;}
-#contextmenu li.hover{ border:1px solid #0a246a;background-color:#b6bdd2}
-#contextmenu li.disabled{ color:#666;}
-#contextmenuShadow{ display:none;position:absolute;opacity:0.2;filter:alpha(opacity=20);background-color:#000;z-index:499;}
+#contextmenu{display:none;position:absolute;z-index:500;left:0;top:0}
+#contextmenu ul{list-style:none;padding:1px;margin:0;background-color:#fff;border:1px solid #999;width:150px}
+#contextmenu li{display:block;color:#000;padding:3px;margin:0;border:1px solid #fff;background-color:transparent;text-align:left;cursor:default}
+#contextmenu li.hover{border:1px solid #0a246a;background-color:#b6bdd2}
+#contextmenu li.disabled{color:#666}
+#contextmenuShadow{display:none;position:absolute;opacity:0.2;filter:alpha(opacity=20);background-color:#000;z-index:499}
 
 /* suggest */
-#suggest{ position:absolute;z-index:2000;left:0;top:0;}
-#suggest ul{ list-style:none;padding:1px;margin:0;background-color:#fff;border:1px solid #999;width:150px;}
-#suggest li{ display:block;color:#000;padding:3px;margin:0;border:1px solid #fff;background-color:transparent;text-align:left;cursor:default;}
-#suggest li.selected{ border:1px solid #0a246a;background-color:#b6bdd2}
+#suggest{position:absolute;z-index:2000;left:0;top:0}
+#suggest ul{list-style:none;padding:1px;margin:0;background-color:#fff;border:1px solid #999;width:150px}
+#suggest li{display:block;color:#000;padding:3px;margin:0;border:1px solid #fff;background-color:transparent;text-align:left;cursor:default}
+#suggest li.selected{border:1px solid #0a246a;background-color:#b6bdd2}
 
 /* button */
-a.btnDel,a.btnSelect, a.btnLook, a.btnAttach{ background:url(../default/images/button.gif) no-repeat;display:block;width:24px;height:28px;text-indent:-1000px;overflow:hidden;float:left;margin-right:3px}
-a.btnDel{ background-position:-22px 3px}
-a.btnSelect{ background-position:-91px 3px}
-a.btnLook{ background-position:-160px 3px}
-a.btnAttach{ background-position:-182px 3px}
-.center a.btnDel, .center a.btnSelect, .center a.btnLook, .center a.btnAttach{ display:inline-block;float:none}
-.right a.btnDel, .right a.btnSelect, .right a.btnLook, .right a.btnAttach{ display:inline-block;float:none;text-indent:1000px}
+a.btnDel,a.btnSelect, a.btnLook, a.btnAttach{background:url(../default/images/button.gif) no-repeat;display:block;width:24px;height:28px;text-indent:-1000px;overflow:hidden;float:left;margin-right:3px}
+a.btnDel{background-position:-22px 3px}
+a.btnSelect{background-position:-91px 3px}
+a.btnLook{background-position:-160px 3px}
+a.btnAttach{background-position:-182px 3px}
+.center a.btnDel, .center a.btnSelect, .center a.btnLook, .center a.btnAttach{display:inline-block;float:none}
+.right a.btnDel, .right a.btnSelect, .right a.btnLook, .right a.btnAttach{display:inline-block;float:none;text-indent:1000px}
 
-.viewInfo{ padding:10px 5px}
-.viewInfo dl{ float:left;display:block;width:380px;line-height:22px;margin:0;padding:5px 0;position:relative;}
-.viewInfo dt{ float:left;width:120px;padding:0 5px;text-align:right;}
-.viewInfo dd{ display:block;width:220px;float:left;border-bottom:1px dotted #999;min-height:21px}
-.viewInfo dl.nowrap{ width:100%;height:auto;clear:both;}
-.viewInfo dl.nowrap dt{ width:120px;}
-.viewInfo dl.nowrap dd{ width:auto;}
-.dialogContent .viewInfo,.dialogContent .pageContent{ background-color:#fff}
+.viewInfo{padding:10px 5px}
+.viewInfo dl{float:left;display:block;width:380px;line-height:22px;margin:0;padding:5px 0;position:relative}
+.viewInfo dt{float:left;width:120px;padding:0 5px;text-align:right}
+.viewInfo dd{display:block;width:220px;float:left;border-bottom:1px dotted #999;min-height:21px}
+.viewInfo dl.nowrap{width:100%;height:auto;clear:both}
+.viewInfo dl.nowrap dt{width:120px}
+.viewInfo dl.nowrap dd{width:auto}
+.dialogContent .viewInfo,.dialogContent .pageContent{background-color:#fff}
 
-.sortDragPlaceholder{ border:1px dashed #ccc;}
-#printBox{ display:none;}
+.sortDragPlaceholder{border:1px dashed #ccc}
+#printBox{display:none}
 
 /* Alert */
-.alert{ overflow:hidden;z-index:1011;display:block;width:300px;margin-left:-150px;position:absolute;top:0;left:50%;}
-.alert .alertContent{ display:block;overflow:hidden;padding:5px 5px 1px 5px;border-style:solid;border-width:0 1px;}
-.alert .alertInner{ display:block;padding:0 9px 9px 9px;text-align:left;border-style:solid;border-width:1px;}
-.alert .alertInner .msg{ margin:10px;max-height:200px;overflow:auto;line-height:1.3em}
-.alert h1{ display:block;overflow:hidden;height:30px;margin-bottom:10px;padding:0 0 0 25px;line-height:30px;border-style:solid;border-width:0 0 1px 0;line-height:30px;}
-.alert .error h1{ background-position:2px -42px;}
+.alert{overflow:hidden;z-index:1011;display:block;width:300px;margin-left:-150px;position:absolute;top:0;left:50%}
+.alert .alertContent{display:block;overflow:hidden;padding:5px 5px 1px 5px;border-style:solid;border-width:0 1px}
+.alert .alertInner{display:block;padding:0 9px 9px 9px;text-align:left;border-style:solid;border-width:1px}
+.alert .alertInner .msg{margin:10px;max-height:200px;overflow:auto;line-height:1.3em}
+.alert h1{display:block;overflow:hidden;height:30px;margin-bottom:10px;padding:0 0 0 25px;line-height:30px;border-style:solid;border-width:0 0 1px 0;line-height:30px}
+.alert .error h1{background-position:2px -42px}
 .alert .info h1,
-.alert .warn h1{ background-position:2px 8px;}
-.alert .correct h1{ background-position:2px -92px;}
-.alert .confirm h1{ background-position:2px 8px;}
-.alert p{ margin:10px;}
+.alert .warn h1{background-position:2px 8px}
+.alert .correct h1{background-position:2px -92px}
+.alert .confirm h1{background-position:2px 8px}
+.alert p{margin:10px}
 
-.alert .toolBar{ display:block;overflow:hidden;height:30px;padding-top:5px;text-align:right;}
-.alert .toolBar ul{ float:right;}
-.alert .toolBar li{ float:left;}
-.alert .toolBar .button, .alert .toolBar .buttonActive{ margin-left:5px;}
+.alert .toolBar{display:block;overflow:hidden;height:30px;padding-top:5px;text-align:right}
+.alert .toolBar ul{float:right}
+.alert .toolBar li{float:left}
+.alert .toolBar .button, .alert .toolBar .buttonActive{margin-left:5px}
 
-.alert .alertFooter_c{ display:block;overflow:hidden;height:5px;}
-.alert .alertFooter{ padding-left:5px;background-position:0 0;}
-.alert .alertFooter_r{ padding-right:5px;background-position:100% -50px;}
-.alert .alertFooter_c{ padding:0;background-position:0 -100px;background-repeat:repeat-x;}
+.alert .alertFooter_c{display:block;overflow:hidden;height:5px}
+.alert .alertFooter{padding-left:5px;background-position:0 0}
+.alert .alertFooter_r{padding-right:5px;background-position:100% -50px}
+.alert .alertFooter_c{padding:0;background-position:0 -100px;background-repeat:repeat-x}
 
 /* Dialog */
-.dialog{ display:block;text-align:left;position:absolute;z-index:42;}
-.dialog .dialogHeader, .dialog .dialogHeader_r, .dialog .dialogHeader_c{ display:block;overflow:hidden;height:28px;}
-.dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize{ display:block;overflow:hidden;text-indent:-1000px;width:19px;height:19px;position:absolute;top:5px;}
-.dialog .dialogHeader h1{ display:block;overflow:hidden;height:28px;padding:0 5px 0 20px;line-height:28px;background-position:0 -450px;}
+.dialog{display:block;text-align:left;position:absolute;z-index:42}
+.dialog .dialogHeader, .dialog .dialogHeader_r, .dialog .dialogHeader_c{display:block;overflow:hidden;height:28px}
+.dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize{display:block;overflow:hidden;text-indent:-1000px;width:19px;height:19px;position:absolute;top:5px}
+.dialog .dialogHeader h1{display:block;overflow:hidden;height:28px;padding:0 5px 0 20px;line-height:28px;background-position:0 -450px}
 
-.dialog .dialogHeader{ padding-left:5px;background-position:0 0;position:relative;cursor:move;}
-.dialog .dialogHeader_r{ padding-right:5px;background-position:100% -50px;}
-.dialog .dialogHeader_c{ padding:0;background-position:0 -100px;background-repeat:repeat-x;}
+.dialog .dialogHeader{padding-left:5px;background-position:0 0;position:relative;cursor:move}
+.dialog .dialogHeader_r{padding-right:5px;background-position:100% -50px}
+.dialog .dialogHeader_c{padding:0;background-position:0 -100px;background-repeat:repeat-x}
 
-.dialog .dialogHeader .close{ background-position:0 0;right:4px;}
-.dialog .dialogHeader .close:hover{ background-position:0 -50px;}
-.dialog .dialogHeader .maximize{ background-position:0 -100px;right:23px;}
-.dialog .dialogHeader .maximize:hover{ background-position:0 -150px;}
-.dialog .dialogHeader .restore{ display:none;background-position:0 -200px;right:23px;}
-.dialog .dialogHeader .restore:hover{ background-position:0 -250px;}
-.dialog .dialogHeader .minimize{ background-position:0 -300px;right:42px;}
-.dialog .dialogHeader .minimize:hover{ background-position:0 -350px;}
-.dialog .dialogContent{ display:block;overflow:hidden;padding:5px 5px 1px 5px;border-style:solid;border-width:0 1px;}
-.dialog .panelFooter_r, .dialog .dialogFooter_c{ display:block;overflow:hidden;height:5px;}
-.dialog .dialogFooter{ padding-left:5px;background-position:0 -150px;}
-.dialog .dialogFooter_r{ padding-right:5px;background-position:100% -200px;}
-.dialog .dialogFooter_c{ padding:0;background-position:0 -250px;background-repeat:repeat-x;}
-.dialogProxy{ opacity:0.8;filter:alpha(opacity=80);}
-.dialog .resizable_f_r{ width:11px;height:11px;background-position:0 -400px;}
+.dialog .dialogHeader .close{background-position:0 0;right:4px}
+.dialog .dialogHeader .close:hover{background-position:0 -50px}
+.dialog .dialogHeader .maximize{background-position:0 -100px;right:23px}
+.dialog .dialogHeader .maximize:hover{background-position:0 -150px}
+.dialog .dialogHeader .restore{display:none;background-position:0 -200px;right:23px}
+.dialog .dialogHeader .restore:hover{background-position:0 -250px}
+.dialog .dialogHeader .minimize{background-position:0 -300px;right:42px}
+.dialog .dialogHeader .minimize:hover{background-position:0 -350px}
+.dialog .dialogContent{display:block;overflow:hidden;padding:5px 5px 1px 5px;border-style:solid;border-width:0 1px}
+.dialog .panelFooter_r, .dialog .dialogFooter_c{display:block;overflow:hidden}
+.dialog .dialogFooter{padding-left:5px;background-position:0 -150px}
+.dialog .dialogFooter_r{padding-right:5px;background-position:100% -200px}
+.dialog .dialogFooter_c{padding:0;background-position:0 -250px;background-repeat:repeat-x}
+.dialogProxy{opacity:0.8;filter:alpha(opacity=80)}
+.dialog .resizable_f_r{width:11px;height:11px;background-position:0 -400px}
 
 /* Dialog Resizable */
-.resizable{ display:none;overflow:hidden;border-style:dashed;border-width:1px;opacity:0.5;filter:alpha(opacity=50);position:absolute;top:0;left:0;z-index:100;}
+.resizable{display:none;overflow:hidden;border-style:dashed;border-width:1px;opacity:0.5;filter:alpha(opacity=50);position:absolute;top:0;left:0;z-index:100}
 .resizable_h_l, .resizable_h_r, .resizable_h_c,
 .resizable_c_l, .resizable_c_r,
-.resizable_f_l, .resizable_f_r, .resizable_f_c{ display:block;overflow:hidden;width:6px;height:6px;position:absolute;}
-.resizable_h_l{ cursor:nw-resize;top:0;left:0;z-index:2;}
-.resizable_h_r{ cursor:ne-resize;top:0;right:0;z-index:2;}
-.resizable_h_c{ width:100%;cursor:n-resize;top:0;left:0;z-index:1;}
-.resizable_c_l{ cursor:w-resize;top:0;left:0;z-index:1;}
-.resizable_c_r{ cursor:e-resize;top:0;right:0;z-index:1;}
-.resizable_f_l{ cursor:sw-resize;bottom:0;left:0;z-index:2;}
-.resizable_f_r{ cursor:se-resize;bottom:0;right:0;z-index:2;}
-.resizable_f_c{ width:100%;cursor:s-resize;bottom:0;left:0;z-index:1;}
+.resizable_f_l, .resizable_f_r, .resizable_f_c{display:block;overflow:hidden;width:6px;height:6px;position:absolute}
+.resizable_h_l{cursor:nw-resize;top:0;left:0;z-index:2}
+.resizable_h_r{cursor:ne-resize;top:0;right:0;z-index:2}
+.resizable_h_c{width:100%;cursor:n-resize;top:0;left:0;z-index:1}
+.resizable_c_l{cursor:w-resize;top:0;left:0;z-index:1}
+.resizable_c_r{cursor:e-resize;top:0;right:0;z-index:1}
+.resizable_f_l{cursor:sw-resize;bottom:0;left:0;z-index:2}
+.resizable_f_r{cursor:se-resize;bottom:0;right:0;z-index:2}
+.resizable_f_c{width:100%;cursor:s-resize;bottom:0;left:0;z-index:1}
 
 /* Shadow */
-.shadow{ display:none;overflow:hidden;position:absolute;z-index:41;}
+.shadow{display:none;overflow:hidden;position:absolute;z-index:41}
 .shadow .shadow_h, .shadow .shadow_h_l, .shadow .shadow_h_r, .shadow .shadow_h_c,
-.shadow .shadow_f, .shadow .shadow_f_l, .shadow .shadow_f_r, .shadow .shadow_f_c{ display:block;overflow:hidden;height:6px;}
-.shadow .shadow_h, .shadow .shadow_c, .shadow .shadow_f{ position:relative;}
-.shadow .shadow_h_l, .shadow .shadow_c_l, .shadow .shadow_f_l{ width:6px;position:absolute;top:0;left:0;}
-.shadow .shadow_h_r, .shadow .shadow_c_r, .shadow .shadow_f_r{ width:6px;position:absolute;top:0;right:0;}
-.shadow .shadow_h_c, .shadow .shadow_c_c, .shadow .shadow_f_c{ margin:0 6px;}
-.shadow .shadow_c, .shadow .shadow_c_l, .shadow .shadow_c_r, .shadow .shadow_c_c{ display:block;overflow:hidden;height:100%;}
+.shadow .shadow_f, .shadow .shadow_f_l, .shadow .shadow_f_r, .shadow .shadow_f_c{display:block;overflow:hidden;height:6px}
+.shadow .shadow_h, .shadow .shadow_c, .shadow .shadow_f{position:relative}
+.shadow .shadow_h_l, .shadow .shadow_c_l, .shadow .shadow_f_l{width:6px;position:absolute;top:0;left:0}
+.shadow .shadow_h_r, .shadow .shadow_c_r, .shadow .shadow_f_r{width:6px;position:absolute;top:0;right:0}
+.shadow .shadow_h_c, .shadow .shadow_c_c, .shadow .shadow_f_c{margin:0 6px}
+.shadow .shadow_c, .shadow .shadow_c_l, .shadow .shadow_c_r, .shadow .shadow_c_c{display:block;overflow:hidden;height:100%}
 
 /* Shadow */
-.shadow .shadow_h_l{ background-image:url(../default/images/shadow/shadow_h_l.png);background-repeat:no-repeat;}
-.shadow .shadow_h_r{ background-image:url(../default/images/shadow/shadow_h_r.png);background-repeat:no-repeat;}
-.shadow .shadow_h_c{ background-image:url(../default/images/shadow/shadow_h_c.png);background-repeat:repeat-x;}
-.shadow .shadow_c_l{ background-image:url(../default/images/shadow/shadow_c_l.png);background-repeat:repeat-y;}
-.shadow .shadow_c_r{ background-image:url(../default/images/shadow/shadow_c_r.png);background-repeat:repeat-y;}
-.shadow .shadow_c_c{ background-image:url(../default/images/shadow/shadow_c_c.png);background-repeat:repeat;}
-.shadow .shadow_f_l{ background-image:url(../default/images/shadow/shadow_f_l.png);background-repeat:no-repeat;}
-.shadow .shadow_f_r{ background-image:url(../default/images/shadow/shadow_f_r.png);background-repeat:no-repeat;}
-.shadow .shadow_f_c{ background-image:url(../default/images/shadow/shadow_f_c.png);background-repeat:repeat-x;}
+.shadow .shadow_h_l{background-image:url(../default/images/shadow/shadow_h_l.png);background-repeat:no-repeat}
+.shadow .shadow_h_r{background-image:url(../default/images/shadow/shadow_h_r.png);background-repeat:no-repeat}
+.shadow .shadow_h_c{background-image:url(../default/images/shadow/shadow_h_c.png);background-repeat:repeat-x}
+.shadow .shadow_c_l{background-image:url(../default/images/shadow/shadow_c_l.png);background-repeat:repeat-y}
+.shadow .shadow_c_r{background-image:url(../default/images/shadow/shadow_c_r.png);background-repeat:repeat-y}
+.shadow .shadow_c_c{background-image:url(../default/images/shadow/shadow_c_c.png);background-repeat:repeat}
+.shadow .shadow_f_l{background-image:url(../default/images/shadow/shadow_f_l.png);background-repeat:no-repeat}
+.shadow .shadow_f_r{background-image:url(../default/images/shadow/shadow_f_r.png);background-repeat:no-repeat}
+.shadow .shadow_f_c{background-image:url(../default/images/shadow/shadow_f_c.png);background-repeat:repeat-x}
 
 /* calendar */
-#calendar{ margin:0;width:208px;z-index:1001;position:absolute;display:block;border:1px solid #B3E4EB;display:none;}
-#calendar *{ margin:0;padding:0;font-size:12px;line-height:18px}
-#calendar .main{ margin:auto;padding:2px;text-align:center;background:#ffffff;zoom:1;position:relative;}
-#calendar .head{ background:#EDF8FF;border:1px solid #BEE9F0}
-#calendar .head select{ width:60px;}
-#calendar .body{ margin:2px 0;padding:2px;clear:both;overflow:hidden;border:1px solid #BEE9F0;position:relative;}
-#calendar .foot{ background:#EDF8FF;border:1px solid #BEE9F0;text-align:right;padding:1px}
-#calendar .nodate .head, #calendar .nodate .body{ display:none;}
-#calendar dl{ clear:both;margin:auto;overflow:hidden;}
-#calendar dt, #calendar dd, #calendar span{ width:26px;height:18px;display:block;float:left;overflow:hidden;zoom:1;border:1px solid #fff;}
-#calendar dt{ margin-top:4px;font-weight:bold;color:#666666;}
-#calendar .days dd{ cursor:pointer;}
-#calendar .days dd.other{ color:#6A6AFF}
-#calendar .days dd.slt{ background:#B3E4EB;border:1px solid #66CCCC;}
-#calendar .days dd:hover{ border:1px solid #66CCCC;}
-#calendar .days dd.disabled{ background:#ccc;}
-#calendar .close{ width:16px;height:16px;font-size:16px;display:block;cursor:pointer;border:1px solid #CCC;text-align:center;}
-#calendar .clearBut, #calendar .okBut{ background-color:#CFEBEE;border:1px solid #38B1B9;color:#08575B;width:40px;}
-#calendar .time{ border-collapse:collapse;float:left;background-color:#fff;display:none;}
-#calendar .time td{ border:1px solid #61CAD0;line-height:16px;vertical-align:center;}
-#calendar .time .hh, #calendar .time .mm, #calendar .time .ss{ width:18px;height:16px;border:none}
-#calendar .time ul{ list-style:none}
-#calendar .time .up, #calendar .time .down{ font-size:8px;height:8px;line-height:100%;border:1px solid #BEE9F0;cursor:pointer;}
-#calendar .tm{ text-align:center;}
-#calendar .tm .hh, #calendar .tm .mm, #calendar .tm .ss{ border:1px solid #A3C6C8;position:absolute;left:4px;bottom:34px;background-color:#ffffc0;width:120px;display:none;}
-#calendar .hh .hh, #calendar .mm .mm, #calendar .ss .ss{ display:block;}
-#calendar .tm .hh li, #calendar .tm .mm li, #calendar .tm .ss li{ display:block;float:left;cursor:pointer;width:20px;line-height:21px}
-#calendar .tm .hh li:hover, #calendar .tm .mm li:hover, #calendar .tm .ss li:hover{ background:#B3E4EB;}
-
-.thumbnail {position: relative; overflow: hidden; margin-right: 5px; border: 1px dashed #cacbcc; display: inline-block; text-align: center;}
+#calendar{margin:0;width:208px;z-index:1001;position:absolute;display:block;border:1px solid #B3E4EB;display:none}
+#calendar *{margin:0;padding:0;font-size:12px;line-height:18px}
+#calendar .main{margin:auto;padding:2px;text-align:center;background:#ffffff;zoom:1;position:relative}
+#calendar .head{background:#EDF8FF;border:1px solid #BEE9F0}
+#calendar .head select{width:60px}
+#calendar .body{margin:2px 0;padding:2px;clear:both;overflow:hidden;border:1px solid #BEE9F0;position:relative}
+#calendar .foot{background:#EDF8FF;border:1px solid #BEE9F0;text-align:right;padding:1px}
+#calendar .nodate .head, #calendar .nodate .body{display:none}
+#calendar dl{clear:both;margin:auto;overflow:hidden}
+#calendar dt, #calendar dd, #calendar span{width:26px;height:18px;display:block;float:left;overflow:hidden;zoom:1;border:1px solid #fff}
+#calendar dt{margin-top:4px;font-weight:bold;color:#666666}
+#calendar .days dd{cursor:pointer}
+#calendar .days dd.other{color:#6A6AFF}
+#calendar .days dd.slt{background:#B3E4EB;border:1px solid #66CCCC}
+#calendar .days dd:hover{border:1px solid #66CCCC}
+#calendar .days dd.disabled{background:#ccc}
+#calendar .close{width:16px;height:16px;font-size:16px;display:block;cursor:pointer;border:1px solid #CCC;text-align:center}
+#calendar .clearBut, #calendar .okBut{background-color:#CFEBEE;border:1px solid #38B1B9;color:#08575B;width:40px}
+#calendar .time{border-collapse:collapse;float:left;background-color:#fff;display:none}
+#calendar .time td{border:1px solid #61CAD0;line-height:16px;vertical-align:center}
+#calendar .time .hh, #calendar .time .mm, #calendar .time .ss{width:18px;height:16px;border:none}
+#calendar .time ul{list-style:none}
+#calendar .time .up, #calendar .time .down{font-size:8px;height:8px;line-height:100%;border:1px solid #BEE9F0;cursor:pointer}
+#calendar .tm{text-align:center}
+#calendar .tm .hh, #calendar .tm .mm, #calendar .tm .ss{border:1px solid #A3C6C8;position:absolute;left:4px;bottom:34px;background-color:#ffffc0;width:120px;display:none}
+#calendar .hh .hh, #calendar .mm .mm, #calendar .ss .ss{display:block}
+#calendar .tm .hh li, #calendar .tm .mm li, #calendar .tm .ss li{display:block;float:left;cursor:pointer;width:20px;line-height:21px}
+#calendar .tm .hh li:hover, #calendar .tm .mm li:hover, #calendar .tm .ss li:hover{background:#B3E4EB}
+.thumbnail {position: relative; overflow: hidden; margin-right: 5px; border: 1px dashed #cacbcc; display: inline-block; text-align: center}
+/* color */
+body{color:#ccc;}
+a{color:#fff}
+header{background-color:#333}
+main{background-color:#333}
+footer{background-color:#333}
+table.list tbody {background-color:#666}
+/* 通用样式 */
+@font-face{font-family:iconfont;src:url(../iconfont.eot?t=1535019566673);src:url(../iconfont.eot?t=1535019566673#iefix) format('embedded-opentype'),url('data:application/x-font-woff;charset=utf-8;base64,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') format('woff'),url(../iconfont.ttf?t=1535019566673) format('truetype'),url(../iconfont.svg?t=1535019566673#iconfont) format('svg')}
+.iconfont{font-family:iconfont;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+.iconfont-user:before{content:"\e633"}
+.iconfont-key:before{content:"\e61c"}
+*,body{font-family:microsoft yahei,Arial}
+.left-page-content{border-right-width:1px;border-right-style:solid;float:left;display:block;overflow:auto;width:240px;line-height:21px}
+body #splitBar,body #splitBarProxy{top:60px}
+input[type="checkbox"]{width:14px;height:14px}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-button:vertical{display:none}
+::-webkit-scrollbar-corner,::-webkit-scrollbar-track{border-radius:10px}
+/* 导航 */
+header{height:60px;border:none}
+header .logo{width:202px}
+header .logo img{height:50px;margin:5px 10px}
+#navMenu{top:0;left:202px}
+#navMenu li{margin:0}
+#navMenu li a{border:none;font-weight:400;line-height:60px;border-radius:0;padding:0 18px;display:block;font-size:13px}
+#navMenu li a>i{margin-right:5px}
+header .nav li{padding:0 10px}
+header .nav li a{font-size:12px}
+header .nav a:hover{text-decoration:none}
+/* 主界面 */
+main{position:relative}
+.tabsPage{border:none;position:relative}
+#leftside{position:absolute;top:0;bottom:0}
+#sidebar_s{bottom:0;height:auto}
+#sidebar{left:0;display:block;top:0;bottom:0;width:202px}
+main .accordion .accordionHeader{border:none}
+main .accordion .accordionContent{border:none}
+main .accordion .accordionHeader h2{height:45px;line-height:45px;padding-left:10px;font-weight:400}
+main .accordion .accordionHeader h2 .icon{line-height:45px}
+main .accordion .accordionHeader h2>i{margin-right:5px}
+.accordionContent .tree a{line-height:40px;height:auto}
+.accordionContent .tree div{height:auto}
+.accordionContent .tree div div{background:0 0;width:25px;height:40px}
+.accordionContent .tree a>i{margin-right:5px;width:16px;display:inline-block;text-align:center}
+.tabsPage .tabsPageHeader{height:45px;border:none}
+.tabsPage .tabsPageHeaderContent{margin-left:91px}
+.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight,.toggleCollapse{height:100%;line-height:45px;border:none}
+.tabsPageHeader .toggleCollapse{border-right:1px solid #637799;width:45px}
+.tabsPage .tabsLeft{left:46px;width:45px}
+.tabsPage .tabsPageHeader li{border:none;margin:0}
+.tabsPage .tabsPageHeader li a{line-height:45px;font-family:microsoft yahei;padding:0 12px}
+.tabsPageHeader li a>i{margin-right:5px}
+.tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{font-weight:400}
+.tabsPage .tabsMoreList{top:45px;padding:0}
+.tabsPage .tabsMoreList li a{border:none;line-height:30px;height:30px;width:100%;box-sizing:border-box}
+.tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{border:none;font-weight:400}
+.tabsPage .tabsMoreList li a>i{width:16px;text-align:center;display:inline-block;margin-right:5px}
+main .pageFormContent{padding:15px;box-sizing:border-box}
+.pageFormContent fieldset{background:#fff;border:none;margin-bottom:10px;position:relative;padding:40px 20px 20px 20px}
+.pageFormContent fieldset legend{border:none;position:absolute;top:0;font-weight:400;font-size:13px;padding:0;line-height:40px;padding-left:9px}
+.pageFormContent fieldset legend:hover{background-color:transparent;cursor:default}
+.pageFormContent fieldset legend:before{content:"";width:2px;height:14px;position:absolute;top:50%;margin-top:-8px;left:-4px}
+fieldset>label{margin-bottom:10px}
+.divider{border-style:dashed}
+main .pageFormContent p{min-height:16px}
+.unit a.button{height:26px;line-height:27px;font-size:13px;border:1px solid #dde2ec;position:relative;padding:0 15px 0 30px}
+.unit a.button:before{content:"\f021";font-family:FontAwesome;position:absolute;left:13px}
+.pageFormContent fieldset:first-child .unit:first-of-type p:last-child{padding:0}
+.page{background:#fff}
+.page.work-bench{background:#edf1f5}
+.formBar{background:#edf1f5;border:none;padding:10px}
+.formBar li{margin-left:10px}
+button.buttonActive{border:1px solid #667ea7;font-size:13px;font-weight:400}
+a.button,button.button{border:1px solid #dde2ec;font-size:13px;font-weight:400}
+.pagination li.jumpto .textInput,.textInput,input.disabled,input.error,input.focus,input.readonly,input.required,textarea.disabled,textarea.error,textarea.focus,textarea.readonly,textarea.required{font-size:12px}
+.pageHeader{padding:10px}
+.searchBar .subBar{top:11px;right:40px}
+.searchBar span.connect-string{font-size:16px}
+.searchBar label{padding:0 15px}
+.searchBar ul.searchContent{height:32px;position:relative;padding-right:100px;background:0 0}
+.searchBar ul.searchContentHover{height:auto}
+.searchBar ul.searchContent:before{content:"\e631";font-family:iconfont;font-size:18px;position:absolute;right:0;top:0;line-height:32px;width:30px;text-align:right}
+.searchBar ul.searchContentHover:before{content:"\e6f8"}
+.panelBar{border:none;height:auto}
+.panelBar ul{overflow:hidden;padding:5px}
+.panelBar li{height:auto}
+.panelBar .toolBar li a{line-height:30px;padding:0 10px}
+.panelBar .toolBar li a>i{margin-right:6px}
+.panelBar .toolBar li.line{border:none;position:relative;top:3px}
+table.list td{padding:4px 2px}
+table.list th{font-weight:400;padding:5px 2px}
+.panelBar .pages{height:100%}
+.panelBar .pages .combox .select a{height:26px;line-height:26px}
+.panelBar .pages span{line-height:28px}
+table.list th.asc,table.list th.desc,table.list th.order{position:relative;background:0 0}
+table.list th.asc:before,table.list th.desc:before,table.list th.order:before{content:"\e623";font-family:iconfont;font-size:16px;position:absolute;right:3px;top:50%;margin-top:-13px}
+table.list th.asc:before{content:"\e654";font-size:12px}
+table.list th.desc:before{content:"\e668";font-size:12px}
+.pagination li.jumpto .goto{background:url(../images/goto.png) no-repeat center center;background-size:90% auto}
+a.btnLook{background:0 0;position:relative}
+a.btnLook:before{content:"\e66a";font-family:iconfont;font-size:20px;line-height:28px;position:absolute;top:0;left:3px;text-indent:0}
+.tabs .tabsHeaderContent>ul li a{line-height:40px}
+.tabs .tabsHeader li.selected{border:none;position:relative}
+.tabs .tabsHeader li.selected:before{content:"";width:100%;height:2px;position:absolute;bottom:-1px;left:0}
+body .tabs .tabsHeader{height:40px}
+.tabs .tabsHeader ul{border-bottom-width:1px;border-bottom-style:solid;box-sizing:border-box}
+footer{height:40px;border:none}
+.langList a,.langList a:hover,.langList li.current-lang a{text-decoration:none}
+.themeList{display:none}
+/* 弹窗样式 */
+.alert{box-shadow:0 0 18px rgba(157,159,168,.35)}
+.alert .alertContent{background:#fff;border:none;padding:0;padding-bottom:20px}
+.alert .alertInner{border:none;padding:0}
+.alert .error h1{font-weight:400;border:none;height:auto;line-height:40px;font-size:14px}
+.alert .alertInner .msg{font-size:13px;margin:20px 10px 20px 25px}
+.alert .toolBar{text-align:center}
+.alert .toolBar ul{overflow:hidden;display:inline-block;float:none}
+.alertBackground,body .dialogBackground{background:rgba(0,0,0,.3);opacity:1;z-index:999}
+.dialog .formBar{border:none}
+.dialog{background:#fff}
+.dialog .dialogHeader{background:#f2f6f9}
+.dialog .dialogHeader h1{font-weight:400;line-height:40px;height:40px;font-size:13px}
+.dialog .dialogContent{border:none;padding:0;width:100%}
+.dialog .dialogContent .pageFormContent{margin-right:5px}
+.dialog .dialogHeader,.dialog .dialogHeader_c,.dialog .dialogHeader_r{height:40px}
+.alert h1{border:none;background:#f2f6f9;font-weight:400;font-size:14px;height:40px;line-height:40px}
+.dialog .dialogHeader .close,.dialog .dialogHeader .maximize,.dialog .dialogHeader .minimize,.dialog .dialogHeader .restore{font-family:iconfont;font-size:20px;background:0 0;text-indent:0;width:22px;height:22px;top:10px}
+body .dialog .dialogHeader .close{right:10px}
+body .dialog .dialogHeader .maximize,body .dialog .dialogHeader .restore{right:37px}
+body .dialog .dialogHeader .minimize{right:65px}
+.dialog .dialogHeader .close:before{content:"\e61a"}
+.dialog .dialogHeader .maximize:before{content:"\e673"}
+.dialog .dialogHeader .restore:before{content:"\e671"}
+.dialog .dialogHeader .minimize:before{content:"\e675"}
+.dialog .dialogHeader_c a:hover{text-decoration:none}
+#taskbar{height:40px}
+#taskbar .taskbarContent,#taskbar li .taskbutton{height:100%}
+#taskbar li{height:40px;padding-left:10px}
+#taskbar li .taskbutton span{height:auto;line-height:40px;width:auto;padding-right:30px}
+.icon-remove:before{content:"\e61a";font-family:iconfont;font-size:16px}
+#taskbar .close{text-indent:0;width:auto;height:auto;top:50%;margin-top:-8px;right:8px}
+.dialogContent .pageContent{border:none}
+/* 树样式 */
+.accordionContent .tree.treeFolder a{line-height:30px}
+.accordionContent .tree.treeFolder div div{height:30px}
+.tree.treeFolder li>div>div:first-child{padding-left:10px}
+.tree div div{background:0 0}
+.tree .collapsable,.tree .end_collapsable,.tree .end_expandable,.tree .expandable,.tree .file,.tree .folder_collapsable,.tree .folder_expandable,.tree .last_collapsable,.tree .last_expandable, .tree .first_collapsable, .tree .first_expandable{font-family:iconfont;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:30px;width:25px;background:0 0}
+.tree .folder_collapsable:before{content:"\e67d"}
+.tree .collapsable:before,.tree .end_collapsable:before,.tree .last_collapsable:before, .tree .first_collapsable:before{content:"\e668"}
+.tree .folder_expandable:before{content:"\e60f"}
+.tree .file:before{content:"\e686"}
+.tree .end_expandable:before,.tree .expandable:before,.tree .last_expandable:before, .tree .first_expandable:before{content:"\e603"}
+/* 部分图标修改 */
+.icon-backward:before,.icon-chevron-down:before,.icon-chevron-up:before,.icon-forward:before,.icon-refresh:before{font-family:iconfont;line-height:45px;vertical-align:unset}
+.icon-chevron-up:before{content:"\e654"}
+.icon-chevron-down:before{content:"\e668"}
+.icon-backward:before{content:"\e6ea";font-size:20px}
+.icon-forward:before{content:"\e616";font-size:20px}
+.icon-chevron-sign-left:before{content:"\e7ab";font-family:iconfont}
+.icon-chevron-sign-right:before{content:"\e61b";font-family:iconfont}
+.icon-th-list:before{content:"\e629";font-family:iconfont;font-size:20px}
+.icon-refresh:before{content:"\e606";line-height:normal}
+/* 右键菜单 */
+#contextmenu ul{padding:0}
+#contextmenu li{line-height:28px;padding:0 10px;border:none}
+#contextmenu li.disabled{cursor:not-allowed}
+#contextmenu li.hover{border:none}
+#contextmenu li.hover.disabled{background:0 0}
+#contextmenuShadow{background:0 0}
+/* 下拉菜单 */
+.combox .select a{height:28px;line-height:28px;border-width:1px;border-style:solid;position:relative;padding:0 28px 0 10px}
+.combox .select a:before{content:"\e668";font-family:iconfont;position:absolute;right:8px}
+.combox .select a.expand:before{content:"\e654"}
+.comboxop{border:1px solid #dde2ec;padding:0}
+.comboxop a{width:100%;display:block;box-sizing:border-box;height:28px;padding:0 10px;line-height:28px}
+.comboxop .selected,body .comboxop a:hover{text-decoration:none}
+/* 日期控件 */
+#calendar{width:230px}
+#calendar .main{padding:0}
+#calendar .body,#calendar .foot,#calendar .head{border:none}
+#calendar .foot,#calendar .head{padding:6px 0}
+#calendar .days dd:hover{border:none}
+#calendar .days dd.slt,#calendar .days dd.slt:hover{border:none}
+#calendar .tm .hh li,#calendar .tm .mm li,#calendar .tm .ss li{width:24px;line-height:26px}
+#calendar dd,#calendar dt{width:32px;height:24px;border:none;line-height:22px;margin:2px 0}
+#calendar .days dd.disabled{background:0 0;cursor:not-allowed}
+#calendar .clearBut,#calendar .okBut{width:52px;line-height:24px;cursor:pointer;margin-right:7px;border-width:1px;border-style:solid}
+#calendar .clearBut{margin-right:2px}
+#calendar .time{margin-left:6px}
+#calendar .time td{border:none;line-height:26px}
+#calendar .time .hh,#calendar .time .mm,#calendar .time .ss{width:20px;height:auto;text-align:center}
+#calendar .time .down,#calendar .time .up{cursor:pointer;border:none;width:12px;text-align:center;height:13px}
+#calendar .close{border:none}

@@ -101,8 +101,7 @@ public class QQOauthComponent extends AbstractOauth {
                 Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
                 });
                 if (0 == (Integer) map.get("ret")) {
-                    return new OauthUser(oauthAccess.getOpenId(), (String) map.get("nickname"),
-                            (String) map.get("figureurl_qq_2"), "男".equals(map.get("gender")) ? "m" : "f");
+                    return new OauthUser(oauthAccess.getOpenId(), (String) map.get("nickname"));
                 }
             }
         }

@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -55,17 +54,16 @@ public class MethodController extends AbstractController {
      * @param name
      * @param appToken
      * @param request
-     * @param response
      * @return result
      */
     @RequestMapping("method/{name}")
-    public Object method(@PathVariable String name, String appToken, HttpServletRequest request, HttpServletResponse response) {
+    public Object method(@PathVariable String name, String appToken, HttpServletRequest request) {
         BaseMethod method = methodMap.get(name);
         if (null != method) {
             try {
                 if (method.needAppToken()) {
                     SysAppToken token = appTokenService.getEntity(appToken);
-                    if (null == token) {
+                    if (null == token || null != token.getExpiryDate() && CommonUtils.getDate().after(token.getExpiryDate())) {
                         return NEED_APP_TOKEN_MAP;
                     }
                     SysApp app = appService.getEntity(token.getAppId());

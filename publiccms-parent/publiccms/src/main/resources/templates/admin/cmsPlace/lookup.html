@@ -38,7 +38,7 @@
             <@_metadata path=path>
                 <#if a.directory>
                     <a href="javascript:;" onclick="return false;">
-                        ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
+                        ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                     </a>
                     <ul>
                         <@pageTree path/>
@@ -46,12 +46,12 @@
                 <#else>
                     <#if site.useStatic&&(object.publishPath)?has_content>
                         <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.sitePath+object.publishPath}'});return false;">
-                            [<@t.page 'static_page'/>] ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
+                            [<@t.page 'static_page'/>] ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </a>
                     </#if>
                     <#if (object.useDynamic)?has_content&&object.useDynamic>
                         <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.dynamicPath+path}<#if (object.acceptParameters)?has_content><#list object.acceptParameters?split(',') as a><#if a?is_first>?<#else>#</#if>${a}=</#list></#if>'});return false;">
-                            [<@t.page 'dynamic_page'/>] ${a.fileName} ${(object.alias)?has_content?then('('+object.alias+')','')}
+                            [<@t.page 'dynamic_page'/>] ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </a>
                     </#if>
                 </#if>
@@ -73,8 +73,8 @@
         </div>
     </div>
     <div class="tabsContent">
-        <div class="pageContent" layoutH="37">
-            <div class="unitBox" layoutH="37" style="float:left; display:block; overflow:auto; width:180px;border-right:solid 1px #CCC;">
+        <div class="pageContent" layoutH="40">
+            <div class="unitBox left-page-content" layoutH="40">
                 <ul class="tree treeFolder">
                     <li>
                         <a href="cmsPlace/lookup_content_list.html" target="ajax" rel="lookup_content_list"><@t.page 'category'/></a>
@@ -84,16 +84,16 @@
                     </li>
                  </ul>
             </div>
-            <div id="lookup_content_list" class="unitBox" style="margin-left:180px;">
+            <div id="lookup_content_list" class="unitBox">
                 <#include "lookup_content_list.html"/>
             </div>
         </div>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder expand">
                 <@lookupTree/>
             </ul>
         </div>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder expand">
                 <@pageTree/>
             </ul>

@@ -2,6 +2,8 @@ package com.publiccms.controller.admin;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.Cookie;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -29,6 +33,8 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
@@ -49,6 +55,8 @@ public class LoginAdminController extends AbstractController {
     private LogLoginService logLoginService;
     @Autowired
     private CacheComponent cacheComponent;
+    @Autowired
+    private ConfigComponent configComponent;
 
     /**
      * @param username
@@ -91,8 +99,12 @@ public class LoginAdminController extends AbstractController {
         ControllerUtils.setAdminToSession(session, user);
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
-        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                CommonUtils.getDate(), ip));
+        Date now = CommonUtils.getDate();
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+        sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, now,
+                DateUtils.addMinutes(now, expiryMinutes), ip));
         try {
             StringBuilder sb = new StringBuilder();
             sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
@@ -100,7 +112,7 @@ public class LoginAdminController extends AbstractController {
                     .append(CommonConstants.getCookiesUserSplit())
                     .append(URLEncoder.encode(user.getNickName(), CommonConstants.DEFAULT_CHARSET_NAME));
             RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesAdmin(), sb.toString(),
-                    30 * 24 * 3600, null);
+                    expiryMinutes * 60, null);
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }

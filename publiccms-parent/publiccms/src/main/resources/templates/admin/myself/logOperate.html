@@ -2,7 +2,7 @@
             userId=admin.id  startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-    <form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -20,9 +20,9 @@
                 </li>
                 <li>
                     <label><@t.page 'log.create_date'/>:</label>
-                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
                     <span>-</span>
-                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
+                    <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
                 </li>
             </ul>
             <div class="subBar">
@@ -60,8 +60,8 @@
                     ${a.channel!}
                 </td>
                 <td>
-                	<@t.message 'operate.'+a.operate/>
-                	/
+                    <@t.message 'operate.'+a.operate/>
+                    /
                     ${a.operate}
                 </td>
                 <td>

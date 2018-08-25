@@ -2,6 +2,7 @@ package com.publiccms.controller.web;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -12,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -44,6 +48,7 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  */
 @Controller
 public class LoginController extends AbstractController {
+    protected static final Log log = LogFactory.getLog(LoginController.class);
     @Autowired
     private SysUserService service;
     @Autowired
@@ -87,39 +92,38 @@ public class LoginController extends AbstractController {
                 user = service.findByEmail(site.getId(), username);
             }
             String ip = RequestUtils.getIpAddress(request);
+            Date now = CommonUtils.getDate();
             if (ControllerUtils.verifyNotExist("username", user, model) || ControllerUtils.verifyNotEquals("password",
                     VerificationUtils.md5Encode(password), user.getPassword(), model) || verifyNotEnablie(user, model)) {
                 Long userId = null;
                 if (null != user) {
                     userId = user.getId();
                 }
-                logLoginService.save(new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false,
-                        CommonUtils.getDate(), password));
+                logLoginService.save(
+                        new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             } else {
-                user.setPassword(null);
-                ControllerUtils.setUserToSession(request.getSession(), user);
                 String authToken = UUID.randomUUID().toString();
-                addLoginStatus(user, authToken, request, response);
-                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB,
-                        CommonUtils.getDate(), ip));
+                int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                        LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                addLoginStatus(user, authToken, request, response, expiryMinutes);
+                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
+                        DateUtils.addMinutes(now, expiryMinutes), ip));
                 service.updateLoginStatus(user.getId(), ip);
-                logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true,
-                        CommonUtils.getDate(), null));
+                logLoginService.save(
+                        new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true, now, null));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
         }
     }
 
     /**
-     * @param request
      * @param session
-     * @param response
      * @return result
      */
     @RequestMapping("loginStatus")
     @ResponseBody
-    public Map<String, Object> loginStatus(HttpServletRequest request, HttpSession session, HttpServletResponse response) {
+    public Map<String, Object> loginStatus(HttpSession session) {
         SysUser user = ControllerUtils.getUserFromSession(session);
         Map<String, Object> result = new HashMap<>();
         if (null != user) {
@@ -174,20 +178,24 @@ public class LoginController extends AbstractController {
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
             service.save(entity);
-            entity.setPassword(null);
-            ControllerUtils.setUserToSession(request.getSession(), entity);
-            String authToken = UUID.randomUUID().toString();
-            addLoginStatus(entity, authToken, request, response);
-            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), LogLoginService.CHANNEL_WEB,
-                    CommonUtils.getDate(), ip));
-            if (null != channel && null != openId) {
-                String oauthToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+            Date now = CommonUtils.getDate();
+            String authToken;
+            Date expiryDate = null;
+            if (null == channel || null == openId) {
+                authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
                         .append(CommonConstants.DOT).append(openId).toString();
-                sysUserTokenService
-                        .save(new SysUserToken(oauthToken, site.getId(), entity.getId(), channel, CommonUtils.getDate(), ip));
+            } else {
+                authToken = UUID.randomUUID().toString();
+                channel = LogLoginService.CHANNEL_WEB;
+                expiryDate = DateUtils.addMinutes(now, expiryMinutes);
             }
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            addLoginStatus(entity, authToken, request, response, expiryMinutes);
+            sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), channel, now, expiryDate, ip));
         }
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     /**
@@ -195,12 +203,10 @@ public class LoginController extends AbstractController {
      * @param returnUrl
      * @param request
      * @param response
-     * @param model
      * @return view name
      */
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
-    public String logout(Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response,
-            ModelMap model) {
+    public String logout(Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -222,15 +228,18 @@ public class LoginController extends AbstractController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
-    private void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response) {
+    public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
+            int expiryMinutes) {
         try {
+            user.setPassword(null);
+            ControllerUtils.setUserToSession(request.getSession(), user);
             StringBuilder sb = new StringBuilder();
             sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
                     .append(CommonConstants.getCookiesUserSplit()).append(user.isSuperuserAccess())
                     .append(CommonConstants.getCookiesUserSplit())
                     .append(URLEncoder.encode(user.getNickName(), CommonConstants.DEFAULT_CHARSET_NAME));
             RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesUser(), sb.toString(),
-                    30 * 24 * 3600, null);
+                    expiryMinutes * 60, null);
         } catch (UnsupportedEncodingException e) {
             log.error(e.getMessage(), e);
         }

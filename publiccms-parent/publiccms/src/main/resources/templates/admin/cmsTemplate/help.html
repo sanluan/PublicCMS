@@ -14,7 +14,7 @@
         </div>
     </div>
     <div class="tabsContent">
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder">
             <#if metadata?has_content>
                 <li>
@@ -82,13 +82,13 @@
                 <li><a href="javascript:;" <@getAction r'<#list .namespace?keys as k>${k}<#sep>,</#list>' t.pageMessage('help.echo_namespace')/>><@t.page 'help.echo_namespace'/></a></li>
             </ul>
         </div>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder">
             <#if type?has_content&&'task'=type>
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.task_directive'/></a>
                     <ul>
-                    	<li><a href="javascript:;" <@getAction r'<@_clearLog clearDate=clearDate>'+'\n    '+r'Login log cleaning:${result.loginLog},Operate log cleaning:${result.operateLog},Task log cleaning:${result.taskLog}'+'\n'+r'</@_clearLog>'/>><@t.page 'help.clear_log'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_clearLog clearDate=clearDate>'+'\n    '+r'Login log cleaning:${result.loginLog},Operate log cleaning:${result.operateLog},Task log cleaning:${result.taskLog}'+'\n'+r'</@_clearLog>'/>><@t.page 'help.clear_log'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_indexContent id=id ids=ids/>'/>><@t.page 'help.rebuild_index'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids pageIndex=pageIndex totalPage=totalPage>'+'\n    '+r'Publish failed category ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@_publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_publishCategory id=id ids=ids>'+'\n    '+r'Publish failed content ids:<#list map?keys as k><#if !map[k]>${k},</#if></#list>'+'\n'+r'</@_publishCategory>'/>><@t.page 'help.publish_category'/></a></li>
@@ -157,6 +157,7 @@
                         <li><a href="javascript:;" <@getAction r'${getHtml(url,parameter)}' t.pageMessage('help.method.html.description')/>><@t.page 'help.method.html'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' t.pageMessage('help.method.keywords.description')/>><@t.page 'help.method.'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getMd5(value)}' t.pageMessage('help.method.md5.description')/>><@t.page 'help.method.md5'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getHash(value)}' t.pageMessage('help.method.hash.description')/>><@t.page 'help.method.hash'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' t.pageMessage('help.method.sha1.description')/>><@t.page 'help.method.sha1'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getSha2Encode(value)}' t.pageMessage('help.method.sha2.description')/>><@t.page 'help.method.sha2'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getPage(url,pageIndex,pageParameter)}' t.pageMessage('help.method.page.description')/>><@t.page 'help.method.page'/></a></li>
@@ -170,7 +171,7 @@
                 </li>
             </ul>
         </div>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder">
 <@_sysConfigList>
     <#list list as a>
@@ -191,7 +192,7 @@
             </ul>
         </div>
     <#if path?has_content>
-        <div class="pageFormContent" layoutH="37">
+        <div class="pageFormContent" layoutH="40">
             <ul class="tree treeFolder">
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.content_contribute'/></a>
@@ -221,19 +222,19 @@
         <#list list as a>
             <#local path=filepath+'/'+a.fileName>
             <@_placeMetadata path=path>
-	            <#if a.directory>
-	                <li>
-	                    <a href="javascript:;" onclick="return false;">${a.fileName}</a>
-	                    <ul><@placeTree path/></ul>
-	                </li>
-	            <#elseif object.allowContribute>
-	                <li>
-	                    <a href="placeTemplate/form.html?path=${(path?url)!}" target="dialog" mask="true">
-	                        ${(object.alias)!a.fileName}
-	                    </a>
-	                </li>
-	            </#if>
-	        </@_placeMetadata>
+                <#if a.directory>
+                    <li>
+                        <a href="javascript:;" onclick="return false;">${a.fileName}</a>
+                        <ul><@placeTree path/></ul>
+                    </li>
+                <#elseif object.allowContribute>
+                    <li>
+                        <a href="placeTemplate/form.html?path=${(path?url)!}" target="dialog" mask="true">
+                            ${(object.alias)!a.fileName}
+                        </a>
+                    </li>
+                </#if>
+            </@_placeMetadata>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>

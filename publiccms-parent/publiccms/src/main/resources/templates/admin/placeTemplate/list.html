@@ -2,20 +2,20 @@
     <@_templateList path='/include'+filepath orderField='createDate'>
         <#list list as a>
             <li>
-	            <#local path=filepath+'/'+a.fileName>
-	            <#if a.directory>
-	                <a href="placeTemplate/directory.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">${a.fileName}</a>
-	                <ul><@placeTree path/></ul>
-	            <#else>
-	               <a href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@_placeMetadata path=path>${(object.alias)!a.fileName}</@_placeMetadata></a>
-	            </#if>
+                <#local path=filepath+'/'+a.fileName>
+                <#if a.directory>
+                    <a href="placeTemplate/directory.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">${a.fileName}</a>
+                    <ul><@placeTree path/></ul>
+                <#else>
+                   <a href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@_placeMetadata path=path>${(object.alias)!a.fileName}</@_placeMetadata></a>
+                </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_templateList>
 </#macro>
-    <div layoutH="0" style="float:left; display:block; overflow:auto; width:240px;border-right:solid 1px #CCC; line-height:21px;">
+    <div layoutH="0" class="left-page-content">
         <h2 class="contentTitle">
             <a class="button" href="placeTemplate/metadata.html" target="ajax" rel="cmsTemplatePlace"><@t.page 'place.create'/></a>
         </h2>

@@ -19,6 +19,7 @@ public class UsernamePasswordAuthenticator extends java.net.Authenticator {
         auth = new PasswordAuthentication(username, password.toCharArray());
     }
 
+    @Override
     protected PasswordAuthentication getPasswordAuthentication() {
         return auth;
     }

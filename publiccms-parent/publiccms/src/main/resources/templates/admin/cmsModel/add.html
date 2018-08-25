@@ -8,11 +8,15 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
+        <#if site.parentId?has_content>
+            <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
+        <#else>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+        </#if>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <fieldset>
             <legend><@t.page 'base_info'/></legend>
             <dl class="nowrap">
@@ -132,7 +136,7 @@
                     <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="content"/><@t.page 'required'/></label>
                     <label><@t.page 'editor_type'/>:</label>
-                    <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor')}/>
+                    <#assign editorTypes={'ueditor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'kindeditor':t.pageMessage('kindeditor')}/>
                     <select class="combox" name="editorType">
                         <#list editorTypes as k,v>
                         <option value="${k}"${(k=(a.editorType)!)?then(' selected="true"','')?no_esc}>${v}</option>

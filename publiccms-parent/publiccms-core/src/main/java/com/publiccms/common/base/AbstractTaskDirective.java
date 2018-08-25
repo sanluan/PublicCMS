@@ -41,8 +41,8 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
 
     @Override
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-            String callback, HttpServletResponse response) throws IOException, Exception {
-        HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, callback, response);
+            HttpServletResponse response) throws IOException, Exception {
+        HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, response);
         SysApp app = null;
         if (null == (app = getApp(handler))) {
             handler.put("error", ApiController.NEED_APP_TOKEN).render();
@@ -57,7 +57,7 @@ public abstract class AbstractTaskDirective extends BaseTemplateDirective {
 
     protected SysApp getApp(RenderHandler handler) throws Exception {
         SysAppToken appToken = appTokenService.getEntity(handler.getString("appToken"));
-        if (null != appToken) {
+        if (null != appToken && (null == appToken.getExpiryDate() || CommonUtils.getDate().before(appToken.getExpiryDate()))) {
             SysApp app = appService.getEntity(appToken.getAppId());
             if (app.getSiteId() == getSite(handler).getId()) {
                 return app;

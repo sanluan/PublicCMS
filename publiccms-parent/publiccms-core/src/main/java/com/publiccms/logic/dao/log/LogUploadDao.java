@@ -79,7 +79,7 @@ public class LogUploadDao extends BaseDao<LogUpload> {
      */
     public int delete(Short siteId, Date createDate) {
         if (CommonUtils.notEmpty(siteId) || null != createDate) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from LogUpload bean");
+            QueryHandler queryHandler = getQueryHandler("delete from LogUpload bean");
             if (CommonUtils.notEmpty(siteId)) {
                 queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
             }

@@ -311,7 +311,7 @@ public class VerificationUtils {
             byte ciphertext[] = cipher.doFinal(input);
             return new String(ciphertext, Constants.DEFAULT_CHARSET);
         } catch (Exception e) {
-            return "";
+            return Constants.BLANK;
         }
     }
 

@@ -24,7 +24,7 @@ public class SysEmailTokenService extends BaseService<SysEmailToken> {
      * @param userId
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Long userId, Integer pageIndex, Integer pageSize) {
@@ -32,11 +32,11 @@ public class SysEmailTokenService extends BaseService<SysEmailToken> {
     }
 
     /**
-     * @param createDate
-     * @return
+     * @param now
+     * @return number of data deleted
      */
-    public int delete(Date createDate) {
-        return dao.delete(createDate);
+    public int delete(Date now) {
+        return dao.delete(now);
     }
     
     @Autowired

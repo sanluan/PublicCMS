@@ -12,27 +12,30 @@
             <#assign parent=object/>
         </@_content>
     </#if>
+    <#if !admin.ownsAllContent><#assign userId=admin.id/></#if>
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild
             modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-    <form id="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li class="width:auto">
                     <#include "../include_page/status.html"/>
                 </li>
+            <#if admin.ownsAllContent>
                 <li>
                     <label><@t.page 'content.promulgator'/>:</label>
                     <#include "../include_page/userId.html"/>
                 </li>
+            </#if>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
                     <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
                 </li>
                 <li>
                     <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
@@ -84,7 +87,7 @@
             <li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> <@t.page 'content.edit'/></a></li>
         <#if authorizedMap['cmsContent/changeModelParameters']>
             <li>
-                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" rel="cmsContent_changeModelParameters"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
+                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" mask="true"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
             </li>
         </#if>
             <li class="line">line</li>
@@ -101,7 +104,7 @@
         <#if authorizedMap['cmsContent/publish']>
             <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
         </#if>
-        <#if authorizedMap['cmsContent/moveParameters']>
+        <#if !parentId?has_content&&authorizedMap['cmsContent/moveParameters']>
             <li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> <@t.page 'button.batch_move'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/delete']>
@@ -174,7 +177,7 @@
                             <#if dept?has_content>
                                 <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" target="dialog" width="500" height="150" mask="true"><@t.page 'top'/></a>
                             </#if>
-                            <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" rel="push"><@t.page 'button.push'/></a>
+                            <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>
                         </#if>
                         <#if authorizedMap['cmsContent/uncheck']>
                             <a href="cmsContent/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>

@@ -241,7 +241,8 @@ public class FileComponent {
     public String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder("upload/");
         sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
-        return sb.append(CommonConstants.random.nextInt()).append(suffix).toString();
+        sb.append(CommonConstants.random.nextInt()).append(suffix);
+        return sb.toString();
     }
 
     /**

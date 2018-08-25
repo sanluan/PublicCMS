@@ -34,13 +34,14 @@ public class SysAppTokenDao extends BaseDao<SysAppToken> {
     }
 
     /**
-     * @param createDate
+     * @param now
      * @return number of data deleted
      */
-    public int delete(Date createDate) {
-        if (null != createDate) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from SysAppToken bean");
-            queryHandler.condition("bean.createDate <= :createDate").setParameter("createDate", createDate);
+    public int delete(Date now) {
+        if (null != now) {
+            QueryHandler queryHandler = getQueryHandler("delete from SysAppToken bean");
+            queryHandler.condition("bean.expiryDate is not null");
+            queryHandler.condition("bean.expiryDate <= :expiryDate").setParameter("expiryDate", now);
             return delete(queryHandler);
         }
         return 0;

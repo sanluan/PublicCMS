@@ -1,6 +1,6 @@
 <@_contentList categoryId=categoryId modelId=modelId parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-    <form id="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
+    <form class="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
         <input type="hidden" name="userId" value="${userId!}"/>
         <input type="hidden" name="parentId" value="${parentId!}"/>
@@ -13,9 +13,9 @@
                 </li>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
                     <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
                 </li>
                 <li>
                     <label><@t.page 'title'/>:</label>
@@ -67,7 +67,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" rel="push"><@t.page 'button.push'/></a>
+                    <a class="btnSelect" href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" mask="true"><@t.page 'button.push'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>

@@ -44,6 +44,8 @@ public class SysUser implements java.io.Serializable {
     private String nickName;
     @GeneratorColumn(title = "部门", condition = true)
     private Integer deptId;
+    @GeneratorColumn(title = "拥有所有内容权限")
+    private boolean ownsAllContent;
     @GeneratorColumn(title = "角色")
     private String roles;
     @GeneratorColumn(title = "邮箱", condition = true, like = true, or = true, name = "name")
@@ -53,6 +55,7 @@ public class SysUser implements java.io.Serializable {
     @GeneratorColumn(title = "是否管理员", condition = true)
     private boolean superuserAccess;
     @GeneratorColumn(title = "已禁用", condition = true)
+    @JsonIgnore
     private boolean disabled;
     @GeneratorColumn(title = "上次登录日期", condition = true, order = true)
     private Date lastLoginDate;
@@ -66,19 +69,20 @@ public class SysUser implements java.io.Serializable {
     public SysUser() {
     }
 
-    public SysUser(short siteId, String name, String password, String nickName, boolean emailChecked, boolean superuserAccess,
+    public SysUser(short siteId, String name, String password, String nickName, boolean ownsAllContent, boolean emailChecked, boolean superuserAccess,
             boolean disabled, int loginCount) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
         this.nickName = nickName;
+        this.ownsAllContent = ownsAllContent;
         this.emailChecked = emailChecked;
         this.superuserAccess = superuserAccess;
         this.disabled = disabled;
         this.loginCount = loginCount;
     }
 
-    public SysUser(short siteId, String name, String password, String nickName, Integer deptId, String roles, String email,
+    public SysUser(short siteId, String name, String password, String nickName, Integer deptId, boolean ownsAllContent, String roles, String email,
             boolean emailChecked, boolean superuserAccess, boolean disabled, Date lastLoginDate, String lastLoginIp,
             int loginCount, Date registeredDate) {
         this.siteId = siteId;
@@ -86,6 +90,7 @@ public class SysUser implements java.io.Serializable {
         this.password = password;
         this.nickName = nickName;
         this.deptId = deptId;
+        this.ownsAllContent = ownsAllContent;
         this.roles = roles;
         this.email = email;
         this.emailChecked = emailChecked;
@@ -152,6 +157,15 @@ public class SysUser implements java.io.Serializable {
 
     public void setDeptId(Integer deptId) {
         this.deptId = deptId;
+    }
+    
+    @Column(name = "owns_all_content", nullable = false)
+    public boolean isOwnsAllContent() {
+        return this.ownsAllContent;
+    }
+
+    public void setOwnsAllContent(boolean ownsAllContent) {
+        this.ownsAllContent = ownsAllContent;
     }
 
     @Column(name = "roles", length = 65535)

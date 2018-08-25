@@ -5,7 +5,7 @@
             <li><a href="sysConfig/add.html?code={sid}" target="navTab" rel="sysConfig/edit"><i class="icon-edit icon-large"></i> <@t.page 'config.edit'/></a></li>
         </ul>
     </div>
-<@_sysConfigList>
+<@_sysConfigList advanced=true>
     <table class="list" width="100%" layoutH="57">
         <thead>
             <tr>
@@ -21,7 +21,7 @@
                 <td>${(a.description)!}</td>
                 <td>
                     <a href="sysConfig/add.html?code=${a.code}" target="navTab" rel="sysConfig/edit"><@t.page 'config.edit'/></a>
-                <#if a.customed>
+                <#if a.customed&&!site.parentId?has_content>
                     <a href="sysConfig/delete.do?code=${a.code}&navTabId=sysConfig/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'config.delete'/></a>
                 </#if>
                 </td>

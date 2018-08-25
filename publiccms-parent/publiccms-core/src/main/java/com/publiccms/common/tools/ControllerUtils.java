@@ -27,13 +27,10 @@ public class ControllerUtils {
      */
     public static final Pattern NUMBER_PATTERN = Pattern.compile("^[0-9]*$");
     /**
-     * UserName Pattern
+     * UNVALID Pattern
      */
-    public static final Pattern USERNAME_PATTERN = Pattern.compile("^[A-Za-z_]{1}[0-9A-Za-z_]{3,40}$");
-    /**
-     * NickName Pattern
-     */
-    public static final Pattern NICKNAME_PATTERN = Pattern.compile("^[0-9A-Za-z_\u4E00-\uFA29\uE7C7-\uE7F3]{2,45}$");
+    public static final Pattern UNVALID_CHARS = Pattern
+            .compile("[ 　`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}‘；：”“’。，、？]|\n|\r|\t");
 
     private static final String VALID_CHARS = "[^\\s\\(\\)<>@,;:\\\\\\\"\\.\\[\\]+]+";
     /**
@@ -337,7 +334,7 @@ public class ControllerUtils {
     }
 
     /**
-     * @param request 
+     * @param request
      * @return
      */
     public static String getWebToken(HttpServletRequest request) {
@@ -345,7 +342,7 @@ public class ControllerUtils {
     }
 
     /**
-     * @param request 
+     * @param request
      * @return
      */
     public static String getAdminToken(HttpServletRequest request) {
@@ -375,21 +372,9 @@ public class ControllerUtils {
      * @param value
      * @return boolean
      */
-    public static boolean verifyNotUserName(String value) {
-        Matcher m = USERNAME_PATTERN.matcher(value);
-        if (!m.matches()) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * @param value
-     * @return boolean
-     */
-    public static boolean verifyNotNickName(String value) {
-        Matcher m = NICKNAME_PATTERN.matcher(value);
-        if (!m.matches()) {
+    public static boolean verifyNotValid(String value) {
+        Matcher m = UNVALID_CHARS.matcher(value);
+        if (null == value || 0 == value.length() || m.matches()) {
             return true;
         }
         return false;
@@ -416,7 +401,7 @@ public class ControllerUtils {
      * @return boolean
      */
     public static boolean verifyNotUserName(String field, String value, Map<String, Object> model) {
-        if (verifyNotUserName(value)) {
+        if (verifyNotValid(value)) {
             model.put(CommonConstants.ERROR, "verify.notUserName." + field);
             return true;
         }
@@ -430,7 +415,7 @@ public class ControllerUtils {
      * @return boolean
      */
     public static boolean verifyNotNickName(String field, String value, Map<String, Object> model) {
-        if (verifyNotNickName(value)) {
+        if (verifyNotValid(value)) {
             model.put(CommonConstants.ERROR, "verify.notNickName." + field);
             return true;
         }

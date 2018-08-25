@@ -1,10 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
-import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
-
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,27 +16,16 @@ import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
-import com.publiccms.entities.cms.CmsCategoryType;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.sys.SysExtend;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.template.TemplateComponent;
-import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
-import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
-import com.publiccms.logic.service.cms.CmsCategoryTypeService;
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.logic.service.cms.CmsTagTypeService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.sys.SysExtendFieldService;
-import com.publiccms.logic.service.sys.SysExtendService;
-import com.publiccms.views.pojo.model.CmsCategoryModelParameters;
 import com.publiccms.views.pojo.model.CmsCategoryParameters;
 
 import freemarker.template.TemplateException;
@@ -56,19 +41,7 @@ public class CmsCategoryAdminController extends AbstractController {
     @Autowired
     private CmsCategoryService service;
     @Autowired
-    private CmsTagTypeService tagTypeService;
-    @Autowired
     private CmsContentService contentService;
-    @Autowired
-    private CmsCategoryAttributeService attributeService;
-    @Autowired
-    private CmsCategoryModelService categoryModelService;
-    @Autowired
-    private CmsCategoryTypeService categoryTypeService;
-    @Autowired
-    private SysExtendService extendService;
-    @Autowired
-    private SysExtendFieldService extendFieldService;
     @Autowired
     private TemplateComponent templateComponent;
 
@@ -111,51 +84,12 @@ public class CmsCategoryAdminController extends AbstractController {
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
-            if (entity.isOnlyUrl()) {
-                entity.setUrl(entity.getPath());
-            }
-            entity.setSiteId(site.getId());
-            service.save(entity);
-            service.addChildIds(entity.getParentId(), entity.getId());
+            service.save(site.getId(), entity);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "save.category", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-
-        Integer[] tagTypeIds = tagTypeService.update(site.getId(), categoryParameters.getTagTypes());
-        service.updateTagTypeIds(entity.getId(), arrayToCommaDelimitedString(tagTypeIds));// 更新保存标签分类
-
-        List<CmsCategoryModelParameters> categoryModelList = categoryParameters.getCategoryModelList();
-        if (CommonUtils.notEmpty(categoryModelList)) {
-            for (CmsCategoryModelParameters cmsCategoryModelParameters : categoryModelList) {
-                if (null != cmsCategoryModelParameters.getCategoryModel()) {
-                    cmsCategoryModelParameters.getCategoryModel().getId().setCategoryId(entity.getId());
-                    if (cmsCategoryModelParameters.isUse()) {
-                        categoryModelService.updateCategoryModel(cmsCategoryModelParameters.getCategoryModel());
-                    } else {
-                        categoryModelService.delete(cmsCategoryModelParameters.getCategoryModel().getId());
-                    }
-                }
-            }
-        }
-        if (CommonUtils.notEmpty(categoryParameters.getContentExtends()) || CommonUtils.notEmpty(entity.getExtendId())) {
-            if (null == extendService.getEntity(entity.getExtendId())) {
-                entity = service.updateExtendId(entity.getId(),
-                        (Integer) extendService.save(new SysExtend("category", entity.getId())));
-            }
-            extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
-        }
-
-        CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());
-        if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendId())) {
-            List<SysExtendField> categoryTypeExtendList = extendFieldService.getList(categoryType.getExtendId());
-            Map<String, String> map = ExtendUtils.getSysExtentDataMap(categoryParameters.getExtendDataList(),
-                    categoryTypeExtendList);
-            attribute.setData(ExtendUtils.getExtendString(map));
-        } else {
-            attribute.setData(null);
-        }
-        attributeService.updateAttribute(entity.getId(), attribute);
+        service.saveTagAndAttribute(site.getId(), entity.getId(), attribute, categoryParameters);
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {

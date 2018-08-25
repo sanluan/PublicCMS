@@ -33,6 +33,9 @@
                     <input type="hidden" name="returnUrl" value="${site.sitePath}"/>
                     <input type="submit" value="Login"/>
                 </p>
+                <#if _oauthList?has_content&&_oauthList?is_directive>
+                    <p><#list list as o><a href="${site.dynamicPath}/oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
+                </#if>
                 <p>No account?<a href="register.html">Please register</a></p>
             </form>
         </#if>

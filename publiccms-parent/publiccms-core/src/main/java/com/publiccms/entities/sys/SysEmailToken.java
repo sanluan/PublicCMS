@@ -31,18 +31,21 @@ public class SysEmailToken implements java.io.Serializable {
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     @GeneratorColumn(title = "邮件地址")
-    private String email;    
+    private String email;
     @GeneratorColumn(title = "创建日期")
     private Date createDate;
+    @GeneratorColumn(title = "过期日期")
+    private Date expiryDate;
 
     public SysEmailToken() {
     }
 
-    public SysEmailToken(String authToken, long userId, String email, Date createDate) {
+    public SysEmailToken(String authToken, long userId, String email, Date createDate, Date expiryDate) {
         this.authToken = authToken;
         this.userId = userId;
         this.email = email;
         this.createDate = createDate;
+        this.expiryDate = expiryDate;
     }
 
     @Id
@@ -81,6 +84,16 @@ public class SysEmailToken implements java.io.Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "expiry_date", nullable = false, length = 19)
+    public Date getExpiryDate() {
+        return this.expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
 }

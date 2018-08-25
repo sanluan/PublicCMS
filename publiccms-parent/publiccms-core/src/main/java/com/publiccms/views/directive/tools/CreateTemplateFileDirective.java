@@ -29,7 +29,7 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
         Integer pageIndex = handler.getInteger("pageIndex");
         if (CommonUtils.notEmpty(templatePath) && CommonUtils.notEmpty(filePath)) {
             SysSite site = getSite(handler);
-            String templateFullPath = SiteComponent.getFullFileName(site, templatePath);
+            String templateFullPath = SiteComponent.getFullTemplatePath(site, templatePath);
             try {
                 handler.put("url", templateComponent.createStaticFile(site, templateFullPath, filePath, pageIndex, null, null))
                         .render();

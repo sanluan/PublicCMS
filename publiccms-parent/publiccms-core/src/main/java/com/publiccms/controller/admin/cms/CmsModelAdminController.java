@@ -51,6 +51,9 @@ public class CmsModelAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         modelComponent.clear(site.getId());
         if (CommonUtils.notEmpty(modelId)) {
             Map<String, CmsModel> modelMap = modelComponent.getMap(site);
@@ -85,6 +88,9 @@ public class CmsModelAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = getSite(request);
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
         Map<String, CmsModel> modelMap = modelComponent.getMap(site);
         CmsModel entity = modelMap.remove(id);
         if (null != entity) {

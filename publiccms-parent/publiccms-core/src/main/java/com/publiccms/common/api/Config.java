@@ -3,6 +3,8 @@ package com.publiccms.common.api;
 import java.util.List;
 import java.util.Locale;
 
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.views.pojo.entities.ExtendField;
 
@@ -21,6 +23,15 @@ public interface Config {
      * 
      */
     public static final String CONFIG_CODE_SITE = "site";
+
+    /**
+     * 
+     */
+    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE_SITE;
+    /**
+     * 
+     */
+    public static final String CONFIG_CODE_DESCRIPTION_SUFFIX = CommonConstants.DOT + "description";
     /**
      * 
      */
@@ -49,16 +60,6 @@ public interface Config {
     /**
      * 
      */
-    public static final String INPUTTYPE_EDITOR = "editor";
-    
-    /**
-     * 
-     */
-    public static final String INPUTTYPE_CKEDITOR = "ckeditor";
-
-    /**
-     * 
-     */
     public static final String INPUTTYPE_TEXTAREA = "textarea";
 
     /**
@@ -76,14 +77,6 @@ public interface Config {
      */
     public static final String INPUTTYPE_USER = "user";
 
-    /**
-     * 
-     */
-    public static final String INPUTTYPE_CONTENT = "content";
-    /**
-     * 
-     */
-    public static final String INPUTTYPE_CATEGORY = "category";
     /**
      * 
      */
@@ -111,21 +104,43 @@ public interface Config {
 
     /**
      * @param site
-     * @return config code
-     */
-    public String getCode(SysSite site);
-
-    /**
-     * @param site
-     * @param locale
-     * @return config code description
-     */
-    public String getCodeDescription(SysSite site, Locale locale);
-
-    /**
-     * @param site
      * @param locale
      * @return config extend field list
      */
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale);
+
+    /**
+     * @param site
+     * @param showAll
+     * @return config code or null
+     */
+    public default String getCode(SysSite site, boolean showAll) {
+        return CONFIG_CODE_SITE;
+    }
+
+    /**
+     * @param site
+     * @param showAll
+     * @return config code or null
+     */
+    public default String getMessage(Locale locale, String code) {
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, code);
+    }
+
+    /**
+     * @param site
+     * @return config code or null
+     */
+    public default String getCode(SysSite site) {
+        return getCode(site, false);
+    }
+
+    /**
+     * @param site
+     * @param locale
+     * @return
+     */
+    public default String getCodeDescription(Locale locale) {
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
+    }
 }

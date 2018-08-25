@@ -1,4 +1,4 @@
-<div class="pageFormContent" layoutH="19">
+<div class="pageFormContent" layoutH="0">
 <fieldset>
     <legend><@t.page 'my_account'/></legend>
     <div class="unit">
@@ -41,35 +41,35 @@
     </div>
 </fieldset>
 <@_sysAuthorized roleIds=admin.roles url='report/user'>
-	<fieldset>
-	    <legend><@t.page 'report.user'/></legend>
-	    <div class="unit">
-	        <p>
-	            <label><@t.page 'register'/>:</label>
-	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-	                <@_sysUserList startRegisteredDate=.now?long?number_to_date?string>
-	                   ${page.totalCount}
-	                </@_sysUserList>
-	            </a>
-	        </p>
-	        <p>
-	            <label><@t.page 'login'/>:</label>
-	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-	                <@_logLoginList startCreateDate=.now?long?number_to_date?string>
-	                   ${page.totalCount}
-	                </@_logLoginList>
-	            </a>
-	        </p>
-	        <p>
-	            <label><@t.page 'operate'/>:${.now?long?number_to_date?string}</label>
-	            <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-	                <@_logOperateList startCreateDate=.now?long?number_to_date?string>
-	                   ${page.totalCount}
-	                </@_logOperateList>
-	            </a>
-	        </p>
-	    </div>
-	</fieldset>
+    <fieldset>
+        <legend><@t.page 'report.user'/></legend>
+        <div class="unit">
+            <p>
+                <label><@t.page 'register'/>:</label>
+                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                    <@_sysUserList startRegisteredDate=.now?long?number_to_date?string>
+                       ${page.totalCount}
+                    </@_sysUserList>
+                </a>
+            </p>
+            <p>
+                <label><@t.page 'login'/>:</label>
+                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                    <@_logLoginList startCreateDate=.now?long?number_to_date?string>
+                       ${page.totalCount}
+                    </@_logLoginList>
+                </a>
+            </p>
+            <p>
+                <label><@t.page 'operate'/>:${.now?long?number_to_date?string}</label>
+                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                    <@_logOperateList startCreateDate=.now?long?number_to_date?string>
+                       ${page.totalCount}
+                    </@_logOperateList>
+                </a>
+            </p>
+        </div>
+    </fieldset>
 </@_sysAuthorized>
 <@_masterSite>
     <@_systemProperties>
@@ -138,7 +138,7 @@
                 <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.page 'publiccms_website'/>">${cms}</a>
             </p>
             <script>
-                $.getJSON('//cms.publiccms.com/api/directive/version?callback=?',function(data){
+                $.getJSON('//cms.publiccms.com/api/directive/version',function(data){
                     if($('#cmsVersion a').eq(0).text()!==data.cms){
                         $('#cmsVersion a').eq(0).append('[<em style="color:red"><@t.page 'version.old'/></em>]');
                     } else {
@@ -154,7 +154,7 @@
         <@_disk>
             <p>
                 <label><@t.page 'data.directory'/>:</label>
-                <a href="report/cms.html" icon="<i class='icon-check-sign icon-large'></i>" title="<@t.page 'system_monitor'/>" target="navTab" rel="report/cms" external="true">${(rootPath)!}</a>
+                <a href="sysSite/monitor.html" icon="<i class='icon-check-sign icon-large'></i>" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor" external="true">${(rootPath)!}</a>
             </p>
             <p>
                 <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>

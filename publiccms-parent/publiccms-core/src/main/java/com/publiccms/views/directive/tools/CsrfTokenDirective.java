@@ -47,6 +47,7 @@ public class CsrfTokenDirective extends AbstractTemplateDirective {
     /**
      * @return whether to enable http
      */
+    @Override
     public boolean httpEnabled() {
         return false;
     }

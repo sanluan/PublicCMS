@@ -4,6 +4,10 @@
     <textarea name="random"><@html_escape><#include "demo/random.html" parse=false/></@html_escape></textarea>
     <textarea name="content"><@html_escape><#include "demo/content.html" parse=false/></@html_escape></textarea>
     <textarea name="category"><@html_escape><#include "demo/category.html" parse=false/></@html_escape></textarea>
+    <textarea name="content_md5"><@html_escape><#include "demo/content_md5.html" parse=false/></@html_escape></textarea>
+    <textarea name="category_md5"><@html_escape><#include "demo/category_md5.html" parse=false/></@html_escape></textarea>
+    <textarea name="content_hash"><@html_escape><#include "demo/content_hash.html" parse=false/></@html_escape></textarea>
+    <textarea name="category_hash"><@html_escape><#include "demo/category_hash.html" parse=false/></@html_escape></textarea>
     <textarea name="search"><@html_escape><#include "demo/search.html" parse=false/></@html_escape></textarea>
     <textarea name="login"><@html_escape><#include "demo/login.html" parse=false/></@html_escape></textarea>
     <textarea name="register"><@html_escape><#include "demo/register.html" parse=false/></@html_escape></textarea>
@@ -55,6 +59,34 @@ function templateDefaultConfig(type,name){
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
         $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
         break;
+    case 'content_md5':
+        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+        $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content_md5.html');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        break;
+    case 'category_md5':
+        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+        $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category_md5.html');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        break;
+    case 'content_hash':
+        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+        $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content_hash.html');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        break;
+    case 'category_hash':
+        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+        $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category_hash.html');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        break;
     case 'search':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
@@ -74,7 +106,7 @@ function templateDefaultConfig(type,name){
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/register.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message,name,nickname');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message,name,nickname,openId,channel,returnUrl');
         break;
 <#if site.useStatic>
     case 'staticContent':
@@ -121,13 +153,17 @@ function templateDefaultConfig(type,name){
     $.pdialog.closeCurrent();
 }
 </script>
-<div class="pageFormContent" layoutH="19">
+<div class="pageFormContent" layoutH="0">
     <ul class="tree treeFolder">
         <li><a href="javascript:;" onclick="templateDefaultConfig('index','<@t.page 'home_page'/>');"><@t.page 'home_page'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('index_zh_CN','<@t.page 'home_page_zh_CN'/>');"><@t.page 'home_page_zh_CN'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('random','<@t.page 'random_content_page'/>');"><@t.page 'random_content_page'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('content','<@t.page 'content_page'/>');"><@t.page 'content_page'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('category','<@t.page 'category_page'/>');"><@t.page 'category_page'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('content_md5','<@t.page 'content_page_md5'/>');"><@t.page 'content_page_md5'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('category_md5','<@t.page 'category_page_md5'/>');"><@t.page 'category_page_md5'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('content_hash','<@t.page 'content_page_hash'/>');"><@t.page 'content_page_hash'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('category_hash','<@t.page 'category_page_hash'/>');"><@t.page 'category_page_hash'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('search','<@t.page 'search_page'/>');"><@t.page 'search_page'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('login','<@t.page 'login_page'/>');"><@t.page 'login_page'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('register','<@t.page 'register_page'/>');"><@t.page 'register_page'/></a></li>

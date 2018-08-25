@@ -7,10 +7,17 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
+        <#if a?has_content>
+            <li><a class="button" href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.content'/></a></li>
+        </#if>
+        <#if site.parentId?has_content>
+            <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
+        <#else>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+        </#if>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <dl class="nowrap">
             <dt><@t.page 'path'/>:</dt></dt>
             <dd>
@@ -158,10 +165,10 @@ checkPageSize();
     <#items as a>
         <li>
             <figure>
-                <!-- ${a.itemType!} : ${a.itemId!} -->
+                <!-- ${a.itemType!} : ${a.itemId!} ,place/redirect.do:count and 301 jump to a.url,place/click.do:count and 302 jump to a.url-->
                 <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${site.sitePath+a.cover!}"></a>
                 <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
-                <@t.page 'extend_field'/>:<#assign attribute=getPlaceAttribute(a.id)/>
+                </#noparse><@t.page 'extend_field'/>:<#noparse><#assign attribute=getPlaceAttribute(a.id)/>
             </figure>
         </li>
     </#items>

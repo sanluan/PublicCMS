@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -21,11 +22,20 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
 import com.publiccms.logic.dao.cms.CmsContentDao;
+import com.publiccms.logic.service.sys.SysExtendFieldService;
+import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.entities.ExtendField;
+import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
@@ -36,7 +46,18 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @Service
 @Transactional
 public class CmsContentService extends BaseService<CmsContent> {
-
+    @Autowired
+    private SysExtendService extendService;
+    @Autowired
+    private SysExtendFieldService extendFieldService;
+    @Autowired
+    private CmsTagService tagService;
+    @Autowired
+    private CmsContentFileService contentFileService;
+    @Autowired
+    private CmsContentAttributeService attributeService;
+    @Autowired
+    private CmsContentRelatedService cmsContentRelatedService;
     /**
      * 
      */
@@ -51,6 +72,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public static final int STATUS_PEND = 2;
 
     /**
+     * @param projection
      * @param siteId
      * @param text
      * @param tagIds
@@ -66,10 +88,10 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler query(Short siteId, String text, Long[] tagIds, Integer categoryId, Boolean containChild,
-            Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, String orderField,
-            Integer pageIndex, Integer pageSize) {
-        return dao.query(siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
+    public PageHandler query(boolean projection, Short siteId, String text, Long[] tagIds, Integer categoryId,
+            Boolean containChild, Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate,
+            String orderField, Integer pageIndex, Integer pageSize) {
+        return dao.query(projection, siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
                 getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, orderField,
                 pageIndex, pageSize);
     }
@@ -125,35 +147,79 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.getPage(queryEntity, orderField, orderType, pageIndex, pageSize);
     }
 
-    /**
-     * @param siteId
-     * @param ids
-     */
-    public void refresh(short siteId, Serializable[] ids) {
-        List<CmsContent> list = getEntitys(ids);
-        Collections.reverse(list);
-        for (CmsContent entity : list) {
-            if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()) {
-                Date now = CommonUtils.getDate();
-                if (now.after(entity.getPublishDate())) {
-                    entity.setPublishDate(now);
-                }
+    public void saveTagAndAttribute(Short siteId, Long userId, Long id, CmsContentParameters contentParameters, CmsModel cmsModel,
+            CmsCategory category, CmsContentAttribute attribute) {
+        Long[] tagIds = tagService.update(siteId, contentParameters.getTags());
+        CmsContent entity = getEntity(id);
+        if (null != entity) {
+            entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
+        }
+        if (entity.isHasImages() || entity.isHasFiles()) {
+            contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
+                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
+        }
+
+        List<ExtendField> modelExtendList = cmsModel.getExtendList();
+        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
+        if (null != category && null != extendService.getEntity(category.getExtendId())) {
+            List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
+            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
+                    categoryExtendList);
+            if (CommonUtils.notEmpty(map)) {
+                map.putAll(categoryMap);
+            } else {
+                map = categoryMap;
             }
+        }
+
+        if (CommonUtils.notEmpty(map)) {
+            attribute.setData(ExtendUtils.getExtendString(map));
+        } else {
+            attribute.setData(null);
+        }
+
+        attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
+        if (CommonUtils.notEmpty(contentParameters.getContentRelateds())) {
+            cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         }
     }
 
     /**
      * @param siteId
-     * @param userId
+     * @param user
      * @param ids
      * @return results list
      */
-    public List<CmsContent> check(short siteId, Long userId, Serializable[] ids) {
+    public List<CmsContent> refresh(short siteId, SysUser user, Serializable[] ids) {
+        List<CmsContent> entityList = new ArrayList<>();
+        List<CmsContent> list = getEntitys(ids);
+        Collections.reverse(list);
+        for (CmsContent entity : list) {
+            if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+                Date now = CommonUtils.getDate();
+                if (now.after(entity.getPublishDate())) {
+                    entity.setPublishDate(now);
+                    entityList.add(entity);
+                }
+            }
+        }
+        return entityList;
+    }
+
+    /**
+     * @param siteId
+     * @param user
+     * @param ids
+     * @return results list
+     */
+    public List<CmsContent> check(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
+            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 entity.setStatus(STATUS_NORMAL);
-                entity.setCheckUserId(userId);
+                entity.setCheckUserId(user.getId());
                 entity.setCheckDate(CommonUtils.getDate());
                 entityList.add(entity);
             }
@@ -163,32 +229,20 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param userId
+     * @param user
      * @param ids
      * @return results list
      */
-    public List<CmsContent> uncheck(short siteId, Long userId, Serializable[] ids) {
+    public List<CmsContent> uncheck(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()) {
+            if (null != entity && siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 entity.setStatus(STATUS_PEND);
                 entityList.add(entity);
             }
         }
         return entityList;
-    }
-
-    /**
-     * @param id
-     * @param tagIds
-     * @return result
-     */
-    public CmsContent updateTagIds(Serializable id, String tagIds) {
-        CmsContent entity = getEntity(id);
-        if (null != entity) {
-            entity.setTagIds(tagIds);
-        }
-        return entity;
     }
 
     /**
@@ -283,20 +337,22 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
+     * @param user
      * @param ids
      * @return list of data deleted
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> delete(short siteId, Serializable[] ids) {
+    public List<CmsContent> delete(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (siteId == entity.getSiteId() && !entity.isDisabled()) {
+            if (siteId == entity.getSiteId() && !entity.isDisabled()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
                             entity.getId(), null, null, null, null, null, null, null, null, null), null, null, null, null, null)
                                     .getList()) {
                         child.setDisabled(true);
-                        entityList.add(child);
+                        entity.setChilds(entity.getChilds() - 1);
                     }
                 }
                 entity.setDisabled(true);

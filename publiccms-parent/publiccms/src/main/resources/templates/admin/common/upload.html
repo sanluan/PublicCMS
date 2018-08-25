@@ -1,8 +1,17 @@
 <script>
 var imagesSuffix=["png","gif","jpg","jpeg","bmp"];
+var videosSuffix=["ogg","webm","mpeg","mpg","mov","rm","ram","avi","wmv","mp4"];
 function checkFileType(){
 <#if onlyImage?has_content>
     <#assign fileTypes='image'/>
+    var filenames=$('input[name=file]',$.pdialog.getCurrent()).val().toLowerCase().split('.');
+    if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+        return true;
+    }
+    alertMsg.error('<@t.page 'upload.image_warn'/>');
+    return false;
+<#elseif onlyVideo?has_content>
+    <#assign fileTypes='video'/>
     var filenames=$('input[name=file]',$.pdialog.getCurrent()).val().toLowerCase().split('.');
     if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
         return true;
@@ -28,21 +37,14 @@ function selectFile(path){
 </script>
 <form action="file/doUpload.do" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <div class="formBar">
-        <ul>
-            <li><button type="submit" class="buttonActive" onclick="return checkFileType();"><@t.page 'upload'/></button></li>
-            <li><button type="button" class="button" onclick="$.bringBack({'${field}':''});return false;"><@t.page 'button.clear_select'/></button></li>
-            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-        </ul>
-    </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <div id="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
         <dl>
             <dt><@t.page 'file'/>:</dt>
             <dd>
                 <input type="hidden" name="field" value="${field!'fileName'}"/>
                 <input type="hidden" name="originalField" value="${originalField!}"/>
-                <input type="file" name="file" class="required" size="30" />
+                <input type="file" name="file" class="required" size="30"<#if onlyImage?has_content> accept="image/*"<#elseif onlyVideo?has_content> accept="video/*"</#if>/>
             </dd>
         </dl>
         <ul class="tree" style="height:200px">
@@ -68,5 +70,12 @@ function selectFile(path){
             });
         </script>
         </#if>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive" onclick="return checkFileType();"><@t.page 'upload'/></button></li>
+            <li><button type="button" class="button" onclick="$.bringBack({'${field}':''});return false;"><@t.page 'button.clear_select'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
     </div>
 </form>

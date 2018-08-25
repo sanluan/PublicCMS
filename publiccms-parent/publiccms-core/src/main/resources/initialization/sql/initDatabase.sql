@@ -382,6 +382,7 @@ CREATE TABLE `sys_app` (
   `app_key` varchar(50) NOT NULL COMMENT 'APP key',
   `app_secret` varchar(50) NOT NULL COMMENT 'APP secret',
   `authorized_apis`  text NULL COMMENT '授权API',
+  `expiry_minutes` int(11) DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `key` (`app_key`),
   KEY `site_id` (`site_id`)
@@ -413,6 +414,7 @@ CREATE TABLE `sys_app_token` (
   `auth_token` varchar(40) NOT NULL COMMENT '授权验证',
   `app_id` int(11) NOT NULL COMMENT '应用ID',
   `create_date` datetime NOT NULL COMMENT '创建日期',
+  `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
   KEY `app_id` (`app_id`),
   KEY `create_date` (`create_date`)
@@ -457,6 +459,7 @@ CREATE TABLE `sys_dept` (
   `max_sort` INT NOT NULL DEFAULT 1000 COMMENT  '最大内容置顶级别',
   `owns_all_category` tinyint(1) NOT NULL COMMENT '拥有全部分类权限',
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
+  `owns_all_config` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有全部配置权限',
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
 ) AUTO_INCREMENT=3 COMMENT='部门';
@@ -464,8 +467,7 @@ CREATE TABLE `sys_dept` (
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES ('1', '1', '技术部', null, '', '1', '1000', '1', '1');
-INSERT INTO `sys_dept` VALUES ('2', '2', '技术部', null, '', '3', '1000', '1', '1');
+INSERT INTO `sys_dept` VALUES ('1', '1', '技术部', null, '', '1', '1000', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for sys_dept_category
@@ -487,6 +489,14 @@ CREATE TABLE `sys_dept_page` (
   PRIMARY KEY  (`dept_id`,`page`)
 ) COMMENT='部门页面';
 
+-- ----------------------------
+-- Table structure for sys_dept_config
+-- ----------------------------
+CREATE TABLE `sys_dept_config` (
+  `dept_id` int(11) NOT NULL COMMENT '部门ID',
+  `config` varchar(100) NOT NULL COMMENT '配置',
+  PRIMARY KEY (`dept_id`,`config`) 
+) COMMENT='部门配置';
 -- ----------------------------
 -- Table structure for sys_domain
 -- ----------------------------
@@ -516,6 +526,7 @@ CREATE TABLE `sys_email_token` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `email` varchar(100) NOT NULL COMMENT '邮件地址',
   `create_date` datetime NOT NULL COMMENT '创建日期',
+  `expiry_date` datetime NOT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
   KEY `create_date` (`create_date`),
   KEY `user_id` (`user_id`)
@@ -575,6 +586,7 @@ INSERT INTO `sys_module` VALUES ('app_add', 'sysApp/add', 'sysApp/save', NULL, '
 INSERT INTO `sys_module` VALUES ('app_client_disable', NULL, 'sysAppClient/disable', NULL, 'app_client_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_enable', NULL, 'sysAppClient/enable', NULL, 'app_client_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_list', 'sysAppClient/list', NULL, '<i class=\"icon-coffee icon-large\"></i>', 'user_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, '<i class=\"icon-linux icon-large\"></i>', 'system_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('category', NULL, NULL, '<i class=\"icon-folder-open icon-large\"></i>', NULL, 1, 5);
@@ -592,14 +604,14 @@ INSERT INTO `sys_module` VALUES ('category_type_list', 'cmsCategoryType/list', N
 INSERT INTO `sys_module` VALUES ('clearcache', NULL, 'clearCache', '', NULL, 0, 10);
 INSERT INTO `sys_module` VALUES ('config_add', 'sysConfig/add', 'sysConfig/save', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_delete', NULL, 'sysConfigData/delete', NULL, 'config_data_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('config_data_edit', 'sysConfigData/edit', 'sysConfigData/save', NULL, 'config_data_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('config_data_edit', NULL, 'sysConfigData/save,sysConfigData/edit', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_list', 'sysConfigData/list', NULL, '<i class=\"icon-cog icon-large\"></i>', 'system_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, '<i class=\"icon-cogs icon-large\"></i>', 'config_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('config_list_data_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_menu', NULL, NULL, '<i class=\"icon-gear icon-large\"></i>', 'develop', 1, 2);
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, '<i class=\"icon-book icon-large\"></i>', NULL, 1, 2);
-INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,cmsContent/save,ueditor', '', 'content_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_extend', NULL, NULL, '<i class=\"icon-road icon-large\"></i>', 'content', 1, 1);
@@ -647,7 +659,7 @@ INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 
 INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', NULL, '<i class=\"icon-th-large icon-large\"></i>', 'config_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, '<i class=\"icon-user icon-large\"></i>', NULL, 1, 1);
 INSERT INTO `sys_module` VALUES ('myself_content', 'myself/contentList', NULL, '<i class=\"icon-book icon-large\"></i>', 'myself_menu', 1, 2);
-INSERT INTO `sys_module` VALUES ('myself_content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload', NULL, 'myself_content', 0, 0);
+INSERT INTO `sys_module` VALUES ('myself_content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload', NULL, 'myself_content', 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_delete', NULL, 'cmsContent/delete', NULL, 'myself_content', 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_publish', NULL, 'cmsContent/publish', NULL, 'myself_content', 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_push', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsContent/push_to_place,cmsContent/related', NULL, 'myself_content', 0, 0);
@@ -670,14 +682,14 @@ INSERT INTO `sys_module` VALUES ('page_select_tag_type', 'cmsTagType/lookup', NU
 INSERT INTO `sys_module` VALUES ('page_select_template', 'cmsTemplate/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_user', 'sysUser/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_add', 'cmsPlace/add', 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save', NULL, 'place_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check', NULL, 'place_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/uncheck', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_data_list', 'cmsPlace/dataList', NULL, NULL, 'place_list', 0, 1);
 INSERT INTO `sys_module` VALUES ('place_delete', NULL, 'cmsPlace/delete', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', 'sysUser/lookup,cmsPlace/data_list', '<i class=\"icon-list-alt icon-large\"></i>', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('place_publish', 'cmsPlace/publish_place', 'cmsTemplate/publishPlace', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_refresh', NULL, 'cmsPlace/refresh', NULL, 'place_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsWebFile/contentForm,placeTemplate/form', NULL, 'place_template_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/savePlace,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsWebFile/contentForm,placeTemplate/form', NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_data_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_fragment', 'cmsTemplate/ftlLookup', NULL, NULL, 'place_template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_help', 'cmsTemplate/help', NULL, NULL, 'place_template_list', 0, 0);
@@ -731,7 +743,7 @@ INSERT INTO `sys_module` VALUES ('user_menu', NULL, NULL, '<i class=\"icon-user 
 INSERT INTO `sys_module` VALUES ('webfile_content', 'cmsWebFile/content', 'cmsWebFile/save', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_directory', 'cmsWebFile/directory', 'cmsWebFile/createDirectory', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, '<i class=\"icon-globe icon-large\"></i>', 'file_menu', 1, 4);
-INSERT INTO `sys_module` VALUES ('webfile_unzip', NULL, 'cmsWebFile/unzip,cmsWebFile/unzipHere', NULL, 'webfile_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('webfile_unzip', 'cmsWebFile/unzipParameters', 'cmsWebFile/unzip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, '<i class=\"icon-search icon-large\"></i>', 'content_extend', 1, 2);
@@ -758,6 +770,8 @@ INSERT INTO `sys_module_lang` VALUES ('app_client_enable', '', '启用');
 INSERT INTO `sys_module_lang` VALUES ('app_client_enable', 'en', 'Enable');
 INSERT INTO `sys_module_lang` VALUES ('app_client_list', '', '客户端管理');
 INSERT INTO `sys_module_lang` VALUES ('app_client_list', 'en', 'Application client management');
+INSERT INTO `sys_module_lang` VALUES ('app_issue', '', '颁发Token');
+INSERT INTO `sys_module_lang` VALUES ('app_issue', 'en', 'Issue Token');
 INSERT INTO `sys_module_lang` VALUES ('app_delete', '', '删除');
 INSERT INTO `sys_module_lang` VALUES ('app_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('app_list', '', '应用授权');
@@ -1147,7 +1161,8 @@ INSERT INTO `sys_role_user` VALUES ('1', '1');
 DROP TABLE IF EXISTS `sys_site`;
 CREATE TABLE `sys_site` (
   `id` smallint(6) NOT NULL auto_increment,
-  `name` varchar(50) NOT NULL,
+  `parent_id` smallint(6) DEFAULT NULL COMMENT '父站点ID',
+  `name` varchar(50) NOT NULL COMMENT '站点名',
   `use_static` tinyint(1) NOT NULL COMMENT '启用静态化',
   `site_path` varchar(255) NOT NULL COMMENT '站点地址',
   `use_ssi` tinyint(1) NOT NULL COMMENT '启用服务器端包含',
@@ -1160,7 +1175,7 @@ CREATE TABLE `sys_site` (
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', 'PublicCMS', '1', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
+INSERT INTO `sys_site` VALUES ('1', null ,'PublicCMS', '1', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
 
 -- ----------------------------
 -- Table structure for sys_task
@@ -1202,6 +1217,7 @@ CREATE TABLE `sys_user` (
   `password` varchar(32) NOT NULL COMMENT '密码',
   `nick_name` varchar(45) NOT NULL COMMENT '昵称',
   `dept_id` int(11) default NULL COMMENT '部门',
+  `owns_all_content` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有所有内容权限',
   `roles` text COMMENT '角色',
   `email` varchar(100) default NULL COMMENT '邮箱地址',
   `email_checked` tinyint(1) NOT NULL COMMENT '已验证邮箱',
@@ -1224,7 +1240,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
 
 
 -- ----------------------------
@@ -1237,6 +1253,7 @@ CREATE TABLE `sys_user_token` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `create_date` datetime NOT NULL COMMENT '创建日期',
+  `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   `login_ip` varchar(64) NOT NULL COMMENT '登录IP',
   PRIMARY KEY  (`auth_token`),
   KEY `user_id` (`user_id`),

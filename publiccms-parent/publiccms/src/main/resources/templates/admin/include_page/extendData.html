@@ -9,7 +9,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-            <input name="${inputName}" <#if 'customform'!=type>class="number<#if extend.required> required</#if>" </#if>type="text" size="5" value="${(value)!}"/>
+            <input name="${inputName}" <#if 'customform'!=type>class="number<#if extend.required> required</#if>" </#if>type="number" value="${(value)!}"/>
             </#if>
             <#break>
         <#case 'file'>
@@ -26,13 +26,25 @@
                 <br/>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}"/>
+                <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyImage=true" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
                     </#if>
                     <@preview extend.id.code 'input[name="${inputName}"]' ''/>
+                </#if>
+            </#if>
+            <#break>
+        <#case 'video'>
+            <#if 'view'=type>
+                <video controls="controls" src="${site.sitePath+value}" style="max-width:500px;max-height:500px;"></video>
+                <br/>
+                ${(value)!}
+            <#else>
+                <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
+                <#if 'customform'!=type>
+                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyVideo=true" lookupGroup="" width="560" height="300"><@t.page 'video'/></a>
                 </#if>
             </#if>
             <#break>
@@ -64,6 +76,13 @@
                 <textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="ckeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
+        <#case 'kindeditor'>
+            <#if 'view'=type>
+                ${(value?no_esc)!}
+            <#else>
+                <textarea name="${inputName}" <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="kindeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
+            </#if>
+            <#break>
         <#case 'template'>
             <#if 'view'=type>
                 ${(value)!}
@@ -83,7 +102,7 @@
             </#if>
             <#break>
         <#case 'user'>
-            <@_sysUser id=value><#assign user=object/></@_sysUser>
+            <@_sysUser id=value><#local user=object/></@_sysUser>
             <#if 'view'=type>
                 ${(value)!}:${(user.nickName)!}
             <#else>
@@ -93,7 +112,7 @@
             </#if>
             <#break>
         <#case 'content'>
-            <@_content id=value><#assign content=object/></@_content>
+            <@_content id=value><#local content=object/></@_content>
             <#if 'view'=type>
                 ${(value)!}:${(content.title)!}
             <#else>
@@ -103,7 +122,7 @@
             </#if>
             <#break>
         <#case 'category'>
-            <@_category id=value><#assign category=object/></@_category>
+            <@_category id=value><#local category=object/></@_category>
             <#if 'view'=type>
                 ${(value)!}:${(category.name)!}
             <#else>
@@ -113,7 +132,7 @@
             </#if>
             <#break>
         <#case 'categoryType'>
-            <@_categoryType id=value><#assign categoryType=object/></@_categoryType>
+            <@_categoryType id=value><#local categoryType=object/></@_categoryType>
             <#if 'view'=type>
                 ${(value)!}:${(categoryType.name)!}
             <#else>
@@ -123,7 +142,7 @@
             </#if>
             <#break>
         <#case 'tagType'>
-            <@_tagType id=value><#assign tagType=object/></@_tagType>
+            <@_tagType id=value><#local tagType=object/></@_tagType>
             <#if 'view'=type>
                 ${(value)!}:${(tagType.name)!}
             <#else>
@@ -133,13 +152,13 @@
             </#if>
             <#break>
         <#case 'dictionary'>
-            <@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
+            <@_dictionary id=extend.dictionaryId><#local dictionary=object/></@_dictionary>
             <#if dictionary?has_content>
                 <#if 'view'=type>
                     <#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
                 <#else>
                     <#if dictionary.multiple>
-                        <#assign values=value?split(',')/>
+                        <#local values=value?split(',')/>
                         <@_dictionaryDataList dictionaryId=extend.dictionaryId>
                             <#list list as d>
                                 <label><input name="${name}[${index}].values" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>${d.text}</label>
@@ -161,7 +180,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd" </#if>type="text" size="10" value="${(value)!}"/>
+                <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd" </#if>type="text" size="10" value="${(value)!}"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;"><@t.page 'select_date'/></a></#if>
             </#if>
             <#break>
@@ -169,7 +188,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
+                <input name="${inputName}" <#if 'customform'!=type>class="date<#if extend.required> required</#if>" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" </#if>type="text" size="20" value="${(value)!}"/>
                 <#if 'customform'!=type><a class="inputDateButton" href="javascript:;" onclick="return false;"><@t.page 'select_date'/></a></#if>
             </#if>
             <#break>
@@ -183,7 +202,7 @@
 </#macro>
 <#macro extendData name extendList extendValues type='form' fromIndex=0>
     <#list extendList as e>
-    <#assign value=extendValues[e.id.code]!''/>
+    <#local value=extendValues[e.id.code]!''/>
         <#if 'customform'=type>
     <p><label>${(e.name)}:</label><@input name e e?index+fromIndex value type/></p>
         <#else>
@@ -191,7 +210,7 @@
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> id="content"</#if>>
             <@input name e e?index+fromIndex value type/>
-            <span class="info">${(e.description)!}</span>
+            <span class="info">${(e.description?no_esc)!}</span>
         </dd>
     </dl>
         </#if>

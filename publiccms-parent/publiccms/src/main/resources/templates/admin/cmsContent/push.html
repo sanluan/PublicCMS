@@ -1,10 +1,10 @@
-<div class="pageFormContent" layoutH="5" style="background:#fff">
+<div class="pageFormContent" layoutH="0">
     <h2 class="contentTitle"><@t.page 'recommended_to'/></h2>
     <div class="unit">
 <@_contentRelatedList relatedContentId=contentId>
         <p>
             <label><@t.page 'content'/>:</label><label><@t.page 'total_count' page.totalCount/></label>
-            <a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" rel="push"><@t.page 'button.push'/></a>
+            <a class="button" href="cmsContent/push_content.html?contentId=${contentId}" target="dialog" mask="true"><@t.page 'button.push'/></a>
         </p>
         <p>
     <#list page.list as a>
@@ -22,7 +22,7 @@
 <@_placeList itemType='content' itemId=contentId>
         <p>
             <label><@t.page 'place'/>:</label><label><@t.page 'total_count' page.totalCount/></label>
-            <a class="button" href="cmsPlace/push.html?itemType=content&itemId=${contentId}" target="dialog" rel="push"><@t.page 'button.push'/></a>
+            <a class="button" href="cmsPlace/push.html?itemType=content&itemId=${contentId}" target="dialog" mask="true"><@t.page 'button.push'/></a>
         </p>
         <p>
     <#list page.list as a>

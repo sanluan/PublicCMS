@@ -27,8 +27,8 @@ public class ThumbDirective extends AbstractTemplateDirective {
         Integer height = handler.getInteger("height");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(width) && CommonUtils.notEmpty(height)) {
-            String thumbPath = path.substring(0, path.lastIndexOf(CommonConstants.DOT)) + "_" + width + "_" + height
-                    + fileComponent.getSuffix(path);
+            String thumbPath = path.substring(0, path.lastIndexOf(CommonConstants.DOT)) + CommonConstants.UNDERLINE + width
+                    + CommonConstants.UNDERLINE + height + fileComponent.getSuffix(path);
             String thumbFilePath = siteComponent.getWebFilePath(site, thumbPath);
             if (fileComponent.exists(thumbFilePath)) {
                 handler.print(thumbPath);

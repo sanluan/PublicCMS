@@ -43,8 +43,8 @@ public class SysSiteServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     public void searchTest() {
-        PageHandler page = cmsService.query((short) 1, "啊", null, null, null, null, null, null, CommonUtils.getMinuteDate(), null,
-                null, null);
+        PageHandler page = cmsService.query(false, (short) 1, "啊", null, null, null, null, null, null,
+                CommonUtils.getMinuteDate(), null, null, null);
         for (CmsContent site : (List<CmsContent>) page.getList()) {
             System.out.println(site.getTitle());
         }
@@ -56,7 +56,7 @@ public class SysSiteServiceTest {
     @SuppressWarnings("unchecked")
     @Test
     public void queryTest() {
-        PageHandler page = siteService.getPage(null, null, null, null);
+        PageHandler page = siteService.getPage(null, null, null, null, null);
         for (SysSite site : (List<SysSite>) page.getList()) {
             System.out.println(site.getName());
         }

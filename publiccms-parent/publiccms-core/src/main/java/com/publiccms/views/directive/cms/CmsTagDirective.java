@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsTag;
@@ -36,12 +39,8 @@ public class CmsTagDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsTag> entityList = service.getEntitys(ids);
-                Map<String, CmsTag> map = new LinkedHashMap<>();
-                for (CmsTag entity : entityList) {
-                    if (site.getId() == entity.getSiteId()) {
-                        map.put(String.valueOf(entity.getId()), entity);
-                    }
-                }
+                Map<String, CmsTag> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId()).collect(Collectors.toMap(k -> k.getId().toString(),
+                        Function.identity(), CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
                 handler.put("map", map).render();
             }
         }

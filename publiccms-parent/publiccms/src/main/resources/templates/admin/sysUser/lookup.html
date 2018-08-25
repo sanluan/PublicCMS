@@ -2,7 +2,7 @@
             superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=false
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-    <form id="pagerForm" onsubmit="return dialogSearch(this);" action="sysUser/lookup.html" method="post">
+    <form class="pagerForm" onsubmit="return dialogSearch(this);" action="sysUser/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'userId'}"/>
         <input type="hidden" name="nickNameField" value="${nickNameField!'nickName'}"/>
@@ -31,15 +31,15 @@
                 <tr>
                     <td colspan="2">
                         <label><@t.page 'user.register_date'/>:</label>
-                        <input type="text" name="startRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
+                        <input type="text" name="startRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
                         <span>-</span>
-                        <input type="text" name="endRegisteredDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
+                        <input type="text" name="endRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
                     </td>
                     <td colspan="2">
                         <label><@t.page 'user.last_login_date'/>:</label>
-                        <input type="text" name="startLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
+                        <input type="text" name="startLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
                         <span>-</span>
-                        <input type="text" name="endLastLoginDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
+                        <input type="text" name="endLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
                     </td>
                 </tr>
             </table>

@@ -26,21 +26,21 @@ subprojects{
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "4.3.17.RELEASE"
+        springVersion = "5.0.7.RELEASE"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "1.5.13.RELEASE"
+        springBootVersion = "2.0.3.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
-        httpclientVersion = "4.5.5"
+        httpclientVersion = "4.5.6"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-        jacksonVersion = "2.8.11"
+        jacksonVersion = "2.9.6"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.1.13.Final"
+        hibernateVersion = "5.3.3.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "5.6.4.Final"
+        hibernateSearchVersion = "5.10.3.Final"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.28"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
@@ -54,8 +54,8 @@ subprojects{
         // http://mvnrepository.com/artifact/com.mchange/c3p0
         c3p0Version = "0.9.5.2"
     }
-	sourceCompatibility = 1.7
-	targetCompatibility = 1.7
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
 
     [compileJava]*.options*.encoding = "UTF-8"
     [compileTestJava]*.options*.encoding = "UTF-8"

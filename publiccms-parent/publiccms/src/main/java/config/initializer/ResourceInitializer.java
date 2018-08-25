@@ -25,6 +25,7 @@ import com.publiccms.common.constants.CommonConstants;
  */
 public class ResourceInitializer implements WebApplicationInitializer {
 
+    @Override
     public void onStartup(ServletContext servletContext) throws ServletException {
         Dynamic registration = servletContext.addServlet("defaultServlet", new HttpRequestHandlerServlet());
         registration.setLoadOnStartup(1);

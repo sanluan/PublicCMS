@@ -17,6 +17,7 @@ import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
@@ -32,8 +33,13 @@ public class MetadataComponent implements Cache {
      *
      */
     public static final String METADATA_FILE = "metadata.data";
+    /**
+     *
+     */
+    public static final String DATA_FILE = "data.data";
 
     private CacheEntity<String, Map<String, CmsPageMetadata>> pageCache;
+    private CacheEntity<String, Map<String, CmsPageData>> pageDataCache;
     private CacheEntity<String, Map<String, CmsPlaceMetadata>> placeCache;
 
     /**
@@ -68,6 +74,21 @@ public class MetadataComponent implements Cache {
     }
 
     /**
+     * 获取模板元数据
+     *
+     * @param filePath
+     * @return template metadata
+     */
+    public CmsPageData getTemplateData(String filePath) {
+        File file = new File(filePath);
+        CmsPageData pageMetadata = getTemplateDataMap(file.getParent()).get(file.getName());
+        if (null == pageMetadata) {
+            pageMetadata = new CmsPageData();
+        }
+        return pageMetadata;
+    }
+
+    /**
      * 更新模板元数据
      *
      * @param filePath
@@ -88,6 +109,26 @@ public class MetadataComponent implements Cache {
     }
 
     /**
+     * 更新模板元数据
+     *
+     * @param filePath
+     * @param data
+     * @return whether the update is successful
+     */
+    public boolean updateTemplateData(String filePath, CmsPageData data) {
+        File file = new File(filePath);
+        String dirPath = file.getParent();
+        Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath);
+        dataMap.put(file.getName(), data);
+        try {
+            saveTemplateData(dirPath, dataMap);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
      * 更新推荐位元数据
      *
      * @param filePath
@@ -101,6 +142,25 @@ public class MetadataComponent implements Cache {
         metadataMap.put(file.getName(), metadata);
         try {
             savePlaceMetadata(dirPath, metadataMap);
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
+
+    /**
+     * 删除模板数据
+     *
+     * @param filePath
+     * @return whether the delete is successful
+     */
+    public boolean deleteTemplateData(String filePath) {
+        File file = new File(filePath);
+        String dirPath = file.getParent();
+        Map<String, CmsPageData> dataMap = getTemplateDataMap(dirPath);
+        dataMap.remove(file.getName());
+        try {
+            saveTemplateData(dirPath, dataMap);
             return true;
         } catch (IOException e) {
             return false;
@@ -146,7 +206,7 @@ public class MetadataComponent implements Cache {
     }
 
     /**
-     * 获取目录元数据
+     * 获取页面片段目录元数据
      *
      * @param dirPath
      * @return place metadata map
@@ -157,8 +217,9 @@ public class MetadataComponent implements Cache {
             File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    metadataMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, CmsPlaceMetadata>>() {
-                    });
+                    metadataMap = CommonConstants.objectMapper.readValue(file,
+                            new TypeReference<Map<String, CmsPlaceMetadata>>() {
+                            });
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new HashMap<>();
                 }
@@ -182,8 +243,9 @@ public class MetadataComponent implements Cache {
             File file = new File(dirPath + CommonConstants.SEPARATOR + METADATA_FILE);
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    metadataMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, CmsPageMetadata>>() {
-                    });
+                    metadataMap = CommonConstants.objectMapper.readValue(file,
+                            new TypeReference<Map<String, CmsPageMetadata>>() {
+                            });
                 } catch (IOException | ClassCastException e) {
                     metadataMap = new HashMap<>();
                 }
@@ -193,6 +255,53 @@ public class MetadataComponent implements Cache {
             pageCache.put(dirPath, metadataMap);
         }
         return metadataMap;
+    }
+
+    /**
+     * 获取目录数据
+     *
+     * @param dirPath
+     * @return template metadata map
+     */
+    private Map<String, CmsPageData> getTemplateDataMap(String dirPath) {
+        Map<String, CmsPageData> dataMap = pageDataCache.get(dirPath);
+        if (null == dataMap) {
+            File file = new File(dirPath + CommonConstants.SEPARATOR + DATA_FILE);
+            if (CommonUtils.notEmpty(file)) {
+                try {
+                    dataMap = CommonConstants.objectMapper.readValue(file,
+                            new TypeReference<Map<String, CmsPageData>>() {
+                            });
+                } catch (IOException | ClassCastException e) {
+                    dataMap = new HashMap<>();
+                }
+            } else {
+                dataMap = new HashMap<>();
+            }
+            pageDataCache.put(dirPath, dataMap);
+        }
+        return dataMap;
+    }
+
+    /**
+     * 保存模板数据
+     *
+     * @param dirPath
+     * @param dataMap
+     * @throws JsonGenerationException
+     * @throws JsonMappingException
+     * @throws IOException
+     */
+    private void saveTemplateData(String dirPath, Map<String, CmsPageData> dataMap)
+            throws JsonGenerationException, JsonMappingException, IOException {
+        File file = new File(dirPath + CommonConstants.SEPARATOR + DATA_FILE);
+        if (CommonUtils.empty(file)) {
+            file.getParentFile().mkdirs();
+        }
+        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+            CommonConstants.objectMapper.writeValue(file, dataMap);
+        }
+        pageCache.clear();
     }
 
     /**
@@ -239,6 +348,7 @@ public class MetadataComponent implements Cache {
     public void clear() {
         placeCache.clear();
         pageCache.clear();
+        pageDataCache.clear();
     }
 
     /**
@@ -251,6 +361,7 @@ public class MetadataComponent implements Cache {
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         pageCache = cacheEntityFactory.createCacheEntity("pageMetadata");
+        pageDataCache = cacheEntityFactory.createCacheEntity("pageDataMetadata");
         placeCache = cacheEntityFactory.createCacheEntity("placeMetadata");
     }
 }

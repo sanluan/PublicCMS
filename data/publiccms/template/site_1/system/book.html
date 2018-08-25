@@ -79,7 +79,7 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 <script>
 	uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
-	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){});
+	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
 </script>
 </body>
 </html>

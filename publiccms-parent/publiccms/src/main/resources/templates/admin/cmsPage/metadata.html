@@ -8,7 +8,7 @@
             </li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <input name="path" type="hidden" value="${path}"/>
         <#if site.useStatic&&(a.publishPath)?has_content>
             <dl class="nowrap">
@@ -43,7 +43,7 @@
                     <@_placeMetadata path=a>
                 <#if 0=((object.size)!0)>
                     <p>
-                        <a href="cmsPlace/publish_place.html?path=${a?url}" target="dialog" rel="place">${(object.alias)!a}</a>
+                        <a href="cmsPlace/publish_place.html?path=${a?url}" target="dialog" mask="true">${(object.alias)!a}</a>
                     </p>
                 <#else>
                     <p>

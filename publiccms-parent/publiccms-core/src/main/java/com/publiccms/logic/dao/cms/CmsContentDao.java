@@ -14,10 +14,11 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
-import org.hibernate.search.FullTextQuery;
+import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.MustJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
@@ -39,8 +40,11 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] textFields = new String[] { "title", "author", "editor", "description" };
     private static final String[] tagFields = new String[] { "tagIds" };
     private static final String[] facetFields = new String[] { "categoryId", "modelId" };
+    private static final String[] projectionFields = new String[] { "title", "categoryId", "modelId", "parentId", "author",
+            "editor", "onlyUrl", "hasImages", "hasFiles", "url", "description", "tagIds", "publishDate" };
 
     /**
+     * @param projection
      * @param siteId
      * @param text
      * @param tagIds
@@ -53,8 +57,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(Short siteId, String text, String tagIds, Integer[] categoryIds, String[] modelIds,
-            Date startPublishDate, Date endPublishDate, String orderField, Integer pageIndex, Integer pageSize) {
+    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, Integer[] categoryIds,
+            String[] modelIds, Date startPublishDate, Date endPublishDate, String orderField, Integer pageIndex,
+            Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         MustJunction termination = queryBuilder.bool()
                 .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagIds) ? textFields : tagFields)
@@ -86,6 +91,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if ("publishDate".equals(orderField)) {
             Sort sort = new Sort(new SortField("publishDate", SortField.Type.LONG, true));
             query.setSort(sort);
+        }
+        if (projection) {
+            query.setProjection(projectionFields);
+            query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         }
         return getPage(query, pageIndex, pageSize);
     }
@@ -254,7 +263,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             if (ORDERTYPE_DESC.equals(orderType)) {
                 queryHandler.order("bean.sort desc");
             }
-            queryHandler.order("bean.publishDate desc");
+            queryHandler.order("bean.publishDate " + orderType);
         }
         queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);

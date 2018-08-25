@@ -32,7 +32,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
-import com.publiccms.views.pojo.model.CmsPlaceParameters;
+import com.publiccms.views.pojo.model.ExtendDataParameters;
 
 /**
  *
@@ -60,13 +60,12 @@ public class PlaceController extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save")
-    public String save(CmsPlace entity, String returnUrl, @ModelAttribute CmsPlaceParameters placeParameters, String _csrf,
-            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
+    public String save(CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters, String _csrf,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -76,6 +75,7 @@ public class PlaceController extends AbstractController {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
             }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
+            entity.setStatus(CmsPlaceService.STATUS_PEND);
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
             CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
             SysUser user = ControllerUtils.getUserFromSession(session);
@@ -122,13 +122,11 @@ public class PlaceController extends AbstractController {
      * @param returnUrl
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response,
-            ModelMap model) {
+    public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -155,13 +153,11 @@ public class PlaceController extends AbstractController {
      * @param returnUrl
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping("check")
-    public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response,
-            ModelMap model) {
+    public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -182,15 +178,45 @@ public class PlaceController extends AbstractController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
+    
+    /**
+     * @param id
+     * @param returnUrl
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("uncheck")
+    public String uncheck(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysSite site = getSite(request);
+        if (CommonUtils.empty(returnUrl)) {
+            returnUrl = site.getDynamicPath();
+        }
+        CmsPlace entity = service.getEntity(id);
+        SysUser user = ControllerUtils.getUserFromSession(session);
+        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+        if (ControllerUtils.verifyCustom("manage",
+                null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
+                        || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
+                model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        } else {
+            service.uncheck(id);
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        }
+    }
 
     /**
      * @param id
      * @param request
-     * @param response
      * @return view name
      */
     @RequestMapping("click")
-    public String click(Long id, HttpServletRequest request, HttpServletResponse response) {
+    public String click(Long id, HttpServletRequest request) {
         SysSite site = getSite(request);
         CmsPlaceStatistics placeStatistics = statisticsComponent.placeClicks(id);
         if (null != placeStatistics && null != placeStatistics.getEntity()

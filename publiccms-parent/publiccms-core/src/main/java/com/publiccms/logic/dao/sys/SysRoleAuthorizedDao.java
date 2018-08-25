@@ -40,7 +40,7 @@ public class SysRoleAuthorizedDao extends BaseDao<SysRoleAuthorized> {
      * @return number of results
      */
     public long count(Integer[] roleIds, String url) {
-        QueryHandler queryHandler = getCountQueryHandler("from SysRoleAuthorized bean");
+        QueryHandler queryHandler = getQueryHandler("select count(*) from SysRoleAuthorized bean");
         if (CommonUtils.notEmpty(roleIds)) {
             queryHandler.condition("bean.id.roleId in (:roleIds)").setParameter("roleIds", roleIds);
         }
@@ -56,7 +56,7 @@ public class SysRoleAuthorizedDao extends BaseDao<SysRoleAuthorized> {
      */
     public int deleteByRoleId(Integer roleId) {
         if (CommonUtils.notEmpty(roleId)) {
-            QueryHandler queryHandler = getDeleteQueryHandler("from SysRoleAuthorized bean where bean.id.roleId = :roleId");
+            QueryHandler queryHandler = getQueryHandler("delete from SysRoleAuthorized bean where bean.id.roleId = :roleId");
             queryHandler.setParameter("roleId", roleId);
             return delete(queryHandler);
         }

@@ -70,7 +70,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
         servletcontext.addListener(IntrospectorCleanupListener.class);
     }
 
-    private void createInstallServlet(ServletContext servletcontext, Properties config, String startStep, String version) {
+    private static void createInstallServlet(ServletContext servletcontext, Properties config, String startStep, String version) {
         Dynamic registration = servletcontext.addServlet("install", new InstallServlet(config, startStep, version));
         registration.setLoadOnStartup(1);
         registration.addMapping(new String[] { INSTALL_SERVLET_MAPPING });
@@ -82,7 +82,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
      * @param config
      * @throws IOException
      */
-    private void initProxy(Properties config) throws IOException {
+    private static void initProxy(Properties config) throws IOException {
         if ("true".equalsIgnoreCase(System.getProperty("cms.proxy.enable", config.getProperty("cms.proxy.enable", "false")))) {
             Properties proxyProperties = PropertiesLoaderUtils.loadAllProperties(
                     System.getProperty("cms.proxy.configFilePath", config.getProperty("cms.proxy.configFilePath")));

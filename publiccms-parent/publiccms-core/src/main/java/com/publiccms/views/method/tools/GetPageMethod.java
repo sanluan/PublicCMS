@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.BaseMethod;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 
 import freemarker.template.TemplateModelException;
@@ -56,26 +57,26 @@ public class GetPageMethod extends BaseMethod {
                 return new StringBuilder(url).append("?").append(pageParameter).append("=").append(pageIndex).toString();
             }
         } else {
-            int index = url.lastIndexOf('.');
+            int index = url.lastIndexOf(CommonConstants.DOT);
             if (-1 < index) {
                 String prefixFilePath = url.substring(0, index);
                 String suffixFilePath = url.substring(index, url.length());
-                if (url.lastIndexOf("/") < url.lastIndexOf("_")) {
-                    prefixFilePath = prefixFilePath.substring(0, url.lastIndexOf("_"));
+                if (url.lastIndexOf(CommonConstants.SEPARATOR) < url.lastIndexOf(CommonConstants.UNDERLINE)) {
+                    prefixFilePath = prefixFilePath.substring(0, url.lastIndexOf(CommonConstants.UNDERLINE));
                 }
                 if (1 < pageIndex) {
-                    return prefixFilePath + '_' + pageIndex + suffixFilePath;
+                    return prefixFilePath + CommonConstants.UNDERLINE + pageIndex + suffixFilePath;
                 } else {
                     return prefixFilePath + suffixFilePath;
                 }
 
             } else {
                 String prefixFilePath = url;
-                if (url.lastIndexOf("/") < url.lastIndexOf("_")) {
-                    prefixFilePath = prefixFilePath.substring(0, url.lastIndexOf("_"));
+                if (url.lastIndexOf(CommonConstants.SEPARATOR) < url.lastIndexOf(CommonConstants.UNDERLINE)) {
+                    prefixFilePath = prefixFilePath.substring(0, url.lastIndexOf(CommonConstants.UNDERLINE));
                 }
                 if (1 < pageIndex) {
-                    return prefixFilePath + '_' + pageIndex;
+                    return prefixFilePath + CommonConstants.UNDERLINE + pageIndex;
                 } else {
                     return prefixFilePath;
                 }

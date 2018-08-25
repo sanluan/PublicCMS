@@ -74,7 +74,7 @@ public abstract class AbstractOauth implements Config, Oauth {
      */
     public AbstractOauth(String channel) {
         this.channel = channel;
-        this.prefix = channel + "_";
+        this.prefix = channel + CommonConstants.UNDERLINE;
     }
 
     @Override
@@ -149,6 +149,7 @@ public abstract class AbstractOauth implements Config, Oauth {
         return oauthInfo;
     }
 
+    @Override
     public OauthAccess getOpenId(short siteId, String code) throws ClientProtocolException, IOException {
         return getOpenId(siteId, getAccessToken(siteId, code));
     }
@@ -163,30 +164,26 @@ public abstract class AbstractOauth implements Config, Oauth {
     public abstract OauthAccess getAccessToken(short siteId, String code) throws ClientProtocolException, IOException;
 
     @Override
-    public String getCode(SysSite site) {
+    public String getCode(SysSite site, boolean showAll) {
         return CONFIG_CODE;
     }
 
     @Override
-    public String getCodeDescription(SysSite site, Locale locale) {
+    public String getCodeDescription(Locale locale) {
         return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION);
     }
 
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, true,
+        extendFieldList.add(new ExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, false, CONFIG_APP_KEY,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY), null));
+        extendFieldList.add(new ExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT, false, CONFIG_APP_SECRET,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET), null));
+        extendFieldList.add(new ExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT, false, CONFIG_RETURN_URL,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY),
-                null, null));
-        extendFieldList.add(new ExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT, true,
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET),
-                null, null));
-        extendFieldList.add(new ExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT, true,
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL),
-                null, null));
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL, site.getDynamicPath()),
+                null));
         return extendFieldList;
     }
 }

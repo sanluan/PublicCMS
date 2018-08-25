@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -68,7 +69,8 @@ public class ApplicationConfig {
      */
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
-        CmsDataSource bean = new CmsDataSource(getDirPath("") + CmsDataSource.DATABASE_CONFIG_FILENAME);
+        CmsDataSource bean = new CmsDataSource(
+                getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
         CmsDataSource.initDefautlDataSource();
         return bean;
     }
@@ -115,11 +117,13 @@ public class ApplicationConfig {
      * @throws IOException
      */
     @Bean
-    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource) throws PropertyVetoException, IOException {
+    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource)
+            throws PropertyVetoException, IOException {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setPackagesToScan("com.publiccms.entities");
-        Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.hibernate.configFilePath"));
+        Properties properties = PropertiesLoaderUtils
+                .loadAllProperties(env.getProperty("cms.hibernate.configFilePath"));
         properties.setProperty("hibernate.search.default.indexBase", getDirPath("/indexes/"));
         MultiTokenizerFactory.setName(env.getProperty("cms.tokenizerFactory"));
         bean.setHibernateProperties(properties);
@@ -148,7 +152,7 @@ public class ApplicationConfig {
     @Bean
     public MessageSource messageSource(MenuMessageComponent menuMessageComponent) {
         ResourceBundleMessageSource bean = new ResourceBundleMessageSource();
-        bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), ","));
+        bean.setBasenames(StringUtils.split(env.getProperty("cms.language"), CommonConstants.COMMA_DELIMITED));
         bean.setCacheSeconds(300);
         bean.setUseCodeAsDefaultMessage(true);
         bean.setParentMessageSource(menuMessageComponent);
@@ -188,7 +192,7 @@ public class ApplicationConfig {
     @Bean
     public SiteComponent siteComponent() {
         SiteComponent bean = new SiteComponent();
-        bean.setRootPath(getDirPath(""));
+        bean.setRootPath(getDirPath(CommonConstants.BLANK));
         bean.setMasterSiteIds(env.getProperty("cms.masterSiteIds"));
         bean.setDefaultSiteId(Short.parseShort(env.getProperty("cms.defaultSiteId")));
         return bean;
@@ -204,8 +208,9 @@ public class ApplicationConfig {
     public FreeMarkerConfigurer freeMarkerConfigurer() throws IOException {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
         bean.setTemplateLoaderPath("classpath:/templates/");
-        Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
-        if(CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))) {
+        Properties properties = PropertiesLoaderUtils
+                .loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
+        if (CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))) {
             properties.put("locale", env.getProperty("cms.defaultLocale"));
         }
         bean.setFreemarkerSettings(properties);
@@ -231,20 +236,21 @@ public class ApplicationConfig {
      * 文件上传解决方案
      *
      * @return file upload resolver
+     * @throws IOException
      */
     @Bean
-    public CommonsMultipartResolver multipartResolver() {
+    public CommonsMultipartResolver multipartResolver() throws IOException {
         CommonsMultipartResolver bean = new CommonsMultipartResolver();
         bean.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
         bean.setMaxUploadSize(Long.parseLong(env.getProperty("cms.multipart.maxUploadSize")) * 1024 * 1024);
+        bean.setUploadTempDir(new FileSystemResource(getDirPath("/temp/")));
         return bean;
     }
 
     /**
      * json、Jsonp消息转换适配器，用于支持RequestBody、ResponseBody
      *
-     * @return json、jsonp message converter , support for
-     *         requestbody、responsebody
+     * @return json、jsonp message converter , support for requestbody、responsebody
      */
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {

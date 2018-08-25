@@ -49,12 +49,12 @@
 			</div>
 		</div>
 	</main>
-	
+
 	<@_includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
-	
+
 	<script>
 		$('a[data-id=${parent.id}]').addClass('selected');
-		$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){});
+		$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
 	</script>
 </body>
 </html>

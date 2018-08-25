@@ -1,4 +1,7 @@
-<@_sysSite id=id><#assign a=object/></@_sysSite>
+<@_sysSite id=id>
+    <#assign a=object/>
+</@_sysSite>
+<@_sysSite id=(a.parentId)!parentId><#assign parent=object/></@_sysSite>
 <script>
 function siteDefaultConfig${id!}(type){
     if('static'==type){
@@ -34,12 +37,22 @@ function siteDefaultConfig${id!}(type){
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
+    <#if parent?has_content>
+        <dl class="nowrap">
+            <dt><@t.page 'site.parent'/>:</dt>
+            <dd>
+                <input class="disabled" type="text" size="30" value="${(parent.name)!}"/>
+                <input name="parentId" type="hidden" value="${(parent.id)!}"/>
+                <span class="info"><@t.page 'site.parent.description'/></span>
+            </dd>
+        </dl>
+    </#if>
         <dl class="nowrap">
             <dt><@t.page 'name'/>:</dt>
             <dd>
                 <input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
-                <label><input name="useStatic" onchange="if($(this).is(':checked')){$('.useSsi').show();}else{$('.useSsi').hide();}" type="checkbox"/><@t.page 'site.enable_static'/></label>
+                <label><input name="useStatic" type="checkbox"<#if a?has_content&&a.useStatic> checked="checked"</#if>/><@t.page 'site.enable_static'/></label>
                 <span class="info" style="display:none"><@t.page 'site.config.description'/></span>
             </dd>
         </dl>
@@ -54,9 +67,9 @@ function siteDefaultConfig${id!}(type){
             <dt><@t.page 'site.site_path'/>:</dt>
             <dd>
                 <input name="sitePath" type="text" maxlength="255" size="60" value="${(a.sitePath)!}"/>
-                <label style="display:none" class="useSsi"><input name="useSsi" type="checkbox"/><@t.page 'site.enable_ssi'/></label>
+                <label><input name="useSsi" type="checkbox"<#if a?has_content&&a.useSsi> checked="checked"</#if>/><@t.page 'site.enable_ssi'/></label>
                 <span class="info"><@t.page 'site.dynamic_path.description'/></span>
-                <span style="display:none" class="info useSsi"><@t.page 'site.enable_ssi.description'/></span>
+                <span class="info"><@t.page 'site.enable_ssi.description'/></span>
             </dd>
         </dl>
         <#if !a??>
@@ -96,13 +109,5 @@ function siteDefaultConfig${id!}(type){
                 </dl>
             </fieldset>
         </#if>
-        <script>
-            <#if a?has_content&&a.useStatic>
-                $('input[name=useStatic]',navTab.getCurrentPanel()).click();
-            </#if>
-            <#if a?has_content&&a.useSsi>
-                $('input[name=useSsi]',navTab.getCurrentPanel()).click();
-            </#if>
-        </script>
     </div>
 </form>

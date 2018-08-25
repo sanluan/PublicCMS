@@ -11,11 +11,14 @@
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <dl class="nowrap">
             <dt><@t.page 'user.username'/>:</dt>
             <dd>
                 <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
+            <#if admin.ownsAllContent>
+                <label><input name="ownsAllContent" type="checkbox"<#if !a?has_content||a.ownsAllContent> checked="true"</#if>/><@t.page 'user.own_all_content'/></label>
+            </#if>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -54,5 +57,19 @@
         </@_sysRole>
             </ul>
         </fieldset>
+<#if a?has_content&&a.superuserAccess>
+<script>
+    $('input[name=superuserAccess]',navTab.getCurrentPanel()).click();
+<#if a.roles?has_content>
+    <#list a.roles?split(',') as role>
+        if($('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).length) {
+            $('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
+        } else {
+            $('form',navTab.getCurrentPanel()).prepend('<input name="roleIds" value="${role}" type="hidden"/>');
+        }
+    </#list>
+</#if>
+</script>
+</#if>
     </div>
 </form>

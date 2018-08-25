@@ -18,11 +18,10 @@ public interface HttpDirective {
      * @param httpMessageConverter
      * @param mediaType
      * @param request
-     * @param callback
      * @param response
      * @throws IOException
      * @throws Exception
      */
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-            String callback, HttpServletResponse response) throws IOException, Exception;
+            HttpServletResponse response) throws IOException, Exception;
 }

@@ -1,7 +1,7 @@
 dependencies {
     compile (
         // http://mvnrepository.com/artifact/cglib/cglib-nodep
-        "cglib:cglib-nodep:3.2.6",
+        "cglib:cglib-nodep:3.2.7",
         // http://mvnrepository.com/artifact/commons-io/commons-io
         "commons-io:commons-io:2.6",
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
@@ -9,7 +9,7 @@ dependencies {
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         "commons-codec:commons-codec:1.11",
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
-        "org.apache.commons:commons-collections4:4.1",
+        "org.apache.commons:commons-collections4:4.2",
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         "org.apache.commons:commons-lang3:3.7",
 
@@ -17,7 +17,7 @@ dependencies {
         "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
 
         // http://mvnrepository.com/artifact/org.apache.ant/ant
-        "org.apache.ant:ant:1.9.9",
+        "org.apache.ant:ant:1.10.5",
 
         // http://mvnrepository.com/artifact/org.slf4j/slf4j-api
         "org.slf4j:slf4j-api:1.7.25",
@@ -43,7 +43,7 @@ dependencies {
 
         // http://mvnrepository.com/artifact/javax.transaction/jta
 	    "javax.transaction:jta:1.1",
-	    // http://mvnrepository.com/artifact/javax.mail/mail
+	    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
 	    "javax.mail:javax.mail-api:1.6.1",
         // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         "javax.servlet:javax.servlet-api:3.1.0"

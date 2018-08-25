@@ -26,7 +26,7 @@ public interface CacheEntity<K, V> {
      * @param value
      * @param expiry
      */
-    public void put(K key, V value, Integer expiry);
+    public void put(K key, V value, Integer expiryInSeconds);
 
     /**
      * @param key

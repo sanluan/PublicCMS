@@ -119,12 +119,12 @@ public class SysSiteAdminController extends AbstractController {
                 wild = false;
             }
             domainService.save(new SysDomain(domain, entity.getId(), wild));
-            SysDept dept = new SysDept(entity.getId(), deptName, true, 0, true);
+            SysDept dept = new SysDept(entity.getId(), deptName, 0, true, true, true);
             deptService.save(dept);// 初始化部门
             SysRole role = new SysRole(entity.getId(), roleName, true, true);
             roleService.save(role);// 初始化角色
             SysUser user = new SysUser(entity.getId(), userName, VerificationUtils.md5Encode(password), userName, dept.getId(),
-                    role.getId().toString(), null, false, true, false, null, null, 0, CommonUtils.getDate());
+                    true, role.getId().toString(), null, false, true, false, null, null, 0, CommonUtils.getDate());
             userService.save(user);// 初始化用户
             roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
@@ -188,8 +188,8 @@ public class SysSiteAdminController extends AbstractController {
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (-1 < sql.indexOf(" ")) {
-            String type = sql.substring(0, sql.indexOf(" "));
+        if (-1 < sql.indexOf(CommonConstants.BLANK_SPACE)) {
+            String type = sql.substring(0, sql.indexOf(CommonConstants.BLANK_SPACE));
             try {
                 if ("update".equalsIgnoreCase(type)) {
                     model.addAttribute("result", sqlService.update(sql));

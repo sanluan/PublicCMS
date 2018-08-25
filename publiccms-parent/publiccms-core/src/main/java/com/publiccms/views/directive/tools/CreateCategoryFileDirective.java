@@ -37,7 +37,7 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
                 if (null != category && site.getId() == category.getSiteId()) {
                     handler.put(
                             "url",
-                            templateComponent.createCategoryFile(site, category, SiteComponent.getFullFileName(site, templatePath), filePath,
+                            templateComponent.createCategoryFile(site, category, SiteComponent.getFullTemplatePath(site, templatePath), filePath,
                                     pageIndex, null)).render();
                 }
             } catch (IOException | TemplateException e) {

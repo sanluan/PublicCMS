@@ -1,6 +1,6 @@
 <@_contentList categoryId=categoryId modelId=modelId title=title parentId=parentId userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
-    <form id="pagerForm" action="cmsPlace/lookup_content_list.html" onsubmit="return divSearch(this, 'lookup_content_list');" method="post">
+    <form class="pagerForm" action="cmsPlace/lookup_content_list.html" onsubmit="return divSearch(this, 'lookup_content_list');" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="userId" value="${userId!}"/>
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
@@ -12,9 +12,9 @@
                 </li>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startPublishDate!}" />
                     <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
                 </li>
                 <li>
                     <label><@t.page 'title'/>:</label>
@@ -32,7 +32,7 @@
     </form>
 </div>
 <div>
-    <table class="list" width="100%" layoutH="104" targetType="dialog" rel="lookup_content_list">
+    <table class="list" width="100%" layoutH="127" targetType="dialog" rel="lookup_content_list">
         <thead>
             <tr>
                 <th><@t.page 'use'/></th>

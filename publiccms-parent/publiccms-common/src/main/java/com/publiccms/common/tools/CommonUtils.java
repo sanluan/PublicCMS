@@ -70,26 +70,10 @@ public class CommonUtils {
 
     /**
      * @param var
-     * @return 是否为空
-     */
-    public static boolean empty(List<?> var) {
-        return null == var || var.isEmpty();
-    }
-
-    /**
-     * @param var
      * @return 是否非空
      */
     public static boolean notEmpty(Map<?, ?> var) {
         return null != var && !var.isEmpty();
-    }
-
-    /**
-     * @param var
-     * @return 是否为空
-     */
-    public static boolean empty(Map<?, ?> var) {
-        return null == var || var.isEmpty();
     }
 
     /**

@@ -1,12 +1,5 @@
 package config.spring;
 
-import com.publiccms.common.interceptor.WebContextInterceptor;
-import com.publiccms.common.view.DefaultWebFreeMarkerView;
-import com.publiccms.common.view.WebFreeMarkerView;
-import com.publiccms.common.view.WebFreeMarkerViewResolver;
-import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
-
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +12,17 @@ import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
+
+import com.publiccms.common.interceptor.CorsInterceptor;
+import com.publiccms.common.interceptor.WebContextInterceptor;
+import com.publiccms.common.view.DefaultWebFreeMarkerView;
+import com.publiccms.common.view.WebFreeMarkerView;
+import com.publiccms.common.view.WebFreeMarkerViewResolver;
+import com.publiccms.logic.component.cache.CacheComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
  * 
@@ -32,12 +33,14 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 @EnableWebMvc
 @ComponentScan(basePackages = "com.publiccms.controller.web", useDefaultFilters = false, includeFilters = {
         @ComponentScan.Filter(value = { Controller.class }) })
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig implements WebMvcConfigurer {
     @Autowired
-    private WebContextInterceptor webInitializingInterceptor;
+    private WebContextInterceptor webInterceptor;
+    @Autowired
+    private CorsInterceptor corsInterceptor;
     @Autowired
     private CacheComponent cacheComponent;
-    
+
     @Bean
     public LocaleResolver localeResolver(Environment env) {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
@@ -86,12 +89,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
      * @return web servlet interceptor
      */
     @Bean
-    public WebContextInterceptor webInitializingInterceptor() {
+    public WebContextInterceptor webInterceptor() {
         return new WebContextInterceptor();
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(webInitializingInterceptor);
+        registry.addInterceptor(webInterceptor);
+        registry.addInterceptor(corsInterceptor);
     }
 }

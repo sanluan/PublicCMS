@@ -23,7 +23,7 @@
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH="60">
+    <div class="pageFormContent" layoutH="50">
         <#assign fieldList=metadata.fieldList![]/>
         <#assign requiredFieldList=metadata.requiredFieldList![]/>
         <dl class="nowrap">
@@ -42,7 +42,7 @@
         <dl>
             <dt><@t.page 'publish_date'/>:</dt>
             <dd>
-                <input type="text" name="publishDate" class="date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
+                <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
                 <a class="inputDateButton" href="javascript:;" onclick="return false;"><@t.page 'select_date'/></a>
             </dd>
         </dl>

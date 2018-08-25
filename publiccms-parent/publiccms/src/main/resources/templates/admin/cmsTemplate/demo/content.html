@@ -3,11 +3,10 @@
     <@_category id=object.categoryId>
         <#assign category=object/>
     </@_category>
-    <#assign attribute=getContentAttribute(id)/>
+    <#assign attribute=getContentAttribute(content.id)/>
     <#assign temp=getContentPage(attribute.text!'',pageIndex)/>
     <#assign page=temp.page/>
     <#assign text=temp.text/>
-</@_content>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,6 +33,24 @@
             <h1><a href="${content.url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
             <div>${text?no_esc!}</div>
+        <#if content.hasFiles>
+            <div>
+                <@_contentFileList contentId=content.id fileTypes='video,audio,other'>
+                    <#list page.list as file>
+                        <a href="${site.sitePath+(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
+                    </#list>
+                </@_contentFileList>
+            </div>
+        </#if>
+        <#if content.hasImages>
+            <div>
+             <@_contentFileList contentId=content.id fileTypes='image'>
+                 <#list page.list as file>
+                     <img src="${site.sitePath+(file.filePath)!}" style="max-width:200px;max-height:200px;border:1px slid;"/>
+                 </#list>
+             </@_contentFileList>
+            </div>
+        </#if>
         <#if content.tags?has_content>
             <div>
                 Tags:
@@ -44,6 +61,10 @@
                 </@_tag>
             </div>
         </#if>
+            <div>
+                <@_contentList parentId=content.parentId endPublishDate=content.publishDate pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous</a></#list></#if></@_contentList>
+                <@_contentList parentId=content.parentId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1><#list page.list as a><a href="${a.url!}">Next</a></#list></@_contentList>
+            </div>
             <div>
                 <#assign url='?id=${id}'/>
                 <#if !page.firstPage>
@@ -65,7 +86,7 @@
                 </#if>
             </div>
             <script>
-                $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}&callback=?', function(data){
+                $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
                     $('article p em').text(data.clicks);
                 });
             </script>
@@ -91,3 +112,4 @@
     </footer>
 </body>
 </html>
+</@_content>

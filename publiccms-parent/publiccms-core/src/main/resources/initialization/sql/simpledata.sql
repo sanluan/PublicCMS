@@ -13,7 +13,6 @@ INSERT INTO `cms_category` VALUES ('14', '1', '图书', '1', null, null, null, '
 INSERT INTO `cms_category` VALUES ('15', '1', '小说', '1', null, null, '', 'novel', '/category/list.html', '${category.code}/index.html', '0', '1', '//www.publiccms.com/novel/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '1', '20', '0', '0', '0', '0', null);
 INSERT INTO `cms_category` VALUES ('16', '1', 'OSChina下载', '13', null, null, null, 'download', '', 'http://git.oschina.net/sanluan/PublicCMS', '0', '0', 'http://git.oschina.net/sanluan/PublicCMS', '', '1', '20', '0', '0', '0', '1', null);
 INSERT INTO `cms_category` VALUES ('17', '1', '科技', '1', null, null, '', 'science', '/category/list.html', '${category.code}/index.html', '0', '1', '//www.publiccms.com/science/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '1', '20', '0', '0', '0', '0', null);
-INSERT INTO `cms_category` VALUES ('18', '1', '商品', '1', null, null, '', 'product', '/category/product_list.html', '${category.code}/index.html', '0', '1', '//www.publiccms.com/product/index.html', '${category.code}/${content.publishDate?string(\'yyyy/MM-dd\')}/${content.id}.html', '1', '10', '0', '0', '0', '0', null);
 INSERT INTO `cms_category` VALUES ('19', '1', '案例', null, null, null, '', 'case', '/category/parent.html', '${category.code}/index.html', '0', '1', '//www.publiccms.com/case/index.html', '${content.publishDate?string(\'yyyy/MM/dd\')}/${content.id}.html', '1', '20', '0', '0', '0', '0', null);
 INSERT INTO `cms_category` VALUES (71, 2, '中文栏目', NULL, NULL, '73,75,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,120', '', 'zh', NULL, '#', 1, 0, '#', '', 0, 20, 0, 0, 1, 0, null);
 INSERT INTO `cms_category` VALUES (72, 2, '英文栏目', NULL, NULL, '74,76,99,100,101,102,103,104,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,121', '', 'en', NULL, '#', 1, 0, '#', '', 0, 20, 0, 0, 1, 0, null);
@@ -83,7 +82,6 @@ INSERT INTO `cms_category_attribute` VALUES ('14', null, null, null, '{}');
 INSERT INTO `cms_category_attribute` VALUES ('15', '小说', '小说,在线阅读', '小说,在线阅读', null);
 INSERT INTO `cms_category_attribute` VALUES ('16', null, null, null, '{}');
 INSERT INTO `cms_category_attribute` VALUES ('17', '科技', '科技', '科技频道', null);
-INSERT INTO `cms_category_attribute` VALUES ('18', '商品', '商品,导购', '商品', null);
 INSERT INTO `cms_category_attribute` VALUES ('19', '案例', 'PublicCMS案例', 'PublicCMS案例', null);
 INSERT INTO `cms_category_attribute` VALUES (71, '', '', '', NULL);
 INSERT INTO `cms_category_attribute` VALUES (72, '', '', '', NULL);
@@ -192,7 +190,7 @@ INSERT INTO `cms_category_model` VALUES (93, 'article', NULL);
 -- ----------------------------
 -- Records of cms_category_type
 -- ----------------------------
-INSERT INTO `cms_category_type` VALUES (1, 2, '带文章的分类', 0, 81);
+INSERT INTO `cms_category_type` VALUES (1, 2, '带文章的分类', 0, 1);
 
 -- ----------------------------
 -- Records of cms_place
@@ -262,6 +260,11 @@ INSERT INTO `sys_extend` VALUES (1, 'categoryType', 1);
 INSERT INTO `sys_extend_field` VALUES (1, 'article', 1, NULL, '内容', '', 'editor', '', NULL, 0);
 
 -- ----------------------------
+-- Records of sys_dept
+-- ----------------------------
+INSERT INTO `sys_dept` VALUES ('2', '2', '技术部', null, '', '3', '1000', '1', '1', '1');
+
+-- ----------------------------
 -- Records of sys_domain
 -- ----------------------------
 INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', '2', '1', '');
@@ -279,9 +282,9 @@ INSERT INTO `sys_role_user` VALUES ('2', '2');
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('2', '演示站点1', '0', '//site2.dev.publiccms.com:8080/publiccms/webfile/', '0', '//site2.dev.publiccms.com:8080/publiccms/', '0');
+INSERT INTO `sys_site` VALUES ('2', null ,'演示站点1', '0', '//site2.dev.publiccms.com:8080/publiccms/webfile/', '0', '//site2.dev.publiccms.com:8080/publiccms/', '0');
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2', '2', '', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('2', '2', 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', '2', '1', '2', '', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');

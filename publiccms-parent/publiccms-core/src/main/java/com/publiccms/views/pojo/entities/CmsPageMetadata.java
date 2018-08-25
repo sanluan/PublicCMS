@@ -6,7 +6,6 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -29,8 +28,6 @@ public class CmsPageMetadata implements java.io.Serializable {
     private Integer cacheTime;
     private String contentType;
     private List<ExtendField> extendList;
-    private List<ExtendData> extendDataList;
-    private Map<String, String> extendData;
 
     /**
      * 
@@ -93,7 +90,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     public void setAcceptParameters(String acceptParameters) {
         this.acceptParameters = acceptParameters;
     }
-    
+
     /**
      * @return the acceptParamters
      */
@@ -130,8 +127,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     }
 
     /**
-     * @param contentType
-     *            the contentType to set
+     * @param contentType the contentType to set
      */
     public void setContentType(String contentType) {
         this.contentType = contentType;
@@ -179,33 +175,19 @@ public class CmsPageMetadata implements java.io.Serializable {
         this.extendList = extendList;
     }
 
-    /**
-     * @return
-     */
     @JsonIgnore
-    public Map<String, String> getExtendData() {
-        if (CommonUtils.empty(extendData)) {
-            extendData = new HashMap<>();
-            if (CommonUtils.notEmpty(extendDataList)) {
-                for (ExtendData extend : extendDataList) {
-                    extendData.put(extend.getName(), extend.getValue());
-                }
-            }
-        }
-        return extendData;
-    }
-
-    /**
-     * @return
-     */
-    public List<ExtendData> getExtendDataList() {
-        return extendDataList;
-    }
-
-    /**
-     * @param extendDataList
-     */
-    public void setExtendDataList(List<ExtendData> extendDataList) {
-        this.extendDataList = extendDataList;
+    public Map<String, Object> getAsMap(CmsPageData data) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("alias", getAlias());
+        map.put("publishPath", getPublishPath());
+        map.put("useDynamic", isUseDynamic());
+        map.put("needLogin", isNeedLogin());
+        map.put("needBody", isNeedBody());
+        map.put("acceptParameters", getAcceptParameters());
+        map.put("cacheTime", getCacheTime());
+        map.put("contentType", getContentType());
+        map.put("extendList", getExtendList());
+        map.put("extendData", data.getExtendData());
+        return map;
     }
 }

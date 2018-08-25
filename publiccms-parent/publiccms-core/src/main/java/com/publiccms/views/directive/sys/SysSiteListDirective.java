@@ -26,7 +26,7 @@ public class SysSiteListDirective extends AbstractTemplateDirective {
         if (handler.getBoolean("advanced", false)) {
             disabled = handler.getBoolean("disabled", false);
         }
-        PageHandler page = service.getPage(disabled, handler.getString("name"), handler.getInteger("pageIndex", 1),
+        PageHandler page = service.getPage(disabled,handler.getShort("parentId"), handler.getString("name"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("count", 30));
         handler.put("page", page).render();
     }

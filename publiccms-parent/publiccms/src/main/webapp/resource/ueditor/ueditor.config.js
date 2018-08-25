@@ -433,7 +433,8 @@
 			u:      [],
 			ul:     ['class', 'style'],
 			video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style'],
-			embed:  ['type', 'class', 'width', 'height', 'allowscriptaccess', 'loop', 'play', 'menu', 'wmode', 'src', 'pluginspage', 'allowfullscreen']
+			embed:  ['type', 'class', 'width', 'height', 'allowscriptaccess', 'loop', 'play', 'menu', 'wmode', 'src', 'pluginspage', 'allowfullscreen'],
+			iframe: ['frameborder','border','marginwidth','marginheight','width','height','src','id']
 		}
     };
 

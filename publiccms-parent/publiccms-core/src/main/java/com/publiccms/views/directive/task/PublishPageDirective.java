@@ -18,6 +18,7 @@ import com.publiccms.logic.component.file.FileComponent.FileInfo;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 
 import freemarker.template.TemplateException;
@@ -40,8 +41,10 @@ public class PublishPageDirective extends AbstractTaskDirective {
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
             if (CommonUtils.notEmpty(metadata.getPublishPath())) {
                 try {
-                    templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, path), metadata.getPublishPath(),
-                            null, metadata, null);
+                    CmsPageData data = metadataComponent
+                            .getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, filePath));
+                    templateComponent.createStaticFile(site, SiteComponent.getFullTemplatePath(site, path),
+                            metadata.getPublishPath(), null, metadata.getAsMap(data), null);
                     map.put(path, true);
                 } catch (IOException | TemplateException e) {
                     map.put(path, false);
@@ -66,8 +69,11 @@ public class PublishPageDirective extends AbstractTaskDirective {
                         .getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, filePath));
                 if (null != metadata && CommonUtils.notEmpty(metadata.getPublishPath())) {
                     try {
-                        templateComponent.createStaticFile(site, SiteComponent.getFullFileName(site, filePath),
-                                metadata.getPublishPath(), null, metadata, null);
+                        String templatePath = SiteComponent.getFullTemplatePath(site, filePath);
+                        CmsPageData data = metadataComponent
+                                .getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, filePath));
+                        templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null,
+                                metadata.getAsMap(data), null);
                         map.put(filePath, true);
                     } catch (IOException | TemplateException e) {
                         map.put(filePath, false);

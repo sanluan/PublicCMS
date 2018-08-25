@@ -21,6 +21,8 @@ import org.mybatis.generator.api.dom.java.Parameter;
 import org.mybatis.generator.api.dom.java.TopLevelClass;
 import org.mybatis.generator.config.PropertyRegistry;
 
+import com.publiccms.common.constants.CommonConstants;
+
 /**
  *
  * ServicePlugin
@@ -33,16 +35,18 @@ public class ServicePlugin extends PluginAdapter {
     /**
      * This plugin is always valid - no properties are required
      */
+    @Override
     public boolean validate(List<String> warnings) {
         return true;
     }
 
+    @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
         String packageName = interfaze.getType().getPackageName();
         String shortName = interfaze.getType().getShortName();
         String mapperName = interfaze.getType().getFullyQualifiedName();
         if (shortName.endsWith("Mapper")) {
-            int idx = packageName.lastIndexOf(".");
+            int idx = packageName.lastIndexOf(CommonConstants.DOT);
             if (idx < 0) {
                 idx = packageName.length();
             }
@@ -62,7 +66,7 @@ public class ServicePlugin extends PluginAdapter {
                 topLevelClazz.addFileCommentLine("    @Author: xinlu");
                 topLevelClazz.addFileCommentLine("    @Email: 442559691@qq.com");
                 topLevelClazz.addFileCommentLine("*/");
-                topLevelClazz.addFileCommentLine("");
+                topLevelClazz.addFileCommentLine(CommonConstants.BLANK);
             }
             topLevelClazz.addAnnotation("@Service");
             topLevelClazz.addAnnotation("@Transactional");
@@ -86,8 +90,9 @@ public class ServicePlugin extends PluginAdapter {
                     FullyQualifiedJavaType pageHandler = new FullyQualifiedJavaType("com.publiccms.common.handler.PageHandler");
                     m.setReturnType(pageHandler);
                     topLevelClazz.addImportedType(pageHandler);
-                    m.addBodyLine("PageHandler page = new PageHandler(pageIndex, pageSize, mapper.countByExample(example), null);");
-                    StringBuilder bodyline = new StringBuilder("");
+                    m.addBodyLine(
+                            "PageHandler page = new PageHandler(pageIndex, pageSize, mapper.countByExample(example), null);");
+                    StringBuilder bodyline = new StringBuilder();
                     bodyline.append("page.setList(mapper.");
                     bodyline.append(it.getName());
                     bodyline.append("(");
@@ -126,7 +131,7 @@ public class ServicePlugin extends PluginAdapter {
                         m.addParameter(tmp);
                         paramTxt.add(tmp.getName());
                     }
-                    bodyline += StringUtils.join(paramTxt, ",");
+                    bodyline += StringUtils.join(paramTxt, CommonConstants.COMMA_DELIMITED);
                     bodyline += ");";
                     m.addBodyLine(bodyline);
                 }
@@ -138,6 +143,7 @@ public class ServicePlugin extends PluginAdapter {
         return true;
     }
 
+    @Override
     public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles() {
         List<GeneratedJavaFile> listGjf = new ArrayList<>();
         for (TopLevelClass topLevelClazz : services) {
@@ -149,6 +155,7 @@ public class ServicePlugin extends PluginAdapter {
         return listGjf;
     }
 
+    @Override
     public List<GeneratedJavaFile> contextGenerateAdditionalJavaFiles(IntrospectedTable introspectedTable) {
         return contextGenerateAdditionalJavaFiles();
     }

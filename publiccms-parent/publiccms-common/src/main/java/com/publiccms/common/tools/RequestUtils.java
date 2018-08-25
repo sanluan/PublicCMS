@@ -45,7 +45,7 @@ public class RequestUtils {
             }
             url = URLEncoder.encode(url, Constants.DEFAULT_CHARSET_NAME);
         } catch (UnsupportedEncodingException e) {
-            url = "";
+            url = Constants.BLANK;
         }
         return url;
     }

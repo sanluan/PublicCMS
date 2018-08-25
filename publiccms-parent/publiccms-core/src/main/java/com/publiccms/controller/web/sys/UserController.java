@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,6 +33,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.EmailTemplateConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -114,13 +116,12 @@ public class UserController extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "saveEmail", method = RequestMethod.POST)
     public String saveEmail(String email, String returnUrl, String _csrf, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
+            ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
@@ -137,10 +138,13 @@ public class UserController extends AbstractController {
                 || ControllerUtils.verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
+            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
             SysEmailToken sysEmailToken = new SysEmailToken();
             sysEmailToken.setUserId(user.getId());
             sysEmailToken.setAuthToken(UUID.randomUUID().toString());
             sysEmailToken.setEmail(email);
+            sysEmailToken.setExpiryDate(DateUtils.addMinutes(CommonUtils.getDate(), expiryMinutes));
             sysEmailTokenService.save(sysEmailToken);
             try {
                 Map<String, Object> emailModel = new HashMap<>();
@@ -148,6 +152,7 @@ public class UserController extends AbstractController {
                 emailModel.put("site", site);
                 emailModel.put("email", email);
                 emailModel.put("authToken", sysEmailToken.getAuthToken());
+                emailModel.put("expiryDate", sysEmailToken.getExpiryDate());
                 if (emailComponent.sendHtml(site.getId(), email,
                         FreeMarkerUtils.generateStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
                         FreeMarkerUtils.generateStringByFile(siteComponent.getWebTemplateFilePath(site, emailPath),
@@ -168,18 +173,20 @@ public class UserController extends AbstractController {
      * @param returnUrl
      * @param request
      * @param session
-     * @param response
      * @param model
      * @return view name
      */
     @RequestMapping(value = "verifyEmail", method = RequestMethod.POST)
     public String verifyEmail(String authToken, String returnUrl, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
+            ModelMap model) {
         SysSite site = getSite(request);
         if (CommonUtils.empty(returnUrl)) {
             returnUrl = site.getDynamicPath();
         }
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
+        if (null != sysEmailToken && CommonUtils.getDate().after(sysEmailToken.getExpiryDate())) {
+            sysEmailToken = null;
+        }
         if (ControllerUtils.verifyNotEmpty("verifyEmail.authToken", authToken, model)
                 || ControllerUtils.verifyNotExist("verifyEmail.sysEmailToken", sysEmailToken, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

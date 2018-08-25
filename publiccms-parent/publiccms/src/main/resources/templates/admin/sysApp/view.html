@@ -1,10 +1,5 @@
 <@_sysApp id=id><#assign a=object/></@_sysApp>
-<div class="formBar">
-    <ul>
-        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
-    </ul>
-</div>
-<div class="pageFormContent" layoutH="60">
+<div class="pageFormContent" layoutH="50">
     <dl class="nowrap">
         <dt><@t.page 'channel'/>:</dt>
         <dd>
@@ -32,4 +27,9 @@
             ${a.authorizedApis!}
         </dd>
     </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
 </div>

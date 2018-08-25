@@ -27,29 +27,30 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
      * @param siteId
      * @param userId
      * @param channel
+     * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
-     * @return
+     * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, String channel, String orderType, Integer pageIndex,
+    public PageHandler getPage(Short siteId, Long userId, String channel, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
-        return dao.getPage(siteId, userId, channel, orderType, pageIndex, pageSize);
+        return dao.getPage(siteId, userId, channel, orderField,orderType, pageIndex, pageSize);
     }
     /**
      * @param userId
-     * @return
+     * @return number of data deleted
      */
     public int delete(Long userId) {
         return dao.delete(userId);
     }
     /**
-     * @param createDate
-     * @return
+     * @param now
+     * @return number of data deleted
      */
-    public int delete(Date createDate) {
-        return dao.delete(createDate);
+    public int delete(Date now) {
+        return dao.delete(now);
     }
 
     @Autowired

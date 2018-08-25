@@ -94,11 +94,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                     }
                 }
             }
-            user.setName(entity.getName());
-            user.setNickName(entity.getNickName());
-            user.setRoles(entity.getRoles());
-            user.setDeptId(entity.getDeptId());
-            ControllerUtils.setAdminToSession(session, user);
+            entity.setPassword(null);
+            ControllerUtils.setAdminToSession(session, entity);
         }
         return true;
     }
@@ -118,7 +115,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
     }
 
     private boolean ownsAllRight(String roles) {
-        String[] roleIdArray = StringUtils.split(roles, ",");
+        String[] roleIdArray = StringUtils.split(roles, CommonConstants.COMMA_DELIMITED);
         if (null != roles && 0 < roleIdArray.length) {
             Integer[] roleIds = new Integer[roleIdArray.length];
             for (int i = 0; i < roleIdArray.length; i++) {

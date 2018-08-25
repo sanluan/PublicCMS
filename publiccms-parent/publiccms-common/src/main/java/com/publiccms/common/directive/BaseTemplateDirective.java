@@ -36,6 +36,7 @@ public abstract class BaseTemplateDirective implements TemplateDirectiveModel, D
         }
     }
     
+    @Override
     public String getName() {
         return this.name;
     }

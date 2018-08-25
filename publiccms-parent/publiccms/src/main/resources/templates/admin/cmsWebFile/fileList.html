@@ -1,0 +1,24 @@
+<#assign photoSubfix=["png","gif","jpg","jpeg","bmp"]/>
+<#if 'NAME'=order><#assign orderField='fileName'/><#elseif 'TYPE'=order><#assign orderField='modifiedDate'/><#elseif 'SIZE'=order><#assign orderField='fileSize'/></#if>
+{
+<@_webFileList path=path orderField=orderField>
+    "moveup_dir_path":"${path?ends_with('/')?then(path?keep_before_last('/')?keep_before_last('/'),path?keep_before_last('/'))}",
+    "current_dir_path":"${path?ends_with('/')?then(path,path+'/')}",
+    "current_url":"${site.sitePath+path?keep_after('/')}",
+    "total_count":"${list?size}",
+    "file_list":[
+    <#list list as a>
+        <#assign ext = a.fileName?keep_after_last('.')?lower_case/>
+        {
+            "is_dir":${a.directory?c},
+            "has_file":${a.directory?then(true,false)?c},
+            "filesize":${a.size},
+            "is_photo":${photoSubfix?seq_contains(ext)?c},
+            "filetype":"${a.directory?then('',ext)}",
+            "filename":"${a.fileName}",
+            "datetime":"${a.creationTime?datetime}"
+        }<#sep>,
+    </#list>
+    ]
+</@_webFileList>
+}

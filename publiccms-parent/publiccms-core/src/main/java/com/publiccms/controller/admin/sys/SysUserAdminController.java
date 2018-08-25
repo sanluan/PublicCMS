@@ -77,6 +77,7 @@ public class SysUserAdminController extends AbstractController {
             roleIds = null;
             entity.setRoles(null);
             entity.setDeptId(null);
+            entity.setOwnsAllContent(false);
         }
         if (null != entity.getId()) {
             SysUser oldEntity = service.getEntity(entity.getId());
@@ -111,7 +112,9 @@ public class SysUserAdminController extends AbstractController {
         } else {
             if (ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
                     || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)
-                    || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
+                    || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
+                    || ControllerUtils.verifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()),
+                            model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity.setSiteId(site.getId());

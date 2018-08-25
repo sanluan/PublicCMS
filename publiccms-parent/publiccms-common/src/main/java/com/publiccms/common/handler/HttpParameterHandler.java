@@ -5,8 +5,6 @@ import java.io.Writer;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.http.converter.json.MappingJacksonValue;
 import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -31,16 +28,10 @@ import com.publiccms.common.tools.DateFormatUtils;
  */
 public class HttpParameterHandler extends BaseHandler {
 
-    /**
-     * 
-     */
-    public static final Pattern FUNCTIONNAME_PATTERN = Pattern.compile("[0-9A-Za-z_\\.]*");
-
     private MediaType mediaType;
     private HttpMessageConverter<Object> httpMessageConverter;
     private HttpServletRequest request;
     private HttpServletResponse response;
-    private String callback;
 
     /**
      * @param httpMessageConverter
@@ -50,10 +41,9 @@ public class HttpParameterHandler extends BaseHandler {
      * @param response
      */
     public HttpParameterHandler(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType,
-            HttpServletRequest request, String callback, HttpServletResponse response) {
+            HttpServletRequest request, HttpServletResponse response) {
         this.httpMessageConverter = httpMessageConverter;
         this.request = request;
-        this.callback = callback;
         this.response = response;
         this.mediaType = mediaType;
         regristerParameters();
@@ -62,14 +52,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public void render() throws HttpMessageNotWritableException, IOException {
         if (!renderd) {
-            MappingJacksonValue mappingJacksonValue = new MappingJacksonValue(map);
-            if (CommonUtils.notEmpty(callback)) {
-                Matcher m = FUNCTIONNAME_PATTERN.matcher(callback);
-                if (m.matches()) {
-                    mappingJacksonValue.setJsonpFunction(callback);
-                }
-            }
-            httpMessageConverter.write(mappingJacksonValue, mediaType, new ServletServerHttpResponse(response));
+            httpMessageConverter.write(map, mediaType, new ServletServerHttpResponse(response));
             renderd = true;
         }
     }
@@ -85,13 +68,13 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    protected String getStringWithoutRegrister(String name) {
+    protected String getStringWithoutRegister(String name) {
         return request.getParameter(name);
     }
 
     @Override
-    protected Integer getIntegerWithoutRegrister(String name) {
-        String result = getStringWithoutRegrister(name);
+    protected Integer getIntegerWithoutRegister(String name) {
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Integer.valueOf(result);
@@ -105,7 +88,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public Short getShort(String name) {
         regristerParameter(PARAMETER_TYPE_STRING, name);
-        String result = getStringWithoutRegrister(name);
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Short.valueOf(result);
@@ -119,7 +102,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public Long getLong(String name) {
         regristerParameter(PARAMETER_TYPE_LONG, name);
-        String result = getStringWithoutRegrister(name);
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Long.valueOf(result);
@@ -133,7 +116,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     public Double getDouble(String name) {
         regristerParameter(PARAMETER_TYPE_DOUBLE, name);
-        String result = getStringWithoutRegrister(name);
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Double.valueOf(result);
@@ -145,7 +128,7 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    protected String[] getStringArrayWithoutRegrister(String name) {
+    protected String[] getStringArrayWithoutRegister(String name) {
         String[] values = request.getParameterValues(name);
         if (CommonUtils.notEmpty(values) && 1 == values.length && 0 <= values[0].indexOf(Constants.COMMA_DELIMITED)) {
             return StringUtils.split(values[0], Constants.COMMA_DELIMITED);
@@ -154,8 +137,8 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    protected Boolean getBooleanWithoutRegrister(String name) {
-        String result = getStringWithoutRegrister(name);
+    protected Boolean getBooleanWithoutRegister(String name) {
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             return Boolean.valueOf(result);
         }
@@ -163,8 +146,8 @@ public class HttpParameterHandler extends BaseHandler {
     }
 
     @Override
-    public Date getDateWithoutRegrister(String name) throws ParseException {
-        String result = getStringWithoutRegrister(name);
+    public Date getDateWithoutRegister(String name) throws ParseException {
+        String result = getStringWithoutRegister(name);
         if (CommonUtils.notEmpty(result)) {
             String temp = StringUtils.trimToEmpty(result);
             if (DateFormatUtils.FULL_DATE_LENGTH == temp.length()) {

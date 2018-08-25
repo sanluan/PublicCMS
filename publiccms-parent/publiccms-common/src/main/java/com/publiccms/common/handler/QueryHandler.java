@@ -3,8 +3,10 @@ package com.publiccms.common.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
+
+import com.publiccms.common.constants.Constants;
 
 /**
  *
@@ -12,7 +14,7 @@ import org.hibernate.Session;
  * 
  */
 public class QueryHandler {
-    
+
     /**
      * 
      */
@@ -29,7 +31,7 @@ public class QueryHandler {
      * 
      */
     public static final String KEYWORD_GROUP = " group by ";
-    
+
     boolean whereFlag = true;
     boolean orderFlag = true;
     boolean groupFlag = true;
@@ -44,7 +46,7 @@ public class QueryHandler {
      * @param sql
      */
     public QueryHandler(String sql) {
-        this.sqlBuilder = new StringBuilder(" ");
+        this.sqlBuilder = new StringBuilder(Constants.BLANK_SPACE);
         sqlBuilder.append(sql);
     }
 
@@ -59,16 +61,8 @@ public class QueryHandler {
      * @param session
      * @return query
      */
-    public Query getQuery(Session session) {
+    public Query<?> getQuery(Session session) {
         return getQuery(session, getSql());
-    }
-
-    /**
-     * @param session
-     * @return count query
-     */
-    public Query getCountQuery(Session session) {
-        return getQuery(session, getCountSql());
     }
 
     /**
@@ -95,7 +89,7 @@ public class QueryHandler {
             orderFlag = false;
             append(KEYWORD_ORDER);
         } else {
-            sqlBuilder.append(',');
+            sqlBuilder.append(Constants.COMMA_DELIMITED);
         }
         sqlBuilder.append(sqlString);
         return this;
@@ -110,7 +104,7 @@ public class QueryHandler {
             groupFlag = false;
             sqlBuilder.append(KEYWORD_GROUP);
         } else {
-            sqlBuilder.append(',');
+            sqlBuilder.append(Constants.COMMA_DELIMITED);
         }
         sqlBuilder.append(sqlString);
         return this;
@@ -121,7 +115,7 @@ public class QueryHandler {
      * @return query handler
      */
     public QueryHandler append(String sqlString) {
-        sqlBuilder.append(" ");
+        sqlBuilder.append(Constants.BLANK_SPACE);
         sqlBuilder.append(sqlString);
         return this;
     }
@@ -179,8 +173,8 @@ public class QueryHandler {
         return this;
     }
 
-    private Query getQuery(Session session, String sql) {
-        Query query = session.createQuery(sql);
+    public Query<?> getQuery(Session session, String sql) {
+        Query<?> query = session.createQuery(sql);
         if (null != map) {
             for (String key : map.keySet()) {
                 query.setParameter(key, map.get(key));
@@ -209,7 +203,7 @@ public class QueryHandler {
         return sqlBuilder.toString();
     }
 
-    private String getCountSql() {
+    public String getCountSql() {
         String sql = getSql();
         sql = sql.substring(sql.toLowerCase().indexOf(KEYWORD_FROM));
         int orderIndex = sql.toLowerCase().indexOf(KEYWORD_ORDER);
@@ -218,5 +212,5 @@ public class QueryHandler {
         }
         return COUNT_SQL + sql;
     }
-    
+
 }

@@ -1,0 +1,17 @@
+<@_categoryList advanced=true parentId=parentId count=500>
+<ul>
+    <#list page.list as a>
+        <@t.merge 'categoryIds' a.id!/>
+    </#list>
+    <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+    <#list page.list as a>
+        <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
+            <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
+                <a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'content.management'/>">${(a.name)!}</a>
+            </li>
+        </#if>
+    <#else>
+        <li><a><@t.page 'empty_directory'/></a></li>
+    </#list>
+</ul>
+</@_categoryList>
