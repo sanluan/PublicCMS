@@ -250,12 +250,13 @@ public abstract class BaseDao<E> {
         PageHandler page;
         if (CommonUtils.notEmpty(pageSize)) {
             page = new PageHandler(pageIndex, pageSize, countResult(queryHandler, countHql), maxResults);
-            queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
             if (0 != pageSize) {
+                queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
                 page.setList(getList(queryHandler));
             }
         } else {
             page = new PageHandler(pageIndex, pageSize, 0, maxResults);
+            queryHandler.setMaxResults(maxResults);
             page.setList(getList(queryHandler));
         }
         return page;
@@ -384,8 +385,7 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(FullTextQuery fullTextQuery, Integer pageIndex, Integer pageSize,
-            Integer maxResults) {
+    protected PageHandler getPage(FullTextQuery fullTextQuery, Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
         if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
@@ -402,9 +402,8 @@ public abstract class BaseDao<E> {
      * @param pageSize
      * @return facet results page
      */
-    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery,
-            String[] facetFields, Map<String, List<String>> valueMap, int facetCount, Integer pageIndex,
-            Integer pageSize) {
+    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery, String[] facetFields,
+            Map<String, List<String>> valueMap, int facetCount, Integer pageIndex, Integer pageSize) {
         return getFacetPage(queryBuilder, fullTextQuery, facetFields, valueMap, facetCount, pageIndex, pageSize, 100);
     }
 
@@ -417,14 +416,13 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return facet results page
      */
-    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery,
-            String[] facetFields, Map<String, List<String>> valueMap, int facetCount, Integer pageIndex,
-            Integer pageSize, Integer maxResults) {
+    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery, String[] facetFields,
+            Map<String, List<String>> valueMap, int facetCount, Integer pageIndex, Integer pageSize, Integer maxResults) {
         FacetManager facetManager = fullTextQuery.getFacetManager();
         for (String facetField : facetFields) {
-            FacetingRequest facetingRequest = queryBuilder.facet().name(facetField + FACET_NAME_SUFFIX)
-                    .onField(facetField).discrete().orderedBy(FacetSortOrder.COUNT_DESC).includeZeroCounts(false)
-                    .maxFacetCount(facetCount).createFacetingRequest();
+            FacetingRequest facetingRequest = queryBuilder.facet().name(facetField + FACET_NAME_SUFFIX).onField(facetField)
+                    .discrete().orderedBy(FacetSortOrder.COUNT_DESC).includeZeroCounts(false).maxFacetCount(facetCount)
+                    .createFacetingRequest();
             facetManager.enableFaceting(facetingRequest);
         }
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
@@ -446,8 +444,7 @@ public abstract class BaseDao<E> {
                         }
                     }
                     if (!facetList.isEmpty()) {
-                        facetManager.getFacetGroup(facetingName)
-                                .selectFacets(facetList.toArray(new Facet[facetList.size()]));
+                        facetManager.getFacetGroup(facetingName).selectFacets(facetList.toArray(new Facet[facetList.size()]));
                     }
                 } else {
                     for (Facet facet : facets) {
@@ -476,8 +473,9 @@ public abstract class BaseDao<E> {
 
     @SuppressWarnings("unchecked")
     private Class<E> getEntityClass() {
-        return null == clazz ? this.clazz = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass())
-                .getActualTypeArguments()[0] : clazz;
+        return null == clazz
+                ? this.clazz = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]
+                : clazz;
     }
 
     protected abstract E init(E entity);

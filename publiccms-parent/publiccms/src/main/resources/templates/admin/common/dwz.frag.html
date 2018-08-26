@@ -1,21 +1,14 @@
 <textarea id="dialogFrag"><div class="dialog" style="top:150px; left:300px;">
     <div class="dialogHeader" onselectstart="return false;" oncopy="return false;" onpaste="return false;" oncut="return false;">
-        <div class="dialogHeader_r">
-            <div class="dialogHeader_c">
-                <a class="close" href="#close"></a>
-                <a class="maximize" href="#maximize"></a>
-                <a class="restore" href="#restore"></a>
-                <a class="minimize" href="#minimize"></a>
-                <h1><@t.page 'dialog'/></h1>
-            </div>
+        <div class="dialogHeader_c">
+            <a class="close" href="#close"></a>
+            <a class="maximize" href="#maximize"></a>
+            <a class="restore" href="#restore"></a>
+            <a class="minimize" href="#minimize"></a>
+            <h1><@t.page 'dialog'/></h1>
         </div>
     </div>
     <div class="dialogContent layoutBox unitBox"></div>
-    <div class="dialogFooter">
-        <div class="dialogFooter_r">
-            <div class="dialogFooter_c"></div>
-        </div>
-    </div>
     <div class="resizable_h_l" tar="nw"></div>
     <div class="resizable_h_r" tar="ne"></div>
     <div class="resizable_h_c" tar="n"></div>
@@ -52,23 +45,6 @@
 <div id="splitBarProxy"></div>
 
 <div class="resizable"></div>
-<div class="shadow" style="width:508px; top:148px; left:296px;">
-    <div class="shadow_h">
-        <div class="shadow_h_l"></div>
-        <div class="shadow_h_r"></div>
-        <div class="shadow_h_c"></div>
-    </div>
-    <div class="shadow_c">
-        <div class="shadow_c_l" style="height:296px;"></div>
-        <div class="shadow_c_r" style="height:296px;"></div>
-        <div class="shadow_c_c" style="height:296px;"></div>
-    </div>
-    <div class="shadow_f">
-        <div class="shadow_f_l"></div>
-        <div class="shadow_f_r"></div>
-        <div class="shadow_f_c"></div>
-    </div>
-</div>
 <div id="alertBackground" class="alertBackground"></div>
 <div id="dialogBackground" class="dialogBackground"></div>
 

@@ -589,7 +589,7 @@ INSERT INTO `sys_module` VALUES ('app_client_list', 'sysAppClient/list', NULL, '
 INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, '<i class=\"icon-linux icon-large\"></i>', 'system_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('category', NULL, NULL, '<i class=\"icon-folder-open icon-large\"></i>', NULL, 1, 5);
+INSERT INTO `sys_module` VALUES ('category', NULL, NULL, '<i class=\"icon-folder-open-alt icon-large\"></i>', NULL, 1, 5);
 INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '', 'category_menu', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_delete', NULL, 'cmsCategory/delete', '', 'category_menu', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_extend', NULL, NULL, '<i class=\"icon-road icon-large\"></i>', 'category', 1, 2);
@@ -610,7 +610,7 @@ INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL
 INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, '<i class=\"icon-cogs icon-large\"></i>', 'config_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('config_list_data_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_menu', NULL, NULL, '<i class=\"icon-gear icon-large\"></i>', 'develop', 1, 2);
-INSERT INTO `sys_module` VALUES ('content', NULL, NULL, '<i class=\"icon-book icon-large\"></i>', NULL, 1, 2);
+INSERT INTO `sys_module` VALUES ('content', NULL, NULL, '<i class=\"icon-file-text-alt icon-large\"></i>', NULL, 1, 2);
 INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', '', 'content_menu', 1, 0);
@@ -636,7 +636,7 @@ INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/lookup,sysU
 INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', 'sysDept/lookup,sysUser/lookup', '<i class=\"icon-group icon-large\"></i>', 'user_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('dept_user_list', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, 'dept_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, '<i class=\"icon-folder-close-alt icon-large\"></i>', NULL, 1, 7);
+INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, '<i class=\"icon-puzzle-piece icon-large\"></i>', NULL, 1, 7);
 INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/save', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, '<i class=\"icon-book icon-large\"></i>', 'system_menu', 1, 4);
@@ -657,7 +657,7 @@ INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, '<i class=\"icon-cog
 INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', NULL, '<i class=\"icon-th-large icon-large\"></i>', 'config_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, '<i class=\"icon-user icon-large\"></i>', NULL, 1, 1);
+INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, '<i class=\"icon-key icon-large\"></i>', NULL, 1, 1);
 INSERT INTO `sys_module` VALUES ('myself_content', 'myself/contentList', NULL, '<i class=\"icon-book icon-large\"></i>', 'myself_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('myself_content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload', NULL, 'myself_content', 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_delete', NULL, 'cmsContent/delete', NULL, 'myself_content', 0, 0);
@@ -669,7 +669,7 @@ INSERT INTO `sys_module` VALUES ('myself_log_operate', 'myself/logOperate', NULL
 INSERT INTO `sys_module` VALUES ('myself_menu', NULL, NULL, '<i class=\"icon-user icon-large\"></i>', 'myself', 1, 0);
 INSERT INTO `sys_module` VALUES ('myself_password', 'myself/password', 'changePassword', '<i class=\"icon-key icon-large\"></i>', 'myself_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', NULL, '<i class=\"icon-unlock-alt icon-large\"></i>', 'myself_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('page', NULL, NULL, '<i class=\"icon-globe icon-large\"></i>', NULL, 1, 3);
+INSERT INTO `sys_module` VALUES ('page', NULL, NULL, '<i class=\"icon-tablet icon-large\"></i>', NULL, 1, 3);
 INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,sysUser/lookup,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', '<i class=\"icon-globe icon-large\"></i>', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('page_menu', NULL, NULL, '<i class=\"icon-globe icon-large\"></i>', 'page', 1, 0);
 INSERT INTO `sys_module` VALUES ('page_metadata', 'cmsPage/metadata', 'cmsPage/save', NULL, 'page_list', 0, 0);

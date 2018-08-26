@@ -65,7 +65,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a class="btnSelect" href="javascript:;" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url!}', title:'${(a.title?js_string)!}', description:'${(a.description?js_string)!}',cover:'${(a.cover?js_string)!}',publishDate:'${(a.publishDate)!}'}); return false;"><@t.page 'content.select'/></a>
+                    <a href="javascript:;" onclick="$.bringBack({itemId:'${a.id}', itemType:'content', url:'${a.url!}', title:'${(a.title?js_string)!}', description:'${(a.description?js_string)!}',cover:'${(a.cover?js_string)!}',publishDate:'${(a.publishDate)!}'}); return false;"><i class="icon-check-sign icon-large"></i> <@t.page 'content.select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>

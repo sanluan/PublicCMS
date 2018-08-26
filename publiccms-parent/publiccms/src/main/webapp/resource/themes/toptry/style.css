@@ -13,13 +13,17 @@ header a{color:#afc5f6}
 #navMenu li.selected,#navMenu li:hover{background:#2c3343}
 #navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff}
 /* 主界面 */
-#sidebar,#sidebar_s,main{background:#2c3343}
+
+main,#sidebar,#sidebar_s{background:#2c3343}
 .tabsPage{background:#edf1f5}
 #sidebar #menu{background:#222836}
 #sidebar_s a,main .accordion .accordionHeader h2.collapsable{color:#fff}
+#splitBarProxy{border-color:#c0c0c0;background-color:#CCC}
+
 #leftside,.accordionContent .tree a,.accordionContent .tree div.hover{color:#8d95a7}
 .accordionContent .tree div.hover a{background:#19202f;color:#8d95a7}
 .accordionContent .tree div.selected a{background:#667ea7;color:#fff}
+
 .tabsPage .tabsPageHeader{background:#516485}
 .tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight,.toggleCollapse{color:#a8b6ce}
 .tabsPageHeader .toggleCollapse{border-color:#637799}
@@ -29,16 +33,24 @@ header a{color:#afc5f6}
 .tabsPage .tabsMoreList{background:#fff;border-color:#dde2ec}
 .tabsPage .tabsMoreList li a{color:#333;}
 .tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background:#667ea7;color:#fff}
+
+.page{background:#fff}
+.page.work-bench{background:#edf1f5}
+
+.pageFormContent fieldset{background-color:#fff;}
 .pageFormContent fieldset legend{color:#3587ef;}
-.pageFormContent fieldset legend:before{background:#3587ef}
+.pageFormContent fieldset legend:before{background-color:#3587ef}
 .pageFormContent label{color:#989eab}
 .pageFormContent dt{color:#31353e}
 .unit a.button:hover{background:#516485;color:#fff;border-color:#516485}
 .divider{border-color:#d6dce6}
-button.buttonActive{color:#fff;background:#667ea7;border-color:#667ea7}
-button.buttonActive:hover{background:#5d7298;border-color:#5d7298}
-a.button,button.button{color:#516485;background:#fff;border-color:#dde2ec}
-a.button:hover,button.button:hover{background:#eceff3;border-color:#dde2ec}
+
+.formBar{background:#edf1f5;}
+
+button.buttonActive{color:#fff;background-color:#667ea7;border-color:#667ea7}
+button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298}
+a.button,button.button{color:#516485;background-color:#fff;border-color:#dde2ec}
+a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec}
 .pagination li.jumpto .textInput,.textInput,input.disabled,input.error,input.focus,input.readonly,input.required,textarea.disabled,textarea.error,textarea.focus,textarea.readonly,textarea.required{border-color:#dde2ec}
 .pageHeader{background:#f2f6f9;color:#31353e}
 .searchBar span.connect-string{color:#dde2ec;}
@@ -49,6 +61,7 @@ a.button:hover,button.button:hover{background:#eceff3;border-color:#dde2ec}
 .panelBar .toolBar li a:hover{background:#667ea7;color:#fff}
 .panelBar .toolBar li.line{background:#e4e9f2}
 .panelBar.pageBar{background:#e8ebf2}
+
 table.list,table.list td{border-color:#e4e9f2}
 table.list thead tr{background:#f8fcfe}
 table.list th{border-color:#e4e9f2;color:#31353e}
@@ -58,6 +71,8 @@ table.list tbody tr.hover td{background:#e5eaf4}
 table.list td a{color:#448af3}
 table.list tbody tr.selected td{background:#cdd9ed}
 table.list th.asc:before,table.list th.desc:before,table.list th.order:before{color:#667ea7}
+table.nowrap tbody tr {border-color:#ededed;}
+
 .tabs .tabsHeaderContent>ul li a{color:#989eab;}
 .tabs .tabsHeader li.selected:before{background:#516485}
 .tabs .tabsHeader li.selected a{color:#31353e}
@@ -69,28 +84,36 @@ footer a{color:#4d84ff}
 .langList a:hover,.langList li.current-lang a{color:#fff}
 /* 弹窗 */
 .alert .error h1{background:#f2f6f9}
+.alert .alertContent{background: #fff}
 .alert .toolBar .button{background:#667ea7;color:#fff;border-color:#667ea7}
 .alert .toolBar .button:hover{background:#5d7298;border-color:#5d7298}
+.alert h1{background: #f2f6f9;}
+
+.dialog{background:#fff}
 .dialog .dialogHeader{background:#f2f6f9}
 .dialog .dialogHeader_c a:hover{color:#3587ef}
 .dialog .dialogHeader .close,.dialog .dialogHeader .maximize,.dialog .dialogHeader .minimize,.dialog .dialogHeader .restore{color:#a1a4a8;}
+.dialog .dialogContent .viewInfo,.dialogContent .pageContent{background-color:#fff}
+
 #taskbar{background:#131a23}
 #taskbar li{color:#b5c3db}
-#taskbar .hover,#taskbar .selected{background:#222836;color:#fff}
+#taskbar .hover,#taskbar .selected{background-color:#222836;color:#fff}
 /* 日期控件 */
 #calendar{border-color:#e4e9f2}
-#calendar .foot,#calendar .head{background:#f2f6f9}
-#calendar .days dd:hover{background:#e4e4e4}
+#calendar .main{background-color:#ffffff;}
+#calendar .foot,#calendar .head{background-color:#f2f6f9}
+#calendar .days dd:hover{background-color:#e4e4e4}
 #calendar dd,#calendar dt{color:#333}
 #calendar .days dd.other{color:#999}
-#calendar .days dd.disabled{color:#d6d6d6;cursor:not-allowed}
-#calendar .days dd.slt,#calendar .days dd.slt:hover{background:#516485;color:#fff}
+#calendar .days dd.disabled{background-color:#ccc;color:#d6d6d6;cursor:not-allowed}
+#calendar .days dd.slt,#calendar .days dd.slt:hover{background-color:#516485;color:#fff}
 #calendar .clearBut,#calendar .okBut{color:#333;background-color:#fff;border-color:#e4e9f2}
 #calendar .clearBut{border-color:#667ea7;background:#667ea7;color:#fff}
-#calendar .clearBut:hover{background:#5d7298;border-color:#5d7298}
-#calendar .okBut:hover{background:#eceff3;border-color:#dde2ec}
-#calendar .tm .hh,#calendar .tm .mm,#calendar .tm .ss{background:#f2f6f9;border-color:#e4e9f2}
-#calendar .tm .hh li:hover,#calendar .tm .mm li:hover,#calendar .tm .ss li:hover{background:#516485;color:#fff}
+#calendar .clearBut:hover{background-color:#5d7298;border-color:#5d7298}
+#calendar .okBut:hover{background-color:#eceff3;border-color:#dde2ec}
+#calendar .time{background-color:#fff}
+#calendar .tm .hh,#calendar .tm .mm,#calendar .tm .ss{background-color:#f2f6f9;border-color:#e4e9f2}
+#calendar .tm .hh li:hover,#calendar .tm .mm li:hover,#calendar .tm .ss li:hover{background-color:#516485;color:#fff}
 #calendar .close:hover{color:#3587ef}
 /* 树样式 */
 .accordionContent .tree div.selected div{color:#fff}
@@ -100,9 +123,10 @@ footer a{color:#4d84ff}
 #contextmenu ul{border-color:#dde2ec}
 #contextmenu li{color:#333}
 #contextmenu li.disabled{color:#999}
-#contextmenu li.hover{background:#667ea7;color:#fff}
+#contextmenu li.hover{background-color:#667ea7;color:#fff}
 #contextmenu li.hover.disabled{color:#999}
 /* 下拉菜单 */
-.combox .select a{border-color:#e4e9f2;background:#fff;color:#333}
+.combox .select a{border-color:#e4e9f2;background-color:#fff;color:#333}
+.comboxop{background-color:#fff;;border-color:#dde2ec}
 .comboxop a{color:#31353e}
-.comboxop .selected,body .comboxop a:hover{background:#667ea7;color:#fff}
+.comboxop .selected,body .comboxop a:hover{background-color:#667ea7;color:#fff}
