@@ -184,9 +184,6 @@ input.required, textarea.required{background-position:100% 0}
 input.gray, textarea.gray{color:gray}
 select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0}
 
-.inputButton{float:left;display:block;overflow:hidden;width:16px;height:21px}
-.inputDateButton{float:left;display:block;overflow:hidden;width: 16px;height: 28px}
-
 span.error{display:block;overflow:hidden;width:165px;height:21px;padding:0 3px;line-height:21px;background:#F00;color:#FFF;position:absolute;top:5px;left:318px}
 label.alt{display:block;overflow:hidden;position:absolute;line-height:20px}
 .nowrap span.error{position:static}

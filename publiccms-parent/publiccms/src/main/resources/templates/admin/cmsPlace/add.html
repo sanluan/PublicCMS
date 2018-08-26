@@ -43,7 +43,6 @@
             <dt><@t.page 'publish_date'/>:</dt>
             <dd>
                 <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
-                <a class="inputDateButton" href="javascript:;" onclick="return false;"><@t.page 'select_date'/></a>
             </dd>
         </dl>
     <#if fieldList?seq_contains('cover')>

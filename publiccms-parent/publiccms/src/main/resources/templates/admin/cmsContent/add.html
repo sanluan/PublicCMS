@@ -149,7 +149,6 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                     <dt><@t.page 'publish_date'/>:</dt>
                     <dd>
                         <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
-                        <a class="inputDateButton" href="javascript:;" onclick="return false;"></a>
                     </dd>
                 </dl>
             <#if a?has_content&&a.publishDate gt .now>
