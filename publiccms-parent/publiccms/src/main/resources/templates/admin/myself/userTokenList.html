@@ -46,8 +46,8 @@
         </tbody>
     </table>
     <script>
-        $('table>tbody>tr[rel="<@_csrfToken admin=true/>"]>td:eq(0)',navTab.getCurrentPanel()).append('<@t.page 'current_token'/>');
-        $('table>tbody>tr[rel="<@_csrfToken/>"]>td:eq(0)',navTab.getCurrentPanel()).append('<@t.page 'current_token'/>');
+        $('table>tbody>tr[rel="<@_csrfToken admin=true/>"]>td:eq(0)',navTab.getCurrentPanel()).append('[<@t.page 'current_token'/>]');
+        $('table>tbody>tr[rel="<@_csrfToken/>"]>td:eq(0)',navTab.getCurrentPanel()).append('[<@t.page 'current_token'/>]');
     </script>
     <#include "../include_page/page.html"/>
 </div>

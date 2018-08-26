@@ -4,13 +4,11 @@
 .iconfont-key:before{content:"\e61c"}
 
 html,body{ position:relative; width:100%; height:100%; overflow:hidden;margin:0px;padding:0px;}
-body{background:url(background.jpg) no-repeat;background-size: cover;}
 .clearfix { *zoom: 1;}
 .clearfix:after {display:block; content:"."; height:0; clear:both; visibility:hidden;}
 /** Login **/
 .login_form .logo{margin:0px;}
 .login_msg{ height:25px; line-height:25px; text-align:center;color:red;}
-
 
 body{background:#f8fbff;position:relative}
 body:before{content:"";height:100%;right:0;left:50%;position:absolute;background:#667ea7;margin-left:-120px}
