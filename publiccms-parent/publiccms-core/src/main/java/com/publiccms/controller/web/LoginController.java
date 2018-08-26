@@ -185,12 +185,12 @@ public class LoginController extends AbstractController {
             String authToken;
             Date expiryDate = null;
             if (null == channel || null == openId) {
-                authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
-                        .append(CommonConstants.DOT).append(openId).toString();
-            } else {
                 authToken = UUID.randomUUID().toString();
                 channel = LogLoginService.CHANNEL_WEB;
                 expiryDate = DateUtils.addMinutes(now, expiryMinutes);
+            } else {
+                authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(site.getId())
+                        .append(CommonConstants.DOT).append(openId).toString();
             }
             addLoginStatus(entity, authToken, request, response, expiryMinutes);
             sysUserTokenService.save(new SysUserToken(authToken, site.getId(), entity.getId(), channel, now, expiryDate, ip));
