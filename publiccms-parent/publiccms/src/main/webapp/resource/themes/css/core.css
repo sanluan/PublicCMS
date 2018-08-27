@@ -167,9 +167,12 @@ table.nowrap tbody tr {border-bottom-width:1px;border-bottom-style:solid;}
 #taskbar li{float:left;height:40px;margin-left:2px;padding-left:10px;position:relative;cursor:pointer}
 #taskbar li .taskbutton{float:left;display:block;overflow:hidden;height:100%}
 #taskbar li .taskbutton span{display:block;overflow:hidden;width:auto;height:auto;line-height:40px;padding:0 30px 0 0}
-#taskbar .taskbarLeft, #taskbar .taskbarRight{display:block;overflow:hidden;width:18px;height:29px;position:absolute;top:0}
+#taskbar .taskbarLeft, #taskbar .taskbarRight{display:block;overflow:hidden;width:18px;height:100%;position:absolute;top:0;color:#fff;font-size:18px;line-height:40px;text-align:center}
 #taskbar .taskbarLeft, #taskbar .taskbarRight{left:2px;cursor:pointer}
-#taskbar .taskbarLeftDisabled, #taskbar .taskbarRightDisabled{cursor:default}
+#taskbar .taskbarLeftDisabled, #taskbar .taskbarRightDisabled{cursor:not-allowed;color:#666}
+#taskbar .taskbarRight{left:auto;right:0px}
+#taskbar .taskbarLeft:before{content:"\e6ea";font-family:iconfont}
+#taskbar .taskbarRight:before{content:"\e616";font-family:iconfont}
 #taskbar .close{display:block;overflow:hidden;padding:0;position:absolute;top:5px;width:auto;height:auto;top:50%;margin-top:-8px;right:8px;text-indent:0}
 
 /* ProgressBar */
