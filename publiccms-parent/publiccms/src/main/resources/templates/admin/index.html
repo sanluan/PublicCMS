@@ -72,13 +72,8 @@ $(function(){
             <a href="clearCache" target="ajaxTodo" title="<@t.page 'button.clear_cache'/>"><i class="icon-rubbish icon-large"></i> </a>
         </li>
     </@_sysAuthorized>
-        <li class="switchBox">
+        <li>
             <a href="javascript:"><i class="icon-user icon-large"></i> ${(admin.nickName)!}</a>
-            <!-- <ul>
-                <li>
-                    <a href="logout.do?userId=${admin.id}"><i class="icon-signout icon-large"></i> <@t.page 'logout'/></a>
-                </li>
-            </ul> -->
         </li>
         <li>
             <a href="logout.do?userId=${admin.id}" title="<@t.page 'logout'/>"><i class="icon-signout icon-large"></i> </a>
