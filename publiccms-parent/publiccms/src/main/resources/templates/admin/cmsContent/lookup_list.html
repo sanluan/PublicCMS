@@ -39,7 +39,7 @@
     <table class="list" width="100%" layoutH="109" rel="content_list">
         <thead>
             <tr>
-                <th><@t.page 'use'/></th>
+                <th width="30"><@t.page 'use'/></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'content.promulgator'/></th>
@@ -70,7 +70,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a href="javascript:;" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-check-sign icon-large"></i> <@t.page 'content.select'/></a>
+                    <a href="javascript:;" class="btnSelect" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-check-sign icon-large"></i> <@t.page 'content.select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>
