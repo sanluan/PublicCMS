@@ -135,6 +135,17 @@ public class SiteComponent implements Cache {
                 : sysDomain.getPath() + CommonConstants.SEPARATOR;
         return getFullTemplatePath(site, path);
     }
+    
+    /**
+     * @param site
+     * @param sysDomain
+     * @return view name prefix
+     */
+    public String getCurrentViewNamePrefix(SysSite site, SysDomain sysDomain) {
+        String path = CommonUtils.empty(sysDomain.getPath()) ? CommonConstants.BLANK
+                : sysDomain.getPath() + CommonConstants.SEPARATOR;
+        return getFullFileName(site.getId(), path);
+    }
 
     /**
      * @param serverName

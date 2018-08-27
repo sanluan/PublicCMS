@@ -61,8 +61,8 @@ public class IndexController extends AbstractController {
      * @return view name
      */
     @RequestMapping({ "/**/{id:[0-9]+}" })
-    public String rest(@PathVariable("id") long id, @RequestBody(required = false) String body,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+    public String rest(@PathVariable("id") long id, @RequestBody(required = false) String body, HttpServletRequest request,
+            HttpServletResponse response, ModelMap model) {
         return restPage(id, null, body, request, response, model);
     }
 
@@ -83,8 +83,7 @@ public class IndexController extends AbstractController {
             ModelMap model) {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
-            requestPath = requestPath.substring(0,
-                    requestPath.lastIndexOf(CommonConstants.SEPARATOR, requestPath.length() - 2))
+            requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR, requestPath.length() - 2))
                     + CommonConstants.getDefaultSubfix();
         } else {
             requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR))
@@ -103,8 +102,8 @@ public class IndexController extends AbstractController {
      * @return view name
      */
     @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
-    public String page(@RequestBody(required = false) String body, HttpServletRequest request,
-            HttpServletResponse response, ModelMap model) {
+    public String page(@RequestBody(required = false) String body, HttpServletRequest request, HttpServletResponse response,
+            ModelMap model) {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
             requestPath += CommonConstants.getDefaultPage();
@@ -131,8 +130,7 @@ public class IndexController extends AbstractController {
                     return sb.append(site.getDynamicPath()).toString();
                 }
             }
-            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(),
-                    CommonConstants.COMMA_DELIMITED);
+            String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
             if (CommonUtils.notEmpty(acceptParameters)) {
                 billingRequestParametersToModel(request, acceptParameters, model);
                 if (null != id && ArrayUtils.contains(acceptParameters, "id")) {
@@ -142,8 +140,8 @@ public class IndexController extends AbstractController {
                     }
                 }
             }
-            CmsPageData data = metadataComponent
-                    .getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, requestPath));
+            CmsPageData data = metadataComponent.getTemplateData(
+                    siteComponent.getWebTemplateFilePath() + siteComponent.getCurrentViewNamePrefix(site, domain) + requestPath);
             model.addAttribute("metadata", metadata.getAsMap(data));
             if (metadata.isNeedBody()) {
                 model.addAttribute("body", body);
@@ -159,8 +157,8 @@ public class IndexController extends AbstractController {
                         || CommonUtils.notEmpty(pragma) && "no-cache".equalsIgnoreCase(pragma)) {
                     cacheMillisTime = 0;
                 }
-                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath,
-                        localeResolver.resolveLocale(request), cacheMillisTime, acceptParameters, request, model);
+                return templateCacheComponent.getCachedPath(requestPath, fullRequestPath, localeResolver.resolveLocale(request),
+                        cacheMillisTime, acceptParameters, request, model);
             }
         } else {
             try {
@@ -171,8 +169,7 @@ public class IndexController extends AbstractController {
         return requestPath;
     }
 
-    private static void billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters,
-            ModelMap model) {
+    private static void billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, ModelMap model) {
         for (String parameterName : acceptParameters) {
             String[] values = request.getParameterValues(parameterName);
             if (CommonUtils.notEmpty(values)) {
