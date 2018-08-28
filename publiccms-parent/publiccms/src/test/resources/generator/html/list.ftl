@@ -20,7 +20,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    	<button type="submit" class="buttonActive"><#noparse><@t.page 'button.search'/></#noparse></button>
                     </li>
                 </ul>
             </div>
@@ -32,11 +32,11 @@
     <div class="panelBar">
         <ul class="toolBar">
         ${'<#'}if authorizedMap['${entityName?uncap_first}/add']>
-            <li><a href="${entityName?uncap_first}/add.html" target="navTab" rel="${entityName?uncap_first}/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
-            <li><a href="${entityName?uncap_first}/add.html?id={sid}" target="navTab" rel="${entityName?uncap_first}/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
+            <li><a href="${entityName?uncap_first}/add.html" target="navTab" rel="${entityName?uncap_first}/add"><i class="icon-plus-sign-alt icon-large"></i> <#noparse><@t.page 'button.add'/></#noparse></a></li>
+            <li><a href="${entityName?uncap_first}/add.html?id={sid}" target="navTab" rel="${entityName?uncap_first}/edit"><i class="icon-edit icon-large"></i> <#noparse><@t.page 'button.edit'/></#noparse></a></li>
         ${'</#'}if>
         ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
-            <li><a href="${entityName?uncap_first}/delete.do?csrfToken=<#noparse><@_csrfToken admin=true/></#noparse>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="${entityName?uncap_first}/delete.do?csrfToken=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.batch_delete'/></#noparse>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <#noparse><@t.page 'button.batch_delete'/></#noparse></a></li>
         ${'</#'}if>
         </ul>
     </div>
@@ -47,7 +47,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
                 <#list columnList as a>
                 <th<#if a.order> orderField="${a.name}" class="<#noparse><#if orderField??&&</#noparse>'${a.name}'<#noparse>==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if></#noparse>"</#if>>${a.title}</th>
                 </#list>
-                <th><@t.page 'operate'/></th>
+                <th><#noparse><@t.page 'operate'/></#noparse></th>
             </tr>
         </thead>
         <tbody>
@@ -59,7 +59,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
                 </#list>
                 <td>
                 ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
-                    <a href="${entityName?uncap_first}/delete.do?ids=<#noparse>${a.id}</#noparse>?csrfToken=<#noparse><@_csrfToken admin=true/></#noparse>" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="${entityName?uncap_first}/delete.do?ids=<#noparse>${a.id}</#noparse>?csrfToken=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.delete'/></#noparse>"  target="ajaxTodo"><#noparse><@t.page 'button.delete'/></#noparse></a>
                 ${'</#'}if>
                 </td>
             <#noparse>
