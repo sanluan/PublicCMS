@@ -23,7 +23,7 @@
                 <input type="submit" value="<@t.page 'login'/>"/>
                 <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
             </p>
-            <p class="login_msg">
+            <p class="error_msg">
                 <#if error??>
                     <@t.message error/>
                 </#if>
