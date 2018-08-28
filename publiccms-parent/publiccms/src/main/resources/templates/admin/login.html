@@ -7,7 +7,7 @@
 </head>
 <body onload="document.getElementsByTagName('input')[0].focus();">
 <div class="login_body">
-	<div class="login_body_left"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo.png</#if>"/></div>
+	<div class="login_body_left"><img src="<#if siteAttribute.square_logo?has_content>${site.sitePath+siteAttribute.square_logo}<#else>${res}/square_logo.png</#if>"/></div>
     <div class="login_form clearfix">
         <form action="${adminBase}/login.do" method="post">
             <p class="logo">${site.name}</p>

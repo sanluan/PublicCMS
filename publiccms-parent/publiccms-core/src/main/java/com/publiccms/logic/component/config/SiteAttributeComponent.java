@@ -19,6 +19,7 @@ import com.publiccms.views.pojo.entities.ExtendField;
 @Component
 public class SiteAttributeComponent implements Config {
     public static final String CONFIG_LOGO = "logo";
+    public static final String CONFIG_SQUARE_LOGO = "square_logo";
     /**
      * 
      */
@@ -40,6 +41,10 @@ public class SiteAttributeComponent implements Config {
         extendFieldList.add(new ExtendField(CONFIG_LOGO, INPUTTYPE_IMAGE, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO),
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                null));
+        extendFieldList.add(new ExtendField(CONFIG_SQUARE_LOGO, INPUTTYPE_IMAGE, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 null));
         return extendFieldList;
     }
