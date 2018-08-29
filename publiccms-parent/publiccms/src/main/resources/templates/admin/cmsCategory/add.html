@@ -73,7 +73,7 @@ function clickAddTagType(){
 <@tagTypes ((a.tagTypeIds)!'')/>
 <#if site.useStatic>
                 <dl class="nowrap onlyUrl advanced">
-                    <dt><@t.page 'category.template_path'/>:</dt>
+                    <dt><@t.page 'template_path'/>:</dt>
                     <dd>
                         <input name="templatePath" type="text" maxlength="255" size="30" value="${(a.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
