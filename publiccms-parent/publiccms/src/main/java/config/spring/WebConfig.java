@@ -46,7 +46,10 @@ public class WebConfig implements WebMvcConfigurer {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setCookieName("PUBLICCMS_LOCALE");
         localeResolver.setCookieMaxAge(30 * 24 * 3600);
-        localeResolver.setDefaultLocale(Locale.forLanguageTag(env.getProperty("cms.defaultLocale")));
+        String defaultLocale = env.getProperty("cms.defaultLocale");
+        if (!"auto".equalsIgnoreCase(defaultLocale)) {
+            localeResolver.setDefaultLocale(Locale.forLanguageTag(defaultLocale));
+        }
         return localeResolver;
     }
 
