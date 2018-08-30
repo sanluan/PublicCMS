@@ -158,11 +158,11 @@
                         <li><a href="javascript:;" <@getAction r'<#list getKeywords(word) as a>${a}<#sep>,</#list>' t.pageMessage('help.method.keywords.description')/>><@t.page 'help.method.keywords'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getMd5(value)}' t.pageMessage('help.method.md5.description')/>><@t.page 'help.method.md5'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getHash(value)}' t.pageMessage('help.method.hash.description')/>><@t.page 'help.method.hash'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'${getSha1Encode(value)}' t.pageMessage('help.method.sha1.description')/>><@t.page 'help.method.sha1'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'${getSha2Encode(value)}' t.pageMessage('help.method.sha2.description')/>><@t.page 'help.method.sha2'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getSha1(value)}' t.pageMessage('help.method.sha1.description')/>><@t.page 'help.method.sha1'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getSha2(value)}' t.pageMessage('help.method.sha2.description')/>><@t.page 'help.method.sha2'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getPage(url,pageIndex,pageParameter)}' t.pageMessage('help.method.page.description')/>><@t.page 'help.method.page'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getRandom(number)}' t.pageMessage('help.method.random.description')/>><@t.page 'help.method.random'/></a></li>
-                       <li><a href="javascript:;" <@getAction r'${getSleep(second)}' t.pageMessage('help.method.sleep.description')/>><@t.page 'help.method.sleep'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'${getSleep(second)}' t.pageMessage('help.method.sleep.description')/>><@t.page 'help.method.sleep'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getTemplateResult(template)}' t.pageMessage('help.method.template_result.description')/>><@t.page 'help.method.template_result'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getTextFromHtml(html)}' t.pageMessage('help.method.text_from_html.description')/>><@t.page 'help.method.text_from_html'/></a></li>
                         <li><a href="javascript:;" <@getAction r'${getUUID()}' t.pageMessage('help.method.uuid.description')/>><@t.page 'help.method.uuid'/></a></li>
