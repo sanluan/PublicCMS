@@ -48,7 +48,10 @@ public class AdminConfig implements WebMvcConfigurer {
         CookieLocaleResolver localeResolver = new CookieLocaleResolver();
         localeResolver.setCookieName("cms.locale");
         localeResolver.setCookieMaxAge(30 * 24 * 3600);
-        localeResolver.setDefaultLocale(Locale.forLanguageTag(env.getProperty("cms.defaultLocale")));
+        String defaultLocale = env.getProperty("cms.defaultLocale");
+        if (!"auto".equalsIgnoreCase(defaultLocale)) {
+            localeResolver.setDefaultLocale(Locale.forLanguageTag(defaultLocale));
+        }
         return localeResolver;
     }
 
