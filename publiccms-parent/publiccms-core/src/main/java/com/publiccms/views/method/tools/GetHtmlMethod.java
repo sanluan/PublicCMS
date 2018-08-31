@@ -42,7 +42,7 @@ public class GetHtmlMethod extends BaseMethod {
         String body = getString(1, arguments);
         String html = null;
         if (CommonUtils.notEmpty(url)) {
-            try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
+            try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build();) {
                 HttpUriRequest request;
                 if (null != parameters || CommonUtils.notEmpty(body)) {
                     HttpPost httppost = new HttpPost(url);

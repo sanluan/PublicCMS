@@ -193,7 +193,7 @@ public class UeditorAdminController extends AbstractController {
     @ResponseBody
     public Map<String, Object> catchimage(HttpServletRequest request, HttpSession session) {
         SysSite site = getSite(request);
-        try (CloseableHttpClient httpclient = HttpClients.createDefault();) {
+        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build();) {
             String[] files = request.getParameterValues(FIELD_NAME + "[]");
             if (CommonUtils.notEmpty(files)) {
                 List<Map<String, Object>> list = new ArrayList<>();

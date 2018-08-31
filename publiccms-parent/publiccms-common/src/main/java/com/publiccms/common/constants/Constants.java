@@ -4,6 +4,8 @@ import java.nio.charset.Charset;
 import java.util.Random;
 import java.util.function.BinaryOperator;
 
+import org.apache.http.client.config.RequestConfig;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
@@ -16,6 +18,12 @@ public class Constants {
      * Json Mapper
      */
     public static final ObjectMapper objectMapper = new ObjectMapper();
+    
+    /**
+     * Default Request Config
+     */
+    public static final RequestConfig defaultRequestConfig = RequestConfig.custom().setSocketTimeout(5000).setConnectTimeout(5000)
+            .setConnectionRequestTimeout(5000).build();
     /**
      * 随机数
      * 

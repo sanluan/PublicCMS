@@ -61,7 +61,7 @@ public abstract class AbstractOauth implements Config, Oauth {
      */
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
 
-    protected static final CloseableHttpClient httpclient = HttpClients.createDefault();
+    protected static final CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build();
     protected final Log log = LogFactory.getLog(getClass());
     protected String channel;
     protected String prefix;
