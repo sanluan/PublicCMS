@@ -206,6 +206,8 @@ public class TemplateComponent implements Cache {
             String pageBreakTag = null;
             if (-1 < attribute.getText().indexOf(CommonConstants.getCkeditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
+            } else if(-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())){
+                pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
             } else {
                 pageBreakTag = CommonConstants.getUeditorPageBreakTag();
             }

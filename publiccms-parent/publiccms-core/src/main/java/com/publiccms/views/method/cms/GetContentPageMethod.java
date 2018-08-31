@@ -31,6 +31,8 @@ public class GetContentPageMethod extends BaseMethod {
             String pageBreakTag = null;
             if (-1 < text.indexOf(CommonConstants.getCkeditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
+            } else if(-1 < text.indexOf(CommonConstants.getKindEditorPageBreakTag())){
+                pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
             } else {
                 pageBreakTag = CommonConstants.getUeditorPageBreakTag();
             }
