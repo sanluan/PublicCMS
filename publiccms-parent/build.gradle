@@ -37,7 +37,7 @@ subprojects{
         jacksonVersion = "2.9.6"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.3.3.Final"
+        hibernateVersion = "5.3.5.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "5.10.3.Final"

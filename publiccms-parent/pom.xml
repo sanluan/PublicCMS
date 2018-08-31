@@ -29,7 +29,7 @@
         <version.jackson>2.9.6</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.3.3.Final</version.hibernate>
+        <version.hibernate>5.3.5.Final</version.hibernate>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
         <!-- http://hibernate.org/search/releases/ -->
         <version.hibernateSearch>5.10.3.Final</version.hibernateSearch>
