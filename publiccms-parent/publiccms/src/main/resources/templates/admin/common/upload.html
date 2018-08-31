@@ -51,7 +51,7 @@ function selectFile(path){
         <#if admin?has_content>
     <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 count=5>
         <#list page.list as a>
-            <li><a href="javascript:;" onclick="if(selectFile('${a.filePath!}')){$.bringBack({'${field!'fileName'}':'${a.filePath!}','${originalField!'originalName'}':'${a.originalName!}'});}return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
+            <li><a href="javascript:;" data-src="${a.filePath!}" onclick="if(selectFile('${a.filePath!}')){$.bringBack({'${field!'fileName'}':'${a.filePath!}','${originalField!'originalName'}':'${a.originalName!}'});}return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
         </#list>
     </@_logUploadList>
         </ul>
@@ -60,9 +60,9 @@ function selectFile(path){
                 var filenames=$(this).text().toLowerCase().split('.');
                 if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
                     if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
-                        $('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).text());
+                        $('#preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
                     }else{
-                        $('#preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).text());
+                        $('#preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
                     }
                 }
             },function(){
