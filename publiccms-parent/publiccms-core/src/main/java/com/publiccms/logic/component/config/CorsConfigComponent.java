@@ -82,9 +82,8 @@ public class CorsConfigComponent implements SiteCache, Config {
                     config.setExposedHeaders(Arrays
                             .asList(StringUtils.split(configData.get(CONFIG_EXPOSED_HEADERS), CommonConstants.COMMA_DELIMITED)));
                 }
-                if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
-                    config.setAllowCredentials("true".equals(configData.get(CONFIG_ALLOW_CREDENTIALS)));
-                }
+                config.setAllowCredentials(CommonUtils.empty(configData.get(CONFIG_ALLOW_CREDENTIALS))
+                        || "true".equals(configData.get(CONFIG_ALLOW_CREDENTIALS)));
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
                     try {
                         config.setMaxAge(Long.parseLong(configData.get(CONFIG_MAXAGE)));
@@ -161,7 +160,7 @@ public class CorsConfigComponent implements SiteCache, Config {
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAXAGE),
                         getMessage(locale,
                                 CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAXAGE + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                        null));
+                        "true"));
         return extendFieldList;
     }
 
