@@ -93,8 +93,9 @@ public class LoginController extends AbstractController {
             }
             String ip = RequestUtils.getIpAddress(request);
             Date now = CommonUtils.getDate();
-            if (ControllerUtils.verifyNotExist("username", user, model) || ControllerUtils.verifyNotEquals("password",
-                    VerificationUtils.md5Encode(password), user.getPassword(), model) || verifyNotEnablie(user, model)) {
+            if (ControllerUtils.verifyCustom("password",
+                    null == user || !VerificationUtils.md5Encode(password).equals(user.getPassword()), model)
+                    || verifyNotEnablie(user, model)) {
                 Long userId = null;
                 if (null != user) {
                     userId = user.getId();
