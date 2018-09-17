@@ -10,7 +10,6 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
@@ -37,7 +36,7 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
                 if (null != category && site.getId() == category.getSiteId()) {
                     handler.put(
                             "url",
-                            templateComponent.createCategoryFile(site, category, SiteComponent.getFullTemplatePath(site, templatePath), filePath,
+                            templateComponent.createCategoryFile(site, category, templatePath, filePath,
                                     pageIndex, null)).render();
                 }
             } catch (IOException | TemplateException e) {
