@@ -147,7 +147,7 @@ public class StatisticsComponent implements Cache {
      * @param id
      * @return content statistics
      */
-    public CmsContentStatistics clicks(Long id) {
+    public CmsContentStatistics contentClicks(Long id) {
         if (CommonUtils.notEmpty(id)) {
             CmsContentStatistics contentStatistics = contentCache.get(id);
             if (null == contentStatistics) {
@@ -163,6 +163,19 @@ public class StatisticsComponent implements Cache {
         } else {
             return null;
         }
+    }
+    /**
+     * @param id
+     * @return content clicks
+     */
+    public Integer getContentClicks(Long id) {
+        if (CommonUtils.notEmpty(id)) {
+            CmsContentStatistics contentStatistics = contentCache.get(id);
+            if (null != contentStatistics) {
+                return contentStatistics.getClicks();
+            }
+        }
+        return null;
     }
 
     @Override

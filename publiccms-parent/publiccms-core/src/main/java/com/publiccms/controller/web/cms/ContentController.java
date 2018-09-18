@@ -152,7 +152,7 @@ public class ContentController extends AbstractController {
      */
     @RequestMapping("redirect")
     public String contentRedirect(Long id, HttpServletRequest request) {
-        CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
         SysSite site = getSite(request);
         if (null != contentStatistics && null != contentStatistics.getEntity()
                 && site.getId() == contentStatistics.getEntity().getSiteId()) {
@@ -171,7 +171,7 @@ public class ContentController extends AbstractController {
     @RequestMapping("click")
     @ResponseBody
     public int click(Long id) {
-        CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
         if (null != contentStatistics && null != contentStatistics.getEntity()) {
             return contentStatistics.getEntity().getClicks() + contentStatistics.getClicks();
         }

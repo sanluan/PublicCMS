@@ -4,6 +4,7 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,6 +13,8 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
@@ -54,10 +57,19 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
         PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+        @SuppressWarnings("unchecked")
+        List<CmsContent> list = (List<CmsContent>) page.getList();
+        list.forEach(e -> {
+            Integer clicks = statisticsComponent.getContentClicks(e.getId());
+            if (null != clicks) {
+                e.setClicks(clicks);
+            }
+        });
         handler.put("page", page).render();
     }
 
     @Autowired
     private CmsContentService service;
-
+    @Autowired
+    private StatisticsComponent statisticsComponent;
 }

@@ -29,7 +29,7 @@ public class ContentClickDirective extends AbstractAppDirective {
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         Long id = handler.getLong("id");
-        CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
         if (null != contentStatistics && null != contentStatistics.getEntity()) {
             handler.put("clicks", contentStatistics.getEntity().getClicks() + contentStatistics.getClicks());
         }
