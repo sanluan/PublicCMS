@@ -379,6 +379,7 @@ public class TemplateComponent implements Cache {
         Map<String, Object> freemarkerVariables = new HashMap<>();
         adminConfiguration = freeMarkerConfigurer.getConfiguration();
         for (Entry<String, AbstractTemplateDirective> entry : directiveComponent.getTemplateDirectiveMap().entrySet()) {
+            freemarkerVariables.put(entry.getKey(), entry.getValue());
             freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
         }
         freemarkerVariables.putAll(directiveComponent.getMethodMap());
@@ -399,6 +400,7 @@ public class TemplateComponent implements Cache {
         taskConfiguration.setDirectoryForTemplateLoading(taskFile);
         copyConfig(adminConfiguration, taskConfiguration);
         for (Entry<String, AbstractTaskDirective> entry : directiveComponent.getTaskDirectiveMap().entrySet()) {
+            freemarkerVariables.put(entry.getKey(), entry.getValue());
             freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
         }
         taskConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, taskConfiguration.getObjectWrapper()));
