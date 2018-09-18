@@ -15,15 +15,13 @@ import com.publiccms.entities.cms.CmsCategoryModel;
  */
 @Repository
 public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
-    
+
     /**
      * @param modelId
      * @param categoryId
-     * @param pageIndex
-     * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(String modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(String modelId, Integer categoryId) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategoryModel bean");
         if (CommonUtils.notEmpty(modelId)) {
             queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);
@@ -32,7 +30,9 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
             queryHandler.condition("bean.id.categoryId = :categoryId").setParameter("categoryId", categoryId);
         }
         queryHandler.order("bean.id desc");
-        return getPage(queryHandler, pageIndex, pageSize);
+        PageHandler page = new PageHandler(1, null, 0, null);
+        page.setList(getList(queryHandler));
+        return page;
     }
 
     @Override

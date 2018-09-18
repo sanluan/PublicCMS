@@ -58,7 +58,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                                 CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
                 handler.put("map", map).render();
             }
-        }
+        } 
     }
 
     @Autowired

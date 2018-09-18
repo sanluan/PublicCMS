@@ -12,6 +12,7 @@
         <module>publiccms</module>
         <module>publiccms-core</module>
         <module>publiccms-common</module>
+        <module>publiccms-j2cache</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

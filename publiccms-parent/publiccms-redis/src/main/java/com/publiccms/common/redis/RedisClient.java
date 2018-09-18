@@ -43,14 +43,6 @@ public class RedisClient {
 
     /**
      * @param region
-     * @return
-     */
-    public long getDataSize(String region) {
-        return createOrGetCache(region).getDataSize();
-    }
-
-    /**
-     * @param region
      * @param key
      * @return
      */
@@ -112,14 +104,6 @@ public class RedisClient {
      */
     public void removeRegion(String region) {
         regionMap.remove(region);
-    }
-
-    /**
-     * @param region
-     * @return
-     */
-    public Map<?, ?> getAll(String region) {
-        return createOrGetCache(region).getAll();
     }
 
     /**

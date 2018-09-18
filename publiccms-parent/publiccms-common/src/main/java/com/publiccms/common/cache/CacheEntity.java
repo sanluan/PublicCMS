@@ -1,7 +1,6 @@
 package com.publiccms.common.cache;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -15,11 +14,11 @@ import java.util.Properties;
 public interface CacheEntity<K, V> {
 
     /**
-     * @param name
+     * @param region
      * @param size
      * @param properties
      */
-    public void init(String name, Integer size, Properties properties);
+    public void init(String region, Integer size, Properties properties);
 
     /**
      * @param key
@@ -58,13 +57,4 @@ public interface CacheEntity<K, V> {
      */
     public List<V> clear();
 
-    /**
-     * @return datasize
-     */
-    public long getDataSize();
-
-    /**
-     * @return values map
-     */
-    public Map<K, V> getAll();
 }

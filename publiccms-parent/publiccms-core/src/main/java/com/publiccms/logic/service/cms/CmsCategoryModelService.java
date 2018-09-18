@@ -23,13 +23,11 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
     /**
      * @param modelId
      * @param categoryId
-     * @param pageIndex
-     * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(String modelId, Integer categoryId, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(modelId, categoryId, pageIndex, pageSize);
+    public PageHandler getPage(String modelId, Integer categoryId) {
+        return dao.getPage(modelId, categoryId);
     }
 
     /**
