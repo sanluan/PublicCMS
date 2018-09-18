@@ -93,10 +93,12 @@ public class J2CacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializa
     @SuppressWarnings("unchecked")
     @Override
     public List<V> clear() {
-        Collection<String> keys = channel.keys(region);
-        Map<String, CacheObject> valueMap = channel.get(region, keys);
-        channel.clear(region);
-        return (List<V>) valueMap.values().stream().map(v -> v.getValue()).collect(Collectors.toList());
+        synchronized (this) {
+            Collection<String> keys = channel.keys(region);
+            Map<String, CacheObject> valueMap = channel.get(region, keys);
+            channel.clear(region);
+            return (List<V>) valueMap.values().stream().map(v -> v.getValue()).collect(Collectors.toList());
+        }
     }
 
 }
