@@ -65,19 +65,21 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * @param contextPath
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
-        String scheme = request.getScheme();
-        int port = request.getServerPort();
         String serverName = request.getServerName();
-        if (80 == port && "http".equals(scheme) || 443 == port && "https".equals(scheme)) {
-            model.put(CONTEXT_BASE,
-                    new StringBuilder(scheme).append("://").append(serverName).append(request.getContextPath()).toString());
-        } else {
-            model.put(CONTEXT_BASE, new StringBuilder(scheme).append("://").append(serverName).append(":").append(port)
-                    .append(request.getContextPath()).toString());
-        }
-
+        model.put(CONTEXT_BASE, getBasePath(request.getScheme(), request.getServerPort(), serverName, request.getContextPath()));
         model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(serverName));
         exposeSite(model, BeanComponent.getSiteComponent().getSite(serverName));
+    }
+
+    public static String getBasePath(String scheme, int port, String serverName, String contextPath) {
+        String basePath;
+        if (80 == port && "http".equals(scheme) || 443 == port && "https".equals(scheme)) {
+            basePath = new StringBuilder(scheme).append("://").append(serverName).append(contextPath).toString();
+        } else {
+            basePath = new StringBuilder(scheme).append("://").append(serverName).append(":").append(port).append(contextPath)
+                    .toString();
+        }
+        return basePath;
     }
 
     /**

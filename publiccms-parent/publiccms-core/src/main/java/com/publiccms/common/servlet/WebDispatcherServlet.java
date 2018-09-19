@@ -30,8 +30,6 @@ public class WebDispatcherServlet extends ErrorToNotFoundDispatcherServlet {
      */
     public static final String GLOBLE_URL_PREFIX = "globle:";
     private static final int GLOBLE_URL_PREFIX_LENGTH = GLOBLE_URL_PREFIX.length();
-    private static final int REDIRECT_URL_PREFIX_LENGTH = UrlBasedViewResolver.REDIRECT_URL_PREFIX.length();
-    private static final String SPECIAL_REDIRECT_URL = UrlBasedViewResolver.REDIRECT_URL_PREFIX + "//";
     private HttpRequestHandler installHandler;
 
     /**
@@ -56,14 +54,8 @@ public class WebDispatcherServlet extends ErrorToNotFoundDispatcherServlet {
     protected View resolveViewName(String viewName, Map<String, Object> model, Locale locale, HttpServletRequest request)
             throws Exception {
         String multiSiteViewName;
-        if (viewName.startsWith(UrlBasedViewResolver.REDIRECT_URL_PREFIX)) {
-            if (viewName.startsWith(SPECIAL_REDIRECT_URL)) {
-                multiSiteViewName = viewName.substring(0, REDIRECT_URL_PREFIX_LENGTH) + request.getScheme()
-                        + viewName.substring(REDIRECT_URL_PREFIX_LENGTH - 1);
-            } else {
-                multiSiteViewName = viewName;
-            }
-        } else if (viewName.startsWith(UrlBasedViewResolver.FORWARD_URL_PREFIX)) {
+        if (viewName.startsWith(UrlBasedViewResolver.FORWARD_URL_PREFIX)
+                || viewName.startsWith(UrlBasedViewResolver.REDIRECT_URL_PREFIX)) {
             multiSiteViewName = viewName;
         } else if (viewName.startsWith(GLOBLE_URL_PREFIX)) {
             multiSiteViewName = viewName.substring(GLOBLE_URL_PREFIX_LENGTH);

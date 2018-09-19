@@ -14,6 +14,7 @@ import org.springframework.web.util.UrlPathHelper;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
 
 /**
  * 
@@ -63,6 +64,10 @@ public class IndexAdminController extends AbstractController {
         if (CommonUtils.empty(returnUrl)) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
+            SysSite site = getSite(request);
+            if (isUnSafeUrl(returnUrl, site, request)) {
+                returnUrl = site.getDynamicPath();
+            }
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }

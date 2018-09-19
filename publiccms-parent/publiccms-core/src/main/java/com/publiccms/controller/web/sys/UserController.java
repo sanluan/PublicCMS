@@ -80,7 +80,7 @@ public class UserController extends AbstractController {
     public String changePassword(String oldpassword, String password, String repassword, String returnUrl, String _csrf,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -123,7 +123,7 @@ public class UserController extends AbstractController {
     public String saveEmail(String email, String returnUrl, String _csrf, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
@@ -180,7 +180,7 @@ public class UserController extends AbstractController {
     public String verifyEmail(String authToken, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
@@ -211,7 +211,7 @@ public class UserController extends AbstractController {
     public String deleteToken(String authToken, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysUserToken entity = sysUserTokenService.getEntity(authToken);

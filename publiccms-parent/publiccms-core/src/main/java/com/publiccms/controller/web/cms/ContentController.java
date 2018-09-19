@@ -80,7 +80,7 @@ public class ContentController extends AbstractController {
             @ModelAttribute CmsContentParameters contentParameters, String returnUrl, String _csrf, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
