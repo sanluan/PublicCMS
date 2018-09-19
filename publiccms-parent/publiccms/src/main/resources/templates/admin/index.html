@@ -141,13 +141,13 @@ $(function(){
     <#list langs as k,v>
         <#if .locale!=k>
             <li>
-            	<a href="changeLocale?lang=${k}" target="ajaxTodo">
+            	<a href="changeLocale?lang=${k?has_content?then(k,'zh')}" target="ajaxTodo">
             		<img src="${res}/themes/images/${k?has_content?then(k,'zh')}.png" alt="${v}"/>${v}
             	</a>
             </li>
         <#else>
         	<li class="current-lang">
-            	<a href="changeLocale?lang=${k}" target="ajaxTodo">
+            	<a href="changeLocale?lang=${k?has_content?then(k,'zh')}" target="ajaxTodo">
             		<img src="${res}/themes/images/${k?has_content?then(k,'zh')}.png" alt="${v}"/>${v}
             	</a>
             </li>

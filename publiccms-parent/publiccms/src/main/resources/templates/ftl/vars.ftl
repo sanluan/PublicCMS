@@ -1,3 +1,3 @@
 <#assign res=base+'/resource'/>
 <#assign adminBase=base+adminContextPath/>
-<#assign langs={'zh':'中文','en':'English'}/>
+<#assign langs={'':'中文','en':'English'}/>
