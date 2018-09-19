@@ -1,0 +1,1 @@
+UPDATE `sys_module_lang` SET `lang` =  'zh' WHERE `lang` ='';

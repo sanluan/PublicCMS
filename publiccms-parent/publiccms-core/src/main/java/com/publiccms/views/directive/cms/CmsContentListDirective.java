@@ -59,12 +59,14 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         @SuppressWarnings("unchecked")
         List<CmsContent> list = (List<CmsContent>) page.getList();
-        list.forEach(e -> {
-            Integer clicks = statisticsComponent.getContentClicks(e.getId());
-            if (null != clicks) {
-                e.setClicks(clicks);
-            }
-        });
+        if (null != list) {
+            list.forEach(e -> {
+                Integer clicks = statisticsComponent.getContentClicks(e.getId());
+                if (null != clicks) {
+                    e.setClicks(clicks);
+                }
+            });
+        }
         handler.put("page", page).render();
     }
 
