@@ -24,7 +24,7 @@ public class J2CacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializa
     private String region;
 
     @Override
-    public void init(String region, Integer size, Properties properties) {
+    public void init(String region, Properties properties) {
         this.region = region;
         J2CacheConfig config = new J2CacheConfig();
         config.setSerialization(properties.getProperty("j2cache.serialization"));

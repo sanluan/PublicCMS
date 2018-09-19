@@ -8,6 +8,9 @@ import java.util.Properties;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 /**
  *
  * MemoryCacheEntity
@@ -22,7 +25,8 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
      * 
      */
     private static final long serialVersionUID = 1L;
-    private int size;
+    private int size = 300;
+    protected final Log log = LogFactory.getLog(getClass());
     private LinkedHashMap<K, CacheValue<V>> cachedMap = new LinkedHashMap<>(16, 0.75f, true);
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -136,9 +140,11 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public void init(String region, Integer cacheSize, Properties properties) {
-        if (null != cacheSize) {
-            this.size = cacheSize;
+    public void init(String region, Properties properties) {
+        try {
+            this.size = Integer.parseInt(properties.getProperty("cache.defaultSize"));
+        } catch (NumberFormatException e) {
+            log.warn(e);
         }
     }
 }

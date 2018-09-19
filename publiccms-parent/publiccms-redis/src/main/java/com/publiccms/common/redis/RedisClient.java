@@ -126,7 +126,7 @@ public class RedisClient {
             synchronized (regionMap) {
                 if (null == cache) {
                     cache = new RedisCacheEntity<>();
-                    cache.init(region, null, jedisPool);
+                    cache.init(region, jedisPool);
                     regionMap.put(region, cache);
                 }
             }

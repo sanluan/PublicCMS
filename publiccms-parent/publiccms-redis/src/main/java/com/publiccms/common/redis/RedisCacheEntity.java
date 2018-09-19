@@ -107,7 +107,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     @Override
-    public void init(String region, Integer cacheSize, Properties properties) {
+    public void init(String region,  Properties properties) {
         if (null == JEDISPOOL) {
             synchronized (this) {
                 if (null == JEDISPOOL) {
@@ -115,10 +115,10 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
                 }
             }
         }
-        init(region, cacheSize, JEDISPOOL);
+        init(region, JEDISPOOL);
     }
 
-    public void init(String region, Integer cacheSize, JedisPool pool) {
+    public void init(String region, JedisPool pool) {
         this.region = region;
         this.byteRegion = stringSerializer.serialize(region);
         this.jedisPool = pool;
