@@ -13,7 +13,7 @@ function checkFileType(){
 <#elseif onlyVideo?has_content>
     <#assign fileTypes='video'/>
     var filenames=$('input[name=file]',$.pdialog.getCurrent()).val().toLowerCase().split('.');
-    if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+    if(-1 != $.inArray(filenames[filenames.length-1], videosSuffix)){
         return true;
     }
     alertMsg.error('<@t.page 'upload.image_warn'/>');
