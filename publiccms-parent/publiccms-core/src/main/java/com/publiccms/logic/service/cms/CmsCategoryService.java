@@ -108,6 +108,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     /**
      * @param siteId
      * @param entity
+     * @return 
      */
     public CmsCategory save(Short siteId, CmsCategory entity) {
         if (entity.isOnlyUrl()) {

@@ -71,6 +71,7 @@ public class SysDeptAdminController extends AbstractController {
      * @param entity
      * @param categoryIds
      * @param pages
+     * @param configs 
      * @param _csrf
      * @param request
      * @param session

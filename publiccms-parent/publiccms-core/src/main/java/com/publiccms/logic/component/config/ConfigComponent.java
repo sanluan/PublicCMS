@@ -70,6 +70,7 @@ public class ConfigComponent implements SiteCache {
     /**
      * @param site
      * @param locale
+     * @param showAll 
      * @return config list
      */
     public List<ConfigInfo> getConfigList(SysSite site, Locale locale, boolean showAll) {

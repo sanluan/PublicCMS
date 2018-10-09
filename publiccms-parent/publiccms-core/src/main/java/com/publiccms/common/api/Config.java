@@ -119,8 +119,8 @@ public interface Config {
     }
 
     /**
-     * @param site
-     * @param showAll
+     * @param locale 
+     * @param code 
      * @return config code or null
      */
     public default String getMessage(Locale locale, String code) {
@@ -136,7 +136,6 @@ public interface Config {
     }
 
     /**
-     * @param site
      * @param locale
      * @return
      */

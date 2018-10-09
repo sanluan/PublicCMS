@@ -22,7 +22,7 @@ public interface CacheEntity<K, V> {
     /**
      * @param key
      * @param value
-     * @param expiry
+     * @param expiryInSeconds 
      */
     public void put(K key, V value, Integer expiryInSeconds);
 

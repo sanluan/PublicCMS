@@ -66,6 +66,7 @@ public class ContentController extends AbstractController {
      * 保存内容
      * 
      * @param entity
+     * @param draft 
      * @param attribute
      * @param contentParameters
      * @param returnUrl

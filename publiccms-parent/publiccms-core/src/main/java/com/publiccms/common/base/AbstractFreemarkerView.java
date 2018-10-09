@@ -59,10 +59,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
 
     /**
      * @param model
-     * @param scheme
-     * @param serverName
-     * @param serverPort
-     * @param contextPath
+     * @param request 
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
         String serverName = request.getServerName();

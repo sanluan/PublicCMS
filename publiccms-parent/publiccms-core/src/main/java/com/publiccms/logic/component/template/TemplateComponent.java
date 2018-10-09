@@ -92,7 +92,7 @@ public class TemplateComponent implements Cache {
      * @param fullTemplatePath
      * @param filePath
      * @param pageIndex
-     * @param metadata
+     * @param metadataMap 
      * @param model
      * @return static file path
      * @throws IOException
