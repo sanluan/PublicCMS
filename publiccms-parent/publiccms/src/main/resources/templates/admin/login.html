@@ -34,11 +34,7 @@
         </form>
         <p>
             <#list langs as k,v>
-            	<#if .locale!=k>
-		            <a href="${adminBase}/changeLocale?lang=${k}&returnUrl=${adminBase?url}/">${v}</a>
-		        <#else>
-		        	<a class="current-lang" href="${adminBase}/changeLocale?lang=${k}&returnUrl=${adminBase?url}/">${v}</a>
-		        </#if>
+                <a<#if .locale=k?has_content?then(k,'zh')> class="current-lang"</#if> href="${adminBase}/changeLocale?lang=${k?has_content?then(k,'zh')}&returnUrl=${(adminBase+'/')?url}">${v}</a>
             </#list>
         </p>
     </div>
