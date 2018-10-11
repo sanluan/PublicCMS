@@ -28,12 +28,12 @@
                 <table bordercolor="#cccccc" cellspacing="1" cellpadding="1" border="1">
                     <tbody>
                         <tr><td width="54"><@t.page 'task.cron.position'/></td><td width="82"><@t.page 'task.cron.means'/></td><td width="133"><@t.page 'task.cron.allow_value'/></td><td width="290"><@t.page 'task.cron.allow_special_char'/></td></tr>
-                        <tr><td>1</td><td><@t.page 'minute'/></td><td>0-59</td><td>, - * /</td></tr>
-                        <tr><td>2</td><td><@t.page 'hour'/></td><td>0-23</td><td>, - * /</td></tr>
-                        <tr><td>3</td><td><@t.page 'day_of_month'/></td><td>1-31</td><td>, - * ? / L W C </td></tr>
-                        <tr><td>4</td><td><@t.page 'month'/></td><td>1-12</td><td>, - * /</td></tr>
-                        <tr><td>5</td><td><@t.page 'day_of_week'/></td><td>1-7</td><td>, - * ? / L C #</td></tr>
-                        <tr><td>6</td><td><@t.page 'year'/>(<@t.page 'task.cron.not_required'/>)</td><td><@t.page 'task.cron.year_value'/></td><td>, - * /</td></tr>
+                        <tr><td>1</td><td><@t.page 'task.cron.minute'/></td><td>0-59</td><td>, - * /</td></tr>
+                        <tr><td>2</td><td><@t.page 'task.cron.hour'/></td><td>0-23</td><td>, - * /</td></tr>
+                        <tr><td>3</td><td><@t.page 'task.cron.day_of_month'/></td><td>1-31</td><td>, - * ? / L W C </td></tr>
+                        <tr><td>4</td><td><@t.page 'task.cron.month'/></td><td>1-12</td><td>, - * /</td></tr>
+                        <tr><td>5</td><td><@t.page 'task.cron.day_of_week'/></td><td>1-7</td><td>, - * ? / L C #</td></tr>
+                        <tr><td>6</td><td><@t.page 'task.cron.year'/>(<@t.page 'task.cron.not_required'/>)</td><td><@t.page 'task.cron.year_value'/></td><td>, - * /</td></tr>
                         <tr><td colspan="4"><@t.page 'task.cron.special_char_means'/></td></tr>
                     </tbody>
                 </table>
