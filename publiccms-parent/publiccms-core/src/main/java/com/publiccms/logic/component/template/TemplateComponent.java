@@ -92,7 +92,7 @@ public class TemplateComponent implements Cache {
      * @param fullTemplatePath
      * @param filePath
      * @param pageIndex
-     * @param metadataMap 
+     * @param metadataMap
      * @param model
      * @return static file path
      * @throws IOException
@@ -206,7 +206,7 @@ public class TemplateComponent implements Cache {
             String pageBreakTag = null;
             if (-1 < attribute.getText().indexOf(CommonConstants.getCkeditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
-            } else if(-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())){
+            } else if (-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
             } else {
                 pageBreakTag = CommonConstants.getUeditorPageBreakTag();
@@ -379,7 +379,6 @@ public class TemplateComponent implements Cache {
         Map<String, Object> freemarkerVariables = new HashMap<>();
         adminConfiguration = freeMarkerConfigurer.getConfiguration();
         for (Entry<String, AbstractTemplateDirective> entry : directiveComponent.getTemplateDirectiveMap().entrySet()) {
-            freemarkerVariables.put(entry.getKey(), entry.getValue());
             freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
         }
         freemarkerVariables.putAll(directiveComponent.getMethodMap());
@@ -400,7 +399,6 @@ public class TemplateComponent implements Cache {
         taskConfiguration.setDirectoryForTemplateLoading(taskFile);
         copyConfig(adminConfiguration, taskConfiguration);
         for (Entry<String, AbstractTaskDirective> entry : directiveComponent.getTaskDirectiveMap().entrySet()) {
-            freemarkerVariables.put(entry.getKey(), entry.getValue());
             freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
         }
         taskConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, taskConfiguration.getObjectWrapper()));
