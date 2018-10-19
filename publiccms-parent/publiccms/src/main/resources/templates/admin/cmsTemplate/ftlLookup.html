@@ -22,13 +22,6 @@
     </@_templateList>
 </#macro>
 <script>
-function check(){
-    if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
-        $('input[name=namespace]',$.pdialog.getCurrent()).parent().hide();
-    } else {
-        $('input[name=namespace]',$.pdialog.getCurrent()).parent().show();
-    }
-}
 function use(path,description){
     if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
         DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@include path="'?no_esc}'+path+'${r'"/>'?no_esc}'+description);
@@ -42,16 +35,25 @@ function use(path,description){
         <dt><@t.page 'use_way'/></dt>
         <dd>
             <label style="width:auto;">
-                <input name="use" type="radio" onchange="check()" value="include" checked="true"/>
+                <input name="use" type="radio" value="include" checked="true"/>
                 <@t.page 'include'/>
             </label>
             <label style="width:auto;">
-                <input name="use" type="radio" onchange="check()" value="import"/>
+                <input name="use" type="radio" value="import"/>
                 <@t.page 'import'/>
             </label>
             <div style="display:none"><label style="width:auto;"><@t.page 'name_space'/>:</label><input name="namespace" type="text" maxlength="10" size="10" value="t"/></div>
         </dd>
     </dl>
+    <script>
+    $('input[name=use]',$.pdialog.getCurrent()).on('change',function(){
+        if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
+            $('input[name=namespace]',$.pdialog.getCurrent()).parent().hide();
+        } else {
+            $('input[name=namespace]',$.pdialog.getCurrent()).parent().show();
+        }
+    });
+    </script>
     <ul class="tree treeFolder">
 <@chipTree ''/>
     </ul>

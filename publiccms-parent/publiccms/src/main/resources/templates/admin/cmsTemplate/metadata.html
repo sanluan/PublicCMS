@@ -32,16 +32,34 @@
                 <input name="alias" type="text" maxlength="40" size="20" value="${(a.alias)!}"/>
                 <#if site.useStatic>
                     <label>
-                        <input name="useStatic" type="checkbox" onchange="if($(this).is(':checked')){$('input[name=publishPath]',navTab.getCurrentPanel()).addClass('required');$('.useStatic',navTab.getCurrentPanel()).show();}else{$('input[name=publishPath]',navTab.getCurrentPanel()).removeClass('required').val('');$('.useStatic',navTab.getCurrentPanel()).hide();}"/>
+                        <input name="useStatic" type="checkbox"/>
                         <@t.page 'site.enable_static'/>
                     </label>
                 </#if>
                 <label>
-                    <input name="useDynamic" type="checkbox" onchange="if($(this).is(':checked')){$('.useDynamic',navTab.getCurrentPanel()).show();}else{$('.useDynamic',navTab.getCurrentPanel()).hide();}"/>
+                    <input name="useDynamic" type="checkbox"/>
                     <@t.page 'allow_dynamic'/>
                 </label>
             </dd>
         </dl>
+        <script>
+        $('input[name=useStatic]',navTab.getCurrentPanel()).on('change',function(){
+            if($(this).is(':checked')){
+                $('input[name=publishPath]',navTab.getCurrentPanel()).addClass('required');
+                $('.useStatic',navTab.getCurrentPanel()).show();
+            }else{
+                $('input[name=publishPath]',navTab.getCurrentPanel()).removeClass('required').val('');
+                $('.useStatic',navTab.getCurrentPanel()).hide();
+            }
+        });
+        $('input[name=useDynamic]',navTab.getCurrentPanel()).on('change',function(){
+            if($(this).is(':checked')){
+                $('.useDynamic',navTab.getCurrentPanel()).show();
+            }else{
+                $('.useDynamic',navTab.getCurrentPanel()).hide();
+            }
+        });
+        </script>
     <#if site.useStatic>
         <fieldset class="useStatic" style="display:none">
             <legend><@t.page 'static_config'/></legend>
