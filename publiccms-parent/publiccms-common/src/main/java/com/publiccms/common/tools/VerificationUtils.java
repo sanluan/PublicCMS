@@ -170,7 +170,7 @@ public class VerificationUtils {
     public static byte[] publicKeyDecode(byte[] publicKey, byte[] input) {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, getPublicKey(publicKey));
+            cipher.init(Cipher.DECRYPT_MODE, getPublicKey(publicKey));
             return cipher.doFinal(input);
         } catch (Exception e) {
             return input;
@@ -187,7 +187,7 @@ public class VerificationUtils {
     public static byte[] privateKeyDecode(byte[] privateKey, byte[] input) {
         try {
             Cipher cipher = Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, getPrivateKey(privateKey));
+            cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey(privateKey));
             return cipher.doFinal(input);
         } catch (Exception e) {
             return input;

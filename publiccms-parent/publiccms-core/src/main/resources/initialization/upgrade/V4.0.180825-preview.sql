@@ -3,3 +3,5 @@ UPDATE `sys_module_lang` SET `value` =  'Delete' WHERE `lang` ='en' and module_i
 UPDATE `sys_module_lang` SET `value` =  'Publish' WHERE `lang` ='en' and module_id = 'myself_content_publish';
 UPDATE `sys_module_lang` SET `value` =  'Push' WHERE `lang` ='en' and module_id = 'myself_content_push';
 UPDATE `sys_module_lang` SET `value` =  'Refresh' WHERE `lang` ='en' and module_id = 'myself_content_refresh';
+-- 20181022 --
+UPDATE `sys_module_lang` SET `lang` =  'zh' WHERE `lang` ='';

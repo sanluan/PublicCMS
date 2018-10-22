@@ -59,29 +59,20 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
 
     @Override
     protected String resolveCodeWithoutArguments(String code, Locale locale) {
-        Map<String, String> map = getMessageMap(locale);
-        if (null != map) {
-            String message = map.get(code);
-            if (null == message) {
-                List<Locale> candidateLocales = messageSourceControl.getCandidateLocales(CODE, locale);
-                for (Locale l : candidateLocales) {
-                    if (!l.equals(locale)) {
-                        Map<String, String> messageMap = getMessageMap(l);
-                        if (null != messageMap) {
-                            message = messageMap.get(code);
-                            if (null != message) {
-                                return message;
-                            }
-                        }
-                    }
+        List<Locale> candidateLocales = messageSourceControl.getCandidateLocales(CODE, locale);
+        for (Locale l : candidateLocales) {
+            Map<String, String> messageMap = getMessageMap(l);
+            if (null != messageMap) {
+                String message = messageMap.get(code);
+                if (null != message) {
+                    return message;
                 }
-                return null;
-            } else {
-                return message;
             }
-        } else {
-            return null;
+            if (Locale.ROOT.equals(l) && !Locale.getDefault().equals(locale)) {
+                return resolveCodeWithoutArguments(code, Locale.getDefault());
+            }
         }
+        return null;
     }
 
     private Map<String, String> getMessageMap(Locale locale) {
@@ -91,10 +82,10 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
             synchronized (messageCache) {
                 messageMap = messageCache.get(lang);
                 if (null == messageMap) {
-                    messageMap = new HashMap<>();
                     @SuppressWarnings("unchecked")
                     List<SysModuleLang> list = (List<SysModuleLang>) sysModuleLangService.getList(null, lang);
                     if (CommonUtils.notEmpty(list)) {
+                        messageMap = new HashMap<>();
                         for (SysModuleLang entity : list) {
                             messageMap.put(PREFIX + entity.getId().getModuleId(), entity.getValue());
                         }
