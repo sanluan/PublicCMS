@@ -63,11 +63,11 @@
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.createDate!}</td>
                 <td>
-                    <a href="cmsWord/add.html?id=${a.id}" target="dialog" rel="cmsWord_edit" title="<@t.page 'search_word.edit'/>"><@t.page 'button.edit'/></a>
+                    <a href="cmsWord/add.html?id=${a.id}" target="dialog" rel="cmsWord_edit" title="<@t.page 'search_word.edit'/>"><@t.page 'button.edit'/></a>|
                     <#if a.hidden>
-                        <a href="cmsWord/show.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.show'/>" target="ajaxTodo"><@t.page 'button.show'/></a>
+                        <a href="cmsWord/show.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.show'/>" target="ajaxTodo"><@t.page 'button.show'/></a>|
                     <#else>
-                        <a href="cmsWord/hidden.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.hide'/>" target="ajaxTodo"><@t.page 'button.hide'/></a>
+                        <a href="cmsWord/hidden.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.hide'/>" target="ajaxTodo"><@t.page 'button.hide'/></a>|
                     </#if>
                     <a href="cmsWord/delete.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>
