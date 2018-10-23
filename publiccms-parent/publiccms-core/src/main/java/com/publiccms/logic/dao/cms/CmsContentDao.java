@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
@@ -225,12 +226,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
         }
         if (null != queryEntitry.getStartPublishDate()) {
-            queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate",
+            queryHandler.condition("bean.publishDate >= :startPublishDate").setParameter("startPublishDate",
                     queryEntitry.getStartPublishDate());
         }
         if (null != queryEntitry.getEndPublishDate()) {
-            queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate",
-                    queryEntitry.getEndPublishDate());
+            queryHandler.condition("bean.publishDate < :endPublishDate").setParameter("endPublishDate",
+                   DateUtils.addDays(queryEntitry.getEndPublishDate(),1));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
