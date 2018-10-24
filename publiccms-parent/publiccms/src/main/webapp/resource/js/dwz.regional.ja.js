@@ -1,5 +1,4 @@
 /**
- * @author 金道贵金属
  */
 (function($){
     // jQuery validate

@@ -1,5 +1,4 @@
 /**
- * author: 金道贵金属
  */
 UE.I18N['ja-jp'] = {
     'labelMap':{
