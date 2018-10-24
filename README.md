@@ -97,3 +97,7 @@ docker run -d -p 8080:8080 mypubliccms
 ## Public CMS Management
 
 ![](doc/management_en.png)
+
+## Public CMS 管理バックグラウンド
+
+![](doc/management_ja.png)
