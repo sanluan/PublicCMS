@@ -112,6 +112,7 @@ public class ZipUtils {
 
     /**
      * @param zipFilePath
+     * @param encoding 
      * @throws IOException
      */
     public static void unzipHere(String zipFilePath, String encoding) throws IOException {
@@ -124,6 +125,7 @@ public class ZipUtils {
 
     /**
      * @param zipFilePath
+     * @param encoding 
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String encoding) throws IOException {
@@ -133,6 +135,7 @@ public class ZipUtils {
     /**
      * @param zipFilePath
      * @param targetPath
+     * @param encoding 
      * @param overwrite
      * @throws IOException
      */

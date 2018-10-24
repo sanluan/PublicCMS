@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
 
-import com.publiccms.common.constants.Constants;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  *
@@ -26,7 +25,8 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
      * 
      */
     private static final long serialVersionUID = 1L;
-    private int size;
+    private int size = 300;
+    protected final Log log = LogFactory.getLog(getClass());
     private LinkedHashMap<K, CacheValue<V>> cachedMap = new LinkedHashMap<>(16, 0.75f, true);
     private ReentrantReadWriteLock lock = new ReentrantReadWriteLock();
 
@@ -130,17 +130,6 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public long getDataSize() {
-        return cachedMap.size();
-    }
-
-    @Override
-    public Map<K, V> getAll() {
-        return cachedMap.entrySet().stream().collect(Collectors.toMap(Entry::getKey, v -> v.getValue().getValue(),
-                Constants.defaultMegerFunction(), LinkedHashMap::new));
-    }
-
-    @Override
     public boolean contains(K key) {
         lock.readLock().lock();
         try {
@@ -151,9 +140,11 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public void init(String name, Integer cacheSize, Properties properties) {
-        if (null != cacheSize) {
-            this.size = cacheSize;
+    public void init(String region, Properties properties) {
+        try {
+            this.size = Integer.parseInt(properties.getProperty("cache.defaultSize"));
+        } catch (NumberFormatException e) {
+            log.warn(e);
         }
     }
 }

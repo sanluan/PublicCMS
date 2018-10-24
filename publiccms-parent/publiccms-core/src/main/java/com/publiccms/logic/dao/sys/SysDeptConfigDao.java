@@ -18,7 +18,7 @@ public class SysDeptConfigDao extends BaseDao<SysDeptConfig> {
 
     /**
      * @param deptId
-     * @param page
+     * @param config 
      * @param pageIndex
      * @param pageSize
      * @return results page

@@ -92,7 +92,7 @@ public class TemplateComponent implements Cache {
      * @param fullTemplatePath
      * @param filePath
      * @param pageIndex
-     * @param metadata
+     * @param metadataMap
      * @param model
      * @return static file path
      * @throws IOException
@@ -206,7 +206,7 @@ public class TemplateComponent implements Cache {
             String pageBreakTag = null;
             if (-1 < attribute.getText().indexOf(CommonConstants.getCkeditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getCkeditorPageBreakTag();
-            } else if(-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())){
+            } else if (-1 < attribute.getText().indexOf(CommonConstants.getKindEditorPageBreakTag())) {
                 pageBreakTag = CommonConstants.getKindEditorPageBreakTag();
             } else {
                 pageBreakTag = CommonConstants.getUeditorPageBreakTag();

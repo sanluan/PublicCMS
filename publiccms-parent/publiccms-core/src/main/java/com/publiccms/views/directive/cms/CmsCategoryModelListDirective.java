@@ -22,8 +22,7 @@ public class CmsCategoryModelListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getString("modelId"), handler.getInteger("categoryId"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("count"));
+        PageHandler page = service.getPage(handler.getString("modelId"), handler.getInteger("categoryId"));
         handler.put("page", page).render();
     }
 

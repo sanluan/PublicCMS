@@ -55,8 +55,6 @@ public class LoginController extends AbstractController {
     private SysUserTokenService sysUserTokenService;
     @Autowired
     private LogLoginService logLoginService;
-    @Autowired
-    private ConfigComponent configComponent;
 
     /**
      * @param username
@@ -71,13 +69,14 @@ public class LoginController extends AbstractController {
     public String login(String username, String password, String returnUrl, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
-            returnUrl = site.getDynamicPath();
-        }
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
         if (CommonUtils.empty(loginPath)) {
             loginPath = site.getDynamicPath();
+        }
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+            returnUrl = site.getDynamicPath();
         }
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
@@ -153,14 +152,17 @@ public class LoginController extends AbstractController {
     public String register(SysUser entity, String repassword, String returnUrl, String channel, String openId,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
-            returnUrl = site.getDynamicPath();
-        }
+        
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
         repassword = StringUtils.trim(repassword);
 
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+            returnUrl = site.getDynamicPath();
+        }
         if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
                 || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
                 || ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
@@ -179,9 +181,10 @@ public class LoginController extends AbstractController {
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
             service.save(entity);
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            
             int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                     LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+            
             Date now = CommonUtils.getDate();
             String authToken;
             Date expiryDate = null;
@@ -209,7 +212,7 @@ public class LoginController extends AbstractController {
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
     public String logout(Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(request.getSession());

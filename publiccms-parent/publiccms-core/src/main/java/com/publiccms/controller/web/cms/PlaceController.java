@@ -67,7 +67,7 @@ public class PlaceController extends AbstractController {
     public String save(CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
@@ -128,7 +128,7 @@ public class PlaceController extends AbstractController {
     @RequestMapping("delete")
     public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
@@ -159,7 +159,7 @@ public class PlaceController extends AbstractController {
     @RequestMapping("check")
     public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
@@ -190,7 +190,7 @@ public class PlaceController extends AbstractController {
     @RequestMapping("uncheck")
     public String uncheck(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);

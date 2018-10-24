@@ -43,14 +43,6 @@ public class RedisClient {
 
     /**
      * @param region
-     * @return
-     */
-    public long getDataSize(String region) {
-        return createOrGetCache(region).getDataSize();
-    }
-
-    /**
-     * @param region
      * @param key
      * @return
      */
@@ -115,14 +107,6 @@ public class RedisClient {
     }
 
     /**
-     * @param region
-     * @return
-     */
-    public Map<?, ?> getAll(String region) {
-        return createOrGetCache(region).getAll();
-    }
-
-    /**
      * 
      */
     public void flushDb() {
@@ -142,7 +126,7 @@ public class RedisClient {
             synchronized (regionMap) {
                 if (null == cache) {
                     cache = new RedisCacheEntity<>();
-                    cache.init(region, null, jedisPool);
+                    cache.init(region, jedisPool);
                     regionMap.put(region, cache);
                 }
             }

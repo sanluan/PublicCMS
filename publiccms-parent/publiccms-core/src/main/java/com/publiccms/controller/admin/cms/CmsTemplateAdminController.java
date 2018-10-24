@@ -157,7 +157,7 @@ public class CmsTemplateAdminController extends AbstractController {
     }
 
     /**
-     * @param file
+     * @param files 
      * @param path
      * @param _csrf
      * @param request

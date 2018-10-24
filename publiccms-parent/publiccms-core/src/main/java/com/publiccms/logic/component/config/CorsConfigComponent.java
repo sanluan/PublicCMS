@@ -119,7 +119,6 @@ public class CorsConfigComponent implements SiteCache, Config {
     }
 
     /**
-     * @param site
      * @param locale
      * @return
      */

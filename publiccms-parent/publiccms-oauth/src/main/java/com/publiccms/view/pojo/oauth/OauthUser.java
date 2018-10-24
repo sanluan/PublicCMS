@@ -17,8 +17,6 @@ public class OauthUser implements Serializable {
     /**
      * @param openId
      * @param nickname
-     * @param avatar
-     * @param gender
      */
     public OauthUser(String openId, String nickname) {
         this.openId = openId;

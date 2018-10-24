@@ -21,7 +21,7 @@ public class CmsVersion {
      * @return version
      */
     public static final String getVersion() {
-        return "V4.0.180825";
+        return "V4.0.181024";
     }
 
     /**

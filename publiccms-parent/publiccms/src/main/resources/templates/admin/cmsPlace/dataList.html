@@ -68,7 +68,7 @@
                 <th width="100"><@t.page 'content.promulgator'/></th>
                 <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="50"><@t.page 'status'/></th>
-                <th width="100"><@t.page 'operate'/></th>
+                <th width="140"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -88,11 +88,11 @@
                 <td>${a.clicks}</td>
                 <td><@t.page 'status.place.data.'+a.status/></td>
                 <td>
-                    <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="<@t.page 'place_data.edit'/>"><@t.page 'button.edit'/></a>
+                    <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="<@t.page 'place_data.edit'/>"><@t.page 'button.edit'/></a>|
                     <#if 2=a.status>
-                        <a href="cmsPlace/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>
+                        <a href="cmsPlace/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>|
                     <#elseif 1=a.status>
-                        <a href="cmsPlace/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>
+                        <a href="cmsPlace/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>|
                     </#if>
                     <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>

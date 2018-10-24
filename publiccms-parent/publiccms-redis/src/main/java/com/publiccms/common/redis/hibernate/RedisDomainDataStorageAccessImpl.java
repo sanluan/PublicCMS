@@ -51,6 +51,6 @@ public class RedisDomainDataStorageAccessImpl implements DomainDataStorageAccess
 
     @Override
     public void release() {
-        redisClient.removeRegion(cache.getName());
+        redisClient.removeRegion(cache.getRegion());
     }
 }

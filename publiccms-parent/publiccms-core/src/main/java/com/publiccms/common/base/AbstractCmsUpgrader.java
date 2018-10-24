@@ -49,6 +49,7 @@ public abstract class AbstractCmsUpgrader {
     }
 
     /**
+     * @param stringWriter 
      * @param connection
      * @param fromVersion
      * @throws SQLException

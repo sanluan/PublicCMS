@@ -2,7 +2,7 @@
 <div class="pageBar panelBar">
     <div class="pages">
         <span><@t.page 'page_size'/>:</span>
-        <select class="combox" name="numPerPage" onchange="navTabPageBreak({numPerPage:this.value},'${rel!}')">
+        <select class="combox" name="numPerPage">
             <option value="30"${(page.pageSize=30)?then(' selected="true"','')?no_esc}>30</option>
             <option value="50"${(page.pageSize=50)?then(' selected="true"','')?no_esc}>50</option>
             <option value="100"${(page.pageSize=100)?then(' selected="true"','')?no_esc}>100</option>
@@ -11,4 +11,9 @@
     </div>
     <div class="pagination" totalCount="${page.totalCount}" rel="${rel!}" numPerPage="${page.pageSize}" pageNumShown="10" currentPage="${page.pageIndex}"></div>
 </div>
+<script>
+$('select[name=numPerPage]',navTab.getCurrentPanel()).on('change',function(){
+    navTabPageBreak({numPerPage:this.value},'${rel!}');
+});
+</script>
 </#if>

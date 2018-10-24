@@ -5,7 +5,7 @@ dependencies {
     compile (
         "com.mchange:c3p0:${c3p0Version}",
         // http://mvnrepository.com/artifact/mysql/mysql-connector-java
-        "mysql:mysql-connector-java:5.1.46",
+        "mysql:mysql-connector-java:5.1.47",
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         "eu.bitwalker:UserAgentUtils:1.21",
         // http://mvnrepository.com/artifact/net.coobird/thumbnailator

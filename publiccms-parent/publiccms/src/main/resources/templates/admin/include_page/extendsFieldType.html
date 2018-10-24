@@ -1,8 +1,18 @@
 <#macro extendsFieldType inputName value=''>
 <#local inputTypes={'text':t.pageMessage('input'),'number':t.pageMessage('number'),'file':t.pageMessage('file'),'image':t.pageMessage('image'),'video':t.pageMessage('video'),'password':t.pageMessage('password'),'editor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'kindeditor':t.pageMessage('kindeditor'),'textarea':t.pageMessage('textarea'),'date':t.pageMessage('date'),'datetime':t.pageMessage('datetime'),'template':t.pageMessage('template_path'),'boolean':t.pageMessage('true_or_false'),'user':t.pageMessage('user'),'content':t.pageMessage('content'),'category':t.pageMessage('category'),'dictionary':t.pageMessage('dictionary'),'categoryType':t.pageMessage('category_type'),'tagType':t.pageMessage('tag_type')}/>
-<select class="combox" name="${inputName!}" onchange="if($(this).val()=='dictionary'){$(this).closest('tr').find('a.btnLook').show().prev().addClass('required').show();}else{$(this).closest('tr').find('a.btnLook').hide().prev().removeClass('required').hide();}">
+<#assign flag=.now?long/>
+<select class="combox combox_${flag}" name="${inputName!}">
     <#list inputTypes as a,inputType>
     <option value="${a}"${(a=value)?then(' selected="true"','')?no_esc}>${inputType}</option>
     </#list>
 </select>
+<script>
+$('.combox_${flag}').on('change',function(){
+    if($(this).val()=='dictionary') {
+        $(this).closest('tr').find('a.btnLook').show().prev().addClass('required').show();
+    }else{
+        $(this).closest('tr').find('a.btnLook').hide().prev().removeClass('required').hide();
+    }
+});
+</script>
 </#macro>

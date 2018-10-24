@@ -16,6 +16,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
@@ -33,14 +34,25 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
+                Integer clicks = statisticsComponent.getContentClicks(entity.getId());
+                if (null != clicks) {
+                    entity.setClicks(clicks);
+                }
                 handler.put("object", entity).render();
             }
         } else {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
-                Map<String, CmsContent> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId()).collect(Collectors.toMap(k -> k.getId().toString(),
-                        Function.identity(), CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
+                entityList.forEach(e -> {
+                    Integer clicks = statisticsComponent.getContentClicks(e.getId());
+                    if (null != clicks) {
+                        e.setClicks(clicks);
+                    }
+                });
+                Map<String, CmsContent> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toMap(k -> k.getId().toString(), Function.identity(),
+                                CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
                 handler.put("map", map).render();
             }
         }
@@ -48,4 +60,6 @@ public class CmsContentDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentService service;
+    @Autowired
+    private StatisticsComponent statisticsComponent;
 }

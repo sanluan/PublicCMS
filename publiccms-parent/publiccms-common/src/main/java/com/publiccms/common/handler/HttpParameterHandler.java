@@ -37,7 +37,6 @@ public class HttpParameterHandler extends BaseHandler {
      * @param httpMessageConverter
      * @param mediaType
      * @param request
-     * @param callback
      * @param response
      */
     public HttpParameterHandler(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType,

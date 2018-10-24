@@ -22,7 +22,7 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class CreateCategoryFileDirective extends AbstractTemplateDirective {
-    
+
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
@@ -34,10 +34,9 @@ public class CreateCategoryFileDirective extends AbstractTemplateDirective {
             try {
                 CmsCategory category = categoryService.getEntity(id);
                 if (null != category && site.getId() == category.getSiteId()) {
-                    handler.put(
-                            "url",
-                            templateComponent.createCategoryFile(site, category, templatePath, filePath,
-                                    pageIndex, null)).render();
+                    handler.put("url",
+                            templateComponent.createCategoryFile(site, category, templatePath, filePath, pageIndex, null))
+                            .render();
                 }
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());

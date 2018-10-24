@@ -42,7 +42,6 @@ public class DirectiveController extends AbstractController {
      * 接口指令统一分发
      * 
      * @param action
-     * @param callback
      * @param request
      * @param response
      */

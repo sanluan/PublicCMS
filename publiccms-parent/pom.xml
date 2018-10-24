@@ -5,34 +5,35 @@
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
     <packaging>pom</packaging>
-    <version>V4.0.180825</version>
+    <version>V4.0.181024</version>
     <modules>
         <module>publiccms-oauth</module>
         <module>publiccms-redis</module>
         <module>publiccms</module>
         <module>publiccms-core</module>
         <module>publiccms-common</module>
+        <module>publiccms-j2cache</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.0.8.RELEASE</version.spring>
+        <version.spring>5.0.10.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.0.4.RELEASE</version.springBoot>
+        <version.springBoot>2.0.6.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.6</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.9.6</version.jackson>
+        <version.jackson>2.9.7</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.3.5.Final</version.hibernate>
+        <version.hibernate>5.3.6.Final</version.hibernate>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>5.10.3.Final</version.hibernateSearch>
+        <version.hibernateSearch>5.10.4.Final</version.hibernateSearch>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.28</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
@@ -159,7 +160,7 @@
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.46</version>
+                <version>5.1.47</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>

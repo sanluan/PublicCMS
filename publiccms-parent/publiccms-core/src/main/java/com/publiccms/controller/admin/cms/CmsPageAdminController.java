@@ -47,7 +47,7 @@ public class CmsPageAdminController extends AbstractController {
 
     /**
      * @param path
-     * @param placeParameters
+     * @param extendDataParameters 
      * @param _csrf
      * @param request
      * @param session

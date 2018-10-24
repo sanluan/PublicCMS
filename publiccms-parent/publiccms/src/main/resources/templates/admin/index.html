@@ -139,10 +139,10 @@ $(function(){
 <footer>
    <ul class="langList">
     <#list langs as k,v>
-        <li<#if .locale=k?has_content?then(k,'zh')> class="current-lang"</#if>>
-            <a href="changeLocale?lang=${k?has_content?then(k,'zh')}" target="ajaxTodo">
-                <img src="${res}/themes/images/${k?has_content?then(k,'ch')}.png" alt="${v}"/>${v}
-            </a>
+        <li<#if .locale=k> class="current-lang"</#if>>
+        	<a href="changeLocale?lang=${k}" target="ajaxTodo">
+        		<img src="${res}/themes/images/${k}.png" alt="${v}"/>${v}
+        	</a>
         </li>
     </#list>
     </ul>

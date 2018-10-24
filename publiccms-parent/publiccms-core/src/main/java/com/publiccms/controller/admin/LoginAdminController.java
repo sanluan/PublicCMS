@@ -118,7 +118,7 @@ public class LoginAdminController extends AbstractController {
         }
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
-        if (CommonUtils.notEmpty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();

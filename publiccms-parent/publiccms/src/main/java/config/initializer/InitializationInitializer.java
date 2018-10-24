@@ -46,28 +46,50 @@ public class InitializationInitializer implements WebApplicationInitializer {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
             initProxy(config);
             CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", config.getProperty("cms.filePath"));
-            String absolutePath = new File(CommonConstants.CMS_FILEPATH).getAbsolutePath();
-            File file = new File(absolutePath + CommonConstants.INSTALL_LOCK_FILENAME);
+            checkFilePath(servletcontext);
+            File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
             if (file.exists()) {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
                 if (CmsVersion.getVersion().equals(version)) {
                     CmsVersion.setInitialized(true);
                     CmsDataSource.initDefautlDataSource();
-                    log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + absolutePath);
+                    log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + CommonConstants.CMS_FILEPATH);
                 } else {
                     createInstallServlet(servletcontext, config, InstallServlet.STEP_CHECKDATABASE, version);
-                    log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + absolutePath
+                    log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CommonConstants.CMS_FILEPATH
                             + ", please upgrade your database!");
                 }
             } else {
                 createInstallServlet(servletcontext, config, null, null);
-                log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + absolutePath
+                log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CommonConstants.CMS_FILEPATH
                         + ", please configure your database information and initialize the database!");
             }
         } catch (IOException e) {
             throw new ServletException(e);
         }
         servletcontext.addListener(IntrospectorCleanupListener.class);
+    }
+
+    /**
+     * 检查CMS路径变量
+     * 
+     * @param servletcontext
+     * @param defaultPath
+     * @throws ServletException
+     */
+    private void checkFilePath(ServletContext servletcontext) throws ServletException {
+        File file = new File(CommonConstants.CMS_FILEPATH);
+        try {
+            file.mkdirs();
+        } catch (Exception e) {
+        }
+        if (!file.exists()) {
+            log.warn("PublicCMS " + CmsVersion.getVersion()
+                    + " the cms.filePath parameter is invalid , try to use the temporary directory.");
+            // 将目录设置为项目所在目录
+            file = new File(servletcontext.getRealPath("/"), "cms_filepath_temp");
+            CommonConstants.CMS_FILEPATH = file.getAbsolutePath();
+        }
     }
 
     private static void createInstallServlet(ServletContext servletcontext, Properties config, String startStep, String version) {

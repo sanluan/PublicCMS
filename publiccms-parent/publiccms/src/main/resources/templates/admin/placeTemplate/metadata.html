@@ -53,19 +53,27 @@
         <dl class="nowrap">
             <dt><@t.page 'place_data.page_size'/>:</dt>
             <dd>
-                <input name="size" class="required digits" onchange="checkPageSize();" type="number" value="${(a.size)!0}"/>
+                <input name="size" class="required digits" type="number" value="${(a.size)!0}"/>
             </dd>
         </dl>
         <dl class="nowrap placeExtend">
             <dt><@t.page 'place_data.master'/>:</dt>
             <dd>
                 <input name="userId" type="hidden"/>
-                <input name="nickName" type="hidden" onchange="addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());"/>
+                <input name="nickName" type="hidden"/>
                 <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
                 <div id="adminIds"></div>
             </dd>
         </dl>
-         <fieldset class="placeExtend systemField">
+        <script>
+        $('input[name=size]',navTab.getCurrentPanel()).on('change',function(){
+            checkPageSize();
+        });
+        $('input[name=nickName]',navTab.getCurrentPanel()).on('change',function(){
+            addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());
+        });
+        </script>
+        <fieldset class="placeExtend systemField">
             <legend><@t.page 'place.system_field'/></legend>
             <dl class="nowrap">
                 <dt>

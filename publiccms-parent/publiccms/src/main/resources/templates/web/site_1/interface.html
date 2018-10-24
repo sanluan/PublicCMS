@@ -104,6 +104,10 @@ $(function(){
         init();
     });
     init();
+    $('#siteList').on('change',function(){
+        $('#sendData').val($('#sendData').val().replace(sitePath,$(this).val()));
+        sitePath=$(this).val(); 
+    });
 });
 </script>
 </head>
@@ -118,7 +122,7 @@ $(function(){
         <p id="buttons" style="display:none"><input type="button" value="Send" onclick="invoke()"/></p>
         <p>
             <label>Site switch
-                <select onchange="$('#sendData').val($('#sendData').val().replace(sitePath,$(this).val()));sitePath=$(this).val();">
+                <select id="siteList">
             <@_sysSiteList count=500>
                 <#list page.list as a>
                     <option value ="${a.dynamicPath!}" <#if site.id=a.id>selected="selected"</#if>>${a.name!}<#if site.id=a.id>[Current site]</#if></option>

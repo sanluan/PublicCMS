@@ -59,7 +59,7 @@ public class CmsPlaceAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param placeParameters
+     * @param extendDataParameters 
      * @param _csrf
      * @param request
      * @param session
@@ -255,6 +255,7 @@ public class CmsPlaceAdminController extends AbstractController {
     }
 
     /**
+     * @param path 
      * @param ids
      * @param _csrf
      * @param request

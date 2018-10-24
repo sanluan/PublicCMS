@@ -116,6 +116,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param siteId
      * @param ids
+     * @param path 
      */
     public void check(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
@@ -132,6 +133,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param siteId
      * @param ids
+     * @param path 
      */
     public void uncheck(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
@@ -148,6 +150,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param siteId
      * @param ids
+     * @param path 
      */
     public void refresh(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
@@ -171,6 +174,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param siteId
      * @param ids
+     * @param path 
      */
     public void delete(short siteId, Serializable[] ids, String path) {
         for (CmsPlace entity : getEntitys(ids)) {

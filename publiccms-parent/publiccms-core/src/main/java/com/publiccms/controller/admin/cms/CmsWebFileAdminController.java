@@ -79,7 +79,7 @@ public class CmsWebFileAdminController extends AbstractController {
     }
 
     /**
-     * @param file
+     * @param files 
      * @param path
      * @param _csrf
      * @param request
@@ -183,6 +183,8 @@ public class CmsWebFileAdminController extends AbstractController {
 
     /**
      * @param path
+     * @param encoding 
+     * @param here 
      * @param _csrf
      * @param request
      * @param session

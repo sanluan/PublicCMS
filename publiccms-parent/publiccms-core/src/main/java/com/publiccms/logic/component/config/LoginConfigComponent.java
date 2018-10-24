@@ -21,6 +21,10 @@ public class LoginConfigComponent implements Config {
     /**
      * 
      */
+    public static final String CONFIG_RETURN_URL = "return_url";
+    /**
+     * 
+     */
     public static final String CONFIG_LOGIN_PATH = "login_path";
     /**
      * 
@@ -42,6 +46,8 @@ public class LoginConfigComponent implements Config {
     @Override
     public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<ExtendField> extendFieldList = new ArrayList<>();
+        extendFieldList.add(new ExtendField(CONFIG_RETURN_URL, INPUTTYPE_TEXTAREA, false, CONFIG_RETURN_URL,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RETURN_URL), null));
         extendFieldList.add(new ExtendField(CONFIG_REGISTER_URL, INPUTTYPE_TEXT, false, CONFIG_REGISTER_URL,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_REGISTER_URL), null));
         extendFieldList.add(new ExtendField(CONFIG_LOGIN_PATH, INPUTTYPE_TEXT, false, CONFIG_LOGIN_PATH,

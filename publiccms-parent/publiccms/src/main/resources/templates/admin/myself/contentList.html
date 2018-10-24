@@ -102,7 +102,7 @@
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="myself/contentList.html?parentId=${a.id}" target="navTab" rel="myself/contentList"><@t.page 'content.child_management'/></a>
+                        <a href="myself/contentList.html?parentId=${a.id}" target="navTab" rel="myself/contentList"><@t.page 'content.child_management'/></a>|
                     </#if>
                     <#if 1==a.status>
                         <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>

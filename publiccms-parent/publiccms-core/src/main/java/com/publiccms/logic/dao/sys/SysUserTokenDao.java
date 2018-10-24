@@ -23,6 +23,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
      * @param siteId
      * @param userId
      * @param channel
+     * @param orderField 
      * @param orderType
      * @param pageIndex
      * @param pageSize

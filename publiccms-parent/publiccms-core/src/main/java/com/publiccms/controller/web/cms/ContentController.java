@@ -66,6 +66,7 @@ public class ContentController extends AbstractController {
      * 保存内容
      * 
      * @param entity
+     * @param draft 
      * @param attribute
      * @param contentParameters
      * @param returnUrl
@@ -80,7 +81,7 @@ public class ContentController extends AbstractController {
             @ModelAttribute CmsContentParameters contentParameters, String returnUrl, String _csrf, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = getSite(request);
-        if (CommonUtils.empty(returnUrl)) {
+        if (isUnSafeUrl(returnUrl, site, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -152,7 +153,7 @@ public class ContentController extends AbstractController {
      */
     @RequestMapping("redirect")
     public String contentRedirect(Long id, HttpServletRequest request) {
-        CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
         SysSite site = getSite(request);
         if (null != contentStatistics && null != contentStatistics.getEntity()
                 && site.getId() == contentStatistics.getEntity().getSiteId()) {
@@ -171,7 +172,7 @@ public class ContentController extends AbstractController {
     @RequestMapping("click")
     @ResponseBody
     public int click(Long id) {
-        CmsContentStatistics contentStatistics = statisticsComponent.clicks(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
         if (null != contentStatistics && null != contentStatistics.getEntity()) {
             return contentStatistics.getEntity().getClicks() + contentStatistics.getClicks();
         }
