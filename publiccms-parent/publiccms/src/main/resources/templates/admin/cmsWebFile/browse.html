@@ -43,8 +43,10 @@ function callback(fileUrl){
         </div>
     </div>
 </#if>
-<#assign imageSuffix=["png","gif","jpg","jpeg","bmp"]/>
-<#assign flashSuffix=["swf","fla"]/>
+<#assign
+    imageSuffix=["png","gif","jpg","jpeg","bmp"]
+    flashSuffix=["swf","fla"]
+/>
 <@_webFileList path=path>
     <#list list as a>
     <div class="row">

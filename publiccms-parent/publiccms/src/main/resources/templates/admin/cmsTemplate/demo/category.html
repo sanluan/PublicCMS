@@ -35,19 +35,21 @@
         </section>
     </#list>
         <div>
-            <#assign url='?id=${id}'/>
+            <#assign
+                url='?id=${id}'
+                start=1
+                end=page.totalPage
+            />
+            <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+            </#if>
+            <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+            </#if>
             <#if !page.firstPage>
                 <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
             <#else>
                 <span>Previous page</span>
-            </#if>
-            <#assign start=1/>
-            <#if (page.pageIndex-5) gt start>
-                <#assign start=page.pageIndex-4/>
-            </#if>
-            <#assign end=page.totalPage/>
-            <#if (page.pageIndex+5) lt end>
-                <#assign end=page.pageIndex+4/>
             </#if>
             <#if start gt 1>
                 <a href="${url}">1</a> ...

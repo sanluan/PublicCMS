@@ -58,8 +58,10 @@
     </#if>
         <#include "../include_page/extendData.html"/>
         <@_placeMetadata path=(a.path)!path!''><#assign metadata=object/></@_placeMetadata>
-        <#assign extendList=(metadata.extendList)![]/>
-        <#assign attribute=getPlaceAttribute((a.id)!)!{}/>
+        <#assign
+            extendList=(metadata.extendList)![]
+            attribute=getPlaceAttribute((a.id)!)!{}
+        />
         <@extendData 'extendDataList' extendList attribute/>
     </div>
 </form>

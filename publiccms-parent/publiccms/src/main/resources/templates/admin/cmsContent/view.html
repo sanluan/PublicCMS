@@ -1,9 +1,11 @@
 <@_content id=id>
-    <#assign a=object/>
-    <#assign parentId=a.parentId!/>
-    <#assign categoryId=a.categoryId!/>
-    <#assign modelId=a.modelId!/>
-    <#assign attribute=getContentAttribute(a.id)!/>
+    <#assign
+        a=object
+        parentId=a.parentId!''
+        categoryId=a.categoryId!''
+        modelId=a.modelId!''
+        attribute=getContentAttribute(a.id)!{}
+    />
 </@_content>
 <@_category id=categoryId!><#assign category=object/></@_category>
 <@_model id=modelId!><#assign model=object/></@_model>
@@ -138,14 +140,18 @@
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
             <@_sysExtendFieldList extendId=category.extendId>
-                <#assign extendList=list![]/>
-                <#assign extendValue=attribute!{}/>
+                <#assign
+                    extendList=list![]
+                    extendValue=attribute!{}
+                />
                 <@extendData 'categoryExtendDataList' extendList extendValue 'view'/>
             </@_sysExtendFieldList>
         </#if>
         <#if model?has_content>
-            <#assign extendList=model.extendList![]/>
-            <#assign extendValue=attribute!{}/>
+            <#assign
+                extendList=model.extendList![]
+                extendValue=attribute!{}
+            />
             <@extendData 'modelExtendDataList' extendList extendValue 'view'/>
         </#if>
         <#if a?has_content&&(a.hasImages||a.hasFiles)>

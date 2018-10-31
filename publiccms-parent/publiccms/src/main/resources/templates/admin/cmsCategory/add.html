@@ -1,8 +1,10 @@
 <@_category id=id!copyId>
-    <#assign a=object/>
-    <#assign parentId=object.parentId!/>
-    <#assign typeId=object.typeId!/>
-    <#assign attribute=getCategoryAttribute(a.id)!/>
+    <#assign
+        a=object
+        parentId=object.parentId!''
+        typeId=object.typeId!''
+        attribute=getCategoryAttribute(a.id)!{}
+    />
 </@_category>
 <@_category id=parentId><#assign category=object/></@_category>
 <@_categoryType id=typeId><#assign categoryType=object/></@_categoryType>

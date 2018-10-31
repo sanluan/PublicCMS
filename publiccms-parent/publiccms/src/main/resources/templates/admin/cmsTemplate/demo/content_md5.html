@@ -5,10 +5,12 @@
         <#assign category=object/>
     </@_category>
 <#if ids[1]=getMd5(category.code+content.id)>
-    <#assign attribute=getContentAttribute(content.id)/>
-    <#assign temp=getContentPage(attribute.text!'',pageIndex)/>
-    <#assign page=temp.page/>
-    <#assign text=temp.text/>
+    <#assign
+        attribute=getContentAttribute(content.id)
+        temp=getContentPage(attribute.text!'',pageIndex)
+        page=temp.page
+        text=temp.text
+    />
 <!DOCTYPE html>
 <html lang="en">
 <head>

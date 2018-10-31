@@ -11,13 +11,15 @@
         <dt><@t.page 'server_config.nginx'/>:</dt>
         <dd>
             <textarea name="description" class="code" mode="nginx"><@_disk>
-<#assign rootPath=rootPath?replace('\\','/')/>
-<#assign dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')/>
-<#assign dynamicLocation=a.dynamicPath?keep_after('//')?keep_after('/')/>
-<#assign dynamicPort=a.dynamicPath?keep_after('//')?keep_before('/')?keep_after(':')/>
-<#assign sitePath=a.sitePath?keep_after('//')?keep_before('/')?keep_before(':')/>
-<#assign siteLocation=a.sitePath?keep_after('//')?keep_after('/')/>
-<#assign sitePort=a.sitePath?keep_after('//')?keep_before('/')?keep_after(':')/>
+<#assign
+    rootPath=rootPath?replace('\\','/')
+    dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')
+    dynamicLocation=a.dynamicPath?keep_after('//')?keep_after('/')
+    dynamicPort=a.dynamicPath?keep_after('//')?keep_before('/')?keep_after(':')
+    sitePath=a.sitePath?keep_after('//')?keep_before('/')?keep_before(':')
+    siteLocation=a.sitePath?keep_after('//')?keep_after('/')
+    sitePort=a.sitePath?keep_after('//')?keep_before('/')?keep_after(':')
+/>
 <#if dynamicPath!=sitePath||dynamicPort!=sitePort||dynamicPath=sitePath&&dynamicLocation!=siteLocation||a.useSsi>
     <@_sysDomainList advanced=true siteId=siteId>
 #${a.name} <@t.page 'server_config.site'/>

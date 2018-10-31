@@ -12,9 +12,11 @@
         }
     </#if>
 </#list>
-<#assign orderSize=0/>
-<#assign order=false/>
-<#list columnList as a><#if a.order><#assign order=true/><#assign orderSize+=1/></#if></#list>
+<#assign
+    orderSize=0
+    order=false
+/>
+<#list columnList as a><#if a.order><#assign order=true orderSize+=1/></#if></#list>
 <#if order>
         if(!ORDERTYPE_ASC.equalsIgnoreCase(orderType)){
             orderType = ORDERTYPE_DESC;

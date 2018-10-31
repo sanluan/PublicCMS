@@ -1,10 +1,12 @@
 <@_content id=id>
-    <#assign a=object/>
-    <#assign id=a.id/>
-    <#assign parentId=a.parentId!/>
-    <#assign categoryId=a.categoryId!/>
-    <#assign modelId=a.modelId!/>
-    <#assign attribute=getContentAttribute(a.id)!/>
+    <#assign
+        a=object
+        id=a.id
+        parentId=a.parentId!''
+        categoryId=a.categoryId!''
+        modelId=a.modelId!''
+        attribute=getContentAttribute(a.id)!{}
+    />
 </@_content>
 <@_category id=categoryId!><#assign category=object/></@_category>
 <@_model id=modelId!><#assign model=object/></@_model>
@@ -114,9 +116,11 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
             </#if>
             <#if fieldList?seq_contains('tag')>
                  <#include "../include_page/tags.html"/>
-                 <#assign tagTypeIds=(category.tagTypeIds)!''/>
-                 <#assign tagIds=(a.tagIds)!''/>
-                 <#assign tagText=(model.fieldTextMap['tag'])!''/>
+                 <#assign
+                     tagTypeIds=(category.tagTypeIds)!''
+                     tagIds=(a.tagIds)!''
+                     tagText=(model.fieldTextMap['tag'])!''
+                 >
                  <@tags tagText tagTypeIds tagIds/>
             </#if>
             <#if fieldList?seq_contains('author')>
@@ -175,8 +179,10 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                     <@extendData 'categoryExtendDataList' extendList extendValue/>
                  </@_sysExtendFieldList>
             </#if>
-            <#assign extendList=model.extendList![]/>
-            <#assign extendValue=attribute!{}/>
+            <#assign
+                extendList=model.extendList![]
+                extendValue=attribute!{}
+            />
             <@extendData 'modelExtendDataList' extendList extendValue/>
             <#if fieldList?seq_contains('content')>
                 <dl class="nowrap">

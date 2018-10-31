@@ -1,6 +1,8 @@
 <@_sysDept id=admin.deptId>
-    <#assign dept=object/>
-    <#assign containChild=object.ownsAllCategory/>
+    <#assign
+        dept=object
+        containChild=object.ownsAllCategory
+    />
 </@_sysDept>
 <@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!><#assign deptCategory=object!/></@_sysDeptCategory>
 <#if !dept?has_content||(!dept.ownsAllCategory&&!deptCategory?has_content)>
