@@ -93,11 +93,11 @@ $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
                 </dl>
                 <dl class="copied" style="display:none">
                     <dt>${(model.fieldTextMap['source'])!}:</dt>
-                    <dd><input name="source" type="text"<#if requiredFieldList?seq_contains('source')> class="required" data-required="true"</#if> maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
+                    <dd><input name="source" type="text"<#if a?has_content&&a.copied&&requiredFieldList?seq_contains('source')> class="required"</#if><#if requiredFieldList?seq_contains('source')> data-required="true"</#if> maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
                 </dl>
                 <dl class="copied" style="display:none">
                     <dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>
-                    <dd><input class="url<#if requiredFieldList?seq_contains('sourceUrl')> required</#if>"<#if requiredFieldList?seq_contains('sourceUrl')> data-required="true"</#if> name="sourceUrl" type="text" maxlength="250" size="20" value="${(attribute.sourceUrl)!}"/></dd>
+                    <dd><input class="url<#if a?has_content&&a.copied&&requiredFieldList?seq_contains('sourceUrl')> required</#if>"<#if requiredFieldList?seq_contains('sourceUrl')> data-required="true"</#if> name="sourceUrl" type="text" maxlength="250" size="20" value="${(attribute.sourceUrl)!}"/></dd>
                 </dl>
             <#if a?has_content&&a.copied&&fieldList?seq_contains('copied')>
 <script>
