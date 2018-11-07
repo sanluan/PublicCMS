@@ -8,8 +8,16 @@
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label>内容ID：</label>
+                    <label><@t.page 'content.id'/>:</label>
                     <input type="text" name="contentId" value="${contentId!}" />
+                </li>
+                <li class="width:auto">
+                <#list 1..2 as s>
+                    <label style="width:auto">
+                        <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                        <span><@t.page 'status.content.'+s/></span>
+                    </label>
+                </#list>
                 </li>
             </ul>
             <div class="subBar">
@@ -22,7 +30,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsComment/add,cmsComment/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
@@ -37,19 +45,18 @@
         </#if>
         </ul>
     </div>
-<@_commentList userId=userId 
-            contentId=contentId status=status 
+<@_commentList userId=userId contentId=contentId status=status 
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>发布用户</th>
-                <th>内容ID</th>
-                <th orderField="updateDate" class="<#if orderField??&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">更新日期</th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
-                <th>状态</th>
-                <th>内容</th>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'content.promulgator'/></th>
+                <th><@t.page 'content.id'/></th>
+                <th orderField="updateDate" class="<#if orderField??&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'modified_date'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th><@t.page 'status'/>/<@t.page 'inspector'/></th>
+                <th><@t.page 'text'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -77,7 +84,7 @@
                     <@t.page 'status.content.'+a.status/>
                     <#if 1=a.status>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
-                <td>${a.text!}</td>
+                <td><textarea rows="3" cols="50">${a.text!}</textarea></td>
                 <td>
                 <#if authorizedMap['cmsComment/delete']>
                     <a href="cmsComment/delete.do?ids=${a.id}?csrfToken=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
