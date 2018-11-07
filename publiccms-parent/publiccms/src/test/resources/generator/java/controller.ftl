@@ -40,6 +40,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
+     * @param model
      * @return operate result
      */
     @RequestMapping("save")
@@ -68,6 +69,7 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      * @param _csrf
      * @param request
      * @param session
+     * @param model
      * @return operate result
      */
     @RequestMapping("delete")

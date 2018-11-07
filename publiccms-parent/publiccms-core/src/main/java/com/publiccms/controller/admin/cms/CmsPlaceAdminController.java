@@ -181,7 +181,7 @@ public class CmsPlaceAdminController extends AbstractController {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
             service.check(site.getId(), ids, path);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), user.getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, ',')));
         }
@@ -215,7 +215,7 @@ public class CmsPlaceAdminController extends AbstractController {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
             service.uncheck(site.getId(), ids, path);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(site.getId(), user.getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "check.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, ',')));
         }

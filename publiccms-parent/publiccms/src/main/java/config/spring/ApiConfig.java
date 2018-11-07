@@ -12,7 +12,7 @@ import com.publiccms.common.interceptor.CorsInterceptor;
 
 /**
  * 
- * WebConfig WebServlet配置类
+ * ApiConfig ApiServlet配置类
  *
  */
 @Configuration
