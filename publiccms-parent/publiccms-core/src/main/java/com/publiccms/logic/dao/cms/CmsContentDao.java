@@ -185,22 +185,27 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (CommonUtils.notEmpty(queryEntitry.getStatus())) {
             queryHandler.condition("bean.status in (:status)").setParameter("status", queryEntitry.getStatus());
         }
-        if (CommonUtils.notEmpty(queryEntitry.getCategoryIds())) {
-            queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
-                    queryEntitry.getCategoryIds());
-        } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
-            queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
-        }
+        if (CommonUtils.notEmpty(queryEntitry.getParentId())) {
+            queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", queryEntitry.getParentId());
+        } else {
+            if (CommonUtils.notEmpty(queryEntitry.getCategoryIds())) {
+                queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
+                        queryEntitry.getCategoryIds());
+            } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
+                queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
+            }
+            if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
+                queryHandler.condition("bean.parentId is null");
+            }
+        } 
         if (null != queryEntitry.getDisabled()) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", queryEntitry.getDisabled());
         }
         if (CommonUtils.notEmpty(queryEntitry.getModelIds())) {
             queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", queryEntitry.getModelIds());
         }
-        if (CommonUtils.notEmpty(queryEntitry.getParentId())) {
-            queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", queryEntitry.getParentId());
-        } else if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
-            queryHandler.condition("bean.parentId is null");
+        if (CommonUtils.notEmpty(queryEntitry.getUserId())) {
+            queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
         }
         if (null != queryEntitry.getOnlyUrl()) {
             queryHandler.condition("bean.onlyUrl = :onlyUrl").setParameter("onlyUrl", queryEntitry.getOnlyUrl());
@@ -220,9 +225,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         if (CommonUtils.notEmpty(queryEntitry.getTitle())) {
             queryHandler.condition("(bean.title like :title)").setParameter("title", like(queryEntitry.getTitle()));
-        }
-        if (CommonUtils.notEmpty(queryEntitry.getUserId())) {
-            queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
         }
         if (null != queryEntitry.getStartPublishDate()) {
             queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate",
