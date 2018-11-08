@@ -36,7 +36,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             if (null != entity && site.getId() == entity.getSiteId()) {
                 Integer clicks = statisticsComponent.getContentClicks(entity.getId());
                 if (null != clicks) {
-                    entity.setClicks(clicks);
+                    entity.setClicks(entity.getClicks() + clicks);
                 }
                 handler.put("object", entity).render();
             }
@@ -47,7 +47,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 entityList.forEach(e -> {
                     Integer clicks = statisticsComponent.getContentClicks(e.getId());
                     if (null != clicks) {
-                        e.setClicks(clicks);
+                        e.setClicks(e.getClicks() + clicks);
                     }
                 });
                 Map<String, CmsContent> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())

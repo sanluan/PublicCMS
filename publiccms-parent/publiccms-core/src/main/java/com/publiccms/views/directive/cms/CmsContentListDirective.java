@@ -63,7 +63,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             list.forEach(e -> {
                 Integer clicks = statisticsComponent.getContentClicks(e.getId());
                 if (null != clicks) {
-                    e.setClicks(clicks);
+                    e.setClicks(e.getClicks() + clicks);
                 }
             });
         }
