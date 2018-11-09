@@ -29,7 +29,7 @@
             <ul>
                 <#list page.list as a>
                     <li>
-                        <a tname="moduleIds" tvalue="${a.id}">${(a.attached?no_esc)!} <@t.menu a.id/></a>
+                        <a tname="moduleIds" tvalue="${a.id}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>
                         <@moduleTree a.id/>
                     </li>
                 </#list>

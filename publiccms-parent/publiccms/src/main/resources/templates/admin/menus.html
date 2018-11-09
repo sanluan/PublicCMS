@@ -8,7 +8,7 @@
     <#list page.list as a>
         <#if (roleModuleMap[a.id?string])??&&roleModuleMap[a.id?string]>
     <div class="accordionHeader">
-        <h2>${a.attached?no_esc!} <@t.menu a.id/> <i class="icon icon-chevron-up"></i></h2>
+        <h2><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/> <i class="icon icon-chevron-up"></i></h2>
     </div>
     <div class="accordionContent">
     <#switch a.url!''>
@@ -70,7 +70,7 @@
                 <@_sysRoleModule roleIds=admin.roles moduleIds=t.childModuleIds!><#assign childRoleModuleMap=map!/></@_sysRoleModule>
                 <#list page.list as a>
                     <#if (childRoleModuleMap[a.id?string])?has_content&&childRoleModuleMap[a.id?string]>
-                <li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}" ${(a.url!'')?starts_with('report')?then('external="true"','')?no_esc}>${(a.attached?no_esc)!} <@t.menu a.id/></a></li>
+                <li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}" ${(a.url!'')?starts_with('report')?then('external="true"','')?no_esc}><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a></li>
                     </#if>
                 </#list>
             </@_sysModuleList>

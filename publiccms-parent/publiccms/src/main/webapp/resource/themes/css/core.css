@@ -423,7 +423,8 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:2
 #calendar .tm .hh li, #calendar .tm .mm li, #calendar .tm .ss li{display:block;float:left;cursor:pointer;width:24px;line-height:26px}
 
 /* custom icon */
-.icon-backward:before, .icon-chevron-down:before, .icon-chevron-up:before, .icon-forward:before, .icon-rubbish:before{font-family:iconfont;line-height:45px;vertical-align:unset}
+.icon-backward:before, .icon-chevron-down:before, .icon-chevron-up:before, .icon-forward:before, .icon-rubbish:before{font-family:iconfont;vertical-align:unset}
+.tabsPageHeader .icon-backward:before,.icon-forward:before{line-height:45px;}
 .icon-chevron-up:before{content:"\e654"}
 .icon-chevron-down:before{content:"\e668"}
 .icon-backward:before{content:"\e6ea";font-size:20px}
