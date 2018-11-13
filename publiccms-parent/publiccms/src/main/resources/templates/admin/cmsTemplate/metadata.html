@@ -95,6 +95,13 @@
                 </dd>
             </dl>
             <dl class="nowrap">
+                <dt><@t.page 'dynamic_config.allowed_cors'/>:</dt>
+                <dd>
+                    <label><input name="allowedCors" type="checkbox"/></label>
+                    <span class="info"><@t.page 'dynamic_config.allowed_cors.description'/></span>
+                </dd>
+            </dl>
+            <dl class="nowrap">
                 <dt><@t.page 'dynamic_config.content-type'/>:</dt>
                 <dd>
                     <input name="contentType" type="text" value="${(a.contentType)!}"/>
