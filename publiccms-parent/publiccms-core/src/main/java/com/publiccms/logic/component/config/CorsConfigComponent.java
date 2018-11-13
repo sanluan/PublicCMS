@@ -75,7 +75,7 @@ public class CorsConfigComponent implements SiteCache, Config {
                             .asList(StringUtils.split(configData.get(CONFIG_ALLOWED_METHODS), CommonConstants.COMMA_DELIMITED)));
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_HEADERS))) {
-                    config.setExposedHeaders(Arrays
+                    config.setAllowedHeaders(Arrays
                             .asList(StringUtils.split(configData.get(CONFIG_ALLOWED_HEADERS), CommonConstants.COMMA_DELIMITED)));
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_EXPOSED_HEADERS))) {
