@@ -33,3 +33,5 @@ INSERT INTO `sys_module_lang` VALUES ('comment_delete', 'ja', '削除');
 UPDATE `sys_module` SET `attached` = replace(replace(`attached`,'<i class=\"',''),' icon-large\"></i>','');
 ALTER TABLE  `sys_module`
     MODIFY COLUMN `attached` varchar(50) default NULL COMMENT '标题附加' AFTER `authorized_url`;
+ALTER TABLE `sys_user` 
+    ADD COLUMN `salt` varchar(20) NULL COMMENT '混淆码,为空时则密码为md5,不为空时为sha2(sha2(password)+salt)' AFTER `password`;

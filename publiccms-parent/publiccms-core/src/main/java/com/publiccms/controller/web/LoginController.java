@@ -30,7 +30,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -93,7 +93,7 @@ public class LoginController extends AbstractController {
             String ip = RequestUtils.getIpAddress(request);
             Date now = CommonUtils.getDate();
             if (ControllerUtils.verifyCustom("password",
-                    null == user || !VerificationUtils.md5Encode(password).equals(user.getPassword()), model)
+                    null == user || !UserPasswordUtils.passwordEncode(password, user.getSalt()).equals(user.getPassword()), model)
                     || verifyNotEnablie(user, model)) {
                 Long userId = null;
                 if (null != user) {
@@ -103,13 +103,17 @@ public class LoginController extends AbstractController {
                         new LogLogin(site.getId(), username, userId, ip, LogLoginService.CHANNEL_WEB, false, now, password));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + loginPath;
             } else {
+                if (UserPasswordUtils.needUpdate(user.getSalt())) {
+                    String salt = UserPasswordUtils.getSalt();
+                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+                }
+                service.updateLoginStatus(user.getId(), ip);
                 String authToken = UUID.randomUUID().toString();
                 int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                         LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 addLoginStatus(user, authToken, request, response, expiryMinutes);
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
                         DateUtils.addMinutes(now, expiryMinutes), ip));
-                service.updateLoginStatus(user.getId(), ip);
                 logLoginService.save(
                         new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB, true, now, null));
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
@@ -152,7 +156,7 @@ public class LoginController extends AbstractController {
     public String register(SysUser entity, String repassword, String returnUrl, String channel, String openId,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         SysSite site = getSite(request);
-        
+
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -177,14 +181,16 @@ public class LoginController extends AbstractController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             String ip = RequestUtils.getIpAddress(request);
-            entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
+            String salt = UserPasswordUtils.getSalt();
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), salt));
+            entity.setSalt(salt);
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
             service.save(entity);
-            
+
             int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                     LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
-            
+
             Date now = CommonUtils.getDate();
             String authToken;
             Date expiryDate = null;

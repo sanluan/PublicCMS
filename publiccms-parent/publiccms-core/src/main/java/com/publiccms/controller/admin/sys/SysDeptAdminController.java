@@ -21,7 +21,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategory;
@@ -181,7 +181,8 @@ public class SysDeptAdminController extends AbstractController {
                 if (ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
-                entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
+                entity.setSalt(UserPasswordUtils.getSalt());
+                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
             } else {
                 entity.setPassword(user.getPassword());
                 if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
@@ -205,7 +206,8 @@ public class SysDeptAdminController extends AbstractController {
             }
             entity.setDeptId(dept.getId());
             entity.setSiteId(site.getId());
-            entity.setPassword(VerificationUtils.md5Encode(entity.getPassword()));
+            entity.setSalt(UserPasswordUtils.getSalt());
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
             userService.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {
                 for (Integer roleId : roleIds) {

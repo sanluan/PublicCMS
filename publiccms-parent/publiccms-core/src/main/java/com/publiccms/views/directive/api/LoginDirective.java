@@ -14,7 +14,7 @@ import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
@@ -45,12 +45,17 @@ public class LoginDirective extends AbstractAppDirective {
                 user = service.findByEmail(site.getId(), username);
             }
             String ip = RequestUtils.getIpAddress(handler.getRequest());
-            if (null != user && !user.isDisabled() && user.getPassword().equals(VerificationUtils.md5Encode(password))) {
+            if (null != user && !user.isDisabled()
+                    && user.getPassword().equals(UserPasswordUtils.passwordEncode(password, user.getSalt()))) {
+                if (UserPasswordUtils.needUpdate(user.getSalt())) {
+                    String salt = UserPasswordUtils.getSalt();
+                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+                }
+                service.updateLoginStatus(user.getId(), ip);
                 String authToken = UUID.randomUUID().toString();
                 Date now = CommonUtils.getDate();
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now,
                         DateUtils.addDays(now, 30), ip));
-                service.updateLoginStatus(user.getId(), ip);
                 logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, app.getChannel(), true,
                         CommonUtils.getDate(), null));
                 user.setPassword(null);

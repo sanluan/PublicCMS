@@ -25,7 +25,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysEmailToken;
 import com.publiccms.entities.sys.SysSite;
@@ -84,11 +84,14 @@ public class UserController extends AbstractController {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
+        if (null != user) {
+            user = service.getEntity(user.getId());
+        }
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
                 || ControllerUtils.verifyNotEmpty("user", user, model)
                 || ControllerUtils.verifyNotEmpty("password", password, model)
-                || ControllerUtils.verifyNotEquals("repassword", password, repassword, model) || ControllerUtils
-                        .verifyNotEquals("password", user.getPassword(), VerificationUtils.md5Encode(oldpassword), model)) {
+                || ControllerUtils.verifyNotEquals("repassword", password, repassword, model) || ControllerUtils.verifyNotEquals(
+                        "password", user.getPassword(), UserPasswordUtils.passwordEncode(oldpassword, user.getSalt()), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
@@ -102,7 +105,8 @@ public class UserController extends AbstractController {
                 }
             }
             ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
-            service.updatePassword(user.getId(), VerificationUtils.md5Encode(password));
+            String salt = UserPasswordUtils.getSalt();
+            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
             model.addAttribute(CommonConstants.MESSAGE, CommonConstants.SUCCESS);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "changepassword",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));

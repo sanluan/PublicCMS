@@ -21,7 +21,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysDept;
@@ -123,8 +123,9 @@ public class SysSiteAdminController extends AbstractController {
             deptService.save(dept);// 初始化部门
             SysRole role = new SysRole(entity.getId(), roleName, true, true);
             roleService.save(role);// 初始化角色
-            SysUser user = new SysUser(entity.getId(), userName, VerificationUtils.md5Encode(password), userName, dept.getId(),
-                    true, role.getId().toString(), null, false, true, false, null, null, 0, CommonUtils.getDate());
+            String salt = UserPasswordUtils.getSalt();
+            SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt), salt, userName,
+                    dept.getId(), true, role.getId().toString(), null, false, true, false, null, null, 0, CommonUtils.getDate());
             userService.save(user);// 初始化用户
             roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

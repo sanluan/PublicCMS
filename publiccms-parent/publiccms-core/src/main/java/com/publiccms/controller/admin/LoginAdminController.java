@@ -26,7 +26,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
@@ -82,8 +82,8 @@ public class LoginAdminController extends AbstractController {
         }
         String ip = RequestUtils.getIpAddress(request);
         SysUser user = service.findByName(site.getId(), username);
-        if (ControllerUtils.verifyNotExist("username", user, model)
-                || ControllerUtils.verifyNotEquals("password", VerificationUtils.md5Encode(password), user.getPassword(), model)
+        if (ControllerUtils.verifyNotExist("username", user, model) || ControllerUtils.verifyNotEquals("password",
+                UserPasswordUtils.passwordEncode(password, user.getSalt()), user.getPassword(), model)
                 || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
@@ -97,6 +97,10 @@ public class LoginAdminController extends AbstractController {
         }
 
         ControllerUtils.setAdminToSession(session, user);
+        if (UserPasswordUtils.needUpdate(user.getSalt())) {
+            String salt = UserPasswordUtils.getSalt();
+            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+        }
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
@@ -162,7 +166,7 @@ public class LoginAdminController extends AbstractController {
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        String encodedOldPassword = VerificationUtils.md5Encode(oldpassword);
+        String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt());
         if (ControllerUtils.verifyNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         } else if (ControllerUtils.verifyNotEmpty("password", password, model)
@@ -172,7 +176,8 @@ public class LoginAdminController extends AbstractController {
             ControllerUtils.clearAdminToSession(request.getContextPath(), request.getSession(), response);
             model.addAttribute(CommonConstants.MESSAGE, "message.needReLogin");
         }
-        service.updatePassword(user.getId(), VerificationUtils.md5Encode(password));
+        String salt = UserPasswordUtils.getSalt();
+        service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
         sysUserTokenService.delete(user.getId());
         logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "changepassword",
                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), encodedOldPassword));
