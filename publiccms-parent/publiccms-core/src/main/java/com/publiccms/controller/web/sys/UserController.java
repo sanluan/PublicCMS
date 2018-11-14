@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.base.AbstractController;
@@ -90,8 +91,9 @@ public class UserController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
                 || ControllerUtils.verifyNotEmpty("user", user, model)
                 || ControllerUtils.verifyNotEmpty("password", password, model)
-                || ControllerUtils.verifyNotEquals("repassword", password, repassword, model) || ControllerUtils.verifyNotEquals(
-                        "password", user.getPassword(), UserPasswordUtils.passwordEncode(oldpassword, user.getSalt()), model)) {
+                || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)
+                || null != user.getPassword() && ControllerUtils.verifyNotEquals("password", user.getPassword(),
+                        UserPasswordUtils.passwordEncode(oldpassword, user.getSalt()), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
@@ -107,11 +109,30 @@ public class UserController extends AbstractController {
             ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
             String salt = UserPasswordUtils.getSalt();
             service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+            if (user.isWeakPassword() && !UserPasswordUtils.isWeek(user.getName(), password)) {
+                service.updateWeekPassword(user.getId(), false);
+            }
             model.addAttribute(CommonConstants.MESSAGE, CommonConstants.SUCCESS);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "changepassword",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
+    }
+
+    /**
+     * @param password
+     * @param session
+     * @return result
+     */
+    @RequestMapping("isWeak")
+    @ResponseBody
+    public Map<String, Object> isWeak(String password, HttpSession session) {
+        SysUser user = ControllerUtils.getUserFromSession(session);
+        Map<String, Object> result = new HashMap<>();
+        if (null != user) {
+            result.put("weak", UserPasswordUtils.isWeek(user.getName(), password));
+        }
+        return result;
     }
 
     /**

@@ -104,7 +104,7 @@ public class AdminConfig implements WebMvcConfigurer {
         bean.setUnauthorizedUrl("/common/unauthorizedUrl.html");
         bean.setLoginJsonUrl("/common/ajaxTimeout.html");
         bean.setNeedNotLoginUrls(new String[] { "/logout", "/changeLocale", "/common/", "/login" });
-        bean.setNeedNotAuthorizedUrls(new String[] { "/index", "/main", "/menus" });
+        bean.setNeedNotAuthorizedUrls(new String[] { "/index", "/main", "/menus", "/isWeak" });
         return bean;
     }
 

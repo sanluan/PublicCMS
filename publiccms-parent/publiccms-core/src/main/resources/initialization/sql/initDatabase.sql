@@ -1394,7 +1394,9 @@ CREATE TABLE `sys_user` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '用户名',
-  `password` varchar(32) NOT NULL COMMENT '密码',
+  `password` varchar(128) NOT NULL COMMENT '密码',
+  `salt` varchar(20) DEFAULT NULL COMMENT '混淆码,为空时则密码为md5,不为空时为sha2(sha2(password)+salt)',
+  `weak_password` tinyint(1) NOT NULL DEFAULT '0' COMMENT '弱密码',
   `nick_name` varchar(45) NOT NULL COMMENT '昵称',
   `dept_id` int(11) default NULL COMMENT '部门',
   `owns_all_content` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有所有内容权限',
@@ -1420,7 +1422,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', '管理员', '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, 1, '管理员', '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
 
 
 -- ----------------------------

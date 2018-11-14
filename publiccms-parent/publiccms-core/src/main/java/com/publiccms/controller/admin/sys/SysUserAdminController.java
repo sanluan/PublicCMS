@@ -121,6 +121,7 @@ public class SysUserAdminController extends AbstractController {
             entity.setSiteId(site.getId());
             entity.setSalt(UserPasswordUtils.getSalt());
             entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
+            entity.setWeakPassword(true);
             service.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {
                 for (Integer roleId : roleIds) {

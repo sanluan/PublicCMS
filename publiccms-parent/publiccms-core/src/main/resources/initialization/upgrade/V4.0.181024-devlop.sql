@@ -34,4 +34,6 @@ UPDATE `sys_module` SET `attached` = replace(replace(`attached`,'<i class=\"',''
 ALTER TABLE  `sys_module`
     MODIFY COLUMN `attached` varchar(50) default NULL COMMENT '标题附加' AFTER `authorized_url`;
 ALTER TABLE `sys_user` 
-    ADD COLUMN `salt` varchar(20) NULL COMMENT '混淆码,为空时则密码为md5,不为空时为sha2(sha2(password)+salt)' AFTER `password`;
+    ADD COLUMN `salt` varchar(20) NULL COMMENT '混淆码,为空时则密码为md5,不为空时为sha2(sha2(password)+salt)' AFTER `password`,
+    ADD COLUMN `weak_password` tinyint(1) NOT NULL DEFAULT 0 COMMENT '弱密码' AFTER `salt`,
+    MODIFY COLUMN `password` varchar(128) NOT NULL COMMENT '密码' AFTER `name`;

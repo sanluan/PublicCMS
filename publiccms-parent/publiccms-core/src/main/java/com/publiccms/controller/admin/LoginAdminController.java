@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Config;
@@ -101,6 +102,9 @@ public class LoginAdminController extends AbstractController {
             String salt = UserPasswordUtils.getSalt();
             service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
         }
+        if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
+            service.updateWeekPassword(user.getId(), true);
+        }
         service.updateLoginStatus(user.getId(), ip);
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
@@ -167,7 +171,8 @@ public class LoginAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt());
-        if (ControllerUtils.verifyNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
+        if (null != user.getPassword()
+                && ControllerUtils.verifyNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         } else if (ControllerUtils.verifyNotEmpty("password", password, model)
                 || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)) {
@@ -178,10 +183,25 @@ public class LoginAdminController extends AbstractController {
         }
         String salt = UserPasswordUtils.getSalt();
         service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+        if (user.isWeakPassword() && !UserPasswordUtils.isWeek(user.getName(), password)) {
+            service.updateWeekPassword(user.getId(), false);
+        }
         sysUserTokenService.delete(user.getId());
         logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "changepassword",
                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), encodedOldPassword));
         return "common/ajaxTimeout";
+    }
+
+    /**
+     * @param password
+     * @param session
+     * @return result
+     */
+    @RequestMapping("isWeak")
+    @ResponseBody
+    public boolean isWeak(String password, HttpSession session) {
+        SysUser user = ControllerUtils.getAdminFromSession(session);
+        return !UserPasswordUtils.isWeek(user.getName(), password);
     }
 
     /**

@@ -52,6 +52,9 @@ $(function(){
         callback:function(){
             initEnv();
             $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"toptry"});
+            <#if admin.weakPassword>
+                $.pdialog.open("myself/password.html?target=dialog", "_blank", "<@t.page 'user.new_password'/>", {mask: true, width: 400, height: 280});
+            </#if>
         }
     });
 });

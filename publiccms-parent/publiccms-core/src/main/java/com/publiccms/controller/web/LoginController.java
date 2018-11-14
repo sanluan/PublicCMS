@@ -107,6 +107,9 @@ public class LoginController extends AbstractController {
                     String salt = UserPasswordUtils.getSalt();
                     service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
                 }
+                if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
+                    service.updateWeekPassword(user.getId(), true);
+                }
                 service.updateLoginStatus(user.getId(), ip);
                 String authToken = UUID.randomUUID().toString();
                 int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
