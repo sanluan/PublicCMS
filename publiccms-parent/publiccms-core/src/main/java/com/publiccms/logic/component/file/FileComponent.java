@@ -156,7 +156,7 @@ public class FileComponent {
     public boolean createFile(String filePath, String content) throws IOException {
         File file = new File(filePath);
         if (CommonUtils.empty(file)) {
-            FileUtils.writeStringToFile(file, content, CommonConstants.DEFAULT_CHARSET);
+            FileUtils.writeStringToFile(file, content, CommonConstants.DEFAULT_CHARSET_NAME);
             return true;
         }
         return false;
@@ -224,7 +224,7 @@ public class FileComponent {
         File file = new File(filePath);
         try {
             if (file.isFile()) {
-                return FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
+                return FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
             }
         } catch (IOException e) {
             return null;

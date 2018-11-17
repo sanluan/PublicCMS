@@ -69,8 +69,7 @@ public class ApplicationConfig {
      */
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
-        CmsDataSource bean = new CmsDataSource(
-                getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
+        CmsDataSource bean = new CmsDataSource(getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
         CmsDataSource.initDefautlDataSource();
         return bean;
     }
@@ -117,13 +116,15 @@ public class ApplicationConfig {
      * @throws IOException
      */
     @Bean
-    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource)
-            throws PropertyVetoException, IOException {
+    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource) throws PropertyVetoException, IOException {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setPackagesToScan("com.publiccms.entities");
-        Properties properties = PropertiesLoaderUtils
-                .loadAllProperties(env.getProperty("cms.hibernate.configFilePath"));
+        Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.hibernate.configFilePath"));
+        String cacheConfigUri = "hibernate.javax.cache.uri";
+        if (properties.containsKey(cacheConfigUri)) {
+            properties.setProperty(cacheConfigUri, getClass().getResource(properties.getProperty(cacheConfigUri)).toString());
+        }
         properties.setProperty("hibernate.search.default.indexBase", getDirPath("/indexes/"));
         MultiTokenizerFactory.setName(env.getProperty("cms.tokenizerFactory"));
         bean.setHibernateProperties(properties);
@@ -208,8 +209,7 @@ public class ApplicationConfig {
     public FreeMarkerConfigurer freeMarkerConfigurer() throws IOException {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
         bean.setTemplateLoaderPath("classpath:/templates/");
-        Properties properties = PropertiesLoaderUtils
-                .loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
+        Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
         if (CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))) {
             properties.put("locale", env.getProperty("cms.defaultLocale"));
         }
@@ -250,7 +250,8 @@ public class ApplicationConfig {
     /**
      * json、Jsonp消息转换适配器，用于支持RequestBody、ResponseBody
      *
-     * @return json、jsonp message converter , support for requestbody、responsebody
+     * @return json、jsonp message converter , support for
+     *         requestbody、responsebody
      */
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
