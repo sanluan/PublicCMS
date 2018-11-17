@@ -14,7 +14,7 @@ CREATE TABLE `cms_category` (
   `tag_type_ids` text default NULL COMMENT '标签分类',
   `code` varchar(50) default NULL COMMENT '编码',
   `template_path` varchar(255) default NULL COMMENT '模板路径',
-  `path` varchar(1000) NOT NULL COMMENT '首页路径',
+  `path` varchar(1000) DEFAULT NULL COMMENT '首页路径',
   `only_url` tinyint(1) NOT NULL COMMENT '外链',
   `has_static` tinyint(1) NOT NULL COMMENT '已经静态化',
   `url` varchar(1000) default NULL COMMENT '首页地址',
