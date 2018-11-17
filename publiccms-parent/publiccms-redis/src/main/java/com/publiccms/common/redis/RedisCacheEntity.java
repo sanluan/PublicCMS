@@ -40,6 +40,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
         Jedis jedis = jedisPool.getResource();
         jedis.set(getKey(key), valueSerializer.serialize(value));
         jedis.zadd(byteRegion, System.currentTimeMillis(), keySerializer.serialize(key));
+        jedis.close();
         return null;
     }
 
