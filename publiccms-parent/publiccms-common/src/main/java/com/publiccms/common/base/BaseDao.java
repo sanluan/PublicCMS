@@ -158,7 +158,6 @@ public abstract class BaseDao<E> {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
             queryHandler.condition("bean." + pk).append("in (:ids)").setParameter("ids", ids);
-            queryHandler.setCacheable(false);
             return (List<E>) getList(queryHandler);
         }
         return Collections.emptyList();
