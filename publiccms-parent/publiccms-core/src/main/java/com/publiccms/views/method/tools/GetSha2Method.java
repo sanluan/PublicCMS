@@ -1,14 +1,6 @@
 package com.publiccms.views.method.tools;
 
-import java.util.List;
-
 import org.springframework.stereotype.Component;
-
-import com.publiccms.common.base.BaseMethod;
-import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.VerificationUtils;
-
-import freemarker.template.TemplateModelException;
 
 /**
  *
@@ -16,25 +8,5 @@ import freemarker.template.TemplateModelException;
  * 
  */
 @Component
-public class GetSha2Method extends BaseMethod {
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public Object exec(@SuppressWarnings("rawtypes") List arguments) throws TemplateModelException {
-        String string = getString(0, arguments);
-        if (CommonUtils.notEmpty(string)) {
-            return VerificationUtils.sha2Encode(string);
-        }
-        return null;
-    }
-    
-    @Override
-    public boolean needAppToken() {
-        return false;
-    }
-
-    @Override
-    public int minParametersNumber() {
-        return 1;
-    }
+public class GetSha2Method extends GetSha512Method {
 }

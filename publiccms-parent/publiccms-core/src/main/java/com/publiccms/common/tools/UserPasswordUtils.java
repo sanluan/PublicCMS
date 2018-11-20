@@ -15,7 +15,7 @@ public class UserPasswordUtils {
 
     public static String passwordEncode(String password, String salt) {
         if (null != salt && SALT_LENGTH == salt.length()) {
-            return VerificationUtils.sha2Encode(VerificationUtils.sha2Encode(password) + salt);
+            return VerificationUtils.sha512Encode(VerificationUtils.sha512Encode(password) + salt);
         } else {
             return VerificationUtils.md5Encode(password);
         }
