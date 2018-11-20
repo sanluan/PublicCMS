@@ -72,9 +72,9 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         }
         sb.append("/");
         sb.append(database);
-        sb.append("?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=round&useSSL=false");
+        sb.append("?useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=round&useSSL=false&serverTimezone=GMT");
         dbconfig.setProperty("jdbc.url", sb.toString());
-        dbconfig.setProperty("jdbc.driverClassName", "com.mysql.jdbc.Driver");
+        dbconfig.setProperty("jdbc.driverClassName", "com.mysql.cj.jdbc.Driver");
     }
 
     @Override

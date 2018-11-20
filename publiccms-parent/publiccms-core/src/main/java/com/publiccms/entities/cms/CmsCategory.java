@@ -200,7 +200,7 @@ public class CmsCategory implements java.io.Serializable {
         this.templatePath = templatePath;
     }
 
-    @Column(name = "path", nullable = false, length = 2000)
+    @Column(name = "path", length = 1000)
     public String getPath() {
         return this.path;
     }
@@ -227,7 +227,7 @@ public class CmsCategory implements java.io.Serializable {
         this.hasStatic = hasStatic;
     }
 
-    @Column(name = "url", length = 2048)
+    @Column(name = "url", length = 1000)
     public String getUrl() {
         return this.url;
     }
@@ -236,7 +236,7 @@ public class CmsCategory implements java.io.Serializable {
         this.url = url;
     }
 
-    @Column(name = "content_path", length = 500)
+    @Column(name = "content_path", length = 1000)
     public String getContentPath() {
         return this.contentPath;
     }

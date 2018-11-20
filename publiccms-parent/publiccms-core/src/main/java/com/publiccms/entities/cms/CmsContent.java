@@ -338,7 +338,7 @@ public class CmsContent implements java.io.Serializable {
         this.hasStatic = hasStatic;
     }
 
-    @Column(name = "url", length = 2048)
+    @Column(name = "url", length = 1000)
     public String getUrl() {
         return this.url;
     }

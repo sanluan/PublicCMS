@@ -158,7 +158,6 @@ public abstract class BaseDao<E> {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
             queryHandler.condition("bean." + pk).append("in (:ids)").setParameter("ids", ids);
-            queryHandler.setCacheable(false);
             return (List<E>) getList(queryHandler);
         }
         return Collections.emptyList();
@@ -474,7 +473,7 @@ public abstract class BaseDao<E> {
     @SuppressWarnings("unchecked")
     private Class<E> getEntityClass() {
         return null == clazz
-                ? this.clazz = (Class<E>) ((ParameterizedType) this.getClass().getGenericSuperclass()).getActualTypeArguments()[0]
+                ? this.clazz = (Class<E>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]
                 : clazz;
     }
 

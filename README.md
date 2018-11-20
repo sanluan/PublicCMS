@@ -26,6 +26,11 @@ https://pan.baidu.com/s/1QIPaIhuASKC_16ZJ6v4SgQ 密码:eo4r
 * 版本:V4.0 商用付费授权协议:详情参见LICENSE
 * 版本:V1.0,V2016,V2017 完全免费授权协议:MIT
 
+## 环境要求
+
+* jdk或jre 1.8 及以上
+* mysql 5.5 及以上
+
 ## 目录说明
 
 * data\publiccms	PublicCMS数据目录

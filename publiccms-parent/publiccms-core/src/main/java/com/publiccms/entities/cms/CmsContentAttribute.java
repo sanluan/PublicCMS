@@ -81,7 +81,7 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.source = source;
     }
 
-    @Column(name = "source_url", length = 2048)
+    @Column(name = "source_url", length = 1000)
     public String getSourceUrl() {
         return this.sourceUrl;
     }

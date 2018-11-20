@@ -49,7 +49,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
             checkFilePath(servletcontext);
             File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
             if (file.exists()) {
-                String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET);
+                String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
                 if (CmsVersion.getVersion().equals(version)) {
                     CmsVersion.setInitialized(true);
                     CmsDataSource.initDefautlDataSource();
