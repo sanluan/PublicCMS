@@ -47,7 +47,7 @@
 //            'print', 'preview', 'searchreplace', 'drafts', 'help'
 //        ]]
     	, toolbars: [[
-                  'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'forecolor', 'backcolor','spechars', '|',
+                  'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'forecolor', 'backcolor','spechars', 'lineheight', '|',
                   'paragraph', 'fontfamily', 'fontsize', '|', 
                   'insertorderedlist', 'insertunorderedlist','indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 
                   'link', 'unlink', '|', 'insertvideo', 

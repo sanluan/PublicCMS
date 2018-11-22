@@ -50,7 +50,7 @@
             <legend><@t.page 'content.system_field'/></legend>
             <dl class="nowrap">
                 <dt>
-                    <label><@t.page 'field.title'/>:</label>
+                    <label><@t.page 'field.title'/>(title):</label>
                 </dt>
                 <dd>
                     <input name="fieldTextMap[title]" class="required" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
@@ -58,7 +58,7 @@
             </dl>
             <dl class="nowrap urlText" style="display:none">
                 <dt>
-                    <label><@t.page 'field.url_text'/>:</label>
+                    <label><@t.page 'field.url_text'/>(url):</label>
                 </dt>
                 <dd>
                     <input name="fieldTextMap[url]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
@@ -66,22 +66,16 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="copied"/><@t.page 'copied'/></label>
+                    <label><input name="fieldList" type="checkbox" value="copied"/><@t.page 'copied'/>(copied)</label>
                 </dt>
                 <dd>
-                    <label><@t.page 'field.copied'/>:</label>
+                    <label><@t.page 'text'/>:</label>
                     <input name="fieldTextMap[copied]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['copied'])!t.pageMessage('copied')}"/>
-                    <label><@t.page 'field.source'/>:</label>
-                    <input name="fieldTextMap[source]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['source'])!t.pageMessage('content.source')}"/>
-                    <label><input name="requiredFieldList" type="checkbox" value="source"/><@t.page 'required'/></label>
-                    <label><@t.page 'field.source_url'/>:</label>
-                    <input name="fieldTextMap[sourceUrl]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['sourceUrl'])!t.pageMessage('content.source_url')}"/>
-                    <label><input name="requiredFieldList" type="checkbox" value="sourceUrl"/><@t.page 'required'/></label>
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="tag"/><@t.page 'tag'/></label>
+                    <label><input name="fieldList" type="checkbox" value="tag"/><@t.page 'tag'/>(tag)</label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
@@ -90,7 +84,7 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="author"/><@t.page 'content.author'/></label>
+                    <label><input name="fieldList" type="checkbox" value="author"/><@t.page 'content.author'/>(author)</label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
@@ -100,7 +94,7 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="editor"/><@t.page 'button.edit'/></label>
+                    <label><input name="fieldList" type="checkbox" value="editor"/><@t.page 'button.edit'/>(editor)</label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
@@ -110,7 +104,7 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'description'/></label>
+                    <label><input name="fieldList" type="checkbox" value="description"/><@t.page 'description'/>(description)</label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
@@ -120,7 +114,7 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/></label>
+                    <label><input name="fieldList" type="checkbox" value="cover"/><@t.page 'cover'/>(cover)</label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
@@ -128,9 +122,25 @@
                     <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
                 </dd>
             </dl>
+        </fieldset>
+        <fieldset class="systemField">
+            <legend><@t.page 'extend_field'/></legend>
+            <dl class="nowrap copied">
+                <dt>
+                    <label><@t.page 'content.source'/></label>
+                </dt>
+                <dd>
+                    <label><@t.page 'field.source'/>(source):</label>
+                    <input name="fieldTextMap[source]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['source'])!t.pageMessage('content.source')}"/>
+                    <label><input name="requiredFieldList" type="checkbox" value="source"/><@t.page 'required'/></label>
+                    <label><@t.page 'field.source_url'/>(sourceUrl):</label>
+                    <input name="fieldTextMap[sourceUrl]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['sourceUrl'])!t.pageMessage('content.source_url')}"/>
+                    <label><input name="requiredFieldList" type="checkbox" value="sourceUrl"/><@t.page 'required'/></label>
+                </dd>
+            </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="content"/><@t.page 'content.text'/></label>
+                    <label><input name="fieldList" type="checkbox" value="content"/><@t.page 'content.text'/>(text)</label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
@@ -149,11 +159,18 @@
             $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
                 var box = $(this).parent().parent().parent();
                 box.find('dd').hide();
+                $('.copied',navTab.getCurrentPanel()).hide();
                 $(this).click(function(){
                     if( $(this).is(':checked') ) {
                         box.find('dd').show().find('input[type=text]').addClass('required');
+                        if("copied"==$(this).val()){
+                            $('.copied',navTab.getCurrentPanel()).show().find('input[type=text]').addClass('required');
+                        }
                     } else {
                         box.find('dd').hide().find('input[type=text]').removeClass('required').val('');
+                        if("copied"==$(this).val()){
+                            $('.copied',navTab.getCurrentPanel()).hide().find('input[type=text]').removeClass('required');
+                        }
                     }
                 });
             });
