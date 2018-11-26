@@ -24,7 +24,6 @@ public class CmsPageMetadata implements java.io.Serializable {
     private boolean useDynamic;
     private boolean needLogin;
     private boolean needBody;
-    private boolean allowedCors;
     private String acceptParameters;
     private Integer cacheTime;
     private String contentType;
@@ -162,20 +161,6 @@ public class CmsPageMetadata implements java.io.Serializable {
      */
     public void setNeedBody(boolean needBody) {
         this.needBody = needBody;
-    }
-
-    /**
-     * @return the allowedCors
-     */
-    public boolean isAllowedCors() {
-        return allowedCors;
-    }
-
-    /**
-     * @param allowedCors the allowedCors to set
-     */
-    public void setAllowedCors(boolean allowedCors) {
-        this.allowedCors = allowedCors;
     }
 
     /**

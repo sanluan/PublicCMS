@@ -21,14 +21,12 @@ import org.springframework.web.util.UrlPathHelper;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.interceptor.CorsInterceptor;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
@@ -46,8 +44,6 @@ public class IndexController extends AbstractController {
     private MetadataComponent metadataComponent;
     @Autowired
     private TemplateCacheComponent templateCacheComponent;
-    @Autowired
-    private CorsConfigComponent corsConfigComponent;
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
@@ -149,12 +145,6 @@ public class IndexController extends AbstractController {
             model.addAttribute("metadata", metadata.getAsMap(data));
             if (metadata.isNeedBody()) {
                 model.addAttribute("body", body);
-            }
-            if (metadata.isAllowedCors()) {
-                try {
-                    CorsInterceptor.corsProcessor.processRequest(corsConfigComponent.getConfig(site), request, response);
-                } catch (IOException e) {
-                }
             }
             if (CommonUtils.notEmpty(metadata.getContentType())) {
                 response.setContentType(metadata.getContentType());
