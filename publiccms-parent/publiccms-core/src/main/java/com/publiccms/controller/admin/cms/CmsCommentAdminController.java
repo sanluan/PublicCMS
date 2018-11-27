@@ -47,8 +47,8 @@ public class CmsCommentAdminController extends AbstractController {
             SysSite site = getSite(request);
             service.check(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "cmsComment.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, ',')));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "cmsComment.place", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -70,8 +70,8 @@ public class CmsCommentAdminController extends AbstractController {
             SysSite site = getSite(request);
             service.uncheck(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "cmsComment.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, ',')));
+                    LogLoginService.CHANNEL_WEB_MANAGER, "cmsComment.place", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -91,7 +91,7 @@ public class CmsCommentAdminController extends AbstractController {
         }
         SysSite site = getSite(request);
         if (CommonUtils.notEmpty(ids)) {
-            service.delete(ids);
+            service.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsComment", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, ',')));

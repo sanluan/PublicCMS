@@ -66,7 +66,7 @@ public class ContentController extends AbstractController {
      * 保存内容
      * 
      * @param entity
-     * @param draft 
+     * @param draft
      * @param attribute
      * @param contentParameters
      * @param returnUrl
@@ -161,6 +161,22 @@ public class ContentController extends AbstractController {
         } else {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
+    }
+
+    /**
+     * 内容评分
+     * 
+     * @param id
+     * @return view name
+     */
+    @RequestMapping("scores")
+    @ResponseBody
+    public int scores(Long id) {
+        CmsContentStatistics contentStatistics = statisticsComponent.contentScores(id);
+        if (null != contentStatistics && null != contentStatistics.getEntity()) {
+            return contentStatistics.getEntity().getScores() + contentStatistics.getScores();
+        }
+        return 0;
     }
 
     /**

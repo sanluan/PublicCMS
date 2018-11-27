@@ -104,7 +104,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param tagIds
      * @param startPublishDate
      * @param endPublishDate
-     * @param orderField 
+     * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
@@ -253,9 +253,20 @@ public class CmsContentService extends BaseService<CmsContent> {
             CmsContent entity = getEntity(entityStatistics.getId());
             if (null != entity) {
                 entity.setClicks(entity.getClicks() + entityStatistics.getClicks());
-                entity.setComments(entity.getComments() + entityStatistics.getComments());
                 entity.setScores(entity.getScores() + entityStatistics.getScores());
             }
+        }
+    }
+
+    /**
+     * @param siteId
+     * @param id
+     * @param comments
+     */
+    public void updateComments(short siteId, Serializable id, int comments) {
+        CmsContent entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId()) {
+            entity.setClicks(entity.getClicks() + comments);
         }
     }
 

@@ -151,7 +151,7 @@ public class StatisticsComponent implements Cache {
         if (CommonUtils.notEmpty(id)) {
             CmsContentStatistics contentStatistics = contentCache.get(id);
             if (null == contentStatistics) {
-                contentStatistics = new CmsContentStatistics(id, 1, 0, 0, contentService.getEntity(id));
+                contentStatistics = new CmsContentStatistics(id, 1, 0, contentService.getEntity(id));
             } else {
                 contentStatistics.setClicks(contentStatistics.getClicks() + 1);
             }
@@ -164,6 +164,29 @@ public class StatisticsComponent implements Cache {
             return null;
         }
     }
+
+    /**
+     * @param id
+     * @return content statistics
+     */
+    public CmsContentStatistics contentScores(Long id) {
+        if (CommonUtils.notEmpty(id)) {
+            CmsContentStatistics contentStatistics = contentCache.get(id);
+            if (null == contentStatistics) {
+                contentStatistics = new CmsContentStatistics(id, 0, 1, contentService.getEntity(id));
+            } else {
+                contentStatistics.setScores(contentStatistics.getScores() + 1);
+            }
+            List<CmsContentStatistics> list = contentCache.put(id, contentStatistics);
+            if (CommonUtils.notEmpty(list)) {
+                contentService.updateStatistics(list);
+            }
+            return contentStatistics;
+        } else {
+            return null;
+        }
+    }
+
     /**
      * @param id
      * @return content clicks

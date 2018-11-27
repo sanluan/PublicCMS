@@ -62,6 +62,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
             if (siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckDate(now);
+                contentService.updateComments(siteId, entity.getContentId(), 1);
             }
         }
     }
@@ -74,19 +75,28 @@ public class CmsCommentService extends BaseService<CmsComment> {
         for (CmsComment entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()) {
                 entity.setStatus(STATUS_PEND);
+                contentService.updateComments(siteId, entity.getContentId(), -1);
             }
         }
     }
 
-    @Override
-    public void delete(Serializable id) {
-        CmsComment entity = getEntity(id);
-        if (null != entity) {
-            entity.setDisabled(true);
+    /**
+     * @param siteId
+     * @param ids
+     */
+    public void delete(short siteId, Serializable[] ids) {
+        for (CmsComment entity : getEntitys(ids)) {
+            if (!entity.isDisabled()) {
+                entity.setDisabled(true);
+                if (STATUS_NORMAL == entity.getStatus()) {
+                    contentService.updateComments(siteId, entity.getContentId(), -1);
+                }
+            }
         }
     }
 
     @Autowired
     private CmsCommentDao dao;
-
+    @Autowired
+    private CmsContentService contentService;
 }
