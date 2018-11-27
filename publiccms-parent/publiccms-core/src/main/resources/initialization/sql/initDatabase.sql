@@ -73,7 +73,25 @@ CREATE TABLE `cms_category_type` (
   PRIMARY KEY  (`id`),
   KEY `site_id` (`site_id`)
 ) COMMENT='分类类型';
-
+-- ----------------------------
+-- Table structure for cms_comment
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_comment`;
+CREATE TABLE `cms_comment` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `content_id` bigint(20) NOT NULL COMMENT '文章内容',
+  `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
+  `check_date` datetime DEFAULT NULL COMMENT '审核日期',
+  `update_date` datetime DEFAULT NULL COMMENT '更新日期',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `status` int(11) NOT NULL COMMENT '状态：1、已发布 2、待审核',
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  `text` text COMMENT '内容',
+  PRIMARY KEY (`id`),
+  KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`,`create_date`)
+) COMMENT='评论';
 -- ----------------------------
 -- Table structure for cms_content
 -- ----------------------------
