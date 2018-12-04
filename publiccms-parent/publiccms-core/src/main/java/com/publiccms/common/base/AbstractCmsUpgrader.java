@@ -49,7 +49,7 @@ public abstract class AbstractCmsUpgrader {
     }
 
     /**
-     * @param stringWriter 
+     * @param stringWriter
      * @param connection
      * @param fromVersion
      * @throws SQLException
@@ -73,10 +73,11 @@ public abstract class AbstractCmsUpgrader {
      * @param host
      * @param port
      * @param database
+     * @param timeZone 
      * @throws IOException
      * @throws URISyntaxException
      */
-    public abstract void setDataBaseUrl(Properties dbconfig, String host, String port, String database)
+    public abstract void setDataBaseUrl(Properties dbconfig, String host, String port, String database, String timeZone)
             throws IOException, URISyntaxException;
 
     protected void updateMetadata(StringWriter stringWriter, Connection connection) {

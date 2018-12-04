@@ -176,7 +176,8 @@ public class InstallServlet extends HttpServlet {
             String host = request.getParameter("host");
             String port = request.getParameter("port");
             String database = request.getParameter("database");
-            cmsUpgrader.setDataBaseUrl(dbconfig, host, port, database);
+            String timeZone = request.getParameter("timeZone");
+            cmsUpgrader.setDataBaseUrl(dbconfig, host, port, database, timeZone);
             dbconfig.setProperty("jdbc.username", request.getParameter("username"));
             dbconfig.setProperty("jdbc.encryptPassword", VerificationUtils
                     .base64Encode(VerificationUtils.encrypt(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));

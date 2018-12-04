@@ -2,7 +2,9 @@ package com.publiccms.common.database;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -11,6 +13,7 @@ import java.util.Properties;
 
 import com.publiccms.common.base.AbstractCmsUpgrader;
 import com.publiccms.common.constants.CmsVersion;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -61,7 +64,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
     }
 
     @Override
-    public void setDataBaseUrl(Properties dbconfig, String host, String port, String database)
+    public void setDataBaseUrl(Properties dbconfig, String host, String port, String database, String timeZone)
             throws IOException, URISyntaxException {
         StringBuilder sb = new StringBuilder();
         sb.append("jdbc:mysql://");
@@ -72,7 +75,14 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         }
         sb.append("/");
         sb.append(database);
-        sb.append("?characterEncoding=UTF-8&zeroDateTimeBehavior=round&useSSL=false&serverTimezone=GMT");
+        sb.append("?characterEncoding=UTF-8&zeroDateTimeBehavior=round&useSSL=false");
+        if (CommonUtils.notEmpty(timeZone)) {
+            try {
+                sb.append("&serverTimezone=GMT");
+                sb.append(URLEncoder.encode(timeZone, Constants.DEFAULT_CHARSET_NAME));
+            } catch (UnsupportedEncodingException e) {
+            }
+        }
         dbconfig.setProperty("jdbc.url", sb.toString());
         dbconfig.setProperty("jdbc.driverClassName", "com.mysql.cj.jdbc.Driver");
     }
