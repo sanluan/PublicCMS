@@ -3,6 +3,7 @@
     <#assign
         category=object
         attribute=getCategoryAttribute(category.id)
+        url='?id=${id}'
     />
 <#if ids[1]=getHash(category.code+category.id)?string>
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home page</a>
+        <a href="${base}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -28,7 +29,7 @@
 <#if category?has_content>
     <main>
         <h1>Latest content</h1>
-<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
+<@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex count=category.pageSize>
     <#list page.list as a>
         <section>
             <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
@@ -40,7 +41,6 @@
     </#list>
         <div>
             <#assign
-                url='?id=${id}'
                 start=1
                 end=page.totalPage
             />

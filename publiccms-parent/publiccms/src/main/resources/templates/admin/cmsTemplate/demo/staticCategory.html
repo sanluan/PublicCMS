@@ -32,11 +32,6 @@
         </section>
     </#list>
         <div>
-            <#if !page.firstPage>
-                <a href="${getPage(url,page.prePage)}">Previous page</a>
-            <#else>
-                <span>Previous page</span>
-            </#if>
             <#assign
                 start=1
                 end=page.totalPage
@@ -46,6 +41,11 @@
             </#if>
             <#if (page.pageIndex+5) lt end>
                 <#assign end=page.pageIndex+4/>
+            </#if>
+            <#if !page.firstPage>
+                <a href="${getPage(url,page.prePage)}">Previous page</a>
+            <#else>
+                <span>Previous page</span>
             </#if>
             <#if start gt 1>
                 <a href="${getPage(url,1)}">1</a> ...

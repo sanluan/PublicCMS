@@ -3,6 +3,7 @@
     <#assign
         category=object
         attribute=getCategoryAttribute(category.id)
+        url='?id=${id}'
     />
 <#if ids[1]=getMd5(category.code+category.id)>
 <!DOCTYPE html>
@@ -18,7 +19,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home page</a>
+        <a href="${base}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -40,7 +41,6 @@
     </#list>
         <div>
             <#assign
-                url='?id=${id}'
                 start=1
                 end=page.totalPage
             />
