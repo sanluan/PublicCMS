@@ -15,12 +15,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.file.FileComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
 
@@ -32,8 +32,6 @@ import com.publiccms.logic.service.log.LogUploadService;
 @Controller
 @RequestMapping("kindeditor")
 public class KindEditorAdminController extends AbstractController {
-    @Autowired
-    private FileComponent fileComponent;
     @Autowired
     protected LogUploadService logUploadService;
 
@@ -51,12 +49,12 @@ public class KindEditorAdminController extends AbstractController {
         SysSite site = getSite(request);
         if (null != imgFile && !imgFile.isEmpty()) {
             String originalName = imgFile.getOriginalFilename();
-            String suffix = fileComponent.getSuffix(originalName);
-            String fileName = fileComponent.getUploadFileName(suffix);
+            String suffix = CmsFileUtils.getSuffix(originalName);
+            String fileName = CmsFileUtils.getUploadFileName(suffix);
             try {
-                fileComponent.upload(imgFile, siteComponent.getWebFilePath(site, fileName));
+                CmsFileUtils.upload(imgFile, siteComponent.getWebFilePath(site, fileName));
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix),
+                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, CmsFileUtils.getFileType(suffix),
                         imgFile.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put(RESULT_URL, fileName);

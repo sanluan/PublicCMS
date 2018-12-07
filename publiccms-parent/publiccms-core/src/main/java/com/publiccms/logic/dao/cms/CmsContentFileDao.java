@@ -20,14 +20,14 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
     /**
      * @param contentId
      * @param userId
-     * @param image
+     * @param fileTypes
      * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long contentId, Long userId, Boolean image, String orderField, String orderType,
+    public PageHandler getPage(Long contentId, Long userId, String[] fileTypes, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentFile bean");
         if (CommonUtils.notEmpty(contentId)) {
@@ -36,8 +36,8 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (null != image) {
-            queryHandler.condition("bean.image = :image").setParameter("image", image);
+        if (null != fileTypes) {
+            queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

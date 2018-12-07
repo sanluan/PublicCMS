@@ -4,14 +4,12 @@ package com.publiccms.views.directive.tools;
 
 import java.io.IOException;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
-import com.publiccms.logic.component.file.FileComponent;
+import com.publiccms.common.tools.CmsFileUtils;
 
 /**
  *
@@ -25,7 +23,7 @@ public class WebFileListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         handler.put("list",
-                fileComponent.getFileList(siteComponent.getWebFilePath(getSite(handler), path), handler.getString("orderField")))
+                CmsFileUtils.getFileList(siteComponent.getWebFilePath(getSite(handler), path), handler.getString("orderField")))
                 .render();
     }
 
@@ -33,8 +31,5 @@ public class WebFileListDirective extends AbstractTemplateDirective {
     public boolean needAppToken() {
         return true;
     }
-
-    @Autowired
-    private FileComponent fileComponent;
 
 }

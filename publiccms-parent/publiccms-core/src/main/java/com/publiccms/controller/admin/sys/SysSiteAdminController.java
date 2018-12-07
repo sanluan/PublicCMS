@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -31,7 +32,6 @@ import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysRoleUserId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.file.FileComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -67,8 +67,6 @@ public class SysSiteAdminController extends AbstractController {
     private CmsContentService contentService;
     @Autowired
     private SqlService sqlService;
-    @Autowired
-    private FileComponent fileComponent;
     @Autowired
     protected LogUploadService logUploadService;
 
@@ -230,9 +228,9 @@ public class SysSiteAdminController extends AbstractController {
         }
         if (null != file && !file.isEmpty()) {
             try {
-                fileComponent.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
+                CmsFileUtils.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
                 logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "license.dat", LogUploadService.FILE_TYPE_OTHER, file.getSize(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(),
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
                 return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {

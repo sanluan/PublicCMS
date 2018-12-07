@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsFileUtils;
+import com.publiccms.common.tools.CmsFileUtils.FileInfo;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.file.FileComponent;
-import com.publiccms.logic.component.file.FileComponent.FileInfo;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
@@ -35,7 +35,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         if (site.isUseSsi()) {
             String filePath = siteComponent.getWebTemplateFilePath(site,
                     TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
-            if (fileComponent.isFile(filePath)) {
+            if (CmsFileUtils.isFile(filePath)) {
                 Map<String, Boolean> map = new LinkedHashMap<>();
                 try {
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
@@ -45,7 +45,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
                     map.put(path, false);
                 }
                 handler.put("map", map).render();
-            } else if (fileComponent.isDirectory(filePath)) {
+            } else if (CmsFileUtils.isDirectory(filePath)) {
                 handler.put("map", dealDir(site, path)).render();
             }
         }
@@ -56,7 +56,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         Map<String, Boolean> map = new LinkedHashMap<>();
         String realPath = siteComponent.getWebTemplateFilePath(site,
                 TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
-        List<FileInfo> list = fileComponent.getFileList(realPath, null);
+        List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
             if (fileInfo.isDirectory()) {
@@ -75,8 +75,6 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         return map;
     }
 
-    @Autowired
-    private FileComponent fileComponent;
     @Autowired
     private TemplateComponent templateComponent;
     @Autowired

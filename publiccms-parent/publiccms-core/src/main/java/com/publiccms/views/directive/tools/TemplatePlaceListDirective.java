@@ -6,13 +6,12 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.logic.component.file.FileComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 
 /**
@@ -29,7 +28,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
         String path = handler.getString("path");
         Set<String> placeSet = new HashSet<>();
         if (CommonUtils.notEmpty(path)) {
-            String fileContent = fileComponent.getFileContent(siteComponent.getWebTemplateFilePath(getSite(handler), path));
+            String fileContent = CmsFileUtils.getFileContent(siteComponent.getWebTemplateFilePath(getSite(handler), path));
             if (CommonUtils.notEmpty(fileContent)) {
                 Matcher matcher = PLACE_PATTERN.matcher(fileContent);
                 while (matcher.find()) {
@@ -37,7 +36,7 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
                 }
                 Set<String> placeSet2 = new HashSet<>();
                 for (String place : placeSet) {
-                    String placeContent = fileComponent.getFileContent(
+                    String placeContent = CmsFileUtils.getFileContent(
                             siteComponent.getWebTemplateFilePath(getSite(handler), TemplateComponent.INCLUDE_DIRECTORY + place));
                     if (CommonUtils.notEmpty(placeContent)) {
                         Matcher placeMatcher = PLACE_PATTERN.matcher(placeContent);
@@ -57,6 +56,4 @@ public class TemplatePlaceListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
-    private FileComponent fileComponent;
 }

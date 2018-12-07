@@ -52,3 +52,15 @@ ALTER TABLE `sys_user`
     ADD COLUMN `salt` varchar(20) NULL COMMENT '混淆码,为空时则密码为md5,不为空时为sha2(sha2(password)+salt)' AFTER `password`,
     ADD COLUMN `weak_password` tinyint(1) NOT NULL DEFAULT 0 COMMENT '弱密码' AFTER `salt`,
     MODIFY COLUMN `password` varchar(128) NOT NULL COMMENT '密码' AFTER `name`;
+-- 2018-12-07 --
+ALTER TABLE `cms_content_file`
+    CHANGE COLUMN `image` `file_type` varchar(20) NOT NULL COMMENT '文件类型' AFTER `file_path`,
+    CHANGE COLUMN `size` `file_size` bigint(20) NOT NULL COMMENT '文件大小' AFTER `file_type`,
+    DROP INDEX `image`,
+    DROP INDEX `size`,
+    ADD INDEX `file_type`(`file_type`),
+    ADD INDEX `file_size` (`file_size`);
+UPDATE `cms_content_file` SET file_type = 'image' WHERE file_type = '1';
+UPDATE `cms_content_file` SET file_type = 'image' WHERE file_path like '%.png' or file_path like '%.jpg' or file_path like '%.gif' or file_path like '%.bmp';
+UPDATE `cms_content_file` SET file_type = 'video' WHERE file_path like '%.mp4' or file_path like '%.3gp';
+UPDATE `cms_content_file` SET file_type = 'other' WHERE file_type = '0';

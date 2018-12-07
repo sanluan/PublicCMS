@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -21,7 +22,6 @@ import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.file.FileComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
 
@@ -33,8 +33,6 @@ import com.publiccms.logic.service.log.LogUploadService;
 @Controller
 @RequestMapping("cmsWebFile")
 public class CmsWebFileAdminController extends AbstractController {
-    @Autowired
-    private FileComponent fileComponent;
     @Autowired
     protected LogUploadService logUploadService;
 
@@ -58,13 +56,13 @@ public class CmsWebFileAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebFilePath(site, path);
-                if (fileComponent.createFile(filePath, content)) {
+                if (CmsFileUtils.createFile(filePath, content)) {
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getWebHistoryFilePath(site, path);
-                    fileComponent.updateFile(filePath, historyFilePath, content);
+                    CmsFileUtils.updateFile(filePath, historyFilePath, content);
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.web.webfile", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
@@ -99,10 +97,10 @@ public class CmsWebFileAdminController extends AbstractController {
                 for (MultipartFile file : files) {
                     String originalName = file.getOriginalFilename();
                     String filePath = path + CommonConstants.SEPARATOR + originalName;
-                    fileComponent.upload(file, siteComponent.getWebFilePath(site, filePath));
+                    CmsFileUtils.upload(file, siteComponent.getWebFilePath(site, filePath));
                     logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, originalName,
-                            LogUploadService.getFileType(fileComponent.getSuffix(originalName)), file.getSize(),
+                            CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), filePath));
                 }
             } catch (IOException e) {
@@ -133,7 +131,7 @@ public class CmsWebFileAdminController extends AbstractController {
             for (String path : paths) {
                 String filePath = siteComponent.getWebFilePath(site, path);
                 String backupFilePath = siteComponent.getWebBackupFilePath(site, path);
-                if (ControllerUtils.verifyCustom("notExist.webfile", !fileComponent.moveFile(filePath, backupFilePath), model)) {
+                if (ControllerUtils.verifyCustom("notExist.webfile", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             }
@@ -160,7 +158,7 @@ public class CmsWebFileAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebFilePath(site, path);
-            if (fileComponent.isDirectory(filePath)) {
+            if (CmsFileUtils.isDirectory(filePath)) {
                 try {
                     String zipFileName = null;
                     if (path.endsWith("/") || path.endsWith("\\")) {
@@ -200,7 +198,7 @@ public class CmsWebFileAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebFilePath(site, path);
-            if (fileComponent.isFile(filePath)) {
+            if (CmsFileUtils.isFile(filePath)) {
                 try {
                     if (here) {
                         ZipUtils.unzipHere(filePath, encoding);
@@ -238,7 +236,7 @@ public class CmsWebFileAdminController extends AbstractController {
             SysSite site = getSite(request);
             path = path + CommonConstants.SEPARATOR + fileName;
             String filePath = siteComponent.getWebFilePath(site, path);
-            fileComponent.mkdirs(filePath);
+            CmsFileUtils.mkdirs(filePath);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "createDirectory.web.webfile", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), path));

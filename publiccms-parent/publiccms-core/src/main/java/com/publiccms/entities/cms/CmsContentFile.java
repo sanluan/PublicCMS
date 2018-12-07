@@ -32,10 +32,10 @@ public class CmsContentFile implements java.io.Serializable {
     private long userId;
     @GeneratorColumn(title = "文件路径")
     private String filePath;
-    @GeneratorColumn(title = "是否图片", condition = true)
-    private boolean image;
-    @GeneratorColumn(title = "大小", order = true)
-    private int size;
+    @GeneratorColumn(title = "图片类型", condition = true)
+    private String fileType;
+    @GeneratorColumn(title = "文件大小", order = true)
+    private long fileSize;
     @GeneratorColumn(title = "点击", order = true)
     private int clicks;
     @GeneratorColumn(title = "排序")
@@ -46,23 +46,23 @@ public class CmsContentFile implements java.io.Serializable {
     public CmsContentFile() {
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, boolean image, int size, int clicks, int sort) {
+    public CmsContentFile(long contentId, long userId, String filePath, String fileType, int fileSize, int clicks, int sort) {
         this.contentId = contentId;
         this.userId = userId;
         this.filePath = filePath;
-        this.image = image;
-        this.size = size;
+        this.fileType = fileType;
+        this.fileSize = fileSize;
         this.clicks = clicks;
         this.sort = sort;
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, boolean image, int size, int clicks, int sort,
+    public CmsContentFile(long contentId, long userId, String filePath, String fileType, int fileSize, int clicks, int sort,
             String description) {
         this.contentId = contentId;
         this.userId = userId;
         this.filePath = filePath;
-        this.image = image;
-        this.size = size;
+        this.fileType = fileType;
+        this.fileSize = fileSize;
         this.clicks = clicks;
         this.sort = sort;
         this.description = description;
@@ -107,22 +107,22 @@ public class CmsContentFile implements java.io.Serializable {
         this.filePath = filePath;
     }
 
-    @Column(name = "image", nullable = false)
-    public boolean isImage() {
-        return this.image;
+    @Column(name = "file_type", nullable = false, length = 20)
+    public String getFileType() {
+        return this.fileType;
     }
 
-    public void setImage(boolean image) {
-        this.image = image;
+    public void setFileType(String fileType) {
+        this.fileType = fileType;
     }
 
-    @Column(name = "size", nullable = false)
-    public int getSize() {
-        return this.size;
+    @Column(name = "file_size", nullable = false)
+    public long getFileSize() {
+        return this.fileSize;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
     }
 
     @Column(name = "clicks", nullable = false)

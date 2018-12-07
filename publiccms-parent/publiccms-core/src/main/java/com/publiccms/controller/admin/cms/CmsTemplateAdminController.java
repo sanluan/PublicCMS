@@ -14,13 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.cache.CacheComponent;
-import com.publiccms.logic.component.file.FileComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
@@ -51,8 +51,6 @@ public class CmsTemplateAdminController extends AbstractController {
     @Autowired
     private MetadataComponent metadataComponent;
     @Autowired
-    private FileComponent fileComponent;
-    @Autowired
     private CmsPlaceService cmsPlaceService;
     @Autowired
     private SysDeptPageService sysDeptPageService;
@@ -80,13 +78,13 @@ public class CmsTemplateAdminController extends AbstractController {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, path);
                 CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
-                if (fileComponent.createFile(filePath, content)) {
+                if (CmsFileUtils.createFile(filePath, content)) {
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.web.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site, path);
-                    fileComponent.updateFile(filePath, historyFilePath, content);
+                    CmsFileUtils.updateFile(filePath, historyFilePath, content);
                     if (CommonUtils.notEmpty(metadata.getCacheTime()) && metadata.getCacheTime() > 0) {
                         templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
                     }
@@ -130,14 +128,14 @@ public class CmsTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-                if (fileComponent.createFile(filePath, content)) {
+                if (CmsFileUtils.createFile(filePath, content)) {
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.place.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site,
                             TemplateComponent.INCLUDE_DIRECTORY + path);
-                    fileComponent.updateFile(filePath, historyFilePath, content);
+                    CmsFileUtils.updateFile(filePath, historyFilePath, content);
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.place.template", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), path));
@@ -179,7 +177,7 @@ public class CmsTemplateAdminController extends AbstractController {
             try {
                 for (MultipartFile file : files) {
                     String filePath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
-                    fileComponent.upload(file, siteComponent.getWebTemplateFilePath(site, filePath));
+                    CmsFileUtils.upload(file, siteComponent.getWebTemplateFilePath(site, filePath));
                     CmsPageMetadata metadata = new CmsPageMetadata();
                     metadata.setUseDynamic(true);
                     metadataComponent.updateTemplateMetadata(filePath, metadata);
@@ -222,7 +220,7 @@ public class CmsTemplateAdminController extends AbstractController {
                 templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
             }
             String backupFilePath = siteComponent.getWebTemplateBackupFilePath(site, path);
-            if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.moveFile(filePath, backupFilePath), model)) {
+            if (ControllerUtils.verifyCustom("notExist.template", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             metadataComponent.deleteTemplateMetadata(filePath);
@@ -257,7 +255,7 @@ public class CmsTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             String backupFilePath = siteComponent.getWebTemplateBackupFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-            if (ControllerUtils.verifyCustom("notExist.template", !fileComponent.moveFile(filePath, backupFilePath), model)) {
+            if (ControllerUtils.verifyCustom("notExist.template", !CmsFileUtils.moveFile(filePath, backupFilePath), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             metadataComponent.deletePlaceMetadata(filePath);
@@ -290,7 +288,7 @@ public class CmsTemplateAdminController extends AbstractController {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             try {
-                fileComponent.createFile(filePath, content);
+                CmsFileUtils.createFile(filePath, content);
                 metadataComponent.updatePlaceMetadata(filePath, metadata);
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.template.meta", RequestUtils.getIpAddress(request),
@@ -331,7 +329,7 @@ public class CmsTemplateAdminController extends AbstractController {
             SysSite site = getSite(request);
             String filePath = siteComponent.getWebTemplateFilePath(site, path);
             try {
-                fileComponent.createFile(filePath, content);
+                CmsFileUtils.createFile(filePath, content);
                 metadataComponent.updateTemplateMetadata(filePath, metadata);
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();

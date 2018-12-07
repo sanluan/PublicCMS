@@ -1,4 +1,4 @@
-package com.publiccms.logic.component.file;
+package com.publiccms.common.tools;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,13 +10,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -31,17 +31,46 @@ import net.coobird.thumbnailator.Thumbnails;
  * FileComponent 文件操作组件
  *
  */
-@Component
-public class FileComponent {
+public class CmsFileUtils {
     private static final String FILE_NAME_FORMAT_STRING = "yyyy/MM-dd/HH-mm-ssSSSS";
     private static final String ORDERFIELD_FILENAME = "fileName";
     private static final String ORDERFIELD_FILESIZE = "fileSize";
     private static final String ORDERFIELD_CREATEDATE = "createDate";
     private static final String ORDERFIELD_MODIFIEDDATE = "modifiedDate";
-    private final FileInfoComparator FILENAME_COMPARATOR = new FileInfoComparator();
-    private final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
-    private final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);
-    private final FileInfoComparator MODIFIEDDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_MODIFIEDDATE);
+    private static final FileInfoComparator FILENAME_COMPARATOR = new FileInfoComparator();
+    private static final FileInfoComparator FILESIZE_COMPARATOR = new FileInfoComparator(ORDERFIELD_FILESIZE);
+    private static final FileInfoComparator CREATEDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_CREATEDATE);
+    private static final FileInfoComparator MODIFIEDDATE_COMPARATOR = new FileInfoComparator(ORDERFIELD_MODIFIEDDATE);
+    /**
+     * 
+     */
+    public static final List<String> IMAGE_FILE_SUFFIXS = Arrays.asList(new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" });
+
+    /**
+     * 
+     */
+    public static final List<String> VIDEO_FILE_SUFFIXS = Arrays.asList(new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm",
+            ".rmvb", ".mpeg", ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm" });
+    /**
+     * 
+     */
+    public static final List<String> MUSIC_FILE_SUFFIXS = Arrays.asList(new String[] { ".mp3", ".wav", ".mid" });
+    /**
+     * 
+     */
+    public static final String FILE_TYPE_IMAGE = "image";
+    /**
+     * 
+     */
+    public static final String FILE_TYPE_VIDEO = "video";
+    /**
+     * 
+     */
+    public static final String FILE_TYPE_MUSIC = "music";
+    /**
+     * 
+     */
+    public static final String FILE_TYPE_OTHER = "other";
 
     /**
      * 获取目录下文件列表
@@ -50,7 +79,7 @@ public class FileComponent {
      * @param orderField
      * @return file info list
      */
-    public List<FileInfo> getFileList(String dirPath, String orderField) {
+    public static List<FileInfo> getFileList(String dirPath, String orderField) {
         List<FileInfo> fileList = new ArrayList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dirPath))) {
             for (Path entry : stream) {
@@ -86,7 +115,7 @@ public class FileComponent {
         return fileList;
     }
 
-    public void thumb(String sourceFilePath, String thumbFilePath, Integer width, Integer height) throws IOException {
+    public static void thumb(String sourceFilePath, String thumbFilePath, Integer width, Integer height) throws IOException {
         try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath);) {
             Thumbnails.of(sourceFilePath).size(width, height).toOutputStream(outputStream);
         }
@@ -97,7 +126,7 @@ public class FileComponent {
      * @param data
      * @throws IOException
      */
-    public void writeByteArrayToFile(String filePath, byte[] data) throws IOException {
+    public static void writeByteArrayToFile(String filePath, byte[] data) throws IOException {
         FileUtils.writeByteArrayToFile(new File(filePath), data);
     }
 
@@ -106,7 +135,7 @@ public class FileComponent {
      * @param destination
      * @throws IOException
      */
-    public void copyInputStreamToFile(InputStream source, String destination) throws IOException {
+    public static void copyInputStreamToFile(InputStream source, String destination) throws IOException {
         File dest = new File(destination);
         FileUtils.copyInputStreamToFile(source, dest);
     }
@@ -114,7 +143,7 @@ public class FileComponent {
     /**
      * @param filePath
      */
-    public void mkdirs(String filePath) {
+    public static void mkdirs(String filePath) {
         File file = new File(filePath);
         file.mkdirs();
     }
@@ -123,7 +152,7 @@ public class FileComponent {
      * @param filePath
      * @return
      */
-    public boolean isDirectory(String filePath) {
+    public static boolean isDirectory(String filePath) {
         File file = new File(filePath);
         return CommonUtils.notEmpty(file) && file.isDirectory();
     }
@@ -132,7 +161,7 @@ public class FileComponent {
      * @param filePath
      * @return
      */
-    public boolean isFile(String filePath) {
+    public static boolean isFile(String filePath) {
         File file = new File(filePath);
         return CommonUtils.notEmpty(file) && file.isFile();
     }
@@ -141,7 +170,7 @@ public class FileComponent {
      * @param filePath
      * @return
      */
-    public boolean exists(String filePath) {
+    public static boolean exists(String filePath) {
         return CommonUtils.notEmpty(new File(filePath));
     }
 
@@ -153,7 +182,7 @@ public class FileComponent {
      * @return whether to create successfully
      * @throws IOException
      */
-    public boolean createFile(String filePath, String content) throws IOException {
+    public static boolean createFile(String filePath, String content) throws IOException {
         File file = new File(filePath);
         if (CommonUtils.empty(file)) {
             FileUtils.writeStringToFile(file, content, CommonConstants.DEFAULT_CHARSET_NAME);
@@ -169,7 +198,7 @@ public class FileComponent {
      * @param backupFilePath
      * @return whether to move successfully
      */
-    public boolean moveFile(String filePath, String backupFilePath) {
+    public static boolean moveFile(String filePath, String backupFilePath) {
         File file = new File(filePath);
         if (CommonUtils.notEmpty(file)) {
             File backupFile = new File(backupFilePath);
@@ -198,7 +227,7 @@ public class FileComponent {
      * @return whether to modify successfully
      * @throws IOException
      */
-    public boolean updateFile(String filePath, String historyFilePath, String content) throws IOException {
+    public static boolean updateFile(String filePath, String historyFilePath, String content) throws IOException {
         File file = new File(filePath);
         if (CommonUtils.notEmpty(file) && null != content) {
             File history = new File(historyFilePath);
@@ -220,7 +249,7 @@ public class FileComponent {
      * @param filePath
      * @return file content
      */
-    public String getFileContent(String filePath) {
+    public static String getFileContent(String filePath) {
         File file = new File(filePath);
         try {
             if (file.isFile()) {
@@ -238,7 +267,7 @@ public class FileComponent {
      * @param suffix
      * @return upload file name
      */
-    public String getUploadFileName(String suffix) {
+    public static String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder("upload/");
         sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
         sb.append(CommonConstants.random.nextInt()).append(suffix);
@@ -251,9 +280,27 @@ public class FileComponent {
      * @param originalFilename
      * @return suffix
      */
-    public String getSuffix(String originalFilename) {
-        return originalFilename.substring(originalFilename.lastIndexOf(CommonConstants.DOT), originalFilename.length())
-                .toLowerCase();
+    public static String getSuffix(String originalFilename) {
+        if (null != originalFilename) {
+            int index = originalFilename.lastIndexOf(CommonConstants.DOT);
+            if (-1 < index) {
+                return originalFilename.substring(originalFilename.lastIndexOf(CommonConstants.DOT), originalFilename.length())
+                        .toLowerCase();
+            }
+        }
+        return null;
+    }
+
+    public static String getFileType(String suffix) {
+        if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
+            return FILE_TYPE_IMAGE;
+        } else if (VIDEO_FILE_SUFFIXS.contains(suffix)) {
+            return FILE_TYPE_VIDEO;
+        } else if (MUSIC_FILE_SUFFIXS.contains(suffix)) {
+            return FILE_TYPE_MUSIC;
+        } else {
+            return FILE_TYPE_OTHER;
+        }
     }
 
     /**
@@ -265,14 +312,14 @@ public class FileComponent {
      * @throws IllegalStateException
      * @throws IOException
      */
-    public String upload(MultipartFile file, String fileName) throws IllegalStateException, IOException {
+    public static String upload(MultipartFile file, String fileName) throws IllegalStateException, IOException {
         File dest = new File(fileName);
         dest.getParentFile().mkdirs();
         file.transferTo(dest);
         return dest.getName();
     }
 
-    public class FileInfoComparator implements Comparator<FileInfo> {
+    public static class FileInfoComparator implements Comparator<FileInfo> {
         private String mode = ORDERFIELD_FILENAME;
 
         public FileInfoComparator() {
@@ -316,7 +363,7 @@ public class FileComponent {
      * FileInfo 文件信息封装类
      *
      */
-    public class FileInfo {
+    public static class FileInfo {
         private String fileName;
         private boolean directory;
         private Date lastModifiedTime;

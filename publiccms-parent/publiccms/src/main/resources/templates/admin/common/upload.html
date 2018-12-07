@@ -58,7 +58,7 @@ function selectFile(path){
         <#if admin?has_content>
     <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 count=5>
         <#list page.list as a>
-            <li><a href="javascript:;" data-src="${a.filePath!}" onclick="if(selectFile('${a.filePath!}')){$.bringBack({'${field!'fileName'}':'${a.filePath!}','${originalField!'originalName'}':'${a.originalName!}'});}return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
+            <li><a href="javascript:;" data-src="${a.filePath!}" onclick="if(selectFile('${a.filePath!}')){$.bringBack({'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','${originalField!'originalName'}':'${a.originalName!}'});}return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
         </#list>
     </@_logUploadList>
         </ul>
