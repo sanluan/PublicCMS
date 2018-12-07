@@ -37,8 +37,8 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long contentId, Long userId, String[] fileTypes, String orderField, String orderType, Integer pageIndex,
-            Integer pageSize) {
+    public PageHandler getPage(Long contentId, Long userId, String[] fileTypes, String orderField, String orderType,
+            Integer pageIndex, Integer pageSize) {
         return dao.getPage(contentId, userId, fileTypes, orderField, orderType, pageIndex, pageSize);
     }
 
@@ -67,6 +67,9 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
         if (CommonUtils.notEmpty(files)) {
             for (CmsContentFile entity : files) {
                 entity.setFileType(CmsFileUtils.getFileType(CmsFileUtils.getSuffix(entity.getFilePath())));
+                if (CmsFileUtils.FILE_TYPE_IMAGE.equals(entity.getFileType())) {
+                    entity.setFileType(CmsFileUtils.FILE_TYPE_OTHER);
+                }
                 if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
