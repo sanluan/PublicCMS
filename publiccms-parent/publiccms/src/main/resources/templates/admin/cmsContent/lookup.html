@@ -1,5 +1,5 @@
 <#macro categoryTree parentId=''>
-    <@_categoryList parentId=parentId>
+    <@_categoryList advanced=true parentId=parentId>
         <#list page.list as a>
             <li>
                 <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">${a.name!}</a>
