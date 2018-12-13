@@ -59,7 +59,7 @@ public class CmsPlaceAdminController extends AbstractController {
 
     /**
      * @param entity
-     * @param extendDataParameters 
+     * @param extendDataParameters
      * @param _csrf
      * @param request
      * @param session
@@ -84,7 +84,7 @@ public class CmsPlaceAdminController extends AbstractController {
                     || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                     || ControllerUtils.verifyCustom("noright",
                             !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
-                                    CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + JsonUtils.getString(entity)))),
+                                    CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))),
                             model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -187,7 +187,7 @@ public class CmsPlaceAdminController extends AbstractController {
         }
         return CommonConstants.TEMPLATE_DONE;
     }
-    
+
     /**
      * @param path
      * @param ids
@@ -198,7 +198,8 @@ public class CmsPlaceAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("uncheck")
-    public String uncheck(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String uncheck(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -255,7 +256,7 @@ public class CmsPlaceAdminController extends AbstractController {
     }
 
     /**
-     * @param path 
+     * @param path
      * @param ids
      * @param _csrf
      * @param request
