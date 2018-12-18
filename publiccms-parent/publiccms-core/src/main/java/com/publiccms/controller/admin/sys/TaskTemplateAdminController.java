@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.util.HtmlUtils;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
@@ -54,6 +55,7 @@ public class TaskTemplateAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getTaskTemplateFilePath(site, path);
+                content = HtmlUtils.htmlUnescape(content);
                 if (CmsFileUtils.createFile(filePath, content)) {
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.task.template", RequestUtils.getIpAddress(request),

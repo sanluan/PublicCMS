@@ -20,7 +20,7 @@
             <input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}<#if !content?has_content>/filename.html</#if>"/>
         </div>
         <div>
-            <textarea name="content" class="code" mode="${editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed')}">${content!}</textarea>
+            <textarea name="content" class="code" escape="true" mode="${editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed')}">${content!}</textarea>
         </div>
     </div>
 </form>

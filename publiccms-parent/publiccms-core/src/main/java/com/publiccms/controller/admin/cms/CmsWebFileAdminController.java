@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.HtmlUtils;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
@@ -56,6 +57,7 @@ public class CmsWebFileAdminController extends AbstractController {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebFilePath(site, path);
+                content = HtmlUtils.htmlUnescape(content);
                 if (CmsFileUtils.createFile(filePath, content)) {
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", RequestUtils.getIpAddress(request),
