@@ -174,6 +174,7 @@ public class CmsContentAdminController extends AbstractController {
         }
 
         if (null != attribute.getText()) {
+            attribute.setText(org.springframework.web.util.HtmlUtils.htmlUnescape(attribute.getText()));
             String text = HtmlUtils.removeHtmlTag(attribute.getText());
             attribute.setWordCount(text.length());
             if (CommonUtils.empty(entity.getDescription())) {
