@@ -25,6 +25,7 @@ import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
@@ -158,9 +159,9 @@ public class CmsContentAdminController extends AbstractController {
         }
         return CommonConstants.TEMPLATE_DONE;
     }
-    
-    public static void initContent(CmsContent entity, CmsModel cmsModel, Boolean draft, Boolean checked, CmsContentAttribute attribute,
-            Date now) {
+
+    public static void initContent(CmsContent entity, CmsModel cmsModel, Boolean draft, Boolean checked,
+            CmsContentAttribute attribute, Date now) {
         entity.setHasFiles(cmsModel.isHasFiles());
         entity.setHasImages(cmsModel.isHasImages());
         entity.setOnlyUrl(cmsModel.isOnlyUrl());
@@ -174,7 +175,7 @@ public class CmsContentAdminController extends AbstractController {
         }
 
         if (null != attribute.getText()) {
-            attribute.setText(org.springframework.web.util.HtmlUtils.htmlUnescape(attribute.getText()));
+            attribute.setText(new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET));
             String text = HtmlUtils.removeHtmlTag(attribute.getText());
             attribute.setWordCount(text.length());
             if (CommonUtils.empty(entity.getDescription())) {
