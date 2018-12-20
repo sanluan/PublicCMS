@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -253,8 +254,10 @@ public class CmsPlaceAdminController extends AbstractController {
      * @return view name
      */
     @RequestMapping("export")
-    public ExcelView export(String path, Long userId, Integer[] status, String itemType, Long itemId, Date startPublishDate,
-            Date endPublishDate, String orderField, String orderType, String _csrf, HttpServletRequest request, ModelMap model) {
+    public ExcelView export(String path, Long userId, Integer[] status, String itemType, Long itemId,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date startPublishDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endPublishDate, String orderField, String orderType, String _csrf,
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             path = path.replace("//", CommonConstants.SEPARATOR);
         }
