@@ -69,3 +69,20 @@ INSERT INTO `sys_module` VALUES ('content_export', NULL, 'cmsContent/export', ''
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'ja', '輸出');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'zh', '导出');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'en', 'Export');
+ALTER TABLE `cms_place` ADD COLUMN `check_user_id` bigint(20) NULL COMMENT '审核用户' AFTER `user_id`;
+ALTER TABLE `cms_place` 
+	DROP INDEX `publish_date`,
+	DROP INDEX `site_id`,
+	DROP INDEX `item_type`,
+	DROP INDEX `user_id`,
+	DROP INDEX `path`,
+	DROP INDEX `disabled`,
+	DROP INDEX `create_date`,
+	DROP INDEX `status`,
+	DROP INDEX `item_id`,
+	ADD INDEX `publish_date`(`publish_date`, `create_date`) ,
+	ADD INDEX `site_id`(`site_id`, `path`, `status`, `disabled`),
+	ADD INDEX `item_type`(`item_type`, `item_id`) ,
+	ADD INDEX `user_id`(`user_id`, `check_user_id`) ;
+UPDATE `sys_module` SET `authorized_url` =  'cmsPlace/dataList,cmsPlace/export' WHERE `id` ='place_data_list';
+UPDATE `sys_module` SET `authorized_url` =  'sysUser/lookup' WHERE `id` ='place_list';

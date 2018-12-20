@@ -37,7 +37,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             queryEntity.setEmptyParent(handler.getBoolean("emptyParent"));
             queryEntity.setTitle(handler.getString("title"));
         } else {
-            queryEntity.setStatus(new Integer[] { CmsContentService.STATUS_NORMAL });
+            queryEntity.setStatus(CmsContentService.STATUS_NORMAL_ARRAY);
             queryEntity.setDisabled(false);
             queryEntity.setEmptyParent(true);
             Date now = CommonUtils.getMinuteDate();

@@ -26,11 +26,12 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
         Date endPublishDate = handler.getDate("endPublishDate");
         String path = handler.getString("path");
         Boolean disabled = false;
-        Integer status = CmsPlaceService.STATUS_NORMAL;
+        Integer[] status;
         if (handler.getBoolean("advanced", false)) {
-            status = handler.getInteger("status");
+            status = handler.getIntegerArray("status");
             disabled = handler.getBoolean("disabled", false);
         } else {
+            status = CmsPlaceService.STATUS_NORMAL_ARRAY;
             Date now = CommonUtils.getMinuteDate();
             if (null == endPublishDate || endPublishDate.after(now)) {
                 endPublishDate = now;
@@ -40,9 +41,9 @@ public class CmsPlaceListDirective extends AbstractTemplateDirective {
             path = path.replace("//", CommonConstants.SEPARATOR);
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), path,
-                handler.getString("itemType"), handler.getLong("itemId"), handler.getDate("startPublishDate"),
-                handler.getDate("endPublishDate"), status, disabled, handler.getString("orderField"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+                handler.getString("itemType"), handler.getLong("itemId"), handler.getDate("startPublishDate"), endPublishDate,
+                status, disabled, handler.getString("orderField"), handler.getString("orderType"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
     }
 

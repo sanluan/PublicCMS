@@ -253,6 +253,8 @@ public class CmsContentAdminController extends AbstractController {
             view.getDataList().add(list);
             return view;
         }
+        SysSite site = getSite(request);
+        queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
         List<String> list = new ArrayList<>();
@@ -278,28 +280,28 @@ public class CmsContentAdminController extends AbstractController {
         view.getDataList().add(list);
         PageHandler page = service.getPage(queryEntity, null, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
-        List<CmsContent> contentList = (List<CmsContent>) page.getList();
+        List<CmsContent> entityList = (List<CmsContent>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();
-        for (CmsContent content : contentList) {
+        for (CmsContent entity : entityList) {
             List<Serializable> userIds = pksMap.get("userIds");
             if (null == userIds) {
                 userIds = new ArrayList<>();
                 pksMap.put("userIds", userIds);
             }
-            userIds.add(content.getUserId());
-            userIds.add(content.getCheckUserId());
+            userIds.add(entity.getUserId());
+            userIds.add(entity.getCheckUserId());
             List<Serializable> categoryIds = pksMap.get("categoryIds");
             if (null == categoryIds) {
                 categoryIds = new ArrayList<>();
                 pksMap.put("categoryIds", categoryIds);
             }
-            categoryIds.add(content.getCategoryId());
+            categoryIds.add(entity.getCategoryId());
             List<Serializable> modelIds = pksMap.get("modelIds");
             if (null == modelIds) {
                 modelIds = new ArrayList<>();
                 pksMap.put("modelIds", modelIds);
             }
-            modelIds.add(content.getModelId());
+            modelIds.add(entity.getModelId());
         }
         Map<Long, SysUser> userMap = new HashMap<>();
         if (null != pksMap.get("userIds")) {
@@ -317,32 +319,32 @@ public class CmsContentAdminController extends AbstractController {
                 categoryMap.put(entity.getId(), entity);
             }
         }
-        SysSite site = getSite(request);
+        
         Map<String, CmsModel> modelMap = modelComponent.getMap(site);
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
         SysUser user;
         CmsCategory category;
         CmsModel cmsModel;
-        for (CmsContent content : contentList) {
+        for (CmsContent entity : entityList) {
             List<String> cellList = new ArrayList<>();
-            cellList.add(content.getId().toString());
-            cellList.add(content.getTitle());
-            cellList.add(content.getUrl());
-            user = userMap.get(content.getUserId());
+            cellList.add(entity.getId().toString());
+            cellList.add(entity.getTitle());
+            cellList.add(entity.getUrl());
+            user = userMap.get(entity.getUserId());
             cellList.add(null == user ? null : user.getNickName());
-            category = categoryMap.get(content.getCategoryId());
+            category = categoryMap.get(entity.getCategoryId());
             cellList.add(null == category ? null : category.getName());
-            cmsModel = modelMap.get(content.getModelId());
+            cmsModel = modelMap.get(entity.getModelId());
             cellList.add(null == cmsModel ? null : cmsModel.getName());
-            cellList.add(String.valueOf(content.getScores()));
-            cellList.add(String.valueOf(content.getComments()));
-            cellList.add(String.valueOf(content.getClicks()));
-            cellList.add(dateFormat.format(content.getPublishDate()));
-            cellList.add(dateFormat.format(content.getCreateDate()));
-            cellList.add(String.valueOf(content.getSort()));
+            cellList.add(String.valueOf(entity.getScores()));
+            cellList.add(String.valueOf(entity.getComments()));
+            cellList.add(String.valueOf(entity.getClicks()));
+            cellList.add(dateFormat.format(entity.getPublishDate()));
+            cellList.add(dateFormat.format(entity.getCreateDate()));
+            cellList.add(String.valueOf(entity.getSort()));
             cellList.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                    "page.status.content." + content.getStatus()));
-            user = userMap.get(content.getCheckUserId());
+                    "page.status.content." + entity.getStatus()));
+            user = userMap.get(entity.getCheckUserId());
             cellList.add(null == user ? null : user.getNickName());
             view.getDataList().add(cellList);
         }

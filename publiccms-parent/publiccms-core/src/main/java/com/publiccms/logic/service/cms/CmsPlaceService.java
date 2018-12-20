@@ -35,6 +35,10 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * 
      */
+    public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
+    /**
+     * 
+     */
     public static final int STATUS_PEND = 2;
     /**
      * 
@@ -67,7 +71,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, Date startPublishDate,
-            Date endPublishDate, Integer status, Boolean disabled, String orderField, String orderType, Integer pageIndex,
+            Date endPublishDate, Integer[] status, Boolean disabled, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, userId, path, itemType, itemId, startPublishDate, endPublishDate, status, disabled, orderField,
                 orderType, pageIndex, pageSize);
@@ -87,11 +91,13 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
 
     /**
      * @param id
+     * @param userId
      */
-    public void check(Serializable id) {
+    public void check(Serializable id, Long userId) {
         CmsPlace entity = getEntity(id);
         if (null != entity && STATUS_PEND == entity.getStatus()) {
             entity.setStatus(STATUS_NORMAL);
+            entity.setCheckUserId(userId);
             Date now = CommonUtils.getDate();
             if (now.after(entity.getPublishDate())) {
                 entity.setPublishDate(now);
@@ -115,14 +121,16 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
 
     /**
      * @param siteId
+     * @param userId
      * @param ids
-     * @param path 
+     * @param path
      */
-    public void check(short siteId, Serializable[] ids, String path) {
+    public void check(short siteId, Long userId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus() && path.equals(entity.getPath())) {
                 entity.setStatus(STATUS_NORMAL);
+                entity.setCheckUserId(userId);
                 if (now.after(entity.getPublishDate())) {
                     entity.setPublishDate(now);
                 }
@@ -133,7 +141,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param siteId
      * @param ids
-     * @param path 
+     * @param path
      */
     public void uncheck(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
@@ -150,7 +158,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param siteId
      * @param ids
-     * @param path 
+     * @param path
      */
     public void refresh(short siteId, Serializable[] ids, String path) {
         Date now = CommonUtils.getDate();
@@ -174,7 +182,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param siteId
      * @param ids
-     * @param path 
+     * @param path
      */
     public void delete(short siteId, Serializable[] ids, String path) {
         for (CmsPlace entity : getEntitys(ids)) {

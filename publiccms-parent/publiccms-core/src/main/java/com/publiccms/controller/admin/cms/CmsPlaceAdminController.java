@@ -1,5 +1,12 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,14 +19,20 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.LocaleResolver;
+import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.JsonUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.view.ExcelView;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDept;
@@ -33,6 +46,7 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
 /**
@@ -47,6 +61,8 @@ public class CmsPlaceAdminController extends AbstractController {
     private CmsPlaceService service;
     @Autowired
     private CmsPlaceAttributeService attributeService;
+    @Autowired
+    private SysUserService sysUserService;
     @Autowired
     private MetadataComponent metadataComponent;
     @Autowired
@@ -180,7 +196,7 @@ public class CmsPlaceAdminController extends AbstractController {
         }
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
-            service.check(site.getId(), ids, path);
+            service.check(site.getId(), user.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
@@ -219,6 +235,95 @@ public class CmsPlaceAdminController extends AbstractController {
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param path
+     * @param userId
+     * @param status
+     * @param itemType
+     * @param itemId
+     * @param startPublishDate
+     * @param endPublishDate
+     * @param orderField
+     * @param orderType
+     * @param _csrf
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("export")
+    public ExcelView export(String path, Long userId, Integer[] status, String itemType, Long itemId, Date startPublishDate,
+            Date endPublishDate, String orderField, String orderType, String _csrf, HttpServletRequest request, ModelMap model) {
+        if (CommonUtils.notEmpty(path)) {
+            path = path.replace("//", CommonConstants.SEPARATOR);
+        }
+        ExcelView view = new ExcelView();
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            List<String> list = new ArrayList<>();
+            list.add((String) model.get(CommonConstants.ERROR));
+            view.getDataList().add(list);
+            return view;
+        }
+        SysSite site = getSite(request);
+        List<String> list = new ArrayList<>();
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        Locale locale = request.getLocale();
+        if (null != localeResolver) {
+            locale = localeResolver.resolveLocale(request);
+        }
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.clicks"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.publish_date"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.create_date"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
+        view.getDataList().add(list);
+
+        PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, startPublishDate, endPublishDate, status,
+                false, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
+        @SuppressWarnings("unchecked")
+        List<CmsPlace> entityList = (List<CmsPlace>) page.getList();
+        Map<String, List<Serializable>> pksMap = new HashMap<>();
+        for (CmsPlace entity : entityList) {
+            List<Serializable> userIds = pksMap.get("userIds");
+            if (null == userIds) {
+                userIds = new ArrayList<>();
+                pksMap.put("userIds", userIds);
+            }
+            userIds.add(entity.getUserId());
+            userIds.add(entity.getCheckUserId());
+        }
+        Map<Long, SysUser> userMap = new HashMap<>();
+        if (null != pksMap.get("userIds")) {
+            List<Serializable> userIds = pksMap.get("userIds");
+            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
+            for (SysUser entity : entitys) {
+                userMap.put(entity.getId(), entity);
+            }
+        }
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
+        SysUser user;
+        for (CmsPlace entity : entityList) {
+            List<String> cellList = new ArrayList<>();
+            cellList.add(entity.getId().toString());
+            cellList.add(entity.getTitle());
+            cellList.add(entity.getUrl());
+            user = userMap.get(entity.getUserId());
+            cellList.add(null == user ? null : user.getNickName());
+            cellList.add(String.valueOf(entity.getClicks()));
+            cellList.add(dateFormat.format(entity.getPublishDate()));
+            cellList.add(dateFormat.format(entity.getCreateDate()));
+            cellList.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                    "page.status.place.data." + entity.getStatus()));
+            user = userMap.get(entity.getCheckUserId());
+            cellList.add(null == user ? null : user.getNickName());
+            view.getDataList().add(cellList);
+        }
+        return view;
     }
 
     /**

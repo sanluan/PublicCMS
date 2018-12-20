@@ -72,6 +72,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     public static final int STATUS_PEND = 2;
 
     /**
+     * 
+     */
+    public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
+
+    /**
      * @param projection
      * @param siteId
      * @param text

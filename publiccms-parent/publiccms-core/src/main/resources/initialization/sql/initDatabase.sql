@@ -222,6 +222,7 @@ CREATE TABLE `cms_place` (
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `path` varchar(100) NOT NULL COMMENT '模板路径',
   `user_id` bigint(20) default NULL COMMENT '提交用户',
+  `check_user_id` bigint(20) default NULL COMMENT '审核用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
   `item_id` bigint(20) default NULL COMMENT '推荐项目ID',
   `title` varchar(255) NOT NULL COMMENT '标题',
@@ -233,16 +234,11 @@ CREATE TABLE `cms_place` (
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
-  KEY `path` (`path`),
-  KEY `disabled` (`disabled`),
-  KEY `publish_date` (`publish_date`),
-  KEY `create_date` (`create_date`),
-  KEY `site_id` (`site_id`),
-  KEY `status` (`status`),
-  KEY `item_id` (`item_id`),
-  KEY `item_type` (`item_type`),
-  KEY `user_id` (`user_id`),
-  KEY `clicks` (`clicks`)
+  KEY `clicks` (`clicks`),
+  KEY `publish_date` (`publish_date`,`create_date`),
+  KEY `site_id` (`site_id`,`path`,`status`,`disabled`),
+  KEY `item_type` (`item_type`,`item_id`),
+  KEY `user_id` (`user_id`,`check_user_id`)
 ) COMMENT='页面数据';
 
 -- ----------------------------
@@ -707,9 +703,9 @@ INSERT INTO `sys_module` VALUES ('page_select_user', 'sysUser/lookup', NULL, NUL
 INSERT INTO `sys_module` VALUES ('place_add', 'cmsPlace/add', 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/uncheck', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'place_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('place_data_list', 'cmsPlace/dataList', NULL, NULL, 'place_list', 0, 1);
+INSERT INTO `sys_module` VALUES ('place_data_list', 'cmsPlace/dataList,cmsPlace/export', NULL, NULL, 'place_list', 0, 1);
 INSERT INTO `sys_module` VALUES ('place_delete', NULL, 'cmsPlace/delete', NULL, 'place_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', 'sysUser/lookup,cmsPlace/data_list', 'icon-list-alt', 'page_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', 'sysUser/lookup', 'icon-list-alt', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('place_publish', 'cmsPlace/publish_place', 'cmsTemplate/publishPlace', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_refresh', NULL, 'cmsPlace/refresh', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/savePlace,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsWebFile/contentForm,placeTemplate/form', NULL, 'place_template_list', 0, 0);

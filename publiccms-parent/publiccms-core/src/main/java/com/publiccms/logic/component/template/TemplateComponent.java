@@ -311,7 +311,7 @@ public class TemplateComponent implements Cache {
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
         if (null != metadata.getSize() && metadata.getSize() > 0) {
             model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null,
-                    CommonUtils.getMinuteDate(), CmsPlaceService.STATUS_NORMAL, false, null, null, 1, metadata.getSize()));
+                    CommonUtils.getMinuteDate(), CmsPlaceService.STATUS_NORMAL_ARRAY, false, null, null, 1, metadata.getSize()));
         }
         model.put("metadata", metadata);
         AbstractFreemarkerView.exposeSite(model, site);

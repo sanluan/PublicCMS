@@ -34,6 +34,9 @@
                     <li>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
+                    <li>
+                        <a class="button" href="cmsPlace/export.do?${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -67,13 +70,14 @@
                 <th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th width="100"><@t.page 'content.promulgator'/></th>
                 <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
-                <th width="50"><@t.page 'status'/></th>
+                <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="140"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
     <#list page.list as a>
         <@t.merge 'userIds' a.userId!/>
+        <@t.merge 'userIds' a.checkUserId!/>
     </#list>
 
     <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
@@ -86,7 +90,10 @@
                 <td>${a.createDate}</td>
                 <td>${(userMap[a.userId?string].nickName)!}</td>
                 <td>${a.clicks}</td>
-                <td><@t.page 'status.place.data.'+a.status/></td>
+                <td>
+                    <@t.page 'status.place.data.'+a.status/>
+                    <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
+                </td>
                 <td>
                     <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="<@t.page 'place_data.edit'/>"><@t.page 'button.edit'/></a>|
                     <#if 2=a.status>

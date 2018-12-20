@@ -172,13 +172,13 @@ public class PlaceController extends AbstractController {
                 model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
-            service.check(id);
+            service.check(id, user.getId());
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
-    
+
     /**
      * @param id
      * @param returnUrl
