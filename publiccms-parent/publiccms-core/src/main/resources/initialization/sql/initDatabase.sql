@@ -634,6 +634,7 @@ INSERT INTO `sys_module` VALUES ('config_list_data_dictionary', 'cmsDictionary/l
 INSERT INTO `sys_module` VALUES ('config_menu', NULL, NULL, 'icon-gear', 'develop', 1, 2);
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, 'icon-file-text-alt', NULL, 1, 2);
 INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload', '', 'content_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('content_export', NULL, 'cmsContent/export', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_extend', NULL, NULL, 'icon-road', 'content', 1, 1);
@@ -856,6 +857,8 @@ INSERT INTO `sys_module_lang` VALUES ('content', 'zh', '内容');
 INSERT INTO `sys_module_lang` VALUES ('content', 'en', 'Content');
 INSERT INTO `sys_module_lang` VALUES ('content_add', 'zh', '增加/修改');
 INSERT INTO `sys_module_lang` VALUES ('content_add', 'en', 'Add/edit');
+INSERT INTO `sys_module_lang` VALUES ('content_export', 'zh', '导出');
+INSERT INTO `sys_module_lang` VALUES ('content_export', 'en', 'Export');
 INSERT INTO `sys_module_lang` VALUES ('content_check', 'zh', '审核');
 INSERT INTO `sys_module_lang` VALUES ('content_check', 'en', 'Check');
 INSERT INTO `sys_module_lang` VALUES ('content_delete', 'zh', '删除');
@@ -1156,6 +1159,7 @@ INSERT INTO `sys_module_lang` VALUES ('config_list_data_dictionary', 'ja', 'デ�
 INSERT INTO `sys_module_lang` VALUES ('config_menu', 'ja', '設定管理');
 INSERT INTO `sys_module_lang` VALUES ('content', 'ja', 'コンテンツ');
 INSERT INTO `sys_module_lang` VALUES ('content_add', 'ja', '追加/変更');
+INSERT INTO `sys_module_lang` VALUES ('content_export', 'ja', '輸出');
 INSERT INTO `sys_module_lang` VALUES ('content_check', 'ja', '審査');
 INSERT INTO `sys_module_lang` VALUES ('content_delete', 'ja', '削除');
 INSERT INTO `sys_module_lang` VALUES ('content_extend', 'ja', 'コンテンツ拡張');
@@ -1413,7 +1417,7 @@ CREATE TABLE `sys_user` (
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(128) NOT NULL COMMENT '密码',
-  `salt` varchar(20) DEFAULT NULL COMMENT '混淆码,为空时则密码为md5,不为空时为sha2(sha2(password)+salt)',
+  `salt` varchar(20) DEFAULT NULL COMMENT '混淆码,为空时则密码为md5,为10位时sha512(sha512(password)+salt)',
   `weak_password` tinyint(1) NOT NULL DEFAULT '0' COMMENT '弱密码',
   `nick_name` varchar(45) NOT NULL COMMENT '昵称',
   `dept_id` int(11) default NULL COMMENT '部门',
@@ -1440,7 +1444,7 @@ CREATE TABLE `sys_user` (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, 1, '管理员', '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '21232f297a57a5a743894a0e4a801fc3', NULL, 1, 'admin', '1', '1', '1', 'master@sanluan.com', '0', '1', '0', '2017-01-01 00:00:00', '127.0.0.1', '0', '2017-01-01 00:00:00');
 
 
 -- ----------------------------

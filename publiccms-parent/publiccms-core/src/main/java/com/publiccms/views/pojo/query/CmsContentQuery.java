@@ -2,6 +2,8 @@ package com.publiccms.views.pojo.query;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class CmsContentQuery implements java.io.Serializable {
     /**
      * 
@@ -21,7 +23,9 @@ public class CmsContentQuery implements java.io.Serializable {
     private Boolean hasCover;
     private String title;
     private Long userId;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date startPublishDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endPublishDate;
 
     public CmsContentQuery() {

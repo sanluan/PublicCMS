@@ -11,7 +11,8 @@ dependencies {
         // http://mvnrepository.com/artifact/net.coobird/thumbnailator
         "net.coobird:thumbnailator:0.4.8",
         "org.hibernate:hibernate-search-elasticsearch:${hibernateSearchVersion}",
-    // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-        "javax.servlet:javax.servlet-api:3.1.0"
+        // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+        "javax.servlet:javax.servlet-api:3.1.0",
+        "org.apache.poi:poi-ooxml:${poiVersion}"
     )
 }

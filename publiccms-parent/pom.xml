@@ -50,6 +50,8 @@
         <version.c3p0>0.9.5.2</version.c3p0>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <version.mysql>8.0.13</version.mysql>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <version.poi>4.0.1</version.poi>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -213,6 +215,11 @@
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant</artifactId>
                 <version>1.10.5</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${version.poi}</version>
             </dependency>
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>

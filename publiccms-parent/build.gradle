@@ -57,6 +57,8 @@ subprojects{
         c3p0Version = "0.9.5.2"
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
         mysqlVersion = "8.0.13"
+        // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+        poiVersion = "4.0.1"
     }
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8

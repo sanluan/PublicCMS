@@ -49,7 +49,7 @@ UPDATE `sys_module` SET `attached` = replace(replace(`attached`,'<i class=\"',''
 ALTER TABLE  `sys_module`
     MODIFY COLUMN `attached` varchar(50) default NULL COMMENT '标题附加' AFTER `authorized_url`;
 ALTER TABLE `sys_user` 
-    ADD COLUMN `salt` varchar(20) NULL COMMENT '混淆码,为空时则密码为md5,不为空时为sha2(sha2(password)+salt)' AFTER `password`,
+    ADD COLUMN `salt` varchar(20) NULL COMMENT '混淆码,为空时则密码为md5,为10位时sha512(sha512(password)+salt)' AFTER `password`,
     ADD COLUMN `weak_password` tinyint(1) NOT NULL DEFAULT 0 COMMENT '弱密码' AFTER `salt`,
     MODIFY COLUMN `password` varchar(128) NOT NULL COMMENT '密码' AFTER `name`;
 -- 2018-12-07 --
@@ -64,3 +64,8 @@ UPDATE `cms_content_file` SET file_type = 'image' WHERE file_type = '1';
 UPDATE `cms_content_file` SET file_type = 'image' WHERE file_path like '%.png' or file_path like '%.jpg' or file_path like '%.gif' or file_path like '%.bmp';
 UPDATE `cms_content_file` SET file_type = 'video' WHERE file_path like '%.mp4' or file_path like '%.3gp';
 UPDATE `cms_content_file` SET file_type = 'other' WHERE file_type = '0';
+-- 2018-12-20 --
+INSERT INTO `sys_module` VALUES ('content_export', NULL, 'cmsContent/export', '', 'content_menu', 1, 0);
+INSERT INTO `sys_module_lang` VALUES ('content_export', 'ja', '輸出');
+INSERT INTO `sys_module_lang` VALUES ('content_export', 'zh', '导出');
+INSERT INTO `sys_module_lang` VALUES ('content_export', 'en', 'Export');

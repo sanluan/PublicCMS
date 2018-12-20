@@ -1,8 +1,14 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,17 +21,21 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.view.ExcelView;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
@@ -46,8 +56,10 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
+import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
  *
@@ -59,6 +71,8 @@ import com.publiccms.views.pojo.model.CmsContentParameters;
 public class CmsContentAdminController extends AbstractController {
     @Autowired
     private CmsContentService service;
+    @Autowired
+    private SysUserService sysUserService;
     @Autowired
     private SysDeptCategoryService sysDeptCategoryService;
     @Autowired
@@ -218,6 +232,121 @@ public class CmsContentAdminController extends AbstractController {
                     "check.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param queryEntity
+     * @param orderField
+     * @param orderType
+     * @param _csrf
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("export")
+    public ExcelView export(CmsContentQuery queryEntity, String orderField, String orderType, String _csrf,
+            HttpServletRequest request, ModelMap model) {
+        ExcelView view = new ExcelView();
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            List<String> list = new ArrayList<>();
+            list.add((String) model.get(CommonConstants.ERROR));
+            view.getDataList().add(list);
+            return view;
+        }
+        queryEntity.setDisabled(false);
+        queryEntity.setEmptyParent(true);
+        List<String> list = new ArrayList<>();
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        Locale locale = request.getLocale();
+        if (null != localeResolver) {
+            locale = localeResolver.resolveLocale(request);
+        }
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.score"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.comments"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.clicks"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.publish_date"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.create_date"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.top_level"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
+        view.getDataList().add(list);
+        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
+        @SuppressWarnings("unchecked")
+        List<CmsContent> contentList = (List<CmsContent>) page.getList();
+        Map<String, List<Serializable>> pksMap = new HashMap<>();
+        for (CmsContent content : contentList) {
+            List<Serializable> userIds = pksMap.get("userIds");
+            if (null == userIds) {
+                userIds = new ArrayList<>();
+                pksMap.put("userIds", userIds);
+            }
+            userIds.add(content.getUserId());
+            userIds.add(content.getCheckUserId());
+            List<Serializable> categoryIds = pksMap.get("categoryIds");
+            if (null == categoryIds) {
+                categoryIds = new ArrayList<>();
+                pksMap.put("categoryIds", categoryIds);
+            }
+            categoryIds.add(content.getCategoryId());
+            List<Serializable> modelIds = pksMap.get("modelIds");
+            if (null == modelIds) {
+                modelIds = new ArrayList<>();
+                pksMap.put("modelIds", modelIds);
+            }
+            modelIds.add(content.getModelId());
+        }
+        Map<Long, SysUser> userMap = new HashMap<>();
+        if (null != pksMap.get("userIds")) {
+            List<Serializable> userIds = pksMap.get("userIds");
+            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
+            for (SysUser entity : entitys) {
+                userMap.put(entity.getId(), entity);
+            }
+        }
+        Map<Integer, CmsCategory> categoryMap = new HashMap<>();
+        if (null != pksMap.get("categoryIds")) {
+            List<Serializable> categoryIds = pksMap.get("categoryIds");
+            List<CmsCategory> entitys = categoryService.getEntitys(categoryIds.toArray(new Serializable[categoryIds.size()]));
+            for (CmsCategory entity : entitys) {
+                categoryMap.put(entity.getId(), entity);
+            }
+        }
+        SysSite site = getSite(request);
+        Map<String, CmsModel> modelMap = modelComponent.getMap(site);
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
+        SysUser user;
+        CmsCategory category;
+        CmsModel cmsModel;
+        for (CmsContent content : contentList) {
+            List<String> cellList = new ArrayList<>();
+            cellList.add(content.getId().toString());
+            cellList.add(content.getTitle());
+            cellList.add(content.getUrl());
+            user = userMap.get(content.getUserId());
+            cellList.add(null == user ? null : user.getNickName());
+            category = categoryMap.get(content.getCategoryId());
+            cellList.add(null == category ? null : category.getName());
+            cmsModel = modelMap.get(content.getModelId());
+            cellList.add(null == cmsModel ? null : cmsModel.getName());
+            cellList.add(String.valueOf(content.getScores()));
+            cellList.add(String.valueOf(content.getComments()));
+            cellList.add(String.valueOf(content.getClicks()));
+            cellList.add(dateFormat.format(content.getPublishDate()));
+            cellList.add(dateFormat.format(content.getCreateDate()));
+            cellList.add(String.valueOf(content.getSort()));
+            cellList.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                    "page.status.content." + content.getStatus()));
+            user = userMap.get(content.getCheckUserId());
+            cellList.add(null == user ? null : user.getNickName());
+            view.getDataList().add(cellList);
+        }
+        return view;
     }
 
     /**
