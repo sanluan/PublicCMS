@@ -13,7 +13,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.logic.dao.cms.CmsPlaceDao;
-import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
  *
@@ -80,8 +80,8 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
     /**
      * @param entitys
      */
-    public void updateStatistics(Collection<CmsPlaceStatistics> entitys) {
-        for (CmsPlaceStatistics entityStatistics : entitys) {
+    public void updateStatistics(Collection<ClickStatistics> entitys) {
+        for (ClickStatistics entityStatistics : entitys) {
             CmsPlace entity = getEntity(entityStatistics.getId());
             if (null != entity) {
                 entity.setClicks(entity.getClicks() + entityStatistics.getClicks());

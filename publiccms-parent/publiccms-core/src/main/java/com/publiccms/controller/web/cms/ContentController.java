@@ -3,7 +3,6 @@ package com.publiccms.controller.web.cms;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,7 +32,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
@@ -56,11 +55,6 @@ public class ContentController extends AbstractController {
     private CmsCategoryService categoryService;
     @Autowired
     private ModelComponent modelComponent;
-
-    private String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "createDate", "clicks",
-            "comments", "scores", "childs", "checkUserId" };
-
-    private String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
 
     /**
      * 保存内容
@@ -107,7 +101,7 @@ public class ContentController extends AbstractController {
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
-            entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
+            entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties : CmsContentAdminController.ignorePropertiesWithUrl);
             if (null != entity.getId()) {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.content",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -135,10 +129,10 @@ public class ContentController extends AbstractController {
      */
     @RequestMapping("related/redirect")
     public String relatedRedirect(Long id, HttpServletRequest request) {
-        CmsContentRelatedStatistics contentRelatedStatistics = statisticsComponent.relatedClicks(id);
+        ClickStatistics clickStatistics = statisticsComponent.relatedClicks(id);
         SysSite site = getSite(request);
-        if (null != contentRelatedStatistics && null != contentRelatedStatistics.getEntity()) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentRelatedStatistics.getEntity().getUrl();
+        if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + clickStatistics.getUrl();
         } else {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
@@ -155,9 +149,9 @@ public class ContentController extends AbstractController {
     public String contentRedirect(Long id, HttpServletRequest request) {
         CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
         SysSite site = getSite(request);
-        if (null != contentStatistics && null != contentStatistics.getEntity()
-                && site.getId() == contentStatistics.getEntity().getSiteId()) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentStatistics.getEntity().getUrl();
+        if (null != contentStatistics && null != contentStatistics.getUrl()
+                && site.getId().equals(contentStatistics.getSiteId())) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentStatistics.getUrl();
         } else {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
@@ -167,14 +161,16 @@ public class ContentController extends AbstractController {
      * 内容评分
      * 
      * @param id
+     * @param request
      * @return view name
      */
     @RequestMapping("scores")
     @ResponseBody
-    public int scores(Long id) {
+    public int scores(Long id, HttpServletRequest request) {
+        SysSite site = getSite(request);
         CmsContentStatistics contentStatistics = statisticsComponent.contentScores(id);
-        if (null != contentStatistics && null != contentStatistics.getEntity()) {
-            return contentStatistics.getEntity().getScores() + contentStatistics.getScores();
+        if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
+            return contentStatistics.getScores() + contentStatistics.getScores();
         }
         return 0;
     }
@@ -183,14 +179,16 @@ public class ContentController extends AbstractController {
      * 内容点击
      * 
      * @param id
+     * @param request
      * @return click
      */
     @RequestMapping("click")
     @ResponseBody
-    public int click(Long id) {
+    public int click(Long id, HttpServletRequest request) {
+        SysSite site = getSite(request);
         CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
-        if (null != contentStatistics && null != contentStatistics.getEntity()) {
-            return contentStatistics.getEntity().getClicks() + contentStatistics.getClicks();
+        if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
+            return contentStatistics.getClicks() + contentStatistics.getClicks();
         }
         return 0;
     }

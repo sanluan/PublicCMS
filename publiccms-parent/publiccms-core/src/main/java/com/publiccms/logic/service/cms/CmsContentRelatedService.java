@@ -14,7 +14,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.logic.dao.cms.CmsContentRelatedDao;
-import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
  *
@@ -24,9 +24,9 @@ import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
 @Service
 @Transactional
 public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
-    
+
     private String[] ignoreProperties = new String[] { "id", "contentId", "userId" };
-    
+
     /**
      * @param contentId
      * @param relatedContentId
@@ -46,8 +46,8 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
     /**
      * @param entitys
      */
-    public void updateStatistics(Collection<CmsContentRelatedStatistics> entitys) {
-        for (CmsContentRelatedStatistics entityStatistics : entitys) {
+    public void updateStatistics(Collection<ClickStatistics> entitys) {
+        for (ClickStatistics entityStatistics : entitys) {
             CmsContentRelated entity = getEntity(entityStatistics.getId());
             if (null != entity) {
                 entity.setClicks(entity.getClicks() + entityStatistics.getClicks());
@@ -85,5 +85,5 @@ public class CmsContentRelatedService extends BaseService<CmsContentRelated> {
 
     @Autowired
     private CmsContentRelatedDao dao;
-    
+
 }

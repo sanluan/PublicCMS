@@ -30,8 +30,8 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
-import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
 /**
@@ -218,11 +218,10 @@ public class PlaceController extends AbstractController {
     @RequestMapping("click")
     public String click(Long id, HttpServletRequest request) {
         SysSite site = getSite(request);
-        CmsPlaceStatistics placeStatistics = statisticsComponent.placeClicks(id);
-        if (null != placeStatistics && null != placeStatistics.getEntity()
-                && site.getId() == placeStatistics.getEntity().getSiteId()
-                && CommonUtils.notEmpty(placeStatistics.getEntity().getUrl())) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + placeStatistics.getEntity().getUrl();
+        ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
+        if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
+                && site.getId().equals(clickStatistics.getSiteId())) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + clickStatistics.getUrl();
         } else {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
@@ -236,11 +235,10 @@ public class PlaceController extends AbstractController {
     @RequestMapping("redirect")
     public void redirect(Long id, HttpServletRequest request, HttpServletResponse response) {
         SysSite site = getSite(request);
-        CmsPlaceStatistics placeStatistics = statisticsComponent.placeClicks(id);
-        if (null != placeStatistics && null != placeStatistics.getEntity()
-                && site.getId() == placeStatistics.getEntity().getSiteId()
-                && CommonUtils.notEmpty(placeStatistics.getEntity().getUrl())) {
-            ControllerUtils.redirectPermanently(response, placeStatistics.getEntity().getUrl());
+        ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
+        if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
+                && site.getId().equals(clickStatistics.getSiteId())) {
+            ControllerUtils.redirectPermanently(response, clickStatistics.getUrl());
         } else {
             ControllerUtils.redirectPermanently(response, site.getDynamicPath());
         }

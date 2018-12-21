@@ -88,10 +88,10 @@ public class CmsContentAdminController extends AbstractController {
     @Autowired
     private TemplateComponent templateComponent;
 
-    private String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "sort", "createDate", "clicks",
-            "comments", "scores", "childs", "checkUserId" };
+    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "sort",
+            "createDate", "updateDate", "clicks", "comments", "scores", "childs", "checkUserId" };
 
-    private String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
+    public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
 
     /**
      * 保存内容
@@ -167,7 +167,10 @@ public class CmsContentAdminController extends AbstractController {
         if (null != checked && checked) {
             service.check(site.getId(), user, new Long[] { entity.getId() });
             if (CommonUtils.notEmpty(entity.getParentId())) {
-                publish(new Long[] { entity.getParentId() }, _csrf, request, session, model);
+                CmsContent parent = service.getEntity(entity.getParentId());
+                if (null != parent) {
+                    publish(site, parent, user);
+                }
             }
             templateComponent.createCategoryFile(site, category, null, null);
         }
@@ -208,147 +211,7 @@ public class CmsContentAdminController extends AbstractController {
      */
     @RequestMapping("check")
     public String check(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
-            SysUser user = ControllerUtils.getAdminFromSession(session);
-            List<CmsContent> entityList = service.check(site.getId(), user, ids);
-            Set<Integer> categoryIdSet = new HashSet<>();
-            for (CmsContent entity : entityList) {
-                if (null != entity && site.getId() == entity.getSiteId()) {
-                    if (CommonUtils.notEmpty(entity.getParentId())) {
-                        publish(new Long[] { entity.getParentId() }, _csrf, request, session, model);
-                    }
-                    publish(new Long[] { entity.getId() }, _csrf, request, session, model);
-                    categoryIdSet.add(entity.getCategoryId());
-                }
-            }
-            for (CmsCategory category : categoryService.getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
-                templateComponent.createCategoryFile(site, category, null, null);
-            }
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "check.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
-        }
-        return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param queryEntity
-     * @param orderField
-     * @param orderType
-     * @param _csrf
-     * @param request
-     * @param model
-     * @return view name
-     */
-    @RequestMapping("export")
-    public ExcelView export(CmsContentQuery queryEntity, String orderField, String orderType, String _csrf,
-            HttpServletRequest request, ModelMap model) {
-        ExcelView view = new ExcelView();
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            List<String> list = new ArrayList<>();
-            list.add((String) model.get(CommonConstants.ERROR));
-            view.getDataList().add(list);
-            return view;
-        }
-        SysSite site = getSite(request);
-        queryEntity.setSiteId(site.getId());
-        queryEntity.setDisabled(false);
-        queryEntity.setEmptyParent(true);
-        List<String> list = new ArrayList<>();
-        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-        Locale locale = request.getLocale();
-        if (null != localeResolver) {
-            locale = localeResolver.resolveLocale(request);
-        }
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.score"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.comments"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.clicks"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.publish_date"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.create_date"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.top_level"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
-        view.getDataList().add(list);
-        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
-        @SuppressWarnings("unchecked")
-        List<CmsContent> entityList = (List<CmsContent>) page.getList();
-        Map<String, List<Serializable>> pksMap = new HashMap<>();
-        for (CmsContent entity : entityList) {
-            List<Serializable> userIds = pksMap.get("userIds");
-            if (null == userIds) {
-                userIds = new ArrayList<>();
-                pksMap.put("userIds", userIds);
-            }
-            userIds.add(entity.getUserId());
-            userIds.add(entity.getCheckUserId());
-            List<Serializable> categoryIds = pksMap.get("categoryIds");
-            if (null == categoryIds) {
-                categoryIds = new ArrayList<>();
-                pksMap.put("categoryIds", categoryIds);
-            }
-            categoryIds.add(entity.getCategoryId());
-            List<Serializable> modelIds = pksMap.get("modelIds");
-            if (null == modelIds) {
-                modelIds = new ArrayList<>();
-                pksMap.put("modelIds", modelIds);
-            }
-            modelIds.add(entity.getModelId());
-        }
-        Map<Long, SysUser> userMap = new HashMap<>();
-        if (null != pksMap.get("userIds")) {
-            List<Serializable> userIds = pksMap.get("userIds");
-            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
-            for (SysUser entity : entitys) {
-                userMap.put(entity.getId(), entity);
-            }
-        }
-        Map<Integer, CmsCategory> categoryMap = new HashMap<>();
-        if (null != pksMap.get("categoryIds")) {
-            List<Serializable> categoryIds = pksMap.get("categoryIds");
-            List<CmsCategory> entitys = categoryService.getEntitys(categoryIds.toArray(new Serializable[categoryIds.size()]));
-            for (CmsCategory entity : entitys) {
-                categoryMap.put(entity.getId(), entity);
-            }
-        }
-        
-        Map<String, CmsModel> modelMap = modelComponent.getMap(site);
-        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
-        SysUser user;
-        CmsCategory category;
-        CmsModel cmsModel;
-        for (CmsContent entity : entityList) {
-            List<String> cellList = new ArrayList<>();
-            cellList.add(entity.getId().toString());
-            cellList.add(entity.getTitle());
-            cellList.add(entity.getUrl());
-            user = userMap.get(entity.getUserId());
-            cellList.add(null == user ? null : user.getNickName());
-            category = categoryMap.get(entity.getCategoryId());
-            cellList.add(null == category ? null : category.getName());
-            cmsModel = modelMap.get(entity.getModelId());
-            cellList.add(null == cmsModel ? null : cmsModel.getName());
-            cellList.add(String.valueOf(entity.getScores()));
-            cellList.add(String.valueOf(entity.getComments()));
-            cellList.add(String.valueOf(entity.getClicks()));
-            cellList.add(dateFormat.format(entity.getPublishDate()));
-            cellList.add(dateFormat.format(entity.getCreateDate()));
-            cellList.add(String.valueOf(entity.getSort()));
-            cellList.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                    "page.status.content." + entity.getStatus()));
-            user = userMap.get(entity.getCheckUserId());
-            cellList.add(null == user ? null : user.getNickName());
-            view.getDataList().add(cellList);
-        }
-        return view;
+        return checkOrUncheck(true, ids, _csrf, request, session, model);
     }
 
     /**
@@ -361,20 +224,33 @@ public class CmsContentAdminController extends AbstractController {
      */
     @RequestMapping("uncheck")
     public String uncheck(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+        return checkOrUncheck(true, ids, _csrf, request, session, model);
+    }
+
+    private String checkOrUncheck(boolean uncheck, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
             SysUser user = ControllerUtils.getAdminFromSession(session);
-            List<CmsContent> entityList = service.uncheck(site.getId(), user, ids);
+            List<CmsContent> entityList;
+            if (uncheck) {
+                entityList = service.uncheck(site.getId(), user, ids);
+            } else {
+                entityList = service.check(site.getId(), user, ids);
+            }
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : entityList) {
                 if (null != entity && site.getId() == entity.getSiteId()) {
                     if (CommonUtils.notEmpty(entity.getParentId())) {
-                        publish(new Long[] { entity.getParentId() }, _csrf, request, session, model);
+                        CmsContent parent = service.getEntity(entity.getParentId());
+                        if (null != parent) {
+                            publish(site, parent, user);
+                        }
                     }
-                    publish(new Long[] { entity.getId() }, _csrf, request, session, model);
+                    publish(site, entity, user);
                     categoryIdSet.add(entity.getCategoryId());
                 }
             }
@@ -382,7 +258,8 @@ public class CmsContentAdminController extends AbstractController {
                 templateComponent.createCategoryFile(site, category, null, null);
             }
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "uncheck.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    uncheck ? "uncheck.content" : "check.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -451,7 +328,7 @@ public class CmsContentAdminController extends AbstractController {
             }
             entity.setUserId(user.getId());
             cmsContentRelatedService.save(entity);
-            publish(new Long[] { entity.getContentId() }, _csrf, request, session, model);
+            publish(site, content, user);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "related.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(related)));
         }
@@ -482,7 +359,7 @@ public class CmsContentAdminController extends AbstractController {
             CmsContent content = service.getEntity(entity.getContentId());
             if (null == content || site.getId() == content.getSiteId()) {
                 cmsContentRelatedService.delete(id);
-                publish(new Long[] { entity.getContentId() }, _csrf, request, session, model);
+                publish(site, content, user);
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "unrelated.content", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -662,10 +539,7 @@ public class CmsContentAdminController extends AbstractController {
         SysUser user = ControllerUtils.getAdminFromSession(session);
         if (CommonUtils.notEmpty(ids)) {
             for (CmsContent entity : service.getEntitys(ids)) {
-                CmsCategoryModel categoryModel = categoryModelService
-                        .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-                if (null != categoryModel && (user.isOwnsAllContent() || entity.getUserId() == user.getId())
-                        && !entity.isOnlyUrl() && !templateComponent.createContentFile(site, entity, null, categoryModel)) {
+                if (!publish(site, entity, user)) {
                     ControllerUtils.verifyCustom("static", true, model);
                     return CommonConstants.TEMPLATE_ERROR;
                 }
@@ -675,6 +549,132 @@ public class CmsContentAdminController extends AbstractController {
                     CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    private boolean publish(SysSite site, CmsContent entity, SysUser user) {
+        CmsCategoryModel categoryModel = categoryModelService
+                .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
+        if (null != categoryModel && (user.isOwnsAllContent() || entity.getUserId() == user.getId()) && !entity.isOnlyUrl()) {
+            return templateComponent.createContentFile(site, entity, null, categoryModel);
+        }
+        return false;
+    }
+
+    /**
+     * @param queryEntity
+     * @param orderField
+     * @param orderType
+     * @param _csrf
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("export")
+    public ExcelView export(CmsContentQuery queryEntity, String orderField, String orderType, String _csrf,
+            HttpServletRequest request, ModelMap model) {
+        ExcelView view = new ExcelView();
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            List<String> list = new ArrayList<>();
+            list.add((String) model.get(CommonConstants.ERROR));
+            view.getDataList().add(list);
+            return view;
+        }
+        SysSite site = getSite(request);
+        queryEntity.setSiteId(site.getId());
+        queryEntity.setDisabled(false);
+        queryEntity.setEmptyParent(true);
+        List<String> list = new ArrayList<>();
+        LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
+        Locale locale = request.getLocale();
+        if (null != localeResolver) {
+            locale = localeResolver.resolveLocale(request);
+        }
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.score"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.comments"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.clicks"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.publish_date"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.create_date"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.top_level"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
+        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
+        view.getDataList().add(list);
+        PageHandler page = service.getPage(queryEntity, null, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
+        @SuppressWarnings("unchecked")
+        List<CmsContent> entityList = (List<CmsContent>) page.getList();
+        Map<String, List<Serializable>> pksMap = new HashMap<>();
+        for (CmsContent entity : entityList) {
+            List<Serializable> userIds = pksMap.get("userIds");
+            if (null == userIds) {
+                userIds = new ArrayList<>();
+                pksMap.put("userIds", userIds);
+            }
+            userIds.add(entity.getUserId());
+            userIds.add(entity.getCheckUserId());
+            List<Serializable> categoryIds = pksMap.get("categoryIds");
+            if (null == categoryIds) {
+                categoryIds = new ArrayList<>();
+                pksMap.put("categoryIds", categoryIds);
+            }
+            categoryIds.add(entity.getCategoryId());
+            List<Serializable> modelIds = pksMap.get("modelIds");
+            if (null == modelIds) {
+                modelIds = new ArrayList<>();
+                pksMap.put("modelIds", modelIds);
+            }
+            modelIds.add(entity.getModelId());
+        }
+        Map<Long, SysUser> userMap = new HashMap<>();
+        if (null != pksMap.get("userIds")) {
+            List<Serializable> userIds = pksMap.get("userIds");
+            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
+            for (SysUser entity : entitys) {
+                userMap.put(entity.getId(), entity);
+            }
+        }
+        Map<Integer, CmsCategory> categoryMap = new HashMap<>();
+        if (null != pksMap.get("categoryIds")) {
+            List<Serializable> categoryIds = pksMap.get("categoryIds");
+            List<CmsCategory> entitys = categoryService.getEntitys(categoryIds.toArray(new Serializable[categoryIds.size()]));
+            for (CmsCategory entity : entitys) {
+                categoryMap.put(entity.getId(), entity);
+            }
+        }
+
+        Map<String, CmsModel> modelMap = modelComponent.getMap(site);
+        DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
+        SysUser user;
+        CmsCategory category;
+        CmsModel cmsModel;
+        for (CmsContent entity : entityList) {
+            List<String> cellList = new ArrayList<>();
+            cellList.add(entity.getId().toString());
+            cellList.add(entity.getTitle());
+            cellList.add(entity.getUrl());
+            user = userMap.get(entity.getUserId());
+            cellList.add(null == user ? null : user.getNickName());
+            category = categoryMap.get(entity.getCategoryId());
+            cellList.add(null == category ? null : category.getName());
+            cmsModel = modelMap.get(entity.getModelId());
+            cellList.add(null == cmsModel ? null : cmsModel.getName());
+            cellList.add(String.valueOf(entity.getScores()));
+            cellList.add(String.valueOf(entity.getComments()));
+            cellList.add(String.valueOf(entity.getClicks()));
+            cellList.add(dateFormat.format(entity.getPublishDate()));
+            cellList.add(dateFormat.format(entity.getCreateDate()));
+            cellList.add(String.valueOf(entity.getSort()));
+            cellList.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                    "page.status.content." + entity.getStatus()));
+            user = userMap.get(entity.getCheckUserId());
+            cellList.add(null == user ? null : user.getNickName());
+            view.getDataList().add(cellList);
+        }
+        return view;
     }
 
     /**

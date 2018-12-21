@@ -15,7 +15,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsTag;
 import com.publiccms.logic.dao.cms.CmsTagDao;
-import com.publiccms.views.pojo.entities.CmsTagStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
  *
@@ -37,8 +37,8 @@ public class CmsTagService extends BaseService<CmsTag> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Integer typeId, String name, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Integer typeId, String name, String orderField, String orderType, Integer pageIndex,
+            Integer pageSize) {
         return dao.getPage(siteId, typeId, name, orderField, orderType, pageIndex, pageSize);
     }
 
@@ -57,11 +57,11 @@ public class CmsTagService extends BaseService<CmsTag> {
     /**
      * @param entitys
      */
-    public void updateStatistics(Collection<CmsTagStatistics> entitys) {
-        for (CmsTagStatistics entityStatistics : entitys) {
+    public void updateStatistics(Collection<ClickStatistics> entitys) {
+        for (ClickStatistics entityStatistics : entitys) {
             CmsTag entity = getEntity(entityStatistics.getId());
             if (null != entity) {
-                entity.setSearchCount(entity.getSearchCount() + entityStatistics.getSearchCounts());
+                entity.setSearchCount(entity.getSearchCount() + entityStatistics.getClicks());
             }
         }
     }
@@ -69,7 +69,7 @@ public class CmsTagService extends BaseService<CmsTag> {
     /**
      * @param siteId
      * @param entitys
-     * @return 
+     * @return
      */
     public Long[] update(short siteId, List<CmsTag> entitys) {
         Set<Long> idList = new HashSet<>();
@@ -92,5 +92,5 @@ public class CmsTagService extends BaseService<CmsTag> {
 
     @Autowired
     private CmsTagDao dao;
-    
+
 }
