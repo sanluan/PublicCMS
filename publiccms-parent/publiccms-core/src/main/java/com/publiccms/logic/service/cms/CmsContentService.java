@@ -271,7 +271,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public void updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
-            entity.setClicks(entity.getClicks() + comments);
+            entity.setComments(entity.getComments() + comments);
         }
     }
 
