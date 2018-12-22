@@ -69,7 +69,7 @@
                     <p style="color:#999;">reply : ${userMap[a.replyUserId?string].nickName} : ${object.text!}</p>
                 </@_comment>
             </#if>
-            <p>${a.createDate} : ${a.text!}</p>
+            <p>${a.createDate} : ${a.text!} <a href="comment.html?contentId=${contentId!}&replyId=${a.id}">Reply</a></p>
         </section>
     </#list>
 </@_commentList>
