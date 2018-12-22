@@ -25,7 +25,7 @@ CREATE TABLE `cms_comment` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   `text` text COMMENT '内容',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`,`create_date`)
+  KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`, `create_date`),
 ) COMMENT='评论';
 INSERT INTO `sys_module` VALUES ('comment_list', 'cmsComment/list', 'sysUser/lookup', '<i class=\"icon-comment icon-large\"></i>', 'content_extend', 1, 4);
 INSERT INTO `sys_module` VALUES ('comment_check', NULL, 'cmsComment/check', NULL, 'comment_list', 0, 0);
@@ -86,3 +86,10 @@ ALTER TABLE `cms_place`
 	ADD INDEX `user_id`(`user_id`, `check_user_id`) ;
 UPDATE `sys_module` SET `authorized_url` =  'cmsPlace/dataList,cmsPlace/export' WHERE `id` ='place_data_list';
 UPDATE `sys_module` SET `authorized_url` =  'sysUser/lookup' WHERE `id` ='place_list';
+-- 2018-12-22 --
+ALTER TABLE `cms_comment` 
+    ADD COLUMN `reply_id` bigint(20) NULL COMMENT '回复ID' AFTER `user_id`,
+	DROP INDEX `site_id`,
+	ADD INDEX `site_id`(`site_id`, `content_id`, `status`, `disabled`),
+	ADD INDEX(`update_date`, `create_date`),
+	ADD INDEX `reply_id`(`site_id`, `reply_id`);

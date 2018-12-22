@@ -60,6 +60,11 @@
     <#list page.list as a>
         <section>
             <p>${userMap[a.userId?string].nickName}</p>
+            <#if a.replyId?has_content>
+                <@_comment id=a.replayId>
+                    <p style="color:#999;">reply : <@_sysUser id=object.userId!>${object.nickName} :</@_sysUser> ${object.text!}</p>
+                </@_comment>
+            </#if>
             <p>${a.createDate} : ${a.text!}</p>
         </section>
     </#list>

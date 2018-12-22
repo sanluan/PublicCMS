@@ -81,6 +81,7 @@ CREATE TABLE `cms_comment` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `reply_id` bigint(20) DEFAULT NULL COMMENT '回复ID',
   `content_id` bigint(20) NOT NULL COMMENT '文章内容',
   `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
   `check_date` datetime DEFAULT NULL COMMENT '审核日期',
@@ -90,7 +91,9 @@ CREATE TABLE `cms_comment` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   `text` text COMMENT '内容',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`,`create_date`)
+  KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`),
+  KEY `update_date` (`update_date`,`create_date`),
+  KEY `reply_id` (`site_id`,`reply_id`)
 ) COMMENT='评论';
 -- ----------------------------
 -- Table structure for cms_content
