@@ -82,6 +82,7 @@ CREATE TABLE `cms_comment` (
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `reply_id` bigint(20) DEFAULT NULL COMMENT '回复ID',
+  `reply_user_id` bigint(20) DEFAULT NULL COMMENT '回复用户ID',
   `content_id` bigint(20) NOT NULL COMMENT '文章内容',
   `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
   `check_date` datetime DEFAULT NULL COMMENT '审核日期',

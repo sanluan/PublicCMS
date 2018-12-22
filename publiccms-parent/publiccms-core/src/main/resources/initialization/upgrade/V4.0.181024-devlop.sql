@@ -91,5 +91,9 @@ ALTER TABLE `cms_comment`
     ADD COLUMN `reply_id` bigint(20) NULL COMMENT '回复ID' AFTER `user_id`,
 	DROP INDEX `site_id`,
 	ADD INDEX `site_id`(`site_id`, `content_id`, `status`, `disabled`),
-	ADD INDEX(`update_date`, `create_date`),
+	ADD INDEX `update_date`(`update_date`, `create_date`),
 	ADD INDEX `reply_id`(`site_id`, `reply_id`);
+ALTER TABLE `cms_comment` 
+    ADD COLUMN `reply_user_id` bigint(20) NULL COMMENT '回复用户ID' AFTER `reply_id`,
+    DROP INDEX `reply_id`,
+    ADD INDEX `reply_id`(`site_id`, `reply_user_id`, `reply_id`);

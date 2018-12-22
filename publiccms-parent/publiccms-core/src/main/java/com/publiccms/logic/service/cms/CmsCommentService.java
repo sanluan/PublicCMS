@@ -37,6 +37,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param siteId
      * @param userId
      * @param replyId
+     * @param replyUserId 
      * @param contentId
      * @param checkUserId
      * @param status
@@ -48,15 +49,16 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, Long replyId, Long contentId, Long checkUserId, Integer status,
+    public PageHandler getPage(Short siteId, Long userId, Long replyId, Long replyUserId, Long contentId, Long checkUserId, Integer status,
             Boolean disabled, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, userId, replyId, contentId, checkUserId, status, disabled, orderField, orderType, pageIndex,
+        return dao.getPage(siteId, userId, replyId, replyUserId, contentId, checkUserId, status, disabled, orderField, orderType, pageIndex,
                 pageSize);
     }
 
     /**
      * @param siteId
      * @param ids
+     * @param userId 
      */
     public void check(short siteId, Serializable[] ids, long userId) {
         Date now = CommonUtils.getDate();

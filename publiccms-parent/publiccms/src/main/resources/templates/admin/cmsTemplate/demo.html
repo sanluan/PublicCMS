@@ -91,9 +91,10 @@ function templateDefaultConfig(type,name){
     case 'comment':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+        $('input[name=needLogin]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/comment.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,contentId,pageIndex');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,replyId,contentId,pageIndex');
         break;
     case 'search':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');

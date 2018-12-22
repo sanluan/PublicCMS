@@ -30,7 +30,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 @RequestMapping("comment")
 public class CommentController extends AbstractController {
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "status",
-            "disabled" };
+            "replyId", "replyUserId", "disabled" };
 
     /**
      * @param entity
@@ -67,6 +67,14 @@ public class CommentController extends AbstractController {
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
             entity.setStatus(CmsCommentService.STATUS_PEND);
+            if (null != entity.getReplyId()) {
+                CmsComment reply = service.getEntity(entity.getReplyId());
+                if (null == reply) {
+                    entity.setReplyId(null);
+                } else {
+                    entity.setReplyUserId(reply.getUserId());
+                }
+            }
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));

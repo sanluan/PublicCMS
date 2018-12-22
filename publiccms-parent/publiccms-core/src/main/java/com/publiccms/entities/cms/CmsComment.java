@@ -32,6 +32,8 @@ public class CmsComment implements java.io.Serializable {
     private long userId;
     @GeneratorColumn(title = "回复ID", condition = true)
     private Long replyId;
+    @GeneratorColumn(title = "回复用户ID", condition = true)
+    private Long replyUserId;
     @GeneratorColumn(title = "内容ID", condition = true)
     private long contentId;
     @GeneratorColumn(title = "审核用户", condition = true)
@@ -61,11 +63,12 @@ public class CmsComment implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsComment(short siteId, long userId, Long replyId, long contentId, Long checkUserId, Date checkDate, Date updateDate,
+    public CmsComment(short siteId, long userId, Long replyId, Long replyUserId, long contentId, Long checkUserId, Date checkDate, Date updateDate,
             Date createDate, int status, boolean disabled, String text) {
         this.siteId = siteId;
         this.userId = userId;
         this.replyId = replyId;
+        this.replyUserId = replyUserId;
         this.contentId = contentId;
         this.checkUserId = checkUserId;
         this.checkDate = checkDate;
@@ -113,6 +116,15 @@ public class CmsComment implements java.io.Serializable {
 
     public void setReplyId(Long replyId) {
         this.replyId = replyId;
+    }
+    
+    @Column(name = "reply_user_id")
+    public Long getReplyUserId() {
+        return this.replyUserId;
+    }
+    
+    public void setReplyUserId(Long replyUserId) {
+        this.replyUserId = replyUserId;
     }
 
     @Column(name = "content_id", nullable = false)
