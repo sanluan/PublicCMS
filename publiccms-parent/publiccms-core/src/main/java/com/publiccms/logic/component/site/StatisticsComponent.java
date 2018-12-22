@@ -60,9 +60,11 @@ public class StatisticsComponent implements Cache {
             } else {
                 clickStatistics.addClicks();
             }
-            List<ClickStatistics> list = relatedCache.put(id, clickStatistics);
-            if (CommonUtils.notEmpty(list)) {
-                contentRelatedService.updateStatistics(list);
+            if (null != clickStatistics) {
+                List<ClickStatistics> list = relatedCache.put(id, clickStatistics);
+                if (CommonUtils.notEmpty(list)) {
+                    contentRelatedService.updateStatistics(list);
+                }
             }
             return clickStatistics;
         } else {
@@ -164,9 +166,11 @@ public class StatisticsComponent implements Cache {
             } else {
                 clickStatistics.addClicks();
             }
-            List<CmsContentStatistics> list = contentCache.put(id, clickStatistics);
-            if (CommonUtils.notEmpty(list)) {
-                contentService.updateStatistics(list);
+            if (null != clickStatistics) {
+                List<CmsContentStatistics> list = contentCache.put(id, clickStatistics);
+                if (CommonUtils.notEmpty(list)) {
+                    contentService.updateStatistics(list);
+                }
             }
             return clickStatistics;
         } else {
@@ -189,9 +193,11 @@ public class StatisticsComponent implements Cache {
             } else {
                 clickStatistics.addScores();
             }
-            List<CmsContentStatistics> list = contentCache.put(id, clickStatistics);
-            if (CommonUtils.notEmpty(list)) {
-                contentService.updateStatistics(list);
+            if (null != clickStatistics) {
+                List<CmsContentStatistics> list = contentCache.put(id, clickStatistics);
+                if (CommonUtils.notEmpty(list)) {
+                    contentService.updateStatistics(list);
+                }
             }
             return clickStatistics;
         } else {
