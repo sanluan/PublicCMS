@@ -8,6 +8,7 @@
     <textarea name="category_md5"><@html_escape><#include "demo/category_md5.html" parse=false/></@html_escape></textarea>
     <textarea name="content_hash"><@html_escape><#include "demo/content_hash.html" parse=false/></@html_escape></textarea>
     <textarea name="category_hash"><@html_escape><#include "demo/category_hash.html" parse=false/></@html_escape></textarea>
+    <textarea name="comment"><@html_escape><#include "demo/comment.html" parse=false/></@html_escape></textarea>
     <textarea name="search"><@html_escape><#include "demo/search.html" parse=false/></@html_escape></textarea>
     <textarea name="login"><@html_escape><#include "demo/login.html" parse=false/></@html_escape></textarea>
     <textarea name="register"><@html_escape><#include "demo/register.html" parse=false/></@html_escape></textarea>
@@ -87,6 +88,13 @@ function templateDefaultConfig(type,name){
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
         $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
         break;
+    case 'comment':
+        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+        $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/comment.html');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,contentId,pageIndex');
+        break;
     case 'search':
         $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
@@ -164,6 +172,7 @@ function templateDefaultConfig(type,name){
         <li><a href="javascript:;" onclick="templateDefaultConfig('category_md5','<@t.page 'category_page_md5'/>');"><@t.page 'category_page_md5'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('content_hash','<@t.page 'content_page_hash'/>');"><@t.page 'content_page_hash'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('category_hash','<@t.page 'category_page_hash'/>');"><@t.page 'category_page_hash'/></a></li>
+        <li><a href="javascript:;" onclick="templateDefaultConfig('comment','<@t.page 'comment_page'/>');"><@t.page 'comment_page'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('search','<@t.page 'search_page'/>');"><@t.page 'search_page'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('login','<@t.page 'login_page'/>');"><@t.page 'login_page'/></a></li>
         <li><a href="javascript:;" onclick="templateDefaultConfig('register','<@t.page 'register_page'/>');"><@t.page 'register_page'/></a></li>

@@ -82,7 +82,7 @@
                 <dd>${(a.editor)!}</dd>
             </dl>
         </#if>
-        <#if (a.tagIds)?has_content>
+        <#if category?has_content && (a.tagIds)?has_content>
 <#if category.tagTypeIds?has_content>
     <@_tagType ids=category.tagTypeIds>
         <#list map as k,tagType>
@@ -205,6 +205,24 @@
             </#if>
         </@_contentRelatedList>
     </#if>
+    <@_commentList contentId=contentId status=1 pageIndex=pageIndex>
+        <#if page.totalCount gt 0>
+            <dl class="nowrap">
+                <dt><@t.page 'comment'/>:</dt>
+                <dd>
+                    <#list page.list as a>
+                        <@merge 'userIds' a.userId!/>
+                    </#list>
+                    <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+                    <#list page.list as a>
+                        <p>
+                            ${userMap[a.userId?string].nickName} : ${a.text!}
+                        </p>
+                    </#list>
+                </dd>
+            </dl>
+        </#if>
+    </@_commentList>
 </div>
 <div class="formBar">
     <ul>

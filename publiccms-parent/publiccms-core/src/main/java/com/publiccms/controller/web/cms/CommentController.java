@@ -55,13 +55,18 @@ public class CommentController extends AbstractController {
         }
 
         if (null != entity.getId()) {
-            entity.setUpdateDate(CommonUtils.getDate());
-            entity = service.update(entity.getId(), entity, ignoreProperties);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.cmsComment",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            CmsComment oldEntity = service.getEntity(entity.getId());
+            if (null != oldEntity && !oldEntity.isDisabled() && oldEntity.getUserId() == user.getId()) {
+                entity.setUpdateDate(CommonUtils.getDate());
+                entity = service.update(entity.getId(), entity, ignoreProperties);
+                logOperateService
+                        .save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.cmsComment",
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            }
         } else {
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
+            entity.setStatus(CmsCommentService.STATUS_PEND);
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));

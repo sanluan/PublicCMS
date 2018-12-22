@@ -6,7 +6,7 @@
 <@_contentList advanced=true status=status modelId=modelId parentId=parentId emptyParent=true title=title userId=admin.id
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
     <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -77,7 +77,7 @@
                 <th width="30"><@t.page 'id'/></th>
                 <th width="150"><@t.page 'title'/></th>
                 <th width="30"><@t.page 'category'/></th>
-                <th width="30"><@t.page 'model'/></th>
+                <th width="50"><@t.page 'model'/></th>
                 <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
                 <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
@@ -110,7 +110,13 @@
                     ${(modelMap[a.modelId].name)!}
                 </td>
                 <td>${a.scores!}</td>
-                <td>${a.comments!}</td>
+                <td>
+                    <#if authorizedMap['cmsComment/list']>
+                        <a href="cmsComment/list.html?_contentId=${a.id}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${a.comments!}</a>
+                    <#else>
+                        ${a.comments!}
+                    </#if>
+                </td>
                 <td>${a.clicks!}</td>
                 <td>${a.publishDate!}</td>
                 <td>${a.createDate!}</td>

@@ -56,12 +56,13 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param siteId
      * @param ids
      */
-    public void check(short siteId, Serializable[] ids) {
+    public void check(short siteId, Serializable[] ids,long userId) {
         Date now = CommonUtils.getDate();
         for (CmsComment entity : getEntitys(ids)) {
-            if (siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()) {
+            if (siteId == entity.getSiteId() && STATUS_NORMAL != entity.getStatus()) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckDate(now);
+                entity.setCheckUserId(userId);
                 contentService.updateComments(siteId, entity.getContentId(), 1);
             }
         }

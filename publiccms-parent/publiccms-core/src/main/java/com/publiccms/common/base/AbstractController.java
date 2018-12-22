@@ -43,66 +43,46 @@ public abstract class AbstractController {
     }
 
     protected boolean isUnSafeUrl(String url, SysSite site, HttpServletRequest request) {
-        if (CommonUtils.empty(url)) {
-            return true;
-        } else if (unSafe(url, site, request)) {
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-            String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-            if (null != safeReturnUrl) {
-                for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
-                    if (url.startsWith(safeUrlPrefix)) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        } else {
-            return false;
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (null != safeReturnUrl) {
+            return isUnSafeUrl(url, site, safeReturnUrl, request);
         }
+        return false;
     }
 
     protected boolean isUnSafeUrl(String url, SysSite site, String safeReturnUrl, HttpServletRequest request) {
         if (CommonUtils.empty(url)) {
             return true;
-        } else if (unSafe(url, site, request)) {
-            if (null != safeReturnUrl) {
-                for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
-                    if (url.startsWith(safeUrlPrefix)) {
-                        return false;
+        } else {
+            if (url.startsWith("//")) {
+                url = new StringBuilder(request.getScheme()).append(":").append(url).toString();
+            }
+            if (unSafe(url, site, request)) {
+                if (null != safeReturnUrl) {
+                    for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
+                        if (url.startsWith(safeUrlPrefix)) {
+                            return false;
+                        }
                     }
                 }
+                return true;
+            } else {
+                return false;
             }
-            return true;
-        } else {
-            return false;
         }
     }
 
     private boolean unSafe(String url, SysSite site, HttpServletRequest request) {
-        String scheme = request.getScheme();
-        String basePath = AbstractFreemarkerView.getBasePath(scheme, request.getServerPort(), request.getServerName(),
-                request.getContextPath());
-        if (url.startsWith("http://") || url.startsWith("https://")) {
-            String fixedUrl = url.substring(url.indexOf("://") + 1);
-            if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
-                    || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                    || url.startsWith(basePath)) {
-                return false;
-            } else {
-                return true;
-            }
-
-        } else if (url.startsWith("//")) {
-            String fixedUrl = new StringBuilder(scheme).append(":").append(url).toString();
-            if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
-                    || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                    || fixedUrl.startsWith(basePath)) {
-                return false;
-            } else {
-                return true;
-            }
-        } else {
+        String basePath = AbstractFreemarkerView.getBasePath(request.getScheme(), request.getServerPort(),
+                request.getServerName(), request.getContextPath());
+        String fixedUrl = url.substring(url.indexOf("://") + 1);
+        if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
+                || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
+                || url.startsWith(basePath)) {
             return false;
+        } else {
+            return true;
         }
     }
 }

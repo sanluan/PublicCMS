@@ -18,6 +18,7 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.cms.CmsCommentService;
 import com.publiccms.logic.service.log.LogLoginService;
 
@@ -45,8 +46,9 @@ public class CmsCommentAdminController extends AbstractController {
         }
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = getSite(request);
-            service.check(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+            SysUser user = ControllerUtils.getAdminFromSession(session);
+            service.check(site.getId(), ids, user.getId());
+            logOperateService.save(new LogOperate(site.getId(), user.getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "cmsComment.place", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, ',')));
         }
@@ -85,7 +87,7 @@ public class CmsCommentAdminController extends AbstractController {
      * @return operate result
      */
     @RequestMapping("delete")
-    public String delete(Integer[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }

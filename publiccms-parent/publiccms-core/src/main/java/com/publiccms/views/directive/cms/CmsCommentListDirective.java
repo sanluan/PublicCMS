@@ -21,10 +21,20 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
+        Integer status;
+        Long checkUserId = null;
+        Boolean disabled;
+        if (handler.getBoolean("advanced", false)) {
+            status = handler.getInteger("status");
+            checkUserId = handler.getLong("checkUserId");
+            disabled = handler.getBoolean("disabled", false);
+        } else {
+            status = CmsCommentService.STATUS_NORMAL;
+            disabled = false;
+        }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getLong("contentId"),
-                handler.getLong("checkUserId"), handler.getInteger("status"), handler.getBoolean("disabled"),
-                handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("count", 30));
+                checkUserId, status, disabled, handler.getString("orderField"), handler.getString("orderType"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
     }
 
