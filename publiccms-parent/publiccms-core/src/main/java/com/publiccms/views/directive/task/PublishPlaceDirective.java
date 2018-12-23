@@ -30,7 +30,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        String path = handler.getString("path", CommonConstants.SEPARATOR);
+        String path = handler.getString("path", CommonConstants.BLANK);
         SysSite site = getSite(handler);
         if (site.isUseSsi()) {
             String filePath = siteComponent.getWebTemplateFilePath(site,
