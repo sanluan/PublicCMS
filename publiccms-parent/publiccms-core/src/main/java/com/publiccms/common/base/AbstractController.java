@@ -54,7 +54,7 @@ public abstract class AbstractController {
     protected boolean isUnSafeUrl(String url, SysSite site, String safeReturnUrl, HttpServletRequest request) {
         if (CommonUtils.empty(url)) {
             return true;
-        } else {
+        } else if (0 < url.indexOf("://") || url.startsWith("//")) {
             if (url.startsWith("//")) {
                 url = new StringBuilder(request.getScheme()).append(":").append(url).toString();
             }
@@ -70,6 +70,8 @@ public abstract class AbstractController {
             } else {
                 return false;
             }
+        } else {
+            return false;
         }
     }
 

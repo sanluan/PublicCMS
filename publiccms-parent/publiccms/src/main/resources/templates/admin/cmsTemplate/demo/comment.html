@@ -7,6 +7,12 @@
     <title>Comment - ${content.title}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
     <meta name="description" content="${content.description}"/>
+    <style type="text/css">
+        .right{float:right;}
+        .gray{color:gray;}
+        .border{border:1px solid gray;}
+        .underline{border-bottom:1px dashed gray;}
+    </style>
 </head>
 <body>
     <header>
@@ -28,9 +34,9 @@
         <#if page.totalCount gt 0>
             <h3>My Comments</h3>
             <#list page.list as a>
-                <section>
-                    <p>${user.nickName} - under review</p>
-                    <p>${a.createDate} : ${a.text!} <a href="comment.html?contentId=${contentId!}&id=${a.id}">Edit</a></p>
+                <section class="underline">
+                    <p>${user.nickName} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
+                    <p>${a.text!}<span class="right"><a href="comment.html?contentId=${contentId!}&id=${a.id}">Edit</a></span></p>
                 </section>
             </#list>
         </#if>
@@ -50,7 +56,7 @@
             <input type="hidden" name="contentId" value="${contentId}"/>
             <input name="returnUrl" type="hidden" value="${content.url!}" />
             <p><label>Comment:</label></p>
-            <p><textarea name="text" cols="80" rows="20">${text!}</textarea></p>
+            <p><textarea name="text" cols="100" rows="5" maxlength="1000">${text!}</textarea></p>
             <p><input type="submit" value="Submit"/></p>
         </form>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
@@ -62,14 +68,14 @@
     <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
     <h3>Comments</h3>
     <#list page.list as a>
-        <section>
-            <p>${userMap[a.userId?string].nickName}</p>
+        <section class="underline">
+            <p>${userMap[a.userId?string].nickName}<span class="right">${a.createDate}</span></p>
             <#if a.replyId?has_content>
-                <@_comment id=a.replayId>
-                    <p style="color:#999;">reply : ${userMap[a.replyUserId?string].nickName} : ${object.text!}</p>
+                <@_comment id=a.replyId>
+                    <p class="border gray">${userMap[a.replyUserId?string].nickName} : ${object.text!}</p>
                 </@_comment>
             </#if>
-            <p>${a.createDate} : ${a.text!} <a href="comment.html?contentId=${contentId!}&replyId=${a.id}">Reply</a></p>
+            <p>${a.text!}<span class="right"><a href="comment.html?contentId=${contentId!}&replyId=${a.id}">Reply</a></span></p>
         </section>
     </#list>
 </@_commentList>
