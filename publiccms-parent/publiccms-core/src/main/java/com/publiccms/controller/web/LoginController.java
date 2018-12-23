@@ -1,7 +1,5 @@
 package com.publiccms.controller.web;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -137,6 +135,7 @@ public class LoginController extends AbstractController {
             result.put("id", user.getId());
             result.put("name", user.getName());
             result.put("nickname", user.getNickName());
+            result.put("weakPassword", user.isWeakPassword());
             result.put("email", user.getEmail());
             result.put("emailChecked", user.isEmailChecked());
             result.put("superuserAccess", user.isSuperuserAccess());
@@ -243,19 +242,12 @@ public class LoginController extends AbstractController {
 
     public static void addLoginStatus(SysUser user, String authToken, HttpServletRequest request, HttpServletResponse response,
             int expiryMinutes) {
-        try {
-            user.setPassword(null);
-            ControllerUtils.setUserToSession(request.getSession(), user);
-            StringBuilder sb = new StringBuilder();
-            sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
-                    .append(CommonConstants.getCookiesUserSplit()).append(user.isSuperuserAccess())
-                    .append(CommonConstants.getCookiesUserSplit())
-                    .append(URLEncoder.encode(user.getNickName(), CommonConstants.DEFAULT_CHARSET_NAME));
-            RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesUser(), sb.toString(),
-                    expiryMinutes * 60, null);
-        } catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage(), e);
-        }
+        user.setPassword(null);
+        ControllerUtils.setUserToSession(request.getSession(), user);
+        StringBuilder sb = new StringBuilder();
+        sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
+        RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesUser(), sb.toString(),
+                expiryMinutes * 60, null);
     }
 
     /**

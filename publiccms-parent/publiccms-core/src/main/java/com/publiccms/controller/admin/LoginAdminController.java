@@ -1,7 +1,5 @@
 package com.publiccms.controller.admin;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
@@ -113,17 +111,10 @@ public class LoginAdminController extends AbstractController {
                 LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, now,
                 DateUtils.addMinutes(now, expiryMinutes), ip));
-        try {
-            StringBuilder sb = new StringBuilder();
-            sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken)
-                    .append(CommonConstants.getCookiesUserSplit()).append(user.isSuperuserAccess())
-                    .append(CommonConstants.getCookiesUserSplit())
-                    .append(URLEncoder.encode(user.getNickName(), CommonConstants.DEFAULT_CHARSET_NAME));
-            RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesAdmin(), sb.toString(),
-                    expiryMinutes * 60, null);
-        } catch (UnsupportedEncodingException e) {
-            log.error(e.getMessage(), e);
-        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
+        RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesAdmin(), sb.toString(),
+                expiryMinutes * 60, null);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
         if (isUnSafeUrl(returnUrl, site, request)) {
