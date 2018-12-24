@@ -43,6 +43,8 @@ import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 
+import config.initializer.InitializationInitializer;
+
 /**
  *
  * Spring配置类
@@ -260,10 +262,9 @@ public class ApplicationConfig {
 
     private String getDirPath(String path) {
         if (null == CommonConstants.CMS_FILEPATH) {
-            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", env.getProperty("cms.filePath"));
+            InitializationInitializer.initFilePath(env.getProperty("cms.filePath"), System.getProperty("user.dir"));
         }
-        String filePath = CommonConstants.CMS_FILEPATH + path;
-        File dir = new File(filePath);
+        File dir = new File(CommonConstants.CMS_FILEPATH + path);
         dir.mkdirs();
         return dir.getAbsolutePath();
     }

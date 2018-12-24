@@ -30,7 +30,7 @@ import com.publiccms.common.servlet.InstallServlet;
  *
  */
 public class InitializationInitializer implements WebApplicationInitializer {
-    protected final Log log = LogFactory.getLog(getClass());
+    protected static final Log log = LogFactory.getLog(InitializationInitializer.class);
     /**
      * 安装Servlet映射路径
      */
@@ -45,8 +45,9 @@ public class InitializationInitializer implements WebApplicationInitializer {
         try {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
             initProxy(config);
-            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", config.getProperty("cms.filePath"));
-            checkFilePath(servletcontext);
+            if (null == CommonConstants.CMS_FILEPATH) {
+                initFilePath(config.getProperty("cms.filePath"), System.getProperty("user.dir"));
+            }
             File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
             if (file.exists()) {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
@@ -73,11 +74,12 @@ public class InitializationInitializer implements WebApplicationInitializer {
     /**
      * 检查CMS路径变量
      * 
-     * @param servletcontext
+     * @param filePath
      * @param defaultPath
-     * @throws ServletException
+     * 
      */
-    private void checkFilePath(ServletContext servletcontext) throws ServletException {
+    public static void initFilePath(String filePath, String defaultPath) {
+        CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", filePath);
         File file = new File(CommonConstants.CMS_FILEPATH);
         try {
             file.mkdirs();
@@ -86,8 +88,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
         if (!file.exists()) {
             log.warn("PublicCMS " + CmsVersion.getVersion()
                     + " the cms.filePath parameter is invalid , try to use the temporary directory.");
-            // 将目录设置为项目所在目录
-            file = new File(servletcontext.getRealPath("/"), "cms_filepath_temp");
+            file = new File(defaultPath, "data/publiccms");
             CommonConstants.CMS_FILEPATH = file.getAbsolutePath();
         }
     }
