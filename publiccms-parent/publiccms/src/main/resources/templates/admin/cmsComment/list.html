@@ -1,5 +1,5 @@
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" action="cmsComment/list.html" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -9,12 +9,12 @@
                 </li>
                 <li>
                     <label><@t.page 'content.id'/>:</label>
-                    <input type="text" name="contentId" value="${contentId!_contentId!}" />
+                    <input type="text" name="contentId" value="${contentId!}" />
                 </li>
                 <li class="width:auto">
                 <#list 1..2 as s>
                     <label style="width:auto">
-                        <input <@t.compare status!_status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                        <input <@t.compare status s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
                         <span><@t.page 'status.content.'+s/></span>
                     </label>
                 </#list>
@@ -45,7 +45,7 @@
         </#if>
         </ul>
     </div>
-<@_commentList advanced=true userId=userId contentId=contentId!_contentId!'' status=status!_status 
+<@_commentList advanced=true userId=userId contentId=contentId status=status 
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
     <table class="list" width="100%" layoutH="92">
         <thead>

@@ -112,7 +112,7 @@
                 <td>${a.scores!}</td>
                 <td>
                     <#if authorizedMap['cmsComment/list']>
-                        <a href="cmsComment/list.html?_contentId=${a.id}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${a.comments!}</a>
+                        <a href="cmsComment/list.html?contentId=${a.id}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${a.comments!}</a>
                     <#else>
                         ${a.comments!}
                     </#if>
