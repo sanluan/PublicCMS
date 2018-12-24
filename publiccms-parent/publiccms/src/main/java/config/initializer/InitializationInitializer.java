@@ -1,20 +1,15 @@
 package config.initializer;
 
-import static org.publiccms.common.constants.CommonConstants.CMS_FILEPATH;
-import static org.publiccms.common.constants.CommonConstants.INSTALL_LOCK_FILENAME;
 import static org.apache.commons.io.FileUtils.readFileToString;
 import static org.apache.commons.logging.LogFactory.getLog;
-import static org.publiccms.common.database.CmsDataSource.DATABASE_CONFIG_FILENAME;
+import static org.publiccms.common.constants.CommonConstants.CMS_FILEPATH;
+import static org.publiccms.common.constants.CommonConstants.INSTALL_LOCK_FILENAME;
 import static org.publiccms.common.servlet.InstallServlet.STEP_CHECKDATABASE;
-import static org.publiccms.common.tools.DatabaseUtils.getConnection;
 import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
 
-import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
 import java.net.Authenticator;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -44,7 +39,6 @@ public class InitializationInitializer implements WebApplicationInitializer, Bas
     @Override
     public void onStartup(ServletContext servletcontext) throws ServletException {
         Properties config = null;
-        Connection connection = null;
         try {
             config = loadAllProperties(CMS_CONFIG_FILE);
             // 检查路径是否存在- 2017-06-17
@@ -59,8 +53,6 @@ public class InitializationInitializer implements WebApplicationInitializer, Bas
             }
             File file = new File(CMS_FILEPATH + INSTALL_LOCK_FILENAME);
             if (file.exists()) {
-                connection = getConnection(CMS_FILEPATH + DATABASE_CONFIG_FILENAME);
-                connection.close();
                 String version = readFileToString(file, DEFAULT_CHARSET);
                 if (CmsVersion.getVersion().equals(version)) {
                     CmsVersion.setInitialized(true);
@@ -75,13 +67,7 @@ public class InitializationInitializer implements WebApplicationInitializer, Bas
                 log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CMS_FILEPATH
                         + ", please configure your database information and initialize the database!");
             }
-        } catch (PropertyVetoException | SQLException | IOException | ClassNotFoundException e) {
-            if (null != connection) {
-                try {
-                    connection.close();
-                } catch (SQLException e1) {
-                }
-            }
+        } catch (IOException e) {
             createInstallServlet(servletcontext, config, null, null);
             log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CMS_FILEPATH
                     + ", please modify your database configuration!");
@@ -103,25 +89,14 @@ public class InitializationInitializer implements WebApplicationInitializer, Bas
      */
     private void checkFilePath(ServletContext servletcontext, String defaultPath) throws ServletException {
         CMS_FILEPATH = System.getProperty("cms.filePath", defaultPath);
-        boolean exist = false;
         try {
             File rootFolder = new File(CMS_FILEPATH);
-            exist = rootFolder.exists();
-            if (!exist) {
-                // 尝试创建
-                log.warn("PublicCMS " + CmsVersion.getVersion() + " The directory " + CMS_FILEPATH
-                        + " doesnot exist, try to create the directory.");
-                rootFolder.mkdirs();
-                exist = rootFolder.exists();
+            if (!rootFolder.exists() && !rootFolder.mkdirs()) {
+                CMS_FILEPATH = new File(servletcontext.getRealPath("/"), "cms_filepath_temp").getPath();
+                log.warn("PublicCMS " + CmsVersion.getVersion() + " the cms.filePath parameter is invalid ," + CMS_FILEPATH
+                        + " will be use as the default cms.filepath.");
             }
         } catch (Exception e) {
-        }
-        if (!exist) {
-            log.warn("PublicCMS " + CmsVersion.getVersion()
-                    + " the cms.filePath parameter is invalid , try to use the temporary directory.");
-            // 将目录设置为项目所在目录
-            CMS_FILEPATH = new File(servletcontext.getRealPath("/"), "cms_filepath_temp").getPath();
-            log.warn("PublicCMS " + CmsVersion.getVersion() + " " + CMS_FILEPATH + " will be use as the default cms.filepath.");
         }
     }
 }
