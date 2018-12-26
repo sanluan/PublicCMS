@@ -81,7 +81,7 @@ public class MethodController extends AbstractController {
                     map.put("result", method.exec(list));
                     return map;
                 } else if (CommonUtils.empty(parameters) && 0 == method.minParametersNumber()) {
-                    map.put("result", method.exec(null));
+                    map.put("result", method.exec(new ArrayList<>()));
                     return map;
                 } else {
                     map.put(CommonConstants.ERROR, "parametersError");
