@@ -75,7 +75,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         }
         sb.append("/");
         sb.append(database);
-        sb.append("?zeroDateTimeBehavior=round&useSSL=false");
+        sb.append("?useSSL=false");
         if (CommonUtils.notEmpty(timeZone)) {
             try {
                 sb.append("&serverTimezone=GMT");
