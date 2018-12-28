@@ -67,6 +67,7 @@
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'title'/></th>
                 <th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="140"><@t.page 'expiry_date'/></th>
                 <th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th width="100"><@t.page 'content.promulgator'/></th>
                 <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
@@ -87,6 +88,7 @@
                 <td>${a.id}</td>
                 <td><#if a.url?has_content><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a><#else>${a.title}</#if></td>
                 <td>${a.publishDate}</td>
+                <td>${a.expiryDate!}</td>
                 <td>${a.createDate}</td>
                 <td>${(userMap[a.userId?string].nickName)!}</td>
                 <td>${a.clicks}</td>

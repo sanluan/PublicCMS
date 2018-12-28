@@ -61,6 +61,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param itemId
      * @param startPublishDate
      * @param endPublishDate
+     * @param expiryDate 
      * @param status
      * @param disabled
      * @param orderField
@@ -71,10 +72,10 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, Date startPublishDate,
-            Date endPublishDate, Integer[] status, Boolean disabled, String orderField, String orderType, Integer pageIndex,
-            Integer pageSize) {
-        return dao.getPage(siteId, userId, path, itemType, itemId, startPublishDate, endPublishDate, status, disabled, orderField,
-                orderType, pageIndex, pageSize);
+            Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled, String orderField, String orderType,
+            Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, path, itemType, itemId, startPublishDate, endPublishDate, expiryDate, status, disabled,
+                orderField, orderType, pageIndex, pageSize);
     }
 
     /**

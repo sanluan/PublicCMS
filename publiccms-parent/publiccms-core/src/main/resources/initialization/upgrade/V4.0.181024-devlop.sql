@@ -97,3 +97,10 @@ ALTER TABLE `cms_comment`
     ADD COLUMN `reply_user_id` bigint(20) NULL COMMENT '回复用户ID' AFTER `reply_id`,
     DROP INDEX `reply_id`,
     ADD INDEX `reply_id`(`site_id`, `reply_user_id`, `reply_id`);
+-- 2018-12-28 --
+ALTER TABLE `cms_content` DROP INDEX `status`,
+    ADD COLUMN `expiry_date` datetime NULL COMMENT '过期日期' AFTER `publish_date`,
+    ADD INDEX `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`);
+ALTER TABLE `cms_content` DROP INDEX `publish_date`,
+    ADD COLUMN `expiry_date` datetime NULL COMMENT '过期日期' AFTER `publish_date`,
+    ADD INDEX `publish_date` (`publish_date`,`create_date`,`expiry_date`);

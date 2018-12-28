@@ -133,6 +133,7 @@
                 <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="70"><@t.page 'expiry_date'/></th>
                 <th width="70"><@t.page 'create_date'/></th>
                 <th width="40" orderField="default" class="<#if !orderField??||'default'==orderField>desc<#else>order</#if>"><@t.page 'content.top_level'/></th>
                 <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
@@ -175,6 +176,7 @@
                 </td>
                 <td class="center">${a.clicks!}</td>
                 <td class="center">${a.publishDate!}</td>
+                <td class="center">${a.expiryDate!}</td>
                 <td class="center">${a.createDate!}</td>
                 <td class="center">${a.sort!}</td>
                 <td>

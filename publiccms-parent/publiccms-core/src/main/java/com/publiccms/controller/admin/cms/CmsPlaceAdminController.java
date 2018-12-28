@@ -286,8 +286,8 @@ public class CmsPlaceAdminController extends AbstractController {
         list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
         view.getDataList().add(list);
 
-        PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, startPublishDate, endPublishDate, status,
-                false, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
+        PageHandler page = service.getPage(site.getId(), userId, path, itemType, itemId, startPublishDate, endPublishDate,
+                CommonUtils.getMinuteDate(), status, false, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsPlace> entityList = (List<CmsPlace>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();

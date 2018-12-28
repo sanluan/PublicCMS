@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -310,8 +311,9 @@ public class TemplateComponent implements Cache {
 
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
         if (null != metadata.getSize() && metadata.getSize() > 0) {
-            model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null,
-                    CommonUtils.getMinuteDate(), CmsPlaceService.STATUS_NORMAL_ARRAY, false, null, null, 1, metadata.getSize()));
+            Date now = CommonUtils.getMinuteDate();
+            model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null, now, now,
+                    CmsPlaceService.STATUS_NORMAL_ARRAY, false, null, null, 1, metadata.getSize()));
         }
         model.put("metadata", metadata);
         AbstractFreemarkerView.exposeSite(model, site);

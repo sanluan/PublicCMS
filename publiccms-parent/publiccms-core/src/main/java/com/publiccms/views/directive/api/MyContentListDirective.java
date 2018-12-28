@@ -34,7 +34,7 @@ public class MyContentListDirective extends AbstractAppDirective {
                         handler.getIntegerArray("categoryIds"), false, null, handler.getLong("parentId"),
                         handler.getBoolean("emptyParent"), handler.getBoolean("onlyUrl"), handler.getBoolean("hasImages"),
                         handler.getBoolean("hasCover"), handler.getBoolean("hasFiles"), null, user.getId(), null,
-                        handler.getDate("endPublishDate")),
+                        handler.getDate("endPublishDate"), null),
                 handler.getBoolean("containChild"), null, null, handler.getInteger("pageIndex", 1),
                 handler.getInteger("count", 30));
         @SuppressWarnings("unchecked")

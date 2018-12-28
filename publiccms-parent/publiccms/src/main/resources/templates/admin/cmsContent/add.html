@@ -155,6 +155,12 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                         <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
                     </dd>
                 </dl>
+                <dl id="publishDate" style="display:none">
+                    <dt><@t.page 'expiry_date'/>:</dt>
+                    <dd>
+                        <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!}"/>
+                    </dd>
+                </dl>
             <#if a?has_content&&a.publishDate gt .now>
 <script>
 $('input[name=timing]',navTab.getCurrentPanel()).click();

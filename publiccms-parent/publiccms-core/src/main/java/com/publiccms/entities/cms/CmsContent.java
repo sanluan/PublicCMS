@@ -45,7 +45,8 @@ import com.publiccms.common.search.MultiTokenizerFactory;
 @DynamicUpdate
 @AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class))
 @Analyzer(definition = "cms") // Comment this line to enable elasticsearch
-// @Analyzer(definition = "default") // Uncomment this line to enable elasticsearch
+// @Analyzer(definition = "default") // Uncomment this line to enable
+// elasticsearch
 @ClassBridge(impl = CmsContentBridge.class)
 @Indexed(interceptor = CmsContentInterceptor.class)
 public class CmsContent implements java.io.Serializable {
@@ -124,6 +125,12 @@ public class CmsContent implements java.io.Serializable {
     @DateBridge(resolution = Resolution.SECOND)
     @SortableField
     private Date publishDate;
+    @GeneratorColumn(title = "过期日期", condition = true, order = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Field(analyze = Analyze.NO, store = Store.YES)
+    @DateBridge(resolution = Resolution.SECOND)
+    @SortableField
+    private Date expiryDate;
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
     @GeneratorColumn(title = "更新日期", order = true)
@@ -168,7 +175,8 @@ public class CmsContent implements java.io.Serializable {
     public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
             boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasStatic,
             String url, String description, String tagIds, String cover, int childs, int scores, int comments, int clicks,
-            Date publishDate, Date checkDate, Date updateDate, Date createDate, int sort, int status, boolean disabled) {
+            Date publishDate, Date expiryDate, Date checkDate, Date updateDate, Date createDate, int sort, int status,
+            boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
@@ -192,6 +200,7 @@ public class CmsContent implements java.io.Serializable {
         this.comments = comments;
         this.clicks = clicks;
         this.publishDate = publishDate;
+        this.expiryDate = expiryDate;
         this.checkDate = checkDate;
         this.updateDate = updateDate;
         this.createDate = createDate;
@@ -418,6 +427,16 @@ public class CmsContent implements java.io.Serializable {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "expiry_date", length = 19)
+    public Date getExpiryDate() {
+        return this.expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

@@ -87,6 +87,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param modelIds
      * @param startPublishDate
      * @param endPublishDate
+     * @param expiryDate
      * @param orderField
      * @param pageIndex
      * @param pageSize
@@ -95,10 +96,10 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public PageHandler query(boolean projection, Short siteId, String text, Long[] tagIds, Integer categoryId,
             Boolean containChild, Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate,
-            String orderField, Integer pageIndex, Integer pageSize) {
+            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         return dao.query(projection, siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
-                getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, orderField,
-                pageIndex, pageSize);
+                getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, expiryDate,
+                orderField, pageIndex, pageSize);
     }
 
     /**
@@ -109,6 +110,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param tagIds
      * @param startPublishDate
      * @param endPublishDate
+     * @param expiryDate
      * @param orderField
      * @param pageIndex
      * @param pageSize
@@ -116,9 +118,9 @@ public class CmsContentService extends BaseService<CmsContent> {
      */
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, Long[] tagIds,
-            Date startPublishDate, Date endPublishDate, String orderField, Integer pageIndex, Integer pageSize) {
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
-                startPublishDate, endPublishDate, orderField, pageIndex, pageSize);
+                startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
@@ -365,8 +367,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                     && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null), null, null, null, null, null)
-                                    .getList()) {
+                            entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null,
+                            null).getList()) {
                         child.setDisabled(true);
                         entity.setChilds(entity.getChilds() - 1);
                     }
@@ -411,8 +413,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null), false, null, null, null, null)
-                                    .getList()) {
+                            entity.getId(), null, null, null, null, null, null, null, null, null, null), false, null, null, null,
+                            null).getList()) {
                         child.setDisabled(false);
                         entityList.add(child);
                     }
@@ -436,8 +438,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null), false, null, null, null, null)
-                                    .getList()) {
+                            entity.getId(), null, null, null, null, null, null, null, null, null, null), false, null, null, null,
+                            null).getList()) {
                         delete(child.getId());
                     }
                 }

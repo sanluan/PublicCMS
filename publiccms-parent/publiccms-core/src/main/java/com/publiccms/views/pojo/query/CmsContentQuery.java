@@ -27,6 +27,7 @@ public class CmsContentQuery implements java.io.Serializable {
     private Date startPublishDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endPublishDate;
+    private Date expiryDate;
 
     public CmsContentQuery() {
 
@@ -34,7 +35,7 @@ public class CmsContentQuery implements java.io.Serializable {
 
     public CmsContentQuery(Short siteId, Integer[] status, Integer categoryId, Integer[] categoryIds, Boolean disabled,
             String[] modelIds, Long parentId, Boolean emptyParent, Boolean onlyUrl, Boolean hasImages, Boolean hasFiles,
-            Boolean hasCover, String title, Long userId, Date startPublishDate, Date endPublishDate) {
+            Boolean hasCover, String title, Long userId, Date startPublishDate, Date endPublishDate, Date expiryDate) {
         super();
         this.siteId = siteId;
         this.status = status;
@@ -52,6 +53,7 @@ public class CmsContentQuery implements java.io.Serializable {
         this.userId = userId;
         this.startPublishDate = startPublishDate;
         this.endPublishDate = endPublishDate;
+        this.expiryDate = expiryDate;
     }
 
     /**
@@ -291,5 +293,19 @@ public class CmsContentQuery implements java.io.Serializable {
      */
     public void setHasCover(Boolean hasCover) {
         this.hasCover = hasCover;
+    }
+
+    /**
+     * @return the expiryDate
+     */
+    public Date getExpiryDate() {
+        return expiryDate;
+    }
+
+    /**
+     * @param expiryDate the expiryDate to set
+     */
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 }

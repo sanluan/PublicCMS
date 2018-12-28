@@ -3,6 +3,7 @@ package com.publiccms.views.directive.cms;
 // Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,11 +42,11 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             PageHandler page;
             Integer pageIndex = handler.getInteger("pageIndex", 1);
             Integer count = handler.getInteger("count", 30);
+            Date currentDate = CommonUtils.getMinuteDate();
             try {
                 page = service.facetQuery(site.getId(), handler.getStringArray("categoryId"), handler.getStringArray("modelId"),
-                        word, tagIds, handler.getDate("startPublishDate"),
-                        handler.getDate("endPublishDate", CommonUtils.getMinuteDate()), handler.getString("orderField"),
-                        pageIndex, count);
+                        word, tagIds, handler.getDate("startPublishDate"), handler.getDate("endPublishDate", currentDate),
+                        currentDate, handler.getString("orderField"), pageIndex, count);
             } catch (Exception e) {
                 page = new FacetPageHandler(pageIndex, count, 0, null);
             }

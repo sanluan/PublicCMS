@@ -125,6 +125,7 @@ CREATE TABLE `cms_content` (
   `comments` int(11) NOT NULL COMMENT '评论数',
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `publish_date` datetime NOT NULL COMMENT '发布日期',
+  `expiry_date` datetime default NULL COMMENT '过期日期',
   `check_date` datetime default NULL COMMENT '审核日期',
   `update_date` datetime default NULL COMMENT '更新日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -134,7 +135,7 @@ CREATE TABLE `cms_content` (
   PRIMARY KEY  (`id`),
   KEY `check_date` (`check_date`,`update_date`),
   KEY `scores` (`scores`,`comments`,`clicks`),
-  KEY `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`),
+  KEY `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
   KEY `only_url` (`only_url`,`has_images`,`has_files`,`user_id`)
 ) COMMENT='内容';
 
@@ -234,12 +235,13 @@ CREATE TABLE `cms_place` (
   `cover` varchar(255) default NULL COMMENT '封面图',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `publish_date` datetime NOT NULL COMMENT '发布日期',
+  `expiry_date` datetime default NULL COMMENT '过期日期',
   `status` int(11) NOT NULL COMMENT '状态：0、前台提交 1、已发布 ',
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
   KEY `clicks` (`clicks`),
-  KEY `publish_date` (`publish_date`,`create_date`),
+  KEY `publish_date` (`publish_date`,`create_date`,`expiry_date`),
   KEY `site_id` (`site_id`,`path`,`status`,`disabled`),
   KEY `item_type` (`item_type`,`item_id`),
   KEY `user_id` (`user_id`,`check_user_id`)

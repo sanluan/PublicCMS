@@ -56,6 +56,9 @@ public class CmsPlace implements java.io.Serializable {
     @GeneratorColumn(title = "发布日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date publishDate;
+    @GeneratorColumn(title = "过期日期", condition = true, order = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date expiryDate;
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
     @GeneratorColumn(title = "点击数", order = true)
@@ -79,8 +82,9 @@ public class CmsPlace implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsPlace(short siteId, String path, Long userId, Long checkUserId,String itemType, Long itemId, String title, String url, String cover,
-            Date createDate, Date publishDate, int status, int clicks, boolean disabled) {
+    public CmsPlace(short siteId, String path, Long userId, Long checkUserId, String itemType, Long itemId, String title,
+            String url, String cover, Date createDate, Date publishDate, Date expiryDate, int status, int clicks,
+            boolean disabled) {
         this.siteId = siteId;
         this.path = path;
         this.userId = userId;
@@ -92,6 +96,7 @@ public class CmsPlace implements java.io.Serializable {
         this.cover = cover;
         this.createDate = createDate;
         this.publishDate = publishDate;
+        this.expiryDate = expiryDate;
         this.status = status;
         this.clicks = clicks;
         this.disabled = disabled;
@@ -208,6 +213,16 @@ public class CmsPlace implements java.io.Serializable {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "expiry_date", length = 19)
+    public Date getExpiryDate() {
+        return this.expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     @Column(name = "status", nullable = false)
