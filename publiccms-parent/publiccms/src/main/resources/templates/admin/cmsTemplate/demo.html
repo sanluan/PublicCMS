@@ -12,6 +12,7 @@
     <textarea name="search"><@html_escape><#include "demo/search.html" parse=false/></@html_escape></textarea>
     <textarea name="login"><@html_escape><#include "demo/login.html" parse=false/></@html_escape></textarea>
     <textarea name="register"><@html_escape><#include "demo/register.html" parse=false/></@html_escape></textarea>
+    <textarea name="sitemap"><@html_escape><#include "demo/sitemap.xml" parse=false/></@html_escape></textarea>
     <#if site.useStatic>
         <textarea name="staticContent"><@html_escape><#include "demo/staticContent.html" parse=false/></@html_escape></textarea>
         <textarea name="staticCategory"><@html_escape><#include "demo/staticCategory.html" parse=false/></@html_escape></textarea>
@@ -110,6 +111,19 @@ function templateDefaultConfig(type,name){
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
         $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
         break;
+    case 'sitemap':
+        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
+        $('input[name=path]',navTab.getCurrentPanel()).val('/sitemap.xml');
+        $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
+        break;
+<#else>
+    case 'sitemap':
+        $('input[name=path]',navTab.getCurrentPanel()).val('/sitemap.xml');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
 </#if>
     case 'commentJson':
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.json');
@@ -152,6 +166,7 @@ function templateDefaultConfig(type,name){
                 <li><a href="javascript:;" onclick="templateDefaultConfig('search','<@t.page 'search_page'/>');"><@t.page 'search_page'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('login','<@t.page 'login_page'/>');"><@t.page 'login_page'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('register','<@t.page 'register_page'/>');"><@t.page 'register_page'/></a></li>
+                <li><a href="javascript:;" onclick="templateDefaultConfig('sitemap','<@t.page 'sitemap'/>');"><@t.page 'sitemap'/></a></li>
             </ul>
         </li>
         <li>
