@@ -310,7 +310,7 @@ public class TemplateComponent implements Cache {
     }
 
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
-        if (null != metadata.getSize() && metadata.getSize() > 0) {
+        if (null != metadata.getSize() && 0 < metadata.getSize()) {
             Date now = CommonUtils.getMinuteDate();
             model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null, now, now,
                     CmsPlaceService.STATUS_NORMAL_ARRAY, false, null, null, 1, metadata.getSize()));

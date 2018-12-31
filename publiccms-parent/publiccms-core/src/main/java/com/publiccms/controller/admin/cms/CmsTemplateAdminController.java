@@ -87,7 +87,7 @@ public class CmsTemplateAdminController extends AbstractController {
                 } else {
                     String historyFilePath = siteComponent.getWebTemplateHistoryFilePath(site, path);
                     CmsFileUtils.updateFile(filePath, historyFilePath, content);
-                    if (CommonUtils.notEmpty(metadata.getCacheTime()) && metadata.getCacheTime() > 0) {
+                    if (CommonUtils.notEmpty(metadata.getCacheTime()) &&0 < metadata.getCacheTime() ) {
                         templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
                     }
                     logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

@@ -80,7 +80,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             } else if (verifyNeedAuthorized(path)) {
                 if (!CommonConstants.SEPARATOR.equals(path)) {
                     int index = path.lastIndexOf(CommonConstants.DOT);
-                    path = path.substring(path.indexOf(CommonConstants.SEPARATOR) > 0 ? 0 : 1,
+                    path = path.substring(0 < path.indexOf(CommonConstants.SEPARATOR) ? 0 : 1,
                             index > -1 ? index : path.length());
                     if (0 == roleAuthorizedService.count(entity.getRoles(), path) && !ownsAllRight(entity.getRoles())) {
                         try {

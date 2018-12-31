@@ -39,7 +39,7 @@ public class IndexAdminController extends AbstractController {
                 path += CommonConstants.getDefaultPage();
             }
             int index = path.lastIndexOf(CommonConstants.DOT);
-            path = path.substring(path.indexOf(CommonConstants.SEPARATOR) > 0 ? 0 : 1, index > -1 ? index : path.length());
+            path = path.substring(0 < path.indexOf(CommonConstants.SEPARATOR) ? 0 : 1, -1 < index ? index : path.length());
         }
         return path;
     }

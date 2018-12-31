@@ -59,7 +59,7 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
                 for (SysModule module : modules) {
                     if (CommonUtils.notEmpty(module.getUrl()) && !showAllModule) {
                         int index = module.getUrl().indexOf("?");
-                        urls.add(module.getUrl().substring(0, index > 0 ? index : module.getUrl().length()));
+                        urls.add(module.getUrl().substring(0, 0 < index ? index : module.getUrl().length()));
                     }
                     if (CommonUtils.notEmpty(module.getAuthorizedUrl())) {
                         for (String url : StringUtils.split(module.getAuthorizedUrl(), ',')) {
@@ -110,5 +110,5 @@ public class SysRoleAuthorizedService extends BaseService<SysRoleAuthorized> {
 
     @Autowired
     private SysRoleAuthorizedDao dao;
-    
+
 }
