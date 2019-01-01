@@ -163,7 +163,6 @@ public class CmsContentAdminController extends AbstractController {
                     RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
         service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel, category, attribute);
-        templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
         if (null != checked && checked) {
             service.check(site.getId(), user, new Long[] { entity.getId() });
             if (CommonUtils.notEmpty(entity.getParentId())) {
@@ -173,6 +172,31 @@ public class CmsContentAdminController extends AbstractController {
                 }
             }
             templateComponent.createCategoryFile(site, category, null, null);
+        }
+        if (!entity.isOnlyUrl()) {
+            templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
+            if (null == entity.getParentId() && !entity.isOnlyUrl()) {
+                service.quote(site.getId(), entity, contentParameters.getContentIds());
+                Set<Integer> categoryIdsList = contentParameters.getCategoryIds();
+                if (CommonUtils.notEmpty(categoryIdsList)) {
+                    if (categoryIdsList.contains(entity.getCategoryId())) {
+                        categoryIdsList.remove(entity.getCategoryId());
+                    }
+                    entity = service.getEntity(entity.getId());
+                    for (Integer categoryId : categoryIdsList) {
+                        CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), categoryId,
+                                entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(), false, 0,
+                                0, 0, 0, entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
+                        quote.setQuoteContentId(entity.getId());
+                        quote.setDescription(entity.getDescription());
+                        quote.setAuthor(entity.getAuthor());
+                        quote.setCover(entity.getCover());
+                        quote.setEditor(entity.getEditor());
+                        quote.setExpiryDate(entity.getExpiryDate());
+                        service.save(quote);
+                    }
+                }
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -211,7 +235,7 @@ public class CmsContentAdminController extends AbstractController {
      */
     @RequestMapping("check")
     public String check(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        return checkOrUncheck(true, ids, _csrf, request, session, model);
+        return checkOrUncheck(false, ids, _csrf, request, session, model);
     }
 
     /**
@@ -242,17 +266,18 @@ public class CmsContentAdminController extends AbstractController {
                 entityList = service.check(site.getId(), user, ids);
             }
             Set<Integer> categoryIdSet = new HashSet<>();
+            Set<Long> parentIdSet = new HashSet<>();
             for (CmsContent entity : entityList) {
                 if (null != entity && site.getId() == entity.getSiteId()) {
                     if (CommonUtils.notEmpty(entity.getParentId())) {
-                        CmsContent parent = service.getEntity(entity.getParentId());
-                        if (null != parent) {
-                            publish(site, parent, user);
-                        }
+                        parentIdSet.add(entity.getParentId());
                     }
                     publish(site, entity, user);
                     categoryIdSet.add(entity.getCategoryId());
                 }
+            }
+            for (CmsContent parent : service.getEntitys(parentIdSet.toArray(new Integer[parentIdSet.size()]))) {
+                publish(site, parent, user);
             }
             for (CmsCategory category : categoryService.getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
                 templateComponent.createCategoryFile(site, category, null, null);
@@ -554,7 +579,8 @@ public class CmsContentAdminController extends AbstractController {
     private boolean publish(SysSite site, CmsContent entity, SysUser user) {
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-        if (null != categoryModel && (user.isOwnsAllContent() || entity.getUserId() == user.getId()) && !entity.isOnlyUrl()) {
+        if (null != categoryModel && (user.isOwnsAllContent() || entity.getUserId() == user.getId())
+                && (!entity.isOnlyUrl() || null != entity.getQuoteContentId())) {
             return templateComponent.createContentFile(site, entity, null, categoryModel);
         }
         return false;

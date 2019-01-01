@@ -81,6 +81,9 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "父内容", condition = true)
     @Field(analyze = Analyze.NO, store = Store.YES)
     private Long parentId;
+    @GeneratorColumn(title = "引用内容ID", condition = true)
+    @Field(analyze = Analyze.NO, store = Store.YES)
+    private Long quoteContentId;
     @GeneratorColumn(title = "是否转载")
     private boolean copied;
     @GeneratorColumn(title = "作者")
@@ -173,7 +176,7 @@ public class CmsContent implements java.io.Serializable {
     }
 
     public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
-            boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasStatic,
+            Long quoteContentId, boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasStatic,
             String url, String description, String tagIds, String cover, int childs, int scores, int comments, int clicks,
             Date publishDate, Date expiryDate, Date checkDate, Date updateDate, Date createDate, int sort, int status,
             boolean disabled) {
@@ -184,6 +187,7 @@ public class CmsContent implements java.io.Serializable {
         this.categoryId = categoryId;
         this.modelId = modelId;
         this.parentId = parentId;
+        this.quoteContentId = quoteContentId;
         this.copied = copied;
         this.author = author;
         this.editor = editor;
@@ -282,6 +286,15 @@ public class CmsContent implements java.io.Serializable {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    @Column(name = "quote_content_id")
+    public Long getQuoteContentId() {
+        return this.quoteContentId;
+    }
+
+    public void setQuoteContentId(Long quoteContentId) {
+        this.quoteContentId = quoteContentId;
     }
 
     @Column(name = "copied", nullable = false)

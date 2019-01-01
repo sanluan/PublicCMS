@@ -65,14 +65,6 @@
                 <div id="adminIds"></div>
             </dd>
         </dl>
-        <script>
-        $('input[name=size]',navTab.getCurrentPanel()).on('change',function(){
-            checkPageSize();
-        });
-        $('input[name=nickName]',navTab.getCurrentPanel()).on('change',function(){
-            addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());
-        });
-        </script>
         <fieldset class="placeExtend systemField">
             <legend><@t.page 'place.system_field'/></legend>
             <dl class="nowrap">
@@ -132,6 +124,12 @@ $('.systemField dt [type=checkbox]',navTab.getCurrentPanel()).each(function(){
     $('input[name=requiredFieldList][value=${field}]',navTab.getCurrentPanel()).click();
 </#list>
 </#if>
+$('input[name=size]',navTab.getCurrentPanel()).on('change',function(){
+    checkPageSize();
+});
+$('input[name=nickName]',navTab.getCurrentPanel()).on('change',function(){
+    addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());
+});
 function checkPageSize(){
     if(parseInt($('input[name=size]',navTab.getCurrentPanel()).val())>0){
         $('.placeExtend',navTab.getCurrentPanel()).show();

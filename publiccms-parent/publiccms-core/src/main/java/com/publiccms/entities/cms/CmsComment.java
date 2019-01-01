@@ -5,12 +5,15 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.GenericGenerator;
+
+import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -18,6 +21,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "cms_comment")
+@DynamicUpdate
 public class CmsComment implements java.io.Serializable {
 
     /**
@@ -80,8 +84,8 @@ public class CmsComment implements java.io.Serializable {
     }
 
     @Id
-    @GeneratedValue(strategy = IDENTITY)
-
+    @GeneratedValue(generator = "cmsGenerator")
+    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
     @Column(name = "id", unique = true, nullable = false)
     public Long getId() {
         return this.id;
@@ -108,7 +112,7 @@ public class CmsComment implements java.io.Serializable {
     public void setUserId(long userId) {
         this.userId = userId;
     }
-    
+
     @Column(name = "reply_id")
     public Long getReplyId() {
         return this.replyId;
@@ -117,12 +121,12 @@ public class CmsComment implements java.io.Serializable {
     public void setReplyId(Long replyId) {
         this.replyId = replyId;
     }
-    
+
     @Column(name = "reply_user_id")
     public Long getReplyUserId() {
         return this.replyUserId;
     }
-    
+
     public void setReplyUserId(Long replyUserId) {
         this.replyUserId = replyUserId;
     }
@@ -193,7 +197,7 @@ public class CmsComment implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    @Column(name = "text")
+    @Column(name = "text", length = 65535)
     public String getText() {
         return this.text;
     }

@@ -5,6 +5,7 @@
     <textarea name="content"><@html_escape><#include "demo/content.html" parse=false/></@html_escape></textarea>
     <textarea name="category"><@html_escape><#include "demo/category.html" parse=false/></@html_escape></textarea>
     <textarea name="content_md5"><@html_escape><#include "demo/content_md5.html" parse=false/></@html_escape></textarea>
+    <textarea name="category_code"><@html_escape><#include "demo/category_code.html" parse=false/></@html_escape></textarea>
     <textarea name="category_md5"><@html_escape><#include "demo/category_md5.html" parse=false/></@html_escape></textarea>
     <textarea name="content_hash"><@html_escape><#include "demo/content_hash.html" parse=false/></@html_escape></textarea>
     <textarea name="category_hash"><@html_escape><#include "demo/category_hash.html" parse=false/></@html_escape></textarea>
@@ -61,6 +62,11 @@ function templateDefaultConfig(type,name){
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content_md5.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
         $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        break;
+    case 'category_code':
+        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category_code.html');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('code,pageIndex');
         break;
     case 'category_md5':
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category_md5.html');
@@ -184,6 +190,7 @@ function templateDefaultConfig(type,name){
             <a href="javascript:;" onclick="return false;"><@t.page 'category_page'/></a>
             <ul>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('category','<@t.page 'category_page'/>');"><@t.page 'category_page'/></a></li>
+                <li><a href="javascript:;" onclick="templateDefaultConfig('category_code','<@t.page 'category_page_code'/>');"><@t.page 'category_page_code'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('category_md5','<@t.page 'category_page_md5'/>');"><@t.page 'category_page_md5'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('category_hash','<@t.page 'category_page_hash'/>');"><@t.page 'category_page_hash'/></a></li>
                 <#if site.useStatic>

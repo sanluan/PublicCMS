@@ -107,8 +107,17 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
     /**
      * @param siteId
+     * @param code
+     * @return
+     */
+    public CmsCategory getEntityByCode(short siteId, String code) {
+        return dao.getEntityByCode(siteId, code);
+    }
+
+    /**
+     * @param siteId
      * @param entity
-     * @return 
+     * @return
      */
     public CmsCategory save(Short siteId, CmsCategory entity) {
         if (entity.isOnlyUrl()) {

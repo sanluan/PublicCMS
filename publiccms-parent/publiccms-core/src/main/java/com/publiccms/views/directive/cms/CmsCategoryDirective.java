@@ -32,9 +32,15 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
+        String code = handler.getString("code");
         SysSite site = getSite(handler);
-        if (CommonUtils.notEmpty(id)) {
-            CmsCategory entity = service.getEntity(id);
+        if (CommonUtils.notEmpty(id) || CommonUtils.notEmpty(code)) {
+            CmsCategory entity;
+            if (CommonUtils.notEmpty(id)) {
+                entity = service.getEntity(id);
+            } else {
+                entity = service.getEntityByCode(site.getId(), code);
+            }
             if (null != entity && site.getId() == entity.getSiteId()) {
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -58,7 +64,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                                 CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
                 handler.put("map", map).render();
             }
-        } 
+        }
     }
 
     @Autowired

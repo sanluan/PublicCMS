@@ -121,15 +121,14 @@ public class SysDomainAdminController extends AbstractController {
      */
     @RequestMapping("virify")
     @ResponseBody
-    public boolean virify(String name, String domain, String oldName, ModelMap model) {
+    public boolean virify(String name, String domain, String oldName) {
         if (CommonUtils.notEmpty(name)) {
-            if (CommonUtils.notEmpty(oldName) && !name.equals(oldName)
-                    && ControllerUtils.verifyHasExist("domain", service.getEntity(name), model)
-                    || CommonUtils.empty(oldName) && ControllerUtils.verifyHasExist("domain", service.getEntity(name), model)) {
+            if (CommonUtils.notEmpty(oldName) && !name.equals(oldName) && null != service.getEntity(name)
+                    || CommonUtils.empty(oldName) && null != service.getEntity(name)) {
                 return false;
             }
         }
-        if (CommonUtils.notEmpty(domain) && ControllerUtils.verifyHasExist("domain", service.getEntity(domain), model)) {
+        if (CommonUtils.notEmpty(domain) && null != service.getEntity(domain)) {
             return false;
         }
         return true;

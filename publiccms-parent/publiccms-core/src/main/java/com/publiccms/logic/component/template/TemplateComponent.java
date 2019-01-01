@@ -132,32 +132,41 @@ public class TemplateComponent implements Cache {
      */
     public boolean createContentFile(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel) {
         if (null != site && null != entity) {
-            if (null == category) {
-                category = categoryService.getEntity(entity.getCategoryId());
-            }
-            if (null == categoryModel) {
-                categoryModel = categoryModelService
-                        .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-            }
-            if (null != categoryModel && null != category && !entity.isOnlyUrl()) {
-                try {
-                    if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
-                        String url = site.getSitePath()
-                                + createContentFile(site, entity, category, true, categoryModel.getTemplatePath(), null, null);
-                        contentService.updateUrl(entity.getId(), url, true);
-                    } else {
-                        Map<String, Object> model = new HashMap<>();
-                        model.put("content", entity);
-                        model.put("category", category);
-                        model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                        String url = site.getDynamicPath()
-                                + FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration, model);
-                        contentService.updateUrl(entity.getId(), url, false);
+            if (!entity.isOnlyUrl()) {
+                if (null == category) {
+                    category = categoryService.getEntity(entity.getCategoryId());
+                }
+                if (null == categoryModel) {
+                    categoryModel = categoryModelService
+                            .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
+                }
+                if (null != categoryModel && null != category) {
+                    try {
+                        if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
+                            String url = site.getSitePath() + createContentFile(site, entity, category, true,
+                                    categoryModel.getTemplatePath(), null, null);
+                            contentService.updateUrl(entity.getId(), url, true);
+                        } else {
+                            Map<String, Object> model = new HashMap<>();
+                            model.put("content", entity);
+                            model.put("category", category);
+                            model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
+                            String url = site.getDynamicPath()
+                                    + FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration, model);
+                            contentService.updateUrl(entity.getId(), url, false);
+                        }
+                        return true;
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage(), e);
+                        return false;
                     }
-                    return true;
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                    return false;
+                }
+            } else if (null != entity.getQuoteContentId()) {
+                if (null != categoryModel && null != category) {
+                    CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
+                    if (null != quote) {
+                        contentService.updateUrl(entity.getId(), quote.getUrl(), false);
+                    }
                 }
             }
         }

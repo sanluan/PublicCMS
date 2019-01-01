@@ -9,6 +9,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -220,6 +221,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
+    @SuppressWarnings("unchecked")
     public List<CmsContent> check(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -228,7 +230,39 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(user.getId());
                 entity.setCheckDate(CommonUtils.getDate());
+                for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null,
+                        null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null,
+                        null).getList()) {
+                    quote.setStatus(STATUS_NORMAL);
+                }
                 entityList.add(entity);
+            }
+        }
+        return entityList;
+    }
+
+    /**
+     * @param siteId
+     * @param entity
+     * @param contentIds
+     * @return results list
+     */
+    @SuppressWarnings("unchecked")
+    public List<CmsContent> quote(short siteId, CmsContent entity, Set<Long> contentIds) {
+        List<CmsContent> entityList = new ArrayList<>();
+        for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null, null,
+                entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null, null)
+                        .getList()) {
+            if (null != contentIds && contentIds.contains(quote.getId())) {
+                quote.setUrl(entity.getUrl());
+                quote.setTitle(entity.getTitle());
+                quote.setDescription(entity.getDescription());
+                quote.setAuthor(entity.getAuthor());
+                quote.setCover(entity.getCover());
+                quote.setEditor(entity.getEditor());
+                quote.setExpiryDate(entity.getExpiryDate());
+            } else {
+                delete(quote.getId());
             }
         }
         return entityList;
@@ -240,12 +274,18 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
+    @SuppressWarnings("unchecked")
     public List<CmsContent> uncheck(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()
+            if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()
                     && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 entity.setStatus(STATUS_PEND);
+                for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null,
+                        null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null,
+                        null).getList()) {
+                    quote.setStatus(STATUS_PEND);
+                }
                 entityList.add(entity);
             }
         }
@@ -367,10 +407,15 @@ public class CmsContentService extends BaseService<CmsContent> {
                     && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null,
-                            null).getList()) {
+                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null), null, null,
+                            null, null, null).getList()) {
                         child.setDisabled(true);
                         entity.setChilds(entity.getChilds() - 1);
+                    }
+                    for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
+                            null, null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null,
+                            null, null, null).getList()) {
+                        quote.setDisabled(true);
                     }
                 }
                 entity.setDisabled(true);
@@ -404,49 +449,61 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param ids
-     * @return list of data deleted
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> recycle(short siteId, Serializable[] ids) {
-        List<CmsContent> entityList = new ArrayList<>();
+    public void recycle(short siteId, Serializable[] ids) {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null), false, null, null, null,
-                            null).getList()) {
+                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null), false, null,
+                            null, null, null).getList()) {
                         child.setDisabled(false);
-                        entityList.add(child);
+                        if (0 < entity.getChilds()) {
+                            recycle(siteId, ids);
+                        }
+                    }
+                    if (null == entity.getParentId()) {
+                        for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null,
+                                null, null, null, entity.getId(), null, null, null, null, null, null, null, null, null, null),
+                                null, null, null, null, null).getList()) {
+                            quote.setDisabled(false);
+                        }
                     }
                 }
                 entity.setDisabled(false);
-                entityList.add(entity);
             }
         }
-        return entityList;
     }
 
     /**
      * @param siteId
      * @param ids
-     * @return list of data deleted
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> realDelete(Short siteId, Long[] ids) {
-        List<CmsContent> entityList = new ArrayList<>();
+    public void realDelete(Short siteId, Long[] ids) {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 if (0 < entity.getChilds()) {
                     for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null), false, null, null, null,
-                            null).getList()) {
-                        delete(child.getId());
+                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null), false, null,
+                            null, null, null).getList()) {
+                        child.setParentId(null);
+                        if (0 < entity.getChilds()) {
+                            realDelete(siteId, ids);
+                        }
+                    }
+                    if (null == entity.getParentId()) {
+                        for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null,
+                                null, null, null, entity.getId(), null, null, null, null, null, null, null, null, null, null),
+                                null, null, null, null, null).getList()) {
+                            delete(quote.getId());
+                        }
                     }
                 }
                 delete(entity.getId());
             }
         }
-        return entityList;
     }
 
     @Autowired

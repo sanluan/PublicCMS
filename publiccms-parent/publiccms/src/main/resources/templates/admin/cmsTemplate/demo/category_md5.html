@@ -1,8 +1,7 @@
 <#assign ids=(id!'-')?split('-')/>
-<@_category id=ids[0]>
+<@_category id=ids[0] containsAttribute=true>
     <#assign
         category=object
-        attribute=getCategoryAttribute(category.id)
         url='?id=${id}'
     />
 <#if ids[1]=getMd5(category.code+category.id)>

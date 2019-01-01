@@ -1,10 +1,8 @@
-<#assign ids=(id!'-')?split('-')/>
-<@_category id=ids[0] containsAttribute=true>
+<@_category code=code containsAttribute=true>
     <#assign
         category=object
         url='?id=${id}'
     />
-<#if ids[1]=getHash(category.code+category.id)?string>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -95,5 +93,4 @@
     </footer>
 </body>
 </html>
-</#if>
 </@_category>

@@ -14,9 +14,12 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
@@ -38,7 +41,19 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 if (null != clicks) {
                     entity.setClicks(entity.getClicks() + clicks);
                 }
-                handler.put("object", entity).render();
+                handler.put("object", entity);
+                if (handler.getBoolean("containsAttribute", false)) {
+                    CmsContentAttribute attribute = attributeService.getEntity(id);
+                    if (null != attribute) {
+                        Map<String, String> map = ExtendUtils.getExtendMap(attribute.getData());
+                        map.put("text", attribute.getText());
+                        map.put("source", attribute.getSource());
+                        map.put("sourceUrl", attribute.getSourceUrl());
+                        map.put("wordCount", String.valueOf(attribute.getWordCount()));
+                        handler.put("attribute", map);
+                    }
+                }
+                handler.render();
             }
         } else {
             Long[] ids = handler.getLongArray("ids");
@@ -60,6 +75,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentService service;
+    @Autowired
+    private CmsContentAttributeService attributeService;
     @Autowired
     private StatisticsComponent statisticsComponent;
 }

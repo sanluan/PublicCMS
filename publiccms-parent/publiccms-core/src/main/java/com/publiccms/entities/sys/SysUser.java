@@ -141,7 +141,7 @@ public class SysUser implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "password", nullable = false, length = 32)
+    @Column(name = "password", nullable = false, length = 128)
     public String getPassword() {
         return this.password;
     }
@@ -152,7 +152,7 @@ public class SysUser implements java.io.Serializable {
 
     @Column(name = "salt", length = 20)
     public String getSalt() {
-        return salt;
+        return this.salt;
     }
 
     public void setSalt(String salt) {
@@ -161,7 +161,7 @@ public class SysUser implements java.io.Serializable {
 
     @Column(name = "weak_password", nullable = false)
     public boolean isWeakPassword() {
-        return weakPassword;
+        return this.weakPassword;
     }
 
     public void setWeakPassword(boolean weakPassword) {

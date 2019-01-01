@@ -51,6 +51,18 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
+    /**
+     * @param siteId
+     * @param code
+     * @return
+     */
+    public CmsCategory getEntityByCode(short siteId, String code) {
+        QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.code = :code").setParameter("code", code);
+        return getEntity(queryHandler);
+    }
+
     @Override
     protected CmsCategory init(CmsCategory entity) {
         if (CommonUtils.empty(entity.getChildIds())) {

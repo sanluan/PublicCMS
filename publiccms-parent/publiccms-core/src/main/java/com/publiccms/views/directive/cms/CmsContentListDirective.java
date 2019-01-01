@@ -46,6 +46,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             }
             queryEntity.setExpiryDate(now);
         }
+        queryEntity.setEmptyQuote(handler.getBoolean("emptyQuote"));
+        queryEntity.setQuoteId(handler.getLong("quoteId"));
         queryEntity.setCategoryId(handler.getInteger("categoryId"));
         queryEntity.setCategoryIds(handler.getIntegerArray("categoryIds"));
         queryEntity.setModelIds(handler.getStringArray("modelId"));

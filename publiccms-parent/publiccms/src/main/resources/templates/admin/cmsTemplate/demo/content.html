@@ -1,10 +1,9 @@
-<@_content id=id>
+<@_content id=id containsAttribute=true>
     <#assign content=object/>
     <@_category id=object.categoryId>
         <#assign category=object/>
     </@_category>
     <#assign
-        attribute=getContentAttribute(content.id)
         temp=getContentPage(attribute.text!'',pageIndex)
         page=temp.page
         text=temp.text

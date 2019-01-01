@@ -1,6 +1,7 @@
 package com.publiccms.views.pojo.model;
 
 import java.util.List;
+import java.util.Set;
 
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentRelated;
@@ -19,6 +20,8 @@ public class CmsContentParameters implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     private List<CmsContentRelated> contentRelateds;
+    private Set<Integer> categoryIds;
+    private Set<Long> contentIds;
     private List<CmsTag> tags;
     private List<CmsContentFile> files;
     private List<CmsContentFile> images;
@@ -37,6 +40,36 @@ public class CmsContentParameters implements java.io.Serializable {
      */
     public void setContentRelateds(List<CmsContentRelated> contentRelateds) {
         this.contentRelateds = contentRelateds;
+    }
+
+    /**
+     * @return the categoryIds
+     */
+    public Set<Integer> getCategoryIds() {
+        return categoryIds;
+    }
+
+    /**
+     * @param categoryIds
+     *            the categoryIds to set
+     */
+    public void setCategoryIds(Set<Integer> categoryIds) {
+        this.categoryIds = categoryIds;
+    }
+
+    /**
+     * @return the contentIds
+     */
+    public Set<Long> getContentIds() {
+        return contentIds;
+    }
+
+    /**
+     * @param contentIds
+     *            the contentIds to set
+     */
+    public void setContentIds(Set<Long> contentIds) {
+        this.contentIds = contentIds;
     }
 
     /**

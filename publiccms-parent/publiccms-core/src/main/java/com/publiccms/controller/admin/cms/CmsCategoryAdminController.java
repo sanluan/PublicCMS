@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
@@ -215,6 +216,25 @@ public class CmsCategoryAdminController extends AbstractController {
         if (null != site && null != entity && site.getId() == entity.getSiteId()) {
             templateComponent.createCategoryFile(site, entity, null, max);
         }
+    }
+
+    /**
+     * @param request
+     * @param code
+     * @param oldCode
+     * @return view name
+     */
+    @RequestMapping("virify")
+    @ResponseBody
+    public boolean virify(HttpServletRequest request, String code, String oldCode) {
+        SysSite site = getSite(request);
+        if (CommonUtils.notEmpty(code)) {
+            if (CommonUtils.notEmpty(code) && !code.equals(oldCode) && null != service.getEntityByCode(site.getId(), code)
+                    || CommonUtils.empty(oldCode) && null != service.getEntityByCode(site.getId(), code)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

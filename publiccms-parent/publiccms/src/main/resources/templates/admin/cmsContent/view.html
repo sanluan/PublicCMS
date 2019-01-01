@@ -127,7 +127,7 @@
                     ${(a.publishDate)!}
                 </dd>
             </dl>
-        <#if fieldList?seq_contains('cover')>
+        <#if fieldList?seq_contains('cover')&&a.cover?has_content>
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['cover'])!}:</dt>
                 <dd>
@@ -207,20 +207,19 @@
     </#if>
     <@_commentList contentId=contentId status=1 pageIndex=pageIndex>
         <#if page.totalCount gt 0>
+        <fieldset>
+            <legend><@t.page 'comment'/></legend>
+            <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+            </#list>
+            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
             <dl class="nowrap">
-                <dt><@t.page 'comment'/>:</dt>
-                <dd>
-                    <#list page.list as a>
-                        <@merge 'userIds' a.userId!/>
-                    </#list>
-                    <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
-                    <#list page.list as a>
-                        <p>
-                            ${userMap[a.userId?string].nickName} : ${a.text!}
-                        </p>
-                    </#list>
+                <dt>${(userMap[a.userId?string].nickName)!}:</dt>
+                <dd>${a.text!}
                 </dd>
             </dl>
+            </#list>
         </#if>
     </@_commentList>
 </div>

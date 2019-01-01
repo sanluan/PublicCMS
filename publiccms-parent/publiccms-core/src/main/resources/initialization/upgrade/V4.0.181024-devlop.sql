@@ -25,7 +25,7 @@ CREATE TABLE `cms_comment` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   `text` text COMMENT '内容',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`, `create_date`),
+  KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`, `create_date`)
 ) COMMENT='评论';
 INSERT INTO `sys_module` VALUES ('comment_list', 'cmsComment/list', 'sysUser/lookup', '<i class=\"icon-comment icon-large\"></i>', 'content_extend', 1, 4);
 INSERT INTO `sys_module` VALUES ('comment_check', NULL, 'cmsComment/check', NULL, 'comment_list', 0, 0);
@@ -101,6 +101,32 @@ ALTER TABLE `cms_comment`
 ALTER TABLE `cms_content` DROP INDEX `status`,
     ADD COLUMN `expiry_date` datetime NULL COMMENT '过期日期' AFTER `publish_date`,
     ADD INDEX `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`);
-ALTER TABLE `cms_content` DROP INDEX `publish_date`,
+ALTER TABLE `cms_place` DROP INDEX `publish_date`,
     ADD COLUMN `expiry_date` datetime NULL COMMENT '过期日期' AFTER `publish_date`,
     ADD INDEX `publish_date` (`publish_date`,`create_date`,`expiry_date`);
+-- 2019-01-01 --
+update cms_category set code=CONCAT(code,id) where (site_id,code) in (
+    select * from (
+        SELECT site_id,code FROM `cms_category` group by site_id,code having count(*) > 1
+    ) a
+) and id not in (
+    select * from (
+        select min(id) from cms_category where (site_id,code) in (
+        SELECT site_id,code FROM `cms_category` group by site_id,code having count(*) > 1
+        ) group by site_id,code
+    ) b
+);
+ALTER TABLE `cms_category`
+    MODIFY COLUMN `code` varchar(50) NOT NULL COMMENT '编码' AFTER `tag_type_ids`,
+	DROP INDEX `site_id`,
+	DROP INDEX `parent_id`,
+	DROP INDEX `disabled`,
+    DROP INDEX `type_id`,
+    DROP INDEX `allow_contribute`,
+    DROP INDEX `hidden`,
+	ADD INDEX `type_id`(`type_id`, `allow_contribute`),
+	ADD INDEX `site_id`(`site_id`, `parent_id`, `hidden`, `disabled`),
+	ADD UNIQUE INDEX `code`(`site_id`, `code`);
+ALTER TABLE `cms_content` 
+    ADD COLUMN `quote_content_id` bigint(20) NULL COMMENT '引用内容ID' AFTER `parent_id`,
+    ADD INDEX `quote_content_id`(`site_id`, `quote_content_id`);

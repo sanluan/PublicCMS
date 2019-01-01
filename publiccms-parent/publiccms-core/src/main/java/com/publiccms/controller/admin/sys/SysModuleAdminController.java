@@ -108,16 +108,14 @@ public class SysModuleAdminController extends AbstractController {
     /**
      * @param id
      * @param oldId
-     * @param model
      * @return view name
      */
     @RequestMapping("virify")
     @ResponseBody
-    public boolean virify(String id, String oldId, ModelMap model) {
+    public boolean virify(String id, String oldId) {
         if (CommonUtils.notEmpty(id)) {
-            if (CommonUtils.notEmpty(oldId) && !id.equals(oldId)
-                    && ControllerUtils.verifyHasExist("module", service.getEntity(id), model)
-                    || CommonUtils.empty(oldId) && ControllerUtils.verifyHasExist("module", service.getEntity(id), model)) {
+            if (CommonUtils.notEmpty(oldId) && !id.equals(oldId) && null != service.getEntity(id)
+                    || CommonUtils.empty(oldId) && null != service.getEntity(id)) {
                 return false;
             }
         }

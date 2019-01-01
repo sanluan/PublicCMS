@@ -1,5 +1,4 @@
-{<@_content id=id>
-    <#assign attribute=getContentAttribute(id)/>
+{<@_content id=id containsAttribute=true>
     <@_category id=object.categoryId>
         <#assign category=object/>
     </@_category>
