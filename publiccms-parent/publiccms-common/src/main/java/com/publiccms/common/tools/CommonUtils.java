@@ -1,8 +1,8 @@
 package com.publiccms.common.tools;
 
 import java.io.File;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -64,7 +64,7 @@ public class CommonUtils {
      * @param var
      * @return 是否非空
      */
-    public static boolean notEmpty(List<?> var) {
+    public static boolean notEmpty(Collection<?> var) {
         return null != var && !var.isEmpty();
     }
 

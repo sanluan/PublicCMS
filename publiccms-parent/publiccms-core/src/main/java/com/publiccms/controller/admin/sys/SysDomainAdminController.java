@@ -116,7 +116,6 @@ public class SysDomainAdminController extends AbstractController {
      * @param name
      * @param domain
      * @param oldName
-     * @param model
      * @return view name
      */
     @RequestMapping("virify")
