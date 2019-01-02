@@ -9,13 +9,15 @@
 <main>
     <div class="container">
     	<p class="message">正在退出登录</p>
+		<form action="${site.dynamicPath}doLogout.do" method="post">
+			<input type="hidden" name="userId" valuealue="${(user.id)!}"/>
+			<input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+		</form>
     </div>
 </main>
 <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 <script>
-   	$.post("doLogout.do?userId=${(user.id)!}",function(){
-		window.location.href='${site.sitePath}';
-   	});
+	$('form').submit();
 </script>
 </body>
 </html>

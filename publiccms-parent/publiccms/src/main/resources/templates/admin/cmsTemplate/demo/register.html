@@ -22,7 +22,11 @@
     </nav>
     <main>
         <#if user??>
-            <p>${user.nickName},You are already logged in!<a href="logout.html">You can logout</a></p>
+            <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+            <form action="${site.dynamicPath}doLogout.do" method="post">
+                <input type="hidden" name="userId" value="${(user.id)!}"/>
+                <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+            </form>
         <#else>
             <form action="${site.dynamicPath}doRegister.do" method="post">
                 <#if error??>
@@ -47,9 +51,7 @@
     </footer>
 <script>
 function logout(){
-    $.post("${site.dynamicPath}doLogout.do",function(){
-        window.location.href='${site.sitePath}';
-    });
+    $("form").submit();
 }
 </script>
 </body>

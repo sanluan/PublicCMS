@@ -23,6 +23,10 @@
     <main>
         <#if user?has_content>
             <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+            <form action="${site.dynamicPath}doLogout.do" method="post">
+                <input type="hidden" name="userId" value="${(user.id)!}"/>
+                <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+            </form>
         <#else>
             <form action="${site.dynamicPath}doLogin.do" method="post">
                 <#if error??>
@@ -31,7 +35,7 @@
                 <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p>
-                    <input type="hidden" name="returnUrl" value="${site.sitePath}"/>
+                    <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
                     <input type="submit" value="Login"/>
                 </p>
                 <#if _oauthList?has_content&&_oauthList?is_directive>
@@ -46,9 +50,7 @@
     </footer>
 <script>
 function logout(){
-    $.post("${site.dynamicPath}doLogout.do",function(){
-        window.location.href='${site.sitePath}';
-    });
+    $("form").submit();
 }
 </script>
 </body>

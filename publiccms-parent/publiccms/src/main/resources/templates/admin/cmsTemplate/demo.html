@@ -97,7 +97,7 @@ function templateDefaultConfig(type,name){
     case 'login':
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/login.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message');
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message,returnUrl');
         break;
     case 'register':
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/register.html');
