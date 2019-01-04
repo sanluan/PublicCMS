@@ -27,7 +27,7 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.6</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.9.7</version.jackson>
+        <version.jackson>2.9.8</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.3.7.Final</version.hibernate>
