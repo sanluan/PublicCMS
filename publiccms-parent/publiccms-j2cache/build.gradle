@@ -1,0 +1,8 @@
+group = 'com.publiccms'
+
+dependencies {
+    compile project(':publiccms-common')
+    compile (
+        "net.oschina.j2cache:j2cache-core:2.3.22-release"
+    )
+}
