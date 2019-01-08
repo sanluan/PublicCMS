@@ -3,7 +3,7 @@ group = 'com.publiccms'
 dependencies {
     compile project(':publiccms-common')
     compile (
-        "com.mchange:c3p0:${c3p0Version}",
+        "com.zaxxer:HikariCP:${hikariCPVersion}",
         // http://mvnrepository.com/artifact/mysql/mysql-connector-java
         "mysql:mysql-connector-java:${mysqlVersion}",
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils

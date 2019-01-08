@@ -53,8 +53,8 @@ subprojects{
         jedisVersion = "2.9.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.0"
-        // http://mvnrepository.com/artifact/com.mchange/c3p0
-        c3p0Version = "0.9.5.2"
+        // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+        hikariCPVersion = "3.3.0"
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
         mysqlVersion = "8.0.13"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
