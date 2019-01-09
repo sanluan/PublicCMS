@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -23,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -33,6 +34,7 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.views.pojo.entities.UeditorConfig;
@@ -44,9 +46,13 @@ import com.publiccms.views.pojo.entities.UeditorConfig;
  */
 @Controller
 @RequestMapping("ueditor")
-public class UeditorAdminController extends AbstractController {
+public class UeditorAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     protected LogUploadService logUploadService;
+    @Autowired
+    protected SiteComponent siteComponent;
+
 
     private static final String ACTION_CONFIG = "config";
     private static final String ACTION_UPLOAD = "upload";
@@ -82,7 +88,7 @@ public class UeditorAdminController extends AbstractController {
     @RequestMapping(params = "action=" + ACTION_CONFIG)
     @ResponseBody
     public UeditorConfig config(HttpServletRequest request) {
-        String urlPrefix = getSite(request).getSitePath();
+        String urlPrefix = siteComponent.getSite(request.getServerName()).getSitePath();
         UeditorConfig config = new UeditorConfig();
         config.setImageActionName(ACTION_UPLOAD);
         config.setSnapscreenActionName(ACTION_UPLOAD);
@@ -123,7 +129,7 @@ public class UeditorAdminController extends AbstractController {
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
     public String upload(MultipartFile file, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
@@ -158,7 +164,7 @@ public class UeditorAdminController extends AbstractController {
     @RequestMapping(params = "action=" + ACTION_UPLOAD_SCRAW)
     @ResponseBody
     public Map<String, Object> uploadScraw(String file, HttpServletRequest request, HttpSession session) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
             String fileName = CmsFileUtils.getUploadFileName(SCRAW_TYPE);
@@ -190,7 +196,7 @@ public class UeditorAdminController extends AbstractController {
     @RequestMapping(params = "action=" + ACTION_CATCHIMAGE)
     @ResponseBody
     public Map<String, Object> catchimage(HttpServletRequest request, HttpSession session) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build();) {
             String[] files = request.getParameterValues(FIELD_NAME + "[]");
             if (CommonUtils.notEmpty(files)) {
@@ -245,7 +251,7 @@ public class UeditorAdminController extends AbstractController {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(getSite(request).getId(),
+        PageHandler page = logUploadService.getPage(siteComponent.getSite(request.getServerName()).getId(),
                 ControllerUtils.getAdminFromSession(session).getId(), null, null, null, null, null, null, start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -26,7 +25,9 @@ import com.publiccms.entities.sys.SysRole;
 import com.publiccms.entities.sys.SysRoleModule;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.MenuMessageComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysModuleLangService;
 import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
@@ -41,7 +42,7 @@ import com.publiccms.views.pojo.model.SysModuleParameters;
  */
 @Controller
 @RequestMapping("sysModule")
-public class SysModuleAdminController extends AbstractController {
+public class SysModuleAdminController {
     @Autowired
     private SysModuleService service;
     @Autowired
@@ -56,6 +57,10 @@ public class SysModuleAdminController extends AbstractController {
     private SysRoleAuthorizedService roleAuthorizedService;
     @Autowired
     private MenuMessageComponent menuMessageComponent;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param entity
@@ -70,7 +75,7 @@ public class SysModuleAdminController extends AbstractController {
     @RequestMapping("save")
     public String save(SysModule entity, @ModelAttribute SysModuleParameters moduleParameters, String oldId, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -132,7 +137,7 @@ public class SysModuleAdminController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(String id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -146,7 +151,7 @@ public class SysModuleAdminController extends AbstractController {
             List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, id, null, null).getList();
             roleModuleService.deleteByModuleId(id);
             dealRoleAuthorized(roleModuleList);
-            logOperateService.save(new LogOperate(getSite(request).getId(), ControllerUtils.getAdminFromSession(session).getId(),
+            logOperateService.save(new LogOperate(siteComponent.getSite(request.getServerName()).getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.module", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }

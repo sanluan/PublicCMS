@@ -1,5 +1,7 @@
 package com.publiccms.controller.web.cms;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -9,7 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -18,8 +20,12 @@ import com.publiccms.entities.cms.CmsComment;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 
 /**
  * 
@@ -28,7 +34,14 @@ import com.publiccms.logic.service.log.LogLoginService;
  */
 @Controller
 @RequestMapping("comment")
-public class CommentController extends AbstractController {
+public class CommentController {
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
+    @Autowired
+    protected ConfigComponent configComponent;
+
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "status",
             "replyId", "replyUserId", "disabled" };
 
@@ -44,8 +57,10 @@ public class CommentController extends AbstractController {
     @RequestMapping("save")
     public String save(CmsComment entity, String _csrf, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(session);

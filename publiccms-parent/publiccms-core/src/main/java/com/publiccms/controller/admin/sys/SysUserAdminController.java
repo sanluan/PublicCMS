@@ -12,7 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -24,7 +23,9 @@ import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysRoleUserId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysRoleUserService;
 import com.publiccms.logic.service.sys.SysUserService;
 
@@ -35,11 +36,15 @@ import com.publiccms.logic.service.sys.SysUserService;
  */
 @Controller
 @RequestMapping("sysUser")
-public class SysUserAdminController extends AbstractController {
+public class SysUserAdminController {
     @Autowired
     private SysUserService service;
     @Autowired
     private SysRoleUserService roleUserService;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "authToken", "lastLoginDate",
             "lastLoginIp", "loginCount", "disabled" };
@@ -60,7 +65,7 @@ public class SysUserAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -150,7 +155,7 @@ public class SysUserAdminController extends AbstractController {
         }
         SysUser entity = service.getEntity(id);
         if (null != entity) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
                     || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
                 return CommonConstants.TEMPLATE_ERROR;
@@ -178,7 +183,7 @@ public class SysUserAdminController extends AbstractController {
         }
         SysUser entity = service.getEntity(id);
         if (null != entity) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
                     || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
                 return CommonConstants.TEMPLATE_ERROR;

@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -34,7 +33,9 @@ import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
@@ -44,8 +45,9 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  *
  */
 @Controller
-public class LoginAdminController extends AbstractController {
-
+public class LoginAdminController {
+    @Autowired
+    protected LogOperateService logOperateService;
     @Autowired
     private SysUserService service;
     @Autowired
@@ -56,6 +58,8 @@ public class LoginAdminController extends AbstractController {
     private CacheComponent cacheComponent;
     @Autowired
     private ConfigComponent configComponent;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param username
@@ -70,7 +74,7 @@ public class LoginAdminController extends AbstractController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
             HttpServletResponse response, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
         if (ControllerUtils.verifyNotEmpty("username", username, model)
@@ -117,7 +121,8 @@ public class LoginAdminController extends AbstractController {
                 expiryMinutes * 60, null);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();
@@ -155,7 +160,7 @@ public class LoginAdminController extends AbstractController {
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     public String changeMyselfPassword(String oldpassword, String password, String repassword, String _csrf,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = service.getEntity(ControllerUtils.getAdminFromSession(session).getId());
         if (ControllerUtils.verifyNotEquals("siteId", site.getId(), user.getSiteId(), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {

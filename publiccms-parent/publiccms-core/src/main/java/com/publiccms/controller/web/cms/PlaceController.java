@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -24,12 +24,16 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
@@ -41,7 +45,7 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
  */
 @Controller
 @RequestMapping("place")
-public class PlaceController extends AbstractController {
+public class PlaceController {
     @Autowired
     private CmsPlaceService service;
     @Autowired
@@ -50,7 +54,13 @@ public class PlaceController extends AbstractController {
     private CmsPlaceAttributeService attributeService;
     @Autowired
     private MetadataComponent metadataComponent;
-
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
+    @Autowired
+    protected ConfigComponent configComponent;
+    
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };
 
     /**
@@ -66,8 +76,10 @@ public class PlaceController extends AbstractController {
     @RequestMapping(value = "save")
     public String save(CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters, String _csrf,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
@@ -127,8 +139,10 @@ public class PlaceController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
@@ -158,8 +172,10 @@ public class PlaceController extends AbstractController {
      */
     @RequestMapping("check")
     public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
@@ -189,8 +205,10 @@ public class PlaceController extends AbstractController {
      */
     @RequestMapping("uncheck")
     public String uncheck(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
@@ -217,7 +235,7 @@ public class PlaceController extends AbstractController {
      */
     @RequestMapping("click")
     public String click(Long id, HttpServletRequest request) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {
@@ -234,7 +252,7 @@ public class PlaceController extends AbstractController {
      */
     @RequestMapping("redirect")
     public void redirect(Long id, HttpServletRequest request, HttpServletResponse response) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {

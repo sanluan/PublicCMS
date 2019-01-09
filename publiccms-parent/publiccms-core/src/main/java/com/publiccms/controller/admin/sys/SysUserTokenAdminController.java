@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -17,7 +16,9 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUserToken;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 
 /**
@@ -27,7 +28,11 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  */
 @Controller
 @RequestMapping("sysUserToken")
-public class SysUserTokenAdminController extends AbstractController {
+public class SysUserTokenAdminController {
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param authToken
@@ -38,7 +43,7 @@ public class SysUserTokenAdminController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(String authToken, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUserToken entity = service.getEntity(authToken);
         Long userId = ControllerUtils.getAdminFromSession(session).getId();
         if (null != entity) {

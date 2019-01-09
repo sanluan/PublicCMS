@@ -9,14 +9,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.log.LogUploadService;
 
@@ -26,7 +27,7 @@ import com.publiccms.logic.service.log.LogUploadService;
  * 
  */
 @Controller
-public class LogAdminController extends AbstractController {
+public class LogAdminController {
 
     @Autowired
     private LogLoginService logLoginService;
@@ -34,6 +35,10 @@ public class LogAdminController extends AbstractController {
     private LogTaskService logTaskService;
     @Autowired
     private LogUploadService logUploadService;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param ids
@@ -48,7 +53,7 @@ public class LogAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             logLoginService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
@@ -72,7 +77,7 @@ public class LogAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             logOperateService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
@@ -95,7 +100,7 @@ public class LogAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             logTaskService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
@@ -118,7 +123,7 @@ public class LogAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             logUploadService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

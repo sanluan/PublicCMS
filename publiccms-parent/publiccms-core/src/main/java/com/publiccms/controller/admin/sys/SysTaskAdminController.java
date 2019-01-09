@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -17,8 +16,10 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysTask;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.task.ScheduledTask;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysTaskService;
 
 /**
@@ -28,11 +29,15 @@ import com.publiccms.logic.service.sys.SysTaskService;
  */
 @Controller
 @RequestMapping("sysTask")
-public class SysTaskAdminController extends AbstractController {
+public class SysTaskAdminController {
     @Autowired
     private SysTaskService service;
     @Autowired
     private ScheduledTask scheduledTask;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -49,7 +54,7 @@ public class SysTaskAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             SysTask oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -84,7 +89,7 @@ public class SysTaskAdminController extends AbstractController {
      */
     @RequestMapping("runOnce")
     public String runOnce(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
@@ -109,7 +114,7 @@ public class SysTaskAdminController extends AbstractController {
      */
     @RequestMapping("pause")
     public String pause(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
@@ -135,7 +140,7 @@ public class SysTaskAdminController extends AbstractController {
      */
     @RequestMapping("resume")
     public String resume(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
@@ -161,7 +166,7 @@ public class SysTaskAdminController extends AbstractController {
      */
     @RequestMapping("recreate")
     public String recreate(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
@@ -187,7 +192,7 @@ public class SysTaskAdminController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)

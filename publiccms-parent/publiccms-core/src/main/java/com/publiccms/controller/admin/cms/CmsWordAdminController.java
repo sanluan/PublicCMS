@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -17,8 +16,10 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsWordService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 
 /**
  *
@@ -27,7 +28,11 @@ import com.publiccms.logic.service.log.LogLoginService;
  */
 @Controller
 @RequestMapping("cmsWord")
-public class CmsWordAdminController extends AbstractController {
+public class CmsWordAdminController {
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -44,7 +49,7 @@ public class CmsWordAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             CmsWord oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -79,7 +84,7 @@ public class CmsWordAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -106,7 +111,7 @@ public class CmsWordAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -133,7 +138,7 @@ public class CmsWordAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {

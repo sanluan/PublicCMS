@@ -12,7 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -20,8 +19,10 @@ import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
 
 /**
@@ -31,9 +32,13 @@ import com.publiccms.views.pojo.entities.CmsModel;
  */
 @Controller
 @RequestMapping("cmsModel")
-public class CmsModelAdminController extends AbstractController {
+public class CmsModelAdminController {
     @Autowired
     private ModelComponent modelComponent;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param entity
@@ -50,7 +55,7 @@ public class CmsModelAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -87,7 +92,7 @@ public class CmsModelAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }

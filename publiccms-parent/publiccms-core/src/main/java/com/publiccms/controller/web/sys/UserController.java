@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -36,8 +36,10 @@ import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.EmailTemplateConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
@@ -51,7 +53,7 @@ import freemarker.template.TemplateException;
  */
 @Controller
 @RequestMapping("user")
-public class UserController extends AbstractController {
+public class UserController {
     @Autowired
     private SysUserService service;
     @Autowired
@@ -64,6 +66,10 @@ public class UserController extends AbstractController {
     private SysEmailTokenService sysEmailTokenService;
     @Autowired
     private ConfigComponent configComponent;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param oldpassword
@@ -80,8 +86,10 @@ public class UserController extends AbstractController {
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     public String changePassword(String oldpassword, String password, String repassword, String returnUrl, String _csrf,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -147,8 +155,10 @@ public class UserController extends AbstractController {
     @RequestMapping(value = "saveEmail", method = RequestMethod.POST)
     public String saveEmail(String email, String returnUrl, String _csrf, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> loginConfig = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = loginConfig.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
@@ -204,8 +214,10 @@ public class UserController extends AbstractController {
     @RequestMapping(value = "verifyEmail", method = RequestMethod.POST)
     public String verifyEmail(String authToken, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
@@ -235,8 +247,10 @@ public class UserController extends AbstractController {
     @RequestMapping(value = "deleteToken", method = RequestMethod.POST)
     public String deleteToken(String authToken, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.getDynamicPath();
         }
         SysUserToken entity = sysUserTokenService.getEntity(authToken);

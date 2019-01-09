@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -13,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -23,10 +24,12 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.model.CmsCategoryParameters;
 
 import freemarker.template.TemplateException;
@@ -38,13 +41,18 @@ import freemarker.template.TemplateException;
  */
 @Controller
 @RequestMapping("cmsCategory")
-public class CmsCategoryAdminController extends AbstractController {
+public class CmsCategoryAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     private CmsCategoryService service;
     @Autowired
     private CmsContentService contentService;
     @Autowired
     private TemplateComponent templateComponent;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
             "contents", "typeId" };
@@ -66,7 +74,7 @@ public class CmsCategoryAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             CmsCategory oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -115,7 +123,7 @@ public class CmsCategoryAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         CmsCategory parent = service.getEntity(parentId);
         if (CommonUtils.notEmpty(ids) && (null == parent || null != parent && site.getId() == parent.getSiteId())) {
             for (Integer id : ids) {
@@ -160,7 +168,7 @@ public class CmsCategoryAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             try {
                 for (Integer id : ids) {
@@ -194,7 +202,7 @@ public class CmsCategoryAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(id)) {
             service.changeType(id, typeId);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
@@ -227,7 +235,7 @@ public class CmsCategoryAdminController extends AbstractController {
     @RequestMapping("virify")
     @ResponseBody
     public boolean virify(HttpServletRequest request, String code, String oldCode) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(code)) {
             if (CommonUtils.notEmpty(code) && !code.equals(oldCode) && null != service.getEntityByCode(site.getId(), code)
                     || CommonUtils.empty(oldCode) && null != service.getEntityByCode(site.getId(), code)) {
@@ -251,7 +259,7 @@ public class CmsCategoryAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             service.delete(site.getId(), ids);
             contentService.deleteByCategoryIds(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

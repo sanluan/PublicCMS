@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -18,9 +17,11 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsDictionary;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.model.CmsDictionaryParameters;
 
 /**
@@ -30,7 +31,11 @@ import com.publiccms.views.pojo.model.CmsDictionaryParameters;
  */
 @Controller
 @RequestMapping("cmsDictionary")
-public class CmsDictionaryAdminController extends AbstractController {
+public class CmsDictionaryAdminController {
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -49,7 +54,7 @@ public class CmsDictionaryAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             dataService.update(entity.getId(), dictionaryParameters.getDataList());
@@ -80,7 +85,7 @@ public class CmsDictionaryAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

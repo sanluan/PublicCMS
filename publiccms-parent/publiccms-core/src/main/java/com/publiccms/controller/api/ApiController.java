@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.publiccms.common.base.AbstractAppDirective;
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.logic.component.site.DirectiveComponent;
@@ -27,7 +28,8 @@ import com.publiccms.logic.component.site.DirectiveComponent;
  *
  */
 @Controller
-public class ApiController extends AbstractController {
+public class ApiController {
+    protected final Log log = LogFactory.getLog(getClass());
     private Map<String, AbstractAppDirective> appDirectiveMap = new HashMap<>();
     private List<Map<String, String>> appList = new ArrayList<>();
     @Autowired

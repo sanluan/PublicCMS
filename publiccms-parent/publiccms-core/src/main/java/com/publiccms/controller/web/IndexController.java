@@ -19,7 +19,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -28,6 +27,7 @@ import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -39,7 +39,7 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  *
  */
 @Controller
-public class IndexController extends AbstractController {
+public class IndexController {
     @Autowired
     private MetadataComponent metadataComponent;
     @Autowired
@@ -48,6 +48,9 @@ public class IndexController extends AbstractController {
     private ConfigComponent configComponent;
     @Autowired
     private LocaleResolver localeResolver;
+    @Autowired
+    protected SiteComponent siteComponent;
+    
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
     /**
@@ -113,8 +116,8 @@ public class IndexController extends AbstractController {
 
     private String getViewName(Long id, Integer pageIndex, String requestPath, String body, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) {
-        SysDomain domain = getDomain(request);
-        SysSite site = getSite(request);
+        SysDomain domain = siteComponent.getDomain(request.getServerName());
+        SysSite site = siteComponent.getSite(request.getServerName());
         String fullRequestPath = siteComponent.getViewNamePrefix(site, domain) + requestPath;
         String templatePath = siteComponent.getWebTemplateFilePath() + fullRequestPath;
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);

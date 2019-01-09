@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -19,7 +18,9 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDomainService;
 
 /**
@@ -29,9 +30,14 @@ import com.publiccms.logic.service.sys.SysDomainService;
  */
 @Controller
 @RequestMapping("sysDomain")
-public class SysDomainAdminController extends AbstractController {
+public class SysDomainAdminController {
     @Autowired
     private SysDomainService service;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
+
     private String[] ignoreProperties = new String[] { "siteId", "name", "wild" };
 
     /**
@@ -46,7 +52,7 @@ public class SysDomainAdminController extends AbstractController {
     @RequestMapping("save")
     public String save(SysDomain entity, String oldName, String _csrf, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)
                 || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
@@ -77,7 +83,7 @@ public class SysDomainAdminController extends AbstractController {
                     JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        if (!getSite(request).getId().equals(site.getId())) {
+        if (!siteComponent.getSite(request.getServerName()).getId().equals(site.getId())) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
             return CommonConstants.TEMPLATE_DONE;
@@ -95,7 +101,7 @@ public class SysDomainAdminController extends AbstractController {
     @RequestMapping("saveConfig")
     public String saveConfig(SysDomain entity, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(entity.getName())) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             SysDomain oldEntity = service.getEntity(entity.getName());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
                     || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
@@ -143,7 +149,7 @@ public class SysDomainAdminController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(String id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;

@@ -5,6 +5,8 @@ import java.io.IOException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -20,6 +21,7 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
 
@@ -30,9 +32,12 @@ import com.publiccms.logic.service.log.LogUploadService;
  */
 @Controller
 @RequestMapping("file")
-public class FileAdminController extends AbstractController {
+public class FileAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     protected LogUploadService logUploadService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param file
@@ -50,7 +55,7 @@ public class FileAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);

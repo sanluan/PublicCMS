@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -23,7 +22,9 @@ import com.publiccms.entities.sys.SysRoleModule;
 import com.publiccms.entities.sys.SysRoleModuleId;
 import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysModuleService;
 import com.publiccms.logic.service.sys.SysRoleAuthorizedService;
 import com.publiccms.logic.service.sys.SysRoleModuleService;
@@ -38,7 +39,7 @@ import com.publiccms.logic.service.sys.SysUserService;
  */
 @Controller
 @RequestMapping("sysRole")
-public class SysRoleAdminController extends AbstractController {
+public class SysRoleAdminController {
     @Autowired
     private SysRoleService service;
     @Autowired
@@ -51,6 +52,10 @@ public class SysRoleAdminController extends AbstractController {
     private SysRoleAuthorizedService roleAuthorizedService;
     @Autowired
     private SysUserService userService;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
@@ -69,7 +74,7 @@ public class SysRoleAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (entity.isOwnsAllRight()) {
             moduleIds = null;
             entity.setShowAllModule(false);
@@ -116,7 +121,7 @@ public class SysRoleAdminController extends AbstractController {
     @RequestMapping("delete")
     public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysRole entity = service.getEntity(id);
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
                     || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {

@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -19,9 +18,11 @@ import com.publiccms.entities.cms.CmsCategoryType;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysExtend;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsCategoryTypeService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.model.CmsCategoryTypeParameters;
@@ -34,7 +35,7 @@ import com.publiccms.views.pojo.query.CmsCategoryQuery;
  */
 @Controller
 @RequestMapping("cmsCategoryType")
-public class CmsCategoryTypeAdminController extends AbstractController {
+public class CmsCategoryTypeAdminController {
     @Autowired
     private CmsCategoryTypeService service;
     @Autowired
@@ -43,6 +44,10 @@ public class CmsCategoryTypeAdminController extends AbstractController {
     private SysExtendService extendService;
     @Autowired
     private SysExtendFieldService extendFieldService;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "extendId" };
 
@@ -61,7 +66,7 @@ public class CmsCategoryTypeAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             CmsCategoryType oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -100,7 +105,7 @@ public class CmsCategoryTypeAdminController extends AbstractController {
      */
     @RequestMapping("delete")
     public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         CmsCategoryType entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)

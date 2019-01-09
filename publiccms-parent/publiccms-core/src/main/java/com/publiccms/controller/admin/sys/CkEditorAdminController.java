@@ -13,7 +13,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -21,6 +20,7 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
 
@@ -31,9 +31,11 @@ import com.publiccms.logic.service.log.LogUploadService;
  */
 @Controller
 @RequestMapping("ckeditor")
-public class CkEditorAdminController extends AbstractController {
+public class CkEditorAdminController {
     @Autowired
     protected LogUploadService logUploadService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private static final String RESULT_UPLOADED = "uploaded";
     private static final String RESULT_FILENAME = "fileName";
@@ -48,7 +50,7 @@ public class CkEditorAdminController extends AbstractController {
      */
     @RequestMapping("upload")
     public String upload(MultipartFile upload, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != upload && !upload.isEmpty()) {
             String originalName = upload.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);

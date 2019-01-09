@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -31,7 +30,9 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysConfigDataService;
 import com.publiccms.logic.service.sys.SysDeptConfigService;
 import com.publiccms.logic.service.sys.SysDeptService;
@@ -44,7 +45,11 @@ import com.publiccms.views.pojo.model.SysConfigParameters;
  */
 @Controller
 @RequestMapping("sysConfigData")
-public class SysConfigDataAdminController extends AbstractController {
+public class SysConfigDataAdminController {
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id" };
 
@@ -63,7 +68,7 @@ public class SysConfigDataAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             SysUser user = ControllerUtils.getAdminFromSession(session);
             SysDept dept = sysDeptService.getEntity(user.getDeptId());
@@ -123,7 +128,7 @@ public class SysConfigDataAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)

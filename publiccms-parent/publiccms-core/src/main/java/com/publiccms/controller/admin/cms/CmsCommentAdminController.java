@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -19,8 +18,10 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 
 /**
  *
@@ -29,7 +30,11 @@ import com.publiccms.logic.service.log.LogLoginService;
  */
 @Controller
 @RequestMapping("cmsComment")
-public class CmsCommentAdminController extends AbstractController {
+public class CmsCommentAdminController {
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param ids
@@ -45,7 +50,7 @@ public class CmsCommentAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             SysUser user = ControllerUtils.getAdminFromSession(session);
             service.check(site.getId(), ids, user.getId());
             logOperateService.save(new LogOperate(site.getId(), user.getId(),
@@ -69,7 +74,7 @@ public class CmsCommentAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             service.uncheck(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "cmsComment.place", RequestUtils.getIpAddress(request),
@@ -91,7 +96,7 @@ public class CmsCommentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

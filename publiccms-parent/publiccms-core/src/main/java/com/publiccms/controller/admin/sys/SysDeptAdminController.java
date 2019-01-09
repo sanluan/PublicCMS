@@ -15,7 +15,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -34,7 +33,9 @@ import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysRoleUserId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptConfigService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
@@ -49,7 +50,7 @@ import com.publiccms.logic.service.sys.SysUserService;
  */
 @Controller
 @RequestMapping("sysDept")
-public class SysDeptAdminController extends AbstractController {
+public class SysDeptAdminController {
     @Autowired
     private SysDeptService service;
     @Autowired
@@ -62,6 +63,10 @@ public class SysDeptAdminController extends AbstractController {
     private SysDeptPageService sysDeptPageService;
     @Autowired
     private SysDeptConfigService sysDeptConfigService;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
     private String[] userIgnoreProperties = new String[] { "id", "superuserAccess", "registeredDate", "siteId", "authToken",
@@ -84,7 +89,7 @@ public class SysDeptAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             SysDept oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -143,7 +148,7 @@ public class SysDeptAdminController extends AbstractController {
     @RequestMapping("saveUser")
     public String saveUser(SysUser entity, String repassword, Integer[] roleIds, String _csrf, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -233,7 +238,7 @@ public class SysDeptAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysDept entity = service.delete(site.getId(), id);
         if (null != entity) {
             sysDeptCategoryService.delete(entity.getId(), null);
@@ -262,7 +267,7 @@ public class SysDeptAdminController extends AbstractController {
         }
         SysUser entity = userService.getEntity(id);
         if (null != entity) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             SysDept dept = service.getEntity(entity.getDeptId());
             SysUser admin = ControllerUtils.getAdminFromSession(session);
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
@@ -293,7 +298,7 @@ public class SysDeptAdminController extends AbstractController {
         }
         SysUser entity = userService.getEntity(id);
         if (null != entity) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             SysDept dept = service.getEntity(entity.getDeptId());
             SysUser admin = ControllerUtils.getAdminFromSession(session);
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)

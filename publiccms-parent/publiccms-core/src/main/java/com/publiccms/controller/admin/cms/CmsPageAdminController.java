@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -23,6 +22,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -35,7 +35,7 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
  */
 @Controller
 @RequestMapping("cmsPage")
-public class CmsPageAdminController extends AbstractController {
+public class CmsPageAdminController {
     @Autowired
     private MetadataComponent metadataComponent;
     @Autowired
@@ -44,6 +44,10 @@ public class CmsPageAdminController extends AbstractController {
     private SysDeptService sysDeptService;
     @Autowired
     private TemplateCacheComponent templateCacheComponent;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param path
@@ -72,7 +76,7 @@ public class CmsPageAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getCurrentSiteWebTemplateFilePath(site, path);
             CmsPageData pageDate = new CmsPageData();
             pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
@@ -108,7 +112,7 @@ public class CmsPageAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "clear.pageCache", RequestUtils.getIpAddress(request),

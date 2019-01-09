@@ -6,13 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -23,7 +24,9 @@ import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
 
 /**
@@ -33,9 +36,14 @@ import com.publiccms.logic.service.log.LogUploadService;
  */
 @Controller
 @RequestMapping("cmsWebFile")
-public class CmsWebFileAdminController extends AbstractController {
+public class CmsWebFileAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     protected LogUploadService logUploadService;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param path
@@ -53,7 +61,7 @@ public class CmsWebFileAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebFilePath(site, path);
@@ -94,7 +102,7 @@ public class CmsWebFileAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != files) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             try {
                 for (MultipartFile file : files) {
                     String originalName = file.getOriginalFilename();
@@ -129,7 +137,7 @@ public class CmsWebFileAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(paths)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             for (String path : paths) {
                 String filePath = siteComponent.getWebFilePath(site, path);
                 String backupFilePath = siteComponent.getWebBackupFilePath(site, path);
@@ -158,7 +166,7 @@ public class CmsWebFileAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getWebFilePath(site, path);
             if (CmsFileUtils.isDirectory(filePath)) {
                 try {
@@ -198,7 +206,7 @@ public class CmsWebFileAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getWebFilePath(site, path);
             if (CmsFileUtils.isFile(filePath)) {
                 try {
@@ -235,7 +243,7 @@ public class CmsWebFileAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != path && CommonUtils.notEmpty(fileName)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             path = path + CommonConstants.SEPARATOR + fileName;
             String filePath = siteComponent.getWebFilePath(site, path);
             CmsFileUtils.mkdirs(filePath);

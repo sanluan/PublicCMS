@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -19,7 +18,9 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysAppService;
 
 /**
@@ -29,9 +30,13 @@ import com.publiccms.logic.service.sys.SysAppService;
  */
 @Controller
 @RequestMapping("sysApp")
-public class SysAppAdminController extends AbstractController {
+public class SysAppAdminController {
     @Autowired
     private SysAppService service;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "channel", "appSecret" };
 
@@ -50,7 +55,7 @@ public class SysAppAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         entity.setAuthorizedApis(arrayToCommaDelimitedString(apis));
         if (null != entity.getId()) {
             SysApp oldEntity = service.getEntity(entity.getId());
@@ -87,7 +92,7 @@ public class SysAppAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysApp entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,7 +24,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.oauth.Oauth;
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.oauth.AbstractOauth;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -35,6 +36,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
@@ -43,7 +45,8 @@ import com.publiccms.view.pojo.oauth.OauthUser;
 
 @Controller
 @RequestMapping("oauth")
-public class OauthController extends AbstractController {
+public class OauthController {
+    protected final Log log = LogFactory.getLog(getClass());
     /**
      * 
      */
@@ -63,6 +66,8 @@ public class OauthController extends AbstractController {
     private SysUserService sysUserService;
     @Autowired
     private LogLoginService logLoginService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param channel
@@ -75,7 +80,7 @@ public class OauthController extends AbstractController {
     public String login(@PathVariable("channel") String channel, String returnUrl, HttpServletRequest request,
             HttpServletResponse response) {
         Oauth oauthComponent = oauthChannelMap.get(channel);
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != oauthComponent && oauthComponent.enabled(site.getId())) {
             String state = UUID.randomUUID().toString();
             RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
@@ -91,7 +96,7 @@ public class OauthController extends AbstractController {
      * @param code
      * @param request
      * @param session
-     * @param response 
+     * @param response
      * @param model
      * @return view name
      */
@@ -99,7 +104,7 @@ public class OauthController extends AbstractController {
     public String callback(@PathVariable("channel") String channel, String state, String code, HttpServletRequest request,
             HttpSession session, HttpServletResponse response, ModelMap model) {
         Oauth oauthComponent = oauthChannelMap.get(channel);
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), response, RETURN_URL, null);
         String returnUrl;

@@ -9,7 +9,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -18,7 +17,9 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysAppClientService;
 
 /**
@@ -28,9 +29,13 @@ import com.publiccms.logic.service.sys.SysAppClientService;
  */
 @Controller
 @RequestMapping("sysAppClient")
-public class SysAppClientAdminController extends AbstractController {
+public class SysAppClientAdminController {
     @Autowired
     private SysAppClientService service;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param id
@@ -47,7 +52,7 @@ public class SysAppClientAdminController extends AbstractController {
         }
         SysAppClient entity = service.getEntity(id);
         if (null != entity.getId()) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getId().getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -74,7 +79,7 @@ public class SysAppClientAdminController extends AbstractController {
         }
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getId().getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }

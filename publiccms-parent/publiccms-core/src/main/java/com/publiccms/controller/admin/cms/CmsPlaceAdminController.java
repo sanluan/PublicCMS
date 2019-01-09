@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -40,11 +39,13 @@ import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptPageId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -57,7 +58,7 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
  */
 @Controller
 @RequestMapping("cmsPlace")
-public class CmsPlaceAdminController extends AbstractController {
+public class CmsPlaceAdminController {
     @Autowired
     private CmsPlaceService service;
     @Autowired
@@ -70,6 +71,10 @@ public class CmsPlaceAdminController extends AbstractController {
     private SysDeptPageService sysDeptPageService;
     @Autowired
     private SysDeptService sysDeptService;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "status", "userId", "type", "clicks", "path", "createDate",
             "disabled" };
@@ -94,7 +99,7 @@ public class CmsPlaceAdminController extends AbstractController {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
             }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             SysUser user = ControllerUtils.getAdminFromSession(session);
             SysDept dept = sysDeptService.getEntity(user.getDeptId());
             if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
@@ -162,7 +167,7 @@ public class CmsPlaceAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             service.refresh(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "refresh.place", RequestUtils.getIpAddress(request),
@@ -196,7 +201,7 @@ public class CmsPlaceAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             service.check(site.getId(), user.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
@@ -230,7 +235,7 @@ public class CmsPlaceAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             service.uncheck(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
@@ -268,7 +273,7 @@ public class CmsPlaceAdminController extends AbstractController {
             view.getDataList().add(list);
             return view;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         List<String> list = new ArrayList<>();
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
         Locale locale = request.getLocale();
@@ -353,7 +358,7 @@ public class CmsPlaceAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             service.delete(site.getId(), path);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "clear.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
@@ -386,7 +391,7 @@ public class CmsPlaceAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             service.delete(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.place", RequestUtils.getIpAddress(request),

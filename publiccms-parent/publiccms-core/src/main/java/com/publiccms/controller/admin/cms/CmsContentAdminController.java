@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -47,6 +46,7 @@ import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategoryId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
@@ -54,6 +54,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -68,7 +69,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  */
 @Controller
 @RequestMapping("cmsContent")
-public class CmsContentAdminController extends AbstractController {
+public class CmsContentAdminController {
     @Autowired
     private CmsContentService service;
     @Autowired
@@ -87,6 +88,10 @@ public class CmsContentAdminController extends AbstractController {
     private CmsCategoryService categoryService;
     @Autowired
     private TemplateComponent templateComponent;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "sort",
             "createDate", "updateDate", "clicks", "comments", "scores", "childs", "checkUserId" };
@@ -113,7 +118,7 @@ public class CmsContentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
@@ -257,7 +262,7 @@ public class CmsContentAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             SysUser user = ControllerUtils.getAdminFromSession(session);
             List<CmsContent> entityList;
             if (uncheck) {
@@ -303,7 +308,7 @@ public class CmsContentAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = getSite(request);
+            SysSite site = siteComponent.getSite(request.getServerName());
             SysUser user = ControllerUtils.getAdminFromSession(session);
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.refresh(site.getId(), user, ids)) {
@@ -337,7 +342,7 @@ public class CmsContentAdminController extends AbstractController {
         }
         CmsContent content = service.getEntity(entity.getContentId());
         CmsContent related = service.getEntity(entity.getRelatedContentId());
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         if (null != content && null != related) {
             if (null == entity || ControllerUtils.verifyNotEquals("siteId", site.getId(), content.getSiteId(), model)
@@ -374,7 +379,7 @@ public class CmsContentAdminController extends AbstractController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         CmsContentRelated entity = cmsContentRelatedService.getEntity(id);
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         if (null != entity) {
             if (null == entity || ControllerUtils.verifyCustom("noright",
@@ -408,7 +413,7 @@ public class CmsContentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         CmsCategory category = categoryService.getEntity(categoryId);
@@ -482,7 +487,7 @@ public class CmsContentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         CmsContent content = service.getEntity(id);
@@ -519,7 +524,7 @@ public class CmsContentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         CmsContent content = service.getEntity(id);
@@ -560,7 +565,7 @@ public class CmsContentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         if (CommonUtils.notEmpty(ids)) {
             for (CmsContent entity : service.getEntitys(ids)) {
@@ -605,7 +610,7 @@ public class CmsContentAdminController extends AbstractController {
             view.getDataList().add(list);
             return view;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
@@ -716,7 +721,7 @@ public class CmsContentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
@@ -749,7 +754,7 @@ public class CmsContentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.getEntitys(ids)) {
@@ -787,7 +792,7 @@ public class CmsContentAdminController extends AbstractController {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             service.realDelete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
