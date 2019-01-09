@@ -17,6 +17,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.AdminContextInterceptor;
 import com.publiccms.common.view.AdminFreeMarkerView;
 import com.publiccms.logic.component.cache.CacheComponent;
@@ -31,7 +32,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
-        @ComponentScan.Filter(value = { Controller.class }) })
+        @ComponentScan.Filter(value = { Controller.class }) }, nameGenerator = FullBeanNameGenerator.class)
 public class AdminConfig implements WebMvcConfigurer {
     /**
      * 管理后台上下文路径 Management Context Path
