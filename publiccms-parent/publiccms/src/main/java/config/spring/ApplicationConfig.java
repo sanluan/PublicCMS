@@ -1,8 +1,8 @@
 package config.spring;
 
 import static config.initializer.InitializationInitializer.CMS_CONFIG_FILE;
-import static org.publiccms.common.constants.CommonConstants.CMS_FILEPATH;
 import static java.lang.Integer.parseInt;
+import static org.publiccms.common.constants.CommonConstants.CMS_FILEPATH;
 import static org.publiccms.common.database.CmsDataSource.DATABASE_CONFIG_FILENAME;
 import static org.springframework.core.io.support.PropertiesLoaderUtils.loadAllProperties;
 import static org.springframework.scheduling.quartz.SchedulerFactoryBean.PROP_THREAD_COUNT;
@@ -33,6 +33,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
@@ -266,12 +267,14 @@ public class ApplicationConfig implements Base {
      * File Upload Resolver
      *
      * @return
+     * @throws IOException 
      */
     @Bean
-    public CommonsMultipartResolver multipartResolver() {
+    public CommonsMultipartResolver multipartResolver() throws IOException {
         CommonsMultipartResolver bean = new CommonsMultipartResolver();
         bean.setDefaultEncoding(DEFAULT_CHARSET_NAME);
         bean.setMaxUploadSize(Long.parseLong(env.getProperty("cms.multipart.maxUploadSize")));
+        bean.setUploadTempDir(new FileSystemResource(getDirPath("/temp/")));
         return bean;
     }
 
