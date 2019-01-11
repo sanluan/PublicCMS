@@ -36,6 +36,8 @@ $(".pageFormContent",$.pdialog.getCurrent()).on("change","input[type=file]",func
             success: function (result) {
                 if(true==result){
                     $('.override').show();
+                } else {
+                    $('.override').hide();
                 }
             }
         });
