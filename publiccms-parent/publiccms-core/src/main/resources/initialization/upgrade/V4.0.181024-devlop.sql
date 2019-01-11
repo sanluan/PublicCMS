@@ -130,3 +130,5 @@ ALTER TABLE `cms_category`
 ALTER TABLE `cms_content` 
     ADD COLUMN `quote_content_id` bigint(20) NULL COMMENT '引用内容ID' AFTER `parent_id`,
     ADD INDEX `quote_content_id`(`site_id`, `quote_content_id`);
+-- 2019-01-11 --
+UPDATE `sys_module` SET `authorized_url` =  'cmsWebFile/doUpload,cmsWebFile/check' WHERE `id` ='webfile_upload';

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -87,17 +89,18 @@ public class CmsWebFileAdminController {
     }
 
     /**
-     * @param files 
+     * @param files
      * @param path
      * @param _csrf
+     * @param override
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("doUpload")
-    public String upload(MultipartFile[] files, String path, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String upload(MultipartFile[] files, String path, String _csrf, Boolean override, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -107,7 +110,10 @@ public class CmsWebFileAdminController {
                 for (MultipartFile file : files) {
                     String originalName = file.getOriginalFilename();
                     String filePath = path + CommonConstants.SEPARATOR + originalName;
-                    CmsFileUtils.upload(file, siteComponent.getWebFilePath(site, filePath));
+                    String fuleFilePath = siteComponent.getWebFilePath(site, filePath);
+                    if (null != override && override || !CmsFileUtils.exists(fuleFilePath)) {
+                        CmsFileUtils.upload(file, fuleFilePath);
+                    }
                     logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, originalName,
                             CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
@@ -120,6 +126,35 @@ public class CmsWebFileAdminController {
             }
         }
         return CommonConstants.TEMPLATE_DONE;
+
+    }
+
+    /**
+     * @param fileNames
+     * @param path
+     * @param _csrf
+     * @param request
+     * @param session
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("check")
+    @ResponseBody
+    public boolean check(@RequestParam("fileNames[]") String[] fileNames, String path, String _csrf, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            return false;
+        }
+        if (null != fileNames) {
+            SysSite site = siteComponent.getSite(request.getServerName());
+            for (String fileName : fileNames) {
+                String filePath = path + CommonConstants.SEPARATOR + fileName;
+                if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, filePath))) {
+                    return true;
+                }
+            }
+        }
+        return false;
 
     }
 
@@ -191,8 +226,8 @@ public class CmsWebFileAdminController {
 
     /**
      * @param path
-     * @param encoding 
-     * @param here 
+     * @param encoding
+     * @param here
      * @param _csrf
      * @param request
      * @param session
