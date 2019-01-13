@@ -99,6 +99,7 @@ $('#categoryIds',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     return false;
 });
+<#if a?has_content>
 <@_contentList quoteId=a.id count=100>
     <#list page.list as a>
     <@_category id=a.categoryId>
@@ -106,6 +107,7 @@ $('#categoryIds',navTab.getCurrentPanel()).on('click','span>a',function(){
     </@_category>
     </#list>
 </@_contentList>
+</#if>
 </script>
                     </#if>
                 <dl>

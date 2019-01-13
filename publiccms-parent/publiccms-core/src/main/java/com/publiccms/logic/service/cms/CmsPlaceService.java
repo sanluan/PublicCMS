@@ -99,10 +99,6 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
         if (null != entity && STATUS_PEND == entity.getStatus()) {
             entity.setStatus(STATUS_NORMAL);
             entity.setCheckUserId(userId);
-            Date now = CommonUtils.getDate();
-            if (now.after(entity.getPublishDate())) {
-                entity.setPublishDate(now);
-            }
         }
     }
 
@@ -113,10 +109,6 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
         CmsPlace entity = getEntity(id);
         if (null != entity && STATUS_NORMAL == entity.getStatus()) {
             entity.setStatus(STATUS_PEND);
-            Date now = CommonUtils.getDate();
-            if (now.after(entity.getPublishDate())) {
-                entity.setPublishDate(now);
-            }
         }
     }
 
