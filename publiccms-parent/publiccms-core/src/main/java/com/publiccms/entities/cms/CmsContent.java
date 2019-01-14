@@ -130,9 +130,8 @@ public class CmsContent implements java.io.Serializable {
     private Date publishDate;
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Field(analyze = Analyze.NO, store = Store.YES)
+    @Field(analyze = Analyze.NO, store = Store.YES, indexNullAs = "0")
     @DateBridge(resolution = Resolution.SECOND)
-    @SortableField
     private Date expiryDate;
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
@@ -176,10 +175,10 @@ public class CmsContent implements java.io.Serializable {
     }
 
     public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
-            Long quoteContentId, boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasStatic,
-            String url, String description, String tagIds, String cover, int childs, int scores, int comments, int clicks,
-            Date publishDate, Date expiryDate, Date checkDate, Date updateDate, Date createDate, int sort, int status,
-            boolean disabled) {
+            Long quoteContentId, boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages,
+            boolean hasFiles, boolean hasStatic, String url, String description, String tagIds, String cover, int childs,
+            int scores, int comments, int clicks, Date publishDate, Date expiryDate, Date checkDate, Date updateDate,
+            Date createDate, int sort, int status, boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
