@@ -15,10 +15,6 @@ function clickAddTag(){
     $('.tags .button',navTab.getCurrentPanel()).click();
 }
 </script>
-<style>
-#categoryIds{line-height:25px;float:left;}
-#categoryIds span{margin-right:8px;padding:3px;background-color:#e0e0e0;}
-</style>
 <form method="post" action="cmsContent/save.do?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input name="parentId" type="hidden" value="${parentId!}" />
@@ -67,12 +63,12 @@ function clickAddTag(){
                     <dt><@t.page 'category'/>:</dt>
                     <dd>
                         <input name="categoryId" type="hidden" value="${categoryId!}"/>
-                        ${(category.name)!}
+                        <label style="width:auto">${(category.name)!}</label>
                    <#if !parentId?has_content && !model.onlyUrl>
                         <input name="quoteCategoryId" type="hidden"/>
                         <input name="categoryName" type="hidden"/>
+                        <div id="categoryIds" class="tagsBox"></div>
                         <a class="btnLook" href="cmsCategory/lookupByModelId.html?field=quoteCategoryId&modelId=${modelId!}&currentCategoryId=${categoryId!}" width="920" lookupGroup=""><@t.page 'category.select'/></a>
-                        <div id="categoryIds"></div>
                     </#if>
                     </dd>
                 </dl>

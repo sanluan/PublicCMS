@@ -1,12 +1,8 @@
 <#macro tagTypes typeIds=''>
-<style>
-#tagTypes{line-height:25px;}
-#tagTypes span{margin-right:8px;padding:3px;background-color:#e0e0e0;}
-</style>
-<dl class="nowrap tagTypes  advanced">
+<dl class="nowrap tagTypes advanced">
     <dt><@t.page 'tag_type'/>:</dt>
     <dd>
-        <div id="tagTypes"></div>
+        <div id="tagTypes" class="tagsBox"></div>
         <input name="type[].id" type="hidden"/>
         <input name="type[].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="type[]" suggestUrl="common/tagTypeSuggest.html"/>
         <a class="button" href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;"><@t.page 'button.add'/></a>
@@ -36,7 +32,7 @@ function reIndexTagType(){
         $('input[name$=\\.name]',this).attr('name','tagTypes['+tagIndex+'].name');
     });
 }
-$('.tagTypes',navTab.getCurrentPanel()).on('click','span>a',function(){
+$('#tagTypes',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     reIndexTagType();
     return false;

@@ -1,8 +1,4 @@
 <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
-<style>
-#adminIds{line-height:25px;float:left;}
-#adminIds span{margin-right:8px;padding:3px;background-color:#e0e0e0;}
-</style>
 <form method="post" action="cmsTemplate/savePlaceMetaData.do?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
@@ -62,7 +58,7 @@
                 <input name="userId" type="hidden"/>
                 <input name="nickName" type="hidden"/>
                 <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
-                <div id="adminIds"></div>
+                <div id="adminIds" class="tagsBox"></div>
             </dd>
         </dl>
         <fieldset class="placeExtend systemField">

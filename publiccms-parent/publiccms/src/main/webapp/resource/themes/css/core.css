@@ -287,8 +287,9 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0}
 .formBar li{float:left;margin-left:10px}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0}
 
-.tags .tagsBox span {border: none;padding: 5px 8px;}
-.tags .tagsBox span>a{margin-left: 5px}
+.tagsBox{line-height:25px;}
+.tagsBox span{margin-right:8px;border: none;padding: 5px 8px;}
+.tagsBox span>a{margin-left: 5px}
 
 /* Pages dialog */
 .dialog .pageHeader{margin:0}
@@ -422,6 +423,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:2
 #calendar .hh .hh, #calendar .mm .mm, #calendar .ss .ss{display:block}
 #calendar .tm .hh li, #calendar .tm .mm li, #calendar .tm .ss li{display:block;float:left;cursor:pointer;width:24px;line-height:26px}
 
+.icons label{width:200px;}
 /* custom icon */
 .icon-backward:before, .icon-chevron-down:before, .icon-chevron-up:before, .icon-forward:before, .icon-rubbish:before{font-family:iconfont;vertical-align:unset}
 .tabsPageHeader .icon-backward:before,.icon-forward:before{line-height:45px;}
@@ -465,3 +467,4 @@ main{background-color:#333}
 footer{background-color:#333}
 table.list tbody {background-color:#666}
 .page{background: #fff; color: #333;}
+.tagsBox span{background-color:#e0e0e0;}

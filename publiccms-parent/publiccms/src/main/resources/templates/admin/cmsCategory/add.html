@@ -10,7 +10,7 @@
 <@_categoryType id=typeId><#assign categoryType=object/></@_categoryType>
 <script>
 function clickAddTagType(){
-    $('.tagTypes .button',navTab.getCurrentPanel()).click();
+    $('#tagTypes',navTab.getCurrentPanel()).parent().find('.button').click();
 }
 </script>
 <form method="post" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">

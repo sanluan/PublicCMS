@@ -86,7 +86,7 @@
 <#if category.tagTypeIds?has_content>
     <@_tagType ids=category.tagTypeIds>
         <#list map as k,tagType>
-            <dl class="nowrap tags">
+            <dl class="nowrap">
                 <dt>${tagType.name}:</dt>
                 <dd>
                     <@_tag ids=a.tagIds>
@@ -101,7 +101,7 @@
         </#list>
     </@_tagType>
 <#else>
-            <dl class="nowrap tags">
+            <dl class="nowrap">
                 <dt>${(model.fieldTextMap['tag'])!}:</dt>
                 <dd>
                     <@_tag ids=a.tagIds>
