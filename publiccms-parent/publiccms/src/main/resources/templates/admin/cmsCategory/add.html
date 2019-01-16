@@ -45,7 +45,7 @@ function clickAddTagType(){
                     <dd>
                         <input name="parentId" type="hidden" value="${parentId!}" />
                         <input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
-                        <a class="btnLook" href="cmsCategory/lookup.html?categoryId=${parentId!}" lookupGroup=""></a>
+                        <a class="btnLook" href="cmsCategory/lookup.html?currentCategoryId=${(a.id)!}" lookupGroup=""></a>
                     </dd>
                 </dl>
                 <dl>
@@ -98,7 +98,7 @@ function clickAddTagType(){
                         <label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/><@t.page 'category.contain_child'/></label>
                     </dd>
                 </dl>
-                <dl class="advanced">
+                <dl>
                     <dt><@t.page 'sort'/>:</dt>
                     <dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!0}"/></dd>
                 </dl>
