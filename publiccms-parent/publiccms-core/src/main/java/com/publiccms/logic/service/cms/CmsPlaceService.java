@@ -61,7 +61,7 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param itemId
      * @param startPublishDate
      * @param endPublishDate
-     * @param expiryDate 
+     * @param expiryDate
      * @param status
      * @param disabled
      * @param orderField
