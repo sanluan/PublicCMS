@@ -71,7 +71,7 @@ function clickAddTag(){
                    <#if !parentId?has_content && !model.onlyUrl>
                         <input name="quoteCategoryId" type="hidden"/>
                         <input name="categoryName" type="hidden"/>
-                        <a class="btnLook" href="cmsCategory/lookupByModelId.html?field=quoteCategoryId&currentCategoryId=${categoryId!}" width="920" lookupGroup=""><@t.page 'category.select'/></a>
+                        <a class="btnLook" href="cmsCategory/lookupByModelId.html?field=quoteCategoryId&modelId=${modelId!}&currentCategoryId=${categoryId!}" width="920" lookupGroup=""><@t.page 'category.select'/></a>
                         <div id="categoryIds"></div>
                     </#if>
                     </dd>

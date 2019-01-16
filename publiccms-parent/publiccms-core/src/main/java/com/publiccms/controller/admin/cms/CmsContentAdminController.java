@@ -189,16 +189,23 @@ public class CmsContentAdminController {
                     }
                     entity = service.getEntity(entity.getId());
                     for (Integer categoryId : categoryIdsList) {
-                        CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), categoryId,
-                                entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(), false, 0,
-                                0, 0, 0, entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
-                        quote.setQuoteContentId(entity.getId());
-                        quote.setDescription(entity.getDescription());
-                        quote.setAuthor(entity.getAuthor());
-                        quote.setCover(entity.getCover());
-                        quote.setEditor(entity.getEditor());
-                        quote.setExpiryDate(entity.getExpiryDate());
-                        service.save(quote);
+                        CmsCategory newCategory = categoryService.getEntity(categoryId);
+                        if (null != newCategory) {
+                            CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(),
+                                    categoryId, entity.getModelId(), entity.isCopied(), true, entity.isHasImages(),
+                                    entity.isHasFiles(), false, 0, 0, 0, 0, entity.getPublishDate(), entity.getCreateDate(), 0,
+                                    entity.getStatus(), false);
+                            quote.setQuoteContentId(entity.getId());
+                            quote.setDescription(entity.getDescription());
+                            quote.setAuthor(entity.getAuthor());
+                            quote.setCover(entity.getCover());
+                            quote.setEditor(entity.getEditor());
+                            quote.setExpiryDate(entity.getExpiryDate());
+                            service.save(quote);
+                            if (null != checked && checked) {
+                                templateComponent.createCategoryFile(site, newCategory, null, null);
+                            }
+                        }
                     }
                 }
             }
