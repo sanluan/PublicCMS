@@ -123,9 +123,9 @@ public class LoginAdminController {
                 CommonUtils.getDate(), null));
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            returnUrl = CommonConstants.getDefaultPage();
         }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     /**
