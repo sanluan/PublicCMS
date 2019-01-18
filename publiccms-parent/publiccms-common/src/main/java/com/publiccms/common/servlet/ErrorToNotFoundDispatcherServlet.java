@@ -1,7 +1,10 @@
 package com.publiccms.common.servlet;
 
+import java.io.IOException;
+import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -27,11 +30,25 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
     private static final int REDIRECT_URL_PREFIX_LENGTH = UrlBasedViewResolver.REDIRECT_URL_PREFIX.length();
     private static final String SPECIAL_REDIRECT_URL = UrlBasedViewResolver.REDIRECT_URL_PREFIX + "//";
 
+    private static final String METHOD_GET = "GET";
+    private static final String METHOD_POST = "POST";
+    private static final ResourceBundle lStrings = ResourceBundle.getBundle("javax.servlet.http.LocalStrings");
+
     /**
      * @param webApplicationContext
      */
     public ErrorToNotFoundDispatcherServlet(WebApplicationContext webApplicationContext) {
         super(webApplicationContext);
+    }
+
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String method = req.getMethod();
+        if (method.equals(METHOD_GET) || method.equals(METHOD_POST)) {
+            super.service(req, resp);
+        } else {
+            String errMsg = lStrings.getString("http.method_not_implemented");
+            resp.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, MessageFormat.format(errMsg, method));
+        }
     }
 
     @Override

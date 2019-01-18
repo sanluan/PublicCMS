@@ -130,6 +130,9 @@ public class AdminContextInterceptor extends WebContextInterceptor {
         if (null == loginUrl) {
             return false;
         } else if (null != needNotLoginUrls && null != url) {
+            if (url.startsWith(loginUrl) || (null != loginJsonUrl && url.startsWith(loginJsonUrl))) {
+                return false;
+            }
             for (String needNotLoginUrl : needNotLoginUrls) {
                 if (null != needNotLoginUrl) {
                     if (url.startsWith(needNotLoginUrl)) {
@@ -145,6 +148,9 @@ public class AdminContextInterceptor extends WebContextInterceptor {
         if (null == unauthorizedUrl) {
             return false;
         } else if (null != needNotAuthorizedUrls && null != url) {
+            if (url.startsWith(unauthorizedUrl)) {
+                return false;
+            }
             for (String needNotAuthorizedUrl : needNotAuthorizedUrls) {
                 if (null != needNotAuthorizedUrl) {
                     if (url.startsWith(needNotAuthorizedUrl)) {
