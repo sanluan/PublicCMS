@@ -202,6 +202,7 @@ public class CmsContentAdminController {
                             quote.setEditor(entity.getEditor());
                             quote.setExpiryDate(entity.getExpiryDate());
                             service.save(quote);
+                            service.saveTagAndAttribute(site.getId(), user.getId(), quote.getId(), contentParameters, cmsModel, category, attribute);
                             if (null != checked && checked) {
                                 templateComponent.createCategoryFile(site, newCategory, null, null);
                             }
