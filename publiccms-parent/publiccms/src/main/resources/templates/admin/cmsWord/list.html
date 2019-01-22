@@ -69,7 +69,7 @@
                     <#else>
                         <a href="cmsWord/hidden.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.hide'/>" target="ajaxTodo"><@t.page 'button.hide'/></a>|
                     </#if>
-                    <a href="cmsWord/delete.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsWord/delete.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

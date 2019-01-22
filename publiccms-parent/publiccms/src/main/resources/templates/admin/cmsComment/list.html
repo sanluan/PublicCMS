@@ -97,7 +97,7 @@
                     </#if>
                 </#if>
                 <#if authorizedMap['cmsComment/delete']>
-                    <a href="cmsComment/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsComment/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </#if>
                 </td>
             </tr>

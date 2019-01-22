@@ -1,5 +1,5 @@
 <#macro categoryTree parentId=''>
-    <@_categoryList parentId=parentId>
+    <@_categoryList advanced=true parentId=parentId count=500>
         <#list page.list as a>
             <li>
                 <a href="cmsPlace/lookup_content_list.html?categoryId=${a.id}" target="ajax" rel="lookup_content_list">${a.name!}</a>
@@ -15,7 +15,7 @@
     </@_categoryList>
 </#macro>
 <#macro lookupTree parentId=''>
-    <@_categoryList parentId=parentId>
+    <@_categoryList advanced=true parentId=parentId>
         <#list page.list as a>
             <li>
                 <a href="javascript:;" onclick="$.bringBack({itemType:'category',itemId:'${a.id}',title:'${(a.name?js_string)!}',url:'${a.url!}'});return false;">${a.name!}</a>

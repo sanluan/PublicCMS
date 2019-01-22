@@ -56,7 +56,7 @@
             <dd><input name="ownsAllConfig" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllConfig',navTab.getCurrentPanel()).hide();}else{$('.ownsAllConfig',navTab.getCurrentPanel()).show();}"/></dd>
         </dl>
 <#macro categoryTree parentId=''>
-    <@_categoryList parentId=parentId advanced=true>
+    <@_categoryList parentId=parentId advanced=true count=500>
         <#list page.list as a>
             <li>
                 <a tname="categoryIds" tvalue="${a.id}">${a.name}</a>
