@@ -78,6 +78,12 @@ public class Constants {
      * comma delimited
      */
     public static final String COMMA_DELIMITED = ",";
+    /**
+     * 逗号分隔符
+     * 
+     * comma delimited
+     */
+    public static final char COMMA = ',';
 
     /**
      * @return deafult meger function

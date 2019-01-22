@@ -25,6 +25,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.SortableField;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.hibernate.search.bridge.builtin.ShortBridge;
@@ -35,6 +36,7 @@ import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 import com.publiccms.common.search.CmsContentBridge;
 import com.publiccms.common.search.CmsContentInterceptor;
+import com.publiccms.common.search.MultiTokenFilterFactory;
 import com.publiccms.common.search.MultiTokenizerFactory;
 
 /**
@@ -43,10 +45,10 @@ import com.publiccms.common.search.MultiTokenizerFactory;
 @Entity
 @Table(name = "cms_content")
 @DynamicUpdate
-@AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class))
+@AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class), filters = {
+        @TokenFilterDef(factory = MultiTokenFilterFactory.class) })
 @Analyzer(definition = "cms") // Comment this line to enable elasticsearch
-// @Analyzer(definition = "default") // Uncomment this line to enable
-// elasticsearch
+// @Analyzer(definition = "default") // Uncomment this line to enable elasticsearch
 @ClassBridge(impl = CmsContentBridge.class)
 @Indexed(interceptor = CmsContentInterceptor.class)
 public class CmsContent implements java.io.Serializable {
@@ -112,6 +114,9 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "标签")
     @Field(store = Store.YES)
     private String tagIds;
+    @GeneratorColumn(title = "数据字典值")
+    @Field(store = Store.YES)
+    private String dictionaryValues;
     @GeneratorColumn(title = "封面")
     private String cover;
     @GeneratorColumn(title = "子内容数")
@@ -176,9 +181,9 @@ public class CmsContent implements java.io.Serializable {
 
     public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
             Long quoteContentId, boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages,
-            boolean hasFiles, boolean hasStatic, String url, String description, String tagIds, String cover, int childs,
-            int scores, int comments, int clicks, Date publishDate, Date expiryDate, Date checkDate, Date updateDate,
-            Date createDate, int sort, int status, boolean disabled) {
+            boolean hasFiles, boolean hasStatic, String url, String description, String tagIds, String dictionaryValues,
+            String cover, int childs, int scores, int comments, int clicks, Date publishDate, Date expiryDate, Date checkDate,
+            Date updateDate, Date createDate, int sort, int status, boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
@@ -197,6 +202,7 @@ public class CmsContent implements java.io.Serializable {
         this.url = url;
         this.description = description;
         this.tagIds = tagIds;
+        this.dictionaryValues = dictionaryValues;
         this.cover = cover;
         this.childs = childs;
         this.scores = scores;
@@ -384,6 +390,15 @@ public class CmsContent implements java.io.Serializable {
 
     public void setTagIds(String tagIds) {
         this.tagIds = tagIds;
+    }
+
+    @Column(name = "dictionar_values", length = 65535)
+    public String getDictionaryValues() {
+        return this.dictionaryValues;
+    }
+
+    public void setDictionaryValues(String dictionaryValues) {
+        this.dictionaryValues = dictionaryValues;
     }
 
     @Column(name = "cover")

@@ -92,7 +92,7 @@ public class CmsTagAdminController {
             service.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.tag", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, ',')));
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

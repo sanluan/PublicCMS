@@ -1,5 +1,5 @@
 <#macro input name extend index value='' type='form'>
-    <#if !value?has_content>
+    <#if !value??>
         <#local value=extend.defaultValue!/>
     </#if>
     <#local inputName=name+'['+index+'].value'/>
@@ -158,13 +158,24 @@
                     <#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
                 <#else>
                     <#if dictionary.multiple>
-                        <#local values=value?split(',')/>
+                        <#if value?has_content>
+                            <#local values=value?split(',')/>
+                            <#list values as v>
+                                <input type="hidden" name="dictionaryValues" value="${extend.dictionaryId}_${v}"/>
+                            </#list>
+                        </#if>
                         <@_dictionaryDataList dictionaryId=extend.dictionaryId>
                             <#list list as d>
-                                <label><input name="${name}[${index}].values" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>${d.text}</label>
+                                <label>
+                                    <input name="${name}[${index}].values" type="checkbox" value="${d.id.value}"${(values?has_content&&values?seq_contains(d.id.value))?then(' checked="true"','')?no_esc}/>
+                                    ${d.text}
+                                </label>
                             </#list>
                         </@_dictionaryDataList>
                     <#else>
+                        <#if value?has_content>
+                            <input type="hidden" name="dictionaryValues" value="${extend.dictionaryId}_${value!}"/>
+                        </#if>
                         <select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
                         <@_dictionaryDataList dictionaryId=extend.dictionaryId>
                             <#list list as d>

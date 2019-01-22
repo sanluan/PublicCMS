@@ -90,7 +90,7 @@ public class CmsDictionaryAdminController {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsDictionary", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

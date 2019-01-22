@@ -82,6 +82,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param text
      * @param tagIds
+     * @param dictionaryValues
      * @param categoryId
      * @param containChild
      * @param categoryIds
@@ -95,10 +96,11 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler query(boolean projection, Short siteId, String text, Long[] tagIds, Integer categoryId,
-            Boolean containChild, Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate,
-            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+    public PageHandler query(boolean projection, Short siteId, String text, Long[] tagIds, String[] dictionaryValues,
+            Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds, Date startPublishDate,
+            Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         return dao.query(projection, siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
+                arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE),
                 getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, expiryDate,
                 orderField, pageIndex, pageSize);
     }
@@ -109,6 +111,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param modelIds
      * @param text
      * @param tagIds
+     * @param dictionaryValues
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -119,9 +122,11 @@ public class CmsContentService extends BaseService<CmsContent> {
      */
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, Long[] tagIds,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+            String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
+            Integer pageIndex, Integer pageSize) {
         return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
-                startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+                arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE), startPublishDate, endPublishDate,
+                expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
@@ -161,34 +166,39 @@ public class CmsContentService extends BaseService<CmsContent> {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
-        }
-        if (entity.isHasImages() || entity.isHasFiles()) {
-            contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
-                    entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
-        }
-
-        List<ExtendField> modelExtendList = cmsModel.getExtendList();
-        Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
-        if (null != category && null != extendService.getEntity(category.getExtendId())) {
-            List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
-            Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
-                    categoryExtendList);
-            if (CommonUtils.notEmpty(map)) {
-                map.putAll(categoryMap);
-            } else {
-                map = categoryMap;
+            List<String> dictionaryValueList = contentParameters.getDictionaryValues();
+            if (null != dictionaryValueList) {
+                String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
+                entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
             }
-        }
+            if (entity.isHasImages() || entity.isHasFiles()) {
+                contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
+                        entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
+            }
 
-        if (CommonUtils.notEmpty(map)) {
-            attribute.setData(ExtendUtils.getExtendString(map));
-        } else {
-            attribute.setData(null);
-        }
+            List<ExtendField> modelExtendList = cmsModel.getExtendList();
+            Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
+            if (null != category && null != extendService.getEntity(category.getExtendId())) {
+                List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
+                Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
+                        categoryExtendList);
+                if (CommonUtils.notEmpty(map)) {
+                    map.putAll(categoryMap);
+                } else {
+                    map = categoryMap;
+                }
+            }
 
-        attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
-        if (CommonUtils.notEmpty(contentParameters.getContentRelateds())) {
-            cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
+            if (CommonUtils.notEmpty(map)) {
+                attribute.setData(ExtendUtils.getExtendString(map));
+            } else {
+                attribute.setData(null);
+            }
+
+            attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
+            if (CommonUtils.notEmpty(contentParameters.getContentRelateds())) {
+                cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
+            }
         }
     }
 

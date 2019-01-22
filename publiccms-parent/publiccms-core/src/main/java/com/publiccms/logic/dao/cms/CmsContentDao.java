@@ -39,6 +39,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] textFields = new String[] { "title", "author", "editor", "description" };
     private static final String[] tagFields = new String[] { "tagIds" };
+    private static final String dictionaryField = "dictionaryValues";
     private static final String[] facetFields = new String[] { "categoryId", "modelId" };
     private static final String[] projectionFields = new String[] { "title", "categoryId", "modelId", "parentId", "author",
             "editor", "onlyUrl", "hasImages", "hasFiles", "url", "description", "tagIds", "publishDate" };
@@ -48,6 +49,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param siteId
      * @param text
      * @param tagIds
+     * @param dictionaryValues
      * @param categoryIds
      * @param modelIds
      * @param startPublishDate
@@ -58,14 +60,19 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, Integer[] categoryIds,
-            String[] modelIds, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
-            Integer pageSize) {
+    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, String dictionaryValues,
+            Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, Date expiryDate,
+            String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        MustJunction termination = queryBuilder.bool()
-                .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagIds) ? textFields : tagFields)
-                        .matching(CommonUtils.empty(tagIds) ? text : tagIds).createQuery())
-                .must(new TermQuery(new Term("siteId", siteId.toString())));
+        MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
+        if (CommonUtils.notEmpty(text)) {
+            termination.must(queryBuilder.keyword().onFields(textFields).matching(text).createQuery());
+        } else if (CommonUtils.notEmpty(tagIds)) {
+            termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
+        }
+        if (CommonUtils.notEmpty(dictionaryValues)) {
+            termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(dictionaryValues).createQuery());
+        }
         if (null != startPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
         }
@@ -108,7 +115,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param categoryIds
      * @param modelIds
      * @param text
-     * @param tagId
+     * @param tagIds
+     * @param dictionaryValues
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -117,13 +125,19 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, String tagId,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, String tagIds,
+            String dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
+            Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        MustJunction termination = queryBuilder.bool()
-                .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagId) ? textFields : tagFields)
-                        .matching(CommonUtils.empty(tagId) ? text : tagId).createQuery())
-                .must(new TermQuery(new Term("siteId", siteId.toString())));
+        MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
+        if (CommonUtils.notEmpty(text)) {
+            termination.must(queryBuilder.keyword().onFields(textFields).matching(text).createQuery());
+        } else if (CommonUtils.notEmpty(tagIds)) {
+            termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
+        }
+        if (CommonUtils.notEmpty(dictionaryValues)) {
+            termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(dictionaryValues).createQuery());
+        }
         if (null != startPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
         }

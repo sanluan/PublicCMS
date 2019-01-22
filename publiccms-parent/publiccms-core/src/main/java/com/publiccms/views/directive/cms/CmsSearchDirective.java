@@ -28,7 +28,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String word = handler.getString("word");
         Long[] tagIds = handler.getLongArray("tagId");
-        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagIds)) {
+        String[] dictionaryValues = handler.getStringArray("dictionaryValues");
+        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagIds) || CommonUtils.notEmpty(dictionaryValues)) {
             SysSite site = getSite(handler);
             if (CommonUtils.notEmpty(word)) {
                 statisticsComponent.search(site.getId(), word);
@@ -43,7 +44,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             Integer count = handler.getInteger("count", 30);
             Date currentDate = CommonUtils.getMinuteDate();
             try {
-                page = service.query(handler.getBoolean("projection", false), site.getId(), word, tagIds,
+                page = service.query(handler.getBoolean("projection", false), site.getId(), word, tagIds, dictionaryValues,
                         handler.getInteger("categoryId"), handler.getBoolean("containChild"),
                         handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
                         handler.getDate("startPublishDate"), currentDate, currentDate, handler.getString("orderField"), pageIndex,

@@ -58,7 +58,7 @@ public class LogAdminController {
             logLoginService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.logLogin", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -82,7 +82,7 @@ public class LogAdminController {
             logOperateService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.logOperate", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -105,7 +105,7 @@ public class LogAdminController {
             logTaskService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.logTask", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -128,7 +128,7 @@ public class LogAdminController {
             logUploadService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.logUpload", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

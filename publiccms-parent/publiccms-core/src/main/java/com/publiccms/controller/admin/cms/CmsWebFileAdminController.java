@@ -182,7 +182,7 @@ public class CmsWebFileAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.web.webfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(paths, ',')));
+                    CommonUtils.getDate(), StringUtils.join(paths, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

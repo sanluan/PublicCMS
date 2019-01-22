@@ -3,6 +3,8 @@ package config.spring;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
@@ -36,6 +38,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
+import com.publiccms.common.search.MultiTokenFilterFactory;
 import com.publiccms.common.search.MultiTokenizerFactory;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.DirectiveComponent;
@@ -128,7 +131,11 @@ public class ApplicationConfig {
             properties.setProperty(cacheConfigUri, getClass().getResource(properties.getProperty(cacheConfigUri)).toString());
         }
         properties.setProperty("hibernate.search.default.indexBase", getDirPath("/indexes/"));
-        MultiTokenizerFactory.setName(env.getProperty("cms.tokenizerFactory"));
+        MultiTokenizerFactory.init(env.getProperty("cms.tokenizerFactory"),
+                getMap(env.getProperty("cms.tokenizerFactory.parameters")));
+
+        MultiTokenFilterFactory.init(env.getProperty("cms.tokenFilterFactory"),
+                getMap(env.getProperty("cms.tokenFilterFactory.parameters")));
         bean.setHibernateProperties(properties);
         return bean;
     }
@@ -260,6 +267,30 @@ public class ApplicationConfig {
         return new MappingJackson2HttpMessageConverter();
     }
 
+    /**
+     * @param property
+     * @return the map
+     */
+    private Map<String, String> getMap(String property) {
+        Map<String, String> parametersMap = new HashMap<>();
+        if (CommonUtils.notEmpty(property)) {
+            String[] parameters = StringUtils.split(property, CommonConstants.COMMA_DELIMITED);
+            for (String parameter : parameters) {
+                String[] values = StringUtils.split(parameter, "=", 2);
+                if (values.length == 2) {
+                    parametersMap.put(values[0], values[1]);
+                } else if (values.length == 1) {
+                    parametersMap.put(values[0], null);
+                }
+            }
+        }
+        return parametersMap;
+    }
+
+    /**
+     * @param path
+     * @return the cms data path
+     */
     private String getDirPath(String path) {
         if (null == CommonConstants.CMS_FILEPATH) {
             InitializationInitializer.initFilePath(env.getProperty("cms.filePath"), System.getProperty("user.dir"));

@@ -171,7 +171,7 @@ public class CmsPlaceAdminController {
             service.refresh(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "refresh.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -204,7 +204,7 @@ public class CmsPlaceAdminController {
             SysSite site = siteComponent.getSite(request.getServerName());
             service.check(site.getId(), user.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -238,7 +238,7 @@ public class CmsPlaceAdminController {
             SysSite site = siteComponent.getSite(request.getServerName());
             service.uncheck(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -395,7 +395,7 @@ public class CmsPlaceAdminController {
             service.delete(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, ',')));
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
