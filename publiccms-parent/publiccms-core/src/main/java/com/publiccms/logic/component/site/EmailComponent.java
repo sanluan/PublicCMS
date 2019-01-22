@@ -202,7 +202,7 @@ public class EmailComponent implements SiteCache, Config {
                 String.valueOf(3000)));
         extendFieldList.add(new ExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true, CONFIG_AUTH,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_AUTH), null));
-        extendFieldList.add(new ExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, CONFIG_FROMADDRESS, LanguagesUtils.getMessage(
+        extendFieldList.add(new ExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, CONFIG_SSL, LanguagesUtils.getMessage(
                 CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null));
         extendFieldList.add(new ExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true, CONFIG_FROMADDRESS,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_FROMADDRESS), null));
