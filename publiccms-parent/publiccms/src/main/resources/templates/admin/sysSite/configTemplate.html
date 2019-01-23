@@ -41,6 +41,11 @@ server {
         proxy_read_timeout 10;
         proxy_pass http://cms;
     }
+
+    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
+        alias   ${rootPath}/web/site_${siteId}/webfile/;
+        index  index.html;
+    }
         <#if a.useSsi>
     location /include/ {
         alias ${rootPath}/web/site_${siteId}/include/;
