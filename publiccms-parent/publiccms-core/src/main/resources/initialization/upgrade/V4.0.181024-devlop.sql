@@ -139,7 +139,7 @@ ALTER TABLE `cms_content`
 ALTER TABLE `cms_dictionary` 
     MODIFY COLUMN `id` varchar(20) NOT NULL FIRST,
 	DROP PRIMARY KEY,
-	ADD PRIMARY KEY (`id`, `site_id`) USING BTREE;
+	ADD PRIMARY KEY (`id`, `site_id`);
 ALTER TABLE `cms_dictionary_data` 
     MODIFY COLUMN `dictionary_id` varchar(20) NOT NULL COMMENT '字典' FIRST,
     ADD COLUMN `site_id` smallint(0) NOT NULL COMMENT '站点ID' AFTER `dictionary_id`,

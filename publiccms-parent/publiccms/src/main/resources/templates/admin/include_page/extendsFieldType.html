@@ -13,10 +13,11 @@ $('.combox_${flag}').on('change',function(){
     }else{
         $(this).closest('tr').find('a.btnLook').hide().prev().removeClass('required').hide();
     }
-    if($.inArray($(this).val(), ['user','content','category','categoryType','tagType','date','datetime','file','image','video'])){
-        $(this).closest('tr').find('input[type=number]').show();
-    }else{
+    console.log($(this).val());
+    if(-1<$.inArray($(this).val(), ['user','content','category','categoryType','boolean','tagType','date','datetime','file','image','video'])){
         $(this).closest('tr').find('input[type=number]').hide();
+    }else{
+        $(this).closest('tr').find('input[type=number]').show();
     }
 });
 </script>

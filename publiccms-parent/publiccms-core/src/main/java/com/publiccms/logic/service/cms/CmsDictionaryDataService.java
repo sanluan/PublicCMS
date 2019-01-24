@@ -61,7 +61,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
                 }
             }
         }
-        List<CmsDictionaryData> list = getList(dictionaryId);
+        List<CmsDictionaryData> list = getList(siteId, dictionaryId);
         for (CmsDictionaryData entity : list) {
             if (!idSet.contains(entity.getId())) {
                 delete(entity.getId());
@@ -70,12 +70,13 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     }
 
     /**
+     * @param siteId
      * @param dictionaryId
      * @return data list
      */
     @Transactional(readOnly = true)
-    public List<CmsDictionaryData> getList(String dictionaryId) {
-        return dao.getList(dictionaryId);
+    public List<CmsDictionaryData> getList(short siteId, String dictionaryId) {
+        return dao.getList(siteId, dictionaryId);
     }
 
     @Autowired

@@ -46,7 +46,7 @@ public class CmsDictionaryDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];
                 for (int i = 0; i < ids.length; i++) {
-                    entityIds[i++] = new CmsDictionaryId(ids[i], siteId);
+                    entityIds[i] = new CmsDictionaryId(ids[i], siteId);
                 }
                 List<CmsDictionary> entityList = service.getEntitys(entityIds);
                 Map<String, CmsDictionary> map = entityList.stream().collect(Collectors.toMap(k -> k.getId().toString(),

@@ -59,7 +59,7 @@ public class CmsDictionaryAdminController {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
-            if (null != entity.getId().getId()) {
+            if (null != service.getEntity(entity.getId())) {
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 dataService.update(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
                 logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
@@ -114,7 +114,7 @@ public class CmsDictionaryAdminController {
         if (CommonUtils.notEmpty(ids)) {
             CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];
             for (int i = 0; i < ids.length; i++) {
-                entityIds[i++] = new CmsDictionaryId(ids[i], site.getId());
+                entityIds[i] = new CmsDictionaryId(ids[i], site.getId());
             }
             service.delete(entityIds);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),

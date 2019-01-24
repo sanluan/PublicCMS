@@ -11,6 +11,7 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsDictionaryData;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 
 /**
@@ -26,7 +27,8 @@ public class CmsDictionaryDataListDirective extends AbstractTemplateDirective {
         List<CmsDictionaryData> list = null;
         String dictionaryId = handler.getString("dictionaryId");
         if (CommonUtils.notEmpty(dictionaryId)) {
-            list = service.getList(dictionaryId);
+            SysSite site = getSite(handler);
+            list = service.getList(site.getId(), dictionaryId);
         } else {
             list = new ArrayList<>();
         }
