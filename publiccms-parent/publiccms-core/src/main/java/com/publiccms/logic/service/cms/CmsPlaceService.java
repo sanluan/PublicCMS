@@ -119,14 +119,10 @@ public class CmsPlaceService extends BaseService<CmsPlace> {
      * @param path
      */
     public void check(short siteId, Long userId, Serializable[] ids, String path) {
-        Date now = CommonUtils.getDate();
         for (CmsPlace entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus() && path.equals(entity.getPath())) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(userId);
-                if (now.after(entity.getPublishDate())) {
-                    entity.setPublishDate(now);
-                }
             }
         }
     }
