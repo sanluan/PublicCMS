@@ -1,16 +1,14 @@
 package com.publiccms.entities.cms;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.GenericGenerator;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -26,10 +24,7 @@ public class CmsDictionary implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
-    private Long id;
-    @GeneratorColumn(title = "站点", condition = true)
-    @JsonIgnore
-    private short siteId;
+    private CmsDictionaryId id;
     @GeneratorColumn(title = "名称")
     private String name;
     @GeneratorColumn(title = "允许多选", condition = true)
@@ -38,31 +33,21 @@ public class CmsDictionary implements java.io.Serializable {
     public CmsDictionary() {
     }
 
-    public CmsDictionary(short siteId, String name, boolean multiple) {
-        this.siteId = siteId;
+    public CmsDictionary(CmsDictionaryId id, String name, boolean multiple) {
+        this.id = id;
         this.name = name;
         this.multiple = multiple;
     }
 
-    @Id
-    @GeneratedValue(generator = "cmsGenerator")
-    @GenericGenerator(name = "cmsGenerator", strategy = CmsUpgrader.IDENTIFIER_GENERATOR)
-    @Column(name = "id", unique = true, nullable = false)
-    public Long getId() {
+    @EmbeddedId
+    @AttributeOverrides({ @AttributeOverride(name = "id", column = @Column(name = "id", nullable = false, length = 20)),
+            @AttributeOverride(name = "siteId", column = @Column(name = "site_id", nullable = false)) })
+    public CmsDictionaryId getId() {
         return this.id;
     }
 
-    public void setId(Long id) {
+    public void setId(CmsDictionaryId id) {
         this.id = id;
-    }
-
-    @Column(name = "site_id", nullable = false)
-    public short getSiteId() {
-        return this.siteId;
-    }
-
-    public void setSiteId(short siteId) {
-        this.siteId = siteId;
     }
 
     @Column(name = "name", nullable = false, length = 100)

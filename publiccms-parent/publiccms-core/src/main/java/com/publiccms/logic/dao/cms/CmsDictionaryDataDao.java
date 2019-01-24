@@ -24,7 +24,7 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<CmsDictionaryData> getList(long dictionaryId) {
+    public List<CmsDictionaryData> getList(String dictionaryId) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionaryData bean");
         queryHandler.condition("bean.id.dictionaryId = :dictionaryId").setParameter("dictionaryId", dictionaryId);
         queryHandler.order("bean.id.value asc");

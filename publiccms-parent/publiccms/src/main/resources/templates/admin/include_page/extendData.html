@@ -153,6 +153,7 @@
             <#break>
         <#case 'dictionary'>
             <@_dictionary id=extend.dictionaryId><#local dictionary=object/></@_dictionary>
+            <#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=extend.dictionaryId siteId=site.parentId><#assign dictionary=object/></@_dictionary></#if>
             <#if dictionary?has_content>
                 <#if 'view'=type>
                     <#if dictionary.multiple><@_dictionaryData dictionaryId=extend.dictionaryId values=value><#list map as k,data>${data.text}<#sep>,</#list></@_dictionaryData><#else><@_dictionaryData dictionaryId=extend.dictionaryId value=value>${object.text}</@_dictionaryData></#if>
