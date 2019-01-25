@@ -1,11 +1,10 @@
-<#macro url url=""><#if url?starts_with('//')>http:${url}<#else>${url}<#if></#macro>
 <?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
     http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc><@url site.sitePath/></loc>
+    <loc>${site.sitePath!}</loc>
     <lastmod>${.now?date}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
@@ -14,7 +13,7 @@
     <#list page.list as a>
         <#if !a.onlyUrl>
     <url>
-        <loc><@url a.url/></loc>
+        <loc>${a.url!}</loc>
         <lastmod>${.now?date}</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.3</priority>
@@ -31,7 +30,7 @@
             <#list page.list as a>
                 <#if !a.onlyUrl>
     <url>
-        <loc><@url a.url/></loc>
+        <loc>${a.url!}</loc>
         <lastmod>${a.publishDate?date}</lastmod>
         <changefreq>never</changefreq>
         <priority>0.1</priority>
