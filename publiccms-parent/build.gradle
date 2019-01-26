@@ -46,7 +46,9 @@ subprojects{
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.28"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.4.6"
+        mybatisVersion = "3.5.0"
+        // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
+        mybatisSpringVersion = "2.0.0"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "5.5.5"
         // http://mvnrepository.com/artifact/redis.clients/jedis
@@ -56,9 +58,15 @@ subprojects{
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
         hikariCPVersion = "3.3.0"
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        mysqlVersion = "8.0.13"
+        mysqlVersion = "8.0.14"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "4.0.1"
+        // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
+        fileuploadVersion = "1.4"
+        // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
+        collectionsVersion = "4.2"
+        // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+        langVersion = "3.8.1"
     }
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
