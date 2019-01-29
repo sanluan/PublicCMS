@@ -39,7 +39,7 @@ public class SysAppClientAdminController {
 
     /**
      * @param id
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
@@ -51,9 +51,9 @@ public class SysAppClientAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysAppClient entity = service.getEntity(id);
-        if (null != entity.getId()) {
+        if (null != entity) {
             SysSite site = siteComponent.getSite(request.getServerName());
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getId().getSiteId(), model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
@@ -66,7 +66,7 @@ public class SysAppClientAdminController {
 
     /**
      * @param id
-     * @param _csrf 
+     * @param _csrf
      * @param request
      * @param session
      * @param model
@@ -80,7 +80,7 @@ public class SysAppClientAdminController {
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = siteComponent.getSite(request.getServerName());
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getId().getSiteId(), model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);

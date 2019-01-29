@@ -414,17 +414,19 @@ CREATE TABLE `sys_app` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_app_client`;
 CREATE TABLE `sys_app_client` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `channel` varchar(20) NOT NULL COMMENT '渠道',
   `uuid` varchar(50) NOT NULL COMMENT '唯一标识',
-  `user_id` bigint(20) default NULL COMMENT '绑定用户',
-  `client_version` varchar(50) default NULL COMMENT '版本',
-  `last_login_date` datetime default NULL COMMENT '上次登录时间',
-  `last_login_ip` varchar(64) default NULL COMMENT '上次登录IP',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '绑定用户',
+  `client_version` varchar(50) DEFAULT NULL COMMENT '版本',
+  `last_login_date` datetime DEFAULT NULL COMMENT '上次登录时间',
+  `last_login_ip` varchar(64) DEFAULT NULL COMMENT '上次登录IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
-  PRIMARY KEY  (`site_id`,`channel`,`uuid`),
-  KEY `user_id` (`user_id`,`disabled`,`create_date`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `site_id` (`site_id`,`channel`,`uuid`),
+  KEY `user_id` (`user_id`,`disabled`,`create_date`) 
 ) COMMENT='应用客户端';
 
 -- ----------------------------
@@ -694,7 +696,8 @@ INSERT INTO `sys_module` VALUES ('myself_log_login', 'myself/logLogin', NULL, 'i
 INSERT INTO `sys_module` VALUES ('myself_log_operate', 'myself/logOperate', NULL, 'icon-list-alt', 'myself_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('myself_menu', NULL, NULL, 'icon-user', 'myself', 1, 0);
 INSERT INTO `sys_module` VALUES ('myself_password', 'myself/password', 'changePassword', 'icon-key', 'myself_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', NULL, 'icon-unlock-alt', 'myself_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', 'sysUserToken/delete', 'icon-unlock-alt', 'myself_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('myself_device', 'myself/userDeviceList', 'sysAppClient/enable,sysAppClient/disable', 'icon-linux', 'myself_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('page', NULL, NULL, 'icon-tablet', NULL, 1, 3);
 INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,sysUser/lookup,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', 'icon-globe', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('page_menu', NULL, NULL, 'icon-globe', 'page', 1, 0);

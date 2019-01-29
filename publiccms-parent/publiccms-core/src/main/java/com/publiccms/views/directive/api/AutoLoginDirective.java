@@ -15,7 +15,6 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysAppClient;
-import com.publiccms.entities.sys.SysAppClientId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
@@ -38,9 +37,8 @@ public class AutoLoginDirective extends AbstractAppDirective {
         boolean result = false;
         if (CommonUtils.notEmpty(uuid)) {
             SysSite site = getSite(handler);
-            SysAppClientId sysAppClientId = new SysAppClientId(site.getId(), app.getChannel(), uuid);
-            SysAppClient appClient = appClientService.getEntity(sysAppClientId);
-            if (null != appClient && CommonUtils.notEmpty(appClient.getUserId())) {
+            SysAppClient appClient = appClientService.getEntity(site.getId(), app.getChannel(), uuid);
+            if (null != appClient && null != appClient.getUserId()) {
                 user = service.getEntity(appClient.getUserId());
                 if (null != user && !user.isDisabled()) {
                     String authToken = UUID.randomUUID().toString();

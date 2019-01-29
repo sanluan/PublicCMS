@@ -135,3 +135,11 @@ UPDATE `sys_module` SET `authorized_url` =  'cmsWebFile/doUpload,cmsWebFile/chec
 -- 2019-01-22 --
 ALTER TABLE `cms_content` 
     ADD COLUMN `dictionar_values` text default NULL COMMENT '数据字典值' AFTER `tag_ids`;
+-- 2019-01-29 --
+INSERT INTO `sys_module` VALUES ('myself_device', 'myself/userDeviceList', 'sysAppClient/enable,sysAppClient/disable', 'icon-linux', 'myself_menu', 1, 5);
+UPDATE `sys_module` SET `authorized_url` =  'sysUserToken/delete' WHERE `id` ='myself_token';
+ALTER TABLE `sys_app_client` 
+	ADD COLUMN `id` bigint(20) NOT NULL AUTO_INCREMENT FIRST,
+	DROP PRIMARY KEY,
+	ADD PRIMARY KEY (`id`),
+	ADD UNIQUE INDEX(`site_id`, `channel`, `uuid`);

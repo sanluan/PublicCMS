@@ -35,13 +35,15 @@
                 <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p>
-                    <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+                    <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
+                    <input type="hidden" name="clientId" value="${clientId!}"/>
+                    <input type="hidden" name="uuid" value="${uuid!}"/>
                     <input type="submit" value="Login"/>
                 </p>
                 <#if _oauthList?has_content&&_oauthList?is_directive>
                     <p><#list list as o><a href="${site.dynamicPath}/oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
                 </#if>
-                <p>No account?<a href="register.html">Please register</a></p>
+                <p>No account?<a href="register.html?clientId=${clientId!}&uuid=${uuid!}&returnUrl=${returnUrl!}">Please register</a></p>
             </form>
         </#if>
     </main>

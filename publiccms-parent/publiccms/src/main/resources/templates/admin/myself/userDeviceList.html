@@ -1,6 +1,6 @@
 <@_sysAppClientList channel=channel advanced=true
-            userId=userId startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
-            startCreateDate=startCreateDate endCreateDate=endCreateDate disabled=disabled
+            userId=admin.id startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+            startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
@@ -10,16 +10,6 @@
                 <li>
                     <label><@t.page 'channel'/>:</label>
                     <input type="text" name="channel" value="${channel!}" />
-                </li>
-                <li>
-                    <label><@t.page 'user.id'/>:</label>
-                    <input type="text" name="userId" value="${userId!}" />
-                </li>
-                <li>
-                    <label><@t.page 'user.last_login_date'/>:</label>
-                    <input type="text" name="startLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
-                    <span>-</span>
-                    <input type="text" name="endLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
                 </li>
                 <li>
                     <label><@t.page 'create_date'/>:</label>
@@ -52,8 +42,6 @@
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'channel'/></th>
                 <th><@t.page 'uuid'/></th>
-                <th><@t.page 'user.id'/></th>
-                <th><@t.page 'user.nickname'/></th>
                 <th><@t.page 'version'/></th>
                 <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
                 <th><@t.page 'user.last_login_ip'/></th>
@@ -71,8 +59,6 @@
                 <td>${a.id!}</td>
                 <td>${a.channel!}</td>
                 <td>${a.uuid!}</td>
-                <td>${a.userId!}</td>
-                <td>${(userMap[a.userId?string].nickName)!}</td>
                 <td>${a.cmsVersion!}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.lastLoginIp!}</td>

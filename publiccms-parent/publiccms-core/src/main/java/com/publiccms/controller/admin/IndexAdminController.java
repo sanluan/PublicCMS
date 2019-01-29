@@ -79,7 +79,7 @@ public class IndexAdminController {
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
             if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-                returnUrl = site.getDynamicPath();
+                returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
             }
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }

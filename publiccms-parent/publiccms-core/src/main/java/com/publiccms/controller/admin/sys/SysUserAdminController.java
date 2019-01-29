@@ -46,8 +46,8 @@ public class SysUserAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "authToken", "lastLoginDate",
-            "lastLoginIp", "loginCount", "disabled" };
+    private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "salt", "lastLoginDate", "lastLoginIp",
+            "loginCount", "disabled" };
 
     /**
      * @param entity

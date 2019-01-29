@@ -90,7 +90,7 @@ public class UserController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.getDynamicPath();
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
         if (null != user) {
@@ -159,7 +159,7 @@ public class UserController {
         Map<String, String> loginConfig = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = loginConfig.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.getDynamicPath();
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
         }
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
@@ -218,7 +218,7 @@ public class UserController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.getDynamicPath();
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
         }
         SysEmailToken sysEmailToken = sysEmailTokenService.getEntity(authToken);
         if (null != sysEmailToken && CommonUtils.getDate().after(sysEmailToken.getExpiryDate())) {
@@ -251,7 +251,7 @@ public class UserController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.getDynamicPath();
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
         }
         SysUserToken entity = sysUserTokenService.getEntity(authToken);
         Long userId = ControllerUtils.getAdminFromSession(session).getId();
