@@ -977,6 +977,8 @@ INSERT INTO `sys_module_lang` VALUES ('myself_password', 'zh', '修改密码');
 INSERT INTO `sys_module_lang` VALUES ('myself_password', 'en', 'Change password');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'zh', '我的登录授权');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'en', 'My login token');
+INSERT INTO `sys_module_lang` VALUES ('myself_device', 'en', 'My device');
+INSERT INTO `sys_module_lang` VALUES ('myself_device', 'zh', '我的设备');
 INSERT INTO `sys_module_lang` VALUES ('page', 'zh', '页面');
 INSERT INTO `sys_module_lang` VALUES ('page', 'en', 'Page');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'zh', '页面管理');
@@ -1221,6 +1223,7 @@ INSERT INTO `sys_module_lang` VALUES ('myself_log_operate', 'ja', 'マイ操作�
 INSERT INTO `sys_module_lang` VALUES ('myself_menu', 'ja', '私に関連する情報');
 INSERT INTO `sys_module_lang` VALUES ('myself_password', 'ja', 'パスワードを変更');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'ja', '私のログイン授権');
+INSERT INTO `sys_module_lang` VALUES ('myself_device', 'ja', '私の端末');
 INSERT INTO `sys_module_lang` VALUES ('page', 'ja', 'ページ');
 INSERT INTO `sys_module_lang` VALUES ('page_list', 'ja', 'ページ管理');
 INSERT INTO `sys_module_lang` VALUES ('page_menu', 'ja', 'ページのメンテナンス');

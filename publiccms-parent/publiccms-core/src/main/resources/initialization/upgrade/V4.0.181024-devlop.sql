@@ -154,6 +154,9 @@ UPDATE `sys_module` SET `authorized_url` =  'cmsDictionary/save,cmsDictionary/vi
 -- 2019-01-29 --
 INSERT INTO `sys_module` VALUES ('myself_device', 'myself/userDeviceList', 'sysAppClient/enable,sysAppClient/disable', 'icon-linux', 'myself_menu', 1, 5);
 UPDATE `sys_module` SET `authorized_url` =  'sysUserToken/delete' WHERE `id` ='myself_token';
+INSERT INTO `sys_module_lang`(`module_id`, `lang`, `value`) VALUES ('myself_device', 'en', 'My device');
+INSERT INTO `sys_module_lang`(`module_id`, `lang`, `value`) VALUES ('myself_device', 'ja', '私の端末');
+INSERT INTO `sys_module_lang`(`module_id`, `lang`, `value`) VALUES ('myself_device', 'zh', '我的设备');
 ALTER TABLE `sys_app_client` 
 	ADD COLUMN `id` bigint(20) NOT NULL AUTO_INCREMENT FIRST,
 	DROP PRIMARY KEY,
