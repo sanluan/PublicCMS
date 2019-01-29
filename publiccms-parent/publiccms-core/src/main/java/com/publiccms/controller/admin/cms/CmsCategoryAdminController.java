@@ -237,7 +237,7 @@ public class CmsCategoryAdminController {
     public boolean virify(HttpServletRequest request, String code, String oldCode) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(code)) {
-            if (CommonUtils.notEmpty(code) && !code.equals(oldCode) && null != service.getEntityByCode(site.getId(), code)
+            if (CommonUtils.notEmpty(oldCode) && !code.equals(oldCode) && null != service.getEntityByCode(site.getId(), code)
                     || CommonUtils.empty(oldCode) && null != service.getEntityByCode(site.getId(), code)) {
                 return false;
             }

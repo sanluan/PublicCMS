@@ -1,11 +1,8 @@
 dependencies {
     compile (
-        // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
-        "commons-fileupload:commons-fileupload:1.4",
-        // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
-        "org.apache.commons:commons-collections4:4.2",
-        // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        "org.apache.commons:commons-lang3:3.8.1",
+        "commons-fileupload:commons-fileupload:${fileuploadVersion}",
+        "org.apache.commons:commons-collections4:${collectionsVersion}",
+        "org.apache.commons:commons-lang3:${langVersion}",
 
         "org.apache.httpcomponents:httpmime:${httpclientVersion}",
         "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",

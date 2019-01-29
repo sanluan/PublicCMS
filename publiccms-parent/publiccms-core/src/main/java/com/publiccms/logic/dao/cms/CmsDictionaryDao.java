@@ -25,12 +25,12 @@ public class CmsDictionaryDao extends BaseDao<CmsDictionary> {
     public PageHandler getPage(Short siteId, Boolean multiple, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsDictionary bean");
         if (null != siteId) {
-            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+            queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
         }
         if (null != multiple) {
             queryHandler.condition("bean.multiple = :multiple").setParameter("multiple", multiple);
         }
-        queryHandler.order("bean.id desc");
+        queryHandler.order("bean.id.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

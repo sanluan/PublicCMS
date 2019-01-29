@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -15,6 +16,7 @@ import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsDictionary;
+import com.publiccms.entities.cms.CmsDictionaryId;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -49,27 +51,50 @@ public class CmsDictionaryAdminController {
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsDictionary entity, CmsDictionaryParameters dictionaryParameters, String _csrf, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String save(CmsDictionary entity, CmsDictionaryParameters dictionaryParameters, String _csrf,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
-            entity = service.update(entity.getId(), entity, ignoreProperties);
-            dataService.update(entity.getId(), dictionaryParameters.getDataList());
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
-        } else {
-            entity.setSiteId(site.getId());
-            service.save(entity);
-            dataService.save(entity.getId(), dictionaryParameters.getDataList());
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+            entity.getId().setSiteId(site.getId());
+            if (null != service.getEntity(entity.getId())) {
+                entity = service.update(entity.getId(), entity, ignoreProperties);
+                dataService.update(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
+                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+            } else {
+                entity.getId().setSiteId(site.getId());
+                service.save(entity);
+                dataService.save(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
+                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param request
+     * @param id
+     * @param oldId
+     * @return view name
+     */
+    @RequestMapping("virify")
+    @ResponseBody
+    public boolean virify(HttpServletRequest request, String id, String oldId) {
+        if (CommonUtils.notEmpty(id)) {
+            SysSite site = siteComponent.getSite(request.getServerName());
+            CmsDictionaryId entityId = new CmsDictionaryId(id, site.getId());
+            if (CommonUtils.notEmpty(oldId) && !id.equals(oldId) && null != service.getEntity(entityId)
+                    || CommonUtils.empty(oldId) && null != service.getEntity(entityId)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -81,13 +106,17 @@ public class CmsDictionaryAdminController {
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(String[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
-            service.delete(ids);
+            CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];
+            for (int i = 0; i < ids.length; i++) {
+                entityIds[i] = new CmsDictionaryId(ids[i], site.getId());
+            }
+            service.delete(entityIds);
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsDictionary", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));

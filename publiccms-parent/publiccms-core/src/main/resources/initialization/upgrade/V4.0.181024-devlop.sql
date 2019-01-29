@@ -135,6 +135,22 @@ UPDATE `sys_module` SET `authorized_url` =  'cmsWebFile/doUpload,cmsWebFile/chec
 -- 2019-01-22 --
 ALTER TABLE `cms_content` 
     ADD COLUMN `dictionar_values` text default NULL COMMENT '数据字典值' AFTER `tag_ids`;
+-- 2019-01-24 --
+ALTER TABLE `cms_dictionary` 
+    MODIFY COLUMN `id` varchar(20) NOT NULL FIRST,
+	DROP PRIMARY KEY,
+	ADD PRIMARY KEY (`id`, `site_id`);
+ALTER TABLE `cms_dictionary_data` 
+    MODIFY COLUMN `dictionary_id` varchar(20) NOT NULL COMMENT '字典' FIRST,
+    ADD COLUMN `site_id` smallint(0) NOT NULL COMMENT '站点ID' AFTER `dictionary_id`,
+	DROP PRIMARY KEY,
+	ADD PRIMARY KEY (`dictionary_id`, `site_id`, `value`);
+update cms_dictionary_data a set a.site_id = (select site_id from cms_dictionary b where a.dictionary_id = b.id);
+ALTER TABLE `sys_extend_field` 
+    MODIFY COLUMN `dictionary_id` varchar(20) NULL DEFAULT NULL COMMENT '数据字典ID' AFTER `default_value`;
+-- 2019-01-24 --
+UPDATE `sys_module` SET `authorized_url` =  'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save' WHERE `id` ='category_add';
+UPDATE `sys_module` SET `authorized_url` =  'cmsDictionary/save,cmsDictionary/virify' WHERE `id` ='dictionary_add';
 -- 2019-01-29 --
 INSERT INTO `sys_module` VALUES ('myself_device', 'myself/userDeviceList', 'sysAppClient/enable,sysAppClient/disable', 'icon-linux', 'myself_menu', 1, 5);
 UPDATE `sys_module` SET `authorized_url` =  'sysUserToken/delete' WHERE `id` ='myself_token';

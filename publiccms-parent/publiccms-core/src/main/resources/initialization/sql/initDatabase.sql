@@ -27,13 +27,10 @@ CREATE TABLE `cms_category` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
-  KEY `parent_id` (`parent_id`),
-  KEY `disabled` (`disabled`),
+  UNIQUE KEY `code` (`site_id`,`code`),
   KEY `sort` (`sort`),
-  KEY `site_id` (`site_id`),
-  KEY `type_id` (`type_id`),
-  KEY `allow_contribute` (`allow_contribute`),
-  KEY `hidden` (`hidden`)
+  KEY `type_id` (`type_id`,`allow_contribute`),
+  KEY `site_id` (`site_id`,`parent_id`,`hidden`,`disabled`)
 ) COMMENT='分类';
 
 -- ----------------------------
@@ -200,11 +197,11 @@ CREATE TABLE `cms_content_related` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_dictionary`;
 CREATE TABLE `cms_dictionary` (
-  `id` bigint(20) NOT NULL auto_increment,
+  `id` varchar(20) NOT NULL,
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `name` varchar(100) NOT NULL COMMENT '名称',
   `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
-  PRIMARY KEY  (`id`),
+  PRIMARY KEY (`id`,`site_id`),
   KEY `site_id` (`site_id`,`multiple`)
 ) COMMENT='字典';
 
@@ -213,10 +210,11 @@ CREATE TABLE `cms_dictionary` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_dictionary_data`;
 CREATE TABLE `cms_dictionary_data` (
-  `dictionary_id` bigint(20) NOT NULL COMMENT '字典',
+  `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `value` varchar(50) NOT NULL COMMENT '值',
   `text` varchar(100) NOT NULL COMMENT '文字',
-  PRIMARY KEY  (`dictionary_id`,`value`)
+  PRIMARY KEY  (`dictionary_id`,`site_id`,`value`)
 ) COMMENT='字典数据';
 
 -- ----------------------------
@@ -490,7 +488,7 @@ CREATE TABLE `sys_dept` (
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES ('1', '1', '技术部', null, '', '1', '1000', '1', '1', '1');
+INSERT INTO `sys_dept` VALUES ('1', '1', 'Technical department', null, '', '1', '1000', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for sys_dept_category
@@ -579,7 +577,7 @@ CREATE TABLE `sys_extend_field` (
   `description` varchar(100) default NULL COMMENT '解释',
   `input_type` varchar(20) NOT NULL COMMENT '表单类型',
   `default_value` varchar(50) default NULL COMMENT '默认值',
-  `dictionary_id` bigint(20) default NULL COMMENT '数据字典ID',
+  `dictionary_id` varchar(20) default NULL COMMENT '数据字典ID',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
   KEY `sort` (`sort`)
@@ -613,7 +611,7 @@ INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppT
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, 'icon-linux', 'system_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('category', NULL, NULL, 'icon-folder-open-alt', NULL, 1, 5);
-INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '', 'category_menu', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '', 'category_menu', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_delete', NULL, 'cmsCategory/delete', '', 'category_menu', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_extend', NULL, NULL, 'icon-road', 'category', 1, 2);
 INSERT INTO `sys_module` VALUES ('category_menu', 'cmsCategory/list', NULL, 'icon-folder-open', 'category', 1, 1);
@@ -665,7 +663,7 @@ INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'd
 INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', 'sysDept/lookup,sysUser/lookup', 'icon-group', 'user_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('dept_user_list', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, 'icon-puzzle-piece', NULL, 1, 7);
-INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/save', NULL, 'dictionary_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 'icon-book', 'system_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
@@ -1318,7 +1316,7 @@ CREATE TABLE `sys_role` (
 -- ----------------------------
 -- Records of sys_role
 -- ----------------------------
-INSERT INTO `sys_role` VALUES ('1', '1', '超级管理员', '1', '0');
+INSERT INTO `sys_role` VALUES ('1', '1', 'superuser', '1', '0');
 
 -- ----------------------------
 -- Table structure for sys_role_authorized
