@@ -90,9 +90,9 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
      */
     public SysAppClient getEntity(Short siteId, String channel, String uuid) {
         QueryHandler queryHandler = getQueryHandler("from SysAppClient bean");
-        queryHandler.append("bean.siteId = :siteId").setParameter("siteId", siteId);
-        queryHandler.append("bean.channel = :channel").setParameter("channel", channel);
-        queryHandler.append("bean.uuid = :uuid").setParameter("uuid", uuid);
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
+        queryHandler.condition("bean.uuid = :uuid").setParameter("uuid", uuid);
         return getEntity(queryHandler);
     }
 
