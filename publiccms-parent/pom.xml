@@ -45,7 +45,7 @@
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.0</version.quartz>
         <!-- http://mvnrepository.com/artifact/com.mchange/c3p0 -->
-        <version.c3p0>0.9.5.2</version.c3p0>
+        <version.c3p0>0.9.5.3</version.c3p0>
     </properties>
     <dependencyManagement>
         <dependencies>

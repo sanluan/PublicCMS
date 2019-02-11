@@ -52,7 +52,7 @@ subprojects{
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.0"
         // http://mvnrepository.com/artifact/com.mchange/c3p0
-        c3p0Version = "0.9.5.2"
+        c3p0Version = "0.9.5.3"
     }
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
