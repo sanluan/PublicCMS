@@ -152,6 +152,7 @@ public class OauthController {
                                         + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
                             }
                         } else if (null != appClient.getUserId() && !appClient.isDisabled()) {// 有授权则登录
+                            appClientService.updateLastLogin(appClient.getId(), CmsVersion.getVersion(), ip);
                             int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                                     LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
                             user = sysUserService.getEntity(appClient.getUserId());

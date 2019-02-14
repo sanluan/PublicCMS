@@ -19,13 +19,13 @@ import com.publiccms.logic.service.sys.SysAppClientService;
  * 
  */
 @Component
-public class CreateAppClientDirective extends AbstractTemplateDirective {
+public class AppClientDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String uuid = handler.getString("uuid");
         String channel = handler.getString("channel");
-        String version = handler.getString("version");
+        String clientVersion = handler.getString("clientVersion");
         if (CommonUtils.notEmpty(uuid) && CommonUtils.notEmpty(channel)) {
             SysSite site = getSite(handler);
             SysAppClient appClient = appClientService.getEntity(site.getId(), channel, uuid);
@@ -36,7 +36,7 @@ public class CreateAppClientDirective extends AbstractTemplateDirective {
                 appClient.setLastLoginIp(ip);
                 appClientService.save(appClient);
             } else {
-                appClientService.updateLastLogin(appClient.getId(), version, ip);
+                appClientService.updateLastLogin(appClient.getId(), clientVersion, ip);
             }
             handler.render();
         }
