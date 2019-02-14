@@ -1,6 +1,6 @@
 <@_sysAppClientList channel=channel advanced=true
             userId=admin.id startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
-            startCreateDate=startCreateDate endCreateDate=endCreateDate
+            startCreateDate=startCreateDate endCreateDate=endCreateDate disabled=disabled
             orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
@@ -59,7 +59,7 @@
                 <td>${a.id!}</td>
                 <td>${a.channel!}</td>
                 <td>${a.uuid!}</td>
-                <td>${a.version!}</td>
+                <td>${a.clientVersion!}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.lastLoginIp!}</td>
                 <td>${a.createDate!}</td>
