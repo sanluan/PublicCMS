@@ -162,3 +162,16 @@ ALTER TABLE `sys_app_client`
 	DROP PRIMARY KEY,
 	ADD PRIMARY KEY (`id`),
 	ADD UNIQUE INDEX(`site_id`, `channel`, `uuid`);
+-- 2019-02-15 --
+ALTER TABLE `cms_place` 
+    MODIFY COLUMN `path` varchar(100) NOT NULL COMMENT '模板路径' AFTER `site_id`;
+DELETE FROM `cms_word` WHERE LENGTH(name) > 100;
+ALTER TABLE `cms_word` 
+    MODIFY COLUMN `name` varchar(100) NOT NULL COMMENT '名称' AFTER `site_id`;
+ALTER TABLE `sys_dept_page` 
+    MODIFY COLUMN `page` varchar(100) NOT NULL COMMENT '页面' AFTER `dept_id`;
+ALTER TABLE `sys_domain` 
+    MODIFY COLUMN `name` varchar(100) NOT NULL COMMENT '域名' FIRST,
+    MODIFY COLUMN `path` varchar(100) NULL DEFAULT NULL COMMENT '路径' AFTER `wild`;
+ALTER TABLE `sys_role_authorized` 
+    MODIFY COLUMN `url` varchar(100) NOT NULL COMMENT '授权地址' AFTER `role_id`;

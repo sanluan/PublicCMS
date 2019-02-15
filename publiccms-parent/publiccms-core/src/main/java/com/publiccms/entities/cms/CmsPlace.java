@@ -123,7 +123,7 @@ public class CmsPlace implements java.io.Serializable {
         this.siteId = siteId;
     }
 
-    @Column(name = "path", nullable = false)
+    @Column(name = "path", nullable = false, length = 100)
     public String getPath() {
         return this.path;
     }

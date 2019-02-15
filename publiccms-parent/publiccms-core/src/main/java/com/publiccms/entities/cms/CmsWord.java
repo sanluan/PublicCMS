@@ -76,7 +76,7 @@ public class CmsWord implements java.io.Serializable {
         this.siteId = siteId;
     }
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, length = 100)
     public String getName() {
         return this.name;
     }
