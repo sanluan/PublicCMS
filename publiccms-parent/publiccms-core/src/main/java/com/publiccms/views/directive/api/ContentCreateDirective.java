@@ -1,13 +1,18 @@
 package com.publiccms.views.directive.api;
 
+import static org.springframework.util.StringUtils.arrayToDelimitedString;
+
 //Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -18,6 +23,7 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.cms.CmsTag;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
@@ -27,6 +33,7 @@ import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
 
@@ -39,6 +46,8 @@ import com.publiccms.views.pojo.entities.CmsModel;
 public class ContentCreateDirective extends AbstractAppDirective {
     @Autowired
     private CmsContentService service;
+    @Autowired
+    private CmsTagService tagService;
     @Autowired
     private CmsContentAttributeService attributeService;
     @Autowired
@@ -72,6 +81,31 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 entity.setEditor(handler.getString("editor"));
                 entity.setCopied(handler.getBoolean("copied", false));
                 entity.setPublishDate(handler.getDate("publishDate"));
+                entity.setDictionaryValues(
+                        arrayToDelimitedString(handler.getStringArray("dictionaryValues"), CommonConstants.BLANK_SPACE));
+                String[] tagNames = handler.getStringArray("tagNames");
+                Long[] tagIds = handler.getLongArray("tagIds");
+                if (CommonUtils.notEmpty(tagNames) || CommonUtils.notEmpty(tagIds)) {
+                    List<CmsTag> tagList = new ArrayList<>();
+                    if (null != tagNames) {
+                        for (String name : tagNames) {
+                            CmsTag tag = new CmsTag();
+                            tag.setName(name);
+                            tagList.add(tag);
+                        }
+                    }
+                    if (null != tagIds) {
+                        for (Long id : tagIds) {
+                            CmsTag tag = new CmsTag();
+                            tag.setId(id);
+                            tagList.add(tag);
+                        }
+                    }
+                    tagIds = tagService.update(site.getId(), tagList);
+                    entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
+                } else {
+                    entity.setTagIds(null);
+                }
                 if (entity.isOnlyUrl()) {
                     entity.setUrl(handler.getString("url"));
                 }
@@ -82,8 +116,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 attribute.setText(handler.getString("text"));
                 attribute.setData(handler.getString("data"));
 
-                CmsContentAdminController.initContent(entity, cmsModel, handler.getBoolean("draft"), false, attribute,
-                        CommonUtils.getDate());
+                CmsContentAdminController.initContent(entity, cmsModel, handler.getBoolean("draft"),
+                        handler.getBoolean("checked"), attribute, CommonUtils.getDate());
                 if (null != entity.getId()) {
                     CmsContent oldEntity = service.getEntity(entity.getId());
                     if (null != oldEntity && site.getId() == oldEntity.getSiteId()) {
