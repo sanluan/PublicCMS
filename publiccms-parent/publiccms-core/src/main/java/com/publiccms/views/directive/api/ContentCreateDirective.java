@@ -28,6 +28,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
+import com.publiccms.views.pojo.model.CmsContentParameters;
 
 /**
  *
@@ -103,6 +104,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     logOperateService.save(new LogOperate(site.getId(), user.getId(), app.getChannel(), "save.content",
                             RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
+                service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), new CmsContentParameters(), cmsModel, category, attribute);
                 handler.put("result", "success");
             }
         }
