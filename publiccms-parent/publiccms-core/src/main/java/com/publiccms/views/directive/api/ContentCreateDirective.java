@@ -25,10 +25,10 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
+import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
-import com.publiccms.views.pojo.model.CmsContentParameters;
 
 /**
  *
@@ -39,6 +39,8 @@ import com.publiccms.views.pojo.model.CmsContentParameters;
 public class ContentCreateDirective extends AbstractAppDirective {
     @Autowired
     private CmsContentService service;
+    @Autowired
+    private CmsContentAttributeService attributeService;
     @Autowired
     private CmsCategoryModelService categoryModelService;
     @Autowired
@@ -78,6 +80,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 attribute.setSource(handler.getString("source"));
                 attribute.setSourceUrl(handler.getString("sourceUrl"));
                 attribute.setText(handler.getString("text"));
+                attribute.setData(handler.getString("data"));
 
                 CmsContentAdminController.initContent(entity, cmsModel, handler.getBoolean("draft"), false, attribute,
                         CommonUtils.getDate());
@@ -104,7 +107,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     logOperateService.save(new LogOperate(site.getId(), user.getId(), app.getChannel(), "save.content",
                             RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
-                service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), new CmsContentParameters(), cmsModel, category, attribute);
+                attributeService.updateAttribute(entity.getId(), attribute);
                 handler.put("result", "success");
             }
         }
