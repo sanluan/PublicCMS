@@ -19,7 +19,7 @@ import com.publiccms.logic.service.sys.SysAppClientService;
  * 
  */
 @Component
-public class AppClientDirective extends AbstractTemplateDirective {
+public class SysAppClientDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {

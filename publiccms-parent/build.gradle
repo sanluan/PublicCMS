@@ -26,13 +26,13 @@ subprojects{
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "5.0.12.RELEASE"
+        springVersion = "5.1.5.RELEASE"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "2.0.7.RELEASE"
+        springBootVersion = "2.1.3.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
-        httpclientVersion = "4.5.6"
+        httpclientVersion = "4.5.7"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
         jacksonVersion = "2.9.8"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
@@ -56,15 +56,15 @@ subprojects{
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.0"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
-        hikariCPVersion = "3.3.0"
+        hikariCPVersion = "3.3.1"
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        mysqlVersion = "8.0.14"
+        mysqlVersion = "8.0.15"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "4.0.1"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
-        collectionsVersion = "4.2"
+        collectionsVersion = "4.3"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.8.1"
     }
