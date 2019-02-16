@@ -143,7 +143,7 @@ public class LoginAdminController {
      */
     @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
     public String loginDialog(@RequestAttribute SysSite site, String username, String password, HttpServletRequest request,
-            HttpSession session, HttpServletResponse response, ModelMap model) {
+            HttpServletResponse response, HttpSession session, ModelMap model) {
         if ("login".equals(login(site, username, password, null, request, session, response, model))) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -157,7 +157,6 @@ public class LoginAdminController {
      * @param password
      * @param repassword
      * @param request
-     * @param session
      * @param response
      * @param model
      * @return view name
@@ -165,8 +164,7 @@ public class LoginAdminController {
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     @Csrf
     public String changeMyselfPassword(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String oldpassword,
-            String password, String repassword, HttpServletRequest request, HttpSession session, HttpServletResponse response,
-            ModelMap model) {
+            String password, String repassword, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         SysUser user = service.getEntity(admin.getId());
         String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt());
         if (null != user.getPassword()

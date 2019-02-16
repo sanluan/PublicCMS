@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,13 +44,12 @@ public class KindEditorAdminController {
      * @param admin
      * @param imgFile
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("upload")
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile imgFile,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (null != imgFile && !imgFile.isEmpty()) {
             String originalName = imgFile.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);

@@ -3,8 +3,6 @@ package com.publiccms.controller.admin.cms;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,14 +55,13 @@ public class CmsWebFileAdminController {
      * @param path
      * @param content
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String content,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebFilePath(site, path);
@@ -94,14 +91,13 @@ public class CmsWebFileAdminController {
      * @param path
      * @param override
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("doUpload")
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            Boolean override, HttpServletRequest request, HttpSession session, ModelMap model) {
+            Boolean override, HttpServletRequest request, ModelMap model) {
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
@@ -130,7 +126,6 @@ public class CmsWebFileAdminController {
      * @param fileNames
      * @param path
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
@@ -138,7 +133,7 @@ public class CmsWebFileAdminController {
     @Csrf
     @ResponseBody
     public boolean check(@RequestAttribute SysSite site, @RequestParam("fileNames[]") String[] fileNames, String path,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (null != fileNames) {
             for (String fileName : fileNames) {
                 String filePath = path + CommonConstants.SEPARATOR + fileName;
@@ -156,14 +151,13 @@ public class CmsWebFileAdminController {
      * @param admin
      * @param paths
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] paths,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(paths)) {
             for (String path : paths) {
                 String filePath = siteComponent.getWebFilePath(site, path);
@@ -184,14 +178,13 @@ public class CmsWebFileAdminController {
      * @param admin
      * @param path
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("zip")
     @Csrf
     public String doZip(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             String filePath = siteComponent.getWebFilePath(site, path);
             if (CmsFileUtils.isDirectory(filePath)) {
@@ -221,14 +214,13 @@ public class CmsWebFileAdminController {
      * @param encoding
      * @param here
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("unzip")
     @Csrf
     public String doUnzip(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String encoding,
-            boolean here, HttpServletRequest request, HttpSession session, ModelMap model) {
+            boolean here, HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
             String filePath = siteComponent.getWebFilePath(site, path);
             if (CmsFileUtils.isFile(filePath)) {
@@ -255,14 +247,13 @@ public class CmsWebFileAdminController {
      * @param path
      * @param fileName
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("createDirectory")
     @Csrf
     public String createDirectory(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String fileName,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (null != path && CommonUtils.notEmpty(fileName)) {
             path = path + CommonConstants.SEPARATOR + fileName;
             String filePath = siteComponent.getWebFilePath(site, path);

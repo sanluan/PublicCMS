@@ -72,7 +72,8 @@ public class ContentController {
 
     /**
      * 保存内容
-     * @param site 
+     * 
+     * @param site
      * 
      * @param entity
      * @param draft
@@ -138,7 +139,8 @@ public class ContentController {
 
     /**
      * 内容推荐重定向并计数
-     * @param site 
+     * 
+     * @param site
      * 
      * @param id
      * @param request
@@ -156,7 +158,8 @@ public class ContentController {
 
     /**
      * 内容链接重定向并计数
-     * @param site 
+     * 
+     * @param site
      * @param id
      * @param request
      * @return view name
@@ -174,7 +177,8 @@ public class ContentController {
 
     /**
      * 内容评分
-     * @param site 
+     * 
+     * @param site
      * @param id
      * @param request
      * @return view name
@@ -182,7 +186,7 @@ public class ContentController {
     @RequestMapping("scores")
     @ResponseBody
     public int scores(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        
+
         CmsContentStatistics contentStatistics = statisticsComponent.contentScores(id);
         if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
             return contentStatistics.getScores() + contentStatistics.getScores();
@@ -192,7 +196,8 @@ public class ContentController {
 
     /**
      * 内容点击
-     * @param site 
+     * 
+     * @param site
      * @param id
      * @param request
      * @return click

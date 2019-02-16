@@ -73,14 +73,13 @@ public class CmsTemplateAdminController {
      * @param path
      * @param content
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String content,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -121,14 +120,13 @@ public class CmsTemplateAdminController {
      * @param path
      * @param content
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("savePlace")
     @Csrf
     public String savePlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String content,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -166,14 +164,13 @@ public class CmsTemplateAdminController {
      * @param files
      * @param path
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("doUpload")
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -204,14 +201,13 @@ public class CmsTemplateAdminController {
      * @param admin
      * @param path
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
 
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -242,14 +238,13 @@ public class CmsTemplateAdminController {
      * @param admin
      * @param path
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("deletePlace")
     @Csrf
     public String deletePlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -350,14 +345,13 @@ public class CmsTemplateAdminController {
      * @param admin
      * @param path
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("publishPlace")
     @Csrf
     public String publishPlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         try {
             if (CommonUtils.notEmpty(path) && site.isUseSsi()) {
                 CmsPlaceMetadata metadata = metadataComponent

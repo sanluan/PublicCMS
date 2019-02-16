@@ -3,8 +3,6 @@ package com.publiccms.controller.admin.sys;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -50,14 +48,13 @@ public class SysAppAdminController {
      * @param entity
      * @param apis
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysApp entity, String[] apis,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         entity.setAuthorizedApis(arrayToCommaDelimitedString(apis));
         if (null != entity.getId()) {
             SysApp oldEntity = service.getEntity(entity.getId());
@@ -84,14 +81,13 @@ public class SysAppAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         SysApp entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {

@@ -1,8 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,14 +48,13 @@ public class CmsDictionaryAdminController {
      * @param entity
      * @param dictionaryParameters
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsDictionary entity,
-            CmsDictionaryParameters dictionaryParameters, HttpServletRequest request, HttpSession session, ModelMap model) {
+            CmsDictionaryParameters dictionaryParameters, HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
             if (null != service.getEntity(entity.getId())) {
@@ -103,14 +100,13 @@ public class CmsDictionaryAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];
             for (int i = 0; i < ids.length; i++) {

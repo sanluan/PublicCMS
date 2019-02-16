@@ -149,14 +149,13 @@ public class CmsPlaceAdminController {
      * @param path
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("refresh")
     @Csrf
     public String refresh(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
@@ -181,14 +180,13 @@ public class CmsPlaceAdminController {
      * @param path
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("check")
     @Csrf
     public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
@@ -212,14 +210,13 @@ public class CmsPlaceAdminController {
      * @param path
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("uncheck")
     @Csrf
     public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
@@ -328,14 +325,13 @@ public class CmsPlaceAdminController {
      * @param admin
      * @param path
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("clear")
     @Csrf
     public String clear(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
@@ -359,14 +355,13 @@ public class CmsPlaceAdminController {
      * @param path
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)

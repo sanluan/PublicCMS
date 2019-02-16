@@ -1,8 +1,6 @@
 package com.publiccms.controller.admin.sys;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -50,14 +48,13 @@ public class SysDomainAdminController {
      * @param entity
      * @param oldName
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysDomain entity, String oldName,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
                 || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(entity.getName()), model)) {
@@ -97,14 +94,13 @@ public class SysDomainAdminController {
      * @param admin
      * @param entity
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("saveConfig")
     @Csrf
     public String saveConfig(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysDomain entity,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(entity.getName())) {
             SysDomain oldEntity = service.getEntity(entity.getName());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -147,13 +143,12 @@ public class SysDomainAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }

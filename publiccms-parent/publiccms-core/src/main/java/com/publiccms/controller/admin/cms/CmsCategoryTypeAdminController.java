@@ -102,14 +102,13 @@ public class CmsCategoryTypeAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         CmsCategoryType entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)

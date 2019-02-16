@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -238,7 +237,6 @@ public class UserController {
 
     /**
      * @param site
-     * @param admin
      * @param authToken
      * @param returnUrl
      * @param request
@@ -247,17 +245,17 @@ public class UserController {
      * @return view name
      */
     @RequestMapping(value = "deleteToken", method = RequestMethod.POST)
-    public String deleteToken(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String authToken, String returnUrl,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String deleteToken(@RequestAttribute SysSite site, String authToken, String returnUrl, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         SysUserToken entity = sysUserTokenService.getEntity(authToken);
-        Long userId = admin.getId();
-        if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("userId", userId, entity.getUserId(), model)) {
+        SysUser user = ControllerUtils.getUserFromSession(session);
+        if (null != entity && null != user) {
+            if (ControllerUtils.verifyNotEquals("userId", user.getId(), entity.getUserId(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             sysUserTokenService.delete(authToken);

@@ -3,8 +3,6 @@ package com.publiccms.controller.admin.sys;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +46,13 @@ public class FileAdminController {
      * @param field
      * @param originalField
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, String field,
-            String originalField, HttpServletRequest request, HttpSession session, ModelMap model) {
+            String originalField, HttpServletRequest request, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);

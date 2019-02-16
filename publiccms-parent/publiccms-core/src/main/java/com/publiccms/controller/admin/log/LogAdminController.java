@@ -1,8 +1,6 @@
 package com.publiccms.controller.admin.log;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -48,14 +46,13 @@ public class LogAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("logLogin/delete")
     @Csrf
     public String logLoginDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             logLoginService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -70,14 +67,13 @@ public class LogAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("logOperate/delete")
     @Csrf
     public String logOperateDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             logOperateService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -92,14 +88,13 @@ public class LogAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("logTask/delete")
     @Csrf
     public String logTaskDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             logTaskService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -114,14 +109,13 @@ public class LogAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("logUpload/delete")
     @Csrf
     public String logUploadDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             logUploadService.delete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,

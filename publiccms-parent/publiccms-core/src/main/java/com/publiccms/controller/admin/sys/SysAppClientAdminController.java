@@ -1,8 +1,6 @@
 package com.publiccms.controller.admin.sys;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -46,14 +44,13 @@ public class SysAppClientAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
     @Csrf
     public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
@@ -71,14 +68,13 @@ public class SysAppClientAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
     @Csrf
     public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {

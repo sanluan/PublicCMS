@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -112,7 +111,6 @@ public class CmsContentAdminController {
      * @param draft
      * @param checked
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
@@ -120,7 +118,7 @@ public class CmsContentAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContent entity,
             CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters, Boolean draft, Boolean checked,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
@@ -246,15 +244,14 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("check")
     @Csrf
     public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
-        return checkOrUncheck(site, admin, false, ids, request, session, model);
+            ModelMap model) {
+        return checkOrUncheck(site, admin, false, ids, request, model);
     }
 
     /**
@@ -262,19 +259,18 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("uncheck")
     @Csrf
     public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
-        return checkOrUncheck(site, admin, true, ids, request, session, model);
+            ModelMap model) {
+        return checkOrUncheck(site, admin, true, ids, request, model);
     }
 
     private String checkOrUncheck(SysSite site, SysUser admin, boolean uncheck, Long[] ids, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             List<CmsContent> entityList;
             if (uncheck) {
@@ -311,14 +307,13 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("refresh")
     @Csrf
     public String refresh(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.refresh(site.getId(), admin, ids)) {
@@ -342,14 +337,13 @@ public class CmsContentAdminController {
      * @param admin
      * @param entity
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("related")
     @Csrf
     public String related(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsContentRelated entity,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         CmsContent content = service.getEntity(entity.getContentId());
         CmsContent related = service.getEntity(entity.getRelatedContentId());
         if (null != content && null != related) {
@@ -379,14 +373,13 @@ public class CmsContentAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("unrelated")
     @Csrf
     public String unrelated(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         CmsContentRelated entity = cmsContentRelatedService.getEntity(id);
         if (null != entity) {
             if (null == entity || ControllerUtils.verifyCustom("noright",
@@ -411,14 +404,13 @@ public class CmsContentAdminController {
      * @param ids
      * @param categoryId
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("move")
     @Csrf
     public String move(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, Integer categoryId,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         CmsCategory category = categoryService.getEntity(categoryId);
         if (ControllerUtils.verifyNotEquals("siteId", site.getId(), category.getSiteId(), model)
@@ -482,14 +474,13 @@ public class CmsContentAdminController {
      * @param id
      * @param modelId
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("changeModel")
     @Csrf
     public String changeModel(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, String modelId,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         CmsContent content = service.getEntity(id);
         if (null != content && CommonUtils.notEmpty(modelId)) {
@@ -499,8 +490,8 @@ public class CmsContentAdminController {
                             !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
                                     .getEntity(new SysDeptCategoryId(admin.getDeptId(), content.getCategoryId()))),
                             model)
-                    || ControllerUtils.verifyCustom("noright", !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()),
-                            model)) {
+                    || ControllerUtils.verifyCustom("noright",
+                            !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.changeModel(id, modelId);
@@ -517,14 +508,13 @@ public class CmsContentAdminController {
      * @param id
      * @param sort
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("sort")
     @Csrf
     public String sort(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, int sort,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         CmsContent content = service.getEntity(id);
         if (null != content) {
@@ -534,8 +524,8 @@ public class CmsContentAdminController {
                             !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
                                     .getEntity(new SysDeptCategoryId(admin.getDeptId(), content.getCategoryId()))),
                             model)
-                    || ControllerUtils.verifyCustom("noright", !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()),
-                            model)) {
+                    || ControllerUtils.verifyCustom("noright",
+                            !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             CmsContent entity = service.sort(site.getId(), id, sort);
@@ -556,14 +546,13 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("publish")
     @Csrf
     public String publish(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             for (CmsContent entity : service.getEntitys(ids)) {
                 if (!publish(site, entity, admin)) {
@@ -704,14 +693,13 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.delete(site.getId(), admin, ids)) {
@@ -735,14 +723,11 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
-     * @param model
      * @return view name
      */
     @RequestMapping("recycle")
     @Csrf
-    public String recycle(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String recycle(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.getEntitys(ids)) {
@@ -772,14 +757,12 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param session
-     * @param model
      * @return view name
      */
     @RequestMapping("realDelete")
     @Csrf
     public String realDelete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             service.realDelete(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,

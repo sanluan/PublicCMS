@@ -93,14 +93,13 @@ public class CmsPageAdminController {
      * @param admin
      * @param path
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("clearCache")
     @Csrf
     public String clearCache(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysDept dept = sysDeptService.getEntity(admin.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)

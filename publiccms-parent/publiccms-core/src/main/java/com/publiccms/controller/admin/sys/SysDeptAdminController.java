@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -83,14 +81,13 @@ public class SysDeptAdminController {
      * @param pages
      * @param configs
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysDept entity, Integer[] categoryIds,
-            String[] pages, String[] configs, HttpServletRequest request, HttpSession session, ModelMap model) {
+            String[] pages, String[] configs, HttpServletRequest request, ModelMap model) {
         if (null != entity.getId()) {
             SysDept oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -141,14 +138,13 @@ public class SysDeptAdminController {
      * @param repassword
      * @param roleIds
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("saveUser")
     @Csrf
     public String saveUser(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysUser entity, String repassword,
-            Integer[] roleIds, HttpServletRequest request, HttpSession session, ModelMap model) {
+            Integer[] roleIds, HttpServletRequest request, ModelMap model) {
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -228,14 +224,13 @@ public class SysDeptAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         SysDept entity = service.delete(site.getId(), id);
         if (null != entity) {
             sysDeptCategoryService.delete(entity.getId(), null);
@@ -252,14 +247,13 @@ public class SysDeptAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "enableUser", method = RequestMethod.POST)
     @Csrf
     public String enable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (ControllerUtils.verifyEquals("admin.operate", admin.getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -283,14 +277,13 @@ public class SysDeptAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "disableUser", method = RequestMethod.POST)
     @Csrf
     public String disable(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (ControllerUtils.verifyEquals("admin.operate", admin.getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }

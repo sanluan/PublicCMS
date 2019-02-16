@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +92,6 @@ public class SysSiteAdminController {
      * @param userName
      * @param password
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
@@ -102,7 +99,7 @@ public class SysSiteAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String domain,
             Boolean wild, String roleName, String deptName, String userName, String password, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -155,7 +152,6 @@ public class SysSiteAdminController {
      * @param admin
      * @param id
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
@@ -163,7 +159,7 @@ public class SysSiteAdminController {
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Short id, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -189,14 +185,13 @@ public class SysSiteAdminController {
      * @param admin
      * @param sql
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("execSql")
     @Csrf
     public String execSql(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String sql, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -227,14 +222,13 @@ public class SysSiteAdminController {
      * @param admin
      * @param file
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "doUploadLicense", method = RequestMethod.POST)
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -256,14 +250,13 @@ public class SysSiteAdminController {
      * @param site
      * @param admin
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("reCreateIndex")
     @Csrf
     public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         contentService.reCreateIndex();
         Long userId = admin.getId();
         logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "reCreateIndex",

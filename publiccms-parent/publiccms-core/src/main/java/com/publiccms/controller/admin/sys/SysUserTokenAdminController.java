@@ -1,8 +1,6 @@
 package com.publiccms.controller.admin.sys;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -42,13 +40,12 @@ public class SysUserTokenAdminController {
      * @param admin
      * @param authToken
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String authToken,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysUserToken entity = service.getEntity(authToken);
         Long userId = admin.getId();
         if (null != entity) {

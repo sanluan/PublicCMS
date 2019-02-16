@@ -77,14 +77,13 @@ public class SysAppTokenAdminController {
      * @param admin
      * @param authToken
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String authToken,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         SysAppToken entity = service.getEntity(authToken);
         Long userId = admin.getId();
         if (null != entity) {

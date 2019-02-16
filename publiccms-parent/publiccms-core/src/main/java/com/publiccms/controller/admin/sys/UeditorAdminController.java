@@ -126,13 +126,12 @@ public class UeditorAdminController {
      * @param admin 
      * @param file
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+            HttpServletRequest request, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);

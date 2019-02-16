@@ -66,7 +66,7 @@ public class PlaceController {
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };
 
     /**
-     * @param site 
+     * @param site
      * @param entity
      * @param returnUrl
      * @param placeParameters
@@ -77,9 +77,9 @@ public class PlaceController {
      */
     @RequestMapping(value = "save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
-        
+    public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl,
+            @ModelAttribute ExtendDataParameters placeParameters, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
@@ -132,7 +132,7 @@ public class PlaceController {
     }
 
     /**
-     * @param site 
+     * @param site
      * @param id
      * @param returnUrl
      * @param request
@@ -141,7 +141,8 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
@@ -165,7 +166,7 @@ public class PlaceController {
     }
 
     /**
-     * @param site 
+     * @param site
      * @param id
      * @param returnUrl
      * @param request
@@ -174,7 +175,8 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("check")
-    public String check(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String check(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
@@ -198,7 +200,7 @@ public class PlaceController {
     }
 
     /**
-     * @param site 
+     * @param site
      * @param id
      * @param returnUrl
      * @param request
@@ -207,7 +209,8 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("uncheck")
-    public String uncheck(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String uncheck(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
@@ -231,7 +234,7 @@ public class PlaceController {
     }
 
     /**
-     * @param site 
+     * @param site
      * @param id
      * @param request
      * @return view name
@@ -248,7 +251,7 @@ public class PlaceController {
     }
 
     /**
-     * @param site 
+     * @param site
      * @param id
      * @param request
      * @param response

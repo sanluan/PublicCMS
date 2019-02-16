@@ -3,8 +3,6 @@ package com.publiccms.controller.admin.sys;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -49,13 +47,12 @@ public class SysConfigAdminController {
      * @param entity
      * @param configCode
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute SysConfig entity,
-            String configCode, HttpServletRequest request, HttpSession session, ModelMap model) {
+            String configCode, HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -81,14 +78,13 @@ public class SysConfigAdminController {
      * @param admin
      * @param code
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String code, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+            ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
