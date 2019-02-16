@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -65,6 +66,7 @@ public class PlaceController {
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };
 
     /**
+     * @param site 
      * @param entity
      * @param returnUrl
      * @param placeParameters
@@ -75,9 +77,9 @@ public class PlaceController {
      */
     @RequestMapping(value = "save")
     @Csrf
-    public String save(CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters,
+    public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+        
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
@@ -130,6 +132,7 @@ public class PlaceController {
     }
 
     /**
+     * @param site 
      * @param id
      * @param returnUrl
      * @param request
@@ -138,13 +141,11 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String delete(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            ;
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -164,6 +165,7 @@ public class PlaceController {
     }
 
     /**
+     * @param site 
      * @param id
      * @param returnUrl
      * @param request
@@ -172,13 +174,11 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("check")
-    public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String check(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            ;
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -198,6 +198,7 @@ public class PlaceController {
     }
 
     /**
+     * @param site 
      * @param id
      * @param returnUrl
      * @param request
@@ -206,13 +207,11 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("uncheck")
-    public String uncheck(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String uncheck(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            ;
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -232,13 +231,13 @@ public class PlaceController {
     }
 
     /**
+     * @param site 
      * @param id
      * @param request
      * @return view name
      */
     @RequestMapping("click")
-    public String click(Long id, HttpServletRequest request) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
         ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {
@@ -249,13 +248,13 @@ public class PlaceController {
     }
 
     /**
+     * @param site 
      * @param id
      * @param request
      * @param response
      */
     @RequestMapping("redirect")
-    public void redirect(Long id, HttpServletRequest request, HttpServletResponse response) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public void redirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request, HttpServletResponse response) {
         ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {

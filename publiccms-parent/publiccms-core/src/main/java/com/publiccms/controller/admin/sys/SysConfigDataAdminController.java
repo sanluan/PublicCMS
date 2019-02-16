@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
 import com.publiccms.common.annotation.Csrf;
@@ -55,6 +57,8 @@ public class SysConfigDataAdminController {
     private String[] ignoreProperties = new String[] { "id" };
 
     /**
+     * @param site
+     * @param admin
      * @param entity
      * @param sysConfigParameters
      * @param request
@@ -64,18 +68,17 @@ public class SysConfigDataAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(SysConfigData entity, @ModelAttribute SysConfigParameters sysConfigParameters,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysConfigData entity,
+            @ModelAttribute SysConfigParameters sysConfigParameters, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         if (null != entity.getId()) {
-            SysUser user = ControllerUtils.getAdminFromSession(session);
-            SysDept dept = sysDeptService.getEntity(user.getDeptId());
-            if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+            SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+            if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                     || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                     || ControllerUtils
                             .verifyCustom("noright",
                                     !(dept.isOwnsAllConfig() || null != sysDeptConfigService
-                                            .getEntity(new SysDeptConfigId(user.getDeptId(), entity.getId().getCode()))),
+                                            .getEntity(new SysDeptConfigId(admin.getDeptId(), entity.getId().getCode()))),
                                     model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -92,14 +95,14 @@ public class SysConfigDataAdminController {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
                     logOperateService.save(
-                            new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.configData",
+                            new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.configData",
                                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
                 logOperateService
-                        .save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.configData",
+                        .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.configData",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             configComponent.removeCache(site.getId(), entity.getId().getCode());
@@ -114,6 +117,8 @@ public class SysConfigDataAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param code
      * @param request
      * @param session
@@ -122,23 +127,22 @@ public class SysConfigDataAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(String code, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        SysDept dept = sysDeptService.getEntity(user.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String code, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils
                         .verifyCustom("noright",
                                 !(dept.isOwnsAllConfig()
-                                        || null != sysDeptConfigService.getEntity(new SysDeptConfigId(user.getDeptId(), code))),
+                                        || null != sysDeptConfigService.getEntity(new SysDeptConfigId(admin.getDeptId(), code))),
                                 model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
         if (null != entity) {
             service.delete(entity.getId());
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.configData", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             configComponent.removeCache(site.getId(), entity.getId().getCode());
         }

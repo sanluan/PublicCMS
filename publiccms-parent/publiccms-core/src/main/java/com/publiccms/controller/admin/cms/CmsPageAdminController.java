@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -51,8 +53,10 @@ public class CmsPageAdminController {
     protected SiteComponent siteComponent;
 
     /**
+     * @param site
+     * @param admin
      * @param path
-     * @param extendDataParameters 
+     * @param extendDataParameters
      * @param request
      * @param session
      * @param model
@@ -60,32 +64,33 @@ public class CmsPageAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String saveMetadata(String path, @ModelAttribute ExtendDataParameters extendDataParameters,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        SysDept dept = sysDeptService.getEntity(user.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+    public String saveMetadata(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
+            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils
                         .verifyCustom("noright",
                                 !(dept.isOwnsAllPage()
-                                        || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(), path))),
+                                        || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(), path))),
                                 model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getCurrentSiteWebTemplateFilePath(site, path);
             CmsPageData pageDate = new CmsPageData();
             pageDate.setExtendDataList(extendDataParameters.getExtendDataList());
             metadataComponent.updateTemplateData(filePath, pageDate);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "update.template.data", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param request
      * @param session
@@ -94,24 +99,22 @@ public class CmsPageAdminController {
      */
     @RequestMapping("clearCache")
     @Csrf
-    public String clearCache(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        SysDept dept = sysDeptService.getEntity(user.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+    public String clearCache(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils
                         .verifyCustom("noright",
                                 !(dept.isOwnsAllPage()
-                                        || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(), path))),
+                                        || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(), path))),
                                 model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             templateCacheComponent.deleteCachedFile(SiteComponent.getFullTemplatePath(site, path));
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "clear.pageCache", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "clear.pageCache", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

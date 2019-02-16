@@ -11,9 +11,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
@@ -27,6 +29,7 @@ import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
@@ -49,6 +52,8 @@ public class CmsWebFileAdminController {
     protected SiteComponent siteComponent;
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param content
      * @param request
@@ -58,23 +63,20 @@ public class CmsWebFileAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(String path, String content, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String content,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebFilePath(site, path);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filePath, content)) {
-                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "save.web.webfile", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), path));
+                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getWebHistoryFilePath(site, path);
                     CmsFileUtils.updateFile(filePath, historyFilePath, content);
-                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.web.webfile", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), path));
+                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "update.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -86,6 +88,8 @@ public class CmsWebFileAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param files
      * @param path
      * @param override
@@ -96,10 +100,9 @@ public class CmsWebFileAdminController {
      */
     @RequestMapping("doUpload")
     @Csrf
-    public String upload(MultipartFile[] files, String path, Boolean override, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
+            Boolean override, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (null != files) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             try {
                 for (MultipartFile file : files) {
                     String originalName = file.getOriginalFilename();
@@ -108,9 +111,8 @@ public class CmsWebFileAdminController {
                     if (null != override && override || !CmsFileUtils.exists(fuleFilePath)) {
                         CmsFileUtils.upload(file, fuleFilePath);
                     }
-                    logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, originalName,
-                            CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
+                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), filePath));
                 }
             } catch (IOException e) {
@@ -124,6 +126,7 @@ public class CmsWebFileAdminController {
     }
 
     /**
+     * @param site
      * @param fileNames
      * @param path
      * @param request
@@ -134,10 +137,9 @@ public class CmsWebFileAdminController {
     @RequestMapping("check")
     @Csrf
     @ResponseBody
-    public boolean check(@RequestParam("fileNames[]") String[] fileNames, String path, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public boolean check(@RequestAttribute SysSite site, @RequestParam("fileNames[]") String[] fileNames, String path,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (null != fileNames) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             for (String fileName : fileNames) {
                 String filePath = path + CommonConstants.SEPARATOR + fileName;
                 if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, filePath))) {
@@ -150,6 +152,8 @@ public class CmsWebFileAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param paths
      * @param request
      * @param session
@@ -158,9 +162,9 @@ public class CmsWebFileAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(String[] paths, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] paths,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(paths)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             for (String path : paths) {
                 String filePath = siteComponent.getWebFilePath(site, path);
                 String backupFilePath = siteComponent.getWebBackupFilePath(site, path);
@@ -168,14 +172,16 @@ public class CmsWebFileAdminController {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.web.webfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(paths, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "delete.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(paths, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param request
      * @param session
@@ -184,9 +190,9 @@ public class CmsWebFileAdminController {
      */
     @RequestMapping("zip")
     @Csrf
-    public String doZip(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String doZip(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getWebFilePath(site, path);
             if (CmsFileUtils.isDirectory(filePath)) {
                 try {
@@ -202,14 +208,15 @@ public class CmsWebFileAdminController {
                     log.error(e.getMessage(), e);
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "zip.web.webfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "zip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param encoding
      * @param here
@@ -220,10 +227,9 @@ public class CmsWebFileAdminController {
      */
     @RequestMapping("unzip")
     @Csrf
-    public String doUnzip(String path, String encoding, boolean here, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String doUnzip(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String encoding,
+            boolean here, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getWebFilePath(site, path);
             if (CmsFileUtils.isFile(filePath)) {
                 try {
@@ -237,14 +243,15 @@ public class CmsWebFileAdminController {
                     log.error(e.getMessage(), e);
                 }
             }
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "unzip.web.webfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "unzip.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param fileName
      * @param request
@@ -254,16 +261,14 @@ public class CmsWebFileAdminController {
      */
     @RequestMapping("createDirectory")
     @Csrf
-    public String createDirectory(String path, String fileName, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String createDirectory(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String fileName,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (null != path && CommonUtils.notEmpty(fileName)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             path = path + CommonConstants.SEPARATOR + fileName;
             String filePath = siteComponent.getWebFilePath(site, path);
             CmsFileUtils.mkdirs(filePath);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "createDirectory.web.webfile", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "createDirectory.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -10,17 +10,19 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -40,6 +42,8 @@ public class FileAdminController {
     protected SiteComponent siteComponent;
 
     /**
+     * @param site
+     * @param admin
      * @param file
      * @param field
      * @param originalField
@@ -50,9 +54,8 @@ public class FileAdminController {
      */
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     @Csrf
-    public String upload(MultipartFile file, String field, String originalField, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, String field,
+            String originalField, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
@@ -68,9 +71,9 @@ public class FileAdminController {
                     model.put("originalField", originalField);
                     model.put(originalField, originalName);
                 }
-                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, fileType, file.getSize(),
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService
+                        .save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, originalName,
+                                fileType, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
                 return "common/uploadResult";

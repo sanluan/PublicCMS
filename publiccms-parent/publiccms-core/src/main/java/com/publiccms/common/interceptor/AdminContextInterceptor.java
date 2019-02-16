@@ -47,6 +47,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
         if (unsafe(request, response, handler)) {
             return false;
         }
+        SysSite site = siteComponent.getSite(request.getServerName());
+        request.setAttribute("site", site);
         String path = urlPathHelper.getLookupPathForRequest(request);
         String ctxPath = urlPathHelper.getOriginatingContextPath(request);
         if (adminContextPath.equals(path)) {
@@ -60,7 +62,6 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             }
         } else if (verifyNeedLogin(path)) {
             HttpSession session = request.getSession();
-            SysSite site = siteComponent.getSite(request.getServerName());
             SysUser user = initUser(ControllerUtils.getAdminFromSession(session), LogLoginService.CHANNEL_WEB_MANAGER,
                     CommonConstants.getCookiesAdmin(), site, request, response);
             if (null == user) {

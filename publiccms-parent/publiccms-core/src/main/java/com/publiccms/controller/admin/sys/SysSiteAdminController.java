@@ -12,8 +12,10 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
@@ -82,6 +84,8 @@ public class SysSiteAdminController {
     private String[] ignoreProperties = new String[] { "id" };
 
     /**
+     * @param site
+     * @param admin
      * @param entity
      * @param domain
      * @param wild
@@ -96,9 +100,9 @@ public class SysSiteAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(SysSite entity, String domain, Boolean wild, String roleName, String deptName, String userName,
-            String password, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String domain,
+            Boolean wild, String roleName, String deptName, String userName, String password, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -108,9 +112,8 @@ public class SysSiteAdminController {
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.site", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        "update.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             if (ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
@@ -135,9 +138,8 @@ public class SysSiteAdminController {
                     CommonUtils.getDate());
             userService.save(user);// 初始化用户
             roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.site",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
         if (!siteComponent.getSite(request.getServerName()).getId().equals(site.getId()) || site.getId().equals(entity.getId())
@@ -149,6 +151,8 @@ public class SysSiteAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param id
      * @param request
      * @param session
@@ -158,15 +162,15 @@ public class SysSiteAdminController {
     @SuppressWarnings("unchecked")
     @RequestMapping("delete")
     @Csrf
-    public String delete(Short id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Short id, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite entity = service.getEntity(id);
         if (null != entity) {
             service.delete(id);
-            Long userId = ControllerUtils.getAdminFromSession(session).getId();
+            Long userId = admin.getId();
             Date now = CommonUtils.getDate();
             String ip = RequestUtils.getIpAddress(request);
             for (SysDomain domain : (List<SysDomain>) domainService.getPage(entity.getId(), null, null, null).getList()) {
@@ -181,6 +185,8 @@ public class SysSiteAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param sql
      * @param request
      * @param session
@@ -189,10 +195,9 @@ public class SysSiteAdminController {
      */
     @RequestMapping("execSql")
     @Csrf
-    public String execSql(String sql, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                ) {
+    public String execSql(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String sql, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (-1 < sql.indexOf(CommonConstants.BLANK_SPACE)) {
@@ -211,14 +216,15 @@ public class SysSiteAdminController {
                 model.addAttribute("error", e.getMessage());
             }
             model.addAttribute("sql", sql);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "execsql.site", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(model)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param file
      * @param request
      * @param session
@@ -227,17 +233,17 @@ public class SysSiteAdminController {
      */
     @RequestMapping(value = "doUploadLicense", method = RequestMethod.POST)
     @Csrf
-    public String upload(MultipartFile file, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != file && !file.isEmpty()) {
             try {
                 CmsFileUtils.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
-                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(),
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
+                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
                 return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
@@ -247,6 +253,8 @@ public class SysSiteAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param request
      * @param session
      * @param model
@@ -254,10 +262,10 @@ public class SysSiteAdminController {
      */
     @RequestMapping("reCreateIndex")
     @Csrf
-    public String reCreateIndex(HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         contentService.reCreateIndex();
-        SysSite site = siteComponent.getSite(request.getServerName());
-        Long userId = ControllerUtils.getAdminFromSession(session).getId();
+        Long userId = admin.getId();
         logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "reCreateIndex",
                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));
         return CommonConstants.TEMPLATE_DONE;

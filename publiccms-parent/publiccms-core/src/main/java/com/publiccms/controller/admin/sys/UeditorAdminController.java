@@ -21,19 +21,21 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -52,7 +54,6 @@ public class UeditorAdminController {
     protected LogUploadService logUploadService;
     @Autowired
     protected SiteComponent siteComponent;
-
 
     private static final String ACTION_CONFIG = "config";
     private static final String ACTION_UPLOAD = "upload";
@@ -121,6 +122,8 @@ public class UeditorAdminController {
     }
 
     /**
+     * @param site
+     * @param admin 
      * @param file
      * @param request
      * @param session
@@ -128,17 +131,17 @@ public class UeditorAdminController {
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
-    public String upload(MultipartFile file, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             String fileName = CmsFileUtils.getUploadFileName(suffix);
             try {
                 CmsFileUtils.upload(file, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, CmsFileUtils.getFileType(suffix), file.getSize(),
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        originalName, CmsFileUtils.getFileType(suffix), file.getSize(), RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", file.getSize());
                 map.put("title", originalName);
@@ -156,6 +159,8 @@ public class UeditorAdminController {
     }
 
     /**
+     * @param site
+     * @param admin 
      * @param file
      * @param request
      * @param session
@@ -163,16 +168,16 @@ public class UeditorAdminController {
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD_SCRAW)
     @ResponseBody
-    public Map<String, Object> uploadScraw(String file, HttpServletRequest request, HttpSession session) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public Map<String, Object> uploadScraw(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String file,
+            HttpServletRequest request, HttpSession session) {
         if (CommonUtils.notEmpty(file)) {
             byte[] data = VerificationUtils.base64Decode(file);
             String fileName = CmsFileUtils.getUploadFileName(SCRAW_TYPE);
             try {
                 CmsFileUtils.writeByteArrayToFile(siteComponent.getWebFilePath(site, fileName), data);
-                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, CmsFileUtils.FILE_TYPE_IMAGE, data.length,
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        CommonConstants.BLANK, CmsFileUtils.FILE_TYPE_IMAGE, data.length, RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put("size", data.length);
                 map.put("title", fileName);
@@ -189,15 +194,18 @@ public class UeditorAdminController {
     }
 
     /**
+     * @param site
+     * @param admin 
      * @param request
      * @param session
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_CATCHIMAGE)
     @ResponseBody
-    public Map<String, Object> catchimage(HttpServletRequest request, HttpSession session) {
-        SysSite site = siteComponent.getSite(request.getServerName());
-        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig).build();) {
+    public Map<String, Object> catchimage(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
+            HttpServletRequest request, HttpSession session) {
+        try (CloseableHttpClient httpclient = HttpClients.custom().setDefaultRequestConfig(CommonConstants.defaultRequestConfig)
+                .build();) {
             String[] files = request.getParameterValues(FIELD_NAME + "[]");
             if (CommonUtils.notEmpty(files)) {
                 List<Map<String, Object>> list = new ArrayList<>();
@@ -215,9 +223,9 @@ public class UeditorAdminController {
                         }
                         String fileName = CmsFileUtils.getUploadFileName(suffix);
                         CmsFileUtils.copyInputStreamToFile(entity.getContent(), siteComponent.getWebFilePath(site, fileName));
-                        logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                                LogLoginService.CHANNEL_WEB_MANAGER, CommonConstants.BLANK, CmsFileUtils.getFileType(suffix),
-                                entity.getContentLength(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                CommonConstants.BLANK, CmsFileUtils.getFileType(suffix), entity.getContentLength(),
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                         Map<String, Object> map = getResultMap(true);
                         map.put("size", entity.getContentLength());
                         map.put("title", fileName);
@@ -239,6 +247,7 @@ public class UeditorAdminController {
     }
 
     /**
+     * @param admin 
      * @param start
      * @param request
      * @param session
@@ -247,12 +256,13 @@ public class UeditorAdminController {
     @SuppressWarnings("unchecked")
     @RequestMapping(params = "action=" + ACTION_LISTFILE)
     @ResponseBody
-    public Map<String, Object> listfile(Integer start, HttpServletRequest request, HttpSession session) {
+    public Map<String, Object> listfile(@SessionAttribute SysUser admin, Integer start, HttpServletRequest request,
+            HttpSession session) {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(siteComponent.getSite(request.getServerName()).getId(),
-                ControllerUtils.getAdminFromSession(session).getId(), null, null, null, null, null, null, start / 20 + 1, 20);
+        PageHandler page = logUploadService.getPage(siteComponent.getSite(request.getServerName()).getId(), admin.getId(), null,
+                null, null, null, null, null, start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
         List<Map<String, Object>> list = new ArrayList<>();

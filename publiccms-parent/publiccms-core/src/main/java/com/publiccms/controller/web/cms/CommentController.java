@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -47,6 +48,7 @@ public class CommentController {
             "replyId", "replyUserId", "disabled" };
 
     /**
+     * @param site 
      * @param entity
      * @param returnUrl
      * @param request
@@ -56,9 +58,8 @@ public class CommentController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(CmsComment entity, String returnUrl, HttpServletRequest request, HttpSession session,
+    public String save(@RequestAttribute SysSite site, CmsComment entity, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {

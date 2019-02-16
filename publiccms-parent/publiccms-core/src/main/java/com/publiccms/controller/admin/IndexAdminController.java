@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
@@ -57,7 +58,7 @@ public class IndexAdminController {
 
     /**
      * 修改语言
-     * 
+     * @param site 
      * @param lang
      * @param returnUrl
      * @param request
@@ -65,7 +66,7 @@ public class IndexAdminController {
      * @return view name
      */
     @RequestMapping("changeLocale")
-    public String changeLocale(String lang, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
+    public String changeLocale(@RequestAttribute SysSite site, String lang, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
         if (null != lang) {
             LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
             if (null != localeResolver) {
@@ -75,7 +76,7 @@ public class IndexAdminController {
         if (CommonUtils.empty(returnUrl)) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
-            SysSite site = siteComponent.getSite(request.getServerName());
+            
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
             if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {

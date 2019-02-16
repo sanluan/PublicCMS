@@ -7,19 +7,21 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsDictionary;
 import com.publiccms.entities.cms.CmsDictionaryId;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsDictionaryDataService;
 import com.publiccms.logic.service.cms.CmsDictionaryService;
@@ -43,6 +45,8 @@ public class CmsDictionaryAdminController {
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
     /**
+     * @param site
+     * @param admin
      * @param entity
      * @param dictionaryParameters
      * @param request
@@ -52,30 +56,30 @@ public class CmsDictionaryAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(CmsDictionary entity, CmsDictionaryParameters dictionaryParameters,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsDictionary entity,
+            CmsDictionaryParameters dictionaryParameters, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
             if (null != service.getEntity(entity.getId())) {
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 dataService.update(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
-                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(
+                        new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary",
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
                 dataService.save(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
-                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(
+                        new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary",
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
      * @param request
      * @param id
      * @param oldId
@@ -83,9 +87,8 @@ public class CmsDictionaryAdminController {
      */
     @RequestMapping("virify")
     @ResponseBody
-    public boolean virify(HttpServletRequest request, String id, String oldId) {
+    public boolean virify(@RequestAttribute SysSite site, HttpServletRequest request, String id, String oldId) {
         if (CommonUtils.notEmpty(id)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             CmsDictionaryId entityId = new CmsDictionaryId(id, site.getId());
             if (CommonUtils.notEmpty(oldId) && !id.equals(oldId) && null != service.getEntity(entityId)
                     || CommonUtils.empty(oldId) && null != service.getEntity(entityId)) {
@@ -96,6 +99,8 @@ public class CmsDictionaryAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param ids
      * @param request
      * @param session
@@ -104,17 +109,17 @@ public class CmsDictionaryAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(String[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String[] ids,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];
             for (int i = 0; i < ids.length; i++) {
                 entityIds[i] = new CmsDictionaryId(ids[i], site.getId());
             }
             service.delete(entityIds);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsDictionary", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "delete.cmsDictionary", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

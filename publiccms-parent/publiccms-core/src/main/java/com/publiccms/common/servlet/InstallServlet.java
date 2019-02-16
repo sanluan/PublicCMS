@@ -159,7 +159,7 @@ public class InstallServlet extends HttpServlet {
 
     private void start() throws FileNotFoundException, IOException {
         CmsVersion.setInitialized(true);
-        CmsDataSource.initDefautlDataSource();
+        CmsDataSource.initDefautDataSource();
         File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
         try (FileOutputStream outputStream = new FileOutputStream(file);) {
             outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));

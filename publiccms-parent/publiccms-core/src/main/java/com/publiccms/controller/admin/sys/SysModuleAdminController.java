@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -25,6 +27,7 @@ import com.publiccms.entities.sys.SysModule;
 import com.publiccms.entities.sys.SysRole;
 import com.publiccms.entities.sys.SysRoleModule;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -64,6 +67,8 @@ public class SysModuleAdminController {
     protected SiteComponent siteComponent;
 
     /**
+     * @param site
+     * @param admin
      * @param entity
      * @param moduleParameters
      * @param oldId
@@ -74,9 +79,9 @@ public class SysModuleAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(SysModule entity, @ModelAttribute SysModuleParameters moduleParameters, String oldId,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysModule entity,
+            @ModelAttribute SysModuleParameters moduleParameters, String oldId, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -95,16 +100,14 @@ public class SysModuleAdminController {
                         .getPage(null, entity.getId(), null, null).getList();
                 dealRoleAuthorized(roleModuleList);
                 sysModuleLangService.save(oldId, entity.getId(), moduleParameters.getLangList());
-                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.module", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        "update.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             service.save(entity);
             sysModuleLangService.save(null, entity.getId(), moduleParameters.getLangList());
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.module",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         menuMessageComponent.clear();
         return CommonConstants.TEMPLATE_DONE;
@@ -129,6 +132,8 @@ public class SysModuleAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param id
      * @param request
      * @param session
@@ -137,8 +142,8 @@ public class SysModuleAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(String id, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -151,9 +156,9 @@ public class SysModuleAdminController {
             List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, id, null, null).getList();
             roleModuleService.deleteByModuleId(id);
             dealRoleAuthorized(roleModuleList);
-            logOperateService.save(new LogOperate(siteComponent.getSite(request.getServerName()).getId(),
-                    ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.module",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(siteComponent.getSite(request.getServerName()).getId(), admin.getId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.module", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         menuMessageComponent.clear();
         return CommonConstants.TEMPLATE_DONE;

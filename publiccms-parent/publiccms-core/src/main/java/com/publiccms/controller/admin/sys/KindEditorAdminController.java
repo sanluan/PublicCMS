@@ -10,16 +10,18 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -40,6 +42,8 @@ public class KindEditorAdminController {
     private static final String RESULT_URL = "url";
 
     /**
+     * @param site
+     * @param admin
      * @param imgFile
      * @param request
      * @param session
@@ -47,17 +51,17 @@ public class KindEditorAdminController {
      * @return view name
      */
     @RequestMapping("upload")
-    public String upload(MultipartFile imgFile, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile imgFile,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (null != imgFile && !imgFile.isEmpty()) {
             String originalName = imgFile.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             String fileName = CmsFileUtils.getUploadFileName(suffix);
             try {
                 CmsFileUtils.upload(imgFile, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, CmsFileUtils.getFileType(suffix),
-                        imgFile.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        originalName, CmsFileUtils.getFileType(suffix), imgFile.getSize(), RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), fileName));
                 Map<String, Object> map = getResultMap(true);
                 map.put(RESULT_URL, fileName);
                 model.addAttribute("result", map);

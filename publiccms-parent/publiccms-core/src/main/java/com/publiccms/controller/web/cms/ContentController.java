@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -71,6 +72,7 @@ public class ContentController {
 
     /**
      * 保存内容
+     * @param site 
      * 
      * @param entity
      * @param draft
@@ -84,15 +86,13 @@ public class ContentController {
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @Csrf
-    public String save(CmsContent entity, Boolean draft, CmsContentAttribute attribute,
+    public String save(@RequestAttribute SysSite site, CmsContent entity, Boolean draft, CmsContentAttribute attribute,
             @ModelAttribute CmsContentParameters contentParameters, String returnUrl, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            ;
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
         CmsCategoryModel categoryModel = categoryModelService
@@ -138,15 +138,15 @@ public class ContentController {
 
     /**
      * 内容推荐重定向并计数
+     * @param site 
      * 
      * @param id
      * @param request
      * @return view name
      */
     @RequestMapping("related/redirect")
-    public String relatedRedirect(Long id, HttpServletRequest request) {
+    public String relatedRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
         ClickStatistics clickStatistics = statisticsComponent.relatedClicks(id);
-        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + clickStatistics.getUrl();
         } else {
@@ -156,15 +156,14 @@ public class ContentController {
 
     /**
      * 内容链接重定向并计数
-     * 
+     * @param site 
      * @param id
      * @param request
      * @return view name
      */
     @RequestMapping("redirect")
-    public String contentRedirect(Long id, HttpServletRequest request) {
+    public String contentRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
         CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
-        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != contentStatistics && null != contentStatistics.getUrl()
                 && site.getId().equals(contentStatistics.getSiteId())) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentStatistics.getUrl();
@@ -175,15 +174,15 @@ public class ContentController {
 
     /**
      * 内容评分
-     * 
+     * @param site 
      * @param id
      * @param request
      * @return view name
      */
     @RequestMapping("scores")
     @ResponseBody
-    public int scores(Long id, HttpServletRequest request) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public int scores(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+        
         CmsContentStatistics contentStatistics = statisticsComponent.contentScores(id);
         if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
             return contentStatistics.getScores() + contentStatistics.getScores();
@@ -193,15 +192,14 @@ public class ContentController {
 
     /**
      * 内容点击
-     * 
+     * @param site 
      * @param id
      * @param request
      * @return click
      */
     @RequestMapping("click")
     @ResponseBody
-    public int click(Long id, HttpServletRequest request) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public int click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
         CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
         if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
             return contentStatistics.getClicks() + contentStatistics.getClicks();

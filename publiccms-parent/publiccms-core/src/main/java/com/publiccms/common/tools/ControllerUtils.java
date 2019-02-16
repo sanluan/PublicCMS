@@ -1,6 +1,5 @@
 package com.publiccms.common.tools;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -321,9 +320,9 @@ public class ControllerUtils {
      * @param session
      * @return Date
      */
-    public static Date getUserTimeFromSession(HttpSession session) {
+    public static Long getUserTimeFromSession(HttpSession session) {
         if (null != session) {
-            return (Date) session.getAttribute(CommonConstants.getSessionUserTime());
+            return (Long) session.getAttribute(CommonConstants.getSessionUserTime());
         } else {
             return null;
         }
@@ -335,7 +334,7 @@ public class ControllerUtils {
      */
     public static void setUserToSession(HttpSession session, SysUser user) {
         session.setAttribute(CommonConstants.getSessionUser(), user);
-        session.setAttribute(CommonConstants.getSessionUserTime(), CommonUtils.getDate());
+        session.setAttribute(CommonConstants.getSessionUserTime(), System.currentTimeMillis());
     }
 
     /**

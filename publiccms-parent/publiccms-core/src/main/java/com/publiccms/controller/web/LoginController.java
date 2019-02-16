@@ -17,6 +17,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,6 +64,7 @@ public class LoginController {
     protected ConfigComponent configComponent;
 
     /**
+     * @param site 
      * @param username
      * @param password
      * @param returnUrl
@@ -74,9 +76,8 @@ public class LoginController {
      * @return view name
      */
     @RequestMapping(value = "doLogin", method = RequestMethod.POST)
-    public String login(String username, String password, String returnUrl, Long clientId, String uuid,
+    public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, Long clientId, String uuid,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
         if (CommonUtils.empty(loginPath)) {
@@ -85,7 +86,6 @@ public class LoginController {
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            ;
         }
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
@@ -164,6 +164,7 @@ public class LoginController {
     }
 
     /**
+     * @param site 
      * @param entity
      * @param repassword
      * @param returnUrl
@@ -175,10 +176,8 @@ public class LoginController {
      * @return view name
      */
     @RequestMapping(value = "doRegister", method = RequestMethod.POST)
-    public String register(SysUser entity, String repassword, String returnUrl, Long clientId, String uuid,
+    public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, Long clientId, String uuid,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
-
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -188,7 +187,6 @@ public class LoginController {
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            ;
         }
         if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
                 || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
@@ -232,6 +230,7 @@ public class LoginController {
     }
 
     /**
+     * @param site 
      * @param userId
      * @param returnUrl
      * @param request
@@ -239,13 +238,11 @@ public class LoginController {
      * @return view name
      */
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
-    public String logout(Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String logout(@RequestAttribute SysSite site, Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            ;
         }
         SysUser user = ControllerUtils.getUserFromSession(request.getSession());
         if (null != userId && null != user && userId.equals(user.getId())) {

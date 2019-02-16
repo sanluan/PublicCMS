@@ -12,8 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -25,6 +27,7 @@ import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
@@ -59,6 +62,8 @@ public class CmsCategoryAdminController {
             "contents", "typeId" };
 
     /**
+     * @param site
+     * @param admin
      * @param entity
      * @param attribute
      * @param categoryParameters
@@ -69,10 +74,9 @@ public class CmsCategoryAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(CmsCategory entity, CmsCategoryAttribute attribute,
-            @ModelAttribute CmsCategoryParameters categoryParameters, HttpServletRequest request,
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsCategory entity,
+            CmsCategoryAttribute attribute, @ModelAttribute CmsCategoryParameters categoryParameters, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             CmsCategory oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -86,15 +90,14 @@ public class CmsCategoryAdminController {
                 } else if (null != entity.getParentId() && null == oldEntity.getParentId()) {
                     service.generateChildIds(site.getId(), entity.getParentId());
                 }
-                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.category", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.category",
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             service.save(site.getId(), entity);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "save.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         service.saveTagAndAttribute(site.getId(), entity.getId(), attribute, categoryParameters);
         try {
@@ -107,6 +110,8 @@ public class CmsCategoryAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param ids
      * @param parentId
      * @param request
@@ -116,17 +121,15 @@ public class CmsCategoryAdminController {
      */
     @RequestMapping("move")
     @Csrf
-    public String move(Integer[] ids, Integer parentId, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String move(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids, Integer parentId,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         CmsCategory parent = service.getEntity(parentId);
         if (CommonUtils.notEmpty(ids) && (null == parent || null != parent && site.getId() == parent.getSiteId())) {
             for (Integer id : ids) {
                 move(site, id, parentId);
             }
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "move.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(),
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "move.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(" to ").append(parentId).toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -149,6 +152,8 @@ public class CmsCategoryAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param ids
      * @param max
      * @param request
@@ -158,9 +163,8 @@ public class CmsCategoryAdminController {
      */
     @RequestMapping("publish")
     @Csrf
-    public String publish(Integer[] ids, Integer max, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String publish(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids, Integer max,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             try {
                 for (Integer id : ids) {
@@ -171,15 +175,17 @@ public class CmsCategoryAdminController {
                 log.error(e.getMessage(), e);
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "static.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(",pageSize:")
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "static.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(",pageSize:")
                             .append((CommonUtils.empty(max) ? 1 : max)).toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param id
      * @param typeId
      * @param request
@@ -189,14 +195,13 @@ public class CmsCategoryAdminController {
      */
     @RequestMapping("changeType")
     @Csrf
-    public String changeType(Integer id, Integer typeId, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String changeType(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, Integer typeId,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(id)) {
             service.changeType(id, typeId);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "changeType.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), new StringBuilder(id).append(" to ").append(typeId).toString()));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "changeType.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    new StringBuilder(id).append(" to ").append(typeId).toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -216,6 +221,7 @@ public class CmsCategoryAdminController {
     }
 
     /**
+     * @param site
      * @param request
      * @param code
      * @param oldCode
@@ -223,8 +229,7 @@ public class CmsCategoryAdminController {
      */
     @RequestMapping("virify")
     @ResponseBody
-    public boolean virify(HttpServletRequest request, String code, String oldCode) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public boolean virify(@RequestAttribute SysSite site, HttpServletRequest request, String code, String oldCode) {
         if (CommonUtils.notEmpty(code)) {
             if (CommonUtils.notEmpty(oldCode) && !code.equals(oldCode) && null != service.getEntityByCode(site.getId(), code)
                     || CommonUtils.empty(oldCode) && null != service.getEntityByCode(site.getId(), code)) {
@@ -235,6 +240,8 @@ public class CmsCategoryAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param ids
      * @param request
      * @param session
@@ -243,14 +250,14 @@ public class CmsCategoryAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(Integer[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             service.delete(site.getId(), ids);
             contentService.deleteByCategoryIds(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.category", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "delete.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

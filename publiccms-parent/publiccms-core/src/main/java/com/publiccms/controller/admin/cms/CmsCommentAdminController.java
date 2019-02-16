@@ -9,12 +9,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
@@ -38,6 +39,8 @@ public class CmsCommentAdminController {
     protected SiteComponent siteComponent;
 
     /**
+     * @param site
+     * @param admin
      * @param ids
      * @param request
      * @param session
@@ -46,12 +49,11 @@ public class CmsCommentAdminController {
      */
     @RequestMapping("check")
     @Csrf
-    public String check(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
-            SysUser user = ControllerUtils.getAdminFromSession(session);
-            service.check(site.getId(), ids, user.getId());
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            service.check(site.getId(), ids, admin.getId());
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "cmsComment.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
         }
@@ -59,6 +61,8 @@ public class CmsCommentAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param ids
      * @param request
      * @param session
@@ -67,18 +71,20 @@ public class CmsCommentAdminController {
      */
     @RequestMapping("uncheck")
     @Csrf
-    public String uncheck(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             service.uncheck(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "cmsComment.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "cmsComment.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param ids
      * @param request
      * @param session
@@ -87,13 +93,13 @@ public class CmsCommentAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.cmsComment", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "delete.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -10,7 +10,9 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -21,6 +23,7 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -43,6 +46,8 @@ public class TaskTemplateAdminController {
     protected SiteComponent siteComponent;
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param content
      * @param request
@@ -52,9 +57,8 @@ public class TaskTemplateAdminController {
      */
     @RequestMapping("save")
     @Csrf
-    public String save(String path, String content, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String content,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -63,15 +67,13 @@ public class TaskTemplateAdminController {
                 String filePath = siteComponent.getTaskTemplateFilePath(site, path);
                 content = new String(VerificationUtils.base64Decode(content), CommonConstants.DEFAULT_CHARSET);
                 if (CmsFileUtils.createFile(filePath, content)) {
-                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "save.task.template", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), path));
+                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 } else {
                     String historyFilePath = siteComponent.getTaskTemplateHistoryFilePath(site, path);
                     CmsFileUtils.updateFile(filePath, historyFilePath, content);
-                    logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                            LogLoginService.CHANNEL_WEB_MANAGER, "update.task.template", RequestUtils.getIpAddress(request),
-                            CommonUtils.getDate(), path));
+                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "update.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTaskTemplateCache();
             } catch (IOException e) {
@@ -84,6 +86,8 @@ public class TaskTemplateAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param request
      * @param session
@@ -92,8 +96,8 @@ public class TaskTemplateAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -104,9 +108,8 @@ public class TaskTemplateAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             templateComponent.clearTaskTemplateCache();
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.task.template", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), path));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "delete.task.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

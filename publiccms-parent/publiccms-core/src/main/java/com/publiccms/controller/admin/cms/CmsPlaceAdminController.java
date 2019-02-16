@@ -18,8 +18,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
@@ -81,6 +83,8 @@ public class CmsPlaceAdminController {
             "disabled" };
 
     /**
+     * @param site
+     * @param admin
      * @param entity
      * @param extendDataParameters
      * @param request
@@ -90,20 +94,20 @@ public class CmsPlaceAdminController {
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @Csrf
-    public String save(CmsPlace entity, @ModelAttribute ExtendDataParameters extendDataParameters,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsPlace entity,
+            @ModelAttribute ExtendDataParameters extendDataParameters, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
             }
             entity.setPath(entity.getPath().replace("//", CommonConstants.SEPARATOR));
-            SysSite site = siteComponent.getSite(request.getServerName());
-            SysUser user = ControllerUtils.getAdminFromSession(session);
-            SysDept dept = sysDeptService.getEntity(user.getDeptId());
-            if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+
+            SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+            if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                     || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                     || ControllerUtils.verifyCustom("noright",
-                            !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
+                            !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(),
                                     CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))),
                             model)) {
                 return CommonConstants.TEMPLATE_ERROR;
@@ -119,15 +123,15 @@ public class CmsPlaceAdminController {
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "update.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
                 }
             } else {
-                entity.setUserId(user.getId());
+                entity.setUserId(admin.getId());
                 entity.setSiteId(site.getId());
                 entity.setStatus(CmsPlaceService.STATUS_NORMAL);
                 service.save(entity);
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
@@ -140,6 +144,8 @@ public class CmsPlaceAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param ids
      * @param request
@@ -149,29 +155,29 @@ public class CmsPlaceAdminController {
      */
     @RequestMapping("refresh")
     @Csrf
-    public String refresh(String path, Long[] ids, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        SysDept dept = sysDeptService.getEntity(user.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+    public String refresh(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, Long[] ids,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils.verifyCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
+                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(),
                                 CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             service.refresh(site.getId(), ids, path);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "refresh.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "refresh.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param ids
      * @param request
@@ -181,27 +187,28 @@ public class CmsPlaceAdminController {
      */
     @RequestMapping("check")
     @Csrf
-    public String check(String path, Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        SysDept dept = sysDeptService.getEntity(user.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+    public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, Long[] ids,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils.verifyCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
+                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(),
                                 CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
-            service.check(site.getId(), user.getId(), ids, path);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
+            service.check(site.getId(), admin.getId(), ids, path);
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param ids
      * @param request
@@ -211,30 +218,29 @@ public class CmsPlaceAdminController {
      */
     @RequestMapping("uncheck")
     @Csrf
-    public String uncheck(String path, Long[] ids, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        SysDept dept = sysDeptService.getEntity(user.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, Long[] ids,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils.verifyCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
+                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(),
                                 CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             service.uncheck(site.getId(), ids, path);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
      * @param path
-     * @param userId
+     * @param userId 
      * @param status
      * @param itemType
      * @param itemId
@@ -248,15 +254,15 @@ public class CmsPlaceAdminController {
      */
     @RequestMapping("export")
     @Csrf
-    public ExcelView export(String path, Long userId, Integer[] status, String itemType, Long itemId,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date startPublishDate,
+    public ExcelView export(@RequestAttribute SysSite site, String path, Long userId, Integer[] status, String itemType,
+            Long itemId, @DateTimeFormat(pattern = "yyyy-MM-dd") Date startPublishDate,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date endPublishDate, String orderField, String orderType,
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             path = path.replace("//", CommonConstants.SEPARATOR);
         }
         ExcelView view = new ExcelView();
-        SysSite site = siteComponent.getSite(request.getServerName());
+
         List<String> list = new ArrayList<>();
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
         Locale locale = request.getLocale();
@@ -282,7 +288,7 @@ public class CmsPlaceAdminController {
         for (CmsPlace entity : entityList) {
             List<Serializable> userIds = pksMap.get("userIds");
             if (null == userIds) {
-                userIds = new ArrayList<>();
+                userIds= new ArrayList<>();
                 pksMap.put("userIds", userIds);
             }
             userIds.add(entity.getUserId());
@@ -318,6 +324,8 @@ public class CmsPlaceAdminController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param request
      * @param session
@@ -326,27 +334,28 @@ public class CmsPlaceAdminController {
      */
     @RequestMapping("clear")
     @Csrf
-    public String clear(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        SysDept dept = sysDeptService.getEntity(user.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+    public String clear(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils.verifyCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
+                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(),
                                 CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(path)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             service.delete(site.getId(), path);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "clear.place",
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "clear.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param path
      * @param ids
      * @param request
@@ -356,23 +365,22 @@ public class CmsPlaceAdminController {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(String path, Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        SysDept dept = sysDeptService.getEntity(user.getDeptId());
-        if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, Long[] ids,
+            HttpServletRequest request, HttpSession session, ModelMap model) {
+        SysDept dept = sysDeptService.getEntity(admin.getDeptId());
+        if (ControllerUtils.verifyNotEmpty("deptId", admin.getDeptId(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils.verifyCustom("noright",
-                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(user.getDeptId(),
+                        !(dept.isOwnsAllPage() || null != sysDeptPageService.getEntity(new SysDeptPageId(admin.getDeptId(),
                                 CommonConstants.SEPARATOR + TemplateComponent.INCLUDE_DIRECTORY + path))),
                         model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(ids)) {
-            SysSite site = siteComponent.getSite(request.getServerName());
             service.delete(site.getId(), ids, path);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "delete.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

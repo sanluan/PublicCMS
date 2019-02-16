@@ -14,9 +14,11 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -63,6 +65,7 @@ public class LoginAdminController {
     protected SiteComponent siteComponent;
 
     /**
+     * @param site
      * @param username
      * @param password
      * @param returnUrl
@@ -73,9 +76,8 @@ public class LoginAdminController {
      * @return view name
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String login(String username, String password, String returnUrl, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
+    public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl,
+            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
         if (ControllerUtils.verifyNotEmpty("username", username, model)
@@ -130,6 +132,7 @@ public class LoginAdminController {
     }
 
     /**
+     * @param site
      * @param username
      * @param password
      * @param request
@@ -139,15 +142,17 @@ public class LoginAdminController {
      * @return view name
      */
     @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
-    public String loginDialog(String username, String password, HttpServletRequest request, HttpSession session,
-            HttpServletResponse response, ModelMap model) {
-        if ("login".equals(login(username, password, null, request, session, response, model))) {
+    public String loginDialog(@RequestAttribute SysSite site, String username, String password, HttpServletRequest request,
+            HttpSession session, HttpServletResponse response, ModelMap model) {
+        if ("login".equals(login(site, username, password, null, request, session, response, model))) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param oldpassword
      * @param password
      * @param repassword
@@ -159,13 +164,10 @@ public class LoginAdminController {
      */
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     @Csrf
-    public String changeMyselfPassword(String oldpassword, String password, String repassword,
-            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
-        SysSite site = siteComponent.getSite(request.getServerName());
-        SysUser user = service.getEntity(ControllerUtils.getAdminFromSession(session).getId());
-        if (ControllerUtils.verifyNotEquals("siteId", site.getId(), user.getSiteId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    public String changeMyselfPassword(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String oldpassword,
+            String password, String repassword, HttpServletRequest request, HttpSession session, HttpServletResponse response,
+            ModelMap model) {
+        SysUser user = service.getEntity(admin.getId());
         String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt());
         if (null != user.getPassword()
                 && ControllerUtils.verifyNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
@@ -189,15 +191,15 @@ public class LoginAdminController {
     }
 
     /**
+     * @param admin
      * @param password
      * @param session
      * @return result
      */
     @RequestMapping("isWeak")
     @ResponseBody
-    public boolean isWeak(String password, HttpSession session) {
-        SysUser user = ControllerUtils.getAdminFromSession(session);
-        return !UserPasswordUtils.isWeek(user.getName(), password);
+    public boolean isWeak(@SessionAttribute SysUser admin, String password, HttpSession session) {
+        return !UserPasswordUtils.isWeek(admin.getName(), password);
     }
 
     /**
