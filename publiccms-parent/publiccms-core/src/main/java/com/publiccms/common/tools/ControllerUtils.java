@@ -78,7 +78,7 @@ public class ControllerUtils {
             return true;
         }
     }
-    
+
     /**
      * @param response
      * @param url
@@ -310,7 +310,11 @@ public class ControllerUtils {
      * @return SysUser
      */
     public static SysUser getUserFromSession(HttpSession session) {
-        return (SysUser) session.getAttribute(CommonConstants.getSessionUser());
+        if (null != session) {
+            return (SysUser) session.getAttribute(CommonConstants.getSessionUser());
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -318,7 +322,11 @@ public class ControllerUtils {
      * @return Date
      */
     public static Date getUserTimeFromSession(HttpSession session) {
-        return (Date) session.getAttribute(CommonConstants.getSessionUserTime());
+        if (null != session) {
+            return (Date) session.getAttribute(CommonConstants.getSessionUserTime());
+        } else {
+            return null;
+        }
     }
 
     /**

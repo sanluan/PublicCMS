@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -42,17 +43,14 @@ public class LogAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("logLogin/delete")
-    public String logLoginDelete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String logLoginDelete(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             logLoginService.delete(site.getId(), ids);
@@ -65,18 +63,15 @@ public class LogAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("logOperate/delete")
-    public String logOperateDelete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String logOperateDelete(Long[] ids, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             logOperateService.delete(site.getId(), ids);
@@ -89,17 +84,14 @@ public class LogAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("logTask/delete")
-    public String logTaskDelete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String logTaskDelete(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             logTaskService.delete(site.getId(), ids);
@@ -112,17 +104,14 @@ public class LogAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("logUpload/delete")
-    public String logUploadDelete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String logUploadDelete(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             logUploadService.delete(site.getId(), ids);

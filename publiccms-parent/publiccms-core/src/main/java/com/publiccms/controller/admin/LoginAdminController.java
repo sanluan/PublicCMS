@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -150,7 +151,6 @@ public class LoginAdminController {
      * @param oldpassword
      * @param password
      * @param repassword
-     * @param _csrf
      * @param request
      * @param session
      * @param response
@@ -158,12 +158,12 @@ public class LoginAdminController {
      * @return view name
      */
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
-    public String changeMyselfPassword(String oldpassword, String password, String repassword, String _csrf,
+    @Csrf
+    public String changeMyselfPassword(String oldpassword, String password, String repassword,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = service.getEntity(ControllerUtils.getAdminFromSession(session).getId());
-        if (ControllerUtils.verifyNotEquals("siteId", site.getId(), user.getSiteId(), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+        if (ControllerUtils.verifyNotEquals("siteId", site.getId(), user.getSiteId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt());

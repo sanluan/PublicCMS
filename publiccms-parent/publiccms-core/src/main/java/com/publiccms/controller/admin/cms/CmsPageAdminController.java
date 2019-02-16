@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -52,18 +53,15 @@ public class CmsPageAdminController {
     /**
      * @param path
      * @param extendDataParameters 
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String saveMetadata(String path, @ModelAttribute ExtendDataParameters extendDataParameters, String _csrf,
+    @Csrf
+    public String saveMetadata(String path, @ModelAttribute ExtendDataParameters extendDataParameters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
@@ -89,17 +87,14 @@ public class CmsPageAdminController {
 
     /**
      * @param path
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("clearCache")
-    public String clearCache(String path, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String clearCache(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)

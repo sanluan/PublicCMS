@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -43,18 +43,15 @@ public class FileAdminController {
      * @param file
      * @param field
      * @param originalField
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
-    public String upload(MultipartFile file, String field, String originalField, String _csrf, HttpServletRequest request,
+    @Csrf
+    public String upload(MultipartFile file, String field, String originalField, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();

@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -76,19 +77,16 @@ public class SysDeptAdminController {
      * @param entity
      * @param categoryIds
      * @param pages
-     * @param configs 
-     * @param _csrf
+     * @param configs
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysDept entity, Integer[] categoryIds, String[] pages, String[] configs, String _csrf,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String save(SysDept entity, Integer[] categoryIds, String[] pages, String[] configs, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             SysDept oldEntity = service.getEntity(entity.getId());
@@ -139,15 +137,15 @@ public class SysDeptAdminController {
      * @param entity
      * @param repassword
      * @param roleIds
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("saveUser")
-    public String saveUser(SysUser entity, String repassword, Integer[] roleIds, String _csrf, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    @Csrf
+    public String saveUser(SysUser entity, String repassword, Integer[] roleIds, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
@@ -155,8 +153,7 @@ public class SysDeptAdminController {
         repassword = StringUtils.trim(repassword);
         SysDept dept = service.getEntity(entity.getDeptId());
         SysUser admin = ControllerUtils.getAdminFromSession(session);
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)
-                || ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
+        if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
                 || ControllerUtils.verifyNotEmpty("deptId", dept, model)
                 || ControllerUtils.verifyNotEquals("userId", dept.getUserId(), admin.getId(), model)
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), dept.getSiteId(), model)
@@ -227,17 +224,14 @@ public class SysDeptAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysDept entity = service.delete(site.getId(), id);
         if (null != entity) {
@@ -253,16 +247,15 @@ public class SysDeptAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "enableUser", method = RequestMethod.POST)
-    public String enable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model) || ControllerUtils
-                .verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
+    @Csrf
+    public String enable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = userService.getEntity(id);
@@ -284,16 +277,15 @@ public class SysDeptAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "disableUser", method = RequestMethod.POST)
-    public String disable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model) || ControllerUtils
-                .verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
+    @Csrf
+    public String disable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
+        if (ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = userService.getEntity(id);

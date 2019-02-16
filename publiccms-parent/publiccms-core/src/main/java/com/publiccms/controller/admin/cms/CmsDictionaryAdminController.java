@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -44,18 +45,15 @@ public class CmsDictionaryAdminController {
     /**
      * @param entity
      * @param dictionaryParameters
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsDictionary entity, CmsDictionaryParameters dictionaryParameters, String _csrf,
+    @Csrf
+    public String save(CmsDictionary entity, CmsDictionaryParameters dictionaryParameters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             entity.getId().setSiteId(site.getId());
@@ -99,17 +97,14 @@ public class CmsDictionaryAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(String[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             CmsDictionaryId[] entityIds = new CmsDictionaryId[ids.length];

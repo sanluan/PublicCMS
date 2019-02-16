@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -43,18 +44,15 @@ public class SysAppAdminController {
     /**
      * @param entity
      * @param apis
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysApp entity, String[] apis, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String save(SysApp entity, String[] apis, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         entity.setAuthorizedApis(arrayToCommaDelimitedString(apis));
         if (null != entity.getId()) {
@@ -81,17 +79,14 @@ public class SysAppAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysApp entity = service.getEntity(id);
         if (null != entity) {

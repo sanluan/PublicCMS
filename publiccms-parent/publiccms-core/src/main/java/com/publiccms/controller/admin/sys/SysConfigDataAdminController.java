@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -56,18 +57,15 @@ public class SysConfigDataAdminController {
     /**
      * @param entity
      * @param sysConfigParameters
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysConfigData entity, @ModelAttribute SysConfigParameters sysConfigParameters, String _csrf,
+    @Csrf
+    public String save(SysConfigData entity, @ModelAttribute SysConfigParameters sysConfigParameters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             SysUser user = ControllerUtils.getAdminFromSession(session);
@@ -117,17 +115,14 @@ public class SysConfigDataAdminController {
 
     /**
      * @param code
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String code, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(String code, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());

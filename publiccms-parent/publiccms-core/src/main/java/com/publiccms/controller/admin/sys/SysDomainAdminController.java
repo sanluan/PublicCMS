@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -43,18 +44,16 @@ public class SysDomainAdminController {
     /**
      * @param entity
      * @param oldName
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysDomain entity, String oldName, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    @Csrf
+    public String save(SysDomain entity, String oldName, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)
                 || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
                 || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(entity.getName()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -92,19 +91,18 @@ public class SysDomainAdminController {
 
     /**
      * @param entity
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("saveConfig")
-    public String saveConfig(SysDomain entity, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String saveConfig(SysDomain entity, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(entity.getName())) {
             SysSite site = siteComponent.getSite(request.getServerName());
             SysDomain oldEntity = service.getEntity(entity.getName());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getName(), entity, ignoreProperties);
@@ -126,6 +124,7 @@ public class SysDomainAdminController {
      */
     @RequestMapping("virify")
     @ResponseBody
+    @Csrf
     public boolean virify(String name, String domain, String oldName) {
         if (CommonUtils.notEmpty(name)) {
             if (CommonUtils.notEmpty(oldName) && !name.equals(oldName) && null != service.getEntity(name)
@@ -141,17 +140,15 @@ public class SysDomainAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String delete(String id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysDomain entity = service.getEntity(id);

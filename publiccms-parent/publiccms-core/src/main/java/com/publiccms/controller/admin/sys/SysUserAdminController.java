@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -53,18 +54,15 @@ public class SysUserAdminController {
      * @param entity
      * @param repassword
      * @param roleIds
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysUser entity, String repassword, Integer[] roleIds, String _csrf, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String save(SysUser entity, String repassword, Integer[] roleIds, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
@@ -142,22 +140,21 @@ public class SysUserAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
-    public String enable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String enable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = siteComponent.getSite(request.getServerName());
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
@@ -170,22 +167,21 @@ public class SysUserAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
-    public String disable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String disable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (ControllerUtils.verifyEquals("admin.operate", ControllerUtils.getAdminFromSession(session).getId(), id, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysUser entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = siteComponent.getSite(request.getServerName());
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);

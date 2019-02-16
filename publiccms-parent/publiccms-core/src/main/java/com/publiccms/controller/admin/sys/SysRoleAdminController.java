@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -62,18 +63,15 @@ public class SysRoleAdminController {
     /**
      * @param entity
      * @param moduleIds
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysRole entity, String[] moduleIds, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String save(SysRole entity, String[] moduleIds, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (entity.isOwnsAllRight()) {
             moduleIds = null;
@@ -112,19 +110,18 @@ public class SysRoleAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysRole entity = service.getEntity(id);
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(id);

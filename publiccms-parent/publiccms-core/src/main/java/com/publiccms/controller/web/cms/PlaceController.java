@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -60,27 +61,27 @@ public class PlaceController {
     protected SiteComponent siteComponent;
     @Autowired
     protected ConfigComponent configComponent;
-    
+
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };
 
     /**
      * @param entity
      * @param returnUrl
      * @param placeParameters
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save")
-    public String save(CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters, String _csrf,
+    @Csrf
+    public String save(CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
@@ -96,8 +97,7 @@ public class PlaceController {
                     || ControllerUtils.verifyCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
-            if (!metadata.isAllowAnonymous()
-                    && ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
+            if (!metadata.isAllowAnonymous()) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             if (null != entity.getId()) {
@@ -143,7 +143,8 @@ public class PlaceController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
+            ;
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -176,7 +177,8 @@ public class PlaceController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
+            ;
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -209,7 +211,8 @@ public class PlaceController {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
+            ;
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);

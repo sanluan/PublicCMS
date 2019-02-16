@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
@@ -88,18 +89,17 @@ public class SysSiteAdminController {
      * @param deptName
      * @param userName
      * @param password
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
+    @Csrf
     public String save(SysSite entity, String domain, Boolean wild, String roleName, String deptName, String userName,
-            String password, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+            String password, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (!entity.isUseStatic()) {
@@ -150,7 +150,6 @@ public class SysSiteAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
@@ -158,10 +157,10 @@ public class SysSiteAdminController {
      */
     @SuppressWarnings("unchecked")
     @RequestMapping("delete")
-    public String delete(Short id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String delete(Short id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite entity = service.getEntity(id);
@@ -183,17 +182,17 @@ public class SysSiteAdminController {
 
     /**
      * @param sql
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("execSql")
-    public String execSql(String sql, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String execSql(String sql, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+                ) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (-1 < sql.indexOf(CommonConstants.BLANK_SPACE)) {
@@ -221,17 +220,16 @@ public class SysSiteAdminController {
 
     /**
      * @param file
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "doUploadLicense", method = RequestMethod.POST)
-    public String upload(MultipartFile file, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String upload(MultipartFile file, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != file && !file.isEmpty()) {
@@ -249,17 +247,14 @@ public class SysSiteAdminController {
     }
 
     /**
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("reCreateIndex")
-    public String reCreateIndex(String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String reCreateIndex(HttpServletRequest request, HttpSession session, ModelMap model) {
         contentService.reCreateIndex();
         SysSite site = siteComponent.getSite(request.getServerName());
         Long userId = ControllerUtils.getAdminFromSession(session).getId();

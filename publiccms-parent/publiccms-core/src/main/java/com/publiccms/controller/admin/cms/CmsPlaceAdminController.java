@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -82,18 +83,15 @@ public class CmsPlaceAdminController {
     /**
      * @param entity
      * @param extendDataParameters
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String save(CmsPlace entity, @ModelAttribute ExtendDataParameters extendDataParameters, String _csrf,
+    @Csrf
+    public String save(CmsPlace entity, @ModelAttribute ExtendDataParameters extendDataParameters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
@@ -144,18 +142,15 @@ public class CmsPlaceAdminController {
     /**
      * @param path
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("refresh")
-    public String refresh(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String refresh(String path, Long[] ids, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
@@ -179,17 +174,14 @@ public class CmsPlaceAdminController {
     /**
      * @param path
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("check")
-    public String check(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String check(String path, Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
@@ -212,18 +204,15 @@ public class CmsPlaceAdminController {
     /**
      * @param path
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("uncheck")
-    public String uncheck(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String uncheck(String path, Long[] ids, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
@@ -253,26 +242,20 @@ public class CmsPlaceAdminController {
      * @param endPublishDate
      * @param orderField
      * @param orderType
-     * @param _csrf
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping("export")
+    @Csrf
     public ExcelView export(String path, Long userId, Integer[] status, String itemType, Long itemId,
             @DateTimeFormat(pattern = "yyyy-MM-dd") Date startPublishDate,
-            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endPublishDate, String orderField, String orderType, String _csrf,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endPublishDate, String orderField, String orderType,
             HttpServletRequest request, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             path = path.replace("//", CommonConstants.SEPARATOR);
         }
         ExcelView view = new ExcelView();
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            List<String> list = new ArrayList<>();
-            list.add((String) model.get(CommonConstants.ERROR));
-            view.getDataList().add(list);
-            return view;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         List<String> list = new ArrayList<>();
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
@@ -336,17 +319,14 @@ public class CmsPlaceAdminController {
 
     /**
      * @param path
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("clear")
-    public String clear(String path, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String clear(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)
@@ -369,17 +349,14 @@ public class CmsPlaceAdminController {
     /**
      * @param path
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String path, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(String path, Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
         if (ControllerUtils.verifyNotEmpty("deptId", user.getDeptId(), model)

@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.support.RequestContextUtils;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -106,18 +107,15 @@ public class CmsContentAdminController {
      * @param contentParameters
      * @param draft
      * @param checked
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
+    @Csrf
     public String save(CmsContent entity, CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters,
-            Boolean draft, Boolean checked, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+            Boolean draft, Boolean checked, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
@@ -202,7 +200,8 @@ public class CmsContentAdminController {
                             quote.setEditor(entity.getEditor());
                             quote.setExpiryDate(entity.getExpiryDate());
                             service.save(quote);
-                            service.saveTagAndAttribute(site.getId(), user.getId(), quote.getId(), contentParameters, cmsModel, category, attribute);
+                            service.saveTagAndAttribute(site.getId(), user.getId(), quote.getId(), contentParameters, cmsModel,
+                                    category, attribute);
                             if (null != checked && checked) {
                                 templateComponent.createCategoryFile(site, newCategory, null, null);
                             }
@@ -240,35 +239,31 @@ public class CmsContentAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("check")
-    public String check(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        return checkOrUncheck(false, ids, _csrf, request, session, model);
+    @Csrf
+    public String check(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
+        return checkOrUncheck(false, ids, request, session, model);
     }
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("uncheck")
-    public String uncheck(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        return checkOrUncheck(true, ids, _csrf, request, session, model);
+    @Csrf
+    public String uncheck(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
+        return checkOrUncheck(true, ids, request, session, model);
     }
 
-    private String checkOrUncheck(boolean uncheck, Long[] ids, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    private String checkOrUncheck(boolean uncheck, Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             SysUser user = ControllerUtils.getAdminFromSession(session);
@@ -304,17 +299,14 @@ public class CmsContentAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("refresh")
-    public String refresh(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String refresh(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             SysUser user = ControllerUtils.getAdminFromSession(session);
@@ -329,25 +321,22 @@ public class CmsContentAdminController {
                 }
             }
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "refresh.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+                    "refresh.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param entity
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("related")
-    public String related(CmsContentRelated entity, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String related(CmsContentRelated entity, HttpServletRequest request, HttpSession session, ModelMap model) {
         CmsContent content = service.getEntity(entity.getContentId());
         CmsContent related = service.getEntity(entity.getRelatedContentId());
         SysSite site = siteComponent.getSite(request.getServerName());
@@ -375,17 +364,14 @@ public class CmsContentAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("unrelated")
-    public String unrelated(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String unrelated(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
         CmsContentRelated entity = cmsContentRelatedService.getEntity(id);
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
@@ -409,18 +395,14 @@ public class CmsContentAdminController {
     /**
      * @param ids
      * @param categoryId
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("move")
-    public String move(Long[] ids, Integer categoryId, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String move(Long[] ids, Integer categoryId, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
@@ -459,8 +441,8 @@ public class CmsContentAdminController {
             }
             logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "move.content", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(" to ").append(category.getId())
-                            .append(":").append(category.getName()).toString()));
+                    CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(" to ")
+                            .append(category.getId()).append(":").append(category.getName()).toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -483,18 +465,14 @@ public class CmsContentAdminController {
     /**
      * @param id
      * @param modelId
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("changeModel")
-    public String changeModel(Long id, String modelId, String _csrf, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String changeModel(Long id, String modelId, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
@@ -521,17 +499,14 @@ public class CmsContentAdminController {
     /**
      * @param id
      * @param sort
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("sort")
-    public String sort(Long id, int sort, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String sort(Long id, int sort, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         SysDept dept = sysDeptService.getEntity(user.getDeptId());
@@ -562,17 +537,14 @@ public class CmsContentAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("publish")
-    public String publish(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String publish(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         if (CommonUtils.notEmpty(ids)) {
@@ -603,21 +575,15 @@ public class CmsContentAdminController {
      * @param queryEntity
      * @param orderField
      * @param orderType
-     * @param _csrf
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping("export")
-    public ExcelView export(CmsContentQuery queryEntity, String orderField, String orderType, String _csrf,
-            HttpServletRequest request, ModelMap model) {
+    @Csrf
+    public ExcelView export(CmsContentQuery queryEntity, String orderField, String orderType, HttpServletRequest request,
+            ModelMap model) {
         ExcelView view = new ExcelView();
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            List<String> list = new ArrayList<>();
-            list.add((String) model.get(CommonConstants.ERROR));
-            view.getDataList().add(list);
-            return view;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
@@ -718,17 +684,14 @@ public class CmsContentAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = ControllerUtils.getAdminFromSession(session);
         if (CommonUtils.notEmpty(ids)) {
@@ -751,17 +714,14 @@ public class CmsContentAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("recycle")
-    public String recycle(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String recycle(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
@@ -789,17 +749,14 @@ public class CmsContentAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("realDelete")
-    public String realDelete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String realDelete(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             service.realDelete(site.getId(), ids);

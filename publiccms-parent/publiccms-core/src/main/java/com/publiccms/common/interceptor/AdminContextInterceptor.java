@@ -44,6 +44,9 @@ public class AdminContextInterceptor extends WebContextInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (unsafe(request, response, handler)) {
+            return false;
+        }
         String path = urlPathHelper.getLookupPathForRequest(request);
         String ctxPath = urlPathHelper.getOriginatingContextPath(request);
         if (adminContextPath.equals(path)) {

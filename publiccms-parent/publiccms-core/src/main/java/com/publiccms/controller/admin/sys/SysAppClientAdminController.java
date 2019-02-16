@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -39,17 +40,14 @@ public class SysAppClientAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "enable", method = RequestMethod.POST)
-    public String enable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String enable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = siteComponent.getSite(request.getServerName());
@@ -66,17 +64,14 @@ public class SysAppClientAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "disable", method = RequestMethod.POST)
-    public String disable(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String disable(Long id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysAppClient entity = service.getEntity(id);
         if (null != entity) {
             SysSite site = siteComponent.getSite(request.getServerName());

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -66,18 +67,15 @@ public class CmsTemplateAdminController {
     /**
      * @param path
      * @param content
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(String path, String content, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String save(String path, String content, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -118,18 +116,15 @@ public class CmsTemplateAdminController {
     /**
      * @param path
      * @param content
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("savePlace")
-    public String savePlace(String path, String content, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String savePlace(String path, String content, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -167,18 +162,15 @@ public class CmsTemplateAdminController {
     /**
      * @param files 
      * @param path
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("doUpload")
-    public String upload(MultipartFile[] files, String path, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String upload(MultipartFile[] files, String path, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -208,17 +200,14 @@ public class CmsTemplateAdminController {
 
     /**
      * @param path
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String path, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -247,17 +236,14 @@ public class CmsTemplateAdminController {
 
     /**
      * @param path
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("deletePlace")
-    public String deletePlace(String path, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String deletePlace(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -282,18 +268,15 @@ public class CmsTemplateAdminController {
      * @param path
      * @param metadata
      * @param content
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("savePlaceMetaData")
-    public String savePlaceMetaData(String path, @ModelAttribute CmsPlaceMetadata metadata, String content, String _csrf,
+    @Csrf
+    public String savePlaceMetaData(String path, @ModelAttribute CmsPlaceMetadata metadata, String content,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
@@ -320,18 +303,15 @@ public class CmsTemplateAdminController {
      * @param path
      * @param metadata
      * @param content
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("saveMetaData")
-    public String saveMetadata(String path, @ModelAttribute CmsPageMetadata metadata, String content, String _csrf,
+    @Csrf
+    public String saveMetadata(String path, @ModelAttribute CmsPageMetadata metadata, String content,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path)) {
             if (path.endsWith(CommonConstants.SEPARATOR) || CommonUtils.empty(path)) {
                 path += CommonConstants.getDefaultPage();
@@ -360,17 +340,14 @@ public class CmsTemplateAdminController {
 
     /**
      * @param path
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("publishPlace")
-    public String publishPlace(String path, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String publishPlace(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         try {
             SysSite site = siteComponent.getSite(request.getServerName());
             if (CommonUtils.notEmpty(path) && site.isUseSsi()) {
@@ -391,16 +368,13 @@ public class CmsTemplateAdminController {
 
     /**
      * @param path
-     * @param _csrf
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping("publish")
-    public String publish(String path, String _csrf, HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String publish(String path, HttpServletRequest request, ModelMap model) {
         try {
             SysSite site = siteComponent.getSite(request.getServerName());
             publish(site, path);

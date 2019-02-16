@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -43,17 +44,14 @@ public class SysTaskAdminController {
 
     /**
      * @param entity
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysTask entity, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String save(SysTask entity, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             SysTask oldEntity = service.getEntity(entity.getId());
@@ -81,19 +79,18 @@ public class SysTaskAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("runOnce")
-    public String runOnce(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String runOnce(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             scheduledTask.runOnce(site, id);
@@ -106,19 +103,19 @@ public class SysTaskAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("pause")
-    public String pause(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String pause(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+                    ) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, ScheduledTask.TASK_STATUS_PAUSE);
@@ -132,19 +129,18 @@ public class SysTaskAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("resume")
-    public String resume(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String resume(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
@@ -158,19 +154,18 @@ public class SysTaskAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("recreate")
-    public String recreate(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String recreate(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
@@ -184,19 +179,18 @@ public class SysTaskAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysTask entity = service.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(id);

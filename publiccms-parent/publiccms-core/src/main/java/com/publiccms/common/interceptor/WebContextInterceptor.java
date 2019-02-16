@@ -1,6 +1,9 @@
 package com.publiccms.common.interceptor;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -12,14 +15,17 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysSite;
@@ -47,6 +53,34 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private LogLoginService logLoginService;
     protected LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+    private Map<HandlerMethod, Boolean> cache = new HashMap<>();
+
+    protected boolean unsafe(HttpServletRequest request, HttpServletResponse response, Object handler) {
+        if (handler instanceof HandlerMethod) {
+            boolean flag = false;
+            Boolean temp = cache.get(handler);
+            if (null != temp && temp) {
+                flag = true;
+            } else {
+                HandlerMethod handlerMethod = (HandlerMethod) handler;
+                flag = handlerMethod.hasMethodAnnotation(Csrf.class);
+                cache.put(handlerMethod, flag);
+            }
+            if (flag) {
+                String csrf = request.getParameter("_csrf");
+                if (null == csrf || !csrf.equals(ControllerUtils.getAdminToken(request))) {
+                    try {
+                        String message = LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                                "verify.notEquals._csrf");
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN, message);
+                    } catch (IOException e) {
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
     protected SysUser initUser(SysUser user, String channel, String cookiesName, SysSite site, HttpServletRequest request,
             HttpServletResponse response) {
@@ -93,13 +127,19 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-        HttpSession session = request.getSession();
+        if (unsafe(request, response, handler)) {
+            return false;
+        }
+        HttpSession session = request.getSession(false);
         SysSite site = siteComponent.getSite(request.getServerName());
         SysUser user = initUser(ControllerUtils.getUserFromSession(session), LogLoginService.CHANNEL_WEB,
                 CommonConstants.getCookiesUser(), site, request, response);
         if (null != user) {
             Date date = ControllerUtils.getUserTimeFromSession(session);
             if (null == date || date.before(DateUtils.addSeconds(new Date(), -30))) {
+                if (null == session) {
+                    session = request.getSession(true);
+                }
                 SysUser entity = sysUserService.getEntity(user.getId());
                 if (null != entity && !entity.isDisabled() && null != site && !site.isDisabled()
                         && site.getId() == entity.getSiteId()) {

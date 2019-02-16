@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -43,18 +44,15 @@ public class SysAppTokenAdminController {
     /**
      * @param id
      * @param expiryDate
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("issue")
-    public String issue(Integer id, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date expiryDate, String _csrf,
+    @Csrf
+    public String issue(Integer id, @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") Date expiryDate,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         SysApp entity = appService.getEntity(id);
         if (null != entity) {
@@ -72,17 +70,14 @@ public class SysAppTokenAdminController {
 
     /**
      * @param authToken
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String authToken, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(String authToken, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         SysAppToken entity = service.getEntity(authToken);
         Long userId = ControllerUtils.getAdminFromSession(session).getId();

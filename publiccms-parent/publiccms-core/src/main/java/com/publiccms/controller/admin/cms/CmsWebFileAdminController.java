@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -50,19 +51,15 @@ public class CmsWebFileAdminController {
     /**
      * @param path
      * @param content
-     *            // * @param _csrf
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(String path, String content, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String save(String path, String content, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(path)) {
             try {
@@ -91,7 +88,6 @@ public class CmsWebFileAdminController {
     /**
      * @param files
      * @param path
-     * @param _csrf
      * @param override
      * @param request
      * @param session
@@ -99,11 +95,9 @@ public class CmsWebFileAdminController {
      * @return view name
      */
     @RequestMapping("doUpload")
-    public String upload(MultipartFile[] files, String path, String _csrf, Boolean override, HttpServletRequest request,
+    @Csrf
+    public String upload(MultipartFile[] files, String path, Boolean override, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (null != files) {
             SysSite site = siteComponent.getSite(request.getServerName());
             try {
@@ -132,19 +126,16 @@ public class CmsWebFileAdminController {
     /**
      * @param fileNames
      * @param path
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("check")
+    @Csrf
     @ResponseBody
-    public boolean check(@RequestParam("fileNames[]") String[] fileNames, String path, String _csrf, HttpServletRequest request,
+    public boolean check(@RequestParam("fileNames[]") String[] fileNames, String path, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return false;
-        }
         if (null != fileNames) {
             SysSite site = siteComponent.getSite(request.getServerName());
             for (String fileName : fileNames) {
@@ -160,17 +151,14 @@ public class CmsWebFileAdminController {
 
     /**
      * @param paths
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String[] paths, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(String[] paths, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(paths)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             for (String path : paths) {
@@ -189,17 +177,14 @@ public class CmsWebFileAdminController {
 
     /**
      * @param path
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("zip")
-    public String doZip(String path, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String doZip(String path, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(path)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getWebFilePath(site, path);
@@ -228,18 +213,15 @@ public class CmsWebFileAdminController {
      * @param path
      * @param encoding
      * @param here
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("unzip")
-    public String doUnzip(String path, String encoding, boolean here, String _csrf, HttpServletRequest request,
+    @Csrf
+    public String doUnzip(String path, String encoding, boolean here, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path) && path.toLowerCase().endsWith(".zip")) {
             SysSite site = siteComponent.getSite(request.getServerName());
             String filePath = siteComponent.getWebFilePath(site, path);
@@ -265,18 +247,15 @@ public class CmsWebFileAdminController {
     /**
      * @param path
      * @param fileName
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("createDirectory")
-    public String createDirectory(String path, String fileName, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String createDirectory(String path, String fileName, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (null != path && CommonUtils.notEmpty(fileName)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             path = path + CommonConstants.SEPARATOR + fileName;

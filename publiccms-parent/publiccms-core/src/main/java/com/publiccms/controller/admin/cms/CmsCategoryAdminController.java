@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -61,19 +62,16 @@ public class CmsCategoryAdminController {
      * @param entity
      * @param attribute
      * @param categoryParameters
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
+    @Csrf
     public String save(CmsCategory entity, CmsCategoryAttribute attribute,
-            @ModelAttribute CmsCategoryParameters categoryParameters, String _csrf, HttpServletRequest request,
+            @ModelAttribute CmsCategoryParameters categoryParameters, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             CmsCategory oldEntity = service.getEntity(entity.getId());
@@ -111,18 +109,15 @@ public class CmsCategoryAdminController {
     /**
      * @param ids
      * @param parentId
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("move")
-    public String move(Integer[] ids, Integer parentId, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String move(Integer[] ids, Integer parentId, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         CmsCategory parent = service.getEntity(parentId);
         if (CommonUtils.notEmpty(ids) && (null == parent || null != parent && site.getId() == parent.getSiteId())) {
@@ -156,18 +151,15 @@ public class CmsCategoryAdminController {
     /**
      * @param ids
      * @param max
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("publish")
-    public String publish(Integer[] ids, Integer max, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String publish(Integer[] ids, Integer max, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             try {
@@ -190,18 +182,15 @@ public class CmsCategoryAdminController {
     /**
      * @param id
      * @param typeId
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("changeType")
-    public String changeType(Integer id, Integer typeId, String _csrf, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String changeType(Integer id, Integer typeId, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(id)) {
             service.changeType(id, typeId);
@@ -247,17 +236,14 @@ public class CmsCategoryAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Integer[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(Integer[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             service.delete(site.getId(), ids);

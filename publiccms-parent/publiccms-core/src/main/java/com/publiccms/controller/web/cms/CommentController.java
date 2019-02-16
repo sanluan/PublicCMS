@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -47,7 +48,6 @@ public class CommentController {
 
     /**
      * @param entity
-     * @param _csrf
      * @param returnUrl
      * @param request
      * @param session
@@ -55,7 +55,8 @@ public class CommentController {
      * @return
      */
     @RequestMapping("save")
-    public String save(CmsComment entity, String _csrf, String returnUrl, HttpServletRequest request, HttpSession session,
+    @Csrf
+    public String save(CmsComment entity, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -64,10 +65,6 @@ public class CommentController {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
-                || ControllerUtils.verifyCustom("contribute", null == user, model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-        }
 
         if (null != entity.getId()) {
             CmsComment oldEntity = service.getEntity(entity.getId());

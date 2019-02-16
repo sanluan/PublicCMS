@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -54,18 +55,15 @@ public class CmsCategoryTypeAdminController {
     /**
      * @param entity
      * @param categoryTypeParameters
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsCategoryType entity, @ModelAttribute CmsCategoryTypeParameters categoryTypeParameters, String _csrf,
+    @Csrf
+    public String save(CmsCategoryType entity, @ModelAttribute CmsCategoryTypeParameters categoryTypeParameters,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         if (null != entity.getId()) {
             CmsCategoryType oldEntity = service.getEntity(entity.getId());
@@ -97,19 +95,18 @@ public class CmsCategoryTypeAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Integer id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String delete(Integer id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         CmsCategoryType entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)
-                    || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)
                     || ControllerUtils.verifyNotGreaterThen("category",
                             categoryService
                                     .getPage(new CmsCategoryQuery(site.getId(), null, true, id, null, null, false), null, null)

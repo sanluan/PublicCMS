@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -67,6 +68,7 @@ public class ContentController {
     protected SiteComponent siteComponent;
     @Autowired
     protected ConfigComponent configComponent;
+
     /**
      * 保存内容
      * 
@@ -75,27 +77,27 @@ public class ContentController {
      * @param attribute
      * @param contentParameters
      * @param returnUrl
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
+    @Csrf
     public String save(CmsContent entity, Boolean draft, CmsContentAttribute attribute,
-            @ModelAttribute CmsContentParameters contentParameters, String returnUrl, String _csrf, HttpServletRequest request,
+            @ModelAttribute CmsContentParameters contentParameters, String returnUrl, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
+            ;
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
-                || ControllerUtils.verifyNotEmpty("categoryModel", categoryModel, model)
+        if (ControllerUtils.verifyNotEmpty("categoryModel", categoryModel, model)
                 || ControllerUtils.verifyCustom("contribute", null == user, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
@@ -114,7 +116,8 @@ public class ContentController {
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
-            entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties : CmsContentAdminController.ignorePropertiesWithUrl);
+            entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
+                    : CmsContentAdminController.ignorePropertiesWithUrl);
             if (null != entity.getId()) {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.content",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));

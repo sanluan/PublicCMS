@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -66,18 +67,17 @@ public class SysModuleAdminController {
      * @param entity
      * @param moduleParameters
      * @param oldId
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysModule entity, @ModelAttribute SysModuleParameters moduleParameters, String oldId, String _csrf,
+    @Csrf
+    public String save(SysModule entity, @ModelAttribute SysModuleParameters moduleParameters, String oldId,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (CommonUtils.notEmpty(oldId)) {
@@ -117,6 +117,7 @@ public class SysModuleAdminController {
      */
     @RequestMapping("virify")
     @ResponseBody
+    @Csrf
     public boolean virify(String id, String oldId) {
         if (CommonUtils.notEmpty(id)) {
             if (CommonUtils.notEmpty(oldId) && !id.equals(oldId) && null != service.getEntity(id)
@@ -129,17 +130,16 @@ public class SysModuleAdminController {
 
     /**
      * @param id
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(String id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
+    @Csrf
+    public String delete(String id, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysModule entity = service.getEntity(id);
@@ -151,9 +151,9 @@ public class SysModuleAdminController {
             List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, id, null, null).getList();
             roleModuleService.deleteByModuleId(id);
             dealRoleAuthorized(roleModuleList);
-            logOperateService.save(new LogOperate(siteComponent.getSite(request.getServerName()).getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.module", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(siteComponent.getSite(request.getServerName()).getId(),
+                    ControllerUtils.getAdminFromSession(session).getId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.module",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         menuMessageComponent.clear();
         return CommonConstants.TEMPLATE_DONE;

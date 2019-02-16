@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -38,41 +39,35 @@ public class CmsCommentAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("check")
-    public String check(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String check(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             SysUser user = ControllerUtils.getAdminFromSession(session);
             service.check(site.getId(), ids, user.getId());
-            logOperateService.save(new LogOperate(site.getId(), user.getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "cmsComment.place", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "cmsComment.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("uncheck")
-    public String uncheck(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String uncheck(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             SysSite site = siteComponent.getSite(request.getServerName());
             service.uncheck(site.getId(), ids);
@@ -85,17 +80,14 @@ public class CmsCommentAdminController {
 
     /**
      * @param ids
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return operate result
      */
     @RequestMapping("delete")
-    public String delete(Long[] ids, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String delete(Long[] ids, HttpServletRequest request, HttpSession session, ModelMap model) {
         SysSite site = siteComponent.getSite(request.getServerName());
         if (CommonUtils.notEmpty(ids)) {
             service.delete(site.getId(), ids);
