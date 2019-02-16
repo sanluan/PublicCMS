@@ -67,6 +67,8 @@ subprojects{
         collectionsVersion = "4.3"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.8.1"
+        // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+        log4jVersion = "2.11.2"
     }
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8

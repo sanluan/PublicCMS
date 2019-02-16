@@ -54,12 +54,14 @@
         <version.mysql>8.0.15</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <version.poi>4.0.1</version.poi>
-         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+        <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <version.fileupload>1.4</version.fileupload>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <version.collections>4.3</version.collections>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <version.lang>3.8.1</version.lang>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <version.log4j>2.11.2</version.log4j>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -77,6 +79,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.lang}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${version.log4j}</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
@@ -103,7 +110,7 @@
                 <artifactId>mybatis</artifactId>
                 <version>${version.mybatis}</version>
             </dependency>
-            
+
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis-spring</artifactId>
