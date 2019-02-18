@@ -18,6 +18,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.CorsInterceptor;
+import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.interceptor.WebContextInterceptor;
 import com.publiccms.common.view.DefaultWebFreeMarkerView;
 import com.publiccms.common.view.WebFreeMarkerView;
@@ -39,6 +40,8 @@ public class WebConfig implements WebMvcConfigurer {
     private WebContextInterceptor webInterceptor;
     @Autowired
     private CorsInterceptor corsInterceptor;
+    @Autowired
+    private CsrfInterceptor csrfInterceptor;
     @Autowired
     private CacheComponent cacheComponent;
 
@@ -99,6 +102,7 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(csrfInterceptor);
         registry.addInterceptor(webInterceptor);
         registry.addInterceptor(corsInterceptor);
     }

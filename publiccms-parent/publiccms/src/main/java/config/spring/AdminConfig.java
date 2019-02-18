@@ -19,6 +19,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.AdminContextInterceptor;
+import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.view.AdminFreeMarkerView;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -42,7 +43,9 @@ public class AdminConfig implements WebMvcConfigurer {
     @Autowired
     private CacheComponent cacheComponent;
     @Autowired
-    private AdminContextInterceptor adminInitializingInterceptor;
+    private AdminContextInterceptor adminInterceptor;
+    @Autowired
+    private CsrfInterceptor csrfInterceptor;
 
     @Bean
     public LocaleResolver localeResolver(Environment env) {
@@ -111,6 +114,7 @@ public class AdminConfig implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(adminInitializingInterceptor);
+        registry.addInterceptor(csrfInterceptor);
+        registry.addInterceptor(adminInterceptor);
     }
 }

@@ -1,9 +1,5 @@
 package com.publiccms.common.interceptor;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -13,17 +9,14 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogLogin;
 import com.publiccms.entities.sys.SysSite;
@@ -51,13 +44,9 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private LogLoginService logLoginService;
     protected LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
-    private Map<HandlerMethod, Boolean> methodCache = new HashMap<>();
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-        if (unsafe(request, response, handler)) {
-            return false;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         request.setAttribute("site", site);
         HttpSession session = request.getSession(false);
@@ -93,33 +82,6 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
         }
         localeChangeInterceptor.preHandle(request, response, handler);
         return true;
-    }
-
-    protected boolean unsafe(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (handler instanceof HandlerMethod) {
-            boolean flag = false;
-            Boolean temp = methodCache.get(handler);
-            if (null != temp && temp) {
-                flag = true;
-            } else {
-                HandlerMethod handlerMethod = (HandlerMethod) handler;
-                flag = handlerMethod.hasMethodAnnotation(Csrf.class);
-                methodCache.put(handlerMethod, flag);
-            }
-            if (flag) {
-                String csrf = request.getParameter("_csrf");
-                if (null == csrf || !csrf.equals(ControllerUtils.getAdminToken(request))) {
-                    try {
-                        String message = LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
-                                "verify.notEquals._csrf");
-                        response.sendError(HttpServletResponse.SC_FORBIDDEN, message);
-                    } catch (IOException e) {
-                    }
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     protected SysUser initUser(SysUser user, String channel, String cookiesName, SysSite site, HttpServletRequest request,

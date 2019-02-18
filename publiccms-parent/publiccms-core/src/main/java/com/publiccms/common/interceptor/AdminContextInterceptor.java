@@ -44,9 +44,6 @@ public class AdminContextInterceptor extends WebContextInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        if (unsafe(request, response, handler)) {
-            return false;
-        }
         SysSite site = siteComponent.getSite(request.getServerName());
         request.setAttribute("site", site);
         String path = urlPathHelper.getLookupPathForRequest(request);
