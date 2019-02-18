@@ -6,7 +6,7 @@ buildscript {
 	/**
 	dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.13.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.3.RELEASE")
     }*/
 }
 
@@ -78,7 +78,7 @@ subprojects{
 
     repositories {
 		mavenLocal()
-		jcenter()
+		// jcenter()
         mavenCentral()
     }
     eclipse {
