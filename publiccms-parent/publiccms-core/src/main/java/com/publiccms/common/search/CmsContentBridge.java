@@ -1,10 +1,10 @@
 package com.publiccms.common.search;
 
-
 import org.apache.lucene.document.Document;
 import org.hibernate.search.bridge.FieldBridge;
 import org.hibernate.search.bridge.LuceneOptions;
 
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.logic.component.BeanComponent;
@@ -21,7 +21,7 @@ public class CmsContentBridge implements FieldBridge {
         CmsContent content = (CmsContent) value;
         CmsContentAttribute entity = BeanComponent.getContentAttributeService().getEntity(content.getId());
         if (null != entity) {
-            content.setDescription(content.getDescription() + entity.getText());
+            content.setDescription(content.getDescription() + CommonConstants.BLANK_SPACE + entity.getSearchText());
         }
     }
 }

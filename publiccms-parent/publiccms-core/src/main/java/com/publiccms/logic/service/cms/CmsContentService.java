@@ -25,6 +25,7 @@ import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
+import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
@@ -36,7 +37,6 @@ import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
-import com.publiccms.views.pojo.entities.ExtendField;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
@@ -63,6 +63,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     private static String[] SEARCHABLE_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
             Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE,
             Config.INPUTTYPE_TAGTYPE };
+
+    private static String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "editor" };
     /**
      * 
      */
@@ -170,13 +172,17 @@ public class CmsContentService extends BaseService<CmsContent> {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
-
             if (entity.isHasImages() || entity.isHasFiles()) {
                 contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
                         entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
             }
+            String text = HtmlUtils.removeHtmlTag(attribute.getText());
+            attribute.setWordCount(text.length());
+            if (CommonUtils.empty(entity.getDescription())) {
+                entity.setDescription(StringUtils.substring(text, 0, 300));
+            }
 
-            List<ExtendField> modelExtendList = cmsModel.getExtendList();
+            List<SysExtendField> modelExtendList = cmsModel.getExtendList();
             List<SysExtendField> categoryExtendList = null;
             Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
             if (null != category && null != extendService.getEntity(category.getExtendId())) {
@@ -190,64 +196,66 @@ public class CmsContentService extends BaseService<CmsContent> {
                 }
             }
             if (CommonUtils.notEmpty(map)) {
+                StringBuilder sb = new StringBuilder();
+                if (cmsModel.isSearchable() && CommonUtils.notEmpty(text)) {
+                    sb.append(text).append(CommonConstants.BLANK_SPACE);
+                }
                 List<String> dictionaryValueList = new ArrayList<>();
-                if (CommonUtils.notEmpty(modelExtendList)) {
-                    for (ExtendField extendField : modelExtendList) {
-                        if (ArrayUtils.contains(SEARCHABLE_INPUT_TYPES, extendField.getInputType())) {
-                            if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType())) {
-                                String[] values = StringUtils.split(map.get(extendField.getId().getCode()),
-                                        CommonConstants.COMMA);
-                                if (CommonUtils.notEmpty(values)) {
-                                    for (String value : values) {
-                                        dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
-                                    }
-                                }
-                            } else {
-                                String value = map.get(extendField.getId().getCode());
-                                if (null != value) {
-                                    dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
-                                }
-                            }
-                        }
-                    }
-                }
-                if (CommonUtils.notEmpty(categoryExtendList)) {
-                    for (SysExtendField extendField : categoryExtendList) {
-                        if (ArrayUtils.contains(SEARCHABLE_INPUT_TYPES, extendField.getInputType())) {
-                            if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType())) {
-                                String[] values = StringUtils.split(map.get(extendField.getId().getCode()),
-                                        CommonConstants.COMMA);
-                                if (CommonUtils.notEmpty(values)) {
-                                    for (String value : values) {
-                                        dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
-                                    }
-                                }
-                            } else {
-                                String value = map.get(extendField.getId().getCode());
-                                if (null != value) {
-                                    dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
-                                }
-                            }
-                        }
-                    }
-                }
+                dealExtend(modelExtendList, dictionaryValueList, map, sb);
+                dealExtend(categoryExtendList, dictionaryValueList, map, sb);
                 if (CommonUtils.notEmpty(dictionaryValueList)) {
                     String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
                     entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
                 }
-            } else {
-                entity.setDictionaryValues(null);
-            }
-
-            if (CommonUtils.notEmpty(map)) {
                 attribute.setData(ExtendUtils.getExtendString(map));
+                attribute.setSearchText(sb.toString());
             } else {
                 attribute.setData(null);
+                entity.setDictionaryValues(null);
+                if (cmsModel.isSearchable()) {
+                    attribute.setSearchText(text);
+                } else {
+                    attribute.setSearchText(null);
+                }
             }
 
             attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
             if (CommonUtils.notEmpty(contentParameters.getContentRelateds())) {
                 cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
+            }
+        }
+
+    }
+
+    private void dealExtend(List<SysExtendField> extendList, List<String> dictionaryValueList, Map<String, String> map,
+            StringBuilder sb) {
+        if (CommonUtils.notEmpty(extendList)) {
+            for (SysExtendField extendField : extendList) {
+                if (extendField.isSearchable()) {
+                    if (ArrayUtils.contains(SEARCHABLE_INPUT_TYPES, extendField.getInputType())) {
+                        if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType())) {
+                            String[] values = StringUtils.split(map.get(extendField.getId().getCode()), CommonConstants.COMMA);
+                            if (CommonUtils.notEmpty(values)) {
+                                for (String value : values) {
+                                    dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
+                                }
+                            }
+                        } else {
+                            String value = map.get(extendField.getId().getCode());
+                            if (null != value) {
+                                dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
+                            }
+                        }
+                    } else {
+                        String value = map.get(extendField.getId().getCode());
+                        if (null != value) {
+                            if (ArrayUtils.contains(FULLTEXT_SEARCHABLE_EDITOR, extendField.getInputType())) {
+                                value = HtmlUtils.removeHtmlTag(value);
+                            }
+                            sb.append(value).append(CommonConstants.BLANK_SPACE);
+                        }
+                    }
+                }
             }
         }
     }

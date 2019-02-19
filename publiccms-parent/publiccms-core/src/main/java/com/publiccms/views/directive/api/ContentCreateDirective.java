@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.controller.admin.cms.CmsContentAdminController;
@@ -140,6 +142,14 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     }
                     logOperateService.save(new LogOperate(site.getId(), user.getId(), app.getChannel(), "save.content",
                             RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                }
+                String text = HtmlUtils.removeHtmlTag(attribute.getText());
+                attribute.setWordCount(text.length());
+                if (CommonUtils.empty(entity.getDescription())) {
+                    entity.setDescription(StringUtils.substring(text, 0, 300));
+                }
+                if (cmsModel.isSearchable()) {
+                    attribute.setSearchText(text);
                 }
                 attributeService.updateAttribute(entity.getId(), attribute);
                 handler.put("result", "success");

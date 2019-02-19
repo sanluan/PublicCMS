@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.publiccms.entities.sys.SysExtendField;
 
 /**
  *
@@ -27,7 +28,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     private String acceptParameters;
     private Integer cacheTime;
     private String contentType;
-    private List<ExtendField> extendList;
+    private List<SysExtendField> extendList;
 
     /**
      * 
@@ -166,14 +167,14 @@ public class CmsPageMetadata implements java.io.Serializable {
     /**
      * @return
      */
-    public List<ExtendField> getExtendList() {
+    public List<SysExtendField> getExtendList() {
         return extendList;
     }
 
     /**
      * @param extendList
      */
-    public void setExtendList(List<ExtendField> extendList) {
+    public void setExtendList(List<SysExtendField> extendList) {
         this.extendList = extendList;
     }
 

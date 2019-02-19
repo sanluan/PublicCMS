@@ -175,3 +175,9 @@ ALTER TABLE `sys_domain`
     MODIFY COLUMN `path` varchar(100) NULL DEFAULT NULL COMMENT '路径' AFTER `wild`;
 ALTER TABLE `sys_role_authorized` 
     MODIFY COLUMN `url` varchar(100) NOT NULL COMMENT '授权地址' AFTER `role_id`;
+-- 2019-02-19 --
+ALTER TABLE `cms_content_attribute` 
+    ADD COLUMN `search_text` longtext NULL COMMENT '全文索引文本' AFTER `data`;
+ALTER TABLE `sys_extend_field` 
+	ADD COLUMN `searchable` tinyint(1) NOT NULL COMMENT '是否可搜索' AFTER `required`,
+	MODIFY COLUMN `maxlength` int(11) NULL DEFAULT NULL COMMENT '最大长度' AFTER `searchable`;

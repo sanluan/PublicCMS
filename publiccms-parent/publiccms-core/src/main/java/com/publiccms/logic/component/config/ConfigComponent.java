@@ -23,10 +23,10 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.sys.SysConfigData;
 import com.publiccms.entities.sys.SysConfigDataId;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.sys.SysConfigDataService;
-import com.publiccms.views.pojo.entities.ExtendField;
 import com.publiccms.views.pojo.entities.SysConfig;
 
 /**
@@ -103,13 +103,13 @@ public class ConfigComponent implements SiteCache {
      * @param locale
      * @return field list
      */
-    public List<ExtendField> getFieldList(SysSite site, String code, Boolean customed, Locale locale) {
-        List<ExtendField> fieldList = new ArrayList<>();
+    public List<SysExtendField> getFieldList(SysSite site, String code, Boolean customed, Locale locale) {
+        List<SysExtendField> fieldList = new ArrayList<>();
         if ((null == customed || !customed) && CommonUtils.notEmpty(configPluginList)) {
             for (Config config : configPluginList) {
                 String configCode = config.getCode(site);
                 if (null != configCode && configCode.equals(code)) {
-                    List<ExtendField> extendFieldList = config.getExtendFieldList(site, locale);
+                    List<SysExtendField> extendFieldList = config.getExtendFieldList(site, locale);
                     if (null != extendFieldList) {
                         fieldList.addAll(extendFieldList);
                     }

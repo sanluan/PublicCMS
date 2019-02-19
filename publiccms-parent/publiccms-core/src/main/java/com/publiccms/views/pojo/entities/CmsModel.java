@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.publiccms.entities.sys.SysExtendField;
 
 /**
  *
@@ -25,10 +26,11 @@ public class CmsModel implements java.io.Serializable {
     private boolean onlyUrl;
     private boolean hasImages;
     private boolean hasFiles;
+    private boolean searchable = true;
     private List<String> fieldList;
     private List<String> requiredFieldList;
-    private Map<String,String> fieldTextMap;
-    private List<ExtendField> extendList;
+    private Map<String, String> fieldTextMap;
+    private List<SysExtendField> extendList;
 
     /**
      * @return
@@ -71,7 +73,6 @@ public class CmsModel implements java.io.Serializable {
     public void setTemplatePath(String templatePath) {
         this.templatePath = templatePath;
     }
-
 
     /**
      * @return
@@ -144,6 +145,21 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
+     * @return the searchable
+     */
+    public boolean isSearchable() {
+        return searchable;
+    }
+
+    /**
+     * @param searchable
+     *            the searchable to set
+     */
+    public void setSearchable(boolean searchable) {
+        this.searchable = searchable;
+    }
+
+    /**
      * @return the fieldList
      */
     public List<String> getFieldList() {
@@ -151,7 +167,8 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
-     * @param fieldList the fieldList to set
+     * @param fieldList
+     *            the fieldList to set
      */
     public void setFieldList(List<String> fieldList) {
         this.fieldList = fieldList;
@@ -165,7 +182,8 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
-     * @param requiredFieldList the requiredFieldList to set
+     * @param requiredFieldList
+     *            the requiredFieldList to set
      */
     public void setRequiredFieldList(List<String> requiredFieldList) {
         this.requiredFieldList = requiredFieldList;
@@ -179,7 +197,8 @@ public class CmsModel implements java.io.Serializable {
     }
 
     /**
-     * @param fieldTextMap the fieldTextMap to set
+     * @param fieldTextMap
+     *            the fieldTextMap to set
      */
     public void setFieldTextMap(Map<String, String> fieldTextMap) {
         this.fieldTextMap = fieldTextMap;
@@ -188,14 +207,14 @@ public class CmsModel implements java.io.Serializable {
     /**
      * @return
      */
-    public List<ExtendField> getExtendList() {
+    public List<SysExtendField> getExtendList() {
         return extendList;
     }
 
     /**
      * @param extendList
      */
-    public void setExtendList(List<ExtendField> extendList) {
+    public void setExtendList(List<SysExtendField> extendList) {
         this.extendList = extendList;
     }
 

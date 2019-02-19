@@ -4,6 +4,7 @@ package com.publiccms.entities.sys;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -17,6 +18,7 @@ public class SysExtendFieldId implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "扩展ID", condition = true)
+    @JsonIgnore
     private int extendId;
     @GeneratorColumn(title = "字段")
     private String code;

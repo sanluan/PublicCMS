@@ -11,9 +11,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.EmailComponent;
-import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  *
@@ -66,15 +66,15 @@ public class EmailTemplateConfigComponent implements Config {
     }
 
     @Override
-    public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
+    public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
-            List<ExtendField> extendFieldList = new ArrayList<>();
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, false, CONFIG_EMAIL_TITLE,
+            List<SysExtendField> extendFieldList = new ArrayList<>();
+            extendFieldList.add(new SysExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, false, CONFIG_EMAIL_TITLE,
                     getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_TITLE), null));
-            extendFieldList.add(new ExtendField(CONFIG_EMAIL_PATH, INPUTTYPE_TEMPLATE, false, CONFIG_EMAIL_PATH,
+            extendFieldList.add(new SysExtendField(CONFIG_EMAIL_PATH, INPUTTYPE_TEMPLATE, false, CONFIG_EMAIL_PATH,
                     getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH), null));
-            extendFieldList.add(new ExtendField(CONFIG_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES,
+            extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES,
                     getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES), "30"));
             return extendFieldList;
         } else {

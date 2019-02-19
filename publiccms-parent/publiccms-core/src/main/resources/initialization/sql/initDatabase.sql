@@ -146,6 +146,7 @@ CREATE TABLE `cms_content_attribute` (
   `source` varchar(50) default NULL COMMENT '内容来源',
   `source_url` varchar(1000) default NULL COMMENT '来源地址',
   `data` longtext COMMENT '数据JSON',
+  `search_text` longtext NULL COMMENT '全文索引文本',
   `text` longtext COMMENT '内容',
   `word_count` int(11) NOT NULL COMMENT '字数',
   PRIMARY KEY  (`content_id`)
@@ -572,7 +573,8 @@ CREATE TABLE `sys_extend_field` (
   `extend_id` int(11) NOT NULL COMMENT '扩展ID',
   `code` varchar(20) NOT NULL COMMENT '编码',
   `required` tinyint(1) NOT NULL COMMENT '是否必填',
-  `maxlength` int(11) default NULL,
+  `searchable` tinyint(1) NOT NULL COMMENT '是否可搜索',
+  `maxlength` int(11) default NULL COMMENT '最大长度',
   `name` varchar(20) NOT NULL COMMENT '名称',
   `description` varchar(100) default NULL COMMENT '解释',
   `input_type` varchar(20) NOT NULL COMMENT '表单类型',

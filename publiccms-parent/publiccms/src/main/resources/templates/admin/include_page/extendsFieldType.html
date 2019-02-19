@@ -1,5 +1,6 @@
+<#assign maxlengthDisableTypes=['user','content','category','categoryType','tagType','date','datetime','file','image','video']/>
 <#macro extendsFieldType inputName value=''>
-<#local inputTypes={'text':t.pageMessage('input'),'number':t.pageMessage('number'),'file':t.pageMessage('file'),'image':t.pageMessage('image'),'video':t.pageMessage('video'),'password':t.pageMessage('password'),'editor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'kindeditor':t.pageMessage('kindeditor'),'textarea':t.pageMessage('textarea'),'date':t.pageMessage('date'),'datetime':t.pageMessage('datetime'),'template':t.pageMessage('template_path'),'boolean':t.pageMessage('true_or_false'),'user':t.pageMessage('user'),'content':t.pageMessage('content'),'category':t.pageMessage('category'),'dictionary':t.pageMessage('dictionary'),'categoryType':t.pageMessage('category_type'),'tagType':t.pageMessage('tag_type')}/>
+<#local inputTypes={'text':t.pageMessage('input')+'-'+t.pageMessage('fulltext_search'),'number':t.pageMessage('number')+'-'+t.pageMessage('dictionary_search'),'file':t.pageMessage('file')+'-'+t.pageMessage('fulltext_search'),'image':t.pageMessage('image')+'-'+t.pageMessage('fulltext_search'),'video':t.pageMessage('video')+'-'+t.pageMessage('fulltext_search'),'password':t.pageMessage('password')+'-'+t.pageMessage('fulltext_search'),'editor':t.pageMessage('ueditor')+'-'+t.pageMessage('fulltext_search'),'ckeditor':t.pageMessage('ckeditor')+'-'+t.pageMessage('fulltext_search'),'kindeditor':t.pageMessage('kindeditor')+'-'+t.pageMessage('fulltext_search'),'textarea':t.pageMessage('textarea')+'-'+t.pageMessage('fulltext_search'),'date':t.pageMessage('date')+'-'+t.pageMessage('fulltext_search'),'datetime':t.pageMessage('datetime')+'-'+t.pageMessage('fulltext_search'),'template':t.pageMessage('template_path')+'-'+t.pageMessage('fulltext_search'),'boolean':t.pageMessage('true_or_false')+'-'+t.pageMessage('dictionary_search'),'user':t.pageMessage('user')+'-'+t.pageMessage('dictionary_search'),'content':t.pageMessage('content')+'-'+t.pageMessage('dictionary_search'),'category':t.pageMessage('category')+'-'+t.pageMessage('dictionary_search'),'dictionary':t.pageMessage('dictionary')+'-'+t.pageMessage('dictionary_search'),'categoryType':t.pageMessage('category_type')+'-'+t.pageMessage('dictionary_search'),'tagType':t.pageMessage('tag_type')+'-'+t.pageMessage('dictionary_search')}/>
 <#assign flag=.now?long/>
 <select class="combox combox_${flag}" name="${inputName!}">
     <#list inputTypes as a,inputType>
@@ -13,8 +14,7 @@ $('.combox_${flag}').on('change',function(){
     }else{
         $(this).closest('tr').find('a.btnLook').hide().prev().removeClass('required').hide();
     }
-    console.log($(this).val());
-    if(-1<$.inArray($(this).val(), ['user','content','category','categoryType','boolean','tagType','date','datetime','file','image','video'])){
+    if(-1<$.inArray($(this).val(), [<#list maxlengthDisableTypes as t>'${t}'<#sep>,</#list>])){
         $(this).closest('tr').find('input[type=number]').hide();
     }else{
         $(this).closest('tr').find('input[type=number]').show();

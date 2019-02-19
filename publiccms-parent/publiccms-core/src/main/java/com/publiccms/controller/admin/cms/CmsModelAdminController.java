@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -59,6 +60,12 @@ public class CmsModelAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         modelComponent.clear(site.getId());
+        if (!(CommonUtils.notEmpty(entity.getFieldList()) && entity.getFieldList().contains("content"))) {
+            entity.setSearchable(false);
+        }
+        if (CommonUtils.notEmpty(entity.getExtendList())) {
+            entity.getExtendList().sort((e1, e2) -> e1.getSort() - e2.getSort());
+        }
         if (CommonUtils.notEmpty(modelId)) {
             Map<String, CmsModel> modelMap = modelComponent.getMap(site);
             modelMap.remove(modelId);

@@ -12,6 +12,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -20,8 +21,9 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
 @Entity
 @Table(name = "sys_extend_field")
 @DynamicUpdate
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SysExtendField implements java.io.Serializable {
-    
+
     /**
      * 
      */
@@ -29,6 +31,8 @@ public class SysExtendField implements java.io.Serializable {
     private SysExtendFieldId id;
     @GeneratorColumn(title = "必填")
     private boolean required;
+    @GeneratorColumn(title = "可搜索")
+    private boolean searchable;
     @GeneratorColumn(title = "最大长度")
     private Integer maxlength;
     @GeneratorColumn(title = "名称")
@@ -47,18 +51,29 @@ public class SysExtendField implements java.io.Serializable {
     public SysExtendField() {
     }
 
-    public SysExtendField(SysExtendFieldId id, boolean required, String name, String inputType, int sort) {
+    public SysExtendField(String code, String inputType, boolean required, String name, String description, String defaultValue) {
+        this.id = new SysExtendFieldId(0, code);
+        this.inputType = inputType;
+        this.required = required;
+        this.name = name;
+        this.description = description;
+        this.defaultValue = defaultValue;
+    }
+
+    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, String name, String inputType, int sort) {
         this.id = id;
         this.required = required;
+        this.searchable = searchable;
         this.name = name;
         this.inputType = inputType;
         this.sort = sort;
     }
 
-    public SysExtendField(SysExtendFieldId id, boolean required, Integer maxlength, String name, String description,
-            String inputType, String defaultValue, String dictionaryId, int sort) {
+    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, Integer maxlength, String name,
+            String description, String inputType, String defaultValue, String dictionaryId, int sort) {
         this.id = id;
         this.required = required;
+        this.searchable = searchable;
         this.maxlength = maxlength;
         this.name = name;
         this.description = description;
@@ -86,6 +101,15 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setRequired(boolean required) {
         this.required = required;
+    }
+
+    @Column(name = "searchable", nullable = false)
+    public boolean isSearchable() {
+        return this.searchable;
+    }
+
+    public void setSearchable(boolean searchable) {
+        this.searchable = searchable;
     }
 
     @Column(name = "maxlength")

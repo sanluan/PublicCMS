@@ -1,5 +1,5 @@
 <#include "../include_page/extendsFieldType.html"/>
-<#macro extends name extendList=[]>
+<#macro extends name extendList=[] searchable=false>
 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
     <thead>
         <tr>
@@ -11,6 +11,8 @@
             <th type="number" name="${name}[#index#].maxlength" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'maxlength'/></th>
             <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><@t.page 'dictionary'/></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':100,'rows':2,'cols':30}"><@t.page 'description'/></th>
+            <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10"><@t.page 'searchable'/></th></#if>
+            <th type="number" name="${name}[#index#].sort" fieldClass="required digits" defaultVal="0" size="4"><@t.page 'sort'/></th>
             <th type="del" width="60"><@t.page 'operate'/></th>
         </tr>
     </thead>
@@ -34,7 +36,7 @@
                     <input type="text" name="${name}[${extend?index}].defaultValue" value="${(extend.defaultValue)!}" size="10"/>
                 </td>
                 <td>
-                    <input type="number" name="${name}[${extend?index}].maxlength" min="1" value="${(extend.maxlength)!}"<#if ['user','content','category','categoryType','tagType','date','datetime','file','image','video']?seq_contains(extend.inputType)> style="display:none"</#if> size="10"/>
+                    <input type="number" name="${name}[${extend?index}].maxlength" min="1" value="${(extend.maxlength)!}"<#if maxlengthDisableTypes?seq_contains(extend.inputType)> style="display:none"</#if> size="10"/>
                 </td>
                 <td>
                     <@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
@@ -45,6 +47,14 @@
                 </td>
                 <td>
                     <textarea type="text" name="${name}[${extend?index}].description" rows="2" cols="30" maxlength="100">${(extend.description)!}</textarea>
+                </td>
+                <#if searchable>
+                    <td>
+                        <input type="checkbox" name="${name}[${extend?index}].searchable" ${extend.searchable?then(' checked="true"','')?no_esc}/>
+                    </td>
+                </#if>
+                <td>
+                    <input type="number" name="${name}[${extend?index}].sort" value="${(extend.sort)!}" size="10"/>
                 </td>
                 <td>
                     <a href="javascript:void(0)" class="btnDel"><@t.page 'button.delete'/></a>

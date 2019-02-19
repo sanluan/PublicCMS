@@ -3,6 +3,7 @@ package com.publiccms.views.pojo.entities;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.publiccms.entities.sys.SysExtendField;
 
 /**
  *
@@ -18,7 +19,7 @@ public class SysConfig implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private String code;
     private String description;
-    private List<ExtendField> extendList;
+    private List<SysExtendField> extendList;
 
     /**
      * @return
@@ -51,14 +52,14 @@ public class SysConfig implements java.io.Serializable {
     /**
      * @return
      */
-    public List<ExtendField> getExtendList() {
+    public List<SysExtendField> getExtendList() {
         return extendList;
     }
 
     /**
      * @param extendList
      */
-    public void setExtendList(List<ExtendField> extendList) {
+    public void setExtendList(List<SysExtendField> extendList) {
         this.extendList = extendList;
     }
 }

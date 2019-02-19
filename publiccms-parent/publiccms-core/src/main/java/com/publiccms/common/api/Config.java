@@ -5,8 +5,8 @@ import java.util.Locale;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.LanguagesUtils;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  *
@@ -127,7 +127,7 @@ public interface Config {
      * @param locale
      * @return config extend field list
      */
-    public List<ExtendField> getExtendFieldList(SysSite site, Locale locale);
+    public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale);
 
     /**
      * @param site

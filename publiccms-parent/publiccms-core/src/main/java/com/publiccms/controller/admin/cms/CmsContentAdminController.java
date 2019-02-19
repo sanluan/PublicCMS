@@ -31,7 +31,6 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
-import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
@@ -228,14 +227,8 @@ public class CmsContentAdminController {
         if (null == entity.getPublishDate()) {
             entity.setPublishDate(now);
         }
-
         if (null != attribute.getText()) {
             attribute.setText(new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET));
-            String text = HtmlUtils.removeHtmlTag(attribute.getText());
-            attribute.setWordCount(text.length());
-            if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(StringUtils.substring(text, 0, 300));
-            }
         }
     }
 
