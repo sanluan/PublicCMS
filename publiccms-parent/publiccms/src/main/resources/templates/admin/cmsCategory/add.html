@@ -68,7 +68,7 @@ function clickAddTagType(){
                 <dl class="nowrap">
                     <dt><@t.page 'code'/>:</dt>
                     <dd>
-                        <input class="required" name="code" remote="cmsCategory/virify.do<#if id?has_content>?oldCode=${(a.code)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.category.code'/>" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/>
+                        <input class="required" name="code" remote="cmsCategory/virify.do<#if id?has_content>?oldCode=${(a.code)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/>
                     </dd>
                 </dl>
 <#include "../include_page/tagTypes.html"/>

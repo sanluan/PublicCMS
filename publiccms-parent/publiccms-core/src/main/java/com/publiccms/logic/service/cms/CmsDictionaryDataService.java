@@ -79,6 +79,15 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
         return dao.getList(siteId, dictionaryId);
     }
 
+    /**
+     * @param siteId
+     * @param dictionaryIds
+     * @return the number of entities deleted
+     */
+    public int delete(short siteId, String[] dictionaryIds) {
+        return dao.delete(siteId, dictionaryIds);
+    }
+
     @Autowired
     private CmsDictionaryDataDao dao;
 

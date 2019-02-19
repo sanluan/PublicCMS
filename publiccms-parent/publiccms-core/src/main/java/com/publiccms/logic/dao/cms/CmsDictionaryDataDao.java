@@ -20,7 +20,7 @@ import com.publiccms.common.handler.QueryHandler;
 public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
 
     /**
-     * @param siteId 
+     * @param siteId
      * @param dictionaryId
      * @return results page
      */
@@ -31,6 +31,18 @@ public class CmsDictionaryDataDao extends BaseDao<CmsDictionaryData> {
         queryHandler.condition("bean.id.dictionaryId = :dictionaryId").setParameter("dictionaryId", dictionaryId);
         queryHandler.order("bean.id.value asc");
         return (List<CmsDictionaryData>) getList(queryHandler);
+    }
+
+    /**
+     * @param siteId
+     * @param dictionaryIds
+     * @return the number of entities deleted
+     */
+    public int delete(short siteId, String[] dictionaryIds) {
+        QueryHandler queryHandler = getQueryHandler("delete from CmsDictionaryData bean");
+        queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.id.dictionaryId in (:dictionaryIds)").setParameter("dictionaryIds", dictionaryIds);
+        return delete(queryHandler);
     }
 
     @Override

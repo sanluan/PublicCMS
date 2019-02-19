@@ -161,9 +161,6 @@
                     <#if dictionary.multiple>
                         <#if value?has_content>
                             <#local values=value?split(',')/>
-                            <#list values as v>
-                                <input type="hidden" name="dictionaryValues" value="${extend.dictionaryId}_${v}"/>
-                            </#list>
                         </#if>
                         <@_dictionaryDataList dictionaryId=extend.dictionaryId>
                             <#list list as d>
@@ -174,9 +171,6 @@
                             </#list>
                         </@_dictionaryDataList>
                     <#else>
-                        <#if value?has_content>
-                            <input type="hidden" name="dictionaryValues" value="${extend.dictionaryId}_${value!}"/>
-                        </#if>
                         <select class="combox" name="${inputName}"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>>
                         <@_dictionaryDataList dictionaryId=extend.dictionaryId>
                             <#list list as d>

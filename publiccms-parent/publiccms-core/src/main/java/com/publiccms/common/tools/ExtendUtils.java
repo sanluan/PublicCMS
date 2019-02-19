@@ -33,10 +33,8 @@ public class ExtendUtils {
                 extendFieldMap.put(extend.getName(), extend.getValue());
             }
             for (SysExtendField extend : sysExtendFieldList) {
-                String value = extendFieldMap.get(extend.getId().getCode());
-                if (null == value) {
-                    map.put(extend.getId().getCode(), extend.getDefaultValue());
-                } else {
+                String value = extendFieldMap.getOrDefault(extend.getId().getCode(), extend.getDefaultValue());
+                if (null != value) {
                     map.put(extend.getId().getCode(), value);
                 }
             }
@@ -53,10 +51,9 @@ public class ExtendUtils {
         List<ExtendData> extendDataList = new ArrayList<>();
         if (CommonUtils.notEmpty(extendFieldList)) {
             for (ExtendField extend : extendFieldList) {
-                if (null == extendData.get(extend.getId().getCode())) {
-                    extendDataList.add(new ExtendData(extend.getId().getCode(), extend.getDefaultValue()));
-                } else {
-                    extendDataList.add(new ExtendData(extend.getId().getCode(), extendData.get(extend.getId().getCode())));
+                String value = extendData.getOrDefault(extend.getId().getCode(), extend.getDefaultValue());
+                if (null != value) {
+                    extendDataList.add(new ExtendData(extend.getId().getCode(), value));
                 }
             }
         }
@@ -76,10 +73,8 @@ public class ExtendUtils {
                 extendFieldMap.put(extend.getName(), extend.getValue());
             }
             for (ExtendField extend : extendFieldList) {
-                String value = extendFieldMap.get(extend.getId().getCode());
-                if (null == value) {
-                    map.put(extend.getId().getCode(), extend.getDefaultValue());
-                } else {
+                String value = extendFieldMap.getOrDefault(extend.getId().getCode(), extend.getDefaultValue());
+                if (null != value) {
                     map.put(extend.getId().getCode(), value);
                 }
             }

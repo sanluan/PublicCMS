@@ -27,7 +27,6 @@ public class CmsContentParameters implements java.io.Serializable {
     private List<ExtendData> modelExtendDataList;
     private List<ExtendData> categoryExtendDataList;
     private List<CmsTag> tags;
-    private List<String> dictionaryValues;
 
     /**
      * @return
@@ -141,20 +140,5 @@ public class CmsContentParameters implements java.io.Serializable {
      */
     public void setTags(List<CmsTag> tags) {
         this.tags = tags;
-    }
-
-    /**
-     * @return the dictionaryValues
-     */
-    public List<String> getDictionaryValues() {
-        return dictionaryValues;
-    }
-
-    /**
-     * @param dictionaryValues
-     *            the dictionaryValues to set
-     */
-    public void setDictionaryValues(List<String> dictionaryValues) {
-        this.dictionaryValues = dictionaryValues;
     }
 }

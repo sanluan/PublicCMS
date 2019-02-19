@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.FacetPageHandler;
@@ -59,6 +60,9 @@ public class CmsContentService extends BaseService<CmsContent> {
     private CmsContentAttributeService attributeService;
     @Autowired
     private CmsContentRelatedService cmsContentRelatedService;
+    private static String[] SEARCHABLE_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
+            Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE,
+            Config.INPUTTYPE_TAGTYPE };
     /**
      * 
      */
@@ -166,20 +170,17 @@ public class CmsContentService extends BaseService<CmsContent> {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
-            List<String> dictionaryValueList = contentParameters.getDictionaryValues();
-            if (null != dictionaryValueList) {
-                String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
-                entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
-            }
+
             if (entity.isHasImages() || entity.isHasFiles()) {
                 contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
                         entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
             }
 
             List<ExtendField> modelExtendList = cmsModel.getExtendList();
+            List<SysExtendField> categoryExtendList = null;
             Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
             if (null != category && null != extendService.getEntity(category.getExtendId())) {
-                List<SysExtendField> categoryExtendList = extendFieldService.getList(category.getExtendId());
+                categoryExtendList = extendFieldService.getList(category.getExtendId());
                 Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
                         categoryExtendList);
                 if (CommonUtils.notEmpty(map)) {
@@ -187,6 +188,55 @@ public class CmsContentService extends BaseService<CmsContent> {
                 } else {
                     map = categoryMap;
                 }
+            }
+            if (CommonUtils.notEmpty(map)) {
+                List<String> dictionaryValueList = new ArrayList<>();
+                if (CommonUtils.notEmpty(modelExtendList)) {
+                    for (ExtendField extendField : modelExtendList) {
+                        if (ArrayUtils.contains(SEARCHABLE_INPUT_TYPES, extendField.getInputType())) {
+                            if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType())) {
+                                String[] values = StringUtils.split(map.get(extendField.getId().getCode()),
+                                        CommonConstants.COMMA);
+                                if (CommonUtils.notEmpty(values)) {
+                                    for (String value : values) {
+                                        dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
+                                    }
+                                }
+                            } else {
+                                String value = map.get(extendField.getId().getCode());
+                                if (null != value) {
+                                    dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
+                                }
+                            }
+                        }
+                    }
+                }
+                if (CommonUtils.notEmpty(categoryExtendList)) {
+                    for (SysExtendField extendField : categoryExtendList) {
+                        if (ArrayUtils.contains(SEARCHABLE_INPUT_TYPES, extendField.getInputType())) {
+                            if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType())) {
+                                String[] values = StringUtils.split(map.get(extendField.getId().getCode()),
+                                        CommonConstants.COMMA);
+                                if (CommonUtils.notEmpty(values)) {
+                                    for (String value : values) {
+                                        dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
+                                    }
+                                }
+                            } else {
+                                String value = map.get(extendField.getId().getCode());
+                                if (null != value) {
+                                    dictionaryValueList.add(extendField.getId().getCode() + "_" + value);
+                                }
+                            }
+                        }
+                    }
+                }
+                if (CommonUtils.notEmpty(dictionaryValueList)) {
+                    String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
+                    entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
+                }
+            } else {
+                entity.setDictionaryValues(null);
             }
 
             if (CommonUtils.notEmpty(map)) {
