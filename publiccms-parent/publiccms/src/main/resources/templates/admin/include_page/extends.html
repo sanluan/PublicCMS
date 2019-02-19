@@ -24,7 +24,7 @@
                     <input type="text" name="${name}[${extend?index}].id.code" value="${extend.id.code}" size="10" class="required letterstart"/>
                 </td>
                 <td>
-                    <@extendsFieldType name+'['+extend?index+'].inputType' extend.inputType/>
+                    <@extendsFieldType name+'['+extend?index+'].inputType' extend.inputType searchable/>
                 </td>
                 <td>
                     <input type="text" name="${name}[${extend?index}].name" value="${extend.name}" size="10" class="required" maxlength="20"/>

@@ -60,7 +60,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     private CmsContentAttributeService attributeService;
     @Autowired
     private CmsContentRelatedService cmsContentRelatedService;
-    private static String[] SEARCHABLE_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
+    private static String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
             Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE,
             Config.INPUTTYPE_TAGTYPE };
 
@@ -232,7 +232,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (CommonUtils.notEmpty(extendList)) {
             for (SysExtendField extendField : extendList) {
                 if (extendField.isSearchable()) {
-                    if (ArrayUtils.contains(SEARCHABLE_INPUT_TYPES, extendField.getInputType())) {
+                    if (ArrayUtils.contains(DICTIONARY_INPUT_TYPES, extendField.getInputType())) {
                         if (Config.INPUTTYPE_DICTIONARY.equals(extendField.getInputType())) {
                             String[] values = StringUtils.split(map.get(extendField.getId().getCode()), CommonConstants.COMMA);
                             if (CommonUtils.notEmpty(values)) {
