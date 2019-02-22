@@ -182,4 +182,4 @@ ALTER TABLE `sys_extend_field`
 	ADD COLUMN `searchable` tinyint(1) NOT NULL COMMENT '是否可搜索' AFTER `required`,
 	MODIFY COLUMN `maxlength` int(11) NULL DEFAULT NULL COMMENT '最大长度' AFTER `searchable`;
 -- 2019-02-22 --
-UPDATE `sys_module` SET `parent_id` = 'config_menu';
+UPDATE `sys_module` SET `parent_id` = 'config_menu' where id = 'domain_list';
