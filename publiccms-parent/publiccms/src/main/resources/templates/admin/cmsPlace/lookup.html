@@ -45,12 +45,12 @@
                     </ul>
                 <#else>
                     <#if site.useStatic&&(object.publishPath)?has_content>
-                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.sitePath+object.publishPath}'});return false;">
+                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.sitePath+(object.publishPath?starts_with('/'))?then(object.publishPath?keep_after('/'),object.publishPath)}'});return false;">
                             [<@t.page 'static_page'/>] ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </a>
                     </#if>
                     <#if (object.useDynamic)?has_content&&object.useDynamic>
-                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.dynamicPath+path}<#if (object.acceptParameters)?has_content><#list object.acceptParameters?split(',') as a><#if a?is_first>?<#else>#</#if>${a}=</#list></#if>'});return false;">
+                        <a href="javascript" onclick="$.bringBack({itemType:'page',title:'${(object.alias)!}',url:'${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if (object.acceptParameters)?has_content><#list object.acceptParameters?split(',') as a><#if a?is_first>?<#else>#</#if>${a}=</#list></#if>'});return false;">
                             [<@t.page 'dynamic_page'/>] ${(object.alias)?has_content?then(object.alias+' ('+a.fileName+')',a.fileName)}
                         </a>
                     </#if>

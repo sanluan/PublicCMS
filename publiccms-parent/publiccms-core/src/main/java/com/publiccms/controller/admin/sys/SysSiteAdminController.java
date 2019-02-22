@@ -106,6 +106,16 @@ public class SysSiteAdminController {
         if (!entity.isUseStatic()) {
             entity.setUseSsi(false);
         }
+        if (null == entity.getDynamicPath()) {
+            entity.setDynamicPath(CommonConstants.SEPARATOR);
+        } else if (!entity.getDynamicPath().endsWith(CommonConstants.SEPARATOR)) {
+            entity.setDynamicPath(entity.getDynamicPath() + CommonConstants.SEPARATOR);
+        }
+        if (null == entity.getSitePath()) {
+            entity.setSitePath(CommonConstants.SEPARATOR);
+        } else if (!entity.getSitePath().endsWith(CommonConstants.SEPARATOR)) {
+            entity.setSitePath(entity.getSitePath() + CommonConstants.SEPARATOR);
+        }
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {

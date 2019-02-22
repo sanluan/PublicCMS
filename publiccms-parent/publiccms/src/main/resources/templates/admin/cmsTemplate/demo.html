@@ -30,7 +30,7 @@ function templateDefaultConfig(type,name){
     $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
     switch (type){
     case 'index':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/index.html');
+        $('input[name=path]',navTab.getCurrentPanel()).val('/');
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
         $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
     <#if site.useStatic>

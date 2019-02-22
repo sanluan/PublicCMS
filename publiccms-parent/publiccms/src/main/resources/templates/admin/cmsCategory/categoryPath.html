@@ -3,7 +3,7 @@
     <ul class="tree treeFolder expand">
         <li>
         <#if site.useStatic>
-            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>${category.code}/index.html</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/index.html</a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.id'/>}.html</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${getMd5(category.code+category.id)}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'help.method.md5'/>(<@t.page 'category.code'/>+<@t.page 'category.id'/>)}.html</a>
         </#if>
