@@ -10,12 +10,11 @@
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
+            <#if parent?has_content>
                 <li>
-                    <label><@t.page 'dept.parent'/>:</label>
-                    <input name="parentId" type="hidden" value="${parentId!}"/>
-                    <input readonly="readonly" name="parentName" type="text" size="10" value="${(parent.name)!}"/>
-                    <a class="btnLook" href="sysDept/lookup.html" width="920" lookupGroup=""><@t.page 'dept.select'/></a>
+                    <label><@t.page 'dept.parent'/>:${(parent.name)!}</label>
                 </li>
+            </#if>
                 <li>
                     <label><@t.page 'dept.master'/>:</label>
                     <#include "../include_page/userId.html"/>
