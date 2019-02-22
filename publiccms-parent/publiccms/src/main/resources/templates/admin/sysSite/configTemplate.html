@@ -40,6 +40,10 @@ server {
         proxy_send_timeout 30;
         proxy_read_timeout 10;
         proxy_pass http://cms;
+        
+        #<@t.page 'server_config.proxy'/>
+        #proxy_pass http://cms/publiccms/;
+        #proxy_cookie_path /publiccms/ /;
     }
 
     location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
@@ -64,7 +68,7 @@ server {
 <#if dynamicPath!=sitePath||dynamicPort!=sitePort||!(dynamicPath=sitePath&&dynamicLocation!=siteLocation)>
 #${a.name} <@t.page 'server_config.static'/>
 server {
-    listen       ${sitePort?has_content?then(sitePort,80)};
+    listen       ${sitePort?has_content?then(sitePort,80)}; #<@t.page 'server_config.port'/>
     server_name  ${sitePath};
     <#if a.useSsi>
     ssi on;
@@ -94,24 +98,6 @@ server {
 upstream cms {
     #<@t.page 'server_config.upstream'/>
     server localhost:8080  weight=1;
-}
-server {
-    listen       80 default; #<@t.page 'server_config.port'/>
-    location / {
-        proxy_redirect off;
-        proxy_set_header Host $host:$server_port;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto  $scheme;
-        proxy_connect_timeout 5;
-        proxy_send_timeout 30;
-        proxy_read_timeout 10;
-        proxy_pass http://cms;
-        
-        #<@t.page 'server_config.proxy'/>
-        #proxy_pass http://cms/publiccms/;
-        #proxy_cookie_path /publiccms/ /;
-    }
 }</textarea>
             <span class="info"><@t.page 'server_config.nginx_common_description'/></span>
         </dd>
