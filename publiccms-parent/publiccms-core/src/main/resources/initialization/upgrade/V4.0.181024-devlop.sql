@@ -183,3 +183,4 @@ ALTER TABLE `sys_extend_field`
 	MODIFY COLUMN `maxlength` int(11) NULL DEFAULT NULL COMMENT '最大长度' AFTER `searchable`;
 -- 2019-02-22 --
 UPDATE `sys_module` SET `parent_id` = 'config_menu' where id = 'domain_list';
+UPDATE `sys_module` SET `authorized_url` =  'cmsPlace/export',`url` = 'cmsPlace/dataList' WHERE `id` ='place_data_list';
