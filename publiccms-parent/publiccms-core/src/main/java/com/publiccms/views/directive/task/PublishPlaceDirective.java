@@ -33,8 +33,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
         if (site.isUseSsi()) {
-            String filePath = siteComponent.getWebTemplateFilePath(site,
-                    TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
+            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             if (CmsFileUtils.isFile(filePath)) {
                 Map<String, Boolean> map = new LinkedHashMap<>();
                 try {
@@ -54,8 +53,7 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     private Map<String, Boolean> dealDir(SysSite site, String path) {
         path = path.replace("\\", CommonConstants.SEPARATOR).replace("//", CommonConstants.SEPARATOR);
         Map<String, Boolean> map = new LinkedHashMap<>();
-        String realPath = siteComponent.getWebTemplateFilePath(site,
-                TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + path);
+        String realPath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
         List<FileInfo> list = CmsFileUtils.getFileList(realPath, null);
         for (FileInfo fileInfo : list) {
             String filePath = path + fileInfo.getFileName();
@@ -63,8 +61,8 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
                 map.putAll(dealDir(site, filePath + CommonConstants.SEPARATOR));
             } else {
                 try {
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(siteComponent.getWebTemplateFilePath(site,
-                            TemplateComponent.INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + filePath));
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(
+                            siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + filePath));
                     templateComponent.staticPlace(site, filePath, metadata);
                     map.put(filePath, true);
                 } catch (IOException | TemplateException e) {

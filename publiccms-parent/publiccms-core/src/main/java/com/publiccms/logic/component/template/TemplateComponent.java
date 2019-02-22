@@ -347,7 +347,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, model);
-            String placeTemplatePath = INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + templatePath;
+            String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
             String templateFullPath = SiteComponent.getFullTemplatePath(site, placeTemplatePath);
             FreeMarkerUtils.generateFileByFile(templateFullPath, siteComponent.getWebFilePath(site, placeTemplatePath),
                     webConfiguration, model);
