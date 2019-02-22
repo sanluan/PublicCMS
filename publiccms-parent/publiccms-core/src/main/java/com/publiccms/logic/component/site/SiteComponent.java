@@ -117,25 +117,36 @@ public class SiteComponent implements Cache {
 
     /**
      * @param serverName
-     * @return view name prefix
+     * @param path
+     * @return view name
      */
-    public String getViewNamePrefix(String serverName) {
+    public String getViewName(String serverName, String path) {
         SysDomain sysDomain = getDomain(serverName);
         SysSite site = getSite(serverName);
-        return getViewNamePrefix(site, sysDomain);
+        return getViewName(site, sysDomain, path);
     }
 
     /**
      * @param site
      * @param sysDomain
-     * @return view name prefix
+     * @param path
+     * @return view name
      */
-    public String getViewNamePrefix(SysSite site, SysDomain sysDomain) {
-        String path = CommonUtils.empty(sysDomain.getPath()) ? CommonConstants.BLANK
-                : sysDomain.getPath() + CommonConstants.SEPARATOR;
+    public String getViewName(SysSite site, SysDomain sysDomain, String path) {
+        if (CommonUtils.notEmpty(sysDomain.getPath())) {
+            if (path.startsWith(CommonConstants.SEPARATOR) || sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
+                if (path.startsWith(CommonConstants.SEPARATOR) && sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
+                    path = sysDomain.getPath() + path.substring(1);
+                } else {
+                    path = sysDomain.getPath() + path;
+                }
+            } else {
+                path = sysDomain.getPath() + CommonConstants.SEPARATOR + path;
+            }
+        }
         return getFullTemplatePath(site, path);
     }
-    
+
     /**
      * @param site
      * @param sysDomain
@@ -205,7 +216,7 @@ public class SiteComponent implements Cache {
     public String getWebFilePath(SysSite site, String filePath) {
         return webFilePath + getFullFileName(site.getId(), filePath);
     }
-    
+
     /**
      * @param site
      * @param filePath
@@ -276,7 +287,7 @@ public class SiteComponent implements Cache {
     public String getWebTemplateFilePath(SysSite site, String templatePath) {
         return getWebTemplateFilePath() + getFullTemplatePath(site, templatePath);
     }
-    
+
     /**
      * @param site
      * @param templatePath

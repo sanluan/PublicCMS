@@ -60,7 +60,7 @@ public class WebDispatcherServlet extends ErrorToNotFoundDispatcherServlet {
         } else if (viewName.startsWith(GLOBLE_URL_PREFIX)) {
             multiSiteViewName = viewName.substring(GLOBLE_URL_PREFIX_LENGTH);
         } else {
-            multiSiteViewName = getSiteComponent().getViewNamePrefix(request.getServerName()) + viewName;
+            multiSiteViewName = getSiteComponent().getViewName(request.getServerName(), viewName);
         }
         return super.resolveViewName(multiSiteViewName, model, locale, request);
     }

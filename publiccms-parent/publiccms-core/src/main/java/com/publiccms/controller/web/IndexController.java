@@ -121,7 +121,7 @@ public class IndexController {
     private String getViewName(SysSite site, Long id, Integer pageIndex, String requestPath, String body,
             HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         SysDomain domain = siteComponent.getDomain(request.getServerName());
-        String fullRequestPath = siteComponent.getViewNamePrefix(site, domain) + requestPath;
+        String fullRequestPath = siteComponent.getViewName(site, domain, requestPath);
         String templatePath = siteComponent.getWebTemplateFilePath() + fullRequestPath;
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {
