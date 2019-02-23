@@ -109,10 +109,10 @@ public class TemplateComponent implements Cache {
             model.put("pageIndex", pageIndex);
             AbstractFreemarkerView.exposeSite(model, site);
             filePath = FreeMarkerUtils.generateStringByString(filePath, webConfiguration, model);
-            model.put("url", site.getSitePath() + filePath);
             if (filePath.startsWith(CommonConstants.SEPARATOR)) {
                 filePath = filePath.substring(1);
             }
+            model.put("url", site.getSitePath() + filePath);
             String staticFilePath;
             if (filePath.endsWith(CommonConstants.SEPARATOR)) {
                 staticFilePath = filePath + CommonConstants.getDefaultPage();
