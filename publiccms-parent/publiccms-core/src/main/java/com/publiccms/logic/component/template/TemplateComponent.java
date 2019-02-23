@@ -113,16 +113,19 @@ public class TemplateComponent implements Cache {
             if (filePath.startsWith(CommonConstants.SEPARATOR)) {
                 filePath = filePath.substring(1);
             }
+            String staticFilePath;
             if (filePath.endsWith(CommonConstants.SEPARATOR)) {
-                filePath += CommonConstants.getDefaultPage();
+                staticFilePath = filePath + CommonConstants.getDefaultPage();
+            } else {
+                staticFilePath = filePath;
             }
             if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
-                int index = filePath.lastIndexOf(CommonConstants.DOT);
-                filePath = filePath.substring(0, index) + CommonConstants.UNDERLINE + pageIndex
-                        + filePath.substring(index, filePath.length());
+                int index = staticFilePath.lastIndexOf(CommonConstants.DOT);
+                staticFilePath = staticFilePath.substring(0, index) + CommonConstants.UNDERLINE + pageIndex
+                        + staticFilePath.substring(index, staticFilePath.length());
             }
-            FreeMarkerUtils.generateFileByFile(fullTemplatePath, siteComponent.getWebFilePath(site, filePath), webConfiguration,
-                    model);
+            FreeMarkerUtils.generateFileByFile(fullTemplatePath, siteComponent.getWebFilePath(site, staticFilePath),
+                    webConfiguration, model);
         }
         return filePath;
     }
