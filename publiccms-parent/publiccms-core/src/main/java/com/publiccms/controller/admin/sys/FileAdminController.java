@@ -3,6 +3,8 @@ package com.publiccms.controller.admin.sys;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,23 +58,27 @@ public class FileAdminController {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
-            String fileName = CmsFileUtils.getUploadFileName(suffix);
-            try {
-                CmsFileUtils.upload(file, siteComponent.getWebFilePath(site, fileName));
-                model.put("field", field);
-                model.put(field, fileName);
-                String fileType = CmsFileUtils.getFileType(suffix);
-                model.put("fileType", fileType);
-                model.put("fileSize", file.getSize());
-                if (CommonUtils.notEmpty(originalField)) {
-                    model.put("originalField", originalField);
-                    model.put(originalField, originalName);
+            if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
+                String fileName = CmsFileUtils.getUploadFileName(suffix);
+                try {
+                    CmsFileUtils.upload(file, siteComponent.getWebFilePath(site, fileName));
+                    model.put("field", field);
+                    model.put(field, fileName);
+                    String fileType = CmsFileUtils.getFileType(suffix);
+                    model.put("fileType", fileType);
+                    model.put("fileSize", file.getSize());
+                    if (CommonUtils.notEmpty(originalField)) {
+                        model.put("originalField", originalField);
+                        model.put(originalField, originalName);
+                    }
+                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            originalName, fileType, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                            fileName));
+                } catch (IllegalStateException | IOException e) {
+                    log.error(e.getMessage(), e);
+                    return "common/uploadResult";
                 }
-                logUploadService
-                        .save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, originalName,
-                                fileType, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-            } catch (IllegalStateException | IOException e) {
-                log.error(e.getMessage(), e);
+            } else {
                 return "common/uploadResult";
             }
         }

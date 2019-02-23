@@ -68,7 +68,7 @@ public class UeditorAdminController {
 
     private static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
             ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
-    private static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
+    public static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
             new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
                     ".pptx", ".pdf", ".txt", ".md", ".xml" });
     private static final Map<String, String> CONTENT_TYPE_MAP = new HashMap<String, String>() {
@@ -123,7 +123,7 @@ public class UeditorAdminController {
 
     /**
      * @param site
-     * @param admin 
+     * @param admin
      * @param file
      * @param request
      * @param model
@@ -135,20 +135,24 @@ public class UeditorAdminController {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
-            String fileName = CmsFileUtils.getUploadFileName(suffix);
-            try {
-                CmsFileUtils.upload(file, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        originalName, CmsFileUtils.getFileType(suffix), file.getSize(), RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), fileName));
-                Map<String, Object> map = getResultMap(true);
-                map.put("size", file.getSize());
-                map.put("title", originalName);
-                map.put("url", fileName);
-                map.put("type", suffix);
-                map.put("original", originalName);
-                model.addAttribute("result", map);
-            } catch (IllegalStateException | IOException e) {
+            if (ArrayUtils.contains(ALLOW_FILES, suffix)) {
+                String fileName = CmsFileUtils.getUploadFileName(suffix);
+                try {
+                    CmsFileUtils.upload(file, siteComponent.getWebFilePath(site, fileName));
+                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            originalName, CmsFileUtils.getFileType(suffix), file.getSize(), RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), fileName));
+                    Map<String, Object> map = getResultMap(true);
+                    map.put("size", file.getSize());
+                    map.put("title", originalName);
+                    map.put("url", fileName);
+                    map.put("type", suffix);
+                    map.put("original", originalName);
+                    model.addAttribute("result", map);
+                } catch (IllegalStateException | IOException e) {
+                    model.addAttribute("result", getResultMap(false));
+                }
+            } else {
                 model.addAttribute("result", getResultMap(false));
             }
         } else {
@@ -159,7 +163,7 @@ public class UeditorAdminController {
 
     /**
      * @param site
-     * @param admin 
+     * @param admin
      * @param file
      * @param request
      * @param session
@@ -194,7 +198,7 @@ public class UeditorAdminController {
 
     /**
      * @param site
-     * @param admin 
+     * @param admin
      * @param request
      * @param session
      * @return view name
@@ -246,7 +250,7 @@ public class UeditorAdminController {
     }
 
     /**
-     * @param admin 
+     * @param admin
      * @param start
      * @param request
      * @param session

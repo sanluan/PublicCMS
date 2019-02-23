@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -53,18 +55,24 @@ public class KindEditorAdminController {
         if (null != imgFile && !imgFile.isEmpty()) {
             String originalName = imgFile.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
-            String fileName = CmsFileUtils.getUploadFileName(suffix);
-            try {
-                CmsFileUtils.upload(imgFile, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        originalName, CmsFileUtils.getFileType(suffix), imgFile.getSize(), RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), fileName));
-                Map<String, Object> map = getResultMap(true);
-                map.put(RESULT_URL, fileName);
-                model.addAttribute("result", map);
-            } catch (IllegalStateException | IOException e) {
+            if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
+                String fileName = CmsFileUtils.getUploadFileName(suffix);
+                try {
+                    CmsFileUtils.upload(imgFile, siteComponent.getWebFilePath(site, fileName));
+                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            originalName, CmsFileUtils.getFileType(suffix), imgFile.getSize(), RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), fileName));
+                    Map<String, Object> map = getResultMap(true);
+                    map.put(RESULT_URL, fileName);
+                    model.addAttribute("result", map);
+                } catch (IllegalStateException | IOException e) {
+                    Map<String, Object> map = getResultMap(false);
+                    map.put(CommonConstants.MESSAGE, e.getMessage());
+                    model.addAttribute("result", map);
+                }
+            } else {
                 Map<String, Object> map = getResultMap(false);
-                map.put(CommonConstants.MESSAGE, e.getMessage());
+                map.put(CommonConstants.MESSAGE, "unsafe file");
                 model.addAttribute("result", map);
             }
         } else {
