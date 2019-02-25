@@ -12,7 +12,7 @@
             <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><@t.page 'dictionary'/></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':100,'rows':2,'cols':30}"><@t.page 'description'/></th>
             <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10"><@t.page 'searchable'/></th></#if>
-            <th type="number" name="${name}[#index#].sort" fieldClass="required digits" defaultVal="0" size="4"><@t.page 'sort'/></th>
+            <th type="number" name="${name}[#index#].sort"  size="10" fieldClass="required digits" defaultVal="0"><@t.page 'sort'/></th>
             <th type="del" width="60"><@t.page 'operate'/></th>
         </tr>
     </thead>
