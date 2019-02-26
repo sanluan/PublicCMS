@@ -29,10 +29,10 @@ public class ResourceInitializer implements WebApplicationInitializer {
     public void onStartup(ServletContext servletContext) throws ServletException {
         Dynamic registration = servletContext.addServlet("defaultServlet", new HttpRequestHandlerServlet());
         registration.setLoadOnStartup(1);
-        registration.addMapping(new String[] { "/resource/*", "/favicon.ico" });
+        registration.addMapping(new String[] { "/resource/*" });
         Dynamic webfileRegistration = servletContext.addServlet("webfileServlet", new HttpRequestHandlerServlet());
         webfileRegistration.setLoadOnStartup(0);
-        webfileRegistration.addMapping(new String[] { "/webfile/*" });
+        webfileRegistration.addMapping(new String[] { "/webfile/*", "/favicon.ico" });
         Filter[] filters = getServletFilters();
         if (!ObjectUtils.isEmpty(filters)) {
             for (Filter filter : filters) {
