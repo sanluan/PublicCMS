@@ -16,7 +16,34 @@
     
     function initUploader(){
         showLocalPath("localPath");
+        createCopyButton("clipboard", "localPath");
         uploadImage = new UploadImage('queueList');
+    }
+    
+    function createCopyButton(id, dataFrom) {
+        baidu.swf.create({
+                id:"copyFlash",
+                url:"fClipboard_ueditor.swf",
+                width:"58",
+                height:"25",
+                errorMessage:"",
+                bgColor:"#CBCBCB",
+                wmode:"transparent",
+                ver:"10.0.0",
+                vars:{
+                    tid:dataFrom
+                }
+            }, id
+        );
+
+        var clipboard = baidu.swf.getMovie("copyFlash");
+        var clipinterval = setInterval(function() {
+            if (clipboard && clipboard.flashInit) {
+                clearInterval(clipinterval);
+                clipboard.setHandCursor(true);
+                clipboard.setContentFuncName("getPasteData");
+            }
+        }, 500);
     }
     
     function showLocalPath(id) {
@@ -562,31 +589,6 @@
         }
     };
 })();
-function createCopyButton(id, dataFrom) {
-    baidu.swf.create({
-            id:"copyFlash",
-            url:"fClipboard_ueditor.swf",
-            width:"58",
-            height:"25",
-            errorMessage:"",
-            bgColor:"#CBCBCB",
-            wmode:"transparent",
-            ver:"10.0.0",
-            vars:{
-                tid:dataFrom
-            }
-        }, id
-    );
-
-    var clipboard = baidu.swf.getMovie("copyFlash");
-    var clipinterval = setInterval(function() {
-        if (clipboard && clipboard.flashInit) {
-            clearInterval(clipinterval);
-            clipboard.setHandCursor(true);
-            clipboard.setContentFuncName("getPasteData");
-        }
-    }, 500);
-}
 
 function getPasteData(id) {
     baidu.g("msg").innerHTML = lang.copySuccess + "</br>";
@@ -595,5 +597,3 @@ function getPasteData(id) {
     }, 5000);
     return baidu.g(id).value;
 }
-
-createCopyButton("clipboard", "localPath");
