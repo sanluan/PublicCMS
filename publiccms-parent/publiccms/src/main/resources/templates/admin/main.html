@@ -82,64 +82,6 @@
         </div>
     </fieldset>
 </@_sysAuthorized>
-<@_masterSite>
-    <@_systemProperties>
-        <fieldset>
-            <legend><@t.page 'os'/></legend>
-            <div class="unit">
-                <p>
-                    <label><@t.page 'name'/>:</label>${.vars['os.name']!}(${.vars['os.arch']!})
-                </p>
-                <p>
-                    <label><@t.page 'version'/>:</label>${.vars['os.version']!}
-                </p>
-                <p>
-                    <label><@t.page 'user'/>:</label>${.vars['user.name']!}
-                </p>
-                <p>
-                    <label><@t.page 'os.timezone'/>:</label>${.vars['user.timezone']!}
-                </p>
-                <p>
-                    <label><@t.page 'file.encoding'/>:</label>${.vars['file.encoding']!}
-                </p>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend><@t.page 'jre'/></legend>
-            <div class="unit">
-                <p>
-                    <label><@t.page 'name'/>:</label>${.vars['java.runtime.name']!}
-                </p>
-                <p>
-                    <label><@t.page 'version'/>:</label>${.vars['java.runtime.version']!}(${.vars['java.vm.info']!})
-                </p>
-                <p>
-                    <label><@t.page 'vm.name'/>:</label>${.vars['java.vm.name']!}
-                </p>
-                <p>
-                    <label><@t.page 'vm.version'/>:</label>${.vars['java.vm.version']!}
-                </p>
-            </div>
-        </fieldset>
-        <fieldset>
-            <legend><@t.page 'file.system'/></legend>
-            <div class="unit">
-                <p>
-                    <label><@t.page 'file.user.home'/>:</label>${.vars['user.home']!}
-                </p>
-                <p>
-                    <label><@t.page 'file.user.dir'/>:</label>${.vars['user.dir']!}
-                </p>
-                <p>
-                    <label><@t.page 'file.temp.dir'/>:</label>${.vars['java.io.tmpdir']!}
-                </p>
-                <p>
-                    <label><@t.page 'file.separator'/>:</label>${.vars['file.separator']!}
-                </p>
-            </div>
-        </fieldset>
-    </@_systemProperties>
-</@_masterSite>
 <@_version>
     <fieldset>
         <legend><@t.page 'system'/></legend>
@@ -157,6 +99,11 @@
                     }
                 });
             </script>
+    <@_systemProperties>
+            <p>
+                <label><@t.page 'os.timezone'/>:</label>${.vars['user.timezone']!}
+            </p>
+    </@_systemProperties>
     <@_masterSite>
             <p>
                 <label>${master?then(t.pageMessage('cluster.master'),t.pageMessage('cluster.normal'))}:</label>
