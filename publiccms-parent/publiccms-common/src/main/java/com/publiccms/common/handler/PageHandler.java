@@ -45,8 +45,8 @@ public class PageHandler implements java.io.Serializable {
      * @param maxPages
      */
     public PageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxPages) {
-        setTotalCount(totalCount, maxPages);
         setPageSize(null != pageSize ? pageSize : 0);
+        setTotalCount(totalCount, maxPages * getPageSize());
         setPageIndex(null != pageIndex ? pageIndex : 1);
         init();
     }
