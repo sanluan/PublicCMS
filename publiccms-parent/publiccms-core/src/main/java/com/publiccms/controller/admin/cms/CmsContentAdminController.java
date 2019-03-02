@@ -242,9 +242,8 @@ public class CmsContentAdminController {
      */
     @RequestMapping("check")
     @Csrf
-    public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
-        return checkOrUncheck(site, admin, false, ids, request, model);
+    public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
+        return checkOrUncheck(site, admin, false, ids, request);
     }
 
     /**
@@ -257,13 +256,11 @@ public class CmsContentAdminController {
      */
     @RequestMapping("uncheck")
     @Csrf
-    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
-        return checkOrUncheck(site, admin, true, ids, request, model);
+    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
+        return checkOrUncheck(site, admin, true, ids, request);
     }
 
-    private String checkOrUncheck(SysSite site, SysUser admin, boolean uncheck, Long[] ids, HttpServletRequest request,
-            ModelMap model) {
+    private String checkOrUncheck(SysSite site, SysUser admin, boolean uncheck, Long[] ids, HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             List<CmsContent> entityList;
             if (uncheck) {
