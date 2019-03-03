@@ -4,6 +4,8 @@
     <textarea name="random"><@html_escape><#include "demo/random.html" parse=false/></@html_escape></textarea>
     <textarea name="content"><@html_escape><#include "demo/content.html" parse=false/></@html_escape></textarea>
     <textarea name="category"><@html_escape><#include "demo/category.html" parse=false/></@html_escape></textarea>
+    <textarea name="content_rest"><@html_escape><#include "demo/content_rest.html" parse=false/></@html_escape></textarea>
+    <textarea name="category_rest"><@html_escape><#include "demo/category_rest.html" parse=false/></@html_escape></textarea>
     <textarea name="content_md5"><@html_escape><#include "demo/content_md5.html" parse=false/></@html_escape></textarea>
     <textarea name="category_code"><@html_escape><#include "demo/category_code.html" parse=false/></@html_escape></textarea>
     <textarea name="category_md5"><@html_escape><#include "demo/category_md5.html" parse=false/></@html_escape></textarea>
@@ -54,6 +56,16 @@ function templateDefaultConfig(type,name){
         $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
         break;
     case 'category':
+        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category.html');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        break;
+    case 'content_rest':
+        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.html');
+        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
+        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
+        break;
+    case 'category_rest':
         $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category.html');
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
         $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
@@ -179,6 +191,7 @@ function templateDefaultConfig(type,name){
             <a href="javascript:;" onclick="return false;"><@t.page 'content_page'/></a>
             <ul>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('content','<@t.page 'content_page'/>');"><@t.page 'content_page'/></a></li>
+                <li><a href="javascript:;" onclick="templateDefaultConfig('content_rest','<@t.page 'content_page_rest'/>');"><@t.page 'content_page_rest'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('content_md5','<@t.page 'content_page_md5'/>');"><@t.page 'content_page_md5'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('content_hash','<@t.page 'content_page_hash'/>');"><@t.page 'content_page_hash'/></a></li>
                 <#if site.useStatic>
@@ -190,6 +203,7 @@ function templateDefaultConfig(type,name){
             <a href="javascript:;" onclick="return false;"><@t.page 'category_page'/></a>
             <ul>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('category','<@t.page 'category_page'/>');"><@t.page 'category_page'/></a></li>
+                <li><a href="javascript:;" onclick="templateDefaultConfig('category_rest','<@t.page 'category_page_rest'/>');"><@t.page 'category_page_rest'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('category_code','<@t.page 'category_page_code'/>');"><@t.page 'category_page_code'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('category_md5','<@t.page 'category_page_md5'/>');"><@t.page 'category_page_md5'/></a></li>
                 <li><a href="javascript:;" onclick="templateDefaultConfig('category_hash','<@t.page 'category_page_hash'/>');"><@t.page 'category_page_hash'/></a></li>
