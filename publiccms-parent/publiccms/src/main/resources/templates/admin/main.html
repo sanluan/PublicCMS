@@ -39,18 +39,22 @@
             <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> <@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
         </p>
     </div>
-    <div class="divider"></div>
-    <div class="unit">
-        <p>
-            <label><@t.page 'comment.uncheck'/>:</label>
-            <a href="cmsComment/list.html?status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment'/>" target="navTab" rel="cmsComment/list">
-                <@_commentList advanced=true status=2 count=0>
-                    ${page.totalCount}
-                </@_commentList>
-            </a>
-        </p>
-    </div>
 </fieldset>
+<@_sysAuthorized roleIds=admin.roles url='cmsComment/list'>
+    <fieldset>
+        <legend><@t.page 'comment.management'/></legend>
+        <div class="unit">
+            <p>
+                <label><@t.page 'comment.uncheck'/>:</label>
+                <a href="cmsComment/list.html?status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment'/>" target="navTab" rel="cmsComment/list">
+                    <@_commentList advanced=true status=2 count=0>
+                        ${page.totalCount}
+                    </@_commentList>
+                </a>
+            </p>
+        </div>
+   </fieldset>
+</@_sysAuthorized>
 <@_sysAuthorized roleIds=admin.roles url='report/user'>
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
