@@ -62,7 +62,7 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
             queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate", endPublishDate);
         }
         if (null != expiryDate) {
-            queryHandler.condition("(bean.expiryDate is null or bean.expiryDate <= :expiryDate)").setParameter("expiryDate",
+            queryHandler.condition("(bean.expiryDate is null or bean.expiryDate >= :expiryDate)").setParameter("expiryDate",
                     expiryDate);
         }
         if (CommonUtils.notEmpty(status)) {

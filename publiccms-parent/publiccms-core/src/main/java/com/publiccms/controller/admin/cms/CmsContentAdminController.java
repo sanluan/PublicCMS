@@ -237,7 +237,6 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("check")
@@ -251,7 +250,6 @@ public class CmsContentAdminController {
      * @param admin
      * @param ids
      * @param request
-     * @param model
      * @return view name
      */
     @RequestMapping("uncheck")

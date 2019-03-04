@@ -80,7 +80,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
         }
         if (null != expiryDate) {
-            termination.must(queryBuilder.range().onField("expiryDate").below(expiryDate).createQuery());
+            termination.must(queryBuilder.range().onField("expiryDate").above(expiryDate).createQuery());
         }
         if (CommonUtils.notEmpty(categoryIds)) {
             @SuppressWarnings("rawtypes")
@@ -145,7 +145,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
         }
         if (null != expiryDate) {
-            termination.must(queryBuilder.range().onField("expiryDate").below(expiryDate).createQuery());
+            termination.must(queryBuilder.range().onField("expiryDate").above(expiryDate).createQuery());
         }
         Map<String, List<String>> valueMap = new LinkedHashMap<>();
         if (CommonUtils.notEmpty(categoryIds)) {
@@ -278,7 +278,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                     queryEntitry.getEndPublishDate());
         }
         if (null != queryEntitry.getExpiryDate()) {
-            queryHandler.condition("(bean.expiryDate is null or bean.expiryDate <= :expiryDate)").setParameter("expiryDate",
+            queryHandler.condition("(bean.expiryDate is null or bean.expiryDate >= :expiryDate)").setParameter("expiryDate",
                     queryEntitry.getExpiryDate());
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
