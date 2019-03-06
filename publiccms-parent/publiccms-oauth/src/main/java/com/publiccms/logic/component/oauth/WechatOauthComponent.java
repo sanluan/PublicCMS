@@ -1,12 +1,12 @@
 package com.publiccms.logic.component.oauth;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.base.oauth.AbstractOauth;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -56,8 +56,8 @@ public class WechatOauthComponent extends AbstractOauth {
             sb.append(config.getAppKey()).append("&secret=").append(config.getAppSecret()).append("&code=").append(code)
                     .append("&grant_type=authorization_code");
             String html = get(sb.toString());
-            Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
-            });
+            Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper.getTypeFactory()
+                    .constructMapLikeType(HashMap.class, String.class, Object.class));
             if (null != map.get("access_token")) {
                 return new OauthAccess(code, (String) map.get("access_token"), (String) map.get("openid"));
             }
@@ -76,8 +76,8 @@ public class WechatOauthComponent extends AbstractOauth {
             sb.append(oauthInfo.getAccessToken()).append("&openid=").append(oauthInfo.getOpenId());
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
-                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
-                });
+                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
+                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("nickname"));
             }
         }

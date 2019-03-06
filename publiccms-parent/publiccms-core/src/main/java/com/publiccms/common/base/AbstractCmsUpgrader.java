@@ -11,13 +11,13 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import org.apache.ibatis.jdbc.ScriptRunner;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -73,7 +73,7 @@ public abstract class AbstractCmsUpgrader {
      * @param host
      * @param port
      * @param database
-     * @param timeZone 
+     * @param timeZone
      * @throws IOException
      * @throws URISyntaxException
      */
@@ -89,9 +89,8 @@ public abstract class AbstractCmsUpgrader {
                         + CommonConstants.SEPARATOR + MetadataComponent.METADATA_FILE;
                 File file = new File(filePath);
                 try {
-                    Map<String, CmsPageData> dataMap = CommonConstants.objectMapper.readValue(file,
-                            new TypeReference<Map<String, CmsPageData>>() {
-                            });
+                    Map<String, CmsPageData> dataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper
+                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, CmsPageData.class));
                     try {
                         CommonConstants.objectMapper.writeValue(new File(CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR
                                 + SiteComponent.TEMPLATE_PATH + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX

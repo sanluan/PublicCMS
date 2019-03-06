@@ -1,12 +1,12 @@
 package com.publiccms.logic.component.oauth;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.base.oauth.AbstractOauth;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -77,8 +77,8 @@ public class QQOauthComponent extends AbstractOauth {
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
                 html = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
-                Map<String, String> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, String>>() {
-                });
+                Map<String, String> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
+                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
                 oauthInfo.setOpenId(map.get("openid"));
                 return oauthInfo;
             }
@@ -98,8 +98,8 @@ public class QQOauthComponent extends AbstractOauth {
                     .append(oauthAccess.getOpenId()).append("&format=format");
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
-                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
-                });
+                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
+                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
                 if (0 == (Integer) map.get("ret")) {
                     return new OauthUser(oauthAccess.getOpenId(), (String) map.get("nickname"));
                 }

@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.views.pojo.entities.ExtendData;
@@ -46,7 +45,8 @@ public class ExtendUtils {
      * @param extendFieldList
      * @return extent data map
      */
-    public static List<ExtendData> getDefaultExtentDataList(Map<String, String> extendData, List<SysExtendField> extendFieldList) {
+    public static List<ExtendData> getDefaultExtentDataList(Map<String, String> extendData,
+            List<SysExtendField> extendFieldList) {
         List<ExtendData> extendDataList = new ArrayList<>();
         if (CommonUtils.notEmpty(extendFieldList)) {
             for (SysExtendField extend : extendFieldList) {
@@ -88,9 +88,8 @@ public class ExtendUtils {
     public static Map<String, String> getExtendMap(String data) {
         if (CommonUtils.notEmpty(data)) {
             try {
-                return CommonConstants.objectMapper.readValue(data, new TypeReference<Map<String, String>>() {
-
-                });
+                return CommonConstants.objectMapper.readValue(data, CommonConstants.objectMapper.getTypeFactory()
+                        .constructMapLikeType(LinkedHashMap.class, String.class, String.class));
             } catch (IOException | ClassCastException e) {
                 return new LinkedHashMap<>();
             }

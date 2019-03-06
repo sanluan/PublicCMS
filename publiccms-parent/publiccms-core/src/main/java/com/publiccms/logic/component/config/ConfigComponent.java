@@ -13,7 +13,6 @@ import java.util.Map.Entry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
@@ -70,7 +69,7 @@ public class ConfigComponent implements SiteCache {
     /**
      * @param site
      * @param locale
-     * @param showAll 
+     * @param showAll
      * @return config list
      */
     public List<ConfigInfo> getConfigList(SysSite site, Locale locale, boolean showAll) {
@@ -173,8 +172,8 @@ public class ConfigComponent implements SiteCache {
         File file = new File(siteComponent.getConfigFilePath(site));
         if (CommonUtils.notEmpty(file)) {
             try {
-                modelMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, SysConfig>>() {
-                });
+                modelMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
+                        .constructMapLikeType(HashMap.class, String.class, SysConfig.class));
             } catch (IOException | ClassCastException e) {
                 modelMap = new HashMap<>();
             }

@@ -11,7 +11,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
@@ -73,8 +72,8 @@ public class ModelComponent implements SiteCache {
             File file = new File(siteComponent.getModelFilePath(site));
             if (CommonUtils.notEmpty(file)) {
                 try {
-                    modelMap = CommonConstants.objectMapper.readValue(file, new TypeReference<Map<String, CmsModel>>() {
-                    });
+                    modelMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
+                            .constructMapLikeType(HashMap.class, String.class, CmsModel.class));
                 } catch (IOException | ClassCastException e) {
                     modelMap = new HashMap<>();
                 }
