@@ -24,6 +24,7 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
      * @param siteId
      * @param userId
      * @param replyId
+     * @param emptyReply 
      * @param replyUserId
      * @param contentId
      * @param checkUserId
@@ -35,8 +36,9 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, Long replyId, Long replyUserId, Long contentId, Long checkUserId, Integer status, Boolean disabled,
-            String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, Long replyId, Boolean emptyReply, Long replyUserId, Long contentId,
+            Long checkUserId, Integer status, Boolean disabled, String orderField, String orderType, Integer pageIndex,
+            Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsComment bean");
         if (CommonUtils.notEmpty(siteId)) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -46,6 +48,8 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
         }
         if (CommonUtils.notEmpty(replyId)) {
             queryHandler.condition("bean.replyId = :replyId").setParameter("replyId", replyId);
+        } else if (null != emptyReply && emptyReply) {
+            queryHandler.condition("bean.replyId is null");
         }
         if (CommonUtils.notEmpty(replyUserId)) {
             queryHandler.condition("bean.replyUserId = :replyUserId").setParameter("replyUserId", replyUserId);

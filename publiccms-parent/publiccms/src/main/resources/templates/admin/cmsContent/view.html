@@ -204,24 +204,26 @@
             </dl>
             </#if>
         </@_contentRelatedList>
+        <@_commentList advanced=true contentId=a.id count=100>
+            <#if page.totalCount gt 0>
+            <fieldset>
+                <legend><@t.page 'comment'/></legend>
+                <#list page.list as a>
+                    <@t.merge 'userIds' a.userId!/>
+                    <@t.merge 'userIds' a.replyUserId!/>
+                </#list>
+                <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+                <#list page.list as a>
+                <dl class="nowrap">
+                    <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> <@t.page 'comment.reply'/> ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
+                    <dd>
+                        <div>${a.text!}</div>
+                    </dd>
+                </dl>
+                </#list>
+            </#if>
+        </@_commentList>
     </#if>
-    <@_commentList contentId=contentId status=1 pageIndex=pageIndex>
-        <#if page.totalCount gt 0>
-        <fieldset>
-            <legend><@t.page 'comment'/></legend>
-            <#list page.list as a>
-                <@t.merge 'userIds' a.userId!/>
-            </#list>
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <#list page.list as a>
-            <dl class="nowrap">
-                <dt>${(userMap[a.userId?string].nickName)!}:</dt>
-                <dd>${a.text!}
-                </dd>
-            </dl>
-            </#list>
-        </#if>
-    </@_commentList>
 </div>
 <div class="formBar">
     <ul>

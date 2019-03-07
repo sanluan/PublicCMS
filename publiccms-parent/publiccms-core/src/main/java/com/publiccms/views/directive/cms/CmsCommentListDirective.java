@@ -33,9 +33,9 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
             disabled = false;
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getLong("replyId"),
-                handler.getLong("replyUserId"), handler.getLong("contentId"), checkUserId, status, disabled,
-                handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("count", 30));
+                handler.getBoolean("emptyReply", false), handler.getLong("replyUserId"), handler.getLong("contentId"),
+                checkUserId, status, disabled, handler.getString("orderField"), handler.getString("orderType"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
         handler.put("page", page).render();
     }
 
