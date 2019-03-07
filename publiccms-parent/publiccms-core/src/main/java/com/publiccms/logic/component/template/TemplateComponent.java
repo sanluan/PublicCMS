@@ -160,8 +160,14 @@ public class TemplateComponent implements Cache {
                             model.put("content", entity);
                             model.put("category", category);
                             model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                            String url = site.getDynamicPath()
-                                    + FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration, model);
+                            String filePath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
+                                    model);
+                            String url;
+                            if (0 < filePath.indexOf("://") || filePath.startsWith("//")) {
+                                url = site.getDynamicPath() + filePath;
+                            } else {
+                                url = filePath;
+                            }
                             contentService.updateUrl(entity.getId(), url, false);
                         }
                         return true;
@@ -269,8 +275,13 @@ public class TemplateComponent implements Cache {
                     Map<String, Object> model = new HashMap<>();
                     model.put("category", entity);
                     model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                    String url = site.getDynamicPath()
-                            + FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
+                    String filePath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
+                    String url;
+                    if (0 < filePath.indexOf("://") || filePath.startsWith("//")) {
+                        url = site.getDynamicPath() + filePath;
+                    } else {
+                        url = filePath;
+                    }
                     categoryService.updateUrl(entity.getId(), url, false);
                 }
             } catch (IOException | TemplateException e) {

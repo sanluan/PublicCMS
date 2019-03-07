@@ -57,8 +57,8 @@ public class CmsCategoryAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private String[] ignoreProperties = new String[] { "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
-            "contents", "typeId" };
+    private String[] ignoreProperties = new String[] { "id", "siteId", "childIds", "tagTypeIds", "url", "disabled", "extendId",
+            "hasStatic", "typeId" };
 
     /**
      * @param site
