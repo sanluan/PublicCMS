@@ -169,18 +169,12 @@ public class CmsContentAdminController {
                 attribute);
         if (null != checked && checked) {
             service.check(site.getId(), admin, new Long[] { entity.getId() });
-            if (CommonUtils.notEmpty(entity.getParentId())) {
-                CmsContent parent = service.getEntity(entity.getParentId());
-                if (null != parent) {
-                    publish(site, parent, admin);
-                }
-            }
-            templateComponent.createCategoryFile(site, category, null, null);
         }
         if (!entity.isOnlyUrl()) {
             templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
             if (null == entity.getParentId() && !entity.isOnlyUrl()) {
-                service.quote(site.getId(), entity, contentParameters.getContentIds());
+                service.quote(site.getId(), entity, contentParameters.getContentIds(), contentParameters, cmsModel, category,
+                        attribute);
                 Set<Integer> categoryIdsList = contentParameters.getCategoryIds();
                 if (CommonUtils.notEmpty(categoryIdsList)) {
                     if (categoryIdsList.contains(entity.getCategoryId())) {
@@ -209,6 +203,13 @@ public class CmsContentAdminController {
                         }
                     }
                 }
+            }
+        }
+        if (null != checked && checked) {
+            templateComponent.createCategoryFile(site, category, null, null);
+            CmsContent parent = service.getEntity(entity.getParentId());
+            if (null != parent) {
+                publish(site, parent, admin);
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -254,7 +255,8 @@ public class CmsContentAdminController {
      */
     @RequestMapping("uncheck")
     @Csrf
-    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
+    public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         return checkOrUncheck(site, admin, true, ids, request);
     }
 
@@ -715,7 +717,8 @@ public class CmsContentAdminController {
      */
     @RequestMapping("recycle")
     @Csrf
-    public String recycle(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request) {
+    public String recycle(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.getEntitys(ids)) {

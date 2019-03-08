@@ -313,10 +313,15 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param entity
      * @param contentIds
+     * @param contentParameters
+     * @param cmsModel
+     * @param category
+     * @param attribute
      * @return results list
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> quote(short siteId, CmsContent entity, Set<Long> contentIds) {
+    public List<CmsContent> quote(short siteId, CmsContent entity, Set<Long> contentIds, CmsContentParameters contentParameters,
+            CmsModel cmsModel, CmsCategory category, CmsContentAttribute attribute) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null, null,
                 entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null, null)
@@ -329,8 +334,10 @@ public class CmsContentService extends BaseService<CmsContent> {
                 quote.setCover(entity.getCover());
                 quote.setEditor(entity.getEditor());
                 quote.setExpiryDate(entity.getExpiryDate());
+                saveTagAndAttribute(siteId, entity.getId(), quote.getId(), contentParameters, cmsModel, category, attribute);
             } else {
                 delete(quote.getId());
+                attributeService.delete(quote.getId());
             }
         }
         return entityList;
