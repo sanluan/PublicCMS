@@ -27,6 +27,11 @@
             <version>V4.0.181024</version>
         </dependency>
         <dependency>
+            <groupId>com.publiccms</groupId>
+            <artifactId>publiccms-analyzer</artifactId>
+            <version>V4.0.181024</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-web</artifactId>
         </dependency>

@@ -1,5 +1,6 @@
 package org.apache.lucene.analysis.cn.smart.hhmm;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 /**
@@ -10,23 +11,19 @@ import java.lang.reflect.Method;
  */
 public class DictionaryReloader {
 
-    public final synchronized static void reload(String dctroot) {
-        reloadCoreMem(dctroot);
-        reloadBigramMem(dctroot);
-    }
-
-    private final static void reloadCoreMem(String dctroot) {
-        WordDictionary dict = WordDictionary.getInstance();
-        dict.load(dctroot);
-    }
-
-    private final static void reloadBigramMem(String dctroot) {
-        BigramDictionary dict = BigramDictionary.getInstance();
-        try {
-            Method method = BigramDictionary.class.getDeclaredMethod("load", String.class);
-            method.setAccessible(true);
-            method.invoke(dict, dctroot);
-        } catch (Exception e) {
+    public synchronized static void reload(String dctroot) {
+        if (new File(dctroot + "/coredict.dct").exists() || new File(dctroot + "/coredict.mem").exists()) {
+            WordDictionary dict = WordDictionary.getInstance();
+            dict.load(dctroot);
+        }
+        if (new File(dctroot + "/bigramdict.dct").exists() || new File(dctroot + "/bigramdict.mem").exists()) {
+            BigramDictionary dict = BigramDictionary.getInstance();
+            try {
+                Method method = BigramDictionary.class.getDeclaredMethod("load", String.class);
+                method.setAccessible(true);
+                method.invoke(dict, dctroot);
+            } catch (Exception e) {
+            }
         }
     }
 }

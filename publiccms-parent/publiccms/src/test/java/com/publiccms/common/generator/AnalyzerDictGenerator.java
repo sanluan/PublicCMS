@@ -1,4 +1,4 @@
-package com.publiccms.test;
+package com.publiccms.common.generator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,12 +10,11 @@ import java.util.Map;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
-import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
-import com.publiccms.common.utils.SmartcnDictUtils;
+import com.publiccms.common.tools.SmartcnDictUtils;
 
-public class AnalyzerTest {
+public class AnalyzerDictGenerator {
 
     public static void main(String[] args) {
         String analyzeStr = "你好天津黑核科技有限公司";
@@ -36,7 +35,7 @@ public class AnalyzerTest {
         try (Analyzer analyzer = new SmartChineseAnalyzer();
                 TokenStream tokenStream = analyzer.tokenStream("content", new StringReader(analyzeStr))) {
             generat(dirPath, wordMap);
-            DictionaryReloader.reload(dirPath);
+            // DictionaryReloader.reload(dirPath);
             CharTermAttribute attr = tokenStream.addAttribute(CharTermAttribute.class);
             tokenStream.reset();
             while (tokenStream.incrementToken()) {

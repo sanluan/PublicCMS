@@ -1,4 +1,4 @@
-package com.publiccms.common.utils;
+package com.publiccms.common.tools;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -58,23 +58,9 @@ public class SmartcnDictUtils {
         return null;
     }
 
-    private static Map<String, Map<String, Integer>> transSource(Map<String, Integer> source) {
-        Set<String> keys = source.keySet();
-        Map<String, Map<String, Integer>> charTermFreqsMap = new HashMap<>();
-        for (String key : keys) {
-            Integer freq = source.get(key);
-            String ch = key.substring(0, 1);
-            Map<String, Integer> tfs = charTermFreqsMap.get(ch);
-            if (null == tfs) {
-                tfs = new HashMap<>();
-            }
-            tfs.put(key.substring(1), freq);
-            charTermFreqsMap.put(ch, tfs);
-        }
-        return charTermFreqsMap;
-    }
-
     /**
+     * 读取已有词库mem文件
+     * 
      * @param inputStream
      * @param charTermFreqsMap
      * @param delimiterFreqsMap
@@ -90,6 +76,62 @@ public class SmartcnDictUtils {
             int[][] wordItemFrequencyTable = (int[][]) oiStream.readObject();
             readCoreMemFromArrays(wordItemCharArrayTable, wordItemFrequencyTable, charTermFreqsMap, delimiterFreqsMap);
         }
+    }
+
+    /**
+     * 增加新的分词
+     * 
+     * @param tfsMap
+     * @param source
+     */
+    public static void mergeTFsMap(Map<String, Map<String, Integer>> tfsMap, Map<String, Integer> source) {
+        Map<String, Map<String, Integer>> tempTfsMap = transSource(source);
+        merge(tfsMap, tempTfsMap, tfsMap.keySet());
+        merge(tfsMap, tempTfsMap, tempTfsMap.keySet());
+    }
+
+    /**
+     * 创建词库文件
+     * 
+     * @param filePath
+     * @param type
+     * @param charTFsMap
+     * @param delimiterFreqsMap
+     */
+    public static void create(String filePath, String type, Map<String, Map<String, Integer>> charTFsMap,
+            Map<String, Integer> delimiterFreqsMap) {
+        try (OutputStream oStream = new FileOutputStream(filePath)) {
+            for (int i = GB2312_FIRST_CHAR; i < GB2312_FIRST_CHAR + CHAR_NUM_IN_FILE; i++) {
+                if (3755 + GB2312_FIRST_CHAR == i && TYPE_CORE.equals(type)) {
+                    writeDelimiters(oStream, delimiterFreqsMap);
+                    continue;
+                }
+                String cc = getCCByGB2312Id(i);
+                Map<String, Integer> tfs = charTFsMap.get(cc);
+                if (null == tfs || tfs.isEmpty()) {
+                    writeEmpty(oStream);
+                } else {
+                    writeTFs(oStream, tfs);
+                }
+            }
+        } catch (Exception e) {
+        }
+    }
+
+    private static Map<String, Map<String, Integer>> transSource(Map<String, Integer> source) {
+        Set<String> keys = source.keySet();
+        Map<String, Map<String, Integer>> charTermFreqsMap = new HashMap<>();
+        for (String key : keys) {
+            Integer freq = source.get(key);
+            String ch = key.substring(0, 1);
+            Map<String, Integer> tfs = charTermFreqsMap.get(ch);
+            if (null == tfs) {
+                tfs = new HashMap<>();
+            }
+            tfs.put(key.substring(1), freq);
+            charTermFreqsMap.put(ch, tfs);
+        }
+        return charTermFreqsMap;
     }
 
     private static void readCoreMemFromArrays(char[][][] wordItemCharArrayTable, int[][] wordItemFrequencyTable,
@@ -134,12 +176,6 @@ public class SmartcnDictUtils {
         delimiterFreqsMap.put(cc, freq);
     }
 
-    public static void mergeTFsMap(Map<String, Map<String, Integer>> tfsMap, Map<String, Integer> source) {
-        Map<String, Map<String, Integer>> tempTfsMap = transSource(source);
-        merge(tfsMap, tempTfsMap, tfsMap.keySet());
-        merge(tfsMap, tempTfsMap, tempTfsMap.keySet());
-    }
-
     private static void merge(Map<String, Map<String, Integer>> tfsMap, Map<String, Map<String, Integer>> tempTfsMap,
             Set<String> keys) {
         for (String key : keys) {
@@ -152,26 +188,6 @@ public class SmartcnDictUtils {
             if (null != temp) {
                 tfs.putAll(temp);
             }
-        }
-    }
-
-    public static void create(String filePath, String type, Map<String, Map<String, Integer>> charTFsMap,
-            Map<String, Integer> delimiterFreqsMap) {
-        try (OutputStream oStream = new FileOutputStream(filePath)) {
-            for (int i = GB2312_FIRST_CHAR; i < GB2312_FIRST_CHAR + CHAR_NUM_IN_FILE; i++) {
-                if (3755 + GB2312_FIRST_CHAR == i && TYPE_CORE.equals(type)) {
-                    writeDelimiters(oStream, delimiterFreqsMap);
-                    continue;
-                }
-                String cc = getCCByGB2312Id(i);
-                Map<String, Integer> tfs = charTFsMap.get(cc);
-                if (null == tfs || tfs.isEmpty()) {
-                    writeEmpty(oStream);
-                } else {
-                    writeTFs(oStream, tfs);
-                }
-            }
-        } catch (Exception e) {
         }
     }
 

@@ -10,6 +10,7 @@ import java.util.Properties;
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
 import org.hibernate.SessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -136,6 +137,13 @@ public class ApplicationConfig {
 
         MultiTokenFilterFactory.init(env.getProperty("cms.tokenFilterFactory"),
                 getMap(env.getProperty("cms.tokenFilterFactory.parameters")));
+        if ("hmmchinese".equalsIgnoreCase(env.getProperty("cms.tokenizerFactory"))) {
+            String dictDirPath = getDirPath("/dict/");
+            File dictDir = new File(dictDirPath);
+            if (dictDir.exists() && dictDir.isDirectory()) {
+                DictionaryReloader.reload(dictDirPath);// 自定义词库
+            }
+        }
         bean.setHibernateProperties(properties);
         return bean;
     }
