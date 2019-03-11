@@ -60,7 +60,7 @@
                 <td>${a.searchCount!}</td>
                 <td>
                     <a href="cmsTag/add.html?id=${a.id}" target="navTab" rel="cmsTag/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'tag.edit'/>"><@t.page 'button.edit'/></a>|
-                    <a href="cmsTag/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsTag/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

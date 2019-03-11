@@ -9,6 +9,8 @@ import java.util.Map.Entry;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Controller;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
@@ -25,6 +26,7 @@ import com.publiccms.common.directive.BaseTemplateDirective;
 import com.publiccms.common.directive.HttpDirective;
 import com.publiccms.common.handler.HttpParameterHandler;
 import com.publiccms.logic.component.site.DirectiveComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 
 /**
  * 
@@ -32,11 +34,14 @@ import com.publiccms.logic.component.site.DirectiveComponent;
  *
  */
 @Controller
-public class DirectiveController extends AbstractController {
+public class DirectiveController {
+    protected final Log log = LogFactory.getLog(getClass());
     private Map<String, BaseTemplateDirective> actionMap = new HashMap<>();
     private List<Map<String, String>> actionList = new ArrayList<>();
     @Autowired
     protected MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * 接口指令统一分发
@@ -50,7 +55,7 @@ public class DirectiveController extends AbstractController {
         try {
             HttpDirective directive = actionMap.get(action);
             if (null != directive) {
-                request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, getSite(request));
+                request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, siteComponent.getSite(request.getServerName()));
                 directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             } else {
                 HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,

@@ -47,7 +47,7 @@
 //            'print', 'preview', 'searchreplace', 'drafts', 'help'
 //        ]]
     	, toolbars: [[
-                  'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'forecolor', 'backcolor','spechars', '|',
+                  'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'forecolor', 'backcolor','spechars', 'lineheight', '|',
                   'paragraph', 'fontfamily', 'fontsize', '|', 
                   'insertorderedlist', 'insertunorderedlist','indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|', 
                   'link', 'unlink', '|', 'insertvideo', 
@@ -407,7 +407,7 @@
 			header: [],
 			hr:     [],
 			i:      ['class', 'style'],
-			img:    ['src', 'alt', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'class', 'data-latex'],
+			img:    ['src', 'alt', 'title', 'width', 'height', 'id', '_src', '_url', 'loadingclass', 'class', 'data-latex' ,'word_img', 'style'],
 			ins:    ['datetime'],
 			li:     ['class', 'style'],
 			mark:   [],

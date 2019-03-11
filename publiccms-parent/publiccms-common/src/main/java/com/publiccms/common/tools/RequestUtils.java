@@ -135,7 +135,7 @@ public class RequestUtils {
             }
             ip = request.getHeader("X-Forwarded-For");
             if (CommonUtils.notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-                int index = ip.indexOf(',');
+                int index = ip.indexOf(Constants.COMMA);
                 if (index != -1) {
                     return ip.substring(0, index);
                 }

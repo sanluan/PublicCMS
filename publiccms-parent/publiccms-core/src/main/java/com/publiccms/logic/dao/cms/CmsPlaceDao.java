@@ -18,7 +18,7 @@ import com.publiccms.entities.cms.CmsPlace;
  */
 @Repository
 public class CmsPlaceDao extends BaseDao<CmsPlace> {
-    
+
     /**
      * @param siteId
      * @param userId
@@ -27,6 +27,7 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @param itemId
      * @param startPublishDate
      * @param endPublishDate
+     * @param expiryDate
      * @param status
      * @param disabled
      * @param orderField
@@ -35,8 +36,8 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId,
-            Date startPublishDate, Date endPublishDate, Integer status, Boolean disabled, String orderField, String orderType,
+    public PageHandler getPage(Short siteId, Long userId, String path, String itemType, Long itemId, Date startPublishDate,
+            Date endPublishDate, Date expiryDate, Integer[] status, Boolean disabled, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsPlace bean");
         if (CommonUtils.notEmpty(siteId)) {
@@ -60,8 +61,12 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
         if (null != endPublishDate) {
             queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate", endPublishDate);
         }
-        if (null != status) {
-            queryHandler.condition("bean.status = :status").setParameter("status", status);
+        if (null != expiryDate) {
+            queryHandler.condition("(bean.expiryDate is null or bean.expiryDate >= :expiryDate)").setParameter("expiryDate",
+                    expiryDate);
+        }
+        if (CommonUtils.notEmpty(status)) {
+            queryHandler.condition("bean.status in (:status)").setParameter("status", status);
         }
         if (null != disabled) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", disabled);

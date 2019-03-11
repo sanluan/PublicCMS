@@ -33,7 +33,7 @@ public class PublishCategoryDirective extends AbstractTaskDirective {
         Map<String, Boolean> map = new LinkedHashMap<>();
         if (CommonUtils.notEmpty(id)) {
             CmsCategory entity = service.getEntity(id);
-            map.put(entity.getId().toString(), deal(site, entity, pageIndex, totalPage));
+            map.put(id.toString(), deal(site, entity, pageIndex, totalPage));
         } else {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {

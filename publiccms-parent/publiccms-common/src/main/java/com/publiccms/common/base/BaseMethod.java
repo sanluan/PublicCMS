@@ -3,6 +3,8 @@ package com.publiccms.common.base;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -110,12 +112,14 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     public static Integer[] getIntegerArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
         String[] arr = getStringArray(index, arguments);
         if (CommonUtils.notEmpty(arr)) {
-            Integer[] ids = new Integer[arr.length];
-            int i = 0;
+            Set<Integer> set = new TreeSet<>();
             for (String s : arr) {
-                ids[i++] = Integer.valueOf(s);
+                try {
+                    set.add(Integer.valueOf(s));
+                } catch (NumberFormatException e) {
+                }
             }
-            return ids;
+            return set.toArray(new Integer[set.size()]);
         }
         return null;
     }
@@ -129,12 +133,14 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     public static Long[] getLongArray(int index, List<TemplateModel> arguments) throws TemplateModelException {
         String[] arr = getStringArray(index, arguments);
         if (CommonUtils.notEmpty(arr)) {
-            Long[] ids = new Long[arr.length];
-            int i = 0;
+            Set<Long> set = new TreeSet<>();
             for (String s : arr) {
-                ids[i++] = Long.valueOf(s);
+                try {
+                    set.add(Long.valueOf(s));
+                } catch (NumberFormatException e) {
+                }
             }
-            return ids;
+            return set.toArray(new Long[set.size()]);
         }
         return null;
     }
@@ -161,7 +167,7 @@ public abstract class BaseMethod implements TemplateMethodModelEx {
     }
 
     /**
-     * @return whether to enable http 
+     * @return whether to enable http
      */
     public boolean httpEnabled() {
         return true;

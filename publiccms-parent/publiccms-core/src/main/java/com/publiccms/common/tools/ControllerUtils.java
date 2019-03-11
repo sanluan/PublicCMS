@@ -1,6 +1,5 @@
 package com.publiccms.common.tools;
 
-import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -10,9 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
 
+import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 
 /**
@@ -38,6 +40,43 @@ public class ControllerUtils {
      */
     public static final Pattern EMAIL_PATTERN = Pattern
             .compile("(" + VALID_CHARS + "(\\." + VALID_CHARS + ")*@" + VALID_CHARS + "(\\." + VALID_CHARS + ")*)");
+
+    public static boolean isUnSafeUrl(String url, SysSite site, String safeReturnUrl, HttpServletRequest request) {
+        if (CommonUtils.empty(url)) {
+            return true;
+        } else if (0 < url.indexOf("://") || url.startsWith("//")) {
+            if (url.startsWith("//")) {
+                url = new StringBuilder(request.getScheme()).append(":").append(url).toString();
+            }
+            if (unSafe(url, site, request)) {
+                if (null != safeReturnUrl) {
+                    for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
+                        if (url.startsWith(safeUrlPrefix)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    private static boolean unSafe(String url, SysSite site, HttpServletRequest request) {
+        String basePath = AbstractFreemarkerView.getBasePath(request.getScheme(), request.getServerPort(),
+                request.getServerName(), request.getContextPath());
+        String fixedUrl = url.substring(url.indexOf("://") + 1);
+        if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
+                || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
+                || url.startsWith(basePath)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     /**
      * @param response
@@ -270,15 +309,23 @@ public class ControllerUtils {
      * @return SysUser
      */
     public static SysUser getUserFromSession(HttpSession session) {
-        return (SysUser) session.getAttribute(CommonConstants.getSessionUser());
+        if (null != session) {
+            return (SysUser) session.getAttribute(CommonConstants.getSessionUser());
+        } else {
+            return null;
+        }
     }
 
     /**
      * @param session
      * @return Date
      */
-    public static Date getUserTimeFromSession(HttpSession session) {
-        return (Date) session.getAttribute(CommonConstants.getSessionUserTime());
+    public static Long getUserTimeFromSession(HttpSession session) {
+        if (null != session) {
+            return (Long) session.getAttribute(CommonConstants.getSessionUserTime());
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -287,7 +334,7 @@ public class ControllerUtils {
      */
     public static void setUserToSession(HttpSession session, SysUser user) {
         session.setAttribute(CommonConstants.getSessionUser(), user);
-        session.setAttribute(CommonConstants.getSessionUserTime(), CommonUtils.getDate());
+        session.setAttribute(CommonConstants.getSessionUserTime(), System.currentTimeMillis());
     }
 
     /**

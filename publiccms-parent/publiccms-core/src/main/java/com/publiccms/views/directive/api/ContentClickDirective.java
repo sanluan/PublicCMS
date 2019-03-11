@@ -22,7 +22,7 @@ import com.publiccms.common.handler.RenderHandler;
  */
 @Component
 public class ContentClickDirective extends AbstractAppDirective {
-    
+
     @Autowired
     private StatisticsComponent statisticsComponent;
 
@@ -30,8 +30,8 @@ public class ContentClickDirective extends AbstractAppDirective {
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         Long id = handler.getLong("id");
         CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
-        if (null != contentStatistics && null != contentStatistics.getEntity()) {
-            handler.put("clicks", contentStatistics.getEntity().getClicks() + contentStatistics.getClicks());
+        if (null != contentStatistics) {
+            handler.put("clicks", contentStatistics.getOldClicks() + contentStatistics.getClicks());
         }
     }
 

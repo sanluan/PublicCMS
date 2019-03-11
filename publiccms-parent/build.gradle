@@ -6,7 +6,7 @@ buildscript {
 	/**
 	dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.5.13.RELEASE")
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.3.RELEASE")
     }*/
 }
 
@@ -19,40 +19,56 @@ subprojects{
     apply plugin: "eclipse-wtp"
 	
 	group = 'com.publiccms'
-	version = 'V4.0.20180210'
+	version = 'V4.0.190312'
 	
 	test.enabled = false
 	
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "5.0.10.RELEASE"
+        springVersion = "5.1.5.RELEASE"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "2.0.6.RELEASE"
+        springBootVersion = "2.1.3.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
-        httpclientVersion = "4.5.6"
+        httpclientVersion = "4.5.7"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-        jacksonVersion = "2.9.7"
+        jacksonVersion = "2.9.8"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.3.6.Final"
+        hibernateVersion = "5.3.7.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "5.10.4.Final"
+        hibernateSearchVersion = "5.10.5.Final"
+        // https://mvnrepository.com/artifact/org.ehcache/ehcache
+        ehcacheVersion = "3.6.3"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.28"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.4.6"
+        mybatisVersion = "3.5.0"
+        // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
+        mybatisSpringVersion = "2.0.0"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "5.5.5"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "2.9.0"
+        jedisVersion = "3.0.1"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.0"
-        // http://mvnrepository.com/artifact/com.mchange/c3p0
-        c3p0Version = "0.9.5.3"
+        // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
+        hikariCPVersion = "3.3.1"
+        // https://mvnrepository.com/artifact/mysql/mysql-connector-java
+        mysqlVersion = "8.0.15"
+        // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+        poiVersion = "4.0.1"
+        // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
+        fileuploadVersion = "1.4"
+        // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
+        collectionsVersion = "4.3"
+        // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+        langVersion = "3.8.1"
+        // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
+        log4jVersion = "2.11.2"
     }
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
@@ -62,13 +78,13 @@ subprojects{
 
     repositories {
 		mavenLocal()
-		jcenter()
+		// jcenter()
         mavenCentral()
     }
     eclipse {
 	    wtp {
 	        facet {
-	            facet name: "jst.java", version: "1.7"
+	            facet name: "jst.java", version: "1.8"
 	        }
 	    }
 	}

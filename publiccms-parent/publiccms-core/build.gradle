@@ -3,15 +3,16 @@ group = 'com.publiccms'
 dependencies {
     compile project(':publiccms-common')
     compile (
-        "com.mchange:c3p0:${c3p0Version}",
+        "com.zaxxer:HikariCP:${hikariCPVersion}",
         // http://mvnrepository.com/artifact/mysql/mysql-connector-java
-        "mysql:mysql-connector-java:5.1.47",
+        "mysql:mysql-connector-java:${mysqlVersion}",
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         "eu.bitwalker:UserAgentUtils:1.21",
         // http://mvnrepository.com/artifact/net.coobird/thumbnailator
         "net.coobird:thumbnailator:0.4.8",
         "org.hibernate:hibernate-search-elasticsearch:${hibernateSearchVersion}",
-    // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-        "javax.servlet:javax.servlet-api:3.1.0"
+        // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
+        "javax.servlet:javax.servlet-api:3.1.0",
+        "org.apache.poi:poi-ooxml:${poiVersion}"
     )
 }

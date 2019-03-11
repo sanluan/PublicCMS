@@ -31,10 +31,11 @@ public class MyContentListDirective extends AbstractAppDirective {
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         PageHandler page = service.getPage(
                 new CmsContentQuery(getSite(handler).getId(), handler.getIntegerArray("status"), handler.getInteger("categoryId"),
-                        handler.getIntegerArray("categoryIds"), false, null, handler.getLong("parentId"),
-                        handler.getBoolean("emptyParent"), handler.getBoolean("onlyUrl"), handler.getBoolean("hasImages"),
+                        handler.getIntegerArray("categoryIds"), false, handler.getStringArray("modelIds"),
+                        handler.getLong("parentId"), handler.getBoolean("emptyParent"), handler.getLong("quoteId"),
+                        handler.getBoolean("quote"), handler.getBoolean("onlyUrl"), handler.getBoolean("hasImages"),
                         handler.getBoolean("hasCover"), handler.getBoolean("hasFiles"), null, user.getId(), null,
-                        handler.getDate("endPublishDate")),
+                        handler.getDate("endPublishDate"), null),
                 handler.getBoolean("containChild"), null, null, handler.getInteger("pageIndex", 1),
                 handler.getInteger("count", 30));
         @SuppressWarnings("unchecked")

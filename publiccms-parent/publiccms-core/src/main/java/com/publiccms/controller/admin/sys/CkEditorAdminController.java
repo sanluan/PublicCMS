@@ -5,22 +5,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.file.FileComponent;
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
 
@@ -31,43 +33,52 @@ import com.publiccms.logic.service.log.LogUploadService;
  */
 @Controller
 @RequestMapping("ckeditor")
-public class CkEditorAdminController extends AbstractController {
-    @Autowired
-    private FileComponent fileComponent;
+public class CkEditorAdminController {
     @Autowired
     protected LogUploadService logUploadService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private static final String RESULT_UPLOADED = "uploaded";
     private static final String RESULT_FILENAME = "fileName";
     private static final String RESULT_URL = "url";
 
     /**
+     * @param site
+     * @param admin
      * @param upload
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("upload")
-    public String upload(MultipartFile upload, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile upload,
+            HttpServletRequest request, ModelMap model) {
         if (null != upload && !upload.isEmpty()) {
             String originalName = upload.getOriginalFilename();
-            String suffix = fileComponent.getSuffix(originalName);
-            String fileName = fileComponent.getUploadFileName(suffix);
-            try {
-                fileComponent.upload(upload, siteComponent.getWebFilePath(site, fileName));
-                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, originalName, LogUploadService.getFileType(suffix), upload.getSize(),
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                Map<String, Object> map = getResultMap(true);
-                map.put(RESULT_FILENAME, originalName);
-                map.put(RESULT_URL, fileName);
-                model.addAttribute("result", map);
-            } catch (IllegalStateException | IOException e) {
+            String suffix = CmsFileUtils.getSuffix(originalName);
+            if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
+                String fileName = CmsFileUtils.getUploadFileName(suffix);
+                try {
+                    CmsFileUtils.upload(upload, siteComponent.getWebFilePath(site, fileName));
+                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            originalName, CmsFileUtils.getFileType(suffix), upload.getSize(), RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), fileName));
+                    Map<String, Object> map = getResultMap(true);
+                    map.put(RESULT_FILENAME, originalName);
+                    map.put(RESULT_URL, fileName);
+                    model.addAttribute("result", map);
+                } catch (IllegalStateException | IOException e) {
+                    Map<String, Object> map = getResultMap(false);
+                    Map<String, String> messageMap = new HashMap<>();
+                    messageMap.put(CommonConstants.MESSAGE, e.getMessage());
+                    map.put(CommonConstants.ERROR, messageMap);
+                    model.addAttribute("result", map);
+                }
+            } else {
                 Map<String, Object> map = getResultMap(false);
                 Map<String, String> messageMap = new HashMap<>();
-                messageMap.put(CommonConstants.MESSAGE, e.getMessage());
+                messageMap.put(CommonConstants.MESSAGE, "error");
                 map.put(CommonConstants.ERROR, messageMap);
                 model.addAttribute("result", map);
             }

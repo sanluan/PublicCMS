@@ -3,11 +3,14 @@ package config.spring;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
 import org.hibernate.SessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
@@ -36,12 +39,15 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
+import com.publiccms.common.search.MultiTokenFilterFactory;
 import com.publiccms.common.search.MultiTokenizerFactory;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
+
+import config.initializer.InitializationInitializer;
 
 /**
  *
@@ -69,9 +75,8 @@ public class ApplicationConfig {
      */
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
-        CmsDataSource bean = new CmsDataSource(
-                getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
-        CmsDataSource.initDefautlDataSource();
+        CmsDataSource bean = new CmsDataSource(getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
+        CmsDataSource.initDefautDataSource();
         return bean;
     }
 
@@ -117,15 +122,28 @@ public class ApplicationConfig {
      * @throws IOException
      */
     @Bean
-    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource)
-            throws PropertyVetoException, IOException {
+    public FactoryBean<SessionFactory> hibernateSessionFactory(DataSource dataSource) throws PropertyVetoException, IOException {
         LocalSessionFactoryBean bean = new LocalSessionFactoryBean();
         bean.setDataSource(dataSource);
         bean.setPackagesToScan("com.publiccms.entities");
-        Properties properties = PropertiesLoaderUtils
-                .loadAllProperties(env.getProperty("cms.hibernate.configFilePath"));
+        Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.hibernate.configFilePath"));
+        String cacheConfigUri = "hibernate.javax.cache.uri";
+        if (properties.containsKey(cacheConfigUri)) {
+            properties.setProperty(cacheConfigUri, getClass().getResource(properties.getProperty(cacheConfigUri)).toString());
+        }
         properties.setProperty("hibernate.search.default.indexBase", getDirPath("/indexes/"));
-        MultiTokenizerFactory.setName(env.getProperty("cms.tokenizerFactory"));
+        MultiTokenizerFactory.init(env.getProperty("cms.tokenizerFactory"),
+                getMap(env.getProperty("cms.tokenizerFactory.parameters")));
+
+        MultiTokenFilterFactory.init(env.getProperty("cms.tokenFilterFactory"),
+                getMap(env.getProperty("cms.tokenFilterFactory.parameters")));
+        if ("hmmchinese".equalsIgnoreCase(env.getProperty("cms.tokenizerFactory"))) {
+            String dictDirPath = getDirPath("/dict/");
+            File dictDir = new File(dictDirPath);
+            if (dictDir.exists() && dictDir.isDirectory()) {
+                DictionaryReloader.reload(dictDirPath);// 自定义词库
+            }
+        }
         bean.setHibernateProperties(properties);
         return bean;
     }
@@ -208,8 +226,7 @@ public class ApplicationConfig {
     public FreeMarkerConfigurer freeMarkerConfigurer() throws IOException {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
         bean.setTemplateLoaderPath("classpath:/templates/");
-        Properties properties = PropertiesLoaderUtils
-                .loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
+        Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
         if (CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))) {
             properties.put("locale", env.getProperty("cms.defaultLocale"));
         }
@@ -250,19 +267,43 @@ public class ApplicationConfig {
     /**
      * json、Jsonp消息转换适配器，用于支持RequestBody、ResponseBody
      *
-     * @return json、jsonp message converter , support for requestbody、responsebody
+     * @return json、jsonp message converter , support for
+     *         requestbody、responsebody
      */
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
         return new MappingJackson2HttpMessageConverter();
     }
 
+    /**
+     * @param property
+     * @return the map
+     */
+    private Map<String, String> getMap(String property) {
+        Map<String, String> parametersMap = new HashMap<>();
+        if (CommonUtils.notEmpty(property)) {
+            String[] parameters = StringUtils.split(property, CommonConstants.COMMA_DELIMITED);
+            for (String parameter : parameters) {
+                String[] values = StringUtils.split(parameter, "=", 2);
+                if (values.length == 2) {
+                    parametersMap.put(values[0], values[1]);
+                } else if (values.length == 1) {
+                    parametersMap.put(values[0], null);
+                }
+            }
+        }
+        return parametersMap;
+    }
+
+    /**
+     * @param path
+     * @return the cms data path
+     */
     private String getDirPath(String path) {
         if (null == CommonConstants.CMS_FILEPATH) {
-            CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", env.getProperty("cms.filePath"));
+            InitializationInitializer.initFilePath(env.getProperty("cms.filePath"), System.getProperty("user.dir"));
         }
-        String filePath = CommonConstants.CMS_FILEPATH + path;
-        File dir = new File(filePath);
+        File dir = new File(CommonConstants.CMS_FILEPATH + path);
         dir.mkdirs();
         return dir.getAbsolutePath();
     }

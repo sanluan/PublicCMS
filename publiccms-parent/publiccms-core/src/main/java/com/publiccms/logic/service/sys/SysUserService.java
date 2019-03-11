@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysUser;
@@ -81,11 +82,24 @@ public class SysUserService extends BaseService<SysUser> {
     /**
      * @param id
      * @param password
+     * @param salt
      */
-    public void updatePassword(Serializable id, String password) {
+    public void updatePassword(Serializable id, String password, String salt) {
         SysUser entity = getEntity(id);
         if (null != entity) {
             entity.setPassword(password);
+            entity.setSalt(salt);
+        }
+    }
+
+    /**
+     * @param id
+     * @param weak
+     */
+    public void updateWeekPassword(Serializable id, boolean weak) {
+        SysUser entity = getEntity(id);
+        if (null != entity) {
+            entity.setWeakPassword(weak);
         }
     }
 
@@ -112,7 +126,7 @@ public class SysUserService extends BaseService<SysUser> {
         SysUser entity = getEntity(userId);
         if (null != entity) {
             String roles = entity.getRoles();
-            String[] roleArray = StringUtils.split(roles, ',');
+            String[] roleArray = StringUtils.split(roles, CommonConstants.COMMA);
             ArrayUtils.removeElement(roleArray, roleId.toString());
             entity.setRoles(arrayToCommaDelimitedString(roleArray));
         }

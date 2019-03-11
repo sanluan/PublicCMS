@@ -1,10 +1,7 @@
-<style>
-label{width:150px;}
-</style>
 <script>
 $(function(){
     $('.icons a').click(function(){
-        $.bringBack({'${field}':$('i',$(this)).prop("outerHTML")});
+        $.bringBack({'${field}':$('i',$(this)).prop("className").replace(' icon-large','')});
         return false;
     });
 });

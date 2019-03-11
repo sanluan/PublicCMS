@@ -1,14 +1,16 @@
 <@_category id=id!copyId>
-    <#assign a=object/>
-    <#assign parentId=object.parentId!/>
-    <#assign typeId=object.typeId!/>
-    <#assign attribute=getCategoryAttribute(a.id)!/>
+    <#assign
+        a=object
+        parentId=object.parentId!''
+        typeId=object.typeId!''
+        attribute=getCategoryAttribute(a.id)!{}
+    />
 </@_category>
 <@_category id=parentId><#assign category=object/></@_category>
 <@_categoryType id=typeId><#assign categoryType=object/></@_categoryType>
 <script>
 function clickAddTagType(){
-    $('.tagTypes .button',navTab.getCurrentPanel()).click();
+    $('#tagTypes',navTab.getCurrentPanel()).parent().find('.button').click();
 }
 </script>
 <form method="post" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
@@ -43,7 +45,7 @@ function clickAddTagType(){
                     <dd>
                         <input name="parentId" type="hidden" value="${parentId!}" />
                         <input name="categoryName" readonly="readonly" type="text" size="10" value="${(category.name)!}"/>
-                        <a class="btnLook" href="cmsCategory/lookup.html?categoryId=${parentId!}" lookupGroup=""></a>
+                        <a class="btnLook" href="cmsCategory/lookup.html?currentCategoryId=${(a.id)!}" lookupGroup=""></a>
                     </dd>
                 </dl>
                 <dl>
@@ -66,7 +68,7 @@ function clickAddTagType(){
                 <dl class="nowrap">
                     <dt><@t.page 'code'/>:</dt>
                     <dd>
-                        <input class="required" name="code" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/>
+                        <input class="required" name="code" remote="cmsCategory/virify.do<#if id?has_content>?oldCode=${(a.code)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/>
                     </dd>
                 </dl>
 <#include "../include_page/tagTypes.html"/>
@@ -96,7 +98,7 @@ function clickAddTagType(){
                         <label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/><@t.page 'category.contain_child'/></label>
                     </dd>
                 </dl>
-                <dl class="advanced">
+                <dl>
                     <dt><@t.page 'sort'/>:</dt>
                     <dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!0}"/></dd>
                 </dl>
@@ -242,7 +244,7 @@ checkCategoryModel();
 <#include "../include_page/extends.html"/>
                 <fieldset>
                     <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.invalid'/>:source,sourceUrl,text)(<@t.page 'metadata.default_value_description'/>)</legend>
-                    <@extends 'contentExtends' contentExtendList![]/>
+                    <@extends 'contentExtends' contentExtendList![] true/>
                 </fieldset>
             </div>
         </div>

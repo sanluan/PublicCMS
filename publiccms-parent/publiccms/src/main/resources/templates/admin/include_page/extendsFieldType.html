@@ -1,9 +1,11 @@
-<#macro extendsFieldType inputName value=''>
+<#assign maxlengthDisableTypes=['user','content','category','categoryType','tagType','date','datetime','file','image','video']/>
+<#assign dictionaryTypes=['number','boolean','user','content','categroy','dictionary','categoryType','tagType']/>
+<#macro extendsFieldType inputName value='' searchable=false>
 <#local inputTypes={'text':t.pageMessage('input'),'number':t.pageMessage('number'),'file':t.pageMessage('file'),'image':t.pageMessage('image'),'video':t.pageMessage('video'),'password':t.pageMessage('password'),'editor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'kindeditor':t.pageMessage('kindeditor'),'textarea':t.pageMessage('textarea'),'date':t.pageMessage('date'),'datetime':t.pageMessage('datetime'),'template':t.pageMessage('template_path'),'boolean':t.pageMessage('true_or_false'),'user':t.pageMessage('user'),'content':t.pageMessage('content'),'category':t.pageMessage('category'),'dictionary':t.pageMessage('dictionary'),'categoryType':t.pageMessage('category_type'),'tagType':t.pageMessage('tag_type')}/>
 <#assign flag=.now?long/>
 <select class="combox combox_${flag}" name="${inputName!}">
     <#list inputTypes as a,inputType>
-    <option value="${a}"${(a=value)?then(' selected="true"','')?no_esc}>${inputType}</option>
+    <option value="${a}"${(a=value)?then(' selected="true"','')?no_esc}>${inputType}<#if searchable>(${t.pageMessage(dictionaryTypes?seq_contains(a)?then('dictionary_search','fulltext_search'))})</#if></option>
     </#list>
 </select>
 <script>
@@ -12,6 +14,11 @@ $('.combox_${flag}').on('change',function(){
         $(this).closest('tr').find('a.btnLook').show().prev().addClass('required').show();
     }else{
         $(this).closest('tr').find('a.btnLook').hide().prev().removeClass('required').hide();
+    }
+    if(-1<$.inArray($(this).val(), [<#list maxlengthDisableTypes as t>'${t}'<#sep>,</#list>])){
+        $(this).closest('tr').find('input[type=number]').hide();
+    }else{
+        $(this).closest('tr').find('input[type=number]').show();
     }
 });
 </script>

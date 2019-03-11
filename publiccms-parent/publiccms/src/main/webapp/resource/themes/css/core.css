@@ -4,15 +4,15 @@
 html, body, *{padding:0;margin:0;font-size:12px;font-family:microsoft yahei,Arial, sans-serif;word-break:break-all}
 body{width:100%;height:100%;overflow:hidden}
 
-.clearfix {*zoom: 1}
-.clearfix:after {display:block; content:"."; height:0; clear:both; visibility:hidden}
+.clearfix{*zoom:1}
+.clearfix:after{display:block;content:".";height:0;clear:both;visibility:hidden}
 /* Remember to define focus styles! */
 :focus{outline:0}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-button:vertical{display:none}
 ::-webkit-scrollbar-corner,::-webkit-scrollbar-track{border-radius:10px}
 
-input[type="checkbox"] {margin:5px;width:14px;height:14px}
+input[type="checkbox"]{margin:5px;width:14px;height:14px}
 
 ul, ol{list-style:none}
 /* Tables still need 'cellspacing="0"' in the markup. */
@@ -37,13 +37,13 @@ header .logo{float:left;width:202px;height:100%}
 header .logo img{max-width:100%;height:50px;margin:5px 10px}
 header .nav{display:block;position:absolute;right:0px;z-index:2}
 header .nav a:hover{text-decoration:none}
-header .nav li{float:left;padding:0 10px;line-height:60px;position: relative}
+header .nav li{float:left;padding:0 10px;line-height:60px;position:relative}
 header .nav li a{font-size:12px}
-header .nav ul {display:none;width:100px; border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;position:absolute;top:45px; right:0}
-header .nav ul li {margin-top:2px;line-height:26px;padding-left:10px}
-header .nav .selected ul {display:block}
+header .nav ul{display:none;width:100px;border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;position:absolute;top:45px;right:0}
+header .nav ul li{margin-top:2px;line-height:26px;padding-left:10px}
+header .nav .selected ul{display:block}
 
-@media (max-width: 1080px){header .nav {display:none}}
+@media (max-width:1080px){header .nav{display:none}}
 
 #navMenu{float:left;display:block;position:absolute;top:0;left:202px;z-index:1}
 #navMenu li{float:left}
@@ -64,7 +64,7 @@ header .nav .selected ul {display:block}
 
 .tabsPage{margin-left:202px;position:relative}
 .tabsPage .tabsPageHeader{display:block;height:45px;position:relative}
-.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height: 100%;margin-left:91px;margin-right:91px;position:relative}
+.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:91px;margin-right:91px;position:relative}
 .tabsPage .tabsPageHeaderMargin{margin:0 81px 0 81px}
 .tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute}
 .tabsPage .tabsPageHeader li{float:left;display:block;height:100%;position:relative}
@@ -72,9 +72,9 @@ header .nav .selected ul {display:block}
 .tabsPage .tabsPageHeader li a>i{margin-right:5px}
 .tabsPage .tabsPageHeader li a:hover{text-decoration:none}
 .tabsPage .tabsPageHeader li.selected a, .tabsPage .tabsPageHeader li:hover a{font-weight:400}
-.tabsPage .tabsPageHeader li .close{padding:0;padding-right: 10px}
+.tabsPage .tabsPageHeader li .close{padding:0;padding-right:10px}
 .tabsPage .tabsMove{height:100%;position:absolute;top:0;right:0;z-index:2}
-.toggleCollapse,.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:35px;text-align: center;height:100%;line-height:45px;position:absolute;z-index:2}
+.toggleCollapse,.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:35px;text-align:center;height:100%;line-height:45px;position:absolute;z-index:2}
 .toggleCollapse{top:0px;left:0;border-right-width:1px;border-right-style:solid;width:45px}
 .tabsPage .tabsLeft{top:0px;left:46px;width:45px}
 .tabsPage .tabsRight{top:0px;right:35px}
@@ -148,16 +148,16 @@ header .nav .selected ul {display:block}
 .pagination li.jumpto .goto{float:left;display:block;overflow:hidden;width:16px;height:19px;border:0;text-indent:-1000px;cursor:pointer;background:url(../images/goto.png) no-repeat center center;background-size:90% auto}
 
 /* CSS Table */
-table.list {border-collapse:collapse;border:solid 1px #ededed;position:relative}
-table.list th {font-weight:400;padding:5px 2px;line-height:26px;border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid;}
-table.list td {padding:4px 2px;line-height:26px;border-right:solid 1px #ededed}
+table.list{border-collapse:collapse;border:solid 1px #ededed;position:relative}
+table.list th{font-weight:400;padding:5px 2px;line-height:26px;border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid;}
+table.list td{padding:4px 2px;line-height:26px;border-right:solid 1px #ededed}
 table.list th.order,table.list th.asc,table.list th.desc{cursor:pointer;position:relative}
 table.list th.asc:before,table.list th.desc:before,table.list th.order:before{font-size:16px;position:absolute;right:3px;top:50%;margin-top:-13px}
-table.list .right {text-align:right}
-table.list .center {text-align:center}
-table.list a:hover {text-decoration:underline}
-table.list td span.error {z-index:-1}
-table.nowrap tbody tr {border-bottom-width:1px;border-bottom-style:solid;}
+table.list .right{text-align:right}
+table.list .center{text-align:center}
+table.list a:hover{text-decoration:underline}
+table.list td span.error{z-index:-1}
+table.nowrap tbody tr{border-bottom-width:1px;border-bottom-style:solid;}
 
 /* Taskbar */
 #taskbar{overflow:hidden;height:40px;border-style:solid;border-width:0;border-color:#0f3255;background-color:#112746;background-repeat:repeat-x;position:absolute;z-index:30}
@@ -184,7 +184,7 @@ table.nowrap tbody tr {border-bottom-width:1px;border-bottom-style:solid;}
 /* TextInput */
 .textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
 textarea.focus, textarea.required, textarea.error, textarea.readonly,
-textarea.disabled{background: #fff;padding:2px;margin:0;line-height:22px;font-size:12px;border-style:solid;border-width:1px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+textarea.disabled{background:#fff;padding:2px;margin:0;line-height:22px;font-size:12px;border-style:solid;border-width:1px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
 input.required, textarea.required{background-position:100% 0}
 input.gray, textarea.gray{color:gray}
 select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0}
@@ -201,7 +201,7 @@ a.button,button.button{border-width:1px;border-style:solid;}
 .button:hover{text-decoration:none}
 .buttonActive{font-weight:bold}
 
-.page.work-bench a.button{height:27px;line-height:27px;padding:0 15px;font-size: 13px}
+.page.work-bench a.button{height:27px;line-height:27px;padding:0 15px;font-size:13px}
 
 /* ----------------------------------------------------------------- Pages */
 /* Layout */
@@ -209,7 +209,7 @@ a.button,button.button{border-width:1px;border-style:solid;}
 #sidebar{position:absolute;left:0px;z-index:20;overflow:hidden;display:block;top:0;bottom:0;width:202px}
 #sidebar #menu{overflow:auto}
 a.toggleCollapse{text-decoration:none}
-#sidebar_s{display:none;width:35px;line-height:35px;height:auto;position:absolute;cursor:pointer;top:0px;bottom:0;left:0;z-index:21;text-align: center}
+#sidebar_s{display:none;width:35px;line-height:35px;height:auto;position:absolute;cursor:pointer;top:0px;bottom:0;left:0;z-index:21;text-align:center}
 #sidebar_s a{text-decoration:none;line-height:35px}
 #splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20}
 #splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:200px;z-index:20}
@@ -218,7 +218,7 @@ a.toggleCollapse{text-decoration:none}
 .langList{position:absolute;right:0px;bottom:0px;padding:0px 7px}
 .langList li{float:right;padding:0px 10px}
 .langList a,.langList a:hover,.langList li.current-lang a{text-decoration:none}
-.langList a img{height: 20px;position: relative;top: 5px;border-radius: 50%;margin-right: 5px}
+.langList a img{height:20px;position:relative;top:5px;border-radius:50%;margin-right:5px}
 
 .themeList li div{background:url(../images/themeButton.png) no-repeat}
 .themeList{position:absolute;left:0px;bottom:0px;padding:14px 12px 15px}
@@ -228,10 +228,10 @@ a.toggleCollapse{text-decoration:none}
 .themeList li.toptry .selected{background-position:-60px -20px}
 
 .left-page-content{border-right-width:1px;border-right-style:solid;float:left;display:block;overflow:auto;width:240px;line-height:21px}
-.thumbnail {position: relative; overflow: hidden; margin-right: 5px; border: 1px dashed #cacbcc; display: inline-block; text-align: center}
+.thumbnail{position:relative;overflow:hidden;margin-right:5px;border:1px dashed #cacbcc;display:inline-block;text-align:center}
 
 /* Pages default */
-.page{display:block;overflow:hidden;float:left;width:100%;height:100%;-webkit-overflow-scrolling: touch}
+.page{display:block;overflow:hidden;float:left;width:100%;height:100%;-webkit-overflow-scrolling:touch}
 .pageHeader{display:block;overflow:hidden;padding:10px;position:relative}
 .searchBar input,.searchBar span{float:left}
 .searchBar span{line-height:28px}
@@ -264,7 +264,7 @@ a.toggleCollapse{text-decoration:none}
 .pageFormContent .inputInfo{padding:0 5px;line-height:21px}
 .pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:21px}
 .pageFormContent span.info{color:#7F7F7F;display:block;line-height:21px}
-.pageFormContent span.info:before {display:block; content:"."; height:0; clear:both; visibility:hidden}
+.pageFormContent span.info:before{display:block;content:".";height:0;clear:both;visibility:hidden}
 
 .pageFormContent dl{float:left;line-height:22px;display:block;width:50%;margin:0;padding:5px 0;position:relative}
 .pageFormContent dt{float:left;width:120px;padding:0 5px}
@@ -272,10 +272,10 @@ a.toggleCollapse{text-decoration:none}
 .pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both}
 
 #content{width:800px}
-#content p{float: none;display: block;min-width: initial;padding: 0}
+#content p{float:none;display:block;min-width:initial;padding:0}
 .CodeMirror{height:100%;line-height:16px}
 
-fieldset{border: none;margin:0 0 10px 0;position:relative;padding:40px 20px 20px 20px}
+fieldset{border:none;margin:0 0 10px 0;position:relative;padding:40px 20px 20px 20px}
 fieldset>label, .pageFormContent>label{margin-bottom:10px}
 fieldset legend{position:absolute;top:0;font-weight:400;font-size:13px;padding:0;line-height:40px;padding-left:9px}
 fieldset legend:hover{background-color:transparent;cursor:default}
@@ -287,8 +287,9 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0}
 .formBar li{float:left;margin-left:10px}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0}
 
-.tags .tagsBox span {border: none;padding: 5px 8px;}
-.tags .tagsBox span>a{margin-left: 5px}
+.tagsBox{line-height:25px;float:left;}
+.tagsBox span{margin-right:8px;border:none;padding:5px 8px;}
+.tagsBox span>a{margin-left:5px}
 
 /* Pages dialog */
 .dialog .pageHeader{margin:0}
@@ -422,8 +423,10 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:2
 #calendar .hh .hh, #calendar .mm .mm, #calendar .ss .ss{display:block}
 #calendar .tm .hh li, #calendar .tm .mm li, #calendar .tm .ss li{display:block;float:left;cursor:pointer;width:24px;line-height:26px}
 
+.icons label{width:200px;}
 /* custom icon */
-.icon-backward:before, .icon-chevron-down:before, .icon-chevron-up:before, .icon-forward:before, .icon-rubbish:before{font-family:iconfont;line-height:45px;vertical-align:unset}
+.icon-backward:before, .icon-chevron-down:before, .icon-chevron-up:before, .icon-forward:before, .icon-rubbish:before{font-family:iconfont;vertical-align:unset}
+.tabsPageHeader .icon-backward:before,.icon-forward:before{line-height:45px;}
 .icon-chevron-up:before{content:"\e654"}
 .icon-chevron-down:before{content:"\e668"}
 .icon-backward:before{content:"\e6ea";font-size:20px}
@@ -446,12 +449,12 @@ table.list th.asc:before{content:"\e654"}
 table.list th.order:before{content:"\e623"}
 table.list th.desc:before{content:"\e668"}
 a.btnLook:before{content:"\e66a";font-family:iconfont;}
-a.btnSelect {display: block;width: 22px;height: 20px;overflow: hidden;float: left;margin-right: 3px;text-align: center;}
+a.btnSelect{display:block;width:22px;height:20px;overflow:hidden;float:left;margin-right:3px;text-align:center;}
 
 .searchBar ul.searchContent:before{content:"\e631";font-family:iconfont}
 .searchBar ul.searchContentHover:before{content:"\e6f8"}
 
-.ckbox{font-family: FontAwesome;vertical-align: -10%;font-size: 1.3333333333333333em;text-decoration: inherit;display: inline-block;speak: none;}
+.ckbox{font-family:FontAwesome;vertical-align:-10%;font-size:1.3333333333333333em;text-decoration:inherit;display:inline-block;speak:none;}
 .unchecked:before{content:"\f096"}
 .ckbox.indeterminate:before{content:"\f147"}
 .ckbox.checked:before{content:"\f046"}
@@ -462,5 +465,6 @@ a{color:#fff}
 header{background-color:#333}
 main{background-color:#333}
 footer{background-color:#333}
-table.list tbody {background-color:#666}
-.page{background: #fff; color: #333;}
+table.list tbody{background-color:#666}
+.page{background:#fff;color:#333;}
+.tagsBox span{background-color:#e0e0e0;}

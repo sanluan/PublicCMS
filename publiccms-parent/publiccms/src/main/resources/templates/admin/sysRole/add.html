@@ -23,14 +23,16 @@
                 <input name="ownsAllRight" type="checkbox" onclick="if($(this).is(':checked')){$('.ownsAllRight',navTab.getCurrentPanel()).hide();}else{$('.ownsAllRight').show();}"/>
             </dd>
         </dl>
-<#macro moduleTree parentId=''>
+<#macro moduleTree parentId='' deep=0>
     <@_sysModuleList parentId=parentId advanced=true>
         <#if page.totalCount gt 0>
             <ul>
                 <#list page.list as a>
                     <li>
-                        <a tname="moduleIds" tvalue="${a.id}">${(a.attached?no_esc)!} <@t.menu a.id/></a>
-                        <@moduleTree a.id/>
+                        <a tname="moduleIds" tvalue="${a.id}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>
+                        <#if deep lte 3>
+                            <@moduleTree a.id deep+1/>
+                        </#if>
                     </li>
                 </#list>
             </ul>
@@ -48,7 +50,7 @@
             <ul class="tree treeFolder treeCheck">
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'module.all'/></a>
-                    <@moduleTree/>
+                    <@moduleTree deep=0/>
                 </li>
             </ul>
 <#if a??>

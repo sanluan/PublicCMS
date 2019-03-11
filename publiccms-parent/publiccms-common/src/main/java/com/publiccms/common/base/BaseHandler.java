@@ -233,12 +233,7 @@ public abstract class BaseHandler implements RenderHandler {
                 } catch (NumberFormatException e) {
                 }
             }
-            int i = 0;
-            Integer[] ids = new Integer[set.size()];
-            for (Integer number : set) {
-                ids[i++] = number;
-            }
-            return ids;
+            return set.toArray(new Integer[set.size()]);
         }
         return null;
     }
@@ -255,12 +250,7 @@ public abstract class BaseHandler implements RenderHandler {
                 } catch (NumberFormatException e) {
                 }
             }
-            int i = 0;
-            Long[] ids = new Long[set.size()];
-            for (Long number : set) {
-                ids[i++] = number;
-            }
-            return ids;
+            return set.toArray(new Long[set.size()]);
         }
         return null;
     }

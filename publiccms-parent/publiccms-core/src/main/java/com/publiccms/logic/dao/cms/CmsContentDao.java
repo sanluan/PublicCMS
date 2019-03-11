@@ -39,6 +39,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] textFields = new String[] { "title", "author", "editor", "description" };
     private static final String[] tagFields = new String[] { "tagIds" };
+    private static final String dictionaryField = "dictionaryValues";
     private static final String[] facetFields = new String[] { "categoryId", "modelId" };
     private static final String[] projectionFields = new String[] { "title", "categoryId", "modelId", "parentId", "author",
             "editor", "onlyUrl", "hasImages", "hasFiles", "url", "description", "tagIds", "publishDate" };
@@ -48,28 +49,38 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param siteId
      * @param text
      * @param tagIds
+     * @param dictionaryValues
      * @param categoryIds
      * @param modelIds
      * @param startPublishDate
      * @param endPublishDate
+     * @param expiryDate
      * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, Integer[] categoryIds,
-            String[] modelIds, Date startPublishDate, Date endPublishDate, String orderField, Integer pageIndex,
-            Integer pageSize) {
+    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, String dictionaryValues,
+            Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, Date expiryDate,
+            String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        MustJunction termination = queryBuilder.bool()
-                .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagIds) ? textFields : tagFields)
-                        .matching(CommonUtils.empty(tagIds) ? text : tagIds).createQuery())
-                .must(new TermQuery(new Term("siteId", siteId.toString())));
+        MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
+        if (CommonUtils.notEmpty(text)) {
+            termination.must(queryBuilder.keyword().onFields(textFields).matching(text).createQuery());
+        } else if (CommonUtils.notEmpty(tagIds)) {
+            termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
+        }
+        if (CommonUtils.notEmpty(dictionaryValues)) {
+            termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(dictionaryValues).createQuery());
+        }
         if (null != startPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
         }
         if (null != endPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
+        }
+        if (null != expiryDate) {
+            termination.must(queryBuilder.range().onField("expiryDate").from(1L).to(expiryDate.getTime()).createQuery()).not();
         }
         if (CommonUtils.notEmpty(categoryIds)) {
             @SuppressWarnings("rawtypes")
@@ -104,26 +115,37 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param categoryIds
      * @param modelIds
      * @param text
-     * @param tagId
+     * @param tagIds
+     * @param dictionaryValues
      * @param startPublishDate
      * @param endPublishDate
+     * @param expiryDate
      * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, String tagId,
-            Date startPublishDate, Date endPublishDate, String orderField, Integer pageIndex, Integer pageSize) {
+    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, String tagIds,
+            String dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
+            Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        MustJunction termination = queryBuilder.bool()
-                .must(queryBuilder.keyword().onFields(CommonUtils.empty(tagId) ? textFields : tagFields)
-                        .matching(CommonUtils.empty(tagId) ? text : tagId).createQuery())
-                .must(new TermQuery(new Term("siteId", siteId.toString())));
+        MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
+        if (CommonUtils.notEmpty(text)) {
+            termination.must(queryBuilder.keyword().onFields(textFields).matching(text).createQuery());
+        } else if (CommonUtils.notEmpty(tagIds)) {
+            termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
+        }
+        if (CommonUtils.notEmpty(dictionaryValues)) {
+            termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(dictionaryValues).createQuery());
+        }
         if (null != startPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
         }
         if (null != endPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
+        }
+        if (null != expiryDate) {
+            termination.must(queryBuilder.range().onField("expiryDate").from(1L).to(expiryDate.getTime()).createQuery()).not();
         }
         Map<String, List<String>> valueMap = new LinkedHashMap<>();
         if (CommonUtils.notEmpty(categoryIds)) {
@@ -185,22 +207,48 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (CommonUtils.notEmpty(queryEntitry.getStatus())) {
             queryHandler.condition("bean.status in (:status)").setParameter("status", queryEntitry.getStatus());
         }
-        if (CommonUtils.notEmpty(queryEntitry.getCategoryIds())) {
-            queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
-                    queryEntitry.getCategoryIds());
-        } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
-            queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
+        if (CommonUtils.notEmpty(queryEntitry.getParentId())) {
+            queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", queryEntitry.getParentId());
+        } else {
+            if (CommonUtils.notEmpty(queryEntitry.getCategoryIds())) {
+                queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
+                        queryEntitry.getCategoryIds());
+            } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
+                queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
+            }
+            if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
+                queryHandler.condition("bean.parentId is null");
+            }
         }
         if (null != queryEntitry.getDisabled()) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", queryEntitry.getDisabled());
         }
+        if (CommonUtils.notEmpty(queryEntitry.getParentId())) {
+            queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", queryEntitry.getParentId());
+        } else {
+            if (CommonUtils.notEmpty(queryEntitry.getCategoryIds())) {
+                queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
+                        queryEntitry.getCategoryIds());
+            } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
+                queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
+            }
+            if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
+                queryHandler.condition("bean.parentId is null");
+            }
+        }
+        if (CommonUtils.notEmpty(queryEntitry.getQuoteId())) {
+            queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId",
+                    queryEntitry.getQuoteId());
+        } else {
+            if (null != queryEntitry.getEmptyQuote() && queryEntitry.getEmptyQuote()) {
+                queryHandler.condition("bean.quoteContentId is null");
+            }
+        }
         if (CommonUtils.notEmpty(queryEntitry.getModelIds())) {
             queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", queryEntitry.getModelIds());
         }
-        if (CommonUtils.notEmpty(queryEntitry.getParentId())) {
-            queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", queryEntitry.getParentId());
-        } else if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
-            queryHandler.condition("bean.parentId is null");
+        if (CommonUtils.notEmpty(queryEntitry.getUserId())) {
+            queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
         }
         if (null != queryEntitry.getOnlyUrl()) {
             queryHandler.condition("bean.onlyUrl = :onlyUrl").setParameter("onlyUrl", queryEntitry.getOnlyUrl());
@@ -221,9 +269,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (CommonUtils.notEmpty(queryEntitry.getTitle())) {
             queryHandler.condition("(bean.title like :title)").setParameter("title", like(queryEntitry.getTitle()));
         }
-        if (CommonUtils.notEmpty(queryEntitry.getUserId())) {
-            queryHandler.condition("bean.userId = :userId").setParameter("userId", queryEntitry.getUserId());
-        }
         if (null != queryEntitry.getStartPublishDate()) {
             queryHandler.condition("bean.publishDate > :startPublishDate").setParameter("startPublishDate",
                     queryEntitry.getStartPublishDate());
@@ -231,6 +276,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null != queryEntitry.getEndPublishDate()) {
             queryHandler.condition("bean.publishDate <= :endPublishDate").setParameter("endPublishDate",
                     queryEntitry.getEndPublishDate());
+        }
+        if (null != queryEntitry.getExpiryDate()) {
+            queryHandler.condition("(bean.expiryDate is null or bean.expiryDate >= :expiryDate)").setParameter("expiryDate",
+                    queryEntitry.getExpiryDate());
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

@@ -84,7 +84,7 @@ public class SysModule implements java.io.Serializable {
         this.authorizedUrl = authorizedUrl;
     }
 
-    @Column(name = "attached", length = 300)
+    @Column(name = "attached", length = 50)
     public String getAttached() {
         return this.attached;
     }

@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -108,14 +109,23 @@ public class TemplateComponent implements Cache {
             model.put("pageIndex", pageIndex);
             AbstractFreemarkerView.exposeSite(model, site);
             filePath = FreeMarkerUtils.generateStringByString(filePath, webConfiguration, model);
-            model.put("url", site.getSitePath() + filePath);
-            if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
-                int index = filePath.lastIndexOf(CommonConstants.DOT);
-                filePath = filePath.substring(0, index) + CommonConstants.UNDERLINE + pageIndex
-                        + filePath.substring(index, filePath.length());
+            if (filePath.startsWith(CommonConstants.SEPARATOR)) {
+                filePath = filePath.substring(1);
             }
-            FreeMarkerUtils.generateFileByFile(fullTemplatePath, siteComponent.getWebFilePath(site, filePath), webConfiguration,
-                    model);
+            model.put("url", site.getSitePath() + filePath);
+            String staticFilePath;
+            if (filePath.endsWith(CommonConstants.SEPARATOR)) {
+                staticFilePath = filePath + CommonConstants.getDefaultPage();
+            } else {
+                staticFilePath = filePath;
+            }
+            if (CommonUtils.notEmpty(pageIndex) && 1 < pageIndex) {
+                int index = staticFilePath.lastIndexOf(CommonConstants.DOT);
+                staticFilePath = staticFilePath.substring(0, index) + CommonConstants.UNDERLINE + pageIndex
+                        + staticFilePath.substring(index, staticFilePath.length());
+            }
+            FreeMarkerUtils.generateFileByFile(fullTemplatePath, siteComponent.getWebFilePath(site, staticFilePath),
+                    webConfiguration, model);
         }
         return filePath;
     }
@@ -131,32 +141,47 @@ public class TemplateComponent implements Cache {
      */
     public boolean createContentFile(SysSite site, CmsContent entity, CmsCategory category, CmsCategoryModel categoryModel) {
         if (null != site && null != entity) {
-            if (null == category) {
-                category = categoryService.getEntity(entity.getCategoryId());
-            }
-            if (null == categoryModel) {
-                categoryModel = categoryModelService
-                        .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-            }
-            if (null != categoryModel && null != category && !entity.isOnlyUrl()) {
-                try {
-                    if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
-                        String url = site.getSitePath()
-                                + createContentFile(site, entity, category, true, categoryModel.getTemplatePath(), null, null);
-                        contentService.updateUrl(entity.getId(), url, true);
-                    } else {
-                        Map<String, Object> model = new HashMap<>();
-                        model.put("content", entity);
-                        model.put("category", category);
-                        model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                        String url = site.getDynamicPath()
-                                + FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration, model);
-                        contentService.updateUrl(entity.getId(), url, false);
+            if (!entity.isOnlyUrl()) {
+                if (null == category) {
+                    category = categoryService.getEntity(entity.getCategoryId());
+                }
+                if (null == categoryModel) {
+                    categoryModel = categoryModelService
+                            .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
+                }
+                if (null != categoryModel && null != category) {
+                    try {
+                        if (site.isUseStatic() && CommonUtils.notEmpty(categoryModel.getTemplatePath())) {
+                            String url = site.getSitePath() + createContentFile(site, entity, category, true,
+                                    categoryModel.getTemplatePath(), null, null);
+                            contentService.updateUrl(entity.getId(), url, true);
+                        } else {
+                            Map<String, Object> model = new HashMap<>();
+                            model.put("content", entity);
+                            model.put("category", category);
+                            model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
+                            String filePath = FreeMarkerUtils.generateStringByString(category.getContentPath(), webConfiguration,
+                                    model);
+                            String url;
+                            if (0 < filePath.indexOf("://") || filePath.startsWith("//")) {
+                                url = site.getDynamicPath() + filePath;
+                            } else {
+                                url = filePath;
+                            }
+                            contentService.updateUrl(entity.getId(), url, false);
+                        }
+                        return true;
+                    } catch (IOException | TemplateException e) {
+                        log.error(e.getMessage(), e);
+                        return false;
                     }
-                    return true;
-                } catch (IOException | TemplateException e) {
-                    log.error(e.getMessage(), e);
-                    return false;
+                }
+            } else if (null != entity.getQuoteContentId()) {
+                if (null != categoryModel && null != category) {
+                    CmsContent quote = contentService.getEntity(entity.getQuoteContentId());
+                    if (null != quote) {
+                        contentService.updateUrl(entity.getId(), quote.getUrl(), false);
+                    }
                 }
             }
         }
@@ -250,8 +275,13 @@ public class TemplateComponent implements Cache {
                     Map<String, Object> model = new HashMap<>();
                     model.put("category", entity);
                     model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
-                    String url = site.getDynamicPath()
-                            + FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
+                    String filePath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
+                    String url;
+                    if (0 < filePath.indexOf("://") || filePath.startsWith("//")) {
+                        url = site.getDynamicPath() + filePath;
+                    } else {
+                        url = filePath;
+                    }
                     categoryService.updateUrl(entity.getId(), url, false);
                 }
             } catch (IOException | TemplateException e) {
@@ -309,9 +339,10 @@ public class TemplateComponent implements Cache {
     }
 
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
-        if (null != metadata.getSize() && metadata.getSize() > 0) {
-            model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null,
-                    CommonUtils.getMinuteDate(), CmsPlaceService.STATUS_NORMAL, false, null, null, 1, metadata.getSize()));
+        if (null != metadata.getSize() && 0 < metadata.getSize()) {
+            Date now = CommonUtils.getMinuteDate();
+            model.put("page", placeService.getPage(site.getId(), null, templatePath, null, null, null, now, now,
+                    CmsPlaceService.STATUS_NORMAL_ARRAY, false, null, null, 1, metadata.getSize()));
         }
         model.put("metadata", metadata);
         AbstractFreemarkerView.exposeSite(model, site);
@@ -330,7 +361,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.notEmpty(templatePath)) {
             Map<String, Object> model = new HashMap<>();
             exposePlace(site, templatePath, metadata, model);
-            String placeTemplatePath = INCLUDE_DIRECTORY + CommonConstants.SEPARATOR + templatePath;
+            String placeTemplatePath = INCLUDE_DIRECTORY + templatePath;
             String templateFullPath = SiteComponent.getFullTemplatePath(site, placeTemplatePath);
             FreeMarkerUtils.generateFileByFile(templateFullPath, siteComponent.getWebFilePath(site, placeTemplatePath),
                     webConfiguration, model);

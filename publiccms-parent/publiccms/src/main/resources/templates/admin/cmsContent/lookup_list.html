@@ -1,5 +1,5 @@
-<@_contentList categoryId=categoryId modelId=modelId title=title status=1
-    parentId=parentId containChild=true userId=userId startPublishDate=startPublishDate endPublishDate=.now
+<@_contentList advanced=true categoryId=categoryId modelId=modelId title=title status=1
+    parentId=parentId emptyQuote=true containChild=true userId=userId startPublishDate=startPublishDate endPublishDate=.now
     orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
@@ -70,7 +70,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a href="javascript:;" class="btnSelect" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-check-sign icon-large"></i> <@t.page 'content.select'/></a>
+                    <a href="javascript:;" class="btnSelect" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-check-sign icon-large"></i> <@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>

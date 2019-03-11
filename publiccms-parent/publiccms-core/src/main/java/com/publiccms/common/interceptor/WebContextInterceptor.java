@@ -1,14 +1,11 @@
 package com.publiccms.common.interceptor;
 
-import java.util.Date;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +44,45 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private LogLoginService logLoginService;
     protected LocaleChangeInterceptor localeChangeInterceptor = new LocaleChangeInterceptor();
+
+    @Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
+        SysSite site = siteComponent.getSite(request.getServerName());
+        request.setAttribute("site", site);
+        HttpSession session = request.getSession(false);
+        SysUser user = initUser(ControllerUtils.getUserFromSession(session), LogLoginService.CHANNEL_WEB,
+                CommonConstants.getCookiesUser(), site, request, response);
+        if (null != user) {
+            if (null == session) {
+                session = request.getSession(true);
+                ControllerUtils.setUserToSession(session, user);
+            } else {
+                Long last = ControllerUtils.getUserTimeFromSession(session);
+                if (null == last || System.currentTimeMillis() - last > 1000 * 60) {
+                    SysUser entity = sysUserService.getEntity(user.getId());
+                    if (null != entity && !entity.isDisabled() && null != site && !site.isDisabled()
+                            && site.getId() == entity.getSiteId()) {
+                        entity.setPassword(null);
+                        ControllerUtils.setUserToSession(session, entity);
+                    } else {
+                        Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
+                        if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
+                            String value = userCookie.getValue();
+                            if (null != value) {
+                                String[] userData = value.split(CommonConstants.getCookiesUserSplit());
+                                if (userData.length > 1) {
+                                    sysUserTokenService.delete(userData[1]);
+                                }
+                            }
+                        }
+                        ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
+                    }
+                }
+            }
+        }
+        localeChangeInterceptor.preHandle(request, response, handler);
+        return true;
+    }
 
     protected SysUser initUser(SysUser user, String channel, String cookiesName, SysSite site, HttpServletRequest request,
             HttpServletResponse response) {
@@ -89,38 +125,5 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
             }
         }
         return user;
-    }
-
-    @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-        HttpSession session = request.getSession();
-        SysSite site = siteComponent.getSite(request.getServerName());
-        SysUser user = initUser(ControllerUtils.getUserFromSession(session), LogLoginService.CHANNEL_WEB,
-                CommonConstants.getCookiesUser(), site, request, response);
-        if (null != user) {
-            Date date = ControllerUtils.getUserTimeFromSession(session);
-            if (null == date || date.before(DateUtils.addSeconds(new Date(), -30))) {
-                SysUser entity = sysUserService.getEntity(user.getId());
-                if (null != entity && !entity.isDisabled() && null != site && !site.isDisabled()
-                        && site.getId() == entity.getSiteId()) {
-                    entity.setPassword(null);
-                    ControllerUtils.setUserToSession(session, entity);
-                } else {
-                    Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
-                    if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
-                        String value = userCookie.getValue();
-                        if (null != value) {
-                            String[] userData = value.split(CommonConstants.getCookiesUserSplit());
-                            if (userData.length > 1) {
-                                sysUserTokenService.delete(userData[1]);
-                            }
-                        }
-                    }
-                    ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
-                }
-            }
-        }
-        localeChangeInterceptor.preHandle(request, response, handler);
-        return true;
     }
 }

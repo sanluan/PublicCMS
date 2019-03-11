@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.logic.dao.cms.CmsContentFileDao;
@@ -22,13 +23,13 @@ import com.publiccms.logic.dao.cms.CmsContentFileDao;
 @Service
 @Transactional
 public class CmsContentFileService extends BaseService<CmsContentFile> {
-    
-    private String[] ignoreProperties =  new String[] { "id", "userId", "contentId", "image" };
-    
+
+    private String[] ignoreProperties = new String[] { "id", "userId", "contentId", "image" };
+
     /**
      * @param contentId
      * @param userId
-     * @param image
+     * @param fileTypes
      * @param orderField
      * @param orderType
      * @param pageIndex
@@ -36,9 +37,9 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long contentId, Long userId, Boolean image, String orderField, String orderType,
+    public PageHandler getPage(Long contentId, Long userId, String[] fileTypes, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
-        return dao.getPage(contentId, userId, image, orderField, orderType, pageIndex, pageSize);
+        return dao.getPage(contentId, userId, fileTypes, orderField, orderType, pageIndex, pageSize);
     }
 
     /**
@@ -52,10 +53,10 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
         Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(images)) {
             for (CmsContentFile entity : images) {
+                entity.setFileType(CmsFileUtils.getFileType(CmsFileUtils.getSuffix(entity.getFilePath())));
                 if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
-                    entity.setImage(true);
                     entity.setUserId(userId);
                     entity.setContentId(contentId);
                     save(entity);
@@ -65,6 +66,10 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
         }
         if (CommonUtils.notEmpty(files)) {
             for (CmsContentFile entity : files) {
+                entity.setFileType(CmsFileUtils.getFileType(CmsFileUtils.getSuffix(entity.getFilePath())));
+                if (CmsFileUtils.FILE_TYPE_IMAGE.equals(entity.getFileType())) {
+                    entity.setFileType(CmsFileUtils.FILE_TYPE_OTHER);
+                }
                 if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
@@ -84,5 +89,5 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
 
     @Autowired
     private CmsContentFileDao dao;
-    
+
 }

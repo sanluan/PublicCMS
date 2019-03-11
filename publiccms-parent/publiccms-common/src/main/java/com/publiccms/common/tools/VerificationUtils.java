@@ -267,8 +267,18 @@ public class VerificationUtils {
      * @param input
      * @return sha2 encode result
      */
-    public static String sha2Encode(String input) {
+    public static String sha512Encode(String input) {
         return encode(input, "SHA-512");
+    }
+    
+    /**
+     * sha256加密
+     *
+     * @param input
+     * @return sha2 encode result
+     */
+    public static String sha256Encode(String input) {
+        return encode(input, "SHA-256");
     }
 
     /**

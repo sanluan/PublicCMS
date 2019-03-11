@@ -26,9 +26,9 @@ import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  * 
@@ -181,30 +181,30 @@ public class EmailComponent implements SiteCache, Config {
     }
 
     @Override
-    public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
-        List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true, CONFIG_DEFAULTENCODING,
+    public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
+        List<SysExtendField> extendFieldList = new ArrayList<>();
+        extendFieldList.add(new SysExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true, CONFIG_DEFAULTENCODING,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULTENCODING),
                 CommonConstants.DEFAULT_CHARSET_NAME));
-        extendFieldList.add(new ExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true, CONFIG_HOST, LanguagesUtils.getMessage(
+        extendFieldList.add(new SysExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true, CONFIG_HOST, LanguagesUtils.getMessage(
                 CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_HOST), null));
-        extendFieldList.add(new ExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true, CONFIG_PORT,
+        extendFieldList.add(new SysExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true, CONFIG_PORT,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PORT),
                 String.valueOf(25)));
-        extendFieldList.add(new ExtendField(CONFIG_USERNAME, INPUTTYPE_TEXT, true, CONFIG_USERNAME,
+        extendFieldList.add(new SysExtendField(CONFIG_USERNAME, INPUTTYPE_TEXT, true, CONFIG_USERNAME,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_USERNAME), null));
-        extendFieldList.add(new ExtendField(CONFIG_PASSWORD, INPUTTYPE_PASSWORD, true, CONFIG_PASSWORD,
+        extendFieldList.add(new SysExtendField(CONFIG_PASSWORD, INPUTTYPE_PASSWORD, true, CONFIG_PASSWORD,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PASSWORD), null));
-        extendFieldList.add(new ExtendField(CONFIG_TIMEOUT, INPUTTYPE_NUMBER, true, CONFIG_TIMEOUT,
+        extendFieldList.add(new SysExtendField(CONFIG_TIMEOUT, INPUTTYPE_NUMBER, true, CONFIG_TIMEOUT,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_TIMEOUT),
                 String.valueOf(3000)));
-        extendFieldList.add(new ExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true, CONFIG_AUTH,
+        extendFieldList.add(new SysExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true, CONFIG_AUTH,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_AUTH), null));
-        extendFieldList.add(new ExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, CONFIG_FROMADDRESS, LanguagesUtils.getMessage(
+        extendFieldList.add(new SysExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, CONFIG_SSL, LanguagesUtils.getMessage(
                 CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null));
-        extendFieldList.add(new ExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true, CONFIG_FROMADDRESS,
+        extendFieldList.add(new SysExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true, CONFIG_FROMADDRESS,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_FROMADDRESS), null));
         return extendFieldList;
     }

@@ -119,10 +119,10 @@
                         <a href="cmsRecycleContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsRecycleContent/list"><@t.page 'content.child'/></a>|
                     </#if>
                     <#if authorizedMap['cmsContent/recycle']>
-                        <a href="cmsContent/recycle.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><@t.page 'button.recycle'/></a>|
+                        <a href="cmsContent/recycle.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.recycle'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.recycle'/></a>|
                     </#if>
                     <#if authorizedMap['cmsContent/realDelete']>
-                        <a href="cmsContent/realDelete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                        <a href="cmsContent/realDelete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.delete'/></a>
                     </#if>
                 </td>
             </tr>

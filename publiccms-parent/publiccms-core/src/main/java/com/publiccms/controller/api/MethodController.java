@@ -8,12 +8,13 @@ import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.BaseMethod;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -34,7 +35,8 @@ import freemarker.template.TemplateModelException;
  *
  */
 @RestController
-public class MethodController extends AbstractController {
+public class MethodController {
+    protected final Log log = LogFactory.getLog(getClass());
     private Map<String, BaseMethod> methodMap;
     private List<Map<String, String>> methodList = new ArrayList<>();
     private ObjectWrapper objectWrapper;
@@ -81,7 +83,7 @@ public class MethodController extends AbstractController {
                     map.put("result", method.exec(list));
                     return map;
                 } else if (CommonUtils.empty(parameters) && 0 == method.minParametersNumber()) {
-                    map.put("result", method.exec(null));
+                    map.put("result", method.exec(new ArrayList<>()));
                     return map;
                 } else {
                     map.put(CommonConstants.ERROR, "parametersError");

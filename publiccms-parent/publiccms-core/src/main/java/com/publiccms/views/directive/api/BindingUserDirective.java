@@ -9,7 +9,7 @@ import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysApp;
-import com.publiccms.entities.sys.SysAppClientId;
+import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.service.sys.SysAppClientService;
 
@@ -26,9 +26,11 @@ public class BindingUserDirective extends AbstractAppDirective {
         String uuid = handler.getString("uuid");
         boolean result = false;
         if (CommonUtils.notEmpty(uuid)) {
-            SysAppClientId sysAppClientId = new SysAppClientId(getSite(handler).getId(), app.getChannel(), uuid);
-            appClientService.updateUser(sysAppClientId, user.getId());
-            result = true;
+            SysAppClient sysAppClien = appClientService.getEntity(getSite(handler).getId(), app.getChannel(), uuid);
+            if (null != sysAppClien) {
+                appClientService.updateUser(sysAppClien.getId(), user.getId());
+                result = true;
+            }
         }
         handler.put("result", result);
     }

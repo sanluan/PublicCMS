@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>${metadata.alias!}${word?has_content?then(' - '+word,'')}</title>
     <meta name="keywords" content="<#list getKeywords(word) as a>${a}<#sep>,</#list>"/>
     <meta name="description" content="${site.name} - Search"/>
@@ -44,11 +45,13 @@
             <#else>
                 <span>Previous page</span>
             </#if>
-            <#assign start=1/>
+            <#assign
+                start=1
+                end=page.totalPage
+            />
             <#if (page.pageIndex-5) gt start>
                 <#assign start=page.pageIndex-4/>
             </#if>
-            <#assign end=page.totalPage/>
             <#if (page.pageIndex+5) lt end>
                 <#assign end=page.pageIndex+4/>
             </#if>

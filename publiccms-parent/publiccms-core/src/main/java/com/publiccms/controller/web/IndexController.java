@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
@@ -19,7 +20,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -28,6 +28,7 @@ import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
 import com.publiccms.views.pojo.entities.CmsPageData;
@@ -39,7 +40,7 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
  *
  */
 @Controller
-public class IndexController extends AbstractController {
+public class IndexController {
     @Autowired
     private MetadataComponent metadataComponent;
     @Autowired
@@ -48,11 +49,15 @@ public class IndexController extends AbstractController {
     private ConfigComponent configComponent;
     @Autowired
     private LocaleResolver localeResolver;
+    @Autowired
+    protected SiteComponent siteComponent;
+
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
     /**
      * REST页面请求统一分发
      * 
+     * @param site
      * @param id
      * @param body
      * @param request
@@ -61,14 +66,15 @@ public class IndexController extends AbstractController {
      * @return view name
      */
     @RequestMapping({ "/**/{id:[0-9]+}" })
-    public String rest(@PathVariable("id") long id, @RequestBody(required = false) String body, HttpServletRequest request,
-            HttpServletResponse response, ModelMap model) {
-        return restPage(id, null, body, request, response, model);
+    public String rest(@RequestAttribute SysSite site, @PathVariable("id") long id, @RequestBody(required = false) String body,
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        return restPage(site, id, null, body, request, response, model);
     }
 
     /**
      * REST页面请求统一分发
      * 
+     * @param site
      * @param id
      * @param pageIndex
      * @param body
@@ -78,9 +84,9 @@ public class IndexController extends AbstractController {
      * @return view name
      */
     @RequestMapping({ "/**/{id:[0-9]+}_{pageIndex:[0-9]+}" })
-    public String restPage(@PathVariable("id") long id, @PathVariable("pageIndex") Integer pageIndex,
-            @RequestBody(required = false) String body, HttpServletRequest request, HttpServletResponse response,
-            ModelMap model) {
+    public String restPage(@RequestAttribute SysSite site, @PathVariable("id") long id,
+            @PathVariable("pageIndex") Integer pageIndex, @RequestBody(required = false) String body, HttpServletRequest request,
+            HttpServletResponse response, ModelMap model) {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
             requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR, requestPath.length() - 2))
@@ -89,12 +95,13 @@ public class IndexController extends AbstractController {
             requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR))
                     + CommonConstants.getDefaultSubfix();
         }
-        return getViewName(id, pageIndex, requestPath, body, request, response, model);
+        return getViewName(site, id, pageIndex, requestPath, body, request, response, model);
     }
 
     /**
      * 页面请求统一分发
      * 
+     * @param site
      * @param body
      * @param request
      * @param response
@@ -102,20 +109,19 @@ public class IndexController extends AbstractController {
      * @return view name
      */
     @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
-    public String page(@RequestBody(required = false) String body, HttpServletRequest request, HttpServletResponse response,
-            ModelMap model) {
+    public String page(@RequestAttribute SysSite site, @RequestBody(required = false) String body, HttpServletRequest request,
+            HttpServletResponse response, ModelMap model) {
         String requestPath = urlPathHelper.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
             requestPath += CommonConstants.getDefaultPage();
         }
-        return getViewName(null, null, requestPath, body, request, response, model);
+        return getViewName(site, null, null, requestPath, body, request, response, model);
     }
 
-    private String getViewName(Long id, Integer pageIndex, String requestPath, String body, HttpServletRequest request,
-            HttpServletResponse response, ModelMap model) {
-        SysDomain domain = getDomain(request);
-        SysSite site = getSite(request);
-        String fullRequestPath = siteComponent.getViewNamePrefix(site, domain) + requestPath;
+    private String getViewName(SysSite site, Long id, Integer pageIndex, String requestPath, String body,
+            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        SysDomain domain = siteComponent.getDomain(request.getServerName());
+        String fullRequestPath = siteComponent.getViewName(site, domain, requestPath);
         String templatePath = siteComponent.getWebTemplateFilePath() + fullRequestPath;
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(templatePath);
         if (metadata.isUseDynamic()) {

@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.http.client.ClientProtocolException;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.publiccms.common.base.oauth.AbstractOauth;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
@@ -60,8 +59,8 @@ public class WeiboOauthComponent extends AbstractOauth {
             parameters.put("code", code);
             String html = post("https://api.weibo.com/oauth2/access_token", parameters);
             if (CommonUtils.notEmpty(html)) {
-                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
-                });
+                Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
+                        .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
                 return new OauthAccess(code, (String) map.get("access_token"), String.valueOf(map.get("uid")));
             }
         }
@@ -77,8 +76,8 @@ public class WeiboOauthComponent extends AbstractOauth {
             StringBuilder sb = new StringBuilder("https://api.weibo.com/2/users/show.json?access_token=");
             sb.append(oauthInfo.getAccessToken()).append("&uid=").append(oauthInfo.getOpenId());
             String html = get(sb.toString());
-            Map<String, Object> map = CommonConstants.objectMapper.readValue(html, new TypeReference<Map<String, Object>>() {
-            });
+            Map<String, Object> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper.getTypeFactory()
+                    .constructMapLikeType(HashMap.class, String.class, Object.class));
             if (null != map.get("id")) {
                 return new OauthUser(oauthInfo.getOpenId(), (String) map.get("screen_name"));
             }

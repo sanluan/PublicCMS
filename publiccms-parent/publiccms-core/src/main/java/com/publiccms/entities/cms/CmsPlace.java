@@ -39,6 +39,8 @@ public class CmsPlace implements java.io.Serializable {
     private String path;
     @GeneratorColumn(title = "推荐用户", condition = true)
     private Long userId;
+    @GeneratorColumn(title = "审核用户", condition = true)
+    private Long checkUserId;
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
     @GeneratorColumn(title = "项目ID", condition = true)
@@ -54,6 +56,9 @@ public class CmsPlace implements java.io.Serializable {
     @GeneratorColumn(title = "发布日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date publishDate;
+    @GeneratorColumn(title = "过期日期", condition = true, order = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date expiryDate;
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
     @GeneratorColumn(title = "点击数", order = true)
@@ -77,11 +82,13 @@ public class CmsPlace implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsPlace(short siteId, String path, Long userId, String itemType, Long itemId, String title, String url, String cover,
-            Date createDate, Date publishDate, int status, int clicks, boolean disabled) {
+    public CmsPlace(short siteId, String path, Long userId, Long checkUserId, String itemType, Long itemId, String title,
+            String url, String cover, Date createDate, Date publishDate, Date expiryDate, int status, int clicks,
+            boolean disabled) {
         this.siteId = siteId;
         this.path = path;
         this.userId = userId;
+        this.checkUserId = checkUserId;
         this.itemType = itemType;
         this.itemId = itemId;
         this.title = title;
@@ -89,6 +96,7 @@ public class CmsPlace implements java.io.Serializable {
         this.cover = cover;
         this.createDate = createDate;
         this.publishDate = publishDate;
+        this.expiryDate = expiryDate;
         this.status = status;
         this.clicks = clicks;
         this.disabled = disabled;
@@ -115,7 +123,7 @@ public class CmsPlace implements java.io.Serializable {
         this.siteId = siteId;
     }
 
-    @Column(name = "path", nullable = false)
+    @Column(name = "path", nullable = false, length = 100)
     public String getPath() {
         return this.path;
     }
@@ -131,6 +139,15 @@ public class CmsPlace implements java.io.Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    @Column(name = "check_user_id")
+    public Long getCheckUserId() {
+        return this.checkUserId;
+    }
+
+    public void setCheckUserId(Long checkUserId) {
+        this.checkUserId = checkUserId;
     }
 
     @Column(name = "item_type", length = 50)
@@ -160,7 +177,7 @@ public class CmsPlace implements java.io.Serializable {
         this.title = title;
     }
 
-    @Column(name = "url", length = 2048)
+    @Column(name = "url", length = 1000)
     public String getUrl() {
         return this.url;
     }
@@ -196,6 +213,16 @@ public class CmsPlace implements java.io.Serializable {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "expiry_date", length = 19)
+    public Date getExpiryDate() {
+        return this.expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     @Column(name = "status", nullable = false)

@@ -8,8 +8,8 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  * 
@@ -36,15 +36,16 @@ public class SiteAttributeComponent implements Config {
     }
 
     @Override
-    public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
-        List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(CONFIG_LOGO, INPUTTYPE_IMAGE, false,
+    public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
+        List<SysExtendField> extendFieldList = new ArrayList<>();
+        extendFieldList.add(new SysExtendField(CONFIG_LOGO, INPUTTYPE_IMAGE, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO),
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 null));
-        extendFieldList.add(new ExtendField(CONFIG_SQUARE_LOGO, INPUTTYPE_IMAGE, false,
+        extendFieldList.add(new SysExtendField(CONFIG_SQUARE_LOGO, INPUTTYPE_IMAGE, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO),
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 null));
         return extendFieldList;
     }

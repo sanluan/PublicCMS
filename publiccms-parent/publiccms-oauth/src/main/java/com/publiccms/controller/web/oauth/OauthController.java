@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,20 +24,22 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.oauth.Oauth;
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.base.oauth.AbstractOauth;
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.controller.web.LoginController;
 import com.publiccms.entities.log.LogLogin;
+import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.sys.SysAppClientService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
 import com.publiccms.view.pojo.oauth.OauthAccess;
@@ -43,7 +47,8 @@ import com.publiccms.view.pojo.oauth.OauthUser;
 
 @Controller
 @RequestMapping("oauth")
-public class OauthController extends AbstractController {
+public class OauthController {
+    protected final Log log = LogFactory.getLog(getClass());
     /**
      * 
      */
@@ -58,11 +63,15 @@ public class OauthController extends AbstractController {
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
+    private SysAppClientService appClientService;
+    @Autowired
     private SysUserTokenService sysUserTokenService;
     @Autowired
     private SysUserService sysUserService;
     @Autowired
     private LogLoginService logLoginService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     /**
      * @param channel
@@ -75,7 +84,7 @@ public class OauthController extends AbstractController {
     public String login(@PathVariable("channel") String channel, String returnUrl, HttpServletRequest request,
             HttpServletResponse response) {
         Oauth oauthComponent = oauthChannelMap.get(channel);
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != oauthComponent && oauthComponent.enabled(site.getId())) {
             String state = UUID.randomUUID().toString();
             RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
@@ -91,7 +100,7 @@ public class OauthController extends AbstractController {
      * @param code
      * @param request
      * @param session
-     * @param response 
+     * @param response
      * @param model
      * @return view name
      */
@@ -99,14 +108,17 @@ public class OauthController extends AbstractController {
     public String callback(@PathVariable("channel") String channel, String state, String code, HttpServletRequest request,
             HttpSession session, HttpServletResponse response, ModelMap model) {
         Oauth oauthComponent = oauthChannelMap.get(channel);
-        SysSite site = getSite(request);
+        SysSite site = siteComponent.getSite(request.getServerName());
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), response, RETURN_URL, null);
         String returnUrl;
-        if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (null != cookie && CommonUtils.notEmpty(cookie.getValue())
+                && !ControllerUtils.isUnSafeUrl(cookie.getValue(), site, safeReturnUrl, request)) {
             returnUrl = cookie.getValue();
         } else {
-            returnUrl = site.getDynamicPath();
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
 
         Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);
@@ -116,44 +128,55 @@ public class OauthController extends AbstractController {
             try {
                 OauthAccess oauthAccess = oauthComponent.getOpenId(site.getId(), code);
                 if (null != oauthAccess && null != oauthAccess.getOpenId()) {
-                    String authToken = new StringBuilder(channel).append(CommonConstants.DOT).append(oauthAccess.getOpenId())
-                            .toString();
-                    Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                    int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                            LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                    SysAppClient appClient = appClientService.getEntity(site.getId(), channel, oauthAccess.getOpenId());
                     String ip = RequestUtils.getIpAddress(request);
-                    Date now = CommonUtils.getDate();
-                    SysUserToken entity = sysUserTokenService.getEntity(authToken);
-                    if (null == entity) {
-                        SysUser user = ControllerUtils.getUserFromSession(session);
-                        if (null == user) { // 未登录则注册用户
+                    SysUser user = ControllerUtils.getUserFromSession(session);
+                    if (null == user) {
+                        Date now = CommonUtils.getDate();
+                        if (null == appClient) {
                             OauthUser oauthUser = oauthComponent.getUserInfo(site.getId(), oauthAccess);
                             Map<String, String> oauthConfig = configComponent.getConfigData(site.getId(),
                                     AbstractOauth.CONFIG_CODE);
                             if (null != oauthUser && CommonUtils.notEmpty(oauthConfig)
                                     && CommonUtils.notEmpty(config.get(LoginConfigComponent.CONFIG_REGISTER_URL))) {
+                                appClient = new SysAppClient(site.getId(), channel, oauthAccess.getOpenId(),
+                                        CommonUtils.getDate(), false);
+                                appClient.setClientVersion(CmsVersion.getVersion());
+                                appClient.setLastLoginIp(ip);
+                                appClientService.save(appClient);
                                 model.addAttribute("nickname", oauthUser.getNickname());
-                                model.addAttribute("openId", oauthUser.getOpenId());
-                                model.addAttribute("channel", channel);
+                                model.addAttribute("clientId", appClient.getId());
+                                model.addAttribute("uuid", oauthAccess.getOpenId());
                                 model.addAttribute("returnUrl", returnUrl);
                                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX
                                         + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
                             }
-                        } else { // 如果用户已经登录,则绑定用户
-                            entity = new SysUserToken(authToken, site.getId(), user.getId(), channel, now, ip);
-                            sysUserTokenService.save(entity);
-                            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                        } else if (null != appClient.getUserId() && !appClient.isDisabled()) {// 有授权则登录
+                            appClientService.updateLastLogin(appClient.getId(), CmsVersion.getVersion(), ip);
+                            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                            user = sysUserService.getEntity(appClient.getUserId());
+                            if (null != user && !user.isDisabled()) {
+                                String loginToken = UUID.randomUUID().toString();
+                                sysUserTokenService.save(new SysUserToken(loginToken, site.getId(), user.getId(),
+                                        LogLoginService.CHANNEL_WEB, now, DateUtils.addMinutes(now, expiryMinutes), ip));
+                                LoginController.addLoginStatus(user, loginToken, request, response, expiryMinutes);
+                                sysUserService.updateLoginStatus(user.getId(), ip);
+                                logLoginService.save(
+                                        new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true, now, null));
+                            }
                         }
-                    } else if (entity.getChannel().equals(channel)) {// 有授权则登录
-                        SysUser user = sysUserService.getEntity(entity.getUserId());
-                        String loginToken = UUID.randomUUID().toString();
-                        sysUserTokenService.save(new SysUserToken(loginToken, site.getId(), user.getId(),
-                                LogLoginService.CHANNEL_WEB, now, DateUtils.addMinutes(now, expiryMinutes), ip));
-                        LoginController.addLoginStatus(user, loginToken, request, response, expiryMinutes);
-                        sysUserService.updateLoginStatus(user.getId(), ip);
-                        logLoginService
-                                .save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true, now, null));
-                        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+                    } else {
+                        if (null == appClient) {
+                            appClient = new SysAppClient(site.getId(), channel, oauthAccess.getOpenId(), CommonUtils.getDate(),
+                                    false);
+                            appClient.setClientVersion(CmsVersion.getVersion());
+                            appClient.setLastLoginIp(ip);
+                            appClient.setUserId(user.getId());
+                            appClientService.save(appClient);
+                        } else if (null == appClient.getUserId() || !appClient.getUserId().equals(user.getId())) {// 有授权则登录
+                            appClientService.updateUser(appClient.getId(), user.getId());
+                        }
                     }
                 }
             } catch (IOException e) {

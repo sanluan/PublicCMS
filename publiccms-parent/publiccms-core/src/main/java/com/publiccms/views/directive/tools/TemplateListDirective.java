@@ -7,11 +7,10 @@ import java.io.IOException;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.constants.CommonConstants;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.handler.RenderHandler;
-import com.publiccms.logic.component.file.FileComponent;
+import com.publiccms.common.tools.CmsFileUtils;
 
 /**
  *
@@ -24,7 +23,7 @@ public class TemplateListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
-        handler.put("list", fileComponent.getFileList(siteComponent.getWebTemplateFilePath(getSite(handler), path),
+        handler.put("list", CmsFileUtils.getFileList(siteComponent.getWebTemplateFilePath(getSite(handler), path),
                 handler.getString("orderField"))).render();
     }
 
@@ -33,6 +32,4 @@ public class TemplateListDirective extends AbstractTemplateDirective {
         return true;
     }
 
-    @Autowired
-    private FileComponent fileComponent;
 }

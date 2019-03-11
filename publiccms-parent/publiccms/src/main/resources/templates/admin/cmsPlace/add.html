@@ -45,6 +45,12 @@
                 <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!(content.publishDate)!.now}"/>
             </dd>
         </dl>
+        <dl>
+            <dt><@t.page 'expiry_date'/>:</dt>
+            <dd>
+                <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!(content.expiryDate)!}"/>
+            </dd>
+        </dl>
     <#if fieldList?seq_contains('cover')>
         <dl class="nowrap">
             <dt>${(metadata.fieldTextMap['cover'])}:</dt>
@@ -58,8 +64,10 @@
     </#if>
         <#include "../include_page/extendData.html"/>
         <@_placeMetadata path=(a.path)!path!''><#assign metadata=object/></@_placeMetadata>
-        <#assign extendList=(metadata.extendList)![]/>
-        <#assign attribute=getPlaceAttribute((a.id)!)!{}/>
+        <#assign
+            extendList=(metadata.extendList)![]
+            attribute=getPlaceAttribute((a.id)!)!{}
+        />
         <@extendData 'extendDataList' extendList attribute/>
     </div>
 </form>

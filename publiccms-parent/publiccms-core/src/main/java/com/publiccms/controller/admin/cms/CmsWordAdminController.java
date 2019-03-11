@@ -1,14 +1,14 @@
 package com.publiccms.controller.admin.cms;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -17,8 +17,11 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsWordService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 
 /**
  *
@@ -27,24 +30,27 @@ import com.publiccms.logic.service.log.LogLoginService;
  */
 @Controller
 @RequestMapping("cmsWord")
-public class CmsWordAdminController extends AbstractController {
+public class CmsWordAdminController {
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId" };
 
     /**
+     * @param site
+     * @param admin
      * @param entity
-     * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(CmsWord entity, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        SysSite site = getSite(request);
+    @Csrf
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsWord entity,
+            HttpServletRequest request, ModelMap model) {
+
         if (null != entity.getId()) {
             CmsWord oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
@@ -52,97 +58,86 @@ public class CmsWordAdminController extends AbstractController {
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                logOperateService.save(new LogOperate(entity.getSiteId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.word", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(entity.getSiteId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        "update.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.word",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param id
-     * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        SysSite site = getSite(request);
+    @Csrf
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
+            ModelMap model) {
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(id);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.word",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param id
-     * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("hidden")
-    public String hidden(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        SysSite site = getSite(request);
+    @Csrf
+    public String hidden(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
+            ModelMap model) {
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, true);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "hidden.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "hidden.word",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param id
-     * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("show")
-    public String show(Long id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        SysSite site = getSite(request);
+    @Csrf
+    public String show(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, HttpServletRequest request,
+            ModelMap model) {
         CmsWord entity = service.getEntity(id);
         if (null != entity) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.updateStatus(id, false);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "show.word", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "show.word",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

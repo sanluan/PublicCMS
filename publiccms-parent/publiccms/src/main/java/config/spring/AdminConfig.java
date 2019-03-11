@@ -17,7 +17,9 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
+import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.AdminContextInterceptor;
+import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.view.AdminFreeMarkerView;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -31,7 +33,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.publiccms.controller.admin", useDefaultFilters = false, includeFilters = {
-        @ComponentScan.Filter(value = { Controller.class }) })
+        @ComponentScan.Filter(value = { Controller.class }) }, nameGenerator = FullBeanNameGenerator.class)
 public class AdminConfig implements WebMvcConfigurer {
     /**
      * 管理后台上下文路径 Management Context Path
@@ -41,7 +43,9 @@ public class AdminConfig implements WebMvcConfigurer {
     @Autowired
     private CacheComponent cacheComponent;
     @Autowired
-    private AdminContextInterceptor adminInitializingInterceptor;
+    private AdminContextInterceptor adminInterceptor;
+    @Autowired
+    private CsrfInterceptor csrfInterceptor;
 
     @Bean
     public LocaleResolver localeResolver(Environment env) {
@@ -103,13 +107,14 @@ public class AdminConfig implements WebMvcConfigurer {
         bean.setLoginUrl("/login.html");
         bean.setUnauthorizedUrl("/common/unauthorizedUrl.html");
         bean.setLoginJsonUrl("/common/ajaxTimeout.html");
-        bean.setNeedNotLoginUrls(new String[] { "/logout", "/changeLocale", "/common/", "/login" });
-        bean.setNeedNotAuthorizedUrls(new String[] { "/index", "/main", "/menus" });
+        bean.setNeedNotLoginUrls(new String[] { "/logout", "/changeLocale", "/login" });
+        bean.setNeedNotAuthorizedUrls(new String[] { "/index", "/main", "/menus", "/common/", "/isWeak" });
         return bean;
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(adminInitializingInterceptor);
+        registry.addInterceptor(csrfInterceptor);
+        registry.addInterceptor(adminInterceptor);
     }
 }

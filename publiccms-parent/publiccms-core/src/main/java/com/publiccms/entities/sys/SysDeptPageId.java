@@ -38,7 +38,7 @@ public class SysDeptPageId implements java.io.Serializable {
         this.deptId = deptId;
     }
 
-    @Column(name = "page", nullable = false)
+    @Column(name = "page", nullable = false, length = 100)
     public String getPage() {
         return this.page;
     }

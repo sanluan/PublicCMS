@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>${metadata.alias!}</title>
     <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
     <style>
@@ -21,7 +22,11 @@
     </nav>
     <main>
         <#if user??>
-            <p>${user.nickName},You are already logged in!<a href="logout.html">You can logout</a></p>
+            <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+            <form action="${site.dynamicPath}doLogout.do" method="post">
+                <input type="hidden" name="userId" value="${(user.id)!}"/>
+                <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+            </form>
         <#else>
             <form action="${site.dynamicPath}doRegister.do" method="post">
                 <#if error??>
@@ -32,12 +37,12 @@
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p><input type="password" name="repassword" placeholder="Repeat password" title="Repeat password"/></p>
                 <p>
-                    <input type="hidden" name="returnUrl" value="${site.sitePath}"/>
-                    <input type="hidden" name="channel" value="${channel!}"/>
-                    <input type="hidden" name="openId" value="${openId!}"/>
+                    <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
+                    <input type="hidden" name="clientId" value="${clientId!}"/>
+                    <input type="hidden" name="uuid" value="${uuid!}"/>
                     <input type="submit" value="Register"/>
                 </p>
-                <p>Already have an account?<a href="login.html">Please login</a></p>
+                <p>Already have an account?<a href="login.html?clientId=${clientId!}&uuid=${uuid!}&returnUrl=${returnUrl!}">Please login</a></p>
             </form>
         </#if>
     </main>
@@ -46,9 +51,7 @@
     </footer>
 <script>
 function logout(){
-    $.post("${site.dynamicPath}doLogout.do",function(){
-        window.location.href='${site.sitePath}';
-    });
+    $("form").submit();
 }
 </script>
 </body>

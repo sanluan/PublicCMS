@@ -159,7 +159,7 @@ public class InstallServlet extends HttpServlet {
 
     private void start() throws FileNotFoundException, IOException {
         CmsVersion.setInitialized(true);
-        CmsDataSource.initDefautlDataSource();
+        CmsDataSource.initDefautDataSource();
         File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
         try (FileOutputStream outputStream = new FileOutputStream(file);) {
             outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
@@ -176,7 +176,8 @@ public class InstallServlet extends HttpServlet {
             String host = request.getParameter("host");
             String port = request.getParameter("port");
             String database = request.getParameter("database");
-            cmsUpgrader.setDataBaseUrl(dbconfig, host, port, database);
+            String timeZone = request.getParameter("timeZone");
+            cmsUpgrader.setDataBaseUrl(dbconfig, host, port, database, timeZone);
             dbconfig.setProperty("jdbc.username", request.getParameter("username"));
             dbconfig.setProperty("jdbc.encryptPassword", VerificationUtils
                     .base64Encode(VerificationUtils.encrypt(request.getParameter("password"), CommonConstants.ENCRYPT_KEY)));
@@ -200,10 +201,11 @@ public class InstallServlet extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    private static void checkDatabse(Map<String, Object> map) {
+    private void checkDatabse(Map<String, Object> map) {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+        startStep = null;
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
-            map.put("message", "success");
+            map.put("message", "fail");
         } catch (Exception e) {
             map.put("error", e.getMessage());
         }

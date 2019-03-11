@@ -1,9 +1,11 @@
 <@_category id=categoryId!>
     <#assign category=object/>
     <@_model id=modelId!>
-        <#assign model=object/>
-        <#assign fieldList=model.fieldList![]/>
-        <#assign requiredFieldList=model.requiredFfieldList![]/>
+        <#assign
+            model=object
+            fieldList=model.fieldList![]
+            requiredFieldList=model.requiredFfieldList![]
+        />
 <#assign formContent>
     <#if category.allowContribute>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save.do">

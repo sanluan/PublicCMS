@@ -59,11 +59,12 @@ select {
 				<div style="width:400px; margin:0 auto;">
 					<form action="./" method="post" id="formDBConfig">
 						<input type="hidden" name="step" value="dataBaseConfig"/>
-						<div class="wrapper"><label>数据库地址</label><input type="text" maxlength="100" name="host" value="localhost"/></div>
-						<div class="wrapper"><label>数据库端口</label><input type="number" maxlength="10" name="port" value="3306"/></div>
+						<div class="wrapper"><label>数据库地址</label><input type="text" maxlength="100" name="host" value="127.0.0.1"/></div>
+						<div class="wrapper"><label>数据库端口</label><input type="number" maxlength="10" name="port" value="${defaultPort}"/></div>
 						<div class="wrapper"><label>数据库名称</label><input type="text" maxlength="50" name="database" value="publiccms"/></div>
 						<div class="wrapper"><label>数据库用户</label><input type="text" maxlength="50" name="username"/></div>
 						<div class="wrapper"><label>数据库密码</label><input type="text" maxlength="50" name="password"/></div>
+						<div class="wrapper"><label>数据库时区</label><input type="text" maxlength="10" name="timeZone" value="${.now?string('X')}"/></div>
 					</form>
 				</div>
 			</div>

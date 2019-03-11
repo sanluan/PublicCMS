@@ -17,8 +17,8 @@ import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  *
@@ -127,35 +127,35 @@ public class CorsConfigComponent implements SiteCache, Config {
     }
 
     @Override
-    public List<ExtendField> getExtendFieldList(SysSite site, Locale locale) {
-        List<ExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new ExtendField(CONFIG_ALLOWED_ORIGINS, INPUTTYPE_TEXT, false,
+    public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
+        List<SysExtendField> extendFieldList = new ArrayList<>();
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_ORIGINS, INPUTTYPE_TEXT, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_ORIGINS),
                 getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_ORIGINS + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 "*"));
-        extendFieldList.add(new ExtendField(CONFIG_ALLOWED_METHODS, INPUTTYPE_TEXT, false,
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_METHODS, INPUTTYPE_TEXT, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_METHODS),
                 getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_METHODS + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 null));
-        extendFieldList.add(new ExtendField(CONFIG_ALLOWED_HEADERS, INPUTTYPE_TEXT, false,
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_HEADERS, INPUTTYPE_TEXT, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_HEADERS),
                 getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_HEADERS + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 null));
-        extendFieldList.add(new ExtendField(CONFIG_EXPOSED_HEADERS, INPUTTYPE_TEXT, false,
+        extendFieldList.add(new SysExtendField(CONFIG_EXPOSED_HEADERS, INPUTTYPE_TEXT, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPOSED_HEADERS),
                 getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPOSED_HEADERS + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 null));
-        extendFieldList.add(new ExtendField(CONFIG_ALLOW_CREDENTIALS, INPUTTYPE_BOOLEAN, false,
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOW_CREDENTIALS, INPUTTYPE_BOOLEAN, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_CREDENTIALS),
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_CREDENTIALS
                         + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 null));
         extendFieldList
-                .add(new ExtendField(CONFIG_MAXAGE, INPUTTYPE_TEXT, false,
+                .add(new SysExtendField(CONFIG_MAXAGE, INPUTTYPE_TEXT, false,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAXAGE),
                         getMessage(locale,
                                 CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAXAGE + CONFIG_CODE_DESCRIPTION_SUFFIX),

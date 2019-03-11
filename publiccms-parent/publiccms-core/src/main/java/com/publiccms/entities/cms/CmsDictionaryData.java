@@ -38,7 +38,9 @@ public class CmsDictionaryData implements java.io.Serializable {
 
     @EmbeddedId
 
-    @AttributeOverrides({ @AttributeOverride(name = "dictionaryId", column = @Column(name = "dictionary_id", nullable = false)),
+    @AttributeOverrides({
+            @AttributeOverride(name = "dictionaryId", column = @Column(name = "dictionary_id", nullable = false, length = 20)),
+            @AttributeOverride(name = "siteId", column = @Column(name = "site_id", nullable = false)),
             @AttributeOverride(name = "value", column = @Column(name = "value", nullable = false, length = 50)) })
     public CmsDictionaryDataId getId() {
         return this.id;

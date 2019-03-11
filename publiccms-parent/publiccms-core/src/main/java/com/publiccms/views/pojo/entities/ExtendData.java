@@ -11,7 +11,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ExtendData implements java.io.Serializable {
-
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private String value;
     /**
      * 
      */
@@ -26,13 +31,6 @@ public class ExtendData implements java.io.Serializable {
         this.name = name;
         this.value = value;
     }
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = 1L;
-    String name;
-    String value;
 
     /**
      * @return

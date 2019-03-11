@@ -19,7 +19,7 @@ import com.publiccms.logic.component.site.SiteComponent;
  */
 @Component
 public class CorsInterceptor extends HandlerInterceptorAdapter {
-    private static final CorsProcessor corsProcessor = new DefaultCorsProcessor();
+    public static final CorsProcessor corsProcessor = new DefaultCorsProcessor();
     @Autowired
     private CorsConfigComponent corsConfigComponent;
     @Autowired
@@ -30,4 +30,5 @@ public class CorsInterceptor extends HandlerInterceptorAdapter {
         return corsProcessor.processRequest(corsConfigComponent.getConfig(siteComponent.getSite(request.getServerName())),
                 request, response);
     }
+    
 }

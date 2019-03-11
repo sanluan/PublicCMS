@@ -47,7 +47,7 @@ public class SysDomain implements java.io.Serializable {
     }
 
     @Id
-    @Column(name = "name", unique = true, nullable = false)
+    @Column(name = "name", unique = true, nullable = false, length = 100)
     public String getName() {
         return this.name;
     }
@@ -74,7 +74,7 @@ public class SysDomain implements java.io.Serializable {
         this.wild = wild;
     }
 
-    @Column(name = "path")
+    @Column(name = "path", length = 100)
     public String getPath() {
         return this.path;
     }

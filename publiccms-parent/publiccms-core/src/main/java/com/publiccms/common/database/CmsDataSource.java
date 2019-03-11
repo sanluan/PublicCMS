@@ -11,11 +11,12 @@ import java.util.Properties;
 
 import javax.sql.DataSource;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.datasource.MultiDataSource;
 import com.publiccms.common.tools.VerificationUtils;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 
 /**
  *
@@ -67,32 +68,30 @@ public class CmsDataSource extends MultiDataSource {
      * @throws PropertyVetoException
      */
     public static DataSource initDataSource(Properties properties) throws IOException, PropertyVetoException {
-        ComboPooledDataSource dataSource = new ComboPooledDataSource();
-        dataSource.setDriverClass(properties.getProperty("jdbc.driverClassName"));
-        dataSource.setJdbcUrl(properties.getProperty("jdbc.url"));
-        dataSource.setUser(properties.getProperty("jdbc.username"));
+        HikariConfig config = new HikariConfig();
+        config.setDriverClassName(properties.getProperty("jdbc.driverClassName"));
+        config.setJdbcUrl(properties.getProperty("jdbc.url"));
+        config.setUsername(properties.getProperty("jdbc.username"));
         String password = properties.getProperty("jdbc.password");
         String encryptPassword = properties.getProperty("jdbc.encryptPassword");
         if (null != encryptPassword) {
             password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword), CommonConstants.ENCRYPT_KEY);
         }
-        dataSource.setPassword(password);
-        dataSource.setAutoCommitOnClose(Boolean.parseBoolean(properties.getProperty("cpool.autoCommitOnClose")));
-        dataSource.setCheckoutTimeout(Integer.parseInt(properties.getProperty("cpool.checkoutTimeout")));
-        dataSource.setInitialPoolSize(Integer.parseInt(properties.getProperty("cpool.minPoolSize")));
-        dataSource.setMinPoolSize(Integer.parseInt(properties.getProperty("cpool.minPoolSize")));
-        dataSource.setMaxPoolSize(Integer.parseInt(properties.getProperty("cpool.maxPoolSize")));
-        dataSource.setMaxIdleTime(Integer.parseInt(properties.getProperty("cpool.maxIdleTime")));
-        dataSource.setAcquireIncrement(Integer.parseInt(properties.getProperty("cpool.acquireIncrement")));
-        dataSource
-                .setMaxIdleTimeExcessConnections(Integer.parseInt(properties.getProperty("cpool.maxIdleTimeExcessConnections")));
+        config.setPassword(password);
+        config.setAutoCommit(Boolean.parseBoolean(properties.getProperty("hikariCP.autoCommit")));
+        config.setConnectionTimeout(Long.parseLong(properties.getProperty("hikariCP.connectionTimeout")));
+        config.setMinimumIdle(Integer.parseInt(properties.getProperty("hikariCP.minPoolSize")));
+        config.setMaximumPoolSize(Integer.parseInt(properties.getProperty("hikariCP.maxPoolSize")));
+        config.setIdleTimeout(Long.parseLong(properties.getProperty("hikariCP.idleTimeout")));
+        config.setMaxLifetime(Long.parseLong(properties.getProperty("hikariCP.maxLifetime")));
+        HikariDataSource dataSource = new HikariDataSource(config);
         return dataSource;
     }
 
     /**
      * 
      */
-    public static void initDefautlDataSource() {
+    public static void initDefautDataSource() {
         if (null != cmsDataSource) {
             synchronized (cmsDataSource) {
                 if (!initialized && CmsVersion.isInitialized()) {

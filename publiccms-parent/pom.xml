@@ -5,85 +5,91 @@
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
     <packaging>pom</packaging>
-    <version>V4.0.181024</version>
+    <version>V4.0.190312</version>
     <modules>
-        <module>publiccms-oauth</module>
-        <module>publiccms-redis</module>
         <module>publiccms</module>
         <module>publiccms-core</module>
         <module>publiccms-common</module>
+        <module>publiccms-oauth</module>
+        <module>publiccms-redis</module>
         <module>publiccms-j2cache</module>
+        <module>publiccms-analyzer</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.0.10.RELEASE</version.spring>
+        <version.spring>5.1.5.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.0.6.RELEASE</version.springBoot>
+        <version.springBoot>2.1.3.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
-        <version.httpclient>4.5.6</version.httpclient>
+        <version.httpclient>4.5.7</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <version.jackson>2.9.8</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.3.6.Final</version.hibernate>
+        <version.hibernate>5.3.7.Final</version.hibernate>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>5.10.4.Final</version.hibernateSearch>
+        <version.hibernateSearch>5.10.5.Final</version.hibernateSearch>
+        <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
+        <version.ehcache>3.6.3</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.28</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <version.mybatis>3.4.6</version.mybatis>
+        <version.mybatis>3.5.0</version.mybatis>
+        <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+        <version.mybatisSpring>2.0.0</version.mybatisSpring>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn -->
         <version.lucene>5.5.5</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>2.9.0</version.jedis>
+        <version.jedis>3.0.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.0</version.quartz>
-        <!-- http://mvnrepository.com/artifact/com.mchange/c3p0 -->
-        <version.c3p0>0.9.5.3</version.c3p0>
+        <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
+        <version.hikariCP>3.3.1</version.hikariCP>
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
+        <version.mysql>8.0.15</version.mysql>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <version.poi>4.0.1</version.poi>
+        <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
+        <version.fileupload>1.4</version.fileupload>
+        <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
+        <version.collections>4.3</version.collections>
+        <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <version.lang>3.8.1</version.lang>
+        <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+        <version.log4j>2.11.2</version.log4j>
     </properties>
     <dependencyManagement>
         <dependencies>
-            <!-- http://mvnrepository.com/artifact/cglib/cglib-nodep -->
-            <dependency>
-                <groupId>cglib</groupId>
-                <artifactId>cglib-nodep</artifactId>
-                <version>3.2.7</version>
-            </dependency>
-            <!-- http://mvnrepository.com/artifact/commons-io/commons-io -->
-            <dependency>
-                <groupId>commons-io</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>2.6</version>
-            </dependency>
-            <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
-                <version>1.3.3</version>
+                <version>${version.fileupload}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
-            <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.11</version>
-            </dependency>
-            <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-collections4</artifactId>
-                <version>4.2</version>
+                <version>${version.collections}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
             <dependency>
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
-                <version>3.7</version>
+                <version>${version.lang}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-web</artifactId>
+                <version>${version.log4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j-impl</artifactId>
+                <version>${version.log4j}</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
@@ -110,15 +116,20 @@
                 <artifactId>mybatis</artifactId>
                 <version>${version.mybatis}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
+
             <dependency>
                 <groupId>org.mybatis</groupId>
                 <artifactId>mybatis-spring</artifactId>
-                <version>1.3.2</version>
+                <version>${version.mybatisSpring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.ehcache</groupId>
+                <artifactId>ehcache</artifactId>
+                <version>${version.ehcache}</version>
             </dependency>
             <dependency>
                 <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-ehcache</artifactId>
+                <artifactId>hibernate-jcache</artifactId>
                 <version>${version.hibernate}</version>
             </dependency>
             <dependency>
@@ -152,15 +163,14 @@
                 <version>${version.jedis}</version>
             </dependency>
             <dependency>
-                <groupId>com.mchange</groupId>
-                <artifactId>c3p0</artifactId>
-                <version>${version.c3p0}</version>
+                <groupId>com.zaxxer</groupId>
+                <artifactId>HikariCP</artifactId>
+                <version>${version.hikariCP}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/mysql/mysql-connector-java -->
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>5.1.47</version>
+                <version>${version.mysql}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
@@ -182,12 +192,6 @@
                 <artifactId>httpclient-cache</artifactId>
                 <version>${version.httpclient}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.25</version>
-            </dependency>
             <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
             <dependency>
                 <groupId>javax.transaction</groupId>
@@ -198,13 +202,13 @@
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>javax.mail-api</artifactId>
-                <version>1.6.1</version>
+                <version>1.6.2</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
             <dependency>
                 <groupId>com.sun.mail</groupId>
                 <artifactId>javax.mail</artifactId>
-                <version>1.6.1</version>
+                <version>1.6.2</version>
             </dependency>
             <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
             <dependency>
@@ -225,15 +229,30 @@
                 <version>1.10.5</version>
             </dependency>
             <dependency>
+                <groupId>org.apache.poi</groupId>
+                <artifactId>poi-ooxml</artifactId>
+                <version>${version.poi}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
                 <version>${version.quartz}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.mchange</groupId>
+                        <artifactId>mchange-commons-java</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.mchange</groupId>
+                        <artifactId>c3p0</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>3.1.0</version>
+                <version>4.0.1</version>
             </dependency>
             <!-- http://mvnrepository.com/artifact/junit/junit -->
             <dependency>
@@ -270,18 +289,9 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <repositories>
-        <repository>
-            <id>jcenter</id>
-            <url>http://jcenter.bintray.com/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>jcenter</id>
-            <url>http://jcenter.bintray.com/</url>
-        </pluginRepository>
-    </pluginRepositories>
+    <!-- <repositories> <repository> <id>jcenter</id> <url>http://jcenter.bintray.com/</url> 
+        </repository> </repositories> <pluginRepositories> <pluginRepository> <id>jcenter</id> 
+        <url>http://jcenter.bintray.com/</url> </pluginRepository> </pluginRepositories> -->
     <build>
         <defaultGoal>compile</defaultGoal>
         <finalName>${project.artifactId}</finalName>

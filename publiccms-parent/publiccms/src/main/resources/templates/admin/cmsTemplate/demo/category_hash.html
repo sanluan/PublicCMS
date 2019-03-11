@@ -1,7 +1,9 @@
 <#assign ids=(id!'-')?split('-')/>
-<@_category id=ids[0]>
-    <#assign category=object/>
-    <#assign attribute=getCategoryAttribute(category.id)/>
+<@_category id=ids[0] containsAttribute=true>
+    <#assign
+        category=object
+        url='?id=${id}'
+    />
 <#if ids[1]=getHash(category.code+category.id)?string>
 <!DOCTYPE html>
 <html lang="en">
@@ -16,7 +18,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home page</a>
+        <a href="${base}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -26,7 +28,7 @@
 <#if category?has_content>
     <main>
         <h1>Latest content</h1>
-<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
+<@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex count=category.pageSize>
     <#list page.list as a>
         <section>
             <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
@@ -37,19 +39,20 @@
         </section>
     </#list>
         <div>
-            <#assign url='?id=${id}'/>
+            <#assign
+                start=1
+                end=page.totalPage
+            />
+            <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+            </#if>
+            <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+            </#if>
             <#if !page.firstPage>
                 <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
             <#else>
                 <span>Previous page</span>
-            </#if>
-            <#assign start=1/>
-            <#if (page.pageIndex-5) gt start>
-                <#assign start=page.pageIndex-4/>
-            </#if>
-            <#assign end=page.totalPage/>
-            <#if (page.pageIndex+5) lt end>
-                <#assign end=page.pageIndex+4/>
             </#if>
             <#if start gt 1>
                 <a href="${url}">1</a> ...

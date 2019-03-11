@@ -17,25 +17,35 @@ public class CmsDictionaryDataId implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "数据字典ID")
-    private long dictionaryId;
-    @GeneratorColumn(title = "值")
+    private String dictionaryId;
+    private short siteId;
     private String value;
 
     public CmsDictionaryDataId() {
     }
 
-    public CmsDictionaryDataId(long dictionaryId, String value) {
+    public CmsDictionaryDataId(String dictionaryId, short siteId, String value) {
         this.dictionaryId = dictionaryId;
+        this.siteId = siteId;
         this.value = value;
     }
 
-    @Column(name = "dictionary_id", nullable = false)
-    public long getDictionaryId() {
+    @Column(name = "dictionary_id", nullable = false, length = 20)
+    public String getDictionaryId() {
         return this.dictionaryId;
     }
 
-    public void setDictionaryId(long dictionaryId) {
+    public void setDictionaryId(String dictionaryId) {
         this.dictionaryId = dictionaryId;
+    }
+
+    @Column(name = "site_id", nullable = false)
+    public short getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(short siteId) {
+        this.siteId = siteId;
     }
 
     @Column(name = "value", nullable = false, length = 50)
@@ -56,14 +66,16 @@ public class CmsDictionaryDataId implements java.io.Serializable {
             return false;
         CmsDictionaryDataId castOther = (CmsDictionaryDataId) other;
 
-        return (this.getDictionaryId() == castOther.getDictionaryId()) && ((this.getValue() == castOther.getValue())
-                || (this.getValue() != null && castOther.getValue() != null && this.getValue().equals(castOther.getValue())));
+        return ((this.getDictionaryId() == castOther.getDictionaryId()) || (this.getDictionaryId() != null
+                && castOther.getDictionaryId() != null && this.getDictionaryId().equals(castOther.getDictionaryId())))
+                && ((this.getValue() == castOther.getValue()) || (this.getValue() != null && castOther.getValue() != null
+                        && this.getValue().equals(castOther.getValue())));
     }
 
     public int hashCode() {
         int result = 17;
 
-        result = 37 * result + (int) this.getDictionaryId();
+        result = 37 * result + (getDictionaryId() == null ? 0 : this.getDictionaryId().hashCode());
         result = 37 * result + (getValue() == null ? 0 : this.getValue().hashCode());
         return result;
     }

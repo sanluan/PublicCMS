@@ -31,6 +31,8 @@ public class CmsContentAttribute implements java.io.Serializable {
     private String sourceUrl;
     @GeneratorColumn(title = "扩展数据")
     private String data;
+    @GeneratorColumn(title = "全文索引文本")
+    private String searchText;
     @GeneratorColumn(title = "文本")
     private String text;
     @GeneratorColumn(title = "字数")
@@ -43,7 +45,7 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.contentId = contentId;
         this.wordCount = wordCount;
     }
-    
+
     public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, int wordCount) {
         this.contentId = contentId;
         this.source = source;
@@ -52,11 +54,13 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.wordCount = wordCount;
     }
 
-    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String text, int wordCount) {
+    public CmsContentAttribute(long contentId, String source, String sourceUrl, String data, String searchText, String text,
+            int wordCount) {
         this.contentId = contentId;
         this.source = source;
         this.sourceUrl = sourceUrl;
         this.data = data;
+        this.searchText = searchText;
         this.text = text;
         this.wordCount = wordCount;
     }
@@ -81,7 +85,7 @@ public class CmsContentAttribute implements java.io.Serializable {
         this.source = source;
     }
 
-    @Column(name = "source_url", length = 2048)
+    @Column(name = "source_url", length = 1000)
     public String getSourceUrl() {
         return this.sourceUrl;
     }
@@ -97,6 +101,15 @@ public class CmsContentAttribute implements java.io.Serializable {
 
     public void setData(String data) {
         this.data = data;
+    }
+
+    @Column(name = "search_text")
+    public String getSearchText() {
+        return this.searchText;
+    }
+
+    public void setSearchText(String searchText) {
+        this.searchText = searchText;
     }
 
     @Column(name = "text")

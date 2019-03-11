@@ -23,7 +23,6 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
      * @param siteId
      * @param channel
      * @param userId
-     * @param allowPush
      * @param startLastLoginDate
      * @param endLastLoginDate
      * @param startCreateDate
@@ -35,21 +34,18 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, String channel, Long userId, Boolean allowPush, Date startLastLoginDate,
-            Date endLastLoginDate, Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField,
-            String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, String channel, Long userId, Date startLastLoginDate, Date endLastLoginDate,
+            Date startCreateDate, Date endCreateDate, Boolean disabled, String orderField, String orderType, Integer pageIndex,
+            Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from SysAppClient bean");
         if (CommonUtils.notEmpty(siteId)) {
-            queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
         if (CommonUtils.notEmpty(channel)) {
-            queryHandler.condition("bean.id.channel = :channel").setParameter("channel", channel);
+            queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
         }
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
-        }
-        if (null != allowPush) {
-            queryHandler.condition("bean.allowPush = :allowPush").setParameter("allowPush", allowPush);
         }
         if (null != startLastLoginDate) {
             queryHandler.condition("bean.lastLoginDate > :startLastLoginDate").setParameter("startLastLoginDate",
@@ -86,6 +82,20 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
+    /**
+     * @param siteId
+     * @param channel
+     * @param uuid
+     * @return the entity
+     */
+    public SysAppClient getEntity(Short siteId, String channel, String uuid) {
+        QueryHandler queryHandler = getQueryHandler("from SysAppClient bean");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.channel = :channel").setParameter("channel", channel);
+        queryHandler.condition("bean.uuid = :uuid").setParameter("uuid", uuid);
+        return getEntity(queryHandler);
+    }
+
     @Override
     protected SysAppClient init(SysAppClient entity) {
         if (null == entity.getCreateDate()) {
@@ -93,5 +103,4 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
         }
         return entity;
     }
-
 }

@@ -15,7 +15,7 @@
                 <dt><@t.page 'static_page'/>:</dt>
                 <dd>
                     <label><a class="button" href="cmsTemplate/publish.do?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'publish_page'/></a></label>
-                    <label><a class="button" href="${site.sitePath+a.publishPath}" target="_blank"><@t.page 'button.view_page'/></a></label>
+                    <label><a class="button" href="${site.sitePath+(a.publishPath?starts_with('/'))?then(a.publishPath?keep_after('/'),a.publishPath)}" target="_blank"><@t.page 'button.view_page'/></a></label>
                 </dd>
             </dl>
         </#if>
@@ -23,17 +23,13 @@
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_page'/>:</dt>
                 <dd>
-                    <label><a class="button" href="${site.dynamicPath+path}<#if a.acceptParameters?has_content>?<#list a.acceptParameters?split(',') as p>${p}=_value${p?counter}_<#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
+                    <label><a class="button" href="${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if a.acceptParameters?has_content>?<#list a.acceptParameters?split(',') as p>${p}=<#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
                     <#if 10 lte (a.cacheTime)!0>
                         <label><a class="button" href="cmsPage/clearCache.do?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a></label>
                     </#if>
                 </dd>
             </dl>
         </#if>
-        <#include "../include_page/extendData.html"/>
-        <#assign extendList=(a.extendList)![]/>
-        <#assign attribute=(a.extendData)!{}/>
-        <@extendData 'extendDataList' extendList attribute/>
     <@_templatePlaceList path=path>
         <#if list?has_content>
         <dl class="nowrap">
@@ -56,5 +52,9 @@
         </dl>
         </#if>
     </@_templatePlaceList>
+        <#include "../include_page/extendData.html"/>
+        <#assign extendList=(a.extendList)![]/>
+        <#assign attribute=(a.extendData)!{}/>
+        <@extendData 'extendDataList' extendList attribute/>
     </div>
 </form>

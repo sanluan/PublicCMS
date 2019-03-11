@@ -7,16 +7,15 @@ import java.util.Collection;
 
 import java.util.Date;
 
-import com.publiccms.entities.cms.CmsWord;
-import com.publiccms.logic.dao.cms.CmsWordDao;
-import com.publiccms.views.pojo.entities.CmsWordStatistics;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.entities.cms.CmsWord;
+import com.publiccms.logic.dao.cms.CmsWordDao;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
  *
@@ -48,11 +47,11 @@ public class CmsWordService extends BaseService<CmsWord> {
     /**
      * @param entitys
      */
-    public void updateStatistics(Collection<CmsWordStatistics> entitys) {
-        for (CmsWordStatistics entityStatistics : entitys) {
+    public void updateStatistics(Collection<ClickStatistics> entitys) {
+        for (ClickStatistics entityStatistics : entitys) {
             CmsWord entity = getEntity(entityStatistics.getId());
             if (null != entity) {
-                entity.setSearchCount(entity.getSearchCount() + entityStatistics.getSearchCounts());
+                entity.setSearchCount(entity.getSearchCount() + entityStatistics.getClicks());
             }
         }
     }
@@ -81,5 +80,5 @@ public class CmsWordService extends BaseService<CmsWord> {
 
     @Autowired
     private CmsWordDao dao;
-    
+
 }

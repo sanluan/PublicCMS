@@ -1,0 +1,109 @@
+<div class="pageHeader">
+    <form class="pagerForm" action="cmsComment/list.html" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'content.promulgator'/>:</label>
+                    <#include "../include_page/userId.html"/>
+                </li>
+                <li>
+                    <label><@t.page 'content.id'/>:</label>
+                    <input type="text" name="contentId" value="${contentId!}" />
+                </li>
+                <li class="width:auto">
+                <#list 1..2 as s>
+                    <label style="width:auto">
+                        <input <@t.compare status s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                        <span><@t.page 'status.content.'+s/></span>
+                    </label>
+                </#list>
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        <#if authorizedMap['cmsComment/check']>
+            <li><a href="cmsComment/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsComment/uncheck']>
+            <li><a href="cmsComment/uncheck.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsComment/delete']>
+            <li><a href="cmsComment/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+        </#if>
+        </ul>
+    </div>
+<@_commentList advanced=true userId=userId contentId=contentId status=status 
+            orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+    <table class="list" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'content.promulgator'/></th>
+                <th width="150"><@t.page 'content'/></th>
+                <th orderField="updateDate" class="<#if orderField??&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'modified_date'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th><@t.page 'status'/>/<@t.page 'inspector'/></th>
+                <th><@t.page 'comment'/></th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+                <@t.merge 'userIds' a.checkUserId!/>
+                <@t.merge 'contentIds' a.contentId!/>
+            </#list>
+            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
+                <td>${a.id!}</td>
+                <td class="center">
+                    ${(userMap[a.userId?string].nickName)!}
+                </td>
+                <td>
+                    <a href="cmsContent/view.html?id=${a.contentId}" target="dialog" rel="viewContent${a.contentId}">${(contentMap[a.contentId?string].title)!}</a>
+                </td>
+                <td>${a.updateDate!}</td>
+                <td>${a.createDate!}</td>
+                <td>
+                    <@t.page 'status.content.'+a.status/>
+                    <#if 1=a.status>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
+                </td>
+                <td><textarea rows="3" cols="50">${a.text!}</textarea></td>
+                <td>
+                <#if 1=a.status>
+                    <#if authorizedMap['cmsComment/uncheck']>
+                        <a href="cmsComment/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>"  target="ajaxTodo"><@t.page 'button.uncheck'/></a> |
+                    </#if>
+                <#else>
+                    <#if authorizedMap['cmsComment/check']>
+                        <a href="cmsComment/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>"  target="ajaxTodo"><@t.page 'button.check'/></a> |
+                    </#if>
+                </#if>
+                <#if authorizedMap['cmsComment/delete']>
+                    <a href="cmsComment/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                </#if>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</@_commentList>
+</div>

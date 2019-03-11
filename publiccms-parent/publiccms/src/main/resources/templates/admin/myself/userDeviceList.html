@@ -1,0 +1,73 @@
+<@_sysAppClientList channel=channel advanced=true
+            userId=admin.id startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+            startCreateDate=startCreateDate endCreateDate=endCreateDate disabled=disabled
+            orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'channel'/>:</label>
+                    <input type="text" name="channel" value="${channel!}" />
+                </li>
+                <li>
+                    <label><@t.page 'create_date'/>:</label>
+                    <input type="text" name="startCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endCreateDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
+                </li>
+                <#include "../include_page/disabled.html"/>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+            <li><a href="sysAppClient/enable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'button.enable'/></a></li>
+            <li><a href="sysAppClient/disable.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.disable'/></a></li>
+        </ul>
+    </div>
+    <table class="list" width="100%" layoutH="99">
+        <thead>
+            <tr>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'channel'/></th>
+                <th><@t.page 'uuid'/></th>
+                <th><@t.page 'version'/></th>
+                <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
+                <th><@t.page 'user.last_login_ip'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th><@t.page 'disabled'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+            </#list>
+            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td>${a.id!}</td>
+                <td>${a.channel!}</td>
+                <td>${a.uuid!}</td>
+                <td>${a.clientVersion!}</td>
+                <td>${a.lastLoginDate!}</td>
+                <td>${a.lastLoginIp!}</td>
+                <td>${a.createDate!}</td>
+                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_sysAppClientList>

@@ -4,13 +4,12 @@ package com.publiccms.views.directive.tools;
 
 import java.io.IOException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.logic.component.file.FileComponent;
 
 /**
  *
@@ -24,7 +23,7 @@ public class WebFileContentDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path)) {
-            handler.put("object", fileComponent.getFileContent(siteComponent.getWebFilePath(getSite(handler), path))).render();
+            handler.put("object", CmsFileUtils.getFileContent(siteComponent.getWebFilePath(getSite(handler), path))).render();
         }
     }
 
@@ -32,8 +31,5 @@ public class WebFileContentDirective extends AbstractTemplateDirective {
     public boolean needAppToken() {
         return true;
     }
-
-    @Autowired
-    private FileComponent fileComponent;
 
 }

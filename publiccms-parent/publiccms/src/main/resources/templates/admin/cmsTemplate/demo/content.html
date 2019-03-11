@@ -1,15 +1,17 @@
-<@_content id=id>
+<@_content id=id containsAttribute=true>
     <#assign content=object/>
     <@_category id=object.categoryId>
         <#assign category=object/>
     </@_category>
-    <#assign attribute=getContentAttribute(content.id)/>
-    <#assign temp=getContentPage(attribute.text!'',pageIndex)/>
-    <#assign page=temp.page/>
-    <#assign text=temp.text/>
+    <#assign
+        temp=getContentPage(attribute.text!'',pageIndex)
+        page=temp.page
+        text=temp.text
+    />
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8">
     <title>${content.title} - ${category.name}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
     <meta name="description" content="${content.description}"/>

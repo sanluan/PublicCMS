@@ -2,12 +2,16 @@
     <@_categoryList advanced=true parentId=parentId count=500>
         <#list page.list as a>
             <li>
-                <a href="javascript:;" onclick="$.bringBack({parentId:'${a.id}',${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;">${a.name!}</a>
-            <#if a.childIds?has_content>
-                <ul>
-                    <@lookupTree a.id/>
-                </ul>
-            </#if>
+                <#if currentCategoryId?has_content&&a.id?string=currentCategoryId>
+                    <a href="javascript:;" onclick="return false;">${a.name!}</a>
+                <#else>
+                    <a href="javascript:;" onclick="$.bringBack({parentId:'${a.id}',${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;">${a.name!}</a>
+                    <#if a.childIds?has_content>
+                        <ul>
+                            <@lookupTree a.id/>
+                        </ul>
+                    </#if>
+                </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>

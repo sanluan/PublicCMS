@@ -23,13 +23,15 @@ import com.publiccms.logic.dao.cms.CmsDictionaryDataDao;
 @Transactional
 public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     /**
+     * @param siteId
      * @param dictionaryId
      * @param dataList
      */
-    public void save(Long dictionaryId, List<CmsDictionaryData> dataList) {
+    public void save(short siteId, String dictionaryId, List<CmsDictionaryData> dataList) {
         if (CommonUtils.notEmpty(dataList)) {
             for (CmsDictionaryData entity : dataList) {
                 if (null != entity.getId()) {
+                    entity.getId().setSiteId(siteId);
                     entity.getId().setDictionaryId(dictionaryId);
                     save(entity);
                 }
@@ -38,14 +40,16 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     }
 
     /**
+     * @param siteId
      * @param dictionaryId
      * @param dataList
      */
-    public void update(Long dictionaryId, List<CmsDictionaryData> dataList) {
+    public void update(short siteId, String dictionaryId, List<CmsDictionaryData> dataList) {
         Set<CmsDictionaryDataId> idSet = new HashSet<>();
         if (CommonUtils.notEmpty(dataList)) {
             for (CmsDictionaryData entity : dataList) {
                 if (null != entity.getId()) {
+                    entity.getId().setSiteId(siteId);
                     entity.getId().setDictionaryId(dictionaryId);
                     CmsDictionaryData oldEntity = getEntity(entity.getId());
                     if (null == oldEntity) {
@@ -57,7 +61,7 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
                 }
             }
         }
-        List<CmsDictionaryData> list = getList(dictionaryId);
+        List<CmsDictionaryData> list = getList(siteId, dictionaryId);
         for (CmsDictionaryData entity : list) {
             if (!idSet.contains(entity.getId())) {
                 delete(entity.getId());
@@ -66,12 +70,22 @@ public class CmsDictionaryDataService extends BaseService<CmsDictionaryData> {
     }
 
     /**
+     * @param siteId
      * @param dictionaryId
      * @return data list
      */
     @Transactional(readOnly = true)
-    public List<CmsDictionaryData> getList(long dictionaryId) {
-        return dao.getList(dictionaryId);
+    public List<CmsDictionaryData> getList(short siteId, String dictionaryId) {
+        return dao.getList(siteId, dictionaryId);
+    }
+
+    /**
+     * @param siteId
+     * @param dictionaryIds
+     * @return the number of entities deleted
+     */
+    public int delete(short siteId, String[] dictionaryIds) {
+        return dao.delete(siteId, dictionaryIds);
     }
 
     @Autowired

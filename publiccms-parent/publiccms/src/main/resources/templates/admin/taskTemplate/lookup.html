@@ -6,7 +6,7 @@
         <#if a.directory>
             <a href="javascript:;" onclick="return false;">${a.fileName}</a>
             <ul>
-                <@templateTree field type path/>
+                <@templateTree field path/>
             </ul>
         <#else>
             <a href="javascript:;" data="${path!}" onclick="$.bringBack({'${field}':'${path}'});return false;">
@@ -21,7 +21,7 @@
 </#macro>
 <div class="pageFormContent" layoutH="0">
     <ul class="tree treeFolder">
-        <@templateTree field type/>
+        <@templateTree field/>
     </ul>
     <script>
         $('a[data="${(value?js_string)!}"]',$.pdialog.getCurrent()).parent().addClass('selected');

@@ -28,7 +28,7 @@ public class LicenseGenerator {
         Scanner sc = new Scanner(System.in);
         System.out.println("Please input a password:");
         SecureRandom secrand = new SecureRandom();
-        secrand.setSeed(VerificationUtils.sha2Encode(sc.nextLine()).getBytes(CommonConstants.DEFAULT_CHARSET)); // 初始化随机产生器
+        secrand.setSeed(VerificationUtils.sha512Encode(sc.nextLine()).getBytes(CommonConstants.DEFAULT_CHARSET)); // 初始化随机产生器
         KeyPair keyPair = VerificationUtils.generateKeyPair(1024, secrand);
         String publicKey = VerificationUtils.base64Encode(keyPair.getPublic().getEncoded());
         if (CommonConstants.PUBLIC_KEY.equals(publicKey)) {
@@ -40,12 +40,12 @@ public class LicenseGenerator {
             license.setDomain("*");
             license.setStartDate(DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(new Date()));
             license.setEndDate(
-                    DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(DateUtils.addMonths(new Date(),3)));
+                    DateFormatUtils.getDateFormat(LicenseUtils.DATE_FORMAT_STRING).format(DateUtils.addMonths(new Date(), 3)));
             license.setSignaturer(LicenseUtils.generateSignaturer(keyPair.getPrivate().getEncoded(), license));
             String s2 = LicenseUtils.generateSignaturer(keyPair.getPrivate().getEncoded(), license);
             String licenseText = LicenseUtils.writeLicense(license);
             License l = LicenseUtils.readLicense(licenseText);
-            if(license.getSignaturer().equals(s2) && LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, l)){
+            if (license.getSignaturer().equals(s2) && LicenseUtils.verifyLicense(CommonConstants.PUBLIC_KEY, l)) {
                 System.out.println("----------PublicCMS License-----------");
                 System.out.print(licenseText);
                 System.out.println("----------PublicCMS License-----------");

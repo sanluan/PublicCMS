@@ -1,15 +1,18 @@
 <#include "../include_page/extendsFieldType.html"/>
-<#macro extends name extendList=[]>
+<#macro extends name extendList=[] searchable=false>
 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
     <thead>
         <tr>
             <th type="text" name="${name}[#index#].id.code" size="10" fieldClass="required letterstart"><@t.page 'code'/></th>
             <th type="enum" name="${name}[#index#].inputType" enumUrl="common/extendsFieldType.html" fieldClass="required" size="10" width="100"><@t.page 'field_type'/></th>
-            <th type="text" name="${name}[#index#].name" size="10" fieldClass="required" fieldAttrs="{maxlength:20}"><@t.page 'name'/></th>
+            <th type="text" name="${name}[#index#].name" size="10" fieldClass="required" fieldAttrs="{'maxlength':20}"><@t.page 'name'/></th>
             <th type="checkbox" name="${name}[#index#].required" size="10"><@t.page 'required'/></th>
             <th type="text" name="${name}[#index#].defaultValue" size="10"><@t.page 'default_value'/></th>
-            <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{readonly:'readonly',style:'display:none'}" size="10"><@t.page 'dictionary'/></th>
-            <th type="textarea" name="${name}[#index#].description" fieldAttrs="{maxlength:100,rows:2,cols:30}"><@t.page 'description'/></th>
+            <th type="number" name="${name}[#index#].maxlength" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'maxlength'/></th>
+            <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><@t.page 'dictionary'/></th>
+            <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':100,'rows':2,'cols':30}"><@t.page 'description'/></th>
+            <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10"><@t.page 'searchable'/></th></#if>
+            <th type="number" name="${name}[#index#].sort"  size="10" fieldClass="required digits" defaultVal="0"><@t.page 'sort'/></th>
             <th type="del" width="60"><@t.page 'operate'/></th>
         </tr>
     </thead>
@@ -21,7 +24,7 @@
                     <input type="text" name="${name}[${extend?index}].id.code" value="${extend.id.code}" size="10" class="required letterstart"/>
                 </td>
                 <td>
-                    <@extendsFieldType name+'['+extend?index+'].inputType' extend.inputType/>
+                    <@extendsFieldType name+'['+extend?index+'].inputType' extend.inputType searchable/>
                 </td>
                 <td>
                     <input type="text" name="${name}[${extend?index}].name" value="${extend.name}" size="10" class="required" maxlength="20"/>
@@ -33,13 +36,25 @@
                     <input type="text" name="${name}[${extend?index}].defaultValue" value="${(extend.defaultValue)!}" size="10"/>
                 </td>
                 <td>
+                    <input type="number" name="${name}[${extend?index}].maxlength" min="1" value="${(extend.maxlength)!}"<#if maxlengthDisableTypes?seq_contains(extend.inputType)> style="display:none"</#if> size="10"/>
+                </td>
+                <td>
                     <@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>
+                    <#if site.parentId?has_content&&!dictionary?has_content><@_dictionary id=extend.dictionaryId siteId=site.parentId><#assign dictionary=object/></@_dictionary></#if>
                     <input type="hidden" name="${name}[${extend?index}].dictionaryId" value="${(extend.dictionaryId)!}"/>
                     <input type="text" name="${name}[${extend?index}].dictionaryName" readonly="readonly" size="10" value="${(dictionary.name)!}"<#if 'dictionary'!=extend.inputType> style="display:none"</#if>/>
                     <a class="btnLook" href="cmsDictionary/lookup.html" lookupGroup="${name}[${extend?index}]" width="1000" height="500"<#if 'dictionary'!=extend.inputType> style="display:none"</#if>><@t.page 'dictionary.select'/></a>
                 </td>
                 <td>
                     <textarea type="text" name="${name}[${extend?index}].description" rows="2" cols="30" maxlength="100">${(extend.description)!}</textarea>
+                </td>
+                <#if searchable>
+                    <td>
+                        <input type="checkbox" name="${name}[${extend?index}].searchable" ${extend.searchable?then(' checked="true"','')?no_esc}/>
+                    </td>
+                </#if>
+                <td>
+                    <input type="number" name="${name}[${extend?index}].sort" value="${(extend.sort)!}" size="10"/>
                 </td>
                 <td>
                     <a href="javascript:void(0)" class="btnDel"><@t.page 'button.delete'/></a>

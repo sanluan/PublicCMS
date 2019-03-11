@@ -38,7 +38,7 @@ public class SysRoleAuthorizedId implements java.io.Serializable {
         this.roleId = roleId;
     }
 
-    @Column(name = "url", nullable = false)
+    @Column(name = "url", nullable = false, length = 100)
     public String getUrl() {
         return this.url;
     }

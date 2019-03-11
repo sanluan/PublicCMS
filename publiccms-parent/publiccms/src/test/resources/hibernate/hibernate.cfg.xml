@@ -4,9 +4,9 @@
 		"http://www.kerneler.com/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
     <session-factory>
-        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">password</property>
-        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/public_cms</property>
-        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.password">publiccms</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/publiccms?serverTimezone=GMT</property>
+        <property name="hibernate.connection.username">publiccms</property>
     </session-factory>
 </hibernate-configuration>

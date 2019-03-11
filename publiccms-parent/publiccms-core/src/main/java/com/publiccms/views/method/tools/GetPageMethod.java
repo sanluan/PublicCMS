@@ -57,6 +57,9 @@ public class GetPageMethod extends BaseMethod {
                 return new StringBuilder(url).append("?").append(pageParameter).append("=").append(pageIndex).toString();
             }
         } else {
+            if (url.endsWith(CommonConstants.SEPARATOR) && 1 != pageIndex) {
+                url += CommonConstants.getDefaultPage();
+            }
             int index = url.lastIndexOf(CommonConstants.DOT);
             if (-1 < index) {
                 String prefixFilePath = url.substring(0, index);

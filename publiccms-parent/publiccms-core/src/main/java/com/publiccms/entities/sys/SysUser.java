@@ -40,6 +40,12 @@ public class SysUser implements java.io.Serializable {
     @GeneratorColumn(title = "密码")
     @JsonIgnore
     private String password;
+    @GeneratorColumn(title = "混淆码")
+    @JsonIgnore
+    private String salt;
+    @GeneratorColumn(title = "弱密码", condition = true)
+    @JsonIgnore
+    private boolean weakPassword;
     @GeneratorColumn(title = "用户昵称", condition = true, like = true, or = true, name = "name")
     private String nickName;
     @GeneratorColumn(title = "部门", condition = true)
@@ -69,11 +75,12 @@ public class SysUser implements java.io.Serializable {
     public SysUser() {
     }
 
-    public SysUser(short siteId, String name, String password, String nickName, boolean ownsAllContent, boolean emailChecked, boolean superuserAccess,
-            boolean disabled, int loginCount) {
+    public SysUser(short siteId, String name, String password, boolean weakPassword,String nickName, boolean ownsAllContent, boolean emailChecked,
+            boolean superuserAccess, boolean disabled, int loginCount) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
+        this.weakPassword = weakPassword;
         this.nickName = nickName;
         this.ownsAllContent = ownsAllContent;
         this.emailChecked = emailChecked;
@@ -82,12 +89,14 @@ public class SysUser implements java.io.Serializable {
         this.loginCount = loginCount;
     }
 
-    public SysUser(short siteId, String name, String password, String nickName, Integer deptId, boolean ownsAllContent, String roles, String email,
-            boolean emailChecked, boolean superuserAccess, boolean disabled, Date lastLoginDate, String lastLoginIp,
-            int loginCount, Date registeredDate) {
+    public SysUser(short siteId, String name, String password, String salt, boolean weakPassword,String nickName, Integer deptId, boolean ownsAllContent,
+            String roles, String email, boolean emailChecked, boolean superuserAccess, boolean disabled, Date lastLoginDate,
+            String lastLoginIp, int loginCount, Date registeredDate) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
+        this.salt = salt;
+        this.weakPassword = weakPassword;
         this.nickName = nickName;
         this.deptId = deptId;
         this.ownsAllContent = ownsAllContent;
@@ -132,13 +141,31 @@ public class SysUser implements java.io.Serializable {
         this.name = name;
     }
 
-    @Column(name = "password", nullable = false, length = 32)
+    @Column(name = "password", nullable = false, length = 128)
     public String getPassword() {
         return this.password;
     }
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    @Column(name = "salt", length = 20)
+    public String getSalt() {
+        return this.salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
+
+    @Column(name = "weak_password", nullable = false)
+    public boolean isWeakPassword() {
+        return this.weakPassword;
+    }
+
+    public void setWeakPassword(boolean weakPassword) {
+        this.weakPassword = weakPassword;
     }
 
     @Column(name = "nick_name", nullable = false, length = 45)
@@ -158,7 +185,7 @@ public class SysUser implements java.io.Serializable {
     public void setDeptId(Integer deptId) {
         this.deptId = deptId;
     }
-    
+
     @Column(name = "owns_all_content", nullable = false)
     public boolean isOwnsAllContent() {
         return this.ownsAllContent;

@@ -5,23 +5,26 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysDept;
@@ -31,9 +34,10 @@ import com.publiccms.entities.sys.SysRoleUser;
 import com.publiccms.entities.sys.SysRoleUserId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.file.FileComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysDomainService;
@@ -50,7 +54,8 @@ import com.publiccms.logic.service.tools.SqlService;
  */
 @Controller
 @RequestMapping("sysSite")
-public class SysSiteAdminController extends AbstractController {
+public class SysSiteAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     private SysSiteService service;
     @Autowired
@@ -68,13 +73,17 @@ public class SysSiteAdminController extends AbstractController {
     @Autowired
     private SqlService sqlService;
     @Autowired
-    private FileComponent fileComponent;
-    @Autowired
     protected LogUploadService logUploadService;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
 
     private String[] ignoreProperties = new String[] { "id" };
 
     /**
+     * @param site
+     * @param admin
      * @param entity
      * @param domain
      * @param wild
@@ -82,29 +91,36 @@ public class SysSiteAdminController extends AbstractController {
      * @param deptName
      * @param userName
      * @param password
-     * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("save")
-    public String save(SysSite entity, String domain, Boolean wild, String roleName, String deptName, String userName,
-            String password, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+    @Csrf
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String domain,
+            Boolean wild, String roleName, String deptName, String userName, String password, HttpServletRequest request,
+            ModelMap model) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (!entity.isUseStatic()) {
             entity.setUseSsi(false);
         }
+        if (null == entity.getDynamicPath()) {
+            entity.setDynamicPath(CommonConstants.SEPARATOR);
+        } else if (!entity.getDynamicPath().endsWith(CommonConstants.SEPARATOR)) {
+            entity.setDynamicPath(entity.getDynamicPath() + CommonConstants.SEPARATOR);
+        }
+        if (null == entity.getSitePath()) {
+            entity.setSitePath(CommonConstants.SEPARATOR);
+        } else if (!entity.getSitePath().endsWith(CommonConstants.SEPARATOR)) {
+            entity.setSitePath(entity.getSitePath() + CommonConstants.SEPARATOR);
+        }
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "update.site", RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        "update.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             if (ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
@@ -123,16 +139,17 @@ public class SysSiteAdminController extends AbstractController {
             deptService.save(dept);// 初始化部门
             SysRole role = new SysRole(entity.getId(), roleName, true, true);
             roleService.save(role);// 初始化角色
-            SysUser user = new SysUser(entity.getId(), userName, VerificationUtils.md5Encode(password), userName, dept.getId(),
-                    true, role.getId().toString(), null, false, true, false, null, null, 0, CommonUtils.getDate());
+            String salt = UserPasswordUtils.getSalt();
+            SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt), salt, true,
+                    userName, dept.getId(), true, role.getId().toString(), null, false, true, false, null, null, 0,
+                    CommonUtils.getDate());
             userService.save(user);// 初始化用户
             roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.site",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        if (!getSite(request).getId().equals(site.getId()) || site.getId().equals(entity.getId())
+        if (!siteComponent.getSite(request.getServerName()).getId().equals(site.getId()) || site.getId().equals(entity.getId())
                 && (!site.getSitePath().equals(entity.getSitePath()) || !site.getDynamicPath().equals(entity.getDynamicPath()))) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
@@ -141,25 +158,25 @@ public class SysSiteAdminController extends AbstractController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param id
-     * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @SuppressWarnings("unchecked")
     @RequestMapping("delete")
-    public String delete(Short id, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+    @Csrf
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Short id, HttpServletRequest request,
+            ModelMap model) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         SysSite entity = service.getEntity(id);
         if (null != entity) {
             service.delete(id);
-            Long userId = ControllerUtils.getAdminFromSession(session).getId();
+            Long userId = admin.getId();
             Date now = CommonUtils.getDate();
             String ip = RequestUtils.getIpAddress(request);
             for (SysDomain domain : (List<SysDomain>) domainService.getPage(entity.getId(), null, null, null).getList()) {
@@ -174,18 +191,18 @@ public class SysSiteAdminController extends AbstractController {
     }
 
     /**
+     * @param site
+     * @param admin
      * @param sql
-     * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("execSql")
-    public String execSql(String sql, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+    @Csrf
+    public String execSql(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String sql, HttpServletRequest request,
+            ModelMap model) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (-1 < sql.indexOf(CommonConstants.BLANK_SPACE)) {
@@ -204,34 +221,33 @@ public class SysSiteAdminController extends AbstractController {
                 model.addAttribute("error", e.getMessage());
             }
             model.addAttribute("sql", sql);
-            logOperateService.save(new LogOperate(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "execsql.site", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(model)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     /**
+     * @param site
+     * @param admin
      * @param file
-     * @param _csrf
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "doUploadLicense", method = RequestMethod.POST)
-    public String upload(MultipartFile file, String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
-                || ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
+    @Csrf
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+            HttpServletRequest request, ModelMap model) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null != file && !file.isEmpty()) {
             try {
-                fileComponent.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
-                logUploadService.save(new LogUpload(site.getId(), ControllerUtils.getAdminFromSession(session).getId(),
-                        LogLoginService.CHANNEL_WEB_MANAGER, "license.dat", LogUploadService.FILE_TYPE_OTHER, file.getSize(),
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
+                CmsFileUtils.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
+                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
                 return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);
@@ -241,20 +257,18 @@ public class SysSiteAdminController extends AbstractController {
     }
 
     /**
-     * @param _csrf
+     * @param site
+     * @param admin
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("reCreateIndex")
-    public String reCreateIndex(String _csrf, HttpServletRequest request, HttpSession session, ModelMap model) {
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getAdminToken(request), _csrf, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
+    @Csrf
+    public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
+            ModelMap model) {
         contentService.reCreateIndex();
-        SysSite site = getSite(request);
-        Long userId = ControllerUtils.getAdminFromSession(session).getId();
+        Long userId = admin.getId();
         logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "reCreateIndex",
                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));
         return CommonConstants.TEMPLATE_DONE;

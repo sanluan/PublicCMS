@@ -11,10 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -24,14 +26,18 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
-import com.publiccms.views.pojo.entities.CmsPlaceStatistics;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
 /**
@@ -41,7 +47,7 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
  */
 @Controller
 @RequestMapping("place")
-public class PlaceController extends AbstractController {
+public class PlaceController {
     @Autowired
     private CmsPlaceService service;
     @Autowired
@@ -50,25 +56,34 @@ public class PlaceController extends AbstractController {
     private CmsPlaceAttributeService attributeService;
     @Autowired
     private MetadataComponent metadataComponent;
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
+    @Autowired
+    protected ConfigComponent configComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };
 
     /**
+     * @param site
      * @param entity
      * @param returnUrl
      * @param placeParameters
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save")
-    public String save(CmsPlace entity, String returnUrl, @ModelAttribute ExtendDataParameters placeParameters, String _csrf,
-            HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
-            returnUrl = site.getDynamicPath();
+    @Csrf
+    public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl,
+            @ModelAttribute ExtendDataParameters placeParameters, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
@@ -84,8 +99,7 @@ public class PlaceController extends AbstractController {
                     || ControllerUtils.verifyCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
-            if (!metadata.isAllowAnonymous()
-                    && ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
+            if (!metadata.isAllowAnonymous()) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             if (null != entity.getId()) {
@@ -118,6 +132,7 @@ public class PlaceController extends AbstractController {
     }
 
     /**
+     * @param site
      * @param id
      * @param returnUrl
      * @param request
@@ -126,10 +141,12 @@ public class PlaceController extends AbstractController {
      * @return view name
      */
     @RequestMapping("delete")
-    public String delete(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
-            returnUrl = site.getDynamicPath();
+    public String delete(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -149,6 +166,7 @@ public class PlaceController extends AbstractController {
     }
 
     /**
+     * @param site
      * @param id
      * @param returnUrl
      * @param request
@@ -157,10 +175,12 @@ public class PlaceController extends AbstractController {
      * @return view name
      */
     @RequestMapping("check")
-    public String check(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
-            returnUrl = site.getDynamicPath();
+    public String check(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -172,14 +192,15 @@ public class PlaceController extends AbstractController {
                 model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
-            service.check(id);
+            service.check(id, user.getId());
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
-    
+
     /**
+     * @param site
      * @param id
      * @param returnUrl
      * @param request
@@ -188,10 +209,12 @@ public class PlaceController extends AbstractController {
      * @return view name
      */
     @RequestMapping("uncheck")
-    public String uncheck(Long id, String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
-            returnUrl = site.getDynamicPath();
+    public String uncheck(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
+            HttpSession session, ModelMap model) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
         SysUser user = ControllerUtils.getUserFromSession(session);
@@ -211,36 +234,34 @@ public class PlaceController extends AbstractController {
     }
 
     /**
+     * @param site
      * @param id
      * @param request
      * @return view name
      */
     @RequestMapping("click")
-    public String click(Long id, HttpServletRequest request) {
-        SysSite site = getSite(request);
-        CmsPlaceStatistics placeStatistics = statisticsComponent.placeClicks(id);
-        if (null != placeStatistics && null != placeStatistics.getEntity()
-                && site.getId() == placeStatistics.getEntity().getSiteId()
-                && CommonUtils.notEmpty(placeStatistics.getEntity().getUrl())) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + placeStatistics.getEntity().getUrl();
+    public String click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+        ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
+        if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
+                && site.getId().equals(clickStatistics.getSiteId())) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + clickStatistics.getUrl();
         } else {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
     }
 
     /**
+     * @param site
      * @param id
      * @param request
      * @param response
      */
     @RequestMapping("redirect")
-    public void redirect(Long id, HttpServletRequest request, HttpServletResponse response) {
-        SysSite site = getSite(request);
-        CmsPlaceStatistics placeStatistics = statisticsComponent.placeClicks(id);
-        if (null != placeStatistics && null != placeStatistics.getEntity()
-                && site.getId() == placeStatistics.getEntity().getSiteId()
-                && CommonUtils.notEmpty(placeStatistics.getEntity().getUrl())) {
-            ControllerUtils.redirectPermanently(response, placeStatistics.getEntity().getUrl());
+    public void redirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request, HttpServletResponse response) {
+        ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
+        if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
+                && site.getId().equals(clickStatistics.getSiteId())) {
+            ControllerUtils.redirectPermanently(response, clickStatistics.getUrl());
         } else {
             ControllerUtils.redirectPermanently(response, site.getDynamicPath());
         }

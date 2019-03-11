@@ -27,7 +27,7 @@
     <div class="pageFormContent" layoutH="109">
            <div>
             <input name="path" type="hidden" value="${path}"/>
-            <textarea name="content" class="code" mode="freemarkermixed"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
+            <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
         </div>
     </div>
 </form>

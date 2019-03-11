@@ -1,9 +1,11 @@
 <@_content id=id>
-    <#assign a=object/>
-    <#assign parentId=a.parentId!/>
-    <#assign categoryId=a.categoryId!/>
-    <#assign modelId=a.modelId!/>
-    <#assign attribute=getContentAttribute(a.id)!/>
+    <#assign
+        a=object
+        parentId=a.parentId!''
+        categoryId=a.categoryId!''
+        modelId=a.modelId!''
+        attribute=getContentAttribute(a.id)!{}
+    />
 </@_content>
 <@_category id=categoryId!><#assign category=object/></@_category>
 <@_model id=modelId!><#assign model=object/></@_model>
@@ -80,11 +82,11 @@
                 <dd>${(a.editor)!}</dd>
             </dl>
         </#if>
-        <#if (a.tagIds)?has_content>
+        <#if category?has_content && (a.tagIds)?has_content>
 <#if category.tagTypeIds?has_content>
     <@_tagType ids=category.tagTypeIds>
         <#list map as k,tagType>
-            <dl class="nowrap tags">
+            <dl class="nowrap">
                 <dt>${tagType.name}:</dt>
                 <dd>
                     <@_tag ids=a.tagIds>
@@ -99,7 +101,7 @@
         </#list>
     </@_tagType>
 <#else>
-            <dl class="nowrap tags">
+            <dl class="nowrap">
                 <dt>${(model.fieldTextMap['tag'])!}:</dt>
                 <dd>
                     <@_tag ids=a.tagIds>
@@ -125,7 +127,7 @@
                     ${(a.publishDate)!}
                 </dd>
             </dl>
-        <#if fieldList?seq_contains('cover')>
+        <#if fieldList?seq_contains('cover')&&a.cover?has_content>
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['cover'])!}:</dt>
                 <dd>
@@ -138,14 +140,18 @@
         <#include "../include_page/extendData.html"/>
         <#if category?has_content&&category.extendId?has_content>
             <@_sysExtendFieldList extendId=category.extendId>
-                <#assign extendList=list![]/>
-                <#assign extendValue=attribute!{}/>
+                <#assign
+                    extendList=list![]
+                    extendValue=attribute!{}
+                />
                 <@extendData 'categoryExtendDataList' extendList extendValue 'view'/>
             </@_sysExtendFieldList>
         </#if>
         <#if model?has_content>
-            <#assign extendList=model.extendList![]/>
-            <#assign extendValue=attribute!{}/>
+            <#assign
+                extendList=model.extendList![]
+                extendValue=attribute!{}
+            />
             <@extendData 'modelExtendDataList' extendList extendValue 'view'/>
         </#if>
         <#if a?has_content&&(a.hasImages||a.hasFiles)>
@@ -198,6 +204,25 @@
             </dl>
             </#if>
         </@_contentRelatedList>
+        <@_commentList advanced=true contentId=a.id count=100>
+            <#if page.totalCount gt 0>
+            <fieldset>
+                <legend><@t.page 'comment'/></legend>
+                <#list page.list as a>
+                    <@t.merge 'userIds' a.userId!/>
+                    <@t.merge 'userIds' a.replyUserId!/>
+                </#list>
+                <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+                <#list page.list as a>
+                <dl class="nowrap">
+                    <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> <@t.page 'comment.reply'/> ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
+                    <dd>
+                        <div>${a.text!}</div>
+                    </dd>
+                </dl>
+                </#list>
+            </#if>
+        </@_commentList>
     </#if>
 </div>
 <div class="formBar">

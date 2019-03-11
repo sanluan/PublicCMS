@@ -1,6 +1,8 @@
 <@_webFileContent path=path><#assign content=object!/></@_webFileContent>
-<#assign editorType={'css':'css','js':'javascript','xml':'xml'}/>
-<#assign fileType=path?keep_after_last('.')?lower_case/>
+<#assign
+    editorType={'css':'css','js':'javascript','xml':'xml'}
+    fileType=path?keep_after_last('.')?lower_case
+/>
 <form method="post" action="cmsWebFile/save.do<#if !content?has_content>?callbackType=closeCurrent&navTabId=cmsWebFile/list</#if>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
@@ -18,7 +20,7 @@
             <input name="path" class="required" type="text" maxlength="50" size="50" value="${(path)!}<#if !content?has_content>/filename.html</#if>"/>
         </div>
         <div>
-            <textarea name="content" class="code" mode="${editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed')}">${content!}</textarea>
+            <textarea name="content" class="code" escape="true" mode="${editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed')}">${content!}</textarea>
         </div>
     </div>
 </form>

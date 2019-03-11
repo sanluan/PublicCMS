@@ -1,6 +1,8 @@
-<@_category id=id>
-    <#assign category=object/>
-    <#assign attribute=getCategoryAttribute(category.id)/>
+<@_category id=id containsAttribute=true>
+    <#assign
+        category=object
+        url='?id=${id}'
+    />
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,7 +16,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home page</a>
+        <a href="${base}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -35,19 +37,20 @@
         </section>
     </#list>
         <div>
-            <#assign url='?id=${id}'/>
+            <#assign
+                start=1
+                end=page.totalPage
+            />
+            <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+            </#if>
+            <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+            </#if>
             <#if !page.firstPage>
                 <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
             <#else>
                 <span>Previous page</span>
-            </#if>
-            <#assign start=1/>
-            <#if (page.pageIndex-5) gt start>
-                <#assign start=page.pageIndex-4/>
-            </#if>
-            <#assign end=page.totalPage/>
-            <#if (page.pageIndex+5) lt end>
-                <#assign end=page.pageIndex+4/>
             </#if>
             <#if start gt 1>
                 <a href="${url}">1</a> ...

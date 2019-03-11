@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.publiccms.entities.sys.SysExtendField;
 
 /**
  *
@@ -25,7 +26,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     private List<String> fieldList;
     private List<String> requiredFieldList;
     private Map<String,String> fieldTextMap;
-    private List<ExtendField> extendList;
+    private List<SysExtendField> extendList;
 
     /**
      * @return
@@ -86,14 +87,14 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     /**
      * @return
      */
-    public List<ExtendField> getExtendList() {
+    public List<SysExtendField> getExtendList() {
         return extendList;
     }
 
     /**
      * @param extendList
      */
-    public void setExtendList(List<ExtendField> extendList) {
+    public void setExtendList(List<SysExtendField> extendList) {
         this.extendList = extendList;
     }
 

@@ -1,6 +1,6 @@
 <@_dictionary id=id><#assign a=object/></@_dictionary>
 <form method="post" action="cmsDictionary/save.do?callbackType=closeCurrent&navTabId=cmsDictionary/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
-    <input name="id" type="hidden" value="${id!}" />
+    <input name="oldId" type="hidden" value="${(a.id.id)!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
@@ -10,6 +10,12 @@
     </div>
     <div class="pageContent">
         <div class="pageFormContent" layoutH="50">
+            <dl class="nowrap">
+                <dt><@t.page 'id'/>:</dt>
+                <dd>
+                    <input class="required" name="id.id" remote="cmsDictionary/virify.do<#if id?has_content>?oldId=${(a.id.id)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" size="20" maxlength="20" value="${(a.id.id)!}"/>
+                </dd>
+            </dl>
             <dl class="nowrap">
                 <dt><@t.page 'name'/>:</dt>
                 <dd>

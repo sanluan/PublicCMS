@@ -5,8 +5,8 @@ import java.util.Locale;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.LanguagesUtils;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.views.pojo.entities.ExtendField;
 
 /**
  *
@@ -85,6 +85,26 @@ public interface Config {
     /**
      * 
      */
+    public static final String INPUTTYPE_CONTENT = "content";
+
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CATEGORY = "category";
+
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_CATEGORYTYPE = "categoryType";
+
+    /**
+     * 
+     */
+    public static final String INPUTTYPE_TAGTYPE = "tagType";
+
+    /**
+     * 
+     */
     public static final String INPUTTYPE_NUMBER = "number";
 
     /**
@@ -107,7 +127,7 @@ public interface Config {
      * @param locale
      * @return config extend field list
      */
-    public List<ExtendField> getExtendFieldList(SysSite site, Locale locale);
+    public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale);
 
     /**
      * @param site
@@ -119,8 +139,8 @@ public interface Config {
     }
 
     /**
-     * @param locale 
-     * @param code 
+     * @param locale
+     * @param code
      * @return config code or null
      */
     public default String getMessage(Locale locale, String code) {

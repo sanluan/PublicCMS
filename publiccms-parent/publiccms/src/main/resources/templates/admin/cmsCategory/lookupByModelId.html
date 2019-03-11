@@ -1,0 +1,21 @@
+<div class="pageFormContent" layoutH="19">
+    <ul class="tree treeFolder expand">
+        <li>
+            <a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:'',parentId:''});return false;"><@t.page 'button.clear_select'/></a>
+        </li>
+        <@_categoryModelList modelId=modelId>
+            <#list page.list as a>
+                <#if currentCategoryId?has_content&&a.id.categoryId?string!=currentCategoryId>
+                    <@t.merge 'categoryIds' a.id.categoryId!/>
+                </#if>
+            </#list>
+            <@_category ids=t.categoryIds!>
+                <#list map as k,v>
+                    <li><a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'${k}', categoryName:'${v.name}'});return false;">${v.name!}</a></li>
+                <#else>
+                    <li><a><@t.page 'empty_directory'/></a></li>
+                </#list>
+            </@_category>
+        </@_categoryModelList>
+    </ul>
+</div>

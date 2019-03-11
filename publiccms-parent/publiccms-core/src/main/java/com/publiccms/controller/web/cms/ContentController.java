@@ -1,19 +1,22 @@
 package com.publiccms.controller.web.cms;
 
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.base.AbstractController;
+import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -27,13 +30,17 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.views.pojo.entities.CmsContentRelatedStatistics;
+import com.publiccms.logic.service.log.LogOperateService;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
@@ -45,7 +52,7 @@ import com.publiccms.views.pojo.model.CmsContentParameters;
  */
 @Controller
 @RequestMapping("content")
-public class ContentController extends AbstractController {
+public class ContentController {
     @Autowired
     private CmsContentService service;
     @Autowired
@@ -56,39 +63,42 @@ public class ContentController extends AbstractController {
     private CmsCategoryService categoryService;
     @Autowired
     private ModelComponent modelComponent;
-
-    private String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "createDate", "clicks",
-            "comments", "scores", "childs", "checkUserId" };
-
-    private String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
+    @Autowired
+    protected LogOperateService logOperateService;
+    @Autowired
+    protected SiteComponent siteComponent;
+    @Autowired
+    protected ConfigComponent configComponent;
 
     /**
      * 保存内容
      * 
+     * @param site
+     * 
      * @param entity
-     * @param draft 
+     * @param draft
      * @param attribute
      * @param contentParameters
      * @param returnUrl
-     * @param _csrf
      * @param request
      * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
-    public String save(CmsContent entity, Boolean draft, CmsContentAttribute attribute,
-            @ModelAttribute CmsContentParameters contentParameters, String returnUrl, String _csrf, HttpServletRequest request,
+    @Csrf
+    public String save(@RequestAttribute SysSite site, CmsContent entity, Boolean draft, CmsContentAttribute attribute,
+            @ModelAttribute CmsContentParameters contentParameters, String returnUrl, HttpServletRequest request,
             HttpSession session, ModelMap model) {
-        SysSite site = getSite(request);
-        if (isUnSafeUrl(returnUrl, site, request)) {
-            returnUrl = site.getDynamicPath();
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-        if (ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)
-                || ControllerUtils.verifyNotEmpty("categoryModel", categoryModel, model)
+        if (ControllerUtils.verifyNotEmpty("categoryModel", categoryModel, model)
                 || ControllerUtils.verifyCustom("contribute", null == user, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
@@ -107,7 +117,8 @@ public class ContentController extends AbstractController {
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
-            entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
+            entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
+                    : CmsContentAdminController.ignorePropertiesWithUrl);
             if (null != entity.getId()) {
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.content",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -129,16 +140,17 @@ public class ContentController extends AbstractController {
     /**
      * 内容推荐重定向并计数
      * 
+     * @param site
+     * 
      * @param id
      * @param request
      * @return view name
      */
     @RequestMapping("related/redirect")
-    public String relatedRedirect(Long id, HttpServletRequest request) {
-        CmsContentRelatedStatistics contentRelatedStatistics = statisticsComponent.relatedClicks(id);
-        SysSite site = getSite(request);
-        if (null != contentRelatedStatistics && null != contentRelatedStatistics.getEntity()) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentRelatedStatistics.getEntity().getUrl();
+    public String relatedRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+        ClickStatistics clickStatistics = statisticsComponent.relatedClicks(id);
+        if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + clickStatistics.getUrl();
         } else {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
@@ -147,34 +159,55 @@ public class ContentController extends AbstractController {
     /**
      * 内容链接重定向并计数
      * 
+     * @param site
      * @param id
      * @param request
      * @return view name
      */
     @RequestMapping("redirect")
-    public String contentRedirect(Long id, HttpServletRequest request) {
+    public String contentRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
         CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
-        SysSite site = getSite(request);
-        if (null != contentStatistics && null != contentStatistics.getEntity()
-                && site.getId() == contentStatistics.getEntity().getSiteId()) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentStatistics.getEntity().getUrl();
+        if (null != contentStatistics && null != contentStatistics.getUrl()
+                && site.getId().equals(contentStatistics.getSiteId())) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentStatistics.getUrl();
         } else {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
     }
 
     /**
+     * 内容评分
+     * 
+     * @param site
+     * @param id
+     * @param request
+     * @return view name
+     */
+    @RequestMapping("scores")
+    @ResponseBody
+    public int scores(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+
+        CmsContentStatistics contentStatistics = statisticsComponent.contentScores(id);
+        if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
+            return contentStatistics.getScores() + contentStatistics.getScores();
+        }
+        return 0;
+    }
+
+    /**
      * 内容点击
      * 
+     * @param site
      * @param id
+     * @param request
      * @return click
      */
     @RequestMapping("click")
     @ResponseBody
-    public int click(Long id) {
+    public int click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
         CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
-        if (null != contentStatistics && null != contentStatistics.getEntity()) {
-            return contentStatistics.getEntity().getClicks() + contentStatistics.getClicks();
+        if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
+            return contentStatistics.getClicks() + contentStatistics.getClicks();
         }
         return 0;
     }

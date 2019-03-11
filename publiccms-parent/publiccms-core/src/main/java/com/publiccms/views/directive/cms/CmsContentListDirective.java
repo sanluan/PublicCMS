@@ -37,14 +37,17 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
             queryEntity.setEmptyParent(handler.getBoolean("emptyParent"));
             queryEntity.setTitle(handler.getString("title"));
         } else {
-            queryEntity.setStatus(new Integer[] { CmsContentService.STATUS_NORMAL });
+            queryEntity.setStatus(CmsContentService.STATUS_NORMAL_ARRAY);
             queryEntity.setDisabled(false);
             queryEntity.setEmptyParent(true);
             Date now = CommonUtils.getMinuteDate();
             if (null == queryEntity.getEndPublishDate() || queryEntity.getEndPublishDate().after(now)) {
                 queryEntity.setEndPublishDate(now);
             }
+            queryEntity.setExpiryDate(now);
         }
+        queryEntity.setEmptyQuote(handler.getBoolean("emptyQuote"));
+        queryEntity.setQuoteId(handler.getLong("quoteId"));
         queryEntity.setCategoryId(handler.getInteger("categoryId"));
         queryEntity.setCategoryIds(handler.getIntegerArray("categoryIds"));
         queryEntity.setModelIds(handler.getStringArray("modelId"));

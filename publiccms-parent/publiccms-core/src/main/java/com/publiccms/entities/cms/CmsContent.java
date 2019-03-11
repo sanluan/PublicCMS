@@ -25,6 +25,7 @@ import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.Resolution;
 import org.hibernate.search.annotations.SortableField;
 import org.hibernate.search.annotations.Store;
+import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.search.bridge.builtin.IntegerBridge;
 import org.hibernate.search.bridge.builtin.ShortBridge;
@@ -35,6 +36,7 @@ import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 import com.publiccms.common.search.CmsContentBridge;
 import com.publiccms.common.search.CmsContentInterceptor;
+import com.publiccms.common.search.MultiTokenFilterFactory;
 import com.publiccms.common.search.MultiTokenizerFactory;
 
 /**
@@ -43,7 +45,8 @@ import com.publiccms.common.search.MultiTokenizerFactory;
 @Entity
 @Table(name = "cms_content")
 @DynamicUpdate
-@AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class))
+@AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class), filters = {
+        @TokenFilterDef(factory = MultiTokenFilterFactory.class) })
 @Analyzer(definition = "cms") // Comment this line to enable elasticsearch
 // @Analyzer(definition = "default") // Uncomment this line to enable elasticsearch
 @ClassBridge(impl = CmsContentBridge.class)
@@ -80,6 +83,9 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "父内容", condition = true)
     @Field(analyze = Analyze.NO, store = Store.YES)
     private Long parentId;
+    @GeneratorColumn(title = "引用内容ID", condition = true)
+    @Field(analyze = Analyze.NO, store = Store.YES)
+    private Long quoteContentId;
     @GeneratorColumn(title = "是否转载")
     private boolean copied;
     @GeneratorColumn(title = "作者")
@@ -108,6 +114,9 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "标签")
     @Field(store = Store.YES)
     private String tagIds;
+    @GeneratorColumn(title = "数据字典值")
+    @Field(store = Store.YES)
+    private String dictionaryValues;
     @GeneratorColumn(title = "封面")
     private String cover;
     @GeneratorColumn(title = "子内容数")
@@ -124,6 +133,11 @@ public class CmsContent implements java.io.Serializable {
     @DateBridge(resolution = Resolution.SECOND)
     @SortableField
     private Date publishDate;
+    @GeneratorColumn(title = "过期日期", condition = true, order = true)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Field(analyze = Analyze.NO, store = Store.YES, indexNullAs = "0")
+    @DateBridge(resolution = Resolution.SECOND)
+    private Date expiryDate;
     @GeneratorColumn(title = "审核日期", order = true)
     private Date checkDate;
     @GeneratorColumn(title = "更新日期", order = true)
@@ -166,9 +180,10 @@ public class CmsContent implements java.io.Serializable {
     }
 
     public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
-            boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages, boolean hasFiles, boolean hasStatic,
-            String url, String description, String tagIds, String cover, int childs, int scores, int comments, int clicks,
-            Date publishDate, Date checkDate, Date updateDate, Date createDate, int sort, int status, boolean disabled) {
+            Long quoteContentId, boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages,
+            boolean hasFiles, boolean hasStatic, String url, String description, String tagIds, String dictionaryValues,
+            String cover, int childs, int scores, int comments, int clicks, Date publishDate, Date expiryDate, Date checkDate,
+            Date updateDate, Date createDate, int sort, int status, boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
@@ -176,6 +191,7 @@ public class CmsContent implements java.io.Serializable {
         this.categoryId = categoryId;
         this.modelId = modelId;
         this.parentId = parentId;
+        this.quoteContentId = quoteContentId;
         this.copied = copied;
         this.author = author;
         this.editor = editor;
@@ -186,12 +202,14 @@ public class CmsContent implements java.io.Serializable {
         this.url = url;
         this.description = description;
         this.tagIds = tagIds;
+        this.dictionaryValues = dictionaryValues;
         this.cover = cover;
         this.childs = childs;
         this.scores = scores;
         this.comments = comments;
         this.clicks = clicks;
         this.publishDate = publishDate;
+        this.expiryDate = expiryDate;
         this.checkDate = checkDate;
         this.updateDate = updateDate;
         this.createDate = createDate;
@@ -275,6 +293,15 @@ public class CmsContent implements java.io.Serializable {
         this.parentId = parentId;
     }
 
+    @Column(name = "quote_content_id")
+    public Long getQuoteContentId() {
+        return this.quoteContentId;
+    }
+
+    public void setQuoteContentId(Long quoteContentId) {
+        this.quoteContentId = quoteContentId;
+    }
+
     @Column(name = "copied", nullable = false)
     public boolean isCopied() {
         return this.copied;
@@ -338,7 +365,7 @@ public class CmsContent implements java.io.Serializable {
         this.hasStatic = hasStatic;
     }
 
-    @Column(name = "url", length = 2048)
+    @Column(name = "url", length = 1000)
     public String getUrl() {
         return this.url;
     }
@@ -363,6 +390,15 @@ public class CmsContent implements java.io.Serializable {
 
     public void setTagIds(String tagIds) {
         this.tagIds = tagIds;
+    }
+
+    @Column(name = "dictionar_values", length = 65535)
+    public String getDictionaryValues() {
+        return this.dictionaryValues;
+    }
+
+    public void setDictionaryValues(String dictionaryValues) {
+        this.dictionaryValues = dictionaryValues;
     }
 
     @Column(name = "cover")
@@ -418,6 +454,16 @@ public class CmsContent implements java.io.Serializable {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "expiry_date", length = 19)
+    public Date getExpiryDate() {
+        return this.expiryDate;
+    }
+
+    public void setExpiryDate(Date expiryDate) {
+        this.expiryDate = expiryDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)

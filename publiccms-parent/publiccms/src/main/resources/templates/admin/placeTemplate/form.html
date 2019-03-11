@@ -2,8 +2,10 @@
     <#assign a=object/>
 <#assign formContent>
     <#if a.allowContribute>
-        <#assign fieldList=a.fieldList![]/>
-        <#assign requiredFieldList=a.requiredFieldList![]/>
+        <#assign
+            fieldList=a.fieldList![]
+            requiredFieldList=a.requiredFieldList![]
+        />
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save.do">
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
     <input name="path" type="hidden" value="${(path)!}" />
