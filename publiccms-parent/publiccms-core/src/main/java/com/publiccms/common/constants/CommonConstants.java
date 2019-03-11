@@ -143,7 +143,7 @@ public class CommonConstants extends Constants{
      * @return cookies user key split
      */
     public static final String getCookiesUserSplit() {
-        return "##";
+        return "_";
     }
 
     /**
