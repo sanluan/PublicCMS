@@ -12,7 +12,7 @@ CREATE TABLE `cms_category` (
   `type_id` int(11) default NULL COMMENT '分类类型',
   `child_ids` text COMMENT '所有子分类ID',
   `tag_type_ids` text default NULL COMMENT '标签分类',
-  `code` varchar(50) default NULL COMMENT '编码',
+  `code` varchar(50) NOT NULL COMMENT '编码',
   `template_path` varchar(255) default NULL COMMENT '模板路径',
   `path` varchar(1000) DEFAULT NULL COMMENT '首页路径',
   `only_url` tinyint(1) NOT NULL COMMENT '外链',
@@ -91,7 +91,7 @@ CREATE TABLE `cms_comment` (
   PRIMARY KEY (`id`),
   KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`),
   KEY `update_date` (`update_date`,`create_date`),
-  KEY `reply_id` (`site_id`,`reply_id`)
+  KEY `reply_id` (`site_id`,`reply_user_id`,`reply_id`)
 ) COMMENT='评论';
 -- ----------------------------
 -- Table structure for cms_content
@@ -106,6 +106,7 @@ CREATE TABLE `cms_content` (
   `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型',
   `parent_id` bigint(20) default NULL COMMENT '父内容ID',
+  `quote_content_id` bigint(20) NULL COMMENT '引用内容ID',
   `copied` tinyint(1) NOT NULL COMMENT '是否转载',
   `author` varchar(50) default NULL COMMENT '作者',
   `editor` varchar(50) default NULL COMMENT '编辑',
@@ -133,8 +134,9 @@ CREATE TABLE `cms_content` (
   PRIMARY KEY  (`id`),
   KEY `check_date` (`check_date`,`update_date`),
   KEY `scores` (`scores`,`comments`,`clicks`),
+  KEY `only_url` (`only_url`,`has_images`,`has_files`,`user_id`),
   KEY `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
-  KEY `only_url` (`only_url`,`has_images`,`has_files`,`user_id`)
+  KEY `quote_content_id`(`site_id`, `quote_content_id`)
 ) COMMENT='内容';
 
 -- ----------------------------
@@ -169,8 +171,8 @@ CREATE TABLE `cms_content_file` (
   PRIMARY KEY  (`id`),
   KEY `content_id` (`content_id`),
   KEY `sort` (`sort`),
-  KEY `image` (`image`),
-  KEY `size` (`size`),
+  KEY `file_type`(`file_type`),
+  KEY `file_size` (`file_size`),
   KEY `clicks` (`clicks`),
   KEY `user_id` (`user_id`)
 ) COMMENT='内容附件';
@@ -241,10 +243,10 @@ CREATE TABLE `cms_place` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
   KEY `clicks` (`clicks`),
-  KEY `publish_date` (`publish_date`,`create_date`,`expiry_date`),
   KEY `site_id` (`site_id`,`path`,`status`,`disabled`),
   KEY `item_type` (`item_type`,`item_id`),
-  KEY `user_id` (`user_id`,`check_user_id`)
+  KEY `user_id` (`user_id`,`check_user_id`),
+  KEY `publish_date` (`publish_date`,`create_date`,`expiry_date`)
 ) COMMENT='页面数据';
 
 -- ----------------------------
@@ -514,6 +516,7 @@ CREATE TABLE `sys_dept_page` (
 -- ----------------------------
 -- Table structure for sys_dept_config
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_dept_config`;
 CREATE TABLE `sys_dept_config` (
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
   `config` varchar(100) NOT NULL COMMENT '配置',

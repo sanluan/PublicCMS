@@ -8,28 +8,28 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.181024</version>
+        <version>V4.0.190312</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-core</artifactId>
-            <version>V4.0.181024</version>
+            <version>V4.0.190312</version>
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-oauth</artifactId>
-            <version>V4.0.181024</version>
+            <version>V4.0.190312</version>
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-redis</artifactId>
-            <version>V4.0.181024</version>
+            <version>V4.0.190312</version>
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-analyzer</artifactId>
-            <version>V4.0.181024</version>
+            <version>V4.0.190312</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>

@@ -201,8 +201,9 @@ public class InstallServlet extends HttpServlet {
      * @throws ServletException
      * @throws IOException
      */
-    private static void checkDatabse(Map<String, Object> map) {
+    private void checkDatabse(Map<String, Object> map) {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
+        startStep = null;
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
             map.put("message", "fail");
         } catch (Exception e) {
