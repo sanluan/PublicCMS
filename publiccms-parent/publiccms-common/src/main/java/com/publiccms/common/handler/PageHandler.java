@@ -32,21 +32,21 @@ public class PageHandler implements java.io.Serializable {
      * @param pageIndex
      * @param pageSize
      * @param totalCount
-     * @param maxPages
+     * @param maxCount
      */
-    public PageHandler(Integer pageIndex, Integer pageSize, long totalCount, Integer maxPages) {
-        this(pageIndex, pageSize, totalCount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) totalCount, maxPages);
+    public PageHandler(Integer pageIndex, Integer pageSize, long totalCount, Integer maxCount) {
+        this(pageIndex, pageSize, totalCount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) totalCount, maxCount);
     }
 
     /**
      * @param pageIndex
      * @param pageSize
      * @param totalCount
-     * @param maxPages
+     * @param maxCount
      */
-    public PageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxPages) {
+    public PageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxCount) {
+        setTotalCount(totalCount, maxCount);
         setPageSize(null != pageSize ? pageSize : 0);
-        setTotalCount(totalCount, maxPages);
         setPageIndex(null != pageIndex ? pageIndex : 1);
         init();
     }
@@ -98,10 +98,10 @@ public class PageHandler implements java.io.Serializable {
 
     /**
      * @param totalCount
-     * @param maxPages
+     * @param maxCount
      */
-    public void setTotalCount(int totalCount, Integer maxPages) {
-        setTotalCount(null != maxPages && maxPages * pageSize < totalCount ? maxPages * pageSize : totalCount);
+    public void setTotalCount(int totalCount, Integer maxCount) {
+        setTotalCount(null != maxCount && maxCount < totalCount ? maxCount : totalCount);
     }
 
     /**

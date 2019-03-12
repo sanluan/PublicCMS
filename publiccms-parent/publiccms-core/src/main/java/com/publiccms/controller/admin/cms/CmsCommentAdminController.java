@@ -51,7 +51,7 @@ public class CmsCommentAdminController {
         if (CommonUtils.notEmpty(ids)) {
             service.check(site.getId(), ids, admin.getId());
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "cmsComment.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    "check.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -72,7 +72,7 @@ public class CmsCommentAdminController {
         if (CommonUtils.notEmpty(ids)) {
             service.uncheck(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "cmsComment.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    "uncheck.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
