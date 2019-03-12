@@ -102,12 +102,12 @@
             </#if>
             <#break>
         <#case 'user'>
-            <@_sysUser id=value><#local user=object/></@_sysUser>
+            <@_sysUser id=value><#local u=object/></@_sysUser>
             <#if 'view'=type>
-                ${(value)!}:${(user.nickName)!}
+                ${(value)!}:${(u.nickName)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(user.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(u.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="sysUser/lookup.html?field=value" width="920" lookupGroup="${name}[${index}]"><@t.page 'user.select'/></a>
             </#if>
             <#break>
