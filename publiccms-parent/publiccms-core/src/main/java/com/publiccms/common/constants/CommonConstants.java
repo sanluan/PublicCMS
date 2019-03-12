@@ -108,14 +108,14 @@ public class CommonConstants extends Constants{
      * @return session user key
      */
     public static final String getSessionUser() {
-        return "user";
+        return "PUBLICCMS_USER";
     }
 
     /**
      * @return session user time key
      */
     public static final String getSessionUserTime() {
-        return "user_time";
+        return "PUBLICCMS_USER_TIME";
     }
 
     /**

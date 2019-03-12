@@ -143,7 +143,7 @@ $(function(){
 <footer>
    <ul class="langList">
     <#list langs as k,v>
-        <li<#if .locale=k> class="current-lang"</#if>>
+        <li<#if springMacroRequestContext.getMessage('page.lang')=k> class="current-lang"</#if>>
         	<a href="changeLocale?lang=${k}" target="ajaxTodo">
         		<img src="${res}/themes/images/${k}.png" alt="${v}"/>${v}
         	</a>

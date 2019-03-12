@@ -20,7 +20,6 @@ import com.publiccms.logic.component.BeanComponent;
  *
  */
 public abstract class AbstractFreemarkerView extends FreeMarkerView {
-    protected static final String CONTEXT_ADMIN = "admin";
     protected static final String CONTEXT_USER = "user";
     /**
      * Domain Context

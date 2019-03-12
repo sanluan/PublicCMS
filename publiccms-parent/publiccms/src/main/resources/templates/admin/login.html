@@ -34,7 +34,7 @@
         </form>
         <p>
             <#list langs as k,v>
-		        <a<#if .locale=k> class="current-lang"</#if> href="${adminBase}/changeLocale?lang=${k}&returnUrl=${(adminBase+'/')?url}">${v}</a>
+		        <a<#if springMacroRequestContext.getMessage('page.lang')=k> class="current-lang"</#if> href="${adminBase}/changeLocale?lang=${k}&returnUrl=${(adminBase+'/')?url}">${v}</a>
             </#list>
         </p>
     </div>

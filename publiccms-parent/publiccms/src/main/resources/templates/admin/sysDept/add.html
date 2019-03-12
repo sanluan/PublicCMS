@@ -3,7 +3,7 @@
     <#if (object.parentId)??><#assign parentId=object.parentId/></#if>
     <#if (object.userId)??><#assign userId=object.userId/></#if>
 </@_sysDept>
-<@_sysUser id=userId><#assign u=object/></@_sysUser>
+<@_sysUser id=userId><#assign user=object/></@_sysUser>
 <@_sysDept id=parentId!><#assign parentName=(object.name)!/></@_sysDept>
 <form method="post" action="sysDept/save.do?callbackType=closeCurrent&navTabId=sysDept/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
@@ -35,7 +35,7 @@
             <dt><@t.page 'dept.master'/>:</dt>
             <dd>
                 <input name="userId" value="${userId!}" type="hidden"/>
-                <input name="nickName" readonly="readonly" size="10" value="${(u.nickName)!}" type="text"/>
+                <input name="nickName" readonly="readonly" size="10" value="${(user.nickName)!}" type="text"/>
                 <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>    
             </dd>
         </dl>
