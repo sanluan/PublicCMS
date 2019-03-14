@@ -41,8 +41,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private CorsInterceptor corsInterceptor;
     @Autowired
-    private CsrfInterceptor csrfInterceptor;
-    @Autowired
     private CacheComponent cacheComponent;
 
     @Bean
@@ -100,9 +98,14 @@ public class WebConfig implements WebMvcConfigurer {
         return new WebContextInterceptor();
     }
 
+    @Bean
+    public CsrfInterceptor csrfInterceptor() {
+        return new CsrfInterceptor(false);
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(csrfInterceptor);
+        registry.addInterceptor(csrfInterceptor());
         registry.addInterceptor(webInterceptor);
         registry.addInterceptor(corsInterceptor);
     }

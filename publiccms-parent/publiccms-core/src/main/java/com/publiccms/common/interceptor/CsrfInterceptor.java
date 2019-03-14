@@ -8,7 +8,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.stereotype.Component;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -17,10 +16,17 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 
-@Component
 public class CsrfInterceptor extends HandlerInterceptorAdapter {
     protected Map<HandlerMethod, CsrfCache> methodCache = new HashMap<>();
     private CsrfCache DEFAULT_CACHE = new CsrfCache(false, null);
+    private boolean admin = false;
+
+    /**
+     * @param admin
+     */
+    public CsrfInterceptor(boolean admin) {
+        this.admin = admin;
+    }
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
@@ -38,7 +44,8 @@ public class CsrfInterceptor extends HandlerInterceptorAdapter {
             }
             if (cache.isEnable()) {
                 String value = request.getParameter(cache.getParameterName());
-                if (null == value || !value.equals(ControllerUtils.getAdminToken(request))) {
+                String token = admin ? ControllerUtils.getAdminToken(request) : ControllerUtils.getWebToken(request);
+                if (null == value || !value.equals(token)) {
                     try {
                         String message = LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
                                 "verify.notEquals._csrf");

@@ -44,8 +44,6 @@ public class AdminConfig implements WebMvcConfigurer {
     private CacheComponent cacheComponent;
     @Autowired
     private AdminContextInterceptor adminInterceptor;
-    @Autowired
-    private CsrfInterceptor csrfInterceptor;
 
     @Bean
     public LocaleResolver localeResolver(Environment env) {
@@ -112,9 +110,14 @@ public class AdminConfig implements WebMvcConfigurer {
         return bean;
     }
 
+    @Bean
+    public CsrfInterceptor csrfInterceptor() {
+        return new CsrfInterceptor(true);
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(csrfInterceptor);
+        registry.addInterceptor(csrfInterceptor());
         registry.addInterceptor(adminInterceptor);
     }
 }
