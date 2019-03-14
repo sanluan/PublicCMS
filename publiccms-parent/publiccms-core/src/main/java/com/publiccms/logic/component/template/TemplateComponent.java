@@ -164,9 +164,9 @@ public class TemplateComponent implements Cache {
                                     model);
                             String url;
                             if (0 < filePath.indexOf("://") || filePath.startsWith("//")) {
-                                url = site.getDynamicPath() + filePath;
-                            } else {
                                 url = filePath;
+                            } else {
+                                url = site.getDynamicPath() + filePath;
                             }
                             contentService.updateUrl(entity.getId(), url, false);
                         }
@@ -278,9 +278,9 @@ public class TemplateComponent implements Cache {
                     String filePath = FreeMarkerUtils.generateStringByString(entity.getPath(), webConfiguration, model);
                     String url;
                     if (0 < filePath.indexOf("://") || filePath.startsWith("//")) {
-                        url = site.getDynamicPath() + filePath;
-                    } else {
                         url = filePath;
+                    } else {
+                        url = site.getDynamicPath() + filePath;
                     }
                     categoryService.updateUrl(entity.getId(), url, false);
                 }
