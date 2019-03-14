@@ -177,7 +177,9 @@ public class CmsContentService extends BaseService<CmsContent> {
                         entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
             }
             String text = HtmlUtils.removeHtmlTag(attribute.getText());
-            attribute.setWordCount(text.length());
+            if (null != text) {
+                attribute.setWordCount(text.length());
+            }
             if (CommonUtils.empty(entity.getDescription())) {
                 entity.setDescription(StringUtils.substring(text, 0, 300));
             }
