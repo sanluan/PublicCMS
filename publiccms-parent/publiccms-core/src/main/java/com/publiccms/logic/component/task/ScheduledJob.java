@@ -10,6 +10,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 
 import com.publiccms.common.base.AbstractFreemarkerView;
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.tools.FreeMarkerUtils;
 import com.publiccms.entities.log.LogTask;
 import com.publiccms.entities.sys.SysSite;
@@ -32,14 +33,17 @@ public class ScheduledJob extends QuartzJobBean {
         Integer taskId = (Integer) context.getJobDetail().getJobDataMap().get(ScheduledTask.ID);
         SysTask task = BeanComponent.getSysTaskService().getEntity(taskId);
         if (null != task) {
-            if (ScheduledTask.TASK_STATUS_READY == task.getStatus()
-                    && BeanComponent.getSysTaskService().updateStatusToRunning(task.getId())) {
+            Object flag = context.getJobDetail().getJobDataMap().get(ScheduledTask.RUNONCE);
+            if (ScheduledTask.TASK_STATUS_READY == task.getStatus() && CmsVersion.isMaster() || null != flag) {
+                if (null != flag) {
+                    context.getJobDetail().getJobDataMap().remove(ScheduledTask.RUNONCE);
+                }
+                BeanComponent.getSysTaskService().updateStatus(task.getId(), ScheduledTask.TASK_STATUS_RUNNING);
                 LogTask entity = new LogTask(task.getSiteId(), task.getId(), new Date(), false);
                 BeanComponent.getLogTaskService().save(entity);
                 boolean success = false;
                 String result;
                 try {
-                    success = true;
                     Map<String, Object> map = new HashMap<>();
                     map.put("task", task);
                     SysSite site = BeanComponent.getSiteService().getEntity(task.getSiteId());
@@ -47,6 +51,7 @@ public class ScheduledJob extends QuartzJobBean {
                     String templatePath = SiteComponent.getFullTemplatePath(site, task.getFilePath());
                     result = FreeMarkerUtils.generateStringByFile(templatePath,
                             BeanComponent.getTemplateComponent().getTaskConfiguration(), map);
+                    success = true;
                 } catch (IOException | TemplateException e) {
                     result = e.getMessage();
                 }

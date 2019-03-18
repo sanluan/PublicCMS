@@ -41,6 +41,10 @@ public class ScheduledTask {
     /**
      * 
      */
+    public static final String RUNONCE = "RUNONCE";
+    /**
+     * 
+     */
     public static final int TASK_STATUS_READY = 0;
     /**
      * 
@@ -128,7 +132,10 @@ public class ScheduledTask {
         if (CommonUtils.notEmpty(id)) {
             Date startTime = CommonUtils.getDate();
             try {
-                scheduler.triggerJob(JobKey.jobKey(getTaskName(id)));
+                JobKey jobKey = JobKey.jobKey(getTaskName(id));
+                JobDetail job = scheduler.getJobDetail(jobKey);
+                job.getJobDataMap().put(RUNONCE, true);
+                scheduler.triggerJob(jobKey);
             } catch (SchedulerException e) {
                 sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
                 logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));

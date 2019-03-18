@@ -2,9 +2,6 @@ package com.publiccms.logic.service.sys;
 
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysTask;
-import com.publiccms.logic.dao.sys.SysTaskDao;
-
 // Generated 2015-7-3 16:18:22 by com.publiccms.common.source.SourceGenerator
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.entities.sys.SysTask;
+import com.publiccms.logic.dao.sys.SysTaskDao;
 
 /**
  *
@@ -45,14 +44,6 @@ public class SysTaskService extends BaseService<SysTask> {
         if (null != entity) {
             entity.setStatus(status);
         }
-    }
-
-    /**
-     * @param id
-     * @return
-     */
-    public boolean updateStatusToRunning(Integer id) {
-        return 1 == dao.updateStatusToRunning(id);
     }
 
     @Autowired
