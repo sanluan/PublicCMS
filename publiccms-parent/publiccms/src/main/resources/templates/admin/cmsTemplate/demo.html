@@ -36,6 +36,7 @@ function templateDefaultConfig(type,name){
         $('input[name=alias]',navTab.getCurrentPanel()).val(name);
         $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
     <#if site.useStatic>
+        $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
         $('input[name=publishPath]',navTab.getCurrentPanel()).val('index.html');
     </#if>
         break;
