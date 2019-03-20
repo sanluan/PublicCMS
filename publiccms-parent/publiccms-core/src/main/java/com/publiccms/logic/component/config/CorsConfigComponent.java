@@ -153,13 +153,13 @@ public class CorsConfigComponent implements SiteCache, Config {
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_CREDENTIALS),
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_CREDENTIALS
                         + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                null));
+                "true"));
         extendFieldList
                 .add(new SysExtendField(CONFIG_MAXAGE, INPUTTYPE_TEXT, false,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAXAGE),
                         getMessage(locale,
                                 CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_MAXAGE + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                        "true"));
+                        "1800"));
         return extendFieldList;
     }
 
