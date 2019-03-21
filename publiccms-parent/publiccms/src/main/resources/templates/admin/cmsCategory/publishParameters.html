@@ -4,7 +4,7 @@
     <div class="pageFormContent" layoutH="50">
         <dl>
             <dt><@t.page 'category.publish_page_count'/>:</dt>
-            <@_contentList categoryId=id containChild=containChild count=pageSize>
+            <@_contentList categoryId=id containChild=containChild pageSize=pageSize>
             <dd><input class="required digits" type="number" name="max" max="${page.totalPage}" min="1" value="${page.totalPage}"/></dd>
             </@_contentList>
         </dl>

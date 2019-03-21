@@ -24,7 +24,7 @@
                         <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
                     </#if>
                     <ul>
-                        <@_categoryList advanced=true parentId=parentId count=500>
+                        <@_categoryList advanced=true parentId=parentId pageSize=500>
                             <#list page.list as a>
                                 <@t.merge 'categoryIds' a.id!/>
                             </#list>
@@ -48,7 +48,7 @@
                 <li>
                     <a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list" icon="<i class='icon-folder-open icon-large'></i>" title="<@t.page 'category.management'/>"><@t.page 'category.parent'/></a>
                     <ul>
-                        <@_categoryList advanced=true parentId=parentId count=500>
+                        <@_categoryList advanced=true parentId=parentId pageSize=500>
                             <#list page.list as a>
                                 <#if a.childIds?has_content>
                                 <li _src="common/categoryTree.html?parentId=${a.id}">

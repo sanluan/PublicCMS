@@ -15,7 +15,7 @@
                 <span class="info"><@t.page 'sql.description'/></span>
             </dd>
         </dl>
-<@_logOperateList operate='execSql.site' count=10>
+<@_logOperateList operate='execSql.site' pageSize=10>
     <#list page.list as a>
         <@t.merge 'userIds' a.userId!/>
     </#list>

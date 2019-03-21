@@ -1,5 +1,5 @@
 [
-<@_tagList name=name typeId=typeId count=10>
+<@_tagList name=name typeId=typeId pageSize=10>
     <#list page.list as a>
         {"id":"${a.id}","name":"${a.name}","typeId":"${a.typeId!}"}<#sep>,
     </#list>

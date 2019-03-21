@@ -66,8 +66,8 @@
             </div>
         </#if>
             <div>
-                <@_contentList parentId=content.parentId endPublishDate=content.publishDate pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous</a></#list></#if></@_contentList>
-                <@_contentList parentId=content.parentId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1><#list page.list as a><a href="${a.url!}">Next</a></#list></@_contentList>
+                <@_contentList parentId=content.parentId endPublishDate=content.publishDate pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous</a></#list></#if></@_contentList>
+                <@_contentList parentId=content.parentId startPublishDate=content.publishDate orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next</a></#list></@_contentList>
             </div>
             <div>
                 <#assign url='?id=${id}'/>
@@ -98,7 +98,7 @@
         <aside>
             <h3>Popular content</h3>
             <ul>
-<@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
+<@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
     <#list page.list as a>
                 <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>

@@ -26,7 +26,7 @@ document.getElementById('operate').style.height=document.getElementById('operate
 echarts.init(document.getElementById('register')).setOption({
     title: {
         text: '<@t.page 'register'/>',
-        subtext: '<@t.page 'total'/>:<@_sysUserList count=0>${page.totalCount}</@_sysUserList>',
+        subtext: '<@t.page 'total'/>:<@_sysUserList pageSize=0>${page.totalCount}</@_sysUserList>',
         x:'center'
     },
     tooltip : {

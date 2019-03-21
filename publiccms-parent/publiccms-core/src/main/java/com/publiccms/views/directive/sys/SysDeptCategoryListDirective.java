@@ -22,11 +22,11 @@ public class SysDeptCategoryListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getInteger("deptId"), handler.getInteger("categoryId"), 
-                handler.getInteger("pageIndex",1), handler.getInteger("count"));
+        PageHandler page = service.getPage(handler.getInteger("deptId"), handler.getInteger("categoryId"),
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count")));
         handler.put("page", page).render();
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;

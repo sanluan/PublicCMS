@@ -41,7 +41,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             }
             PageHandler page;
             Integer pageIndex = handler.getInteger("pageIndex", 1);
-            Integer count = handler.getInteger("count", 30);
+            Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
             Date currentDate = CommonUtils.getMinuteDate();
             try {
                 page = service.query(handler.getBoolean("projection", false), site.getId(), word, tagIds, dictionaryValues,

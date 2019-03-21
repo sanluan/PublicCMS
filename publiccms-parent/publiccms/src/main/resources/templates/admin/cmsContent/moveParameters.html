@@ -1,5 +1,5 @@
 <#macro categoryTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId count=500>
+    <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <@t.merge 'categoryIds' a.id!/>
         </#list>

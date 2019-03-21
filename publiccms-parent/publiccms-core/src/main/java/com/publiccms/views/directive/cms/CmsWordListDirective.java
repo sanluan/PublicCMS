@@ -30,7 +30,7 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
         }
         PageHandler page;
         Integer pageIndex = handler.getInteger("pageIndex", 1);
-        Integer count = handler.getInteger("count", 30);
+        Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
         try {
             page = service.getPage(getSite(handler).getId(), hidden, handler.getDate("startCreateDate"),
                     handler.getDate("endCreateDate"), handler.getString("name"), orderField, handler.getString("orderType"),

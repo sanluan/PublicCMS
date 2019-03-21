@@ -6,8 +6,8 @@
 </head>
 <body>
     <main>
-<@_contentList count=10>
-    <@_contentList pageIndex=getRandom(page.totalPage) count=10>
+<@_contentList pageSize=10>
+    <@_contentList pageIndex=getRandom(page.totalPage) pageSize=10>
         <#list page.list as a>
             <section>
                 <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>

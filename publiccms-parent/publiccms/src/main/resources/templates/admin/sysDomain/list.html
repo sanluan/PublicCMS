@@ -3,7 +3,7 @@
         <#assign sysSite=object/>
     </@_sysSite>
 </#if>
-<@_sysDomainList advanced=true siteId=siteId wild=wild pageIndex=pageNum count=numPerPage>
+<@_sysDomainList advanced=true siteId=siteId wild=wild pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>

@@ -1,4 +1,4 @@
-[<@_categoryList parentId=parentId allowContribute=allowContribute pageIndex=pageIndex count=count>
+[<@_categoryList parentId=parentId allowContribute=allowContribute pageIndex=pageIndex pageSize=count>
     <#list page.list as a>
         {
             "name":"${a.name?json_string}",

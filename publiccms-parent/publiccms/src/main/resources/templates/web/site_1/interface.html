@@ -123,7 +123,7 @@ $(function(){
         <p>
             <label>Site switch
                 <select id="siteList">
-            <@_sysSiteList count=500>
+            <@_sysSiteList pageSize=500>
                 <#list page.list as a>
                     <option value ="${a.dynamicPath!}" <#if site.id=a.id>selected="selected"</#if>>${a.name!}<#if site.id=a.id>[Current site]</#if></option>
                 </#list>

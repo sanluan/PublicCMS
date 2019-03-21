@@ -96,7 +96,7 @@ $('#categoryIds',navTab.getCurrentPanel()).on('click','span>a',function(){
     return false;
 });
 <#if a?has_content>
-<@_contentList quoteId=a.id count=100>
+<@_contentList quoteId=a.id pageSize=100>
     <#list page.list as a>
     <@_category id=a.categoryId>
     addCategory('${a.categoryId}','${object.name}','${a.id}');

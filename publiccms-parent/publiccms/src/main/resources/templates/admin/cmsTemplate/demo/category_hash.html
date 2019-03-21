@@ -28,7 +28,7 @@
 <#if category?has_content>
     <main>
         <h1>Latest content</h1>
-<@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex count=category.pageSize>
+<@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
     <#list page.list as a>
         <section>
             <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
@@ -77,7 +77,7 @@
         <aside>
             <h3>Popular content</h3>
             <ul>
-<@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
+<@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
     <#list page.list as a>
                 <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>

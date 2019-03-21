@@ -1,5 +1,5 @@
 <#macro lookupTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId count=500>
+    <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li>
                 <#if currentCategoryId?has_content&&a.id?string=currentCategoryId>

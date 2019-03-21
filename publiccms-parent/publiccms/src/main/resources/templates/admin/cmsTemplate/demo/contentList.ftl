@@ -1,4 +1,4 @@
-[<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId userId=userId orderField=orderField orderType=orderType pageIndex=pageIndex count=count>
+[<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId userId=userId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=count>
     <#list page.list as a>
         {
             "title":"${a.title?json_string}",

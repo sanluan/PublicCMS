@@ -9,7 +9,7 @@
     <changefreq>weekly</changefreq>
     <priority>0.4</priority>
   </url>
-<@_categoryList advanced=true queryAll=true parentId=parentId count=500>
+<@_categoryList advanced=true queryAll=true parentId=parentId pageSize=500>
     <#list page.list as a>
         <#if !a.onlyUrl>
     <url>
@@ -23,10 +23,10 @@
 </@_categoryList>
 <#assign pageCount=500/>
 <#assign maxPageCount=10/>
-<@_contentList advanced=true pageIndex=1 count=pageCount>
+<@_contentList advanced=true pageIndex=1 pageSize=pageCount>
     <#assign pageCount=(page.totalPage gt maxPageCount)?then(maxPageCount,page.totalPage)/>
     <#list 1..pageCount as n>
-        <@_contentList advanced=true pageIndex=n count=pageCount>
+        <@_contentList advanced=true pageIndex=n pageSize=pageCount>
             <#list page.list as a>
                 <#if !a.onlyUrl>
     <url>

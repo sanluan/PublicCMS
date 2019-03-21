@@ -3,7 +3,7 @@
         <li>
             <a href="javascript:;" onclick="$.bringBack({${field!'typeId'}:'',tagTypeName:''});return false;"><@t.page 'button.clear_select'/></a>
         </li>
-<@_tagTypeList count=500>
+<@_tagTypeList pageSize=500>
     <#list page.list as a>
         <li>
             <a href="javascript:;" onclick="$.bringBack({${field!'typeId'}:'${a.id}',tagTypeName:'${a.name}'});return false;">${a.name!}</a>

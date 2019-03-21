@@ -1,6 +1,6 @@
 <@_contentList advanced=true categoryId=categoryId modelId=modelId title=title status=1
     parentId=parentId emptyQuote=true containChild=true userId=userId startPublishDate=startPublishDate endPublishDate=.now
-    orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+    orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
         <#include "../include_page/parameters.html"/>

@@ -18,7 +18,7 @@
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild
             modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
-            orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
     <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">

@@ -204,7 +204,7 @@
             </dl>
             </#if>
         </@_contentRelatedList>
-        <@_commentList advanced=true contentId=a.id count=100>
+        <@_commentList advanced=true contentId=a.id pageSize=100>
             <#if page.totalCount gt 0>
             <fieldset>
                 <legend><@t.page 'comment'/></legend>
