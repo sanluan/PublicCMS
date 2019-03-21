@@ -44,14 +44,14 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 			<div id="content">
 				${text?no_esc!}
 			</div>
-<@_contentList parentId=content.id pageIndex=1 count=100>
+<@_contentList parentId=content.id pageIndex=1 pageSize=100>
 	<#list 1..page.totalPage as n>
-		<@_contentList parentId=content.id orderType='asc' pageIndex=n count=100>
+		<@_contentList parentId=content.id orderType='asc' pageIndex=n pageSize=100>
 			<#list page.list as a>
 			<h4>${a.title}</h4>
-<@_contentList parentId=a.id endPublishDate=.now pageIndex=1 count=100>
+<@_contentList parentId=a.id endPublishDate=.now pageIndex=1 pageSize=100>
 	<#list 1..page.totalPage as n>
-		<@_contentList parentId=a.id orderType='asc' pageIndex=n count=100>
+		<@_contentList parentId=a.id orderType='asc' pageIndex=n pageSize=100>
 			<ul>
 			<#list page.list as a>
 				<li><a href="${a.url!}">${a.title}</a></li>

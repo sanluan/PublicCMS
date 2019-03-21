@@ -31,7 +31,7 @@
 
 		<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
 		<#if user?has_content&&(a.adminIds)?has_content&&a.adminIds?seq_contains(user.id)>
-			<@_placeList path=path advanced=true pageIndex=pageNum count=numPerPage>
+			<@_placeList path=path advanced=true pageIndex=pageNum pageSize=numPerPage>
 				<#list page.list as a>
 					<@t.merge 'userIds' a.userId!/>
 				</#list>

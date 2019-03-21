@@ -20,7 +20,7 @@
 						<input type="submit" value="搜索"/>
 						<input type="button" onclick="$('.search form').attr('action','facet.html').submit();" value="高级搜索"/>
 				</form>
-				<@_tagList count=10>
+				<@_tagList pageSize=10>
 					<p>
 						热门标签：
 						<#list page.list as a>
@@ -28,7 +28,7 @@
 						</#list>
 					</p>
 				</@_tagList>
-				<@_wordList count=10>
+				<@_wordList pageSize=10>
 					<p>
 						热门搜索词：
 						<#list page.list as a>
@@ -39,7 +39,7 @@
 			</div>
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <#if word?has_content||tagId?has_content>
-		<@_search word=word tagId=tagId pageIndex=page count=10>
+		<@_search word=word tagId=tagId pageIndex=page pageSize=10>
 			<#if page.totalCount gt 0>
 				<#list page.list as a>
 					<@include path="/ftl/search-list.ftl"/>

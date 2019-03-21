@@ -22,7 +22,7 @@
 	</div>
 	<div class="container">
 		<div class="data-list left-content">
-<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
+<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex pageSize=category.pageSize>
 	<@import path="/ftl/tools.ftl" namespace="t"/>
 	<#list page.list as a>
 		<@include path="/ftl/data-list.ftl"/>
@@ -46,7 +46,7 @@
 			<div>
 				<h3>热门排行</h3>
 				<ul class="rank">
-<@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
+<@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
 	<#list page.list as a>
 					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
 	</#list>

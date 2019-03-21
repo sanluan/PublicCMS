@@ -19,7 +19,7 @@
 						<input type="text" name="word" value="${word!tagName!}"/>
 						<input type="submit" value="搜索"/>
 				</form>
-				<@_tagList count=10>
+				<@_tagList pageSize=10>
 					<p>
 						热门标签：
 						<#list page.list as a>
@@ -27,7 +27,7 @@
 						</#list>
 					</p>
 				</@_tagList>
-				<@_wordList count=10>
+				<@_wordList pageSize=10>
 					<p>
 						热门搜索词：
 						<#list page.list as a>
@@ -38,7 +38,7 @@
 			</div>
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <#if word?has_content||tagId?has_content>
-	<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=page count=10>
+	<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=page pageSize=10>
 		<#assign modelFacet=page.facetMap['modelId']!/>
 		<#assign categoryFacet=page.facetMap['categoryId']!/>
 		<#if categoryFacet?has_content>
