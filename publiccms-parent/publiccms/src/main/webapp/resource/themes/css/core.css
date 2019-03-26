@@ -121,7 +121,7 @@ header .nav .selected ul{display:block}
 .panelBar .toolBar li a:hover{border-radius:2px}
 .panelBar .toolBar li a{line-height:30px;display:block;overflow:hidden;padding:0 10px;text-decoration:none}
 .panelBar .toolBar li a>i{margin-right:6px}
-.panelBar .toolBar li.line{display:block;overflow:hidden;height:24px;width:1px;padding:0;position:relative;top:3px}
+.panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:24px;width:1px;padding:0;position:relative;top:3px}
 
 .panelBar .pages{float:left;overflow:hidden;height:100%;padding:2px 5px}
 .panelBar .pages span{float:left;line-height:28px}
