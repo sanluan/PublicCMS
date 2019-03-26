@@ -17,7 +17,7 @@
                     <#list ['image','video','audio','other'] as a>
                         <label style="width:auto">
                             <input <@t.compare fileTypes a 'checked="checked"'/> name="fileTypes" value="${a}" type="checkbox"/>
-                            <span><@t.page 'file_type.'+a/></span>
+                            <@t.page 'file_type.'+a/>
                         </label>
                     </#list>
                 </li>

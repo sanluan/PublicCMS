@@ -12,8 +12,6 @@ body{width:100%;height:100%;overflow:hidden}
 ::-webkit-scrollbar-button:vertical{display:none}
 ::-webkit-scrollbar-corner,::-webkit-scrollbar-track{border-radius:10px}
 
-input[type="checkbox"]{margin:5px;width:14px;height:14px}
-
 ul, ol{list-style:none}
 /* Tables still need 'cellspacing="0"' in the markup. */
 table{border-collapse:separate;border-spacing:0}
@@ -233,7 +231,7 @@ a.toggleCollapse{text-decoration:none}
 /* Pages default */
 .page{display:block;overflow:hidden;float:left;width:100%;height:100%;-webkit-overflow-scrolling:touch}
 .pageHeader{display:block;overflow:hidden;padding:10px;position:relative}
-.searchBar input,.searchBar span{float:left}
+.searchBar .textInput,.searchBar span{float:left}
 .searchBar span{line-height:28px}
 .searchBar span.connect-string{font-size:16px}
 .searchBar ul.searchContent{display:block;overflow:hidden;height:32px;padding-right:100px;position:relative;}
