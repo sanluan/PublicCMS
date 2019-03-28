@@ -75,7 +75,7 @@ function clickAddTagType(){
 <@tagTypes ((a.tagTypeIds)!'')/>
 <#if site.useStatic>
                 <dl class="nowrap onlyUrl advanced">
-                    <dt><@t.page 'template_path'/>:</dt>
+                    <dt><@t.page 'category.template_path'/>:</dt>
                     <dd>
                         <input name="templatePath" type="text" maxlength="255" size="30" value="${(a.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
@@ -164,7 +164,7 @@ function clickAddTagType(){
                     </dt>
                     <dd <#if a.onlyUrl> style="display:none"</#if>>
         <#if site.useStatic>
-                        <label><@t.page 'category.template_path'/>:</label>
+                        <label><@t.page 'category.content_template_path'/>:</label>
                         <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList${('['+modelIndex+']')?url}.categoryModel.templatePath" lookupGroup=""><@t.page 'template.select'/></a>
         </#if>
