@@ -1,4 +1,3 @@
 dependencies {
-	compile project(':publiccms-common')
 	compile ("org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}")
 }

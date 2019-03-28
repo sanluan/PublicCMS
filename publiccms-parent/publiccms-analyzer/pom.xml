@@ -12,11 +12,6 @@
     </parent>
     <dependencies>
         <dependency>
-            <groupId>com.publiccms</groupId>
-            <artifactId>publiccms-common</artifactId>
-            <version>V4.0.190312</version>
-        </dependency>
-        <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-smartcn</artifactId>
         </dependency>
