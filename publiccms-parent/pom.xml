@@ -63,6 +63,10 @@
         <version.lang>3.8.1</version.lang>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <version.log4j>2.11.2</version.log4j>
+        <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
+        <version.extractor>2.11.0</version.extractor>
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <version.servlet>4.0.1</version.servlet>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -90,6 +94,11 @@
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-slf4j-impl</artifactId>
                 <version>${version.log4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.drewnoakes</groupId>
+                <artifactId>metadata-extractor</artifactId>
+                <version>${version.extractor}</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
@@ -252,7 +261,7 @@
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>4.0.1</version>
+                <version>${version.servlet}</version>
             </dependency>
             <!-- http://mvnrepository.com/artifact/junit/junit -->
             <dependency>

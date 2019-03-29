@@ -42,8 +42,12 @@ public class LogUpload implements java.io.Serializable {
     private String originalName;
     @GeneratorColumn(title = "文件类型", condition = true)
     private String fileType;
-    @GeneratorColumn(title = "站点", order = true)
+    @GeneratorColumn(title = "文件大小", order = true)
     private long fileSize;
+    @GeneratorColumn(title = "宽度")
+    private Integer width;
+    @GeneratorColumn(title = "高度")
+    private Integer height;
     @GeneratorColumn(title = "IP")
     private String ip;
     @GeneratorColumn(title = "操作日期", order = true)
@@ -65,8 +69,8 @@ public class LogUpload implements java.io.Serializable {
         this.filePath = filePath;
     }
 
-    public LogUpload(short siteId, long userId, String channel, String originalName, String fileType, long fileSize, String ip,
-            Date createDate, String filePath) {
+    public LogUpload(short siteId, long userId, String channel, String originalName, String fileType, long fileSize,
+            Integer width, Integer height, String ip, Date createDate, String filePath) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;

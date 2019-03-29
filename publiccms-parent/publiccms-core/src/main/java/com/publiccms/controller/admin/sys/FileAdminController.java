@@ -26,6 +26,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
+import com.publiccms.views.pojo.entities.FileSize;
 
 /**
  *
@@ -60,8 +61,9 @@ public class FileAdminController {
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
+                String filePath = siteComponent.getWebFilePath(site, fileName);
                 try {
-                    CmsFileUtils.upload(file, siteComponent.getWebFilePath(site, fileName));
+                    CmsFileUtils.upload(file, filePath);
                     model.put("field", field);
                     model.put(field, fileName);
                     String fileType = CmsFileUtils.getFileType(suffix);
@@ -71,9 +73,10 @@ public class FileAdminController {
                         model.put("originalField", originalField);
                         model.put(originalField, originalName);
                     }
+                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            originalName, fileType, file.getSize(), RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                            fileName));
+                            originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
                     return "common/uploadResult";

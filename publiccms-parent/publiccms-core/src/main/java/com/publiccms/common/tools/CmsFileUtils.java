@@ -1,6 +1,8 @@
 package com.publiccms.common.tools;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,13 +18,14 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.logic.component.template.TemplateComponent;
+import com.publiccms.views.pojo.entities.FileSize;
 
 import net.coobird.thumbnailator.Thumbnails;
 
@@ -71,6 +74,10 @@ public class CmsFileUtils {
      * 
      */
     public static final String FILE_TYPE_OTHER = "other";
+    /**
+     * 
+     */
+    public static final FileSize EMPTY = new FileSize();
 
     /**
      * 获取目录下文件列表
@@ -128,6 +135,26 @@ public class CmsFileUtils {
      */
     public static void writeByteArrayToFile(String filePath, byte[] data) throws IOException {
         FileUtils.writeByteArrayToFile(new File(filePath), data);
+    }
+
+    /**
+     * @param filePath
+     * @param suffix
+     * @return fileSize
+     */
+    public static FileSize getFileSize(String filePath, String suffix) {
+        if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
+            try {
+                FileInputStream fis = new FileInputStream(filePath);
+                BufferedImage bufferedImg = ImageIO.read(fis);
+                FileSize fileSize = new FileSize();
+                fileSize.setWidth(bufferedImg.getWidth());
+                fileSize.setHeight(bufferedImg.getHeight());
+                return fileSize;
+            } catch (IOException e) {
+            }
+        }
+        return EMPTY;
     }
 
     /**

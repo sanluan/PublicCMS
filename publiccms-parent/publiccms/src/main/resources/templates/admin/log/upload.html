@@ -80,7 +80,7 @@
                     <@t.page 'file_type.'+a.fileType/>
                 </td>
                 <td>${a.originalName!}</td>
-                <td><@t.fileSize a.fileSize/></td>
+                <td><@t.fileSize a.fileSize/><#if a.width?has_content&&a.height?has_content>(${a.width}*${a.height})</#if></td>
                 <td>${a.ip!}</td>
                 <td>${a.createDate!}</td>
                 <td>${(a.filePath)!}</td>

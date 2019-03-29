@@ -36,6 +36,10 @@ public class CmsContentFile implements java.io.Serializable {
     private String fileType;
     @GeneratorColumn(title = "文件大小", order = true)
     private long fileSize;
+    @GeneratorColumn(title = "宽度")
+    private Integer width;
+    @GeneratorColumn(title = "高度")
+    private Integer height;
     @GeneratorColumn(title = "点击", order = true)
     private int clicks;
     @GeneratorColumn(title = "排序")
@@ -56,8 +60,8 @@ public class CmsContentFile implements java.io.Serializable {
         this.sort = sort;
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, String fileType, int fileSize, int clicks, int sort,
-            String description) {
+    public CmsContentFile(long contentId, long userId, String filePath, String fileType, int fileSize, Integer width,
+            Integer height, int clicks, int sort, String description) {
         this.contentId = contentId;
         this.userId = userId;
         this.filePath = filePath;
