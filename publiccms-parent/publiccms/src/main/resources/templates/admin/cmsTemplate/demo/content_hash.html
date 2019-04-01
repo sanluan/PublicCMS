@@ -17,7 +17,6 @@
     <title>${content.title} - ${category.name}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
     <meta name="description" content="${content.description}"/>
-    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
 </head>
 <body>
     <header>
@@ -89,11 +88,24 @@
                     <span>Next page</span>
                 </#if>
             </div>
-            <script>
-                $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
-                    $('article p em').text(data.clicks);
-                });
-            </script>
+            <div>
+         <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+         <@_commentList contentId=content.id pageSize=10>
+                <#list page.list as a>
+                    <@merge 'userIds' a.userId!/>
+                    <@merge 'userIds' a.replyUserId!/>
+                </#list>
+                <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+                <#list page.list as a>
+                <dl class="nowrap">
+                    <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
+                    <dd>
+                        <div>${a.text!}</div>
+                    </dd>
+                </dl>
+                </#list>
+        </@_commentList>
+            </div>
         </article>
         <aside>
             <h3>Popular content</h3>
@@ -114,6 +126,12 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+    <script>
+        $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
+            $('article p em').text(data.clicks);
+        });
+    </script>
 </body>
 </html>
 </#if>

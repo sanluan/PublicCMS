@@ -3,7 +3,6 @@
 <head>
     <meta charset="utf-8">
     <title>${metadata.alias!}</title>
-    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
     <style>
         .red{color:#f00;}
     </style>
@@ -50,6 +49,7 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
 <script>
 function logout(){
     $("form").submit();
