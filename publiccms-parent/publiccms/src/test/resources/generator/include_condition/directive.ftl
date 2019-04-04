@@ -6,4 +6,4 @@
     order=false
 />
 <#list columnList as a><#if a.order><#assign order=true orderSize+=1/></#if></#list>
-                <#if order><#if orderSize gt 1>handler.getString("orderField"), </#if>handler.getString("orderType"), </#if>handler.getInteger("pageIndex",1), handler.getInteger("count",30)
+                <#if order><#if orderSize gt 1>handler.getString("orderField"), </#if>handler.getString("orderType"), </#if>handler.getInteger("pageIndex",1), handler.getInteger("pageSize",30)

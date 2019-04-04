@@ -87,10 +87,9 @@ public class SysUserAdminController {
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            SysUser user = service.getEntity(entity.getId());
-            if ((!user.getName().equals(entity.getName())
+            if ((!oldEntity.getName().equals(entity.getName())
                     && ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model))
-                    || (!user.getNickName().equals(entity.getNickName()) && ControllerUtils.verifyHasExist("nickname",
+                    || (!oldEntity.getNickName().equals(entity.getNickName()) && ControllerUtils.verifyHasExist("nickname",
                             service.findByNickName(site.getId(), entity.getNickName()), model))) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -101,8 +100,8 @@ public class SysUserAdminController {
                 entity.setSalt(UserPasswordUtils.getSalt());
                 entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
             } else {
-                entity.setPassword(user.getPassword());
-                if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
+                entity.setPassword(oldEntity.getPassword());
+                if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
                     entity.setEmailChecked(false);
                 }
             }
