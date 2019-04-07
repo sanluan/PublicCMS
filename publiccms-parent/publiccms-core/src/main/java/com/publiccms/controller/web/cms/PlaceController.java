@@ -69,6 +69,7 @@ public class PlaceController {
      * @param site
      * @param entity
      * @param returnUrl
+     * @param _csrf 
      * @param placeParameters
      * @param request
      * @param session
@@ -76,8 +77,8 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping(value = "save")
-    @Csrf
-    public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl,
+    
+    public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl, String _csrf,
             @ModelAttribute ExtendDataParameters placeParameters, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -99,7 +100,8 @@ public class PlaceController {
                     || ControllerUtils.verifyCustom("anonymousContribute", null == user && !metadata.isAllowAnonymous(), model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
-            if (!metadata.isAllowAnonymous()) {
+            if (!metadata.isAllowAnonymous()
+                    && ControllerUtils.verifyNotEquals("_csrf", ControllerUtils.getWebToken(request), _csrf, model)) {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
             }
             if (null != entity.getId()) {
@@ -141,6 +143,7 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("delete")
+    @Csrf
     public String delete(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -175,6 +178,7 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("check")
+    @Csrf
     public String check(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -209,6 +213,7 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping("uncheck")
+    @Csrf
     public String uncheck(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
