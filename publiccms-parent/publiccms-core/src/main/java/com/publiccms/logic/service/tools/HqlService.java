@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
@@ -26,7 +25,7 @@ import com.publiccms.logic.dao.tools.HqlDao;
  */
 @Service
 @Transactional
-public class HqlService extends BaseService<Object> implements Cache{
+public class HqlService extends BaseService<Object> {
 
     /**
      * @param hql
@@ -82,7 +81,6 @@ public class HqlService extends BaseService<Object> implements Cache{
     /**
      * 
      */
-    @Override
     public void clear() {
         dao.clear();
     }

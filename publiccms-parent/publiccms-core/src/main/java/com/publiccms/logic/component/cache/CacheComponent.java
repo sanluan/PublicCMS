@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractCachingViewResolver;
 
 import com.publiccms.common.api.Cache;
+import com.publiccms.logic.service.tools.HqlService;
 
 /**
  *
@@ -20,6 +21,8 @@ import com.publiccms.common.api.Cache;
 public class CacheComponent {
     @Autowired
     private List<Cache> cacheableList;
+    @Autowired
+    private HqlService hqlService;
     private List<AbstractCachingViewResolver> cachingViewResolverList = new ArrayList<>();
 
     /**
@@ -31,6 +34,7 @@ public class CacheComponent {
             cache.clear();
         }
         clearViewCache();
+        hqlService.clear();
     }
     
     /**
