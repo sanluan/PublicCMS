@@ -1,12 +1,20 @@
-<#if parentId?has_content>
-    <@_content id=parentId>
-        <#assign parent=object/>
-    </@_content>
-</#if>
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild disabled=true
-            modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
+            modelId=modelId parentId=parentId title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<#macro modelList parentId=''>
+<@_modelList parentId=parentId>
+    <#list page.list as a>
+        <label style="width:auto">
+            <input <@t.compare modelId!'' a.id?string 'checked="checked"'/> name="modelId" value="${a.id}" type="checkbox"/>
+            ${(a.name)!}
+        </label>
+        <#if a.hasChild>
+            <@modelList a.id/>
+        </#if>
+    </#list>
+</@_modelList>
+</#macro>
 <div class="pageHeader">
     <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -30,7 +38,7 @@
                 </li>
                 <li style="width:auto">
                     <label><@t.page 'model'/>:</label>
-                    <#include "../include_page/modelId.html"/>
+                    <@modelList/>
                 </li>
             </ul>
             <div class="subBar">
@@ -47,10 +55,6 @@
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-        <#if parent?has_content>
-            <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
-            <li class="line">line</li>
-        </#if>
         <#if authorizedMap['cmsContent/recycle']>
             <li><a href="cmsContent/recycle.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_recycle'/>" target="selectedTodo" rel="ids"><i class="icon-reply-all icon-large"></i> <@t.page 'button.batch_recycle'/></a></li>
         </#if>
@@ -115,9 +119,6 @@
                     <#if 1=a.status>/ ${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
                 <td>
-                    <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsRecycleContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsRecycleContent/list"><@t.page 'content.child'/></a>|
-                    </#if>
                     <#if authorizedMap['cmsContent/recycle']>
                         <a href="cmsContent/recycle.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.recycle'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.recycle'/></a>|
                     </#if>
