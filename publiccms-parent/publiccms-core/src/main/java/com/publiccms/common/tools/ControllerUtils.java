@@ -44,7 +44,7 @@ public class ControllerUtils {
     public static boolean isUnSafeUrl(String url, SysSite site, String safeReturnUrl, HttpServletRequest request) {
         if (CommonUtils.empty(url)) {
             return true;
-        } else if (0 < url.indexOf("://") || url.startsWith("//")) {
+        } else if (url.contains("://") || url.startsWith("//")) {
             if (url.startsWith("//")) {
                 url = new StringBuilder(request.getScheme()).append(":").append(url).toString();
             }

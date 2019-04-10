@@ -4,6 +4,7 @@ package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -12,8 +13,10 @@ import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
@@ -49,6 +52,18 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                         handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"),
                         handler.getDate("startPublishDate"), currentDate, currentDate, handler.getString("orderField"), pageIndex,
                         count);
+                @SuppressWarnings("unchecked")
+                List<CmsContent> list = (List<CmsContent>) page.getList();
+                if (null != list) {
+                    list.forEach(e -> {
+                        Integer clicks = statisticsComponent.getContentClicks(e.getId());
+                        if (null != clicks) {
+                            e.setClicks(e.getClicks() + clicks);
+                        }
+                        templateComponent.initContentUrl(site, e);
+                        templateComponent.initContentCover(site, e);
+                    });
+                }
             } catch (Exception e) {
                 page = new PageHandler(pageIndex, count, 0, null);
             }
@@ -58,6 +73,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
 
     @Autowired
     private StatisticsComponent statisticsComponent;
+    @Autowired
+    private TemplateComponent templateComponent;
     @Autowired
     private CmsContentService service;
 

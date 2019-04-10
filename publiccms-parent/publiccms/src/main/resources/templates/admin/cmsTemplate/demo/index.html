@@ -23,7 +23,7 @@
         <article>
             <h3><a href="${a.url!}" target="_blank">${a.title}</a></h3>
             <p>
-                <#if a.cover?has_content><img src="${site.sitePath+a.cover}" alt="${a.title}"/></#if>
+                <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
                 ${a.description!}
             </p>
         </article>

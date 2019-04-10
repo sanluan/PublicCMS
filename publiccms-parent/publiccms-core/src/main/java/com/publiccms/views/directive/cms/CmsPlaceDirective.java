@@ -18,6 +18,8 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 
@@ -49,8 +51,16 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsPlace> entityList = service.getEntitys(ids);
-                Map<String, CmsPlace> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId()).collect(Collectors.toMap(k -> k.getId().toString(),
-                        Function.identity(), CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
+                entityList.forEach(e -> {
+                    Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
+                    if (null != clicks) {
+                        e.setClicks(e.getClicks() + clicks);
+                    }
+                    templateComponent.initPlaceCover(site, e);
+                });
+                Map<String, CmsPlace> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toMap(k -> k.getId().toString(), Function.identity(),
+                                CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
                 handler.put("map", map).render();
             }
         }
@@ -60,4 +70,8 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
     private CmsPlaceService service;
     @Autowired
     private CmsPlaceAttributeService attributeService;
+    @Autowired
+    private TemplateComponent templateComponent;
+    @Autowired
+    private StatisticsComponent statisticsComponent;
 }

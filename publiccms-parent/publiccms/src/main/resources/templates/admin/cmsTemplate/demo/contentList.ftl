@@ -5,7 +5,7 @@
             "url":"${a.url!}",
             "description":"${(a.description?json_string)!}",
             "publishDate":"${a.publishDate}",
-            "cover":"${a.cover?has_content?then(site.sitePath+a.cover,'')}"
+            "cover":"${a.cover?has_content?then(a.cover,'')}"
         }<#sep>,
     </#list>
 </@_contentList>]

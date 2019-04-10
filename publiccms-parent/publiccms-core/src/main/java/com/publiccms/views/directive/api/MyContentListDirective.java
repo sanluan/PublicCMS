@@ -8,8 +8,10 @@ import java.util.List;
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysApp;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
@@ -29,8 +31,9 @@ public class MyContentListDirective extends AbstractAppDirective {
 
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+        SysSite site = getSite(handler);
         PageHandler page = service.getPage(
-                new CmsContentQuery(getSite(handler).getId(), handler.getIntegerArray("status"), handler.getInteger("categoryId"),
+                new CmsContentQuery(site.getId(), handler.getIntegerArray("status"), handler.getInteger("categoryId"),
                         handler.getIntegerArray("categoryIds"), false, handler.getStringArray("modelIds"),
                         handler.getLong("parentId"), handler.getBoolean("emptyParent"), handler.getLong("quoteId"),
                         handler.getBoolean("quote"), handler.getBoolean("onlyUrl"), handler.getBoolean("hasImages"),
@@ -45,12 +48,16 @@ public class MyContentListDirective extends AbstractAppDirective {
             if (null != clicks) {
                 e.setClicks(e.getClicks() + clicks);
             }
+            templateComponent.initContentUrl(site, e);
+            templateComponent.initContentCover(site, e);
         });
         handler.put("page", page);
     }
 
     @Autowired
     private CmsContentService service;
+    @Autowired
+    private TemplateComponent templateComponent;
     @Autowired
     private StatisticsComponent statisticsComponent;
 

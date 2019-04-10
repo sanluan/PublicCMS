@@ -19,6 +19,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
 
@@ -41,6 +42,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 if (null != clicks) {
                     entity.setClicks(entity.getClicks() + clicks);
                 }
+                templateComponent.initContentUrl(site, entity);
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
                     CmsContentAttribute attribute = attributeService.getEntity(id);
@@ -64,6 +66,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     if (null != clicks) {
                         e.setClicks(e.getClicks() + clicks);
                     }
+                    templateComponent.initContentUrl(site, e);
+                    templateComponent.initContentCover(site, e);
                 });
                 Map<String, CmsContent> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toMap(k -> k.getId().toString(), Function.identity(),
@@ -75,6 +79,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentService service;
+    @Autowired
+    private TemplateComponent templateComponent;
     @Autowired
     private CmsContentAttributeService attributeService;
     @Autowired

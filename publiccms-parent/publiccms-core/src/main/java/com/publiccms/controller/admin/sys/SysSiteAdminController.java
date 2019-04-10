@@ -205,7 +205,7 @@ public class SysSiteAdminController {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (-1 < sql.indexOf(CommonConstants.BLANK_SPACE)) {
+        if (sql.contains(CommonConstants.BLANK_SPACE)) {
             String type = sql.substring(0, sql.indexOf(CommonConstants.BLANK_SPACE));
             try {
                 if ("update".equalsIgnoreCase(type)) {

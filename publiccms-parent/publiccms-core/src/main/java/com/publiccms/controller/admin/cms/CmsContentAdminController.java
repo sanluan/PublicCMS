@@ -28,6 +28,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -694,6 +695,13 @@ public class CmsContentAdminController {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.delete(site.getId(), admin, ids)) {
                 categoryIdSet.add(entity.getCategoryId());
+                if (entity.isHasStatic()) {
+                    String filePath = siteComponent.getWebFilePath(site, entity.getUrl());
+                    if (CmsFileUtils.exists(filePath)) {
+                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filePath);
+                        CmsFileUtils.moveFile(filePath, backupFilePath);
+                    }
+                }
             }
             if (!categoryIdSet.isEmpty()) {
                 Integer[] categoryIds = categoryIdSet.toArray(new Integer[categoryIdSet.size()]);
@@ -721,15 +729,10 @@ public class CmsContentAdminController {
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
             Set<Integer> categoryIdSet = new HashSet<>();
-            for (CmsContent entity : service.getEntitys(ids)) {
-                if (entity.isDisabled() && site.getId() == entity.getSiteId()) {
-                    if (CommonUtils.notEmpty(entity.getParentId())) {
-                        service.updateChilds(entity.getParentId(), 1);
-                    }
-                    categoryIdSet.add(entity.getCategoryId());
-                }
+            for (CmsContent entity : service.recycle(site.getId(), ids)) {
+                categoryIdSet.add(entity.getCategoryId());
+                templateComponent.createContentFile(site, entity, null, null);
             }
-            service.recycle(site.getId(), ids);
             if (!categoryIdSet.isEmpty()) {
                 Integer[] categoryIds = categoryIdSet.toArray(new Integer[categoryIdSet.size()]);
                 for (CmsCategory entity : categoryService.getEntitys(categoryIds)) {

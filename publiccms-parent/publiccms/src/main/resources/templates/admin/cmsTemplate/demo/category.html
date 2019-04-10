@@ -31,7 +31,7 @@
         <section>
             <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
             <p>
-                <#if a.cover?has_content><img src="${site.sitePath+a.cover}" alt="${a.title}"/></#if>
+                <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
                 ${a.description!}
             </p>
         </section>

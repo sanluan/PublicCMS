@@ -69,7 +69,7 @@ public class PlaceController {
      * @param site
      * @param entity
      * @param returnUrl
-     * @param _csrf 
+     * @param _csrf
      * @param placeParameters
      * @param request
      * @param session
@@ -77,7 +77,6 @@ public class PlaceController {
      * @return view name
      */
     @RequestMapping(value = "save")
-    
     public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl, String _csrf,
             @ModelAttribute ExtendDataParameters placeParameters, HttpServletRequest request, HttpSession session,
             ModelMap model) {
@@ -236,6 +235,16 @@ public class PlaceController {
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
+    }
+
+    /**
+     * @param site
+     * @param id
+     * @param request
+     */
+    @RequestMapping("counter")
+    public void count(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+        statisticsComponent.placeClicks(id);
     }
 
     /**

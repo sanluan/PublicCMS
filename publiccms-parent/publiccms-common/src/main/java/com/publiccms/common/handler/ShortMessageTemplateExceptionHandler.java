@@ -23,7 +23,7 @@ public class ShortMessageTemplateExceptionHandler implements TemplateExceptionHa
             throws TemplateException {
         try {
             String code = templateexception.getFTLInstructionStack();
-            if (null != code && 0 < code.indexOf("Failed at: ") && 0 < code.indexOf("  [")) {
+            if (null != code && code.contains("Failed at: ") && code.contains("  [")) {
                 writer.write("error:" + code.substring(code.indexOf("Failed at: ") + 11, code.indexOf("  [")));
             } else {
                 writer.write("[some errors occurred!]");

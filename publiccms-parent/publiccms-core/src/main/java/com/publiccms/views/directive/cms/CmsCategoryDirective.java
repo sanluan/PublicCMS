@@ -18,6 +18,7 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 
@@ -42,6 +43,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 entity = service.getEntityByCode(site.getId(), code);
             }
             if (null != entity && site.getId() == entity.getSiteId()) {
+                templateComponent.initCategoryUrl(site, entity);
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
                     CmsCategoryAttribute attribute = attributeService.getEntity(id);
@@ -59,6 +61,9 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
+                entityList.forEach(e -> {
+                    templateComponent.initCategoryUrl(site, e);
+                });
                 Map<String, CmsCategory> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toMap(k -> k.getId().toString(), Function.identity(),
                                 CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
@@ -69,6 +74,8 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsCategoryService service;
+    @Autowired
+    private TemplateComponent templateComponent;
     @Autowired
     private CmsCategoryAttributeService attributeService;
 }

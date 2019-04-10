@@ -212,6 +212,19 @@ public class StatisticsComponent implements Cache {
         }
         return null;
     }
+    /**
+     * @param id
+     * @return content clicks
+     */
+    public Integer getPlaceClicks(Long id) {
+        if (CommonUtils.notEmpty(id)) {
+            ClickStatistics clickStatistics = placeCache.get(id);
+            if (null != clickStatistics) {
+                return clickStatistics.getClicks();
+            }
+        }
+        return null;
+    }
 
     @Override
     public void clear() {

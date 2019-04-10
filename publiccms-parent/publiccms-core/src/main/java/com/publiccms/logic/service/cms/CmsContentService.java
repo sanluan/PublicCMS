@@ -482,18 +482,14 @@ public class CmsContentService extends BaseService<CmsContent> {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()
                     && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
-                if (0 < entity.getChilds()) {
-                    for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null), null, null,
-                            null, null, null).getList()) {
-                        child.setDisabled(true);
-                        entity.setChilds(entity.getChilds() - 1);
-                    }
+                if (null == entity.getParentId()) {
                     for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
                             null, null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null,
                             null, null, null).getList()) {
                         quote.setDisabled(true);
                     }
+                } else {
+                    updateChilds(entity.getParentId(), -1);
                 }
                 entity.setDisabled(true);
                 entityList.add(entity);
@@ -526,58 +522,29 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param ids
+     * @return
      */
-    @SuppressWarnings("unchecked")
-    public void recycle(short siteId, Serializable[] ids) {
+    public List<CmsContent> recycle(short siteId, Serializable[] ids) {
+        List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
-                if (0 < entity.getChilds()) {
-                    for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null), false, null,
-                            null, null, null).getList()) {
-                        child.setDisabled(false);
-                        if (0 < entity.getChilds()) {
-                            recycle(siteId, ids);
-                        }
-                    }
-                    if (null == entity.getParentId()) {
-                        for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null,
-                                null, null, null, entity.getId(), null, null, null, null, null, null, null, null, null, null),
-                                null, null, null, null, null).getList()) {
-                            quote.setDisabled(false);
-                        }
-                    }
-                }
                 entity.setDisabled(false);
+                entityList.add(entity);
+                if (null != entity.getParentId()) {
+                    updateChilds(entity.getParentId(), 1);
+                }
             }
         }
+        return entityList;
     }
 
     /**
      * @param siteId
      * @param ids
      */
-    @SuppressWarnings("unchecked")
     public void realDelete(Short siteId, Long[] ids) {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
-                if (0 < entity.getChilds()) {
-                    for (CmsContent child : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            entity.getId(), null, null, null, null, null, null, null, null, null, null, null, null), false, null,
-                            null, null, null).getList()) {
-                        child.setParentId(null);
-                        if (0 < entity.getChilds()) {
-                            realDelete(siteId, ids);
-                        }
-                    }
-                    if (null == entity.getParentId()) {
-                        for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null,
-                                null, null, null, entity.getId(), null, null, null, null, null, null, null, null, null, null),
-                                null, null, null, null, null).getList()) {
-                            delete(quote.getId());
-                        }
-                    }
-                }
                 delete(entity.getId());
             }
         }

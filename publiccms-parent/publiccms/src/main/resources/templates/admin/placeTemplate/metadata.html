@@ -168,7 +168,7 @@ checkPageSize();
         <li>
             <figure>
                 <!-- ${a.itemType!} : ${a.itemId!} ,place/redirect.do:count and 301 jump to a.url,place/click.do:count and 302 jump to a.url-->
-                <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${site.sitePath+a.cover!}"></a>
+                <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${a.cover!}"></a>
                 <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
                 </#noparse><@t.page 'extend_field'/>:<#noparse><#assign attribute=getPlaceAttribute(a.id)/>
             </figure>

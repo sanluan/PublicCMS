@@ -155,6 +155,16 @@ public class ContentController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
     }
+    
+    /**
+     * @param site
+     * @param id
+     * @param request
+     */
+    @RequestMapping("counter")
+    public void count(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+        statisticsComponent.contentClicks(id);
+    }
 
     /**
      * 内容链接重定向并计数
