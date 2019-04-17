@@ -44,12 +44,9 @@ server {
         #<@t.page 'server_config.proxy'/>
         #proxy_pass http://cms/publiccms/;
         #proxy_cookie_path /publiccms/ /;
+        #rewrite /publiccms/(.*)$ /$1 last;
     }
 
-    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
-        alias   ${rootPath}/web/site_${siteId}/webfile/;
-        index  index.html;
-    }
         <#if a.useSsi>
     location /include/ {
         alias ${rootPath}/web/site_${siteId}/include/;
@@ -59,6 +56,11 @@ server {
     #${a.name} <@t.page 'server_config.static'/>
     location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
         alias   ${rootPath}/web/site_${siteId}/;
+        index  index.html;
+    }
+        <#else>
+    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
+        alias   ${rootPath}/web/site_${siteId}/webfile/;
         index  index.html;
     }
         </#if>
