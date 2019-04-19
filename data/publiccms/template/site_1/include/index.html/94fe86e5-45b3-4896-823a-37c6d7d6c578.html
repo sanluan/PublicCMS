@@ -1,10 +1,8 @@
-<style>
-#index-focus{ margin-top:30px;}
-#index-focus .owl-item img{ display:block;width:100%;height:auto;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}
-#index-focus .owl-item .item{ padding:5px;}
-</style>
-<div id="index-focus" class="owl-carousel owl-theme">
-  <#list page.list as a>
-    <div class="item"><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img class="lazyOwl" data-src="${a.cover}" alt="${a.title!}"></a></div>
-  </#list>
+<div id="index-focus" class="swiper-container">
+	<div class="swiper-wrapper">
+		<#list page.list as a>
+		<div class="swiper-slide"><a href="${site.dynamicPath}place/click.do?id=${a.id!}" target="_blank"><img <#if a?is_first>src="${site.sitePath+a.cover}"<#else>data-src="${site.sitePath+a.cover}" class="swiper-lazy"</#if> alt="${a.title!}"></a></div>
+		</#list>
+	</div>
+	<div class="swiper-pagination swiper-pagination-white"></div>
 </div>

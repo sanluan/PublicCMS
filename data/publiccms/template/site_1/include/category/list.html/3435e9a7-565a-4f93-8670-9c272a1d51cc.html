@@ -1,33 +1,18 @@
 <#list page.list>
-<style>
-#right-images .owl-item img{
-  display: block;
-  width: 100%;
-  height: auto;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  border-radius: 3px;
-}
-#right-images .owl-item .item h4{
-  border: 1px solid #000;
-  background: rgba(255,255,255,0.7);
-  position: absolute;
-  top: 0px;
-  right:0px;
-  padding:2px 5px;
-}
-</style>
 <div>
 	<h3>精彩图集</h3>
-	<div id="right-images" class="owl-carousel owl-theme">
-<#items as a>
-		<div class="item">
-			<a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">
-				<img class="lazyOwl" data-src="${site.sitePath}<@_thumb path=a.cover width=400 height=450/>" alt="${a.title!}">
-				<h4>${a.title}</h4>
-			</a>
+	<div id="right-images" class="swiper-container">
+		<div class="swiper-wrapper">
+			<#items as a>
+			<div class="swiper-slide">
+				<a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">
+					<img <#if a?is_first>src="${site.sitePath}<@_thumb path=a.cover width=400 height=450/>"<#else>data-src="${site.sitePath}<@_thumb path=a.cover width=400 height=450/>" class="swiper-lazy"</#if> alt="${a.title!}"/>
+					<h4>${a.title}</h4>
+				</a>
+			</div>
+			</#items>
 		</div>
-</#items>
+		<div class="swiper-pagination"></div>
 	</div>
 </div>
 </#list>
