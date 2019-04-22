@@ -127,7 +127,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, Long[] tagIds,
+    public FacetPageHandler facetQuery(Short siteId, Integer[] categoryIds, String[] modelIds, String text, Long[] tagIds,
             String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
             Integer pageIndex, Integer pageSize) {
         return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),

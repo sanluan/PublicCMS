@@ -1,14 +1,10 @@
 package com.publiccms.logic.dao.cms;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
 
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Sort;
@@ -125,7 +121,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, String tagIds,
+    public FacetPageHandler facetQuery(Short siteId, Integer[] categoryIds, String[] modelIds, String text, String tagIds,
             String dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
             Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
@@ -147,19 +143,28 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null != expiryDate) {
             termination.must(queryBuilder.range().onField("expiryDate").from(1L).to(expiryDate.getTime()).createQuery()).not();
         }
-        Map<String, List<String>> valueMap = new LinkedHashMap<>();
         if (CommonUtils.notEmpty(categoryIds)) {
-            valueMap.put("categoryId", Arrays.asList(categoryIds));
+            @SuppressWarnings("rawtypes")
+            BooleanJunction<BooleanJunction> tempJunction = queryBuilder.bool();
+            for (Integer categoryId : categoryIds) {
+                tempJunction.should(new TermQuery(new Term("categoryId", categoryId.toString())));
+            }
+            termination.must(tempJunction.createQuery());
         }
         if (CommonUtils.notEmpty(modelIds)) {
-            valueMap.put("modelId", Arrays.asList(modelIds));
+            @SuppressWarnings("rawtypes")
+            BooleanJunction<BooleanJunction> tempJunction = queryBuilder.bool();
+            for (String modelId : modelIds) {
+                tempJunction.should(new TermQuery(new Term("modelId", modelId)));
+            }
+            termination.must(tempJunction.createQuery());
         }
         FullTextQuery query = getFullTextQuery(termination.createQuery());
         if ("publishDate".equals(orderField)) {
             Sort sort = new Sort(new SortField("publishDate", SortField.Type.LONG, true));
             query.setSort(sort);
         }
-        return getFacetPage(queryBuilder, query, facetFields, valueMap, 10, pageIndex, pageSize);
+        return getFacetPage(queryBuilder, query, facetFields, 10, pageIndex, pageSize);
     }
 
     /**

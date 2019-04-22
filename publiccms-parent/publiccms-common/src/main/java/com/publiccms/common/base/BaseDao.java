@@ -2,26 +2,23 @@ package com.publiccms.common.base;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Future;
+import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.ObjectNotFoundException;
-import org.hibernate.query.Query;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.search.jpa.FullTextQuery;
+import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
+import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.engine.spi.FacetManager;
 import org.hibernate.search.query.facet.Facet;
@@ -29,6 +26,7 @@ import org.hibernate.search.query.facet.FacetSortOrder;
 import org.hibernate.search.query.facet.FacetingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
@@ -402,8 +400,8 @@ public abstract class BaseDao<E> {
      * @return facet results page
      */
     protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery, String[] facetFields,
-            Map<String, List<String>> valueMap, int facetCount, Integer pageIndex, Integer pageSize) {
-        return getFacetPage(queryBuilder, fullTextQuery, facetFields, valueMap, facetCount, pageIndex, pageSize, 100);
+            int facetCount, Integer pageIndex, Integer pageSize) {
+        return getFacetPage(queryBuilder, fullTextQuery, facetFields, facetCount, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
@@ -416,7 +414,7 @@ public abstract class BaseDao<E> {
      * @return facet results page
      */
     protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery, String[] facetFields,
-            Map<String, List<String>> valueMap, int facetCount, Integer pageIndex, Integer pageSize, Integer maxResults) {
+            int facetCount, Integer pageIndex, Integer pageSize, Integer maxResults) {
         FacetManager facetManager = fullTextQuery.getFacetManager();
         for (String facetField : facetFields) {
             FacetingRequest facetingRequest = queryBuilder.facet().name(facetField + FACET_NAME_SUFFIX).onField(facetField)
@@ -426,34 +424,12 @@ public abstract class BaseDao<E> {
         }
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
         if (0 < page.getTotalCount()) {
-            Set<String> facetSet = new LinkedHashSet<>();
-            facetSet.addAll(valueMap.keySet());
-            facetSet.addAll(Arrays.asList(facetFields));
-            for (String facetField : facetSet) {
-                String facetingName = facetField + FACET_NAME_SUFFIX;
-                List<Facet> facets = facetManager.getFacets(facetingName);
-                Map<String, Integer> facetMap = new LinkedHashMap<>();
-                List<String> valueList = valueMap.get(facetField);
-                if (null != valueList) {
-                    List<Facet> facetList = new ArrayList<>();
-                    for (Facet facet : facets) {
-                        facetMap.put(facet.getValue(), facet.getCount());
-                        if (valueList.contains(facet.getValue())) {
-                            facetList.add(facet);
-                        }
-                    }
-                    if (!facetList.isEmpty()) {
-                        facetManager.getFacetGroup(facetingName).selectFacets(facetList.toArray(new Facet[facetList.size()]));
-                    }
-                } else {
-                    for (Facet facet : facets) {
-                        facetMap.put(facet.getValue(), facet.getCount());
-                    }
-                }
+            for (String facetField : facetFields) {
+                List<Facet> facets = facetManager.getFacets(facetField + FACET_NAME_SUFFIX);
+                Map<String, Integer> facetMap = facets.stream().collect(Collectors.toMap(facet -> facet.getValue(),
+                        facet -> facet.getCount(), Constants.defaultMegerFunction(), LinkedHashMap::new));
                 page.getFacetMap().put(facetField, facetMap);
             }
-            page.setTotalCount(fullTextQuery.getResultSize(), maxResults);
-            page.init();
         }
         if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());

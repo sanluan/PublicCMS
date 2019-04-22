@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.FacetPageHandler;
-import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
@@ -43,12 +42,12 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
                     statisticsComponent.searchTag(tagId);
                 }
             }
-            PageHandler page;
+            FacetPageHandler page;
             Integer pageIndex = handler.getInteger("pageIndex", 1);
             Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
             Date currentDate = CommonUtils.getMinuteDate();
             try {
-                page = service.facetQuery(site.getId(), handler.getStringArray("categoryId"), handler.getStringArray("modelId"),
+                page = service.facetQuery(site.getId(), handler.getIntegerArray("categoryId"), handler.getStringArray("modelId"),
                         word, tagIds, dictionaryValues, handler.getDate("startPublishDate"),
                         handler.getDate("endPublishDate", currentDate), currentDate, handler.getString("orderField"), pageIndex,
                         count);
