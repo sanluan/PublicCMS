@@ -1,17 +1,7 @@
-<script>
-    var imagesSuffix = ["png", "gif", "jpg", "jpeg", "bmp"];
-    var videosSuffix = ["ogg", "webm", "mpeg", "mpg", "mov", "rm", "ram", "avi", "wmv", "mp4"];
-
-    function checkFileType() {
-        return true;
-    }
-</script>
-
 <!--onsubmit="return iframeCallback(this, $.bringBack)"-->
 <form action="cmsImport/upload" id="registSubmit" method="post" enctype="multipart/form-data"
       class="pageForm required-validate">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <!--<div class="pageFormContent" layoutH="50" style="height:80px">-->
     <div class="pageFormContent" layouth="50" id="pageFormContent">
         <dl class="nowrap">
             <dt><@t.page 'file'/>:</dt>
@@ -45,21 +35,8 @@
             </li>
         </ul>
     </div>
-
 </form>
-
 <script>
-
-    // $(function(){
-    //     $('#pageFormContent').css("height","80px");
-    //     $('#pageFormContent').css("overflow","auto");
-    // });
-    //
-    // window.onload = function(){
-    //     $('#pageFormContent').css("height","80px");
-    //     $('#pageFormContent').css("overflow","auto");
-    // }
-
     $('#registSubmit').on('submit', function () {
         registPost();
         event.preventDefault() //阻止form表单默认提交
@@ -69,7 +46,6 @@
         $('#registSubmit').ajaxSubmit(function (message) {
             console.log(message);
             $('#txtMsg').html(message.msg + "\n" + message.results);
-
         })
     }
 

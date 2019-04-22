@@ -77,6 +77,8 @@ public class LogUpload implements java.io.Serializable {
         this.originalName = originalName;
         this.fileType = fileType;
         this.fileSize = fileSize;
+        this.width = width;
+        this.height = height;
         this.ip = ip;
         this.createDate = createDate;
         this.filePath = filePath;

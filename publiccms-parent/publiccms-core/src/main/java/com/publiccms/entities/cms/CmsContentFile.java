@@ -67,6 +67,8 @@ public class CmsContentFile implements java.io.Serializable {
         this.filePath = filePath;
         this.fileType = fileType;
         this.fileSize = fileSize;
+        this.width = width;
+        this.height = height;
         this.clicks = clicks;
         this.sort = sort;
         this.description = description;
