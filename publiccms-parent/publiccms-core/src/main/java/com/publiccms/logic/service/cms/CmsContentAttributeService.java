@@ -4,10 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.publiccms.entities.cms.CmsContentAttribute;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
+import com.publiccms.logic.dao.cms.CmsContentAttributeDao;
 
 /**
  *
@@ -27,7 +30,14 @@ public class CmsContentAttributeService extends BaseService<CmsContentAttribute>
     public List<CmsContentAttribute> getEntitysWithoutText(Serializable[] ids) {
         return dao.getEntitys(ids);
     }
-    
+
+    @Autowired
+    private CmsContentAttributeDao cmsContentAttributeDao;
+
+    public CmsContentAttribute findByEntity(CmsContentAttribute cmsContentAttribute){
+        return cmsContentAttributeDao.findByEntity(cmsContentAttribute);
+    }
+
     /**
      * @param contentId
      * @param entity

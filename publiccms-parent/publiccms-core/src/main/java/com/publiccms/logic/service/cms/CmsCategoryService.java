@@ -268,7 +268,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             entity.setHasStatic(hasStatic);
         }
     }
-
+    public CmsCategory findByEntity(CmsCategory cmsCategory){
+        return dao.findByEntity(cmsCategory);
+    }
     @Autowired
     private CmsCategoryDao dao;
 }
