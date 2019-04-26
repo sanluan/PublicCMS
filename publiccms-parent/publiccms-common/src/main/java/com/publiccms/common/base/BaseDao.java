@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.LockMode;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
@@ -119,10 +119,21 @@ public abstract class BaseDao<E> {
      * 获取实体
      * 
      * @param id
+     * @param lockMode
+     * @return entity
+     */
+    public E getEntity(Serializable id, LockMode lockMode) {
+        return null == id ? null : getSession().get(getEntityClass(), id, lockMode);
+    }
+
+    /**
+     * 获取实体
+     * 
+     * @param id
      * @return entity
      */
     public E getEntity(Serializable id) {
-        return null != id ? (E) getSession().get(getEntityClass(), id) : null;
+        return null == id ? null : getSession().get(getEntityClass(), id);
     }
 
     /**
@@ -133,9 +144,13 @@ public abstract class BaseDao<E> {
      * @return entity
      */
     public E getEntity(Serializable id, String primaryKeyName) {
-        QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-        queryHandler.condition("bean." + primaryKeyName).append("= :id").setParameter("id", id);
-        return getEntity(queryHandler);
+        if (null == id) {
+            return null;
+        } else {
+            QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
+            queryHandler.condition("bean." + primaryKeyName).append("= :id").setParameter("id", id);
+            return getEntity(queryHandler);
+        }
     }
 
     /**
@@ -155,12 +170,12 @@ public abstract class BaseDao<E> {
      * @param pk
      * @return entity list
      */
-    @SuppressWarnings("unchecked")
     public List<E> getEntitys(Serializable[] ids, String pk) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
             queryHandler.condition("bean." + pk).append("in (:ids)").setParameter("ids", ids);
-            return (List<E>) getList(queryHandler);
+            Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+            return getList(query, queryHandler);
         }
         return Collections.emptyList();
     }
@@ -173,6 +188,20 @@ public abstract class BaseDao<E> {
      */
     public Serializable save(E entity) {
         return getSession().save(init(entity));
+    }
+
+    /**
+     * 删除
+     * 
+     * Delete
+     * 
+     * @param entity
+     * 
+     */
+    public void delete(E entity) {
+        if (null != entity) {
+            getSession().delete(entity);
+        }
     }
 
     /**
@@ -195,12 +224,13 @@ public abstract class BaseDao<E> {
      * @param queryHandler
      * @return entity
      */
-    @SuppressWarnings("unchecked")
     protected E getEntity(QueryHandler queryHandler) {
+        Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+        queryHandler.initQuery(query);
         try {
-            return (E) getQuery(queryHandler).uniqueResult();
+            return query.uniqueResult();
         } catch (Exception e) {
-            return (E) getQuery(queryHandler).list().get(0);
+            return query.list().get(0);
         }
     }
 
@@ -211,7 +241,9 @@ public abstract class BaseDao<E> {
      * @return number of data affected
      */
     protected int update(QueryHandler queryHandler) {
-        return getQuery(queryHandler).executeUpdate();
+        Query<?> query = getSession().createQuery(queryHandler.getSql());
+        queryHandler.initQuery(query);
+        return query.executeUpdate();
     }
 
     /**
@@ -230,12 +262,35 @@ public abstract class BaseDao<E> {
      * @param query
      * @return results list
      */
-    protected List<?> getList(QueryHandler queryHandler) {
+    protected <T> List<T> getList(Query<T> query, QueryHandler queryHandler) {
+        queryHandler.initQuery(query);
         try {
-            return getQuery(queryHandler).list();
+            return query.list();
         } catch (ObjectNotFoundException e) {
-            return getQuery(queryHandler).setCacheable(false).list();
+            return query.setCacheable(false).list();
         }
+    }
+
+    /**
+     * 获取列表
+     * 
+     * @param query
+     * @return results list
+     */
+    protected List<E> getEntityList(QueryHandler queryHandler) {
+        Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
+        return getList(query, queryHandler);
+    }
+
+    /**
+     * 获取列表
+     * 
+     * @param query
+     * @return results list
+     */
+    protected List<?> getList(QueryHandler queryHandler) {
+        Query<?> query = getSession().createQuery(queryHandler.getSql());
+        return getList(query, queryHandler);
     }
 
     /**
@@ -256,9 +311,10 @@ public abstract class BaseDao<E> {
                 page.setList(getList(queryHandler));
             }
         } else {
-            page = new PageHandler(pageIndex, pageSize, 0, maxResults);
             queryHandler.setMaxResults(maxResults);
-            page.setList(getList(queryHandler));
+            List<?> list = getList(queryHandler);
+            page = new PageHandler(pageIndex, pageSize, list.size(), maxResults);
+            page.setList(list);
         }
         return page;
     }
@@ -293,7 +349,8 @@ public abstract class BaseDao<E> {
         if (CommonUtils.empty(countHql)) {
             countHql = queryHandler.getCountSql();
         }
-        List<?> list = queryHandler.getQuery(getSession(), countHql).list();
+        Query<?> query = getSession().createQuery(countHql);
+        List<?> list = queryHandler.initQuery(query).list();
         if (list.isEmpty()) {
             return 0;
         } else {
@@ -311,7 +368,8 @@ public abstract class BaseDao<E> {
      * @return number of data
      */
     protected long count(QueryHandler queryHandler) {
-        List<?> list = getQuery(queryHandler).list();
+        Query<?> query = getSession().createQuery(queryHandler.getSql());
+        List<?> list = queryHandler.initQuery(query).list();
         if (list.isEmpty()) {
             return 0;
         } else {
@@ -322,14 +380,6 @@ public abstract class BaseDao<E> {
                 return result.longValue();
             }
         }
-    }
-
-    private Query<?> getQuery(QueryHandler queryHandler) {
-        return queryHandler.getQuery(getSession());
-    }
-
-    protected NativeQuery<?> getSqlQuery(String sql) {
-        return getSession().createSQLQuery(sql);
     }
 
     /**
@@ -456,13 +506,16 @@ public abstract class BaseDao<E> {
                 }
                 page.getFacetMap().put(facetField, facetMap);
             }
-            page.setTotalCount(fullTextQuery.getResultSize(), maxResults);
+            page.setTotalCount(FacetPageHandler.getTotalCount(fullTextQuery.getResultSize(), maxResults));
             page.init();
         }
         if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
-        page.setList(fullTextQuery.getResultList());
+        List<?> list = fullTextQuery.getResultList();
+        page.setTotalCount(list.size());
+        page.init();
+        page.setList(list);
         return page;
     }
 
@@ -471,7 +524,7 @@ public abstract class BaseDao<E> {
     }
 
     protected FullTextSession getFullTextSession() {
-        return Search.getFullTextSession(getSession());
+        return Search.getFullTextSession(sessionFactory.getCurrentSession());
     }
 
     @SuppressWarnings("unchecked")

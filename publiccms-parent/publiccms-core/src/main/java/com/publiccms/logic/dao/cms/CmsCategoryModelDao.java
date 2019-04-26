@@ -1,9 +1,10 @@
 package com.publiccms.logic.dao.cms;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
-import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategoryModel;
@@ -19,9 +20,9 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
     /**
      * @param modelId
      * @param categoryId
-     * @return results page
+     * @return results list
      */
-    public PageHandler getPage(String modelId, Integer categoryId) {
+    public List<CmsCategoryModel> getList(String modelId, Integer categoryId) {
         QueryHandler queryHandler = getQueryHandler("from CmsCategoryModel bean");
         if (CommonUtils.notEmpty(modelId)) {
             queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);
@@ -30,9 +31,19 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
             queryHandler.condition("bean.id.categoryId = :categoryId").setParameter("categoryId", categoryId);
         }
         queryHandler.order("bean.id desc");
-        PageHandler page = new PageHandler(1, null, 0, null);
-        page.setList(getList(queryHandler));
-        return page;
+        return getEntityList(queryHandler);
+    }
+
+    /**
+     * @param modelId
+     * @param categoryId
+     * @return results list
+     */
+    public CmsCategoryModel getEntity(String modelId, int categoryId) {
+        QueryHandler queryHandler = getQueryHandler("from CmsCategoryModel bean");
+        queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);
+        queryHandler.condition("bean.id.categoryId = :categoryId").setParameter("categoryId", categoryId);
+        return getEntity(queryHandler);
     }
 
     @Override

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.hibernate.query.Query;
-import org.hibernate.Session;
 
 import com.publiccms.common.constants.Constants;
 
@@ -55,14 +54,6 @@ public class QueryHandler {
      */
     public QueryHandler() {
         this.sqlBuilder = new StringBuilder();
-    }
-
-    /**
-     * @param session
-     * @return query
-     */
-    public Query<?> getQuery(Session session) {
-        return getQuery(session, getSql());
     }
 
     /**
@@ -173,8 +164,7 @@ public class QueryHandler {
         return this;
     }
 
-    public Query<?> getQuery(Session session, String sql) {
-        Query<?> query = session.createQuery(sql);
+    public <T> Query<T> initQuery(Query<T> query) {
         if (null != map) {
             for (String key : map.keySet()) {
                 query.setParameter(key, map.get(key));
@@ -199,7 +189,7 @@ public class QueryHandler {
         return query;
     }
 
-    private String getSql() {
+    public String getSql() {
         return sqlBuilder.toString();
     }
 

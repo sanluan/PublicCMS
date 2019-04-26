@@ -204,11 +204,11 @@
                             <a href="javascript:;">${(a.name)!}</a>
                             <ul>
                         <@_categoryModelList categoryId=a.id>
-                            <#list page.list as a>
+                            <#list list as a>
                                 <@t.merge 'modelIds' a.id.modelId!/>
                             </#list>
                             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
-                            <#list page.list as a>
+                            <#list list as a>
                                 <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
                             </#list>
                         </@_categoryModelList>

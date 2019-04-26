@@ -220,7 +220,7 @@ function checkCategoryModel(){
 }
 <#if a?has_content>
     <@_categoryModelList categoryId=id!copyId>
-        <#list page.list as a>
+        <#list list as a>
             $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().find('input[type=checkbox]').click();
             $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
         </#list>

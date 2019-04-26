@@ -75,12 +75,10 @@
         <@_modelList parentId=(parent.modelId)!''>
             <#assign size=0/>
             <#list page.list as a>
-                <@_categoryModelList modelId=a.id categoryId=categoryId>
-                    <#if page.totalCount gt 0>
-                        <#assign size++/>
+                <@_categoryModel modelId=a.id categoryId=categoryId>
+                    <#assign size++/>
             <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
-                    </#if>
-                </@_categoryModelList>
+                </@_categoryModel>
                 <#if size gte 5&&a?has_next>
             <li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'content.add_more'/></a></li>
                     <#break>

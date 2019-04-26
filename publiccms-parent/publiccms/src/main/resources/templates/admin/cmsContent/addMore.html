@@ -8,11 +8,9 @@
 <#if categoryId?has_content>
     <@_modelList parentId=(parent.modelId)!''>
         <#list page.list as a>
-            <@_categoryModelList modelId=a.id categoryId=categoryId>
-                <#if page.totalCount gt 0>
+            <@_categoryModel modelId=a.id categoryId=categoryId>
             <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><@t.page 'button.add_some_things' a.name/></a></li>
-                </#if>
-            </@_categoryModelList>
+            </@_categoryModel>
         </#list>
     </@_modelList>
 </#if>

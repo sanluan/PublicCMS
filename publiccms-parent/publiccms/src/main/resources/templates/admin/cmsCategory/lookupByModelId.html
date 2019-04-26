@@ -4,7 +4,7 @@
             <a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:'',parentId:''});return false;"><@t.page 'button.clear_select'/></a>
         </li>
         <@_categoryModelList modelId=modelId>
-            <#list page.list as a>
+            <#list list as a>
                 <#if currentCategoryId?has_content&&a.id.categoryId?string!=currentCategoryId>
                     <@t.merge 'categoryIds' a.id.categoryId!/>
                 </#if>
