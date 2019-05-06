@@ -105,8 +105,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public PageHandler query(boolean projection, Short siteId, String text, Long[] tagIds, String[] dictionaryValues,
             Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds, Date startPublishDate,
             Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
-        return dao.query(projection, siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
-                arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE),
+        return dao.query(projection, siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues,
                 getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, expiryDate,
                 orderField, pageIndex, pageSize);
     }
@@ -131,8 +130,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
             Integer pageIndex, Integer pageSize) {
         return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
-                arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE), startPublishDate, endPublishDate,
-                expiryDate, orderField, pageIndex, pageSize);
+                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
