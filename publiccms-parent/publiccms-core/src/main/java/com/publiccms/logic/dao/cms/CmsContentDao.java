@@ -60,7 +60,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, String dictionaryValues,
+    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, String[] dictionaryValues,
             Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, Date expiryDate,
             String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
@@ -71,7 +71,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
         }
         if (CommonUtils.notEmpty(dictionaryValues)) {
-            termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(dictionaryValues).createQuery());
+            for (String value : dictionaryValues) {
+                termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(value).createQuery());
+            }
         }
         if (null != startPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
@@ -126,7 +128,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @return results page
      */
     public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, String tagIds,
-            String dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
+            String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
             Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
@@ -136,7 +138,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
         }
         if (CommonUtils.notEmpty(dictionaryValues)) {
-            termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(dictionaryValues).createQuery());
+            for (String value : dictionaryValues) {
+                termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(value).createQuery());
+            }
         }
         if (null != startPublishDate) {
             termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
