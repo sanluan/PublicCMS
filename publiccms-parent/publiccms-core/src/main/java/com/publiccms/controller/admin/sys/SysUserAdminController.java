@@ -101,6 +101,7 @@ public class SysUserAdminController {
                 entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
             } else {
                 entity.setPassword(oldEntity.getPassword());
+                entity.setSalt(oldEntity.getSalt());
                 if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
                     entity.setEmailChecked(false);
                 }
