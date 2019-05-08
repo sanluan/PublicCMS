@@ -47,8 +47,8 @@ public class SysUserAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "salt", "lastLoginDate", "lastLoginIp",
-            "loginCount", "disabled" };
+    private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "salt", "password", "lastLoginDate",
+            "lastLoginIp", "loginCount", "disabled" };
 
     /**
      * @param site
@@ -97,14 +97,11 @@ public class SysUserAdminController {
                 if (ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
-                entity.setSalt(UserPasswordUtils.getSalt());
-                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
-            } else {
-                entity.setPassword(oldEntity.getPassword());
-                entity.setSalt(oldEntity.getSalt());
-                if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
-                    entity.setEmailChecked(false);
-                }
+                String salt = UserPasswordUtils.getSalt();
+                service.updatePassword(entity.getId(), UserPasswordUtils.passwordEncode(entity.getPassword(), salt), salt);
+            }
+            if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
+                entity.setEmailChecked(false);
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
