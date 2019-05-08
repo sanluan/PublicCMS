@@ -47,7 +47,7 @@ public class SysUserAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "salt", "lastLoginDate", "lastLoginIp",
+    private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "lastLoginDate", "lastLoginIp",
             "loginCount", "disabled" };
 
     /**
@@ -102,6 +102,7 @@ public class SysUserAdminController {
                 entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
             } else {
                 entity.setPassword(user.getPassword());
+                entity.setSalt(user.getSalt());
                 if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
                     entity.setEmailChecked(false);
                 }
