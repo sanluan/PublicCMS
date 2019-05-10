@@ -1,8 +1,10 @@
 package com.publiccms.common.tools;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
-import static org.apache.commons.lang3.time.DateUtils.*;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import static org.apache.commons.lang3.time.DateUtils.addMinutes;
+import static org.apache.commons.lang3.time.DateUtils.setMilliseconds;
+import static org.apache.commons.lang3.time.DateUtils.setSeconds;
 
 import java.io.File;
 import java.util.Date;
@@ -34,7 +36,7 @@ public class CommonUtils {
      * @return
      */
     public static Date getMinuteDate() {
-        return setSeconds(setMilliseconds(getDate(), 0), 0);
+        return addMinutes(setSeconds(setMilliseconds(getDate(), 0), 0), 1);
     }
 
     /**
