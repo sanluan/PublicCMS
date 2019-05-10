@@ -352,7 +352,7 @@ public class CmsContentAdminController extends AbstractController {
                 } else {
                     categoryService.updateContents(entity.getCategoryId(), -1);
                 }
-                service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
+                entity = service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
                 templateComponent.createContentFile(site, entity, null, categoryModel);
                 return true;
             }
