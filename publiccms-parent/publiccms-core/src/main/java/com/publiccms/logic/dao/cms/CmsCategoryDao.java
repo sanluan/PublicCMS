@@ -63,19 +63,6 @@ public class CmsCategoryDao extends BaseDao<CmsCategory> {
         return getEntity(queryHandler);
     }
 
-    public CmsCategory findByEntity(CmsCategory cmsCategory) {
-        QueryHandler queryHandler = getQueryHandler("from CmsCategory bean");
-        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", cmsCategory.getSiteId());
-        if (cmsCategory.getName() != null) {
-            queryHandler.condition("bean.name = :name").setParameter("name", cmsCategory.getName());
-            queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", false);
-        }
-        if (cmsCategory.getCode() != null) {
-            queryHandler.condition("bean.code = :code").setParameter("code", cmsCategory.getCode());
-        }
-        return getEntity(queryHandler);
-    }
-
     @Override
     protected CmsCategory init(CmsCategory entity) {
         if (CommonUtils.empty(entity.getChildIds())) {

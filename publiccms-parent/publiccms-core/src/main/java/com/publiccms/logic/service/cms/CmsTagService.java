@@ -89,10 +89,6 @@ public class CmsTagService extends BaseService<CmsTag> {
         }
         return idList.toArray(new Long[idList.size()]);
     }
-    @Transactional(readOnly = true)
-    public CmsTag findByTag(CmsTag cmsTag) {
-        return dao.findByTag(cmsTag);
-    }
 
     @Autowired
     private CmsTagDao dao;

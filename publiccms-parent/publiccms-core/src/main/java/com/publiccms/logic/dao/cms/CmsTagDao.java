@@ -59,14 +59,6 @@ public class CmsTagDao extends BaseDao<CmsTag> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
-    public CmsTag findByTag(CmsTag cmsTag) {
-        QueryHandler queryHandler = getQueryHandler("from CmsTag bean");
-        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", cmsTag.getSiteId());
-        if (CommonUtils.notEmpty(cmsTag.getName())) {
-            queryHandler.condition("bean.name = :name").setParameter("name", cmsTag.getName());
-        }
-        return getEntity(queryHandler);
-    }
     @Override
     protected CmsTag init(CmsTag entity) {
         return entity;

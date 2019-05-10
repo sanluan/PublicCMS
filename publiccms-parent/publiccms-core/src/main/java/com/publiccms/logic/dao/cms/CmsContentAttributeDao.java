@@ -47,10 +47,4 @@ public class CmsContentAttributeDao extends BaseDao<CmsContentAttribute> {
         return entity;
     }
 
-    public CmsContentAttribute findByEntity(CmsContentAttribute cmsContentAttribute) {
-        QueryHandler queryHandler = getQueryHandler("from CmsContentAttribute bean");
-        queryHandler.condition("bean.sourceUrl like :sourceUrl").setParameter("sourceUrl",like( cmsContentAttribute.getSourceUrl()));
-        return getEntity(queryHandler);
-    }
-
 }

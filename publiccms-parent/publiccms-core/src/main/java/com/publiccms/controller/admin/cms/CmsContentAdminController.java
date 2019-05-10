@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -581,31 +583,10 @@ public class CmsContentAdminController {
     @Csrf
     public ExcelView export(@RequestAttribute SysSite site, CmsContentQuery queryEntity, String orderField, String orderType,
             HttpServletRequest request, ModelMap model) {
-        ExcelView view = new ExcelView();
         queryEntity.setSiteId(site.getId());
         queryEntity.setDisabled(false);
         queryEntity.setEmptyParent(true);
-        List<String> list = new ArrayList<>();
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
-        Locale locale = request.getLocale();
-        if (null != localeResolver) {
-            locale = localeResolver.resolveLocale(request);
-        }
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.score"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.comments"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.clicks"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.publish_date"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.create_date"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.top_level"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
-        list.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
-        view.getDataList().add(list);
         PageHandler page = service.getPage(queryEntity, null, orderField, orderType, 1, PageHandler.MAX_PAGE_SIZE);
         @SuppressWarnings("unchecked")
         List<CmsContent> entityList = (List<CmsContent>) page.getList();
@@ -650,32 +631,69 @@ public class CmsContentAdminController {
 
         Map<String, CmsModel> modelMap = modelComponent.getMap(site);
         DateFormat dateFormat = DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING);
-        SysUser user;
-        CmsCategory category;
-        CmsModel cmsModel;
-        for (CmsContent entity : entityList) {
-            List<String> cellList = new ArrayList<>();
-            cellList.add(entity.getId().toString());
-            cellList.add(entity.getTitle());
-            cellList.add(entity.getUrl());
-            user = userMap.get(entity.getUserId());
-            cellList.add(null == user ? null : user.getNickName());
-            category = categoryMap.get(entity.getCategoryId());
-            cellList.add(null == category ? null : category.getName());
-            cmsModel = modelMap.get(entity.getModelId());
-            cellList.add(null == cmsModel ? null : cmsModel.getName());
-            cellList.add(String.valueOf(entity.getScores()));
-            cellList.add(String.valueOf(entity.getComments()));
-            cellList.add(String.valueOf(entity.getClicks()));
-            cellList.add(dateFormat.format(entity.getPublishDate()));
-            cellList.add(dateFormat.format(entity.getCreateDate()));
-            cellList.add(String.valueOf(entity.getSort()));
-            cellList.add(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                    "page.status.content." + entity.getStatus()));
-            user = userMap.get(entity.getCheckUserId());
-            cellList.add(null == user ? null : user.getNickName());
-            view.getDataList().add(cellList);
-        }
+
+        ExcelView view = new ExcelView(workbook -> {
+            Sheet sheet = workbook.createSheet(
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.content"));
+            int i = 0, j = 0;
+            Row row = sheet.createRow(i++);
+
+            Locale locale = request.getLocale();
+            if (null != localeResolver) {
+                locale = localeResolver.resolveLocale(request);
+            }
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.id"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.title"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
+            row.createCell(j++).setCellValue(
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.score"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.comments"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.clicks"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.publish_date"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.create_date"));
+            row.createCell(j++).setCellValue(
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.top_level"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.status"));
+            row.createCell(j++)
+                    .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.inspector"));
+
+            SysUser user;
+            CmsCategory category;
+            CmsModel cmsModel;
+            for (CmsContent entity : entityList) {
+                row = sheet.createRow(i++);
+                j = 0;
+                row.createCell(j++).setCellValue(entity.getId().toString());
+                row.createCell(j++).setCellValue(entity.getTitle());
+                row.createCell(j++).setCellValue(entity.getUrl());
+                user = userMap.get(entity.getUserId());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+                category = categoryMap.get(entity.getCategoryId());
+                row.createCell(j++).setCellValue(null == category ? null : category.getName());
+                cmsModel = modelMap.get(entity.getModelId());
+                row.createCell(j++).setCellValue(null == cmsModel ? null : cmsModel.getName());
+                row.createCell(j++).setCellValue(String.valueOf(entity.getScores()));
+                row.createCell(j++).setCellValue(String.valueOf(entity.getComments()));
+                row.createCell(j++).setCellValue(String.valueOf(entity.getClicks()));
+                row.createCell(j++).setCellValue(dateFormat.format(entity.getPublishDate()));
+                row.createCell(j++).setCellValue(dateFormat.format(entity.getCreateDate()));
+                row.createCell(j++).setCellValue(String.valueOf(entity.getSort()));
+                row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
+                        "page.status.content." + entity.getStatus()));
+                user = userMap.get(entity.getCheckUserId());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+            }
+        });
         return view;
     }
 
