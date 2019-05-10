@@ -452,7 +452,7 @@ public class CmsContentAdminController {
     private boolean move(SysSite site, CmsContent entity, Integer categoryId) {
         CmsCategoryModel categoryModel = categoryModelService.getEntity(new CmsCategoryModelId(categoryId, entity.getModelId()));
         if (null != categoryModel) {
-            service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
+            entity = service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
             templateComponent.createContentFile(site, entity, null, categoryModel);
             return true;
         }
