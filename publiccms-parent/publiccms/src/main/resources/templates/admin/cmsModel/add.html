@@ -213,13 +213,11 @@
                 </#if>
             </#if>
         </script>
-<#if a?has_content>
-    <#assign contentExtendList=a.extendList![]>
-</#if>
+<#assign contentExtendList=(a.extendList)![]>
         <fieldset>
             <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.invalid'/>:source,sourceUrl,text)(<@t.page 'metadata.default_value_description'/>)</legend>
             <#include "../include_page/extends.html"/>
-            <@extends 'extendList' contentExtendList![] true/>
+            <@extends 'extendList' contentExtendList true/>
         </fieldset>
     </div>
 </form>

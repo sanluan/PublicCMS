@@ -21,6 +21,7 @@
                 <dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!(category.sort)!0}"/></dd>
             </dl>
             <#include "../include_page/extends.html"/>
+<#assign categoryExtendList=[]/>
 <#if a?has_content>
     <@_sysExtendFieldList extendId=a.extendId>
         <#assign categoryExtendList=list>
@@ -28,7 +29,7 @@
 </#if>
             <fieldset>
                 <legend><@t.page 'category.extend_field'/>(<@t.page 'extend_field.invalid'/>:title,keywords,description)(<@t.page 'metadata.default_value_description'/>)</legend>
-                <@extends 'categoryExtends' categoryExtendList![]/>
+                <@extends 'categoryExtends' categoryExtendList/>
             </fieldset>
         </div>
     </form>

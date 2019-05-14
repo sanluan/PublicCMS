@@ -236,6 +236,7 @@ checkCategoryModel();
         </script>
             </div>
             <div class="pageFormContent categoryModelContent" layoutH="96">
+<#assign contentExtendList=[]/>
 <#if a?has_content&&a.extendId?has_content>
     <@_sysExtendFieldList extendId=a.extendId>
         <#assign contentExtendList=list>
@@ -244,7 +245,7 @@ checkCategoryModel();
 <#include "../include_page/extends.html"/>
                 <fieldset>
                     <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.invalid'/>:source,sourceUrl,text)(<@t.page 'metadata.default_value_description'/>)</legend>
-                    <@extends 'contentExtends' contentExtendList![] true/>
+                    <@extends 'contentExtends' contentExtendList true/>
                 </fieldset>
             </div>
         </div>
