@@ -41,9 +41,22 @@ public class HqlTest {
      * 
      */
     @Test
-    public void searchTest() {
+    public void beanTest() {
         Map<String, Object> parameters = new HashMap<>();
-        String hql = "select new com.publiccms.test.Bean(content.title,category.name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
+        String hql = "select new com.publiccms.test.Bean(content.id,content.title,category.name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
+        PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
+        for (Object o : page.getList()) {
+            System.out.println(o);
+        }
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void mapTest() {
+        Map<String, Object> parameters = new HashMap<>();
+        String hql = "select new map(content.id as id,content.title as title,category.name as name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
         PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
         for (Object o : page.getList()) {
             System.out.println(o);
@@ -52,13 +65,30 @@ public class HqlTest {
 }
 
 class Bean {
+    long id;
     String contentTitlle;
     String categoryName;
 
-    public Bean(String contentTitlle, String categoryName) {
+    public Bean(long id, String contentTitlle, String categoryName) {
         super();
+        this.id = id;
         this.contentTitlle = contentTitlle;
         this.categoryName = categoryName;
+    }
+
+    /**
+     * @return the id
+     */
+    public long getId() {
+        return id;
+    }
+
+    /**
+     * @param id
+     *            the id to set
+     */
+    public void setId(long id) {
+        this.id = id;
     }
 
     /**
@@ -98,6 +128,6 @@ class Bean {
      */
     @Override
     public String toString() {
-        return "Test [contentTitlle=" + contentTitlle + ", categoryName=" + categoryName + "]";
+        return "Bean [id=" + id + ", contentTitlle=" + contentTitlle + ", categoryName=" + categoryName + "]";
     }
 }
