@@ -1,6 +1,7 @@
 package com.publiccms.test;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
@@ -46,7 +47,8 @@ public class HqlTest {
         String hql = "select new com.publiccms.test.Bean(content.id,content.title,category.name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
         PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
         for (Object o : page.getList()) {
-            System.out.println(o);
+            Bean bean = (Bean) o;
+            System.out.println(bean);
         }
     }
 
@@ -59,7 +61,42 @@ public class HqlTest {
         String hql = "select new map(content.id as id,content.title as title,category.name as name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
         PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
         for (Object o : page.getList()) {
-            System.out.println(o);
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>) o;
+            System.out.println(map);
+        }
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void arrayTest() {
+        Map<String, Object> parameters = new HashMap<>();
+        String hql = "select content.id ,content.title,category.name from CmsContent content,CmsCategory category where content.categoryId=category.id";
+        PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
+        for (Object o : page.getList()) {
+            Object[] array = (Object[]) o;
+            for (Object t : array) {
+                System.out.print(t);
+                System.out.print(",");
+            }
+            System.out.println();
+        }
+    }
+
+    /**
+     * 
+     */
+    @Test
+    public void listTest() {
+        Map<String, Object> parameters = new HashMap<>();
+        String hql = "select new list(content.id ,content.title,category.name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
+        PageHandler page = hqlService.getPage(hql, parameters, 1, 5);
+        for (Object o : page.getList()) {
+            @SuppressWarnings("unchecked")
+            List<Object> list = (List<Object>) o;
+            System.out.println(list);
         }
     }
 }
