@@ -47,20 +47,22 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
 
     @Override
     protected Resource getResource(HttpServletRequest request) throws IOException {
-        String path = getUrlPathHelper().getLookupPathForRequest(request);
-        if (path.endsWith(CommonConstants.SEPARATOR)) {
-            path += CommonConstants.getDefaultPage();
-        }
-        SysSite site = siteComponent.getSite(request.getServerName());
-        Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site, path));
-        if (resource.exists()) {
-            if (resource.isReadable()) {
-                return resource;
+        if (CmsVersion.isInitialized()) {
+            String path = getUrlPathHelper().getLookupPathForRequest(request);
+            if (path.endsWith(CommonConstants.SEPARATOR)) {
+                path += CommonConstants.getDefaultPage();
             }
-        } else if (null != site.getParentId()) {
-            resource = new FileSystemResource(siteComponent.getParentSiteWebFilePath(site, path));
-            if (resource.exists() && resource.isReadable()) {
-                return resource;
+            SysSite site = siteComponent.getSite(request.getServerName());
+            Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site, path));
+            if (resource.exists()) {
+                if (resource.isReadable()) {
+                    return resource;
+                }
+            } else if (null != site.getParentId()) {
+                resource = new FileSystemResource(siteComponent.getParentSiteWebFilePath(site, path));
+                if (resource.exists() && resource.isReadable()) {
+                    return resource;
+                }
             }
         }
         return null;
