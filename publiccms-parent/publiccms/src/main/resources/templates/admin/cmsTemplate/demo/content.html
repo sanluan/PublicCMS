@@ -63,10 +63,6 @@
             </div>
         </#if>
             <div>
-                <@_contentList parentId=content.parentId endPublishDate=content.publishDate pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous</a></#list></#if></@_contentList>
-                <@_contentList parentId=content.parentId startPublishDate=content.publishDate orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next</a></#list></@_contentList>
-            </div>
-            <div>
                 <#assign url='?id=${id}'/>
                 <#if !page.firstPage>
                     <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
@@ -85,6 +81,10 @@
                 <#else>
                     <span>Next page</span>
                 </#if>
+            </div>
+            <div>
+                <@_contentList categoryId=category.id endPublishDate=content.publishDate pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@_contentList>
+                <@_contentList categoryId=category.id startPublishDate=content.publishDate orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@_contentList>
             </div>
             <div>
             <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
