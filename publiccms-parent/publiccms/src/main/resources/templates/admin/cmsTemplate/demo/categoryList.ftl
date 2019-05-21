@@ -1,3 +1,4 @@
+<#ftl auto_esc=false/>
 [<@_categoryList parentId=parentId allowContribute=allowContribute pageIndex=pageIndex pageSize=count>
     <#list page.list as a>
         {

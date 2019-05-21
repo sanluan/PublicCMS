@@ -1,3 +1,4 @@
+<#ftl auto_esc=false/>
 [<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
 <@_commentList contentId=contentId pageIndex=pageIndex>
     <#list page.list as a>
