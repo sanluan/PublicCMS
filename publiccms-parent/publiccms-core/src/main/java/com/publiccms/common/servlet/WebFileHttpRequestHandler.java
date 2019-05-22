@@ -6,6 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -28,6 +29,7 @@ import com.publiccms.logic.component.site.SiteComponent;
  */
 public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
     private SiteComponent siteComponent;
+    private static Resource favicon = new ClassPathResource("favicon.ico");
     @Nullable
     private PathExtensionContentNegotiationStrategy contentNegotiationStrategy;
 
@@ -63,6 +65,9 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
                 if (resource.exists() && resource.isReadable()) {
                     return resource;
                 }
+            }
+            if ("/favicon.ico".equals(path)) {
+                return favicon;
             }
         }
         return null;
