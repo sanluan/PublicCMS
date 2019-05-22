@@ -158,9 +158,11 @@ function clickAddTagType(){
         <#assign modelIndex++/>
                 <dl class="nowrap">
                     <dt>
-                        <input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
-                        <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
-                        ${a.id}:${a.name!}
+                        <label>
+                            <input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
+                            <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
+                            ${a.id}:${a.name!}
+                        </label>
                     </dt>
                     <dd <#if a.onlyUrl> style="display:none"</#if>>
         <#if site.useStatic>

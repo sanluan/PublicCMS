@@ -2,12 +2,14 @@ package com.publiccms.views.directive.api;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -18,6 +20,8 @@ import com.publiccms.entities.sys.SysAppClient;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -44,8 +48,11 @@ public class AutoLoginDirective extends AbstractAppDirective {
                     String authToken = UUID.randomUUID().toString();
                     String ip = RequestUtils.getIpAddress(handler.getRequest());
                     Date now = CommonUtils.getDate();
+                    Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                    int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                            LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
                     sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now,
-                            DateUtils.addDays(now, 30), ip));
+                            DateUtils.addMinutes(now, expiryMinutes), ip));
                     service.updateLoginStatus(user.getId(), ip);
                     logLoginService.save(new LogLogin(site.getId(), uuid, user.getId(), ip, app.getChannel(), true, now, null));
                     user.setPassword(null);
@@ -65,6 +72,8 @@ public class AutoLoginDirective extends AbstractAppDirective {
     private SysUserTokenService sysUserTokenService;
     @Autowired
     private LogLoginService logLoginService;
+    @Autowired
+    private ConfigComponent configComponent;
 
     @Override
     public boolean needUserToken() {
