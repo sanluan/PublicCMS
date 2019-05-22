@@ -26,6 +26,9 @@ public class ThumbDirective extends AbstractTemplateDirective {
         Integer height = handler.getInteger("height");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(width) && CommonUtils.notEmpty(height)) {
+            if (path.startsWith(site.getSitePath())) {
+                path.substring(site.getSitePath().length());
+            }
             String thumbPath = path.substring(0, path.lastIndexOf(CommonConstants.DOT)) + CommonConstants.UNDERLINE + width
                     + CommonConstants.UNDERLINE + height + CmsFileUtils.getSuffix(path);
             String thumbFilePath = siteComponent.getWebFilePath(site, thumbPath);
@@ -52,6 +55,5 @@ public class ThumbDirective extends AbstractTemplateDirective {
     public boolean needAppToken() {
         return true;
     }
-
 
 }
