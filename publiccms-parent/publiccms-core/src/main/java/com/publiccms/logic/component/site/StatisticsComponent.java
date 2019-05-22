@@ -13,6 +13,8 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsWord;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentRelatedService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
@@ -34,6 +36,8 @@ public class StatisticsComponent implements Cache {
     private CacheEntity<Long, ClickStatistics> relatedCache;
     private CacheEntity<Long, ClickStatistics> wordCache;
     private CacheEntity<Long, ClickStatistics> tagCache;
+    @Autowired
+    private TemplateComponent templateComponent;
     @Autowired
     private CmsContentService contentService;
     @Autowired
@@ -150,15 +154,17 @@ public class StatisticsComponent implements Cache {
     }
 
     /**
+     * @param site 
      * @param id
      * @return content statistics
      */
-    public CmsContentStatistics contentClicks(Long id) {
+    public CmsContentStatistics contentClicks(SysSite site, Long id) {
         if (CommonUtils.notEmpty(id)) {
             CmsContentStatistics clickStatistics = contentCache.get(id);
             if (null == clickStatistics) {
                 CmsContent entity = contentService.getEntity(id);
                 if (null != entity) {
+                    templateComponent.initContentUrl(site, entity);
                     clickStatistics = new CmsContentStatistics(id, entity.getSiteId(), 1, 0, entity.getClicks(), entity.getUrl());
                     List<CmsContentStatistics> list = contentCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
@@ -175,15 +181,17 @@ public class StatisticsComponent implements Cache {
     }
 
     /**
+     * @param site 
      * @param id
      * @return content statistics
      */
-    public CmsContentStatistics contentScores(Long id) {
+    public CmsContentStatistics contentScores(SysSite site, Long id) {
         if (CommonUtils.notEmpty(id)) {
             CmsContentStatistics clickStatistics = contentCache.get(id);
             if (null == clickStatistics) {
                 CmsContent entity = contentService.getEntity(id);
                 if (null != entity) {
+                    templateComponent.initContentUrl(site, entity);
                     clickStatistics = new CmsContentStatistics(id, entity.getSiteId(), 0, 1, entity.getClicks(), entity.getUrl());
                     List<CmsContentStatistics> list = contentCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
@@ -212,6 +220,7 @@ public class StatisticsComponent implements Cache {
         }
         return null;
     }
+
     /**
      * @param id
      * @return content clicks

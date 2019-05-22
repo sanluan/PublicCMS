@@ -155,7 +155,7 @@ public class ContentController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
     }
-    
+
     /**
      * @param site
      * @param id
@@ -163,7 +163,7 @@ public class ContentController {
      */
     @RequestMapping("counter")
     public void count(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        statisticsComponent.contentClicks(id);
+        statisticsComponent.contentClicks(site, id);
     }
 
     /**
@@ -176,7 +176,7 @@ public class ContentController {
      */
     @RequestMapping("redirect")
     public String contentRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(site, id);
         if (null != contentStatistics && null != contentStatistics.getUrl()
                 && site.getId().equals(contentStatistics.getSiteId())) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentStatistics.getUrl();
@@ -197,7 +197,7 @@ public class ContentController {
     @ResponseBody
     public int scores(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
 
-        CmsContentStatistics contentStatistics = statisticsComponent.contentScores(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentScores(site, id);
         if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
             return contentStatistics.getScores() + contentStatistics.getScores();
         }
@@ -215,7 +215,7 @@ public class ContentController {
     @RequestMapping("click")
     @ResponseBody
     public int click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(site, id);
         if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
             return contentStatistics.getClicks() + contentStatistics.getClicks();
         }
