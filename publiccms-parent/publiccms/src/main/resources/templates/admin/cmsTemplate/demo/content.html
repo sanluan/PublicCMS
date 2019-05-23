@@ -52,10 +52,10 @@
              </@_contentFileList>
             </div>
         </#if>
-        <#if content.tags?has_content>
+        <#if content.tagIds?has_content>
             <div>
                 Tags:
-                <@_tag ids=content.tags>
+                <@_tag ids=content.tagIds>
                     <#list map as key,tag>
                         <em>${tag.name}</em>
                     </#list>

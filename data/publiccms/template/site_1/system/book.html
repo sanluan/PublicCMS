@@ -26,18 +26,16 @@ article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflo
 				<div class="cover"><img src="${content.cover!}"></div>
 				<div class="info">
 					<h3><a href="${content.url!}" target="_blank">${content.title}</a></h3>
-					<#if content.tags?has_content>
 					<div class="tags">
-						<#if content.tags?has_content>标签：
-							<@_tag ids=content.tags>
+						<#if content.tagIds?has_content>标签：
+							<@_tag ids=content.tagIds>
 								<#list map?keys as key>
-									<a href="${site.dynamicPath!}tags.html?id=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
+									<a href="${site.dynamicPath!}search.html?tagId=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
 								</#list>
 							</@_tag>
 						</#if>
 						<span>${content.publishDate?date}</span>
 					</div>
-					</#if>
 					<p>${content.description}</p>
 				</div>
 			</div>
