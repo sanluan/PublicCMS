@@ -522,6 +522,7 @@ public class TemplateComponent implements Cache {
         target.setDateFormat(source.getDateFormat());
         target.setTimeFormat(source.getTimeFormat());
         target.setNumberFormat(source.getNumberFormat());
+        target.setShowErrorTips(source.getShowErrorTips());
         target.setOutputFormat(source.getOutputFormat());
         target.setURLEscapingCharset(source.getURLEscapingCharset());
         target.setLazyAutoImports(source.getLazyAutoImports());

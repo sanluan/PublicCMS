@@ -22,9 +22,9 @@ public class ShortMessageTemplateExceptionHandler implements TemplateExceptionHa
     public void handleTemplateException(TemplateException templateexception, Environment environment, Writer writer)
             throws TemplateException {
         try {
-            String code = templateexception.getFTLInstructionStack();
-            if (null != code && code.contains("Failed at: ") && code.contains("  [")) {
-                writer.write("error:" + code.substring(code.indexOf("Failed at: ") + 11, code.indexOf("  [")));
+            String code = templateexception.getMessageWithoutStackTop();
+            if (null != code) {
+                writer.write(code);
             } else {
                 writer.write("[some errors occurred!]");
             }
