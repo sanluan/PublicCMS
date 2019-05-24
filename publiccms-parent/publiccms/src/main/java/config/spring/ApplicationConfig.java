@@ -45,7 +45,6 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 
 import config.initializer.InitializationInitializer;
 
@@ -187,17 +186,6 @@ public class ApplicationConfig {
         DirectiveComponent bean = new DirectiveComponent();
         bean.setDirectiveRemoveRegex(env.getProperty("cms.directiveRemoveRegex"));
         bean.setMethodRemoveRegex(env.getProperty("cms.methodRemoveRegex"));
-        return bean;
-    }
-
-    /**
-     * 模板组件
-     *
-     * @return template component
-     */
-    @Bean
-    public TemplateComponent templateComponent() {
-        TemplateComponent bean = new TemplateComponent();
         bean.setDirectivePrefix(env.getProperty("cms.directivePrefix"));
         return bean;
     }

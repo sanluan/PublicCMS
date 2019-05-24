@@ -1,24 +1,20 @@
 package com.publiccms.logic.component.template;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
+import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.base.AbstractFreemarkerView;
-import com.publiccms.common.base.AbstractTaskDirective;
-import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -31,7 +27,6 @@ import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.cms.CmsCategoryAttributeService;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
@@ -44,7 +39,6 @@ import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 
 import freemarker.template.Configuration;
-import freemarker.template.SimpleHash;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModelException;
 
@@ -52,6 +46,7 @@ import freemarker.template.TemplateModelException;
  * 模板处理组件 Template Component
  *
  */
+@Component
 public class TemplateComponent implements Cache {
     protected final Log log = LogFactory.getLog(getClass());
     /**
@@ -62,8 +57,6 @@ public class TemplateComponent implements Cache {
      * 管理后台上下文路径 Context Management Context Path Context
      */
     public static final String CONTEXT_ADMIN_CONTEXT_PATH = "adminContextPath";
-
-    private String directivePrefix;
 
     private Configuration adminConfiguration;
     private Configuration webConfiguration;
@@ -404,58 +397,11 @@ public class TemplateComponent implements Cache {
         }
     }
 
-    @Autowired
-    private void init(FreeMarkerConfigurer freeMarkerConfigurer, DirectiveComponent directiveComponent)
-            throws IOException, TemplateModelException {
-        Map<String, Object> freemarkerVariables = new HashMap<>();
-        adminConfiguration = freeMarkerConfigurer.getConfiguration();
-        for (Entry<String, AbstractTemplateDirective> entry : directiveComponent.getTemplateDirectiveMap().entrySet()) {
-            freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
-        }
-        freemarkerVariables.putAll(directiveComponent.getMethodMap());
-        adminConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, adminConfiguration.getObjectWrapper()));
-
-        webConfiguration = new Configuration(Configuration.getVersion());
-        File webFile = new File(siteComponent.getWebTemplateFilePath());
-        webFile.mkdirs();
-        webConfiguration.setDirectoryForTemplateLoading(webFile);
-        copyConfig(adminConfiguration, webConfiguration);
-        Map<String, Object> webFreemarkerVariables = new HashMap<>(freemarkerVariables);
-        webFreemarkerVariables.put(TemplateCacheComponent.CONTENT_CACHE, new NoCacheDirective());
-        webConfiguration.setAllSharedVariables(new SimpleHash(webFreemarkerVariables, webConfiguration.getObjectWrapper()));
-
-        taskConfiguration = new Configuration(Configuration.getVersion());
-        File taskFile = new File(siteComponent.getTaskTemplateFilePath());
-        taskFile.mkdirs();
-        taskConfiguration.setDirectoryForTemplateLoading(taskFile);
-        copyConfig(adminConfiguration, taskConfiguration);
-        for (Entry<String, AbstractTaskDirective> entry : directiveComponent.getTaskDirectiveMap().entrySet()) {
-            freemarkerVariables.put(directivePrefix + entry.getKey(), entry.getValue());
-        }
-        taskConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, taskConfiguration.getObjectWrapper()));
-    }
-
     public void setAdminContextPath(String adminContextPath) {
         try {
             adminConfiguration.setSharedVariable(CONTEXT_ADMIN_CONTEXT_PATH, adminContextPath);
         } catch (TemplateModelException e) {
         }
-    }
-
-    private static void copyConfig(Configuration source, Configuration target) {
-        target.setNewBuiltinClassResolver(source.getNewBuiltinClassResolver());
-        target.setTemplateUpdateDelayMilliseconds(source.getTemplateUpdateDelayMilliseconds());
-        target.setDefaultEncoding(source.getDefaultEncoding());
-        target.setLocale(source.getLocale());
-        target.setBooleanFormat(source.getBooleanFormat());
-        target.setDateTimeFormat(source.getDateTimeFormat());
-        target.setDateFormat(source.getDateFormat());
-        target.setTimeFormat(source.getTimeFormat());
-        target.setNumberFormat(source.getNumberFormat());
-        target.setOutputFormat(source.getOutputFormat());
-        target.setURLEscapingCharset(source.getURLEscapingCharset());
-        target.setLazyAutoImports(source.getLazyAutoImports());
-        target.setTemplateExceptionHandler(source.getTemplateExceptionHandler());
     }
 
     @Override
@@ -484,6 +430,39 @@ public class TemplateComponent implements Cache {
     }
 
     /**
+     * @param adminConfiguration
+     *            the adminConfiguration to set
+     */
+    public void setAdminConfiguration(Configuration adminConfiguration) {
+        this.adminConfiguration = adminConfiguration;
+    }
+
+    /**
+     * @param webConfiguration
+     *            the webConfiguration to set
+     */
+    public void setWebConfiguration(Configuration webConfiguration) {
+        this.webConfiguration = webConfiguration;
+    }
+
+    /**
+     * @param taskConfiguration
+     *            the taskConfiguration to set
+     */
+    public void setTaskConfiguration(Configuration taskConfiguration) {
+        this.taskConfiguration = taskConfiguration;
+    }
+
+    /**
+     * 获取FreeMarker管理后台配置
+     * 
+     * @return FreeMarker admin config
+     */
+    public Configuration getAdminConfiguration() {
+        return adminConfiguration;
+    }
+
+    /**
      * 获取FreeMarker前台配置
      * 
      * @return FreeMarker web config
@@ -501,22 +480,4 @@ public class TemplateComponent implements Cache {
         return taskConfiguration;
     }
 
-    /**
-     * 获取FreeMarker管理后台配置
-     * 
-     * @return FreeMarker admin config
-     */
-    public Configuration getAdminConfiguration() {
-        return adminConfiguration;
-    }
-
-    /**
-     * 设置指令前缀
-     * 
-     * @param directivePrefix
-     *            Set Directive Prefix
-     */
-    public void setDirectivePrefix(String directivePrefix) {
-        this.directivePrefix = directivePrefix;
-    }
 }
