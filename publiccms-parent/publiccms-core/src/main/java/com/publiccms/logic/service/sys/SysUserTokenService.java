@@ -2,9 +2,6 @@ package com.publiccms.logic.service.sys;
 
 import java.util.Date;
 
-import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.dao.sys.SysUserTokenDao;
-
 // Generated 2016-1-20 11:19:18 by com.publiccms.common.source.SourceGenerator
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.entities.sys.SysUserToken;
+import com.publiccms.logic.dao.sys.SysUserTokenDao;
 
 /**
  *
@@ -36,8 +35,9 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, String channel, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
-        return dao.getPage(siteId, userId, channel, orderField,orderType, pageIndex, pageSize);
+        return dao.getPage(siteId, userId, channel, orderField, orderType, pageIndex, pageSize);
     }
+
     /**
      * @param userId
      * @return number of data deleted
@@ -45,6 +45,7 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
     public int delete(Long userId) {
         return dao.delete(userId);
     }
+
     /**
      * @param now
      * @return number of data deleted
@@ -55,5 +56,5 @@ public class SysUserTokenService extends BaseService<SysUserToken> {
 
     @Autowired
     private SysUserTokenDao dao;
-    
+
 }

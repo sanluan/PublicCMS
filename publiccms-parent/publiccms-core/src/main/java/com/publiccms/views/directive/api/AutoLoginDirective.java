@@ -38,26 +38,28 @@ public class AutoLoginDirective extends AbstractAppDirective {
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         String uuid = handler.getString("uuid");
+        String username = handler.getString("username");
         boolean result = false;
-        if (CommonUtils.notEmpty(uuid)) {
+        if (CommonUtils.notEmpty(uuid) && CommonUtils.notEmpty(username)) {
             SysSite site = getSite(handler);
             SysAppClient appClient = appClientService.getEntity(site.getId(), app.getChannel(), uuid);
             if (null != appClient && null != appClient.getUserId()) {
                 user = service.getEntity(appClient.getUserId());
-                if (null != user && !user.isDisabled()) {
+                if (null != user && !user.isDisabled() && username.equals(user.getName())) {
                     String authToken = UUID.randomUUID().toString();
                     String ip = RequestUtils.getIpAddress(handler.getRequest());
                     Date now = CommonUtils.getDate();
                     Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                     int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                             LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
-                    sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now,
-                            DateUtils.addMinutes(now, expiryMinutes), ip));
+                    Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
+                    sysUserTokenService
+                            .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now, expiryDate, ip));
                     service.updateLoginStatus(user.getId(), ip);
                     logLoginService.save(new LogLogin(site.getId(), uuid, user.getId(), ip, app.getChannel(), true, now, null));
                     user.setPassword(null);
                     result = true;
-                    handler.put("authToken", authToken).put("user", user);
+                    handler.put("authToken", authToken).put("expiryDate", expiryDate).put("user", user);
                 }
             }
         }

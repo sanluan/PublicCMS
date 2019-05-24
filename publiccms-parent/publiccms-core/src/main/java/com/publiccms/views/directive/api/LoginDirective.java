@@ -64,13 +64,14 @@ public class LoginDirective extends AbstractAppDirective {
                 Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
                 int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                         LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
-                sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now,
-                        DateUtils.addMinutes(now, expiryMinutes), ip));
+                Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
+                sysUserTokenService
+                        .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now, expiryDate, ip));
                 logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, app.getChannel(), true,
                         CommonUtils.getDate(), null));
                 user.setPassword(null);
                 result = true;
-                handler.put("authToken", authToken).put("user", user);
+                handler.put("authToken", authToken).put("expiryDate", expiryDate).put("user", user);
             } else {
                 LogLogin log = new LogLogin();
                 log.setSiteId(site.getId());
