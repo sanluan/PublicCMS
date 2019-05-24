@@ -22,12 +22,7 @@ public class ShortMessageTemplateExceptionHandler implements TemplateExceptionHa
     public void handleTemplateException(TemplateException templateexception, Environment environment, Writer writer)
             throws TemplateException {
         try {
-            String code = templateexception.getMessageWithoutStackTop();
-            if (null != code) {
-                writer.write(code);
-            } else {
-                writer.write("[some errors occurred!]");
-            }
+            writer.write(templateexception.getMessageWithoutStackTop());
         } catch (IOException e) {
             log.error(environment.getCurrentTemplate().getSourceName(), e);
         }
