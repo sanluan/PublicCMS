@@ -127,6 +127,7 @@ public class DirectiveComponent {
         target.setURLEscapingCharset(source.getURLEscapingCharset());
         target.setLazyAutoImports(source.getLazyAutoImports());
         target.setTemplateExceptionHandler(source.getTemplateExceptionHandler());
+        target.setLogTemplateExceptions(source.getLogTemplateExceptions());
     }
 
     /**
