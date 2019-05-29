@@ -125,8 +125,9 @@ public class CmsPlaceAdminController {
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            "update.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
+                    logOperateService
+                            .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.place",
+                                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
             } else {
                 entity.setUserId(admin.getId());
