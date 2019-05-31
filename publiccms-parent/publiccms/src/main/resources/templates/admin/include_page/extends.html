@@ -4,7 +4,7 @@
     <thead>
         <tr>
             <th type="text" name="${name}[#index#].id.code" size="10" fieldClass="required letterstart"><@t.page 'code'/></th>
-            <th type="enum" name="${name}[#index#].inputType" enumUrl="common/extendsFieldType.html" fieldClass="required" size="10" width="100"><@t.page 'field_type'/></th>
+            <th type="enum" name="${name}[#index#].inputType" enumUrl="common/extendsFieldType.html?searchable=${searchable?c}" fieldClass="required" size="10" width="100"><@t.page 'field_type'/></th>
             <th type="text" name="${name}[#index#].name" size="10" fieldClass="required" fieldAttrs="{'maxlength':20}"><@t.page 'name'/></th>
             <th type="checkbox" name="${name}[#index#].required" size="10"><@t.page 'required'/></th>
             <th type="text" name="${name}[#index#].defaultValue" size="10"><@t.page 'default_value'/></th>
