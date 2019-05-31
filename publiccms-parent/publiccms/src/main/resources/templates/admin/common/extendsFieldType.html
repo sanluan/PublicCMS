@@ -1,2 +1,3 @@
 <#include "../include_page/extendsFieldType.html"/>
-<@extendsFieldType inputName/>
+<#assign searchable=(searchable?has_content&&'true'=searchable)/>
+<@extendsFieldType inputName '' searchable/>
