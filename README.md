@@ -13,10 +13,6 @@ PublicCMS是采用2018年最新主流技术开发的开源JAVACMS系统。架构
 https://gitee.com/sanluan/PublicCMS
 https://github.com/sanluan/PublicCMS
 
-## 视频、文档及一键运行包下载
-
-https://pan.baidu.com/s/1QIPaIhuASKC_16ZJ6v4SgQ 密码:eo4r
-
 ## 参与开发
 
 切换到develop分支
