@@ -1,5 +1,6 @@
 package com.publiccms.common.tools;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,8 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.views.pojo.entities.FileSize;
-
-import net.coobird.thumbnailator.Thumbnails;
 
 /**
  *
@@ -122,9 +121,14 @@ public class CmsFileUtils {
         return fileList;
     }
 
-    public static void thumb(String sourceFilePath, String thumbFilePath, Integer width, Integer height) throws IOException {
+    public static void thumb(String sourceFilePath, String thumbFilePath, int width, int height, String suffix)
+            throws IOException {
         try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath);) {
-            Thumbnails.of(sourceFilePath).size(width, height).toOutputStream(outputStream);
+            BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
+            Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            img.createGraphics().drawImage(scaledImage, 0, 0, null);
+            ImageIO.write(img, suffix, outputStream);
         }
     }
 

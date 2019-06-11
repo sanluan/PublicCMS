@@ -27,10 +27,6 @@
             <artifactId>UserAgentUtils</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.coobird</groupId>
-            <artifactId>thumbnailator</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search-elasticsearch</artifactId>
         </dependency>
