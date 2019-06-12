@@ -1,16 +1,12 @@
 package com.publiccms.logic.dao.cms;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
 
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
@@ -19,6 +15,7 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.MustJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.query.dsl.TermContext;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -47,12 +44,14 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 
     /**
      * @param projection
+     * @param fuzzy
      * @param siteId
      * @param text
      * @param tagIds
      * @param dictionaryValues
      * @param categoryIds
      * @param modelIds
+     * @param fields
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -61,15 +60,67 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, String[] dictionaryValues,
-            Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, Date expiryDate,
-            String orderField, Integer pageIndex, Integer pageSize) {
+    public PageHandler query(boolean projection, boolean fuzzy, Short siteId, Integer[] categoryIds, String[] modelIds,
+            String text, String[] fields, String tagIds, String[] dictionaryValues, Date startPublishDate, Date endPublishDate,
+            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
+        FullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
+                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+        return getPage(query, pageIndex, pageSize);
+    }
+
+    /**
+     * @param projection
+     * @param fuzzy
+     * @param siteId
+     * @param categoryIds
+     * @param modelIds
+     * @param text
+     * @param fields
+     * @param tagIds
+     * @param dictionaryValues
+     * @param startPublishDate
+     * @param endPublishDate
+     * @param expiryDate
+     * @param orderField
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, Short siteId, Integer[] categoryIds, String[] modelIds,
+            String text, String[] fields, String tagIds, String[] dictionaryValues, Date startPublishDate, Date endPublishDate,
+            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+        QueryBuilder queryBuilder = getFullTextQueryBuilder();
+        FullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
+                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+        return getFacetPage(queryBuilder, query, facetFields, 10, pageIndex, pageSize);
+    }
+
+    private FullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean fuzzy, Short siteId,
+            Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
         if (CommonUtils.notEmpty(text)) {
-            termination.must(queryBuilder.keyword().onFields(textFields).matching(text).createQuery());
+            TermContext term = queryBuilder.keyword();
+            if (!fuzzy) {
+                term.fuzzy().withEditDistanceUpTo(1);
+            }
+            if (CommonUtils.notEmpty(fields)) {
+                for (String field : fields) {
+                    if (!ArrayUtils.contains(textFields, field)) {
+                        fields = textFields;
+                    }
+                }
+            } else {
+                fields = textFields;
+            }
+            termination.must(term.onFields(textFields).matching(text).createQuery());
         } else if (CommonUtils.notEmpty(tagIds)) {
-            termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
+            TermContext term = queryBuilder.keyword();
+            if (!fuzzy) {
+                term.fuzzy().withEditDistanceUpTo(1);
+            }
+            termination.must(term.onFields(tagFields).matching(tagIds).createQuery());
         }
         if (CommonUtils.notEmpty(dictionaryValues)) {
             for (String value : dictionaryValues) {
@@ -110,61 +161,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             query.setProjection(projectionFields);
             query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         }
-        return getPage(query, pageIndex, pageSize);
-    }
-
-    /**
-     * @param siteId
-     * @param categoryIds
-     * @param modelIds
-     * @param text
-     * @param tagIds
-     * @param dictionaryValues
-     * @param startPublishDate
-     * @param endPublishDate
-     * @param expiryDate
-     * @param orderField
-     * @param pageIndex
-     * @param pageSize
-     * @return results page
-     */
-    public FacetPageHandler facetQuery(Short siteId, Integer[] categoryIds, String[] modelIds, String text, String tagIds,
-            String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
-            Integer pageIndex, Integer pageSize) {
-        QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
-        if (CommonUtils.notEmpty(text)) {
-            termination.must(queryBuilder.keyword().onFields(textFields).matching(text).createQuery());
-        } else if (CommonUtils.notEmpty(tagIds)) {
-            termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
-        }
-        if (CommonUtils.notEmpty(dictionaryValues)) {
-            for (String value : dictionaryValues) {
-                termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(value).createQuery());
-            }
-        }
-        if (null != startPublishDate) {
-            termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
-        }
-        if (null != endPublishDate) {
-            termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
-        }
-        if (null != expiryDate) {
-            termination.must(queryBuilder.range().onField("expiryDate").from(1L).to(expiryDate.getTime()).createQuery()).not();
-        }
-        Map<String, List<String>> valueMap = new LinkedHashMap<>();
-        if (CommonUtils.notEmpty(categoryIds)) {
-            valueMap.put("categoryId", Arrays.asList(categoryIds).stream().map(a -> a.toString()).collect(Collectors.toList()));
-        }
-        if (CommonUtils.notEmpty(modelIds)) {
-            valueMap.put("modelId", Arrays.asList(modelIds));
-        }
-        FullTextQuery query = getFullTextQuery(termination.createQuery());
-        if ("publishDate".equals(orderField)) {
-            Sort sort = new Sort(new SortField("publishDate", SortField.Type.LONG, true));
-            query.setSort(sort);
-        }
-        return getFacetPage(queryBuilder, query, facetFields, valueMap, 10, pageIndex, pageSize);
+        return query;
     }
 
     /**

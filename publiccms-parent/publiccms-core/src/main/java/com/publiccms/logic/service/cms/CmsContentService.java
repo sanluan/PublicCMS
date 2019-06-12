@@ -85,36 +85,14 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param projection
+     * @param fuzzy
      * @param siteId
-     * @param text
-     * @param tagIds
-     * @param dictionaryValues
      * @param categoryId
      * @param containChild
      * @param categoryIds
      * @param modelIds
-     * @param startPublishDate
-     * @param endPublishDate
-     * @param expiryDate
-     * @param orderField
-     * @param pageIndex
-     * @param pageSize
-     * @return results page
-     */
-    @Transactional(readOnly = true)
-    public PageHandler query(boolean projection, Short siteId, String text, Long[] tagIds, String[] dictionaryValues,
-            Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds, Date startPublishDate,
-            Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
-        return dao.query(projection, siteId, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues,
-                getCategoryIds(containChild, categoryId, categoryIds), modelIds, startPublishDate, endPublishDate, expiryDate,
-                orderField, pageIndex, pageSize);
-    }
-
-    /**
-     * @param siteId
-     * @param categoryIds
-     * @param modelIds
      * @param text
+     * @param fields
      * @param tagIds
      * @param dictionaryValues
      * @param startPublishDate
@@ -126,11 +104,39 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public FacetPageHandler facetQuery(Short siteId, Integer[] categoryIds, String[] modelIds, String text, Long[] tagIds,
-            String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
-            Integer pageIndex, Integer pageSize) {
-        return dao.facetQuery(siteId, categoryIds, modelIds, text, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE),
-                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+    public PageHandler query(boolean projection, boolean fuzzy, Short siteId, String text, String[] fields, Long[] tagIds,
+            Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+        return dao.query(projection, fuzzy, siteId, getCategoryIds(containChild, categoryId, categoryIds), modelIds, text, fields,
+                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, startPublishDate, endPublishDate,
+                expiryDate, orderField, pageIndex, pageSize);
+    }
+
+    /**
+     * @param projection
+     * @param fuzzy
+     * @param siteId
+     * @param categoryIds
+     * @param modelIds
+     * @param text
+     * @param fields
+     * @param tagIds
+     * @param dictionaryValues
+     * @param startPublishDate
+     * @param endPublishDate
+     * @param expiryDate
+     * @param orderField
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    @Transactional(readOnly = true)
+    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, Short siteId, String text, String[] fields,
+            Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues, Date startPublishDate,
+            Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+        return dao.facetQuery(projection, fuzzy, siteId, categoryIds, modelIds, text, fields,
+                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, startPublishDate, endPublishDate,
+                expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
