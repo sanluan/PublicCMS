@@ -11,6 +11,7 @@
         <module>publiccms-core</module>
         <module>publiccms-common</module>
         <module>publiccms-oauth</module>
+        <module>publiccms-trade</module>
         <module>publiccms-redis</module>
         <module>publiccms-j2cache</module>
         <module>publiccms-analyzer</module>

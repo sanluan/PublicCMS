@@ -65,7 +65,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         FullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
-                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
         return getPage(query, pageIndex, pageSize);
     }
 
@@ -92,13 +92,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         FullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
-                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
         return getFacetPage(queryBuilder, query, facetFields, 10, pageIndex, pageSize);
     }
 
     private FullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean fuzzy, Short siteId,
             Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField) {
         MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
         if (CommonUtils.notEmpty(text)) {
             TermContext term = queryBuilder.keyword();

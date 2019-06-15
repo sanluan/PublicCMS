@@ -38,6 +38,11 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 
     @Autowired
     private CmsCommentService service;

@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.LockMode;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -109,17 +108,6 @@ public abstract class BaseDao<E> {
      */
     public static String rightLike(String var) {
         return var + "%";
-    }
-
-    /**
-     * 获取实体
-     * 
-     * @param id
-     * @param lockMode
-     * @return entity
-     */
-    public E getEntity(Serializable id, LockMode lockMode) {
-        return null == id ? null : getSession().get(getEntityClass(), id, lockMode);
     }
 
     /**

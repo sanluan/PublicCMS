@@ -1,6 +1,6 @@
-package com.publiccms.views.directive.cms;
+package com.publiccms.views.directive.trade;
 
-// Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
+// Generated 2019-6-15 18:52:24 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -10,44 +10,44 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.entities.cms.CmsComment;
-import com.publiccms.logic.service.cms.CmsCommentService;
+import com.publiccms.entities.trade.TradeOrder;
+import com.publiccms.logic.service.trade.TradeOrderService;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
- * CmsCommentDirective
+ * TradeOrderDirective
  * 
  */
 @Component
-public class CmsCommentDirective extends AbstractTemplateDirective {
+public class TradeOrderDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Long id = handler.getLong("id");
+        Integer id = handler.getInteger("id");
         if (CommonUtils.notEmpty(id)) {
             handler.put("object", service.getEntity(id)).render();
         } else {
-            Long[] ids = handler.getLongArray("ids");
+            Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
-                List<CmsComment> entityList = service.getEntitys(ids);
-                Map<String, CmsComment> map = new LinkedHashMap<>();
-                for (CmsComment entity : entityList) {
+                List<TradeOrder> entityList = service.getEntitys(ids);
+                Map<String, TradeOrder> map = new LinkedHashMap<>();
+                for (TradeOrder entity : entityList) {
                     map.put(String.valueOf(entity.getId()), entity);
                 }
                 handler.put("map", map).render();
             }
         }
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;
     }
 
     @Autowired
-    private CmsCommentService service;
+    private TradeOrderService service;
 
 }
