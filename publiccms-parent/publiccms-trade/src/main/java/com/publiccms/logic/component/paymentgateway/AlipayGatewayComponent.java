@@ -226,9 +226,9 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
                                                 TradeOrderHistoryService.OPERATE_PROCESS_ERROR);
                                         historyService.save(history);
                                     }
-                                    return "success";
                                 }
                             }
+                            return "success";
                         } catch (NumberFormatException e) {
                         }
                     }
