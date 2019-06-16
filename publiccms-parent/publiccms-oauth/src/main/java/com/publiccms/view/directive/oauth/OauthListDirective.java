@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.api.oauth.Oauth;
+import com.publiccms.common.api.oauth.OauthGateway;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.sys.SysSite;
@@ -24,7 +24,7 @@ public class OauthListDirective extends AbstractTaskDirective {
         SysSite site = getSite(handler);
         List<String> list = new ArrayList<>();
         if (null != oauthList) {
-            for (Oauth oauth : oauthList) {
+            for (OauthGateway oauth : oauthList) {
                 if (oauth.enabled(site.getId())) {
                     list.add(oauth.getChannel());
                 }
@@ -34,5 +34,5 @@ public class OauthListDirective extends AbstractTaskDirective {
     }
 
     @Autowired(required = false)
-    private List<Oauth> oauthList;
+    private List<OauthGateway> oauthList;
 }

@@ -1,14 +1,26 @@
 package com.publiccms.common.api;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletResponse;
 
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradeRefund;
 
-public interface PaymentGateway {
-    public String getChannel();
+public interface PaymentGateway extends Container<String> {
+    public String getAccountType();
+
+    default Supplier<String> keyFunction() {
+        return new Supplier<String>() {
+
+            @Override
+            public String get() {
+                return getAccountType();
+            }
+
+        };
+    }
 
     public boolean enable(short siteId);
 

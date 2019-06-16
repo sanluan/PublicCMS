@@ -43,9 +43,9 @@ public class SourceGenerator {
         // 生成所有实体类的代码
         // sourceGenerator.generate(basePackage, overwrite);
         // 生成某个包所有实体类的代码
-        // sourceGenerator.generate(basePackage, "trade", overwrite);
+         sourceGenerator.generate(basePackage, "trade", overwrite);
         // 生成某个实体类的代码
-        sourceGenerator.generate(Class.forName("com.publiccms.entities.trade.TradeRefund"), basePackage, overwrite);
+//        sourceGenerator.generate(Class.forName("com.publiccms.entities.trade.TradeRefund"), basePackage, overwrite);
     }
 
     /**

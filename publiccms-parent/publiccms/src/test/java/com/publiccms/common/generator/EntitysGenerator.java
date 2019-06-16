@@ -41,6 +41,7 @@ public class EntitysGenerator {
         pojoExporter.getProperties().setProperty("ejb3", String.valueOf(true));
         pojoExporter.getProperties().setProperty("jdk5", String.valueOf(true));
         pojoExporter.start();
+        System.out.println("Generated successfully, please refresh the project!");
         System.exit(0);
     }
 

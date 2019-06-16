@@ -1,0 +1,57 @@
+<@_tradeAccountHistory id=id><#assign a=object/></@_tradeAccountHistory>
+<form method="post" action="tradeAccountHistory/save.do?callbackType=closeCurrent&navTabId=tradeAccountHistory/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input name="id" type="hidden" value="${id!}" />
+    <input type="hidden" name="csrfToken" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageContent">
+        <div class="pageFormContent" layoutH="56">
+            <dl>
+                <dt>ID：</dt>
+                <dd><input class="required" name="id" type="text" size="30" value="${(a.id)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>站点ID：</dt>
+                <dd><input class="required" name="siteId" type="text" size="30" value="${(a.siteId)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>流水号：</dt>
+                <dd><input class="required" name="serialNumber" type="text" size="30" value="${(a.serialNumber)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>用户ID：</dt>
+                <dd><input class="required" name="userId" type="text" size="30" value="${(a.userId)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>变动：</dt>
+                <dd><input class="required" name="change" type="text" size="30" value="${(a.change)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>金额：</dt>
+                <dd><input class="required" name="amount" type="text" size="30" value="${(a.amount)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>余额：</dt>
+                <dd><input class="required" name="balance" type="text" size="30" value="${(a.balance)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>状态：</dt>
+                <dd><input class="required" name="status" type="text" size="30" value="${(a.status)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>描述：</dt>
+                <dd><input class="required" name="description" type="text" size="30" value="${(a.description)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>创建日期：</dt>
+                <dd>
+                    <input type="text" name="createDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.createDate)!}"/>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</form>

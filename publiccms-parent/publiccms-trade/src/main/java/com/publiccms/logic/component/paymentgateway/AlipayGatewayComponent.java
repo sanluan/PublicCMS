@@ -1,6 +1,7 @@
-package com.publiccms.logic.component.trade;
+package com.publiccms.logic.component.paymentgateway;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -23,17 +24,22 @@ import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.PaymentGateway;
+import com.publiccms.common.api.TradeOrderProcessor;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeOrder;
+import com.publiccms.entities.trade.TradeOrderHistory;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
+import com.publiccms.logic.service.trade.TradeOrderHistoryService;
 import com.publiccms.logic.service.trade.TradeOrderService;
 
 @Component
-public class AlipayComponent implements PaymentGateway, Config {
+public class AlipayGatewayComponent implements PaymentGateway, Config {
     /**
      * 
      */
@@ -66,9 +72,13 @@ public class AlipayComponent implements PaymentGateway, Config {
     private ConfigComponent configComponent;
     @Autowired
     private TradeOrderService service;
+    @Autowired
+    private TradeOrderHistoryService historyService;
+    @Autowired
+    private TradeOrderProcessorComponent tradeOrderProcessorComponent;
 
     @Override
-    public String getChannel() {
+    public String getAccountType() {
         return CONFIG_CODE;
     }
 
@@ -104,7 +114,7 @@ public class AlipayComponent implements PaymentGateway, Config {
     @Override
     public boolean refund(TradeOrder order, TradeRefund refund) {
         Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
-        if (CommonUtils.notEmpty(config)) {
+        if (null != order && CommonUtils.notEmpty(config) && service.refunded(order.getSiteId(), order.getId())) {
             AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
                     config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
                     config.get(CONFIG_ALIPAY_PUBLIC_KEY));
@@ -119,7 +129,11 @@ public class AlipayComponent implements PaymentGateway, Config {
             alipay_request.setBizModel(model);
             try {
                 AlipayTradeRefundResponse alipay_response = client.execute(alipay_request);
-                return "10000".equalsIgnoreCase(alipay_response.getCode());
+                if ("10000".equalsIgnoreCase(alipay_response.getCode())) {
+                    return true;
+                } else {
+                    service.pendingRefund(order.getSiteId(), order.getId());
+                }
             } catch (AlipayApiException e) {
             }
         }
@@ -128,7 +142,36 @@ public class AlipayComponent implements PaymentGateway, Config {
 
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
-        return null;
+        List<SysExtendField> extendFieldList = new ArrayList<>();
+        extendFieldList.add(new SysExtendField(CONFIG_URL, INPUTTYPE_TEXT, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_URL),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_URL + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                null));
+        extendFieldList.add(new SysExtendField(CONFIG_APPID, INPUTTYPE_TEXT, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_APPID),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_APPID + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                null));
+        extendFieldList.add(new SysExtendField(CONFIG_PRIVATE_KEY, INPUTTYPE_TEXTAREA, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRIVATE_KEY),
+                getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRIVATE_KEY + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                null));
+        extendFieldList.add(new SysExtendField(CONFIG_TIMEOUT_EXPRESS, INPUTTYPE_TEXT, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_TIMEOUT_EXPRESS),
+                getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_TIMEOUT_EXPRESS + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                "30M"));
+        extendFieldList.add(new SysExtendField(CONFIG_ALIPAY_PUBLIC_KEY, INPUTTYPE_TEXT, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALIPAY_PUBLIC_KEY),
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALIPAY_PUBLIC_KEY
+                        + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                null));
+        extendFieldList.add(new SysExtendField(CONFIG_PRODUCT_CODE, INPUTTYPE_TEXT, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRODUCT_CODE),
+                getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRODUCT_CODE + CONFIG_CODE_DESCRIPTION_SUFFIX),
+                null));
+        return extendFieldList;
     }
 
     @Override
@@ -162,13 +205,31 @@ public class AlipayComponent implements PaymentGateway, Config {
                     if (CommonUtils.notEmpty(out_trade_nos) && CommonUtils.notEmpty(total_fees)
                             && CommonUtils.notEmpty(trade_nos)) {
                         String out_trade_no = out_trade_nos[0];
-                        String total_fee = total_fees[0];
-                        String trade_no = trade_nos[0];
-                        TradeOrder order = service.getEntity(out_trade_no);
-                        if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
-                                && order.getAmount().toString().equals(total_fee)) {
-                            service.paid(order.getId(), trade_no);
-                            return "success";
+                        try {
+                            long orderId = Long.valueOf(out_trade_no);
+                            String total_fee = total_fees[0];
+                            String trade_no = trade_nos[0];
+                            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, CommonUtils.getDate(),
+                                    TradeOrderHistoryService.OPERATE_NOTIFY);
+                            history.setContent(JsonUtils.getString(parameterMap));
+                            historyService.save(history);
+                            TradeOrder order = service.getEntity(orderId);
+                            if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
+                                    && order.getAmount().toString().equals(total_fee)) {
+                                if (service.paid(siteId, order.getId(), trade_no)) {
+                                    TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent
+                                            .get(order.getTradeType());
+                                    if (null != tradeOrderProcessor && tradeOrderProcessor.process(order)) {
+                                        service.processed(order.getSiteId(), order.getId());
+                                    } else {
+                                        history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),
+                                                TradeOrderHistoryService.OPERATE_PROCESS_ERROR);
+                                        historyService.save(history);
+                                    }
+                                    return "success";
+                                }
+                            }
+                        } catch (NumberFormatException e) {
                         }
                     }
                 }

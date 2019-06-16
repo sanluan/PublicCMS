@@ -1,12 +1,11 @@
 <#if ejb3>
 <#if pojo.hasIdentifierProperty()>
 <#if property.equals(clazz.identifierProperty)>
- ${pojo.generateAnnIdGenerator()}
+${pojo.generateAnnIdGenerator()}
 <#-- if this is the id property (getter)-->
 <#-- explicitly set the column name for this property-->
 </#if>
 </#if>
-
 <#if c2h.isOneToOne(property)>
 ${pojo.generateOneToOneAnnotation(property, md)}
 <#elseif c2h.isManyToOne(property)>

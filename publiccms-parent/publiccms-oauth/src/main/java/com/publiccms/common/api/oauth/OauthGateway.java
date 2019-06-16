@@ -1,21 +1,35 @@
 package com.publiccms.common.api.oauth;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 import org.apache.http.client.ClientProtocolException;
+
+import com.publiccms.common.api.Container;
 import com.publiccms.view.pojo.oauth.OauthAccess;
 import com.publiccms.view.pojo.oauth.OauthUser;
 
 /**
  *
- * Oauth
+ * OauthGateway
  *
  */
-public interface Oauth {
+public interface OauthGateway extends Container<String> {
     /**
      * @return channel
      */
     public String getChannel();
+
+    default Supplier<String> keyFunction() {
+        return new Supplier<String>() {
+
+            @Override
+            public String get() {
+                return getChannel();
+            }
+
+        };
+    }
 
     /**
      * @param siteId
@@ -46,6 +60,7 @@ public interface Oauth {
      * @throws IOException
      */
     public OauthAccess getOpenId(short siteId, String code) throws ClientProtocolException, IOException;
+
     /**
      * @param siteId
      * @param oauthAccess

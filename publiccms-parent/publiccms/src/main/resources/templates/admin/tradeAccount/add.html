@@ -1,0 +1,37 @@
+<@_tradeAccount id=id><#assign a=object/></@_tradeAccount>
+<form method="post" action="tradeAccount/save.do?callbackType=closeCurrent&navTabId=tradeAccount/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input name="id" type="hidden" value="${id!}" />
+    <input type="hidden" name="csrfToken" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageContent">
+        <div class="pageFormContent" layoutH="56">
+            <dl>
+                <dt>用户ID：</dt>
+                <dd><input class="required" name="userId" type="text" size="30" value="${(a.userId)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>站点ID：</dt>
+                <dd><input class="required" name="siteId" type="text" size="30" value="${(a.siteId)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>金额：</dt>
+                <dd><input class="required" name="amount" type="text" size="30" value="${(a.amount)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>冻结金额：</dt>
+                <dd><input class="required" name="frozenAmount" type="text" size="30" value="${(a.frozenAmount)!}"/></dd>
+            </dl>
+            <dl>
+                <dt>更新日期：</dt>
+                <dd>
+                    <input type="text" name="updateDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.updateDate)!}"/>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</form>

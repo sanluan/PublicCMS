@@ -1,9 +1,6 @@
 package com.publiccms.controller.admin.trade;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 // Generated 2019-6-15 20:08:45 by com.publiccms.common.generator.SourceGenerator
 
@@ -28,6 +25,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradeRefund;
+import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeOrderService;
@@ -41,7 +39,6 @@ import com.publiccms.logic.service.trade.TradeRefundService;
 @Controller
 @RequestMapping("tradeRefund")
 public class TradeRefundAdminController {
-    private Map<String, PaymentGateway> paymentGatewayMap = new HashMap<>();
 
     /**
      * @param site
@@ -66,16 +63,16 @@ public class TradeRefundAdminController {
         if (ControllerUtils.verifyNotEmpty("order", order, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        PaymentGateway paymentGateway = paymentGatewayMap.get(order.getAccountType());
+        PaymentGateway paymentGateway = gatewayComponent.get(order.getAccountType());
         if (ControllerUtils.verifyNotEmpty("paymentGateway", paymentGateway, model)
-                || ControllerUtils.verifyCustom("tradeOrderStatus", !orderService.refunded(order.getId()), model)
+                || ControllerUtils.verifyCustom("tradeOrderStatus", !orderService.refunded(site.getId(), order.getId()), model)
                 || ControllerUtils.verifyCustom("refundStatus", !service.updateResund(id, refundAmount, reply), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (paymentGateway.refund(order, entity)) {
             service.updateStatus(entity.getId(), admin.getId(), TradeRefundService.STATUS_REFUNDED);
         } else {
-            orderService.pendingRefund(order.getId());
+            orderService.pendingRefund(site.getId(), order.getId());
             service.updateStatus(entity.getId(), admin.getId(), TradeRefundService.STATUS_FAIL);
         }
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "refund",
@@ -83,15 +80,8 @@ public class TradeRefundAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
-    @Autowired(required = false)
-    public void init(List<PaymentGateway> paymentGatewayList) {
-        if (null != paymentGatewayList) {
-            for (PaymentGateway paymentGateway : paymentGatewayList) {
-                paymentGatewayMap.put(paymentGateway.getChannel(), paymentGateway);
-            }
-        }
-    }
-
+    @Autowired
+    private PaymentGatewayComponent gatewayComponent;
     @Autowired
     private TradeRefundService service;
     @Autowired

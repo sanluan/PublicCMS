@@ -12,7 +12,9 @@ import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.trade.TradeOrder;
+import com.publiccms.entities.trade.TradeOrderHistory;
 import com.publiccms.logic.dao.trade.TradeOrderDao;
+import com.publiccms.logic.dao.trade.TradeOrderHistoryDao;
 
 /**
  *
@@ -64,34 +66,74 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean paid(long orderId, String accountSerialNumber) {
+    public boolean create(TradeOrder entity) {
+        if (null != entity) {
+            entity.setStatus(STATUS_PENDING_PAY);
+            save(entity);
+            TradeOrderHistory history = new TradeOrderHistory(entity.getSiteId(), entity.getId(), CommonUtils.getDate(),
+                    TradeOrderHistoryService.OPERATE_CREATE);
+            historyDao.save(history);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public boolean processed(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && entity.getStatus() == STATUS_PENDING_PAY) {
+        if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
+            entity.setProcessed(true);
+            Date now = CommonUtils.getDate();
+            entity.setProcessDate(now);
+            entity.setUpdateDate(now);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_PROCESSED);
+            historyDao.save(history);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public boolean paid(short siteId, long orderId, String accountSerialNumber) {
+        TradeOrder entity = getEntity(orderId);
+        if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
             entity.setStatus(STATUS_PAID);
             entity.setAccountSerialNumber(accountSerialNumber);
-            entity.setPaymentDate(CommonUtils.getDate());
+            Date now = CommonUtils.getDate();
+            entity.setPaymentDate(now);
+            entity.setUpdateDate(now);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_PAY);
+            historyDao.save(history);
             return true;
         }
         return false;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean pendingRefund(long orderId) {
+    public boolean pendingRefund(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && (entity.getStatus() == STATUS_PAID || entity.getStatus() == STATUS_REFUNDED)) {
+        if (null != entity && siteId == entity.getSiteId()
+                && (entity.getStatus() == STATUS_PAID || entity.getStatus() == STATUS_REFUNDED)) {
             entity.setStatus(STATUS_PENDING_REFUND);
-            entity.setUpdateDate(CommonUtils.getDate());
+            Date now = CommonUtils.getDate();
+            entity.setUpdateDate(now);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now,
+                    TradeOrderHistoryService.OPERATE_PENDING_REFUND);
+            historyDao.save(history);
             return true;
         }
         return false;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean refunded(long orderId) {
+    public boolean refunded(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && (entity.getStatus() == STATUS_PENDING_REFUND)) {
+        if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PENDING_REFUND)) {
             entity.setStatus(STATUS_REFUNDED);
-            entity.setUpdateDate(CommonUtils.getDate());
+            Date now = CommonUtils.getDate();
+            entity.setUpdateDate(now);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_REFUND);
+            historyDao.save(history);
             return true;
         }
         return false;
@@ -99,5 +141,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
 
     @Autowired
     private TradeOrderDao dao;
+    @Autowired
+    private TradeOrderHistoryDao historyDao;
 
 }

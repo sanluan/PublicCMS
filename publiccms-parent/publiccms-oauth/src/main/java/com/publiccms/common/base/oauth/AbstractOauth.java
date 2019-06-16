@@ -24,7 +24,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.api.oauth.Oauth;
+import com.publiccms.common.api.oauth.OauthGateway;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
@@ -39,7 +39,7 @@ import com.publiccms.view.pojo.oauth.OauthConfig;
  * AbstractOauth
  *
  */
-public abstract class AbstractOauth implements Config, Oauth {
+public abstract class AbstractOauth implements Config, OauthGateway {
     /**
      * 
      */

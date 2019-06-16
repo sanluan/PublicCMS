@@ -2,8 +2,6 @@ package com.publiccms.controller.web.oauth;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -23,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.api.oauth.Oauth;
+import com.publiccms.common.api.oauth.OauthGateway;
 import com.publiccms.common.base.oauth.AbstractOauth;
 import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.tools.CommonUtils;
@@ -37,6 +35,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.oauth.OauthComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
@@ -58,8 +57,8 @@ public class OauthController {
      */
     public final static String RETURN_URL = "oauth_return_url";
 
-    private Map<String, Oauth> oauthChannelMap = new HashMap<>();
-
+    @Autowired
+    private OauthComponent oauthComponent;
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
@@ -83,13 +82,13 @@ public class OauthController {
     @RequestMapping(value = "login/{channel}")
     public String login(@PathVariable("channel") String channel, String returnUrl, HttpServletRequest request,
             HttpServletResponse response) {
-        Oauth oauthComponent = oauthChannelMap.get(channel);
+        OauthGateway oauthGateway = oauthComponent.get(channel);
         SysSite site = siteComponent.getSite(request.getServerName());
-        if (null != oauthComponent && oauthComponent.enabled(site.getId())) {
+        if (null != oauthComponent && oauthGateway.enabled(site.getId())) {
             String state = UUID.randomUUID().toString();
             RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
             RequestUtils.addCookie(request.getContextPath(), response, RETURN_URL, returnUrl, null, null);
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + oauthComponent.getAuthorizeUrl(site.getId(), state);
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + oauthGateway.getAuthorizeUrl(site.getId(), state);
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
     }
@@ -107,7 +106,7 @@ public class OauthController {
     @RequestMapping(value = "callback/{channel}")
     public String callback(@PathVariable("channel") String channel, String state, String code, HttpServletRequest request,
             HttpSession session, HttpServletResponse response, ModelMap model) {
-        Oauth oauthComponent = oauthChannelMap.get(channel);
+        OauthGateway oauthGateway = oauthComponent.get(channel);
         SysSite site = siteComponent.getSite(request.getServerName());
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), response, RETURN_URL, null);
@@ -123,10 +122,10 @@ public class OauthController {
 
         Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);
         RequestUtils.cancleCookie(request.getContextPath(), response, STATE_COOKIE_NAME, null);
-        if (null != oauthComponent && oauthComponent.enabled(site.getId()) && null != stateCookie && null != state
+        if (null != oauthComponent && oauthGateway.enabled(site.getId()) && null != stateCookie && null != state
                 && state.equals(stateCookie.getValue())) {
             try {
-                OauthAccess oauthAccess = oauthComponent.getOpenId(site.getId(), code);
+                OauthAccess oauthAccess = oauthGateway.getOpenId(site.getId(), code);
                 if (null != oauthAccess && null != oauthAccess.getOpenId()) {
                     SysAppClient appClient = appClientService.getEntity(site.getId(), channel, oauthAccess.getOpenId());
                     String ip = RequestUtils.getIpAddress(request);
@@ -134,7 +133,7 @@ public class OauthController {
                     if (null == user) {
                         Date now = CommonUtils.getDate();
                         if (null == appClient) {
-                            OauthUser oauthUser = oauthComponent.getUserInfo(site.getId(), oauthAccess);
+                            OauthUser oauthUser = oauthGateway.getUserInfo(site.getId(), oauthAccess);
                             Map<String, String> oauthConfig = configComponent.getConfigData(site.getId(),
                                     AbstractOauth.CONFIG_CODE);
                             if (null != oauthUser && CommonUtils.notEmpty(oauthConfig)
@@ -184,14 +183,5 @@ public class OauthController {
             }
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-    }
-
-    @Autowired(required = false)
-    public void init(List<Oauth> oauthList) {
-        if (null != oauthList) {
-            for (Oauth oauth : oauthList) {
-                oauthChannelMap.put(oauth.getChannel(), oauth);
-            }
-        }
     }
 }

@@ -1,7 +1,5 @@
 package com.publiccms.controller.web.trade;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.constants.CommonConstants;
@@ -27,23 +24,16 @@ import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.trade.TradeOrderService;
 import com.publiccms.logic.service.trade.TradeRefundService;
 
 @Controller
-@RequestMapping("trade")
-public class TradeController {
-    private Map<String, PaymentGateway> paymentGatewayMap = new HashMap<>();
-    @Autowired
-    protected ConfigComponent configComponent;
-    @Autowired
-    private TradeOrderService service;
-    @Autowired
-    private TradeRefundService refundService;
-
+@RequestMapping("tradeOrder")
+public class TradeOrderController {
     /**
      * @param site
-     * @param channel
+     * @param accountType
      * @param orderId
      * @param returnUrl
      * @param request
@@ -52,38 +42,37 @@ public class TradeController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "pay/{channel}")
-    @Csrf
-    public String pay(@RequestAttribute SysSite site, @PathVariable("channel") String channel, Long orderId, String returnUrl,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+    @RequestMapping(value = "pay/{accountType}")
+    public String pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, Long orderId,
+            String returnUrl, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
-        PaymentGateway paymentGateway = paymentGatewayMap.get(channel);
+        PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         TradeOrder entity = service.getEntity(orderId);
         if (null != paymentGateway && null == entity
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
-        paymentGateway.pay(entity, returnUrl, site.getDynamicPath() + "trade/notify/" + channel, response);
+        paymentGateway.pay(entity, returnUrl, site.getDynamicPath() + "tradeOrder/notify/" + accountType, response);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     /**
      * @param site
-     * @param channel
+     * @param accountType
      * @param body
      * @param request
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "notify/{channel}")
+    @RequestMapping(value = "notify/{accountType}")
     @ResponseBody
-    public String notify(@RequestAttribute SysSite site, @PathVariable("channel") String channel,
+    public String notify(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType,
             @RequestBody(required = false) String body, HttpServletRequest request) throws Exception {
-        PaymentGateway paymentGateway = paymentGatewayMap.get(channel);
+        PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         if (null != paymentGateway) {
             return paymentGateway.notify(site.getId(), body, request.getParameterMap());
         }
@@ -107,7 +96,7 @@ public class TradeController {
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
-        if (ControllerUtils.verifyCustom("tradeOrderStatus", !service.pendingRefund(entity.getOrderId()), model)) {
+        if (ControllerUtils.verifyCustom("tradeOrderStatus", !service.pendingRefund(site.getId(), entity.getOrderId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null == entity.getId()) {
@@ -121,12 +110,12 @@ public class TradeController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
-    @Autowired(required = false)
-    public void init(List<PaymentGateway> paymentGatewayList) {
-        if (null != paymentGatewayList) {
-            for (PaymentGateway paymentGateway : paymentGatewayList) {
-                paymentGatewayMap.put(paymentGateway.getChannel(), paymentGateway);
-            }
-        }
-    }
+    @Autowired
+    private PaymentGatewayComponent gatewayComponent;
+    @Autowired
+    protected ConfigComponent configComponent;
+    @Autowired
+    private TradeOrderService service;
+    @Autowired
+    private TradeRefundService refundService;
 }

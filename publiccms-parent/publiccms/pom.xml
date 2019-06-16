@@ -32,6 +32,11 @@
             <version>V4.0.190312</version>
         </dependency>
         <dependency>
+            <groupId>com.publiccms</groupId>
+            <artifactId>publiccms-trade</artifactId>
+            <version>V4.0.190312</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-web</artifactId>
         </dependency>

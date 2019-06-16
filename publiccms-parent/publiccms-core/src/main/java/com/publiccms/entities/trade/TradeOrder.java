@@ -51,10 +51,14 @@ public class TradeOrder implements java.io.Serializable {
     private String ip;
     @GeneratorColumn(title = "状态", condition = true)
     private int status;
+    @GeneratorColumn(title = "已处理", condition = true)
+    private boolean processed;
     @GeneratorColumn(title = "更新日期")
     private Date updateDate;
     @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
+    @GeneratorColumn(title = "处理日期")
+    private Date processDate;
     @GeneratorColumn(title = "支付日期")
     private Date paymentDate;
 
@@ -62,7 +66,7 @@ public class TradeOrder implements java.io.Serializable {
     }
 
     public TradeOrder(short siteId, long userId, BigDecimal amount, String tradeType, String serialNumber, String accountType,
-            String ip, int status, Date createDate) {
+            String ip, int status, boolean processed, Date createDate) {
         this.siteId = siteId;
         this.userId = userId;
         this.amount = amount;
@@ -71,12 +75,13 @@ public class TradeOrder implements java.io.Serializable {
         this.accountType = accountType;
         this.ip = ip;
         this.status = status;
+        this.processed = processed;
         this.createDate = createDate;
     }
 
     public TradeOrder(short siteId, long userId, BigDecimal amount, String description, String tradeType, String serialNumber,
-            String accountType, String accountSerialNumber, String ip, int status, Date updateDate, Date createDate,
-            Date paymentDate) {
+            String accountType, String accountSerialNumber, String ip, int status, boolean processed, Date updateDate,
+            Date createDate, Date processDate, Date paymentDate) {
         this.siteId = siteId;
         this.userId = userId;
         this.amount = amount;
@@ -87,8 +92,10 @@ public class TradeOrder implements java.io.Serializable {
         this.accountSerialNumber = accountSerialNumber;
         this.ip = ip;
         this.status = status;
+        this.processed = processed;
         this.updateDate = updateDate;
         this.createDate = createDate;
+        this.processDate = processDate;
         this.paymentDate = paymentDate;
     }
 
@@ -194,6 +201,15 @@ public class TradeOrder implements java.io.Serializable {
         this.status = status;
     }
 
+    @Column(name = "processed", nullable = false)
+    public boolean isProcessed() {
+        return this.processed;
+    }
+
+    public void setProcessed(boolean processed) {
+        this.processed = processed;
+    }
+
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "update_date", length = 19)
     public Date getUpdateDate() {
@@ -212,6 +228,16 @@ public class TradeOrder implements java.io.Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "process_date", length = 19)
+    public Date getProcessDate() {
+        return this.processDate;
+    }
+
+    public void setProcessDate(Date processDate) {
+        this.processDate = processDate;
     }
 
     @Temporal(TemporalType.TIMESTAMP)
