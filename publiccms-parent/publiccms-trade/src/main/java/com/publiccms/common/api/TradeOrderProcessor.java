@@ -7,7 +7,7 @@ import com.publiccms.entities.trade.TradeOrder;
 public interface TradeOrderProcessor extends Container<String> {
     public String getTradeType();
 
-    default Supplier<String> keyFunction() {
+    public default Supplier<String> keyFunction() {
         return new Supplier<String>() {
 
             @Override

@@ -51,6 +51,13 @@ public class SysExtendField implements java.io.Serializable {
     public SysExtendField() {
     }
 
+    public SysExtendField(String code, String inputType, String name, String description) {
+        this.id = new SysExtendFieldId(0, code);
+        this.inputType = inputType;
+        this.name = name;
+        this.description = description;
+    }
+
     public SysExtendField(String code, String inputType, boolean required, String name, String description, String defaultValue) {
         this.id = new SysExtendFieldId(0, code);
         this.inputType = inputType;

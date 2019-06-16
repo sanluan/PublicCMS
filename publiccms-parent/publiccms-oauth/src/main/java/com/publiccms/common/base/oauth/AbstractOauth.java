@@ -177,14 +177,13 @@ public abstract class AbstractOauth implements Config, OauthGateway {
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, false, CONFIG_APP_KEY,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY), null));
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT, false, CONFIG_APP_SECRET,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET), null));
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT, false, CONFIG_RETURN_URL,
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, CONFIG_APP_KEY,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY)));
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT, CONFIG_APP_SECRET,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET)));
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT, CONFIG_RETURN_URL,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL, site.getDynamicPath()),
-                null));
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL, site.getDynamicPath())));
         return extendFieldList;
     }
 }

@@ -11,7 +11,7 @@ import com.publiccms.entities.trade.TradeRefund;
 public interface PaymentGateway extends Container<String> {
     public String getAccountType();
 
-    default Supplier<String> keyFunction() {
+    public default Supplier<String> keyFunction() {
         return new Supplier<String>() {
 
             @Override
