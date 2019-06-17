@@ -1,6 +1,7 @@
 package com.publiccms.entities.trade;
 // Generated 2019-6-16 9:09:11 by Hibernate Tools 6.0.0-SNAPSHOT
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -21,26 +22,6 @@ import org.hibernate.annotations.GenericGenerator;
 @Table(name = "trade_order_history")
 public class TradeOrderHistory implements java.io.Serializable {
     /**
-     * 
-     */
-    public static final String OPERATE_CREATE = "create";
-    /**
-     * 
-     */
-    public static final String OPERATE_PAY = "pay";
-    /**
-     * 
-     */
-    public static final String OPERATE_PAY_NOTIFY = "notify";
-    /**
-     * 
-     */
-    public static final String OPERATE_REFUND = "refund";
-    /**
-     * 
-     */
-    public static final String OPERATE_CANNEL = "cannel";
-    /**
     *
     */
     private static final long serialVersionUID = 1L;
@@ -48,6 +29,7 @@ public class TradeOrderHistory implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点ID", condition = true)
+    @JsonIgnore
     private short siteId;
     @GeneratorColumn(title = "订单ID", condition = true)
     private long orderId;

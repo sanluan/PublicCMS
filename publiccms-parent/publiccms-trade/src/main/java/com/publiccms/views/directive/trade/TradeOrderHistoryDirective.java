@@ -26,11 +26,11 @@ public class TradeOrderHistoryDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
             handler.put("object", service.getEntity(id)).render();
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeOrderHistory> entityList = service.getEntitys(ids);
                 Map<String, TradeOrderHistory> map = new LinkedHashMap<>();
@@ -40,6 +40,11 @@ public class TradeOrderHistoryDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

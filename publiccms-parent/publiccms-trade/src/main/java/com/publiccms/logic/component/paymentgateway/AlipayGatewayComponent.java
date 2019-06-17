@@ -131,6 +131,10 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
             try {
                 AlipayTradeRefundResponse alipay_response = client.execute(alipay_request);
                 if ("10000".equalsIgnoreCase(alipay_response.getCode())) {
+                    TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
+                    if (null != tradeOrderProcessor && tradeOrderProcessor.refunded(order)) {
+                        service.processed(order.getSiteId(), order.getId());
+                    }
                     return true;
                 } else {
                     service.pendingRefund(order.getSiteId(), order.getId());
@@ -215,7 +219,7 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
                                 if (service.paid(siteId, order.getId(), trade_no)) {
                                     TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent
                                             .get(order.getTradeType());
-                                    if (null != tradeOrderProcessor && tradeOrderProcessor.process(order)) {
+                                    if (null != tradeOrderProcessor && tradeOrderProcessor.paid(order)) {
                                         service.processed(order.getSiteId(), order.getId());
                                     } else {
                                         history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),

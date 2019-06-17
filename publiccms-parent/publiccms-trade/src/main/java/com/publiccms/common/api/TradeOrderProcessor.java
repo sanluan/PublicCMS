@@ -18,5 +18,7 @@ public interface TradeOrderProcessor extends Container<String> {
         };
     }
 
-    public boolean process(TradeOrder order);
+    public boolean paid(TradeOrder order);
+    
+    public boolean refunded(TradeOrder order);
 }

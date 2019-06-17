@@ -25,6 +25,11 @@ public class TradeAccountListDirective extends AbstractTemplateDirective {
                 handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
+    
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 
     @Autowired
     private TradeAccountService service;

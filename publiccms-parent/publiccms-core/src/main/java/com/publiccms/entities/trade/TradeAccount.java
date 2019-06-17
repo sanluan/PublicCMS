@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -26,6 +27,7 @@ public class TradeAccount implements java.io.Serializable {
     @GeneratorColumn(title = "用户ID")
     private long id;
     @GeneratorColumn(title = "站点ID", condition = true)
+    @JsonIgnore
     private short siteId;
     @GeneratorColumn(title = "金额")
     private BigDecimal amount;

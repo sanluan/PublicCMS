@@ -11,11 +11,11 @@ ALTER TABLE `log_upload`
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_account`;
 CREATE TABLE `trade_account`  (
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `id` bigint(20) NOT NULL COMMENT '用户ID',
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `amount` decimal(10, 2) NOT NULL COMMENT '金额',
   `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新日期',
-  PRIMARY KEY (`user_id`),
+  PRIMARY KEY (`id`),
   INDEX `site_id`(`site_id`, `update_date`) 
 ) COMMENT = '资金账户';
 
@@ -23,20 +23,22 @@ CREATE TABLE `trade_account`  (
 -- Table structure for trade_account_history
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_account_history`;
-CREATE TABLE `trade_account_history`  (
+CREATE TABLE `trade_account_history` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `serial_number` varchar(100) NOT NULL COMMENT '流水号',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `amount` decimal(10, 2) NOT NULL COMMENT '变动金额',
+  `account_id` bigint(20) NOT NULL COMMENT '账户ID',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '操作用户ID',
+  `amount_change` decimal(10,2) NOT NULL COMMENT '变动金额',
+  `amount` decimal(10,2) NOT NULL COMMENT '变动金额',
+  `balance` decimal(10,2) NOT NULL COMMENT '变动金额',
   `status` int(10) NOT NULL COMMENT '类型:0预充值,1消费,2充值,3退款',
-  `description` varchar(255) NULL DEFAULT NULL COMMENT '描述',
-  `create_date` datetime(0) NOT NULL COMMENT '创建日期',
+  `description` varchar(255) DEFAULT NULL COMMENT '描述',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  INDEX `site_id`(`site_id`, `user_id`, `status`, `create_date`)
-) COMMENT = '账户流水';
-
--- ----------------------------
+  KEY `site_id` (`site_id`,`account_id`,`status`,`create_date`)
+) COMMENT='账户流水';
+ ----------------------------
 -- Table structure for trade_order
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_order`;
@@ -72,9 +74,11 @@ CREATE TABLE `trade_order_history`  (
   `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `order_id` bigint(20) NOT NULL COMMENT '订单ID',
   `create_date` datetime(0) NOT NULL COMMENT '创建日期',
-  `content` text NOT NULL COMMENT '内容',
+  `operate` varchar(100) NOT NULL COMMENT '操作',
+  `content` text COMMENT '内容',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`order_id`,`create_date`)
+  KEY `site_id` (`site_id`,`order_id`,`operate`),
+  KEY `create_date` (`create_date`)
 ) COMMENT = '订单流水';
 
 -- ----------------------------
@@ -97,3 +101,27 @@ CREATE TABLE `trade_refund`  (
   INDEX `order_id`(`order_id`, `status`, `create_date`)
 ) COMMENT = '退款申请';
 
+INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', 'sysUser/lookup', 'icon-book', 'trade_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('account_list', 'tradeAccount/list', NULL, 'icon-credit-card', 'trade_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list', NULL, 'icon-calendar', 'trade_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/lookup', 'icon-barcode', 'trade_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup', 'icon-signout', 'trade_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 1, 0);
+INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'en', 'Trade menegent');
+INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'ja', 'ビジネス管理');
+INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'zh', '商务管理');
+INSERT INTO `sys_module_lang` VALUES ('account_history_list', 'en', 'Account History');
+INSERT INTO `sys_module_lang` VALUES ('account_history_list', 'ja', 'アカウントの履歴');
+INSERT INTO `sys_module_lang` VALUES ('account_history_list', 'zh', '账户历史');
+INSERT INTO `sys_module_lang` VALUES ('account_list', 'en', 'Account management');
+INSERT INTO `sys_module_lang` VALUES ('account_list', 'ja', 'アカウント管理');
+INSERT INTO `sys_module_lang` VALUES ('account_list', 'zh', '账户管理');
+INSERT INTO `sys_module_lang` VALUES ('order_history_list', 'en', 'Order history');
+INSERT INTO `sys_module_lang` VALUES ('order_history_list', 'ja', 'オーダー履歴');
+INSERT INTO `sys_module_lang` VALUES ('order_history_list', 'zh', '订单历史');
+INSERT INTO `sys_module_lang` VALUES ('order_list', 'en', 'Order management');
+INSERT INTO `sys_module_lang` VALUES ('order_list', 'ja', 'オーダー管理');
+INSERT INTO `sys_module_lang` VALUES ('order_list', 'zh', '订单管理');
+INSERT INTO `sys_module_lang` VALUES ('refund_list', 'en', 'Refund management');
+INSERT INTO `sys_module_lang` VALUES ('refund_list', 'ja', '払い戻し管理');
+INSERT INTO `sys_module_lang` VALUES ('refund_list', 'zh', '退款管理');

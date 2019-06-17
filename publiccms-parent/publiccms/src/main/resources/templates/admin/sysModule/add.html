@@ -31,14 +31,18 @@
         </dl>
       <fieldset>
           <legend><@t.page 'name'/>:</legend>
+          <#assign index=0/>
           <#list langs as k,v>
+            <#if 'zh_TW'!=k>
             <dl class="nowrap">
                 <dt>${v}:</dt>
                 <dd>
-                    <input type="hidden" name="langList[${k?index}].id.lang" value="${k}"/>
-                    <input class="required" name="langList[${k?index}].value" type="text" size="20" maxlength="100" value="<@_sysModuleLang moduleId=id lang=k>${object.value!}</@_sysModuleLang>"/>
+                    <input type="hidden" name="langList[${index}].id.lang" value="${k}"/>
+                    <input class="required" name="langList[${index}].value" type="text" size="20" maxlength="100" value="<@_sysModuleLang moduleId=id lang=k>${object.value!}</@_sysModuleLang>"/>
                 </dd>
             </dl>
+            <#assign index++/>
+            </#if>
         </#list>
       </fieldset>
     <#if deep lte 2>

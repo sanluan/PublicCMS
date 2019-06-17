@@ -48,6 +48,10 @@ public class TradeOrderHistoryService extends BaseService<TradeOrderHistory> {
      * 
      */
     public static final String OPERATE_REFUND = "refund";
+    /**
+     * 
+     */
+    public static final String OPERATE_CANNEL = "cannel";
 
     /**
      * 

@@ -29,10 +29,6 @@
     </form>
 </div>
 <div class="pageContent">
-    <div class="panelBar">
-        <ul class="toolBar">
-        </ul>
-    </div>
 <@_tradeAccountHistoryList userId=userId status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
     <table class="list" width="100%" layoutH="92">
@@ -40,10 +36,11 @@
             <tr>
                 <th>ID</th>
                 <th>流水号</th>
-                <th>用户ID</th>
+                <th>账户ID</th>
                 <th><@t.page 'user'/></th>
-                <th>变动</th>
+                <th>操作用户</th>
                 <th>金额</th>
+                <th>变动</th>
                 <th>余额</th>
                 <th>状态</th>
                 <th>描述</th>
@@ -52,6 +49,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
+                <@t.merge 'userIds' a.accountId!/>
                 <@t.merge 'userIds' a.userId!/>
             </#list>
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
@@ -59,14 +57,17 @@
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
                 <td>${a.serialNumber!}</td>
-                <td>${a.userId!}</td>
+                <td>${a.accountId!}</td>
+                <td class="center">
+                    ${(userMap[a.accountId?string].nickName)!}
+                </td>
                 <td class="center">
                     ${(userMap[a.userId?string].nickName)!}
                 </td>
-                <td>${a.change!}</td>
                 <td>${a.amount!}</td>
+                <td>${a.amountChange!}</td>
                 <td>${a.balance!}</td>
-                <td>${a.status!}</td>
+                <td><@t.page 'status.accountHistory.'+a.status/></td>
                 <td>${a.description!}</td>
                 <td>${a.createDate!}</td>
             </tr>

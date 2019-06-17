@@ -46,14 +46,10 @@
 </div>
 <@_sysAuthorized roleIds=admin.roles urls='tradeAccountHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
-    <div class="panelBar">
-        <ul class="toolBar">
-        </ul>
-    </div>
 <@_tradeOrderList userId=userId orderType=orderType serialNumber=serialNumber accountType=accountType 
             accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-    <table class="list" width="100%" layoutH="92">
+    <table class="list" width="100%">
         <thead>
             <tr>
                 <th>ID</th>

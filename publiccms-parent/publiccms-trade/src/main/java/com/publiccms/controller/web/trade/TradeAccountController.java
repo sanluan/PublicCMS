@@ -24,7 +24,7 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeOrder;
-import com.publiccms.logic.component.orderhandler.ChargeProcessorComponent;
+import com.publiccms.logic.component.orderprocessor.ChargeProcessorComponent;
 import com.publiccms.logic.service.trade.TradeOrderService;
 
 /**
@@ -45,9 +45,9 @@ public class TradeAccountController {
      * @param model
      * @return operate result
      */
-    @RequestMapping("charge/{accountType}")
+    @RequestMapping("recharge/{accountType}")
     @Csrf
-    public String save(@RequestAttribute SysSite site, BigDecimal change, @PathVariable("accountType") String accountType,
+    public String recharge(@RequestAttribute SysSite site, BigDecimal change, @PathVariable("accountType") String accountType,
             HttpServletRequest request, HttpSession session, ModelMap model) {
         SysUser user = ControllerUtils.getUserFromSession(session);
         if (null != user && null != change && 1 == change.compareTo(BigDecimal.ZERO)) {

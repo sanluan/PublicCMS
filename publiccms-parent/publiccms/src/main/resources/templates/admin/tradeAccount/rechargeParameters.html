@@ -1,5 +1,5 @@
 <@_tradeAccount id=admin.deptId><#assign account=object/></@_tradeAccount>
-<form action="cmsContent/sort.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+<form action="tradeAccount/recharge.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="accountId" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH="0">
@@ -17,7 +17,7 @@
         </dl>
         <dl>
             <dt>金额:</dt>
-            <dd><input class="required digits" type="number" name="change"/></dd>
+            <dd><input class="required number" type="number" name="change"/></dd>
         </dl>
         <dl>
             <dt>说明:</dt>

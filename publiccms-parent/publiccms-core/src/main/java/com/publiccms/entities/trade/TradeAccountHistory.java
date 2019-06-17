@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -32,6 +33,7 @@ public class TradeAccountHistory implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点ID", condition = true)
+    @JsonIgnore
     private short siteId;
     @GeneratorColumn(title = "流水号")
     private String serialNumber;
@@ -40,7 +42,7 @@ public class TradeAccountHistory implements java.io.Serializable {
     @GeneratorColumn(title = "用户ID", condition = true)
     private Long userId;
     @GeneratorColumn(title = "变动")
-    private BigDecimal change;
+    private BigDecimal amountChange;
     @GeneratorColumn(title = "金额")
     private BigDecimal amount;
     @GeneratorColumn(title = "余额")
@@ -55,25 +57,25 @@ public class TradeAccountHistory implements java.io.Serializable {
     public TradeAccountHistory() {
     }
 
-    public TradeAccountHistory(short siteId, String serialNumber, long accountId, BigDecimal change, BigDecimal amount,
+    public TradeAccountHistory(short siteId, String serialNumber, long accountId, BigDecimal amountChange, BigDecimal amount,
             BigDecimal balance, int status, Date createDate) {
         this.siteId = siteId;
         this.serialNumber = serialNumber;
         this.accountId = accountId;
-        this.change = change;
+        this.amountChange = amountChange;
         this.amount = amount;
         this.balance = balance;
         this.status = status;
         this.createDate = createDate;
     }
 
-    public TradeAccountHistory(short siteId, String serialNumber, long accountId, Long userId, BigDecimal change,
+    public TradeAccountHistory(short siteId, String serialNumber, long accountId, Long userId, BigDecimal amountChange,
             BigDecimal amount, BigDecimal balance, int status, String description, Date createDate) {
         this.siteId = siteId;
         this.serialNumber = serialNumber;
         this.accountId = accountId;
         this.userId = userId;
-        this.change = change;
+        this.amountChange = amountChange;
         this.amount = amount;
         this.balance = balance;
         this.status = status;
@@ -130,13 +132,13 @@ public class TradeAccountHistory implements java.io.Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "change", nullable = false, precision = 10)
-    public BigDecimal getChange() {
-        return this.change;
+    @Column(name = "amount_change", nullable = false, precision = 10)
+    public BigDecimal getAmountChange() {
+        return this.amountChange;
     }
 
-    public void setChange(BigDecimal change) {
-        this.change = change;
+    public void setAmountChange(BigDecimal amountChange) {
+        this.amountChange = amountChange;
     }
 
     @Column(name = "amount", nullable = false, precision = 10)

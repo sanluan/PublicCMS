@@ -48,7 +48,7 @@ public class AccountGatewayComponent implements PaymentGateway {
                         order.getDescription())) {
             if (service.paid(order.getSiteId(), order.getId(), order.getAccountSerialNumber())) {
                 TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
-                if (null != tradeOrderProcessor && tradeOrderProcessor.process(order)) {
+                if (null != tradeOrderProcessor && tradeOrderProcessor.paid(order)) {
                     service.processed(order.getSiteId(), order.getId());
                 } else {
                     TradeOrderHistory history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),

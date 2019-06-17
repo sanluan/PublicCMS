@@ -94,6 +94,21 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
+    public boolean unProcessed(short siteId, long orderId) {
+        TradeOrder entity = getEntity(orderId);
+        if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
+            entity.setProcessed(false);
+            Date now = CommonUtils.getDate();
+            entity.setProcessDate(now);
+            entity.setUpdateDate(now);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_REFUND);
+            historyDao.save(history);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean paid(short siteId, long orderId, String accountSerialNumber) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PENDING_PAY) {
