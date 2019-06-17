@@ -785,6 +785,9 @@ INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list',
 INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/lookup', 'icon-barcode', 'trade_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup', 'icon-signout', 'trade_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 1, 0);
+INSERT INTO `sys_module` VALUES ('account_add', 'tradeAccount/add', 'tradeAccount/save', '', 'account_list', 0, 1);
+INSERT INTO `sys_module` VALUES ('account_recharge', 'tradeAccount/rechargeParameters', 'tradeAccount/recharge', '', 'account_list', 0, 2);
+INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeRefund/refund', '', 'refund_list', 0, 1);
 
 -- ----------------------------
 -- Table structure for sys_module_lang
@@ -1331,6 +1334,15 @@ INSERT INTO `sys_module_lang` VALUES ('order_list', 'zh', '订单管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'en', 'Refund management');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'ja', '払い戻し管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_list', 'zh', '退款管理');
+INSERT INTO `sys_module_lang` VALUES ('account_add', 'en', 'Add');
+INSERT INTO `sys_module_lang` VALUES ('account_add', 'ja', '追加');
+INSERT INTO `sys_module_lang` VALUES ('account_add', 'zh', '增加');
+INSERT INTO `sys_module_lang` VALUES ('account_recharge', 'en', 'Recharge');
+INSERT INTO `sys_module_lang` VALUES ('account_recharge', 'ja', 'チャージ');
+INSERT INTO `sys_module_lang` VALUES ('account_recharge', 'zh', '充值');
+INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'en', 'Refund');
+INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'ja', '払い戻し');
+INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'zh', '退款');
 -- ----------------------------
 -- Table structure for sys_role
 -- ----------------------------
