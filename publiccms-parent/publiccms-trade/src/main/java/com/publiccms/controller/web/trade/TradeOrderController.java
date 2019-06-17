@@ -39,11 +39,10 @@ public class TradeOrderController {
      * @param request
      * @param response
      * @param model
-     * @return
      * @throws Exception
      */
     @RequestMapping(value = "pay/{accountType}")
-    public String pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, Long orderId,
+    public void pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, Long orderId,
             String returnUrl, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
@@ -54,10 +53,11 @@ public class TradeOrderController {
         TradeOrder entity = service.getEntity(orderId);
         if (null != paymentGateway && null == entity
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            response.sendRedirect(returnUrl);
         }
-        paymentGateway.pay(entity, returnUrl, site.getDynamicPath() + "tradeOrder/notify/" + accountType, response);
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        if (!paymentGateway.pay(entity, returnUrl, site.getDynamicPath() + "tradeOrder/notify/" + accountType, response)) {
+            response.sendRedirect(returnUrl);
+        }
     }
 
     /**

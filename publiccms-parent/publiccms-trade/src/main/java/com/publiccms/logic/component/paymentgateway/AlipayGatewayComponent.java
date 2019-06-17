@@ -48,6 +48,10 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
     /**
      * 
      */
+    public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
+    /**
+     * 
+     */
     public static final String CONFIG_URL = "url";
     /**
      * 
@@ -78,38 +82,51 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
     @Autowired
     private TradeOrderProcessorComponent tradeOrderProcessorComponent;
 
+    /**
+     * @param site
+     * @param showAll
+     * @return config code or null
+     */
+    public String getCode(SysSite site, boolean showAll) {
+        return CONFIG_CODE;
+    }
+
     @Override
     public String getAccountType() {
         return CONFIG_CODE;
     }
 
     @Override
-    public void pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response) {
-        Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
-        if (CommonUtils.notEmpty(config)) {
-            AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
-                    config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
-                    config.get(CONFIG_ALIPAY_PUBLIC_KEY));
-            AlipayTradeWapPayRequest alipay_request = new AlipayTradeWapPayRequest();
-            AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
-            model.setOutTradeNo(String.valueOf(order.getId()));
-            model.setSubject(order.getDescription());
-            model.setTotalAmount(order.getAmount().toString());
-            model.setBody(order.getDescription());
-            model.setTimeoutExpress(config.get(CONFIG_TIMEOUT_EXPRESS));
-            model.setProductCode(config.get(CONFIG_PRODUCT_CODE));
-            alipay_request.setBizModel(model);
-            alipay_request.setNotifyUrl(notifyUrl);
-            alipay_request.setReturnUrl(callbackUrl);
-            try {
-                String form = client.pageExecute(alipay_request).getBody();
-                response.setContentType("text/html;charset=" + CommonConstants.DEFAULT_CHARSET_NAME);
-                response.getWriter().write(form);
-                response.getWriter().flush();
-                response.getWriter().close();
-            } catch (AlipayApiException | IOException e) {
+    public boolean pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response) {
+        if (null != order) {
+            Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
+            if (CommonUtils.notEmpty(config)) {
+                AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
+                        config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
+                        config.get(CONFIG_ALIPAY_PUBLIC_KEY));
+                AlipayTradeWapPayRequest alipay_request = new AlipayTradeWapPayRequest();
+                AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
+                model.setOutTradeNo(String.valueOf(order.getId()));
+                model.setSubject(order.getDescription());
+                model.setTotalAmount(order.getAmount().toString());
+                model.setBody(order.getDescription());
+                model.setTimeoutExpress(config.get(CONFIG_TIMEOUT_EXPRESS));
+                model.setProductCode(config.get(CONFIG_PRODUCT_CODE));
+                alipay_request.setBizModel(model);
+                alipay_request.setNotifyUrl(notifyUrl);
+                alipay_request.setReturnUrl(callbackUrl);
+                try {
+                    String form = client.pageExecute(alipay_request).getBody();
+                    response.setContentType("text/html;charset=" + CommonConstants.DEFAULT_CHARSET_NAME);
+                    response.getWriter().write(form);
+                    response.getWriter().flush();
+                    response.getWriter().close();
+                    return true;
+                } catch (AlipayApiException | IOException e) {
+                }
             }
         }
+        return false;
     }
 
     @Override

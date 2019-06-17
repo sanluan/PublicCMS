@@ -24,7 +24,7 @@ public interface PaymentGateway extends Container<String> {
 
     public boolean enable(short siteId);
 
-    public void pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response);
+    public boolean pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response);
 
     public boolean refund(TradeOrder order, TradeRefund refund);
 

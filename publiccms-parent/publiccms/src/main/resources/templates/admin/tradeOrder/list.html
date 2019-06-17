@@ -9,7 +9,7 @@
                 </li>
                 <li>
                     <label>订单类型：</label>
-                    <input type="text" name="orderType" value="${tradeType!}" />
+                    <input type="text" name="tradeType" value="${tradeType!}" />
                 </li>
                 <li>
                     <label>订单流水：</label>
@@ -44,15 +44,16 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='tradeAccountHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
-<@_tradeOrderList userId=userId orderType=orderType serialNumber=serialNumber accountType=accountType 
+<@_tradeOrderList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType 
             accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-    <table class="list" width="100%">
+    <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
                 <th>ID</th>
+                <th>用户ID</th>
                 <th>用户</th>
                 <th>金额</th>
                 <th>描述</th>
@@ -88,8 +89,8 @@
                 <td>${a.status!}</td>
                 <td>${a.createDate!}</td>
                 <td>
-                    <#if authorizedMap['tradeAccountHistory/list']>
-                        <a href="tradeAccountHistory/list.html?ids=${a.id}?_csrf=<@_csrfToken admin=true/>" target="tabNav" rel="tradeAccountHistory/list">账号流水</a>
+                    <#if authorizedMap['tradeOrderHistory/list']>
+                        <a href="tradeOrderHistory/list.html?orderId=${a.id}" target="navTab" rel="tradeOrderHistory/list">订单历史</a>
                     </#if>
                 </td>
             </tr>

@@ -59,7 +59,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
                 </#list>
                 <td>
                 ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
-                    <a href="${entityName?uncap_first}/delete.do?ids=<#noparse>${a.id}</#noparse>?_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.delete'/></#noparse>"  target="ajaxTodo"><#noparse><@t.page 'button.delete'/></#noparse></a>
+                    <a href="${entityName?uncap_first}/delete.do?ids=<#noparse>${a.id}</#noparse>&_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.delete'/></#noparse>"  target="ajaxTodo"><#noparse><@t.page 'button.delete'/></#noparse></a>
                 ${'</#'}if>
                 </td>
             <#noparse>

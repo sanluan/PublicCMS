@@ -41,7 +41,7 @@ public class AccountGatewayComponent implements PaymentGateway {
     }
 
     @Override
-    public void pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response) {
+    public boolean pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response) {
         if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
                 && null != accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(),
                         order.getUserId(), TradeAccountHistoryService.STATUS_PAY, order.getAmount().negate(),
@@ -50,6 +50,7 @@ public class AccountGatewayComponent implements PaymentGateway {
                 TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
                 if (null != tradeOrderProcessor && tradeOrderProcessor.paid(order)) {
                     service.processed(order.getSiteId(), order.getId());
+                    return true;
                 } else {
                     TradeOrderHistory history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),
                             TradeOrderHistoryService.OPERATE_PROCESS_ERROR);
@@ -64,6 +65,7 @@ public class AccountGatewayComponent implements PaymentGateway {
             response.sendRedirect(callbackUrl);
         } catch (IOException e) {
         }
+        return false;
     }
 
     @Override
