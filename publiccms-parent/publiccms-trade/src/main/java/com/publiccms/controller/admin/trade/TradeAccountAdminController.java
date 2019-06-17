@@ -15,15 +15,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.JsonUtils;
-import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeAccountHistory;
-import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 import com.publiccms.logic.service.trade.TradeAccountService;
 
@@ -42,6 +36,7 @@ public class TradeAccountAdminController {
      * @param serialNumber
      * @param accountId
      * @param change
+     * @param description 
      * @param request
      * @param model
      * @return operate result
@@ -49,12 +44,10 @@ public class TradeAccountAdminController {
     @RequestMapping("charge")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String serialNumber, long accountId,
-            BigDecimal change, HttpServletRequest request, ModelMap model) {
+            BigDecimal change, String description, HttpServletRequest request, ModelMap model) {
         TradeAccountHistory history = service.change(site.getId(), serialNumber, accountId, admin.getId(),
-                TradeAccountHistoryService.STATUS_CHARGE, change);
+                TradeAccountHistoryService.STATUS_CHARGE, change, description);
         if (null != history) {
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "account.charge", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(history)));
             return CommonConstants.TEMPLATE_DONE;
         }
         return CommonConstants.TEMPLATE_ERROR;
@@ -62,6 +55,4 @@ public class TradeAccountAdminController {
 
     @Autowired
     private TradeAccountService service;
-    @Autowired
-    protected LogOperateService logOperateService;
 }

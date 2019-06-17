@@ -44,7 +44,8 @@ public class AccountGatewayComponent implements PaymentGateway {
     public void pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response) {
         if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
                 && null != accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(),
-                        order.getUserId(), TradeAccountHistoryService.STATUS_PAY, order.getAmount().negate())) {
+                        order.getUserId(), TradeAccountHistoryService.STATUS_PAY, order.getAmount().negate(),
+                        order.getDescription())) {
             if (service.paid(order.getSiteId(), order.getId(), order.getAccountSerialNumber())) {
                 TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
                 if (null != tradeOrderProcessor && tradeOrderProcessor.process(order)) {
@@ -56,7 +57,7 @@ public class AccountGatewayComponent implements PaymentGateway {
                 }
             } else {
                 accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(), order.getUserId(),
-                        TradeAccountHistoryService.STATUS_REFUND, order.getAmount());
+                        TradeAccountHistoryService.STATUS_REFUND, order.getAmount(), order.getDescription());
             }
         }
         try {
@@ -69,7 +70,8 @@ public class AccountGatewayComponent implements PaymentGateway {
     public boolean refund(TradeOrder order, TradeRefund refund) {
         if (null != order && service.refunded(order.getSiteId(), order.getId())) {
             TradeAccountHistory history = accountService.change(order.getSiteId(), order.getAccountSerialNumber(),
-                    order.getUserId(), order.getUserId(), TradeAccountHistoryService.STATUS_REFUND, order.getAmount().negate());
+                    order.getUserId(), order.getUserId(), TradeAccountHistoryService.STATUS_REFUND, order.getAmount().negate(),
+                    order.getDescription());
             if (null == history) {
                 service.pendingRefund(order.getSiteId(), order.getId());
             } else {

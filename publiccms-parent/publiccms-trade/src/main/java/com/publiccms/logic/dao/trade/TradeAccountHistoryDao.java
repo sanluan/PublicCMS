@@ -26,7 +26,6 @@ public class TradeAccountHistoryDao extends BaseDao<TradeAccountHistory> {
      * @param userId
      * @param status
      * @param startCreateDate
-     * @param startCreateDate
      * @param endCreateDate
      * @param orderType
      * @param pageIndex

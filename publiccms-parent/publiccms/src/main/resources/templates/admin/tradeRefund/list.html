@@ -26,16 +26,12 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='tradeRefund/add,tradeRefund/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='tradeRefund/refundParameters'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-        <#if authorizedMap['tradeRefund/add']>
-            <li><a href="tradeRefund/add.html" target="navTab" rel="tradeRefund/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
-            <li><a href="tradeRefund/add.html?id={sid}" target="navTab" rel="tradeRefund/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
-        </#if>
-        <#if authorizedMap['tradeRefund/delete']>
-            <li><a href="tradeRefund/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+        <#if authorizedMap['tradeRefund/refundParameters']>
+            <li><a href="tradeRefund/refundParameters.html?id={sid}" target="dialog" rel="tradeRefund/refundParameters"><i class="icon-plus-sign-alt icon-large"></i> 退款</a></li>
         </#if>
         </ul>
     </div>
@@ -70,8 +66,8 @@
                 <td>${a.reply!}</td>
                 <td>${a.createDate!}</td>
                 <td>
-                <#if authorizedMap['tradeRefund/delete']>
-                    <a href="tradeRefund/delete.do?ids=${a.id}?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
+                <#if authorizedMap['tradeRefund/refundParameters']>
+                    <a href="tradeRefund/refundParameters.html?id=${a.id}" target="dialog" rel="tradeRefund/refundParameters">退款</a>
                 </#if>
                 </td>
             </tr>

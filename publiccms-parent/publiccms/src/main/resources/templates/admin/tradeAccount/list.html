@@ -3,10 +3,6 @@
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
-                <li>
-                    <label>站点ID：</label>
-                    <input type="text" name="siteId" value="${siteId!}" />
-                </li>
             </ul>
             <div class="subBar">
                 <ul>
@@ -18,43 +14,44 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='tradeAccount/add,tradeAccount/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='tradeAccount/chargeParameters,tradeAccountHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-        <#if authorizedMap['tradeAccount/add']>
-            <li><a href="tradeAccount/add.html" target="navTab" rel="tradeAccount/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
-            <li><a href="tradeAccount/add.html?id={sid}" target="navTab" rel="tradeAccount/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
-        </#if>
-        <#if authorizedMap['tradeAccount/delete']>
-            <li><a href="tradeAccount/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+        <#if authorizedMap['tradeAccount/chargeParameters']>
+            <li><a href="tradeAccount/chargeParameters.html?id={sid}" target="dialog" rel="tradeAccount/chargeParameters"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.charge'/></a></li>
         </#if>
         </ul>
     </div>
-<@_tradeAccountList 
-            pageIndex=pageNum pageSize=numPerPage>
+<@_tradeAccountList pageIndex=pageNum pageSize=numPerPage>
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
                 <th>用户ID</th>
-                <th>站点ID</th>
                 <th>金额</th>
-                <th>冻结金额</th>
                 <th>更新日期</th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
             <#list page.list as a>
+                <@t.merge 'userIds' a.id!/>
+            </#list>
+            <@_sysUser ids=t.id!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.userId!}</td>
-                <td>${a.siteId!}</td>
+                <td class="center">
+                    ${(userMap[a.id?string].nickName)!}
+                </td>
                 <td>${a.amount!}</td>
-                <td>${a.frozenAmount!}</td>
                 <td>${a.updateDate!}</td>
                 <td>
-                <#if authorizedMap['tradeAccount/delete']>
-                    <a href="tradeAccount/delete.do?ids=${a.id}?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
+                <#if authorizedMap['tradeAccount/chargeParameters']>
+                    <a href="tradeAccount/chargeParameters.html?id=${a.id}" target="dialog" rel="tradeAccount/chargeParameters"><@t.page 'button.charge'/></a>
+                </#if>
+                <#if authorizedMap['tradeAccountHistory/list']>
+                    <a href="tradeAccountHistory/list.html?id=${a.id}" target="tabNav" rel="tradeAccountHistory/list">账号流水</a>
                 </#if>
                 </td>
             </tr>

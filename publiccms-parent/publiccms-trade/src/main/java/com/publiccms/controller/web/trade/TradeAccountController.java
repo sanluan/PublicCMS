@@ -20,15 +20,11 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.logic.component.orderhandler.ChargeProcessorComponent;
-import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeOrderService;
 
 /**
@@ -60,14 +56,10 @@ public class TradeAccountController {
             TradeOrder entity = new TradeOrder(site.getId(), user.getId(), change, ChargeProcessorComponent.GRADE_TYPE,
                     UUID.randomUUID().toString(), accountType, ip, TradeOrderService.STATUS_PENDING_PAY, false, now);
             orderService.create(entity);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "account.charge", ip, now, JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
 
     @Autowired
     private TradeOrderService orderService;
-    @Autowired
-    protected LogOperateService logOperateService;
 }

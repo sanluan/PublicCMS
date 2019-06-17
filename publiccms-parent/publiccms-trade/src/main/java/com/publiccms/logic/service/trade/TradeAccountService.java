@@ -50,14 +50,14 @@ public class TradeAccountService extends BaseService<TradeAccount> {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public TradeAccountHistory change(short siteId, String serialNumber, long accountId, Long userId, int status,
-            BigDecimal change) {
+            BigDecimal change, String description) {
         if (null != change) {
             TradeAccount account = getOrCreate(siteId, accountId);
             BigDecimal balance = change.add(account.getAmount());
             if (0 <= balance.compareTo(BigDecimal.ZERO)) {
                 Date now = CommonUtils.getDate();
                 TradeAccountHistory history = new TradeAccountHistory(siteId, serialNumber, accountId, userId, change,
-                        account.getAmount(), balance, status, null, now);
+                        account.getAmount(), balance, status, description, now);
                 historyDao.save(history);
                 account.setAmount(balance);
                 account.setUpdateDate(now);

@@ -19,8 +19,9 @@ public class ChargeProcessorComponent implements TradeOrderProcessor {
 
     @Override
     public boolean process(TradeOrder order) {
-        return order.isProcessed() || null != accountService.change(order.getSiteId(), order.getAccountSerialNumber(),
-                order.getUserId(), order.getUserId(), TradeAccountHistoryService.STATUS_CHARGE, order.getAmount());
+        return order.isProcessed()
+                || null != accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(),
+                        order.getUserId(), TradeAccountHistoryService.STATUS_CHARGE, order.getAmount(), order.getDescription());
     }
 
 }

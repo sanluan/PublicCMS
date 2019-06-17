@@ -51,11 +51,11 @@ public class TradeOrderHistory implements java.io.Serializable {
     private short siteId;
     @GeneratorColumn(title = "订单ID", condition = true)
     private long orderId;
-    @GeneratorColumn(title = "用户ID", condition = true, order = true)
+    @GeneratorColumn(title = "创建日期", condition = true, order = true)
     private Date createDate;
     @GeneratorColumn(title = "操作", condition = true)
     private String operate;
-    @GeneratorColumn(title = "ID", condition = true, like = true)
+    @GeneratorColumn(title = "内容", condition = true, like = true)
     private String content;
 
     public TradeOrderHistory() {

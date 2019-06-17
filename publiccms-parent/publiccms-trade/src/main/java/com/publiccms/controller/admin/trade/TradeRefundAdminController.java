@@ -16,18 +16,12 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
-import com.publiccms.common.tools.JsonUtils;
-import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
-import com.publiccms.logic.service.log.LogLoginService;
-import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeOrderService;
 import com.publiccms.logic.service.trade.TradeRefundService;
 
@@ -46,7 +40,6 @@ public class TradeRefundAdminController {
      * @param id
      * @param refundAmount
      * @param reply
-     * @param entity
      * @param request
      * @param model
      * @return operate result
@@ -75,8 +68,6 @@ public class TradeRefundAdminController {
             orderService.pendingRefund(site.getId(), order.getId());
             service.updateStatus(entity.getId(), admin.getId(), TradeRefundService.STATUS_FAIL);
         }
-        logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "refund",
-                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(service.getEntity(id))));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -86,6 +77,4 @@ public class TradeRefundAdminController {
     private TradeRefundService service;
     @Autowired
     private TradeOrderService orderService;
-    @Autowired
-    protected LogOperateService logOperateService;
 }
