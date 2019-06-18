@@ -119,7 +119,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 attribute.setData(handler.getString("data"));
 
                 CmsContentAdminController.initContent(entity, cmsModel, handler.getBoolean("draft"),
-                        handler.getBoolean("checked"), attribute, CommonUtils.getDate());
+                        handler.getBoolean("checked"), attribute, false, CommonUtils.getDate());
                 if (null != entity.getId()) {
                     CmsContent oldEntity = service.getEntity(entity.getId());
                     if (null != oldEntity && site.getId() == oldEntity.getSiteId()) {
