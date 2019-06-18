@@ -144,7 +144,7 @@ public class CmsContentAdminController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         Date now = CommonUtils.getDate();
-        initContent(entity, cmsModel, draft, checked, attribute, now);
+        initContent(entity, cmsModel, draft, checked, attribute, true, now);
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
@@ -219,7 +219,7 @@ public class CmsContentAdminController {
     }
 
     public static void initContent(CmsContent entity, CmsModel cmsModel, Boolean draft, Boolean checked,
-            CmsContentAttribute attribute, Date now) {
+            CmsContentAttribute attribute, boolean base64, Date now) {
         entity.setHasFiles(cmsModel.isHasFiles());
         entity.setHasImages(cmsModel.isHasImages());
         entity.setOnlyUrl(cmsModel.isOnlyUrl());
@@ -231,7 +231,7 @@ public class CmsContentAdminController {
         if (null == entity.getPublishDate()) {
             entity.setPublishDate(now);
         }
-        if (null != attribute.getText()) {
+        if (null != attribute.getText() && base64) {
             attribute.setText(new String(VerificationUtils.base64Decode(attribute.getText()), CommonConstants.DEFAULT_CHARSET));
         }
     }

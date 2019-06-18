@@ -111,7 +111,7 @@ public class ContentController {
                 || ControllerUtils.verifyNotEmpty("model", cmsModel, model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
-        CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, CommonUtils.getDate());
+        CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
