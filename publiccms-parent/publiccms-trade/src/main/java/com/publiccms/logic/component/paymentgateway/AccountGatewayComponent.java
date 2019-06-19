@@ -1,7 +1,6 @@
 package com.publiccms.logic.component.paymentgateway;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -86,11 +85,6 @@ public class AccountGatewayComponent implements PaymentGateway {
     @Override
     public boolean enable(short siteId) {
         return true;
-    }
-
-    @Override
-    public String notify(short siteId, String body, Map<String, String[]> parameterMap) {
-        return null;
     }
 
 }

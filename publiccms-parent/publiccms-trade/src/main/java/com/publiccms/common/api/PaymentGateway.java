@@ -1,6 +1,5 @@
 package com.publiccms.common.api;
 
-import java.util.Map;
 import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +26,4 @@ public interface PaymentGateway extends Container<String> {
     public boolean pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response);
 
     public boolean refund(TradeOrder order, TradeRefund refund);
-
-    public String notify(short siteId, String body, Map<String, String[]> parameterMap);
 }

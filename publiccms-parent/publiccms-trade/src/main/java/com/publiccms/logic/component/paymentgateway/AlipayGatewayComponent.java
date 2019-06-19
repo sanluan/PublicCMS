@@ -2,11 +2,9 @@ package com.publiccms.logic.component.paymentgateway;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,7 +16,6 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.domain.AlipayTradeWapPayModel;
-import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
@@ -27,16 +24,13 @@ import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradeOrderProcessor;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeOrder;
-import com.publiccms.entities.trade.TradeOrderHistory;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
-import com.publiccms.logic.service.trade.TradeOrderHistoryService;
 import com.publiccms.logic.service.trade.TradeOrderService;
 
 @Component
@@ -77,8 +71,6 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
     private ConfigComponent configComponent;
     @Autowired
     private TradeOrderService service;
-    @Autowired
-    private TradeOrderHistoryService historyService;
     @Autowired
     private TradeOrderProcessorComponent tradeOrderProcessorComponent;
 
@@ -198,62 +190,6 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
             return true;
         }
         return false;
-    }
-
-    @Override
-    public String notify(short siteId, String body, Map<String, String[]> parameterMap) {
-        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
-        if (CommonUtils.notEmpty(config)) {
-            Map<String, String> params = new HashMap<String, String>();
-            for (Entry<String, String[]> entry : parameterMap.entrySet()) {
-                String[] values = entry.getValue();
-                String valueStr = "";
-                for (int i = 0; i < values.length; i++) {
-                    valueStr = (i == values.length - 1) ? valueStr + values[i] : valueStr + values[i] + ",";
-                }
-                params.put(entry.getKey(), valueStr);
-            }
-            try {
-                if (AlipaySignature.rsaCheckV1(params, config.get(CONFIG_ALIPAY_PUBLIC_KEY), CommonConstants.DEFAULT_CHARSET_NAME,
-                        "RSA2")) {
-                    String[] out_trade_nos = parameterMap.get("out_trade_no");
-                    String[] total_fees = parameterMap.get("trade_status");
-                    String[] trade_nos = parameterMap.get("trade_no");
-                    if (CommonUtils.notEmpty(out_trade_nos) && CommonUtils.notEmpty(total_fees)
-                            && CommonUtils.notEmpty(trade_nos)) {
-                        String out_trade_no = out_trade_nos[0];
-                        try {
-                            long orderId = Long.valueOf(out_trade_no);
-                            String total_fee = total_fees[0];
-                            String trade_no = trade_nos[0];
-                            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, CommonUtils.getDate(),
-                                    TradeOrderHistoryService.OPERATE_NOTIFY);
-                            history.setContent(JsonUtils.getString(parameterMap));
-                            historyService.save(history);
-                            TradeOrder order = service.getEntity(orderId);
-                            if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
-                                    && order.getAmount().toString().equals(total_fee)) {
-                                if (service.paid(siteId, order.getId(), trade_no)) {
-                                    TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent
-                                            .get(order.getTradeType());
-                                    if (null != tradeOrderProcessor && tradeOrderProcessor.paid(order)) {
-                                        service.processed(order.getSiteId(), order.getId());
-                                    } else {
-                                        history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),
-                                                TradeOrderHistoryService.OPERATE_PROCESS_ERROR);
-                                        historyService.save(history);
-                                    }
-                                }
-                            }
-                            return "success";
-                        } catch (NumberFormatException e) {
-                        }
-                    }
-                }
-            } catch (AlipayApiException e) {
-            }
-        }
-        return "fail";
     }
 
 }

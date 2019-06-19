@@ -59,18 +59,18 @@ public class UeditorAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private static final String ACTION_CONFIG = "config";
-    private static final String ACTION_UPLOAD = "upload";
-    private static final String ACTION_UPLOAD_SCRAW = "uploadScraw";
-    private static final String ACTION_CATCHIMAGE = "catchimage";
-    private static final String ACTION_LISTFILE = "listfile";
+    protected static final String ACTION_CONFIG = "config";
+    protected static final String ACTION_UPLOAD = "upload";
+    protected static final String ACTION_UPLOAD_SCRAW = "uploadScraw";
+    protected static final String ACTION_CATCHIMAGE = "catchimage";
+    protected static final String ACTION_LISTFILE = "listfile";
 
-    private static final String FIELD_NAME = "file";
-    private static final String SCRAW_TYPE = ".jpg";
+    protected static final String FIELD_NAME = "file";
+    protected static final String SCRAW_TYPE = ".jpg";
 
-    private static final String[] IMAGE_ALLOW_FILES = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
+    protected static final String[] IMAGE_ALLOW_FILES = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
 
-    private static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
+    protected static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
             ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
     public static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
             new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
@@ -124,7 +124,8 @@ public class UeditorAdminController {
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
-    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+    @ResponseBody
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
             HttpServletRequest request, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -144,17 +145,12 @@ public class UeditorAdminController {
                     map.put("url", fileName);
                     map.put("type", suffix);
                     map.put("original", originalName);
-                    model.addAttribute("result", map);
+                    return map;
                 } catch (IllegalStateException | IOException e) {
-                    model.addAttribute("result", getResultMap(false));
                 }
-            } else {
-                model.addAttribute("result", getResultMap(false));
             }
-        } else {
-            model.addAttribute("result", getResultMap(false));
         }
-        return "common/mapResult";
+        return getResultMap(false);
     }
 
     /**
@@ -280,7 +276,7 @@ public class UeditorAdminController {
         return map;
     }
 
-    private static Map<String, Object> getResultMap(boolean success) {
+    protected static Map<String, Object> getResultMap(boolean success) {
         Map<String, Object> map = new HashMap<>();
         if (success) {
             map.put("state", "SUCCESS");
