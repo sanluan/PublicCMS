@@ -343,15 +343,10 @@ public class CmsContentAdminController extends AbstractController {
      */
     private boolean move(SysSite site, CmsContent entity, Integer categoryId) {
         if (null != entity && site.getId() == entity.getSiteId()) {
-            CmsCategoryModel categoryModel = categoryModelService
-                    .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
+            CmsCategoryModel categoryModel = categoryModelService.getEntity(new CmsCategoryModelId(categoryId, entity.getModelId()));
             if (null != categoryModel) {
                 categoryService.updateContents(categoryId, 1);
-                if (notEmpty(entity.getParentId())) {
-                    service.updateChilds(entity.getParentId(), -1);
-                } else {
-                    categoryService.updateContents(entity.getCategoryId(), -1);
-                }
+                categoryService.updateContents(entity.getCategoryId(), -1);
                 entity = service.updateCategoryId(entity.getSiteId(), entity.getId(), categoryId);
                 templateComponent.createContentFile(site, entity, null, categoryModel);
                 return true;
