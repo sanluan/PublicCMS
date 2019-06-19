@@ -68,7 +68,7 @@ public class TradeOrderController {
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             response.sendRedirect(returnUrl);
         }
-        if (!paymentGateway.pay(entity, returnUrl, site.getDynamicPath() + "tradeOrder/notify/" + accountType, response)) {
+        if (!paymentGateway.pay(entity, returnUrl, response)) {
             response.sendRedirect(returnUrl);
         }
     }

@@ -24,7 +24,6 @@ import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradeOrderProcessor;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeOrder;
@@ -67,6 +66,10 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
      * 
      */
     public static final String CONFIG_PRODUCT_CODE = "productCode";
+    /**
+     * 
+     */
+    public static final String CONFIG_NOTIFYURL = "notifyUrl";
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
@@ -89,7 +92,7 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
     }
 
     @Override
-    public boolean pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response) {
+    public boolean pay(TradeOrder order, String callbackUrl, HttpServletResponse response) {
         if (null != order) {
             Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config)) {
@@ -105,7 +108,7 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
                 model.setTimeoutExpress(config.get(CONFIG_TIMEOUT_EXPRESS));
                 model.setProductCode(config.get(CONFIG_PRODUCT_CODE));
                 alipay_request.setBizModel(model);
-                alipay_request.setNotifyUrl(notifyUrl);
+                alipay_request.setNotifyUrl(config.get(CONFIG_NOTIFYURL));
                 alipay_request.setReturnUrl(callbackUrl);
                 try {
                     String form = client.pageExecute(alipay_request).getBody();
@@ -159,9 +162,7 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
         List<SysExtendField> extendFieldList = new ArrayList<>();
         extendFieldList.add(new SysExtendField(CONFIG_URL, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_URL),
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_URL + CONFIG_CODE_DESCRIPTION_SUFFIX,
-                        site.getDynamicPath())));
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_URL + CONFIG_CODE_DESCRIPTION_SUFFIX)));
         extendFieldList.add(new SysExtendField(CONFIG_APPID, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_APPID), getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_APPID + CONFIG_CODE_DESCRIPTION_SUFFIX)));
@@ -180,6 +181,11 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
         extendFieldList.add(new SysExtendField(CONFIG_PRODUCT_CODE, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRODUCT_CODE), getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRODUCT_CODE + CONFIG_CODE_DESCRIPTION_SUFFIX)));
+        extendFieldList.add(new SysExtendField(CONFIG_NOTIFYURL, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_NOTIFYURL),
+                getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_NOTIFYURL + CONFIG_CODE_DESCRIPTION_SUFFIX,
+                        site.getDynamicPath())));
         return extendFieldList;
     }
 

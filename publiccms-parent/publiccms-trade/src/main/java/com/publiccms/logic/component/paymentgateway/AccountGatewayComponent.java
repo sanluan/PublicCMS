@@ -40,7 +40,7 @@ public class AccountGatewayComponent implements PaymentGateway {
     }
 
     @Override
-    public boolean pay(TradeOrder order, String callbackUrl, String notifyUrl, HttpServletResponse response) {
+    public boolean pay(TradeOrder order, String callbackUrl, HttpServletResponse response) {
         if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
                 && null != accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(),
                         order.getUserId(), TradeAccountHistoryService.STATUS_PAY, order.getAmount().negate(),

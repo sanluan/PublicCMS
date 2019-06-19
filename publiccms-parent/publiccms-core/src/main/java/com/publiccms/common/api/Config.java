@@ -141,10 +141,11 @@ public interface Config {
     /**
      * @param locale
      * @param code
+     * @param args
      * @return config code or null
      */
-    public default String getMessage(Locale locale, String code) {
-        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, code);
+    public default String getMessage(Locale locale, String code, Object... args) {
+        return LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, code, args);
     }
 
     /**
