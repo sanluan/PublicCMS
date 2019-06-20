@@ -21,10 +21,10 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.1.7.RELEASE</version.spring>
+        <version.spring>5.1.8.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.1.5.RELEASE</version.springBoot>
+        <version.springBoot>2.1.6.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.7</version.httpclient>
@@ -35,7 +35,7 @@
         <version.hibernate>5.4.3.Final</version.hibernate>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>5.11.1.Final</version.hibernateSearch>
+        <version.hibernateSearch>5.11.2.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.7.1</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->

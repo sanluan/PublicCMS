@@ -26,10 +26,10 @@ subprojects{
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "5.1.7.RELEASE"
+        springVersion = "5.1.8.RELEASE"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "2.1.5.RELEASE"
+        springBootVersion = "2.1.6.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.7"
@@ -40,7 +40,7 @@ subprojects{
         hibernateVersion = "5.4.3.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "5.11.1.Final"
+        hibernateSearchVersion = "5.11.2.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.7.1"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
