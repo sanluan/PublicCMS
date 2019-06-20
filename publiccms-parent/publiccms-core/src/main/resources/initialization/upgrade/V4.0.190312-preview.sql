@@ -137,3 +137,4 @@ INSERT INTO `sys_module_lang` VALUES ('account_recharge', 'zh', '充值');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'en', 'Refund');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'ja', '払い戻し');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'zh', '退款');
+UPDATE `sys_module` SET `url` = 'cmsCategory/lookupByModelId' WHERE `id` ='content_select_category';
