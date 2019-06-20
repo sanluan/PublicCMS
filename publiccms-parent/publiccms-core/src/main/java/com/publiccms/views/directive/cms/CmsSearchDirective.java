@@ -32,43 +32,41 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
         String word = handler.getString("word");
         Long[] tagIds = handler.getLongArray("tagId");
         String[] dictionaryValues = handler.getStringArray("dictionaryValues");
-        if (CommonUtils.notEmpty(word) || CommonUtils.notEmpty(tagIds) || CommonUtils.notEmpty(dictionaryValues)) {
-            SysSite site = getSite(handler);
-            if (CommonUtils.notEmpty(word)) {
-                statisticsComponent.search(site.getId(), word);
-            }
-            if (CommonUtils.notEmpty(tagIds)) {
-                for (Long tagId : tagIds) {
-                    statisticsComponent.searchTag(tagId);
-                }
-            }
-            PageHandler page;
-            Integer pageIndex = handler.getInteger("pageIndex", 1);
-            Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
-            Date currentDate = CommonUtils.getMinuteDate();
-            try {
-                page = service.query(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true), site.getId(),
-                        word, handler.getStringArray("field"), tagIds, handler.getInteger("categoryId"),
-                        handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
-                        handler.getStringArray("modelIds"), dictionaryValues, handler.getDate("startPublishDate"), currentDate,
-                        currentDate, handler.getString("orderField"), pageIndex, count);
-                @SuppressWarnings("unchecked")
-                List<CmsContent> list = (List<CmsContent>) page.getList();
-                if (null != list) {
-                    list.forEach(e -> {
-                        Integer clicks = statisticsComponent.getContentClicks(e.getId());
-                        if (null != clicks) {
-                            e.setClicks(e.getClicks() + clicks);
-                        }
-                        templateComponent.initContentUrl(site, e);
-                        templateComponent.initContentCover(site, e);
-                    });
-                }
-            } catch (Exception e) {
-                page = new PageHandler(pageIndex, count, 0, null);
-            }
-            handler.put("page", page).render();
+        SysSite site = getSite(handler);
+        if (CommonUtils.notEmpty(word)) {
+            statisticsComponent.search(site.getId(), word);
         }
+        if (CommonUtils.notEmpty(tagIds)) {
+            for (Long tagId : tagIds) {
+                statisticsComponent.searchTag(tagId);
+            }
+        }
+        PageHandler page;
+        Integer pageIndex = handler.getInteger("pageIndex", 1);
+        Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
+        Date currentDate = CommonUtils.getMinuteDate();
+        try {
+            page = service.query(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true), site.getId(), word,
+                    handler.getStringArray("field"), tagIds, handler.getInteger("categoryId"), handler.getBoolean("containChild"),
+                    handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"), dictionaryValues,
+                    handler.getDate("startPublishDate"), currentDate, currentDate, handler.getString("orderField"), pageIndex,
+                    count);
+            @SuppressWarnings("unchecked")
+            List<CmsContent> list = (List<CmsContent>) page.getList();
+            if (null != list) {
+                list.forEach(e -> {
+                    Integer clicks = statisticsComponent.getContentClicks(e.getId());
+                    if (null != clicks) {
+                        e.setClicks(e.getClicks() + clicks);
+                    }
+                    templateComponent.initContentUrl(site, e);
+                    templateComponent.initContentCover(site, e);
+                });
+            }
+        } catch (Exception e) {
+            page = new PageHandler(pageIndex, count, 0, null);
+        }
+        handler.put("page", page).render();
     }
 
     @Autowired

@@ -115,7 +115,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 fields = textFields;
             }
             termination.must(term.onFields(textFields).matching(text).createQuery());
-        } else if (CommonUtils.notEmpty(tagIds)) {
+        }
+        if (CommonUtils.notEmpty(tagIds)) {
             TermContext term = queryBuilder.keyword();
             if (!fuzzy) {
                 term.fuzzy().withEditDistanceUpTo(1);
