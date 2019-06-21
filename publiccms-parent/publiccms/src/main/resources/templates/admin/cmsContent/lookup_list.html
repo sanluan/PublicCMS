@@ -57,13 +57,12 @@
         <tbody>
             <#list page.list as a>
                 <@t.merge 'userIds' a.userId!/>
-                <@t.merge 'checkUserIds' a.checkUserId!/>
+                <@t.merge 'userIds' a.checkUserId!/>
                 <@t.merge 'categoryIds' a.categoryId!/>
                 <@t.merge 'modelIds' a.modelId!/>
             </#list>
 
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_sysUser ids=t.checkUserIds!><#assign checkUserMap=map!/></@_sysUser>
             <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
 
@@ -79,17 +78,13 @@
                     </a>
                 </td>
                 <td>
-                    <a href="cmsContent/lookup_list.html?userId=${a.userId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">
-                        ${(userMap[a.userId?string].nickName)!}
-                    </a>
+                     ${(userMap[a.userId?string].nickName)!}
                 </td>
                 <td>
                     ${(categoryMap[a.categoryId?string].name)!}
                 </td>
                 <td>
-                    <a href="cmsContent/lookup_list.html?modelId=${a.modelId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">
-                        ${(modelMap[a.modelId].name)!}
-                    </a>
+                     ${(modelMap[a.modelId].name)!}
                 </td>
                 <td>${a.scores!}</td>
                 <td>${a.comments!}</td>
@@ -98,7 +93,7 @@
                 <td>${a.createDate!}<#if a.updateDate??>/${a.updateDate}</#if></td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 2==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 2==a.status>/${(userMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
