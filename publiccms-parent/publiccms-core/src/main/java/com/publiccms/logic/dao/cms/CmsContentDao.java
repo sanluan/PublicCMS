@@ -227,19 +227,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null != queryEntitry.getDisabled()) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", queryEntitry.getDisabled());
         }
-        if (CommonUtils.notEmpty(queryEntitry.getParentId())) {
-            queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", queryEntitry.getParentId());
-        } else {
-            if (CommonUtils.notEmpty(queryEntitry.getCategoryIds())) {
-                queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
-                        queryEntitry.getCategoryIds());
-            } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
-                queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
-            }
-            if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
-                queryHandler.condition("bean.parentId is null");
-            }
-        }
         if (CommonUtils.notEmpty(queryEntitry.getQuoteId())) {
             queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId",
                     queryEntitry.getQuoteId());
