@@ -70,6 +70,11 @@ public class CmsModelAdminController {
             Map<String, CmsModel> modelMap = modelComponent.getMap(site);
             modelMap.remove(modelId);
             modelMap.put(entity.getId(), entity);
+            List<CmsModel> modelList = modelComponent.getList(site, modelId, null, null, null, null);
+            for (CmsModel m : modelList) {
+                m.setParentId(entity.getId());
+                modelMap.put(m.getId(), m);
+            }
             modelComponent.save(site, modelMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "update.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
