@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.api.Container;
 
-public class AbstractContainer<K, T> {
+public abstract class AbstractContainer<K, T> {
     private Map<K, T> map = new HashMap<>();
     private List<T> list;
 
