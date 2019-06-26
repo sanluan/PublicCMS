@@ -78,7 +78,7 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
     public int delete(Long userId) {
         if (CommonUtils.notEmpty(userId)) {
             QueryHandler queryHandler = getQueryHandler("delete from SysUserToken bean");
-            queryHandler.condition("bean.userId <= :userId").setParameter("userId", userId);
+            queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
             return delete(queryHandler);
         }
         return 0;
