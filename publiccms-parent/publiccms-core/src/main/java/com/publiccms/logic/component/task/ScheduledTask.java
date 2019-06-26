@@ -77,7 +77,7 @@ public class ScheduledTask {
             List<SysTask> sysTaskList = (List<SysTask>) sysTaskService.getPage(null, null, startDate, null, null).getList();
             for (SysTask sysTask : sysTaskList) {
                 SysSite site = siteService.getEntity(sysTask.getSiteId());
-                if (TASK_STATUS_ERROR == sysTask.getStatus()) {
+                if (TASK_STATUS_ERROR == sysTask.getStatus() || TASK_STATUS_RUNNING == sysTask.getStatus()) {
                     sysTaskService.updateStatus(sysTask.getId(), TASK_STATUS_READY);
                 }
                 create(site, sysTask.getId(), sysTask.getCronExpression());
