@@ -62,6 +62,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             SysUser user = initUser(ControllerUtils.getAdminFromSession(session), LogLoginService.CHANNEL_WEB_MANAGER,
                     CommonConstants.getCookiesAdmin(), site, request, response);
             if (null == user) {
+                ControllerUtils.clearAdminToSession(request.getContextPath(), session, response);
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
                     return false;
@@ -72,6 +73,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             SysUser entity = sysUserService.getEntity(user.getId());
             if (null == entity || entity.isDisabled() || !entity.isSuperuserAccess() || null == site || site.isDisabled()
                     || site.getId() != entity.getSiteId()) {
+                ControllerUtils.clearAdminToSession(request.getContextPath(), session, response);
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
                     return false;
