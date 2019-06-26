@@ -122,7 +122,7 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
                     RequestUtils.cancleCookie(contextPath, response, cookiesName, null);
                 }
             }
-        } else if (null != user && (null == userCookie || CommonUtils.notEmpty(userCookie.getValue()))) {
+        } else if (null != user && (null == userCookie || CommonUtils.empty(userCookie.getValue()))) {
             user = null;
         }
         return user;
