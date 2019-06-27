@@ -114,7 +114,7 @@ public class LoginAdminController {
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+        int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
                 LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, now,
                 DateUtils.addMinutes(now, expiryMinutes), ip));
