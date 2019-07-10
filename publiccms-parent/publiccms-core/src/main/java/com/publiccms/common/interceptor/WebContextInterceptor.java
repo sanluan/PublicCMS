@@ -79,7 +79,7 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
                     }
                 }
             }
-        } else {
+        } else if (null != session) {
             ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
         }
         localeChangeInterceptor.preHandle(request, response, handler);
