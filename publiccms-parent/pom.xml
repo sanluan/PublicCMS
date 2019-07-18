@@ -29,6 +29,7 @@
         <version.httpclient>4.5.7</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <version.jackson>2.9.9</version.jackson>
+        <version.jacksondatabind>2.9.9.1</version.jacksondatabind>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.3.7.Final</version.hibernate>
@@ -175,7 +176,7 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${version.jackson}</version>
+                <version>${version.jacksondatabind}</version>
             </dependency>
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>

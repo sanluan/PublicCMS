@@ -29,7 +29,7 @@ dependencies {
         "org.apache.lucene:lucene-backward-codecs:${luceneVersion}",
 
         "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
-        "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+        "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}",
 
         // http://mvnrepository.com/artifact/javax.transaction/jta
 	    "javax.transaction:jta:1.1",
