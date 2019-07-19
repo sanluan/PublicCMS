@@ -27,26 +27,26 @@ public class ThumbDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(width) && CommonUtils.notEmpty(height)) {
             if (path.startsWith(site.getSitePath())) {
-                path.substring(site.getSitePath().length());
+                path = path.substring(site.getSitePath().length());
             }
             String suffix = CmsFileUtils.getSuffix(path);
             String thumbPath = path.substring(0, path.lastIndexOf(CommonConstants.DOT)) + CommonConstants.UNDERLINE + width
                     + CommonConstants.UNDERLINE + height + suffix;
             String thumbFilePath = siteComponent.getWebFilePath(site, thumbPath);
             if (CmsFileUtils.exists(thumbFilePath)) {
-                handler.print(thumbPath);
+                handler.print(site.getSitePath() + thumbPath);
             } else {
                 String sourceFilePath = siteComponent.getWebFilePath(site, path);
                 if (CmsFileUtils.exists(sourceFilePath)) {
                     try {
                         CmsFileUtils.thumb(sourceFilePath, thumbFilePath, width, height, suffix);
-                        handler.print(thumbPath);
+                        handler.print(site.getSitePath() + thumbPath);
                     } catch (IOException e) {
-                        handler.print(path);
+                        handler.print(site.getSitePath() + path);
                         log.error(e.getMessage());
                     }
                 } else {
-                    handler.print(path);
+                    handler.print(site.getSitePath() + path);
                 }
             }
         }

@@ -38,7 +38,8 @@ CREATE TABLE `trade_account_history` (
   PRIMARY KEY (`id`),
   KEY `site_id` (`site_id`,`account_id`,`status`,`create_date`)
 ) COMMENT='账户流水';
- ----------------------------
+
+-- ----------------------------
 -- Table structure for trade_order
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_order`;

@@ -216,7 +216,7 @@ public class TemplateComponent implements Cache {
      * @return
      */
     public String getUrl(SysSite site, boolean hasStatic, String url) {
-        if (null == url || url.contains("://") || url.startsWith("//")) {
+        if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("//")) {
             return url;
         } else {
             return hasStatic ? site.getSitePath() + url : site.getDynamicPath() + url;
