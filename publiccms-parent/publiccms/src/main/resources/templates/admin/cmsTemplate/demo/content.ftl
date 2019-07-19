@@ -4,7 +4,7 @@
         <#assign category=object/>
     </@_category>
     "id":"${object.id}",
-    "cover":"${a.cover?has_content?then(site.sitePath+a.cover,'')}"
+    "cover":"${a.cover!}"
     "title":"${object.title?json_string}",
     "url":"${object.url!}",
     "description":"${(object.description?json_string)!}",
