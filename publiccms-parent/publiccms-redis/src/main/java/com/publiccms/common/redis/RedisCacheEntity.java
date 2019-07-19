@@ -27,7 +27,6 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
      *
      */
     private static final long serialVersionUID = 1L;
-    private static JedisPool JEDISPOOL;
     private JedisPool jedisPool;
     private String region;
     private final static StringSerializer stringSerializer = new StringSerializer();
@@ -102,14 +101,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
 
     @Override
     public void init(String region, Properties properties) {
-        if (null == JEDISPOOL) {
-            synchronized (this) {
-                if (null == JEDISPOOL) {
-                    JEDISPOOL = RedisUtils.createJedisPool(properties);
-                }
-            }
-        }
-        init(region, JEDISPOOL);
+        init(region, RedisUtils.createOrGetJedisPool(properties));
     }
 
     public void init(String region, JedisPool pool) {

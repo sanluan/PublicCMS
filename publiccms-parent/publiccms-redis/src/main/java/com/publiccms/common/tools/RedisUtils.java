@@ -11,7 +11,8 @@ import redis.clients.jedis.JedisPoolConfig;
  * 
  */
 public class RedisUtils {
-    
+    private static JedisPool pool;
+
     /**
      * @param redisProperties
      * @return
@@ -25,5 +26,20 @@ public class RedisUtils {
         JedisPoolConfig config = new JedisPoolConfig();
         config.setMaxIdle(maxidle);
         return new JedisPool(config, host, port, timeout, password);
+    }
+
+    /**
+     * @param redisProperties
+     * @return
+     */
+    public static JedisPool createOrGetJedisPool(Properties redisProperties) {
+        if (null == pool) {
+            synchronized (RedisUtils.class) {
+                if (null == pool) {
+                    pool = createJedisPool(redisProperties);
+                }
+            }
+        }
+        return pool;
     }
 }
