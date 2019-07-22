@@ -297,8 +297,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         case "checkDate":
             queryHandler.order("bean.checkDate " + orderType);
             break;
-        case "default":
-            orderType = ORDERTYPE_DESC;
         default:
             if (ORDERTYPE_DESC.equals(orderType)) {
                 queryHandler.order("bean.sort desc");
