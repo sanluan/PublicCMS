@@ -56,13 +56,10 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         case VERSION_180707:
             updateMetadata(stringWriter, connection);
             runScript(stringWriter, connection, VERSION_180707, VERSION_180825);
-            break;
         case VERSION_180825:
             runScript(stringWriter, connection, VERSION_180825, VERSION_180825);
-            break;
         case VERSION_181024:
             runScript(stringWriter, connection, VERSION_181024, CmsVersion.getVersion());
-            break;
         }
     }
 
