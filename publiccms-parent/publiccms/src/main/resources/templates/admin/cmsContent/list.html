@@ -85,7 +85,7 @@
                 </#if>
             </#list>
             <#if size=0>
-                <li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'category.edit'/>"><i class="icon-ban-circle icon-large"></i> <@t.page 'content.no_model'/></a></li>
+                <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'category.edit'/>"><i class="icon-ban-circle icon-large"></i> <@t.page 'content.no_model'/></a></li>
             </#if>
         </@_modelList>
     </#if>
