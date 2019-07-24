@@ -257,7 +257,7 @@ INSERT INTO `sys_extend` VALUES (1, 'categoryType', 1);
 -- ----------------------------
 -- Records of sys_extend_field
 -- ----------------------------
-INSERT INTO `sys_extend_field` VALUES (1, 'article', 1, NULL, '内容', '', 'editor', '', NULL, 0);
+INSERT INTO `sys_extend_field` VALUES (1, 'article', 1, 0, NULL, '内容', '', 'editor', '', NULL, 0);
 
 -- ----------------------------
 -- Records of sys_dept
