@@ -31,11 +31,6 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
         return dao.getList(modelId, categoryId);
     }
 
-    @Transactional(readOnly = true)
-    public CmsCategoryModel getEntity(String modelId, int categoryId) {
-        return dao.getEntity(modelId, categoryId);
-    }
-
     /**
      * @param entity
      */

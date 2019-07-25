@@ -173,36 +173,33 @@ public class CmsContentAdminController {
         if (null != checked && checked) {
             service.check(site.getId(), admin, new Long[] { entity.getId() });
         }
-        if (!entity.isOnlyUrl()) {
-            templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
-            if (null == entity.getParentId() && !entity.isOnlyUrl()) {
-                service.quote(site.getId(), entity, contentParameters.getContentIds(), contentParameters, cmsModel, category,
-                        attribute);
-                Set<Integer> categoryIdsList = contentParameters.getCategoryIds();
-                if (CommonUtils.notEmpty(categoryIdsList)) {
-                    if (categoryIdsList.contains(entity.getCategoryId())) {
-                        categoryIdsList.remove(entity.getCategoryId());
-                    }
-                    entity = service.getEntity(entity.getId());
-                    for (Integer categoryId : categoryIdsList) {
-                        CmsCategory newCategory = categoryService.getEntity(categoryId);
-                        if (null != newCategory) {
-                            CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(),
-                                    categoryId, entity.getModelId(), entity.isCopied(), true, entity.isHasImages(),
-                                    entity.isHasFiles(), false, 0, 0, 0, 0, entity.getPublishDate(), entity.getCreateDate(), 0,
-                                    entity.getStatus(), false);
-                            quote.setQuoteContentId(entity.getId());
-                            quote.setDescription(entity.getDescription());
-                            quote.setAuthor(entity.getAuthor());
-                            quote.setCover(entity.getCover());
-                            quote.setEditor(entity.getEditor());
-                            quote.setExpiryDate(entity.getExpiryDate());
-                            service.save(quote);
-                            service.saveTagAndAttribute(site.getId(), admin.getId(), quote.getId(), contentParameters, cmsModel,
-                                    category, attribute);
-                            if (null != checked && checked) {
-                                templateComponent.createCategoryFile(site, newCategory, null, null);
-                            }
+        templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
+        if (null == entity.getParentId() && !entity.isOnlyUrl()) {
+            service.quote(site.getId(), entity, contentParameters.getContentIds(), contentParameters, cmsModel, category,
+                    attribute);
+            Set<Integer> categoryIdsList = contentParameters.getCategoryIds();
+            if (CommonUtils.notEmpty(categoryIdsList)) {
+                if (categoryIdsList.contains(entity.getCategoryId())) {
+                    categoryIdsList.remove(entity.getCategoryId());
+                }
+                entity = service.getEntity(entity.getId());
+                for (Integer categoryId : categoryIdsList) {
+                    CmsCategory newCategory = categoryService.getEntity(categoryId);
+                    if (null != newCategory) {
+                        CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), categoryId,
+                                entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(), false, 0,
+                                0, 0, 0, entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
+                        quote.setQuoteContentId(entity.getId());
+                        quote.setDescription(entity.getDescription());
+                        quote.setAuthor(entity.getAuthor());
+                        quote.setCover(entity.getCover());
+                        quote.setEditor(entity.getEditor());
+                        quote.setExpiryDate(entity.getExpiryDate());
+                        service.save(quote);
+                        service.saveTagAndAttribute(site.getId(), admin.getId(), quote.getId(), contentParameters, cmsModel,
+                                category, attribute);
+                        if (null != checked && checked) {
+                            templateComponent.createCategoryFile(site, newCategory, null, null);
                         }
                     }
                 }

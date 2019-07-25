@@ -390,12 +390,14 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param id
      * @param comments
+     * @return 
      */
-    public void updateComments(short siteId, Serializable id, int comments) {
+    public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setComments(entity.getComments() + comments);
         }
+        return entity;
     }
 
     /**

@@ -2,6 +2,8 @@ package com.publiccms.logic.service.cms;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
 
@@ -13,6 +15,7 @@ import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsComment;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.logic.dao.cms.CmsCommentDao;
 
 /**
@@ -37,7 +40,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param siteId
      * @param userId
      * @param replyId
-     * @param emptyReply 
+     * @param emptyReply
      * @param replyUserId
      * @param contentId
      * @param checkUserId
@@ -61,45 +64,54 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param siteId
      * @param ids
      * @param userId
+     * @return
      */
-    public void check(short siteId, Serializable[] ids, long userId) {
+    public Set<CmsContent> check(short siteId, Serializable[] ids, long userId) {
         Date now = CommonUtils.getDate();
+        Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL != entity.getStatus()) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckDate(now);
                 entity.setCheckUserId(userId);
-                contentService.updateComments(siteId, entity.getContentId(), 1);
+                contentSet.add(contentService.updateComments(siteId, entity.getContentId(), 1));
             }
         }
+        return contentSet;
     }
 
     /**
      * @param siteId
      * @param ids
+     * @return
      */
-    public void uncheck(short siteId, Serializable[] ids) {
+    public Set<CmsContent> uncheck(short siteId, Serializable[] ids) {
+        Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()) {
                 entity.setStatus(STATUS_PEND);
-                contentService.updateComments(siteId, entity.getContentId(), -1);
+                contentSet.add(contentService.updateComments(siteId, entity.getContentId(), -1));
             }
         }
+        return contentSet;
     }
 
     /**
      * @param siteId
      * @param ids
+     * @return
      */
-    public void delete(short siteId, Serializable[] ids) {
+    public Set<CmsContent> delete(short siteId, Serializable[] ids) {
+        Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
             if (!entity.isDisabled()) {
                 entity.setDisabled(true);
                 if (STATUS_NORMAL == entity.getStatus()) {
-                    contentService.updateComments(siteId, entity.getContentId(), -1);
+                    contentSet.add(contentService.updateComments(siteId, entity.getContentId(), -1));
                 }
             }
         }
+        return contentSet;
     }
 
     @Autowired

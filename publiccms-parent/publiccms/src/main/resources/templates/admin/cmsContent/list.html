@@ -73,12 +73,16 @@
 <#if authorizedMap['cmsContent/add']>
     <#if categoryId?has_content>
         <@_modelList parentId=(parent.modelId)!''>
+            <#list page.list as a>
+                <@t.merge 'tempModelIds' a.modelId!/>
+            </#list>
+            <@_categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@_categoryModel>
             <#assign size=0/>
             <#list page.list as a>
-                <@_categoryModel modelId=a.id categoryId=categoryId>
-                    <#assign size++/>
+                	<#if categoryModelMap[a.id]>
+                    	<#assign size++/>
             <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
-                </@_categoryModel>
+            		</#if>
                 <#if size gte 5&&a?has_next>
             <li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'content.add_more'/></a></li>
                     <#break>

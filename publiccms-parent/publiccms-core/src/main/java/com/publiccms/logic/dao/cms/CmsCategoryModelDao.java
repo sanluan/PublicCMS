@@ -34,18 +34,6 @@ public class CmsCategoryModelDao extends BaseDao<CmsCategoryModel> {
         return getEntityList(queryHandler);
     }
 
-    /**
-     * @param modelId
-     * @param categoryId
-     * @return results list
-     */
-    public CmsCategoryModel getEntity(String modelId, int categoryId) {
-        QueryHandler queryHandler = getQueryHandler("from CmsCategoryModel bean");
-        queryHandler.condition("bean.id.modelId = :modelId").setParameter("modelId", modelId);
-        queryHandler.condition("bean.id.categoryId = :categoryId").setParameter("categoryId", categoryId);
-        return getEntity(queryHandler);
-    }
-
     @Override
     protected CmsCategoryModel init(CmsCategoryModel entity) {
         return entity;

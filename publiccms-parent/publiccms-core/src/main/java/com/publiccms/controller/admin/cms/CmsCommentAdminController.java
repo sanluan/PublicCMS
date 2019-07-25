@@ -1,5 +1,7 @@
 package com.publiccms.controller.admin.cms;
 
+import java.util.Set;
+
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,10 +17,12 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
@@ -35,6 +39,8 @@ public class CmsCommentAdminController {
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    private TemplateComponent templateComponent;
 
     /**
      * @param site
@@ -49,7 +55,10 @@ public class CmsCommentAdminController {
     public String check(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            service.check(site.getId(), ids, admin.getId());
+            Set<CmsContent> contentSet = service.check(site.getId(), ids, admin.getId());
+            for (CmsContent content : contentSet) {
+                templateComponent.createContentFile(site, content, null, null);// 静态化
+            }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "check.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
@@ -70,7 +79,10 @@ public class CmsCommentAdminController {
     public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            service.uncheck(site.getId(), ids);
+            Set<CmsContent> contentSet = service.uncheck(site.getId(), ids);
+            for (CmsContent content : contentSet) {
+                templateComponent.createContentFile(site, content, null, null);// 静态化
+            }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "uncheck.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
