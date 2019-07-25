@@ -49,12 +49,13 @@ public class ClusterComponent {
             Date now = CommonUtils.getDate();
             Date lastHeartbeatDate = null;
             if (null == entity) {
-                entity = new SysCluster(CmsVersion.getClusterId(), now, now, false, CmsVersion.getVersion());
+                entity = new SysCluster(CmsVersion.getClusterId(), now, now, false, CmsVersion.getVersion(),
+                        CmsVersion.getRevision());
                 service.save(entity);
             } else {
                 lastHeartbeatDate = entity.getHeartbeatDate();
+                service.updateHeartbeatDate(CmsVersion.getClusterId(), now);
             }
-            service.updateHeartbeatDate(CmsVersion.getClusterId(), now);
             if (CmsVersion.isMaster() != entity.isMaster()) {
                 CmsVersion.setMaster(entity.isMaster());
             }

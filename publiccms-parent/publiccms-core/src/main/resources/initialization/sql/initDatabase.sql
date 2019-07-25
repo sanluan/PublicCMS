@@ -453,7 +453,8 @@ CREATE TABLE `sys_cluster` (
   `create_date` datetime NOT NULL COMMENT '创建时间',
   `heartbeat_date` datetime NOT NULL COMMENT '心跳时间',
   `master` tinyint(1) NOT NULL COMMENT '是否管理',
-  `cms_version` varchar(20) default NULL,
+  `cms_version` varchar(20) default NULL COMMENT '版本',
+  `revision` varchar(20) NULL COMMENT '修订',
   PRIMARY KEY  (`uuid`),
   KEY `create_date` (`create_date`)
 ) COMMENT='服务器集群';

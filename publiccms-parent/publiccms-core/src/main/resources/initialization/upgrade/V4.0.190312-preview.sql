@@ -139,3 +139,7 @@ INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'en', 'Refund');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'ja', '払い戻し');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'zh', '退款');
 UPDATE `sys_module` SET `url` = 'cmsCategory/lookupByModelId' WHERE `id` ='content_select_category';
+-- 2019-07-25 --
+ALTER TABLE `sys_cluster` 
+	MODIFY COLUMN `cms_version` varchar(20) NULL DEFAULT NULL COMMENT '版本' AFTER `master`,
+	ADD COLUMN `revision` varchar(20) NULL COMMENT '修订' AFTER `cms_version`;
