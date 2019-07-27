@@ -52,7 +52,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" size="30" value="${(value)!}"/>
+                <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="30"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" value="${(value)!}"/>
             </#if>
             <#break>
         <#case 'textarea'>
@@ -200,7 +200,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" size="30" value="${(value)!}"/>
+                <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="50"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" value="${(value)!}"/>
             </#if>
     </#switch>
 </#macro>

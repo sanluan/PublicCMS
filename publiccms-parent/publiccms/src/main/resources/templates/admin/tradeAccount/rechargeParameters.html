@@ -1,4 +1,4 @@
-<@_tradeAccount id=admin.deptId><#assign account=object/></@_tradeAccount>
+<@_tradeAccount id=id><#assign account=object/></@_tradeAccount>
 <form action="tradeAccount/recharge.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="accountId" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
@@ -11,9 +11,9 @@
             <dt>用户:</dt>
             <dd><@_sysUser id=id>${object.nickName!}</@_sysUser></dd>
         </dl>
-        <dl>
+        <dl class="nowrap">
             <dt>流水号:</dt>
-            <dd><input class="readonly" type="text" name="serialNumber" readonly="readonly" value="${getUUID()}"/></dd>
+            <dd><input class="readonly" type="text" size="50" name="serialNumber" readonly="readonly" value="${getUUID()}"/></dd>
         </dl>
         <dl>
             <dt>金额:</dt>
