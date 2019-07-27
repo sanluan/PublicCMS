@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
+import com.alipay.api.AlipayConstants;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeRefundModel;
 import com.alipay.api.domain.AlipayTradeWapPayModel;
@@ -98,7 +99,7 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
             if (CommonUtils.notEmpty(config)) {
                 AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
                         config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
-                        config.get(CONFIG_ALIPAY_PUBLIC_KEY));
+                        config.get(CONFIG_ALIPAY_PUBLIC_KEY), AlipayConstants.SIGN_TYPE_RSA2);
                 AlipayTradeWapPayRequest alipay_request = new AlipayTradeWapPayRequest();
                 AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
                 model.setOutTradeNo(String.valueOf(order.getId()));

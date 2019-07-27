@@ -30,7 +30,10 @@ public class ${entityName}${directiveSuffix} extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
         if (CommonUtils.notEmpty(id)) {
-            handler.put("object", service.getEntity(id)).render();
+            ${entityName} entity = service.getEntity(id);
+            if (null != entity) {
+                handler.put("object", entity).render();
+            }
         } else {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {

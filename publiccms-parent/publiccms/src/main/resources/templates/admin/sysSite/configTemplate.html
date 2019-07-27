@@ -99,6 +99,7 @@ server {
         <dd><textarea name="description" class="code" mode="nginx">
 upstream cms {
     #<@t.page 'server_config.upstream'/>
+    ip_hash;
     server localhost:8080  weight=1;
 }</textarea>
             <span class="info"><@t.page 'server_config.nginx_common_description'/></span>
