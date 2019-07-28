@@ -1,5 +1,6 @@
 package com.publiccms.controller.web.trade;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -13,12 +14,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
+import com.github.wxpay.sdk.WXPay;
+import com.github.wxpay.sdk.WXPayConstants;
+import com.github.wxpay.sdk.WXPayUtil;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.PaymentGateway;
@@ -35,6 +40,8 @@ import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.paymentgateway.AlipayGatewayComponent;
+import com.publiccms.logic.component.paymentgateway.WechatConfig;
+import com.publiccms.logic.component.paymentgateway.WechatGatewayComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
 import com.publiccms.logic.service.trade.TradeOrderHistoryService;
@@ -68,7 +75,7 @@ public class TradeOrderController {
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             response.sendRedirect(returnUrl);
         }
-        if (!paymentGateway.pay(entity, returnUrl, response)) {
+        if (!paymentGateway.pay(site, entity, returnUrl, response)) {
             response.sendRedirect(returnUrl);
         }
     }
@@ -95,8 +102,7 @@ public class TradeOrderController {
                         CommonConstants.DEFAULT_CHARSET_NAME, "RSA2")) {
                     try {
                         TradeOrderHistory history = new TradeOrderHistory(site.getId(), out_trade_no, CommonUtils.getDate(),
-                                TradeOrderHistoryService.OPERATE_NOTIFY);
-                        history.setContent(JsonUtils.getString(params));
+                                TradeOrderHistoryService.OPERATE_NOTIFY, JsonUtils.getString(params));
                         historyService.save(history);
                         TradeOrder order = service.getEntity(out_trade_no);
                         if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
@@ -121,6 +127,56 @@ public class TradeOrderController {
         }
         return "fail";
 
+    }
+
+    /**
+     * @param site
+     * @param body
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "notify/wechat")
+    @ResponseBody
+    public String notifyWechat(@RequestAttribute SysSite site, @RequestBody String body) throws Exception {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
+        if (CommonUtils.notEmpty(config)) {
+            WechatConfig wechatConfig = new WechatConfig(config.get(WechatGatewayComponent.CONFIG_APPID),
+                    config.get(WechatGatewayComponent.CONFIG_MCHID), config.get(WechatGatewayComponent.CONFIG_KEY),
+                    config.get(WechatGatewayComponent.CONFIG_CERT));
+            boolean usesandbox = CommonUtils.notEmpty(config.get(WechatGatewayComponent.CONFIG_USESANDBOX))
+                    && "true".equals(config.get(WechatGatewayComponent.CONFIG_USESANDBOX));
+            try {
+                WXPay wxpay = new WXPay(wechatConfig, usesandbox);
+                Map<String, String> result = wxpay.processResponseXml(body);
+                if (WXPayConstants.SUCCESS.equalsIgnoreCase(result.get("return_code"))) {
+                    long orderId = Long.parseLong(result.get("out_trade_no"));
+                    TradeOrderHistory history = new TradeOrderHistory(site.getId(), orderId, CommonUtils.getDate(),
+                            TradeOrderHistoryService.OPERATE_NOTIFY, body);
+                    historyService.save(history);
+                    if (WXPayConstants.SUCCESS.equalsIgnoreCase(result.get("result_code"))) {
+                        TradeOrder order = service.getEntity(orderId);
+                        if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
+                                && order.getAmount().toString().equals(result.get("total_fee"))) {
+                            if (service.paid(site.getId(), order.getId(), result.get("transaction_id"))) {
+                                TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
+                                if (null != tradeOrderProcessor && tradeOrderProcessor.paid(order)) {
+                                    service.processed(order.getSiteId(), order.getId());
+                                } else {
+                                    history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),
+                                            TradeOrderHistoryService.OPERATE_PROCESS_ERROR);
+                                    historyService.save(history);
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (Exception e) {
+            }
+        }
+        Map<String, String> response = new HashMap<>();
+        response.put("return_code", WXPayConstants.SUCCESS);
+        response.put("return_msg", "OK");
+        return WXPayUtil.mapToXml(response);
     }
 
     /**

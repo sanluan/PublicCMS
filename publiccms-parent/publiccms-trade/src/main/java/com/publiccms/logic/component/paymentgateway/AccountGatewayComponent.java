@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradeOrderProcessor;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradeOrderHistory;
@@ -40,7 +41,7 @@ public class AccountGatewayComponent implements PaymentGateway {
     }
 
     @Override
-    public boolean pay(TradeOrder order, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response) {
         if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
                 && null != accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(),
                         order.getUserId(), TradeAccountHistoryService.STATUS_PAY, order.getAmount().negate(),
@@ -68,7 +69,7 @@ public class AccountGatewayComponent implements PaymentGateway {
     }
 
     @Override
-    public boolean refund(TradeOrder order, TradeRefund refund) {
+    public boolean refund(SysSite site, TradeOrder order, TradeRefund refund) {
         if (null != order && service.refunded(order.getSiteId(), order.getId())) {
             TradeAccountHistory history = accountService.change(order.getSiteId(), order.getAccountSerialNumber(),
                     order.getUserId(), order.getUserId(), TradeAccountHistoryService.STATUS_REFUND, order.getAmount().negate(),

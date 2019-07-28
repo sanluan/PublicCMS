@@ -62,7 +62,7 @@ public class TradeRefundAdminController {
                 || ControllerUtils.verifyCustom("refundStatus", !service.updateResund(id, refundAmount, reply), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (paymentGateway.refund(order, entity)) {
+        if (paymentGateway.refund(site, order, entity)) {
             service.updateStatus(entity.getId(), admin.getId(), TradeRefundService.STATUS_REFUNDED);
         } else {
             orderService.pendingRefund(site.getId(), order.getId());

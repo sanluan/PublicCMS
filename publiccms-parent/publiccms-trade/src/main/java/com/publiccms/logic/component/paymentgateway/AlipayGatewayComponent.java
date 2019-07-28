@@ -93,7 +93,7 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
     }
 
     @Override
-    public boolean pay(TradeOrder order, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response) {
         if (null != order) {
             Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config)) {
@@ -126,7 +126,7 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
     }
 
     @Override
-    public boolean refund(TradeOrder order, TradeRefund refund) {
+    public boolean refund(SysSite site, TradeOrder order, TradeRefund refund) {
         Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
         if (null != order && CommonUtils.notEmpty(config) && service.refunded(order.getSiteId(), order.getId())) {
             AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
