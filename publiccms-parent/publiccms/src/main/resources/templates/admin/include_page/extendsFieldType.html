@@ -1,5 +1,5 @@
 <#assign maxlengthDisableTypes=['user','content','category','categoryType','tagType','date','datetime','file','image','video']/>
-<#assign dictionaryTypes=['number','boolean','user','content','categroy','dictionary','categoryType','tagType']/>
+<#assign dictionaryTypes=['number','boolean','user','content','category','dictionary','categoryType','tagType']/>
 <#macro extendsFieldType inputName value='' searchable=false>
 <#local inputTypes={'text':t.pageMessage('input'),'number':t.pageMessage('number'),'file':t.pageMessage('file'),'image':t.pageMessage('image'),'video':t.pageMessage('video'),'password':t.pageMessage('password'),'editor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'kindeditor':t.pageMessage('kindeditor'),'textarea':t.pageMessage('textarea'),'date':t.pageMessage('date'),'datetime':t.pageMessage('datetime'),'template':t.pageMessage('template_path'),'boolean':t.pageMessage('true_or_false'),'user':t.pageMessage('user'),'content':t.pageMessage('content'),'category':t.pageMessage('category'),'dictionary':t.pageMessage('dictionary'),'categoryType':t.pageMessage('category_type'),'tagType':t.pageMessage('tag_type')}/>
 <#assign flag=.now?long/>
