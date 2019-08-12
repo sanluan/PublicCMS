@@ -64,6 +64,10 @@ public class CmsFileUtils {
     /**
      * 
      */
+    public static final String DEFAULT_FORMAT_NAME = "jpg";
+    /**
+     * 
+     */
     public static final String FILE_TYPE_VIDEO = "video";
     /**
      * 
@@ -128,7 +132,11 @@ public class CmsFileUtils {
             BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
             Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
             img.createGraphics().drawImage(scaledImage, 0, 0, null);
-            ImageIO.write(img, suffix, outputStream);
+            if (null != suffix && suffix.length() > 1) {
+                ImageIO.write(img, suffix.substring(1), outputStream);
+            } else {
+                ImageIO.write(img, DEFAULT_FORMAT_NAME, outputStream);
+            }
         }
     }
 
