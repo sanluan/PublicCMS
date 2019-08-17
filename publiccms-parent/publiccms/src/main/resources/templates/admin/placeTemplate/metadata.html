@@ -58,7 +58,7 @@
                 <input name="userId" type="hidden"/>
                 <input name="nickName" type="hidden"/>
                 <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
-                <div id="adminIds" class="tagsBox"></div>
+                <div class="tagsBox adminIds"></div>
             </dd>
         </dl>
         <fieldset class="placeExtend systemField">
@@ -142,12 +142,12 @@ function addUser(id,name){
         name=name.trim();
     }
     if(id&&name){
-        $('#adminIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"adminIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        $('.dminIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"adminIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
     }
     $('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
     $('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
 }
-$('#adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
+$('.adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     return false;
 });
