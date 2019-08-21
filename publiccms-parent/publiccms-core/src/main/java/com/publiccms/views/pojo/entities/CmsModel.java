@@ -26,7 +26,7 @@ public class CmsModel implements java.io.Serializable {
     private boolean onlyUrl;
     private boolean hasImages;
     private boolean hasFiles;
-    private boolean searchable = true;
+    private boolean searchable;
     private List<String> fieldList;
     private List<String> requiredFieldList;
     private Map<String, String> fieldTextMap;
