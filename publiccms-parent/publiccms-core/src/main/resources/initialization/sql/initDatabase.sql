@@ -117,7 +117,7 @@ CREATE TABLE `cms_content` (
   `url` varchar(1000) default NULL COMMENT '地址',
   `description` varchar(300) default NULL COMMENT '简介',
   `tag_ids` text default NULL COMMENT '标签',
-  `dictionar_values` text default NULL COMMENT '数据字典值',
+  `dictionary_values` text default NULL COMMENT '数据字典值',
   `cover` varchar(255) default NULL COMMENT '封面',
   `childs` int(11) NOT NULL COMMENT '子内容数',
   `scores` int(11) NOT NULL COMMENT '分数',

@@ -392,7 +392,7 @@ public class CmsContent implements java.io.Serializable {
         this.tagIds = tagIds;
     }
 
-    @Column(name = "dictionar_values", length = 65535)
+    @Column(name = "dictionary_values", length = 65535)
     public String getDictionaryValues() {
         return this.dictionaryValues;
     }

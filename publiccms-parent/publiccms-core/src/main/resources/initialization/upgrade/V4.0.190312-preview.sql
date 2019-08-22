@@ -143,3 +143,6 @@ UPDATE `sys_module` SET `url` = 'cmsCategory/lookupByModelId' WHERE `id` ='conte
 ALTER TABLE `sys_cluster` 
 	MODIFY COLUMN `cms_version` varchar(20) NULL DEFAULT NULL COMMENT '版本' AFTER `master`,
 	ADD COLUMN `revision` varchar(20) NULL COMMENT '修订' AFTER `cms_version`;
+-- 2019-08-22 --
+ALTER TABLE `cms_content` 
+CHANGE COLUMN `dictionar_values` `dictionary_values` mediumtext  NULL COMMENT '数据字典值' AFTER `tag_ids`;
