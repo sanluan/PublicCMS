@@ -91,7 +91,14 @@ public class CmsPageMetadata implements java.io.Serializable {
     public void setAcceptParameters(String acceptParameters) {
         this.acceptParameters = acceptParameters;
     }
-
+    
+    /**
+     * @param acceptParameters
+     *            the acceptParameters to set
+     */
+    public void setAcceptParamters(String acceptParameters) {
+        this.acceptParameters = acceptParameters;
+    }
     /**
      * @return
      */
