@@ -87,7 +87,11 @@ public class OauthController {
         if (null != oauthComponent && oauthGateway.enabled(site.getId())) {
             String state = UUID.randomUUID().toString();
             RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
-            RequestUtils.addCookie(request.getContextPath(), response, RETURN_URL, returnUrl, null, null);
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+            if (!ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+                RequestUtils.addCookie(request.getContextPath(), response, RETURN_URL, returnUrl, null, null);
+            }
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + oauthGateway.getAuthorizeUrl(site.getId(), state);
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
