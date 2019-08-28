@@ -83,6 +83,9 @@ public class ControllerUtils {
      * @param url
      */
     public static void redirectPermanently(HttpServletResponse response, String url) {
+        if (null != url) {
+            url = url.replaceAll("\r|\n", CommonConstants.BLANK);
+        }
         response.setHeader("Location", url);
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
     }

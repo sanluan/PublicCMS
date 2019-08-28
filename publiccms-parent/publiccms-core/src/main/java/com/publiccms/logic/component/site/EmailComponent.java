@@ -162,6 +162,9 @@ public class EmailComponent implements SiteCache, Config {
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, CommonConstants.DEFAULT_CHARSET_NAME);
             messageHelper.setTo(toAddress);
             messageHelper.setFrom(config.get(CONFIG_FROMADDRESS));
+            if (null != title) {
+                title = title.replaceAll("\r|\n", CommonConstants.BLANK);
+            }
             messageHelper.setSubject(title);
             messageHelper.setText(content, isHtml);
             pool.execute(new SendTask(mailSender, message));

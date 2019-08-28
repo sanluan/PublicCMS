@@ -95,6 +95,12 @@ public class RequestUtils {
      */
     public static Cookie addCookie(String contextPath, HttpServletResponse response, String name, String value, Integer expiry,
             String domain) {
+        if (null != name) {
+            name = name.replaceAll("\r|\n", Constants.BLANK);
+        }
+        if (null != value) {
+            value = value.replaceAll("\r|\n", Constants.BLANK);
+        }
         Cookie cookie = new Cookie(name, value);
         if (CommonUtils.notEmpty(expiry)) {
             cookie.setMaxAge(expiry);
