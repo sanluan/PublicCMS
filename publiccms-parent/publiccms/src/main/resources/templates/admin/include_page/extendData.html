@@ -204,7 +204,7 @@
             </#if>
     </#switch>
 </#macro>
-<#macro extendData name extendList extendValues type='form' fromIndex=0>
+<#macro extendData name extendList extendValues type='form' fromIndex=0 htmlSafe=false>
     <#list extendList as e>
     <#local value=extendValues[e.id.code]!''/>
         <#if 'customform'=type>
@@ -214,7 +214,7 @@
         <dt>${(e.name)}:</dt>
         <dd<#if 'editor'=e.inputType> id="content"</#if>>
             <@input name e e?index+fromIndex value type/>
-            <span class="info">${(e.description?no_esc)!}</span>
+            <span class="info">${(htmlSafe?then(e.description?no_esc,e.description))!}</span>
         </dd>
     </dl>
         </#if>
