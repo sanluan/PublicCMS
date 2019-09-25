@@ -28,8 +28,8 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.7</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.9.9</version.jackson>
-        <version.jacksondatabind>2.9.9.2</version.jacksondatabind>
+        <version.jackson>2.9.10</version.jackson>
+        <version.jacksondatabind>2.9.10</version.jacksondatabind>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.3.7.Final</version.hibernate>
