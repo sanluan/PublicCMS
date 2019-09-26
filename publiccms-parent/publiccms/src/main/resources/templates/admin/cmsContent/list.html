@@ -19,7 +19,7 @@
             modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
     <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -191,10 +191,12 @@
                         <a href="cmsContent/list.html?parentId=${contentId}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a>|
                     </#if>
                     <#if 1=a.status>
-                        <#if authorizedMap['cmsContent/push']>
+                        <#if authorizedMap['cmsContent/sortParameters']>
                             <#if dept?has_content>
                                 <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" target="dialog" width="500" height="150" mask="true"><@t.page 'top'/></a>|
                             </#if>
+                        </#if>
+                        <#if authorizedMap['cmsContent/push']>
                             <a href="cmsContent/push.html?contentId=${contentId}" target="dialog" mask="true"><@t.page 'button.push'/></a>|
                         </#if>
                         <#if authorizedMap['cmsContent/uncheck']>
