@@ -4,14 +4,14 @@
         <#assign category=object/>
     </@_category>
     "id":"${object.id}",
-    "cover":"${a.cover!}"
+    "cover":"${object.cover!}"
     "title":"${object.title?json_string}",
     "url":"${object.url!}",
     "description":"${(object.description?json_string)!}",
     "categoryId":"${object.categoryId}",
     "categoryTitle":"${category.name?json_string}",
     "categoryUrl":"${category.url!}",
-    "editor":"${object.editor}",
+    "editor":"${object.editor!}",
     "publishDate":"${object.publishDate}",
     "text":"${(attribute.text?json_string)!}",
     "sourceUrl":"${(attribute.sourceUrl)!}",

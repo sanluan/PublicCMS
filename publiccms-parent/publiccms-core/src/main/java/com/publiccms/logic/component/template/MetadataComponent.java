@@ -3,9 +3,9 @@ package com.publiccms.logic.component.template;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.collections4.map.CaseInsensitiveMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -217,12 +217,12 @@ public class MetadataComponent implements Cache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(HashMap.class, String.class, CmsPlaceMetadata.class));
+                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsPlaceMetadata.class));
                 } catch (IOException | ClassCastException e) {
-                    metadataMap = new HashMap<>();
+                    metadataMap = new CaseInsensitiveMap<>();
                 }
             } else {
-                metadataMap = new HashMap<>();
+                metadataMap = new CaseInsensitiveMap<>();
             }
             placeCache.put(dirPath, metadataMap);
         }
@@ -242,12 +242,12 @@ public class MetadataComponent implements Cache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     metadataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(HashMap.class, String.class, CmsPageMetadata.class));
+                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsPageMetadata.class));
                 } catch (IOException | ClassCastException e) {
-                    metadataMap = new HashMap<>();
+                    metadataMap = new CaseInsensitiveMap<>();
                 }
             } else {
-                metadataMap = new HashMap<>();
+                metadataMap = new CaseInsensitiveMap<>();
             }
             pageCache.put(dirPath, metadataMap);
         }
@@ -267,12 +267,12 @@ public class MetadataComponent implements Cache {
             if (CommonUtils.notEmpty(file)) {
                 try {
                     dataMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
-                            .constructMapLikeType(HashMap.class, String.class, CmsPageData.class));
+                            .constructMapLikeType(CaseInsensitiveMap.class, String.class, CmsPageData.class));
                 } catch (IOException | ClassCastException e) {
-                    dataMap = new HashMap<>();
+                    dataMap = new CaseInsensitiveMap<>();
                 }
             } else {
-                dataMap = new HashMap<>();
+                dataMap = new CaseInsensitiveMap<>();
             }
             pageDataCache.put(dirPath, dataMap);
         }
