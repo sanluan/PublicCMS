@@ -77,6 +77,11 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private CmsContentService service;
     @Autowired

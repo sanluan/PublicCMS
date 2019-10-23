@@ -66,6 +66,11 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private CmsPlaceService service;
     @Autowired
