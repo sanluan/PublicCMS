@@ -34,8 +34,8 @@ subprojects{
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.7"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-        jacksonVersion = "2.9.9"
-        jacksonDatabindVersion = "2.9.10"
+        jacksonVersion = "2.9.10"
+        jacksonDatabindVersion = "2.9.10.1"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.3.7.Final"
