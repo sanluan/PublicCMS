@@ -57,7 +57,7 @@ public class MybatisRedisCache implements Cache {
 
     @Override
     public int getSize() {
-        return new Long(redisClient.dbSize()).intValue();
+        return Long.valueOf(redisClient.dbSize()).intValue();
     }
 
     @Override

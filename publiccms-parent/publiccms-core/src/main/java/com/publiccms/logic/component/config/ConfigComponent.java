@@ -3,6 +3,7 @@ package com.publiccms.logic.component.config;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -229,10 +230,14 @@ public class ConfigComponent implements SiteCache {
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws ClassNotFoundException
+     * @throws SecurityException 
+     * @throws NoSuchMethodException 
+     * @throws InvocationTargetException 
+     * @throws IllegalArgumentException 
      */
     @Autowired
     public void initCache(CacheEntityFactory cacheEntityFactory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         cache = cacheEntityFactory.createCacheEntity("config");
     }
 

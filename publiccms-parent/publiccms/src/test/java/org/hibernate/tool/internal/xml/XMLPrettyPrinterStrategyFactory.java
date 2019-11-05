@@ -22,7 +22,7 @@ public final class XMLPrettyPrinterStrategyFactory {
         if (strategyClass != null) {
             try {
                 Class<XMLPrettyPrinterStrategy> clazz = (Class<XMLPrettyPrinterStrategy>) Class.forName(strategyClass);
-                return clazz.newInstance();
+                return clazz.getDeclaredConstructor().newInstance();
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

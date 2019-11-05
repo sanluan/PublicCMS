@@ -1,7 +1,7 @@
 package com.publiccms.common.cache;
 
-
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
 
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -44,7 +44,11 @@ public class CacheEntityFactory {
         } else {
             @SuppressWarnings("unchecked")
             Class<CacheEntity<K, V>> c = (Class<CacheEntity<K, V>>) Class.forName(type);
-            cacheEntity = c.newInstance();
+            try {
+                cacheEntity = c.getDeclaredConstructor().newInstance();
+            } catch (IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                throw new ClassNotFoundException(type);
+            }
         }
         cacheEntity.init(name, properties);
         return cacheEntity;

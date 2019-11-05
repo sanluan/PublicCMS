@@ -1,5 +1,6 @@
 package com.publiccms.logic.component.config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -102,10 +103,14 @@ public class CorsConfigComponent implements SiteCache, Config {
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws ClassNotFoundException
+     * @throws SecurityException 
+     * @throws NoSuchMethodException 
+     * @throws InvocationTargetException 
+     * @throws IllegalArgumentException 
      */
     @Autowired
     public void initCache(CacheEntityFactory cacheEntityFactory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         cache = cacheEntityFactory.createCacheEntity("cors", CacheEntityFactory.MEMORY_CACHE_ENTITY);
     }
 
