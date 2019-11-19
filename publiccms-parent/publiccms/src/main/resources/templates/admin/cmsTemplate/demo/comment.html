@@ -56,7 +56,7 @@
             <input type="hidden" name="contentId" value="${contentId}"/>
             <input name="returnUrl" type="hidden" value="${content.url!}" />
             <p><label>Comment:</label></p>
-            <p><textarea name="text" cols="100" rows="5" maxlength="1000">${text!}</textarea></p>
+            <p><textarea name="text" cols="100" rows="4" maxlength="1000">${text!}</textarea></p>
             <p><input type="submit" value="Submit"/></p>
         </form>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
