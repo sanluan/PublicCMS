@@ -53,7 +53,7 @@ CREATE TABLE `trade_order`  (
   `serial_number` varchar(100) NOT NULL COMMENT '订单流水',
   `account_type` varchar(20) NOT NULL COMMENT '支付账户类型',
   `account_serial_number` varchar(100) NULL DEFAULT NULL COMMENT '支付账号流水',
-  `ip` varchar(64) NOT NULL COMMENT 'IP地址',
+  `ip` varchar(130) NOT NULL COMMENT 'IP地址',
   `status` int(10) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3退款成功',
   `processed` tinyint(1) NOT NULL COMMENT '已处理',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
@@ -146,3 +146,12 @@ ALTER TABLE `sys_cluster`
 -- 2019-08-22 --
 ALTER TABLE `cms_content` 
 CHANGE COLUMN `dictionar_values` `dictionary_values` mediumtext  NULL COMMENT '数据字典值' AFTER `tag_ids`;
+-- 2019-11-21 --
+ALTER TABLE `cms_content` 
+    ADD COLUMN `contribute` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否投稿' AFTER `copied`;
+ALTER TABLE `log_login` 
+    MODIFY COLUMN `ip` varchar(130) NOT NULL COMMENT 'IP' AFTER `user_id`;
+ALTER TABLE `log_operate` 
+    MODIFY COLUMN `ip` varchar(130) NULL DEFAULT NULL COMMENT 'IP' AFTER `operate`;
+ALTER TABLE `log_upload` 
+    MODIFY COLUMN `ip` varchar(130) NULL DEFAULT NULL COMMENT 'IP' AFTER `height`;

@@ -111,7 +111,7 @@ public class LogLogin implements java.io.Serializable {
         this.userId = userId;
     }
 
-    @Column(name = "ip", nullable = false, length = 64)
+    @Column(name = "ip", nullable = false, length = 130)
     public String getIp() {
         return this.ip;
     }

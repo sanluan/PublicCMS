@@ -77,6 +77,10 @@ public class CmsContentService extends BaseService<CmsContent> {
      * 
      */
     public static final int STATUS_PEND = 2;
+    /**
+     * 
+     */
+    public static final int STATUS_REFUSE = 3;
 
     /**
      * 
@@ -299,8 +303,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     public List<CmsContent> check(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()
-                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+            if (null != entity && siteId == entity.getSiteId() && STATUS_DRAFT != entity.getStatus()
+                    && STATUS_NORMAL != entity.getStatus() && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(user.getId());
                 entity.setCheckDate(CommonUtils.getDate());
@@ -390,7 +394,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param id
      * @param comments
-     * @return 
+     * @return
      */
     public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);

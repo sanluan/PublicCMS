@@ -107,6 +107,7 @@ CREATE TABLE `cms_content` (
   `model_id` varchar(20) NOT NULL COMMENT '模型',
   `parent_id` bigint(20) default NULL COMMENT '父内容ID',
   `quote_content_id` bigint(20) NULL COMMENT '引用内容ID',
+  `contribute` tinyint(1) NOT NULL COMMENT '是否投稿',
   `copied` tinyint(1) NOT NULL COMMENT '是否转载',
   `author` varchar(50) default NULL COMMENT '作者',
   `editor` varchar(50) default NULL COMMENT '编辑',

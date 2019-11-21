@@ -1,4 +1,4 @@
-<#macro input name extend index value='' type='form'>
+<#macro input name extend index value='' type='form' safe=true>
     <#if !value??>
         <#local value=extend.defaultValue!/>
     </#if>
@@ -64,21 +64,21 @@
             <#break>
         <#case 'editor'>
             <#if 'view'=type>
-                ${(value?no_esc)!}
+                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
         <#case 'ckeditor'>
             <#if 'view'=type>
-                ${(value?no_esc)!}
+                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="ckeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
         <#case 'kindeditor'>
             <#if 'view'=type>
-                ${(value?no_esc)!}
+                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="kindeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>

@@ -150,7 +150,7 @@ public class LogUpload implements java.io.Serializable {
         this.fileSize = fileSize;
     }
 
-    @Column(name = "ip", length = 64)
+    @Column(name = "ip", length = 130)
     public String getIp() {
         return this.ip;
     }

@@ -124,6 +124,7 @@ public class ContentController {
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
+            entity.setContribute(true);
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
             service.save(entity);

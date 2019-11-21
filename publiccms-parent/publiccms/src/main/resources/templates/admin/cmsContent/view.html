@@ -4,8 +4,10 @@
         parentId=a.parentId!''
         categoryId=a.categoryId!''
         modelId=a.modelId!''
+        safe=true
         attribute=getContentAttribute(a.id)!{}
     />
+    <#if a.contribute && a.status != 1><#assign safe=false/></#if>
 </@_content>
 <@_category id=categoryId!><#assign category=object/></@_category>
 <@_model id=modelId!><#assign model=object/></@_model>
@@ -132,7 +134,7 @@
                 <dt>${(model.fieldTextMap['cover'])!}:</dt>
                 <dd>
                     <div class="thumbnail">
-                        <img src="${(site.sitePath+a.cover)!}" style="max-width:200px;max-height:200px;"/>
+                        <img src="${(a.cover)!}" style="max-width:200px;max-height:200px;"/>
                     </div>
                 </dd>
             </dl>
@@ -144,7 +146,7 @@
                     extendList=list![]
                     extendValue=attribute!{}
                 />
-                <@extendData 'categoryExtendDataList' extendList extendValue 'view'/>
+                <@extendData 'categoryExtendDataList' extendList extendValue 'view' safe/>
             </@_sysExtendFieldList>
         </#if>
         <#if model?has_content>
@@ -152,7 +154,7 @@
                 extendList=model.extendList![]
                 extendValue=attribute!{}
             />
-            <@extendData 'modelExtendDataList' extendList extendValue 'view'/>
+            <@extendData 'modelExtendDataList' extendList extendValue 'view' safe/>
         </#if>
         <#if a?has_content&&(a.hasImages||a.hasFiles)>
             <#if a.hasImages>
@@ -162,7 +164,7 @@
             <@_contentFileList contentId=a.id fileTypes='image'>
                 <#list page.list as file>
                     <div class="thumbnail">
-                        <img src="${site.sitePath+(file.filePath)!}" style="max-width:200px;max-height:200px;"/>
+                        <img src="${(file.filePath)!}" style="max-width:200px;max-height:200px;"/>
                     </div>
                 </#list>
             </@_contentFileList>
@@ -175,7 +177,7 @@
                     <dd>
                 <@_contentFileList contentId=a.id fileTypes='video,audio,other'>
                     <#list page.list as file>
-                        <a href="${site.sitePath+(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
+                        <a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
                     </#list>
                 </@_contentFileList>
                     </dd>
@@ -186,7 +188,7 @@
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['content'])!}:</dt>
                 <dd id="content">
-                    ${(attribute.text?no_esc)!}
+                    <#if safe>${(attribute.text?no_esc)!}<#else>${(attribute.text)!}</#if>
                 </dd>
             </dl>
         </#if>

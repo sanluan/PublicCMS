@@ -185,7 +185,7 @@ public class TradeOrder implements java.io.Serializable {
         this.accountSerialNumber = accountSerialNumber;
     }
 
-    @Column(name = "ip", nullable = false, length = 64)
+    @Column(name = "ip", nullable = false, length = 130)
     public String getIp() {
         return this.ip;
     }

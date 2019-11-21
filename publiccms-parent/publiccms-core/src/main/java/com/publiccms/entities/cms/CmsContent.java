@@ -88,6 +88,8 @@ public class CmsContent implements java.io.Serializable {
     private Long quoteContentId;
     @GeneratorColumn(title = "是否转载")
     private boolean copied;
+    @GeneratorColumn(title = "是否投稿")
+    private boolean contribute;
     @GeneratorColumn(title = "作者")
     @Field(analyze = Analyze.NO, store = Store.YES)
     private String author;
@@ -309,6 +311,15 @@ public class CmsContent implements java.io.Serializable {
 
     public void setCopied(boolean copied) {
         this.copied = copied;
+    }
+    
+    @Column(name = "contribute", nullable = false)
+    public boolean isContribute() {
+        return this.contribute;
+    }
+    
+    public void setContribute(boolean contribute) {
+        this.contribute = contribute;
     }
 
     @Column(name = "author", length = 50)
