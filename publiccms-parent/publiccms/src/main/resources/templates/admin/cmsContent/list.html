@@ -19,7 +19,7 @@
             modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
     <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -104,6 +104,9 @@
         <#if authorizedMap['cmsContent/check']>
             <li><a href="cmsContent/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
         </#if>
+        <#if authorizedMap['cmsContent/reject']>
+            <li><a href="cmsContent/reject.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_reject'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_reject'/></a></li>
+        </#if>
         <#if authorizedMap['cmsContent/uncheck']>
             <li><a href="cmsContent/uncheck.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
         </#if>
@@ -184,7 +187,7 @@
                 <td class="center">${a.sort!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 1=a.status>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 1=a.status || 3=a.status>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
@@ -205,6 +208,9 @@
                     <#elseif 2=a.status>
                         <#if authorizedMap['cmsContent/check']>
                             <a href="cmsContent/check.do?ids=${contentId}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>|
+                        </#if>
+                        <#if authorizedMap['cmsContent/reject']>
+                            <a href="cmsContent/reject.do?ids=${contentId}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.reject'/>" target="ajaxTodo"><@t.page 'button.reject'/></a>|
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/delete']>

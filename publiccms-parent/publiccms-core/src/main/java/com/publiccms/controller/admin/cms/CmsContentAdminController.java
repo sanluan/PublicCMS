@@ -253,6 +253,26 @@ public class CmsContentAdminController {
      * @param request
      * @return view name
      */
+    @RequestMapping("reject")
+    @Csrf
+    public String reject(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,
+            HttpServletRequest request) {
+        if (CommonUtils.notEmpty(ids)) {
+            service.reject(site.getId(), admin, ids);
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "reject.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(ids, CommonConstants.COMMA)));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param ids
+     * @param request
+     * @return view name
+     */
     @RequestMapping("uncheck")
     @Csrf
     public String uncheck(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids,

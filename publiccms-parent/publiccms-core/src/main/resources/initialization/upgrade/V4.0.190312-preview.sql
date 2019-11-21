@@ -155,3 +155,4 @@ ALTER TABLE `log_operate`
     MODIFY COLUMN `ip` varchar(130) NULL DEFAULT NULL COMMENT 'IP' AFTER `operate`;
 ALTER TABLE `log_upload` 
     MODIFY COLUMN `ip` varchar(130) NULL DEFAULT NULL COMMENT 'IP' AFTER `height`;
+UPDATE `sys_module` SET `authorized_url` = 'cmsContent/check,cmsContent/reject' WHERE `id` ='content_check';

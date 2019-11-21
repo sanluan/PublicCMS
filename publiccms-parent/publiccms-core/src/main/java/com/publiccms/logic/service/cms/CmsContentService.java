@@ -80,7 +80,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * 
      */
-    public static final int STATUS_REFUSE = 3;
+    public static final int STATUS_REJECT = 3;
 
     /**
      * 
@@ -321,6 +321,50 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
+     * @param user
+     * @param ids
+     * @return results list
+     */
+    public List<CmsContent> reject(short siteId, SysUser user, Serializable[] ids) {
+        List<CmsContent> entityList = new ArrayList<>();
+        for (CmsContent entity : getEntitys(ids)) {
+            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND != entity.getStatus()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+                entity.setStatus(STATUS_REJECT);
+                entity.setCheckUserId(user.getId());
+                entity.setCheckDate(CommonUtils.getDate());
+                entityList.add(entity);
+            }
+        }
+        return entityList;
+    }
+
+    /**
+     * @param siteId
+     * @param user
+     * @param ids
+     * @return results list
+     */
+    @SuppressWarnings("unchecked")
+    public List<CmsContent> uncheck(short siteId, SysUser user, Serializable[] ids) {
+        List<CmsContent> entityList = new ArrayList<>();
+        for (CmsContent entity : getEntitys(ids)) {
+            if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()
+                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+                entity.setStatus(STATUS_PEND);
+                for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null,
+                        null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null,
+                        null).getList()) {
+                    quote.setStatus(STATUS_PEND);
+                }
+                entityList.add(entity);
+            }
+        }
+        return entityList;
+    }
+
+    /**
+     * @param siteId
      * @param entity
      * @param contentIds
      * @param contentParameters
@@ -348,30 +392,6 @@ public class CmsContentService extends BaseService<CmsContent> {
             } else {
                 delete(quote.getId());
                 attributeService.delete(quote.getId());
-            }
-        }
-        return entityList;
-    }
-
-    /**
-     * @param siteId
-     * @param user
-     * @param ids
-     * @return results list
-     */
-    @SuppressWarnings("unchecked")
-    public List<CmsContent> uncheck(short siteId, SysUser user, Serializable[] ids) {
-        List<CmsContent> entityList = new ArrayList<>();
-        for (CmsContent entity : getEntitys(ids)) {
-            if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()
-                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
-                entity.setStatus(STATUS_PEND);
-                for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null,
-                        null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null,
-                        null).getList()) {
-                    quote.setStatus(STATUS_PEND);
-                }
-                entityList.add(entity);
             }
         }
         return entityList;
