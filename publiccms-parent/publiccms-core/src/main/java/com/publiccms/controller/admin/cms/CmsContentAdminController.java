@@ -279,7 +279,7 @@ public class CmsContentAdminController {
                     categoryIdSet.add(entity.getCategoryId());
                 }
             }
-            for (CmsContent parent : service.getEntitys(parentIdSet.toArray(new Integer[parentIdSet.size()]))) {
+            for (CmsContent parent : service.getEntitys(parentIdSet.toArray(new Long[parentIdSet.size()]))) {
                 publish(site, parent, admin);
             }
             for (CmsCategory category : categoryService.getEntitys(categoryIdSet.toArray(new Integer[categoryIdSet.size()]))) {
