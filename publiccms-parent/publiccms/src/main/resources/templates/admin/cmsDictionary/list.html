@@ -51,7 +51,7 @@
             <tr target="sid" rel="${a.id.id}">
                 <td class="center"><input name="ids" value="${a.id.id}" type="checkbox"></td>
                 <td>${a.id.id}</td>
-                <td>${a.name!}</td>
+                <td class="exclude-translate">${a.name!}</td>
                 <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
                 <td>
                 <#if authorizedMap['cmsDictionary/delete']>

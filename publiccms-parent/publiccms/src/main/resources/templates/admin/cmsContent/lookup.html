@@ -2,7 +2,7 @@
     <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li>
-                <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">${a.name!}</a>
+                <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
             <#if a.childIds?has_content>
                 <ul>
                     <@categoryTree a.id/>

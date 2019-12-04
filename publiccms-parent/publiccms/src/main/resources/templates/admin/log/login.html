@@ -70,11 +70,11 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td>${(a.name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
                 <td>
                     ${a.userId!}
                 </td>
-                <td>
+                <td class="exclude-translate">
                     ${a.channel!}
                 </td>
                 <td>${a.ip!}</td>

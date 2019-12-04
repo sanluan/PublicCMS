@@ -78,12 +78,12 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}${(a.ownsAllContent)?then('[<font color="red">'+t.pageMessage('user.own_all_content')+'</font>]','')?no_esc}</td>
-                <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
-                <td>${(a.email)!}</td>
+                <td class="exclude-translate">${(a.name)!}${(a.ownsAllContent)?then('[<font color="red">'+t.pageMessage('user.own_all_content')+'</font>]','')?no_esc}</td>
+                <td class="exclude-translate">${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
+                <td class="exclude-translate">${(a.email)!}</td>
                 <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>
                 <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
-                <td>${a.lastLoginIp!}</td>
+                <td class="exclude-translate">${a.lastLoginIp!}</td>
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate!}</td>

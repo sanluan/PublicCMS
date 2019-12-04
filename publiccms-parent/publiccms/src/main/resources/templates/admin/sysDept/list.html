@@ -69,10 +69,10 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.parentId!}</td>
-                <td>${a.description!}</td>
-                <td>${(userMap[a.userId?string].nickName)!}</td>
+                <td class="exclude-translate">${a.description!}</td>
+                <td class="exclude-translate">${(userMap[a.userId?string].nickName)!}</td>
                 <td>${a.ownsAllCategory?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.maxSort}</td>
                 <td>${a.ownsAllPage?then(t.pageMessage('yes'),'')}</td>

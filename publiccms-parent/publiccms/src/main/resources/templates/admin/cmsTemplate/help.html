@@ -201,7 +201,7 @@
                 <@_categoryList queryAll=true allowContribute=true pageSize=500>
                     <#list page.list as a>
                         <li>
-                            <a href="javascript:;">${(a.name)!}</a>
+                            <a href="javascript:;" class="exclude-translate">${(a.name)!}</a>
                             <ul>
                         <@_categoryModelList categoryId=a.id>
                             <#list list as a>
@@ -209,7 +209,7 @@
                             </#list>
                             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
                             <#list list as a>
-                                <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
+                                <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
                             </#list>
                         </@_categoryModelList>
                             </ul>

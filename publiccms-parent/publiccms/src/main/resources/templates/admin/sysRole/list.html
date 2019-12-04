@@ -23,7 +23,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.ownsAllRight?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.showAllModule?then(t.pageMessage('yes'),'')}</td>
             </tr>

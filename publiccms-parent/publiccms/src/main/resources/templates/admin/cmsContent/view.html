@@ -24,20 +24,20 @@
         </@_content>
             <dl>
                 <dt><@t.page 'category'/>:</dt>
-                <dd>
+                <dd class="exclude-translate">
                     ${(category.name)!}
                 </dd>
             </dl>
             <dl>
                 <dt><@t.page 'model'/>:</dt>
-                <dd>
+                <dd class="exclude-translate">
                     ${(model.name)!}
                 </dd>
             </dl>
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['title'])!}:</dt>
                 <dd>
-                    ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${(a.title)!}
+                    ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<span class="exclude-translate">${(a.title)!}</span>
                 </dd>
             </dl>
             <dl>
@@ -49,25 +49,25 @@
         <#if 1=a.status>
             <dl>
                 <dt><@t.page 'inspector'/>:</dt>
-                <dd>
+                <dd class="exclude-translate">
                      <@_sysUser id=a.checkUserId>${(object.nickName)!}</@_sysUser>
                 </dd>
             </dl>
         </#if>
             <dl class="nowrap">
                 <dt><#if model.onlyUrl>${(model.fieldTextMap['url'])!}<#else><@t.page 'url'/></#if>:</dt>
-                <dd>
+                <dd class="exclude-translate">
                     <a href="${(a.url)!}" target="_blank">${(a.url)!}</a>
                 </dd>
             </dl>
         <#if a?has_content&&a.copied>
             <dl>
                 <dt>${(model.fieldTextMap['source'])!}:</dt>
-                <dd>${(attribute.source)!}</dd>
+                <dd class="exclude-translate">${(attribute.source)!}</dd>
             </dl>
             <dl>
                 <dt>${(attribute.source)!}:</dt>
-                <dd>
+                <dd class="exclude-translate">
                     <a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.sourceUrl)!}</a>
                 </dd>
             </dl>
@@ -75,13 +75,13 @@
         <#if fieldList?seq_contains('author')>
             <dl>
                 <dt>${(model.fieldTextMap['author'])!}:</dt>
-                <dd>${(a.author)!}</dd>
+                <dd class="exclude-translate">${(a.author)!}</dd>
             </dl>
         </#if>
         <#if fieldList?seq_contains('editor')>
             <dl>
                 <dt>${(model.fieldTextMap['editor'])!}:</dt>
-                <dd>${(a.editor)!}</dd>
+                <dd class="exclude-translate">${(a.editor)!}</dd>
             </dl>
         </#if>
         <#if category?has_content && (a.tagIds)?has_content>
@@ -90,7 +90,7 @@
         <#list map as k,tagType>
             <dl class="nowrap">
                 <dt>${tagType.name}:</dt>
-                <dd>
+                <dd class="exclude-translate">
                     <@_tag ids=a.tagIds>
                         <#list map as j,tag>
                             <#if tag.typeId=k>
@@ -105,7 +105,7 @@
 <#else>
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['tag'])!}:</dt>
-                <dd>
+                <dd class="exclude-translate">
                     <@_tag ids=a.tagIds>
                         <#list map as j,tag>
                             ${tag.name}<#sep>,
@@ -118,7 +118,7 @@
         <#if fieldList?seq_contains('description')>
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['description'])!}:</dt>
-                <dd>
+                <dd class="exclude-translate">
                     ${(a.description)!}
                 </dd>
             </dl>
@@ -187,7 +187,7 @@
         <#if fieldList?seq_contains('content')>
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['content'])!}:</dt>
-                <dd id="content">
+                <dd id="content" class="exclude-translate">
                     <#if safe>${(attribute.text?no_esc)!}<#else>${(attribute.text)!}</#if>
                 </dd>
             </dl>
@@ -198,7 +198,7 @@
             <#if page.totalCount gt 0>
             <dl class="nowrap">
                 <dt><@t.page 'recommend_info'/>:</dt>
-                <dd>
+                <dd class="exclude-translate">
                     <#list page.list as a>
                         <a href="${(a.url)!}" target="_blank">${(a.title)!}</a>
                     </#list>
@@ -218,7 +218,7 @@
                 <#list page.list as a>
                 <dl class="nowrap">
                     <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> <@t.page 'comment.reply'/> ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
-                    <dd>
+                    <dd class="exclude-translate">
                         <div>${a.text!}</div>
                     </dd>
                 </dl>

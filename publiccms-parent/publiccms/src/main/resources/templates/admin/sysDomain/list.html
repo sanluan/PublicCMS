@@ -61,7 +61,7 @@
             <tr target="sid" rel="${a.name}">
                 <td>${(a.name)!} ${a.wild?then('['+t.pageMessage('domain.wild')+']','')}</td>
                 <td>${a.siteId!}</td>
-                <td>${(siteMap[a.siteId?string].name)!}</td>
+                <td class="exclude-translate">${(siteMap[a.siteId?string].name)!}</td>
                 <td>${(a.path)!}</td>
             </tr>
             </#list>

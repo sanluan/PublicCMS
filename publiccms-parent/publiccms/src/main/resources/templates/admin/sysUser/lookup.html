@@ -75,12 +75,12 @@
                 <td>
                     <a href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nickNameField!'nickName'}':'${(a.nickName?js_string)!}'});return false;"><i class="icon-check-sign icon-large"></i> <@t.page 'select'/></a>
                 </td>
-                <td>${(a.name)!}</td>
-                <td>${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
-                <td>${(a.email)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate">${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
+                <td class="exclude-translate">${(a.email)!}</td>
                 <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>
                 <td>${a.lastLoginDate!}</td>
-                <td>${a.lastLoginIp!}</td>
+                <td class="exclude-translate">${a.lastLoginIp!}</td>
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate}</td>
             </tr>

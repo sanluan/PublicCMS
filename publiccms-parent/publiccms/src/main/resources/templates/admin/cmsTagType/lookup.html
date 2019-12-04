@@ -6,7 +6,7 @@
 <@_tagTypeList pageSize=500>
     <#list page.list as a>
         <li>
-            <a href="javascript:;" onclick="$.bringBack({${field!'typeId'}:'${a.id}',tagTypeName:'${a.name}'});return false;">${a.name!}</a>
+            <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({${field!'typeId'}:'${a.id}',tagTypeName:'${a.name}'});return false;">${a.name!}</a>
         </li>
     <#else>
         <li><a><@t.page 'empty_directory'/></a></li>
