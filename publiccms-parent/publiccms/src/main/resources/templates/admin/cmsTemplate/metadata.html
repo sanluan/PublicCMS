@@ -3,9 +3,7 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-        <#if !a?has_content>
-            <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
-        <#else>
+        <#if a?has_content>
             <#if !site.parentId?has_content>
                  <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
             </#if>
@@ -110,20 +108,6 @@
                 </dd>
             </dl>
         </fieldset>
-<script>
-<#if site.useStatic&&(a.publishPath)?has_content>
-    $('input[name=useStatic]',navTab.getCurrentPanel()).click();
-</#if>
-<#if (a.useDynamic)?has_content&&a.useDynamic||!a?has_content>
-    $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
-</#if>
-<#if (a.needLogin)?has_content&&a.needLogin>
-    $('input[name=needLogin]',navTab.getCurrentPanel()).click();
-</#if>
-<#if (a.needBody)?has_content&&a.needBody>
-    $('input[name=needBody]',navTab.getCurrentPanel()).click();
-</#if>
-</script>
         <fieldset>
             <legend><@t.page 'metadata.extend_field'/></legend>
             <#include '../include_page/extends.html'/>
@@ -132,22 +116,59 @@
         </fieldset>
 <#if a?has_content>
         <textarea name="content" style="display:none"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
-<#else>
-        <textarea name="content" style="display:none">&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;New PublicCMS Template&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;main&gt;New PublicCMS Template&lt;/main&gt;
-<@_version>
-    <#if !authorizationEdition>
-    &lt;footer&gt;
-        &lt;p&gt;Powered by &lt;a href=&quot;http://www.publiccms.com/&quot;&gt;PublicCMS&lt;/a&gt; &lt;/p&gt;
-    &lt;/footer&gt;
+        <script>
+    <#if site.useStatic&&(a.publishPath)?has_content>
+            $('input[name=useStatic]',navTab.getCurrentPanel()).click();
     </#if>
-</@_version>
-&lt;/body&gt;
-&lt;/html&gt;</textarea>
+    <#if (a.useDynamic)?has_content&&a.useDynamic>
+            $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
+    </#if>
+    <#if (a.needLogin)?has_content&&a.needLogin>
+            $('input[name=needLogin]',navTab.getCurrentPanel()).click();
+    </#if>
+    <#if (a.needBody)?has_content&&a.needBody>
+            $('input[name=needBody]',navTab.getCurrentPanel()).click();
+    </#if>
+        </script>
+<#elseif demo?has_content>
+        <textarea name="content" style="display:none"><@html_escape><#include "demo/"+demo parse=false/></@html_escape></textarea>
+        <script>
+    <#if name?has_content>
+            $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page name/>');
+    </#if>
+            $('input[name=path]',navTab.getCurrentPanel()).val('${path!demo!}');
+    <#if !useDynamic?has_content||'true'=useDynamic>
+            $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+    </#if>
+    <#switch demo>
+        <#case "index.html">
+            <#if site.useStatic>
+                $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+                $('input[name=publishPath]',navTab.getCurrentPanel()).val('/demo/index.html');
+            </#if>
+            <#break>
+        <#case "comment.html">
+            $('input[name=needLogin]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+            <#break>
+        <#case "sitemap.xml">
+            <#if site.useStatic>
+                $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');
+            <#else>
+                $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
+            </#if>
+            <#break>
+        <#case "comment.ftl">
+        <#case "content.ftl">
+        <#case "contentList.ftl">
+        <#case "categoryList.ftl">
+            $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
+</#switch>
+        </script>
+<#else>
+        <textarea name="content" style="display:none"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>
+        <script>
+            $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
+        </script>
 </#if>
     </div>
 </form>
