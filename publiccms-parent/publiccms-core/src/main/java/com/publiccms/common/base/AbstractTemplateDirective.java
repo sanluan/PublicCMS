@@ -97,7 +97,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
      * @return user
      * @throws Exception
      */
-    protected SysUser getUser(RenderHandler handler) throws Exception {
+    private SysUser getUser(RenderHandler handler) throws Exception {
         String authToken = handler.getString("authToken");
         Long authUserId = handler.getLong("authUserId");
         if (CommonUtils.notEmpty(authToken) && null != authUserId) {
