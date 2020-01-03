@@ -58,7 +58,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.searchCount!}</td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.createDate!}</td>

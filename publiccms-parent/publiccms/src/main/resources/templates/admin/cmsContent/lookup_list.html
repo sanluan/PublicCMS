@@ -74,16 +74,16 @@
                 <td>${a.id}</td>
                 <td>
                     <a href="${a.url!}" target="_blank">
-                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${a.title!}
+                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<span class="exclude-translate">${a.title!}</span>
                     </a>
                 </td>
-                <td>
+                <td class="exclude-translate">
                      ${(userMap[a.userId?string].nickName)!}
                 </td>
-                <td>
+                <td class="exclude-translate">
                     ${(categoryMap[a.categoryId?string].name)!}
                 </td>
-                <td>
+                <td class="exclude-translate">
                      ${(modelMap[a.modelId].name)!}
                 </td>
                 <td>${a.scores!}</td>
@@ -93,7 +93,7 @@
                 <td>${a.createDate!}<#if a.updateDate??>/${a.updateDate}</#if></td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 2==a.status>/${(userMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 2==a.status>/<span class="exclude-translate">${(userMap[a.checkUserId?string].nickName)!}</span></#if>
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>

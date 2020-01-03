@@ -48,7 +48,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id?url}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>

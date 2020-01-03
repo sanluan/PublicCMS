@@ -103,7 +103,7 @@
             <tr target="sid" rel="${contentId}">
                 <td><input name="ids" value="${contentId}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
+                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
                 <td>
                     ${(categoryMap[a.categoryId?string].name)!}
                 </td>

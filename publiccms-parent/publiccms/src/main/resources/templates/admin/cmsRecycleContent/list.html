@@ -99,7 +99,7 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
+                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></td>
                 <td>
                     ${(userMap[a.userId?string].nickName)!}
                 </td>

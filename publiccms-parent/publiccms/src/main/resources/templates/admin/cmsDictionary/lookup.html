@@ -38,7 +38,7 @@
                 <td>
                     <a href="javascript:;" onclick="$.bringBack({'${field!'dictionaryId'}':'${a.id.id}','dictionaryName':'${(a.name?js_string)!}'});return false;"><i class="icon-check-sign icon-large"></i> <@t.page 'select'/></a>
                 </td>
-                <td>${a.name!}</td>
+                <td class="exclude-translate">${a.name!}</td>
                 <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
             </tr>
             </#list>

@@ -78,10 +78,10 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td><a href="${a.url!}" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('outer_chain')+']',''))!}</td>
-                <td>${a.code!}</td>
-                <td>${(typeMap[a.typeId?string].name)!}</td>
-                <td>${(parentMap[a.parentId?string].name)!}</td>
+                <td><a href="${a.url!}" class="exclude-translate" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('outer_chain')+']',''))!}</td>
+                <td class="exclude-translate">${a.code!}</td>
+                <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
+                <td class="exclude-translate">${(parentMap[a.parentId?string].name)!}</td>
                 <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then('['+t.pageMessage('category.contain_child')+']',''))!}</#if></td>
                 <td>${a.allowContribute?then(t.pageMessage('allow_contribute'),t.pageMessage('forbid_contribute'))}</td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>

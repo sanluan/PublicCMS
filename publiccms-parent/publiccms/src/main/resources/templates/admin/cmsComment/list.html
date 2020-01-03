@@ -73,10 +73,10 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td class="center">
+                <td class="center exclude-translate">
                     ${(userMap[a.userId?string].nickName)!}
                 </td>
-                <td>
+                <td class="exclude-translate">
                     <a href="cmsContent/view.html?id=${a.contentId}" target="dialog" rel="viewContent${a.contentId}">${(contentMap[a.contentId?string].title)!}</a>
                 </td>
                 <td>${a.updateDate!}</td>

@@ -61,12 +61,12 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td>${(a.name)!}</td>
-                <td>${a.channel!}</td>
-                <td>${a.ip!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate">${a.channel!}</td>
+                <td class="exclude-translate">${a.ip!}</td>
                 <td>${a.result?then(t.pageMessage('success'),t.pageMessage('fail'))}</td>
                 <td>${a.createDate!}</td>
-                <td>${(a.errorPassword)!}</td>
+                <td class="exclude-translate">${(a.errorPassword)!}</td>
             </tr>
             </#list>
         </tbody>

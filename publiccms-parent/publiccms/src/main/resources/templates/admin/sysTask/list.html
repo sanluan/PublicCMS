@@ -48,8 +48,8 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
-                <td>${(a.description)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate">${(a.description)!}</td>
                 <td>${(a.cronExpression)!}</td>
                 <td>${(a.filePath)!}</td>
                 <td><@t.page 'status.task.'+a.status/></td>

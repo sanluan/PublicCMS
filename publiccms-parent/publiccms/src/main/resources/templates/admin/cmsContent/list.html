@@ -162,14 +162,14 @@
             <tr target="sid" rel="${contentId}">
                 <td class="center"><input name="ids" value="${contentId}" type="checkbox"></td>
                 <td class="center">${a.id}</td>
-                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
-                <td class="center">
+                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
+                <td class="center exclude-translate">
                     ${(userMap[a.userId?string].nickName)!}
                 </td>
-                <td class="center">
+                <td class="center exclude-translate">
                     ${(categoryMap[a.categoryId?string].name)!}
                 </td>
-                <td class="center">
+                <td class="center exclude-translate">
                     ${(modelMap[a.modelId].name)!}
                 </td>
                 <td class="center">${a.scores!}</td>
@@ -187,7 +187,7 @@
                 <td class="center">${a.sort!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 1=a.status || 3=a.status>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 1=a.status || 3=a.status>/ <span class="exclude-translate">${(userMap[a.checkUserId?string].nickName)!}</span></#if>
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
