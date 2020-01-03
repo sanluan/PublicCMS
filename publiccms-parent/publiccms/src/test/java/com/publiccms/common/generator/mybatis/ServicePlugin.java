@@ -41,7 +41,7 @@ public class ServicePlugin extends PluginAdapter {
     }
 
     @Override
-    public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
+    public boolean clientGenerated(Interface interfaze, IntrospectedTable introspectedTable) {
         String packageName = interfaze.getType().getPackageName();
         String shortName = interfaze.getType().getShortName();
         String mapperName = interfaze.getType().getFullyQualifiedName();
@@ -72,7 +72,7 @@ public class ServicePlugin extends PluginAdapter {
             topLevelClazz.addAnnotation("@Transactional");
             topLevelClazz.addImportedType("org.springframework.transaction.annotation.Transactional");
             {
-                Field field = new Field();
+                Field field = new Field("mapper", new FullyQualifiedJavaType(fullName));
                 field.setVisibility(JavaVisibility.PRIVATE);
                 field.setType(new FullyQualifiedJavaType(mapperName));
                 field.setName("mapper");
@@ -81,12 +81,10 @@ public class ServicePlugin extends PluginAdapter {
                 topLevelClazz.addField(field);
             }
             List<Method> methods = interfaze.getMethods();
-
+            Method m;
             for (Method it : methods) {
-                Method m = new Method();
-                m.setVisibility(JavaVisibility.PUBLIC);
                 if (it.getName().endsWith("WithRowbounds")) {
-                    m.setName(it.getName().replace("WithRowbounds", "WithPage"));
+                    m = new Method(it.getName().replace("WithRowbounds", "WithPage"));
                     FullyQualifiedJavaType pageHandler = new FullyQualifiedJavaType("com.publiccms.common.handler.PageHandler");
                     m.setReturnType(pageHandler);
                     topLevelClazz.addImportedType(pageHandler);
@@ -116,9 +114,9 @@ public class ServicePlugin extends PluginAdapter {
                     m.addBodyLine(bodyline.toString());
                     m.addBodyLine("return page;");
                 } else {
-                    m.setName(it.getName());
-                    m.setReturnType(it.getReturnType());
-                    topLevelClazz.addImportedType(it.getReturnType());
+                    m = new Method(it.getName());
+                    m.setReturnType(it.getReturnType().get());
+                    topLevelClazz.addImportedType(it.getReturnType().get());
                     String bodyline = "return mapper.";
                     bodyline += m.getName();
                     bodyline += "(";
@@ -135,6 +133,7 @@ public class ServicePlugin extends PluginAdapter {
                     bodyline += ");";
                     m.addBodyLine(bodyline);
                 }
+                m.setVisibility(JavaVisibility.PUBLIC);
                 topLevelClazz.addMethod(m);
             }
 

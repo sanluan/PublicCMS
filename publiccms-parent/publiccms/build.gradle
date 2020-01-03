@@ -16,7 +16,7 @@ dependencies {
     )
     providedCompile(
         // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
-        "org.mybatis.generator:mybatis-generator-core:1.3.7",
+        "org.mybatis.generator:mybatis-generator-core:1.4.0",
         "javax.servlet:javax.servlet-api:${servletVersion}"
     )
     compile("org.apache.logging.log4j:log4j-web:${log4jVersion}",
