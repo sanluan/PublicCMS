@@ -1,10 +1,10 @@
 <#macro contentFiles image contentId=''>
     <#local name=image?then('images','files')/>
     <#local fileTypes=image?then('image','video,audio,other')/>
-<table class="list nowrap itemDetail ${name}" addButton="<@t.page 'button.new_line'/>" width="100%">
+<table class="list nowrap itemDetail ${name}" addButton="<@t.page 'button.new_line'/>"<#if image> batchUploadUrl="common/batchUpload.html?field=filePath&originalField=description&fileTypes=image"</#if> width="100%">
     <thead>
         <tr>
-            <th type="attach" name="${name}[#index#].filePath" size="50" fieldClass="required" lookupGroup="${name}[#index#]" lookupUrl="common/upload.html?field=filePath&originalField=description${image?then('&onlyImage=true','')}"><@t.page 'file_path'/></th>
+            <th type="attach" name="${name}[#index#].filePath" size="50" fieldClass="required" lookupGroup="${name}[#index#]" lookupUrl="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}"><@t.page 'file_path'/></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':280,'rows':2,'cols':60}"><@t.page 'description'/></th>
             <th type="text" name="${name}[#index#].fileSize" fieldClass="readonly digits" size="10" fieldAttrs="{'maxlength':20,'readonly':'readonly'}"><@t.page 'file.size'/></th>
             <th type="text" name="${name}[#index#].width" fieldClass="readonly digits" size="10" fieldAttrs="{'maxlength':20,'readonly':'readonly'}"><@t.page 'width'/></th>
@@ -21,7 +21,7 @@
                 <td>
                     <input type="hidden" name="${name}[${file?index}].id" value="${file.id}"/>
                     <input type="text" name="${name}[${file?index}].filePath" value="${(file.filePath)!}" size="50" class="required" />
-                    <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&onlyImage=true','')}" width="560" height="300" >${image?then(t.pageMessage('upload.image'),t.pageMessage('upload.file'))}</a>
+                    <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}" width="560" height="300">${image?then(t.pageMessage('upload.image'),t.pageMessage('upload.file'))}</a>
                 </td>
                 <td>
                     <textarea name="${name}[${file?index}].description" rows="3" cols="50" maxlength="280">${(file.description)!}</textarea>

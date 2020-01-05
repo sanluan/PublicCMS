@@ -56,7 +56,7 @@
             <dt>${(metadata.fieldTextMap['cover'])}:</dt>
             <dd>
                 <input name="cover" value="${(a.cover)!(content.cover)!}"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> maxlength="300" size="40" type="text"/>
-                <a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
+                <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
                 <#include "../include_page/preview.html"/>
                 <@preview 'page' 'input[name=cover]'/>
             </dd>

@@ -28,7 +28,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyImage=true" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
                     </#if>
@@ -44,7 +44,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyVideo=true" lookupGroup="" width="560" height="300"><@t.page 'video'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="560" height="300"><@t.page 'video'/></a>
                 </#if>
             </#if>
             <#break>

@@ -1,7 +1,9 @@
 package com.publiccms.controller.admin.sys;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -32,9 +34,7 @@ import com.publiccms.logic.service.log.LogUploadService;
 import com.publiccms.views.pojo.entities.FileSize;
 
 /**
- *
  * FileAdminController
- *
  */
 @Controller
 @RequestMapping("file")
@@ -58,8 +58,8 @@ public class FileAdminController {
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     @Csrf
     @ResponseBody
-    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file, String field,
-            String originalField, HttpServletRequest request, ModelMap model) {
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+            String field, String originalField, HttpServletRequest request, ModelMap model) {
         Map<String, Object> result = new HashMap<>();
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -88,5 +88,54 @@ public class FileAdminController {
             }
         }
         return result;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param files
+     * @param field
+     * @param originalField
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping(value = "doBatchUpload", method = RequestMethod.POST)
+    @Csrf
+    @ResponseBody
+    public List<Map<String, Object>> batchUpload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
+            MultipartFile[] files, String field, String originalField, HttpServletRequest request, ModelMap model) {
+        List<Map<String, Object>> resultList = new ArrayList<>();
+        if (CommonUtils.notEmpty(files)) {
+            for (MultipartFile file : files) {
+                Map<String, Object> result = new HashMap<>();
+                String originalName = file.getOriginalFilename();
+                String suffix = CmsFileUtils.getSuffix(originalName);
+                if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
+                    String fileName = CmsFileUtils.getUploadFileName(suffix);
+                    String filePath = siteComponent.getWebFilePath(site, fileName);
+                    try {
+                        CmsFileUtils.upload(file, filePath);
+                        result.put("field", field);
+                        result.put(field, fileName);
+                        String fileType = CmsFileUtils.getFileType(suffix);
+                        result.put("fileType", fileType);
+                        result.put("fileSize", file.getSize());
+                        if (CommonUtils.notEmpty(originalField)) {
+                            result.put("originalField", originalField);
+                            result.put(originalField, originalName);
+                        }
+                        resultList.add(result);
+                        FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                    } catch (IllegalStateException | IOException e) {
+                        log.error(e.getMessage(), e);
+                    }
+                }
+            }
+        }
+        return resultList;
     }
 }

@@ -314,9 +314,18 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <!-- <repositories> <repository> <id>jcenter</id> <url>http://jcenter.bintray.com/</url> 
-        </repository> </repositories> <pluginRepositories> <pluginRepository> <id>jcenter</id> 
-        <url>http://jcenter.bintray.com/</url> </pluginRepository> </pluginRepositories> -->
+    <repositories>
+        <repository>
+            <id>jcenter</id>
+            <url>http://jcenter.bintray.com/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jcenter</id>
+            <url>http://jcenter.bintray.com/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <defaultGoal>compile</defaultGoal>
         <finalName>${project.artifactId}</finalName>
