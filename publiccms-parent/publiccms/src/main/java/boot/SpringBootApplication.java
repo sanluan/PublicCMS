@@ -33,13 +33,13 @@ import config.spring.CmsConfig;
  */
 @Configuration
 @Import(CmsConfig.class)
-public class SprintBootApplication {
+public class SpringBootApplication {
 
     /**
      * @param args
      */
     public static void main(String[] args) {
-        CommonConstants.applicationContext = SpringApplication.run(SprintBootApplication.class, args);
+        CommonConstants.applicationContext = SpringApplication.run(SpringBootApplication.class, args);
     }
 
     /**

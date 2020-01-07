@@ -477,11 +477,6 @@ public class MultiDialect extends Dialect {
     }
 
     @Override
-    public boolean supportsNoColumnsInsert() {
-        return getCurrentDialect().supportsNoColumnsInsert();
-    }
-
-    @Override
     public String getLowercaseFunction() {
         return getCurrentDialect().getLowercaseFunction();
     }
@@ -998,11 +993,6 @@ public class MultiDialect extends Dialect {
     @Override
     public String inlineLiteral(String literal) {
         return getCurrentDialect().inlineLiteral(literal);
-    }
-
-    @Override
-    public boolean supportsJdbcConnectionLobCreation(DatabaseMetaData databaseMetaData) {
-        return getCurrentDialect().supportsJdbcConnectionLobCreation(databaseMetaData);
     }
 
     @Override
