@@ -33,7 +33,6 @@ https://github.com/sanluan/PublicCMS
 * doc			文档
 * docker  docker构建目录
 * publiccms-parent	工程源码
-* license.dat 试用授权
 
 ## 快速编译与运行
 
@@ -48,7 +47,7 @@ java -jar publiccms.war
 ```
 访问程序页面http://localhost:8080/publiccms/ ,根据页面提示配置并初始化数据库
 管理后台访问相对路径为http://localhost:8080/publiccms/admin/ ,数据脚本内置管理员账号/密码:admin/admin
-* 直接下载网盘中可执行程序
+* 直接下载网盘中可执行程序(https://www.publiccms.com/download.html)
 本地准备java,mysql环境,下载可执行程序压缩解压缩后运行startup.bat或startup.sh
 
 ## 定制运行方式

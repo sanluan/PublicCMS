@@ -24,7 +24,7 @@
         </dl>
 <#include "../include_page/extendData.html"/>
 <@_sysConfigFieldList code=code>
-    <@extendData 'extendDataList' list attribute!{}/>
+    <@extendData name='extendDataList' extendList=list extendValues=(attribute!{}) htmlSafe=true/>
 </@_sysConfigFieldList>
     </div>
 </form>
