@@ -54,7 +54,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final List<String> MUSIC_FILE_SUFFIXS = Arrays.asList(new String[] { ".mp3", ".wav", ".mid" });
+    public static final List<String> AUDIO_FILE_SUFFIXS = Arrays.asList(new String[] { ".mp3", ".wav", ".mid" });
     /**
      * 
      */
@@ -66,7 +66,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final String FILE_TYPE_MUSIC = "music";
+    public static final String FILE_TYPE_AUDIO = "audio";
     /**
      * 
      */
@@ -296,8 +296,8 @@ public class CmsFileUtils {
             return FILE_TYPE_IMAGE;
         } else if (VIDEO_FILE_SUFFIXS.contains(suffix)) {
             return FILE_TYPE_VIDEO;
-        } else if (MUSIC_FILE_SUFFIXS.contains(suffix)) {
-            return FILE_TYPE_MUSIC;
+        } else if (AUDIO_FILE_SUFFIXS.contains(suffix)) {
+            return FILE_TYPE_AUDIO;
         } else {
             return FILE_TYPE_OTHER;
         }

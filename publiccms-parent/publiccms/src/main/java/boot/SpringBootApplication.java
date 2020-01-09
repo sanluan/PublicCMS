@@ -28,7 +28,7 @@ import config.spring.CmsConfig;
 
 /**
  *
- * SprintBootApplication
+ * SpringBootApplication
  * 
  */
 @Configuration
