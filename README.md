@@ -31,7 +31,6 @@ https://github.com/sanluan/PublicCMS
 
 * data\publiccms	PublicCMS数据目录
 * doc			文档
-* docker  docker构建目录
 * publiccms-parent	工程源码
 
 ## 快速编译与运行
