@@ -13,6 +13,8 @@ dependencies {
         "org.freemarker:freemarker:${freemarkerVersion}",
 
         "org.springframework:spring-context-support:${springVersion}",
+        "org.springframework:spring-beans:${springVersion}",
+        "org.springframework:spring-web:${springVersion}",
         "org.springframework:spring-orm:${springVersion}",
         "org.springframework:spring-webmvc:${springVersion}",
 
