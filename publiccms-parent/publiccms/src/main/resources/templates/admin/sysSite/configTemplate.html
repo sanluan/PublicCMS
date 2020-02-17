@@ -10,7 +10,7 @@
     <dl class="nowrap">
         <dt><@t.page 'server_config.nginx'/>:</dt>
         <dd>
-            <textarea name="description" class="code" mode="nginx"><@_disk>
+            <textarea class="code" mode="nginx"><@_disk>
 <#assign
     rootPath=rootPath?replace('\\','/')
     dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')
@@ -25,7 +25,12 @@
 #${a.name} <@t.page 'server_config.site'/>
 server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
+    #listen 443 ssl;
     server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>;
+    
+    #ssl_certificate cert/xxx.pem;
+    #ssl_certificate_key cert/xxx.key;
+     
         <#if a.useSsi>
     ssi on;
     ssi_silent_errors on;
@@ -96,13 +101,21 @@ server {
     </dl>
     <dl class="nowrap">
         <dt><@t.page 'server_config.nginx_common'/>:</dt>
-        <dd><textarea name="description" class="code" mode="nginx">
+        <dd><textarea class="code" mode="nginx">
 upstream cms {
     #<@t.page 'server_config.upstream'/>
     ip_hash;
     server localhost:8080  weight=1;
 }</textarea>
             <span class="info"><@t.page 'server_config.nginx_common_description'/></span>
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt><@t.page 'server_config.tomcat'/>:</dt>
+        <dd><textarea class="code" mode="xml">
+&lt;!-- this valve replaces the apparent client remote IP address and hostname and scheme for the request --&gt;
+&lt;Valve className="org.apache.catalina.valves.RemoteIpValve" remoteIpHeader="X-Forwarded-Proto"/&gt;</textarea>
+            <span class="info"><@t.page 'server_config.tomcat_description'/></span>
         </dd>
     </dl>
 </div>

@@ -34,8 +34,8 @@ subprojects{
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.10"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-        jacksonVersion = "2.10.1"
-        jacksonDatabindVersion = "2.10.1"
+        jacksonVersion = "2.10.2"
+        jacksonDatabindVersion = "2.10.2"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.4.9.Final"
@@ -47,7 +47,7 @@ subprojects{
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.29"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
-        mybatisVersion = "3.5.3"
+        mybatisVersion = "3.5.4"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
         mybatisSpringVersion = "2.0.3"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
