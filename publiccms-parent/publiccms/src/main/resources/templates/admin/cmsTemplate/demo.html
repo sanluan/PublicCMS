@@ -39,16 +39,18 @@
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'app.interface'/></a>
             <ul>
-                <li><a href="cmsTemplate/metadata.html?demo=content.ftl&name=content_interface&acceptParameters=id" target="ajax" rel="cmsTemplateBox"><@t.page 'content_interface'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=comment.ftl&name=comment_interface&acceptParameters=contentId" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_interface'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=contentList.ftl&name=content_list_interface&acceptParameters=categoryId,containChild,modelId,parentId,userId,orderField,orderType,pageIndex,count" target="ajax" rel="cmsTemplateBox"><@t.page 'content_list_interface'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=categoryList.ftl&name=category_list_interface&acceptParameters=parentId,allowContribute,pageIndex,count" target="ajax" rel="cmsTemplateBox"><@t.page 'category_list_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=api/content.json&name=content_interface&acceptParameters=id" target="ajax" rel="cmsTemplateBox"><@t.page 'content_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=api/comment.json&name=comment_interface&acceptParameters=contentId" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=api/contentList.json&name=content_list_interface&acceptParameters=categoryId,containChild,modelId,parentId,userId,orderField,orderType,pageIndex,count" target="ajax" rel="cmsTemplateBox"><@t.page 'content_list_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=api/categoryList.json&name=category_list_interface&acceptParameters=parentId,allowContribute,pageIndex,count" target="ajax" rel="cmsTemplateBox"><@t.page 'category_list_interface'/></a></li>
             </ul>
         </li>
     </ul>
 </div>
 <script>
 $('ul li a',$.pdialog.getCurrent()).click(function(){
-    $.pdialog.closeCurrent();
+    if($(this).attr('href')!='javascript:;'){
+        $.pdialog.closeCurrent();
+    }
 });
 </script>

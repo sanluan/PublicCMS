@@ -27,7 +27,9 @@
 </#macro>
 <script>
 $('ul li a',$.pdialog.getCurrent()).click(function(){
-    $.pdialog.closeCurrent();
+    if($(this).attr('href')!='javascript:;'){
+        $.pdialog.closeCurrent();
+    }
 });
 </script>
 <div class="pageFormContent" layoutH="0">

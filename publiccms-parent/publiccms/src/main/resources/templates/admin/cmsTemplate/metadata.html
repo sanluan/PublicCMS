@@ -157,10 +157,10 @@
                 $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
             </#if>
             <#break>
-        <#case "comment.ftl">
-        <#case "content.ftl">
-        <#case "contentList.ftl">
-        <#case "categoryList.ftl">
+        <#case "api/comment.json">
+        <#case "api/content.json">
+        <#case "api/contentList.json">
+        <#case "api/categoryList.json">
             $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
 </#switch>
         </script>
