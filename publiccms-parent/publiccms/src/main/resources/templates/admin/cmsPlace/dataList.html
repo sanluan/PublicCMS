@@ -35,7 +35,7 @@
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                     <li>
-                        <a class="button" href="cmsPlace/export.do?${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
+                        <a class="button" href="cmsPlace/export.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
                     </li>
                 </ul>
             </div>

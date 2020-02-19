@@ -26,7 +26,7 @@
         </p>
         <p>
     <#list page.list as a>
-        ${a.path[0..a.path?last_index_of('/')]}<@_placeMetadata path=a.path>${(object.alias)!}</@_placeMetadata> (${a.clicks}) <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
+        ${a.path[0..a.path?last_index_of('/')]}<@_placeMetadata path=a.path>${(object.alias)!}</@_placeMetadata> (${a.clicks}) <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(a.path?url)!}" title="<@t.page 'confirm.delete'/>" target="ajaxTodo" callback="$.pdialog.closeCurrent()"><@t.page 'button.delete'/></a><br/>
     </#list>
         </p>
 </@_placeList>
