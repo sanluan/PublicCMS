@@ -69,7 +69,7 @@ public class ControllerUtils {
 
     private static boolean unSafe(String url, SysSite site, HttpServletRequest request) {
         String basePath = AbstractFreemarkerView.getBasePath(request.getScheme(), request.getServerPort(),
-                request.getServerName(), request.getContextPath());
+                request.getServerName(), request.getContextPath()) + "/";
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
                 || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
