@@ -140,15 +140,4 @@ public class RequestUtils {
         return null;
     }
 
-    public static String getScheme(HttpServletRequest request) {
-        if (null != request) {
-            String scheme = request.getHeader("X-Forwarded-Proto");
-            if ("https".equals(scheme) || "http".equals(scheme)) {
-                return scheme;
-            } else {
-                return request.getScheme();
-            }
-        }
-        return null;
-    }
 }

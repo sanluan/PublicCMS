@@ -9,7 +9,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.entities.sys.SysSite;
@@ -59,8 +58,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
         String serverName = request.getServerName();
-        model.put(CONTEXT_BASE,
-                getBasePath(RequestUtils.getScheme(request), request.getServerPort(), serverName, request.getContextPath()));
+        model.put(CONTEXT_BASE, getBasePath(request.getScheme(), request.getServerPort(), serverName, request.getContextPath()));
         model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(serverName));
         exposeSite(model, BeanComponent.getSiteComponent().getSite(serverName));
     }

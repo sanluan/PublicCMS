@@ -13,8 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.publiccms.common.tools.RequestUtils;
-
 /**
  * 请求发生异常时，转换为404错误
  * 
@@ -49,7 +47,7 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
     protected View resolveViewName(String viewName, Map<String, Object> model, Locale locale, HttpServletRequest request)
             throws Exception {
         if (viewName.startsWith(SPECIAL_REDIRECT_URL)) {
-            String fixedViewName = viewName.substring(0, REDIRECT_URL_PREFIX_LENGTH) + RequestUtils.getScheme(request)
+            String fixedViewName = viewName.substring(0, REDIRECT_URL_PREFIX_LENGTH) + request.getScheme()
                     + viewName.substring(REDIRECT_URL_PREFIX_LENGTH - 1);
             return super.resolveViewName(fixedViewName, model, locale, request);
         } else {

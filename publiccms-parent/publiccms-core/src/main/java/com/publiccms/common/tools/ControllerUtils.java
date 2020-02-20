@@ -45,13 +45,13 @@ public class ControllerUtils {
         if (CommonUtils.empty(url)) {
             return true;
         } else if (url.contains("\r") || url.contains("\n")) {
-            return false;
+            return true;
         } else if (url.contains("://") || url.startsWith("//")) {
             if (url.startsWith("//")) {
-                url = new StringBuilder(RequestUtils.getScheme(request)).append(":").append(url).toString();
+                url = new StringBuilder(request.getScheme()).append(":").append(url).toString();
             }
             if (unSafe(url, site, request)) {
-                if (null != safeReturnUrl) {
+                if (CommonUtils.notEmpty(safeReturnUrl)) {
                     for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
                         if (url.startsWith(safeUrlPrefix)) {
                             return false;
@@ -68,7 +68,7 @@ public class ControllerUtils {
     }
 
     private static boolean unSafe(String url, SysSite site, HttpServletRequest request) {
-        String basePath = AbstractFreemarkerView.getBasePath(RequestUtils.getScheme(request), request.getServerPort(),
+        String basePath = AbstractFreemarkerView.getBasePath(request.getScheme(), request.getServerPort(),
                 request.getServerName(), request.getContextPath());
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
