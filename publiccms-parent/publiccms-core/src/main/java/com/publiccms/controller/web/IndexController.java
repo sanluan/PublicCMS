@@ -180,9 +180,10 @@ public class IndexController {
             String[] values = request.getParameterValues(parameterName);
             if (CommonUtils.notEmpty(values)) {
                 if (1 < values.length) {
+                    ControllerUtils.removeCRLF(values);
                     model.addAttribute(parameterName, values);
                 } else {
-                    model.addAttribute(parameterName, values[0]);
+                    model.addAttribute(parameterName, ControllerUtils.removeCRLF(values[0]));
                 }
             }
         }

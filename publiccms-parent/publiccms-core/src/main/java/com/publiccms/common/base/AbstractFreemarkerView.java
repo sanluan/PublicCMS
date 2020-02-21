@@ -9,6 +9,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.entities.sys.SysSite;
@@ -93,9 +94,10 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
             String[] values = request.getParameterValues(parameterName);
             if (CommonUtils.notEmpty(values)) {
                 if (1 < values.length) {
+                    ControllerUtils.removeCRLF(values);
                     model.put(parameterName, values);
                 } else {
-                    model.put(parameterName, values[0]);
+                    model.put(parameterName, ControllerUtils.removeCRLF(values[0]));
                 }
             }
         }

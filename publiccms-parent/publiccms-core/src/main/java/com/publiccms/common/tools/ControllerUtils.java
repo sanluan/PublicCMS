@@ -44,12 +44,14 @@ public class ControllerUtils {
     public static boolean isUnSafeUrl(String url, SysSite site, String safeReturnUrl, HttpServletRequest request) {
         if (CommonUtils.empty(url)) {
             return true;
-        } else if (0 < url.indexOf("://") || url.startsWith("//")) {
+        } else if (url.contains("\r") || url.contains("\n")) {
+            return true;
+        } else if (url.contains("://") || url.startsWith("//")) {
             if (url.startsWith("//")) {
                 url = new StringBuilder(request.getScheme()).append(":").append(url).toString();
             }
             if (unSafe(url, site, request)) {
-                if (null != safeReturnUrl) {
+                if (CommonUtils.notEmpty(safeReturnUrl)) {
                     for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
                         if (url.startsWith(safeUrlPrefix)) {
                             return false;
@@ -83,8 +85,23 @@ public class ControllerUtils {
      * @param url
      */
     public static void redirectPermanently(HttpServletResponse response, String url) {
-        response.setHeader("Location", url);
+        response.setHeader("Location", removeCRLF(url));
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+    }
+
+    public static String removeCRLF(String string) {
+        if (null != string) {
+            return string.replaceAll("\r|\n", CommonConstants.BLANK);
+        }
+        return string;
+    }
+
+    public static void removeCRLF(String values[]) {
+        if (null != values) {
+            for (int i = 0; i < values.length; i++) {
+                values[i] = removeCRLF(values[i]);
+            }
+        }
     }
 
     /**
