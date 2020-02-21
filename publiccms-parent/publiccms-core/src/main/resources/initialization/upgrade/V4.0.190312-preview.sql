@@ -16,7 +16,7 @@ CREATE TABLE `trade_account`  (
   `amount` decimal(10, 2) NOT NULL COMMENT '金额',
   `update_date` datetime(0) NULL DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`),
-  INDEX `site_id`(`site_id`, `update_date`) 
+  KEY `site_id`(`site_id`, `update_date`) 
 ) COMMENT = '资金账户';
 
 -- ----------------------------
@@ -61,9 +61,9 @@ CREATE TABLE `trade_order`  (
   `process_date` datetime DEFAULT NULL COMMENT '处理日期',
   `payment_date` datetime(0) NULL DEFAULT NULL COMMENT '支付日期',
   PRIMARY KEY (`id`),
-  INDEX `account_type`(`account_type`, `account_serial_number`),
-  INDEX `site_id`(`site_id`, `user_id`, `status`, `create_date`),
-  INDEX `trade_type`(`trade_type`, `serial_number`)
+  KEY `account_type`(`account_type`, `account_serial_number`),
+  KEY `site_id`(`site_id`, `user_id`, `status`, `create_date`),
+  KEY `trade_type`(`trade_type`, `serial_number`)
 ) COMMENT = '支付订单';
 
 -- ----------------------------
@@ -99,7 +99,7 @@ CREATE TABLE `trade_refund`  (
   `create_date` datetime(0) NOT NULL COMMENT '创建日期',
   `processing_date` datetime(0) NULL DEFAULT NULL COMMENT '处理日期',
   PRIMARY KEY (`id`),
-  INDEX `order_id`(`order_id`, `status`, `create_date`)
+  KEY `order_id`(`order_id`, `status`, `create_date`)
 ) COMMENT = '退款申请';
 
 INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', 'sysUser/lookup', 'icon-book', 'trade_menu', 1, 5);
@@ -110,7 +110,7 @@ INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list',
 INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/lookup', 'icon-barcode', 'trade_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup', 'icon-signout', 'trade_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeRefund/refund', '', 'refund_list', 0, 1);
-INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 1, 0);
+INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 0, 4);
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'en', 'Trade menegent');
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'ja', 'ビジネス管理');
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'zh', '商务管理');
@@ -156,3 +156,233 @@ ALTER TABLE `log_operate`
 ALTER TABLE `log_upload` 
     MODIFY COLUMN `ip` varchar(130) NULL DEFAULT NULL COMMENT 'IP' AFTER `height`;
 UPDATE `sys_module` SET `authorized_url` = 'cmsContent/check,cmsContent/reject' WHERE `id` ='content_check';
+-- 2020-02-21 --
+ALTER TABLE  `cms_category`
+  DROP INDEX  `code`,
+  DROP INDEX  `sort`,
+  DROP INDEX  `type_id`,
+  DROP INDEX  `site_id`;
+ALTER TABLE  `cms_category_type`
+  DROP INDEX  `site_id`;
+ALTER TABLE  `cms_comment`
+  DROP INDEX  `site_id`,
+  DROP INDEX  `update_date`,
+  DROP INDEX  `reply_id`;
+ALTER TABLE  `cms_content`
+  DROP INDEX  `check_date`,
+  DROP INDEX  `scores`,
+  DROP INDEX  `only_url`,
+  DROP INDEX  `status`,
+  DROP INDEX  `quote_content_id`;
+ALTER TABLE  `cms_content_file`
+  DROP INDEX  `content_id`,
+  DROP INDEX  `sort`,
+  DROP INDEX  `file_type`,
+  DROP INDEX  `file_size`,
+  DROP INDEX  `clicks`,
+  DROP INDEX  `user_id`;
+ALTER TABLE  `cms_content_related`
+  DROP INDEX  `user_id`;
+ALTER TABLE  `cms_dictionary`
+  DROP INDEX  `site_id`;
+ALTER TABLE  `cms_place`
+  DROP INDEX  `clicks`,
+  DROP INDEX  `site_id`,
+  DROP INDEX  `item_type`,
+  DROP INDEX  `user_id`,
+  DROP INDEX  `publish_date`;
+ALTER TABLE  `cms_tag`
+  DROP INDEX  `site_id`;
+ALTER TABLE  `cms_tag_type`
+  DROP INDEX  `site_id`;
+ALTER TABLE  `cms_word`
+  DROP INDEX  `name`,
+  DROP INDEX  `hidden`,
+  DROP INDEX  `create_date`,
+  DROP INDEX  `search_count`;
+ALTER TABLE  `log_login`
+  DROP INDEX  `result`,
+  DROP INDEX  `user_id`,
+  DROP INDEX  `create_date`,
+  DROP INDEX  `ip`,
+  DROP INDEX  `site_id`,
+  DROP INDEX  `channel`;
+ALTER TABLE  `log_operate`
+  DROP INDEX  `user_id`,
+  DROP INDEX  `operate`,
+  DROP INDEX  `create_date`,
+  DROP INDEX  `ip`,
+  DROP INDEX  `site_id`,
+  DROP INDEX  `channel`;
+ALTER TABLE  `log_task`
+  DROP INDEX  `task_id`,
+  DROP INDEX  `success`,
+  DROP INDEX  `site_id`,
+  DROP INDEX  `begintime`;
+ALTER TABLE  `log_upload`
+  DROP INDEX  `user_id`,
+  DROP INDEX  `create_date`,
+  DROP INDEX  `ip`,
+  DROP INDEX  `site_id`,
+  DROP INDEX  `channel`,
+  DROP INDEX  `file_type`,
+  DROP INDEX  `file_size`;
+ALTER TABLE  `sys_app`
+  DROP INDEX  `key`,
+  DROP INDEX  `site_id`;
+ALTER TABLE  `sys_app_client`
+  DROP INDEX  `site_id`,
+  DROP INDEX  `user_id`;
+ALTER TABLE  `sys_app_token`
+  DROP INDEX  `app_id`,
+  DROP INDEX  `create_date`;
+ALTER TABLE  `sys_cluster`
+  DROP INDEX  `create_date`;
+ALTER TABLE  `sys_dept`
+  DROP INDEX  `site_id`;
+ALTER TABLE  `sys_domain`
+  DROP INDEX  `site_id`;
+ALTER TABLE  `sys_email_token`
+  DROP INDEX  `create_date`,
+  DROP INDEX  `user_id`;
+ALTER TABLE  `sys_extend_field`
+  DROP INDEX  `sort`;
+ALTER TABLE  `sys_module`
+  DROP INDEX  `parent_id`,
+  DROP INDEX  `sort`;
+ALTER TABLE  `sys_role`
+  DROP INDEX  `site_id`;
+ALTER TABLE  `sys_site`
+  DROP INDEX  `disabled`;
+ALTER TABLE  `sys_task`
+  DROP INDEX  `status`,
+  DROP INDEX  `site_id`,
+  DROP INDEX  `update_date`;
+ALTER TABLE  `sys_user`
+  DROP INDEX  `name`,
+  DROP INDEX  `nick_name`,
+  DROP INDEX  `email`,
+  DROP INDEX  `disabled`,
+  DROP INDEX  `lastLoginDate`,
+  DROP INDEX  `email_checked`,
+  DROP INDEX  `dept_id`;
+ALTER TABLE  `sys_user_token`
+  DROP INDEX  `user_id`,
+  DROP INDEX  `create_date`,
+  DROP INDEX  `channel`,
+  DROP INDEX  `site_id`;
+ALTER TABLE  `cms_category`
+  ADD UNIQUE INDEX `cms_category_code` (`site_id`,`code`),
+  ADD INDEX `cms_category_sort` (`sort`),
+  ADD INDEX `cms_category_type_id` (`type_id`,`allow_contribute`),
+  ADD INDEX `cms_category_site_id` (`site_id`,`parent_id`,`hidden`,`disabled`);
+ALTER TABLE  `cms_category_type`
+  ADD INDEX `cms_category_type_site_id` (`site_id`);
+ALTER TABLE  `cms_comment`
+  ADD INDEX `cms_comment_site_id` (`site_id`,`content_id`,`status`,`disabled`),
+  ADD INDEX `cms_comment_update_date` (`update_date`,`create_date`),
+  ADD INDEX `cms_comment_reply_id` (`site_id`,`reply_user_id`,`reply_id`);
+ALTER TABLE  `cms_content`
+  ADD INDEX `cms_content_check_date` (`check_date`,`update_date`),
+  ADD INDEX `cms_content_scores` (`scores`,`comments`,`clicks`),
+  ADD INDEX `cms_content_only_url` (`only_url`,`has_images`,`has_files`,`user_id`),
+  ADD INDEX `cms_content_status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
+  ADD INDEX `cms_content_quote_content_id`(`site_id`, `quote_content_id`);
+ALTER TABLE  `cms_content_file`
+  ADD INDEX `cms_content_file_content_id` (`content_id`),
+  ADD INDEX `cms_content_file_sort` (`sort`),
+  ADD INDEX `cms_content_file_file_type`(`file_type`),
+  ADD INDEX `cms_content_file_file_size` (`file_size`),
+  ADD INDEX `cms_content_file_clicks` (`clicks`),
+  ADD INDEX `cms_content_file_user_id` (`user_id`);
+ALTER TABLE  `cms_content_related`
+  ADD INDEX `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`);
+ALTER TABLE  `cms_dictionary`
+  ADD INDEX `cms_dictionary_site_id` (`site_id`,`multiple`);
+ALTER TABLE  `cms_place`
+  ADD INDEX `cms_place_clicks` (`clicks`),
+  ADD INDEX `cms_place_site_id` (`site_id`,`path`,`status`,`disabled`),
+  ADD INDEX `cms_place_item_type` (`item_type`,`item_id`),
+  ADD INDEX `cms_place_user_id` (`user_id`,`check_user_id`),
+  ADD INDEX `cms_place_publish_date` (`publish_date`,`create_date`,`expiry_date`);
+ALTER TABLE  `cms_tag`
+  ADD INDEX `cms_tag_site_id` (`site_id`);
+ALTER TABLE  `cms_tag_type`
+  ADD INDEX `cms_tag_type_site_id` (`site_id`);
+ALTER TABLE  `cms_word`
+  ADD UNIQUE INDEX `cms_word_name` (`name`,`site_id`),
+  ADD INDEX `cms_word_hidden` (`hidden`),
+  ADD INDEX `cms_word_create_date` (`create_date`),
+  ADD INDEX `cms_word_search_count` (`search_count`);
+ALTER TABLE  `log_login`
+  ADD INDEX `log_login_result` (`result`),
+  ADD INDEX `log_login_user_id` (`user_id`),
+  ADD INDEX `log_login_create_date` (`create_date`),
+  ADD INDEX `log_login_ip` (`ip`),
+  ADD INDEX `log_login_site_id` (`site_id`),
+  ADD INDEX `log_login_channel` (`channel`);
+ALTER TABLE  `log_operate`
+  ADD INDEX `log_operate_user_id` (`user_id`),
+  ADD INDEX `log_operate_operate` (`operate`),
+  ADD INDEX `log_operate_create_date` (`create_date`),
+  ADD INDEX `log_operate_ip` (`ip`),
+  ADD INDEX `log_operate_site_id` (`site_id`),
+  ADD INDEX `log_operate_channel` (`channel`);
+ALTER TABLE  `log_task`
+  ADD INDEX `log_task_task_id` (`task_id`),
+  ADD INDEX `log_task_success` (`success`),
+  ADD INDEX `log_task_site_id` (`site_id`),
+  ADD INDEX `log_task_begintime` (`begintime`);
+ALTER TABLE  `log_upload`
+  ADD INDEX `log_upload_user_id` (`user_id`),
+  ADD INDEX `log_upload_create_date` (`create_date`),
+  ADD INDEX `log_upload_ip` (`ip`),
+  ADD INDEX `log_upload_site_id` (`site_id`),
+  ADD INDEX `log_upload_channel` (`channel`),
+  ADD INDEX `log_upload_file_type` (`file_type`),
+  ADD INDEX `log_upload_file_size` (`file_size`);
+ALTER TABLE  `sys_app`
+  ADD UNIQUE INDEX `sys_app_key` (`app_key`),
+  ADD INDEX `sys_app_site_id` (`site_id`);
+ALTER TABLE  `sys_app_client`
+  ADD UNIQUE INDEX `sys_app_client_site_id` (`site_id`,`channel`,`uuid`),
+  ADD INDEX `sys_app_client_user_id` (`user_id`,`disabled`,`create_date`) ;
+ALTER TABLE  `sys_app_token`
+  ADD INDEX `sys_app_token_app_id` (`app_id`),
+  ADD INDEX `sys_app_token_create_date` (`create_date`);
+ALTER TABLE  `sys_cluster`
+  ADD INDEX `sys_cluster_create_date` (`create_date`);
+ALTER TABLE  `sys_dept`
+  ADD INDEX `sys_dept_site_id` (`site_id`);
+ALTER TABLE  `sys_domain`
+  ADD INDEX `sys_domain_site_id` (`site_id`);
+ALTER TABLE  `sys_email_token`
+  ADD INDEX `sys_email_token_create_date` (`create_date`),
+  ADD INDEX `sys_email_token_user_id` (`user_id`);
+ALTER TABLE  `sys_extend_field`
+  ADD INDEX `sys_extend_field_sort` (`sort`);
+ALTER TABLE  `sys_module`
+  ADD INDEX `sys_module_parent_id` (`parent_id`,`menu`),
+  ADD INDEX `sys_module_sort` (`sort`);
+ALTER TABLE  `sys_role`
+  ADD INDEX `sys_role_site_id` (`site_id`);
+ALTER TABLE  `sys_site`
+  ADD INDEX `sys_site_disabled` (`disabled`);
+ALTER TABLE  `sys_task`
+  ADD INDEX `sys_task_status` (`status`),
+  ADD INDEX `sys_task_site_id` (`site_id`),
+  ADD INDEX `sys_task_update_date` (`update_date`);
+ALTER TABLE  `sys_user`
+  ADD UNIQUE INDEX `sys_user_name` (`name`,`site_id`),
+  ADD UNIQUE INDEX `sys_user_nick_name` (`nick_name`,`site_id`),
+  ADD INDEX `sys_user_email` (`email`),
+  ADD INDEX `sys_user_disabled` (`disabled`),
+  ADD INDEX `sys_user_lastLoginDate` (`last_login_date`),
+  ADD INDEX `sys_user_email_checked` (`email_checked`),
+  ADD INDEX `sys_user_dept_id` (`dept_id`);
+ALTER TABLE  `sys_user_token`
+  ADD INDEX `sys_user_token_user_id` (`user_id`),
+  ADD INDEX `sys_user_token_create_date` (`create_date`),
+  ADD INDEX `sys_user_token_channel` (`channel`),
+  ADD INDEX `sys_user_token_site_id` (`site_id`);
+UPDATE `sys_module` SET `authorized_url` = 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload' WHERE `id` = 'content_add'

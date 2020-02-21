@@ -27,10 +27,10 @@ CREATE TABLE `cms_category` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `code` (`site_id`,`code`),
-  KEY `sort` (`sort`),
-  KEY `type_id` (`type_id`,`allow_contribute`),
-  KEY `site_id` (`site_id`,`parent_id`,`hidden`,`disabled`)
+  UNIQUE KEY `cms_category_code` (`site_id`,`code`),
+  KEY `cms_category_sort` (`sort`),
+  KEY `cms_category_type_id` (`type_id`,`allow_contribute`),
+  KEY `cms_category_site_id` (`site_id`,`parent_id`,`hidden`,`disabled`)
 ) COMMENT='分类';
 
 -- ----------------------------
@@ -68,7 +68,7 @@ CREATE TABLE `cms_category_type` (
   `sort` int(11) NOT NULL COMMENT '排序',
   `extend_id` int(11) default NULL COMMENT '扩展ID',
   PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`)
+  KEY `cms_category_type_site_id` (`site_id`)
 ) COMMENT='分类类型';
 -- ----------------------------
 -- Table structure for cms_comment
@@ -89,9 +89,9 @@ CREATE TABLE `cms_comment` (
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   `text` text COMMENT '内容',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`content_id`,`status`,`disabled`),
-  KEY `update_date` (`update_date`,`create_date`),
-  KEY `reply_id` (`site_id`,`reply_user_id`,`reply_id`)
+  KEY `cms_comment_site_id` (`site_id`,`content_id`,`status`,`disabled`),
+  KEY `cms_comment_update_date` (`update_date`,`create_date`),
+  KEY `cms_comment_reply_id` (`site_id`,`reply_user_id`,`reply_id`)
 ) COMMENT='评论';
 -- ----------------------------
 -- Table structure for cms_content
@@ -133,11 +133,11 @@ CREATE TABLE `cms_content` (
   `status` int(11) NOT NULL COMMENT '状态：0、草稿 1、已发布 2、待审核',
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
   PRIMARY KEY  (`id`),
-  KEY `check_date` (`check_date`,`update_date`),
-  KEY `scores` (`scores`,`comments`,`clicks`),
-  KEY `only_url` (`only_url`,`has_images`,`has_files`,`user_id`),
-  KEY `status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
-  KEY `quote_content_id`(`site_id`, `quote_content_id`)
+  KEY `cms_content_check_date` (`check_date`,`update_date`),
+  KEY `cms_content_scores` (`scores`,`comments`,`clicks`),
+  KEY `cms_content_only_url` (`only_url`,`has_images`,`has_files`,`user_id`),
+  KEY `cms_content_status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
+  KEY `cms_content_quote_content_id`(`site_id`, `quote_content_id`)
 ) COMMENT='内容';
 
 -- ----------------------------
@@ -170,12 +170,12 @@ CREATE TABLE `cms_content_file` (
   `sort` int(11) NOT NULL COMMENT '排序',
   `description` varchar(300) default NULL COMMENT '描述',
   PRIMARY KEY  (`id`),
-  KEY `content_id` (`content_id`),
-  KEY `sort` (`sort`),
-  KEY `file_type`(`file_type`),
-  KEY `file_size` (`file_size`),
-  KEY `clicks` (`clicks`),
-  KEY `user_id` (`user_id`)
+  KEY `cms_content_file_content_id` (`content_id`),
+  KEY `cms_content_file_sort` (`sort`),
+  KEY `cms_content_file_file_type`(`file_type`),
+  KEY `cms_content_file_file_size` (`file_size`),
+  KEY `cms_content_file_clicks` (`clicks`),
+  KEY `cms_content_file_user_id` (`user_id`)
 ) COMMENT='内容附件';
 
 -- ----------------------------
@@ -193,7 +193,7 @@ CREATE TABLE `cms_content_related` (
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
-  KEY `user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`)
+  KEY `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`)
 ) COMMENT='推荐推荐';
 
 -- ----------------------------
@@ -206,7 +206,7 @@ CREATE TABLE `cms_dictionary` (
   `name` varchar(100) NOT NULL COMMENT '名称',
   `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
   PRIMARY KEY (`id`,`site_id`),
-  KEY `site_id` (`site_id`,`multiple`)
+  KEY `cms_dictionary_site_id` (`site_id`,`multiple`)
 ) COMMENT='字典';
 
 -- ----------------------------
@@ -243,11 +243,11 @@ CREATE TABLE `cms_place` (
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY  (`id`),
-  KEY `clicks` (`clicks`),
-  KEY `site_id` (`site_id`,`path`,`status`,`disabled`),
-  KEY `item_type` (`item_type`,`item_id`),
-  KEY `user_id` (`user_id`,`check_user_id`),
-  KEY `publish_date` (`publish_date`,`create_date`,`expiry_date`)
+  KEY `cms_place_clicks` (`clicks`),
+  KEY `cms_place_site_id` (`site_id`,`path`,`status`,`disabled`),
+  KEY `cms_place_item_type` (`item_type`,`item_id`),
+  KEY `cms_place_user_id` (`user_id`,`check_user_id`),
+  KEY `cms_place_publish_date` (`publish_date`,`create_date`,`expiry_date`)
 ) COMMENT='页面数据';
 
 -- ----------------------------
@@ -271,7 +271,7 @@ CREATE TABLE `cms_tag` (
   `type_id` int(11) default NULL COMMENT '分类ID',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`)
+  KEY `cms_tag_site_id` (`site_id`)
 ) COMMENT='标签';
 
 -- ----------------------------
@@ -284,7 +284,7 @@ CREATE TABLE `cms_tag_type` (
   `name` varchar(50) NOT NULL COMMENT '名称',
   `count` int(11) NOT NULL COMMENT '标签数',
   PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`)
+  KEY `cms_tag_type_site_id` (`site_id`)
 ) COMMENT='标签类型';
 
 -- ----------------------------
@@ -299,10 +299,10 @@ CREATE TABLE `cms_word` (
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `name` (`name`,`site_id`),
-  KEY `hidden` (`hidden`),
-  KEY `create_date` (`create_date`),
-  KEY `search_count` (`search_count`)
+  UNIQUE KEY `cms_word_name` (`name`,`site_id`),
+  KEY `cms_word_hidden` (`hidden`),
+  KEY `cms_word_create_date` (`create_date`),
+  KEY `cms_word_search_count` (`search_count`)
 ) COMMENT='搜索词';
 
 -- ----------------------------
@@ -320,12 +320,12 @@ CREATE TABLE `log_login` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `error_password` varchar(100) default NULL COMMENT '错误密码',
   PRIMARY KEY  (`id`),
-  KEY `result` (`result`),
-  KEY `user_id` (`user_id`),
-  KEY `create_date` (`create_date`),
-  KEY `ip` (`ip`),
-  KEY `site_id` (`site_id`),
-  KEY `channel` (`channel`)
+  KEY `log_login_result` (`result`),
+  KEY `log_login_user_id` (`user_id`),
+  KEY `log_login_create_date` (`create_date`),
+  KEY `log_login_ip` (`ip`),
+  KEY `log_login_site_id` (`site_id`),
+  KEY `log_login_channel` (`channel`)
 ) COMMENT='登录日志';
 
 -- ----------------------------
@@ -342,12 +342,12 @@ CREATE TABLE `log_operate` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `content` text NOT NULL COMMENT '内容',
   PRIMARY KEY  (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `operate` (`operate`),
-  KEY `create_date` (`create_date`),
-  KEY `ip` (`ip`),
-  KEY `site_id` (`site_id`),
-  KEY `channel` (`channel`)
+  KEY `log_operate_user_id` (`user_id`),
+  KEY `log_operate_operate` (`operate`),
+  KEY `log_operate_create_date` (`create_date`),
+  KEY `log_operate_ip` (`ip`),
+  KEY `log_operate_site_id` (`site_id`),
+  KEY `log_operate_channel` (`channel`)
 ) COMMENT='操作日志';
 
 -- ----------------------------
@@ -363,10 +363,10 @@ CREATE TABLE `log_task` (
   `success` tinyint(1) NOT NULL COMMENT '执行成功',
   `result` longtext COMMENT '执行结果',
   PRIMARY KEY  (`id`),
-  KEY `task_id` (`task_id`),
-  KEY `success` (`success`),
-  KEY `site_id` (`site_id`),
-  KEY `begintime` (`begintime`)
+  KEY `log_task_task_id` (`task_id`),
+  KEY `log_task_success` (`success`),
+  KEY `log_task_site_id` (`site_id`),
+  KEY `log_task_begintime` (`begintime`)
 ) COMMENT='任务计划日志';
 
 -- ----------------------------
@@ -385,13 +385,13 @@ CREATE TABLE `log_upload` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `file_path` varchar(500) NOT NULL COMMENT '文件路径',
   PRIMARY KEY  (`id`),
-  KEY `user_id` (`user_id`),
-  KEY `create_date` (`create_date`),
-  KEY `ip` (`ip`),
-  KEY `site_id` (`site_id`),
-  KEY `channel` (`channel`),
-  KEY `file_type` (`file_type`),
-  KEY `file_size` (`file_size`)
+  KEY `log_upload_user_id` (`user_id`),
+  KEY `log_upload_create_date` (`create_date`),
+  KEY `log_upload_ip` (`ip`),
+  KEY `log_upload_site_id` (`site_id`),
+  KEY `log_upload_channel` (`channel`),
+  KEY `log_upload_file_type` (`file_type`),
+  KEY `log_upload_file_size` (`file_size`)
 ) COMMENT='上传日志';
 
 -- ----------------------------
@@ -407,8 +407,8 @@ CREATE TABLE `sys_app` (
   `authorized_apis`  text NULL COMMENT '授权API',
   `expiry_minutes` int(11) DEFAULT NULL COMMENT '过期时间',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `key` (`app_key`),
-  KEY `site_id` (`site_id`)
+  UNIQUE KEY `sys_app_key` (`app_key`),
+  KEY `sys_app_site_id` (`site_id`)
 ) COMMENT='应用';
 
 -- ----------------------------
@@ -427,8 +427,8 @@ CREATE TABLE `sys_app_client` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `site_id` (`site_id`,`channel`,`uuid`),
-  KEY `user_id` (`user_id`,`disabled`,`create_date`) 
+  UNIQUE KEY `sys_app_client_site_id` (`site_id`,`channel`,`uuid`),
+  KEY `sys_app_client_user_id` (`user_id`,`disabled`,`create_date`) 
 ) COMMENT='应用客户端';
 
 -- ----------------------------
@@ -441,8 +441,8 @@ CREATE TABLE `sys_app_token` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
-  KEY `app_id` (`app_id`),
-  KEY `create_date` (`create_date`)
+  KEY `sys_app_token_app_id` (`app_id`),
+  KEY `sys_app_token_create_date` (`create_date`)
 ) COMMENT='应用授权';
 
 -- ----------------------------
@@ -457,7 +457,7 @@ CREATE TABLE `sys_cluster` (
   `cms_version` varchar(20) default NULL COMMENT '版本',
   `revision` varchar(20) NULL COMMENT '修订',
   PRIMARY KEY  (`uuid`),
-  KEY `create_date` (`create_date`)
+  KEY `sys_cluster_create_date` (`create_date`)
 ) COMMENT='服务器集群';
 
 -- ----------------------------
@@ -487,7 +487,7 @@ CREATE TABLE `sys_dept` (
   `owns_all_page` tinyint(1) NOT NULL COMMENT '拥有全部页面权限',
   `owns_all_config` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有全部配置权限',
   PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`)
+  KEY `sys_dept_site_id` (`site_id`)
 ) AUTO_INCREMENT=3 COMMENT='部门';
 
 -- ----------------------------
@@ -534,7 +534,7 @@ CREATE TABLE `sys_domain` (
   `wild` tinyint(1) NOT NULL COMMENT '通配域名',
   `path` varchar(100) default NULL COMMENT '路径',
   PRIMARY KEY  (`name`),
-  KEY `site_id` (`site_id`)
+  KEY `sys_domain_site_id` (`site_id`)
 ) COMMENT='域名';
 
 -- ----------------------------
@@ -555,8 +555,8 @@ CREATE TABLE `sys_email_token` (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `expiry_date` datetime NOT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
-  KEY `create_date` (`create_date`),
-  KEY `user_id` (`user_id`)
+  KEY `sys_email_token_create_date` (`create_date`),
+  KEY `sys_email_token_user_id` (`user_id`)
 ) COMMENT='邮件地址验证日志';
 
 -- ----------------------------
@@ -587,7 +587,7 @@ CREATE TABLE `sys_extend_field` (
   `dictionary_id` varchar(20) default NULL COMMENT '数据字典ID',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
-  KEY `sort` (`sort`)
+  KEY `sys_extend_field_sort` (`sort`)
 ) COMMENT='扩展字段';
 
 -- ----------------------------
@@ -603,8 +603,8 @@ CREATE TABLE `sys_module` (
   `menu` tinyint(1) NOT NULL DEFAULT 1 COMMENT '是否菜单',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
-  KEY `parent_id` (`parent_id`,`menu`),
-  KEY `sort` (`sort`)
+  KEY `sys_module_parent_id` (`parent_id`,`menu`),
+  KEY `sys_module_sort` (`sort`)
 ) COMMENT='模块';
 
 -- ----------------------------
@@ -1356,7 +1356,7 @@ CREATE TABLE `sys_role` (
   `owns_all_right` tinyint(1) NOT NULL COMMENT '拥有全部权限',
   `show_all_module` tinyint(1) NOT NULL COMMENT '显示全部模块',
   PRIMARY KEY  (`id`),
-  KEY `site_id` (`site_id`)
+  KEY `sys_role_site_id` (`site_id`)
 ) AUTO_INCREMENT=2 COMMENT='角色';
 
 -- ----------------------------
@@ -1421,7 +1421,7 @@ CREATE TABLE `sys_site` (
   `dynamic_path` varchar(255) NOT NULL COMMENT '动态站点地址',
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
-  KEY `disabled` (`disabled`)
+  KEY `sys_site_disabled` (`disabled`)
 ) AUTO_INCREMENT=2 COMMENT='站点';
 
 -- ----------------------------
@@ -1443,9 +1443,9 @@ CREATE TABLE `sys_task` (
   `file_path` varchar(255) default NULL COMMENT '文件路径',
   `update_date` datetime default NULL COMMENT '更新时间',
   PRIMARY KEY  (`id`),
-  KEY `status` (`status`),
-  KEY `site_id` (`site_id`),
-  KEY `update_date` (`update_date`)
+  KEY `sys_task_status` (`status`),
+  KEY `sys_task_site_id` (`site_id`),
+  KEY `sys_task_update_date` (`update_date`)
 ) AUTO_INCREMENT=8 COMMENT='任务计划';
 
 -- ----------------------------
@@ -1482,13 +1482,13 @@ CREATE TABLE `sys_user` (
   `login_count` int(11) NOT NULL COMMENT '登录次数',
   `registered_date` datetime default NULL COMMENT '注册日期',
   PRIMARY KEY  (`id`),
-  UNIQUE KEY `name` (`name`,`site_id`),
-  UNIQUE KEY `nick_name` (`nick_name`,`site_id`),
-  KEY `email` (`email`),
-  KEY `disabled` (`disabled`),
-  KEY `lastLoginDate` (`last_login_date`),
-  KEY `email_checked` (`email_checked`),
-  KEY `dept_id` (`dept_id`)
+  UNIQUE KEY `sys_user_name` (`name`,`site_id`),
+  UNIQUE KEY `sys_user_nick_name` (`nick_name`,`site_id`),
+  KEY `sys_user_email` (`email`),
+  KEY `sys_user_disabled` (`disabled`),
+  KEY `sys_user_lastLoginDate` (`last_login_date`),
+  KEY `sys_user_email_checked` (`email_checked`),
+  KEY `sys_user_dept_id` (`dept_id`)
 ) AUTO_INCREMENT=2 COMMENT='用户';
 
 -- ----------------------------
@@ -1510,10 +1510,10 @@ CREATE TABLE `sys_user_token` (
   `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   `login_ip` varchar(64) NOT NULL COMMENT '登录IP',
   PRIMARY KEY  (`auth_token`),
-  KEY `user_id` (`user_id`),
-  KEY `create_date` (`create_date`),
-  KEY `channel` (`channel`),
-  KEY `site_id` (`site_id`)
+  KEY `sys_user_token_user_id` (`user_id`),
+  KEY `sys_user_token_create_date` (`create_date`),
+  KEY `sys_user_token_channel` (`channel`),
+  KEY `sys_user_token_site_id` (`site_id`)
 ) COMMENT='用户令牌';
 
 -- ----------------------------
@@ -1530,7 +1530,7 @@ CREATE TABLE `trade_account`  (
   `amount` decimal(10, 2) NOT NULL COMMENT '金额',
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`),
-  INDEX `site_id`(`site_id`, `update_date`) 
+  KEY `trade_account_site_id`(`site_id`, `update_date`) 
 ) COMMENT = '资金账户';
 
 -- ----------------------------
@@ -1550,8 +1550,8 @@ CREATE TABLE `trade_account_history` (
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`account_id`,`status`),
-  KEY `create_date` (`create_date`)
+  KEY `trade_account_history_site_id` (`site_id`,`account_id`,`status`),
+  KEY `trade_account_history_create_date` (`create_date`)
 ) COMMENT='账户流水';
 -- ----------------------------
 -- Table structure for trade_order
@@ -1575,10 +1575,10 @@ CREATE TABLE `trade_order`  (
   `process_date` datetime DEFAULT NULL COMMENT '处理日期',
   `payment_date` datetime NULL DEFAULT NULL COMMENT '支付日期',
   PRIMARY KEY (`id`),
-  INDEX `account_type`(`account_type`, `account_serial_number`),
-  INDEX `site_id`(`site_id`, `user_id`, `status`),
-  INDEX `trade_type`(`trade_type`, `serial_number`),
-  KEY `create_date` (`create_date`)
+  KEY `trade_order_account_type`(`account_type`, `account_serial_number`),
+  KEY `trade_order_site_id`(`site_id`, `user_id`, `status`),
+  KEY `trade_order_trade_type`(`trade_type`, `serial_number`),
+  KEY `trade_order_create_date` (`create_date`)
 ) COMMENT = '支付订单';
 
 -- ----------------------------
@@ -1593,8 +1593,8 @@ CREATE TABLE `trade_order_history`  (
   `operate` varchar(100) NOT NULL COMMENT '操作',
   `content` text COMMENT '内容',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`order_id`,`operate`),
-  KEY `create_date` (`create_date`)
+  KEY `trade_order_history_site_id` (`site_id`,`order_id`,`operate`),
+  KEY `trade_order_history_create_date` (`create_date`)
 ) COMMENT = '订单流水';
 
 -- ----------------------------
@@ -1614,6 +1614,6 @@ CREATE TABLE `trade_refund`  (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `processing_date` datetime NULL DEFAULT NULL COMMENT '处理日期',
   PRIMARY KEY (`id`),
-  INDEX `order_id`(`order_id`, `status`),
-  KEY `create_date` (`create_date`)
+  KEY `trade_refund_order_id`(`order_id`, `status`),
+  KEY `trade_refund_create_date` (`create_date`)
 ) COMMENT = '退款申请';
