@@ -2,6 +2,8 @@ package com.publiccms.controller.web;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,15 +26,22 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.cms.CmsCategory;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
+import com.publiccms.logic.service.cms.CmsCategoryService;
+import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
+import com.publiccms.views.pojo.entities.ParameterType;
 
 /**
  * 
@@ -51,6 +60,12 @@ public class IndexController {
     private LocaleResolver localeResolver;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    private CmsContentService contentService;
+    @Autowired
+    private CmsCategoryService categoryService;
+    @Autowired
+    private SysUserService userService;
 
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
@@ -138,7 +153,7 @@ public class IndexController {
             }
             String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
             if (CommonUtils.notEmpty(acceptParameters)) {
-                billingRequestParametersToModel(request, acceptParameters, model);
+                billingRequestParametersToModel(request, acceptParameters, metadata.getParameterTypeMap(), model);
                 if (null != id && ArrayUtils.contains(acceptParameters, "id")) {
                     model.addAttribute("id", id.toString());
                     if (null != pageIndex && ArrayUtils.contains(acceptParameters, "pageIndex")) {
@@ -175,16 +190,145 @@ public class IndexController {
         return requestPath;
     }
 
-    private static void billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, ModelMap model) {
+    private boolean billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters,
+            Map<String, ParameterType> parameterTypeMap, ModelMap model) {
         for (String parameterName : acceptParameters) {
+            ParameterType parameterType = parameterTypeMap.get(parameterName);
             String[] values = request.getParameterValues(parameterName);
-            if (CommonUtils.notEmpty(values)) {
-                if (1 < values.length) {
-                    model.addAttribute(parameterName, values);
-                } else {
-                    model.addAttribute(parameterName, values[0]);
+            if (null == parameterType) {
+                billingValue(parameterName, request.getParameterValues(parameterName), model);
+            } else if (!parameterType.isRequired() || CommonUtils.notEmpty(values)) {
+                if (!billingValue(parameterName, values, parameterType, model)) {
+                    return false;
                 }
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void billingValue(String parameterName, String[] values, ModelMap model) {
+        if (CommonUtils.notEmpty(values)) {
+            if (1 < values.length) {
+                RequestUtils.removeCRLF(values);
+                model.addAttribute(parameterName, values);
+            } else {
+                model.addAttribute(parameterName, RequestUtils.removeCRLF(values[0]));
             }
         }
     }
+
+    private boolean billingValue(String parameterName, String[] values, ParameterType parameterType, ModelMap model) {
+        if (CommonUtils.notEmpty(parameterType.getAlias())) {
+            parameterName = parameterType.getAlias();
+        }
+        switch (parameterType.getType()) {
+        case Config.INPUTTYPE_TEXTAREA:
+            if (parameterType.isArray()) {
+                model.addAttribute(parameterName, values);
+            } else {
+                model.addAttribute(parameterName, values[0]);
+            }
+            break;
+        case Config.INPUTTYPE_NUMBER:
+            if (parameterType.isArray()) {
+                Set<Long> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                model.addAttribute(parameterName, set.toArray(new Long[set.size()]));
+            } else {
+                try {
+                    model.addAttribute(parameterName, Long.valueOf(values[0]));
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+            break;
+        case Config.INPUTTYPE_CONTENT:
+            if (parameterType.isArray()) {
+                Set<Long> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                model.addAttribute(parameterName, contentService.getEntitys(set.toArray(new Long[set.size()])));
+            } else {
+                try {
+                    CmsContent entity = contentService.getEntity(Long.valueOf(values[0]));
+                    if (null == entity && parameterType.isRequired()) {
+                        return false;
+                    }
+                    model.addAttribute(parameterName, entity);
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+            break;
+        case Config.INPUTTYPE_CATEGORY:
+            if (parameterType.isArray()) {
+                Set<Integer> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Integer.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                model.addAttribute(parameterName, categoryService.getEntitys(set.toArray(new Integer[set.size()])));
+            } else {
+                try {
+                    CmsCategory entity = categoryService.getEntity(Integer.valueOf(values[0]));
+                    if (null == entity && parameterType.isRequired()) {
+                        return false;
+                    }
+                    model.addAttribute(parameterName, entity);
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+            break;
+        case Config.INPUTTYPE_USER:
+            if (parameterType.isArray()) {
+                Set<Long> set = new TreeSet<>();
+                for (String s : values) {
+                    try {
+                        set.add(Long.valueOf(s));
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                }
+                model.addAttribute(parameterName, userService.getEntitys(set.toArray(new Long[set.size()])));
+            } else {
+                try {
+                    SysUser entity = userService.getEntity(Long.valueOf(values[0]));
+                    if (null == entity && parameterType.isRequired()) {
+                        return false;
+                    }
+                    model.addAttribute(parameterName, entity);
+                } catch (NumberFormatException e) {
+                    return false;
+                }
+            }
+            break;
+        default:
+            if (parameterType.isArray()) {
+                RequestUtils.removeCRLF(values);
+                model.addAttribute(parameterName, values);
+            } else {
+                model.addAttribute(parameterName, RequestUtils.removeCRLF(values[0]));
+            }
+        }
+
+        return true;
+    }
+
 }

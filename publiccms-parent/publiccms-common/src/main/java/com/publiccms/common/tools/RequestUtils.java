@@ -49,6 +49,29 @@ public class RequestUtils {
         }
         return url;
     }
+    
+
+    /**
+     * @param string
+     * @return
+     */
+    public static String removeCRLF(String string) {
+        if (null != string) {
+            return string.replaceAll("\r|\n", Constants.BLANK);
+        }
+        return string;
+    }
+
+    /**
+     * @param values
+     */
+    public static void removeCRLF(String values[]) {
+        if (null != values) {
+            for (int i = 0; i < values.length; i++) {
+                values[i] = removeCRLF(values[i]);
+            }
+        }
+    }
 
     /**
      * 获取UserAgent

@@ -3,7 +3,7 @@
 /* Core Code */
 html, body, *{padding:0;margin:0;font-size:12px;font-family:microsoft yahei,Arial, sans-serif;word-break:break-all}
 body{width:100%;height:100%;overflow:hidden}
-
+input[type="checkbox"]{margin: 3px 3px 3px 4px;}
 .clearfix{*zoom:1}
 .clearfix:after{display:block;content:".";height:0;clear:both;visibility:hidden}
 /* Remember to define focus styles! */
@@ -288,8 +288,12 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0}
 
 .tagsBox{line-height:25px;float:left;}
-.tagsBox span{margin-right:8px;border:none;padding:5px 8px;}
-.tagsBox span>a{margin-left:5px}
+.tagsBox span,.parametersBox span{margin-right:8px;border:none;padding:5px 8px;}
+.tagsBox span>a,.parametersBox span{margin-left:5px}
+.parametersBox{line-height:25px;}
+.parametersBox span>em{color:#f00;}
+.parametersOperateBox{}
+.parametersOperateBox label{width:auto;}
 
 /* Pages dialog */
 .dialog .pageHeader{margin:0}

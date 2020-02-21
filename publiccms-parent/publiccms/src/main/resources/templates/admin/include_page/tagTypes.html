@@ -2,7 +2,7 @@
 <dl class="nowrap tagTypes advanced">
     <dt><@t.page 'tag_type'/>:</dt>
     <dd>
-        <div id="tagTypes" class="tagsBox"></div>
+        <div class="tagsBox"></div>
         <input name="type[].id" type="hidden"/>
         <input name="type[].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="type[]" suggestUrl="common/tagTypeSuggest.html"/>
         <a href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
@@ -13,13 +13,13 @@ function addTagType($id,$name){
     if($name){
         $name=$name.trim();
     }
-    if($('#tagTypes span',navTab.getCurrentPanel()).size()>10){
+    if($('.tagsBox span',navTab.getCurrentPanel()).size()>10){
         alertMsg.error('<@t.page 'tag_type.warn' 10/>');
     }else{
         if($id&&$name){
-            $('#tagTypes',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+            $('.tagsBox',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
         }else if($name){
-            $('#tagTypes',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].name\" value=\""+$name+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+            $('.tagsBox',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].name\" value=\""+$name+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
         }
         reIndexTagType();
     }
@@ -27,12 +27,12 @@ function addTagType($id,$name){
     $('input[name=\'type[].name\']',navTab.getCurrentPanel()).val('');
 }
 function reIndexTagType(){
-    $('#tagTypes span',navTab.getCurrentPanel()).each(function(tagIndex){
+    $('.tagsBox span',navTab.getCurrentPanel()).each(function(tagIndex){
         $('input[name$=\\.id]',this).attr('name','tagTypes['+tagIndex+'].id');
         $('input[name$=\\.name]',this).attr('name','tagTypes['+tagIndex+'].name');
     });
 }
-$('#tagTypes',navTab.getCurrentPanel()).on('click','span>a',function(){
+$('.tagsBox',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     reIndexTagType();
     return false;

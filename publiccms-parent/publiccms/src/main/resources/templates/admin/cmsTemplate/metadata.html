@@ -81,8 +81,74 @@
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_config.accept_parameter'/>:</dt>
                 <dd>
-                    <input name="acceptParameters" type="text" value="${(a.acceptParameters)!}" size="80"/>
+                    <input name="acceptParameters" type="hidden"/>
+                    <div class="parametersBox"></div>
                     <span class="info"><@t.page 'dynamic_config.accept_parameter.description'/></span>
+                    <div class="parametersOperateBox">
+                        <select class="combox" name="parameterType">
+                            <#list ['text','number','textarea','content','category','user'] as o>
+                            <option value="${o}"><@t.page o/></option>
+                            </#list>
+                        </select>
+                        <label><@t.page 'name'/>:</label><input name="parameterName" type="text" size="8"/>
+                        <label><@t.page 'required'/>:<input name="required" type="checkbox"/></label>
+                        <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" size="8"/>
+                        <label><@t.page 'array'/>:<input name="array" type="checkbox"/></label>
+                        <a href="javascript:;" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
+                    </div>
+<script>
+$('select[name=parameterType]').on('change',function() {
+    if($(this).val()=='content' || $(this).val()=='category' || $(this).val()=='user') {
+        if(!$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val()){
+            $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val($(this).val());
+        }
+    }
+});
+function addParameter(parameterName,array,required,parameterType,parameterTypeText,alias) {
+    if(parameterName) {
+        parameterName=parameterName.trim();
+    }
+    var text=parameterTypeText;
+    if(array){
+        text+='[<@t.page 'array'/>]';
+    }
+    text+=" : "+parameterName;
+    if(alias) {
+        alias=alias.trim();
+        text+=" > "+alias;
+    }
+    if(required){
+        text+=" <em>*</em>";
+    }
+    if(parameterName){
+        $('.parametersBox',navTab.getCurrentPanel()).append("<span>"+text+" <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].name\" value=\""+parameterName+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].type\" value=\""+parameterType+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].array\" value=\""+array+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].required\" value=\""+required+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].alias\" value=\""+alias+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+    }
+    $('input[name=\'parameterName\']',navTab.getCurrentPanel()).val('');
+    $('input[name=\'parameterType\']',navTab.getCurrentPanel()).val('');
+    $('input[name=\'array\']',navTab.getCurrentPanel()).prop("checked", false);
+    $('input[name=\'required\']',navTab.getCurrentPanel()).prop("checked", false);
+    $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val('');
+    var acceptParameters=new Array();
+    $('.parametersBox span',navTab.getCurrentPanel()).each(function(){
+        acceptParameters.push($('input[name$=\\.name]',this).val());
+    });
+    $('input[name=acceptParameters]',navTab.getCurrentPanel()).val(acceptParameters.join(','));
+}
+$('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
+    $(this).parent().remove();
+    var acceptParameters=new Array();
+    $('.tagsBox span',navTab.getCurrentPanel()).each(function(){
+        acceptParameters.push($('input[name$=\\.name]',this).val());
+    });
+    $('input[name=acceptParameters]',navTab.getCurrentPanel()).val(acceptParameters.join(','));
+    return false;
+});
+<#if a.acceptParameters?has_content>
+    <#list a.acceptParameters?split(",") as p>
+    addParameter("${p}",${(a.parameterTypeMap[p].array?c)!false},${(a.parameterTypeMap[p].required?c)!false},"${(a.parameterTypeMap[p].type)!'text'}","${(t.pageMessage(a.parameterTypeMap[p].type))!t.pageMessage('text')}","${(a.parameterTypeMap[p].alias)!}");
+    </#list>
+</#if>
+</script>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -162,7 +228,12 @@
         <#case "api/contentList.json">
         <#case "api/categoryList.json">
             $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
-</#switch>
+    </#switch>
+    <#if acceptParameters?has_content>
+        <#list acceptParameters?split(",") as p>
+        addParameter("${p}",false,false,"text","${t.pageMessage('text')}","");
+        </#list>
+    </#if>
         </script>
 <#else>
         <textarea name="content" style="display:none"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>

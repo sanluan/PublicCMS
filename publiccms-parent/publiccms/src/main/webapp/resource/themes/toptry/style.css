@@ -45,7 +45,7 @@ main,#sidebar,#sidebar_s{background:#2c3343}
 .unit a.button:hover{background:#516485;color:#fff;border-color:#516485}
 .divider{border-color:#d6dce6}
 .formBar{background:#edf1f5;}
-.tagsBox span {background: #edf2f6}
+.tagsBox span,.parametersBox span {background: #edf2f6}
 
 button.buttonActive{color:#fff;background-color:#667ea7;border-color:#667ea7}
 button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298}
