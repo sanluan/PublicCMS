@@ -1,6 +1,7 @@
 package com.publiccms.controller.web;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -34,8 +35,10 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateCacheComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -53,6 +56,8 @@ public class IndexController {
     @Autowired
     private MetadataComponent metadataComponent;
     @Autowired
+    private TemplateComponent templateComponent;
+    @Autowired
     private TemplateCacheComponent templateCacheComponent;
     @Autowired
     private ConfigComponent configComponent;
@@ -66,6 +71,8 @@ public class IndexController {
     private CmsCategoryService categoryService;
     @Autowired
     private SysUserService userService;
+    @Autowired
+    private StatisticsComponent statisticsComponent;
 
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
@@ -153,7 +160,7 @@ public class IndexController {
             }
             String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
             if (CommonUtils.notEmpty(acceptParameters)) {
-                if (!billingRequestParametersToModel(request, acceptParameters, metadata.getParameterTypeMap(), model)) {
+                if (!billingRequestParametersToModel(request, acceptParameters, metadata.getParameterTypeMap(), site, model)) {
                     try {
                         response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     } catch (IOException e) {
@@ -197,14 +204,14 @@ public class IndexController {
     }
 
     private boolean billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters,
-            Map<String, ParameterType> parameterTypeMap, ModelMap model) {
+            Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
         for (String parameterName : acceptParameters) {
             ParameterType parameterType = parameterTypeMap.get(parameterName);
             String[] values = request.getParameterValues(parameterName);
             if (null == parameterType) {
                 billingValue(parameterName, request.getParameterValues(parameterName), model);
             } else if (!parameterType.isRequired() || CommonUtils.notEmpty(values)) {
-                if (!billingValue(parameterName, values, parameterType, model)) {
+                if (!billingValue(parameterName, values, parameterType, site, model)) {
                     return false;
                 }
             } else {
@@ -225,7 +232,8 @@ public class IndexController {
         }
     }
 
-    private boolean billingValue(String parameterName, String[] values, ParameterType parameterType, ModelMap model) {
+    private boolean billingValue(String parameterName, String[] values, ParameterType parameterType, SysSite site,
+            ModelMap model) {
         if (CommonUtils.notEmpty(parameterType.getAlias())) {
             parameterName = parameterType.getAlias();
         }
@@ -268,13 +276,27 @@ public class IndexController {
                         return false;
                     }
                 }
-                model.addAttribute(parameterName, contentService.getEntitys(set.toArray(new Long[set.size()])));
+                List<CmsContent> entityList = contentService.getEntitys(set.toArray(new Long[set.size()]));
+                entityList.forEach(e -> {
+                    Integer clicks = statisticsComponent.getContentClicks(e.getId());
+                    if (null != clicks) {
+                        e.setClicks(e.getClicks() + clicks);
+                    }
+                    templateComponent.initContentUrl(site, e);
+                    templateComponent.initContentCover(site, e);
+                });
+                model.addAttribute(parameterName, entityList);
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsContent entity = contentService.getEntity(Long.valueOf(values[0]));
                     if ((null == entity || entity.isDisabled()) && parameterType.isRequired()) {
                         return false;
                     }
+                    Integer clicks = statisticsComponent.getContentClicks(entity.getId());
+                    if (null != clicks) {
+                        entity.setClicks(entity.getClicks() + clicks);
+                    }
+                    templateComponent.initContentUrl(site, entity);
                     model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;
@@ -293,13 +315,18 @@ public class IndexController {
                         return false;
                     }
                 }
-                model.addAttribute(parameterName, categoryService.getEntitys(set.toArray(new Integer[set.size()])));
+                List<CmsCategory> entityList = categoryService.getEntitys(set.toArray(new Integer[set.size()]));
+                entityList.forEach(e -> {
+                    templateComponent.initCategoryUrl(site, e);
+                });
+                model.addAttribute(parameterName, entityList);
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsCategory entity = categoryService.getEntity(Integer.valueOf(values[0]));
                     if ((null == entity || entity.isDisabled()) && parameterType.isRequired()) {
                         return false;
                     }
+                    templateComponent.initCategoryUrl(site, entity);
                     model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;
