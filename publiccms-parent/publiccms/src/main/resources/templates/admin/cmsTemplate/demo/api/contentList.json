@@ -1,5 +1,5 @@
 <#ftl auto_esc=false/>
-[<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId userId=userId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=count>
+[<@_contentList categoryId=category.id containChild=containChild modelId=modelId parentId=parentId userId=userId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>
     <#list page.list as a>
         {
             "id":"${a.id}",

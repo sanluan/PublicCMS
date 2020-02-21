@@ -12,7 +12,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${site.sitePath}">Home</a>
+        <a href="${base!site.sitePath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>

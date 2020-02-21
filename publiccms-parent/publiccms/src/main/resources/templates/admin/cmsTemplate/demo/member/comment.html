@@ -1,5 +1,3 @@
-<@_content id=contentId>
-    <#assign content=object/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -30,13 +28,13 @@
         <h1><a href="${content.url!}">${content.title}</a></h1>
         <p>${content.description!}</p>
 <#if user?has_content>
-    <@_commentList advanced=true userId=user.id contentId=contentId status=2>
+    <@_commentList advanced=true userId=user.id contentId=content.id status=2>
         <#if page.totalCount gt 0>
             <h3>My Comments</h3>
             <#list page.list as a>
                 <section class="underline">
                     <p>${user.nickName} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
-                    <p>${a.text!}<span class="right"><a href="comment.html?contentId=${contentId!}&id=${a.id}">Edit</a></span></p>
+                    <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id}&id=${a.id}">Edit</a></span></p>
                 </section>
             </#list>
         </#if>
@@ -53,14 +51,14 @@
                 <input type="hidden" name="replyId" value="${replyId}"/>
             </#if>
             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-            <input type="hidden" name="contentId" value="${contentId}"/>
+            <input type="hidden" name="contentId" value="${content.id}"/>
             <input name="returnUrl" type="hidden" value="${content.url!}" />
             <p><label>Comment:</label></p>
             <p><textarea name="text" cols="100" rows="4" maxlength="1000">${text!}</textarea></p>
             <p><input type="submit" value="Submit"/></p>
         </form>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-<@_commentList contentId=contentId pageIndex=pageIndex>
+<@_commentList contentId=content.id pageIndex=pageIndex>
     <#list page.list as a>
         <@merge 'userIds' a.userId!/>
         <@merge 'userIds' a.replyUserId!/>
@@ -75,7 +73,7 @@
                     <p class="border gray">${userMap[a.replyUserId?string].nickName} : ${object.text!}</p>
                 </@_comment>
             </#if>
-            <p>${a.text!}<span class="right"><a href="comment.html?contentId=${contentId!}&replyId=${a.id}">Reply</a></span></p>
+            <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id!}&replyId=${a.id}">Reply</a></span></p>
         </section>
     </#list>
 </@_commentList>
@@ -85,4 +83,3 @@
     </footer>
 </body>
 </html>
-</@_content>

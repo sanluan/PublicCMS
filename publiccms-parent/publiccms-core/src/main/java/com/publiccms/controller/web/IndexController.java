@@ -248,12 +248,14 @@ public class IndexController {
                     }
                 }
                 model.addAttribute(parameterName, set.toArray(new Long[set.size()]));
-            } else {
+            } else if (CommonUtils.notEmpty(values)) {
                 try {
                     model.addAttribute(parameterName, Long.valueOf(values[0]));
                 } catch (NumberFormatException e) {
                     return false;
                 }
+            } else if (parameterType.isRequired()) {
+                return false;
             }
             break;
         case Config.INPUTTYPE_CONTENT:
@@ -267,16 +269,18 @@ public class IndexController {
                     }
                 }
                 model.addAttribute(parameterName, contentService.getEntitys(set.toArray(new Long[set.size()])));
-            } else {
+            } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsContent entity = contentService.getEntity(Long.valueOf(values[0]));
-                    if (null == entity && parameterType.isRequired()) {
+                    if ((null == entity || entity.isDisabled()) && parameterType.isRequired()) {
                         return false;
                     }
                     model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;
                 }
+            } else if (parameterType.isRequired()) {
+                return false;
             }
             break;
         case Config.INPUTTYPE_CATEGORY:
@@ -290,16 +294,18 @@ public class IndexController {
                     }
                 }
                 model.addAttribute(parameterName, categoryService.getEntitys(set.toArray(new Integer[set.size()])));
-            } else {
+            } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsCategory entity = categoryService.getEntity(Integer.valueOf(values[0]));
-                    if (null == entity && parameterType.isRequired()) {
+                    if ((null == entity || entity.isDisabled()) && parameterType.isRequired()) {
                         return false;
                     }
                     model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;
                 }
+            } else if (parameterType.isRequired()) {
+                return false;
             }
             break;
         case Config.INPUTTYPE_USER:
@@ -313,16 +319,18 @@ public class IndexController {
                     }
                 }
                 model.addAttribute(parameterName, userService.getEntitys(set.toArray(new Long[set.size()])));
-            } else {
+            } else if (CommonUtils.notEmpty(values)) {
                 try {
                     SysUser entity = userService.getEntity(Long.valueOf(values[0]));
-                    if (null == entity && parameterType.isRequired()) {
+                    if ((null == entity || entity.isDisabled()) && parameterType.isRequired()) {
                         return false;
                     }
                     model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;
                 }
+            } else if (parameterType.isRequired()) {
+                return false;
             }
             break;
         default:

@@ -65,9 +65,8 @@
             </div>
         </#if>
             <div>
-                <#assign url='?id=${id}'/>
                 <#if !page.firstPage>
-                    <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
+                    <a href="${getPage(content.url,page.prePage,'pageIndex')}">Previous page</a>
                 <#else>
                     <span>Previous page</span>
                 </#if>
@@ -75,11 +74,11 @@
                     <#if n=page.pageIndex>
                         ${n}
                     <#else>
-                        <a href="${getPage(url,n,'pageIndex')}">${n}</a>
+                        <a href="${getPage(content.url,n,'pageIndex')}">${n}</a>
                     </#if>
                 </#list>
                 <#if !page.lastPage>
-                    <a href="${getPage(url,page.nextPage,'pageIndex')}">Next page</a>
+                    <a href="${getPage(content.url,page.nextPage,'pageIndex')}">Next page</a>
                 <#else>
                     <span>Next page</span>
                 </#if>

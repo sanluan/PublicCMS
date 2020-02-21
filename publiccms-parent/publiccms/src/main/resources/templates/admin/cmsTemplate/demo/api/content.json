@@ -1,25 +1,25 @@
 <#ftl auto_esc=false/>
-{<@_content id=id containsAttribute=true>
-    <@_category id=object.categoryId>
+{<#assign attribute=getContentAttribute(content.id)/>
+    <@_category id=content.categoryId>
         <#assign category=object/>
     </@_category>
-    "id":"${object.id}",
-    "cover":"${object.cover!}"
-    "title":"${object.title?json_string}",
-    "url":"${object.url!}",
-    "description":"${(object.description?json_string)!}",
-    "categoryId":"${object.categoryId}",
+    "id":"${content.id}",
+    "cover":"${content.cover!}"
+    "title":"${content.title?json_string}",
+    "url":"${content.url!}",
+    "description":"${(content.description?json_string)!}",
+    "categoryId":"${content.categoryId}",
     "categoryTitle":"${category.name?json_string}",
     "categoryUrl":"${category.url!}",
-    "editor":"${object.editor!}",
-    "publishDate":"${object.publishDate}",
+    "editor":"${content.editor!}",
+    "publishDate":"${content.publishDate}",
     "text":"${(attribute.text?json_string)!}",
     "sourceUrl":"${(attribute.sourceUrl)!}",
-    "source":"${(attribute.source)!}"<#if object.hasFiles>
-    ,"files:[<@_contentFileList contentId=object.id fileTypes='video,audio,other'><#list page.list as file>
+    "source":"${(attribute.source)!}"<#if content.hasFiles>
+    ,"files:[<@_contentFileList contentId=content.id fileTypes='video,audio,other'><#list page.list as file>
         {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
-    ]</#if><#if object.hasImages>
-    ,"images":[<@_contentFileList contentId=object.id fileTypes='image'><#list page.list as file>
+    ]</#if><#if content.hasImages>
+    ,"images":[<@_contentFileList contentId=content.id fileTypes='image'><#list page.list as file>
         {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
     ]</#if>
 </@_content>
