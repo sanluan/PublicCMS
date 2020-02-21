@@ -6,42 +6,42 @@
                 <li><a href="cmsTemplate/metadata.html?demo=index.html&name=home_page" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=index_zh_CN.html&name=home_page_zh_CN&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page_zh_CN'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=random.html&name=random_content_page" target="ajax" rel="cmsTemplateBox"><@t.page 'random_content_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=comment.html&name=comment_page&acceptParameters=id,replyId,contentId,pageIndex,error" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=search.html&name=search_page&acceptParameters=word,pageIndex,tagId" target="ajax" rel="cmsTemplateBox"><@t.page 'search_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=login.html&name=login_page&acceptParameters=error,message,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'login_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=register.html&name=register_page&acceptParameters=error,message,name,nickname,openId,channel,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'register_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/comment.html&name=comment_page&acceptParameters=id;number,replyId;number,contentId;content,pageIndex;number,error" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=search.html&name=search_page&acceptParameters=word,pageIndex;number,tagId" target="ajax" rel="cmsTemplateBox"><@t.page 'search_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/login.html&name=login_page&acceptParameters=error,message,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'login_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/register.html&name=register_page&acceptParameters=error,message,name,nickname,openId,channel,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'register_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=sitemap.xml&path=sitemap.xml&name=sitemap" target="ajax" rel="cmsTemplateBox"><@t.page 'sitemap'/></a></li>
             </ul>
         </li>
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'content_page'/></a>
             <ul>
-                <li><a href="cmsTemplate/metadata.html?demo=content.html&name=content_page&acceptParameters=id,pageIndex" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=content_rest.html&name=content_page_rest&acceptParameters=id,pageIndex" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page_rest'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=content_hash.html&name=content_page_hash&acceptParameters=id,pageIndex" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page_hash'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=content/content.html&name=content_page&acceptParameters=id;content,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=content/content_rest.html&name=content_page_rest&acceptParameters=id;content,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page_rest'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=content/content_hash.html&name=content_page_hash&acceptParameters=id,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page_hash'/></a></li>
                 <#if site.useStatic>
-                    <li><a href="cmsTemplate/metadata.html?demo=staticContent.html&name=static_content_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_content_page'/></a></li>
+                    <li><a href="cmsTemplate/metadata.html?demo=content/staticContent.html&name=static_content_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_content_page'/></a></li>
                 </#if>
             </ul>
         </li>
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'category_page'/></a>
             <ul>
-                <li><a href="cmsTemplate/metadata.html?demo=category.html&name=category_page&acceptParameters=id,pageIndex" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=category_rest.html&name=category_page_rest&acceptParameters=id,pageIndex" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_rest'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=category_code.html&name=category_page_code&acceptParameters=code,pageIndex" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_code'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=category_hash.html&name=category_page_hash&acceptParameters=id,pageIndex" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_hash'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category.html&name=category_page&acceptParameters=id;category,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category_rest.html&name=category_page_rest&acceptParameters=id;category,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_rest'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category_code.html&name=category_page_code&acceptParameters=code,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_code'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category_hash.html&name=category_page_hash&acceptParameters=id,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_hash'/></a></li>
                 <#if site.useStatic>
-                    <li><a href="cmsTemplate/metadata.html?demo=staticCategory.html&name=static_category_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_category_page'/></a></li>
+                    <li><a href="cmsTemplate/metadata.html?demo=category/category_rest.html&name=static_category_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_category_page'/></a></li>
                 </#if>
             </ul>
         </li>
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'app.interface'/></a>
             <ul>
-                <li><a href="cmsTemplate/metadata.html?demo=api/content.json&name=content_interface&acceptParameters=id" target="ajax" rel="cmsTemplateBox"><@t.page 'content_interface'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=api/comment.json&name=comment_interface&acceptParameters=contentId" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_interface'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=api/contentList.json&name=content_list_interface&acceptParameters=categoryId,containChild,modelId,parentId,userId,orderField,orderType,pageIndex,count" target="ajax" rel="cmsTemplateBox"><@t.page 'content_list_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=api/content.json&name=content_interface&acceptParameters=id;content" target="ajax" rel="cmsTemplateBox"><@t.page 'content_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=api/comment.json&name=comment_interface&acceptParameters=contentId;content" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=api/contentList.json&name=content_list_interface&acceptParameters=categoryId;category,containChild,modelId,parentId;number,userId;number,orderField,orderType,pageIndex;number,count;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_list_interface'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=api/categoryList.json&name=category_list_interface&acceptParameters=parentId,allowContribute,pageIndex,count" target="ajax" rel="cmsTemplateBox"><@t.page 'category_list_interface'/></a></li>
             </ul>
         </li>

@@ -143,7 +143,7 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
     $('input[name=acceptParameters]',navTab.getCurrentPanel()).val(acceptParameters.join(','));
     return false;
 });
-<#if a.acceptParameters?has_content>
+<#if (a.acceptParameters)?has_content>
     <#list a.acceptParameters?split(",") as p>
     addParameter("${p}",${(a.parameterTypeMap[p].array?c)!false},${(a.parameterTypeMap[p].required?c)!false},"${(a.parameterTypeMap[p].type)!'text'}","${(t.pageMessage(a.parameterTypeMap[p].type))!t.pageMessage('text')}","${(a.parameterTypeMap[p].alias)!}");
     </#list>
@@ -231,7 +231,11 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
     </#switch>
     <#if acceptParameters?has_content>
         <#list acceptParameters?split(",") as p>
+        <#if p?contains(';')>
+        addParameter("${p?split(";")[0]}",false,false,"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${p?split(";")[1]}");
+        <#else>
         addParameter("${p}",false,false,"text","${t.pageMessage('text')}","");
+        </#if>
         </#list>
     </#if>
         </script>

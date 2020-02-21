@@ -153,7 +153,13 @@ public class IndexController {
             }
             String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
             if (CommonUtils.notEmpty(acceptParameters)) {
-                billingRequestParametersToModel(request, acceptParameters, metadata.getParameterTypeMap(), model);
+                if (!billingRequestParametersToModel(request, acceptParameters, metadata.getParameterTypeMap(), model)) {
+                    try {
+                        response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                    } catch (IOException e) {
+                    }
+                    return requestPath;
+                }
                 if (null != id && ArrayUtils.contains(acceptParameters, "id")) {
                     model.addAttribute("id", id.toString());
                     if (null != pageIndex && ArrayUtils.contains(acceptParameters, "pageIndex")) {

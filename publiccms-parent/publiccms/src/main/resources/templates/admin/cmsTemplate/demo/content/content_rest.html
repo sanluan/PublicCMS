@@ -1,13 +1,12 @@
-<@_content id=id containsAttribute=true>
-    <#assign content=object/>
-    <@_category id=object.categoryId>
-        <#assign category=object/>
-    </@_category>
-    <#assign
-        temp=getContentPage(attribute.text!'',pageIndex)
-        page=temp.page
-        text=temp.text
-    />
+<#assign attribute=getContentAttribute(content.id)/>
+<@_category id=content.categoryId>
+    <#assign category=object/>
+</@_category>
+<#assign
+    temp=getContentPage(attribute.text!'',pageIndex)
+    page=temp.page
+    text=temp.text
+/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -63,9 +62,8 @@
             </div>
         </#if>
             <div>
-                <#assign url='?id=${id}'/>
                 <#if !page.firstPage>
-                    <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
+                    <a href="${getPage(content.url,page.prePage)}">Previous page</a>
                 <#else>
                     <span>Previous page</span>
                 </#if>
@@ -73,11 +71,11 @@
                     <#if n=page.pageIndex>
                         ${n}
                     <#else>
-                        <a href="${getPage(url,n,'pageIndex')}">${n}</a>
+                        <a href="${getPage(content.url,n)}">${n}</a>
                     </#if>
                 </#list>
                 <#if !page.lastPage>
-                    <a href="${getPage(url,page.nextPage,'pageIndex')}">Next page</a>
+                    <a href="${getPage(content.url,page.nextPage)}">Next page</a>
                 <#else>
                     <span>Next page</span>
                 </#if>
@@ -125,6 +123,10 @@
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
     <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+    <script>
+        $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
+            $('article p em').text(data.clicks);
+        });
+    </script>
 </body>
 </html>
-</@_content>
