@@ -22,8 +22,8 @@
                     <ul>
                         <li><a href="javascript:;" <@getAction r'${(metadata.alias)!}'/>><@t.page 'template.name'/></a></li>
                 <#if metadata.useDynamic?has_content&&metadata.useDynamic&&metadata.acceptParameters?has_content>
-                    <#list metadata.acceptParameters?split(',') as parameter>
-                        <li><a href="javascript:;" <@getAction r'${('+parameter+r')!}'/>><@t.page 'parameter'/>:${parameter}</a></li>
+                    <#list metadata.acceptParameters?split(',') as p>
+                        <li><a href="javascript:;" <@getAction r'${('+((metadata.parameterTypeMap[p].alias)!p)+r')!}'/>><@t.page 'parameter'/>:${p}</a></li>
                     </#list>
                 </#if>
                 <#if metadata.extendList?has_content>
