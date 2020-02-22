@@ -14,7 +14,7 @@ import config.spring.WebConfig;
  * WebInitializer Servlet3.0 工程入口类
  *
  */
-public class WebInitializer extends BaseServletInitializer implements WebApplicationInitializer {
+public class WebInitializer extends BaseServletInitializer {
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {

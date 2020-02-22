@@ -11,7 +11,7 @@ import config.spring.ApiConfig;
  * <p>WebInitializer</p>
  *
  */
-public class ApiInitializer extends BaseServletInitializer implements WebApplicationInitializer {
+public class ApiInitializer extends BaseServletInitializer {
 
     @Override
     protected Class<?>[] getServletConfigClasses() {

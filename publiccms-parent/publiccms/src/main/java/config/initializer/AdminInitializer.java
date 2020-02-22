@@ -19,7 +19,7 @@ import config.spring.AdminConfig;
  * </p>
  *
  */
-public class AdminInitializer extends BaseServletInitializer implements WebApplicationInitializer {
+public class AdminInitializer extends BaseServletInitializer {
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {

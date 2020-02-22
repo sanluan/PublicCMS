@@ -15,7 +15,7 @@ import config.spring.CmsConfig;
  * Management Initializer
  *
  */
-public class CmsInitializer extends AbstractContextLoaderInitializer implements WebApplicationInitializer {
+public class CmsInitializer extends AbstractContextLoaderInitializer {
 
     @Override
     protected WebApplicationContext createRootApplicationContext() {
