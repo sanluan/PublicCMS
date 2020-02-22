@@ -385,4 +385,6 @@ ALTER TABLE  `sys_user_token`
   ADD INDEX `sys_user_token_create_date` (`create_date`),
   ADD INDEX `sys_user_token_channel` (`channel`),
   ADD INDEX `sys_user_token_site_id` (`site_id`);
-UPDATE `sys_module` SET `authorized_url` = 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload' WHERE `id` = 'content_add'
+UPDATE `sys_module_lang` SET `authorized_url` = 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload' WHERE `id` = 'content_add';
+UPDATE `sys_module_lang` SET `value` =  'Maintain' WHERE `lang` ='en' and module_id = 'maintenance';
+UPDATE `sys_module_lang` SET `value` =  'Develop' WHERE `lang` ='en' and module_id = 'develop';
