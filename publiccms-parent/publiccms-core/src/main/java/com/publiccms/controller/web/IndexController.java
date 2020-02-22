@@ -206,7 +206,10 @@ public class IndexController {
     private boolean billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters,
             Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
         for (String parameterName : acceptParameters) {
-            ParameterType parameterType = parameterTypeMap.get(parameterName);
+            ParameterType parameterType = null;
+            if (null != parameterTypeMap) {
+                parameterType = parameterTypeMap.get(parameterName);
+            }
             String[] values = request.getParameterValues(parameterName);
             if (null == parameterType) {
                 billingValue(parameterName, request.getParameterValues(parameterName), model);
