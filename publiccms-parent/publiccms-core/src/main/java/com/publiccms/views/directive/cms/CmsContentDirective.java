@@ -42,7 +42,9 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 if (null != clicks) {
                     entity.setClicks(entity.getClicks() + clicks);
                 }
-                templateComponent.initContentUrl(site, entity);
+                if (handler.getBoolean("absoluteURL", false)) {
+                    templateComponent.initContentUrl(site, entity);
+                }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
                     CmsContentAttribute attribute = attributeService.getEntity(id);
@@ -61,13 +63,16 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
+                boolean absoluteURL = handler.getBoolean("absoluteURL", false);
                 entityList.forEach(e -> {
                     Integer clicks = statisticsComponent.getContentClicks(e.getId());
                     if (null != clicks) {
                         e.setClicks(e.getClicks() + clicks);
                     }
-                    templateComponent.initContentUrl(site, e);
-                    templateComponent.initContentCover(site, e);
+                    if (absoluteURL) {
+                        templateComponent.initContentUrl(site, e);
+                        templateComponent.initContentCover(site, e);
+                    }
                 });
                 Map<String, CmsContent> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toMap(k -> k.getId().toString(), Function.identity(),

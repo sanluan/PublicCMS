@@ -46,7 +46,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
-        if (null != list) {
+        if (null != list && handler.getBoolean("absoluteURL", true)) {
             list.forEach(e -> {
                 templateComponent.initCategoryUrl(site, e);
             });

@@ -41,12 +41,10 @@
     </@_commentList>
 </#if>
         <form method="post" action="${site.dynamicPath}comment/save.do">
-            <#if id?has_content>
-                <input type="hidden" name="id" value="${id}"/>
-                <@_comment id=id>
-                    <#assign text=object.text!/>
-                </@_comment>
-            </#if>
+            <@_comment id=id>
+                <input type="hidden" name="id" value="${object.id}"/>
+                <#assign text=object.text!/>
+            </@_comment>
             <#if replyId?has_content>
                 <input type="hidden" name="replyId" value="${replyId}"/>
             </#if>

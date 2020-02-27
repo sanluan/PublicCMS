@@ -67,13 +67,16 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         @SuppressWarnings("unchecked")
         List<CmsContent> list = (List<CmsContent>) page.getList();
         if (null != list) {
+            boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             list.forEach(e -> {
                 Integer clicks = statisticsComponent.getContentClicks(e.getId());
                 if (null != clicks) {
                     e.setClicks(e.getClicks() + clicks);
                 }
-                templateComponent.initContentUrl(site, e);
-                templateComponent.initContentCover(site, e);
+                if (absoluteURL) {
+                    templateComponent.initContentUrl(site, e);
+                    templateComponent.initContentCover(site, e);
+                }
             });
         }
         handler.put("page", page).render();
