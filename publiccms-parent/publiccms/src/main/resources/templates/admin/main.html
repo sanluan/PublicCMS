@@ -52,6 +52,14 @@
                     </@_commentList>
                 </a>
             </p>
+            <p>
+                <label><@t.page 'content.comments'/>:</label>
+                <a href="cmsComment/list.html?status=1&status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
+                    <@_commentList advanced=true status='1,2' pageSize=0>
+                        ${page.totalCount}
+                    </@_commentList>
+                </a>
+            </p>
         </div>
    </fieldset>
 </@_sysAuthorized>
@@ -76,7 +84,7 @@
                 </a>
             </p>
             <p>
-                <label><@t.page 'operate'/>:${.now?long?number_to_date?string}</label>
+                <label><@t.page 'operate'/>:</label>
                 <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
                     <@_logOperateList startCreateDate=.now?long?number_to_date?string>
                        ${page.totalCount}

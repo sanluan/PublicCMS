@@ -30,10 +30,13 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/reply'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
+        <#if authorizedMap['cmsComment/reply']>
+            <li><a href="cmsComment/reply.html?id={sid}"  target="dialog" mask="true"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
+        </#if>
         <#if authorizedMap['cmsComment/check']>
             <li><a href="cmsComment/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
         </#if>
@@ -87,6 +90,9 @@
                 </td>
                 <td><textarea rows="3" cols="50">${a.text!}</textarea></td>
                 <td>
+                    <#if authorizedMap['cmsComment/reply']>
+                        <a href="cmsComment/reply.html?replyId=${a.id}" target="dialog" mask="true"><@t.page 'comment.reply'/></a> |
+                    </#if>
                 <#if 1=a.status>
                     <#if authorizedMap['cmsComment/uncheck']>
                         <a href="cmsComment/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>"  target="ajaxTodo"><@t.page 'button.uncheck'/></a> |

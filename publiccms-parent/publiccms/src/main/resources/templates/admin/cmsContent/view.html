@@ -206,6 +206,7 @@
             </dl>
             </#if>
         </@_contentRelatedList>
+        <@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/reply'><#assign authorizedMap=map/></@_sysAuthorized>
         <@_commentList advanced=true contentId=a.id pageSize=100>
             <#if page.totalCount gt 0>
             <fieldset>
@@ -220,6 +221,26 @@
                     <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> <@t.page 'comment.reply'/> ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
                     <dd class="exclude-translate">
                         <div>${a.text!}</div>
+                        <p><label><@t.page 'status'/>:</label><@t.page 'status.content.'+a.status/></p>
+                        <p>
+                            <label><@t.page 'status'/>:</label>
+                            <#if authorizedMap['cmsComment/reply']>
+                                <a href="cmsComment/reply.html?id=${a.id}" target="dialog" mask="true"><@t.page 'button.edit'/></a> |
+                                <a href="cmsComment/reply.html?replyId=${a.id}" target="dialog" mask="true"><@t.page 'comment.reply'/></a> |
+                            </#if>
+                            <#if 1=a.status>
+                                <#if authorizedMap['cmsComment/uncheck']>
+                                    <a href="cmsComment/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>"  target="ajaxTodo"><@t.page 'button.uncheck'/></a> |
+                                </#if>
+                            <#else>
+                                <#if authorizedMap['cmsComment/check']>
+                                    <a href="cmsComment/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>"  target="ajaxTodo"><@t.page 'button.check'/></a> |
+                                </#if>
+                            </#if>
+                            <#if authorizedMap['cmsComment/delete']>
+                                <a href="cmsComment/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                            </#if>
+                           </p>
                     </dd>
                 </dl>
                 </#list>

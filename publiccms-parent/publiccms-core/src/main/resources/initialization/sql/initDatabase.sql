@@ -80,6 +80,7 @@ CREATE TABLE `cms_comment` (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `reply_id` bigint(20) DEFAULT NULL COMMENT '回复ID',
   `reply_user_id` bigint(20) DEFAULT NULL COMMENT '回复用户ID',
+  `replies` int(11) NOT NULL COMMENT '回复数',
   `content_id` bigint(20) NOT NULL COMMENT '文章内容',
   `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
   `check_date` datetime DEFAULT NULL COMMENT '审核日期',
@@ -634,6 +635,7 @@ INSERT INTO `sys_module` VALUES ('comment_list', 'cmsComment/list', 'sysUser/loo
 INSERT INTO `sys_module` VALUES ('comment_check', NULL, 'cmsComment/check', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_uncheck', NULL, 'cmsComment/uncheck', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_delete', NULL, 'cmsComment/delete', NULL, 'comment_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('comment_edit', NULL, 'cmsComment/reply', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_add', 'sysConfig/add', 'sysConfig/save', NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_delete', NULL, 'sysConfigData/delete', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_edit', NULL, 'sysConfigData/save,sysConfigData/edit', NULL, 'config_data_list', 0, 0);
@@ -857,6 +859,9 @@ INSERT INTO `sys_module_lang` VALUES ('comment_uncheck', 'ja', '審査を取り�
 INSERT INTO `sys_module_lang` VALUES ('comment_delete', 'zh', '删除');
 INSERT INTO `sys_module_lang` VALUES ('comment_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('comment_delete', 'ja', '削除');
+INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'zh', '修改');
+INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'en', 'Edit');
+INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'ja', '変更');
 INSERT INTO `sys_module_lang` VALUES ('config_add', 'zh', '添加/修改');
 INSERT INTO `sys_module_lang` VALUES ('config_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('config_data_delete', 'zh', '清空配置');

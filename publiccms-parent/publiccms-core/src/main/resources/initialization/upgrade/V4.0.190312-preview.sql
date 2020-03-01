@@ -388,3 +388,12 @@ ALTER TABLE  `sys_user_token`
 UPDATE `sys_module_lang` SET `authorized_url` = 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload' WHERE `id` = 'content_add';
 UPDATE `sys_module_lang` SET `value` =  'Maintain' WHERE `lang` ='en' and module_id = 'maintenance';
 UPDATE `sys_module_lang` SET `value` =  'Develop' WHERE `lang` ='en' and module_id = 'develop';
+-- 2020-03-01 --
+ALTER TABLE `cms_comment` 
+    ADD COLUMN `replies` int(1) NOT NULL DEFAULT 0 COMMENT '回复数' AFTER `reply_user_id`;
+UPDATE `cms_comment` a INNER JOIN ( SELECT count( * ) count, reply_id FROM `cms_comment` WHERE reply_id IS NOT NULL GROUP BY reply_id ) b ON a.id = b.reply_id 
+    SET a.replies = b.count;
+INSERT INTO `sys_module` VALUES ('comment_edit', NULL, 'cmsComment/reply', NULL, 'comment_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'zh', '修改');
+INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'en', 'Edit');
+INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'ja', '変更');

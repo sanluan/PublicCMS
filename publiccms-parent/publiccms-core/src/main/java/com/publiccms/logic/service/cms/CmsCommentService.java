@@ -71,10 +71,16 @@ public class CmsCommentService extends BaseService<CmsComment> {
         Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL != entity.getStatus()) {
+                if (null != entity.getReplyId()) {
+                    updateReplies(siteId, entity.getReplyId(), 1);
+                }
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckDate(now);
                 entity.setCheckUserId(userId);
-                contentSet.add(contentService.updateComments(siteId, entity.getContentId(), 1));
+                CmsContent content = contentService.updateComments(siteId, entity.getContentId(), 1);
+                if (null != content && !content.isDisabled()) {
+                    contentSet.add(content);
+                }
             }
         }
         return contentSet;
@@ -89,11 +95,31 @@ public class CmsCommentService extends BaseService<CmsComment> {
         Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()) {
+                if (null != entity.getReplyId()) {
+                    updateReplies(siteId, entity.getReplyId(), -1);
+                }
                 entity.setStatus(STATUS_PEND);
-                contentSet.add(contentService.updateComments(siteId, entity.getContentId(), -1));
+                CmsContent content = contentService.updateComments(siteId, entity.getContentId(), -1);
+                if (null != content && !content.isDisabled()) {
+                    contentSet.add(content);
+                }
             }
         }
         return contentSet;
+    }
+
+    /**
+     * @param siteId
+     * @param id
+     * @param replies
+     * @return
+     */
+    public CmsComment updateReplies(short siteId, Serializable id, int replies) {
+        CmsComment entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId()) {
+            entity.setReplies(entity.getReplies() + replies);
+        }
+        return entity;
     }
 
     /**
