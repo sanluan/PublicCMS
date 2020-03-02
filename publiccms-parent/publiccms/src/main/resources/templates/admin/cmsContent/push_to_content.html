@@ -1,7 +1,7 @@
 <@_content id=contentId><#assign content=object/></@_content>
 <@_content id=relatedContentId><#assign related=object/></@_content>
 <div class="pageContent">
-    <form action="cmsContent/related.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <form action="cmsContent/related.do?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
         <input name="contentId" type="hidden" value="${contentId!}" />
         <input name="relatedContentId" type="hidden" value="${relatedContentId!}" />
         <input name="url" type="hidden" value="${related.url!}" />

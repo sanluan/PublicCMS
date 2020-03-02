@@ -1,6 +1,6 @@
 <@_contentList categoryId=categoryId modelId=modelId parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
+    <form class="pagerForm" autocomplete="off" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
         <input type="hidden" name="userId" value="${userId!}"/>
         <input type="hidden" name="parentId" value="${parentId!}"/>

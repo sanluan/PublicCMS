@@ -1,5 +1,5 @@
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#noparse><#include "../include_page/parameters.html"/></#noparse>
         <div class="searchBar">
             <ul class="searchContent">

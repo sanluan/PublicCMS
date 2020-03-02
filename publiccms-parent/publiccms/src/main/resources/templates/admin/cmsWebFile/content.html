@@ -3,7 +3,7 @@
     editorType={'css':'css','js':'javascript','xml':'xml'}
     fileType=path?keep_after_last('.')?lower_case
 />
-<form method="post" action="cmsWebFile/save.do<#if !content?has_content>?callbackType=closeCurrent&navTabId=cmsWebFile/list</#if>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsWebFile/save.do<#if !content?has_content>?callbackType=closeCurrent&navTabId=cmsWebFile/list</#if>" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>

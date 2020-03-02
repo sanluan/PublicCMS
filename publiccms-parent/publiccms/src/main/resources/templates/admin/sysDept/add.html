@@ -5,7 +5,7 @@
 </@_sysDept>
 <@_sysUser id=userId><#assign user=object/></@_sysUser>
 <@_sysDept id=parentId!><#assign parentName=(object.name)!/></@_sysDept>
-<form method="post" action="sysDept/save.do?callbackType=closeCurrent&navTabId=sysDept/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="sysDept/save.do?callbackType=closeCurrent&navTabId=sysDept/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">

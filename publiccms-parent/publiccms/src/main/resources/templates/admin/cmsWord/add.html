@@ -1,5 +1,5 @@
 <@_word id=id><#assign a=object/></@_word>
-<form method="post" action="cmsWord/save.do?callbackType=closeCurrent&navTabId=cmsWord/list" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+<form method="post" autocomplete="off" action="cmsWord/save.do?callbackType=closeCurrent&navTabId=cmsWord/list" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <input name="id" type="hidden" value="${id!}" />
     <div class="pageFormContent" layoutH="50">
