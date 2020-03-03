@@ -9,11 +9,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
-import org.springframework.lang.Nullable;
-import org.springframework.web.accept.PathExtensionContentNegotiationStrategy;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -30,8 +27,6 @@ import com.publiccms.logic.component.site.SiteComponent;
 public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
     private SiteComponent siteComponent;
     private static Resource favicon = new ClassPathResource("favicon.ico");
-    @Nullable
-    private PathExtensionContentNegotiationStrategy contentNegotiationStrategy;
 
     /**
      * @param siteComponent
@@ -83,12 +78,5 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
             setResourceRegionHttpMessageConverter(new ResourceRegionHttpMessageConverter());
         }
 
-        this.contentNegotiationStrategy = initContentNegotiationStrategy();
-    }
-
-    @Nullable
-    protected MediaType getMediaType(HttpServletRequest request, Resource resource) {
-        return (this.contentNegotiationStrategy != null ? this.contentNegotiationStrategy.getMediaTypeForResource(resource)
-                : null);
     }
 }

@@ -1,9 +1,6 @@
-<#assign ids=(id!'-')?split('-')/>
-<@_content id=ids[0] containsAttribute=true>
-    <#assign content=object/>
-    <@_category id=object.categoryId>
-        <#assign category=object/>
-    </@_category>
+<#assign ids=(id!'_')?split('_')/>
+<@_content id=ids[0] containsAttribute=true absoluteURL=true;content>
+    <@_category id=object.categoryId;category>
 <#if ids[1]=getHash(category.code+content.id)?string>
     <#assign
         temp=getContentPage(attribute.text!'',pageIndex)
@@ -134,4 +131,5 @@
 </body>
 </html>
 </#if>
+	</@_category>
 </@_content>

@@ -23,6 +23,7 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     private Long[] adminIds;
     private boolean allowContribute;
     private boolean allowAnonymous;
+    private List<String> acceptItemTypes;
     private List<String> fieldList;
     private List<String> requiredFieldList;
     private Map<String,String> fieldTextMap;
@@ -75,6 +76,20 @@ public class CmsPlaceMetadata implements java.io.Serializable {
      */
     public boolean isAllowAnonymous() {
         return allowAnonymous;
+    }
+
+    /**
+     * @return the acceptItemTypes
+     */
+    public List<String> getAcceptItemTypes() {
+        return acceptItemTypes;
+    }
+
+    /**
+     * @param acceptItemTypes the acceptItemTypes to set
+     */
+    public void setAcceptItemTypes(List<String> acceptItemTypes) {
+        this.acceptItemTypes = acceptItemTypes;
     }
 
     /**

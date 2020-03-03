@@ -2,12 +2,10 @@ package com.publiccms.controller.web.cms;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,22 +15,18 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsComment;
-import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 
@@ -50,12 +44,8 @@ public class CommentController {
     protected SiteComponent siteComponent;
     @Autowired
     protected ConfigComponent configComponent;
-    @Autowired
-    private CmsContentService contentService;
-    @Autowired
-    private TemplateComponent templateComponent;
 
-    private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "status",
+    private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate",
             "replyId", "replyUserId", "replies", "disabled" };
 
     /**
@@ -77,11 +67,10 @@ public class CommentController {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         SysUser user = ControllerUtils.getUserFromSession(session);
-
+        entity.setStatus(CmsCommentService.STATUS_PEND);
         if (null != entity.getId()) {
             CmsComment oldEntity = service.getEntity(entity.getId());
-            if (null != oldEntity && !oldEntity.isDisabled()
-                    && (oldEntity.getUserId() == user.getId() || user.isSuperuserAccess())) {
+            if (null != oldEntity && !oldEntity.isDisabled() && oldEntity.getUserId() == user.getId() ) {
                 entity.setUpdateDate(CommonUtils.getDate());
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 logOperateService
@@ -92,13 +81,6 @@ public class CommentController {
             Date now = CommonUtils.getDate();
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
-            if (user.isSuperuserAccess()) {
-                entity.setStatus(CmsCommentService.STATUS_NORMAL);
-                entity.setCheckUserId(user.getId());
-                entity.setCheckDate(now);
-            } else {
-                entity.setStatus(CmsCommentService.STATUS_PEND);
-            }
             if (null != entity.getReplyId()) {
                 CmsComment reply = service.getEntity(entity.getReplyId());
                 if (null == reply) {
@@ -111,72 +93,6 @@ public class CommentController {
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",
                     RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
-        }
-        if (CmsCommentService.STATUS_NORMAL == entity.getStatus()) {
-            CmsContent content = contentService.getEntity(entity.getContentId());
-            if (null != content && !content.isDisabled()) {
-                templateComponent.createContentFile(site, content, null, null);
-            }
-        }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-    }
-
-    /**
-     * @param site
-     * @param ids
-     * @param returnUrl
-     * @param request
-     * @param session
-     * @param model
-     * @return
-     */
-    @RequestMapping("check")
-    @Csrf
-    public String check(@RequestAttribute SysSite site, Long[] ids, String returnUrl, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
-        SysUser user = ControllerUtils.getUserFromSession(session);
-        if (CommonUtils.notEmpty(ids) && user.isSuperuserAccess()) {
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-            String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-            if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-                returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            }
-            Set<CmsContent> contentSet = service.check(site.getId(), ids, user.getId());
-            for (CmsContent content : contentSet) {
-                templateComponent.createContentFile(site, content, null, null);// 静态化
-            }
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.cmsComment",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
-        }
-        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-    }
-
-    /**
-     * @param site
-     * @param ids
-     * @param returnUrl
-     * @param request
-     * @param session
-     * @param model
-     * @return
-     */
-    @RequestMapping("uncheck")
-    @Csrf
-    public String uncheck(@RequestAttribute SysSite site, Long[] ids, String returnUrl, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
-        SysUser user = ControllerUtils.getUserFromSession(session);
-        if (CommonUtils.notEmpty(ids) && user.isSuperuserAccess()) {
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-            String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-            if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-                returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            }
-            Set<CmsContent> contentSet = service.uncheck(site.getId(), ids);
-            for (CmsContent content : contentSet) {
-                templateComponent.createContentFile(site, content, null, null);// 静态化
-            }
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "uncheck.cmsComment",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }

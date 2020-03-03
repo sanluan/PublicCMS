@@ -5,11 +5,10 @@
         <#if site.useStatic>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>${category.code}/</#noparse>'});return false;"><@t.page 'static_path'/>:{<@t.page 'category.code'/>}/</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.id'/>}.html</a>
-            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${getMd5(category.code+category.id)}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'help.method.md5'/>(<@t.page 'category.code'/>+<@t.page 'category.id'/>)}.html</a>
         </#if>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>}</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'category.id'/>}</a>
-            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}-${getHash(category.code+category.id)}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>-<@t.page 'help.method.hash'/>(<@t.page 'category.code'/>+<@t.page 'category.id'/>)}</a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}_${getHash(category.code+category.id)}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>_<@t.page 'help.method.hash'/>(<@t.page 'category.code'/>+<@t.page 'category.id'/>)}</a>
         </li>
     </ul>
 </div>

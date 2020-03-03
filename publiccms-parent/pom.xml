@@ -21,10 +21,10 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.2.3.RELEASE</version.spring>
+        <version.spring>5.2.4.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.2.4.RELEASE</version.springBoot>
+        <version.springBoot>2.2.5.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.10</version.httpclient>
@@ -33,10 +33,10 @@
         <version.jacksondatabind>2.10.2</version.jacksondatabind>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.4.9.Final</version.hibernate>
+        <version.hibernate>5.4.12.Final</version.hibernate>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>5.11.4.Final</version.hibernateSearch>
+        <version.hibernateSearch>5.11.5.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.8.1</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -56,7 +56,7 @@
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <version.mysql>8.0.18</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>4.1.1</version.poi>
+        <version.poi>4.1.2</version.poi>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <version.fileupload>1.4</version.fileupload>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
@@ -319,11 +319,19 @@
             <id>jcenter</id>
             <url>https://jcenter.bintray.com/</url>
         </repository>
+        <repository>
+            <id>nexus-aliyun</id>
+            <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
+        </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
             <id>jcenter</id>
             <url>https://jcenter.bintray.com/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>nexus-aliyun</id>
+            <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
         </pluginRepository>
     </pluginRepositories>
     <build>

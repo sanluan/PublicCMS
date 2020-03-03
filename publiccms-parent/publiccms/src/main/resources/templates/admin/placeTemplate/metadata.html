@@ -53,6 +53,14 @@
             </dd>
         </dl>
         <dl class="nowrap placeExtend">
+            <dt><@t.page 'place_data.item_type'/>:</dt>
+            <dd>
+                <label><input name="acceptItemTypes" type="checkbox" value="content"<#if a.acceptItemTypes?has_content&&a.acceptItemTypes?seq_contains('content')> checked="checked"</#if>/><@t.page 'content'/></label>
+                <label><input name="acceptItemTypes" type="checkbox" value="page"<#if a.acceptItemTypes?has_content&&a.acceptItemTypes?seq_contains('page')> checked="checked"</#if>/><@t.page 'page'/></label>
+                <label><input name="acceptItemTypes" type="checkbox" value="category"<#if a.acceptItemTypes?has_content&&a.acceptItemTypes?seq_contains('category')> checked="checked"</#if>/><@t.page 'category'/></label>
+            </dd>
+        </dl>
+        <dl class="nowrap placeExtend">
             <dt><@t.page 'place_data.master'/>:</dt>
             <dd>
                 <input name="userId" type="hidden"/>
