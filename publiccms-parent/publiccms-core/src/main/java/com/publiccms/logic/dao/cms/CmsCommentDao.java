@@ -73,6 +73,9 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
             orderField = CommonConstants.BLANK;
         }
         switch (orderField) {
+        case "replies":
+            queryHandler.order("bean.replies " + orderType);
+            break;
         case "checkDate":
             queryHandler.order("bean.checkDate " + orderType);
             break;
