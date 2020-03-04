@@ -244,12 +244,12 @@ public class IndexController {
         case Config.INPUTTYPE_TEXTAREA:
             if (parameterType.isArray()) {
                 model.addAttribute(parameterName, values);
-            } else {
+            } else if (CommonUtils.notEmpty(values)) {
                 model.addAttribute(parameterName, values[0]);
             }
             break;
         case Config.INPUTTYPE_NUMBER:
-            if (parameterType.isArray()) {
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
                 Set<Long> set = new TreeSet<>();
                 for (String s : values) {
                     try {
@@ -270,7 +270,7 @@ public class IndexController {
             }
             break;
         case Config.INPUTTYPE_CONTENT:
-            if (parameterType.isArray()) {
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
                 Set<Long> set = new TreeSet<>();
                 for (String s : values) {
                     try {
@@ -309,7 +309,7 @@ public class IndexController {
             }
             break;
         case Config.INPUTTYPE_CATEGORY:
-            if (parameterType.isArray()) {
+            if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
                 Set<Integer> set = new TreeSet<>();
                 for (String s : values) {
                     try {
@@ -367,7 +367,7 @@ public class IndexController {
             if (parameterType.isArray()) {
                 RequestUtils.removeCRLF(values);
                 model.addAttribute(parameterName, values);
-            } else {
+            } else if (CommonUtils.notEmpty(values)) {
                 model.addAttribute(parameterName, RequestUtils.removeCRLF(values[0]));
             }
         }

@@ -218,12 +218,12 @@
                 <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
                 <#list page.list as a>
                 <dl class="nowrap">
-                    <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> <@t.page 'comment.reply'/> ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
+                    <dt>${(userMap[a.userId?string].nickName)!}:</dt>
                     <dd class="exclude-translate">
-                        <div>${a.text!}</div>
+                        <div><#if a.replyUserId?has_content> <@t.page 'comment.reply'/> ${(userMap[a.replyUserId?string].nickName)!} : </#if>${a.text!}</div>
                         <p><label><@t.page 'status'/>:</label><@t.page 'status.content.'+a.status/></p>
                         <p>
-                            <label><@t.page 'status'/>:</label>
+                            <label><@t.page 'operate'/>:</label>
                             <#if authorizedMap['cmsComment/reply']>
                                 <a href="cmsComment/reply.html?id=${a.id}" target="dialog" mask="true"><@t.page 'button.edit'/></a> |
                                 <a href="cmsComment/reply.html?replyId=${a.id}" target="dialog" mask="true"><@t.page 'comment.reply'/></a> |

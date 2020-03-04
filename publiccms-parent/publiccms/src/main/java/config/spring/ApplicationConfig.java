@@ -248,7 +248,7 @@ public class ApplicationConfig {
         CommonsMultipartResolver bean = new CommonsMultipartResolver();
         bean.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
         bean.setMaxUploadSize(Long.parseLong(env.getProperty("cms.multipart.maxUploadSize")) * 1024 * 1024);
-        bean.setUploadTempDir(new FileSystemResource(getDirPath("/temp/")));
+        bean.setUploadTempDir(new FileSystemResource(getDirPath("/tmp/")));
         return bean;
     }
 

@@ -137,7 +137,7 @@ function addParameter(parameterName,array,required,parameterType,parameterTypeTe
 $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     var acceptParameters=new Array();
-    $('.tagsBox span',navTab.getCurrentPanel()).each(function(){
+    $('.parametersBox span',navTab.getCurrentPanel()).each(function(){
         acceptParameters.push($('input[name$=\\.name]',this).val());
     });
     $('input[name=acceptParameters]',navTab.getCurrentPanel()).val(acceptParameters.join(','));
@@ -223,10 +223,10 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
                 $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
             </#if>
             <#break>
-        <#case "api/comment.json">
-        <#case "api/content.json">
-        <#case "api/contentList.json">
-        <#case "api/categoryList.json">
+        <#case "json/comment.json">
+        <#case "json/content.json">
+        <#case "json/contentList.json">
+        <#case "json/categoryList.json">
             $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
     </#switch>
     <#if acceptParameters?has_content>
