@@ -44,6 +44,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 }
                 if (handler.getBoolean("absoluteURL", false)) {
                     templateComponent.initContentUrl(site, entity);
+                    templateComponent.initContentCover(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
