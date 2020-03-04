@@ -393,8 +393,8 @@ ALTER TABLE `cms_comment`
     ADD COLUMN `replies` int(1) NOT NULL DEFAULT 0 COMMENT '回复数' AFTER `reply_user_id`;
 UPDATE `cms_comment` a INNER JOIN ( SELECT count( * ) count, reply_id FROM `cms_comment` WHERE reply_id IS NOT NULL GROUP BY reply_id ) b ON a.id = b.reply_id 
     SET a.replies = b.count;
-INSERT INTO `sys_module` VALUES ('comment_edit', 'cmsComment/edit', ',cmsComment/reply,cmsComment/save', NULL, 'comment_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('comment_reply', 'cmsComment/reply', ',cmsComment/,cmsComment/save', NULL, 'comment_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('comment_edit', 'cmsComment/edit', 'cmsComment/save', NULL, 'comment_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('comment_reply', 'cmsComment/reply', 'cmsComment/save', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'zh', '修改');
 INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'en', 'Edit');
 INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'ja', '変更');

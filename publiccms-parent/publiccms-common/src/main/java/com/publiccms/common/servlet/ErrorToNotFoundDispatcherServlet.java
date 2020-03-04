@@ -37,7 +37,9 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
     @Override
     public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
         try {
-            super.render(mv, request, response);
+            if (!response.isCommitted()) {
+                super.render(mv, request, response);
+            }
         } catch (ServletException e) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
