@@ -165,7 +165,10 @@ public class CmsCommentAdminController {
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
-            service.delete(site.getId(), ids);
+            Set<CmsContent> contentSet = service.delete(site.getId(), ids);
+            for (CmsContent content : contentSet) {
+                templateComponent.createContentFile(site, content, null, null);// 静态化
+            }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
