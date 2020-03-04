@@ -58,7 +58,7 @@
                     <@t.merge 'userIds' a.replyUserId!/>
                 </#list>
                 <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-                <@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/reply'><#assign authorizedMap=map/></@_sysAuthorized>
+                <@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/edit'><#assign authorizedMap=map/></@_sysAuthorized>
                 <#list page.list as a>
                 <dl class="nowrap">
                     <dt>${(userMap[a.userId?string].nickName)!}:</dt>
