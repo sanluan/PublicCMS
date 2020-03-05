@@ -29,8 +29,8 @@
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.10</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.10.2</version.jackson>
-        <version.jacksondatabind>2.10.2</version.jacksondatabind>
+        <version.jackson>2.10.3</version.jackson>
+        <version.jacksondatabind>2.10.3</version.jacksondatabind>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.4.12.Final</version.hibernate>
@@ -316,22 +316,22 @@
     </dependencyManagement>
     <repositories>
         <repository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-        </repository>
-        <repository>
             <id>nexus-aliyun</id>
             <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
+        </repository>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
         </repository>
     </repositories>
     <pluginRepositories>
         <pluginRepository>
-            <id>jcenter</id>
-            <url>https://jcenter.bintray.com/</url>
-        </pluginRepository>
-        <pluginRepository>
             <id>nexus-aliyun</id>
             <url>http://maven.aliyun.com/nexus/content/repositories/central/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
         </pluginRepository>
     </pluginRepositories>
     <build>
