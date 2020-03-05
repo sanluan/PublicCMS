@@ -103,9 +103,6 @@ public class SysSiteAdminController {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (!entity.isUseStatic()) {
-            entity.setUseSsi(false);
-        }
         if (null == entity.getDynamicPath()) {
             entity.setDynamicPath(CommonConstants.SEPARATOR);
         } else if (!entity.getDynamicPath().endsWith(CommonConstants.SEPARATOR)) {
