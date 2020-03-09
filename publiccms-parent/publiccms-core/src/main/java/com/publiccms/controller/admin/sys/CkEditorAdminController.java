@@ -10,6 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -50,6 +51,7 @@ public class CkEditorAdminController {
      * @param admin
      * @param upload
      * @param ckCsrfToken
+     * @param csrfToken
      * @param request
      * @param model
      * @return view name
@@ -57,10 +59,10 @@ public class CkEditorAdminController {
     @RequestMapping("upload")
     @ResponseBody
     public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile upload,
-            String ckCsrfToken, HttpServletRequest request, ModelMap model) {
+            String ckCsrfToken, @CookieValue("ckCsrfToken") String csrfToken, HttpServletRequest request, ModelMap model) {
         Map<String, Object> map = new HashMap<>();
         int uploaded = 0;
-        if (null != upload && !upload.isEmpty()) {
+        if (null != upload && !upload.isEmpty() && csrfToken.equals(ckCsrfToken)) {
             String originalName = upload.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
