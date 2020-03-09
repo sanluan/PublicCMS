@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -48,13 +49,17 @@ public class CkEditorAdminController {
      * @param site
      * @param admin
      * @param upload
+     * @param ckCsrfToken
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping("upload")
-    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile upload,
-            HttpServletRequest request, ModelMap model) {
+    @ResponseBody
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile upload,
+            String ckCsrfToken, HttpServletRequest request, ModelMap model) {
+        Map<String, Object> map = new HashMap<>();
+        int uploaded = 0;
         if (null != upload && !upload.isEmpty()) {
             String originalName = upload.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
@@ -67,41 +72,25 @@ public class CkEditorAdminController {
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             originalName, CmsFileUtils.getFileType(suffix), upload.getSize(), fileSize.getWidth(),
                             fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                    Map<String, Object> map = getResultMap(true);
                     map.put(RESULT_FILENAME, originalName);
-                    map.put(RESULT_URL, fileName);
-                    model.addAttribute("result", map);
+                    map.put(RESULT_URL, site.getSitePath() + fileName);
+                    uploaded++;
                 } catch (IllegalStateException | IOException e) {
-                    Map<String, Object> map = getResultMap(false);
                     Map<String, String> messageMap = new HashMap<>();
                     messageMap.put(CommonConstants.MESSAGE, e.getMessage());
                     map.put(CommonConstants.ERROR, messageMap);
-                    model.addAttribute("result", map);
                 }
             } else {
-                Map<String, Object> map = getResultMap(false);
                 Map<String, String> messageMap = new HashMap<>();
                 messageMap.put(CommonConstants.MESSAGE, "error");
                 map.put(CommonConstants.ERROR, messageMap);
-                model.addAttribute("result", map);
             }
         } else {
-            Map<String, Object> map = getResultMap(false);
             Map<String, String> messageMap = new HashMap<>();
             messageMap.put(CommonConstants.MESSAGE, "no file");
             map.put(CommonConstants.ERROR, messageMap);
-            model.addAttribute("result", map);
         }
-        return "common/ckuploadResult";
-    }
-
-    private static Map<String, Object> getResultMap(boolean success) {
-        Map<String, Object> map = new HashMap<>();
-        if (success) {
-            map.put(RESULT_UPLOADED, 1);
-        } else {
-            map.put(RESULT_UPLOADED, 0);
-        }
+        map.put(RESULT_UPLOADED, uploaded);
         return map;
     }
 }
