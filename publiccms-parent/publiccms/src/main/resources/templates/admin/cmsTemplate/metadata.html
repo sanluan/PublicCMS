@@ -7,6 +7,11 @@
             <#if !site.parentId?has_content>
                  <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
             </#if>
+    <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
+        <@_sysDeptPage deptId=admin.deptId!'' pages=path>
+            <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
+        </@_sysDeptPage>
+    </@_sysAuthorized>
             <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
         </#if>
         <#if site.parentId?has_content>
