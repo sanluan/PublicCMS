@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -15,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.controller.admin.sys.UeditorAdminController;
 import com.publiccms.entities.log.LogUpload;
@@ -47,19 +48,20 @@ public class FileController {
 
     /**
      * @param site
-     * @param admin
      * @param file
+     * @param session 
      * @param request
      * @return view name
      */
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     @Csrf
     @ResponseBody
-    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+    public Map<String, Object> upload(@RequestAttribute SysSite site, MultipartFile file, HttpSession session,
             HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         result.put("success", false);
-        if (null != file && !file.isEmpty()) {
+        SysUser user = ControllerUtils.getUserFromSession(session);
+        if (null != file && !file.isEmpty() && null != user) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
@@ -73,7 +75,7 @@ public class FileController {
                     result.put("fileType", fileType);
                     result.put("fileSize", file.getSize());
                     FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
-                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB, originalName,
+                    logUploadService.save(new LogUpload(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, originalName,
                             fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                 } catch (IllegalStateException | IOException e) {
