@@ -462,7 +462,7 @@ CREATE TABLE `sys_cluster` (
   PRIMARY KEY  (`uuid`),
   KEY `sys_cluster_create_date` (`create_date`),
   KEY `sys_cluster_heartbeat_date` (`heartbeat_date`, `master`)
-) COMMENT='服务器集群';
+)ENGINE=MyISAM COMMENT='服务器集群';
 
 -- ----------------------------
 -- Table structure for sys_config_data
@@ -540,7 +540,7 @@ CREATE TABLE `sys_domain` (
   `path` varchar(100) default NULL COMMENT '路径',
   PRIMARY KEY  (`name`),
   KEY `sys_domain_site_id` (`site_id`)
-) COMMENT='域名';
+)ENGINE=MyISAM COMMENT='域名';
 
 -- ----------------------------
 -- Records of sys_domain
