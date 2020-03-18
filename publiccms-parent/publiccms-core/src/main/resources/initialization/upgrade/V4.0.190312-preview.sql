@@ -401,3 +401,22 @@ INSERT INTO `sys_module_lang` VALUES ('comment_edit', 'ja', '変更');
 INSERT INTO `sys_module_lang` VALUES ('comment_reply', 'zh', '回复');
 INSERT INTO `sys_module_lang` VALUES ('comment_reply', 'en', 'Reply');
 INSERT INTO `sys_module_lang` VALUES ('comment_reply', 'ja', '応答');
+-- 2020-03-18 --
+ALTER TABLE `cms_content_related`
+  ADD INDEX `cms_content_related_related_content_id` (`related_content_id`);
+ALTER TABLE `cms_word`
+  ADD INDEX `cms_word_site_id` (`site_id`);
+ALTER TABLE `sys_cluster`
+  ADD INDEX `sys_cluster_heartbeat_date` (`heartbeat_date`, `master`);
+ALTER TABLE `sys_dept_page`
+  ADD INDEX `sys_dept_page_page` (`page`);
+ALTER TABLE `sys_module_lang`
+  ADD INDEX `sys_module_lang_lang` (`lang`);
+ALTER TABLE `sys_role_module`
+  ADD INDEX `sys_role_module_module_id` (`module_id`);
+ALTER TABLE `sys_role_user`
+  ADD INDEX `sys_role_user_user_id` (`user_id`);
+ALTER TABLE `sys_site`
+  ADD INDEX `sys_site_parent_id` (`parent_id`);
+ALTER TABLE `sys_user`
+  ADD INDEX `sys_user_site_id` (`site_id`)
