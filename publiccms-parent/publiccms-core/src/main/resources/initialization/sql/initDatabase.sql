@@ -194,7 +194,8 @@ CREATE TABLE `cms_content_related` (
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
-  KEY `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`)
+  KEY `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`),
+  KEY `cms_content_related_related_content_id` (`related_content_id`)
 ) COMMENT='推荐推荐';
 
 -- ----------------------------
@@ -303,7 +304,8 @@ CREATE TABLE `cms_word` (
   UNIQUE KEY `cms_word_name` (`name`,`site_id`),
   KEY `cms_word_hidden` (`hidden`),
   KEY `cms_word_create_date` (`create_date`),
-  KEY `cms_word_search_count` (`search_count`)
+  KEY `cms_word_search_count` (`search_count`),
+  KEY `cms_word_site_id` (`site_id`)
 ) COMMENT='搜索词';
 
 -- ----------------------------
@@ -458,7 +460,8 @@ CREATE TABLE `sys_cluster` (
   `cms_version` varchar(20) default NULL COMMENT '版本',
   `revision` varchar(20) NULL COMMENT '修订',
   PRIMARY KEY  (`uuid`),
-  KEY `sys_cluster_create_date` (`create_date`)
+  KEY `sys_cluster_create_date` (`create_date`),
+  KEY `sys_cluster_heartbeat_date` (`heartbeat_date`, `master`)
 ) COMMENT='服务器集群';
 
 -- ----------------------------
@@ -513,7 +516,8 @@ DROP TABLE IF EXISTS `sys_dept_page`;
 CREATE TABLE `sys_dept_page` (
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
   `page` varchar(100) NOT NULL COMMENT '页面',
-  PRIMARY KEY  (`dept_id`,`page`)
+  PRIMARY KEY  (`dept_id`,`page`),
+  KEY `sys_dept_page_page` (`page`)
 ) COMMENT='部门页面';
 
 -- ----------------------------
@@ -802,7 +806,8 @@ CREATE TABLE `sys_module_lang` (
   `module_id` varchar(30) NOT NULL COMMENT '模块ID',
   `lang` varchar(20) NOT NULL COMMENT '语言',
   `value` varchar(100) DEFAULT NULL COMMENT '值',
-  PRIMARY KEY (`module_id`,`lang`)
+  PRIMARY KEY (`module_id`,`lang`),
+  KEY `sys_module_lang_lang` (`lang`)
 ) COMMENT='模块语言';
 
 -- ----------------------------
@@ -1394,7 +1399,8 @@ DROP TABLE IF EXISTS `sys_role_module`;
 CREATE TABLE `sys_role_module` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `module_id` varchar(30) NOT NULL COMMENT '模块ID',
-  PRIMARY KEY  (`role_id`,`module_id`)
+  PRIMARY KEY  (`role_id`,`module_id`),
+  KEY `sys_role_module_module_id` (`module_id`)
 ) COMMENT='角色授权模块';
 
 -- ----------------------------
@@ -1408,7 +1414,8 @@ DROP TABLE IF EXISTS `sys_role_user`;
 CREATE TABLE `sys_role_user` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  PRIMARY KEY  (`role_id`,`user_id`)
+  PRIMARY KEY  (`role_id`,`user_id`),
+  KEY `sys_role_user_user_id` (`user_id`)
 ) COMMENT='用户角色';
 
 -- ----------------------------
@@ -1430,7 +1437,8 @@ CREATE TABLE `sys_site` (
   `dynamic_path` varchar(255) NOT NULL COMMENT '动态站点地址',
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
-  KEY `sys_site_disabled` (`disabled`)
+  KEY `sys_site_disabled` (`disabled`),
+  KEY `sys_site_parent_id` (`parent_id`)
 ) AUTO_INCREMENT=2 COMMENT='站点';
 
 -- ----------------------------
@@ -1497,7 +1505,8 @@ CREATE TABLE `sys_user` (
   KEY `sys_user_disabled` (`disabled`),
   KEY `sys_user_lastLoginDate` (`last_login_date`),
   KEY `sys_user_email_checked` (`email_checked`),
-  KEY `sys_user_dept_id` (`dept_id`)
+  KEY `sys_user_dept_id` (`dept_id`),
+  KEY `sys_user_site_id` (`site_id`)
 ) AUTO_INCREMENT=2 COMMENT='用户';
 
 -- ----------------------------
