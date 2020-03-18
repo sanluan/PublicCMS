@@ -1400,7 +1400,7 @@ CREATE TABLE `sys_role_module` (
   `role_id` int(11) NOT NULL COMMENT '角色ID',
   `module_id` varchar(30) NOT NULL COMMENT '模块ID',
   PRIMARY KEY  (`role_id`,`module_id`),
-  KEY `model_id` (`module_id`)
+  KEY `sys_role_module_module_id` (`module_id`)
 ) COMMENT='角色授权模块';
 
 -- ----------------------------
