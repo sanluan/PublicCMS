@@ -63,7 +63,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
             Integer[] ids = handler.getIntegerArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
-                if (handler.getBoolean("absoluteURL", false)) {
+                if (handler.getBoolean("absoluteURL", true)) {
                     entityList.forEach(e -> {
                         templateComponent.initCategoryUrl(site, e);
                     });

@@ -45,8 +45,8 @@ public class CommentController {
     @Autowired
     protected ConfigComponent configComponent;
 
-    private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate",
-            "replyId", "replyUserId", "replies", "disabled" };
+    private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "replyId",
+            "replyUserId", "replies", "disabled" };
 
     /**
      * @param site
@@ -70,7 +70,7 @@ public class CommentController {
         entity.setStatus(CmsCommentService.STATUS_PEND);
         if (null != entity.getId()) {
             CmsComment oldEntity = service.getEntity(entity.getId());
-            if (null != oldEntity && !oldEntity.isDisabled() && oldEntity.getUserId() == user.getId() ) {
+            if (null != oldEntity && !oldEntity.isDisabled() && oldEntity.getUserId() == user.getId()) {
                 entity.setUpdateDate(CommonUtils.getDate());
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 logOperateService
@@ -87,8 +87,13 @@ public class CommentController {
                     entity.setReplyId(null);
                 } else {
                     entity.setContentId(reply.getContentId());
-                    entity.setReplyUserId(reply.getUserId());
+                    if (null == entity.getReplyUserId()) {
+                        entity.setReplyUserId(reply.getUserId());
+                    }
                 }
+            }
+            if (null != entity.getReplyUserId() && entity.getReplyUserId().equals(user.getId())) {
+                entity.setReplyUserId(null);
             }
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",

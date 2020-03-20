@@ -64,7 +64,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
-                boolean absoluteURL = handler.getBoolean("absoluteURL", false);
+                boolean absoluteURL = handler.getBoolean("absoluteURL", true);
                 entityList.forEach(e -> {
                     Integer clicks = statisticsComponent.getContentClicks(e.getId());
                     if (null != clicks) {

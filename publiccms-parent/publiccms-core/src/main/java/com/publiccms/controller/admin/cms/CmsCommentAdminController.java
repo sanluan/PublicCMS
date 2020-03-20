@@ -88,8 +88,13 @@ public class CmsCommentAdminController {
                     entity.setReplyId(null);
                 } else {
                     entity.setContentId(reply.getContentId());
-                    entity.setReplyUserId(reply.getUserId());
+                    if (null == entity.getReplyUserId()) {
+                        entity.setReplyUserId(reply.getUserId());
+                    }
                 }
+            }
+            if (null != entity.getReplyUserId() && entity.getReplyUserId().equals(admin.getId())) {
+                entity.setReplyUserId(null);
             }
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
