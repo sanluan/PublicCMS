@@ -419,4 +419,4 @@ ALTER TABLE `sys_role_user`
 ALTER TABLE `sys_site`
   ADD INDEX `sys_site_parent_id` (`parent_id`);
 ALTER TABLE `sys_user`
-  ADD INDEX `sys_user_site_id` (`site_id`)
+  ADD INDEX `sys_user_site_id` (`site_id`);
