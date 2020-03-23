@@ -8,11 +8,6 @@
 <body>
     <header>
         <h1>站点列表</h1>
-		<nav>
-			<a href="http://www.publiccms.com/" target="_blank">PublicCMS官网</a>
-			<a href="http://www.kerneler.com/freemarker2.3.23/" target="_blank">模板手册</a>
-			<a href="http://www.publiccms.com/upload/api/overview-summary.html" target="_blank">JAVA API</a>
-		</nav>
     </header>	
     <main>
 <@_sysSiteList pageSize=4>
@@ -36,6 +31,7 @@
     </#list>
 		</ul>
 </@_sysSiteList>
+		<div class="clear"></div>
 		<p>域名列表表示您使用这些域名访问本程序，将展示对应站点！通配域名表示所有该域名的子域名也可以访问到这个站点。模板根目录表示使用该域名访问，访问的是该目录下的模板文件</p>
 		<p>为方便测试，我们已经将dev.publiccms.com及其所有子域名解析指向了127.0.0.1,它在您联网的情况下可以与localhost,loopback一样用来测试本地服务</p>
     </main>

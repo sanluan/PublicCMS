@@ -8,11 +8,6 @@
 <body>
     <header>
         <h1>Sites list</h1>
-		<nav>
-			<a href="http://www.publiccms.com/" target="_blank">PublicCMS website</a>
-			<a href="https://freemarker.apache.org/docs/" target="_blank">Template manual</a>
-			<a href="http://www.publiccms.com/upload/api/overview-summary.html" target="_blank">JAVA API</a>
-		</nav>
     </header>	
     <main>
 <@_sysSiteList pageSize=4>
@@ -35,6 +30,7 @@
     </#list>
 		</ul>
 </@_sysSiteList>
+		<div class="clear"></div>
 		<p>The domain name list indicates that you use these domain names to access the program, the corresponding site will be displayed! Wildcard domain name means that all subdomains of this domain name can also access this site。The template root directory means access using this domain name, the template files in this directory are accessed</p>
 		<p>For testing purposes, we have pointed dev.publiccms.com and all its subdomains to 127.0.0.1, which can be used to test local services in the same way as localhost and loopback when you are connected to the Internet.</p>
     </main>
