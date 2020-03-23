@@ -108,6 +108,7 @@ public class InstallServlet extends HttpServlet {
             // 记录当前版本号
             map.put("currentVersion", CmsVersion.getVersion());
             map.put("defaultPort", cmsUpgrader.getDefaultPort());
+            map.put("dataFilePath", CommonConstants.CMS_FILEPATH);
 
             if (null == step) {
                 step = startStep;
@@ -228,7 +229,6 @@ public class InstallServlet extends HttpServlet {
                 map.put("history", install(connection, null != useSimple));
                 map.put("message", "success");
             } catch (Exception e) {
-
                 map.put("message", "failed");
                 map.put("error", e.getMessage());
             }
@@ -241,17 +241,13 @@ public class InstallServlet extends HttpServlet {
         runner.setLogWriter(null);
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
-        File file = new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql");
-        if (file.exists()) {
-            try (InputStream inputStream = new FileInputStream(file)) {
-                runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
-            }
-        } else {
-            try (InputStream inputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql")) {
-                runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
-            }
-            if (useSimple) {
-                try (InputStream simpleInputStream = getClass().getResourceAsStream("/initialization/sql/simpledata.sql")) {
+        try (InputStream inputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql")) {
+            runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
+        }
+        if (useSimple) {
+            File file = new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql");
+            if (file.exists()) {
+                try (InputStream simpleInputStream = new FileInputStream(file)) {
                     runner.runScript(new InputStreamReader(simpleInputStream, CommonConstants.DEFAULT_CHARSET));
                 }
             }

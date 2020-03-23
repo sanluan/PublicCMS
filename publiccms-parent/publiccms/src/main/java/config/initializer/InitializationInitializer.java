@@ -79,8 +79,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
      * 
      */
     public static void initFilePath(String filePath, String defaultPath) {
-        CommonConstants.CMS_FILEPATH = System.getProperty("cms.filePath", filePath);
-        File file = new File(CommonConstants.CMS_FILEPATH);
+        File file = new File(System.getProperty("cms.filePath", filePath));
         try {
             file.mkdirs();
         } catch (Exception e) {
@@ -89,8 +88,8 @@ public class InitializationInitializer implements WebApplicationInitializer {
             log.warn("PublicCMS " + CmsVersion.getVersion()
                     + " the cms.filePath parameter is invalid , try to use the temporary directory.");
             file = new File(defaultPath, "data/publiccms");
-            CommonConstants.CMS_FILEPATH = file.getAbsolutePath();
         }
+        CommonConstants.CMS_FILEPATH = file.getAbsolutePath();
     }
 
     private static void createInstallServlet(ServletContext servletcontext, Properties config, String startStep, String version) {
