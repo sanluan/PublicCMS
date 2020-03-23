@@ -110,16 +110,6 @@ select {
                     $form = $(document.forms[0]);
                     $.post($form.attr("action"), $form.serialize() ,function(result){
                         $(".content-box").html(result);
-                        if ($(".error",$(".content-box")).length > 0) {
-                            $(".buttons button").removeClass("active");
-                        }
-                    });
-                    break;
-                case 3:
-                    $("button").removeClass("active");
-                    $form = $(document.forms[0]);
-                    $.post($form.attr("action"), $form.serialize() ,function(result){
-                        $(".content-box").html(result);
                         $(".buttons button").removeClass("active");
                         $(".buttons a").hide();
                     });

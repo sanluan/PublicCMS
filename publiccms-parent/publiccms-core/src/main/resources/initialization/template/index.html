@@ -60,9 +60,6 @@ select {
             <div class="page-content">
                 <div class="content-box">
                     <h2>系统配置</h2>
-                    <div class="wrapper">
-                        <span>数据库配置文件将保存至您的数据目录：${dataFilePath}</span>
-                    </div>
                     <form action="./" method="post">
                         <input type="hidden" name="step" value="dataBaseConfig"/>
                         <div class="wrapper"><label>数据库地址</label><input type="text" maxlength="100" name="host" value="127.0.0.1"/></div>
@@ -72,6 +69,7 @@ select {
                         <div class="wrapper"><label>数据库用户</label><input type="text" maxlength="50" name="username"/></div>
                         <div class="wrapper"><label>数据库密码</label><input type="text" maxlength="50" name="password"/></div>
                         <div class="wrapper"><label>数据库时区</label><input type="text" maxlength="10" name="timeZone" value="${.now?string('X')}"/></div>
+                        <div class="wrapper"><span>数据库配置文件将保存至您的数据目录：${dataFilePath}</span></div>
                     </form>
                 </div>
             </div>
@@ -122,7 +120,6 @@ select {
                     });
                     break;
                 case 3:
-                    $("button").removeClass("active");
                     $form = $(document.forms[0]);
                     $.post($form.attr("action"), $form.serialize() ,function(result){
                         $(".content-box").html(result);
