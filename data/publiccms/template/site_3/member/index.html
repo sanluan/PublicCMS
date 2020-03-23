@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>用户中心</title>
+	<meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
+	<meta name="description" content="${(metadata.extendData.description)!}"/>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+	<div class="container">
+		<div class="left-content">
+			<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
+			<div class="comment-box">
+				<h3>我的待审核评论</h3>
+				<@_commentList advanced=true userId=user.id status=2 pageSize=10>
+				<ul>
+					<#list page.list as a>
+						<@t.merge 'userIds' a.replyUserId!/>
+						<@t.merge 'contentIds' a.contentId!/>
+					</#list>
+					<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+					<@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+					<#list page.list as a>
+						<li class="underline">
+							<p>${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》<span class="float-right"><a href="comment.html?id=${a.id}">编辑</a></span></p>
+							<#if a.replyId?has_content>
+								<@_comment id=a.replyId>
+							<p class="reply"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${userMap[a.replyUserId?string].nickName}</a> : ${object.text!}</p>
+								</@_comment>
+							</#if>
+							<p>${a.text!}</p>
+						</li>
+					<#else>
+					<li class="underline">没有数据</li>
+					</#list>
+				</ul>
+				</@_commentList>
+				<h3>回复我的评论</h3>
+				<@_commentList replyUserId=user.id pageSize=10>
+				<ul>
+					<#list page.list as a>
+						<@t.merge 'userIds' a.userId!/>
+						<@t.merge 'contentIds' a.contentId!/>
+					</#list>
+					<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+					<@_content ids=t.contentIds! absoluteURL=true><#assign contentMap=map!/></@_content>
+					<#list page.list as a>
+						<li class="underline">
+							<p><a href="${site.dynamicPath}user.html?id=${a.userId!}" target="_blank">${userMap[a.userId?string].nickName}</a> ${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
+							<#if a.replyId?has_content>
+								<@_comment id=a.replyId>
+							<p class="reply"><a href="${site.dynamicPath}user.html?id=${user.id!}" target="_blank">@${user.nickName}</a> : ${object.text!}</p>
+								</@_comment>
+							</#if>
+							<p>${a.text!}</p>
+						</li>
+					<#else>
+					<li class="underline">没有数据</li>
+					</#list>
+				</ul>
+				</@_commentList>
+			</div>
+			<h3>我的内容投稿</h3>
+			<@_contentList advanced=true userId=user.id pageSize=10>
+				<#if page.totalCount gt 0>
+					<#list page.list as a>
+						<@t.merge 'categoryIds' a.categoryId!/>
+					</#list>					
+					<@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
+					<#list page.list as a>
+						<p>【${(categoryMap[a.categoryId?string].name)!}】[<@t.m 'page.status.content.'+a.status/>]${(a.title)!}  (${a.clicks!}) </p>
+					<#else>
+					<p>没有数据</p>
+					</#list>
+				</#if>
+			</@_contentList>
+			<h3>我的其他投稿</h3>
+			<@_placeList advanced=true userId=user.id pageSize=10>
+				<#list page.list as a>
+					<p>【<@_placeMetadata path=a.path>${object.alias!}</@_placeMetadata>】 [<@t.m 'page.status.place.data.'+a.status/>]  ${(a.title)!}(${a.clicks!}) </p>
+				<#else>
+					<p>没有数据</p>
+				</#list>
+			</@_placeList>
+			
+		</div>
+	</div>
+	<div class="clearfix-before"></div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+</body>
+</html>

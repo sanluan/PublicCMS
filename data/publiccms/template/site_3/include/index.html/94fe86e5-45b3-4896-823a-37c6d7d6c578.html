@@ -1,0 +1,8 @@
+<div id="index-focus" class="swiper-container">
+	<div class="swiper-wrapper">
+		<#list page.list as a>
+		<div class="swiper-slide"><a href="${site.dynamicPath}place/click.do?id=${a.id!}"><img <#if a?index lt 2>src="${a.cover}"<#else>src="${site.sitePath!}assets/images/logo.png" data-src="${a.cover}" class="swiper-lazy"</#if> alt="${a.title!}"></a></div>
+		</#list>
+	</div>
+	<div class="swiper-pagination swiper-pagination-white"></div>
+</div>

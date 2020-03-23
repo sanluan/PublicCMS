@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>New PublicCMS Template</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/vue-resource"></script>
+</head>
+<body>
+        <header id="header">
+                <p>{{ message }}</p>
+                <nav>
+                        <p v-for="category in categoryList">
+                                <a v-bind:href="category.url">{{ category.name }}</a>
+                        </p>
+                </nav>
+        </header>
+        <main id="main">
+                <dl v-for="content in contentList">
+                        <dt><a v-bind:href="content.url">{{ content.title }}</a>{{ content.publishDate}}</dt>
+                        <dd>{{ content.description }}</dd>
+                </dl>
+        </main>
+        <footer>
+                <p>Powered by <a href="http://www.publiccms.com/">Public CMS</a> </p>
+        </footer>
+<script>
+var header = new Vue({
+  el: '#header',
+  data: {
+    message: 'Hello Vue.js!',
+        categoryList: [],
+        conentList:[]
+  },
+  created:function(){
+          this.$http.get("hello.json").then(function(data){
+                  this.message=eval('('+data.bodyText+')').message;
+          });
+          this.$http.get("categoryList.json").then(function(data){
+                  this.categoryList=eval('('+data.bodyText+')');
+          });
+     }
+});
+var main = new Vue({
+  el: '#main',
+  data: {
+        contentList:[]
+  },
+  created:function(){
+          this.$http.get("contentList.json").then(function(data){
+                  this.contentList=eval('('+data.bodyText+')');
+          });
+     }
+});
+</script>
+</body>

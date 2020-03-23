@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>${metadata.alias!}</title>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+    <div class="container">
+		<h3>请先加好本站链接</h3>
+		<#assign path='/cfdc226d-8abc-48ec-810d-f3941b175b20.html'/>
+		<@import path="ftl/tools.ftl" namespace="t"/>
+
+		<#if error?has_content>
+			<p style="color:red"><@t.m error/></p>
+		</#if>
+
+		<#if result?has_content&&!error?has_content>
+			<p style="color:red">提交成功，请等待管理员审核！</p>
+		<#else>
+			<form method="post" action="${site.dynamicPath}place/save.do" onsubmit="return check();">
+				<input name="path" type="hidden" value="${path}" />
+				<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+				<input name="returnUrl" type="hidden" value="${site.dynamicPath}friendlink.html?result=true" />
+				<p><label>友链标题:</label><input name="title" type="text" size="60" maxlength="60" value=""/></p>
+				<p><label>网站地址:</label><input name="url" type="text" size="60"  maxlength="60" value=""/></p>
+				<p><input type="submit" value="提交"/></p>
+			</form>
+		</#if>
+
+		<@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
+		<#if user?has_content&&(a.adminIds)?has_content&&a.adminIds?seq_contains(user.id)>
+			<@_placeList path=path advanced=true pageIndex=pageNum count=numPerPage>
+				<#list page.list as a>
+					<@t.merge 'userIds' a.userId!/>
+				</#list>
+				<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+				<#list page.list as a>
+						<p>
+							<a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickName)!}]
+						<#if 0=a.status>
+							<a href="${site.dynamicPath}place/check.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">审核</a>
+						</#if>
+							<a href="${site.dynamicPath}place/delete.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">删除</a>
+						</p>
+				</#list>
+			</@_placeList>
+		</#if>
+    </div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+<script type="text/javascript">
+	$(function(){$('.login-form input').eq(0).focus();});
+	function check(){
+		if(!$('input[name=title]').val()||!$('input[name=url]').val()){
+			alert('站点标题和地址不能为空');
+			return false;
+		}
+		return true;
+	}
+</script>
+</body>
+</html>

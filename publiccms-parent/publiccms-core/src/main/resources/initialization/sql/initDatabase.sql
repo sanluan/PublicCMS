@@ -546,8 +546,9 @@ CREATE TABLE `sys_domain` (
 -- Records of sys_domain
 -- ----------------------------
 INSERT INTO `sys_domain` VALUES ('dev.publiccms.com', '1', '1', '');
-INSERT INTO `sys_domain` VALUES ('member.dev.publiccms.com', '1', '0', '/member/');
-INSERT INTO `sys_domain` VALUES ('search.dev.publiccms.com', '1', '0', '/search/');
+INSERT INTO `sys_domain` VALUES ('localhost', '1', '1', '');
+INSERT INTO `sys_domain` VALUES ('127.0.0.1', '1', '1', '');
+
 
 -- ----------------------------
 -- Table structure for sys_email_token
@@ -1444,7 +1445,7 @@ CREATE TABLE `sys_site` (
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', null ,'PublicCMS', '1', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
+INSERT INTO `sys_site` VALUES ('1', null ,'PublicCMS', '0', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
 
 -- ----------------------------
 -- Table structure for sys_task
@@ -1464,16 +1465,6 @@ CREATE TABLE `sys_task` (
   KEY `sys_task_site_id` (`site_id`),
   KEY `sys_task_update_date` (`update_date`)
 ) AUTO_INCREMENT=8 COMMENT='任务计划';
-
--- ----------------------------
--- Records of sys_task
--- ----------------------------
-INSERT INTO `sys_task` VALUES ('1', '1', '重新生成所有页面', '0', '0 0/2 * * ?', '重新生成所有页面', '/publishPage.task', NULL);
-INSERT INTO `sys_task` VALUES ('2', '1', '重建索引', '0', '0 0 1 1 ? 2099', '重建全部索引', '/reCreateIndex.task', NULL);
-INSERT INTO `sys_task` VALUES ('3', '1', '清理日志', '0', '0 0 1 * ?', '清理三个月以前的日志', '/clearLog.task', NULL);
-INSERT INTO `sys_task` VALUES ('4', '1', '重新生成内容页面', '0', '0 0 1 1 ? 2099', '重新生成内容页面', '/publishContent.task', NULL);
-INSERT INTO `sys_task` VALUES ('5', '1', '重新生成所有分类页面', '0', '0 0/6 * * ?', '重新生成所有分类页面', '/publishCategory.task', NULL);
-INSERT INTO `sys_task` VALUES ('7', '1', '重新生成全站', '0', '0 0 1 1 ? 2099', '重新生成全站', '/publishAll.task', NULL);
 
 -- ----------------------------
 -- Table structure for sys_user

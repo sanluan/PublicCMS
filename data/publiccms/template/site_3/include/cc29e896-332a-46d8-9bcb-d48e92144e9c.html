@@ -1,0 +1,62 @@
+<div class="clearfix-before"></div>
+<footer>
+	<div class="container">
+		<div class="column">
+			<h4 class="title">Public CMS内容管理系统<span class="head-line"></span></h4>
+			<p>Public CMS是采用2019年主流技术开发的开源JAVA CMS产品。</p>
+			<p>架构科学，轻松支撑千万数据、千万PV；支持全站静态化，SSI，动态页面局部静态化，多站点，自动安装等为您快速建站，建设大规模站点提供强大驱动，也是企业级项目产品原型的良好选择。</p>
+		</div>
+		<div class="column background-map">
+			<h4 class="title">联系我们<span class="head-line"></span></h4>
+			<p><i class="fa fa-qq"></i> 售前咨询：<a href="javascript:void(0)" class="wechat">微信:kerneler</a>、<a href="http://wpa.qq.com/msgrd?v=3&amp;uin=315415433&amp;site=PublicCMS&amp;Menu=yes" target="_blank">QQ:315415433</a></p>
+			<p><i class="fa fa-envelope"></i> 建议意见：<a href="mailto:master@publiccms.com">master@publiccms.com</a></p>
+			<p><i class="fa fa-phone-square"></i> 联系电话：<a href="tel:18600980373">18600980373</a></p>
+			<p><i class="fa fa-qq"></i> 技术咨询：<a href="https://shang.qq.com/wpa/qunwpa?idkey=8a633f84fb2475068182d3c447319977faca6a14dc3acf8017a160d65962a175" title="里面个个都是人才">一群191381542</a>、<a href="https://shang.qq.com/wpa/qunwpa?idkey=088c921c4eb74328eef0192bac1e63c7228eb31b0524a373d40cdd907ddd2d3c" title="说话又好听">二群481589563</a>、<a href="https://shang.qq.com/wpa/qunwpa?idkey=8b1c7e07973d9f9553c0b8d5f8410107c02456bf6b4674dc7e4d113266ee8e03" title="超喜欢在里面">三群638756883</a></p>
+		</div>
+		<div class="column last">
+			<h4 class="title">关于我们<span class="head-line"></span></h4>
+			<p>天津黑核科技有限公司</p>
+			<p>我们专注提供专业的软件产品和技术。为合作伙伴提供安全可靠的软件产品与解决方案，共同帮助终端用户实现业务创新、快速发展。</p>
+		</div>
+		<div class="clearfix-before"></div>
+		<div class="footer-bottom">
+			<p>&copy;${.now?string('yyyy')}  PublicCMS.com All Rights Reserved. <@_sysConfigData code="site"><a href="http://beian.miit.gov.cn/" target="_blank">${object.approve!}</a></@_sysConfigData></p>
+			<@_includePlace path="/cfdc226d-8abc-48ec-810d-f3941b175b20.html"/> <#-- 友情链接 -->
+		</div>
+	</div>
+</footer>
+<div class="global-sidebar">
+    <ul>
+		<li>
+			<a class="wechat" href="javascript:void(0)">
+				<img src="${site.sitePath}assets/images/wechat.png" alt="售前咨询">售前咨询
+			</a>
+		</li>
+		<li>
+			<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=315415433&site=PublicCMS&Menu=yes">
+				<img src="${site.sitePath}assets/images/qq.png" alt="售前咨询">售前咨询
+			</a>
+		</li>
+		<li>
+			<a target="_blank" href="https://shang.qq.com/wpa/qunwpa?idkey=088c921c4eb74328eef0192bac1e63c7228eb31b0524a373d40cdd907ddd2d3c">
+				<img src="${site.sitePath}assets/images/qq.png" alt="技术支持">技术支持
+			</a>
+		</li>
+    </ul>
+</div>
+<div class="dialog">
+	<div class="background"></div>
+	<div class="box">
+		<img src="//www.publiccms.com/assets/images/wechat_account.jpg" alt="微信">
+	</div>
+</div>
+<script src="${site.sitePath!}assets/js/jquery-1.9.1.min.js"></script>
+<script src="${site.sitePath!}assets/js/jquery.cookie.js"></script>
+<script src="${site.sitePath}assets/swiper/swiper.min.js"></script>
+<!-- 百度编辑器 -->
+<script src="${site.sitePath!}assets/ueditor/ueditor.parse.min.js"></script>
+<script>var CMS_PATH='${site.dynamicPath}';</script>
+<script src="${site.sitePath!}assets/js/main.js"></script>
+<script>
+	<@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
+</script>

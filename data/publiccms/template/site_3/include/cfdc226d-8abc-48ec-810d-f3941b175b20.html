@@ -1,0 +1,9 @@
+<ul class="friendlink">
+	<li><label>友情链接</label></li>
+	<#list page.list as a>
+		<li><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank">${a.title}</a></li>
+	</#list>
+		<li><a href="${site.dynamicPath}friendlink.html">申请友链</a></li>
+		<li><a href="${site.sitePath!}sitemap.xml" target="_blank">站点地图</a></li>
+		<li><a href="http://www.kerneler.com/freemarker2.3.23/" target="_blank">FreeMarker文档</a></li>
+</ul>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>${metadata.alias!}</title>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+    <div class="container">
+		<#if user??>
+			<p class="message">${user.nickName},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
+		<#else>
+			<@import path="/ftl/tools.ftl" namespace="t"/>
+			<form action="${site.dynamicPath}doRegister.do" method="post" class="center login-form">
+				<#if error??>
+					<p class="message red"><@t.m error/></p>
+				</#if>
+				<#if message??>
+					<p class="message"><@t.m "message."+message/></p>
+				</#if>
+				<p><input type="text" name="name" class="input-text" placeholder="用户名" title="用户名" value="${name!}"/></p>
+				<p><input type="text" name="nickName" class="input-text" placeholder="昵称" title="昵称"  value="${nickName!}"/></p>
+				<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
+				<p><input type="password" name="repassword" class="input-text" placeholder="重复密码" title="重复密码"/></p>
+				<p class="text-center">
+					<input type="hidden" name="returnUrl" value="${site.sitePath}"/>
+                    <#if channel??><input type="hidden" name="channel" value="${channel!}"/></#if>
+                    <#if openId??><input type="hidden" name="openId" value="${openId!}"/></#if>
+					<input type="submit" class="button" value="注册"/>
+				</p>
+				<p class="message">已有账号?请<a href="login.html?returnUrl=${(returnUrl!site.sitePath!)?url}">登录</a></p>
+			</form>
+		</#if>
+    </div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+</body>
+</html>
