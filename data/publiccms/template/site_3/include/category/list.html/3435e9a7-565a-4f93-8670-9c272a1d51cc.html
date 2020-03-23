@@ -6,7 +6,7 @@
 			<#items as a>
 			<div class="swiper-slide">
 				<a href="${site.dynamicPath}place/redirect.do?id=${a.id!}">
-					<img <#if a?is_first>src="<@_thumb path=a.cover width=400 height=450/>"<#else>src="${site.sitePath!}assets/images/logo.png" data-src="<@_thumb path=a.cover width=400 height=450/>" class="swiper-lazy"</#if> alt="${a.title!}"/>
+					<img <#if a?is_first>src="${a.cover}"<#else>src="${site.sitePath!}assets/images/logo.png" data-src="${a.cover}" class="swiper-lazy"</#if> alt="${a.title!}"/>
 					<h4>${a.title}</h4>
 				</a>
 			</div>
