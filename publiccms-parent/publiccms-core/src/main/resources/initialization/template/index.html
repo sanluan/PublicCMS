@@ -26,7 +26,8 @@ body {font-size: 14px;}
 .install .box-page .page-content pre {font-size: 13px; white-space : pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;white-space: pre-wrap;}
 .install .box-page .checkbox {line-height: 30px;height: 30px;text-align: center;}
 .install .buttons {margin: auto;text-align: center;height: 60px;line-height: 60px;}
-.install .buttons button {width: 120px;border: 0px;color: white;height: 30px;cursor: pointer;}
+.install .buttons button,.install .buttons a {width:120px;border:0px;color:white;height:30px;cursor:pointer;}
+.install .buttons a{color:black;}
 .install .active {background-color: #6999ec;}
 .install .hide {display: none;}
 .install .show {display: block;}
@@ -111,20 +112,27 @@ select {
                     $(".buttons a").show();
                     break;
                 case 2:
+                    $(".buttons button").removeClass("active");
                     $form = $(document.forms[0]);
                     $.post($form.attr("action"), $form.serialize() ,function(result){
                         $(".content-box").html(result);
-                        if ($(".error",$(".content-box")).length > 0) {
-                            $(".buttons button").removeClass("active");
+                        if ($(".error",$(".content-box")).length <= 0) {
+                            $(".buttons button").addClass("active");
                         }
+                    }).error(function(){
+                        $(".buttons button").addClass("active");
+                        step -= 1;
                     });
                     break;
                 case 3:
+                    $(".buttons button").removeClass("active");
                     $form = $(document.forms[0]);
                     $.post($form.attr("action"), $form.serialize() ,function(result){
                         $(".content-box").html(result);
-                        $(".buttons button").removeClass("active");
                         $(".buttons a").hide();
+                    }).error(function(){
+                        $(".buttons button").addClass("active");
+                        step -= 1;
                     });
                     break;
             }
