@@ -1,10 +1,6 @@
-<@_category id=id>
-	<#assign category=object/>
-	<#-- 分类扩展数据(参数为分类ID) -->
-	<#assign attribute=getCategoryAttribute(id)/>
-	<@_category id=category.parentId>
-		<#assign parent=object/>
-	</@_category>
+<#assign attribute=getCategoryAttribute(id)/>
+<@_category id=category.parentId>
+	<#assign parent=object/>
 </@_category>
 <!DOCTYPE html>
 <html lang="en">

@@ -15,9 +15,9 @@
     <#list page.list?reverse as a>
         <li>
 			<div class="site-box">
-				<h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a></h3>
+				<h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[Enable static]</#if></h3>
 				<div>
-					<p><a href="${a.dynamicPath!}admin/" target="_blank">Management system</a> Default user/password : admin/admin</p>
+					<p><a href="${a.dynamicPath!}admin/" target="_blank">Management system</a></p>
 					Domains list:
 					<@_sysDomainList advanced=true siteId=a.id>
 						<#list page.list as a>
@@ -31,7 +31,9 @@
 		</ul>
 </@_sysSiteList>
 		<div class="clear"></div>
+		<p>The default user name / password for all sites: admin / admin</p>
 		<p>The domain name list indicates that you use these domain names to access the program, the corresponding site will be displayed! Wildcard domain name means that all subdomains of this domain name can also access this site。The template root directory means access using this domain name, the template files in this directory are accessed</p>
+		<p>The first visit to the static site requires you to log in to the background and perform "重新生成全站" in Maintenance-> System Maintenance-> Task Schedule to browse normally</p>
 		<p>For testing purposes, we have pointed dev.publiccms.com and all its subdomains to 127.0.0.1, which can be used to test local services in the same way as localhost and loopback when you are connected to the Internet.</p>
     </main>
     <footer>

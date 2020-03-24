@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -160,18 +160,13 @@ public class IndexController {
             }
             String[] acceptParameters = StringUtils.split(metadata.getAcceptParameters(), CommonConstants.COMMA_DELIMITED);
             if (CommonUtils.notEmpty(acceptParameters)) {
-                if (!billingRequestParametersToModel(request, acceptParameters, metadata.getParameterTypeMap(), site, model)) {
+                if (!billingRequestParametersToModel(request, acceptParameters, id, pageIndex, metadata.getParameterTypeMap(),
+                        site, model)) {
                     try {
                         response.sendError(HttpServletResponse.SC_NOT_FOUND);
                     } catch (IOException e) {
                     }
                     return requestPath;
-                }
-                if (null != id && ArrayUtils.contains(acceptParameters, "id")) {
-                    model.addAttribute("id", id.toString());
-                    if (null != pageIndex && ArrayUtils.contains(acceptParameters, "pageIndex")) {
-                        model.addAttribute("pageIndex", pageIndex.toString());
-                    }
                 }
             }
             CmsPageData data = metadataComponent.getTemplateData(
@@ -203,14 +198,19 @@ public class IndexController {
         return requestPath;
     }
 
-    private boolean billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters,
-            Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
+    private boolean billingRequestParametersToModel(HttpServletRequest request, String[] acceptParameters, Long id,
+            Integer pageIndex, Map<String, ParameterType> parameterTypeMap, SysSite site, ModelMap model) {
         for (String parameterName : acceptParameters) {
             ParameterType parameterType = null;
             if (null != parameterTypeMap) {
                 parameterType = parameterTypeMap.get(parameterName);
             }
             String[] values = request.getParameterValues(parameterName);
+            if ("id".equals(parameterName) && null != id) {
+                values = new String[] { id.toString() };
+            } else if ("pageIndex".equals(parameterName) && null != pageIndex) {
+                values = new String[] { pageIndex.toString() };
+            }
             if (null == parameterType) {
                 billingValue(parameterName, request.getParameterValues(parameterName), model);
             } else if (!parameterType.isRequired() || CommonUtils.notEmpty(values)) {
@@ -280,6 +280,8 @@ public class IndexController {
                     }
                 }
                 List<CmsContent> entityList = contentService.getEntitys(set.toArray(new Long[set.size()]));
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
                 entityList.forEach(e -> {
                     Integer clicks = statisticsComponent.getContentClicks(e.getId());
                     if (null != clicks) {
@@ -292,7 +294,8 @@ public class IndexController {
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsContent entity = contentService.getEntity(Long.valueOf(values[0]));
-                    if ((null == entity || entity.isDisabled()) && parameterType.isRequired()) {
+                    if ((null == entity || entity.isDisabled() || entity.getSiteId() != site.getId())
+                            && parameterType.isRequired()) {
                         return false;
                     }
                     Integer clicks = statisticsComponent.getContentClicks(entity.getId());
@@ -319,6 +322,8 @@ public class IndexController {
                     }
                 }
                 List<CmsCategory> entityList = categoryService.getEntitys(set.toArray(new Integer[set.size()]));
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
                 entityList.forEach(e -> {
                     templateComponent.initCategoryUrl(site, e);
                 });
@@ -326,7 +331,8 @@ public class IndexController {
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsCategory entity = categoryService.getEntity(Integer.valueOf(values[0]));
-                    if ((null == entity || entity.isDisabled()) && parameterType.isRequired()) {
+                    if ((null == entity || entity.isDisabled() || entity.getSiteId() != site.getId())
+                            && parameterType.isRequired()) {
                         return false;
                     }
                     templateComponent.initCategoryUrl(site, entity);
@@ -348,11 +354,15 @@ public class IndexController {
                         return false;
                     }
                 }
-                model.addAttribute(parameterName, userService.getEntitys(set.toArray(new Long[set.size()])));
+                List<SysUser> entityList = userService.getEntitys(set.toArray(new Long[set.size()]));
+                entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toList());
+                model.addAttribute(parameterName, entityList);
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     SysUser entity = userService.getEntity(Long.valueOf(values[0]));
-                    if ((null == entity || entity.isDisabled()) && parameterType.isRequired()) {
+                    if ((null == entity || entity.isDisabled() || entity.getSiteId() != site.getId())
+                            && parameterType.isRequired()) {
                         return false;
                     }
                     model.addAttribute(parameterName, entity);
