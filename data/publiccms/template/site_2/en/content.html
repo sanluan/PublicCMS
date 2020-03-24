@@ -1,13 +1,10 @@
-<@_content id=id>
-	<#assign content=object/>
-	<#assign arrtibute=getContentAttribute(id)/>
-    <@_category id=object.categoryId>
-		<#assign category=object/>
+<#assign arrtibute=getContentAttribute(content.id)/>
+<@_category id=object.categoryId>
+	<#assign category=object/>
 	<@_category id=category.parentId>
 		<#assign parent=object/>
 	</@_category>
-	</@_category>
-</@_content>
+</@_category>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +21,6 @@
 	<div class="banner" style="background:url(${site.sitePath}assets/images/banner.gif) no-repeat top;"></div>
 
 	<@_includePlace path="/1478e1a7-2fcc-452e-841b-2eecc067d7c4.html"/> <#-- 英文导航 -->
-
 	<main class="container">
 		<div class="left">
 			<h2><div><strong>${parent.name!}</strong></div></h2>
