@@ -9,7 +9,7 @@
 <main>
     <div class="container">
     	<#if user?has_content>
-    		<p class="message">${user.nickName},您已经登录了!  <a href="logout.html">退出登录</a></p>
+    		<p class="message">${user.nickName},您已经登录了!  <a href="logout.html?returnUrl=${returnUrl!}">退出登录</a></p>
     	<#else>
 	    	<form id="login" action="${site.dynamicPath}doLogin.do" method="post" class="center">
 				<@import path="/ftl/tools.ftl" namespace="t"/>

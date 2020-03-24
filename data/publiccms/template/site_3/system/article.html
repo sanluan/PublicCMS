@@ -15,7 +15,7 @@
 	</div>
 	<div class="container">
 		<article class="left-content">
-			<h1><a href="${content.url!}">${content.title}</a></h1>
+			<h1><a href="${url!}">${content.title}</a></h1>
 			<p class="author"><#if content.copied>来源：<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></p>
 			<div id="content">${text?no_esc!}</div>
 			<div><@_tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="//search.publiccms.com/?tagId=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@_tag></div>

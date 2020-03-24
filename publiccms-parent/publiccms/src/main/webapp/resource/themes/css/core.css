@@ -99,8 +99,7 @@ header .nav .selected ul{display:block}
 
 /* Tree */
 .tree li{clear:both;display:block;line-height:30px;cursor:pointer}
-.tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px}
-.tree div{overflow:hidden}
+.tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px;white-space:nowrap;}
 .tree div div{float:left;display:block;overflow:hidden;width:30px;height:30px;border:none}
 .tree.treeFolder li>div>div:first-child{padding-left:10px}
 .tree a, .tree a:hover{text-decoration:none}

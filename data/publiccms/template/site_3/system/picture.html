@@ -19,7 +19,7 @@
 			<div id="content">
 				<div class="mod-gallery">
 					<div class="gallery-title">
-						<h2><a href="${content.url!}">${content.title}</a></h2>
+						<h2><a href="${url!}">${content.title}</a></h2>
 						<span class="gallery-counter">
 							<i class="gallery-counter-now" data-gallery="counter-now">?</i>/<i class="gallery-counter-total" data-gallery="counter-total">?</i>
 						</span>
@@ -72,7 +72,6 @@
 						<div class="gallery-footer">
 							<div class="clearfix">
 <@_contentList modelId=content.modelId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
-			${page.pageIndex},${page.list[0].title}
 	<#if 2=page.pageIndex>
 		<#list page.list as a>
 								<span class="gallery-prev">

@@ -1,8 +1,8 @@
 <@_commentList contentId=content.id  pageSize=10>
 	<div class="comment-box">
-		<p>发布评论：<span class="float-right"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}" class="nickname"></a></span></p>
+		<p>发布评论：<span class="float-right"><a href="${site.dynamicPath}login.html?returnUrl=${url?url}" class="nickname"></a></span></p>
 		<div class="comment-text-box user-login">
-			<div class="cover"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}">登录后发布评论</a></div>
+			<div class="cover"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
 		</div>
 		<div class="comment-text-box user-logout">
 			<form method="post" action="${site.dynamicPath}comment/save.do" onsubmit="return comment();">
