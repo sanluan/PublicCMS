@@ -10,6 +10,8 @@ dependencies {
         "javax.annotation:javax.annotation-api:${annotationVersionVersion}",
         "javax.servlet:javax.servlet-api:${servletVersion}",
         "org.apache.poi:poi-ooxml:${poiVersion}",
-        "com.drewnoakes:metadata-extractor:${extractorVersion}"
+        "com.drewnoakes:metadata-extractor:${extractorVersion}",
+        // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
+        "org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.1.4"
     )
 }

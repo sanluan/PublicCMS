@@ -269,11 +269,13 @@ INSERT INTO `sys_domain` VALUES ('search.site3.dev.publiccms.com', '3', '0', '/s
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('2', '2', '站长', '1', '0');
+INSERT INTO `sys_role` VALUES ('3', '3', '站长', '1', '0');
 
 -- ----------------------------
 -- Records of sys_role_user
 -- ----------------------------
 INSERT INTO `sys_role_user` VALUES ('2', '2');
+INSERT INTO `sys_role_user` VALUES ('3', '3');
 
 -- ----------------------------
 -- Records of sys_site
