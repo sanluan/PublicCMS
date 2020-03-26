@@ -21,7 +21,7 @@
 <#if content?has_content>
     <main>
         <article>
-            <h1><a href="${content.url!}">${content.title}</a></h1>
+            <h1><a href="${url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
             <div>${text?no_esc!}</div>
         <#if content.hasFiles>
@@ -54,7 +54,7 @@
         </#if>
             <div>
                 <#if !page.firstPage>
-                    <a href="${getPage(content.url,page.prePage)}">Previous page</a>
+                    <a href="${getPage(url,page.prePage)}">Previous page</a>
                 <#else>
                     <span>Previous page</span>
                 </#if>
@@ -62,11 +62,11 @@
                     <#if n=page.pageIndex>
                         ${n}
                     <#else>
-                        <a href="${getPage(content.url,n)}">${n}</a>
+                        <a href="${getPage(url,n)}">${n}</a>
                     </#if>
                 </#list>
                 <#if !page.lastPage>
-                    <a href="${getPage(content.url,page.nextPage)}">Next page</a>
+                    <a href="${getPage(url,page.nextPage)}">Next page</a>
                 <#else>
                     <span>Next page</span>
                 </#if>

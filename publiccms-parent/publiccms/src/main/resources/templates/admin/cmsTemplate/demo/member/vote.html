@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+        <h1>Vote</h1>
+<@_voteList startStartDate=startStartDate endStartDate=endStartDate 
+            startEndDate=startEndDate endEndDate=endEndDate title=title
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+        <ul>
+    <#list page.list as a>
+            <li>
+                <h3>${a.title}</h3>
+                <p>${a.scores!} votes,end on:${(a.endDate)!}</p>
+                <p>${a.description}</p>
+                <#if a.startDate lt .now && .now lt a.endDate><#assign available=true/><#else><#assign available=false/></#if>
+                <@_userVote userId=user.id voteId=a.id>
+                    <#assign available=false myvote=object/>
+                </@_userVote>
+                <@_voteItemList voteId=a.id pageSize=500>
+                    <ol>
+                    <#list page.list as v>
+                        <li>${v.title} (${v.scores!} votes) <#if available><a href="javascript:vote('${v.id}');">Vote</a></#if><#if (myvote.itemId)?has_content&&(myvote.itemId)=v.id>[My vote]<a href="javascript:unvote('${v.id}');">Cancel voting</a></#if></li>
+                    </#list>
+                    </ol>
+                </@_voteItemList>
+            </li>
+    </#list>
+        </ul>
+        
+</@_voteList>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+<script>
+function vote(itemId){
+    $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+        alert("ok!");
+        location.reload();
+    });
+}
+function unvote(itemId){
+    $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+        alert("ok!");
+        location.reload();
+    });
+}
+</script>
+</body>
+</html>

@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -135,23 +136,22 @@ public class PlaceController {
     /**
      * @param site
      * @param id
+     * @param user
      * @param returnUrl
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String delete(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
+            HttpServletRequest request, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
-        SysUser user = ControllerUtils.getUserFromSession(session);
         String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
         if (ControllerUtils.verifyCustom("manage",
@@ -170,23 +170,22 @@ public class PlaceController {
     /**
      * @param site
      * @param id
+     * @param user
      * @param returnUrl
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("check")
     @Csrf
-    public String check(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String check(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
+            HttpServletRequest request, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
-        SysUser user = ControllerUtils.getUserFromSession(session);
         String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
         if (ControllerUtils.verifyCustom("manage",
@@ -205,23 +204,22 @@ public class PlaceController {
     /**
      * @param site
      * @param id
+     * @param user
      * @param returnUrl
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping("uncheck")
     @Csrf
-    public String uncheck(@RequestAttribute SysSite site, Long id, String returnUrl, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String uncheck(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
+            HttpServletRequest request, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
-        SysUser user = ControllerUtils.getUserFromSession(session);
         String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
         CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
         if (ControllerUtils.verifyCustom("manage",
@@ -241,21 +239,11 @@ public class PlaceController {
      * @param site
      * @param id
      * @param request
-     */
-    @RequestMapping("counter")
-    public void count(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        statisticsComponent.placeClicks(id);
-    }
-
-    /**
-     * @param site
-     * @param id
-     * @param request
      * @return view name
      */
     @RequestMapping("click")
     public String click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
+        ClickStatistics clickStatistics = statisticsComponent.placeClicks(site.getId(), id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + clickStatistics.getUrl();
@@ -272,7 +260,7 @@ public class PlaceController {
      */
     @RequestMapping("redirect")
     public void redirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request, HttpServletResponse response) {
-        ClickStatistics clickStatistics = statisticsComponent.placeClicks(id);
+        ClickStatistics clickStatistics = statisticsComponent.placeClicks(site.getId(), id);
         if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
                 && site.getId().equals(clickStatistics.getSiteId())) {
             ControllerUtils.redirectPermanently(response, clickStatistics.getUrl());

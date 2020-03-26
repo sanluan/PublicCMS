@@ -48,7 +48,7 @@ public class CmsContentRelatedDao extends BaseDao<CmsContentRelated> {
         }
         switch (orderField) {
         case "clicks":
-            queryHandler.order("bean.clicks " + orderType);
+            queryHandler.order("bean.clicks ").append(orderType);
             break;
         default:
             queryHandler.order("bean.sort asc,bean.id asc");

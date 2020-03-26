@@ -79,13 +79,13 @@ public class CmsPlaceDao extends BaseDao<CmsPlace> {
         }
         switch (orderField) {
         case "createDate":
-            queryHandler.order("bean.createDate " + orderType);
+            queryHandler.order("bean.createDate ").append(orderType);
             break;
         case "clicks":
-            queryHandler.order("bean.clicks " + orderType);
+            queryHandler.order("bean.clicks ").append(orderType);
             break;
         default:
-            queryHandler.order("bean.publishDate " + orderType);
+            queryHandler.order("bean.publishDate ").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

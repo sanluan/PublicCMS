@@ -10,7 +10,7 @@
                     <span>-</span>
                     <input type="text" name="end${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${end"+a.name?cap_first+"!}"}" />
                 </li>
-                <#else>
+                <#elseif "siteId"!=a.name>
                 <li>
                     <label>${a.title}：</label>
                     <input type="text" name="${a.name}" value="${r"${"+a.name+"!}"}" />
@@ -44,6 +44,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <#list columnList as a>
                 <th<#if a.order> orderField="${a.name}" class="<#noparse><#if orderField??&&</#noparse>'${a.name}'<#noparse>==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if></#noparse>"</#if>>${a.title}</th>
                 </#list>
@@ -53,6 +54,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
         <tbody>
             <#noparse><#list page.list as a>
             <tr target="sid" rel="${a.id}">
+                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
             </#noparse>
                 <#list columnList as a>
                 <td>${r"${a."+a.name+"!}"}</td>

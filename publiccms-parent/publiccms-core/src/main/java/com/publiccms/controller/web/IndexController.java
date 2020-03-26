@@ -42,6 +42,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.views.pojo.entities.CmsContentStatistics;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.ParameterType;
@@ -259,7 +260,7 @@ public class IndexController {
                     }
                 }
                 model.addAttribute(parameterName, set.toArray(new Long[set.size()]));
-            } else if (CommonUtils.notEmpty(values)) {
+            } else if (CommonUtils.notEmpty(values) && CommonUtils.notEmpty(values[0])) {
                 try {
                     model.addAttribute(parameterName, Long.valueOf(values[0]));
                 } catch (NumberFormatException e) {
@@ -283,9 +284,10 @@ public class IndexController {
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
                 entityList.forEach(e -> {
-                    Integer clicks = statisticsComponent.getContentClicks(e.getId());
-                    if (null != clicks) {
-                        e.setClicks(e.getClicks() + clicks);
+                    CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                    if (null != statistics) {
+                        e.setClicks(e.getClicks() + statistics.getClicks());
+                        e.setScores(e.getScores() + statistics.getScores());
                     }
                     templateComponent.initContentUrl(site, e);
                     templateComponent.initContentCover(site, e);
@@ -298,9 +300,10 @@ public class IndexController {
                             && parameterType.isRequired()) {
                         return false;
                     }
-                    Integer clicks = statisticsComponent.getContentClicks(entity.getId());
-                    if (null != clicks) {
-                        entity.setClicks(entity.getClicks() + clicks);
+                    CmsContentStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
+                    if (null != statistics) {
+                        entity.setClicks(entity.getClicks() + statistics.getClicks());
+                        entity.setScores(entity.getScores() + statistics.getScores());
                     }
                     templateComponent.initContentUrl(site, entity);
                     model.addAttribute(parameterName, entity);

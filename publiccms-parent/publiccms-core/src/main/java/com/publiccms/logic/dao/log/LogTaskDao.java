@@ -51,7 +51,7 @@ public class LogTaskDao extends BaseDao<LogTask> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.begintime " + orderType);
+        queryHandler.order("bean.begintime ").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

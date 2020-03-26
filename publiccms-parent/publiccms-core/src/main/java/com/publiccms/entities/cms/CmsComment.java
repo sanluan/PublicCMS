@@ -135,7 +135,7 @@ public class CmsComment implements java.io.Serializable {
         this.replyUserId = replyUserId;
     }
     
-    @Column(name = "replies")
+    @Column(name = "replies", nullable=false)
     public int getReplies() {
         return this.replies;
     }

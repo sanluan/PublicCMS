@@ -31,12 +31,14 @@
     <@_commentList advanced=true userId=user.id contentId=content.id status=2>
         <#if page.totalCount gt 0>
             <h3>My Comments</h3>
+            <ul>
             <#list page.list as a>
-                <section class="underline">
+                <li class="underline">
                     <p>${user.nickName} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
                     <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id}&id=${a.id}">Edit</a></span></p>
-                </section>
+                </li>
             </#list>
+            </ul>
         </#if>
     </@_commentList>
 </#if>
@@ -63,8 +65,9 @@
     </#list>
     <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
     <h3>Comments</h3>
+    <ul>
     <#list page.list as a>
-        <section class="underline">
+        <li class="underline">
             <p>${userMap[a.userId?string].nickName}<span class="right">${a.createDate}</span></p>
             <#if a.replyId?has_content>
                 <@_comment id=a.replyId>
@@ -72,8 +75,44 @@
                 </@_comment>
             </#if>
             <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id!}&replyId=${a.id}">Reply</a></span></p>
-        </section>
+        </li>
     </#list>
+    </ul>
+    <div>
+        <#assign
+            start=1
+            end=page.totalPage
+        />
+        <#if (page.pageIndex-5) gt start>
+            <#assign start=page.pageIndex-4/>
+        </#if>
+        <#if (page.pageIndex+5) lt end>
+            <#assign end=page.pageIndex+4/>
+        </#if>
+        <#if !page.firstPage>
+            <a href="${getPage('comment.html?id=${content.id}',page.prePage,'pageIndex')}">Previous page</a>
+        <#else>
+            <span>Previous page</span>
+        </#if>
+        <#if start gt 1>
+            <a href="${'comment.html?id=${content.id}'}">1</a> ...
+        </#if>
+        <#list start..end as n>
+            <#if n=page.pageIndex>
+                ${n}
+            <#else>
+                <a href="${getPage('comment.html?id=${content.id}',n,'pageIndex')}">${n}</a>
+            </#if>
+        </#list>
+        <#if end lt page.totalPage>
+            ... <a href="${getPage('comment.html?id=${content.id}',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+        </#if>
+        <#if !page.lastPage>
+            <a href="${getPage('comment.html?id=${content.id}',page.nextPage,'pageIndex')}">Next page</a>
+        <#else>
+            <span>Next page</span>
+        </#if>
+    </div>
 </@_commentList>
     </main>
     <footer>

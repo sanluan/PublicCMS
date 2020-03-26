@@ -23,15 +23,17 @@
     <main>
         <h1>Latest content</h1>
 <@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
+        <ul>
     <#list page.list as a>
-        <section>
+            <li>
             <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
             <p>
                 <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
                 ${a.description!}
             </p>
-        </section>
+            </li>
     </#list>
+        </ul>
         <div>
             <#assign
                 start=1

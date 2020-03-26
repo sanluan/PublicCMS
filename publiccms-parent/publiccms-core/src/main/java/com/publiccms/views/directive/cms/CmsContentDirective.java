@@ -22,6 +22,7 @@ import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.views.pojo.entities.CmsContentStatistics;
 
 /**
  *
@@ -38,9 +39,10 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
-                Integer clicks = statisticsComponent.getContentClicks(entity.getId());
-                if (null != clicks) {
-                    entity.setClicks(entity.getClicks() + clicks);
+                CmsContentStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
+                if (null != statistics) {
+                    entity.setClicks(entity.getClicks() + statistics.getClicks());
+                    entity.setScores(entity.getScores() + statistics.getScores());
                 }
                 if (handler.getBoolean("absoluteURL", false)) {
                     templateComponent.initContentUrl(site, entity);
@@ -66,9 +68,10 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 List<CmsContent> entityList = service.getEntitys(ids);
                 boolean absoluteURL = handler.getBoolean("absoluteURL", true);
                 entityList.forEach(e -> {
-                    Integer clicks = statisticsComponent.getContentClicks(e.getId());
-                    if (null != clicks) {
-                        e.setClicks(e.getClicks() + clicks);
+                    CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                    if (null != statistics) {
+                        e.setClicks(e.getClicks() + statistics.getClicks());
+                        e.setScores(e.getScores() + statistics.getScores());
                     }
                     if (absoluteURL) {
                         templateComponent.initContentUrl(site, e);

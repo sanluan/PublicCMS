@@ -49,13 +49,13 @@ public class SysClusterDao extends BaseDao<SysCluster> {
         }
         switch (orderField) {
         case "createDate":
-            queryHandler.order("bean.createDate " + orderType);
+            queryHandler.order("bean.createDate ").append(orderType);
             break;
         case "heartbeatDate":
-            queryHandler.order("bean.heartbeatDate " + orderType);
+            queryHandler.order("bean.heartbeatDate ").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id " + orderType);
+            queryHandler.order("bean.id ").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

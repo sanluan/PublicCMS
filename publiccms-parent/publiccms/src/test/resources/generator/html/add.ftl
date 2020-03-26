@@ -13,14 +13,14 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_
         <#list columnList as a>
             <#if "Date"=a.type>
             <dl>
-                <dt>${a.title}：</dt>
+                <dt>${a.title}:</dt>
                 <dd>
                     <input type="text" name="${a.name}" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${r"${(a."+a.name+")!}"}"/>
                 </dd>
             </dl>
-            <#else>
+            <#elseif 'id' != a.name && 'siteId' != a.name && 'createDate' != a.name&& 'disabled' != a.name>
             <dl>
-                <dt>${a.title}：</dt>
+                <dt>${a.title}:</dt>
                 <dd><input class="required" name="${a.name}" type="text" size="30" value="${r"${(a."+a.name+")!}"}"/></dd>
             </dl>
             </#if>

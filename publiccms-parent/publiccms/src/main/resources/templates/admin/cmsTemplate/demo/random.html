@@ -8,15 +8,17 @@
     <main>
 <@_contentList pageSize=10>
     <@_contentList pageIndex=getRandom(page.totalPage) pageSize=10>
+        <ul>
         <#list page.list as a>
-            <section>
+            <li>
                 <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
                 <p>
                     <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
                     ${a.description!}
                 </p>
-            </section>
+            </li>
         </#list>
+        </ul>
     </@_contentList>
 </@_contentList>
     </main>

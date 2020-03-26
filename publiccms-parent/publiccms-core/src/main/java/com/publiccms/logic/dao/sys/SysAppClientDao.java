@@ -71,13 +71,13 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
         }
         switch (orderField) {
         case "lastLoginDate":
-            queryHandler.order("bean.lastLoginDate " + orderType);
+            queryHandler.order("bean.lastLoginDate ").append(orderType);
             break;
         case "createDate":
-            queryHandler.order("bean.createDate " + orderType);
+            queryHandler.order("bean.createDate ").append(orderType);
             break;
         default:
-            queryHandler.order("bean.createDate " + orderType);
+            queryHandler.order("bean.createDate ").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

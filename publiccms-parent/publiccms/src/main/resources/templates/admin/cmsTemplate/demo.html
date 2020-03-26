@@ -10,6 +10,7 @@
                 <li><a href="cmsTemplate/metadata.html?demo=search.html&name=search_page&acceptParameters=word,pageIndex;number,tagId" target="ajax" rel="cmsTemplateBox"><@t.page 'search_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=member/login.html&name=login_page&acceptParameters=error,message,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'login_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=member/register.html&name=register_page&acceptParameters=error,message,name,nickname,openId,channel,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'register_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/vote.html&name=vote_page&acceptParameters=pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'vote_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=sitemap.xml&path=sitemap.xml&name=sitemap" target="ajax" rel="cmsTemplateBox"><@t.page 'sitemap'/></a></li>
             </ul>
         </li>
@@ -32,7 +33,7 @@
                 <li><a href="cmsTemplate/metadata.html?demo=category/category_code.html&name=category_page_code&acceptParameters=code,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_code'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=category/category_hash.html&name=category_page_hash&acceptParameters=id,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_hash'/></a></li>
                 <#if site.useStatic>
-                    <li><a href="cmsTemplate/metadata.html?demo=category/category_rest.html&name=static_category_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_category_page'/></a></li>
+                    <li><a href="cmsTemplate/metadata.html?demo=category/staticCategory.html&name=static_category_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_category_page'/></a></li>
                 </#if>
             </ul>
         </li>

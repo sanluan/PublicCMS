@@ -62,6 +62,16 @@
             </div>
         </#if>
             <div>
+                ${content.scores!} star
+                <#if user?has_content>
+                    <@_userScore userId=user.id itemType='content' itemId=content.id>
+                        <a href="javascript:unstar(${content.id});">Cancel rating</a>
+                        <#assign stared=true/>
+                    </@_userScore>
+                    <#if !stared?has_content><a href="javascript:star(${content.id});">Star</a></#if>
+                </#if>
+            </div>
+            <div>
                 <#if !page.firstPage>
                     <a href="${getPage(content.url,page.prePage)}">Previous page</a>
                 <#else>
@@ -127,6 +137,20 @@
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
             $('article p em').text(data.clicks);
         });
+    </script>
+    <script>
+function star(contentId){
+    $.getJSON('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+        alert("ok!");
+        location.reload();
+    });
+}
+function unstar(contentId){
+    $.getJSON('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+        alert("ok!");
+        location.reload();
+    });
+}
     </script>
 </body>
 </html>

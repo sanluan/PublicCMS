@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Entity;
+
 import org.apache.commons.lang3.StringUtils;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -43,9 +45,10 @@ public class SourceGenerator {
         // 生成所有实体类的代码
         // sourceGenerator.generate(basePackage, overwrite);
         // 生成某个包所有实体类的代码
-         sourceGenerator.generate(basePackage, "trade", overwrite);
+//        sourceGenerator.generate(basePackage, "cms", overwrite);
         // 生成某个实体类的代码
-//        sourceGenerator.generate(Class.forName("com.publiccms.entities.trade.TradeRefund"), basePackage, overwrite);
+         sourceGenerator.generate(Class.forName("com.publiccms.entities.cms.CmsVote"),
+         basePackage, overwrite);
     }
 
     /**
@@ -121,12 +124,14 @@ public class SourceGenerator {
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    public void generate(String basePackage, String entityPackage, boolean overwrite)
-            throws ClassNotFoundException, IOException {
+    public void generate(String basePackage, String entityPackage, boolean overwrite) throws ClassNotFoundException, IOException {
         String entitiesFullPackage = basePackage + CommonConstants.DOT + ENTITY_BASE_PACKAGE + CommonConstants.DOT
                 + entityPackage;
         for (Class<?> c : ScanClassUtils.getClasses(new String[] { entitiesFullPackage })) {
-            generate(c, basePackage, overwrite);
+            Entity e = c.getAnnotation(Entity.class);
+            if (null != e) {
+                generate(c, basePackage, overwrite);
+            }
         }
     }
 
@@ -198,8 +203,7 @@ public class SourceGenerator {
                 }
 
                 GeneratorColumn column = field.getAnnotation(GeneratorColumn.class);
-                String shortTypeName = typeName.substring(typeName.lastIndexOf(CommonConstants.DOT) + 1,
-                        typeName.length());
+                String shortTypeName = typeName.substring(typeName.lastIndexOf(CommonConstants.DOT) + 1, typeName.length());
                 if (null != column) {
                     columnList.add(new EntityColumn(field.getName(), shortTypeName, column.order(), column.title()));
                     if (column.condition()) {
@@ -209,8 +213,7 @@ public class SourceGenerator {
                         String key = StringUtils.isNotBlank(column.name()) ? column.name() : field.getName();
                         EntityCondition condition = conditionMap.get(key);
                         if (null == condition) {
-                            condition = new EntityCondition(key, shortTypeName, column.title(), column.or(),
-                                    column.like());
+                            condition = new EntityCondition(key, shortTypeName, column.title(), column.or(), column.like());
                         }
                         condition.getNameList().add(field.getName());
                         conditionMap.put(key, condition);
@@ -238,24 +241,22 @@ public class SourceGenerator {
                 + CommonConstants.SEPARATOR;
 
         try {
-            FreeMarkerUtils.generateFileByFile("java/dao.ftl", daoPath + name + DAO_SUFFIX + ".java", config, model,
+            FreeMarkerUtils.generateFileByFile("java/dao.ftl", daoPath + name + DAO_SUFFIX + ".java", config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/service.ftl", servicePath + name + SERVICE_SUFFIX + ".java", config, model,
                     overwrite);
-            FreeMarkerUtils.generateFileByFile("java/service.ftl", servicePath + name + SERVICE_SUFFIX + ".java",
-                    config, model, overwrite);
-            FreeMarkerUtils.generateFileByFile("java/directive.ftl", directivePath + name + DIRECTIVE_SUFFIX + ".java",
-                    config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/directive.ftl", directivePath + name + DIRECTIVE_SUFFIX + ".java", config,
+                    model, overwrite);
             FreeMarkerUtils.generateFileByFile("java/directiveList.ftl",
                     directivePath + name + "List" + DIRECTIVE_SUFFIX + ".java", config, model, overwrite);
-            FreeMarkerUtils.generateFileByFile("java/controller.ftl",
-                    controllerPath + name + CONTROLLER_SUFFIX + ".java", config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("java/controller.ftl", controllerPath + name + CONTROLLER_SUFFIX + ".java", config,
+                    model, overwrite);
             FreeMarkerUtils.generateFileByFile("html/list.ftl",
                     TEMPLATE_BASE_PATH + StringUtils.uncapitalize(name) + "/list.html", config, model, overwrite);
-            FreeMarkerUtils.generateFileByFile("html/add.ftl",
-                    TEMPLATE_BASE_PATH + StringUtils.uncapitalize(name) + "/add.html", config, model, overwrite);
-            FreeMarkerUtils.generateFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite,
-                    true);
-            FreeMarkerUtils.generateFileByFile("html/language.ftl", WEB_BASE_PATH + "language/operate.txt", config,
-                    model, overwrite, true);
+            FreeMarkerUtils.generateFileByFile("html/add.ftl", TEMPLATE_BASE_PATH + StringUtils.uncapitalize(name) + "/add.html",
+                    config, model, overwrite);
+            FreeMarkerUtils.generateFileByFile("html/doc.ftl", WEB_BASE_PATH + "doc.txt", config, model, overwrite, true);
+            FreeMarkerUtils.generateFileByFile("html/language.ftl", WEB_BASE_PATH + "language/operate.txt", config, model,
+                    overwrite, true);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         } catch (TemplateException e) {

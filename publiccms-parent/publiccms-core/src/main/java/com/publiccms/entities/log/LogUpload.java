@@ -150,6 +150,24 @@ public class LogUpload implements java.io.Serializable {
         this.fileSize = fileSize;
     }
 
+    @Column(name = "width")
+    public Integer getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    @Column(name = "height")
+    public Integer getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
     @Column(name = "ip", length = 130)
     public String getIp() {
         return this.ip;

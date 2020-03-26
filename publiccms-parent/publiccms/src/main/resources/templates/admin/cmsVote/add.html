@@ -1,0 +1,69 @@
+<@_vote id=id><#assign a=object/></@_vote>
+<form method="post" autocomplete="off" action="cmsVote/save.do?callbackType=closeCurrent&navTabId=cmsVote/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input name="id" type="hidden" value="${id!}" />
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageContent">
+        <div class="pageFormContent" layoutH="56">
+            <dl class="nowrap">
+                <dt><@t.page 'title'/>:</dt>
+                <dd><input class="required" name="title" type="text" size="30" maxlength="50" value="${(a.title)!}"/></dd>
+            </dl>
+            <dl class="nowrap">
+                <dt><@t.page 'description'/>:</dt>
+                <dd>
+                    <textarea name="description" maxlength="300" cols="80" rows="2">${(a.description)!}</textarea>
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'start_date'/>:</dt>
+                <dd>
+                    <input type="text" name="startDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.startDate)!}"/>
+                </dd>
+            </dl>
+            <dl>
+                <dt><@t.page 'end_date'/>:</dt>
+                <dd>
+                    <input type="text" name="endDate" class="required date" size="20" dateFmt="yyyy-MM-dd HH:mm:ss" minDate="{%y}-%M-{%d}" value="${(a.endDate)!}"/>
+                </dd>
+            </dl>
+            <fieldset>
+                <legend><@t.page 'vote_item'/></legend>
+                <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
+                    <thead>
+                        <tr>
+                            <th type="text" name="itemList[#index#].title" size="50" fieldClass="required" fieldAttrs="{maxlength:100}"><@t.page 'title'/></th>
+                            <th type="text" name="itemList[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
+                            <th type="del" width="60"><@t.page 'operate'/></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        <#if a?has_content>
+            <@_voteItemList voteId=a.id pageSize=500>
+                <#list page.list as v>
+                        <tr>
+                            <td>
+                                <input type="hidden" name="itemList[${v?index}].id" value="${v.id}"/>
+                                <input class="required" type="text" name="itemList[${v?index}].title" value="${v.title}" size="50" maxlength="100" class="required" />
+                            </td>
+                            <td>
+                                <input class="required digits" type="text" name="itemList[${v?index}].sort" value="${v.sort!}" size="5" maxlength="5"/>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0)" class="btnDel"><@t.page 'button.delete'/></a>
+                            </td>
+                        </tr>
+                </#list>
+            </@_voteItemList>
+        </#if>
+                    </tbody>
+                </table>
+            </fieldset>
+        </div>
+    </div>
+</form>

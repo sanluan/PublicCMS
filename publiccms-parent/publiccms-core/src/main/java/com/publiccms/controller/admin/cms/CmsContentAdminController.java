@@ -98,7 +98,7 @@ public class CmsContentAdminController {
     protected SiteComponent siteComponent;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "sort",
-            "createDate", "updateDate", "clicks", "comments", "scores", "childs", "checkUserId" };
+            "createDate", "updateDate", "clicks", "comments", "scores", "childs", "checkUserId", "disabled" };
 
     public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
 

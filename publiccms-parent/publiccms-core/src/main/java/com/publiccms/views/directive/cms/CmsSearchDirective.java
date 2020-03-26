@@ -18,6 +18,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.views.pojo.entities.CmsContentStatistics;
 
 /**
  *
@@ -55,9 +56,10 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {
                 list.forEach(e -> {
-                    Integer clicks = statisticsComponent.getContentClicks(e.getId());
-                    if (null != clicks) {
-                        e.setClicks(e.getClicks() + clicks);
+                    CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                    if (null != statistics) {
+                        e.setClicks(e.getClicks() + statistics.getClicks());
+                        e.setScores(e.getScores() + statistics.getScores());
                     }
                     templateComponent.initContentUrl(site, e);
                     templateComponent.initContentCover(site, e);

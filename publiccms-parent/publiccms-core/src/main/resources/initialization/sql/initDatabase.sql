@@ -167,6 +167,8 @@ CREATE TABLE `cms_content_file` (
   `file_path` varchar(255) NOT NULL COMMENT '文件路径',
   `file_type` varchar(20) NOT NULL COMMENT '文件类型',
   `file_size` bigint(20) NOT NULL COMMENT '文件大小',
+  `width` int(11) NULL COMMENT '宽度',
+  `height` int(11) NULL COMMENT '高度',
   `clicks` int(11) NOT NULL COMMENT '点击数',
   `sort` int(11) NOT NULL COMMENT '排序',
   `description` varchar(300) default NULL COMMENT '描述',
@@ -191,10 +193,9 @@ CREATE TABLE `cms_content_related` (
   `url` varchar(1000) default NULL COMMENT '推荐链接地址',
   `title` varchar(255) default NULL COMMENT '推荐标题',
   `description` varchar(300) default NULL COMMENT '推荐简介',
-  `clicks` int(11) NOT NULL COMMENT '点击数',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
-  KEY `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`),
+  KEY `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`sort`),
   KEY `cms_content_related_related_content_id` (`related_content_id`)
 ) COMMENT='推荐推荐';
 
@@ -288,6 +289,67 @@ CREATE TABLE `cms_tag_type` (
   PRIMARY KEY  (`id`),
   KEY `cms_tag_type_site_id` (`site_id`)
 ) COMMENT='标签类型';
+
+
+-- ----------------------------
+-- Table structure for cms_user_score
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_user_score`;
+CREATE TABLE `cms_user_score`  (
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `item_type` varchar(50) NOT NULL COMMENT '类型',
+  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
+  `create_date` datetime NOT NULL,
+  PRIMARY KEY (`user_id`, `item_type`, `item_id`),
+  INDEX `cms_user_score_item_type`(`item_type`, `item_id`, `create_date`),
+  INDEX `cms_user_score_user_id`(`user_id`, `create_date`)
+) COMMENT = '用户评分表';
+
+-- ----------------------------
+-- Table structure for cms_user_vote
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_user_vote`;
+CREATE TABLE `cms_user_vote`  (
+`vote_id` bigint(20) NOT NULL COMMENT '投票ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `item_id` bigint(20) NOT NULL COMMENT '投票选项',
+  `ip` varchar(130) NOT NULL COMMENT 'IP',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  PRIMARY KEY (`user_id`, `vote_id`),
+  INDEX `cms_user_vote_vote_id`(`vote_id`, `ip`, `create_date`)
+) COMMENT='投票用户';
+
+-- ----------------------------
+-- Table structure for cms_vote
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_vote`;
+CREATE TABLE `cms_vote`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `start_date` datetime NOT NULL COMMENT '开始日期',
+  `end_date` datetime NULL COMMENT '结束日期',
+  `scores` int(11) NOT NULL COMMENT '总票数',
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `description` varchar(300) NULL DEFAULT NULL COMMENT '描述',
+  `create_date` datetime NOT NULL,
+  `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
+  PRIMARY KEY (`id`),
+  INDEX `cms_vote_site_id`(`site_id`, `start_date`, `disabled`)
+)  COMMENT='投票';
+
+-- ----------------------------
+-- Table structure for cms_vote_item
+-- ----------------------------
+DROP TABLE IF EXISTS `cms_vote_item`;
+CREATE TABLE `cms_vote_item`  (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `vote_id` bigint(20) NOT NULL COMMENT '投票',
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `scores` int(11) NOT NULL COMMENT '票数',
+  `sort` int(11) NOT NULL COMMENT '顺序',
+  PRIMARY KEY (`id`),
+  INDEX `cms_vote_item_vote_id`(`vote_id`, `scores`, `sort`)
+)  COMMENT='投票选型';
 
 -- ----------------------------
 -- Table structure for cms_word
@@ -384,6 +446,8 @@ CREATE TABLE `log_upload` (
   `original_name` varchar(255) DEFAULT NULL COMMENT '原文件名',
   `file_type` varchar(20) NOT NULL COMMENT '文件类型',
   `file_size` bigint(20) NOT NULL COMMENT '文件大小',
+  `width` int(11) NULL COMMENT '宽度',
+  `height` int(11) NULL COMMENT '高度',
   `ip` varchar(64) default NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `file_path` varchar(500) NOT NULL COMMENT '文件路径',
@@ -663,6 +727,10 @@ INSERT INTO `sys_module` VALUES ('content_push', 'cmsContent/push', 'cmsContent/
 INSERT INTO `sys_module` VALUES ('content_recycle_delete', NULL, 'cmsContent/realDelete', NULL, 'content_recycle_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', 'sysUser/lookup', 'icon-trash', 'content_extend', 1, 3);
 INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/recycle', NULL, 'content_recycle_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-ticket', 'content_extend', 1, 4);
+INSERT INTO `sys_module` VALUES ('content_vote_add', 'cmsVote/add', 'cmsVote/save', NULL, 'content_vote', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_vote_delete', NULL, 'cmsVote/delete', NULL, 'content_vote', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_vote_view', 'cmsVote/view', NULL, NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', '', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_select_category', 'cmsCategory/lookupByModelId', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_category_type', 'cmsCategoryType/lookup', NULL, NULL, 'content_add', 0, 0);
@@ -845,11 +913,11 @@ INSERT INTO `sys_module_lang` VALUES ('category_publish', 'en', 'Publish');
 INSERT INTO `sys_module_lang` VALUES ('category_push', 'zh', '推荐');
 INSERT INTO `sys_module_lang` VALUES ('category_push', 'en', 'Push');
 INSERT INTO `sys_module_lang` VALUES ('category_type_add', 'zh', '增加/修改');
-INSERT INTO `sys_module_lang` VALUES ('category_type_add', 'en', 'test');
+INSERT INTO `sys_module_lang` VALUES ('category_type_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('category_type_change', 'zh', '修改类型');
 INSERT INTO `sys_module_lang` VALUES ('category_type_change', 'en', 'Change category type');
 INSERT INTO `sys_module_lang` VALUES ('category_type_delete', 'zh', '删除');
-INSERT INTO `sys_module_lang` VALUES ('category_type_delete', 'en', 'test');
+INSERT INTO `sys_module_lang` VALUES ('category_type_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'zh', '分类类型');
 INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'en', 'Category type');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'zh', '刷新缓存');
@@ -909,11 +977,20 @@ INSERT INTO `sys_module_lang` VALUES ('content_publish', 'en', 'Publish');
 INSERT INTO `sys_module_lang` VALUES ('content_push', 'zh', '推荐');
 INSERT INTO `sys_module_lang` VALUES ('content_push', 'en', 'Push');
 INSERT INTO `sys_module_lang` VALUES ('content_recycle_delete', 'zh', '删除');
-INSERT INTO `sys_module_lang` VALUES ('content_recycle_delete', 'en', 'test');
+INSERT INTO `sys_module_lang` VALUES ('content_recycle_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('content_recycle_list', 'zh', '内容回收站');
 INSERT INTO `sys_module_lang` VALUES ('content_recycle_list', 'en', 'Content recycle');
 INSERT INTO `sys_module_lang` VALUES ('content_recycle_recycle', 'zh', '还原');
-INSERT INTO `sys_module_lang` VALUES ('content_recycle_recycle', 'en', 'test');
+INSERT INTO `sys_module_lang` VALUES ('content_recycle_recycle', 'en', 'Delete');
+INSERT INTO `sys_module_lang` VALUES ('content_vote', 'zh', '投票管理');
+INSERT INTO `sys_module_lang` VALUES ('content_vote', 'en', 'Voting Management');
+INSERT INTO `sys_module_lang` VALUES ('content_vote', 'ja', '投票管理');
+INSERT INTO `sys_module_lang` VALUES ('content_vote_add', 'zh', '增加/修改');
+INSERT INTO `sys_module_lang` VALUES ('content_vote_add', 'en', 'Add/edit');
+INSERT INTO `sys_module_lang` VALUES ('content_vote_add', 'ja', '追加/変更');
+INSERT INTO `sys_module_lang` VALUES ('content_vote_delete', 'zh', '删除');
+INSERT INTO `sys_module_lang` VALUES ('content_vote_delete', 'en', 'Delete');
+INSERT INTO `sys_module_lang` VALUES ('content_vote_delete', 'ja', '削除');
 INSERT INTO `sys_module_lang` VALUES ('content_refresh', 'zh', '刷新');
 INSERT INTO `sys_module_lang` VALUES ('content_refresh', 'en', 'Refresh');
 INSERT INTO `sys_module_lang` VALUES ('content_select_category', 'zh', '选择分类');
@@ -1085,11 +1162,11 @@ INSERT INTO `sys_module_lang` VALUES ('tag_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('tag_list', 'zh', '标签管理');
 INSERT INTO `sys_module_lang` VALUES ('tag_list', 'en', 'Tag management');
 INSERT INTO `sys_module_lang` VALUES ('tag_type_delete', 'zh', '删除');
-INSERT INTO `sys_module_lang` VALUES ('tag_type_delete', 'en', 'test');
+INSERT INTO `sys_module_lang` VALUES ('tag_type_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('tag_type_list', 'zh', '标签分类');
 INSERT INTO `sys_module_lang` VALUES ('tag_type_list', 'en', 'Tag type');
 INSERT INTO `sys_module_lang` VALUES ('tag_type_save', 'zh', '增加/修改');
-INSERT INTO `sys_module_lang` VALUES ('tag_type_save', 'en', 'test');
+INSERT INTO `sys_module_lang` VALUES ('tag_type_save', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('task_add', 'zh', '增加/修改');
 INSERT INTO `sys_module_lang` VALUES ('task_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('task_delete', 'zh', '删除');
@@ -1555,7 +1632,7 @@ CREATE TABLE `trade_account_history` (
   `amount_change` decimal(10,2) NOT NULL COMMENT '变动金额',
   `amount` decimal(10,2) NOT NULL COMMENT '变动金额',
   `balance` decimal(10,2) NOT NULL COMMENT '变动金额',
-  `status` int(10) NOT NULL COMMENT '类型:0预充值,1消费,2充值,3退款',
+  `status` int(11) NOT NULL COMMENT '类型:0预充值,1消费,2充值,3退款',
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
@@ -1577,7 +1654,7 @@ CREATE TABLE `trade_order`  (
   `account_type` varchar(20) NOT NULL COMMENT '支付账户类型',
   `account_serial_number` varchar(100) NULL DEFAULT NULL COMMENT '支付账号流水',
   `ip` varchar(64) NOT NULL COMMENT 'IP地址',
-  `status` int(10) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3退款成功',
+  `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3退款成功',
   `processed` tinyint(1) NOT NULL COMMENT '已处理',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -1618,7 +1695,7 @@ CREATE TABLE `trade_refund`  (
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新日期',
   `refund_user_id` bigint(20) NULL DEFAULT NULL COMMENT '退款操作人员',
   `refund_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '退款金额',
-  `status` int(10) NOT NULL COMMENT '状态:0待退款,1已退款,2取消退款,3拒绝退款,4退款失败',
+  `status` int(11) NOT NULL COMMENT '状态:0待退款,1已退款,2取消退款,3拒绝退款,4退款失败',
   `reply` varchar(255) NULL DEFAULT NULL COMMENT '回复',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `processing_date` datetime NULL DEFAULT NULL COMMENT '处理日期',

@@ -279,28 +279,28 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         switch (orderField) {
         case "scores":
-            queryHandler.order("bean.scores " + orderType);
+            queryHandler.order("bean.scores ").append(orderType);
             break;
         case "comments":
-            queryHandler.order("bean.comments " + orderType);
+            queryHandler.order("bean.comments ").append(orderType);
             break;
         case "clicks":
-            queryHandler.order("bean.clicks " + orderType);
+            queryHandler.order("bean.clicks ").append(orderType);
             break;
         case "publishDate":
-            queryHandler.order("bean.publishDate " + orderType);
+            queryHandler.order("bean.publishDate ").append(orderType);
             break;
         case "updateDate":
-            queryHandler.order("bean.updateDate " + orderType);
+            queryHandler.order("bean.updateDate ").append(orderType);
             break;
         case "checkDate":
-            queryHandler.order("bean.checkDate " + orderType);
+            queryHandler.order("bean.checkDate ").append(orderType);
             break;
         default:
             if (ORDERTYPE_DESC.equals(orderType)) {
                 queryHandler.order("bean.sort desc");
             }
-            queryHandler.order("bean.publishDate " + orderType);
+            queryHandler.order("bean.publishDate ").append(orderType);
         }
         queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
@@ -308,11 +308,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 
     @Override
     protected CmsContent init(CmsContent entity) {
+        Date now = CommonUtils.getDate();
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(now);
         }
         if (null == entity.getPublishDate()) {
-            entity.setPublishDate(CommonUtils.getDate());
+            entity.setPublishDate(now);
         }
         if (CommonUtils.empty(entity.getTagIds())) {
             entity.setTagIds(null);

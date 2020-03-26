@@ -1,0 +1,85 @@
+<div class="pageFormContent" layoutH="50">
+<@_vote id=id>
+    <dl class="nowrap">
+        <dt><@t.page 'title'/>:</dt>
+        <dd class="exclude-translate">
+            ${(object.title)!}
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt><@t.page 'description'/>:</dt>
+        <dd class="exclude-translate">
+            ${(object.description)!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'start_date'/>:</dt>
+        <dd>
+            ${(object.startDate)!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'end_date'/>:</dt>
+        <dd>
+            ${(object.endDate)!}
+        </dd>
+    </dl>
+<#if !pageIndex?has_content || '1' != pageIndex>
+    <@_voteItemList voteId=object.id pageSize=500>
+        <#if page.totalCount gt 0>
+    <fieldset>
+        <legend><@t.page 'vote_item'/></legend>
+        <#list page.list as v>
+        <dl class="nowrap">
+            <dt>
+                ${v.title}
+            </dt>
+            <dd>
+                ${v.scores!}
+            </dd>
+        </dl>
+        </#list>
+    </fieldset>
+        </#if>
+    </@_voteItemList>
+</#if>
+<@_userVoteList voteId=object.id pageIndex=pageIndex>
+    <#if page.totalCount gt 0>
+    <fieldset>
+        <legend><@t.page 'vote'/></legend>
+        <#list page.list as u>
+            <@t.merge 'userIds' u.id.userId!/>
+            <@t.merge 'itemIds' u.itemId!/>
+        </#list>
+        <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+        <@_voteItem ids=t.itemIds!><#assign itemMap=map!/></@_voteItem>
+        <#list page.list as u>
+        <dl class="nowrap">
+            <dt>
+                ${(itemMap[u.itemId?string].title)!}
+            </dt>
+            <dd>
+                ${(userMap[u.id.userId?string].nickName)!}(${u.ip!})
+            </dd>
+        </dl>
+        </#list>
+        <#if page.totalPage gt 1>
+        <div>
+        <#list 1..page.totalPage as p>
+            <#if p==page.pageIndex>
+                ${p}
+            <#else>
+                <a href="cmsVote/view.html?id=${a.id}&pageIndex=${p}" class="exclude-translate" target="dialog" rel="viewVote${object.id}" title="${object.title!}">${p}</a></div>
+            </#if>
+        </#list>
+        </#if>
+    </fieldset>
+    </#if>
+</@_userVoteList>
+</@_vote>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
