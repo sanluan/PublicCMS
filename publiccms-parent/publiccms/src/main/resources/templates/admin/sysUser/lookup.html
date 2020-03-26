@@ -1,48 +1,41 @@
-<@_sysUserList startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
-            superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=false
-            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="sysUser/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'userId'}"/>
         <input type="hidden" name="nickNameField" value="${nickNameField!'nickName'}"/>
         <div class="searchBar">
-            <table class="searchContent">
-                <tr>
-                    <td>
-                        <label><@t.page 'name'/>:</label>
-                        <input type="text" name="name" value="${(name)!}" />
-                    </td>
-                    <td>
-                        <select class="combox" name="superuserAccess">
-                            <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
-                            <option value="false"${(superuserAccess?has_content&&"false"==superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
-                            <option value="true"${(superuserAccess?has_content&&"true"==superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
-                        </select>
-                    </td>
-                    <td>
-                        <select class="combox" name="emailChecked">
-                            <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
-                            <option value="false"${(emailChecked?has_content&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
-                            <option value="true"${(emailChecked?has_content&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
-                        </select>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <label><@t.page 'user.register_date'/>:</label>
-                        <input type="text" name="startRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
-                        <span>-</span>
-                        <input type="text" name="endRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
-                    </td>
-                    <td colspan="2">
-                        <label><@t.page 'user.last_login_date'/>:</label>
-                        <input type="text" name="startLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
-                        <span>-</span>
-                        <input type="text" name="endLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
-                    </td>
-                </tr>
-            </table>
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'name'/>:</label>
+                    <input type="text" name="name" value="${(name)!}" />
+                </li>
+                <li>
+                    <select class="combox" name="superuserAccess">
+                        <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
+                        <option value="false"${(superuserAccess?has_content&&"false"==superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
+                        <option value="true"${(superuserAccess?has_content&&"true"==superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
+                    </select>
+                </li>
+                <li>
+                    <select class="combox" name="emailChecked">
+                        <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
+                        <option value="false"${(emailChecked?has_content&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
+                        <option value="true"${(emailChecked?has_content&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
+                    </select>
+                </li>
+                <li class="colspan">
+                    <label><@t.page 'user.register_date'/>:</label>
+                    <input type="text" name="startRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
+                </li>
+                <li class="colspan">
+                    <label><@t.page 'user.last_login_date'/>:</label>
+                    <input type="text" name="startLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
+                </li>
+            </ul>
             <div class="subBar">
                 <ul>
                     <li>
@@ -54,6 +47,9 @@
         </div>
     </form>
 </div>
+<@_sysUserList startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+            superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=false
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageContent">
     <table class="list" width="100%" layoutH="96">
         <thead>

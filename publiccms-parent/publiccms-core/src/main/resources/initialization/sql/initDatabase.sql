@@ -736,6 +736,8 @@ INSERT INTO `sys_module` VALUES ('content_select_category', 'cmsCategory/lookupB
 INSERT INTO `sys_module` VALUES ('content_select_category_type', 'cmsCategoryType/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_content', 'cmsContent/lookup', 'cmsContent/lookup_list', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_tag_type', 'cmsTagType/lookup', NULL, NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_select_tag', 'cmsTag/lookup', NULL, NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_select_vote', 'cmsVote/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_template', 'cmsTemplate/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_user', 'sysUser/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', '', 'content_menu', 0, 0);
@@ -1001,6 +1003,10 @@ INSERT INTO `sys_module_lang` VALUES ('content_select_content', 'zh', '选择内
 INSERT INTO `sys_module_lang` VALUES ('content_select_content', 'en', 'Select content');
 INSERT INTO `sys_module_lang` VALUES ('content_select_tag_type', 'zh', '选择标签类型');
 INSERT INTO `sys_module_lang` VALUES ('content_select_tag_type', 'en', 'Select tag type');
+INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'zh', '选择标签');
+INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'en', 'Select tag');
+INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'zh', '选择投票');
+INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'en', 'Select vote');
 INSERT INTO `sys_module_lang` VALUES ('content_select_template', 'zh', '选择模板');
 INSERT INTO `sys_module_lang` VALUES ('content_select_template', 'en', 'Select template');
 INSERT INTO `sys_module_lang` VALUES ('content_select_user', 'zh', '选择用户');
@@ -1289,6 +1295,8 @@ INSERT INTO `sys_module_lang` VALUES ('content_select_category', 'ja', '分類�
 INSERT INTO `sys_module_lang` VALUES ('content_select_category_type', 'ja', '分類タイプを選択');
 INSERT INTO `sys_module_lang` VALUES ('content_select_content', 'ja', 'コンテンツを選択');
 INSERT INTO `sys_module_lang` VALUES ('content_select_tag_type', 'ja', 'タグの種類を選択');
+INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'ja', 'タグを選択');
+INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'ja', '投票を選択');
 INSERT INTO `sys_module_lang` VALUES ('content_select_template', 'ja', 'テンプレートを選択');
 INSERT INTO `sys_module_lang` VALUES ('content_select_user', 'ja', 'ユーザーを選択');
 INSERT INTO `sys_module_lang` VALUES ('content_sort', 'ja', 'トッピング');

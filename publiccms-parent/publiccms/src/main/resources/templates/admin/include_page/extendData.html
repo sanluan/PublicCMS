@@ -138,7 +138,7 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].categoryTypeName" readonly="readonly" size="30" value="${(categoryType.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsCategoryType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
+                <a class="btnLook" href="cmsCategoryType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
         <#case 'tagType'>
@@ -148,7 +148,27 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].tagTypeName" readonly="readonly" size="30" value="${(tagType.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsTagType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
+                <a class="btnLook" href="cmsTagType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
+            </#if>
+            <#break>
+        <#case 'tag'>
+            <@_tag id=value><#local tag=object/></@_tag>
+            <#if 'view'=type>
+                ${(value)!}:${(tag.name)!}
+            <#else>
+                <input name="${inputName}" value="${(value)!}" type="hidden"/>
+                <input name="${name}[${index}].tagName" readonly="readonly" size="30" value="${(tag.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <a class="btnLook" href="cmsTag/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
+            </#if>
+            <#break>
+        <#case 'vote'>
+            <@_vote id=value><#local vote=object/></@_vote>
+            <#if 'view'=type>
+                ${(value)!}:${(vote.title)!}
+            <#else>
+                <input name="${inputName}" value="${(value)!}" type="hidden"/>
+                <input name="${name}[${index}].voteName" readonly="readonly" size="30" value="${(vote.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <a class="btnLook" href="cmsVote/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
         <#case 'dictionary'>

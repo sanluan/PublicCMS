@@ -510,3 +510,13 @@ UPDATE `sys_module_lang` SET `value` =  'Delete' WHERE `lang` ='en' and module_i
 UPDATE `sys_module_lang` SET `value` =  'Delete' WHERE `lang` ='en' and module_id = 'tag_type_delete';
 UPDATE `sys_module_lang` SET `value` =  'Add/edit' WHERE `lang` ='en' and module_id = 'tag_type_save';
 UPDATE `sys_module_lang` SET `value` =  'Add/edit' WHERE `lang` ='en' and module_id = 'category_type_add';
+
+INSERT INTO `sys_module` VALUES ('content_select_tag', 'cmsTag/lookup', NULL, NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_select_vote', 'cmsVote/lookup', NULL, NULL, 'content_add', 0, 0);
+
+INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'zh', '选择标签');
+INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'en', 'Select tag');
+INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'ja', 'タグを選択');
+INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'zh', '选择投票');
+INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'en', 'Select vote');
+INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'ja', '投票を選択');
