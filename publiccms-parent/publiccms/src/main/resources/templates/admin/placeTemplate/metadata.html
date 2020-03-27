@@ -162,8 +162,8 @@ $('.adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
 checkPageSize();
 <#if (a.adminIds)?has_content>
     <@_sysUser ids=a.adminIds>
-        <#list map as k,user>
-        addUser('${k}','${user.nickName}');
+        <#list map as k,u>
+        addUser('${k}','${u.nickName}');
         </#list>
     </@_sysUser>
 </#if>
