@@ -80,11 +80,13 @@ public class VoteController {
                         userVoteService.save(entity);
                         voteItemService.updateScores(itemId, 1);
                         service.updateScores(siteId, cmsVote.getId(), 1);
+                        return true;
                     }
                 } else if (null != entity) {
                     userVoteService.delete(id);
                     voteItemService.updateScores(entity.getItemId(), -1);
                     service.updateScores(siteId, cmsVote.getId(), -1);
+                    return true;
                 }
             }
         }
