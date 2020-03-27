@@ -1,3 +1,6 @@
+<@_tradeOrderList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType 
+            accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
+            orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -46,9 +49,6 @@
 </div>
 <@_sysAuthorized roleIds=admin.roles urls='tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
-<@_tradeOrderList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType 
-            accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
-            orderType=orderType pageIndex=pageNum pageSize=numPerPage>
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
@@ -98,5 +98,5 @@
         </tbody>
     </table>
     <#include "../include_page/page.html"/>
-</@_tradeOrderList>
 </div>
+</@_tradeOrderList>

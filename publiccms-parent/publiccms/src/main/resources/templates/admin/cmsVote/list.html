@@ -1,3 +1,6 @@
+<@_voteList startStartDate=startStartDate endStartDate=endStartDate 
+            startEndDate=startEndDate endEndDate=endEndDate title=title
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -43,9 +46,6 @@
         </#if>
         </ul>
     </div>
-<@_voteList startStartDate=startStartDate endStartDate=endStartDate 
-            startEndDate=startEndDate endEndDate=endEndDate title=title
-            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
@@ -81,5 +81,5 @@
         </tbody>
     </table>
     <#include "../include_page/page.html"/>
-</@_voteList>
 </div>
+</@_voteList>

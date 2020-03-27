@@ -10,9 +10,7 @@
     <#include "../common/ajaxError.html"/>
 <#else>
     <#if parentId?has_content>
-        <@_content id=parentId>
-            <#assign parent=object/>
-        </@_content>
+        <@_content id=parentId<#assign parent=object/></@_content>
     </#if>
     <#if !admin.ownsAllContent><#assign userId=admin.id/></#if>
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild

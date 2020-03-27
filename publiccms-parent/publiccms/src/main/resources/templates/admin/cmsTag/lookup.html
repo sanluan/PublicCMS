@@ -1,3 +1,4 @@
+<@_tagList advanced=true name=name orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsTag/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
@@ -21,7 +22,6 @@
         </div>
     </form>
 </div>
-<@_tagList advanced=true name=name orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageContent">
     <table class="list" width="100%" layoutH="96">
         <thead>

@@ -1,3 +1,4 @@
+${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_condition/parameter.ftl">>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#noparse><#include "../include_page/parameters.html"/></#noparse>
@@ -40,7 +41,6 @@
         ${'</#'}if>
         </ul>
     </div>
-${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_condition/parameter.ftl">>
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
@@ -70,5 +70,5 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
         </tbody>
     </table>
     <#noparse><#include "../include_page/page.html"/></#noparse>
-${"</@_"+entityName?replace('Cms','')?uncap_first+"List>"}
 </div>
+${"</@_"+entityName?replace('Cms','')?uncap_first+"List>"}

@@ -1,3 +1,6 @@
+<@_sysUserList startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+            superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=false
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="sysUser/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
@@ -47,9 +50,6 @@
         </div>
     </form>
 </div>
-<@_sysUserList startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
-            superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=false
-            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageContent">
     <table class="list" width="100%" layoutH="96">
         <thead>

@@ -1,3 +1,5 @@
+<@_commentList advanced=true userId=userId contentId=contentId status=status 
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" action="cmsComment/list.html" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -48,8 +50,6 @@
         </#if>
         </ul>
     </div>
-<@_commentList advanced=true userId=userId contentId=contentId status=status 
-            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
