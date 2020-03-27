@@ -39,10 +39,11 @@
                         <li>
                             ${v.title}
                             <#if available>
-                                <a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html</#if>">Vote and view</a>
                                 <#if myvote?has_content>
                                     (${v.scores!} votes)
                                     <#if myvote.itemId=v.id>[My vote]<a href="javascript:unvote('${v.id}');">Cancel voting</a></#if>
+                                <#else>
+                                    <a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html</#if>">Vote and view</a>
                                 </#if>
                             <#else>
                                 (${v.scores!} votes)
