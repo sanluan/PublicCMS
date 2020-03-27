@@ -123,7 +123,7 @@ public class SysUserToken implements java.io.Serializable {
         this.expiryDate = expiryDate;
     }
 
-    @Column(name = "login_ip", nullable = false, length = 64)
+    @Column(name = "login_ip", nullable = false, length = 130)
     public String getLoginIp() {
         return this.loginIp;
     }
