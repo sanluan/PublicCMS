@@ -53,7 +53,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
                 if (CmsVersion.getVersion().equals(version)) {
                     CmsVersion.setInitialized(true);
-                    CmsDataSource.initDefautDataSource();
+                    CmsDataSource.initDefaultDataSource();
                     log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + CommonConstants.CMS_FILEPATH);
                 } else {
                     createInstallServlet(servletcontext, config, InstallServlet.STEP_CHECKDATABASE, version);
