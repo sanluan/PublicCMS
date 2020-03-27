@@ -16,4 +16,16 @@
 	<delete id="delete" parameterType="String">
 		${sql}
 	</delete>
+    <update id="updateContentAttribute" parameterType="map">
+        update cms_content_attribute set text=replace(text,#{oldurl},#{newurl}),data=replace(data,#{oldurl},#{newurl})
+    </update>
+    <update id="updateContentRelated" parameterType="map">
+        update cms_content_related set url=replace(url,#{oldurl},#{newurl})
+    </update>
+    <update id="updatePlaceAttribute" parameterType="map">
+        update cms_place_attribute set data=replace(data,#{oldurl},#{newurl})
+    </update>
+    <update id="updatePlace" parameterType="map">
+        update cms_place set url=replace(url,#{oldurl},#{newurl})
+    </update>
 </mapper>

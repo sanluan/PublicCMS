@@ -16,7 +16,7 @@ CREATE TABLE `trade_account`  (
   `amount` decimal(10, 2) NOT NULL COMMENT '金额',
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`),
-  KEY `site_id`(`site_id`, `update_date`) 
+  KEY `trade_account_site_id`(`site_id`, `update_date`) 
 ) COMMENT = '资金账户';
 
 -- ----------------------------
@@ -36,9 +36,9 @@ CREATE TABLE `trade_account_history` (
   `description` varchar(255) DEFAULT NULL COMMENT '描述',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`account_id`,`status`,`create_date`)
+  KEY `trade_account_history_site_id` (`site_id`,`account_id`,`status`),
+  KEY `trade_account_history_create_date` (`create_date`)
 ) COMMENT='账户流水';
-
 -- ----------------------------
 -- Table structure for trade_order
 -- ----------------------------
@@ -61,9 +61,10 @@ CREATE TABLE `trade_order`  (
   `process_date` datetime DEFAULT NULL COMMENT '处理日期',
   `payment_date` datetime NULL DEFAULT NULL COMMENT '支付日期',
   PRIMARY KEY (`id`),
-  KEY `account_type`(`account_type`, `account_serial_number`),
-  KEY `site_id`(`site_id`, `user_id`, `status`, `create_date`),
-  KEY `trade_type`(`trade_type`, `serial_number`)
+  KEY `trade_order_account_type`(`account_type`, `account_serial_number`),
+  KEY `trade_order_site_id`(`site_id`, `user_id`, `status`),
+  KEY `trade_order_trade_type`(`trade_type`, `serial_number`),
+  KEY `trade_order_create_date` (`create_date`)
 ) COMMENT = '支付订单';
 
 -- ----------------------------
@@ -78,8 +79,8 @@ CREATE TABLE `trade_order_history`  (
   `operate` varchar(100) NOT NULL COMMENT '操作',
   `content` text COMMENT '内容',
   PRIMARY KEY (`id`),
-  KEY `site_id` (`site_id`,`order_id`,`operate`),
-  KEY `create_date` (`create_date`)
+  KEY `trade_order_history_site_id` (`site_id`,`order_id`,`operate`),
+  KEY `trade_order_history_create_date` (`create_date`)
 ) COMMENT = '订单流水';
 
 -- ----------------------------
@@ -99,7 +100,8 @@ CREATE TABLE `trade_refund`  (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `processing_date` datetime NULL DEFAULT NULL COMMENT '处理日期',
   PRIMARY KEY (`id`),
-  KEY `order_id`(`order_id`, `status`, `create_date`)
+  KEY `trade_refund_order_id`(`order_id`, `status`),
+  KEY `trade_refund_create_date` (`create_date`)
 ) COMMENT = '退款申请';
 
 INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', 'sysUser/lookup', 'icon-book', 'trade_menu', 1, 5);
@@ -145,7 +147,7 @@ ALTER TABLE `sys_cluster`
 	ADD COLUMN `revision` varchar(20) NULL COMMENT '修订' AFTER `cms_version`;
 -- 2019-08-22 --
 ALTER TABLE `cms_content` 
-CHANGE COLUMN `dictionar_values` `dictionary_values` mediumtext  NULL COMMENT '数据字典值' AFTER `tag_ids`;
+CHANGE COLUMN `dictionar_values` `dictionary_values` text  NULL COMMENT '数据字典值' AFTER `tag_ids`;
 -- 2019-11-21 --
 ALTER TABLE `cms_content` 
     ADD COLUMN `contribute` tinyint(1) NOT NULL DEFAULT 0 COMMENT '是否投稿' AFTER `copied`;
@@ -295,8 +297,6 @@ ALTER TABLE  `cms_content_file`
   ADD INDEX `cms_content_file_file_size` (`file_size`),
   ADD INDEX `cms_content_file_clicks` (`clicks`),
   ADD INDEX `cms_content_file_user_id` (`user_id`);
-ALTER TABLE  `cms_content_related`
-  ADD INDEX `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`clicks`,`sort`);
 ALTER TABLE  `cms_dictionary`
   ADD INDEX `cms_dictionary_site_id` (`site_id`,`multiple`);
 ALTER TABLE  `cms_place`
@@ -390,7 +390,7 @@ UPDATE `sys_module_lang` SET `value` =  'Maintain' WHERE `lang` ='en' and module
 UPDATE `sys_module_lang` SET `value` =  'Develop' WHERE `lang` ='en' and module_id = 'develop';
 -- 2020-03-01 --
 ALTER TABLE `cms_comment` 
-    ADD COLUMN `replies` int(1) NOT NULL DEFAULT 0 COMMENT '回复数' AFTER `reply_user_id`;
+    ADD COLUMN `replies` int(11) NOT NULL DEFAULT 0 COMMENT '回复数' AFTER `reply_user_id`;
 UPDATE `cms_comment` a INNER JOIN ( SELECT count( * ) count, reply_id FROM `cms_comment` WHERE reply_id IS NOT NULL GROUP BY reply_id ) b ON a.id = b.reply_id 
     SET a.replies = b.count;
 INSERT INTO `sys_module` VALUES ('comment_edit', 'cmsComment/edit', 'cmsComment/save', NULL, 'comment_list', 0, 0);
@@ -402,8 +402,6 @@ INSERT INTO `sys_module_lang` VALUES ('comment_reply', 'zh', '回复');
 INSERT INTO `sys_module_lang` VALUES ('comment_reply', 'en', 'Reply');
 INSERT INTO `sys_module_lang` VALUES ('comment_reply', 'ja', '応答');
 -- 2020-03-18 --
-ALTER TABLE `cms_content_related`
-  ADD INDEX `cms_content_related_related_content_id` (`related_content_id`);
 ALTER TABLE `cms_word`
   ADD INDEX `cms_word_site_id` (`site_id`);
 ALTER TABLE `sys_cluster`
@@ -433,8 +431,8 @@ CREATE TABLE `cms_user_score`  (
   `item_id` bigint(20) NOT NULL COMMENT '项目ID',
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`user_id`, `item_type`, `item_id`),
-  INDEX `home_user_star_item_type`(`item_type`, `item_id`, `create_date`),
-  INDEX `home_user_star_user_id`(`user_id`, `create_date`)
+  INDEX `cms_user_score_item_type`(`item_type`, `item_id`, `create_date`),
+  INDEX `cms_user_score_user_id`(`user_id`, `create_date`)
 ) COMMENT = '用户评分表';
 
 -- ----------------------------
@@ -485,8 +483,8 @@ CREATE TABLE `cms_vote_item`  (
 
 ALTER TABLE `cms_content_related`
   DROP COLUMN `clicks`,
-  DROP INDEX  `cms_content_related_user_id`,
-  ADD INDEX `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`sort`);
+  ADD INDEX `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`sort`),
+  ADD INDEX `cms_content_related_related_content_id` (`related_content_id`);
 INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-ticket', 'content_extend', 1, 4);
 INSERT INTO `sys_module` VALUES ('content_vote_add', 'cmsVote/add', 'cmsVote/save', NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote_delete', NULL, 'cmsVote/delete', NULL, 'content_vote', 0, 0);
@@ -520,3 +518,10 @@ INSERT INTO `sys_module_lang` VALUES ('content_select_tag', 'ja', 'タグを選�
 INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'zh', '选择投票');
 INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'en', 'Select vote');
 INSERT INTO `sys_module_lang` VALUES ('content_select_vote', 'ja', '投票を選択');
+
+ALTER TABLE `sys_user_token` 
+    MODIFY COLUMN `login_ip` varchar(130) NOT NULL COMMENT '登录IP' AFTER `expiry_date`;
+ALTER TABLE `sys_user` 
+    MODIFY COLUMN `last_login_ip` varchar(130) DEFAULT NULL COMMENT '最后登录ip' AFTER `last_login_date`;
+ALTER TABLE `sys_app_client` 
+    MODIFY COLUMN `last_login_ip` varchar(130) DEFAULT NULL COMMENT '上次登录IP' AFTER `last_login_date`;
