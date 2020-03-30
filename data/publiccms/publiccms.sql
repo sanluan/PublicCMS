@@ -240,7 +240,7 @@ INSERT INTO `cms_place_attribute` VALUES (22, '{}');
 -- ----------------------------
 INSERT INTO `sys_config_data` VALUES (2, 'siteAttribute', '{\"logo\":\"assets/images/logo.gif\",\"parentId\":\"71\",\"parentId_en\":\"72\"}');
 INSERT INTO `sys_config_data` VALUES (3, 'cors', '{\"allowed_origins\":\"*\",\"allowed_methods\":\"*\",\"allowed_headers\":\"*\",\"exposed_headers\":\"\",\"allow_credentials\":\"true\",\"max_age\":\"\"}');
-INSERT INTO `sys_config_data` VALUES (3, 'site', '{\"return_url\":\"http://search.site3.dev.publiccms.com:8080/publiccms/\",\"register_url\":\"http://site3.dev.publiccms.com:8080/publiccms/register.html\",\"login_path\":\"http://site3.dev.publiccms.com:8080/publiccms/login.html\",\"expiry_minutes.web\":\"10\",\"expiry_minutes.manager\":\"10\",\"slogan\":\"与先进同行\",\"statistics\":\"\",\"approve\":\"\"}');
+INSERT INTO `sys_config_data` VALUES (3, 'site', '{\"return_url\":\"http://search.site3.dev.publiccms.com:8080/publiccms/\",\"register_url\":\"http://site3.dev.publiccms.com:8080/publiccms/register.html\",\"login_path\":\"http://site3.dev.publiccms.com:8080/publiccms/login.html\",\"slogan\":\"与先进同行\",\"statistics\":\"\",\"approve\":\"\"}');
 INSERT INTO `sys_config_data` VALUES (3, 'siteAttribute', '{\"logo\":\"\",\"square_logo\":\"\",\"searchPath\":\"//search.site3.dev.publiccms.com:8080/publiccms/\"}');
 
 -- ----------------------------

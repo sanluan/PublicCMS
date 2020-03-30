@@ -78,6 +78,19 @@ public class IndexController {
     private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
     /**
+     * METADATA页面请求统一分发
+     * 
+     * @param response
+     */
+    @RequestMapping({ "/**/" + MetadataComponent.DATA_FILE, "/**/" + MetadataComponent.METADATA_FILE })
+    public void rest(HttpServletResponse response) {
+        try {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        } catch (IOException e) {
+        }
+    }
+
+    /**
      * REST页面请求统一分发
      * 
      * @param site
