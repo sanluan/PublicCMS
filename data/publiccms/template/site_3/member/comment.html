@@ -1,0 +1,141 @@
+<#if contentId?has_content || id?has_content>
+<@_comment id=id>
+<#assign text=object.text!/>
+<#assign contentId=object.contentId!/>
+</@_comment>
+</#if>
+<@_content id=contentId>
+<#assign content=object/>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>评论 - ${content.title}</title>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+	<meta name="description" content="${content.description}"/>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+	<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+	<main>
+		<div class="container">
+			<h1><a href="${content.url!}">${content.title}</a></h1>
+			<p>${content.description!}</p>
+			<@import path="ftl/tools.ftl" namespace="t"/>
+			<#if error?has_content>
+			<p style="color:red"><@t.m error/></p>
+			</#if>
+			<div class="comment-box">
+				<#if user?has_content>
+					<#if !pageIndex?has_content || pageIndex=1>
+						<p>发布评论：<span class="float-right"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}">${(user.nickName)!}</a></span></p>
+						<div class="comment-text-box user-logout">
+							<form method="post" action="${site.dynamicPath}comment/save.do">
+								<input type="hidden" name="id" value="${id!}"/>
+								<#if replyId?has_content>
+								<p class="reply"><@_comment id=replyId><span class="username">@<@_sysUser id=object.userId>${object.nickName}</@_sysUser></span> : ${object.text!}</@_comment></p>
+								<input type="hidden" name="replyId" value="${replyId!}"/>
+								</#if>
+								<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+								<input type="hidden" name="contentId" value="${contentId!}"/>
+								<input name="returnUrl" type="hidden" value="${site.dynamicPath}comment.html?contentId=${contentId!}" />
+								<textarea name="text" maxlength="1000">${text!}</textarea>
+								<input type="submit" value="提交"/>
+							</form>
+						</div>
+						<@_commentList advanced=true userId=user.id contentId=contentId status=2>
+							<#if page.totalCount gt 0>
+								<h3>我的待审核评论</h3>
+								<ul>
+									<#list page.list as a>
+									<@t.merge 'userIds' a.replyUserId!/>
+									</#list>
+									<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+									<#list page.list as a>
+									<li class="underline">
+										<p>${a.createDate}<span class="float-right"><a href="comment.html?id=${a.id}">编辑</a></span></p>
+										<#if a.replyId?has_content>
+											<@_comment id=a.replyId>
+												<p class="reply"><span class="username">@${userMap[a.replyUserId?string].nickName}</span> : ${object.text!}</p>
+											</@_comment>
+										</#if>
+										<p>${a.text!}</p>
+									</li>
+									</#list>
+								</ul>
+							</#if>
+						</@_commentList>
+					</#if>
+				<#else>
+					<div class="comment-text-box user-login">
+						<div class="cover"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}">登录后发布评论</a></div>
+					</div>
+				</#if>
+				<@_commentList contentId=contentId pageIndex=pageIndex pageSize=10>
+					<#list page.list as a>
+						<@t.merge 'userIds' a.userId!/>
+						<@t.merge 'userIds' a.replyUserId!/>
+					</#list>
+					<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+					<#if page.totalCount gt 0>
+						<h3>内容评论</h3>
+						<ul>
+							<#list page.list as a>
+							<li class="underline">
+								<p><span class="username">${userMap[a.userId?string].nickName}</span> ${a.createDate?string('yyyy-MM-dd hh:mm')}<span class="float-right"><a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
+								<#if a.replyId?has_content>
+									<@_comment id=a.replyId>
+										<p class="reply"><span class="username">@${userMap[a.replyUserId?string].nickName}</span> : ${object.text!}</p>
+									</@_comment>
+								</#if>
+								<p>${a.text!}</p>
+							</li>
+							</#list>
+						</ul>
+					</#if>
+					<#if page??>
+					<div class="page">
+						<#if !page.firstPage>
+						<a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=${page.prePage}">上一页</a>
+						<#else>
+						<span>上一页</span>
+						</#if>
+						<#assign start=1/>
+						<#if (page.pageIndex-5) gt start>
+						<#assign start=page.pageIndex-4/>
+						</#if>
+						<#assign end=page.totalPage/>
+						<#if (page.pageIndex+5) lt end>
+						<#assign end=page.pageIndex+4/>
+						</#if>
+						<#if start gt 1>
+						<a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=1">1</a> ...
+						</#if>
+						<#list start..end as n><a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=${n}"<#if n=page.pageIndex> class="selected"</#if>>${n}</a></#list>
+						<#if end lt page.totalPage>
+						... <a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
+						</#if>
+						<#if !page.lastPage>
+						<a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=${page.nextPage}">下一页</a>
+						<#else>
+						<span>下一页</span>
+						</#if>
+					</div>
+					</#if>
+				</@_commentList>
+			</div>
+		</div>
+	</main>
+	<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+	<script type="text/javascript">
+		$(function(){$('.login-form input').eq(0).focus();});
+		function check(){
+			if(!$('input[name=text]').val()){
+				alert('评论不能为空');
+				return false;
+			}
+			return true;
+		}
+	</script>
+</body>
+</html>
+</@_content>

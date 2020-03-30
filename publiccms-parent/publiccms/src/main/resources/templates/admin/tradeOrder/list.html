@@ -1,0 +1,102 @@
+<@_tradeOrderList userId=userId tradeType=tradeType serialNumber=serialNumber accountType=accountType 
+            accountSerialNumber=accountSerialNumber status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
+            orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'user'/>：</label>
+                    <#include "../include_page/userId.html"/>
+                </li>
+                <li>
+                    <label>订单类型：</label>
+                    <input type="text" name="tradeType" value="${tradeType!}" />
+                </li>
+                <li>
+                    <label>订单流水：</label>
+                    <input type="text" name="serialNumber" value="${serialNumber!}" />
+                </li>
+                <li>
+                    <label>账户类型：</label>
+                    <input type="text" name="accountType" value="${accountType!}" />
+                </li>
+                <li>
+                    <label>账户流水：</label>
+                    <input type="text" name="accountSerialNumber" value="${accountSerialNumber!}" />
+                </li>
+                <li>
+                    <label>状态：</label>
+                    <input type="text" name="status" value="${status!}" />
+                </li>
+                <li class="colspan">
+                    <label>创建日期：</label>
+                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+    <table class="list" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>用户ID</th>
+                <th>用户</th>
+                <th>金额</th>
+                <th>描述</th>
+                <th>订单类型</th>
+                <th>订单流水</th>
+                <th>账户类型</th>
+                <th>账户流水</th>
+                <th>IP</th>
+                <th>状态</th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+            </#list>
+            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td>${a.id!}</td>
+                <td>${a.userId!}</td>
+                <td class="center">
+                    ${(userMap[a.userId?string].nickName)!}
+                </td>
+                <td>${a.amount!}</td>
+                <td>${a.description!}</td>
+                <td>${a.tradeType!}</td>
+                <td>${a.serialNumber!}</td>
+                <td>${a.accountType!}</td>
+                <td>${a.accountSerialNumber!}</td>
+                <td>${a.ip!}</td>
+                <td>${a.status!}</td>
+                <td>${a.createDate!}</td>
+                <td>
+                    <#if authorizedMap['tradeOrderHistory/list']>
+                        <a href="tradeOrderHistory/list.html?orderId=${a.id}" target="navTab" rel="tradeOrderHistory/list">订单历史</a>
+                    </#if>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_tradeOrderList>

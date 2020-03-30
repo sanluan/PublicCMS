@@ -10,18 +10,16 @@
     <#include "../common/ajaxError.html"/>
 <#else>
     <#if parentId?has_content>
-        <@_content id=parentId>
-            <#assign parent=object/>
-        </@_content>
+        <@_content id=parentId><#assign parent=object/></@_content>
     </#if>
     <#if !admin.ownsAllContent><#assign userId=admin.id/></#if>
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild
             modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate
-            orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -73,21 +71,23 @@
 <#if authorizedMap['cmsContent/add']>
     <#if categoryId?has_content>
         <@_modelList parentId=(parent.modelId)!''>
+            <#list page.list as a>
+                <@t.merge 'tempModelIds' a.id!/>
+            </#list>
+            <@_categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@_categoryModel>
             <#assign size=0/>
             <#list page.list as a>
-                <@_categoryModelList modelId=a.id categoryId=categoryId>
-                    <#if page.totalCount gt 0>
-                        <#assign size++/>
+                	<#if categoryModelMap?has_content&&categoryModelMap[a.id]?has_content>
+                    	<#assign size++/>
             <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
-                    </#if>
-                </@_categoryModelList>
+            		</#if>
                 <#if size gte 5&&a?has_next>
             <li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'content.add_more'/></a></li>
                     <#break>
                 </#if>
             </#list>
             <#if size=0>
-                <li><a><i class="icon-ban-circle icon-large"></i> <@t.page 'content.no_model'/></a></li>
+                <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'category.edit'/>"><i class="icon-ban-circle icon-large"></i> <@t.page 'content.no_model'/></a></li>
             </#if>
         </@_modelList>
     </#if>
@@ -101,6 +101,9 @@
 </#if>
         <#if authorizedMap['cmsContent/check']>
             <li><a href="cmsContent/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsContent/reject']>
+            <li><a href="cmsContent/reject.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_reject'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_reject'/></a></li>
         </#if>
         <#if authorizedMap['cmsContent/uncheck']>
             <li><a href="cmsContent/uncheck.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
@@ -157,14 +160,14 @@
             <tr target="sid" rel="${contentId}">
                 <td class="center"><input name="ids" value="${contentId}" type="checkbox"></td>
                 <td class="center">${a.id}</td>
-                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
-                <td class="center">
+                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
+                <td class="center exclude-translate">
                     ${(userMap[a.userId?string].nickName)!}
                 </td>
-                <td class="center">
+                <td class="center exclude-translate">
                     ${(categoryMap[a.categoryId?string].name)!}
                 </td>
-                <td class="center">
+                <td class="center exclude-translate">
                     ${(modelMap[a.modelId].name)!}
                 </td>
                 <td class="center">${a.scores!}</td>
@@ -182,7 +185,7 @@
                 <td class="center">${a.sort!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 1=a.status>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 1=a.status || 3=a.status>/ <span class="exclude-translate">${(userMap[a.checkUserId?string].nickName)!}</span></#if>
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
@@ -203,6 +206,9 @@
                     <#elseif 2=a.status>
                         <#if authorizedMap['cmsContent/check']>
                             <a href="cmsContent/check.do?ids=${contentId}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>|
+                        </#if>
+                        <#if authorizedMap['cmsContent/reject']>
+                            <a href="cmsContent/reject.do?ids=${contentId}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.reject'/>" target="ajaxTodo"><@t.page 'button.reject'/></a>|
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/delete']>

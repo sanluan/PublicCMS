@@ -195,7 +195,7 @@ public class TemplateModelUtils {
         }
         String str = converString(model);
         if (null != str) {
-            if (0 <= str.indexOf(Constants.COMMA_DELIMITED)) {
+            if (str.contains(Constants.COMMA_DELIMITED)) {
                 return StringUtils.split(str, Constants.COMMA_DELIMITED);
             } else {
                 return StringUtils.split(str, Constants.BLANK_SPACE);

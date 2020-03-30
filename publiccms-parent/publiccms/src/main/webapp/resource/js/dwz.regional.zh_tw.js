@@ -74,7 +74,7 @@
         if(objects){
             for(var i=0;i<objects.length;i++){
                 var object=objects.item(i);
-                if("||BR|HR|TEXTAREA|".indexOf("|"+object.tagName+"|")>0) {
+                if(-1 < "|BR|HR|TEXTAREA|".indexOf("|"+object.tagName+"|") || object.className && -1 < object.className.indexOf("exclude-translate")) {
                     continue;
                 }
                 if(object.title!=""&&object.title!=null){

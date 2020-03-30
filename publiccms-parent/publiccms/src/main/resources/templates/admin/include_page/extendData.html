@@ -1,4 +1,4 @@
-<#macro input name extend index value='' type='form'>
+<#macro input name extend index value='' type='form' safe=true>
     <#if !value??>
         <#local value=extend.defaultValue!/>
     </#if>
@@ -28,7 +28,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyImage=true" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
                     </#if>
@@ -44,7 +44,7 @@
             <#else>
                 <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
-                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&onlyVideo=true" lookupGroup="" width="560" height="300"><@t.page 'video'/></a>
+                    <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="560" height="300"><@t.page 'video'/></a>
                 </#if>
             </#if>
             <#break>
@@ -52,7 +52,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" size="30" value="${(value)!}"/>
+                <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="30"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="password" value="${(value)!}"/>
             </#if>
             <#break>
         <#case 'textarea'>
@@ -64,21 +64,21 @@
             <#break>
         <#case 'editor'>
             <#if 'view'=type>
-                ${(value?no_esc)!}
+                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
         <#case 'ckeditor'>
             <#if 'view'=type>
-                ${(value?no_esc)!}
+                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="ckeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
             <#break>
         <#case 'kindeditor'>
             <#if 'view'=type>
-                ${(value?no_esc)!}
+                <#if safe>${(value?no_esc)!}<#else>${value!}</#if>
             <#else>
                 <textarea name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="editor<#if extend.required> required</#if>" editorType="kindeditor" </#if>cols="80" rows="20">${(value)!}</textarea>
             </#if>
@@ -102,12 +102,12 @@
             </#if>
             <#break>
         <#case 'user'>
-            <@_sysUser id=value><#local user=object/></@_sysUser>
+            <@_sysUser id=value><#local u=object/></@_sysUser>
             <#if 'view'=type>
-                ${(value)!}:${(user.nickName)!}
+                ${(value)!}:${(u.nickName)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(user.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(u.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="sysUser/lookup.html?field=value" width="920" lookupGroup="${name}[${index}]"><@t.page 'user.select'/></a>
             </#if>
             <#break>
@@ -138,7 +138,7 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].categoryTypeName" readonly="readonly" size="30" value="${(categoryType.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsCategoryType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
+                <a class="btnLook" href="cmsCategoryType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
         <#case 'tagType'>
@@ -148,7 +148,27 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].tagTypeName" readonly="readonly" size="30" value="${(tagType.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="cmsTagType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
+                <a class="btnLook" href="cmsTagType/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
+            </#if>
+            <#break>
+        <#case 'tag'>
+            <@_tag id=value><#local tag=object/></@_tag>
+            <#if 'view'=type>
+                ${(value)!}:${(tag.name)!}
+            <#else>
+                <input name="${inputName}" value="${(value)!}" type="hidden"/>
+                <input name="${name}[${index}].tagName" readonly="readonly" size="30" value="${(tag.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <a class="btnLook" href="cmsTag/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
+            </#if>
+            <#break>
+        <#case 'vote'>
+            <@_vote id=value><#local vote=object/></@_vote>
+            <#if 'view'=type>
+                ${(value)!}:${(vote.title)!}
+            <#else>
+                <input name="${inputName}" value="${(value)!}" type="hidden"/>
+                <input name="${name}[${index}].voteName" readonly="readonly" size="30" value="${(vote.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <a class="btnLook" href="cmsVote/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'select'/></a>
             </#if>
             <#break>
         <#case 'dictionary'>
@@ -200,7 +220,7 @@
             <#if 'view'=type>
                 ${(value)!}
             <#else>
-                <input name="${inputName}"<#if extend.maxlength?has_content> maxlength="${extend.maxlength}"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" size="30" value="${(value)!}"/>
+                <input name="${inputName}"<#if extend.maxlength?has_content> size="${extend.maxlength}" maxlength="${extend.maxlength}"<#else> size="50"</#if> <#if 'customform'!=type>class="<#if extend.required> required</#if>" </#if>type="text" value="${(value)!}"/>
             </#if>
     </#switch>
 </#macro>

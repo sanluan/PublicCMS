@@ -1,6 +1,6 @@
 <@_logOperate id=id>
     <#assign a=object/>
-    <@_sysUser id=a.userId><#assign user=object/></@_sysUser>
+    <@_sysUser id=a.userId><#assign u=object/></@_sysUser>
 </@_logOperate>
 <div class="pageFormContent" layoutH="50">
     <dl>
@@ -12,7 +12,7 @@
     <dl>
         <dt><@t.page 'user.nickname'/>:</dt>
         <dd>
-            ${(user.nickName)!}
+            ${(u.nickName)!}
         </dd>
     </dl>
     <dl>

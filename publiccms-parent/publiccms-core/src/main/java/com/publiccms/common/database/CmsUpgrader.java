@@ -69,13 +69,15 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         StringBuilder sb = new StringBuilder();
         sb.append("jdbc:mysql://");
         sb.append(host);
-        if (CommonUtils.notEmpty(port) && !"3306".equals(port)) {
-            sb.append(":");
+        sb.append(":");
+        if (CommonUtils.empty(port)) {
+            sb.append(getDefaultPort());
+        } else {
             sb.append(port);
         }
         sb.append("/");
         sb.append(database);
-        sb.append("?characterEncoding=UTF-8&useSSL=false");
+        sb.append("?characterEncoding=UTF-8&useSSL=false&useAffectedRows=true");
         if (CommonUtils.notEmpty(timeZone)) {
             try {
                 sb.append("&serverTimezone=GMT");

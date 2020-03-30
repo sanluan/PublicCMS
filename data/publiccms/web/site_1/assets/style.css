@@ -1,0 +1,13 @@
+@charset "utf-8";/* CSS Document */
+html,body,ul,li{margin: 0;padding: 0;}
+body{background-color:#eee;}
+a{color: #333;}
+main{background-color:#fff;padding:20px 0;}
+header,footer{text-align:center;}
+footer{line-height:60px;}
+main ul li{width:50%;float:left;list-style: none;}
+.site-box{padding:10px;}
+.clear{clear:both;}
+@media screen and (max-width :800px) {
+	main ul li{width:100%;}
+}

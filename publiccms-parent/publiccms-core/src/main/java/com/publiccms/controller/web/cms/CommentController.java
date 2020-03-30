@@ -1,15 +1,16 @@
 package com.publiccms.controller.web.cms;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -44,29 +45,28 @@ public class CommentController {
     @Autowired
     protected ConfigComponent configComponent;
 
-    private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "status",
-            "replyId", "replyUserId", "disabled" };
+    private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "replyId",
+            "replyUserId", "replies", "disabled" };
 
     /**
-     * @param site 
+     * @param site
+     * @param user 
      * @param entity
      * @param returnUrl
      * @param request
-     * @param session
      * @param model
      * @return
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, CmsComment entity, String returnUrl, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, CmsComment entity, String returnUrl,
+            HttpServletRequest request, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();;
+            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
-        SysUser user = ControllerUtils.getUserFromSession(session);
-
+        entity.setStatus(CmsCommentService.STATUS_PEND);
         if (null != entity.getId()) {
             CmsComment oldEntity = service.getEntity(entity.getId());
             if (null != oldEntity && !oldEntity.isDisabled() && oldEntity.getUserId() == user.getId()) {
@@ -77,20 +77,26 @@ public class CommentController {
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
+            Date now = CommonUtils.getDate();
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
-            entity.setStatus(CmsCommentService.STATUS_PEND);
             if (null != entity.getReplyId()) {
                 CmsComment reply = service.getEntity(entity.getReplyId());
                 if (null == reply) {
                     entity.setReplyId(null);
                 } else {
-                    entity.setReplyUserId(reply.getUserId());
+                    entity.setContentId(reply.getContentId());
+                    if (null == entity.getReplyUserId()) {
+                        entity.setReplyUserId(reply.getUserId());
+                    }
                 }
+            }
+            if (null != entity.getReplyUserId() && entity.getReplyUserId().equals(user.getId())) {
+                entity.setReplyUserId(null);
             }
             service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }

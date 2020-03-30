@@ -1,6 +1,6 @@
-<@_categoryList advanced=true parentId=categoryId allowContribute=allowContribute pageIndex=pageNum count=numPerPage>
+<@_categoryList advanced=true parentId=categoryId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form autocomplete="off" class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -28,7 +28,7 @@
         <ul class="toolBar">
 <#if authorizedMap['cmsCategory/add']>
             <li><a href="cmsCategory/add.html?parentId=${categoryId!}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'category.add'/></a></li>
-    <@_categoryTypeList count=5>
+    <@_categoryTypeList pageSize=5>
         <#list page.list as a>
             <li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
         </#list>
@@ -78,10 +78,10 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td><a href="${a.url!}" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('outer_chain')+']',''))!}</td>
-                <td>${a.code!}</td>
-                <td>${(typeMap[a.typeId?string].name)!}</td>
-                <td>${(parentMap[a.parentId?string].name)!}</td>
+                <td><a href="${a.url!}" class="exclude-translate" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('outer_chain')+']',''))!}</td>
+                <td class="exclude-translate">${a.code!}</td>
+                <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
+                <td class="exclude-translate">${(parentMap[a.parentId?string].name)!}</td>
                 <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then('['+t.pageMessage('category.contain_child')+']',''))!}</#if></td>
                 <td>${a.allowContribute?then(t.pageMessage('allow_contribute'),t.pageMessage('forbid_contribute'))}</td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
@@ -97,7 +97,7 @@
                 <#if authorizedMap['cmsPlace/push']>
                     <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>|
                 </#if>
-                <#if authorizedMap['cmsCategory/publishParameters']&&!a.onlyUrl>
+                <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!a.onlyUrl>
                     <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" target="dialog" width="400" height="150" mask="true"><@t.page 'button.publish'/></a>
                 </#if>
                 </td>

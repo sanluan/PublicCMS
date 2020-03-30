@@ -49,6 +49,29 @@ public class RequestUtils {
         }
         return url;
     }
+    
+
+    /**
+     * @param string
+     * @return
+     */
+    public static String removeCRLF(String string) {
+        if (null != string) {
+            return string.replaceAll("\r|\n", Constants.BLANK);
+        }
+        return string;
+    }
+
+    /**
+     * @param values
+     */
+    public static void removeCRLF(String values[]) {
+        if (null != values) {
+            for (int i = 0; i < values.length; i++) {
+                values[i] = removeCRLF(values[i]);
+            }
+        }
+    }
 
     /**
      * 获取UserAgent
@@ -95,6 +118,12 @@ public class RequestUtils {
      */
     public static Cookie addCookie(String contextPath, HttpServletResponse response, String name, String value, Integer expiry,
             String domain) {
+        if (null != name) {
+            name = name.replaceAll("\r|\n", Constants.BLANK);
+        }
+        if (null != value) {
+            value = value.replaceAll("\r|\n", Constants.BLANK);
+        }
         Cookie cookie = new Cookie(name, value);
         if (CommonUtils.notEmpty(expiry)) {
             cookie.setMaxAge(expiry);
@@ -129,20 +158,9 @@ public class RequestUtils {
      */
     public static String getIpAddress(HttpServletRequest request) {
         if (null != request) {
-            String ip = request.getHeader("X-Real-IP");
-            if (CommonUtils.notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-                return ip;
-            }
-            ip = request.getHeader("X-Forwarded-For");
-            if (CommonUtils.notEmpty(ip) && !"unknown".equalsIgnoreCase(ip)) {
-                int index = ip.indexOf(Constants.COMMA);
-                if (index != -1) {
-                    return ip.substring(0, index);
-                }
-                return ip;
-            }
             return request.getRemoteAddr();
         }
         return null;
     }
+
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>${(metadata.extendData.title)!} </title>
+	<meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
+	<meta name="description" content="${(metadata.extendData.description)!}"/>
+	<@_includePlace  path='/76c53ac2-4f88-4ef3-984b-c81d00a48089.html' /> <#-- header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+	<div class="container">
+		<@_includePlace path="/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"/> <#-- 焦点图 -->
+		<div class="data-list left-content">
+<@import path="/ftl/tools.ftl" namespace="t"/>
+<#macro showCategory id count=3>
+		<@_category id=id>
+		<@_contentList categoryId=object.id containChild=true count=count>
+			<#if page.totalCount gt 0>
+				<a href="${object.url}"><h3>${object.name!}</h3></a>
+				<#list page.list as a>
+					<@include path="/ftl/data-list.ftl"/>
+				</#list>
+			</#if>
+		</@_contentList>
+</@_category>
+</#macro>
+<@showCategory metadata.extendData.category1!'' 3/>
+<@showCategory metadata.extendData.category2!'' 3/>
+<@showCategory metadata.extendData.category3!'' 3/>
+		</div>
+		<aside>			
+			<div>
+				<h3>近期热门</h3>
+				<ul class="rank">
+<@_contentList advanced=true modelId=1 status=1 startPublishDate=(.now?long-3600*1000*24*365)?number_to_datetime orderField='clicks' count=10>
+	<#list page.list as a>
+					<li><a href="${a.url!}">${a.title}</a><span>${a.clicks}</span></li>
+	</#list>
+</@_contentList>
+				</ul>
+			</div>
+			<div>
+				<h3>试用授权</h3>
+				<div class="page">
+					<a href="${site.sitePath}upload/publiccms_try.zip" target="_blank">文件下载</a>
+				</div>
+			</div>
+			<div>
+				<h3>文档视频下载</h3>
+				<div class="page">
+						<a href="https://pan.baidu.com/s/1O2wRWaC6dSBlKVNxNr9xvQ" target="_blank">百度网盘</a>密码:65uk
+				</div>
+			</div>
+			<div>
+				<h3>源码下载</h3>
+				<div class="page">
+					<a href="https://gitee.com/sanluan/PublicCMS" target="_blank">GITEE</a>
+					<a href="https://github.com/sanluan/PublicCMS" target="_blank">GITHUB</a>
+				</div>
+			</div>
+            <@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+		</aside>
+	</div>
+	<div class="clearfix-before"></div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- footer -->
+<script>
+	$("header nav ul li a:contains('首页')").parent().addClass('selected');
+</script>
+</body>
+</html>

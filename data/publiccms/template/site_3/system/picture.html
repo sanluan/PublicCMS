@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>${content.title} - ${category.name}</title>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+	<meta name="description" content="${content.description}"/>
+<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+	<link href="${site.sitePath!}assets/gallery/style.css" rel="stylesheet"/>
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+	<div class="container bread">
+		<@include path="/ftl/echoBread.ftl"/>
+		<@echoBread category.id/>
+	</div>
+	<div class="container">
+		<article>
+			<div id="content">
+				<div class="mod-gallery">
+					<div class="gallery-title">
+						<h2><a href="${url!}">${content.title}</a></h2>
+						<span class="gallery-counter">
+							<i class="gallery-counter-now" data-gallery="counter-now">?</i>/<i class="gallery-counter-total" data-gallery="counter-total">?</i>
+						</span>
+						<span class="gallery-info"><#if content.copied>来源：<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></span>
+					</div>
+					<div class="gallery-description">
+						<p>
+						${content.description!}
+						</p>
+					</div>
+					<div class="gallery-content" data-gallery="content">
+						<div class="gallery-toolbar">
+							<span style="float: right;">
+								<a data-gallery="view-origin" class="gallery-view-origin" href="javascript:void(0);" hideFocus="true" target="_blank">查看原图</a>
+								<a data-gallery="view-list" class="gallery-view-list" href="javascript:void(0);" hideFocus="true">全部图片</a>
+							</span>
+							<span style="float: left;">
+								<a data-gallery="auto-play" class="gallery-auto-play" href="javascript:void(0);" hideFocus="true">幻灯播放</a>
+								<a data-gallery="auto-stop" class="gallery-auto-stop" href="javascript:void(0);" hideFocus="true">停止播放</a>
+							</span>
+						</div>
+						<div class="gallery-photo">
+							<div class="gallery-photo-items" data-gallery="photo-items"></div>
+							<div class="gallery-photo-prev" data-gallery="photo-prev">
+								<a title="点击浏览上一张图片，支持'←'翻页" href="javascript:void(0);" hideFocus="true">上一页</a>
+							</div>
+							<div class="gallery-photo-next" data-gallery="photo-next">
+								<a title="点击浏览下一张图片，支持'→'翻页" href="javascript:void(0);" hideFocus="true">下一页</a>
+							</div>
+							<div class="gallery-loading" data-gallery="loading"><img src="${site.sitePath!}assets/gallery/images/loading.gif" /></div>
+							<div class="gallery-end" data-gallery="end">
+<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1>
+	<#list page.list as a>
+								<a href="${a.url!}">
+									<#if a.cover?has_content><img src="<@_thumb path=a.cover width=200 height=150/>" style="margin-top:20px;" alt="${a.title!}"></#if>
+									<span>下一图集 &gt;</span>
+								</a>
+	<#else>
+								<a href="${site.sitePath}">
+									<span>没有更多图集了，返回首页看看吧！</span>
+								</a>
+	</#list>
+</@_contentList>
+							</div>
+						</div>
+						<div class="gallery-photo-description">
+							<p data-gallery="photo-description">
+							</p>
+						</div>
+						<div class="gallery-footer">
+							<div class="clearfix">
+<@_contentList modelId=content.modelId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1>
+	<#if 2=page.pageIndex>
+		<#list page.list as a>
+								<span class="gallery-prev">
+									<a href="${a.url!}">
+										<#if a.cover?has_content>
+											<img src="<@_thumb path=a.cover width=100 height=75/>" alt="${a.title!}">
+										<#else>
+											<@_contentFileList contentId=a.id image=true count=1>
+												<#list page.list as i>
+													<img src="<@_thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
+												</#list>
+											</@_contentFileList>
+										</#if>
+										<span>&lt; 上一图集</span>
+									</a>
+								</span>
+		</#list>
+	</#if>
+</@_contentList>
+<@_contentList modelId=content.modelId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1>
+	<#list page.list as a>
+								<span class="gallery-next">
+									<a href="${a.url!}">
+										<#if a.cover?has_content>
+											<img src="<@_thumb path=a.cover width=100 height=75/>" alt="${a.title!}">
+										<#else>
+											<@_contentFileList contentId=a.id image=true count=1>
+												<#list page.list as i>
+													<img src="<@_thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
+												</#list>
+											</@_contentFileList>
+										</#if>
+										<span>下一图集 &gt;</span>
+									</a>
+								</span>
+	</#list>
+</@_contentList>
+								<div class="gallery-thumb" data-gallery="slider">
+									<span class="gallery-thumb-prev">
+										<a href="javascript:void(0);" hideFocus="true" data-slider="items-left"></a>
+									</span>
+									<span class="gallery-thumb-next">
+										<a href="javascript:void(0);" hideFocus="true" data-slider="items-right"></a>
+									</span>
+									<div class="gallery-thumbs" data-slider="control">
+										<div class="gallery-thumb-list">
+											<ul class="gallery-thumb-items" data-slider="items">
+											</ul>
+										</div>
+										<div class="gallery-thumb-bar mod-bar" data-slider="bar">
+											<span class="bar-left"></span>
+											<span class="bar-right"></span>
+											<div class="bar-body">
+												<div class="bar-content">
+													<a class="bar-btn" href="javascript:void(0);" hideFocus="true" data-slider="btn">
+														<b class="bar-btn-left"></b>
+														<b class="bar-btn-right"></b>
+														<span class="bar-btn-body">
+															<span>
+																<b class="bar-btn-content"></b>
+															</span>
+														</span>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="gallery-photolist" data-gallery="photolist">
+							<ul class="clearfix gallery-photolist-items" data-photolist="items">
+							</ul>
+							<div class="gallery-photo-page mod-page" data-photolist="pager">
+								<span class="page-prev" data-pager="prev"><a href="javascript:void(0);" hideFocus="true">上一页</a></span>
+								<ul class="page-items" data-pager="items">
+								</ul>
+								<span class="page-next" data-pager="next"><a href="javascript:void(0);" hideFocus="true">下一页</a></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<@import path="/ftl/tools.ftl" namespace="t"/>
+			<@include path="/ftl/comment.ftl"/><#-- 评论 -->
+		</article>
+	</div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+<script src="${site.sitePath!}assets/gallery/gallery.js"></script>
+<script>
+$(function(){
+	var gallery = new Gallery({
+		element: '#content .mod-gallery',
+		photos: [
+<@_contentFileList contentId=content.id image=true>
+<#list page.list as a>
+			{
+				big: '${a.filePath}',
+				small: '<@_thumb path=a.filePath width=100 height=75/>',
+				thumb: '<@_thumb path=a.filePath width=100 height=75/>',
+				note: '${(a.description!content.description!)?js_string}'
+			}<#if a?has_next>,</#if>
+</#list>
+</@_contentFileList>
+		],
+		preload: 3,
+		minHeight: 100,
+		scrollIntoView: false,
+		templatePhotoBig: '',
+		templatePhotoSmall: '',
+		templatePhotoThumb: ''
+	});
+});
+$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
+	$('.gallery-info em').text(data.clicks);
+});
+</script>
+</body>
+</html>

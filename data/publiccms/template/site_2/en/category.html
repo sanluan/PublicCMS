@@ -1,9 +1,6 @@
-<@_category id=id>
-	<#assign category=object/>
-	<#assign attribute=getCategoryAttribute(id)/>
-	<@_category id=category.parentId>
-		<#assign parent=object/>
-	</@_category>
+<#assign attribute=getCategoryAttribute(category.id)/>
+<@_category id=category.parentId>
+	<#assign parent=object/>
 </@_category>
 <!DOCTYPE html>
 <html lang="en">

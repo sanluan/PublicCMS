@@ -1,15 +1,12 @@
 package com.publiccms.logic.dao.cms;
 
 import java.io.Serializable;
-import java.util.Arrays;
 
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
 
 import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
@@ -18,6 +15,7 @@ import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.MustJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
+import org.hibernate.search.query.dsl.TermContext;
 import org.hibernate.transform.Transformers;
 import org.springframework.stereotype.Repository;
 
@@ -46,12 +44,14 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 
     /**
      * @param projection
+     * @param fuzzy
      * @param siteId
      * @param text
      * @param tagIds
      * @param dictionaryValues
      * @param categoryIds
      * @param modelIds
+     * @param fields
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -60,15 +60,68 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, Short siteId, String text, String tagIds, String[] dictionaryValues,
-            Integer[] categoryIds, String[] modelIds, Date startPublishDate, Date endPublishDate, Date expiryDate,
-            String orderField, Integer pageIndex, Integer pageSize) {
+    public PageHandler query(boolean projection, boolean fuzzy, Short siteId, Integer[] categoryIds, String[] modelIds,
+            String text, String[] fields, String tagIds, String[] dictionaryValues, Date startPublishDate, Date endPublishDate,
+            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
+        FullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
+                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
+        return getPage(query, pageIndex, pageSize);
+    }
+
+    /**
+     * @param projection
+     * @param fuzzy
+     * @param siteId
+     * @param categoryIds
+     * @param modelIds
+     * @param text
+     * @param fields
+     * @param tagIds
+     * @param dictionaryValues
+     * @param startPublishDate
+     * @param endPublishDate
+     * @param expiryDate
+     * @param orderField
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, Short siteId, Integer[] categoryIds, String[] modelIds,
+            String text, String[] fields, String tagIds, String[] dictionaryValues, Date startPublishDate, Date endPublishDate,
+            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+        QueryBuilder queryBuilder = getFullTextQueryBuilder();
+        FullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
+                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
+        return getFacetPage(queryBuilder, query, facetFields, 10, pageIndex, pageSize);
+    }
+
+    private FullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean fuzzy, Short siteId,
+            Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField) {
         MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
         if (CommonUtils.notEmpty(text)) {
-            termination.must(queryBuilder.keyword().onFields(textFields).matching(text).createQuery());
-        } else if (CommonUtils.notEmpty(tagIds)) {
-            termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
+            TermContext term = queryBuilder.keyword();
+            if (!fuzzy) {
+                term.fuzzy().withEditDistanceUpTo(1);
+            }
+            if (CommonUtils.notEmpty(fields)) {
+                for (String field : fields) {
+                    if (!ArrayUtils.contains(textFields, field)) {
+                        fields = textFields;
+                    }
+                }
+            } else {
+                fields = textFields;
+            }
+            termination.must(term.onFields(textFields).matching(text).createQuery());
+        }
+        if (CommonUtils.notEmpty(tagIds)) {
+            TermContext term = queryBuilder.keyword();
+            if (!fuzzy) {
+                term.fuzzy().withEditDistanceUpTo(1);
+            }
+            termination.must(term.onFields(tagFields).matching(tagIds).createQuery());
         }
         if (CommonUtils.notEmpty(dictionaryValues)) {
             for (String value : dictionaryValues) {
@@ -109,61 +162,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             query.setProjection(projectionFields);
             query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         }
-        return getPage(query, pageIndex, pageSize);
-    }
-
-    /**
-     * @param siteId
-     * @param categoryIds
-     * @param modelIds
-     * @param text
-     * @param tagIds
-     * @param dictionaryValues
-     * @param startPublishDate
-     * @param endPublishDate
-     * @param expiryDate
-     * @param orderField
-     * @param pageIndex
-     * @param pageSize
-     * @return results page
-     */
-    public FacetPageHandler facetQuery(Short siteId, String[] categoryIds, String[] modelIds, String text, String tagIds,
-            String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
-            Integer pageIndex, Integer pageSize) {
-        QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
-        if (CommonUtils.notEmpty(text)) {
-            termination.must(queryBuilder.keyword().onFields(textFields).matching(text).createQuery());
-        } else if (CommonUtils.notEmpty(tagIds)) {
-            termination.must(queryBuilder.keyword().onFields(tagFields).matching(tagIds).createQuery());
-        }
-        if (CommonUtils.notEmpty(dictionaryValues)) {
-            for (String value : dictionaryValues) {
-                termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(value).createQuery());
-            }
-        }
-        if (null != startPublishDate) {
-            termination.must(queryBuilder.range().onField("publishDate").above(startPublishDate).createQuery());
-        }
-        if (null != endPublishDate) {
-            termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
-        }
-        if (null != expiryDate) {
-            termination.must(queryBuilder.range().onField("expiryDate").from(1L).to(expiryDate.getTime()).createQuery()).not();
-        }
-        Map<String, List<String>> valueMap = new LinkedHashMap<>();
-        if (CommonUtils.notEmpty(categoryIds)) {
-            valueMap.put("categoryId", Arrays.asList(categoryIds));
-        }
-        if (CommonUtils.notEmpty(modelIds)) {
-            valueMap.put("modelId", Arrays.asList(modelIds));
-        }
-        FullTextQuery query = getFullTextQuery(termination.createQuery());
-        if ("publishDate".equals(orderField)) {
-            Sort sort = new Sort(new SortField("publishDate", SortField.Type.LONG, true));
-            query.setSort(sort);
-        }
-        return getFacetPage(queryBuilder, query, facetFields, valueMap, 10, pageIndex, pageSize);
+        return query;
     }
 
     /**
@@ -280,28 +279,28 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         switch (orderField) {
         case "scores":
-            queryHandler.order("bean.scores " + orderType);
+            queryHandler.order("bean.scores ").append(orderType);
             break;
         case "comments":
-            queryHandler.order("bean.comments " + orderType);
+            queryHandler.order("bean.comments ").append(orderType);
             break;
         case "clicks":
-            queryHandler.order("bean.clicks " + orderType);
+            queryHandler.order("bean.clicks ").append(orderType);
             break;
         case "publishDate":
-            queryHandler.order("bean.publishDate " + orderType);
+            queryHandler.order("bean.publishDate ").append(orderType);
             break;
         case "updateDate":
-            queryHandler.order("bean.updateDate " + orderType);
+            queryHandler.order("bean.updateDate ").append(orderType);
             break;
         case "checkDate":
-            queryHandler.order("bean.checkDate " + orderType);
+            queryHandler.order("bean.checkDate ").append(orderType);
             break;
         default:
             if (ORDERTYPE_DESC.equals(orderType)) {
                 queryHandler.order("bean.sort desc");
             }
-            queryHandler.order("bean.publishDate " + orderType);
+            queryHandler.order("bean.publishDate ").append(orderType);
         }
         queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
@@ -309,11 +308,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 
     @Override
     protected CmsContent init(CmsContent entity) {
+        Date now = CommonUtils.getDate();
         if (null == entity.getCreateDate()) {
-            entity.setCreateDate(CommonUtils.getDate());
+            entity.setCreateDate(now);
         }
         if (null == entity.getPublishDate()) {
-            entity.setPublishDate(CommonUtils.getDate());
+            entity.setPublishDate(now);
         }
         if (CommonUtils.empty(entity.getTagIds())) {
             entity.setTagIds(null);

@@ -1,0 +1,72 @@
+<@_voteList startStartDate=startStartDate endStartDate=endStartDate 
+            startEndDate=startEndDate endEndDate=endEndDate title=title
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsVote/lookup.html" method="post">
+        <#include "../include_page/parameters.html"/>
+        <input type="hidden" name="field" value="${field!'voteId'}"/>
+        <input type="hidden" name="titleField" value="${titleField!'title'}"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li class="colspan">
+                    <label><@t.page 'start_date'/>:</label>
+                    <input type="text" name="startStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startStartDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endStartDate!}" />
+                </li>
+                <li class="colspan">
+                    <label><@t.page 'end_date'/>:</label>
+                    <input type="text" name="startEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startEndDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endEndDate!}" />
+                </li>
+                <li>
+                    <label><@t.page 'title'/>:</label>
+                    <input type="text" name="title" value="${title!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="button" class="button" onclick="$.bringBack({'${field!'voteId'}':'','${titleField!'title'}':''});return false;"><@t.page 'button.clear_select'/></button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="list" width="100%" layoutH="96">
+        <thead>
+            <tr>
+                <th><@t.page 'select'/></th>
+                <th>ID</th>
+                <th><@t.page 'title'/></th>
+                <th><@t.page 'description'/></th>
+                <th orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
+                <th orderField="startDate" class="<#if orderField??&&'startDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'start_date'/></th>
+                <th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'end_date'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'voteId'}':'${a.id}','${titleField!'title'}':'${(a.title?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                </td>
+                <td class="center">${a.id!}</td>
+                <td class="center exclude-translate" >${a.title!}</td>
+                <td class="center exclude-translate">${a.description!}</td>
+                <td>${a.scores!}</td>
+                <td>${a.startDate!}</td>
+                <td>${a.endDate!}</td>
+                <td>${a.createDate!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/pageDialog.html"/>
+</div>
+</@_voteList>

@@ -3,7 +3,6 @@ package com.publiccms.controller.web.cms;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -40,7 +39,6 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsContentStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
@@ -76,26 +74,25 @@ public class ContentController {
      * @param site
      * 
      * @param entity
+     * @param user 
      * @param draft
      * @param attribute
      * @param contentParameters
      * @param returnUrl
      * @param request
-     * @param session
      * @param model
      * @return view name
      */
     @RequestMapping(value = "save", method = RequestMethod.POST)
     @Csrf
-    public String save(@RequestAttribute SysSite site, CmsContent entity, Boolean draft, CmsContentAttribute attribute,
-            @ModelAttribute CmsContentParameters contentParameters, String returnUrl, HttpServletRequest request,
-            HttpSession session, ModelMap model) {
+    public String save(@RequestAttribute SysSite site, CmsContent entity, @SessionAttribute SysUser user, Boolean draft,
+            CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters, String returnUrl,
+            HttpServletRequest request, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
-        SysUser user = ControllerUtils.getUserFromSession(session);
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (ControllerUtils.verifyNotEmpty("categoryModel", categoryModel, model)
@@ -124,6 +121,7 @@ public class ContentController {
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
+            entity.setContribute(true);
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
             service.save(entity);
@@ -138,25 +136,6 @@ public class ContentController {
     }
 
     /**
-     * 内容推荐重定向并计数
-     * 
-     * @param site
-     * 
-     * @param id
-     * @param request
-     * @return view name
-     */
-    @RequestMapping("related/redirect")
-    public String relatedRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        ClickStatistics clickStatistics = statisticsComponent.relatedClicks(id);
-        if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + clickStatistics.getUrl();
-        } else {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
-        }
-    }
-
-    /**
      * 内容链接重定向并计数
      * 
      * @param site
@@ -166,7 +145,7 @@ public class ContentController {
      */
     @RequestMapping("redirect")
     public String contentRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
+        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(site, id);
         if (null != contentStatistics && null != contentStatistics.getUrl()
                 && site.getId().equals(contentStatistics.getSiteId())) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentStatistics.getUrl();
@@ -174,42 +153,5 @@ public class ContentController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
     }
-
-    /**
-     * 内容评分
-     * 
-     * @param site
-     * @param id
-     * @param request
-     * @return view name
-     */
-    @RequestMapping("scores")
-    @ResponseBody
-    public int scores(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-
-        CmsContentStatistics contentStatistics = statisticsComponent.contentScores(id);
-        if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
-            return contentStatistics.getScores() + contentStatistics.getScores();
-        }
-        return 0;
-    }
-
-    /**
-     * 内容点击
-     * 
-     * @param site
-     * @param id
-     * @param request
-     * @return click
-     */
-    @RequestMapping("click")
-    @ResponseBody
-    public int click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(id);
-        if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
-            return contentStatistics.getClicks() + contentStatistics.getClicks();
-        }
-        return 0;
-    }
-
+    
 }

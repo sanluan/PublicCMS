@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+    <link href="${site.sitePath}assets/style.css" rel="stylesheet"/>
+</head>
+<body>
+    <header>
+        <h1>站点列表</h1>
+    </header>    
+    <main>
+<@_sysSiteList pageSize=10>
+        <ul>
+    <#list page.list?reverse as a><#if a.id!=site.id>
+        <li>
+            <div class="site-box">
+                <h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[已启用静态化]</#if></h3>
+                <div>
+                    <p><a href="${a.dynamicPath!}admin/" target="_blank">管理后台</a></p>
+                    域名列表:
+                    <@_sysDomainList advanced=true siteId=a.id>
+                        <#list page.list as a>
+                    <p>${a.name}<#if a.wild>[通配域名]</#if> <#if a.path?has_content>模板根目录:${(a.path)!}</#if></p>
+                        </#list>
+                    </@_sysDomainList>
+                    
+                </div>
+            </div>
+        </li>
+    </#if></#list>
+        </ul>
+</@_sysSiteList>
+        <div class="clear"></div>
+        <p>所有站点后台默认用户名/密码：admin/admin</p>
+        <p>域名列表表示您使用这些域名访问本程序，将展示对应站点！通配域名表示所有该域名的子域名也可以访问到这个站点。模板根目录表示使用该域名访问，访问的是该目录下的模板文件</p>
+        <p>静态化站点首次访问需要您登录后台，在维护->系统维护->任务计划 中执行“重新生成全站”，才能正常浏览</p>
+        <p>为方便测试，我们已经将dev.publiccms.com及其所有子域名解析指向了127.0.0.1,它在您联网的情况下可以与localhost,loopback一样用来测试本地服务</p>
+    </main>
+    <footer>
+        <#if base?has_content>
+            <a href="?locale=en">English</a>
+        </#if>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer> 
+</body>
+</html>

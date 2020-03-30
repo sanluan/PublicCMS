@@ -1,4 +1,5 @@
-<form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+<@_sysRoleList pageIndex=pageNum pageSize=numPerPage>
+<form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
 </form>
 <div class="pageContent">
@@ -9,7 +10,6 @@
             <li><a href="sysRole/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
-<@_sysRoleList pageIndex=pageNum count=numPerPage>
     <table class="list" width="100%" layoutH="57">
         <thead>
             <tr>
@@ -23,7 +23,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.ownsAllRight?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.showAllModule?then(t.pageMessage('yes'),'')}</td>
             </tr>

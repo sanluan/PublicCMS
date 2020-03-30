@@ -1,13 +1,14 @@
 package com.publiccms.logic.service.cms;
 
-import com.publiccms.entities.cms.CmsCategoryModel;
-import com.publiccms.logic.dao.cms.CmsCategoryModelDao;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
-import com.publiccms.common.handler.PageHandler;
+import com.publiccms.entities.cms.CmsCategoryModel;
+import com.publiccms.logic.dao.cms.CmsCategoryModelDao;
 
 /**
  *
@@ -17,7 +18,7 @@ import com.publiccms.common.handler.PageHandler;
 @Service
 @Transactional
 public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
-    
+
     private String[] ignoreProperties = new String[] { "id" };
 
     /**
@@ -26,8 +27,8 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(String modelId, Integer categoryId) {
-        return dao.getPage(modelId, categoryId);
+    public List<CmsCategoryModel> getList(String modelId, Integer categoryId) {
+        return dao.getList(modelId, categoryId);
     }
 
     /**
@@ -44,5 +45,5 @@ public class CmsCategoryModelService extends BaseService<CmsCategoryModel> {
 
     @Autowired
     private CmsCategoryModelDao dao;
-    
+
 }

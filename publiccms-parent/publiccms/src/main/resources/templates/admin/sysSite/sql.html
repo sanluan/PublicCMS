@@ -1,4 +1,4 @@
-<form method="post" action="sysSite/execSql.do?navTabId=sysSite/sql" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="sysSite/execSql.do?navTabId=sysSite/sql" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
@@ -8,14 +8,19 @@
     </div>
     <div class="pageFormContent" layoutH="50">
         <dl class="nowrap">
-            <dt>SQL:</dt>
+            <dt>SQL Command:</dt>
             <dd>
-                <textarea class="required" name="sql" maxlength="500" cols="80" rows="4"></textarea>
-                <a class="btnLook" href="sysSite/sqlExample.html" width="920" lookupGroup=""><@t.page 'sql.select'/></a>
-                <span class="info"><@t.page 'sql.description'/></span>
+                <input name="sqlcommand" type="text" readonly="readonly" class="readonly required"/>
+                <span class="info"><button type="button" class="button" onclick="command('update_url','oldurl,newurl')"><@t.page 'sql.example.1'/></button></span>
             </dd>
         </dl>
-<@_logOperateList operate='execSql.site' count=10>
+        <dl class="nowrap">
+            <dt><@t.page 'parameter'/>:</dt>
+            <dd>
+                <p class="sqlcommandBox"></p>
+            </dd>
+        </dl>
+<@_logOperateList operate='execSql.site' pageSize=10>
     <#list page.list as a>
         <@t.merge 'userIds' a.userId!/>
     </#list>
@@ -37,7 +42,7 @@
         <dl class="nowrap">
             <dt><@t.page 'log.content'/>:</dt>
             <dd>
-                ${(content.sql)!}
+                ${(content.sqlcommand)!}:<#if content.sqlparameters?has_content><#list content.sqlparameters as a>${a}<#sep>,</#list></#if>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -51,3 +56,15 @@
 </@_logOperateList>
     </div>
 </form>
+<script>
+function command(command,parametersName){
+    $('input[name=sqlcommand]',navTab.getCurrentPanel()).val(command);
+    $('.sqlcommandBox',navTab.getCurrentPanel()).empty();
+    if(parametersName ) {
+        var parameters = parametersName.split(",");
+        for(i=0; i<parameters.length; i++ ){
+            $('.sqlcommandBox',navTab.getCurrentPanel()).append('<label>'+parameters[i]+':</label><input name="sqlparameters" type="text" class="required"/>').initUI();
+        }
+    }
+}
+</script>

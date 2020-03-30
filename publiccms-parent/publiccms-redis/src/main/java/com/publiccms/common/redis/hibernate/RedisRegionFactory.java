@@ -139,7 +139,7 @@ public class RedisRegionFactory extends RegionFactoryTemplate {
         String configurationResourceName = (String) configValues.get("hibernate.redis.configurationResourceName");
         if (null != configurationResourceName) {
             Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
-            return new RedisClient(RedisUtils.createJedisPool(redisProperties));
+            return new RedisClient(RedisUtils.createOrGetJedisPool(redisProperties));
         } else {
             return null;
         }

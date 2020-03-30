@@ -1,0 +1,26 @@
+<#ftl auto_esc=false/>
+{<#assign attribute=getContentAttribute(content.id)/>
+    <@_category id=content.categoryId absoluteURL=true>
+        <#assign category=object/>
+    </@_category>
+    "id":"${content.id}",
+    "cover":"${content.cover!}"
+    "title":"${content.title?json_string}",
+    "url":"${content.url!}",
+    "description":"${(content.description?json_string)!}",
+    "categoryId":"${content.categoryId}",
+    "categoryTitle":"${category.name?json_string}",
+    "categoryUrl":"${category.url!}",
+    "editor":"${content.editor!}",
+    "publishDate":"${content.publishDate}",
+    "text":"${(attribute.text?json_string)!}",
+    "sourceUrl":"${(attribute.sourceUrl)!}",
+    "source":"${(attribute.source)!}"<#if content.hasFiles>
+    ,"files:[<@_contentFileList contentId=content.id fileTypes='video,audio,other' absoluteURL=true><#list page.list as file>
+        {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
+    ]</#if><#if content.hasImages>
+    ,"images":[<@_contentFileList contentId=content.id fileTypes='image' absoluteURL=true><#list page.list as file>
+        {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
+    ]</#if>
+</@_content>
+}

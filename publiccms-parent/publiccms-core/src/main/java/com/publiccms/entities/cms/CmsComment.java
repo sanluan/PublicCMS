@@ -38,6 +38,8 @@ public class CmsComment implements java.io.Serializable {
     private Long replyId;
     @GeneratorColumn(title = "回复用户ID", condition = true)
     private Long replyUserId;
+    @GeneratorColumn(title = "回复数", condition = true)
+    private int replies;
     @GeneratorColumn(title = "内容ID", condition = true)
     private long contentId;
     @GeneratorColumn(title = "审核用户", condition = true)
@@ -58,21 +60,23 @@ public class CmsComment implements java.io.Serializable {
     public CmsComment() {
     }
 
-    public CmsComment(short siteId, long userId, long contentId, Date createDate, int status, boolean disabled) {
+    public CmsComment(short siteId, long userId, int replies, long contentId, Date createDate, int status, boolean disabled) {
         this.siteId = siteId;
         this.userId = userId;
+        this.replies = replies;
         this.contentId = contentId;
         this.createDate = createDate;
         this.status = status;
         this.disabled = disabled;
     }
 
-    public CmsComment(short siteId, long userId, Long replyId, Long replyUserId, long contentId, Long checkUserId, Date checkDate, Date updateDate,
-            Date createDate, int status, boolean disabled, String text) {
+    public CmsComment(short siteId, long userId, Long replyId, Long replyUserId, Integer replies, long contentId, Long checkUserId,
+            Date checkDate, Date updateDate, Date createDate, int status, boolean disabled, String text) {
         this.siteId = siteId;
         this.userId = userId;
         this.replyId = replyId;
         this.replyUserId = replyUserId;
+        this.replies = replies;
         this.contentId = contentId;
         this.checkUserId = checkUserId;
         this.checkDate = checkDate;
@@ -129,6 +133,15 @@ public class CmsComment implements java.io.Serializable {
 
     public void setReplyUserId(Long replyUserId) {
         this.replyUserId = replyUserId;
+    }
+    
+    @Column(name = "replies", nullable=false)
+    public int getReplies() {
+        return this.replies;
+    }
+    
+    public void setReplies(int replies) {
+        this.replies = replies;
     }
 
     @Column(name = "content_id", nullable = false)

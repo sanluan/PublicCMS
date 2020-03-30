@@ -17,8 +17,8 @@ maven(使用以下文件：.mvn,pom.xml,mvnw,mvnw.cmd)
 
 gradle(使用以下文件：gradle,build.gradle,settings.gradle,gradlew,gradlew.bat)
 
-已安装gradlew完整命令行为  gradle clean
-未安装gradlew完整命令行为 gradlew clean
+已安装gradle完整命令行为  gradle clean
+未安装gradle完整命令行为 gradlew clean
 
 其中clean可以替换为以下任务：
 清空 ：clean

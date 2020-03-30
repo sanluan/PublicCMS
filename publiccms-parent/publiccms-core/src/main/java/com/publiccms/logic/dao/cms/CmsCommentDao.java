@@ -24,7 +24,7 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
      * @param siteId
      * @param userId
      * @param replyId
-     * @param emptyReply 
+     * @param emptyReply
      * @param replyUserId
      * @param contentId
      * @param checkUserId
@@ -40,27 +40,27 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
             Long checkUserId, Integer status, Boolean disabled, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsComment bean");
-        if (CommonUtils.notEmpty(siteId)) {
+        if (null != siteId) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
         }
-        if (CommonUtils.notEmpty(userId)) {
+        if (null != userId) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (CommonUtils.notEmpty(replyId)) {
+        if (null != replyId) {
             queryHandler.condition("bean.replyId = :replyId").setParameter("replyId", replyId);
         } else if (null != emptyReply && emptyReply) {
             queryHandler.condition("bean.replyId is null");
         }
-        if (CommonUtils.notEmpty(replyUserId)) {
+        if (null != replyUserId) {
             queryHandler.condition("bean.replyUserId = :replyUserId").setParameter("replyUserId", replyUserId);
         }
-        if (CommonUtils.notEmpty(contentId)) {
+        if (null != contentId) {
             queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
         }
-        if (CommonUtils.notEmpty(checkUserId)) {
+        if (null != checkUserId) {
             queryHandler.condition("bean.checkUserId = :checkUserId").setParameter("checkUserId", checkUserId);
         }
-        if (CommonUtils.notEmpty(status)) {
+        if (null != status) {
             queryHandler.condition("bean.status = :status").setParameter("status", status);
         }
         if (null != disabled) {
@@ -73,17 +73,20 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
             orderField = CommonConstants.BLANK;
         }
         switch (orderField) {
+        case "replies":
+            queryHandler.order("bean.replies ").append(orderType);
+            break;
         case "checkDate":
-            queryHandler.order("bean.checkDate " + orderType);
+            queryHandler.order("bean.checkDate ").append(orderType);
             break;
         case "updateDate":
-            queryHandler.order("bean.updateDate " + orderType);
+            queryHandler.order("bean.updateDate ").append(orderType);
             break;
         case "createDate":
-            queryHandler.order("bean.createDate " + orderType);
+            queryHandler.order("bean.createDate ").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id " + orderType);
+            queryHandler.order("bean.id ").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

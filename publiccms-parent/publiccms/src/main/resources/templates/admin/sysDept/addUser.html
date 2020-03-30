@@ -2,7 +2,7 @@
     <#assign a=object/>
 </@_sysUser>
 <@_sysDept id=(a.deptId)!deptId><#assign dept=object/></@_sysDept>
-<form method="post" action="sysDept/saveUser.do?callbackType=closeCurrent&navTabId=sysDept/userList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="sysDept/saveUser.do?callbackType=closeCurrent&navTabId=sysDept/userList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">

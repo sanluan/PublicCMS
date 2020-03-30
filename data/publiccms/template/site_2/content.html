@@ -1,13 +1,10 @@
-<@_content id=id>
-	<#assign content=object/>
-	<#assign arrtibute=getContentAttribute(id)/>
-	<@_category id=content.categoryId>
-		<#assign category=object/>
+<#assign arrtibute=getContentAttribute(content.id)/>
+<@_category id=content.categoryId>
+	<#assign category=object/>
 	<@_category id=category.parentId>
 		<#assign parent=object/>
 	</@_category>
-	</@_category>
-</@_content>
+</@_category>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>

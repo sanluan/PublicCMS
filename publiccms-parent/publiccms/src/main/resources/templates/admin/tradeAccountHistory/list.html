@@ -1,0 +1,79 @@
+<@_tradeAccountHistoryList userId=userId status=status startCreateDate=startCreateDate endCreateDate=endCreateDate 
+            orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'user'/>:</label>
+                    <#include "../include_page/userId.html"/>
+                </li>
+                <li>
+                    <label>状态：</label>
+                    <input type="text" name="status" value="${status!}" />
+                </li>
+                <li class="colspan">
+                    <label>创建日期：</label>
+                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="list" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>流水号</th>
+                <th>账户ID</th>
+                <th><@t.page 'user'/></th>
+                <th>操作用户</th>
+                <th>金额</th>
+                <th>变动</th>
+                <th>余额</th>
+                <th>状态</th>
+                <th>描述</th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'userIds' a.accountId!/>
+                <@t.merge 'userIds' a.userId!/>
+            </#list>
+            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td>${a.id!}</td>
+                <td>${a.serialNumber!}</td>
+                <td>${a.accountId!}</td>
+                <td class="center">
+                    ${(userMap[a.accountId?string].nickName)!}
+                </td>
+                <td class="center">
+                    ${(userMap[a.userId?string].nickName)!}
+                </td>
+                <td>${a.amount!}</td>
+                <td>${a.amountChange!}</td>
+                <td>${a.balance!}</td>
+                <td><@t.page 'status.accountHistory.'+a.status/></td>
+                <td>${a.description!}</td>
+                <td>${a.createDate!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_tradeAccountHistoryList>

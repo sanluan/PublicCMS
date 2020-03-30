@@ -1,5 +1,6 @@
 package com.publiccms.logic.component.config;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -102,10 +103,14 @@ public class CorsConfigComponent implements SiteCache, Config {
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws ClassNotFoundException
+     * @throws SecurityException 
+     * @throws NoSuchMethodException 
+     * @throws InvocationTargetException 
+     * @throws IllegalArgumentException 
      */
     @Autowired
     public void initCache(CacheEntityFactory cacheEntityFactory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
         cache = cacheEntityFactory.createCacheEntity("cors", CacheEntityFactory.MEMORY_CACHE_ENTITY);
     }
 
@@ -134,21 +139,18 @@ public class CorsConfigComponent implements SiteCache, Config {
                 getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_ORIGINS + CONFIG_CODE_DESCRIPTION_SUFFIX),
                 "*"));
-        extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_METHODS, INPUTTYPE_TEXT, false,
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_METHODS, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_METHODS),
-                getMessage(locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_METHODS + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                null));
-        extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_HEADERS, INPUTTYPE_TEXT, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_METHODS
+                        + CONFIG_CODE_DESCRIPTION_SUFFIX)));
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOWED_HEADERS, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_HEADERS),
-                getMessage(locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_HEADERS + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                null));
-        extendFieldList.add(new SysExtendField(CONFIG_EXPOSED_HEADERS, INPUTTYPE_TEXT, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOWED_HEADERS
+                        + CONFIG_CODE_DESCRIPTION_SUFFIX)));
+        extendFieldList.add(new SysExtendField(CONFIG_EXPOSED_HEADERS, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPOSED_HEADERS),
-                getMessage(locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPOSED_HEADERS + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                null));
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPOSED_HEADERS
+                        + CONFIG_CODE_DESCRIPTION_SUFFIX)));
         extendFieldList.add(new SysExtendField(CONFIG_ALLOW_CREDENTIALS, INPUTTYPE_BOOLEAN, false,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_CREDENTIALS),
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_CREDENTIALS

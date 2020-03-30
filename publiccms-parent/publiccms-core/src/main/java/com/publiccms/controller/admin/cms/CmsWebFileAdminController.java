@@ -32,6 +32,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
+import com.publiccms.views.pojo.entities.FileSize;
 
 /**
  * 
@@ -102,14 +103,17 @@ public class CmsWebFileAdminController {
             try {
                 for (MultipartFile file : files) {
                     String originalName = file.getOriginalFilename();
+                    String suffix = CmsFileUtils.getSuffix(originalName);
                     String filePath = path + CommonConstants.SEPARATOR + originalName;
                     String fuleFilePath = siteComponent.getWebFilePath(site, filePath);
                     if (null != override && override || !CmsFileUtils.exists(fuleFilePath)) {
                         CmsFileUtils.upload(file, fuleFilePath);
+                        FileSize fileSize = CmsFileUtils.getFileSize(fuleFilePath, suffix);
+                        logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
+                                fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
+                                CommonUtils.getDate(), filePath));
                     }
-                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            originalName, CmsFileUtils.getFileType(CmsFileUtils.getSuffix(originalName)), file.getSize(),
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), filePath));
                 }
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());

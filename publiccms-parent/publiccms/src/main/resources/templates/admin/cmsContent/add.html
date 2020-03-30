@@ -15,7 +15,7 @@ function clickAddTag(){
     $('.tags .button',navTab.getCurrentPanel()).click();
 }
 </script>
-<form method="post" action="cmsContent/save.do?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsContent/save.do?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input name="parentId" type="hidden" value="${parentId!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
@@ -96,7 +96,7 @@ $('#categoryIds',navTab.getCurrentPanel()).on('click','span>a',function(){
     return false;
 });
 <#if a?has_content>
-<@_contentList quoteId=a.id count=100>
+<@_contentList quoteId=a.id pageSize=100>
     <#list page.list as a>
     <@_category id=a.categoryId>
     addCategory('${a.categoryId}','${object.name}','${a.id}');
@@ -179,7 +179,7 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['description'])!}:</dt>
                     <dd>
-                        <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="280" cols="80" rows="4">${(a.description)!}</textarea>
+                        <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!}</textarea>
                     </dd>
                 </dl>
             </#if>
@@ -211,7 +211,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                     <dt>${(model.fieldTextMap['cover'])!}:</dt>
                     <dd>
                         <input name="cover"<#if requiredFieldList?seq_contains('cover')> class="required"</#if> value="${(a.cover)!}" maxlength="300" size="50" type="text"/>
-                        <a class="btnAttach" href="common/upload.html?field=cover&onlyImage=true" lookupGroup="" width="560" height="300">${(model.fieldTextMap['cover'])!}</a>
+                        <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="560" height="300">${(model.fieldTextMap['cover'])!}</a>
                         <#include "../include_page/preview.html"/>
                         <@preview 'content' 'input[name=cover]'/>
                     </dd>
@@ -238,6 +238,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                     </dd>
                 </dl>
             </#if>
+            <div class="clearfix">
             <#if model.hasImages||model.hasFiles>
                 <#include "../include_page/contentFiles.html"/>
                 <#if model.hasImages>
@@ -247,6 +248,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                     <@contentFiles false id!/>
                 </#if>
             </#if>
+            </div>
         </#if>
             </div>
             <div class="pageFormContent" layoutH="96">

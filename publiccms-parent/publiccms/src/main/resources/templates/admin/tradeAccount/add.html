@@ -1,0 +1,19 @@
+<form method="post" autocomplete="off" action="tradeAccount/save.do?callbackType=closeCurrent&navTabId=tradeAccount/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH="50">
+        <dl class="nowrap">
+            <dt><@t.page 'user'/>:</dt>
+            <dd>
+                <input name="userId" type="hidden"/>
+                <input name="nickName" readonly="readonly" size="10" type="text"/>
+                <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
+            </dd>
+        </dl>
+    </div>
+</form>

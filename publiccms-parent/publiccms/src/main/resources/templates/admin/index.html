@@ -3,13 +3,14 @@
 <head>
     <meta charset="utf-8">
     <title>${site.name} - <@t.page 'management_system'/></title>
+    <meta name="viewport" content="width=device-width,initial-scale=0.6">
     <link href="${res}/codemirror/lib/codemirror.css" rel="stylesheet" >
     <link href="${res}/codemirror/addon/hint/show-hint.css" rel="stylesheet" >
     <link href="${res}/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
     <!--[if IE 7]>
     <link href="${res}/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet" >
     <![endif]-->
-    <link href="${res}/themes/css/core.css?version=4" rel="stylesheet" media="screen"/>
+    <link href="${res}/themes/css/core.css?version=5" rel="stylesheet" media="screen"/>
     <link href="${res}/themes/css/print.css" rel="stylesheet" media="print"/>
     <!--[if lte IE 9]>
         <link href="${res}/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
@@ -53,9 +54,11 @@ $(function(){
         callback:function(){
             initEnv();
             $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"toptry"});
+        <@_sysAuthorized roleIds=admin.roles url='myself/password'>
             <#if admin.weakPassword>
                 $.pdialog.open("myself/password.html?target=dialog", "_blank", "<@t.page 'user.new_password'/>", {mask: true, width: 400, height: 280});
             </#if>
+        </@_sysAuthorized>
         }
     });
 });
@@ -65,12 +68,10 @@ $(function(){
 <header>
     <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo.png</#if>"/></a>
     <ul class="nav">
-        <li>
-            <a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i> <@t.page 'dynamic_website'/></a>
-            <#if site.useStatic>
-                | <a href="${site.sitePath!}" target="_blank"><i class="icon-home icon-large"></i> <@t.page 'website'/></a>
-            </#if>
-        </li>
+        <li><a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i></a></li>
+    <#if site.useStatic>
+        <li><a href="${site.sitePath!}" target="_blank"><@t.page 'website'/></a></li>
+    </#if>
     <@_sysAuthorized roleIds=admin.roles url='clearCache'>
         <li>
             <a href="clearCache" target="ajaxTodo" title="<@t.page 'button.clear_cache'/>"><i class="icon-rubbish icon-large"></i> </a>

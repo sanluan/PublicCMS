@@ -76,7 +76,7 @@ public interface RenderHandler {
      * @throws Exception
      * @throws Exception
      */
-    public int getInteger(String name, int defaultValue) throws Exception;
+    public Integer getInteger(String name, Integer defaultValue) throws Exception;
 
     /**
      * @param name
@@ -147,7 +147,7 @@ public interface RenderHandler {
      * @return bool value
      * @throws Exception
      */
-    public boolean getBoolean(String name, boolean defaultValue) throws Exception;
+    public Boolean getBoolean(String name, Boolean defaultValue) throws Exception;
 
     /**
      * @param name

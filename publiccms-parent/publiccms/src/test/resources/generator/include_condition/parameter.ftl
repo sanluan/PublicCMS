@@ -6,4 +6,4 @@
     order=false
 />
 <#list columnList as a><#if a.order><#assign order=true orderSize+=1/></#if></#list>
-            <#if order><#if orderSize gt 1>orderField=orderField </#if>orderType=orderType </#if>pageIndex=pageNum count=numPerPage
+            <#if order><#if orderSize gt 1>orderField=orderField </#if>orderType=orderType </#if>pageIndex=pageNum pageSize=numPerPage

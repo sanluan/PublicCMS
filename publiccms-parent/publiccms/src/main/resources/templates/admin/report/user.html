@@ -18,15 +18,17 @@
         <div id="register" class="col-lg-4 col-md-6"></div>
         <div id="login" class="col-lg-4 col-md-6"></div>
         <div id="operate" class="col-lg-4 col-md-6"></div>
+        <div id="comment" class="col-lg-4 col-md-6"></div>
     </div>
 <script>
 document.getElementById('register').style.height=document.getElementById('register').offsetWidth+'px';
 document.getElementById('login').style.height=document.getElementById('login').offsetWidth+'px';
 document.getElementById('operate').style.height=document.getElementById('operate').offsetWidth+'px';
+document.getElementById('comment').style.height=document.getElementById('comment').offsetWidth+'px';
 echarts.init(document.getElementById('register')).setOption({
     title: {
         text: '<@t.page 'register'/>',
-        subtext: '<@t.page 'total'/>:<@_sysUserList count=0>${page.totalCount}</@_sysUserList>',
+        subtext: '<@t.page 'total'/>:<@_sysUserList pageSize=0>${page.totalCount}</@_sysUserList>',
         x:'center'
     },
     tooltip : {
@@ -107,7 +109,35 @@ echarts.init(document.getElementById('operate')).setOption({
     {
         name:'<@t.page 'operate'/>',
         type:'line',
-        data:[<#list 30..0 as a><@_logOperateList startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>]
+        data:[<#list 30..0 as a><@_logOperateList channel='web_manager' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>]
+    }]
+});
+echarts.init(document.getElementById('comment')).setOption({
+    title: {
+        text: '<@t.page 'comment'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list 30..0 as a>'${(.now?long-a*86400000)?number_to_date}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+        name:'<@t.page 'operate'/>',
+        type:'line',
+        data:[<#list 30..0 as a><@_logOperateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>]
     }]
 });
 </script>

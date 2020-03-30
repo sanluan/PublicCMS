@@ -25,13 +25,44 @@ public class SqlService {
     public int insert(String sql) {
         return mapper.insert(sql);
     }
-
     /**
      * @param sql
      * @return
      */
     public int update(String sql) {
         return mapper.update(sql);
+    }
+    /**
+     * @param oldurl
+     * @param newurl
+     * @return
+     */
+    public int updateContentAttribute(String oldurl, String newurl) {
+        return mapper.updateContentAttribute(oldurl, newurl);
+    }
+    /**
+     * @param oldurl
+     * @param newurl
+     * @return
+     */
+    public int updateContentRelated(String oldurl, String newurl) {
+        return mapper.updateContentRelated(oldurl, newurl);
+    }
+    /**
+     * @param oldurl
+     * @param newurl
+     * @return
+     */
+    public int updatePlaceAttribute(String oldurl, String newurl) {
+        return mapper.updatePlaceAttribute(oldurl, newurl);
+    }
+    /**
+     * @param oldurl
+     * @param newurl
+     * @return
+     */
+    public int updatePlace(String oldurl, String newurl) {
+        return mapper.updatePlace(oldurl, newurl);
     }
 
     /**

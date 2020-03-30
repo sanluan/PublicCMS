@@ -1,0 +1,88 @@
+<@_comment id=replyId>
+    <#assign
+        a=object
+    />
+</@_comment>
+<form action="cmsComment/save.do?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="replyId" value="${replyId!}"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="pageFormContent" layoutH="50">
+        <dl class="nowrap">
+            <dt><@t.page 'content'/>:</dt>
+            <dd>
+                <@_content id=a.contentId>${(object.title)!}</@_content>
+            </dd>
+        </dl>
+        <dl>
+            <dt><@t.page 'create_date'/>:</dt>
+            <dd>${a.createDate!}</dd>
+        </dl>
+    <#if a.updateDate?has_content>
+        <dl>
+            <dt><@t.page 'modified_date'/>:</dt>
+            <dd>${a.updateDate!}</dd>
+        </dl>
+    </#if>
+    <@_sysUser id=a.userId>
+        <dl>
+            <dt><@t.page 'content.promulgator'/>:</dt>
+            <dd>${object.nickName!}</dd>
+        </dl>
+    </@_sysUser>
+        <dl>
+            <dt><@t.page 'status'/>/<@t.page 'inspector'/>:</dt>
+            <dd>
+                <@t.page 'status.content.'+a.status/>
+                <#if 1=a.status>/ <@_sysUser id=a.checkUserId>${object.nickName!}</@_sysUser></#if>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'comment'/>:</dt>
+            <dd>
+                ${a.text!}
+                <input type="hidden" name="replyId" value="${replyId!}"/>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'comment.reply'/>:</dt>
+            <dd>
+                <textarea name="text" rows="3" cols="50"></textarea>
+            </dd>
+        </dl>
+        <@_commentList advanced=true replyId=a.id>
+            <#if page.totalCount gt 0>
+            <fieldset>
+                <legend><@t.page 'comment.reply'/></legend>
+                <#list page.list as a>
+                    <@t.merge 'userIds' a.userId!/>
+                    <@t.merge 'userIds' a.replyUserId!/>
+                </#list>
+                <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+                <@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/edit'><#assign authorizedMap=map/></@_sysAuthorized>
+                <#list page.list as a>
+                <dl class="nowrap">
+                    <dt>${(userMap[a.userId?string].nickName)!}:</dt>
+                    <dd>
+                        <div><@t.page 'comment.reply'/> ${(userMap[a.replyUserId?string].nickName)!} : ${a.text!}</div>
+                        <p><label><@t.page 'status'/>:</label><@t.page 'status.content.'+a.status/></p>
+                        <p>
+                            <label><@t.page 'operate'/>:</label>
+                            <#if authorizedMap['cmsComment/edit']>
+                                <a href="cmsComment/edit.html?id=${a.id}" target="dialog" mask="true"><@t.page 'button.edit'/></a> |
+                            </#if>
+                            <a href="cmsComment/reply.html?replyId=${a.replyId!a.id}" target="dialog" mask="true"><@t.page 'comment.reply'/></a>
+                        </p>
+                    </dd>
+                </dl>
+                </#list>
+            </fieldset>
+            </#if>
+        </@_commentList>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.ok'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>

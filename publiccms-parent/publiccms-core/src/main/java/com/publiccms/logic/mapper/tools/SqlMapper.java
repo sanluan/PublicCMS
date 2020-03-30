@@ -11,13 +11,13 @@ import org.apache.ibatis.annotations.Param;
  * 
  */
 public interface SqlMapper {
-    
+
     /**
      * @param sql
      * @return result list
      */
     List<Map<String, Object>> select(@Param("sql") String sql);
-    
+
     /**
      * @param sql
      * @return result
@@ -37,9 +37,37 @@ public interface SqlMapper {
     int update(@Param("sql") String sql);
 
     /**
+     * @param oldurl
+     * @param newurl
+     * @return number of data updated
+     */
+    int updateContentAttribute(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+
+    /**
+     * @param oldurl
+     * @param newurl
+     * @return number of data updated
+     */
+    int updateContentRelated(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+
+    /**
+     * @param oldurl
+     * @param newurl
+     * @return number of data updated
+     */
+    int updatePlaceAttribute(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+
+    /**
+     * @param oldurl
+     * @param newurl
+     * @return number of data updated
+     */
+    int updatePlace(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
+
+    /**
      * @param sql
      * @return number of data deleted
      */
     int delete(@Param("sql") String sql);
-    
+
 }

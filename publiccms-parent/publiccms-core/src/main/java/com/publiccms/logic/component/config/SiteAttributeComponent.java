@@ -38,15 +38,12 @@ public class SiteAttributeComponent implements Config {
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(CONFIG_LOGO, INPUTTYPE_IMAGE, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO),
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                null));
-        extendFieldList.add(new SysExtendField(CONFIG_SQUARE_LOGO, INPUTTYPE_IMAGE, false,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO),
-                getMessage(locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                null));
+        extendFieldList.add(new SysExtendField(CONFIG_LOGO, INPUTTYPE_IMAGE,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO), getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX)));
+        extendFieldList.add(new SysExtendField(CONFIG_SQUARE_LOGO, INPUTTYPE_IMAGE,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO), getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SQUARE_LOGO + CONFIG_CODE_DESCRIPTION_SUFFIX)));
         return extendFieldList;
     }
 }

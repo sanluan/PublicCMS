@@ -47,8 +47,8 @@ public class SysUserAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "lastLoginDate", "lastLoginIp",
-            "loginCount", "disabled" };
+    private String[] ignoreProperties = new String[] { "id", "registeredDate", "siteId", "salt", "password", "lastLoginDate",
+            "lastLoginIp", "loginCount", "disabled" };
 
     /**
      * @param site
@@ -87,10 +87,9 @@ public class SysUserAdminController {
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            SysUser user = service.getEntity(entity.getId());
-            if ((!user.getName().equals(entity.getName())
+            if ((!oldEntity.getName().equals(entity.getName())
                     && ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model))
-                    || (!user.getNickName().equals(entity.getNickName()) && ControllerUtils.verifyHasExist("nickname",
+                    || (!oldEntity.getNickName().equals(entity.getNickName()) && ControllerUtils.verifyHasExist("nickname",
                             service.findByNickName(site.getId(), entity.getNickName()), model))) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
@@ -98,14 +97,11 @@ public class SysUserAdminController {
                 if (ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)) {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
-                entity.setSalt(UserPasswordUtils.getSalt());
-                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
-            } else {
-                entity.setPassword(user.getPassword());
-                entity.setSalt(user.getSalt());
-                if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
-                    entity.setEmailChecked(false);
-                }
+                String salt = UserPasswordUtils.getSalt();
+                service.updatePassword(entity.getId(), UserPasswordUtils.passwordEncode(entity.getPassword(), salt), salt);
+            }
+            if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
+                entity.setEmailChecked(false);
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {

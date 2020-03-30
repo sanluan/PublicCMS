@@ -23,7 +23,7 @@
     </nav>
     <main>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-<@_search word=word tagId=tagId pageIndex=pageIndex count=10>
+<@_search word=word tagId=tagId pageIndex=pageIndex pageSize=10>
     <#if page.totalCount gt 0>
         <h1>Results</h1>
     <#list page.list as a>
@@ -34,7 +34,7 @@
         <article>
             <h3>[<a href="${(categoryMap[a.categoryId?string].url)!}" target="_blank">${(categoryMap[a.categoryId?string].name)!}</a>]<a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
             <p>
-                <#if a.cover?has_content><img src="${site.sitePath+a.cover}" alt="${a.title}"/></#if>
+                <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
                 ${a.description!}
             </p>
         </article>
@@ -79,7 +79,7 @@
         <aside>
             <h3>Popular content</h3>
             <ul>
-<@_contentList orderField='clicks' count=10>
+<@_contentList orderField='clicks' pageSize=10>
     <#list page.list as a>
                 <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>

@@ -3,12 +3,15 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-        <#if !a?has_content>
-            <li><a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
-        <#else>
+        <#if a?has_content>
             <#if !site.parentId?has_content>
                  <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
             </#if>
+    <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
+        <@_sysDeptPage deptId=admin.deptId!'' pages=path>
+            <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
+        </@_sysDeptPage>
+    </@_sysAuthorized>
             <li><a class="button" href="cmsTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'template.content'/></a></li>
         </#if>
         <#if site.parentId?has_content>
@@ -83,8 +86,74 @@
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_config.accept_parameter'/>:</dt>
                 <dd>
-                    <input name="acceptParameters" type="text" value="${(a.acceptParameters)!}" size="80"/>
+                    <input name="acceptParameters" type="hidden"/>
+                    <div class="parametersBox"></div>
                     <span class="info"><@t.page 'dynamic_config.accept_parameter.description'/></span>
+                    <div class="parametersOperateBox">
+                        <select class="combox" name="parameterType">
+                            <#list ['text','number','textarea','content','category','user'] as o>
+                            <option value="${o}"><@t.page o/></option>
+                            </#list>
+                        </select>
+                        <label><@t.page 'name'/>:</label><input name="parameterName" type="text" size="8"/>
+                        <label><@t.page 'required'/>:<input name="required" type="checkbox"/></label>
+                        <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" size="8"/>
+                        <label><@t.page 'array'/>:<input name="array" type="checkbox"/></label>
+                        <a href="javascript:;" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
+                    </div>
+<script>
+$('select[name=parameterType]').on('change',function() {
+    if($(this).val()=='content' || $(this).val()=='category' || $(this).val()=='user') {
+        if(!$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val()){
+            $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val($(this).val());
+        }
+    }
+});
+function addParameter(parameterName,array,required,parameterType,parameterTypeText,alias) {
+    if(parameterName) {
+        parameterName=parameterName.trim();
+    }
+    var text=parameterTypeText;
+    if(array){
+        text+='[<@t.page 'array'/>]';
+    }
+    text+=" : "+parameterName;
+    if(alias) {
+        alias=alias.trim();
+        text+=" > "+alias;
+    }
+    if(required){
+        text+=" <em>*</em>";
+    }
+    if(parameterName){
+        $('.parametersBox',navTab.getCurrentPanel()).append("<span>"+text+" <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].name\" value=\""+parameterName+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].type\" value=\""+parameterType+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].array\" value=\""+array+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].required\" value=\""+required+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].alias\" value=\""+alias+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+    }
+    $('input[name=\'parameterName\']',navTab.getCurrentPanel()).val('');
+    $('input[name=\'parameterType\']',navTab.getCurrentPanel()).val('');
+    $('input[name=\'array\']',navTab.getCurrentPanel()).prop("checked", false);
+    $('input[name=\'required\']',navTab.getCurrentPanel()).prop("checked", false);
+    $('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val('');
+    var acceptParameters=new Array();
+    $('.parametersBox span',navTab.getCurrentPanel()).each(function(){
+        acceptParameters.push($('input[name$=\\.name]',this).val());
+    });
+    $('input[name=acceptParameters]',navTab.getCurrentPanel()).val(acceptParameters.join(','));
+}
+$('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
+    $(this).parent().remove();
+    var acceptParameters=new Array();
+    $('.parametersBox span',navTab.getCurrentPanel()).each(function(){
+        acceptParameters.push($('input[name$=\\.name]',this).val());
+    });
+    $('input[name=acceptParameters]',navTab.getCurrentPanel()).val(acceptParameters.join(','));
+    return false;
+});
+<#if (a.acceptParameters)?has_content>
+    <#list a.acceptParameters?split(",") as p>
+    addParameter("${p}",${(a.parameterTypeMap[p].array?c)!false},${(a.parameterTypeMap[p].required?c)!false},"${(a.parameterTypeMap[p].type)!'text'}","${(t.pageMessage(a.parameterTypeMap[p].type))!t.pageMessage('text')}","${(a.parameterTypeMap[p].alias)!}");
+    </#list>
+</#if>
+</script>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -110,20 +179,6 @@
                 </dd>
             </dl>
         </fieldset>
-<script>
-<#if site.useStatic&&(a.publishPath)?has_content>
-    $('input[name=useStatic]',navTab.getCurrentPanel()).click();
-</#if>
-<#if (a.useDynamic)?has_content&&a.useDynamic||!a?has_content>
-    $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
-</#if>
-<#if (a.needLogin)?has_content&&a.needLogin>
-    $('input[name=needLogin]',navTab.getCurrentPanel()).click();
-</#if>
-<#if (a.needBody)?has_content&&a.needBody>
-    $('input[name=needBody]',navTab.getCurrentPanel()).click();
-</#if>
-</script>
         <fieldset>
             <legend><@t.page 'metadata.extend_field'/></legend>
             <#include '../include_page/extends.html'/>
@@ -132,22 +187,68 @@
         </fieldset>
 <#if a?has_content>
         <textarea name="content" style="display:none"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
-<#else>
-        <textarea name="content" style="display:none">&lt;html&gt;
-&lt;head&gt;
-    &lt;title&gt;New PublicCMS Template&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;main&gt;New PublicCMS Template&lt;/main&gt;
-<@_version>
-    <#if !authorizationEdition>
-    &lt;footer&gt;
-        &lt;p&gt;Powered by &lt;a href=&quot;http://www.publiccms.com/&quot;&gt;PublicCMS&lt;/a&gt; &lt;/p&gt;
-    &lt;/footer&gt;
+        <script>
+    <#if site.useStatic&&(a.publishPath)?has_content>
+            $('input[name=useStatic]',navTab.getCurrentPanel()).click();
     </#if>
-</@_version>
-&lt;/body&gt;
-&lt;/html&gt;</textarea>
+    <#if (a.useDynamic)?has_content&&a.useDynamic>
+            $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
+    </#if>
+    <#if (a.needLogin)?has_content&&a.needLogin>
+            $('input[name=needLogin]',navTab.getCurrentPanel()).click();
+    </#if>
+    <#if (a.needBody)?has_content&&a.needBody>
+            $('input[name=needBody]',navTab.getCurrentPanel()).click();
+    </#if>
+        </script>
+<#elseif demo?has_content>
+        <textarea name="content" style="display:none"><@html_escape><#include "demo/"+demo parse=false/></@html_escape></textarea>
+        <script>
+    <#if name?has_content>
+            $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page name/>');
+    </#if>
+            $('input[name=path]',navTab.getCurrentPanel()).val('${path!demo!}');
+    <#if !useDynamic?has_content||'true'=useDynamic>
+            $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+    </#if>
+    <#switch demo>
+        <#case "index.html">
+            <#if site.useStatic>
+                $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+                $('input[name=publishPath]',navTab.getCurrentPanel()).val('/demo/index.html');
+            </#if>
+            <#break>
+        <#case "member/comment.html">
+            $('input[name=needLogin]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
+            <#break>
+        <#case "sitemap.xml">
+            <#if site.useStatic>
+                $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');
+            <#else>
+                $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
+            </#if>
+            <#break>
+        <#case "json/comment.json">
+        <#case "json/content.json">
+        <#case "json/contentList.json">
+        <#case "json/categoryList.json">
+            $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
+    </#switch>
+    <#if acceptParameters?has_content>
+        <#list acceptParameters?split(",") as p>
+        <#if p?contains(';')>
+        addParameter("${p?split(";")[0]}",false,${['user','content','category']?seq_contains(p?split(";")[1])?c},"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${['user','content','category']?seq_contains(p?split(";")[1])?then(p?split(";")[1],'')}");
+        <#else>
+        addParameter("${p}",false,false,"text","${t.pageMessage('text')}","");
+        </#if>
+        </#list>
+    </#if>
+        </script>
+<#else>
+        <textarea name="content" style="display:none"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>
+        <script>
+            $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
+        </script>
 </#if>
     </div>
 </form>

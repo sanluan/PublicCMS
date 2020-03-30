@@ -85,23 +85,8 @@ public class ControllerUtils {
      * @param url
      */
     public static void redirectPermanently(HttpServletResponse response, String url) {
-        response.setHeader("Location", removeCRLF(url));
+        response.setHeader("Location", RequestUtils.removeCRLF(url));
         response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
-    }
-
-    public static String removeCRLF(String string) {
-        if (null != string) {
-            return string.replaceAll("\r|\n", CommonConstants.BLANK);
-        }
-        return string;
-    }
-
-    public static void removeCRLF(String values[]) {
-        if (null != values) {
-            for (int i = 0; i < values.length; i++) {
-                values[i] = removeCRLF(values[i]);
-            }
-        }
     }
 
     /**

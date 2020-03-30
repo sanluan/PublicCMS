@@ -22,8 +22,12 @@
                     <ul>
                         <li><a href="javascript:;" <@getAction r'${(metadata.alias)!}'/>><@t.page 'template.name'/></a></li>
                 <#if metadata.useDynamic?has_content&&metadata.useDynamic&&metadata.acceptParameters?has_content>
-                    <#list metadata.acceptParameters?split(',') as parameter>
-                        <li><a href="javascript:;" <@getAction r'${('+parameter+r')!}'/>><@t.page 'parameter'/>:${parameter}</a></li>
+                    <#list metadata.acceptParameters?split(',') as p>
+                        <#if (metadata.parameterTypeMap[p].type)?has_content&&['user','content','category']?seq_contains(metadata.parameterTypeMap[p].type)>
+                            <li><a href="javascript:;" <@getAction r'<#list '+((metadata.parameterTypeMap[p].alias)!p)+r' as k,v>${k}:${v?c}</#list>'/>><@t.page 'parameter'/>:${p}</a></li>
+                        <#else>
+                            <li><a href="javascript:;" <@getAction r'${('+((metadata.parameterTypeMap[p].alias)!p)+r')!}'/>><@t.page 'parameter'/>:${p}</a></li>
+                        </#if>
                     </#list>
                 </#if>
                 <#if metadata.extendList?has_content>
@@ -102,14 +106,15 @@
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.list_directive'/></a>
                     <ul>
-                        <li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex count=count>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_contentList>' t.pageMessage('help.directive.content_list.description')/>><@t.page 'content'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_contentFileList contentId=contentId fileTypes=fileTypes orderField=orderField orderType=orderType pageIndex=pageIndex count=count>'+'\n    '+r'<#list page.list as a>${a.filePath}</#list>'+'\n'+r'</@_contentFileList>' t.pageMessage('help.directive.content_file_list.description')/>><@t.page 'content_file'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex count=count>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_categoryList>' t.pageMessage('help.directive.category_list.description')/>><@t.page 'category'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_categoryTypeList pageIndex=pageIndex count=count>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_categoryTypeList>' t.pageMessage('help.directive.category_type_list.description')/>><@t.page 'category_type'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_placeList path=path orderField=orderField orderType=orderType pageIndex=pageIndex count=count>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_placeList>' t.pageMessage('help.directive.place_list.description')/>><@t.page 'place_data'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_search word=word tagId=tagId dictionaryValues=dictionaryValues categoryId=categoryId containChild=containChild categoryIds=categoryIds modelIds=modelIds startPublishDate=startPublishDate pageIndex=pageIndex count=count>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_search>' t.pageMessage('help.directive.search.description')/>><@t.page 'search'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=pageIndex count=count>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_facetSearch>' t.pageMessage('help.directive.facet_search.description')/>><@t.page 'facet_search'/></a></li>
-                        <li><a href="javascript:;" <@getAction r'<@_wordList startCreateDate=startCreateDate endCreateDate=endCreateDate orderField=orderField orderType=orderType pageIndex=pageIndex count=count>'+'\n    '+r'<#list page.list as a>${a.name!}:${a.searchCount}</#list>'+'\n'+r'</@_wordList>' t.pageMessage('help.directive.word_list.description')/>><@t.page 'search_word'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_contentList categoryId=categoryId containChild=containChild modelId=modelId parentId=parentId onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles hasCover=hasCover orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_contentList>' t.pageMessage('help.directive.content_list.description')/>><@t.page 'content'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_contentFileList contentId=contentId fileTypes=fileTypes orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>${a.filePath}</#list>'+'\n'+r'</@_contentFileList>' t.pageMessage('help.directive.content_file_list.description')/>><@t.page 'content_file'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_commentList contentId=contentId orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'${a.createDate} <@_sysUser id=a.userId>${object.nickName} : </@_sysUser>'+'\n        '+r'${a.text!}</#list>'+'\n'+r'</@_commentList>' t.pageMessage('help.directive.comment_list.description')/>><@t.page 'comment'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_categoryList parentId=parentId typeId=typeId allowContribute=allowContribute pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_categoryList>' t.pageMessage('help.directive.category_list.description')/>><@t.page 'category'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_categoryTypeList pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.name}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_categoryTypeList>' t.pageMessage('help.directive.category_type_list.description')/>><@t.page 'category_type'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_placeList path=path orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_placeList>' t.pageMessage('help.directive.place_list.description')/>><@t.page 'place_data'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_search word=word tagId=tagId dictionaryValues=dictionaryValues categoryId=categoryId containChild=containChild categoryIds=categoryIds modelIds=modelIds startPublishDate=startPublishDate pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_search>' t.pageMessage('help.directive.search.description')/>><@t.page 'search'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>'+'\n        '+r'<a href="${a.url!}">${a.title}</a>'+'\n    '+r'</#list>'+'\n'+r'</@_facetSearch>' t.pageMessage('help.directive.facet_search.description')/>><@t.page 'facet_search'/></a></li>
+                        <li><a href="javascript:;" <@getAction r'<@_wordList startCreateDate=startCreateDate endCreateDate=endCreateDate orderField=orderField orderType=orderType pageIndex=pageIndex pageSize=pageSize>'+'\n    '+r'<#list page.list as a>${a.name!}:${a.searchCount}</#list>'+'\n'+r'</@_wordList>' t.pageMessage('help.directive.word_list.description')/>><@t.page 'search_word'/></a></li>
                         <li><a href="javascript:;" <@getAction r'<@_modelList parentId=parentId hasChild=hasChild onlyUrl=onlyUrl hasImages=hasImages hasFiles=hasFiles>'+'\n    '+r'<#list page.list as a>${a.id}:${a.name}<#sep>,</#list>'+'\n'+r'</@_modelList>' t.pageMessage('help.directive.model_list.description')/>><@t.page 'model'/></a></li>
                     </ul>
                 </li>
@@ -197,18 +202,18 @@
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'help.content_contribute'/></a>
                     <ul>
-                <@_categoryList queryAll=true allowContribute=true count=500>
+                <@_categoryList queryAll=true allowContribute=true pageSize=500>
                     <#list page.list as a>
                         <li>
-                            <a href="javascript:;">${(a.name)!}</a>
+                            <a href="javascript:;" class="exclude-translate">${(a.name)!}</a>
                             <ul>
                         <@_categoryModelList categoryId=a.id>
-                            <#list page.list as a>
+                            <#list list as a>
                                 <@t.merge 'modelIds' a.id.modelId!/>
                             </#list>
                             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
-                            <#list page.list as a>
-                                <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
+                            <#list list as a>
+                                <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
                             </#list>
                         </@_categoryModelList>
                             </ul>

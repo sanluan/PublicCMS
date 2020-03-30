@@ -1,10 +1,15 @@
 <@_sysConfig code=code>
     <#assign a=object/>
 </@_sysConfig>
-<form method="post" action="sysConfig/save.do?callbackType=${closeCurrent!'closeCurrent'}&navTabId=sysConfig/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="sysConfig/save.do?callbackType=${closeCurrent!'closeCurrent'}&navTabId=sysConfig/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
+    <#if code?has_content>
+        <@_sysAuthorized roleIds=admin.roles url='sysConfigData/edit'>
+            <li><a class="button" href="sysConfigData/edit.html?code=${code!}" target="navTab" rel="sysConfigData/edit"><i class="icon-edit icon-large"></i> <@t.page 'config_data.edit'/></a></li>
+        </@_sysAuthorized>
+    </#if>
         <#if site.parentId?has_content>
             <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
         <#else>
@@ -29,9 +34,9 @@
             <dt><@t.page 'description'/>:</dt>
             <dd>
                 <#if a?has_content&&!a.customed>
-                    <textarea class="required readonly" readonly="readonly" name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea>
+                    <textarea class="required readonly" readonly="readonly" name="description" maxlength="300" cols="80" rows="3">${(a.description)!}</textarea>
                 <#else>
-                    <textarea class="required" name="description" maxlength="300" cols="80" rows="5">${(a.description)!}</textarea>
+                    <textarea class="required" name="description" maxlength="300" cols="80" rows="3">${(a.description)!}</textarea>
                 </#if>
             </dd>
         </dl>

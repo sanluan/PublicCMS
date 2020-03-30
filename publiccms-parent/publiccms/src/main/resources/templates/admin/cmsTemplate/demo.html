@@ -1,225 +1,59 @@
-<div style="display:none">
-    <textarea name="index"><@html_escape><#include "demo/index.html" parse=false/></@html_escape></textarea>
-    <textarea name="index_zh_CN"><@html_escape><#include "demo/index_zh_CN.html" parse=false/></@html_escape></textarea>
-    <textarea name="random"><@html_escape><#include "demo/random.html" parse=false/></@html_escape></textarea>
-    <textarea name="content"><@html_escape><#include "demo/content.html" parse=false/></@html_escape></textarea>
-    <textarea name="category"><@html_escape><#include "demo/category.html" parse=false/></@html_escape></textarea>
-    <textarea name="content_rest"><@html_escape><#include "demo/content_rest.html" parse=false/></@html_escape></textarea>
-    <textarea name="category_rest"><@html_escape><#include "demo/category_rest.html" parse=false/></@html_escape></textarea>
-    <textarea name="content_md5"><@html_escape><#include "demo/content_md5.html" parse=false/></@html_escape></textarea>
-    <textarea name="category_code"><@html_escape><#include "demo/category_code.html" parse=false/></@html_escape></textarea>
-    <textarea name="category_md5"><@html_escape><#include "demo/category_md5.html" parse=false/></@html_escape></textarea>
-    <textarea name="content_hash"><@html_escape><#include "demo/content_hash.html" parse=false/></@html_escape></textarea>
-    <textarea name="category_hash"><@html_escape><#include "demo/category_hash.html" parse=false/></@html_escape></textarea>
-    <textarea name="comment"><@html_escape><#include "demo/comment.html" parse=false/></@html_escape></textarea>
-    <textarea name="search"><@html_escape><#include "demo/search.html" parse=false/></@html_escape></textarea>
-    <textarea name="login"><@html_escape><#include "demo/login.html" parse=false/></@html_escape></textarea>
-    <textarea name="register"><@html_escape><#include "demo/register.html" parse=false/></@html_escape></textarea>
-    <textarea name="sitemap"><@html_escape><#include "demo/sitemap.xml" parse=false/></@html_escape></textarea>
-    <#if site.useStatic>
-        <textarea name="staticContent"><@html_escape><#include "demo/staticContent.html" parse=false/></@html_escape></textarea>
-        <textarea name="staticCategory"><@html_escape><#include "demo/staticCategory.html" parse=false/></@html_escape></textarea>
-    </#if>
-    <textarea name="commentJson"><@html_escape><#include "demo/comment.ftl" parse=false/></@html_escape></textarea>
-    <textarea name="contentJson"><@html_escape><#include "demo/content.ftl" parse=false/></@html_escape></textarea>
-    <textarea name="contentListJson"><@html_escape><#include "demo/contentList.ftl" parse=false/></@html_escape></textarea>
-    <textarea name="categoryListJson"><@html_escape><#include "demo/categoryList.ftl" parse=false/></@html_escape></textarea>
-</div>
-<script>
-function templateDefaultConfig(type,name){
-    $('input[name=contentType]',navTab.getCurrentPanel()).val('');
-    $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
-    $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-    switch (type){
-    case 'index':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/index.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
-    <#if site.useStatic>
-        $('input[name=useStatic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-        $('input[name=publishPath]',navTab.getCurrentPanel()).val('index.html');
-    </#if>
-        break;
-    case 'index_zh_CN':
-        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
-        $('input[name=path]',navTab.getCurrentPanel()).val('/index_zh_CN.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
-        break;
-    case 'random':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/random.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
-        break;
-    case 'content':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
-        break;
-    case 'category':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
-        break;
-    case 'content_rest':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
-        break;
-    case 'category_rest':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
-        break;
-    case 'content_md5':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content_md5.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
-        break;
-    case 'category_code':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category_code.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('code,pageIndex');
-        break;
-    case 'category_md5':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category_md5.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
-        break;
-    case 'content_hash':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content_hash.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
-        break;
-    case 'category_hash':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/category_hash.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,pageIndex');
-        break;
-    case 'comment':
-        $('input[name=needLogin]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/comment.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id,replyId,contentId,pageIndex,error');
-        break;
-    case 'search':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/search.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('word,pageIndex,tagId');
-        break;
-    case 'login':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/login.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message,returnUrl');
-        break;
-    case 'register':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/register.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('error,message,name,nickname,openId,channel,returnUrl');
-        break;
-<#if site.useStatic>
-    case 'staticContent':
-        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/staticContent.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
-        break;
-    case 'staticCategory':
-        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/staticCategory.html');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
-        break;
-    case 'sitemap':
-        $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',false).trigger('change');
-        $('input[name=path]',navTab.getCurrentPanel()).val('/sitemap.xml');
-        $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
-        break;
-<#else>
-    case 'sitemap':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/sitemap.xml');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=cacheTime]',navTab.getCurrentPanel()).val(7200);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('');
-</#if>
-    case 'commentJson':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.json');
-        $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id');
-        break;
-    case 'contentJson':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/content.json');
-        $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('id');
-        break;
-    case 'contentListJson':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/contentList.json');
-        $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('categoryId,containChild,modelId,parentId,userId,orderField,orderType,pageIndex,count');
-        break;
-    case 'categoryListJson':
-        $('input[name=path]',navTab.getCurrentPanel()).val('/demo/categoryList.json');
-        $('input[name=contentType]',navTab.getCurrentPanel()).val('application/json; charset=UTF-8');
-        $('input[name=alias]',navTab.getCurrentPanel()).val(name);
-        $('input[name=acceptParameters]',navTab.getCurrentPanel()).val('parentId,allowContribute,pageIndex,count');
-        break;
-    }
-    $('textarea[name=content]',navTab.getCurrentPanel()).val($('textarea[name='+type+']',$.pdialog.getCurrent()).val());
-    $.pdialog.closeCurrent();
-}
-</script>
 <div class="pageFormContent" layoutH="0">
     <ul class="tree treeFolder">
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'dynamic_page'/></a>
             <ul>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('index','<@t.page 'home_page'/>');"><@t.page 'home_page'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('index_zh_CN','<@t.page 'home_page_zh_CN'/>');"><@t.page 'home_page_zh_CN'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('random','<@t.page 'random_content_page'/>');"><@t.page 'random_content_page'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('comment','<@t.page 'comment_page'/>');"><@t.page 'comment_page'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('search','<@t.page 'search_page'/>');"><@t.page 'search_page'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('login','<@t.page 'login_page'/>');"><@t.page 'login_page'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('register','<@t.page 'register_page'/>');"><@t.page 'register_page'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('sitemap','<@t.page 'sitemap'/>');"><@t.page 'sitemap'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=index.html&name=home_page" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=index_zh_CN.html&name=home_page_zh_CN&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page_zh_CN'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=index_en.html&name=home_page_en&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page_en'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=index_ja.html&name=home_page_ja&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page_ja'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=random.html&name=random_content_page" target="ajax" rel="cmsTemplateBox"><@t.page 'random_content_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/comment.html&name=comment_page&acceptParameters=id;number,replyId;number,contentId;content,pageIndex;number,error" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=search.html&name=search_page&acceptParameters=word,pageIndex;number,tagId" target="ajax" rel="cmsTemplateBox"><@t.page 'search_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/login.html&name=login_page&acceptParameters=error,message,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'login_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/register.html&name=register_page&acceptParameters=error,message,name,nickname,openId,channel,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'register_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/vote.html&name=vote_page&acceptParameters=pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'vote_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=sitemap.xml&path=sitemap.xml&name=sitemap" target="ajax" rel="cmsTemplateBox"><@t.page 'sitemap'/></a></li>
             </ul>
         </li>
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'content_page'/></a>
             <ul>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('content','<@t.page 'content_page'/>');"><@t.page 'content_page'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('content_rest','<@t.page 'content_page_rest'/>');"><@t.page 'content_page_rest'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('content_md5','<@t.page 'content_page_md5'/>');"><@t.page 'content_page_md5'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('content_hash','<@t.page 'content_page_hash'/>');"><@t.page 'content_page_hash'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=content/content.html&name=content_page&acceptParameters=id;content,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=content/content_rest.html&name=content_page_rest&acceptParameters=id;content,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page_rest'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=content/content_hash.html&name=content_page_hash&acceptParameters=id,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_page_hash'/></a></li>
                 <#if site.useStatic>
-                    <li><a href="javascript:;" onclick="templateDefaultConfig('staticContent','<@t.page 'static_content_page'/>');"><@t.page 'static_content_page'/></a></li>
+                    <li><a href="cmsTemplate/metadata.html?demo=content/staticContent.html&name=static_content_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_content_page'/></a></li>
                 </#if>
             </ul>
         </li>
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'category_page'/></a>
             <ul>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('category','<@t.page 'category_page'/>');"><@t.page 'category_page'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('category_rest','<@t.page 'category_page_rest'/>');"><@t.page 'category_page_rest'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('category_code','<@t.page 'category_page_code'/>');"><@t.page 'category_page_code'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('category_md5','<@t.page 'category_page_md5'/>');"><@t.page 'category_page_md5'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('category_hash','<@t.page 'category_page_hash'/>');"><@t.page 'category_page_hash'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category.html&name=category_page&acceptParameters=id;category,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category_rest.html&name=category_page_rest&acceptParameters=id;category,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_rest'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category_code.html&name=category_page_code&acceptParameters=code,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_code'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=category/category_hash.html&name=category_page_hash&acceptParameters=id,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'category_page_hash'/></a></li>
                 <#if site.useStatic>
-                    <li><a href="javascript:;" onclick="templateDefaultConfig('staticCategory','<@t.page 'static_category_page'/>');"><@t.page 'static_category_page'/></a></li>
+                    <li><a href="cmsTemplate/metadata.html?demo=category/staticCategory.html&name=static_category_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'static_category_page'/></a></li>
                 </#if>
             </ul>
         </li>
         <li>
             <a href="javascript:;" onclick="return false;"><@t.page 'app.interface'/></a>
             <ul>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('contentJson','<@t.page 'content_interface'/>');"><@t.page 'content_interface'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('contentListJson','<@t.page 'content_list_interface'/>');"><@t.page 'content_list_interface'/></a></li>
-                <li><a href="javascript:;" onclick="templateDefaultConfig('categoryListJson','<@t.page 'category_list_interface'/>');"><@t.page 'category_list_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=json/content.json&name=content_interface&acceptParameters=id;content" target="ajax" rel="cmsTemplateBox"><@t.page 'content_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=json/comment.json&name=comment_interface&acceptParameters=contentId;content,replyId;number,pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=json/contentList.json&name=content_list_interface&acceptParameters=categoryId;number,containChild,modelId,parentId;number,userId;number,orderField,orderType,pageIndex;number,pageSize;number" target="ajax" rel="cmsTemplateBox"><@t.page 'content_list_interface'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=json/categoryList.json&name=category_list_interface&acceptParameters=parentId,allowContribute,pageIndex,pageSize" target="ajax" rel="cmsTemplateBox"><@t.page 'category_list_interface'/></a></li>
             </ul>
         </li>
     </ul>
 </div>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+    if($(this).attr('href')!='javascript:;'){
+        $.pdialog.closeCurrent();
+    }
+});
+</script>

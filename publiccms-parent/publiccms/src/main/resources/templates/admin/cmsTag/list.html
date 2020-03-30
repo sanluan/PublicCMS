@@ -1,6 +1,6 @@
-<@_tagList advanced=true name=name typeId=typeId orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<@_tagList advanced=true name=name typeId=typeId orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -55,8 +55,8 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td>${(a.name)!}</td>
-                <td>${(typeMap[a.typeId?string].name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
                 <td>${a.searchCount!}</td>
                 <td>
                     <a href="cmsTag/add.html?id=${a.id}" target="navTab" rel="cmsTag/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'tag.edit'/>"><@t.page 'button.edit'/></a>|

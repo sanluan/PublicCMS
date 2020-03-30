@@ -1,7 +1,0 @@
-<#assign dealCount=0/>
-<@_clearLog>
-<#list result?keys as k>
-${k}:${result[k]}<#assign dealCount+=result[k]/>
-</#list>
-</@_clearLog>
-共清理${dealCount}条日志

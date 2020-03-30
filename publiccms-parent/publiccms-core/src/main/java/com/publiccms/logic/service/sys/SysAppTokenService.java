@@ -21,7 +21,7 @@ import com.publiccms.common.handler.PageHandler;
 @Service
 @Transactional
 public class SysAppTokenService extends BaseService<SysAppToken> {
-    
+
     /**
      * @param appId
      * @param pageIndex
@@ -41,7 +41,20 @@ public class SysAppTokenService extends BaseService<SysAppToken> {
         return dao.delete(now);
     }
 
+    /**
+     * @param appToken 
+     * @param expiryDate 
+     * @return entity
+     */
+    public SysAppToken updateExpiryDate(String appToken, Date expiryDate) {
+        SysAppToken entity = getEntity(appToken);
+        if (null != entity) {
+            entity.setExpiryDate(expiryDate);
+        }
+        return entity;
+    }
+
     @Autowired
     private SysAppTokenDao dao;
-    
+
 }

@@ -1,9 +1,0 @@
-<xml>
-	<ToUserName><![CDATA[${xml.xml.FromUserName}]]></ToUserName>
-	<FromUserName><![CDATA[${xml.xml.ToUserName}]]></FromUserName>
-	<CreateTime>${getDateNumber(.now)}</CreateTime>
-	<MsgType><![CDATA[text]]></MsgType>
-	<Content><![CDATA[<@_search word=xml.xml.Content?string count=5><#if page.totalCount =0>没有“${xml.xml.Content}”相关内容<#else><#list page.list as a><a href="${a.url?starts_with('http')?then(a.url,'http:'+a.url)}">${a.title}</a><#if a?has_next>
-</#if></#list></#if></@_search>]]></Content>
-	<FuncFlag>0</FuncFlag>
-</xml>

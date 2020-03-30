@@ -38,30 +38,26 @@ public class CmsContentRelated implements java.io.Serializable {
     private String title;
     @GeneratorColumn(title = "推荐描述")
     private String description;
-    @GeneratorColumn(title = "点击数", order = true)
-    private int clicks;
     @GeneratorColumn(title = "排序")
     private int sort;
 
     public CmsContentRelated() {
     }
 
-    public CmsContentRelated(long contentId, long userId, int clicks, int sort) {
+    public CmsContentRelated(long contentId, long userId, int sort) {
         this.contentId = contentId;
         this.userId = userId;
-        this.clicks = clicks;
         this.sort = sort;
     }
 
     public CmsContentRelated(long contentId, Long relatedContentId, long userId, String url, String title, String description,
-            int clicks, int sort) {
+            int sort) {
         this.contentId = contentId;
         this.relatedContentId = relatedContentId;
         this.userId = userId;
         this.url = url;
         this.title = title;
         this.description = description;
-        this.clicks = clicks;
         this.sort = sort;
     }
 
@@ -129,15 +125,6 @@ public class CmsContentRelated implements java.io.Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    @Column(name = "clicks", nullable = false)
-    public int getClicks() {
-        return this.clicks;
-    }
-
-    public void setClicks(int clicks) {
-        this.clicks = clicks;
     }
 
     @Column(name = "sort", nullable = false)

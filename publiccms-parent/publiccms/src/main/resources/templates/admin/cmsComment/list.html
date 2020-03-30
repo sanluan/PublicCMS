@@ -1,5 +1,7 @@
+<@_commentList advanced=true userId=userId contentId=contentId status=status 
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" action="cmsComment/list.html" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" action="cmsComment/list.html" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -15,7 +17,7 @@
                 <#list 1..2 as s>
                     <label style="width:auto">
                         <input <@t.compare status s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
-                        <span><@t.page 'status.content.'+s/></span>
+                        <@t.page 'status.content.'+s/>
                     </label>
                 </#list>
                 </li>
@@ -30,10 +32,13 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/reply'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
+        <#if authorizedMap['cmsComment/reply']>
+            <li><a href="cmsComment/edit.html?id={sid}"  target="dialog" mask="true"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
+        </#if>
         <#if authorizedMap['cmsComment/check']>
             <li><a href="cmsComment/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
         </#if>
@@ -45,8 +50,6 @@
         </#if>
         </ul>
     </div>
-<@_commentList advanced=true userId=userId contentId=contentId status=status 
-            orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
@@ -73,10 +76,10 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td class="center">
+                <td class="center exclude-translate">
                     ${(userMap[a.userId?string].nickName)!}
                 </td>
-                <td>
+                <td class="exclude-translate">
                     <a href="cmsContent/view.html?id=${a.contentId}" target="dialog" rel="viewContent${a.contentId}">${(contentMap[a.contentId?string].title)!}</a>
                 </td>
                 <td>${a.updateDate!}</td>
@@ -87,6 +90,9 @@
                 </td>
                 <td><textarea rows="3" cols="50">${a.text!}</textarea></td>
                 <td>
+                    <#if authorizedMap['cmsComment/reply']>
+                        <a href="cmsComment/reply.html?replyId=${a.replyId!a.id}" target="dialog" mask="true"><@t.page 'comment.reply'/></a> |
+                    </#if>
                 <#if 1=a.status>
                     <#if authorizedMap['cmsComment/uncheck']>
                         <a href="cmsComment/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>"  target="ajaxTodo"><@t.page 'button.uncheck'/></a> |

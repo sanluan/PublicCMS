@@ -32,7 +32,7 @@
 				</div>
 			</h2>
 			<div id="tablist1">
-			<@_contentList categoryId=object.id containChild=true count=count>
+			<@_contentList categoryId=object.id containChild=true pageSize=pageSize>
 			<#if page.totalCount gt 0>
 				<ul>
 				<#list page.list as a>

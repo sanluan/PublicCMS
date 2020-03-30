@@ -1,8 +1,8 @@
 <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
 <@_placeList path=path advanced=true status=status userId=userId startPublishDate=startPublishDate endPublishDate=endPublishDate
-    orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+    orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -14,7 +14,7 @@
                     <#list 0..2 as s>
                         <label style="width:auto">
                             <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
-                            <span><@t.page 'status.place.data.'+s/></span>
+                            <@t.page 'status.place.data.'+s/>
                         </label>
                     </#list>
                 </li>

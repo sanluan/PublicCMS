@@ -1,0 +1,10 @@
+<div>
+<h3>编辑推荐</h3>
+<#list page.list>
+	<ul>
+	<#items as a>
+		<li><a href="${site.dynamicPath}place/redirect.do?id=${a.id!}">${a.title}</a></li>
+	</#items>
+	</ul>
+</#list>
+</div>

@@ -1,6 +1,6 @@
-<@_sysSiteList parentId=parentId name=name pageIndex=pageNum count=numPerPage>
+<@_sysSiteList parentId=parentId name=name pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -51,7 +51,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id}</td>
-                <td>${a.name!} <#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></td>
+                <td class="exclude-translate">${a.name!} <#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></td>
                 <td><a href="${a.dynamicPath!}" target="_blank">${a.dynamicPath!}</a></td>
                 <td>${a.useStatic?then(t.pageMessage('yes'),t.pageMessage('no'))} ${a.useSsi?then('['+t.pageMessage('ssi_enabled')+']','')}</td>
                 <td><a href="${a.sitePath!}" target="_blank">${a.sitePath!}</a></td>

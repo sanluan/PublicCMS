@@ -79,6 +79,8 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
                     }
                 }
             }
+        } else if (null != session) {
+            ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
         }
         localeChangeInterceptor.preHandle(request, response, handler);
         return true;
@@ -88,41 +90,40 @@ public class WebContextInterceptor extends HandlerInterceptorAdapter {
             HttpServletResponse response) {
         response.addHeader(CommonConstants.getXPowered(), CmsVersion.getVersion());
         String contextPath = request.getContextPath();
-        if (null == user) {
-            Cookie userCookie = RequestUtils.getCookie(request.getCookies(), cookiesName);
-            if (null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
-                String value = userCookie.getValue();
-                if (null != value) {
-                    String[] userData = value.split(CommonConstants.getCookiesUserSplit());
-                    if (userData.length > 1) {
-                        try {
-                            Long userId = Long.parseLong(userData[0]);
-                            SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
-                            if (null != userToken && null != site && !site.isDisabled() && userToken.getSiteId() == site.getId()
-                                    && userToken.getUserId() == userId && channel.equals(userToken.getChannel())
-                                    && (null == userToken.getExpiryDate()
-                                            || CommonUtils.getDate().before(userToken.getExpiryDate()))
-                                    && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
-                                user.setPassword(null);
-                                String ip = RequestUtils.getIpAddress(request);
-                                sysUserService.updateLoginStatus(user.getId(), ip);
-                                logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true,
-                                        CommonUtils.getDate(), null));
-                            } else {
-                                user = null;
-                                if (null != userToken) {
-                                    sysUserTokenService.delete(userToken.getAuthToken());
-                                }
-                                RequestUtils.cancleCookie(contextPath, response, cookiesName, null);
+        Cookie userCookie = RequestUtils.getCookie(request.getCookies(), cookiesName);
+        if (null == user && null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
+            String value = userCookie.getValue();
+            if (null != value) {
+                String[] userData = value.split(CommonConstants.getCookiesUserSplit());
+                if (userData.length > 1) {
+                    try {
+                        Long userId = Long.parseLong(userData[0]);
+                        SysUserToken userToken = sysUserTokenService.getEntity(userData[1]);
+                        if (null != userToken && null != site && !site.isDisabled() && userToken.getSiteId() == site.getId()
+                                && userToken.getUserId() == userId && channel.equals(userToken.getChannel())
+                                && (null == userToken.getExpiryDate() || CommonUtils.getDate().before(userToken.getExpiryDate()))
+                                && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
+                            user.setPassword(null);
+                            String ip = RequestUtils.getIpAddress(request);
+                            sysUserService.updateLoginStatus(user.getId(), ip);
+                            logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true,
+                                    CommonUtils.getDate(), null));
+                        } else {
+                            user = null;
+                            if (null != userToken) {
+                                sysUserTokenService.delete(userToken.getAuthToken());
                             }
-                        } catch (NumberFormatException e) {
                             RequestUtils.cancleCookie(contextPath, response, cookiesName, null);
                         }
-                    } else {
+                    } catch (NumberFormatException e) {
                         RequestUtils.cancleCookie(contextPath, response, cookiesName, null);
                     }
+                } else {
+                    RequestUtils.cancleCookie(contextPath, response, cookiesName, null);
                 }
             }
+        } else if (null != user && (null == userCookie || CommonUtils.empty(userCookie.getValue()))) {
+            user = null;
         }
         return user;
     }

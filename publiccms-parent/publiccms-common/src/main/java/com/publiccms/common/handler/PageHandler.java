@@ -26,6 +26,7 @@ public class PageHandler implements java.io.Serializable {
     private int totalCount;
     private int pageSize;
     private int pageIndex;
+    private int totalPage;
     private List<?> list;
 
     /**
@@ -45,7 +46,7 @@ public class PageHandler implements java.io.Serializable {
      * @param maxCount
      */
     public PageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxCount) {
-        setTotalCount(totalCount, maxCount);
+        setTotalCount(getTotalCount(totalCount, maxCount));
         setPageSize(null != pageSize ? pageSize : 0);
         setPageIndex(null != pageIndex ? pageIndex : 1);
         init();
@@ -57,15 +58,28 @@ public class PageHandler implements java.io.Serializable {
     public void init() {
         pageSize = 1 > pageSize ? DEFAULT_PAGE_SIZE : MAX_PAGE_SIZE < pageSize ? MAX_PAGE_SIZE : pageSize;
         totalCount = 0 > totalCount ? 0 : totalCount;
-        pageIndex = 1 > pageIndex ? 1 : pageIndex > getTotalPage() ? getTotalPage() : pageIndex;
+        totalPage = getTotalPage(totalCount, pageSize);
+        pageIndex = 1 > pageIndex ? 1 : pageIndex > totalPage ? totalPage : pageIndex;
+    }
+
+    /**
+     * @param totalCount
+     * @param maxCount
+     * @return total count
+     */
+    public static int getTotalCount(int totalCount, Integer maxCount) {
+        return null != maxCount && maxCount < totalCount ? maxCount : totalCount;
     }
 
     /**
      * 总页数
      * 
+     * @param totalCount
+     * @param pageSize
+     * 
      * @return total page
      */
-    public int getTotalPage() {
+    public static int getTotalPage(int totalCount, int pageSize) {
         int totalPage = totalCount / pageSize;
         return (0 == totalPage || 0 != totalCount % pageSize) ? ++totalPage : totalPage;
     }
@@ -94,14 +108,6 @@ public class PageHandler implements java.io.Serializable {
      */
     public void setTotalCount(int totalCount) {
         this.totalCount = totalCount;
-    }
-
-    /**
-     * @param totalCount
-     * @param maxCount
-     */
-    public void setTotalCount(int totalCount, Integer maxCount) {
-        setTotalCount(null != maxCount && maxCount < totalCount ? maxCount : totalCount);
     }
 
     /**
@@ -152,9 +158,6 @@ public class PageHandler implements java.io.Serializable {
      *            the list to set
      */
     public void setList(List<?> list) {
-        if (0 == totalCount && null != list) {
-            setTotalCount(list.size());
-        }
         this.list = list;
     }
 
@@ -168,12 +171,19 @@ public class PageHandler implements java.io.Serializable {
     }
 
     /**
+     * @return the totalPage
+     */
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    /**
      * 是否最后一页
      * 
      * @return whether the last page
      */
     public boolean isLastPage() {
-        return pageIndex >= getTotalPage();
+        return pageIndex >= totalPage;
     }
 
     /**

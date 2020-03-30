@@ -1,6 +1,7 @@
 package com.publiccms.common.tools;
 
 import java.io.File;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class CommonUtils {
      * @return 精确到分钟的当前日期
      */
     public static Date getMinuteDate() {
-        return DateUtils.addMinutes(DateUtils.setSeconds(DateUtils.setMilliseconds(getDate(), 0), 0), 1);
+        return DateUtils.ceiling(new Date(), Calendar.MINUTE);
     }
 
     /**

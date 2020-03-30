@@ -28,7 +28,10 @@ public class CmsCommentDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
-            handler.put("object", service.getEntity(id)).render();
+            CmsComment entity = service.getEntity(id);
+            if (null != entity) {
+                handler.put("object", entity).render();
+            }
         } else {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
@@ -40,6 +43,11 @@ public class CmsCommentDirective extends AbstractTemplateDirective {
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

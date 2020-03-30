@@ -4,15 +4,14 @@ dependencies {
     compile project(':publiccms-common')
     compile (
         "com.zaxxer:HikariCP:${hikariCPVersion}",
-        // http://mvnrepository.com/artifact/mysql/mysql-connector-java
         "mysql:mysql-connector-java:${mysqlVersion}",
-        // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
-        "eu.bitwalker:UserAgentUtils:1.21",
-        // http://mvnrepository.com/artifact/net.coobird/thumbnailator
-        "net.coobird:thumbnailator:0.4.8",
+        "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}",
         "org.hibernate:hibernate-search-elasticsearch:${hibernateSearchVersion}",
-        // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-        "javax.servlet:javax.servlet-api:3.1.0",
-        "org.apache.poi:poi-ooxml:${poiVersion}"
+        "javax.annotation:javax.annotation-api:${annotationVersionVersion}",
+        "javax.servlet:javax.servlet-api:${servletVersion}",
+        "org.apache.poi:poi-ooxml:${poiVersion}",
+        "com.drewnoakes:metadata-extractor:${extractorVersion}",
+        // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
+        "org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.1.4"
     )
 }

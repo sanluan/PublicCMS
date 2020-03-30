@@ -1,0 +1,93 @@
+<#assign attribute=getCategoryAttribute(category.id)/>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${(category.name)!}</title>
+    <meta name="keywords" content="${(attribute.keywords)!}"/>
+    <meta name="description" content="${(attribute.description)!}"/>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base!}">Home</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+<#if category?has_content>
+    <main>
+        <h1>Latest content</h1>
+<@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
+        <ul>
+    <#list page.list as a>
+            <li>
+                <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
+                <p>
+                    <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
+                    ${a.description!}
+                </p>
+            </li>
+    </#list>
+        </ul>
+        <div>
+            <#assign
+                start=1
+                end=page.totalPage
+            />
+            <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+            </#if>
+            <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+            </#if>
+            <#if !page.firstPage>
+                <a href="${getPage(category.url,page.prePage,'pageIndex')}">Previous page</a>
+            <#else>
+                <span>Previous page</span>
+            </#if>
+            <#if start gt 1>
+                <a href="${category.url}">1</a> ...
+            </#if>
+            <#list start..end as n>
+                <#if n=page.pageIndex>
+                    ${n}
+                <#else>
+                    <a href="${getPage(category.url,n,'pageIndex')}">${n}</a>
+                </#if>
+            </#list>
+            <#if end lt page.totalPage>
+                ... <a href="${getPage(category.url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
+            </#if>
+            <#if !page.lastPage>
+                <a href="${getPage(category.url,page.nextPage,'pageIndex')}">Next page</a>
+            <#else>
+                <span>Next page</span>
+            </#if>
+        </div>
+</@_contentList>
+        <aside>
+            <h3>Popular content</h3>
+            <ul>
+<@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
+    <#list page.list as a>
+                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+    </#list>
+</@_contentList>
+            </ul>
+        </aside>
+    </main>
+<#else>
+    <main>
+        <h2>Category does not exist</h2>
+    </main>
+</#if>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+</body>
+</html>

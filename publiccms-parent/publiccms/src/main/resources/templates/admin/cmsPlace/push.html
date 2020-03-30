@@ -13,7 +13,7 @@
                             <a href="javascript:;" onclick="return false;">${a.fileName}</a>
                             <ul><@placeTree path/></ul>
                         </li>
-                    <#elseif 0!=((object.size)!0)>
+                    <#elseif (object.size)?has_content&&0!=object.size&&(!(object.acceptItemTypes)?has_content||object.acceptItemTypes?seq_contains(itemType))>
                         <li>
                             <a href="cmsPlace/add.html?path=${path?url}&itemType=${itemType}&itemId=${itemId!}" target="navTab" rel="cmsPlace/add">${(object.alias)!a.fileName}</a>
                         </li>
@@ -27,7 +27,9 @@
 </#macro>
 <script>
 $('ul li a',$.pdialog.getCurrent()).click(function(){
-    $.pdialog.closeCurrent();
+    if($(this).attr('href')!='javascript:;'){
+        $.pdialog.closeCurrent();
+    }
 });
 </script>
 <div class="pageFormContent" layoutH="0">

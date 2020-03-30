@@ -1,9 +1,9 @@
-<@_categoryList advanced=true parentId=parentId count=500>
+<@_categoryList advanced=true parentId=parentId pageSize=500>
 <ul>
     <#list page.list as a>
            <#if a.childIds?has_content>
             <li _src="common/categoryTree.html?parentId=${a.id}">
-                <a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" icon="<i class='icon-folder-open icon-large'></i>" title="<@t.page 'category.management'/>">${(a.name)!}</a>
+                <a href="cmsCategory/list.html?categoryId=${a.id}" target="navTab" rel="cmsCategory/list" icon="<i class='icon-folder-open icon-large'></i>" title="<@t.page 'category.management'/>"><span class="exclude-translate">${(a.name)!}</span></a>
             </li>
         </#if>
     </#list>

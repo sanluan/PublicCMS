@@ -1,5 +1,5 @@
 <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
-<form method="post" action="cmsTemplate/savePlaceMetaData.do?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsTemplate/savePlaceMetaData.do?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
@@ -53,12 +53,20 @@
             </dd>
         </dl>
         <dl class="nowrap placeExtend">
+            <dt><@t.page 'place_data.item_type'/>:</dt>
+            <dd>
+                <label><input name="acceptItemTypes" type="checkbox" value="content"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('content')> checked="checked"</#if>/><@t.page 'content'/></label>
+                <label><input name="acceptItemTypes" type="checkbox" value="page"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('page')> checked="checked"</#if>/><@t.page 'page'/></label>
+                <label><input name="acceptItemTypes" type="checkbox" value="category"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('category')> checked="checked"</#if>/><@t.page 'category'/></label>
+            </dd>
+        </dl>
+        <dl class="nowrap placeExtend">
             <dt><@t.page 'place_data.master'/>:</dt>
             <dd>
                 <input name="userId" type="hidden"/>
                 <input name="nickName" type="hidden"/>
                 <a class="btnLook" href="sysUser/lookup.html" width="920" lookupGroup=""><@t.page 'user.select'/></a>
-                <div id="adminIds" class="tagsBox"></div>
+                <div class="tagsBox adminIds"></div>
             </dd>
         </dl>
         <fieldset class="placeExtend systemField">
@@ -142,12 +150,12 @@ function addUser(id,name){
         name=name.trim();
     }
     if(id&&name){
-        $('#adminIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"adminIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        $('.dminIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"adminIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
     }
     $('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
     $('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
 }
-$('#adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
+$('.adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     return false;
 });
@@ -168,7 +176,7 @@ checkPageSize();
         <li>
             <figure>
                 <!-- ${a.itemType!} : ${a.itemId!} ,place/redirect.do:count and 301 jump to a.url,place/click.do:count and 302 jump to a.url-->
-                <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${site.sitePath+a.cover!}"></a>
+                <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${a.cover!}"></a>
                 <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
                 </#noparse><@t.page 'extend_field'/>:<#noparse><#assign attribute=getPlaceAttribute(a.id)/>
             </figure>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>${metadata.alias!}</title>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+    <div class="container">
+		<h3>展示您的成果，有助于吸引更多的客户！</h3>
+		<@import path="ftl/tools.ftl" namespace="t"/>
+
+		<#if error?has_content>
+			<p style="color:red"><@t.m error/></p>
+		</#if>
+
+		<#if result?has_content&&!error?has_content>
+			<p style="color:red">提交成功，请等待管理员审核！</p>
+		<#else>
+			<form method="post" action="${site.dynamicPath}content/save.do" onsubmit="return check();">
+				<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+				<input name="returnUrl" type="hidden" value="${site.dynamicPath}case.html?result=true" />
+				<input name="categoryId" type="hidden" value="19"/>
+				<input name="modelId" type="hidden" value="1"/>
+				<input name="author" type="hidden" value="${(user.nickName)!}"/>
+				<p><label>案例名:</label><input name="title" type="text" size="60" maxlength="255"/></p>
+				<p><label>案例网址，介绍:</label><textarea name="text" cols="80" rows="20"></textarea></p>
+				<p><label>建设单位名:</label>    <input name="categoryExtendDataList[0].name" type="hidden" value="builder"/>
+							<input name="categoryExtendDataList[0].value" type="text" size="30" value=""/>
+			</p>
+				<p><label>显示建设单位:</label>    <input name="categoryExtendDataList[1].name" type="hidden" value="show"/>
+							<select class="combox" name="categoryExtendDataList[1].value">
+								<option value="true">是</option>
+								<option value="false" selected="true">否</option>
+							</select>
+			</p>
+				<p><input type="submit" value="提交"/></p>
+			</form>
+		</#if>
+
+		<#if user?has_content>
+			<@_contentList categoryId=19 advanced=true userId=user.id>
+				<#list page.list as a>
+					<p>[<@t.m 'page.status.content.'+a.status/>]${(a.title)!}  (${a.clicks!}) </p>
+				</#list>
+			</@_contentList>
+		</#if>
+    </div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+<script type="text/javascript">
+	$(function(){$('.login-form input').eq(0).focus();});
+	function check(){
+		if(!$('input[name=title]').val()||!$('textarea[name=text]').val()){
+			alert('案例名和案例网址不能为空');
+			return false;
+		}
+		return true;
+	}
+</script>
+</body>
+</html>

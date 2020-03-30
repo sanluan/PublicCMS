@@ -5,12 +5,13 @@
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
     <packaging>pom</packaging>
-    <version>V4.0.190312</version>
+    <version>V4.0.202004.a</version>
     <modules>
         <module>publiccms</module>
         <module>publiccms-core</module>
         <module>publiccms-common</module>
         <module>publiccms-oauth</module>
+        <module>publiccms-trade</module>
         <module>publiccms-redis</module>
         <module>publiccms-j2cache</module>
         <module>publiccms-analyzer</module>
@@ -20,50 +21,66 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.0.16.RELEASE</version.spring>
+        <version.spring>5.2.5.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.0.9.RELEASE</version.springBoot>
+        <version.springBoot>2.2.6.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
-        <version.httpclient>4.5.7</version.httpclient>
+        <version.httpclient>4.5.10</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.9.10</version.jackson>
-        <version.jacksondatabind>2.9.10.3</version.jacksondatabind>
+        <version.jackson>2.10.3</version.jackson>
+        <version.jacksondatabind>2.10.3</version.jacksondatabind>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.3.7.Final</version.hibernate>
+        <version.hibernate>5.4.12.Final</version.hibernate>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>5.10.5.Final</version.hibernateSearch>
+        <version.hibernateSearch>5.11.5.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
-        <version.ehcache>3.6.3</version.ehcache>
+        <version.ehcache>3.8.1</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
-        <version.freemarker>2.3.28</version.freemarker>
+        <version.freemarker>2.3.29</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <version.mybatis>3.5.0</version.mybatis>
+        <version.mybatis>3.5.4</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-        <version.mybatisSpring>2.0.0</version.mybatisSpring>
+        <version.mybatisSpring>2.0.3</version.mybatisSpring>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn -->
         <version.lucene>5.5.5</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>3.0.1</version.jedis>
+        <version.jedis>3.2.0</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
-        <version.quartz>2.3.0</version.quartz>
+        <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
-        <version.hikariCP>3.3.1</version.hikariCP>
+        <version.hikariCP>3.4.1</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <version.mysql>8.0.15</version.mysql>
+        <version.mysql>8.0.18</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>4.0.1</version.poi>
+        <version.poi>4.1.2</version.poi>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <version.fileupload>1.4</version.fileupload>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
-        <version.collections>4.3</version.collections>
+        <version.collections>4.4</version.collections>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
-        <version.lang>3.8.1</version.lang>
+        <version.lang>3.9</version.lang>
+        <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
+        <version.codec>1.13</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.11.2</version.log4j>
+        <version.log4j>2.13.0</version.log4j>
+        <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
+        <version.extractor>2.12.0</version.extractor>
+        <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
+        <version.userAgentUtils>1.21</version.userAgentUtils>
+        <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
+        <version.annotation>1.3.2</version.annotation>
+        <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
+        <version.mail>1.6.2</version.mail>
+        <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
+        <version.ant>1.10.6</version.ant>
+        <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
+        <version.jta>1.1</version.jta>
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+        <version.servlet>4.0.1</version.servlet>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -83,6 +100,11 @@
                 <version>${version.lang}</version>
             </dependency>
             <dependency>
+                <groupId>commons-codec</groupId>
+                <artifactId>commons-codec</artifactId>
+                <version>${version.codec}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.apache.logging.log4j</groupId>
                 <artifactId>log4j-web</artifactId>
                 <version>${version.log4j}</version>
@@ -93,6 +115,11 @@
                 <version>${version.log4j}</version>
             </dependency>
             <dependency>
+                <groupId>com.drewnoakes</groupId>
+                <artifactId>metadata-extractor</artifactId>
+                <version>${version.extractor}</version>
+            </dependency>
+            <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
                 <version>${version.freemarker}</version>
@@ -100,16 +127,6 @@
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-context-support</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-beans</artifactId>
-                <version>${version.spring}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework</groupId>
-                <artifactId>spring-web</artifactId>
                 <version>${version.spring}</version>
             </dependency>
             <dependency>
@@ -203,41 +220,35 @@
                 <artifactId>httpclient-cache</artifactId>
                 <version>${version.httpclient}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
             <dependency>
                 <groupId>javax.transaction</groupId>
                 <artifactId>jta</artifactId>
-                <version>1.1</version>
+                <version>${version.jta}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
             <dependency>
                 <groupId>javax.mail</groupId>
                 <artifactId>javax.mail-api</artifactId>
-                <version>1.6.2</version>
+                <version>${version.mail}</version>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/com.sun.mail/javax.mail -->
+            <dependency>
+                <groupId>javax.annotation</groupId>
+                <artifactId>javax.annotation-api</artifactId>
+                <version>${version.annotation}</version>
+            </dependency>
             <dependency>
                 <groupId>com.sun.mail</groupId>
                 <artifactId>javax.mail</artifactId>
-                <version>1.6.2</version>
+                <version>${version.mail}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
             <dependency>
                 <groupId>eu.bitwalker</groupId>
                 <artifactId>UserAgentUtils</artifactId>
-                <version>1.21</version>
+                <version>${version.userAgentUtils}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/net.coobird/thumbnailator -->
-            <dependency>
-                <groupId>net.coobird</groupId>
-                <artifactId>thumbnailator</artifactId>
-                <version>0.4.8</version>
-            </dependency>
-            <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
             <dependency>
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant</artifactId>
-                <version>1.10.5</version>
+                <version>${version.ant}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
@@ -257,13 +268,16 @@
                         <groupId>com.mchange</groupId>
                         <artifactId>c3p0</artifactId>
                     </exclusion>
+                    <exclusion>
+                        <groupId>com.zaxxer</groupId>
+                        <artifactId>HikariCP-java7</artifactId>
+                    </exclusion>
                 </exclusions>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
             <dependency>
                 <groupId>javax.servlet</groupId>
                 <artifactId>javax.servlet-api</artifactId>
-                <version>4.0.1</version>
+                <version>${version.servlet}</version>
             </dependency>
             <!-- http://mvnrepository.com/artifact/junit/junit -->
             <dependency>
@@ -280,7 +294,13 @@
             <dependency>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-core</artifactId>
-                <version>1.3.7</version>
+                <version>1.4.0</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
+            <dependency>
+                <groupId>org.mybatis.dynamic-sql</groupId>
+                <artifactId>mybatis-dynamic-sql</artifactId>
+                <version>1.1.4</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -300,14 +320,30 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-    <!-- <repositories> <repository> <id>jcenter</id> <url>http://jcenter.bintray.com/</url> 
-        </repository> </repositories> <pluginRepositories> <pluginRepository> <id>jcenter</id> 
-        <url>http://jcenter.bintray.com/</url> </pluginRepository> </pluginRepositories> -->
+    <repositories>
+        <repository>
+            <id>nexus-aliyun</id>
+            <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
+        </repository>
+        <repository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </repository>
+    </repositories>
+    <pluginRepositories>
+        <pluginRepository>
+            <id>nexus-aliyun</id>
+            <url>https://maven.aliyun.com/nexus/content/repositories/central/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>jcenter</id>
+            <url>https://jcenter.bintray.com/</url>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <defaultGoal>compile</defaultGoal>
         <finalName>${project.artifactId}</finalName>
         <plugins>
-            <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-maven-plugin -->
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -317,7 +353,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.0</version>
+                <version>2.22.2</version>
                 <configuration>
                     <skipTests>true</skipTests>
                 </configuration>
@@ -331,7 +367,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.7.0</version>
+                <version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>

@@ -29,7 +29,7 @@ public class SysUserListDirective extends AbstractTemplateDirective {
                 handler.getDate("startLastLoginDate"), handler.getDate("endLastLoginDate"),
                 handler.getBoolean("superuserAccess"), handler.getBoolean("emailChecked"), disabled, handler.getString("name"),
                 handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
-                handler.getInteger("count", 30));
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
     

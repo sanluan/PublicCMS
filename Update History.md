@@ -1,3 +1,47 @@
+### V4.0.202003.a
+
+框架升级
+
+1. 所有JAVA框架升级到最新版本
+1. JDK11、JDK13兼容性改进
+1. 升级CKEditor编辑器到4.14.0
+1. 升级Codemirror到5.52.0
+
+程序功能修改
+
+1. 增加投票、投票模板示例
+1. 增加图片文件高度宽度记录
+1. 增加动态模板可接受参数类型控制
+1. 增加批量上传附件
+1. 增加内容评分
+1. 管理后台对手机屏幕适配
+1. 后台语言增加繁体中文
+1. 优化后台UI菜单溢出增加滚动条
+1. 优化内容、分类链接地址存储
+1. 安装页面兼容性修改
+1. 百度编辑器word转存功能复制按钮改完html5方式
+1. 删除分类编码回收
+1. 删除内容静态文件删除
+1. nginx配置模板增加https相关配置，增加tomcat https相关配置
+1. 增加多数据源动态方言切换
+1. 增加内容审核驳回
+1. 增加apptoken刷新功能,增加设备绑定用户名验证
+1. 增加hibernate实体生成代码
+
+BUG与缺陷修复
+
+1. 索引优化(https://github.com/sanluan/PublicCMS/issues/33)
+1. 数据脚本可能执行危险SQL修改(https://github.com/sanluan/PublicCMS/issues/29)
+1. 前台投稿造成的XSS攻击修复(https://github.com/sanluan/PublicCMS/issues/27)
+1. 通过x-forwarded-for头信息伪造访客ip漏洞修复(https://github.com/sanluan/PublicCMS/issues/26)
+1. 分类类型扩展字段描述信息XSS攻击修复(https://github.com/sanluan/PublicCMS/issues/25)
+1. 跳转地址安全问题修复
+1. HTTP响应截断修复
+1. 运行被打断的任务计划，启动新节点恢复就绪状态
+
+鸣谢
+1. 感谢对PublicCMS渗透测试，并第一时间提交漏洞详情的各位
+
 ### V4.0.190312
 
 框架升级

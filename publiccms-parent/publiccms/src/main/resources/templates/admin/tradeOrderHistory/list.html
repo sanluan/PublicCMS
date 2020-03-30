@@ -1,0 +1,59 @@
+<@_tradeOrderHistoryList orderId=orderId operate=operate
+            startCreateDate=startCreateDate endCreateDate=endCreateDate 
+            orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label>订单ID：</label>
+                    <input type="text" name="orderId" value="${orderId!}" />
+                </li>
+                <li>
+                    <label>操作：</label>
+                    <input type="text" name="operate" value="${operate!}" />
+                </li>
+                <li class="colspan">
+                    <label>创建日期：</label>
+                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="list" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>订单ID</th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+                <th>操作</th>
+                <th>内容</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td>${a.id!}</td>
+                <td>${a.orderId!}</td>
+                <td>${a.createDate!}</td>
+                <td>${a.operate!}</td>
+                <td>${a.content!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_tradeOrderHistoryList>

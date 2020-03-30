@@ -121,11 +121,13 @@ public class DirectiveComponent {
         target.setDateTimeFormat(source.getDateTimeFormat());
         target.setDateFormat(source.getDateFormat());
         target.setTimeFormat(source.getTimeFormat());
+        target.setShowErrorTips(source.getShowErrorTips());
         target.setNumberFormat(source.getNumberFormat());
         target.setOutputFormat(source.getOutputFormat());
         target.setURLEscapingCharset(source.getURLEscapingCharset());
         target.setLazyAutoImports(source.getLazyAutoImports());
         target.setTemplateExceptionHandler(source.getTemplateExceptionHandler());
+        target.setLogTemplateExceptions(source.getLogTemplateExceptions());
     }
 
     /**

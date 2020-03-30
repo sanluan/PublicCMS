@@ -96,7 +96,7 @@ $(function(){
         if($(this).is(':checked')){
             $('#sendData').val($('#sendData').val()+getSymbol($('#sendData').val())+'showParameters=true');
         }else{
-            $('#sendData').val($('#sendData').val().replace('&showParameters=true','').replace('?showParameters=true',''));
+            $('#sendData').val($('#sendData').val().replace('&showParameters=true','').replace('?showParameters=true&','?').replace('?showParameters=true',''));
         }
     });
     $('input:radio[name=api]').eq(0).click();
@@ -123,7 +123,7 @@ $(function(){
         <p>
             <label>Site switch
                 <select id="siteList">
-            <@_sysSiteList count=500>
+            <@_sysSiteList pageSize=500>
                 <#list page.list as a>
                     <option value ="${a.dynamicPath!}" <#if site.id=a.id>selected="selected"</#if>>${a.name!}<#if site.id=a.id>[Current site]</#if></option>
                 </#list>
@@ -134,12 +134,12 @@ $(function(){
             <label><input type="radio" name="api" value="1"/>函数接口Function interface</label>
             <label><input type="radio" name="api" value="2"/>自定义接口Custom interface</label>
         </p>
-        <p><em>红色字体接口需要使用AppToken才能访问，后台添加应用然后用appKey和appSecret通过自定义接口appToken获取appToken，绿色框体接口需要登录信息authToken，authUserId才能访问,通过普通接口login获取</em></p>
-        <p><em>The red font interface needs to use the AppToken to access, add the application in the management, and then use the appKey and appSecret to obtain the appToken through the custom interface appToken. The green frame interface requires the login information authToken and authUserId to access, and the common interface login.</em></p>
+        <p class="description"><em>红色字体接口需要使用AppToken才能访问，后台添加应用然后用appKey和appSecret通过自定义接口appToken获取appToken，绿色框体接口需要登录信息authToken，authUserId才能访问,通过普通接口login获取</em></p>
+        <p class="description"><em>The red font interface needs to use the AppToken to access, add the application in the management, and then use the appKey and appSecret to obtain the appToken through the custom interface appToken. The green frame interface requires the login information authToken and authUserId to access, and the common interface login.</em></p>
         <p id="interfaes"></p>
         <p>
-            <a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','20px');return false;">↑↑↑↑</a>
-            <a href="javascript:;" style="display:none;" onclick="$(this).hide().prev().show();$('#interfaes').css('height','auto');return false;">↓↓↓↓</a>
+            <a href="javascript:;" onclick="$(this).hide().next().show();$('#interfaes').css('height','20px');$('.description').show();return false;">↑↑↑↑</a>
+            <a href="javascript:;" style="display:none;" onclick="$(this).hide().prev().show();$('#interfaes').css('height','auto');$('.description').hide();return false;">↓↓↓↓</a>
         </p>
     </fieldset>
     <fieldset>

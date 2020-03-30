@@ -31,7 +31,6 @@ https://github.com/sanluan/PublicCMS
 
 * data\publiccms	PublicCMS数据目录
 * doc			文档
-* docker  docker构建目录
 * publiccms-parent	工程源码
 
 ## 快速编译与运行
@@ -71,7 +70,7 @@ java -jar -Dcms.port=8080 -Dcms.contextPath=/publiccms -Dcms.filePath="`pwd`/dat
 docker run -d -p 8080:8080 sanluan/publiccms
 
 ```
-自行构建镜像:复制publiccms.war,data目录到docker目录中,执行
+自行构建镜像:执行
 ```
 docker build -t mypubliccms .
 docker run -d -p 8080:8080 mypubliccms

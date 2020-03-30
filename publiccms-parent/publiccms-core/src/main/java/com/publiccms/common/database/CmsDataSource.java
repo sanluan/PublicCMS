@@ -91,7 +91,7 @@ public class CmsDataSource extends MultiDataSource {
     /**
      * 
      */
-    public static void initDefautDataSource() {
+    public static void initDefaultDataSource() {
         if (null != cmsDataSource) {
             synchronized (cmsDataSource) {
                 if (!initialized && CmsVersion.isInitialized()) {

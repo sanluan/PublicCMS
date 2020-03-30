@@ -1,0 +1,33 @@
+<@_tradeAccount id=id><#assign account=object/></@_tradeAccount>
+<form action="tradeAccount/recharge.do?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="accountId" value="${id!}"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="pageFormContent" layoutH="0">
+        <dl>
+            <dt>用户ID:</dt>
+            <dd>${id}</dd>
+        </dl>
+        <dl>
+            <dt>用户:</dt>
+            <dd><@_sysUser id=id>${object.nickName!}</@_sysUser></dd>
+        </dl>
+        <dl class="nowrap">
+            <dt>流水号:</dt>
+            <dd><input class="readonly" type="text" size="50" name="serialNumber" readonly="readonly" value="${getUUID()}"/></dd>
+        </dl>
+        <dl>
+            <dt>金额:</dt>
+            <dd><input class="required number" type="number" name="change"/></dd>
+        </dl>
+        <dl>
+            <dt>说明:</dt>
+            <dd><input class="required" type="text" name="description"/></dd>
+        </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.ok'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>

@@ -13,7 +13,7 @@ function clickAddTagType(){
     $('#tagTypes',navTab.getCurrentPanel()).parent().find('.button').click();
 }
 </script>
-<form method="post" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
@@ -158,9 +158,11 @@ function clickAddTagType(){
         <#assign modelIndex++/>
                 <dl class="nowrap">
                     <dt>
-                        <input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
-                        <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
-                        ${a.id}:${a.name!}
+                        <label>
+                            <input name="categoryModelList[${modelIndex}].use" type="checkbox" onclick="checkCategoryModel();"/>
+                            <input name="categoryModelList[${modelIndex}].categoryModel.id.modelId" type="hidden" value="${a.id}"/>
+                            ${a.id}:${a.name!}
+                        </label>
                     </dt>
                     <dd <#if a.onlyUrl> style="display:none"</#if>>
         <#if site.useStatic>
@@ -220,7 +222,7 @@ function checkCategoryModel(){
 }
 <#if a?has_content>
     <@_categoryModelList categoryId=id!copyId>
-        <#list page.list as a>
+        <#list list as a>
             $('input[name$=\\.categoryModel\\.id\\.modelId][value=${a.id.modelId}]',navTab.getCurrentPanel()).parent().find('input[type=checkbox]').click();
             $('input[data-model=${a.id.modelId}]',navTab.getCurrentPanel()).val('${(a.templatePath)!}');
         </#list>

@@ -1,6 +1,6 @@
 <@_sysDomain id=id><#assign a=object/></@_sysDomain>
 <div class="pageContent">
-    <form method="post" action="sysDomain/saveConfig.do?callbackType=closeCurrent&navTabId=sysDomain/domainList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+    <form method="post" autocomplete="off" action="sysDomain/saveConfig.do?callbackType=closeCurrent&navTabId=sysDomain/domainList" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
         <input name="name" type="hidden" value="${id!}"/>
         <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
         <div class="formBar">

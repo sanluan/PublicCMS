@@ -88,6 +88,8 @@ public class CmsContent implements java.io.Serializable {
     private Long quoteContentId;
     @GeneratorColumn(title = "是否转载")
     private boolean copied;
+    @GeneratorColumn(title = "是否投稿")
+    private boolean contribute;
     @GeneratorColumn(title = "作者")
     @Field(analyze = Analyze.NO, store = Store.YES)
     private String author;
@@ -180,7 +182,7 @@ public class CmsContent implements java.io.Serializable {
     }
 
     public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
-            Long quoteContentId, boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages,
+            Long quoteContentId, boolean contribute, boolean copied, String author, String editor, boolean onlyUrl, boolean hasImages,
             boolean hasFiles, boolean hasStatic, String url, String description, String tagIds, String dictionaryValues,
             String cover, int childs, int scores, int comments, int clicks, Date publishDate, Date expiryDate, Date checkDate,
             Date updateDate, Date createDate, int sort, int status, boolean disabled) {
@@ -192,6 +194,7 @@ public class CmsContent implements java.io.Serializable {
         this.modelId = modelId;
         this.parentId = parentId;
         this.quoteContentId = quoteContentId;
+       this.contribute = contribute;
         this.copied = copied;
         this.author = author;
         this.editor = editor;
@@ -301,6 +304,15 @@ public class CmsContent implements java.io.Serializable {
     public void setQuoteContentId(Long quoteContentId) {
         this.quoteContentId = quoteContentId;
     }
+    
+	@Column(name = "contribute", nullable = false)
+    public boolean isContribute() {
+        return this.contribute;
+    }
+    
+    public void setContribute(boolean contribute) {
+        this.contribute = contribute;
+    }
 
     @Column(name = "copied", nullable = false)
     public boolean isCopied() {
@@ -310,7 +322,8 @@ public class CmsContent implements java.io.Serializable {
     public void setCopied(boolean copied) {
         this.copied = copied;
     }
-
+    
+    
     @Column(name = "author", length = 50)
     public String getAuthor() {
         return this.author;
@@ -392,7 +405,7 @@ public class CmsContent implements java.io.Serializable {
         this.tagIds = tagIds;
     }
 
-    @Column(name = "dictionar_values", length = 65535)
+    @Column(name = "dictionary_values", length = 65535)
     public String getDictionaryValues() {
         return this.dictionaryValues;
     }

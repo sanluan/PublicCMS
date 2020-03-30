@@ -1,7 +1,24 @@
-<@_tagTypeList pageIndex=pageNum count=numPerPage>
-<form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+<@_tagTypeList pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
-</form>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'name'/>:</label>
+                    <input type="text" name="name" value="${(name)!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
@@ -10,7 +27,7 @@
             <li><a href="cmsTagType/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
-    <table class="list" width="100%" layoutH="57">
+    <table class="list" width="100%" layoutH="99">
         <thead>
             <tr>
                 <th width="30"><@t.page 'id'/></th>
@@ -22,7 +39,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.count!}</td>
             </tr>
             </#list>

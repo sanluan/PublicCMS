@@ -1,8 +1,8 @@
 <#macro lookupTree parentId=''>
-    <@_sysDeptList parentId=parentId count=500>
+    <@_sysDeptList parentId=parentId pageSize=500>
         <#list page.list as a>
             <li>
-                <a href="javascript:;" onclick="$.bringBack({parentId:'${a.id}',deptId:'${a.id}',deptName:'${a.name}',parentName:'${a.name}'});return false;">${a.name!}</a>
+                <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({parentId:'${a.id}',deptId:'${a.id}',deptName:'${a.name}',parentName:'${a.name}'});return false;">${a.name!}</a>
                 <ul>
                     <@lookupTree a.id/>
                 </ul>

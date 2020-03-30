@@ -1,0 +1,57 @@
+<@_tagList advanced=true name=name orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsTag/lookup.html" method="post">
+        <#include "../include_page/parameters.html"/>
+        <input type="hidden" name="field" value="${field!'tagId'}"/>
+        <input type="hidden" name="nameField" value="${nameField!'tagName'}"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'name'/>:</label>
+                    <input type="text" name="name" value="${(name)!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="button" class="button" onclick="$.bringBack({'${field!'tagId'}':'','${nameField!'tagName'}':''});return false;"><@t.page 'button.clear_select'/></button>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="list" width="100%" layoutH="96">
+        <thead>
+            <tr>
+                <th><@t.page 'select'/></th>
+                <th width="30"><@t.page 'id'/></th>
+                <th><@t.page 'name'/></th>
+                <th><@t.page 'tag_type'/></th>
+                <th orderField="searchCount" class="<#if orderField??&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'typeIds' a.typeId!/>
+            </#list>
+
+            <@_tagType ids=t.typeIds!><#assign typeMap=map!/></@_tagType>
+            <#list page.list as a>
+            <tr>
+                <td>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'tagId'}':'${a.id}','${nameField!'name'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                </td>
+                <td>${a.id}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
+                <td>${a.searchCount!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/pageDialog.html"/>
+</div>
+</@_tagList>

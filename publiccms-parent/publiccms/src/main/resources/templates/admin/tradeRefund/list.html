@@ -1,0 +1,78 @@
+<@_tradeRefundList orderId=orderId refundUserId=refundUserId status=status 
+            orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label>订单ID：</label>
+                    <input type="text" name="orderId" value="${orderId!}" />
+                </li>
+                <li>
+                    <label>退款操作用户：</label>
+                    <input type="text" name="refundUserId" value="${refundUserId!}" />
+                </li>
+                <li>
+                    <label>状态：</label>
+                    <input type="text" name="status" value="${status!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='tradeRefund/refundParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        <#if authorizedMap['tradeRefund/refundParameters']>
+            <li><a href="tradeRefund/refundParameters.html?id={sid}" target="dialog" rel="tradeRefund/refundParameters"><i class="icon-plus-sign-alt icon-large"></i> 退款</a></li>
+        </#if>
+        </ul>
+    </div>
+    <table class="list" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>订单ID</th>
+                <th>申请退款金额</th>
+                <th>原因</th>
+                <th>退款操作用户</th>
+                <th>退款金额</th>
+                <th>状态</th>
+                <th>回复</th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td>${a.id!}</td>
+                <td>${a.orderId!}</td>
+                <td>${a.amount!}</td>
+                <td>${a.reason!}</td>
+                <td>${a.refundUserId!}</td>
+                <td>${a.refundAmount!}</td>
+                <td>${a.status!}</td>
+                <td>${a.reply!}</td>
+                <td>${a.createDate!}</td>
+                <td>
+                <#if authorizedMap['tradeRefund/refundParameters'] && 0=a.status>
+                    <a href="tradeRefund/refundParameters.html?id=${a.id}" target="dialog" rel="tradeRefund/refundParameters">退款</a>
+                </#if>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_tradeRefundList>

@@ -115,6 +115,7 @@ public class SmartcnDictUtils {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

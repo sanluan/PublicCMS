@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${site.useStatic?then(site.sitePath,base)}">Home page</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+        <h2>Latest content</h2>
+<@_contentList onlyUrl=false pageSize=10>
+    <#list page.list as a>
+        <article>
+            <h3><a href="${a.url!}" target="_blank">${a.title}</a></h3>
+            <p>
+                <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
+                ${a.description!}
+            </p>
+        </article>
+    </#list>
+</@_contentList>
+        <aside>
+            <h3>Popular content</h3>
+            <ul>
+<@_contentList orderField='clicks' pageSize=10>
+    <#list page.list as a>
+                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+    </#list>
+</@_contentList>
+            </ul>
+        </aside>
+    </main>
+    <footer>
+        <#if base?has_content>
+            <a href="?locale=zh_CN">中文</a>
+            <a href="?locale=ja">日本語</a>
+        </#if>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+</body>
+</html>

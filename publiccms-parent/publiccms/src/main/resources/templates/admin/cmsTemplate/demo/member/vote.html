@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+    <style>
+ol.vote>li {line-height: 30px;height: 30px;width:400px;margin:5px 0 0 0;max-width:95%;position: relative;}
+.progress-box {width: 100%;height: 100%;border: 1px solid #cccccc;display: inline-block;}
+.progress-bar {height:100%;opacity: 0.4;}
+.progress-text {text-align: center;position: absolute;top: 0;width: 100%;}
+.progress-text a {width: 100%;height: 100%;display: inline-block;}
+ol.vote>li:nth-child(3n+1) .progress-bar {background-color:red;}
+ol.vote>li:nth-child(3n+2) .progress-bar {background-color:green;}
+ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+        <h1>Vote</h1>
+<@_voteList pageIndex=pageIndex pageSize=10>
+        <ul>
+    <#list page.list as a>
+            <li>
+                <h3>${a.title}</h3>
+                <p>${a.scores!} votes,end on:${(a.endDate)!}</p>
+                <p>${a.description}</p>
+                <#if a.startDate lt .now && .now lt a.endDate><#assign available=true/><#else><#assign available=false/></#if>
+                <#if available && user?has_content>
+                    <@_userVote userId=user.id voteId=a.id>
+                        <#assign myvote=object/>
+                    </@_userVote>
+                </#if>
+                <@_voteItemList voteId=a.id pageSize=10>
+                    <ol class="vote">
+                    <#list page.list as v>
+                        <li>
+                            <div class="progress-box">
+                                <div class="progress-bar" style="width:${(a.scores gt 0 && myvote?has_content)?then(v.scores*100/a.scores,100)}%;"></div>
+                                <div class="progress-text">
+                                    <#if available>
+                                        <#if myvote?has_content>
+                                            <#if myvote.itemId=v.id>
+                                                <a href="javascript:unvote('${v.id}');" title="Cannel voting">${v.title} (${v.scores!} votes)</a>
+                                            <#else>
+                                                ${v.title} (${v.scores!} votes)
+                                            </#if>
+                                        <#else>
+                                            <a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html?id=${a.id}</#if>" title="Vote and view">${v.title}</a>
+                                        </#if>
+                                    <#else>
+                                        (${v.scores!} votes)
+                                    </#if>
+                                </div>
+                            </div>
+                        </li>
+                    </#list>
+                    </ol>
+                </@_voteItemList>
+            </li>
+    </#list>
+        </ul>
+        <div>
+            <#assign
+                url=site.dynamicPath+'vote.html'
+                start=1
+                end=page.totalPage
+            />
+            <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+            </#if>
+            <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+            </#if>
+            <#if !page.firstPage>
+                <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
+            <#else>
+                <span>Previous page</span>
+            </#if>
+            <#if start gt 1>
+                <a href="${url}">1</a> ...
+            </#if>
+            <#list start..end as n>
+                <#if n=page.pageIndex>
+                    ${n}
+                <#else>
+                    <a href="${getPage(url,n,'pageIndex')}">${n}</a>
+                </#if>
+            </#list>
+            <#if end lt page.totalPage>
+                ... <a href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
+            </#if>
+            <#if !page.lastPage>
+                <a href="${getPage(url,page.nextPage,'pageIndex')}">Next page</a>
+            <#else>
+                <span>Next page</span>
+            </#if>
+        </div>
+</@_voteList>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+<#if user?has_content>
+<script>
+function vote(itemId){
+    $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+        alert("Vote ok!");
+        location.reload();
+    });
+}
+function unvote(itemId){
+    $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+        alert("Cancel ok!");
+        location.reload();
+    });
+}
+</script>
+</#if>
+</body>
+</html>

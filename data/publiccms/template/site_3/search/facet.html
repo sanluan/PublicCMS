@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>高级搜索 - PublicCMS</title>
+	<meta name="keywords" content="高级搜索"/>
+	<meta name="description" content="高级搜索  ${word!}"/>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+	<div class="container bread">
+		<a href="${site.sitePath!}">首页</a>  &gt; <a href="${siteAttribute.searchPath!}">搜索</a>
+	</div>
+	<div class="container">
+		<div class="data-list left-content">
+			<div class="search">
+				<form action="facet.html" method="get">
+						<input type="text" name="word" value="${word!tagName!}"/>
+						<input type="submit" value="搜索"/>
+				</form>
+				<@_tagList count=10>
+					<p>
+						热门标签：
+						<#list page.list as a>
+							<a href="?tagId=${a.id}">${a.name}</a>
+						</#list>
+					</p>
+				</@_tagList>
+				<@_wordList count=10>
+					<p>
+						热门搜索词：
+						<#list page.list as a>
+							<a href="?word=${a.name?url}">${a.name}</a>
+						</#list>
+					</p>
+				</@_wordList>
+			</div>
+<@import path="/ftl/tools.ftl" namespace="t"/>
+<#if word?has_content||tagId?has_content>
+	<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=page count=10>
+		<#assign modelFacet=page.facetMap['modelId']!/>
+		<#assign categoryFacet=page.facetMap['categoryId']!/>
+		<#if categoryFacet?has_content>
+			<#list categoryFacet?keys as k><@t.merge 'categoryIds' k/></#list>
+			<@_category ids=(t.categoryIds)!><#assign categoryMap=map!/></@_category>
+				<div class="search-condition">
+					<label>分类:</label>
+						<a href="facet.html?word=${(word?url)!}" ${(!categoryId?has_content)?then('style="font-weight:bold;"','')}>全部</a>
+						<#list categoryFacet?keys as k>
+						<a href="facet.html?word=${(word?url)!}&categoryId=${k}" ${(k=categoryId!'')?then('style="font-weight:bold;"','')}>${categoryMap[k].name}(${categoryFacet[k]})</a>
+						</#list>
+				</div>
+		</#if>
+		<#if modelFacet?has_content>
+			<#list modelFacet?keys as k><@t.merge 'sidemodelIds' k/></#list>
+			<@_model ids=(t.sidemodelIds)!><#assign modelMap=map!/></@_model>
+				<div class="search-condition">
+					<label>模型:</label>
+						<a href="facet.html?word=${(word?url)!}&categoryId=${(categoryId?url)!}" ${(!modelId?has_content)?then('style="font-weight:bold;"','')}>全部</a>
+						<#list modelFacet?keys as k>
+						<a href="facet.html?word=${(word?url)!}&modelId=${k}&categoryId=${(categoryId?url)!}" ${(k=modelId!'')?then('style="font-weight:bold;"','')}>${modelMap[k].name}(${modelFacet[k]})</a>
+						</#list>
+				</div>
+		</#if>
+		<#if page.totalCount gt 0>
+			<#list page.list as a>
+				<@include path="/ftl/search-list.ftl"/>
+			</#list>
+			<@include path="/ftl/facetSearch-page.ftl"/>
+		</#if>
+	</@_facetSearch>
+</#if>
+		</div>
+		<aside>
+			<@_includePlace path="/4fff54e5-7763-4fc2-a0d1-fb96427c2c0a.html"/> <#-- 左侧推荐 -->
+		</aside>
+	</div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+</body>
+</html>

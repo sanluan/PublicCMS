@@ -27,7 +27,7 @@ public class CmsTagListDirective extends AbstractTemplateDirective {
             orderField = handler.getString("orderField");
         }
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getInteger("typeId"), handler.getString("name"),
-                orderField, handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+                orderField, handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
         handler.put("page", page).render();
     }
 

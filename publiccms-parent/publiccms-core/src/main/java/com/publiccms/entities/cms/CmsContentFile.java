@@ -36,6 +36,10 @@ public class CmsContentFile implements java.io.Serializable {
     private String fileType;
     @GeneratorColumn(title = "文件大小", order = true)
     private long fileSize;
+    @GeneratorColumn(title = "宽度")
+    private Integer width;
+    @GeneratorColumn(title = "高度")
+    private Integer height;
     @GeneratorColumn(title = "点击", order = true)
     private int clicks;
     @GeneratorColumn(title = "排序")
@@ -46,7 +50,7 @@ public class CmsContentFile implements java.io.Serializable {
     public CmsContentFile() {
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, String fileType, int fileSize, int clicks, int sort) {
+    public CmsContentFile(long contentId, long userId, String filePath, String fileType, long fileSize, int clicks, int sort) {
         this.contentId = contentId;
         this.userId = userId;
         this.filePath = filePath;
@@ -56,13 +60,15 @@ public class CmsContentFile implements java.io.Serializable {
         this.sort = sort;
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, String fileType, int fileSize, int clicks, int sort,
-            String description) {
+    public CmsContentFile(long contentId, long userId, String filePath, String fileType, long fileSize, Integer width,
+            Integer height, int clicks, int sort, String description) {
         this.contentId = contentId;
         this.userId = userId;
         this.filePath = filePath;
         this.fileType = fileType;
         this.fileSize = fileSize;
+        this.width = width;
+        this.height = height;
         this.clicks = clicks;
         this.sort = sort;
         this.description = description;
@@ -123,6 +129,24 @@ public class CmsContentFile implements java.io.Serializable {
 
     public void setFileSize(long fileSize) {
         this.fileSize = fileSize;
+    }
+
+    @Column(name = "width")
+    public Integer getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    @Column(name = "height")
+    public Integer getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
     }
 
     @Column(name = "clicks", nullable = false)

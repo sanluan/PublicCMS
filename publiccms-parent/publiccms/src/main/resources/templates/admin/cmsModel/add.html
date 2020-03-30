@@ -2,7 +2,7 @@
     <#assign a=object/>
     <#if (object.parentId)??><#assign parentId=object.parentId/></#if>
 </@_model>
-<form method="post" action="cmsModel/save.do?callbackType=closeCurrent&navTabId=cmsModel/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsModel/save.do?callbackType=closeCurrent&navTabId=cmsModel/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="modelId" type="hidden" value="${id!}" />
     <input name="parentId" type="hidden" value="${parentId!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
@@ -94,11 +94,11 @@
             </dl>
             <dl class="nowrap">
                 <dt>
-                    <label><input name="fieldList" type="checkbox" value="editor"/><@t.page 'button.edit'/>(editor)</label>
+                    <label><input name="fieldList" type="checkbox" value="editor"/><@t.page 'editor'/>(editor)</label>
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[editor]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['editor'])!t.pageMessage('button.edit')}"/>
+                    <input name="fieldTextMap[editor]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['editor'])!t.pageMessage('editor')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="editor"/><@t.page 'required'/></label>
                 </dd>
             </dl>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -92,6 +93,7 @@ public class CmsCategoryAdminController {
                         .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.category",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
+            
         } else {
             service.save(site.getId(), entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -244,7 +246,15 @@ public class CmsCategoryAdminController {
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids,
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(ids)) {
-            service.delete(site.getId(), ids);
+            for (CmsCategory entity : service.delete(site.getId(), ids)) {
+                if (entity.isHasStatic()) {
+                    String filePath = siteComponent.getWebFilePath(site, entity.getUrl());
+                    if (CmsFileUtils.exists(filePath)) {
+                        String backupFilePath = siteComponent.getWebBackupFilePath(site, filePath);
+                        CmsFileUtils.moveFile(filePath, backupFilePath);
+                    }
+                }
+            }
             contentService.deleteByCategoryIds(site.getId(), ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),

@@ -1,6 +1,6 @@
-<@_contentList categoryId=categoryId modelId=modelId parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+<@_contentList categoryId=categoryId modelId=modelId parentId=parentId containChild=true title=title userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
+    <form class="pagerForm" autocomplete="off" action="cmsContent/push_content_list.html?contentId=${contentId}" onsubmit="return divSearch(this, 'push_content_list');" method="post">
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
         <input type="hidden" name="userId" value="${userId!}"/>
         <input type="hidden" name="parentId" value="${parentId!}"/>
@@ -67,7 +67,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" mask="true"><i class="icon-check-sign icon-large"></i> <@t.page 'button.push'/></a>
+                    <a href="cmsContent/push_to_content.html?contentId=${a.id}&relatedContentId=${contentId!}" target="dialog" mask="true"><i class="icon-ok icon-large"></i> <@t.page 'button.push'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>

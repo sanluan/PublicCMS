@@ -29,6 +29,7 @@ public class CmsPageMetadata implements java.io.Serializable {
     private Integer cacheTime;
     private String contentType;
     private List<SysExtendField> extendList;
+    private Map<String, ParameterType> parameterTypeMap;
 
     /**
      * 
@@ -90,13 +91,6 @@ public class CmsPageMetadata implements java.io.Serializable {
      */
     public void setAcceptParameters(String acceptParameters) {
         this.acceptParameters = acceptParameters;
-    }
-
-    /**
-     * @return the acceptParamters
-     */
-    public String getAcceptParamters() {
-        return acceptParameters;
     }
 
     /**
@@ -178,6 +172,21 @@ public class CmsPageMetadata implements java.io.Serializable {
         this.extendList = extendList;
     }
 
+    /**
+     * @return the parameterTypeMap
+     */
+    public Map<String, ParameterType> getParameterTypeMap() {
+        return parameterTypeMap;
+    }
+
+    /**
+     * @param parameterTypeMap
+     *            the parameterTypeMap to set
+     */
+    public void setParameterTypeMap(Map<String, ParameterType> parameterTypeMap) {
+        this.parameterTypeMap = parameterTypeMap;
+    }
+
     @JsonIgnore
     public Map<String, Object> getAsMap(CmsPageData data) {
         Map<String, Object> map = new HashMap<>();
@@ -191,6 +200,7 @@ public class CmsPageMetadata implements java.io.Serializable {
         map.put("contentType", getContentType());
         map.put("extendList", getExtendList());
         map.put("extendData", data.getExtendData());
+        map.put("parameterTypeMap", getParameterTypeMap());
         return map;
     }
 }

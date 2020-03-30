@@ -1,4 +1,4 @@
-<@_place id=id>
+<@_place id=id absoluteURL=true>
     <#assign a=object/>
 </@_place>
 <div class="pageFormContent" layoutH="50">
@@ -25,7 +25,7 @@
         <dt><@t.page 'cover'/>:</dt>
         <dd>
             <div class="thumbnail">
-                <img src="${(site.sitePath+a.cover)!}" style="max-width:200px;max-height:200px;"/>
+                <img src="${(a.cover)!}" style="max-width:200px;max-height:200px;"/>
             </div>
         </dd>
     </dl>

@@ -42,8 +42,12 @@ public class LogUpload implements java.io.Serializable {
     private String originalName;
     @GeneratorColumn(title = "文件类型", condition = true)
     private String fileType;
-    @GeneratorColumn(title = "站点", order = true)
+    @GeneratorColumn(title = "文件大小", order = true)
     private long fileSize;
+    @GeneratorColumn(title = "宽度")
+    private Integer width;
+    @GeneratorColumn(title = "高度")
+    private Integer height;
     @GeneratorColumn(title = "IP")
     private String ip;
     @GeneratorColumn(title = "操作日期", order = true)
@@ -65,14 +69,16 @@ public class LogUpload implements java.io.Serializable {
         this.filePath = filePath;
     }
 
-    public LogUpload(short siteId, long userId, String channel, String originalName, String fileType, long fileSize, String ip,
-            Date createDate, String filePath) {
+    public LogUpload(short siteId, long userId, String channel, String originalName, String fileType, long fileSize,
+            Integer width, Integer height, String ip, Date createDate, String filePath) {
         this.siteId = siteId;
         this.userId = userId;
         this.channel = channel;
         this.originalName = originalName;
         this.fileType = fileType;
         this.fileSize = fileSize;
+        this.width = width;
+        this.height = height;
         this.ip = ip;
         this.createDate = createDate;
         this.filePath = filePath;
@@ -144,7 +150,25 @@ public class LogUpload implements java.io.Serializable {
         this.fileSize = fileSize;
     }
 
-    @Column(name = "ip", length = 64)
+    @Column(name = "width")
+    public Integer getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    @Column(name = "height")
+    public Integer getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
+    }
+
+    @Column(name = "ip", length = 130)
     public String getIp() {
         return this.ip;
     }

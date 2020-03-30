@@ -5,7 +5,7 @@
         <p>
             <label><@t.page 'myself.my_pending_content'/>:</label>
             <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
-                <@_contentList advanced=true status=2 userId=admin.id count=0>
+                <@_contentList advanced=true status=2 userId=admin.id pageSize=0>
                     ${page.totalCount}
                 </@_contentList>
             </a>
@@ -13,7 +13,7 @@
         <p>
             <label><@t.page 'myself.my_draft'/>:</label>
             <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
-                <@_contentList advanced=true status=0 userId=admin.id count=0>
+                <@_contentList advanced=true status=0 userId=admin.id pageSize=0>
                     ${page.totalCount}
                 </@_contentList>
             </a>
@@ -36,7 +36,7 @@
         </p>
         <p>
             <label><@t.page 'my_login_token'/>:</label>
-            <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> <@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id count=0>${page.totalCount}</@_sysUserTokenList></a>
+            <a href="myself/userTokenList.html" title="<i class='icon-unlock-alt icon-large'></i> <@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id pageSize=0>${page.totalCount}</@_sysUserTokenList></a>
         </p>
     </div>
 </fieldset>
@@ -47,7 +47,15 @@
             <p>
                 <label><@t.page 'comment.uncheck'/>:</label>
                 <a href="cmsComment/list.html?status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
-                    <@_commentList advanced=true status=2 count=0>
+                    <@_commentList advanced=true status=2 pageSize=0>
+                        ${page.totalCount}
+                    </@_commentList>
+                </a>
+            </p>
+            <p>
+                <label><@t.page 'content.comments'/>:</label>
+                <a href="cmsComment/list.html?status=1&status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
+                    <@_commentList advanced=true status='1,2' pageSize=0>
                         ${page.totalCount}
                     </@_commentList>
                 </a>
@@ -76,7 +84,7 @@
                 </a>
             </p>
             <p>
-                <label><@t.page 'operate'/>:${.now?long?number_to_date?string}</label>
+                <label><@t.page 'operate'/>:</label>
                 <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
                     <@_logOperateList startCreateDate=.now?long?number_to_date?string>
                        ${page.totalCount}
@@ -92,11 +100,11 @@
         <div class="unit">
             <p id="cmsVersion">
                 <label><@t.page 'publiccms'/>:</label>
-                <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.page 'publiccms_website'/>">${cms}</a>
+                <a href="//www.publiccms.com/" target="navTab" rel="publiccms.com" icon="<i class='icon-home icon-large'></i>" title="<@t.page 'publiccms_website'/>">${cms}.${revision}</a>
             </p>
             <script>
                 $.getJSON('//cms.publiccms.com/api/directive/version',function(data){
-                    if($('#cmsVersion a').eq(0).text()!==data.cms){
+                    if($('#cmsVersion a').eq(0).text()!==(data.cms+'.'+data.revision)){
                         $('#cmsVersion a').eq(0).append('[<em style="color:red"><@t.page 'version.old'/></em>]');
                     } else {
                         $('#cmsVersion a').eq(0).append('[<em style="color:green"><@t.page 'version.new'/></em>]');
@@ -116,7 +124,7 @@
         <@_disk>
             <p>
                 <label><@t.page 'data.directory'/>:</label>
-                <a href="sysSite/monitor.html" icon="<i class='icon-check-sign icon-large'></i>" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor" external="true">${(rootPath)!}</a>
+                <a href="sysSite/monitor.html" icon="<i class='icon-suitcase icon-large'></i>" title="<@t.page 'system_monitor'/>" target="navTab" rel="sysSite/monitor" external="true">${(rootPath)!}</a>
             </p>
             <p>
                 <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>
@@ -126,11 +134,11 @@
             <div class="unit">
                 <p>
                     <label><@t.page 'site.count'/>:</label>
-                    <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@_sysSiteList count=0>${page.totalCount}</@_sysSiteList></a>
+                    <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@_sysSiteList pageSize=0>${page.totalCount}</@_sysSiteList></a>
                 </p>
                 <p>
                     <label><@t.page 'domain.count'/>:</label>
-                    <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@_sysDomainList advanced=true count=0>${page.totalCount}</@_sysDomainList></a>
+                    <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@_sysDomainList advanced=true pageSize=0>${page.totalCount}</@_sysDomainList></a>
                 </p>
             </div>
     </@_masterSite>

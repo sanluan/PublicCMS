@@ -31,6 +31,7 @@ public class GetTemplateResultMethod extends BaseMethod {
         configuration.setAPIBuiltinEnabled(false);
         configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
         configuration.setLogTemplateExceptions(false);
+        configuration.setBooleanFormat("c");
     }
 
     @SuppressWarnings("unchecked")

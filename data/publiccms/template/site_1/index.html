@@ -1,59 +1,46 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-	<title>${(metadata.extendData.title)!}</title>
-	<meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
-	<meta name="description" content="${(metadata.extendData.description)!}"/>
-	<@_includePlace  path='/76c53ac2-4f88-4ef3-984b-c81d00a48089.html' /> <#-- header -->
-</head>
-<body>
-<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
-<main>
-	<div class="container">
-		<@_includePlace path="/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"/> <#-- 焦点图 -->
-		<div class="data-list left-content">
-<@import path="/ftl/tools.ftl" namespace="t"/>
-<#macro showCategory id count=3>
-		<@_category id=id>
-		<@_contentList categoryId=object.id containChild=true count=count>
-			<#if page.totalCount gt 0>
-				<a href="${object.url}"><h3>${object.name!}</h3></a>
-				<#list page.list as a>
-					<@include path="/ftl/data-list.ftl"/>
-				</#list>
-			</#if>
-		</@_contentList>
-</@_category>
-</#macro>
-<@showCategory metadata.extendData.category1!'' 3/>
-<@showCategory metadata.extendData.category2!'' 3/>
-<@showCategory metadata.extendData.category3!'' 3/>
-		</div>
-		<aside>
-			<div>
-				<h3>文档视频下载</h3>
-				<div class="page">
-						<a target="_blank" href="https://pan.baidu.com/s/1QIPaIhuASKC_16ZJ6v4SgQ">百度网盘</a>密码:eo4r
-				</div>
-			</div>
-			<div>
-				<h3>热门文章</h3>
-				<ul class="rank">
-<@_contentList modelId=1 orderField='clicks' count=10>
-	<#list page.list as a>
-					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
-	</#list>
-</@_contentList>
-				</ul>
-			</div>
-            <@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
-		</aside>
-	</div>
-	<div class="clearfix-before"></div>
-</main>
-<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- footer -->
-<script>
-	$("header nav ul li a:contains('首页')").parent().addClass('selected');
-</script>
-</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+    <link href="${site.sitePath}assets/style.css" rel="stylesheet"/>
+</head>
+<body>
+    <header>
+        <h1>Sites list</h1>
+    </header>    
+    <main>
+<@_sysSiteList pageSize=10>
+        <ul>
+    <#list page.list?reverse as a><#if a.id!=site.id>
+        <li>
+            <div class="site-box">
+                <h3><a href="${a.dynamicPath!}" target="_blank">${a.name}</a><#if a.useStatic>[Enable static]</#if></h3>
+                <div>
+                    <p><a href="${a.dynamicPath!}admin/" target="_blank">Management system</a></p>
+                    Domains list:
+                    <@_sysDomainList advanced=true siteId=a.id>
+                        <#list page.list as a>
+                    <p>${a.name}<#if a.wild>[Wild domain]</#if> <#if a.path?has_content>Template root path:${(a.path)!}</#if></p>
+                        </#list>
+                    </@_sysDomainList>                    
+                </div>
+            </div>
+        </li>
+    </#if></#list>
+        </ul>
+</@_sysSiteList>
+        <div class="clear"></div>
+        <p>The default user name / password for all sites: admin / admin</p>
+        <p>The domain name list indicates that you use these domain names to access the program, the corresponding site will be displayed! Wildcard domain name means that all subdomains of this domain name can also access this site。The template root directory means access using this domain name, the template files in this directory are accessed</p>
+        <p>The first visit to the static site requires you to log in to the background and perform "重新生成全站" in Maintenance-> System Maintenance-> Task Schedule to browse normally</p>
+        <p>For testing purposes, we have pointed dev.publiccms.com and all its subdomains to 127.0.0.1, which can be used to test local services in the same way as localhost and loopback when you are connected to the Internet.</p>
+    </main>
+    <footer>
+        <#if base?has_content>
+            <a href="?locale=zh_CN">中文</a>
+        </#if>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+</body>
 </html>

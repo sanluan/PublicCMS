@@ -161,7 +161,7 @@ public class UserController {
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
-        Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
+        Map<String, String> config = configComponent.getConfigData(site.getId(), EmailTemplateConfigComponent.CONFIG_CODE);
         String emailTitle = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_TITLE);
         String emailPath = config.get(EmailTemplateConfigComponent.CONFIG_EMAIL_PATH);
         SysUser user = ControllerUtils.getUserFromSession(session);

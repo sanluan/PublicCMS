@@ -2,7 +2,7 @@
 <dl class="nowrap tags">
     <dt>${typeName?has_content?then(typeName,tagText)}:</dt>
     <dd>
-        <div id="tags${typeId!}" class="tagsBox"></div>
+        <div class="tagsBox tags_${typeId!}"></div>
         <input name="tag[${typeId!}].id" type="hidden"/>
         <input name="tag[${typeId!}].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="tag[${typeId!}]" suggestUrl="common/tagSuggest.html?typeId=${typeId!}"/>
         <a href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
@@ -24,13 +24,13 @@ function addTag(typeId,$id,$name){
     if($name){
         $name=$name.trim();
     }
-    if($('#tags'+typeId+' span',navTab.getCurrentPanel()).size()>20){
+    if($('.tags_'+typeId+' span',navTab.getCurrentPanel()).size()>20){
         alertMsg.error('<@t.page 'tag.warn' 20/>');
     }else{
         if($id&&$name){
-            $('#tags'+typeId,navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tags[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+            $('.tags_'+typeId,navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tags[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
         }else if($name){
-            $('#tags'+typeId,navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tags[].name\" value=\""+$name+"\"/><input type=\"hidden\" name=\"tags[].typeId\" value=\""+typeId+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+            $('.tags_'+typeId,navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tags[].name\" value=\""+$name+"\"/><input type=\"hidden\" name=\"tags[].typeId\" value=\""+typeId+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
         }
         reIndex();
     }
@@ -47,7 +47,7 @@ function reIndex(){
         tagIndex++;
     });
 }
-$('.tags',navTab.getCurrentPanel()).on('click','span>a',function(){
+$('.tagsBox',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     reIndex();
     return false;

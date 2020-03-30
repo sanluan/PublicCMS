@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>用户 - ${user.nickName!}</title>
+	<meta name="keywords" content="${user.nickName!},主页"/>
+	<meta name="description" content="${user.nickName!}的个人页面"/>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+	<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+	<main>
+		<div class="container">
+			<h1><a href="${site.dynamicPath}user.html?id=${user.id}">${user.nickName!}的个人页面</a></h1>
+			<div class="comment-box">
+				<@_commentList contentId=contentId userId=user.id pageIndex=pageIndex pageSize=10>
+					<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
+					<#list page.list as a>
+						<@t.merge 'userIds' a.replyUserId!/>
+						<@t.merge 'contentIds' a.contentId!/>
+					</#list>
+					<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+					<@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+					<#if page.totalCount gt 0>
+						<h3>内容评论</h3>
+						<ul>
+							<#list page.list as a>
+							<li class="underline">
+								<p>${a.createDate?string('yyyy-MM-dd hh:mm')} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》</p>
+								<#if a.replyId?has_content>
+									<@_comment id=a.replyId>
+										<p class="reply"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${userMap[a.replyUserId?string].nickName}</a> : ${object.text!}</p>
+									</@_comment>
+								</#if>
+								<p>${a.text!}</p>
+							</li>
+							</#list>
+						</ul>
+					</#if>
+					<#if page??>
+					<div class="page">
+						<#if !page.firstPage>
+						<a href="${site.dynamicPath}user.html?id=${user.id!}&pageIndex=${page.prePage}">上一页</a>
+						<#else>
+						<span>上一页</span>
+						</#if>
+						<#assign start=1/>
+						<#if (page.pageIndex-5) gt start>
+						<#assign start=page.pageIndex-4/>
+						</#if>
+						<#assign end=page.totalPage/>
+						<#if (page.pageIndex+5) lt end>
+						<#assign end=page.pageIndex+4/>
+						</#if>
+						<#if start gt 1>
+						<a href="${site.dynamicPath}user.html?id=${user.id!}&pageIndex=1">1</a> ...
+						</#if>
+						<#list start..end as n><a href="${site.dynamicPath}user.html?id=${user.id!}&pageIndex=${n}"<#if n=page.pageIndex> class="selected"</#if>>${n}</a></#list>
+						<#if end lt page.totalPage>
+						... <a href="${site.dynamicPath}user.html?id=${user.id!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
+						</#if>
+						<#if !page.lastPage>
+						<a href="${site.dynamicPath}user.html?id=${user.id!}&pageIndex=${page.nextPage}">下一页</a>
+						<#else>
+						<span>下一页</span>
+						</#if>
+					</div>
+					</#if>
+				</@_commentList>
+			</div>
+		</div>
+	</main>
+	<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+</body>
+</html>

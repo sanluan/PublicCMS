@@ -1,0 +1,8 @@
+dependencies {
+	compile project(':publiccms-core')
+	compile(
+        "javax.servlet:javax.servlet-api:${servletVersion}",
+        // https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java
+        "com.alipay.sdk:alipay-sdk-java:4.4.2.ALL"
+    )
+}

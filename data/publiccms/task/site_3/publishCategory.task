@@ -1,0 +1,13 @@
+<#assign dealCount=0/>
+<#macro deal parentId>
+	<@_categoryList advanced=true parentId=parentId count=100>
+		<#list page.list as a>
+			<@_contentList categoryId=a.id containChild=a.containChild endPublishDate=.now count=a.pageSize>
+				<@_publishCategory id=a.id totalPage=page.totalPage><#assign dealCount++/></@_publishCategory>
+			</@_contentList>
+			<#if a.childIds?has_content><@deal a.id/></#if>
+		</#list>
+	</@_categoryList>
+</#macro>
+<@deal ''/>
+共生成${dealCount}个分类静态页面

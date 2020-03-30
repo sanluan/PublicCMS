@@ -25,7 +25,7 @@ public class LogLoginListDirective extends AbstractTemplateDirective {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"),
                 handler.getDate("startCreateDate"), handler.getDate("endCreateDate"), handler.getString("channel"),
                 handler.getBoolean("result"), handler.getString("name"), handler.getString("ip"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("count", 20));
+                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 20)));
         handler.put("page", page).render();
     }
     

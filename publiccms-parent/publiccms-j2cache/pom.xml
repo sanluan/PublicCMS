@@ -5,19 +5,20 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.190312</version>
+        <version>V4.0.202004.a</version>
     </parent>
     <artifactId>publiccms-j2cache</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-common</artifactId>
-            <version>V4.0.190312</version>
+            <version>V4.0.202004.a</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/net.oschina.j2cache/j2cache-core -->
         <dependency>
             <groupId>net.oschina.j2cache</groupId>
             <artifactId>j2cache-core</artifactId>
-            <version>2.3.22-release</version>
+            <version>2.8.0-release</version>
         </dependency>
     </dependencies>
 </project>

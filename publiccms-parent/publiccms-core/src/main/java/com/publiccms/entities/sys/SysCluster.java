@@ -36,6 +36,8 @@ public class SysCluster implements java.io.Serializable {
     private boolean master;
     @GeneratorColumn(title = "版本", condition = true)
     private String cmsVersion;
+    @GeneratorColumn(title = "修订版本")
+    private String revision;
 
     public SysCluster() {
     }
@@ -47,12 +49,13 @@ public class SysCluster implements java.io.Serializable {
         this.master = master;
     }
 
-    public SysCluster(String uuid, Date createDate, Date heartbeatDate, boolean master, String cmsVersion) {
+    public SysCluster(String uuid, Date createDate, Date heartbeatDate, boolean master, String cmsVersion, String revision) {
         this.uuid = uuid;
         this.createDate = createDate;
         this.heartbeatDate = heartbeatDate;
         this.master = master;
         this.cmsVersion = cmsVersion;
+        this.revision = revision;
     }
 
     @Id
@@ -101,6 +104,15 @@ public class SysCluster implements java.io.Serializable {
 
     public void setCmsVersion(String cmsVersion) {
         this.cmsVersion = cmsVersion;
+    }
+    
+    @Column(name = "revision", length = 20)
+    public String getRevision() {
+        return this.revision;
+    }
+    
+    public void setRevision(String revision) {
+        this.revision = revision;
     }
 
 }

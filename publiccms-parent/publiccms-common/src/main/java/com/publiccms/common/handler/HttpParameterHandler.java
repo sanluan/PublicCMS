@@ -129,7 +129,7 @@ public class HttpParameterHandler extends BaseHandler {
     @Override
     protected String[] getStringArrayWithoutRegister(String name) {
         String[] values = request.getParameterValues(name);
-        if (CommonUtils.notEmpty(values) && 1 == values.length && 0 <= values[0].indexOf(Constants.COMMA_DELIMITED)) {
+        if (CommonUtils.notEmpty(values) && 1 == values.length && values[0].contains(Constants.COMMA_DELIMITED)) {
             return StringUtils.split(values[0], Constants.COMMA_DELIMITED);
         }
         return values;

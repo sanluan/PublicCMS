@@ -1,6 +1,6 @@
-<@_logUploadList userId=userId channel=channel fileTypes=fileTypes originalName=originalName filePath=filePath orderType=orderType pageIndex=pageNum count=numPerPage>
+<@_logUploadList userId=userId channel=channel fileTypes=fileTypes originalName=originalName filePath=filePath orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -17,7 +17,7 @@
                     <#list ['image','video','audio','other'] as a>
                         <label style="width:auto">
                             <input <@t.compare fileTypes a 'checked="checked"'/> name="fileTypes" value="${a}" type="checkbox"/>
-                            <span><@t.page 'file_type.'+a/></span>
+                            <@t.page 'file_type.'+a/>
                         </label>
                     </#list>
                 </li>
@@ -80,7 +80,7 @@
                     <@t.page 'file_type.'+a.fileType/>
                 </td>
                 <td>${a.originalName!}</td>
-                <td><@t.fileSize a.fileSize/></td>
+                <td><@t.fileSize a.fileSize/><#if a.width?has_content&&a.height?has_content>(${a.width}*${a.height})</#if></td>
                 <td>${a.ip!}</td>
                 <td>${a.createDate!}</td>
                 <td>${(a.filePath)!}</td>

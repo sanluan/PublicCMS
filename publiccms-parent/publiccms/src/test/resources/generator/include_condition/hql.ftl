@@ -16,7 +16,7 @@
     orderSize=0
     order=false
 />
-<#list columnList as a><#if a.order><#assign order=true orderSize+=1/></#if></#list>
+<#list columnList as a><#if a.order><#assign order=true orderSize+=1/></#if><#if 'createDate' = a.name><#assign createDate=true/></#if></#list>
 <#if order>
         if(!ORDERTYPE_ASC.equalsIgnoreCase(orderType)){
             orderType = ORDERTYPE_DESC;

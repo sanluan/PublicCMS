@@ -4,7 +4,7 @@
 </@_sysModule>
 <@_sysModule id=parentId!><#assign module=object/></@_sysModule>
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
-<form method="post" action="sysModule/save.do?callbackType=closeCurrent&navTabId=sysModule/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="sysModule/save.do?callbackType=closeCurrent&navTabId=sysModule/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="oldId" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
@@ -31,14 +31,18 @@
         </dl>
       <fieldset>
           <legend><@t.page 'name'/>:</legend>
+          <#assign index=0/>
           <#list langs as k,v>
+            <#if 'zh_TW'!=k>
             <dl class="nowrap">
                 <dt>${v}:</dt>
                 <dd>
-                    <input type="hidden" name="langList[${k?index}].id.lang" value="${k}"/>
-                    <input class="required" name="langList[${k?index}].value" type="text" size="20" maxlength="100" value="<@_sysModuleLang moduleId=id lang=k>${object.value!}</@_sysModuleLang>"/>
+                    <input type="hidden" name="langList[${index}].id.lang" value="${k}"/>
+                    <input class="required" name="langList[${index}].value" type="text" size="20" maxlength="100" value="<@_sysModuleLang moduleId=id lang=k>${object.value!}</@_sysModuleLang>"/>
                 </dd>
             </dl>
+            <#assign index++/>
+            </#if>
         </#list>
       </fieldset>
     <#if deep lte 2>
@@ -60,7 +64,7 @@
         <dl class="nowrap">
             <dt><@t.page 'module.authorize_url'/>:</dt>
             <dd>
-                <textarea name="authorizedUrl" cols="80" rows="8">${(a.authorizedUrl)!}</textarea>
+                <textarea name="authorizedUrl" cols="80" rows="4">${(a.authorizedUrl)!}</textarea>
                 <span class="info"><@t.page 'module.authorize_url.description'/></span>
             </dd>
         </dl>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Comment - ${content.title}</title>
+    <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+    <meta name="description" content="${content.description}"/>
+    <style type="text/css">
+        .right{float:right;}
+        .gray{color:gray;}
+        .border{border:1px solid gray;}
+        .underline{border-bottom:1px dashed gray;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${site.useStatic?then(site.sitePath,base)}">Home page</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+        <h1><a href="${content.url!}">${content.title}</a></h1>
+        <p>${content.description!}</p>
+<#if user?has_content>
+    <@_commentList advanced=true userId=user.id contentId=content.id status=2>
+        <#if page.totalCount gt 0>
+            <h3>My Comments</h3>
+            <ul>
+            <#list page.list as a>
+                <li class="underline">
+                    <p>${user.nickName} <span class="gray">under review</span><span class="right">${a.createDate}</span></p>
+                    <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id}&id=${a.id}">Edit</a></span></p>
+                </li>
+            </#list>
+            </ul>
+        </#if>
+    </@_commentList>
+</#if>
+        <form method="post" action="${site.dynamicPath}comment/save.do">
+            <@_comment id=id>
+                <input type="hidden" name="id" value="${object.id}"/>
+                <#assign text=object.text!/>
+            </@_comment>
+            <#if replyId?has_content>
+                <input type="hidden" name="replyId" value="${replyId}"/>
+            </#if>
+            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+            <input type="hidden" name="contentId" value="${content.id}"/>
+            <input name="returnUrl" type="hidden" value="${content.url!}" />
+            <p><label>Comment:</label></p>
+            <p><textarea name="text" cols="100" rows="4" maxlength="1000">${text!}</textarea></p>
+            <p><input type="submit" value="Submit"/></p>
+        </form>
+<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+<@_commentList contentId=content.id pageIndex=pageIndex>
+    <#list page.list as a>
+        <@merge 'userIds' a.userId!/>
+        <@merge 'userIds' a.replyUserId!/>
+    </#list>
+    <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+    <h3>Comments</h3>
+    <ul>
+    <#list page.list as a>
+        <li class="underline">
+            <p>${userMap[a.userId?string].nickName}<span class="right">${a.createDate}</span></p>
+            <#if a.replyId?has_content>
+                <@_comment id=a.replyId>
+                    <p class="border gray">${userMap[a.replyUserId?string].nickName} : ${object.text!}</p>
+                </@_comment>
+            </#if>
+            <p>${a.text!}<span class="right"><a href="comment.html?contentId=${content.id!}&replyId=${a.id}">Reply</a></span></p>
+        </li>
+    </#list>
+    </ul>
+    <div>
+        <#assign
+            start=1
+            end=page.totalPage
+        />
+        <#if (page.pageIndex-5) gt start>
+            <#assign start=page.pageIndex-4/>
+        </#if>
+        <#if (page.pageIndex+5) lt end>
+            <#assign end=page.pageIndex+4/>
+        </#if>
+        <#if !page.firstPage>
+            <a href="${getPage('comment.html?id=${content.id}',page.prePage,'pageIndex')}">Previous page</a>
+        <#else>
+            <span>Previous page</span>
+        </#if>
+        <#if start gt 1>
+            <a href="${'comment.html?id=${content.id}'}">1</a> ...
+        </#if>
+        <#list start..end as n>
+            <#if n=page.pageIndex>
+                ${n}
+            <#else>
+                <a href="${getPage('comment.html?id=${content.id}',n,'pageIndex')}">${n}</a>
+            </#if>
+        </#list>
+        <#if end lt page.totalPage>
+            ... <a href="${getPage('comment.html?id=${content.id}',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+        </#if>
+        <#if !page.lastPage>
+            <a href="${getPage('comment.html?id=${content.id}',page.nextPage,'pageIndex')}">Next page</a>
+        <#else>
+            <span>Next page</span>
+        </#if>
+    </div>
+</@_commentList>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+</body>
+</html>

@@ -1,6 +1,6 @@
-<@_logTaskList taskId=taskId startCreateDate=startCreateDate endCreateDate=endCreateDate success=success pageIndex=pageNum count=numPerPage>
+<@_logTaskList taskId=taskId startCreateDate=startCreateDate endCreateDate=endCreateDate success=success pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">

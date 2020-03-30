@@ -1,5 +1,5 @@
-<@_categoryTypeList name=name pageIndex=pageNum count=numPerPage!30>
-<form class="pagerForm" onsubmit="return navTabSearch(this);" method="post">
+<@_categoryTypeList name=name pageIndex=pageNum pageSize=numPerPage!30>
+<form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
 </form>
 <div class="pageContent">
@@ -22,7 +22,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${(a.name)!}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.sort!}</td>
             </tr>
             </#list>

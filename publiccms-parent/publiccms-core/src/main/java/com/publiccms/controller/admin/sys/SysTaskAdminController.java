@@ -55,13 +55,12 @@ public class SysTaskAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysTask entity,
             HttpServletRequest request, ModelMap model) {
-
+        entity.setUpdateDate(CommonUtils.getDate());
         if (null != entity.getId()) {
             SysTask oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            entity.setUpdateDate(CommonUtils.getDate());
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,

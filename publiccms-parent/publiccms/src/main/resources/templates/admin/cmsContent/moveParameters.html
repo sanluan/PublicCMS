@@ -1,5 +1,5 @@
 <#macro categoryTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId count=500>
+    <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <@t.merge 'categoryIds' a.id!/>
         </#list>
@@ -7,7 +7,7 @@
         <#list page.list as a>
             <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
                 <li>
-                    <a href="javascript:;" onclick="$('input[name=categoryId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();" target="ajax">${a.name!}</a>
+                    <a href="javascript:;" class="exclude-translate" onclick="$('input[name=categoryId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();" target="ajax">${a.name!}</a>
                 <#if a.childIds?has_content>
                     <ul>
                         <@categoryTree a.id/>
@@ -31,7 +31,7 @@ if(0==$('#idsToMove input',$.pdialog.getCurrent()).length){
     $.pdialog.closeCurrent();
 }
 </script>
-<form action="cmsContent/move.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+<form action="cmsContent/move.do?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="categoryId" value=""/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div id="idsToMove"></div>

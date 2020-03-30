@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.publiccms.entities.cms.CmsContentAttribute;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,7 +28,7 @@ public class CmsContentAttributeService extends BaseService<CmsContentAttribute>
     public List<CmsContentAttribute> getEntitysWithoutText(Serializable[] ids) {
         return dao.getEntitys(ids);
     }
-    
+
     /**
      * @param contentId
      * @param entity

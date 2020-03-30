@@ -9,7 +9,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.entities.sys.SysSite;
@@ -55,7 +55,7 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
 
     /**
      * @param model
-     * @param request 
+     * @param request
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
         String serverName = request.getServerName();
@@ -94,10 +94,10 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
             String[] values = request.getParameterValues(parameterName);
             if (CommonUtils.notEmpty(values)) {
                 if (1 < values.length) {
-                    ControllerUtils.removeCRLF(values);
+                    RequestUtils.removeCRLF(values);
                     model.put(parameterName, values);
                 } else {
-                    model.put(parameterName, ControllerUtils.removeCRLF(values[0]));
+                    model.put(parameterName, RequestUtils.removeCRLF(values[0]));
                 }
             }
         }

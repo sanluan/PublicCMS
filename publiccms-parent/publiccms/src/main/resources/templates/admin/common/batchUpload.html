@@ -1,0 +1,49 @@
+<#if fileTypes?has_content&&'image'=fileTypes>
+    <#assign accept=' accept="image/*"'/>
+<#elseif fileTypes?has_content&&'video'=fileTypes>
+    <#assign accept=' accept="video/*"'/>
+</#if>
+<form action="file/doBatchUpload.do" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.batchBringBack)">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="pageFormContent" layoutH="50">
+        <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
+        <dl class="nowrap">
+            <dt><@t.page 'file'/>:</dt>
+            <dd>
+                <input type="hidden" name="field" value="${field!'fileName'}"/>
+                <input type="hidden" name="originalField" value="${originalField!}"/>
+                <input type="file" name="files" class="required" size="30"${accept!} multiple="multiple"/>
+            </dd>
+        </dl>
+        <ul class="tree" style="height:200px">
+        <#if admin?has_content>
+    <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=5>
+        <#list page.list as a>
+            <li><a href="javascript:;" data-src="${a.filePath!}" onclick="$.batchBringBack([{'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${width!}','height':'${height!}','${originalField!'originalName'}':'${a.originalName!}'}]);return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
+        </#list>
+    </@_logUploadList>
+        </ul>
+        <script>
+            var imagesSuffix=["png","gif","jpg","jpeg","bmp"];
+            $('ul li a',$.pdialog.getCurrent()).hover(function(){
+                var filenames=$(this).text().toLowerCase().split('.');
+                if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+                    if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
+                        $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
+                    }else{
+                        $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
+                    }
+                }
+            },function(){
+                $('.preview',$.pdialog.getCurrent()).hide();
+            });
+        </script>
+        </#if>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'upload'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>

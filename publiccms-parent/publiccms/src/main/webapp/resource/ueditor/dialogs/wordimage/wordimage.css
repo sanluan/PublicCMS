@@ -1,6 +1,6 @@
 .wrapper{width: 600px;padding: 10px;height: 352px;overflow: hidden;position: relative;border-bottom: 1px solid #d7d7d7}
 .localPath input{float: left;width: 350px;line-height: 20px;height: 20px;}
-#clipboard{float:left;width: 70px;height: 30px; }
+#clipboard{float:left;width: 70px;height: 30px;cursor: pointer;}
 .description{ color: #0066cc; margin-top: 2px; width: 450px; height: 45px;float: left;line-height: 22px}
 #msg{ width: 140px; height: 30px; line-height:25px;float: left;color: red}
 

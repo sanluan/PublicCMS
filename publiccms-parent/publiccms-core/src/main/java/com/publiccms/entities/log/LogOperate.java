@@ -116,7 +116,7 @@ public class LogOperate implements java.io.Serializable {
         this.operate = operate;
     }
 
-    @Column(name = "ip", length = 64)
+    @Column(name = "ip", length = 130)
     public String getIp() {
         return this.ip;
     }

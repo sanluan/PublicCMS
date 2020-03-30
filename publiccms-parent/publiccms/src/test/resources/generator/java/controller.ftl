@@ -3,7 +3,6 @@ package ${base}.${controllerPack};
 // Generated ${.now} by com.publiccms.common.generator.SourceGenerator
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.base.AbstractController;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
+import com.publiccms.entities.sys.SysSite;
+import com.publiccms.entities.sys.SysUser;
 
 <#include "../include_imports/entity.ftl">
-import com.publiccms.entities.sys.SysSite;
+
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.logic.service.log.LogLoginService;
+import com.publiccms.logic.service.log.LogOperateService;
 <#include "../include_imports/service.ftl">
 
 /**
@@ -34,7 +34,7 @@ import com.publiccms.logic.service.log.LogLoginService;
  */
 @Controller
 @RequestMapping("${entityName?uncap_first}")
-public class ${entityName}${controllerSuffix} extends AbstractController {
+public class ${entityName}${controllerSuffix} {
 
     private String[] ignoreProperties = new String[]{"id"};
     
@@ -43,7 +43,6 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
      * @param admin
      * @param entity
      * @param request
-     * @param session
      * @param model
      * @return operate result
      */
@@ -66,7 +65,9 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
     /**
      * @param ids
      * @param request
-     * @param session
+     * @param site
+     * @param admin 
+     * @param _csrf 
      * @param model
      * @return operate result
      */
@@ -74,7 +75,6 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids, String _csrf, HttpServletRequest request, 
             ModelMap model) {
-        SysSite site = getSite(request);
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.${entityName?uncap_first}",
@@ -85,4 +85,6 @@ public class ${entityName}${controllerSuffix} extends AbstractController {
     
     @Autowired
     private ${entityName}Service service;
+    @Autowired
+    protected LogOperateService logOperateService;
 }

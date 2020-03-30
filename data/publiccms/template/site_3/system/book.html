@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>${content.title} - ${category.name}</title>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+	<meta name="description" content="${content.description}"/>
+<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+<style>
+article .cover{ float:left;}
+article .cover img{ width:144px;height:192px;}
+article .info{ margin-left:155px;}
+#content{ clear:both;}
+article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+</style>
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+	<div class="container bread">
+		<@include path="/ftl/echoBread.ftl"/>
+		<@echoBread category.id/>
+	</div>
+	<div class="container">
+		<article>
+			<div>
+				<div class="cover"><img src="${content.cover!}"></div>
+				<div class="info">
+					<h3><a href="${url!}">${content.title}</a></h3>
+					<div class="tags">
+						<#if content.tagIds?has_content>标签：
+							<@_tag ids=content.tagIds>
+								<#list map?keys as key>
+									<a href="${siteAttribute.searchPath!}?tagId=${map[key].id}" target="_blank"><em>${map[key].name}</em></a>
+								</#list>
+							</@_tag>
+						</#if>
+						<span>${content.publishDate?date}</span>
+					</div>
+					<p>${content.description}</p>
+				</div>
+			</div>
+			<div id="content">
+				${text?no_esc!}
+			</div>
+<@_contentList parentId=content.id pageIndex=1 count=100>
+	<#list 1..page.totalPage as n>
+		<@_contentList parentId=content.id orderType='asc' pageIndex=n count=100>
+			<#list page.list as a>
+			<h4>${a.title}</h4>
+<@_contentList parentId=a.id endPublishDate=.now pageIndex=1 count=100>
+	<#list 1..page.totalPage as n>
+		<@_contentList parentId=a.id orderType='asc' pageIndex=n count=100>
+			<ul>
+			<#list page.list as a>
+				<li><a href="${a.url!}">${a.title}</a></li>
+			</#list>
+			</ul>
+		</@_contentList>
+	</#list>
+</@_contentList>
+			</#list>
+		</@_contentList>
+	</#list>
+</@_contentList>			
+		</article>
+	</div>
+	<div class="clearfix-before"></div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+<script>
+	uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+</script>
+</body>
+</html>

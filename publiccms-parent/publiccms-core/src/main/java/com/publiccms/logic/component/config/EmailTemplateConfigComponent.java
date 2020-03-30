@@ -70,10 +70,10 @@ public class EmailTemplateConfigComponent implements Config {
         Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             List<SysExtendField> extendFieldList = new ArrayList<>();
-            extendFieldList.add(new SysExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, false, CONFIG_EMAIL_TITLE,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_TITLE), null));
-            extendFieldList.add(new SysExtendField(CONFIG_EMAIL_PATH, INPUTTYPE_TEMPLATE, false, CONFIG_EMAIL_PATH,
-                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH), null));
+            extendFieldList.add(new SysExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, CONFIG_EMAIL_TITLE,
+                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_TITLE)));
+            extendFieldList.add(new SysExtendField(CONFIG_EMAIL_PATH, INPUTTYPE_TEMPLATE, CONFIG_EMAIL_PATH,
+                    getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EMAIL_PATH)));
             extendFieldList.add(new SysExtendField(CONFIG_EXPIRY_MINUTES, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES,
                     getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES), "30"));
             return extendFieldList;

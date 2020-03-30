@@ -1,1 +1,0 @@
-{"data":[<@_contentList categoryId=categoryId><#list page.list as a>{"title":"${a.title}","id":"${a.id}"}<#sep>,</#list></@_contentList>],"time":"<@noCache>${.now}</@noCache>"}

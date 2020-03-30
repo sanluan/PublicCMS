@@ -1,8 +1,8 @@
 <@_contentList advanced=true categoryId=categoryId modelId=modelId title=title status=1
     parentId=parentId emptyQuote=true containChild=true userId=userId startPublishDate=startPublishDate endPublishDate=.now
-    orderField=orderField orderType=orderType pageIndex=pageNum count=numPerPage>
+    orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
+    <form class="pagerForm" autocomplete="off" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
         <#include "../include_page/parameters.html"/>
         <input type="hidden" name="field" value="${field!'relatedContentId'}"/>
         <input type="hidden" name="categoryId" value="${categoryId!}"/>
@@ -57,39 +57,34 @@
         <tbody>
             <#list page.list as a>
                 <@t.merge 'userIds' a.userId!/>
-                <@t.merge 'checkUserIds' a.checkUserId!/>
+                <@t.merge 'userIds' a.checkUserId!/>
                 <@t.merge 'categoryIds' a.categoryId!/>
                 <@t.merge 'modelIds' a.modelId!/>
             </#list>
 
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_sysUser ids=t.checkUserIds!><#assign checkUserMap=map!/></@_sysUser>
             <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
             <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
 
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a href="javascript:;" class="btnSelect" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-check-sign icon-large"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" class="btnSelect" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>
                     <a href="${a.url!}" target="_blank">
-                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}${a.title!}
+                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<span class="exclude-translate">${a.title!}</span>
                     </a>
                 </td>
-                <td>
-                    <a href="cmsContent/lookup_list.html?userId=${a.userId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">
-                        ${(userMap[a.userId?string].nickName)!}
-                    </a>
+                <td class="exclude-translate">
+                     ${(userMap[a.userId?string].nickName)!}
                 </td>
-                <td>
+                <td class="exclude-translate">
                     ${(categoryMap[a.categoryId?string].name)!}
                 </td>
-                <td>
-                    <a href="cmsContent/lookup_list.html?modelId=${a.modelId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">
-                        ${(modelMap[a.modelId].name)!}
-                    </a>
+                <td class="exclude-translate">
+                     ${(modelMap[a.modelId].name)!}
                 </td>
                 <td>${a.scores!}</td>
                 <td>${a.comments!}</td>
@@ -98,7 +93,7 @@
                 <td>${a.createDate!}<#if a.updateDate??>/${a.updateDate}</#if></td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
-                    <#if 2==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
+                    <#if 2==a.status>/<span class="exclude-translate">${(userMap[a.checkUserId?string].nickName)!}</span></#if>
                 </td>
                 <td>
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>

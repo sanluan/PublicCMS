@@ -3,7 +3,7 @@
 /* Core Code */
 html, body, *{padding:0;margin:0;font-size:12px;font-family:microsoft yahei,Arial, sans-serif;word-break:break-all}
 body{width:100%;height:100%;overflow:hidden}
-
+input[type="checkbox"]{margin: 3px 3px 3px 4px;}
 .clearfix{*zoom:1}
 .clearfix:after{display:block;content:".";height:0;clear:both;visibility:hidden}
 /* Remember to define focus styles! */
@@ -11,8 +11,6 @@ body{width:100%;height:100%;overflow:hidden}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-button:vertical{display:none}
 ::-webkit-scrollbar-corner,::-webkit-scrollbar-track{border-radius:10px}
-
-input[type="checkbox"]{margin:5px;width:14px;height:14px}
 
 ul, ol{list-style:none}
 /* Tables still need 'cellspacing="0"' in the markup. */
@@ -30,25 +28,37 @@ a:hover{text-decoration:underline}
 
 header{display:block;overflow:hidden;height:60px;position:relative;}
 main{overflow:hidden;position:relative}
-footer{text-align:center;width:100%;height:40px;line-height:40px;padding:0 5px;z-index:-1;font-size:13px}
+footer{text-align:center;width:100%;height:40px;line-height:40px;z-index:-1;font-size:13px}
 
 /* Menu */
 header .logo{float:left;width:202px;height:100%}
 header .logo img{max-width:100%;height:50px;margin:5px 10px}
 header .nav{display:block;position:absolute;right:0px;z-index:2}
 header .nav a:hover{text-decoration:none}
-header .nav li{float:left;padding:0 10px;line-height:60px;position:relative}
-header .nav li a{font-size:12px}
+header .nav li{float:left;padding:0 5px;position:relative}
+header .nav li a{line-height:60px;font-size:12px}
 header .nav ul{display:none;width:100px;border-style:solid;border-width:1px;border-radius:3px;overflow:hidden;position:absolute;top:45px;right:0}
 header .nav ul li{margin-top:2px;line-height:26px;padding-left:10px}
 header .nav .selected ul{display:block}
-
-@media (max-width:1080px){header .nav{display:none}}
 
 #navMenu{float:left;display:block;position:absolute;top:0;left:202px;z-index:1}
 #navMenu li{float:left}
 #navMenu li a{;display:block;font-size:13px;font-weight:400;line-height:60px;text-decoration:none;padding:0 18px;}
 #navMenu li a>i{margin-right:5px}
+
+
+@media (max-width:1100px){
+    .logo{display:none}
+    #navMenu{left:0px}
+    footer{text-align:left;}
+}
+
+@media (max-width:920px){
+    header .nav li{padding:0 5px}
+    header .nav li a{line-height:25px;}
+    #navMenu{top:20px;}
+    #navMenu li a{line-height:40px;}
+}
 
 /* Tabs */
 .tabs .tabsHeader{display:block;overflow:hidden;height:40px;padding-left:5px}
@@ -89,8 +99,7 @@ header .nav .selected ul{display:block}
 
 /* Tree */
 .tree li{clear:both;display:block;line-height:30px;cursor:pointer}
-.tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px}
-.tree div{overflow:hidden}
+.tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px;white-space:nowrap;}
 .tree div div{float:left;display:block;overflow:hidden;width:30px;height:30px;border:none}
 .tree.treeFolder li>div>div:first-child{padding-left:10px}
 .tree a, .tree a:hover{text-decoration:none}
@@ -123,7 +132,7 @@ header .nav .selected ul{display:block}
 .panelBar .toolBar li a:hover{border-radius:2px}
 .panelBar .toolBar li a{line-height:30px;display:block;overflow:hidden;padding:0 10px;text-decoration:none}
 .panelBar .toolBar li a>i{margin-right:6px}
-.panelBar .toolBar li.line{display:block;overflow:hidden;height:24px;width:1px;padding:0;position:relative;top:3px}
+.panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:24px;width:1px;padding:0;position:relative;top:3px}
 
 .panelBar .pages{float:left;overflow:hidden;height:100%;padding:2px 5px}
 .panelBar .pages span{float:left;line-height:28px}
@@ -185,6 +194,8 @@ table.nowrap tbody tr{border-bottom-width:1px;border-bottom-style:solid;}
 .textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
 textarea.focus, textarea.required, textarea.error, textarea.readonly,
 textarea.disabled{background:#fff;padding:2px;margin:0;line-height:22px;font-size:12px;border-style:solid;border-width:1px;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box}
+.textInput, input.focus, input.required, input.error, input.readonly, input.disabled,
+textarea.focus, textarea.required, textarea.error, textarea.readonly, textarea.disabled{background-image:url(../images/input_bg.png);background-repeat:no-repeat;background-attachment:scroll;}
 input.required, textarea.required{background-position:100% 0}
 input.gray, textarea.gray{color:gray}
 select{border:1px solid;border-color:#A2BAC0 #B8D0D6 #B8D0D6 #A2BAC0}
@@ -215,13 +226,13 @@ a.toggleCollapse{text-decoration:none}
 #splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:200px;z-index:20}
 #splitBar,#splitBarProxy{top:60px}
 
-.langList{position:absolute;right:0px;bottom:0px;padding:0px 7px}
+.langList{position:absolute;right:0px}
 .langList li{float:right;padding:0px 10px}
 .langList a,.langList a:hover,.langList li.current-lang a{text-decoration:none}
 .langList a img{height:20px;position:relative;top:5px;border-radius:50%;margin-right:5px}
 
 .themeList li div{background:url(../images/themeButton.png) no-repeat}
-.themeList{position:absolute;left:0px;bottom:0px;padding:14px 12px 15px}
+.themeList{float:left;padding:14px 12px 15px}
 .themeList li{float:left;padding:0px 3px}
 .themeList li div{display:block;overflow:hidden;width:13px;height:11px;cursor:pointer}
 .themeList li.toptry div{background-position:-60px 0}
@@ -233,13 +244,13 @@ a.toggleCollapse{text-decoration:none}
 /* Pages default */
 .page{display:block;overflow:hidden;float:left;width:100%;height:100%;-webkit-overflow-scrolling:touch}
 .pageHeader{display:block;overflow:hidden;padding:10px;position:relative}
-.searchBar input,.searchBar span{float:left}
+.searchBar .textInput,.searchBar span{float:left}
 .searchBar span{line-height:28px}
 .searchBar span.connect-string{font-size:16px}
 .searchBar ul.searchContent{display:block;overflow:hidden;height:32px;padding-right:100px;position:relative;}
 .searchBar ul.searchContent:before{font-size:18px;position:absolute;right:0;top:0;line-height:32px;width:30px;text-align:right}
-.searchBar ul.searchContentHover{height:auto}
 .searchBar ul.searchContent li{float:left;white-space:nowrap;display:block;overflow:hidden;height:28px;padding:2px 0}
+.searchBar ul.searchContentHover,.searchBar ul.searchContentHover li{height:auto}
 .searchBar label{float:left;padding:0 15px;line-height:28px}
 .searchBar .subBar{height:30px;position:absolute;top:11px;right:40px}
 .searchBar .subBar ul{float:right}
@@ -288,8 +299,12 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0}
 .divider{clear:both;display:block;overflow:hidden;width:auto;height:1px;padding:4px 0 0 0;margin-bottom:5px;border-style:dashed;border-width:0 0 1px 0}
 
 .tagsBox{line-height:25px;float:left;}
-.tagsBox span{margin-right:8px;border:none;padding:5px 8px;}
-.tagsBox span>a{margin-left:5px}
+.tagsBox span,.parametersBox span{margin-right:8px;border:none;padding:5px 8px;}
+.tagsBox span>a,.parametersBox span{margin-left:5px}
+.parametersBox{line-height:25px;}
+.parametersBox span>em{color:#f00;}
+.parametersOperateBox{}
+.parametersOperateBox label{width:auto;}
 
 /* Pages dialog */
 .dialog .pageHeader{margin:0}

@@ -29,6 +29,11 @@ public class ${entityName}${daoSuffix} extends BaseDao<${entityName}> {
 
     @Override
     protected ${entityName} init(${entityName} entity) {
+        <#if createDate?has_content && createDate>
+        if (null == entity.getCreateDate()) {
+            entity.setCreateDate(CommonUtils.getDate());
+        }
+        </#if>
         return entity;
     }
 

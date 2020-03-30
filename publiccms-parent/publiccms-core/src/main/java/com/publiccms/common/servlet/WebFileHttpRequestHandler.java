@@ -6,13 +6,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
 import org.springframework.http.converter.ResourceHttpMessageConverter;
 import org.springframework.http.converter.ResourceRegionHttpMessageConverter;
-import org.springframework.lang.Nullable;
-import org.springframework.web.accept.PathExtensionContentNegotiationStrategy;
 import org.springframework.web.servlet.resource.ResourceHttpRequestHandler;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -28,8 +26,7 @@ import com.publiccms.logic.component.site.SiteComponent;
  */
 public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
     private SiteComponent siteComponent;
-    @Nullable
-    private PathExtensionContentNegotiationStrategy contentNegotiationStrategy;
+    private static Resource favicon = new ClassPathResource("favicon.ico");
 
     /**
      * @param siteComponent
@@ -47,20 +44,25 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
 
     @Override
     protected Resource getResource(HttpServletRequest request) throws IOException {
-        String path = getUrlPathHelper().getLookupPathForRequest(request);
-        if (path.endsWith(CommonConstants.SEPARATOR)) {
-            path += CommonConstants.getDefaultPage();
-        }
-        SysSite site = siteComponent.getSite(request.getServerName());
-        Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site, path));
-        if (resource.exists()) {
-            if (resource.isReadable()) {
-                return resource;
+        if (CmsVersion.isInitialized()) {
+            String path = getUrlPathHelper().getLookupPathForRequest(request);
+            if (path.endsWith(CommonConstants.SEPARATOR)) {
+                path += CommonConstants.getDefaultPage();
             }
-        } else if (null != site.getParentId()) {
-            resource = new FileSystemResource(siteComponent.getParentSiteWebFilePath(site, path));
-            if (resource.exists() && resource.isReadable()) {
-                return resource;
+            SysSite site = siteComponent.getSite(request.getServerName());
+            Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site, path));
+            if (resource.exists()) {
+                if (resource.isReadable()) {
+                    return resource;
+                }
+            } else if (null != site.getParentId()) {
+                resource = new FileSystemResource(siteComponent.getParentSiteWebFilePath(site, path));
+                if (resource.exists() && resource.isReadable()) {
+                    return resource;
+                }
+            }
+            if ("/favicon.ico".equals(path)) {
+                return favicon;
             }
         }
         return null;
@@ -76,12 +78,5 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
             setResourceRegionHttpMessageConverter(new ResourceRegionHttpMessageConverter());
         }
 
-        this.contentNegotiationStrategy = initContentNegotiationStrategy();
-    }
-
-    @Nullable
-    protected MediaType getMediaType(HttpServletRequest request, Resource resource) {
-        return (this.contentNegotiationStrategy != null ? this.contentNegotiationStrategy.getMediaTypeForResource(resource)
-                : null);
     }
 }

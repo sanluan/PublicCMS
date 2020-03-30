@@ -40,8 +40,8 @@ public class CommentImportTest {
 
     // 搜狐畅言评论导入
     @Test
-    public void searchTest() throws IOException, ParseException {
-        File file = new File("D:\\Users\\YSXH\\Desktop\\b28141a5-8e9c-4f4f-aacc-9864c6bce235_16.json");
+    public void importTest() throws IOException, ParseException {
+        File file = new File("D:\\Users\\kerneler\\Desktop\\b28141a5-8e9c-4f4f-aacc-9864c6bce235_16.json");
         String content = FileUtils.readFileToString(file);
         Map<String, Object> a = Constants.objectMapper.readValue(content,
                 Constants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
@@ -57,8 +57,8 @@ public class CommentImportTest {
                         text += "![](" + i.get("url") + ")";
                     }
                 }
-                CmsComment entity = new CmsComment((short) 1, 1, null, null, Integer.parseInt((String) map.get("topicSourceId")),
-                        null, null, null,
+                CmsComment entity = new CmsComment((short) 1, 1, null, null, 0,
+                        Integer.parseInt((String) map.get("topicSourceId")), null, null, null,
                         DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING).parse((String) map.get("ctime")),
                         CmsCommentService.STATUS_PEND, false, text);
                 commentsService.save(entity);

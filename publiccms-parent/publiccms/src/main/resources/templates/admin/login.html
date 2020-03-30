@@ -1,11 +1,11 @@
 <!doctype html>
-<html lang="<@t.page 'lang'/>">
+<html lang="<@t.page 'html_lang'/>">
 <head>
     <meta charset="UTF-8">
     <title>${site.name} - <@t.page 'management_system'/> - <@t.page 'login_page'/></title>
     <link rel="stylesheet" href="${res}/login/login.css?1">
 </head>
-<body onload="document.getElementsByTagName('input')[0].focus();">
+<body onload="if(document.getElementsByTagName('input')[0].value){document.getElementsByTagName('input')[1].focus();}else{document.getElementsByTagName('input')[0].focus();}">
 <div class="login_body">
 	<div class="login_body_left"><img src="<#if siteAttribute.square_logo?has_content>${site.sitePath+siteAttribute.square_logo}<#else>${res}/square_logo.png</#if>"/></div>
     <div class="login_form clearfix">
@@ -13,7 +13,7 @@
             <p class="logo">${site.name}</p>
             <p>
             	<i class="iconfont iconfont-user"></i>
-            	<input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>"/>
+            	<input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${(user.name)!}" onclick="if('${(user.name)!}'==this.value){this.value='';}"/>
             </p>
             <p>
             	<i class="iconfont iconfont-key"></i>

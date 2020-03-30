@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+    <style>
+        .red{color:#f00;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+        <#if user?has_content>
+            <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+            <form action="${site.dynamicPath}doLogout.do" method="post">
+                <input type="hidden" name="userId" value="${(user.id)!}"/>
+                <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+            </form>
+        <#else>
+            <form action="${site.dynamicPath}doLogin.do" method="post">
+                <#if error??>
+                    <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
+                </#if>
+                <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
+                <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
+                <p>
+                    <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
+                    <input type="hidden" name="clientId" value="${clientId!}"/>
+                    <input type="hidden" name="uuid" value="${uuid!}"/>
+                    <input type="submit" value="Login"/>
+                </p>
+                <#if _oauthList?has_content&&_oauthList?is_directive>
+                    <p><#list list as o><a href="${site.dynamicPath}/oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
+                </#if>
+                <p>No account?<a href="register.html?clientId=${clientId!}&uuid=${uuid!}&returnUrl=${returnUrl!}">Please register</a></p>
+            </form>
+        </#if>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+<script>
+function logout(){
+    $("form").submit();
+}
+</script>
+</body>
+</html>

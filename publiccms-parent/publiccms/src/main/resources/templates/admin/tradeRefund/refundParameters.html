@@ -1,0 +1,29 @@
+<@_tradeRefund id=id><#assign refund=object/></@_tradeRefund>
+<form action="tradeRefund/refund.do?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="id" value="${id!}"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="pageFormContent" layoutH="0">
+        <dl>
+            <dt>申请金额:</dt>
+            <dd>${(refund.amount)!}</dd>
+        </dl>
+        <dl>
+            <dt>退款原因:</dt>
+            <dd>${(refund.reason)!}</dd>
+        </dl>
+        <dl>
+            <dt>退款金额:</dt>
+            <dd><input class="required digits" type="number" name="refundAmount" max="${(refund.amount)!0}" min="0" value="${(refund.amount)!}"/></dd>
+        </dl>
+        <dl>
+            <dt>备注:</dt>
+            <dd><input class="required" type="text" name="reply"/></dd>
+        </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.ok'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>

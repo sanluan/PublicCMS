@@ -3,10 +3,10 @@
         <li>
             <a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'',categoryTypeName:''});return false;"><@t.page 'button.clear_select'/></a>
         </li>
-<@_categoryTypeList parentId=parentId count=500>
+<@_categoryTypeList parentId=parentId pageSize=500>
     <#list page.list as a>
-        <li>
-            <a href="javascript:;" onclick="$.bringBack({${field!'categoryTypeId'}:'${a.id}', categoryTypeName:'${a.name}'});return false;">${a.name!}</a>
+        <li class="exclude-translate">
+            <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({${field!'categoryTypeId'}:'${a.id}', categoryTypeName:'${a.name}'});return false;">${a.name!}</a>
         </li>
     <#else>
         <li><a><@t.page 'empty_directory'/></a></li>

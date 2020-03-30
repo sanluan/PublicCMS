@@ -3,8 +3,10 @@ package com.publiccms.logic.service.cms;
 import static org.springframework.util.StringUtils.arrayToCommaDelimitedString;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -217,8 +219,10 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     /**
      * @param siteId
      * @param ids
+     * @return 
      */
-    public void delete(short siteId, Integer[] ids) {
+    public List<CmsCategory> delete(short siteId, Integer[] ids) {
+        List<CmsCategory> entityList = new ArrayList<>();
         for (CmsCategory entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && !entity.isDisabled()) {
                 @SuppressWarnings("unchecked")
@@ -227,10 +231,13 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 for (CmsCategory child : list) {
                     child.setParentId(entity.getParentId());
                 }
+                entity.setCode(UUID.randomUUID().toString());
                 entity.setDisabled(true);
+                entityList.add(entity);
                 generateChildIds(entity.getSiteId(), entity.getParentId());
             }
         }
+        return entityList;
     }
 
     /**
@@ -268,7 +275,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             entity.setHasStatic(hasStatic);
         }
     }
-
+    
     @Autowired
     private CmsCategoryDao dao;
 }

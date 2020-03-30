@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -190,37 +191,40 @@ public class SysSiteAdminController {
     /**
      * @param site
      * @param admin
-     * @param sql
+     * @param sqlcommand
+     * @param sqlparameters
+     * @param oldurl
+     * @param newurl
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping("execSql")
     @Csrf
-    public String execSql(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String sql, HttpServletRequest request,
-            ModelMap model) {
+    public String execSql(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String sqlcommand,
+            String[] sqlparameters, HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (-1 < sql.indexOf(CommonConstants.BLANK_SPACE)) {
-            String type = sql.substring(0, sql.indexOf(CommonConstants.BLANK_SPACE));
-            try {
-                if ("update".equalsIgnoreCase(type)) {
-                    model.addAttribute("result", sqlService.update(sql));
-                } else if ("insert".equalsIgnoreCase(type)) {
-                    model.addAttribute("result", sqlService.insert(sql));
-                } else if ("delete".equalsIgnoreCase(type)) {
-                    model.addAttribute("result", sqlService.delete(sql));
-                } else {
-                    model.addAttribute("result", JsonUtils.getString(sqlService.select(sql)));
+        if ("update_url".contains(sqlcommand)) {
+            if (null != sqlparameters && 2 == sqlparameters.length) {
+                try {
+                    String oldurl = sqlparameters[0];
+                    String newurl = sqlparameters[1];
+                    int i = sqlService.updateContentAttribute(oldurl, newurl);
+                    i += sqlService.updateContentRelated(oldurl, newurl);
+                    i += sqlService.updatePlace(oldurl, newurl);
+                    i += sqlService.updatePlaceAttribute(oldurl, newurl);
+                    model.addAttribute("result", i);
+                } catch (Exception e) {
+                    model.addAttribute("error", e.getMessage());
                 }
-            } catch (Exception e) {
-                model.addAttribute("error", e.getMessage());
             }
-            model.addAttribute("sql", sql);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
         }
+        model.addAttribute("sqlcommand", sqlcommand);
+        model.addAttribute("sqlparameters", sqlparameters);
+        logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -243,8 +247,8 @@ public class SysSiteAdminController {
             try {
                 CmsFileUtils.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
                 logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
+                        "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), null, null,
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
                 return CommonConstants.TEMPLATE_DONE;
             } catch (IllegalStateException | IOException e) {
                 log.error(e.getMessage(), e);

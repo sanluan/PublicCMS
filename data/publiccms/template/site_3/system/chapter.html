@@ -1,0 +1,40 @@
+<@_content id=content.parentId absoluteURL=true><#assign parent=object/></@_content>
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>${content.title} - ${(parent.title)!} - ${category.name}</title>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+	<meta name="description" content="${content.description}"/>
+<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+	<div class="container bread">
+		<@include path="/ftl/echoBread.ftl"/>
+		<@echoBread category.id/>
+	</div>
+	<div class="container">
+		<article>
+			<h3><@_content id=parent.parentId  absoluteURL=true><a href="${object.url}" target="_blank">《${object.title}》</a></@_content> ${(parent.title)!} ${content.title}</h3>
+			<div id="content">
+				${text?no_esc!}
+			</div>
+			<div class="page">
+				<@_contentList parentId=content.parentId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">上一章</a></#list></#if></@_contentList>
+				<@_contentList parentId=content.parentId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1><#list page.list as a><a href="${a.url!}">下一章</a></#list></@_contentList>
+			</div>
+		</article>
+	</div>
+	<div class="clearfix-before"></div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+<script>
+	uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+	<#if parent?has_content>
+		$.getJSON('${site.dynamicPath!}api/contentClick?id=${parent.parentId!}', function(data){});
+	</#if>
+</script>
+</body>
+</html>

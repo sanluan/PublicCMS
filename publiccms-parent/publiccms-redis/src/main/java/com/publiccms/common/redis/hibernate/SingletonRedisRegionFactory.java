@@ -29,7 +29,7 @@ public class SingletonRedisRegionFactory extends RedisRegionFactory {
             try {
                 referenceCount.incrementAndGet();
                 Properties redisProperties = PropertiesLoaderUtils.loadAllProperties(configurationResourceName);
-                return new RedisClient(RedisUtils.createJedisPool(redisProperties));
+                return new RedisClient(RedisUtils.createOrGetJedisPool(redisProperties));
             } catch (RuntimeException e) {
                 referenceCount.decrementAndGet();
                 throw e;

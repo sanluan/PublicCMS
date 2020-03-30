@@ -162,6 +162,9 @@ public class EmailComponent implements SiteCache, Config {
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, CommonConstants.DEFAULT_CHARSET_NAME);
             messageHelper.setTo(toAddress);
             messageHelper.setFrom(config.get(CONFIG_FROMADDRESS));
+            if (null != title) {
+                title = title.replaceAll("\r|\n", CommonConstants.BLANK);
+            }
             messageHelper.setSubject(title);
             messageHelper.setText(content, isHtml);
             pool.execute(new SendTask(mailSender, message));
@@ -186,8 +189,8 @@ public class EmailComponent implements SiteCache, Config {
         extendFieldList.add(new SysExtendField(CONFIG_DEFAULTENCODING, INPUTTYPE_TEXT, true, CONFIG_DEFAULTENCODING,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULTENCODING),
                 CommonConstants.DEFAULT_CHARSET_NAME));
-        extendFieldList.add(new SysExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true, CONFIG_HOST, LanguagesUtils.getMessage(
-                CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_HOST), null));
+        extendFieldList.add(new SysExtendField(CONFIG_HOST, INPUTTYPE_TEXT, true, CONFIG_HOST,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_HOST), null));
         extendFieldList.add(new SysExtendField(CONFIG_PORT, INPUTTYPE_NUMBER, true, CONFIG_PORT,
                 LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PORT),
@@ -202,8 +205,8 @@ public class EmailComponent implements SiteCache, Config {
                 String.valueOf(3000)));
         extendFieldList.add(new SysExtendField(CONFIG_AUTH, INPUTTYPE_BOOLEAN, true, CONFIG_AUTH,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_AUTH), null));
-        extendFieldList.add(new SysExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, CONFIG_SSL, LanguagesUtils.getMessage(
-                CommonConstants.applicationContext, locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null));
+        extendFieldList.add(new SysExtendField(CONFIG_SSL, INPUTTYPE_BOOLEAN, true, CONFIG_SSL,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null));
         extendFieldList.add(new SysExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true, CONFIG_FROMADDRESS,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_FROMADDRESS), null));
         return extendFieldList;

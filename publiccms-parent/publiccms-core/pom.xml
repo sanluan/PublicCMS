@@ -5,14 +5,14 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.190312</version>
+        <version>V4.0.202004.a</version>
     </parent>
     <artifactId>publiccms-core</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-common</artifactId>
-            <version>V4.0.190312</version>
+            <version>V4.0.202004.a</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -23,16 +23,24 @@
             <artifactId>UserAgentUtils</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.coobird</groupId>
-            <artifactId>thumbnailator</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-search-elasticsearch</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.drewnoakes</groupId>
+            <artifactId>metadata-extractor</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.annotation</groupId>
+            <artifactId>javax.annotation-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis.dynamic-sql</groupId>
+            <artifactId>mybatis-dynamic-sql</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

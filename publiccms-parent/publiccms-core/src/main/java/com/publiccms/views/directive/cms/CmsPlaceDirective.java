@@ -18,6 +18,8 @@ import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsPlaceAttribute;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsPlaceAttributeService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 
@@ -36,6 +38,9 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(id)) {
             CmsPlace entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
+                if (handler.getBoolean("absoluteURL", false)) {
+                    templateComponent.initPlaceCover(site, entity);
+                }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
                     CmsPlaceAttribute attribute = attributeService.getEntity(id);
@@ -49,15 +54,35 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsPlace> entityList = service.getEntitys(ids);
-                Map<String, CmsPlace> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId()).collect(Collectors.toMap(k -> k.getId().toString(),
-                        Function.identity(), CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
+                boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+                entityList.forEach(e -> {
+                    Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
+                    if (null != clicks) {
+                        e.setClicks(e.getClicks() + clicks);
+                    }
+                    if (absoluteURL) {
+                        templateComponent.initPlaceCover(site, e);
+                    }
+                });
+                Map<String, CmsPlace> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
+                        .collect(Collectors.toMap(k -> k.getId().toString(), Function.identity(),
+                                CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired
     private CmsPlaceService service;
     @Autowired
     private CmsPlaceAttributeService attributeService;
+    @Autowired
+    private TemplateComponent templateComponent;
+    @Autowired
+    private StatisticsComponent statisticsComponent;
 }

@@ -211,7 +211,7 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
-    public int getInteger(String name, int defaultValue) {
+    public Integer getInteger(String name, Integer defaultValue) {
         try {
             regristerParameter(PARAMETER_TYPE_INTEGER, name, defaultValue);
             Integer result = getIntegerWithoutRegister(name);
@@ -277,7 +277,7 @@ public abstract class BaseHandler implements RenderHandler {
         return null;
     }
 
-    protected boolean getBooleanWithoutRegister(String name, boolean defaultValue) {
+    protected Boolean getBooleanWithoutRegister(String name, Boolean defaultValue) {
         try {
             Boolean result = getBooleanWithoutRegister(name);
             return null != result ? result : defaultValue;
@@ -293,7 +293,7 @@ public abstract class BaseHandler implements RenderHandler {
     }
 
     @Override
-    public boolean getBoolean(String name, boolean defaultValue) throws Exception {
+    public Boolean getBoolean(String name, Boolean defaultValue) throws Exception {
         regristerParameter(PARAMETER_TYPE_BOOLEAN, name, defaultValue);
         return getBooleanWithoutRegister(name, defaultValue);
     }

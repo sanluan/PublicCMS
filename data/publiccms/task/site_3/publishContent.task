@@ -1,0 +1,12 @@
+<#assign pageCount=50/>
+<#assign dealCount=0/>
+<@_contentList advanced=true pageIndex=1 count=pageCount>
+  <#list 1..page.totalPage as n>
+    <@_contentList advanced=true pageIndex=n count=pageCount>
+      <#list page.list as a>
+        <@_publishContent id=a.id><#assign dealCount++/></@_publishContent>
+      </#list>
+    </@_contentList>
+  </#list>
+</@_contentList>
+共生成${dealCount}条内容静态页面

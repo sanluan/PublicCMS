@@ -82,16 +82,16 @@ public class SysUserDao extends BaseDao<SysUser> {
         }
         switch (orderField) {
         case "lastLoginDate":
-            queryHandler.order("bean.lastLoginDate " + orderType);
+            queryHandler.order("bean.lastLoginDate ").append(orderType);
             break;
         case "loginCount":
-            queryHandler.order("bean.loginCount " + orderType);
+            queryHandler.order("bean.loginCount ").append(orderType);
             break;
         case "registeredDate":
-            queryHandler.order("bean.registeredDate " + orderType);
+            queryHandler.order("bean.registeredDate ").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id " + orderType);
+            queryHandler.order("bean.id ").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

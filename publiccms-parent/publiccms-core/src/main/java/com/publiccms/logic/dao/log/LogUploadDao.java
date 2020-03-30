@@ -61,13 +61,13 @@ public class LogUploadDao extends BaseDao<LogUpload> {
         }
         switch (orderField) {
         case "createDate":
-            queryHandler.order("bean.createDate " + orderType);
+            queryHandler.order("bean.createDate ").append(orderType);
             break;
         case "fileSize":
-            queryHandler.order("bean.fileSize " + orderType);
+            queryHandler.order("bean.fileSize ").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id " + orderType);
+            queryHandler.order("bean.id ").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

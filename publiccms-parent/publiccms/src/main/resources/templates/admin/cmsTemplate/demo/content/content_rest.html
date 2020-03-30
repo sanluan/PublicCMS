@@ -1,0 +1,155 @@
+<#assign attribute=getContentAttribute(content.id)/>
+<@_category id=content.categoryId;category>
+    <#assign
+        temp=getContentPage(attribute.text!'',pageIndex)
+        page=temp.page
+        text=temp.text
+    />
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${content.title} - ${(category.name)!}</title>
+    <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+    <meta name="description" content="${content.description}"/>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home page</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+<#if content?has_content>
+    <main>
+        <article>
+            <h1><a href="${content.url!}">${content.title}</a></h1>
+            <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
+            <div>${text?no_esc!}</div>
+        <#if content.hasFiles>
+            <div>
+                <@_contentFileList contentId=content.id fileTypes='video,audio,other' absoluteURL=true>
+                    <#list page.list as file>
+                        <a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
+                    </#list>
+                </@_contentFileList>
+            </div>
+        </#if>
+        <#if content.hasImages>
+            <div>
+             <@_contentFileList contentId=content.id fileTypes='image' absoluteURL=true>
+                 <#list page.list as file>
+                     <img src="${(file.filePath)!}" style="max-width:200px;max-height:200px;border:1px solid;"/>
+                 </#list>
+             </@_contentFileList>
+            </div>
+        </#if>
+        <#if content.tagIds?has_content>
+            <div>
+                Tags:
+                <@_tag ids=content.tagIds>
+                    <#list map as key,tag>
+                        <em>${tag.name}</em>
+                    </#list>
+                </@_tag>
+            </div>
+        </#if>
+            <div>
+                ${content.scores!} scores
+                <#if user?has_content>
+                    <@_userScore userId=user.id itemType='content' itemId=content.id>
+                        <a href="javascript:unscore(${content.id});">Cancel rating</a>
+                        <#assign stared=true/>
+                    </@_userScore>
+                    <#if !stared?has_content><a href="javascript:score(${content.id});">Score</a></#if>
+                </#if>
+            </div>
+            <div>
+                <#if !page.firstPage>
+                    <a href="${getPage(content.url,page.prePage)}">Previous page</a>
+                <#else>
+                    <span>Previous page</span>
+                </#if>
+                <#list 1..page.totalCount as n>
+                    <#if n=page.pageIndex>
+                        ${n}
+                    <#else>
+                        <a href="${getPage(content.url,n)}">${n}</a>
+                    </#if>
+                </#list>
+                <#if !page.lastPage>
+                    <a href="${getPage(content.url,page.nextPage)}">Next page</a>
+                <#else>
+                    <span>Next page</span>
+                </#if>
+            </div>
+            <div>
+                <@_contentList categoryId=category.id endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 pageSize=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">Previous:${a.title}</a></#list></#if></@_contentList>
+                <@_contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@_contentList>
+            </div>
+            <div>
+         <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+         <@_commentList contentId=content.id pageSize=10>
+                <#list page.list as a>
+                    <@merge 'userIds' a.userId!/>
+                    <@merge 'userIds' a.replyUserId!/>
+                </#list>
+                <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+                <#list page.list as a>
+                <dl class="nowrap">
+                    <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
+                    <dd>
+                        <div>${a.text!}</div>
+                    </dd>
+                </dl>
+                </#list>
+        </@_commentList>
+            </div>
+        </article>
+        <aside>
+            <h3>Popular content</h3>
+            <ul>
+<@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
+    <#list page.list as a>
+                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+    </#list>
+</@_contentList>
+            </ul>
+        </aside>
+    </main>
+<#else>
+    <main>
+        <h2>Content does not exist</h2>
+    </main>
+</#if>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+    <script>
+        $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
+            $('article p em').text(data.clicks);
+        });
+    </script>
+    <script>
+function score(contentId){
+    $.getJSON('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+        alert("Score ok!");
+        location.reload();
+    });
+}
+function unscore(contentId){
+    $.getJSON('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+        alert("Cancel ok!");
+        location.reload();
+    });
+}
+    </script>
+</body>
+</html>
+</@_category>

@@ -3,24 +3,21 @@ dependencies {
         "commons-fileupload:commons-fileupload:${fileuploadVersion}",
         "org.apache.commons:commons-collections4:${collectionsVersion}",
         "org.apache.commons:commons-lang3:${langVersion}",
+        "commons-codec:commons-codec:${codecVersion}",
 
         "org.apache.httpcomponents:httpmime:${httpclientVersion}",
         "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
 
-        // http://mvnrepository.com/artifact/org.apache.ant/ant
-        "org.apache.ant:ant:1.10.5",
+        "org.apache.ant:ant:${antVersion}",
 
         "org.freemarker:freemarker:${freemarkerVersion}",
 
         "org.springframework:spring-context-support:${springVersion}",
-        "org.springframework:spring-beans:${springVersion}",
-        "org.springframework:spring-web:${springVersion}",
         "org.springframework:spring-orm:${springVersion}",
         "org.springframework:spring-webmvc:${springVersion}",
 
         "org.mybatis:mybatis:${mybatisVersion}",
-        // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-        "org.mybatis:mybatis-spring:1.3.2",
+        "org.mybatis:mybatis-spring:${mybatisSpringVersion}",
 
         "org.hibernate:hibernate-search-orm:${hibernateSearchVersion}",
         "org.hibernate:hibernate-jcache:${hibernateVersion}",
@@ -33,18 +30,14 @@ dependencies {
         "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
         "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}",
 
-        // http://mvnrepository.com/artifact/javax.transaction/jta
-	    "javax.transaction:jta:1.1",
-	    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
-	    "javax.mail:javax.mail-api:1.6.2",
-	    // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
-	    "com.sun.mail:javax.mail:1.6.2",
-        // http://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
-        "javax.servlet:javax.servlet-api:4.0.1"
+	    "javax.transaction:jta:${jtaVersion}",
+	    "javax.mail:javax.mail-api:${mailVersion}",
+	    "com.sun.mail:javax.mail:${mailVersion}",
+        "javax.servlet:javax.servlet-api:${servletVersion}"
     )
     compile(
         "org.quartz-scheduler:quartz:${quartzVersion}") {
         exclude group:"com.mchange"
-        exclude group:"com.zaxxer", module: 'HikariCP-java6'        
+        exclude group:"com.zaxxer" 
     }
 }

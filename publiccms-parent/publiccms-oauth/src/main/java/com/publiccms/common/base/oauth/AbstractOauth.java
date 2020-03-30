@@ -24,7 +24,7 @@ import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.api.Config;
-import com.publiccms.common.api.oauth.Oauth;
+import com.publiccms.common.api.oauth.OauthGateway;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
@@ -39,7 +39,7 @@ import com.publiccms.view.pojo.oauth.OauthConfig;
  * AbstractOauth
  *
  */
-public abstract class AbstractOauth implements Config, Oauth {
+public abstract class AbstractOauth implements Config, OauthGateway {
     /**
      * 
      */
@@ -177,14 +177,12 @@ public abstract class AbstractOauth implements Config, Oauth {
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, false, CONFIG_APP_KEY,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY), null));
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT, false, CONFIG_APP_SECRET,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET), null));
-        extendFieldList.add(new SysExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT, false, CONFIG_RETURN_URL,
-                LanguagesUtils.getMessage(CommonConstants.applicationContext, locale,
-                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL, site.getDynamicPath()),
-                null));
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_KEY, INPUTTYPE_TEXT, CONFIG_APP_KEY,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_KEY)));
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_APP_SECRET, INPUTTYPE_TEXT, CONFIG_APP_SECRET,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_APP_SECRET)));
+        extendFieldList.add(new SysExtendField(prefix + CONFIG_RETURN_URL, INPUTTYPE_TEXT, CONFIG_RETURN_URL, getMessage(locale,
+                CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + prefix + CONFIG_RETURN_URL, site.getDynamicPath())));
         return extendFieldList;
     }
 }

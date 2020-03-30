@@ -14,8 +14,11 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsContent;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
+import com.publiccms.views.pojo.entities.CmsContentStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
@@ -29,7 +32,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         CmsContentQuery queryEntity = new CmsContentQuery();
-        queryEntity.setSiteId(getSite(handler).getId());
+        SysSite site = getSite(handler);
+        queryEntity.setSiteId(site.getId());
         queryEntity.setEndPublishDate(handler.getDate("endPublishDate"));
         if (handler.getBoolean("advanced", false)) {
             queryEntity.setStatus(handler.getIntegerArray("status"));
@@ -59,14 +63,21 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setUserId(handler.getLong("userId"));
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
         PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("count", 30));
+                handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")
         List<CmsContent> list = (List<CmsContent>) page.getList();
         if (null != list) {
+            boolean absoluteURL = handler.getBoolean("absoluteURL", true);
             list.forEach(e -> {
-                Integer clicks = statisticsComponent.getContentClicks(e.getId());
-                if (null != clicks) {
-                    e.setClicks(e.getClicks() + clicks);
+                CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                if (null != statistics) {
+                    e.setClicks(e.getClicks() + statistics.getClicks());
+                    e.setScores(e.getScores() + statistics.getScores());
+                }
+                if (absoluteURL) {
+                    templateComponent.initContentUrl(site, e);
+                    templateComponent.initContentCover(site, e);
                 }
             });
         }
@@ -75,6 +86,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentService service;
+    @Autowired
+    private TemplateComponent templateComponent;
     @Autowired
     private StatisticsComponent statisticsComponent;
 }

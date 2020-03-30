@@ -1,10 +1,6 @@
-<@_category id=id>
-	<#assign category=object/>
-	<#-- 分类扩展数据(参数为分类ID) -->
-	<#assign attribute=getCategoryAttribute(id)/>
-	<@_category id=category.parentId>
-		<#assign parent=object/>
-	</@_category>
+<#assign attribute=getCategoryAttribute(category.id)/>
+<@_category id=category.parentId>
+	<#assign parent=object/>
 </@_category>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +18,7 @@
 	<div class="banner" style="background:url(${site.sitePath!}assets/images/201209101507042748.gif) no-repeat top;"></div>
 
 	<@_includePlace path="/1478e1a7-2fcc-452e-841b-2eecc067d7c4.html"/> <#-- 英文导航 -->
-	
+
     <main class="container">
 		<div class="left">
 			<h2><div><strong>${parent.name!}</strong></div></h2>
@@ -42,7 +38,7 @@
 		</div>
         <div class="breadcrumb">
 			<h3><span>Position：<a href="${base!}">Home</a> > <a href="${(category.url)!}">${category.name}</a></span>${category.name}</h3>
-			<@_contentList categoryId=id pageIndex=pageIndex count=category.pageSize>
+			<@_contentList categoryId=id pageIndex=pageIndex pageSize=category.pageSize>
 				<ul class="content-list">
 					<#list page.list as a><li><span class="title"><a href="${a.url!}">${a.title}</a></span>[${a.publishDate?string('yyyy-MM-dd')}]</li></#list>
 				</ul>
@@ -53,7 +49,7 @@
 			</@_contentList>
         </div>
     </main>
-	
+
 	<@_includePlace path="/df408ca8-9f6d-4c65-b4ca-1eea34955834.html"/> <#-- Footer -->
 	<script>
 			$('a[data-id=${parent.id}]').addClass('selected');

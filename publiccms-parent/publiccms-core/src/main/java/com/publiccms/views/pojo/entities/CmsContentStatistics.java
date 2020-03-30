@@ -33,8 +33,13 @@ public class CmsContentStatistics extends ClickStatistics implements java.io.Ser
     }
 
     /**
+     * @param add 
      */
-    public void addScores() {
-        this.scores++;
+    public void addScores(boolean add) {
+        if (add) {
+            this.scores++;
+        } else {
+            this.scores--;
+        }
     }
 }

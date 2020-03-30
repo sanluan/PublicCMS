@@ -25,18 +25,21 @@ public class ThumbDirective extends AbstractTemplateDirective {
         Integer width = handler.getInteger("width");
         Integer height = handler.getInteger("height");
         SysSite site = getSite(handler);
-        if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(width) && CommonUtils.notEmpty(height)) {
-            String thumbPath = path.substring(0, path.lastIndexOf(CommonConstants.DOT)) + CommonConstants.UNDERLINE + width
-                    + CommonConstants.UNDERLINE + height + CmsFileUtils.getSuffix(path);
+        if (CommonUtils.notEmpty(path) && CommonUtils.notEmpty(width) && CommonUtils.notEmpty(height)
+                && (path.startsWith(site.getSitePath()) || (!path.contains("://") && !path.startsWith("/")))) {
+            String filePath = path.substring(site.getSitePath().length());
+            String suffix = CmsFileUtils.getSuffix(filePath);
+            String thumbPath = filePath.substring(0, filePath.lastIndexOf(CommonConstants.DOT)) + CommonConstants.UNDERLINE
+                    + width + CommonConstants.UNDERLINE + height + suffix;
             String thumbFilePath = siteComponent.getWebFilePath(site, thumbPath);
             if (CmsFileUtils.exists(thumbFilePath)) {
-                handler.print(thumbPath);
+                handler.print(site.getSitePath() + thumbPath);
             } else {
                 String sourceFilePath = siteComponent.getWebFilePath(site, path);
                 if (CmsFileUtils.exists(sourceFilePath)) {
                     try {
-                        CmsFileUtils.thumb(sourceFilePath, thumbFilePath, width, height);
-                        handler.print(thumbPath);
+                        CmsFileUtils.thumb(sourceFilePath, thumbFilePath, width, height, suffix);
+                        handler.print(site.getSitePath() + thumbPath);
                     } catch (IOException e) {
                         handler.print(path);
                         log.error(e.getMessage());
@@ -52,6 +55,5 @@ public class ThumbDirective extends AbstractTemplateDirective {
     public boolean needAppToken() {
         return true;
     }
-
 
 }

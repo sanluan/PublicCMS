@@ -1,6 +1,7 @@
 package com.publiccms.common.servlet;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -107,6 +108,7 @@ public class InstallServlet extends HttpServlet {
             // 记录当前版本号
             map.put("currentVersion", CmsVersion.getVersion());
             map.put("defaultPort", cmsUpgrader.getDefaultPort());
+            map.put("dataFilePath", CommonConstants.CMS_FILEPATH);
 
             if (null == step) {
                 step = startStep;
@@ -159,7 +161,7 @@ public class InstallServlet extends HttpServlet {
 
     private void start() throws FileNotFoundException, IOException {
         CmsVersion.setInitialized(true);
-        CmsDataSource.initDefautDataSource();
+        CmsDataSource.initDefaultDataSource();
         File file = new File(CommonConstants.CMS_FILEPATH + CommonConstants.INSTALL_LOCK_FILENAME);
         try (FileOutputStream outputStream = new FileOutputStream(file);) {
             outputStream.write(CmsVersion.getVersion().getBytes(CommonConstants.DEFAULT_CHARSET));
@@ -187,8 +189,9 @@ public class InstallServlet extends HttpServlet {
                 dbconfig.store(outputStream, null);
             }
             try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile)) {
+                map.put("usersql", new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql").exists());
+                map.put("message", "success");
             }
-            map.put("message", "success");
         } catch (Exception e) {
             map.put("error", e.getMessage());
         }
@@ -205,7 +208,8 @@ public class InstallServlet extends HttpServlet {
         String databaseConfiFile = CommonConstants.CMS_FILEPATH + CmsDataSource.DATABASE_CONFIG_FILENAME;
         startStep = null;
         try (Connection connection = DatabaseUtils.getConnection(databaseConfiFile);) {
-            map.put("message", "fail");
+            map.put("message", "success");
+            map.put("usersql", new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql").exists());
         } catch (Exception e) {
             map.put("error", e.getMessage());
         }
@@ -237,12 +241,15 @@ public class InstallServlet extends HttpServlet {
         runner.setLogWriter(null);
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
-        try (InputStream inputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql");) {
+        try (InputStream inputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql")) {
             runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
         }
         if (useSimple) {
-            try (InputStream simpleInputStream = getClass().getResourceAsStream("/initialization/sql/simpledata.sql")) {
-                runner.runScript(new InputStreamReader(simpleInputStream, CommonConstants.DEFAULT_CHARSET));
+            File file = new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql");
+            if (file.exists()) {
+                try (InputStream simpleInputStream = new FileInputStream(file)) {
+                    runner.runScript(new InputStreamReader(simpleInputStream, CommonConstants.DEFAULT_CHARSET));
+                }
             }
         }
         return stringWriter.toString();

@@ -85,12 +85,12 @@
 										if ( (stream.match(htmlHasLeftDelimeterRegArray[i], false) && htmlTagName === null ) || stream.match(settings.leftDelimiter + freemarkerFlagArray[i], false)) {
 									        state.tokenize = parsers.freemarker;
 									        state.localMode = freemarkerMode;
-									        state.localState = freemarkerMode.startState(htmlMixedMode.indent(state.htmlMixedState, ""));
+									        state.localState = freemarkerMode.startState(htmlMixedMode.indent(state.htmlMixedState, "", ""));
 									        return helpers.maybeBackup(stream, settings.leftDelimiter + freemarkerFlagArray[i], freemarkerMode.token(stream, state.localState));
 									    } else if (stream.match("${", false)) {
 									    	state.tokenize = parsers.freemarker;
 									        state.localMode = freemarkerMode;
-									        state.localState = freemarkerMode.startState(htmlMixedMode.indent(state.htmlMixedState, ""));
+									        state.localState = freemarkerMode.startState(htmlMixedMode.indent(state.htmlMixedState, "", ""));
 									        return helpers.maybeBackup(stream, "${", freemarkerMode.token(stream, state.localState));
 									    }
 									}
@@ -184,7 +184,7 @@
 										}
 									}
 								}
-								return htmlMixedMode.indent(state.htmlMixedState, textAfter);
+								return htmlMixedMode.indent(state.htmlMixedState, textAfter, "");
 							},
 
 							innerMode : function(state) {

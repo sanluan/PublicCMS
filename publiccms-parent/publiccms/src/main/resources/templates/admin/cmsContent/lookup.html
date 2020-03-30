@@ -1,8 +1,8 @@
 <#macro categoryTree parentId=''>
-    <@_categoryList advanced=true parentId=parentId count=500>
+    <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <li>
-                <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" target="ajax" rel="content_list">${a.name!}</a>
+                <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
             <#if a.childIds?has_content>
                 <ul>
                     <@categoryTree a.id/>
@@ -15,7 +15,7 @@
     </@_categoryList>
 </#macro>
 <div class="pageContent">
-    <div class="unitBox" layoutH="0" style="float:left; display:block; overflow:auto; width:180px;background:#ffffff">
+    <div class="unitBox left-page-content" layoutH="0">
         <ul class="tree treeFolder">
             <li>
                 <a href="cmsContent/lookup_list.html" target="ajax" rel="content_list"><@t.page 'category'/></a>
@@ -25,7 +25,7 @@
             </li>
          </ul>
     </div>
-    <div id="content_list" class="unitBox" style="margin-left:180px;">
+    <div id="content_list" class="unitBox">
         <#include "lookup_list.html"/>
     </div>
     <div class="formBar">
