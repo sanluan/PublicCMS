@@ -3,6 +3,16 @@
 <head>
     <meta charset="utf-8">
     <title>${metadata.alias!}</title>
+    <style>
+ol.vote>li {line-height: 30px;height: 30px;width:400px;margin:5px 0 0 0;max-width:95%;position: relative;}
+.progress-box {width: 100%;height: 100%;border: 1px solid #cccccc;display: inline-block;}
+.progress-bar {height:100%;opacity: 0.4;}
+.progress-text {text-align: center;position: absolute;top: 0;width: 100%;}
+.progress-text a {width: 100%;height: 100%;display: inline-block;}
+ol.vote>li:nth-child(3n+1) .progress-bar {background-color:red;}
+ol.vote>li:nth-child(3n+2) .progress-bar {background-color:green;}
+ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
+    </style>
 </head>
 <body>
     <header>
@@ -18,9 +28,7 @@
     </nav>
     <main>
         <h1>Vote</h1>
-<@_voteList startStartDate=startStartDate endStartDate=endStartDate 
-            startEndDate=startEndDate endEndDate=endEndDate title=title
-            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@_voteList pageIndex=pageIndex pageSize=10>
         <ul>
     <#list page.list as a>
             <li>
@@ -33,21 +41,28 @@
                         <#assign myvote=object/>
                     </@_userVote>
                 </#if>
-                <@_voteItemList voteId=a.id pageSize=500>
-                    <ol>
+                <@_voteItemList voteId=a.id pageSize=10>
+                    <ol class="vote">
                     <#list page.list as v>
                         <li>
-                            ${v.title}
-                            <#if available>
-                                <#if myvote?has_content>
-                                    (${v.scores!} votes)
-                                    <#if myvote.itemId=v.id>[My vote]<a href="javascript:unvote('${v.id}');">Cancel voting</a></#if>
-                                <#else>
-                                    <a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html</#if>">Vote and view</a>
-                                </#if>
-                            <#else>
-                                (${v.scores!} votes)
-                            </#if>
+                            <div class="progress-box">
+                                <div class="progress-bar" style="width:${(a.scores gt 0 && myvote?has_content)?then(v.scores*100/a.scores,100)}%;"></div>
+                                <div class="progress-text">
+                                    <#if available>
+                                        <#if myvote?has_content>
+                                            <#if myvote.itemId=v.id>
+                                                <a href="javascript:unvote('${v.id}');" title="Cannel voting">${v.title} (${v.scores!} votes)</a>
+                                            <#else>
+                                                ${v.title} (${v.scores!} votes)
+                                            </#if>
+                                        <#else>
+                                            <a href="<#if user?has_content>javascript:vote('${v.id}');<#else>${site.dynamicPath}login.html?returnUrl=${site.dynamicPath}vote.html?id=${a.id}</#if>" title="Vote and view">${v.title}</a>
+                                        </#if>
+                                    <#else>
+                                        (${v.scores!} votes)
+                                    </#if>
+                                </div>
+                            </div>
                         </li>
                     </#list>
                     </ol>
@@ -101,13 +116,13 @@
 <script>
 function vote(itemId){
     $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
-        alert("ok!");
+        alert("Vote ok!");
         location.reload();
     });
 }
 function unvote(itemId){
     $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
-        alert("ok!");
+        alert("Cancel ok!");
         location.reload();
     });
 }

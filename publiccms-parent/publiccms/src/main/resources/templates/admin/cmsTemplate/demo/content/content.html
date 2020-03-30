@@ -62,13 +62,13 @@
             </div>
         </#if>
             <div>
-                ${content.scores!} star
+                ${content.scores!} scores
                 <#if user?has_content>
                     <@_userScore userId=user.id itemType='content' itemId=content.id>
-                        <a href="javascript:unstar(${content.id});">Cancel rating</a>
+                        <a href="javascript:unscore(${content.id});">Cancel rating</a>
                         <#assign stared=true/>
                     </@_userScore>
-                    <#if !stared?has_content><a href="javascript:star(${content.id});">Star</a></#if>
+                    <#if !stared?has_content><a href="javascript:score(${content.id});">Score</a></#if>
                 </#if>
             </div>
             <div>
@@ -95,7 +95,7 @@
                 <@_contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@_contentList>
             </div>
             <div>
-            <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+         <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
          <@_commentList contentId=content.id pageSize=10>
                 <#list page.list as a>
                     <@merge 'userIds' a.userId!/>
@@ -139,15 +139,15 @@
         });
     </script>
     <script>
-function star(contentId){
+function score(contentId){
     $.getJSON('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
-        alert("ok!");
+        alert("Score ok!");
         location.reload();
     });
 }
-function unstar(contentId){
+function unscore(contentId){
     $.getJSON('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
-        alert("ok!");
+        alert("Cancel ok!");
         location.reload();
     });
 }

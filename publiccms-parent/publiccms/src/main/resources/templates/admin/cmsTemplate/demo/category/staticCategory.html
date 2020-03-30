@@ -11,7 +11,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home</a>
+        <a href="${site.sitePath}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -45,7 +45,7 @@
                 <#assign end=page.pageIndex+4/>
             </#if>
             <#if !page.firstPage>
-                <a href="${getPage(url,page.prePage,'pageIndex')}">Previous page</a>
+                <a href="${getPage(url,page.prePage)}">Previous page</a>
             <#else>
                 <span>Previous page</span>
             </#if>
@@ -56,14 +56,14 @@
                 <#if n=page.pageIndex>
                     ${n}
                 <#else>
-                    <a href="${getPage(url,n,'pageIndex')}">${n}</a>
+                    <a href="${getPage(url,n)}">${n}</a>
                 </#if>
             </#list>
             <#if end lt page.totalPage>
-                ... <a href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
+                ... <a href="${getPage(url,page.totalPage)}">${page.totalPage}</a>
             </#if>
             <#if !page.lastPage>
-                <a href="${getPage(url,page.nextPage,'pageIndex')}">Next page</a>
+                <a href="${getPage(url,page.nextPage)}">Next page</a>
             <#else>
                 <span>Next page</span>
             </#if>

@@ -12,7 +12,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home</a>
+        <a href="${base!}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>
@@ -26,11 +26,11 @@
         <ul>
     <#list page.list as a>
             <li>
-            <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
-            <p>
-                <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
-                ${a.description!}
-            </p>
+                <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect.do?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
+                <p>
+                    <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
+                    ${a.description!}
+                </p>
             </li>
     </#list>
         </ul>
