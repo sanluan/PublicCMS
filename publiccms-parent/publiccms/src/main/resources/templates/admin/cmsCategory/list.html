@@ -97,7 +97,7 @@
                 <#if authorizedMap['cmsPlace/push']>
                     <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>|
                 </#if>
-                <#if authorizedMap['cmsCategory/publishParameters']&&!a.onlyUrl>
+                <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!a.onlyUrl>
                     <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" target="dialog" width="400" height="150" mask="true"><@t.page 'button.publish'/></a>
                 </#if>
                 </td>
