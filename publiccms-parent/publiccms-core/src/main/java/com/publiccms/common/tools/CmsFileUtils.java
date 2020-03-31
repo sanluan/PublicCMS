@@ -309,7 +309,11 @@ public class CmsFileUtils {
     public static String getUploadFileName(String suffix) {
         StringBuilder sb = new StringBuilder("upload/");
         sb.append(DateFormatUtils.getDateFormat(FILE_NAME_FORMAT_STRING).format(CommonUtils.getDate()));
-        sb.append(CommonConstants.random.nextInt()).append(suffix);
+        sb.append(CommonConstants.random.nextInt());
+        if (!suffix.contains(CommonConstants.DOT)) {
+            sb.append(CommonConstants.DOT);
+        }
+        sb.append(suffix);
         return sb.toString();
     }
 
