@@ -17114,8 +17114,7 @@ UE.plugins['fiximgclick'] = (function () {
 
                 if (img && img.tagName == 'IMG' && me.body.contentEditable!="false") {
 
-                    if (img.className.indexOf("edui-faked-music") != -1 ||
-                        img.getAttribute("anchorname") ||
+                    if (img.getAttribute("anchorname") ||
                         domUtils.hasClass(img, 'loadingclass') ||
                         domUtils.hasClass(img, 'loaderrorclass')) { return }
 
@@ -23282,110 +23281,6 @@ UE.plugins['catchremoteimage'] = function () {
     });
 };
 
-// plugins/snapscreen.js
-/**
- * 截屏插件，为UEditor提供插入支持
- * @file
- * @since 1.4.2
- */
-UE.plugin.register('snapscreen', function (){
-
-    var me = this;
-    var snapplugin;
-
-    function getLocation(url){
-        var search,
-            a = document.createElement('a'),
-            params = utils.serializeParam(me.queryCommandValue('serverparam')) || '';
-
-        a.href = url;
-        if (browser.ie) {
-            a.href = a.href;
-        }
-
-
-        search = a.search;
-        if (params) {
-            search = search + (search.indexOf('?') == -1 ? '?':'&')+ params;
-            search = search.replace(/[&]+/ig, '&');
-        }
-        return {
-            'port': a.port,
-            'hostname': a.hostname,
-            'path': a.pathname + search ||  + a.hash
-        }
-    }
-
-    return {
-        commands:{
-            /**
-             * 字体背景颜色
-             * @command snapscreen
-             * @method execCommand
-             * @param { String } cmd 命令字符串
-             * @example
-             * ```javascript
-             * editor.execCommand('snapscreen');
-             * ```
-             */
-            'snapscreen':{
-                execCommand:function (cmd) {
-                    var url, local, res;
-                    var lang = me.getLang("snapScreen_plugin");
-
-                    if(!snapplugin){
-                        var container = me.container;
-                        var doc = me.container.ownerDocument || me.container.document;
-                        snapplugin = doc.createElement("object");
-                        try{snapplugin.type = "application/x-pluginbaidusnap";}catch(e){
-                            return;
-                        }
-                        snapplugin.style.cssText = "position:absolute;left:-9999px;width:0;height:0;";
-                        snapplugin.setAttribute("width","0");
-                        snapplugin.setAttribute("height","0");
-                        container.appendChild(snapplugin);
-                    }
-
-                    function onSuccess(rs){
-                        try{
-                            rs = eval("("+ rs +")");
-                            if(rs.state == 'SUCCESS'){
-                                var opt = me.options;
-                                me.execCommand('insertimage', {
-                                    src: opt.snapscreenUrlPrefix + rs.url,
-                                    _src: opt.snapscreenUrlPrefix + rs.url,
-                                    alt: rs.title || '',
-                                    floatStyle: opt.snapscreenImgAlign
-                                });
-                            } else {
-                                alert(rs.state);
-                            }
-                        }catch(e){
-                            alert(lang.callBackErrorMsg);
-                        }
-                    }
-                    url = me.getActionUrl(me.getOpt('snapscreenActionName'));
-                    local = getLocation(url);
-                    setTimeout(function () {
-                        try{
-                            res =snapplugin.saveSnapshot(local.hostname, local.path, local.port);
-                        }catch(e){
-                            me.ui._dialogs['snapscreenDialog'].open();
-                            return;
-                        }
-
-                        onSuccess(res);
-                    }, 50);
-                },
-                queryCommandState: function(){
-                    return (navigator.userAgent.indexOf("Windows",0) != -1) ? 0:-1;
-                }
-            }
-        }
-    }
-});
-
-
 // plugins/insertparagraph.js
 /**
  * 插入段落
@@ -23431,177 +23326,6 @@ UE.commands['insertparagraph'] = {
     }
 };
 
-
-
-// plugins/webapp.js
-/**
- * 百度应用
- * @file
- * @since 1.2.6.1
- */
-
-
-/**
- * 插入百度应用
- * @command webapp
- * @method execCommand
- * @remind 需要百度APPKey
- * @remind 百度应用主页： <a href="http://app.baidu.com/" target="_blank">http://app.baidu.com/</a>
- * @param { Object } appOptions 应用所需的参数项， 支持的key有： title=>应用标题， width=>应用容器宽度，
- * height=>应用容器高度，logo=>应用logo，url=>应用地址
- * @example
- * ```javascript
- * //editor是编辑器实例
- * //在编辑器里插入一个“植物大战僵尸”的APP
- * editor.execCommand( 'webapp' , {
- *     title: '植物大战僵尸',
- *     width: 560,
- *     height: 465,
- *     logo: '应用展示的图片',
- *     url: '百度应用的地址'
- * } );
- * ```
- */
-
-//UE.plugins['webapp'] = function () {
-//    var me = this;
-//    function createInsertStr( obj, toIframe, addParagraph ) {
-//        return !toIframe ?
-//                (addParagraph ? '<p>' : '') + '<img title="'+obj.title+'" width="' + obj.width + '" height="' + obj.height + '"' +
-//                        ' src="' + me.options.UEDITOR_HOME_URL + 'themes/default/images/spacer.gif" style="background:url(' + obj.logo+') no-repeat center center; border:1px solid gray;" class="edui-faked-webapp" _url="' + obj.url + '" />' +
-//                        (addParagraph ? '</p>' : '')
-//                :
-//                '<iframe class="edui-faked-webapp" title="'+obj.title+'" width="' + obj.width + '" height="' + obj.height + '"  scrolling="no" frameborder="0" src="' + obj.url + '" logo_url = '+obj.logo+'></iframe>';
-//    }
-//
-//    function switchImgAndIframe( img2frame ) {
-//        var tmpdiv,
-//                nodes = domUtils.getElementsByTagName( me.document, !img2frame ? "iframe" : "img" );
-//        for ( var i = 0, node; node = nodes[i++]; ) {
-//            if ( node.className != "edui-faked-webapp" ){
-//                continue;
-//            }
-//            tmpdiv = me.document.createElement( "div" );
-//            tmpdiv.innerHTML = createInsertStr( img2frame ? {url:node.getAttribute( "_url" ), width:node.width, height:node.height,title:node.title,logo:node.style.backgroundImage.replace("url(","").replace(")","")} : {url:node.getAttribute( "src", 2 ),title:node.title, width:node.width, height:node.height,logo:node.getAttribute("logo_url")}, img2frame ? true : false,false );
-//            node.parentNode.replaceChild( tmpdiv.firstChild, node );
-//        }
-//    }
-//
-//    me.addListener( "beforegetcontent", function () {
-//        switchImgAndIframe( true );
-//    } );
-//    me.addListener( 'aftersetcontent', function () {
-//        switchImgAndIframe( false );
-//    } );
-//    me.addListener( 'aftergetcontent', function ( cmdName ) {
-//        if ( cmdName == 'aftergetcontent' && me.queryCommandState( 'source' ) ){
-//            return;
-//        }
-//        switchImgAndIframe( false );
-//    } );
-//
-//    me.commands['webapp'] = {
-//        execCommand:function ( cmd, obj ) {
-//            me.execCommand( "inserthtml", createInsertStr( obj, false,true ) );
-//        }
-//    };
-//};
-
-UE.plugin.register('webapp', function (){
-    var me = this;
-    function createInsertStr(obj,toEmbed){
-        return  !toEmbed ?
-            '<img title="'+obj.title+'" width="' + obj.width + '" height="' + obj.height + '"' +
-                ' src="' + me.options.UEDITOR_HOME_URL + 'themes/default/images/spacer.gif" _logo_url="'+obj.logo+'" style="background:url(' + obj.logo
-                +') no-repeat center center; border:1px solid gray;" class="edui-faked-webapp" _url="' + obj.url + '" ' +
-                (obj.align && !obj.cssfloat? 'align="' + obj.align + '"' : '') +
-                (obj.cssfloat ? 'style="float:' + obj.cssfloat + '"' : '') +
-                '/>'
-            :
-            '<iframe class="edui-faked-webapp" title="'+obj.title+'" ' +
-                (obj.align && !obj.cssfloat? 'align="' + obj.align + '"' : '') +
-                (obj.cssfloat ? 'style="float:' + obj.cssfloat + '"' : '') +
-                'width="' + obj.width + '" height="' + obj.height + '"  scrolling="no" frameborder="0" src="' + obj.url + '" logo_url = "'+obj.logo+'"></iframe>'
-
-    }
-    return {
-        outputRule: function(root){
-            utils.each(root.getNodesByTagName('img'),function(node){
-                var html;
-                if(node.getAttr('class') == 'edui-faked-webapp'){
-                    html =  createInsertStr({
-                        title:node.getAttr('title'),
-                        'width':node.getAttr('width'),
-                        'height':node.getAttr('height'),
-                        'align':node.getAttr('align'),
-                        'cssfloat':node.getStyle('float'),
-                        'url':node.getAttr("_url"),
-                        'logo':node.getAttr('_logo_url')
-                    },true);
-                    var embed = UE.uNode.createElement(html);
-                    node.parentNode.replaceChild(embed,node);
-                }
-            })
-        },
-        inputRule:function(root){
-            utils.each(root.getNodesByTagName('iframe'),function(node){
-                if(node.getAttr('class') == 'edui-faked-webapp'){
-                    var img = UE.uNode.createElement(createInsertStr({
-                        title:node.getAttr('title'),
-                        'width':node.getAttr('width'),
-                        'height':node.getAttr('height'),
-                        'align':node.getAttr('align'),
-                        'cssfloat':node.getStyle('float'),
-                        'url':node.getAttr("src"),
-                        'logo':node.getAttr('logo_url')
-                    }));
-                    node.parentNode.replaceChild(img,node);
-                }
-            })
-
-        },
-        commands:{
-            /**
-             * 插入百度应用
-             * @command webapp
-             * @method execCommand
-             * @remind 需要百度APPKey
-             * @remind 百度应用主页： <a href="http://app.baidu.com/" target="_blank">http://app.baidu.com/</a>
-             * @param { Object } appOptions 应用所需的参数项， 支持的key有： title=>应用标题， width=>应用容器宽度，
-             * height=>应用容器高度，logo=>应用logo，url=>应用地址
-             * @example
-             * ```javascript
-             * //editor是编辑器实例
-             * //在编辑器里插入一个“植物大战僵尸”的APP
-             * editor.execCommand( 'webapp' , {
-             *     title: '植物大战僵尸',
-             *     width: 560,
-             *     height: 465,
-             *     logo: '应用展示的图片',
-             *     url: '百度应用的地址'
-             * } );
-             * ```
-             */
-            'webapp':{
-                execCommand:function (cmd, obj) {
-
-                    var me = this,
-                        str = createInsertStr(utils.extend(obj,{
-                            align:'none'
-                        }), false);
-                    me.execCommand("inserthtml",str);
-                },
-                queryCommandState:function () {
-                    var me = this,
-                        img = me.selection.getRange().getClosedNode(),
-                        flag = img && (img.className == "edui-faked-webapp");
-                    return flag ? 1 : 0;
-                }
-            }
-        }
-    }
-});
-
 // plugins/template.js
 ///import core
 ///import plugins\inserthtml.js
@@ -23643,87 +23367,6 @@ UE.plugins['template'] = function () {
     });
 };
 
-
-// plugins/music.js
-/**
- * 插入音乐命令
- * @file
- */
-UE.plugin.register('music', function (){
-    var me = this;
-    function creatInsertStr(url,width,height,align,cssfloat,toEmbed){
-        return  !toEmbed ?
-                '<img ' +
-                    (align && !cssfloat? 'align="' + align + '"' : '') +
-                    (cssfloat ? 'style="float:' + cssfloat + '"' : '') +
-                    ' width="'+ width +'" height="' + height + '" _url="'+url+'" class="edui-faked-music"' +
-                    ' src="'+me.options.langPath+me.options.lang+'/images/music.png" />'
-            :
-            '<embed type="application/x-shockwave-flash" class="edui-faked-music" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
-                ' src="' + url + '" width="' + width  + '" height="' + height  + '" '+ (align && !cssfloat? 'align="' + align + '"' : '') +
-                (cssfloat ? 'style="float:' + cssfloat + '"' : '') +
-                ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >';
-    }
-    return {
-        outputRule: function(root){
-            utils.each(root.getNodesByTagName('img'),function(node){
-                var html;
-                if(node.getAttr('class') == 'edui-faked-music'){
-                    var cssfloat = node.getStyle('float');
-                    var align = node.getAttr('align');
-                    html =  creatInsertStr(node.getAttr("_url"), node.getAttr('width'), node.getAttr('height'), align, cssfloat, true);
-                    var embed = UE.uNode.createElement(html);
-                    node.parentNode.replaceChild(embed,node);
-                }
-            })
-        },
-        inputRule:function(root){
-            utils.each(root.getNodesByTagName('embed'),function(node){
-                if(node.getAttr('class') == 'edui-faked-music'){
-                    var cssfloat = node.getStyle('float');
-                    var align = node.getAttr('align');
-                    html =  creatInsertStr(node.getAttr("src"), node.getAttr('width'), node.getAttr('height'), align, cssfloat,false);
-                    var img = UE.uNode.createElement(html);
-                    node.parentNode.replaceChild(img,node);
-                }
-            })
-
-        },
-        commands:{
-            /**
-             * 插入音乐
-             * @command music
-             * @method execCommand
-             * @param { Object } musicOptions 插入音乐的参数项， 支持的key有： url=>音乐地址；
-             * width=>音乐容器宽度；height=>音乐容器高度；align=>音乐文件的对齐方式， 可选值有: left, center, right, none
-             * @example
-             * ```javascript
-             * //editor是编辑器实例
-             * //在编辑器里插入一个“植物大战僵尸”的APP
-             * editor.execCommand( 'music' , {
-             *     width: 400,
-             *     height: 95,
-             *     align: "center",
-             *     url: "音乐地址"
-             * } );
-             * ```
-             */
-            'music':{
-                execCommand:function (cmd, musicObj) {
-                    var me = this,
-                        str = creatInsertStr(musicObj.url, musicObj.width || 400, musicObj.height || 95, "none", false);
-                    me.execCommand("inserthtml",str);
-                },
-                queryCommandState:function () {
-                    var me = this,
-                        img = me.selection.getRange().getClosedNode(),
-                        flag = img && (img.className == "edui-faked-music");
-                    return flag ? 1 : 0;
-                }
-            }
-        }
-    }
-});
 
 // plugins/autoupload.js
 /**
@@ -27817,10 +27460,7 @@ UE.ui = baidu.editor.ui = {};
         'edittip':'~/dialogs/table/edittip.html',
         'edittable':'~/dialogs/table/edittable.html',
         'edittd':'~/dialogs/table/edittd.html',
-        'webapp':'~/dialogs/webapp/webapp.html',
-        'snapscreen':'~/dialogs/snapscreen/snapscreen.html',
         'scrawl':'~/dialogs/scrawl/scrawl.html',
-        'music':'~/dialogs/music/music.html',
         'template':'~/dialogs/template/template.html',
         'background':'~/dialogs/background/background.html',
         'charts': '~/dialogs/charts/charts.html'
@@ -27949,9 +27589,9 @@ UE.ui = baidu.editor.ui = {};
 
 
     var dialogBtns = {
-        noOk:['searchreplace', 'help', 'spechars', 'webapp','preview'],
+        noOk:['searchreplace', 'help', 'spechars', 'preview'],
         ok:['attachment', 'anchor', 'link', 'insertimage', 'map', 'gmap', 'insertframe', 'wordimage',
-            'insertvideo', 'insertframe', 'edittip', 'edittable', 'edittd', 'scrawl', 'template', 'music', 'background', 'charts']
+            'insertvideo', 'insertframe', 'edittip', 'edittable', 'edittd', 'scrawl', 'template', 'background', 'charts']
     };
 
     for (var p in dialogBtns) {
@@ -28050,54 +27690,6 @@ UE.ui = baidu.editor.ui = {};
             }
         })(p, dialogBtns[p]);
     }
-
-    editorui.snapscreen = function (editor, iframeUrl, title) {
-        title = editor.options.labelMap['snapscreen'] || editor.getLang("labelMap.snapscreen") || '';
-        var ui = new editorui.Button({
-            className:'edui-for-snapscreen',
-            title:title,
-            onclick:function () {
-                editor.execCommand("snapscreen");
-            },
-            theme:editor.options.theme
-
-        });
-        editorui.buttons['snapscreen'] = ui;
-        iframeUrl = iframeUrl || (editor.options.iframeUrlMap || {})["snapscreen"] || iframeUrlMap["snapscreen"];
-        if (iframeUrl) {
-            var dialog = new editorui.Dialog({
-                iframeUrl:editor.ui.mapUrl(iframeUrl),
-                editor:editor,
-                className:'edui-for-snapscreen',
-                title:title,
-                buttons:[
-                    {
-                        className:'edui-okbutton',
-                        label:editor.getLang("ok"),
-                        editor:editor,
-                        onclick:function () {
-                            dialog.close(true);
-                        }
-                    },
-                    {
-                        className:'edui-cancelbutton',
-                        label:editor.getLang("cancel"),
-                        editor:editor,
-                        onclick:function () {
-                            dialog.close(false);
-                        }
-                    }
-                ]
-
-            });
-            dialog.render();
-            editor.ui._dialogs["snapscreenDialog"] = dialog;
-        }
-        editor.addListener('selectionchange', function () {
-            ui.setDisabled(editor.queryCommandState('snapscreen') == -1);
-        });
-        return ui;
-    };
 
     editorui.insertcode = function (editor, list, title) {
         list = editor.options['insertcode'] || [];
@@ -28880,14 +28472,8 @@ UE.ui = baidu.editor.ui = {};
                         if (img.className.indexOf("edui-faked-video") != -1 || img.className.indexOf("edui-upload-video") != -1) {
                             dialogName = "insertvideoDialog"
                         }
-                        if (img.className.indexOf("edui-faked-webapp") != -1) {
-                            dialogName = "webappDialog"
-                        }
                         if (img.src.indexOf("http://api.map.baidu.com") != -1) {
                             dialogName = "mapDialog"
-                        }
-                        if (img.className.indexOf("edui-faked-music") != -1) {
-                            dialogName = "musicDialog"
                         }
                         if (img.src.indexOf("http://maps.google.com/maps/api/staticmap") != -1) {
                             dialogName = "gmapDialog"

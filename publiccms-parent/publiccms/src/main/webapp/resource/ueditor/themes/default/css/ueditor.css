@@ -831,10 +831,6 @@ div.edui-box {
     background-position: -540px 0;
 }
 
-.edui-default  .edui-for-webapp .edui-icon {
-    background-position: -601px -40px
-}
-
 .edui-default  .edui-for-table .edui-icon {
     background-position: -580px -20px;
 }
@@ -859,20 +855,12 @@ div.edui-box {
     background-position: -700px -40px;
 }
 
-.edui-default  .edui-for-snapscreen .edui-icon {
-    background-position: -581px -40px
-}
-
 .edui-default  .edui-for-scrawl .edui-icon {
     background-position: -801px -41px
 }
 
 .edui-default  .edui-for-background .edui-icon {
     background-position: -680px -40px;
-}
-
-.edui-default  .edui-for-music .edui-icon {
-    background-position: -18px -40px
 }
 
 .edui-default  .edui-for-formula .edui-icon {
@@ -1364,13 +1352,6 @@ div.edui-box {
     height: 400px;
     overflow: hidden;
 }
-/*webapp-dialog*/
-.edui-default .edui-for-webapp .edui-dialog-content {
-    width: 560px;
-    _width: 565px;
-    height: 450px;
-    overflow: hidden;
-}
 
 /*image-insertframe*/
 .edui-default .edui-for-insertframe .edui-dialog-content {
@@ -1448,17 +1429,6 @@ div.edui-box {
 .edui-default .edui-for-edittd .edui-dialog-content {
     width: 240px;
     height: 50px;
-}
-/*snapscreen-dialog*/
-.edui-default .edui-for-snapscreen .edui-dialog-content {
-    width: 400px;
-    height: 220px;
-}
-
-/*music-dialog*/
-.edui-default .edui-for-music .edui-dialog-content {
-    width: 515px;
-    height: 360px;
 }
 
 /*段落弹出菜单*/

@@ -2,7 +2,7 @@
  */
 UE.I18N['ja-jp'] = {
     'labelMap':{
-        'anchor':'アンカー', 'undo':'アンドゥー', 'redo':'リドゥー', 'bold':'太字', 'indent':'インデント', 'snapscreen':'スクリーンショット',
+        'anchor':'アンカー', 'undo':'アンドゥー', 'redo':'リドゥー', 'bold':'太字', 'indent':'インデント', 
         'italic':'斜体', 'underline':'下線', 'strikethrough':'取り消し線', 'subscript':'下付き','fontborder':'囲み線',
         'superscript':'上付き', 'formatmatch':'書式のコピー/貼り付け', 'source':'ソースコード', 'blockquote':'参考資料',
         'pasteplain':'テキストのみ保持', 'selectall':'すべて選択','print':'印刷', 'preview':'プレビュー',
@@ -19,8 +19,8 @@ UE.I18N['ja-jp'] = {
         'rowspacingtop':'段落前の間隔', 'rowspacingbottom':'段落後の間隔',  'pagebreak':'ページ区切り', 'insertframe':'Iframeの挿入', 'imagenone':'デフォルト',
         'imageleft':'左フロート', 'imageright':'右フロート', 'attachment':'添付ファイル', 'imagecenter':'中央揃え', 'wordimage':'画像ダンプ',
         'lineheight':'行間隔','edittip' :'編集チップ','customstyle':'カスタムタイトル', 'autotypeset':'自動レイアウト',
-        'webapp':'baiduapp','touppercase':'大文字', 'tolowercase':'小文字','background':'背景','template':'テンプレート','scrawl':'绘画',
-        'music':'音楽', 'inserttable':'表の挿入','drafts': '下書きから読み込み', 'charts': 'チャート'
+        'touppercase':'大文字', 'tolowercase':'小文字','background':'背景','template':'テンプレート','scrawl':'绘画',
+        'inserttable':'表の挿入','drafts': '下書きから読み込み', 'charts': 'チャート'
     },
     'insertorderedlist':{
         'num':'1,2,3...',
@@ -90,11 +90,6 @@ UE.I18N['ja-jp'] = {
     'loadconfigError': 'バックグラウンド設定リクエスト獲得エラー、アップロードできません！',
     'loadconfigFormatError': 'バックグラウンド設定項目は形式エラーを返します。アップロードできません！',
     'loadconfigHttpError': 'バックグラウンド設定項目をリクエストするhttpエラー、アップロードできません！',
-    'snapScreen_plugin':{
-        'browserMsg':"IEブラウザのみをサポートしています！",
-        'callBackErrorMsg':"サーバーはデータエラーを返しました。設定項目を確認してからもう一度お試しください。",
-        'uploadErrorMsg':"スクリーンショットのアップロードは失敗しました。サーバー側の環境を確認してください！! "
-    },
     'insertcode':{
         'as3':'ActionScript 3',
         'bash':'Bash/Shell',
@@ -421,12 +416,6 @@ UE.I18N['ja-jp'] = {
         'errorHttp':'httpリクエストエラー',
         'errorServerUpload':'サーバーがエラーを返しました'
     },
-    'webapp':{
-        'tip1':"この機能はBaiduによって提供されています。このページが表示された場合、まずサイト管理者はBaidu　APPKeyを申し込んでください！",
-        'tip2':"申し込んでから、ueditor.config.jsからのappkeyを設定してください！ ",
-        'applyFor':"申し込む",
-        'anthorApi':"Baidu　API"
-    },
     'template':{
         'static':{
             'lang_template_bkcolor':'背景色',
@@ -456,17 +445,6 @@ UE.I18N['ja-jp'] = {
         'continueBtn':"続行",
         'imageError':"やばい、画像の読み込みに失敗しました！",
         'backgroundUploading':'背景画像のアップロード中、心配しないでください~'
-    },
-    'music':{
-        'static':{
-            'lang_input_tips':"歌手/音楽/アルバムを入力し、興味のある音楽を検索してください！",
-            'J_searchBtn':{value:'音楽を検索'}
-        },
-        'emptyTxt':'検索条件と一致する結果がありません。別のキーワードを変更してみてください。',
-        'chapter':'音楽',
-        'singer':'歌手',
-        'special':'アルバム',
-        'listenTest':'試聴'
     },
     'anchor':{
         'static':{
@@ -590,14 +568,6 @@ UE.I18N['ja-jp'] = {
         getEnd:"既にテキストの最後まで検索しました！",
         getStart:"テキストのトップまで検索しました",
         countMsg:"合計で{#count}を置き換えました！"
-    },
-    'snapscreen':{
-        'static':{
-            lang_showMsg:"スクリーンショット機能を使うにはUEditorプラグインをインストールする必要があります！",
-            lang_download:"クリックしてダウンロード",
-            lang_step1:"ステップ1：UEditorプラグインをダウンロードしてからインストールしてください。",
-            lang_step2:"ステップ2：インストールした後に使用できますが、うまくいかない場合は、ブラウザを再起動して試してください！"
-        }
     },
     'spechars':{
         'static':{},

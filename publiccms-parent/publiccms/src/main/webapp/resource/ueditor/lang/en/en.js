@@ -7,7 +7,7 @@
  */
 UE.I18N['en'] = {
     'labelMap':{
-        'anchor':'Anchor', 'undo':'Undo', 'redo':'Redo', 'bold':'Bold', 'indent':'Indent', 'snapscreen':'SnapScreen',
+        'anchor':'Anchor', 'undo':'Undo', 'redo':'Redo', 'bold':'Bold', 'indent':'Indent', 
         'italic':'Italic', 'underline':'Underline', 'strikethrough':'Strikethrough', 'subscript':'SubScript','fontborder':'text border',
         'superscript':'SuperScript', 'formatmatch':'Format Match', 'source':'Source', 'blockquote':'BlockQuote',
         'pasteplain':'PastePlain', 'selectall':'SelectAll', 'print':'Print', 'preview':'Preview',
@@ -24,8 +24,8 @@ UE.I18N['en'] = {
         'rowspacingtop':'RowSpacingTop', 'rowspacingbottom':'RowSpacingBottom', 'pagebreak':'PageBreak', 'insertframe':'Iframe', 'imagenone':'Default',
         'imageleft':'ImageLeft', 'imageright':'ImageRight', 'attachment':'Attachment', 'imagecenter':'ImageCenter', 'wordimage':'WordImage',
         'lineheight':'LineHeight','edittip':'EditTip','customstyle':'CustomStyle', 'scrawl':'Scrawl', 'autotypeset':'AutoTypeset',
-        'webapp':'WebAPP', 'touppercase':'UpperCase', 'tolowercase':'LowerCase','template':'Template','background':'Background','inserttable':'InsertTable',
-        'music':'Music', 'charts': 'charts','drafts': 'Load from Drafts'
+        'touppercase':'UpperCase', 'tolowercase':'LowerCase','template':'Template','background':'Background','inserttable':'InsertTable',
+        'charts': 'charts','drafts': 'Load from Drafts'
     },
     'insertorderedlist':{
         'num':'1,2,3...',
@@ -95,11 +95,6 @@ UE.I18N['en'] = {
     'loadconfigError': 'Get server config error.',
     'loadconfigFormatError': 'Server config format error.',
     'loadconfigHttpError': 'Get server config http error.',
-    'snapScreen_plugin':{
-        'browserMsg':"Only IE supported!",
-        'callBackErrorMsg':"The callback data is wrong,please check the config!",
-        'uploadErrorMsg':"Upload error,please check your server environment! "
-    },
     'insertcode':{
         'as3':'ActionScript 3',
         'bash':'Bash/Shell',
@@ -426,12 +421,6 @@ UE.I18N['en'] = {
         'errorHttp':'Http Error',
         'errorServerUpload':'Server Result Error.'
     },
-    'webapp':{
-        'tip1':"This function provided by Baidu APP,please apply for baidu APPKey webmaster first!",
-        'tip2':"And then open the file ueditor.config.js to set it! ",
-        'applyFor':"APPLY FOR",
-        'anthorApi':"Baidu API"
-    },
     'template':{
         'static':{
             'lang_template_bkcolor':'Background Color',
@@ -444,7 +433,7 @@ UE.I18N['en'] = {
         'richText':"Rich Text",
         'scrPapers':"Scientific Papers"
     },
-    scrawl:{
+    'scrawl':{
         'static':{
             'lang_input_previousStep':"Previous",
             'lang_input_nextsStep':"Next",
@@ -460,18 +449,7 @@ UE.I18N['en'] = {
         'imageError':"Image failed to load!",
         'backgroundUploading':'Image is uploading,please wait...'
     },
-    'music':{
-        'static':{
-            'lang_input_tips':"Input singer/song/album, search you interested in music!",
-            'J_searchBtn':{value:'Search songs'}
-        },
-        'emptyTxt':'Not search to the relevant music results, please change a keyword try.',
-        'chapter':'Songs',
-        'singer':'Singer',
-        'special':'Album',
-        'listenTest':'Audition'
-    },
-    anchor:{
+    'anchor':{
         'static':{
             'lang_input_anchorName':'Anchor Name:'
         }
@@ -499,7 +477,7 @@ UE.I18N['en'] = {
             'lang_next_btn': 'Next'
         }
     },
-    emotion:{
+    'emotion':{
         'static':{
             'lang_input_choice':'Choice',
             'lang_input_Tuzki':'Tuzki',
@@ -510,7 +488,7 @@ UE.I18N['en'] = {
             'lang_input_youa':'YouA'
         }
     },
-    gmap:{
+    'gmap':{
         'static':{
             'lang_input_address':'Address:',
             'lang_input_search':'Search',
@@ -518,7 +496,7 @@ UE.I18N['en'] = {
         },
         searchError:'Unable to locate the address!'
     },
-    help:{
+    'help':{
         'static':{
             'lang_input_about':'About',
             'lang_input_shortcuts':'Shortcuts',
@@ -538,7 +516,7 @@ UE.I18N['en'] = {
             'lang_Txt_fullscreen':'Fullscreen'
         }
     },
-    insertframe:{
+    'insertframe':{
         'static':{
             'lang_input_address':'Address：',
             'lang_input_width':'Width：',
@@ -550,7 +528,7 @@ UE.I18N['en'] = {
         },
         'enterAddress':'Please enter an address!'
     },
-    link:{
+    'link':{
         'static':{
             'lang_input_text':'Text：',
             'lang_input_url':'URL：',
@@ -560,7 +538,7 @@ UE.I18N['en'] = {
         'validLink':'Supports only effective when a link is selected',
         'httpPrompt':'The hyperlink you enter should start with "http|https|ftp://"!'
     },
-    map:{
+    'map':{
         'static':{
             lang_city:"City",
             lang_address:"Address",
@@ -571,7 +549,7 @@ UE.I18N['en'] = {
         cityMsg:"Please enter the city name!",
         errorMsg:"Can't find the place!"
     },
-    searchreplace:{
+    'searchreplace':{
         'static':{
             lang_tab_search:"Search",
             lang_tab_replace:"Replace",
@@ -593,15 +571,7 @@ UE.I18N['en'] = {
         getStart:"Has the search to the top!",
         countMsg:"Altogether replaced {#count} character(s)!"
     },
-    snapscreen:{
-        'static':{
-            lang_showMsg:"You should install the UEditor screenshots program first!",
-            lang_download:"Download!",
-            lang_step1:"Step1:Download the program and then run it",
-            lang_step2:"Step2:After complete install,try to click the button again"
-        }
-    },
-    spechars:{
+    'spechars':{
         'static':{},
         tsfh:"Special",
         lmsz:"Roman",
@@ -647,7 +617,7 @@ UE.I18N['en'] = {
         'static':{
         }
     },
-    wordimage:{
+    'wordimage':{
         'static':{
             lang_resave:"The re-save step",
             uploadBtn:{src:"upload.png", alt:"Upload"},
