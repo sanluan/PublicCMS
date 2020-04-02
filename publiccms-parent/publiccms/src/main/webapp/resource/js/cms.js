@@ -128,19 +128,3 @@ function command(command,parametersName){
         }
     }
 }
-if($('.cmsVersion').length ) {
-    $.getJSON('//cms.publiccms.com/api/directive/version', function(data) {
-        var fullVersion=$('.cmsVersion a').eq(0).text();
-        var version=fullVersion.substring(0,fullVersion.lastIndexOf('.'));
-        var revision=fullVersion.substring(fullVersion.lastIndexOf('.')+1);
-        if(version!==data.cms ) {
-            if(revision == data.revision){
-                $('.cmsVersion a old').show();
-            } else {
-                $('.cmsVersion a old').css('color','yellow').show();
-            }
-        } else {
-            $('.cmsVersion a new').show();
-        }
-    });
-}

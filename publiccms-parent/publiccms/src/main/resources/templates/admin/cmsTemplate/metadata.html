@@ -64,7 +64,7 @@
         });
         </script>
     <#if site.useStatic>
-        <fieldset class="useStatic" style="display:none">
+        <fieldset class="useStatic hide">
             <legend><@t.page 'static_config'/></legend>
             <dl class="nowrap">
                 <dt><@t.page 'publish_path'/>:</dt>
@@ -74,7 +74,7 @@
             </dl>
         </fieldset>
     </#if>
-        <fieldset class="useDynamic" style="display:none">
+        <fieldset class="useDynamic hide">
             <legend><@t.page 'dynamic_config'/></legend>
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_config.need_login'/>:</dt>
@@ -186,7 +186,7 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
             <@extends 'extendList' extendList/>
         </fieldset>
 <#if a?has_content>
-        <textarea name="content" style="display:none"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
+        <textarea name="content" class="hide"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
         <script>
     <#if site.useStatic&&(a.publishPath)?has_content>
             $('input[name=useStatic]',navTab.getCurrentPanel()).click();
@@ -202,7 +202,7 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
     </#if>
         </script>
 <#elseif demo?has_content>
-        <textarea name="content" style="display:none"><@html_escape><#include "demo/"+demo parse=false/></@html_escape></textarea>
+        <textarea name="content" class="hide"><@html_escape><#include "demo/"+demo parse=false/></@html_escape></textarea>
         <script>
     <#if name?has_content>
             $('input[name=alias]',navTab.getCurrentPanel()).val('<@t.page name/>');
@@ -245,7 +245,7 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
     </#if>
         </script>
 <#else>
-        <textarea name="content" style="display:none"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>
+        <textarea name="content" class="hide"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>
         <script>
             $('input[name=useDynamic]',navTab.getCurrentPanel()).click();
         </script>

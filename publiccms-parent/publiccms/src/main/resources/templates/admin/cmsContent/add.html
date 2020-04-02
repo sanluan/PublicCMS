@@ -126,11 +126,11 @@ $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
             </#if>
                     </dd>
                 </dl>
-                <dl class="copied" style="display:none">
+                <dl class="copied hide">
                     <dt>${(model.fieldTextMap['source'])!}:</dt>
                     <dd><input name="source" type="text"<#if a?has_content&&a.copied&&requiredFieldList?seq_contains('source')> class="required"</#if><#if requiredFieldList?seq_contains('source')> data-required="true"</#if> maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
                 </dl>
-                <dl class="copied" style="display:none">
+                <dl class="copied hide">
                     <dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>
                     <dd><input class="url<#if a?has_content&&a.copied&&requiredFieldList?seq_contains('sourceUrl')> required</#if>"<#if requiredFieldList?seq_contains('sourceUrl')> data-required="true"</#if> name="sourceUrl" type="text" maxlength="250" size="20" value="${(attribute.sourceUrl)!}"/></dd>
                 </dl>
@@ -182,13 +182,13 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                       <input name="timing" type="checkbox" onclick="if($(this).is(':checked')){$('.publishDate',navTab.getCurrentPanel()).show();$('input[name=publishDate]',navTab.getCurrentPanel()).addClass('required').addClass('valid')}else{$('.publishDate',navTab.getCurrentPanel()).hide();$('input[name=publishDate]',navTab.getCurrentPanel()).removeClass('required').removeClass('valid')}"/>
                     </dd>
                 </dl>
-                <dl class="publishDate" style="display:none">
+                <dl class="publishDate hide">
                     <dt><@t.page 'publish_date'/>:</dt>
                     <dd>
                         <input type="text" name="publishDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.publishDate)!}"/>
                     </dd>
                 </dl>
-                <dl class="publishDate" style="display:none">
+                <dl class="publishDate hide">
                     <dt><@t.page 'expiry_date'/>:</dt>
                     <dd>
                         <input type="text" name="expiryDate" class="date" size="20" autocomplete="off" dateFmt="yyyy-MM-dd HH:mm:ss" value="${(a.expiryDate)!}"/>

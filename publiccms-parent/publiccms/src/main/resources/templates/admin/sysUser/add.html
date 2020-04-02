@@ -20,10 +20,10 @@
             <dd>
                 <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
                 <label><input name="superuserAccess" type="checkbox" onclick="if($(this).is(':checked')){$('.superuserAccess',navTab.getCurrentPanel()).show();}else{$('.superuserAccess',navTab.getCurrentPanel()).hide();}"/><@t.page 'admin'/></label>
-                <label class="superuserAccess" style="display:none"><input name="ownsAllContent" type="checkbox"<#if !a?has_content||a.ownsAllContent> checked="true"</#if>/><@t.page 'user.own_all_content'/></label>
+                <label class="superuserAccess hide"><input name="ownsAllContent" type="checkbox"<#if !a?has_content||a.ownsAllContent> checked="true"</#if>/><@t.page 'user.own_all_content'/></label>
             </dd>
         </dl>
-        <dl class="nowrap superuserAccess" style="display:none">
+        <dl class="nowrap superuserAccess hide">
             <dt><@t.page 'dept'/>:</dt>
             <dd>
                 <input name="deptId" type="hidden" value="${(dept.id)!}"/>
@@ -51,7 +51,7 @@
             <dt><@t.page 'email'/>:</dt>
             <dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
         </dl>
-        <fieldset class="superuserAccess" style="display:none">
+        <fieldset class="superuserAccess hide">
             <legend><i class="icon-user-md icon-large"></i> <@t.page 'role'/></legend>
             <ul class="tree treeFolder treeCheck expand">
         <@_sysRoleList>

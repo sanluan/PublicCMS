@@ -159,7 +159,7 @@
                             ${a.id}:${a.name!}
                         </label>
                     </dt>
-                    <dd <#if a.onlyUrl> style="display:none"</#if>>
+                    <dd <#if a.onlyUrl> class="hide"</#if>>
         <#if site.useStatic>
                         <label><@t.page 'category.content_template_path'/>:</label>
                         <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>

@@ -34,7 +34,7 @@
                         <input name="allowContribute" type="checkbox" onclick="if($(this).is(':checked')){$('.allowContribute',navTab.getCurrentPanel()).show()}else{$('.allowContribute',navTab.getCurrentPanel()).hide()}"/>
                         <@t.page 'allow_contribute'/>
                     </label>
-                    <label class="allowContribute" style="display:none">
+                    <label class="allowContribute hide">
                         <input name="allowAnonymous" type="checkbox"${((a.allowAnonymous)?has_content&&a.allowAnonymous)?then(' checked="checked"','')?no_esc}/>
                         <@t.page 'allow_anonymous_contribute'/>
                     </label>
