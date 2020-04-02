@@ -13,7 +13,7 @@
 </div>
 <script>
 $('select[name=numPerPage]',$.pdialog.getCurrent()).on('change',function(){
-    dialogPageBreak({numPerPage:this.value},'${rel!}');
+    dialogPageBreak({pageNum:"1",numPerPage:this.value},'${rel!}');
 });
 </script>
 </#if>

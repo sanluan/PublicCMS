@@ -8,11 +8,6 @@
 </@_category>
 <@_category id=parentId><#assign category=object/></@_category>
 <@_categoryType id=typeId><#assign categoryType=object/></@_categoryType>
-<script>
-function clickAddTagType(){
-    $('#tagTypes',navTab.getCurrentPanel()).parent().find('.button').click();
-}
-</script>
 <form method="post" autocomplete="off" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
@@ -194,32 +189,6 @@ function clickAddTagType(){
                     </dd>
                 </dl>
 <script>
-function checkCategoryModel(){
-    $('.categoryModelContent',navTab.getCurrentPanel()).hide();
-    $('.categoryModelContentPath',navTab.getCurrentPanel()).hide().find('input[name=contentPath]').removeClass("required");
-    if($('input[name=showAdvancedOptions]',navTab.getCurrentPanel()).is(':checked')){
-        $('.categoryModel',navTab.getCurrentPanel()).show();
-        $('.categoryModelControl',navTab.getCurrentPanel()).show();
-        $('.categoryModel dl',navTab.getCurrentPanel()).each(function(){
-            if($(this).find('input[type=checkbox]').is(':checked')){
-                $(this).find('dd ul li input[name$=\\.use]').val('true');
-                $('.categoryModelContent',navTab.getCurrentPanel()).show();
-                if(0 == $(this).find('dd').children().length || $(this).find('dd').is(":visible")){
-                    $('.categoryModelContentPath',navTab.getCurrentPanel()).show().find('input[name=contentPath]').addClass("required");
-                    return ;
-                }
-            }
-        });
-    }else{
-        $('.categoryModel',navTab.getCurrentPanel()).hide();
-        $('.categoryModelControl',navTab.getCurrentPanel()).hide();
-        $('.categoryModel dl',navTab.getCurrentPanel()).each(function(){
-            if($(this).find('input[type=checkbox]').is(':checked')){
-                $(this).find('dd ul li input[name$=\\.use]').val('true');
-            }
-        });
-    }
-}
 <#if a?has_content>
     <@_categoryModelList categoryId=id!copyId>
         <#list list as a>

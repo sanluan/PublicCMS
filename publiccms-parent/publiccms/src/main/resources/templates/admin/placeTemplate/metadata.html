@@ -134,27 +134,6 @@ $('input[name=size]',navTab.getCurrentPanel()).on('change',function(){
 $('input[name=nickName]',navTab.getCurrentPanel()).on('change',function(){
     addUser($('input[name=\'userId\']',navTab.getCurrentPanel()).val(),$(this).val());
 });
-function checkPageSize(){
-    if(parseInt($('input[name=size]',navTab.getCurrentPanel()).val())>0){
-        $('.placeExtend',navTab.getCurrentPanel()).show();
-        $('textarea[name=content]',navTab.getCurrentPanel()).val($('#content',navTab.getCurrentPanel()).val());
-        $('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).removeAttr('disabled');
-    } else {
-        $('.placeExtend',navTab.getCurrentPanel()).hide();
-        $('textarea[name=content]',navTab.getCurrentPanel()).val('<@t.page 'place'/>');
-        $('.placeExtend input,.placeExtend textarea',navTab.getCurrentPanel()).attr('disabled','disabled');
-    }
-}
-function addUser(id,name){
-    if(name){
-        name=name.trim();
-    }
-    if(id&&name){
-        $('.dminIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"adminIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-    }
-    $('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
-    $('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
-}
 $('.adminIds',navTab.getCurrentPanel()).on('click','span>a',function(){
     $(this).parent().remove();
     return false;
@@ -168,8 +147,8 @@ checkPageSize();
     </@_sysUser>
 </#if>
 </script>
-        <textarea name="content" style="display:none"></textarea>
-        <textarea id="content" style="display:none"><#noparse>
+        <textarea name="content" class="hide"></textarea>
+        <textarea class="content hide"><#noparse>
 <#list page.list>
     <ul>
     <#items as a>

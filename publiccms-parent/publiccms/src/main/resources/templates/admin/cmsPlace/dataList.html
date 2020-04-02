@@ -103,7 +103,7 @@
                     <#elseif 1=a.status>
                         <a href="cmsPlace/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>|
                     </#if>
-                    <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.delete'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsPlace/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>
             </tr>
     </#list>

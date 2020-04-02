@@ -11,9 +11,6 @@
 <@_category id=categoryId!><#assign category=object/></@_category>
 <@_model id=modelId!><#assign model=object/></@_model>
 <script>
-function clickAddTag(){
-    $('.tags .button',navTab.getCurrentPanel()).click();
-}
 </script>
 <form method="post" autocomplete="off" action="cmsContent/save.do?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
@@ -67,7 +64,7 @@ function clickAddTag(){
                    <#if !parentId?has_content && !model.onlyUrl>
                         <input name="quoteCategoryId" type="hidden"/>
                         <input name="categoryName" type="hidden"/>
-                        <div id="categoryIds" class="tagsBox"></div>
+                        <div class="tagsBox categoryIds"></div>
                         <a class="btnLook" href="cmsCategory/lookupByModelId.html?field=quoteCategoryId&modelId=${modelId!}&currentCategoryId=${categoryId!}" width="920" lookupGroup=""><@t.page 'category.select'/></a>
                     </#if>
                     </dd>
@@ -83,18 +80,14 @@ function addCategory(id,name,contentId){
     }
     if(id&&name){
         if(contentId){
-            $('#categoryIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"contentIds\" value=\""+contentId+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+            $('.categoryIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"contentIds\" value=\""+contentId+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
         }else{
-            $('#categoryIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"categoryIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+            $('.categoryIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"categoryIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
         }
     }
     $('input[name=\'quoteCategoryId\']',navTab.getCurrentPanel()).val('');
     $('input[name=\'categoryName\']',navTab.getCurrentPanel()).val('');
 }
-$('#categoryIds',navTab.getCurrentPanel()).on('click','span>a',function(){
-    $(this).parent().remove();
-    return false;
-});
 <#if a?has_content>
 <@_contentList quoteId=a.id pageSize=100>
     <#list page.list as a>

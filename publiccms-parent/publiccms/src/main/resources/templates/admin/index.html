@@ -17,52 +17,6 @@
         <script src="${res}/js/html5shiv.min.js"></script>
         <script src="${res}/js/respond.min.js"></script>
     <![endif]-->
-    <script src="${res}/js/base64.js"></script>
-    <script src="${res}/js/jquery-1.9.1.min.js"></script>
-    <script src="${res}/js/jquery.cookie.js"></script>
-    <script src="${res}/js/jquery.validate.js"></script>
-    <script src="${res}/js/jquery.bgiframe.js"></script>
-
-    <script src="${res}/js/dwz.min.js?version=2"></script>
-    <script src="${res}/js/<@t.page 'dwz_regional_js'/>?version=1"></script>
-
-    <script>
-    var base="${adminBase}";
-    window.UEDITOR_HOME_URL="${res}/ueditor/";
-    window.CKEDITOR_BASEPATH="${res}/ckeditor/";
-    window.CKEDITOR_LANGUAGE="<@t.page 'ckeditor.lang'/>";
-    window.KINDEDITOR_OPTIONS= {
-            width:'60%',
-            height:'400px',
-            basePath:'${res}/kindeditor/',
-            uploadJson : '${adminBase}/kindeditor/upload.do',
-            fileManagerJson : '${adminBase}/cmsWebFile/fileList.html',
-            allowFileManager : true
-    };
-$(function(){
-    DWZ.init("${adminBase}/common/dwz.frag.html", {
-        ckeditorResources:["${res}/ckeditor/ckeditor.js"],
-        kindeditorResources:["${res}/kindeditor/kindeditor-all-min.js","${res}/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
-        ueditorResources:["${res}/ueditor/ueditor.config.js","${res}/ueditor/ueditor.all.min.js","${res}/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
-        codemirrorResources:['${res}/codemirror/lib/codemirror.js','${res}/codemirror/mode/xml/xml.js','${res}/codemirror/mode/javascript/javascript.js','${res}/codemirror/mode/css/css.js',
-            '${res}/codemirror/mode/htmlmixed/htmlmixed.js','${res}/codemirror/mode/freemarker/freemarker.js','${res}/codemirror/mode/freemarkermixed/freemarkermixed.js',
-            '${res}/codemirror/mode/nginx/nginx.js','${res}/codemirror/addon/hint/show-hint.js','${res}/codemirror/addon/hint/javascript-hint.js','${res}/codemirror/addon/hint/html-hint.js',
-            '${res}/codemirror/addon/hint/css-hint.js','${res}/codemirror/addon/hint/xml-hint.js'],
-        loginUrl:"login_dialog.html", loginTitle:"<@t.page 'login'/>",
-        pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"},
-        debug:false,
-        callback:function(){
-            initEnv();
-            $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"toptry"});
-        <@_sysAuthorized roleIds=admin.roles url='myself/password'>
-            <#if admin.weakPassword>
-                $.pdialog.open("myself/password.html?target=dialog", "_blank", "<@t.page 'user.new_password'/>", {mask: true, width: 400, height: 280});
-            </#if>
-        </@_sysAuthorized>
-        }
-    });
-});
-    </script>
 </head>
 <body scroll="no">
 <header>
@@ -108,7 +62,6 @@ $(function(){
     </@_sysAuthorized>
 </@_masterSite>
     </ul>
-    <script>$('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");</script>
 </header>
 <main>
     <div id="leftside">
@@ -168,5 +121,51 @@ $(function(){
         <li theme="toptry"><div></div></li>
     </ul>
 </footer>
+<script src="${res}/js/jquery-1.9.1.min.js"></script>
+<script src="${res}/js/jquery.cookie.js"></script>
+<script src="${res}/js/jquery.validate.js"></script>
+<script src="${res}/js/jquery.bgiframe.js"></script>
+
+<script src="${res}/js/dwz.min.js?version=4"></script>
+<script src="${res}/js/dwz.plugins.js"></script>
+<script src="${res}/js/<@t.page 'dwz_regional_js'/>?version=1"></script>
+<script src="${res}/js/base64.js"></script>
+<script src="${res}/js/cms.js"></script>
+    <script>
+    var base="${adminBase}";
+    window.UEDITOR_HOME_URL="${res}/ueditor/";
+    window.CKEDITOR_BASEPATH="${res}/ckeditor/";
+    window.CKEDITOR_LANGUAGE="<@t.page 'ckeditor.lang'/>";
+    window.KINDEDITOR_OPTIONS= {
+            width:'60%',
+            height:'400px',
+            basePath:'${res}/kindeditor/',
+            uploadJson : '${adminBase}/kindeditor/upload.do',
+            fileManagerJson : '${adminBase}/cmsWebFile/fileList.html',
+            allowFileManager : true
+    };
+    DWZ.init("${adminBase}/common/dwz.frag.html", {
+        ckeditorResources:["${res}/ckeditor/ckeditor.js"],
+        kindeditorResources:["${res}/kindeditor/kindeditor-all-min.js","${res}/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
+        ueditorResources:["${res}/ueditor/ueditor.config.js","${res}/ueditor/ueditor.all.min.js","${res}/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
+        codemirrorResources:['${res}/codemirror/lib/codemirror.js','${res}/codemirror/mode/xml/xml.js','${res}/codemirror/mode/javascript/javascript.js','${res}/codemirror/mode/css/css.js',
+            '${res}/codemirror/mode/htmlmixed/htmlmixed.js','${res}/codemirror/mode/freemarker/freemarker.js','${res}/codemirror/mode/freemarkermixed/freemarkermixed.js',
+            '${res}/codemirror/mode/nginx/nginx.js','${res}/codemirror/addon/hint/show-hint.js','${res}/codemirror/addon/hint/javascript-hint.js','${res}/codemirror/addon/hint/html-hint.js',
+            '${res}/codemirror/addon/hint/css-hint.js','${res}/codemirror/addon/hint/xml-hint.js'],
+        loginUrl:"login_dialog.html", loginTitle:"<@t.page 'login'/>",
+        pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"},
+        debug:false,
+        callback:function(){
+            initEnv();
+            $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"toptry"});
+    <@_sysAuthorized roleIds=admin.roles url='myself/password'>
+        <#if admin.weakPassword>
+            $.pdialog.open("myself/password.html?target=dialog", "_blank", "<@t.page 'user.new_password'/>", {mask: true, width: 400, height: 280});
+        </#if>
+    </@_sysAuthorized>
+            $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
+        }
+    });
+    </script>
 </body>
 </html>

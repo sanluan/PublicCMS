@@ -56,15 +56,3 @@
 </@_logOperateList>
     </div>
 </form>
-<script>
-function command(command,parametersName){
-    $('input[name=sqlcommand]',navTab.getCurrentPanel()).val(command);
-    $('.sqlcommandBox',navTab.getCurrentPanel()).empty();
-    if(parametersName ) {
-        var parameters = parametersName.split(",");
-        for(i=0; i<parameters.length; i++ ){
-            $('.sqlcommandBox',navTab.getCurrentPanel()).append('<label>'+parameters[i]+':</label><input name="sqlparameters" type="text" class="required"/>').initUI();
-        }
-    }
-}
-</script>

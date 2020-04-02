@@ -13,7 +13,7 @@
 </div>
 <script>
 $('select[name=numPerPage]',navTab.getCurrentPanel()).on('change',function(){
-    navTabPageBreak({numPerPage:this.value},'${rel!}');
+    navTabPageBreak({pageNum:"1",numPerPage:this.value},'${rel!}');
 });
 </script>
 </#if>

@@ -11,6 +11,7 @@ input[type="checkbox"]{margin: 3px 3px 3px 4px;}
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-button:vertical{display:none}
 ::-webkit-scrollbar-corner,::-webkit-scrollbar-track{border-radius:10px}
+.hide{display:none}
 
 ul, ol{list-style:none}
 /* Tables still need 'cellspacing="0"' in the markup. */
@@ -28,7 +29,7 @@ a:hover{text-decoration:underline}
 
 header{display:block;overflow:hidden;height:60px;position:relative;}
 main{overflow:hidden;position:relative}
-footer{text-align:center;width:100%;height:40px;line-height:40px;z-index:-1;font-size:13px}
+footer{text-align:center;width:100%;height:40px;line-height:40px;z-index:-1;font-size:13px;position: fixed;bottom:0px}
 
 /* Menu */
 header .logo{float:left;width:202px;height:100%}
@@ -477,9 +478,7 @@ a.btnSelect{display:block;width:22px;height:20px;overflow:hidden;float:left;marg
 /* basic color */
 body{color:#ccc;}
 a{color:#fff}
-header{background-color:#333}
-main{background-color:#333}
-footer{background-color:#333}
+header,main,#sidebar,footer{background-color:#333}
 table.list tbody{background-color:#666}
-.page{background:#fff;color:#333;}
+.page{background-color:#fff;color:#333;}
 .tagsBox span{background-color:#e0e0e0;}

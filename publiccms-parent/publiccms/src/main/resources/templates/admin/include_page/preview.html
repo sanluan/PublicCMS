@@ -1,5 +1,5 @@
 <#macro preview name selector1 selector2=''>
-<div id="${name}Preview" style="display:none"><div style="position:fixed;bottom:62px;right:5px;z-index:1000;"><img style="max-height:400px;max-width:500px;"/></div></div>
+<div class="${name}Preview hide"><div style="position:fixed;bottom:62px;right:5px;z-index:1000;"><img style="max-height:400px;max-width:500px;"/></div></div>
 <script>
     var ${name}ImagesSuffix=["png","gif","jpg","jpeg","bmp"];
     var ${name}ResourcePath = '${site.sitePath}';
@@ -9,13 +9,13 @@
             var filenames=$(this).val().toLowerCase().split('.');
             if(-1 != $.inArray(filenames[filenames.length-1], ${name}ImagesSuffix)){
                 if(-1<$(this).val().indexOf("://")||0==$(this).val().indexOf("//")){
-                    $('#${name}Preview',${name}box).show().find('img').attr('src',$(this).val());
+                    $('.${name}Preview',${name}box).show().find('img').attr('src',$(this).val());
                 }else{
-                    $('#${name}Preview',${name}box).show().find('img').attr('src',${name}ResourcePath+$(this).val());
+                    $('.${name}Preview',${name}box).show().find('img').attr('src',${name}ResourcePath+$(this).val());
                 }
             }
         }else if(event.type == "mouseout"){
-            $('#${name}Preview',${name}box).hide();
+            $('.${name}Preview',${name}box).hide();
         }
     });
 </script>

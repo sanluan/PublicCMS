@@ -74,7 +74,7 @@ public class ContentController {
      * @param site
      * 
      * @param entity
-     * @param user 
+     * @param user
      * @param draft
      * @param attribute
      * @param contentParameters
@@ -131,7 +131,8 @@ public class ContentController {
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.content",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel, category, attribute);
+        service.saveTagAndAttribute(site.getId(), user.getId(), entity.getId(), contentParameters, cmsModel,
+                category.getExtendId(), attribute);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
@@ -153,5 +154,5 @@ public class ContentController {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
         }
     }
-    
+
 }

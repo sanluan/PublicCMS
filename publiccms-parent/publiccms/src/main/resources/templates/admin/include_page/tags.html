@@ -2,7 +2,7 @@
 <dl class="nowrap tags">
     <dt>${typeName?has_content?then(typeName,tagText)}:</dt>
     <dd>
-        <div class="tagsBox tags_${typeId!}"></div>
+        <div class="tagsBox tags_${typeId!}" callback="reIndexTag()"></div>
         <input name="tag[${typeId!}].id" type="hidden"/>
         <input name="tag[${typeId!}].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="tag[${typeId!}]" suggestUrl="common/tagSuggest.html?typeId=${typeId!}"/>
         <a href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
@@ -20,38 +20,6 @@
 <@tagsRow tagText/>
     </#if>
 <script>
-function addTag(typeId,$id,$name){
-    if($name){
-        $name=$name.trim();
-    }
-    if($('.tags_'+typeId+' span',navTab.getCurrentPanel()).size()>20){
-        alertMsg.error('<@t.page 'tag.warn' 20/>');
-    }else{
-        if($id&&$name){
-            $('.tags_'+typeId,navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tags[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-        }else if($name){
-            $('.tags_'+typeId,navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tags[].name\" value=\""+$name+"\"/><input type=\"hidden\" name=\"tags[].typeId\" value=\""+typeId+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-        }
-        reIndex();
-    }
-    $('input[name=\'tag['+typeId+'].id\']',navTab.getCurrentPanel()).val('');
-    $('input[name=\'tag['+typeId+'].typeId\']',navTab.getCurrentPanel()).val('');
-    $('input[name=\'tag['+typeId+'].name\']',navTab.getCurrentPanel()).val('');
-}
-function reIndex(){
-    var tagIndex=0;
-    $('.tagsBox span',navTab.getCurrentPanel()).each(function(){
-        $('input[name$=\\.id]',this).attr('name','tags['+tagIndex+'].id');
-        $('input[name$=\\.name]',this).attr('name','tags['+tagIndex+'].name');
-        $('input[name$=\\.typeId]',this).attr('name','tags['+tagIndex+'].typeId');
-        tagIndex++;
-    });
-}
-$('.tagsBox',navTab.getCurrentPanel()).on('click','span>a',function(){
-    $(this).parent().remove();
-    reIndex();
-    return false;
-});
     <@_tag ids=tagIds>
         <#list map as k,tag>
             <#if typeIds?has_content>

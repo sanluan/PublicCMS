@@ -17,10 +17,10 @@
 <script>
 $('.pageContent table tbody tr input[name=ids]',navTab.getCurrentPanel()).each(function(){
     if($(this).is(":checked")){
-        $('<input type="hidden" name="ids" value="'+$(this).val()+'"/>').appendTo($('#idsToMove',$.pdialog.getCurrent()));
+        $('<input type="hidden" name="ids" value="'+$(this).val()+'"/>').appendTo($('.idsToMove',$.pdialog.getCurrent()));
     }
 });
-if(0==$('#idsToMove input',$.pdialog.getCurrent()).length){
+if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
     alertMsg.error('<@t.page 'category.parent.please_select'/>');
     $.pdialog.closeCurrent();
 }
@@ -29,7 +29,7 @@ if(0==$('#idsToMove input',$.pdialog.getCurrent()).length){
     <form action="cmsCategory/move.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
         <input type="hidden" name="parentId" value=""/>
         <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-        <div id="idsToMove"></div>
+        <div class="idsToMove"></div>
         <ul class="tree treeFolder expand">
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'category.parent.select'/></a>

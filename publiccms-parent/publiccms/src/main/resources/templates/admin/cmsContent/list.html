@@ -198,21 +198,21 @@
                             </#if>
                         </#if>
                         <#if authorizedMap['cmsContent/push']>
-                            <a href="cmsContent/push.html?contentId=${contentId}" target="dialog" mask="true"><@t.page 'button.push'/></a>|
+                            <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>|
                         </#if>
                         <#if authorizedMap['cmsContent/uncheck']>
-                            <a href="cmsContent/uncheck.do?ids=${contentId}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>|
+                            <a href="cmsContent/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>|
                         </#if>
                     <#elseif 2=a.status>
                         <#if authorizedMap['cmsContent/check']>
-                            <a href="cmsContent/check.do?ids=${contentId}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>|
+                            <a href="cmsContent/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>|
                         </#if>
                         <#if authorizedMap['cmsContent/reject']>
-                            <a href="cmsContent/reject.do?ids=${contentId}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.reject'/>" target="ajaxTodo"><@t.page 'button.reject'/></a>|
+                            <a href="cmsContent/reject.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.reject'/>" target="ajaxTodo"><@t.page 'button.reject'/></a>|
                         </#if>
                     </#if>
                     <#if authorizedMap['cmsContent/delete']>
-                        <a href="cmsContent/delete.do?ids=${contentId}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" callback="$('tr[rel=${a.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                        <a href="cmsContent/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                     </#if>
                 </td>
             </tr>

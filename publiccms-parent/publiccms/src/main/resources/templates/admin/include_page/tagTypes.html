@@ -2,41 +2,13 @@
 <dl class="nowrap tagTypes advanced">
     <dt><@t.page 'tag_type'/>:</dt>
     <dd>
-        <div class="tagsBox"></div>
+        <div class="tagsBox" callback="reIndexTagType()"></div>
         <input name="type[].id" type="hidden"/>
         <input name="type[].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="type[]" suggestUrl="common/tagTypeSuggest.html"/>
         <a href="javascript:;" onclick="addTagType($('input[name=\'type[].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'type[].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
     </dd>
 </dl>
 <script>
-function addTagType($id,$name){
-    if($name){
-        $name=$name.trim();
-    }
-    if($('.tagsBox span',navTab.getCurrentPanel()).size()>10){
-        alertMsg.error('<@t.page 'tag_type.warn' 10/>');
-    }else{
-        if($id&&$name){
-            $('.tagsBox',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].id\" value=\""+$id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-        }else if($name){
-            $('.tagsBox',navTab.getCurrentPanel()).append("<span>"+$name+" <input type=\"hidden\" name=\"tagTypes[].name\" value=\""+$name+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-        }
-        reIndexTagType();
-    }
-    $('input[name=\'type[].id\']',navTab.getCurrentPanel()).val('');
-    $('input[name=\'type[].name\']',navTab.getCurrentPanel()).val('');
-}
-function reIndexTagType(){
-    $('.tagsBox span',navTab.getCurrentPanel()).each(function(tagIndex){
-        $('input[name$=\\.id]',this).attr('name','tagTypes['+tagIndex+'].id');
-        $('input[name$=\\.name]',this).attr('name','tagTypes['+tagIndex+'].name');
-    });
-}
-$('.tagsBox',navTab.getCurrentPanel()).on('click','span>a',function(){
-    $(this).parent().remove();
-    reIndexTagType();
-    return false;
-})
     <@_tagType ids=typeIds>
         <#list map as k,tagType>
         addTagType('${k}','${tagType.name?js_string}');

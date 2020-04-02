@@ -54,7 +54,7 @@
                 <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
                 <td>
                 <#if authorizedMap['cmsDictionary/delete']>
-                    <a href="cmsDictionary/delete.do?ids=${a.id.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" callback="$('tr[rel=${a.id.id}]',navTab.getCurrentPanel()).remove()" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsDictionary/delete.do?ids=${a.id.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </#if>
                 </td>
             </tr>

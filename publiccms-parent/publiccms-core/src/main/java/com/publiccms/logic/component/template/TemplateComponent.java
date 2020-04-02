@@ -155,9 +155,6 @@ public class TemplateComponent implements Cache {
                             contentService.updateUrl(entity.getId(), filePath, true);
                         } else {
                             Map<String, Object> model = new HashMap<>();
-                            initContentUrl(site, entity);
-                            initContentCover(site, entity);
-                            initCategoryUrl(site, category);
                             model.put("content", entity);
                             model.put("category", category);
                             model.put(AbstractFreemarkerView.CONTEXT_SITE, site);
@@ -318,7 +315,8 @@ public class TemplateComponent implements Cache {
         } else if (CommonUtils.notEmpty(entity.getPath())) {
             try {
                 if (site.isUseStatic() && CommonUtils.notEmpty(entity.getTemplatePath())) {
-                    String filePath = createCategoryFile(site, entity, entity.getTemplatePath(), entity.getPath(), pageIndex, totalPage);
+                    String filePath = createCategoryFile(site, entity, entity.getTemplatePath(), entity.getPath(), pageIndex,
+                            totalPage);
                     categoryService.updateUrl(entity.getId(), filePath, true);
                 } else {
                     Map<String, Object> model = new HashMap<>();

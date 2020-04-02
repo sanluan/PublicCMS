@@ -28,7 +28,7 @@
         </dl>
         <fieldset class="ownsAllRight">
             <legend><@t.page 'app.interface'/></legend>
-            <ul id="authorizedApis" class="treeFolder treeCheck expand">
+            <ul class="authorizedApis treeFolder treeCheck expand">
                 <li>
                     <a href="javascript:;" onclick="return false;"><@t.page 'app.all_interface'/></a>
                     <ul>
@@ -50,33 +50,6 @@
         </fieldset>
     </div>
 <script>
-var apisArray=['/api/directives','/api/methods','/api/apis'];
-var authorizedApis = '${(a.authorizedApis)!}'.split(",");
-var i=0;
-for (api in apisArray){
-    getApi(api);
-}
-function getApi(api){
-    $.ajax({
-        url:'${base}'+apisArray[api],
-        type: 'GET',
-        contentType:'application/json; charset=UTF-8',
-        dataType: 'json',
-        success: function (dataList) {
-            $(dataList).each(function(index,data){
-                var style='';
-                if('true'==data.needAppToken){
-                    $('#authorizedApis a[data-id='+api+']',navTab.getCurrentPanel()).next().append('<li><a tname="apis" tvalue="'+data.name+'">'+data.name+'</a></li>');
-                }
-            });
-            if(++i==apisArray.length){
-                $("#authorizedApis", navTab.getCurrentPanel()).addClass('tree').jTree();
-                for(authorizedApi in authorizedApis){
-                    $("input[type=checkbox][value="+authorizedApis[authorizedApi]+"]", navTab.getCurrentPanel()).click();
-                }
-            }
-        }
-    });
-}
+getApi("${base}",['/api/directives','/api/methods','/api/apis'],'${(a.authorizedApis)!}'.split(","));
 </script>
 </form>

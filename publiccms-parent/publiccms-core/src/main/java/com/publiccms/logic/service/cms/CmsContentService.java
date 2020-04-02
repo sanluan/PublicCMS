@@ -9,7 +9,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -174,11 +173,11 @@ public class CmsContentService extends BaseService<CmsContent> {
         return dao.getPage(queryEntity, orderField, orderType, pageIndex, pageSize);
     }
 
-    public void saveTagAndAttribute(Short siteId, Long userId, Long id, CmsContentParameters contentParameters, CmsModel cmsModel,
-            CmsCategory category, CmsContentAttribute attribute) {
-        Long[] tagIds = tagService.update(siteId, contentParameters.getTags());
+    public CmsContent saveTagAndAttribute(Short siteId, Long userId, Long id, CmsContentParameters contentParameters,
+            CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
+            Long[] tagIds = tagService.update(siteId, contentParameters.getTags());
             entity.setTagIds(arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE));
             if (entity.isHasImages() || entity.isHasFiles()) {
                 contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
@@ -195,8 +194,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             List<SysExtendField> modelExtendList = cmsModel.getExtendList();
             List<SysExtendField> categoryExtendList = null;
             Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
-            if (null != category && null != extendService.getEntity(category.getExtendId())) {
-                categoryExtendList = extendFieldService.getList(category.getExtendId());
+            if (null != extendId && null != extendService.getEntity(extendId)) {
+                categoryExtendList = extendFieldService.getList(extendId);
                 Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
                         categoryExtendList);
                 if (CommonUtils.notEmpty(map)) {
@@ -234,7 +233,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
             }
         }
-
+        return entity;
     }
 
     private void dealExtend(List<SysExtendField> extendList, List<String> dictionaryValueList, Map<String, String> map,
@@ -299,7 +298,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
-    @SuppressWarnings("unchecked")
     public List<CmsContent> check(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -308,11 +306,6 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(user.getId());
                 entity.setCheckDate(CommonUtils.getDate());
-                for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null,
-                        null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null,
-                        null).getList()) {
-                    quote.setStatus(STATUS_NORMAL);
-                }
                 entityList.add(entity);
             }
         }
@@ -345,18 +338,12 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
-    @SuppressWarnings("unchecked")
     public List<CmsContent> uncheck(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()
                     && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 entity.setStatus(STATUS_PEND);
-                for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null,
-                        null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null,
-                        null).getList()) {
-                    quote.setStatus(STATUS_PEND);
-                }
                 entityList.add(entity);
             }
         }
@@ -365,36 +352,72 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param siteId
-     * @param entity
-     * @param contentIds
+     * @param id
+     * @param contentParameters
+     * @param categoryList
+     * @param cmsModel
+     * @param category
+     * @param attribute
+     */
+    public void saveQuote(short siteId, Serializable id, CmsContentParameters contentParameters, List<CmsCategory> categoryList,
+            CmsModel cmsModel, CmsCategory category, CmsContentAttribute attribute) {
+        CmsContent entity = getEntity(id);
+        if (CommonUtils.notEmpty(categoryList) && null != entity) {
+            for (CmsCategory c : categoryList) {
+                if (null != c && !category.getId().equals(c.getId())) {
+                    CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), c.getId(),
+                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(), false, 0, 0,
+                            0, 0, entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
+                    quote.setUrl(entity.getUrl());
+                    quote.setDescription(entity.getDescription());
+                    quote.setAuthor(entity.getAuthor());
+                    quote.setCover(entity.getCover());
+                    quote.setEditor(entity.getEditor());
+                    quote.setExpiryDate(entity.getExpiryDate());
+                    quote.setQuoteContentId(entity.getId());
+                    quote.setCheckUserId(entity.getCheckUserId());
+                    quote.setCheckDate(entity.getCheckDate());
+                    quote.setPublishDate(entity.getPublishDate());
+                    save(quote);
+                }
+            }
+        }
+    }
+
+    /**
+     * @param siteId
+     * @param id
      * @param contentParameters
      * @param cmsModel
      * @param category
      * @param attribute
-     * @return results list
      */
     @SuppressWarnings("unchecked")
-    public List<CmsContent> quote(short siteId, CmsContent entity, Set<Long> contentIds, CmsContentParameters contentParameters,
-            CmsModel cmsModel, CmsCategory category, CmsContentAttribute attribute) {
-        List<CmsContent> entityList = new ArrayList<>();
-        for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null, null, null,
-                entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null, null, null, null)
-                        .getList()) {
-            if (null != contentIds && contentIds.contains(quote.getId())) {
-                quote.setUrl(entity.getUrl());
-                quote.setTitle(entity.getTitle());
-                quote.setDescription(entity.getDescription());
-                quote.setAuthor(entity.getAuthor());
-                quote.setCover(entity.getCover());
-                quote.setEditor(entity.getEditor());
-                quote.setExpiryDate(entity.getExpiryDate());
-                saveTagAndAttribute(siteId, entity.getId(), quote.getId(), contentParameters, cmsModel, category, attribute);
-            } else {
-                delete(quote.getId());
-                attributeService.delete(quote.getId());
+    public void updateQuote(short siteId, Serializable id, CmsContentParameters contentParameters, CmsModel cmsModel,
+            CmsCategory category, CmsContentAttribute attribute) {
+        CmsContent entity = getEntity(id);
+        if (null != entity) {
+            CmsContentQuery query = new CmsContentQuery();
+            query.setSiteId(siteId);
+            query.setQuoteId(entity.getId());
+            for (CmsContent quote : (List<CmsContent>) getPage(query, null, null, null, null, null).getList()) {
+                if (null != contentParameters.getContentIds() && contentParameters.getContentIds().contains(quote.getId())) {
+                    quote.setUrl(entity.getUrl());
+                    quote.setTitle(entity.getTitle());
+                    quote.setDescription(entity.getDescription());
+                    quote.setAuthor(entity.getAuthor());
+                    quote.setCover(entity.getCover());
+                    quote.setEditor(entity.getEditor());
+                    quote.setExpiryDate(entity.getExpiryDate());
+                    quote.setStatus(entity.getStatus());
+                    quote.setCheckUserId(entity.getCheckUserId());
+                    quote.setCheckDate(entity.getCheckDate());
+                    quote.setPublishDate(entity.getPublishDate());
+                } else {
+                    delete(quote.getId());
+                }
             }
         }
-        return entityList;
     }
 
     /**
@@ -513,9 +536,10 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (siteId == entity.getSiteId() && !entity.isDisabled()
                     && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 if (null == entity.getParentId()) {
-                    for (CmsContent quote : (List<CmsContent>) getPage(new CmsContentQuery(siteId, null, null, null, null, null,
-                            null, null, entity.getId(), null, null, null, null, null, null, null, null, null, null), null, null,
-                            null, null, null).getList()) {
+                    CmsContentQuery query = new CmsContentQuery();
+                    query.setSiteId(siteId);
+                    query.setQuoteId(entity.getId());
+                    for (CmsContent quote : (List<CmsContent>) getPage(query, null, null, null, null, null).getList()) {
                         quote.setDisabled(true);
                     }
                 } else {
@@ -576,6 +600,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
                 delete(entity.getId());
+                attributeService.delete(entity.getId());
             }
         }
     }
