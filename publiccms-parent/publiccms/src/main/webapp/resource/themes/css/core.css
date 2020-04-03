@@ -275,7 +275,7 @@ a.toggleCollapse{text-decoration:none}
 .pageFormContent select{float:left}
 .pageFormContent .inputInfo{padding:0 5px;line-height:21px}
 .pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:21px}
-.pageFormContent span.info{color:#7F7F7F;display:block;line-height:21px}
+.pageFormContent span.info{color:#7F7F7F;line-height:21px}
 .pageFormContent span.info:before{display:block;content:".";height:0;clear:both;visibility:hidden}
 
 .pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:5px 0;position:relative}
