@@ -278,9 +278,9 @@ a.toggleCollapse{text-decoration:none}
 .pageFormContent span.info{color:#7F7F7F;display:block;line-height:21px}
 .pageFormContent span.info:before{display:block;content:".";height:0;clear:both;visibility:hidden}
 
-.pageFormContent dl{float:left;line-height:22px;display:block;width:50%;margin:0;padding:5px 0;position:relative}
+.pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:5px 0;position:relative}
 .pageFormContent dt{float:left;width:120px;padding:0 5px}
-.pageFormContent dd{float:left;display:block}
+.pageFormContent dd{float:left}
 .pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both}
 
 #content{width:800px}
@@ -348,9 +348,9 @@ a.btnDel, a.btnLook, a.btnAttach{display:block;width:24px;height:28px;overflow:h
 a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:28px;position:absolute;top:0;left:3px;text-indent:0}
 
 .viewInfo{padding:10px 5px}
-.viewInfo dl{float:left;display:block;width:380px;line-height:22px;margin:0;padding:5px 0;position:relative}
+.viewInfo dl{float:left;width:380px;line-height:22px;margin:0;padding:5px 0;position:relative}
 .viewInfo dt{float:left;width:120px;padding:0 5px;text-align:right}
-.viewInfo dd{display:block;width:220px;float:left;border-bottom:1px dotted #999;min-height:21px}
+.viewInfo dd{width:220px;float:left;border-bottom:1px dotted #999;min-height:21px}
 .viewInfo dl.nowrap{width:100%;height:auto;clear:both}
 .viewInfo dl.nowrap dt{width:120px}
 .viewInfo dl.nowrap dd{width:auto}
