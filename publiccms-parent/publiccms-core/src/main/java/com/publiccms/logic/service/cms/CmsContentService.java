@@ -321,7 +321,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public List<CmsContent> reject(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND != entity.getStatus()
+            if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()
                     && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
                 entity.setStatus(STATUS_REJECT);
                 entity.setCheckUserId(user.getId());
