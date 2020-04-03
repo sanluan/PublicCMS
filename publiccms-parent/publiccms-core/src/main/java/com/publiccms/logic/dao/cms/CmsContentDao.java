@@ -103,7 +103,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (CommonUtils.notEmpty(text)) {
             TermContext term = queryBuilder.keyword();
             if (!fuzzy) {
-                term.fuzzy().withEditDistanceUpTo(1);
+                term.fuzzy().withEditDistanceUpTo(0);
             }
             if (CommonUtils.notEmpty(fields)) {
                 for (String field : fields) {
@@ -119,7 +119,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (CommonUtils.notEmpty(tagIds)) {
             TermContext term = queryBuilder.keyword();
             if (!fuzzy) {
-                term.fuzzy().withEditDistanceUpTo(1);
+                term.fuzzy().withEditDistanceUpTo(0);
             }
             termination.must(term.onFields(tagFields).matching(tagIds).createQuery());
         }

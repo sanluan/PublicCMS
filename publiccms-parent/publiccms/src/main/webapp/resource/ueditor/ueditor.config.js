@@ -408,7 +408,7 @@
 			mark:   [],
 			nav:    [],
 			ol:     ['class', 'style'],
-			p:      ['class', 'style'],
+			p:      ['class', 'style', 'data-background'],
 			pre:    ['class', 'style'],
 			s:      [],
 			section:[],

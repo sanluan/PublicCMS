@@ -168,22 +168,22 @@
             domUtils.on($G("title"), 'keyup', updatePreview);
 
             domUtils.on($G("width"), 'keyup', function(){
-                updatePreview();
                 if(locker.checked) {
                     var proportion =locker.getAttribute('data-proportion');
                     $G('height').value = Math.round(this.value / proportion);
                 } else {
                     _this.updateLocker();
                 }
+                updatePreview();
             });
             domUtils.on($G("height"), 'keyup', function(){
-                updatePreview();
                 if(locker.checked) {
                     var proportion =locker.getAttribute('data-proportion');
                     $G('width').value = Math.round(this.value * proportion);
                 } else {
                     _this.updateLocker();
                 }
+                updatePreview();
             });
             domUtils.on($G("lock"), 'change', function(){
                 var proportion = parseInt($G("width").value) /parseInt($G("height").value);
@@ -659,8 +659,10 @@
             });
 
             uploader.on('fileDequeued', function (file) {
-                fileCount--;
-                fileSize -= file.size;
+                if (file.ext && acceptExtensions.indexOf(file.ext.toLowerCase()) != -1 && file.size <= imageMaxSize) {
+                    fileCount--;
+                    fileSize -= file.size;
+                }
 
                 removeFile(file);
                 updateTotalProgress();
@@ -693,7 +695,7 @@
 
             uploader.on('uploadBeforeSend', function (file, data, header) {
                 //这里可以通过data对象添加POST参数
-                header['X_Requested_With'] = 'XMLHttpRequest';
+                header['X-Requested-With'] = 'XMLHttpRequest';
             });
 
             uploader.on('uploadProgress', function (file, percentage) {
