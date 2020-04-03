@@ -10620,6 +10620,10 @@ UE.plugins['autotypeset'] = function(){
                 domUtils.removeAttributes(ci,['class']);
             }
 
+            if(opt.removeClass && ci.style){
+                domUtils.removeAttributes(ci,['style']);
+            }
+
             //表情不处理
             if(opt.imageBlockLine && ci.tagName.toLowerCase() == 'img' && !ci.getAttribute('emotion')){
                 if(html){
@@ -11018,7 +11022,7 @@ UE.commands['imagefloat'] = {
                             pN.appendChild(tmpNode);
                             domUtils.setStyle(tmpNode, 'float', '');
 
-                            me.execCommand('insertHtml', '<p id="_img_parent_tmp" style="text-align:center">' + pN.innerHTML + '</p>');
+                            me.execCommand('insertHtml', '<p id="_img_parent_tmp" style="text-align:center">' + pN.innerHTML + '</p>',true);
 
                             tmpNode = me.document.getElementById('_img_parent_tmp');
                             tmpNode.removeAttribute('id');
