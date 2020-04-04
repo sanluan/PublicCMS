@@ -35,8 +35,10 @@
                         <form action="${site.dynamicPath}user/saveEmail.do" method="post" class="center login-form">
                             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
                             <input type="hidden" name="returnUrl" value="${site.dynamicPath}login.html"/>
-                            <p><input type="email" class="input-text" name="email" placeholder="Email" title="Email" value="${user.email!}"/></p>
-                            <p><input type="submit" class="button" value="Verify Email"/></p>
+                            <p>
+                                <input type="email" class="input-text" name="email" placeholder="Email" title="Email" value="${user.email!}"/>
+                                <input type="submit" class="button" value="Verify Email"/>
+                            </p>
                         </form>
                     </#if>
                 <#else>
