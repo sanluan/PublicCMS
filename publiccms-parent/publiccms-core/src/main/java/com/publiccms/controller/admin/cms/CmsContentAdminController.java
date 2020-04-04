@@ -180,8 +180,13 @@ public class CmsContentAdminController {
                 List<CmsCategory> categoryList = categoryService.getEntitys(
                         contentParameters.getCategoryIds().toArray(new Integer[contentParameters.getCategoryIds().size()]));
                 service.saveQuote(site.getId(), entity.getId(), contentParameters, categoryList, cmsModel, category, attribute);
+                if (null != checked && checked) {
+                    for (CmsCategory c : categoryList) {
+                        templateComponent.createCategoryFile(site, c, null, null);
+                    }
+                }
             }
-        
+
         }
         if (null != checked && checked) {
             templateComponent.createCategoryFile(site, category, null, null);

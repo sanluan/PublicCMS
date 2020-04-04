@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>New PublicCMS Template</title>
+</head>
+<body>
+    <main>
+		<@import path="/ftl/tools.ftl" namespace="t"/>
+		<#if error?has_content>
+			<p class="message red"><@t.m 'message.'+error/></p>
+		<#elseif message?has_content>
+			<p class="message"><@t.m "message."+message/></p>
+		<#else>
+		<form action="${site.dynamicPath}user/saveEmail.do" method="post" class="center login-form">
+			<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+			<input type="hidden" name="returnUrl" value="${site.dynamicPath}editEmail.html"/>
+			<p><input type="email" class="input-text" name="email" placeholder="邮箱地址" title="邮箱地址" value="${user.email!}"/></p>
+			<p class="text-center">
+				<input type="submit" class="button" value="下一步"/>
+			</p>
+		</form>
+		</#if>
+	</main>
+    <footer>
+       <p>Powered by <a href="http://www.publiccms.com/">PublicCMS</a></p>
+    </footer>
+</body>
+</html>

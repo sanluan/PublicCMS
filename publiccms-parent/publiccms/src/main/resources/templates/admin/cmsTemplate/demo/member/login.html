@@ -21,11 +21,25 @@
     </nav>
     <main>
         <#if user?has_content>
-            <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
-            <form action="${site.dynamicPath}doLogout.do" method="post">
-                <input type="hidden" name="userId" value="${(user.id)!}"/>
-                <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
-            </form>
+            <#if error?has_content>
+                <p class="message red"><@t.m 'message.'+error/></p>
+            <#elseif message?has_content>
+                <p class="message"><@t.m "message."+message/></p>
+            <#else>
+                <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+                <form name="logout" action="${site.dynamicPath}doLogout.do" method="post">
+                    <input type="hidden" name="userId" value="${(user.id)!}"/>
+                    <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+                </form>
+                <#if !user.emailChecked>
+                    <form action="${site.dynamicPath}user/saveEmail.do" method="post" class="center login-form">
+                        <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                        <input type="hidden" name="returnUrl" value="${site.dynamicPath}login.html"/>
+                        <p><input type="email" class="input-text" name="email" placeholder="Email" title="Email" value="${user.email!}"/></p>
+                        <p><input type="submit" class="button" value="Verify Email"/></p>
+                    </form>
+                </#if>
+            </#if>
         <#else>
             <form action="${site.dynamicPath}doLogin.do" method="post">
                 <#if error??>
@@ -52,7 +66,7 @@
     <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
 <script>
 function logout(){
-    $("form").submit();
+    $("form[name=logout]").submit();
 }
 </script>
 </body>

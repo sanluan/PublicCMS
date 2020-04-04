@@ -218,9 +218,6 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
                 $('input[name=publishPath]',navTab.getCurrentPanel()).val('/demo/index.html');
             </#if>
             <#break>
-        <#case "member/comment.html">
-            $('input[name=needLogin]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
-            <#break>
         <#case "sitemap.xml">
             <#if site.useStatic>
                 $('input[name=publishPath]',navTab.getCurrentPanel()).val('/sitemap.xml');

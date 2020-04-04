@@ -172,8 +172,8 @@ public class UserController {
                 || ControllerUtils.verifyHasExist("email", service.findByEmail(site.getId(), email), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
-            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+            int expiryMinutes = ConfigComponent.getInt(config.get(EmailTemplateConfigComponent.CONFIG_EXPIRY_MINUTES),
+                    EmailTemplateConfigComponent.DEFAULT_EXPIRY_MINUTES);
             SysEmailToken sysEmailToken = new SysEmailToken();
             sysEmailToken.setUserId(user.getId());
             sysEmailToken.setAuthToken(UUID.randomUUID().toString());
@@ -189,13 +189,15 @@ public class UserController {
                 emailModel.put("expiryDate", sysEmailToken.getExpiryDate());
                 if (emailComponent.sendHtml(site.getId(), email,
                         FreeMarkerUtils.generateStringByString(emailTitle, templateComponent.getWebConfiguration(), emailModel),
-                        FreeMarkerUtils.generateStringByFile(siteComponent.getWebTemplateFilePath(site, emailPath),
+                        FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, emailPath),
                                 templateComponent.getWebConfiguration(), emailModel))) {
                     model.addAttribute(CommonConstants.MESSAGE, "sendEmail.success");
                 } else {
+                    sysEmailTokenService.delete(sysEmailToken.getAuthToken());
                     model.addAttribute(CommonConstants.MESSAGE, "sendEmail.error");
                 }
             } catch (IOException | TemplateException | MessagingException e) {
+                sysEmailTokenService.delete(sysEmailToken.getAuthToken());
                 model.addAttribute(CommonConstants.ERROR, "sendEmail.error");
             }
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
@@ -211,7 +213,7 @@ public class UserController {
      * @param model
      * @return view name
      */
-    @RequestMapping(value = "verifyEmail", method = RequestMethod.POST)
+    @RequestMapping(value = "verifyEmail")
     public String verifyEmail(@RequestAttribute SysSite site, String authToken, String returnUrl, HttpServletRequest request,
             HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);

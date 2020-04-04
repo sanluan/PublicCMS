@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>${user.nickName},Please verify your email address [${site.name}]</title>
+</head>
+<body>
+    <div style="border:1px #f0f0f0 solid;margin:10px;padding:0px 10px;height:auto;">
+        <h2>${user.nickName}:</h2>
+        <p>You just initiated a verification email request in ${site.name}[${site.sitePath}]</a></p>
+        <p>Please verify your email address by visiting the link below</p>
+        <p>link:<a href="${site.dynamicPath}user/verifyEmail?authToken=${authToken}&returnUrl=${site.dynamicPath}login.html">${site.dynamicPath}user/verifyEmail?authToken=${authToken}&returnUrl=${site.dynamicPath}login.html</a></p>
+        <p>If the link cannot be clicked directly, please copy and paste it into the address bar of the browser to open it. The link will expire in ${expiryDate?datetime}</p>
+        <p>After verifying your email, you can login with your email address $ {email} or username $ {user.name}</p>
+        <p>If you did not do it yourself, please ignore this email and apologize for the interruption</p>
+    </div>
+</body>
+</html>
