@@ -20,47 +20,48 @@
 </@_categoryList>
     </nav>
     <main>
-            <#if error?has_content>
-                <p class="message red"><@t.m 'message.'+error/></p>
-            <#elseif message?has_content>
-                <p class="message"><@t.m "message."+message/></p>
-            <#else>
-                <#if user?has_content>
-                    <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
-                    <form name="logout" action="${site.dynamicPath}doLogout.do" method="post">
-                        <input type="hidden" name="userId" value="${(user.id)!}"/>
-                        <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
-                    </form>
-                    <#if !user.emailChecked>
-                        <form action="${site.dynamicPath}user/saveEmail.do" method="post" class="center login-form">
-                            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-                            <input type="hidden" name="returnUrl" value="${site.dynamicPath}login.html"/>
-                            <p>
-                                <input type="email" class="input-text" name="email" placeholder="Email" title="Email" value="${user.email!}"/>
-                                <input type="submit" class="button" value="Verify Email"/>
-                            </p>
-                        </form>
-                    </#if>
-                <#else>
-                    <form action="${site.dynamicPath}doLogin.do" method="post">
-                        <#if error??>
-                            <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
-                        </#if>
-                        <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
-                        <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
+        <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+        <#if error?has_content>
+            <p class="message red"><@message 'message.'+error/></p>
+        <#elseif message?has_content>
+            <p class="message"><@message "message."+message/></p>
+        <#else>
+            <#if user?has_content>
+                <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
+                <form name="logout" action="${site.dynamicPath}doLogout.do" method="post">
+                    <input type="hidden" name="userId" value="${(user.id)!}"/>
+                    <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+                </form>
+                <#if !user.emailChecked>
+                    <form action="${site.dynamicPath}user/saveEmail.do" method="post" class="center login-form">
+                        <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                        <input type="hidden" name="returnUrl" value="${site.dynamicPath}login.html"/>
                         <p>
-                            <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
-                            <input type="hidden" name="clientId" value="${clientId!}"/>
-                            <input type="hidden" name="uuid" value="${uuid!}"/>
-                            <input type="submit" value="Login"/>
+                            <input type="email" class="input-text" name="email" placeholder="Email" title="Email" value="${user.email!}"/>
+                            <input type="submit" class="button" value="Verify Email"/>
                         </p>
-                        <#if _oauthList?has_content&&_oauthList?is_directive>
-                            <p><#list list as o><a href="${site.dynamicPath}/oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
-                        </#if>
-                        <p>No account?<a href="register.html?clientId=${clientId!}&uuid=${uuid!}&returnUrl=${returnUrl!}">Please register</a></p>
                     </form>
                 </#if>
+            <#else>
+                <form action="${site.dynamicPath}doLogin.do" method="post">
+                    <#if error??>
+                        <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
+                    </#if>
+                    <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
+                    <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
+                    <p>
+                        <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
+                        <input type="hidden" name="clientId" value="${clientId!}"/>
+                        <input type="hidden" name="uuid" value="${uuid!}"/>
+                        <input type="submit" value="Login"/>
+                    </p>
+                    <#if _oauthList?has_content&&_oauthList?is_directive>
+                        <p><#list list as o><a href="${site.dynamicPath}/oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
+                    </#if>
+                    <p>No account?<a href="register.html?clientId=${clientId!}&uuid=${uuid!}&returnUrl=${returnUrl!}">Please register</a></p>
+                </form>
             </#if>
+        </#if>
     </main>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
