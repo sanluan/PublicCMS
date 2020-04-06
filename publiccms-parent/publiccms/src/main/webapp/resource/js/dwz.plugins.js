@@ -1,5 +1,5 @@
 DWZ.regPlugins.push(function($p){
-    (".searchBar .searchContent", $p).click(function(event){
+    $(".searchBar .searchContent", $p).click(function(event){
         if($(event.target).is('ul')||$(event.target).is('li')){
             $content = $(this).closest(".page").find('.pageContent').find('[layouth]');
             var height = $(this).height();
