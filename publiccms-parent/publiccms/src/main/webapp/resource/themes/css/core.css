@@ -217,12 +217,11 @@ a.button,button.button{border-width:1px;border-style:solid;}
 
 /* ----------------------------------------------------------------- Pages */
 /* Layout */
-#leftside{position:absolute;top:0;bottom:0}
+#leftside{position:absolute;top:0;left:0;height:100%}
 #sidebar{position:absolute;left:0px;z-index:20;overflow:hidden;display:block;top:0;bottom:0;width:202px}
 #sidebar #menu{overflow:auto}
 a.toggleCollapse{text-decoration:none}
-#sidebar_s{display:none;width:35px;line-height:35px;height:auto;position:absolute;cursor:pointer;top:0px;bottom:0;left:0;z-index:21;text-align:center}
-#sidebar_s a{text-decoration:none;line-height:35px}
+#sidebar_s{display:none;width:35px;line-height:35px;height:100%;position:absolute;cursor:pointer;top:0;left:0;z-index:21;text-align:center}
 #splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20}
 #splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:200px;z-index:20}
 #splitBar,#splitBarProxy{top:60px}

@@ -17,7 +17,7 @@ header a{color:#afc5f6}
 main,#sidebar,#sidebar_s{background:#2c3343}
 .tabsPage{background:#edf1f5}
 #sidebar #menu{background:#222836}
-#sidebar_s a,main .accordion .accordionHeader h2.collapsable{color:#fff}
+main .accordion .accordionHeader h2.collapsable{color:#fff}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC}
 
 #leftside,.accordionContent .tree a,.accordionContent .tree div.hover{color:#8d95a7}

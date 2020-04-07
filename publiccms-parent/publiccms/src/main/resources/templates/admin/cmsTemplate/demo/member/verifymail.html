@@ -9,7 +9,7 @@
         <h2>${user.nickName}:</h2>
         <p>You just initiated a verification email request in ${site.name}[${site.sitePath}]</p>
         <p>Please verify your email address by visiting the link below</p>
-        <p>link:<a href="${site.dynamicPath}user/verifyEmail?authToken=${authToken}&returnUrl=${site.dynamicPath}login.html">${site.dynamicPath}user/verifyEmail?authToken=${authToken}&returnUrl=${site.dynamicPath}login.html</a></p>
+        <p><a href="${site.dynamicPath}user/verifyEmail?authToken=${authToken}&returnUrl=${site.dynamicPath}login.html">${site.dynamicPath}user/verifyEmail?authToken=${authToken}&returnUrl=${site.dynamicPath}login.html</a></p>
         <p>If the link cannot be clicked directly, please copy and paste it into the address bar of the browser to open it. The link will expire in ${expiryDate?datetime}</p>
         <p>After verifying your email, you can login with your email address ${email} or username ${user.name}</p>
         <p>If you did not do it yourself, please ignore this email and apologize for the interruption</p>
