@@ -5,7 +5,7 @@
     <thead>
         <tr>
             <th type="attach" name="${name}[#index#].filePath" size="50" fieldClass="required" lookupGroup="${name}[#index#]" lookupUrl="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}"><@t.page 'file_path'/></th>
-            <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':280,'rows':2,'cols':60}"><@t.page 'description'/></th>
+            <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':150,'rows':2,'cols':60}"><@t.page 'description'/></th>
             <th type="text" name="${name}[#index#].fileSize" fieldClass="readonly digits" size="10" fieldAttrs="{'maxlength':20,'readonly':'readonly'}"><@t.page 'file.size'/></th>
             <th type="text" name="${name}[#index#].width" fieldClass="readonly digits" size="10" fieldAttrs="{'maxlength':20,'readonly':'readonly'}"><@t.page 'width'/></th>
             <th type="text" name="${name}[#index#].height" fieldClass="readonly digits" size="10" fieldAttrs="{'maxlength':20,'readonly':'readonly'}"><@t.page 'height'/></th>
@@ -24,7 +24,7 @@
                     <a class="btnAttach" lookupGroup="${name}[${file?index}]" href="common/upload.html?field=filePath&originalField=description${image?then('&fileTypes=image','')}" width="560" height="300">${image?then(t.pageMessage('upload.image'),t.pageMessage('upload.file'))}</a>
                 </td>
                 <td>
-                    <textarea name="${name}[${file?index}].description" rows="3" cols="50" maxlength="280">${(file.description)!}</textarea>
+                    <textarea name="${name}[${file?index}].description" rows="3" cols="50" maxlength="150">${(file.description)!}</textarea>
                 </td>
                 <td>
                     <input type="text" name="${name}[${file?index}].fileSize" class="readonly digits" value="${(file.fileSize)!}" size="10" maxlength="20"/>

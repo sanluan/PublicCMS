@@ -172,7 +172,7 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['description'])!}:</dt>
                     <dd>
-                        <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="300" cols="80" rows="4">${(a.description)!}</textarea>
+                        <textarea name="description"<#if requiredFieldList?seq_contains('description')> class="required"</#if> maxlength="150" cols="80" rows="4">${(a.description)!}</textarea>
                     </dd>
                 </dl>
             </#if>
@@ -250,7 +250,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                         <tr>
                             <th type="lookup" name="contentRelateds[#index#].title" size="30" fieldClass="required" fieldAttrs="{maxlength:255,width:1080,height:500}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId"><@t.page 'content.select'/></th>
                             <th type="text" name="contentRelateds[#index#].url" size="40" fieldClass="required" fieldAttrs="{maxlength:2048}"><@t.page 'address'/></th>
-                            <th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:300,rows:2,cols:60}"><@t.page 'description'/></th>
+                            <th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:150,rows:2,cols:60}"><@t.page 'description'/></th>
                             <th type="text" name="contentRelateds[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
                             <th type="del" width="60"><@t.page 'operate'/></th>
                         </tr>
@@ -270,7 +270,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                                 <input class="required" type="text" name="contentRelateds[${related?index}].url" value="${(related.url)!}" size="40" maxlength="2048"/>
                             </td>
                             <td>
-                                <textarea name="contentRelateds[${related?index}].description" rows="2" cols="60" maxlength="300">${(related.description)!}</textarea>
+                                <textarea name="contentRelateds[${related?index}].description" rows="2" cols="60" maxlength="150">${(related.description)!}</textarea>
                             </td>
                             <td>
                                 <input class="required digits" type="text" name="contentRelateds[${related?index}].sort" value="${related.sort!}" size="5" maxlength="5"/>

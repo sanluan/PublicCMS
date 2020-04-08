@@ -188,7 +188,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 attribute.setWordCount(text.length());
             }
             if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(StringUtils.substring(text, 0, 300));
+                entity.setDescription(StringUtils.substring(text, 0, 150));
             }
 
             List<SysExtendField> modelExtendList = cmsModel.getExtendList();
