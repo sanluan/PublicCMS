@@ -116,10 +116,10 @@ function addCategory(id,name,contentId){
 $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
     if($(this).is(':checked')) {
         $('.copied',navTab.getCurrentPanel()).show();
-        $('.copied input[type=text]',navTab.getCurrentPanel()).addClass('required');
+        $('.copied input[data-required=true]',navTab.getCurrentPanel()).addClass('required');
     } else {
         $('.copied',navTab.getCurrentPanel()).hide();
-        $('.copied input[type=text]',navTab.getCurrentPanel()).removeClass('required').val('');
+        $('.copied input[data-required=true]',navTab.getCurrentPanel()).removeClass('required').val('');
     }
 });
 </script>
@@ -128,11 +128,11 @@ $('input[name=copied]',navTab.getCurrentPanel()).click(function(){
                 </dl>
                 <dl class="copied hide">
                     <dt>${(model.fieldTextMap['source'])!}:</dt>
-                    <dd><input name="source" type="text"<#if a?has_content&&a.copied&&requiredFieldList?seq_contains('source')> class="required"</#if><#if requiredFieldList?seq_contains('source')> data-required="true"</#if> maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
+                    <dd><input name="source" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('source')> data-required="true"</#if> maxlength="50" size="20" value="${(attribute.source)!}"/></dd>
                 </dl>
                 <dl class="copied hide">
                     <dt>${(model.fieldTextMap['sourceUrl'])!}:</dt>
-                    <dd><input class="url<#if a?has_content&&a.copied&&requiredFieldList?seq_contains('sourceUrl')> required</#if>"<#if requiredFieldList?seq_contains('sourceUrl')> data-required="true"</#if> name="sourceUrl" type="text" maxlength="250" size="20" value="${(attribute.sourceUrl)!}"/></dd>
+                    <dd><input class="url" name="sourceUrl" autocomplete="on" type="text"<#if requiredFieldList?seq_contains('sourceUrl')> data-required="true"</#if> maxlength="250" size="20" value="${(attribute.sourceUrl)!}"/></dd>
                 </dl>
             <#if a?has_content&&a.copied&&fieldList?seq_contains('copied')>
 <script>
@@ -159,13 +159,13 @@ $('input[name=copied]',navTab.getCurrentPanel()).click();
             <#if fieldList?seq_contains('author')>
                 <dl>
                     <dt>${(model.fieldTextMap['author'])!}:</dt>
-                    <dd><input name="author"<#if requiredFieldList?seq_contains('author')> class="required"</#if> type="text" maxlength="50" size="20" value="${(a.author)!}"/></dd>
+                    <dd><input name="author"<#if requiredFieldList?seq_contains('author')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.author)!}"/></dd>
                 </dl>
             </#if>
             <#if fieldList?seq_contains('editor')>
                 <dl>
                     <dt>${(model.fieldTextMap['editor'])!}:</dt>
-                    <dd><input name="editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
+                    <dd><input name="editor"<#if requiredFieldList?seq_contains('editor')> class="required"</#if> autocomplete="on" type="text" maxlength="50" size="20" value="${(a.editor)!}"/></dd>
                 </dl>
             </#if>
             <#if fieldList?seq_contains('description')>

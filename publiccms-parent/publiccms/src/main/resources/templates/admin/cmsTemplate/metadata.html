@@ -95,9 +95,9 @@
                             <option value="${o}"><@t.page o/></option>
                             </#list>
                         </select>
-                        <label><@t.page 'name'/>:</label><input name="parameterName" type="text" size="8"/>
+                        <label><@t.page 'name'/>:</label><input name="parameterName" type="text" autocomplete="on" size="8"/>
                         <label><@t.page 'required'/>:<input name="required" type="checkbox"/></label>
-                        <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" size="8"/>
+                        <label><@t.page 'alias'/>:</label><input name="parameterAlias" type="text" autocomplete="on" size="8"/>
                         <label><@t.page 'array'/>:<input name="array" type="checkbox"/></label>
                         <a href="javascript:;" onclick="addParameter($('input[name=\'parameterName\']',navTab.getCurrentPanel()).val(),$('input[name=\'array\']',navTab.getCurrentPanel()).prop('checked'),$('input[name=\'required\']',navTab.getCurrentPanel()).prop('checked'),$('select[name=\'parameterType\']',navTab.getCurrentPanel()).val(),$('select[name=\'parameterType\'] option:selected',navTab.getCurrentPanel()).text(),$('input[name=\'parameterAlias\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
                     </div>

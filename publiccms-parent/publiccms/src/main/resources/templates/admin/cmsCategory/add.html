@@ -72,7 +72,7 @@
                 <dl class="nowrap onlyUrl advanced">
                     <dt><@t.page 'category.template_path'/>:</dt>
                     <dd>
-                        <input name="templatePath" type="text" maxlength="255" size="30" value="${(a.templatePath)!}"/>
+                        <input name="templatePath" type="text" autocomplete="on" maxlength="255" size="30" value="${(a.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
                         <span class="info"><@t.page 'category.template_path.description'/></span>
                     </dd>
@@ -81,7 +81,7 @@
                 <dl class="nowrap advanced">
                     <dt><@t.page 'category.path'/>:</dt>
                     <dd>
-                        <input class="required" name="path" type="text" maxlength="500" size="50" value="${(a.path)!}"/>
+                        <input class="required" name="path" type="text" autocomplete="on" maxlength="500" size="50" value="${(a.path)!}"/>
                         <a class="btnLook onlyUrl" href="cmsCategory/categoryPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
                     </dd>
                 </dl>
@@ -162,7 +162,7 @@
                     <dd <#if a.onlyUrl> class="hide"</#if>>
         <#if site.useStatic>
                         <label><@t.page 'category.content_template_path'/>:</label>
-                        <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+                        <input name="categoryModelList[${modelIndex}].categoryModel.templatePath" data-model="${a.id}" type="text" autocomplete="on" maxlength="200" size="30" value="${(a.templatePath)!}"/>
                         <a class="btnLook" href="cmsTemplate/lookup.html?field=categoryModelList${('['+modelIndex+']')?url}.categoryModel.templatePath" lookupGroup=""><@t.page 'template.select'/></a>
         </#if>
                         <label>&nbsp;</label>
@@ -183,7 +183,7 @@
                 <dl class="nowrap categoryModelContentPath">
                     <dt><@t.page 'category.content_path'/>:</dt>
                     <dd>
-                        <input name="contentPath" type="text" maxlength="500" size="80" value="${(a.contentPath)!}"/>
+                        <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="80" value="${(a.contentPath)!}"/>
                         <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
                         <#if id?has_content><span class="info"><@t.page 'category.content_path.description'/></span></#if>
                     </dd>

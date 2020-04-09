@@ -6,14 +6,14 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
             <ul class="searchContent">
             <#list conditionList as a><#if "Date"=a.type>
                 <li class="colspan">
-                    <label>${a.title}：</label>
+                    <label>${a.title}:</label>
                     <input type="text" name="start${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${start"+a.name?cap_first+"!}"}" />
                     <span>-</span>
                     <input type="text" name="end${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${end"+a.name?cap_first+"!}"}" />
                 </li>
                 <#elseif "siteId"!=a.name>
                 <li>
-                    <label>${a.title}：</label>
+                    <label>${a.title}:</label>
                     <input type="text" name="${a.name}" value="${r"${"+a.name+"!}"}" />
                 </li>
                 </#if></#list>

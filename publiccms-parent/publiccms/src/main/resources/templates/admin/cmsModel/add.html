@@ -39,7 +39,7 @@
             <dl class="onlyUrl nowrap">
                 <dt><@t.page 'template_path'/>:</dt>
                 <dd>
-                    <input name="templatePath" type="text" maxlength="200" size="30" value="${(a.templatePath)!}"/>
+                    <input name="templatePath" type="text" autocomplete="on" maxlength="200" size="30" value="${(a.templatePath)!}"/>
                     <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
                     <span class="info"><@t.page 'model.template_path.description'/></span>
                 </dd>
@@ -53,7 +53,7 @@
                     <label><@t.page 'field.title'/>(title):</label>
                 </dt>
                 <dd>
-                    <input name="fieldTextMap[title]" class="required" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
+                    <input name="fieldTextMap[title]" class="required" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['title'])!t.pageMessage('title')}"/>
                 </dd>
             </dl>
             <dl class="nowrap urlText hide">
@@ -61,7 +61,7 @@
                     <label><@t.page 'field.url_text'/>(url):</label>
                 </dt>
                 <dd>
-                    <input name="fieldTextMap[url]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
+                    <input name="fieldTextMap[url]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['url'])!t.pageMessage('url')}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -70,7 +70,7 @@
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[copied]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['copied'])!t.pageMessage('copied')}"/>
+                    <input name="fieldTextMap[copied]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['copied'])!t.pageMessage('copied')}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -79,7 +79,7 @@
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[tag]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['tag'])!t.pageMessage('tag')}"/>
+                    <input name="fieldTextMap[tag]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['tag'])!t.pageMessage('tag')}"/>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -88,7 +88,7 @@
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[author]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['author'])!t.pageMessage('content.author')}"/>
+                    <input name="fieldTextMap[author]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['author'])!t.pageMessage('content.author')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="author"/><@t.page 'required'/></label>
                 </dd>
             </dl>
@@ -98,7 +98,7 @@
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[editor]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['editor'])!t.pageMessage('editor')}"/>
+                    <input name="fieldTextMap[editor]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['editor'])!t.pageMessage('editor')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="editor"/><@t.page 'required'/></label>
                 </dd>
             </dl>
@@ -108,7 +108,7 @@
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[description]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
+                    <input name="fieldTextMap[description]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['description'])!t.pageMessage('description')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="description"/><@t.page 'required'/></label>
                 </dd>
             </dl>
@@ -118,7 +118,7 @@
                 </dt>
                 <dd>
                     <label><@t.page 'text'/>:</label>
-                    <input name="fieldTextMap[cover]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
+                    <input name="fieldTextMap[cover]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
                 </dd>
             </dl>
@@ -131,7 +131,7 @@
                 </dt>
                 <dd>
                     <label><@t.page 'field.source'/>(source):</label>
-                    <input name="fieldTextMap[source]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['source'])!t.pageMessage('content.source')}"/>
+                    <input name="fieldTextMap[source]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['source'])!t.pageMessage('content.source')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="source"/><@t.page 'required'/></label>
                     <label><@t.page 'field.source_url'/>(sourceUrl):</label>
                     <input name="fieldTextMap[sourceUrl]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['sourceUrl'])!t.pageMessage('content.source_url')}"/>
@@ -143,7 +143,7 @@
                     <label><input name="fieldList" type="checkbox" value="content"/><@t.page 'content.text'/>(text)</label>
                 </dt>
                 <dd>
-                    <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
+                    <label><@t.page 'text'/>:</label><input name="fieldTextMap[content]" type="text" autocomplete="on" maxlength="20" size="10" value="${(a.fieldTextMap['content'])!t.pageMessage('content.text')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="content"/><@t.page 'required'/></label>
                     <label><input name="searchable" type="checkbox" ${(!a?has_content||a.searchable)?then(' checked="true"','')?no_esc}/><@t.page 'searchable'/></label>
                     <label><@t.page 'editor_type'/>:</label>
