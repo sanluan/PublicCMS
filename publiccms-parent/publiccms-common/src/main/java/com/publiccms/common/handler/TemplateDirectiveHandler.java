@@ -54,11 +54,6 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
 
     @Override
-    public RenderHandler put(String key, Object value) {
-        return super.put(key, value);
-    }
-
-    @Override
     public void render() throws TemplateException, IOException {
         if (!renderd) {
             Map<String, TemplateModel> reduceMap = reduce();

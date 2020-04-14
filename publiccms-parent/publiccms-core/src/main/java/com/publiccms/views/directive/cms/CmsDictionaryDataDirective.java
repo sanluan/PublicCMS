@@ -1,7 +1,7 @@
 package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +35,13 @@ public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
             } else {
                 String[] values = handler.getStringArray("values");
                 if (CommonUtils.notEmpty(values)) {
-                    Map<String, CmsDictionaryData> map = new LinkedHashMap<>();
+
                     CmsDictionaryDataId[] ids = new CmsDictionaryDataId[values.length];
                     for (int i = 0; i < values.length; i++) {
                         ids[i] = new CmsDictionaryDataId(dictionaryId, site.getId(), values[i]);
                     }
-                    for (CmsDictionaryData entity : service.getEntitys(ids)) {
-                        map.put(entity.getId().getValue(), entity);
-                    }
+                    List<CmsDictionaryData> entityList = service.getEntitys(ids);
+                    Map<String, CmsDictionaryData> map = CommonUtils.listToMap(entityList, k -> k.getId().getValue(), null, null);
                     handler.put("map", map).render();
                 }
             }

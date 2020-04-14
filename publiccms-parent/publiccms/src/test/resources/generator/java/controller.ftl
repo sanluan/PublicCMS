@@ -36,7 +36,7 @@ import com.publiccms.logic.service.log.LogOperateService;
 @RequestMapping("${entityName?uncap_first}")
 public class ${entityName}${controllerSuffix} {
 
-    private String[] ignoreProperties = new String[]{"id"};
+    private String[] ignoreProperties = new String[]{ "id" };
     
     /**
      * @param site
@@ -73,7 +73,7 @@ public class ${entityName}${controllerSuffix} {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids, String _csrf, HttpServletRequest request, 
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, String _csrf, HttpServletRequest request, 
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
@@ -82,7 +82,7 @@ public class ${entityName}${controllerSuffix} {
         }
         return CommonConstants.TEMPLATE_DONE;
     }
-    
+
     @Autowired
     private ${entityName}Service service;
     @Autowired

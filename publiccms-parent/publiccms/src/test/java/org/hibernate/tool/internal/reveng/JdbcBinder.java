@@ -834,7 +834,8 @@ public class JdbcBinder {
 
 	}
 
-	private Property bindBasicProperty(String propertyName, Table table, Column column, Set<Column> processedColumns, Mapping mapping) {
+	@SuppressWarnings("unused")
+    private Property bindBasicProperty(String propertyName, Table table, Column column, Set<Column> processedColumns, Mapping mapping) {
 		SimpleValue value = bindColumnToSimpleValue( table, column, mapping, false );
 		return PropertyBinder.makeProperty(
 				table, 

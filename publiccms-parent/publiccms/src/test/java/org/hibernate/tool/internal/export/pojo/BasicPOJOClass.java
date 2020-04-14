@@ -382,7 +382,8 @@ abstract public class BasicPOJOClass implements POJOClass, MetaAttributeConstant
 		return annotations.toString();
 	}
 
-	private void buildRecursiveAttributeOverride(Iterator<?> subElements, String path, Property property, StringBuffer annotations) {
+	@SuppressWarnings("unused")
+    private void buildRecursiveAttributeOverride(Iterator<?> subElements, String path, Property property, StringBuffer annotations) {
 		while ( subElements.hasNext() ) {
 			Property subProperty = (Property) subElements.next();
 			if ( subProperty.isComposite() ) {

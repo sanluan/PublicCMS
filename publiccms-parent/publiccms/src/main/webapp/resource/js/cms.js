@@ -93,30 +93,31 @@ function addUser(id,name){
     $('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
     $('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
 }
+var apiCounter=0;
 function getApi(base,apisArray,authorizedApis){
-    var i=0;
     for (var api in apisArray){
-        $.ajax({
-            url:base+apisArray[api],
-            type: 'GET',
-            contentType:'application/json; charset=UTF-8',
-            dataType: 'json',
-            success: function (dataList) {
-                $(dataList).each(function(index,data){
-                    var style='';
-                    if('true'==data.needAppToken){
-                        $('.authorizedApis a[data-id='+api+']',navTab.getCurrentPanel()).next().append('<li><a tname="apis" tvalue="'+data.name+'">'+data.name+'</a></li>');
-                    }
-                });
-                if(++i==apisArray.length){
-                    $(".authorizedApis", navTab.getCurrentPanel()).addClass('tree').jTree();
-                    for(authorizedApi in authorizedApis){
-                        $("input[type=checkbox][value="+authorizedApis[authorizedApi]+"]", navTab.getCurrentPanel()).click();
-                    }
-                }
-            }
-        });
+        apiRequest(base,api,apisArray,authorizedApis);
     }
+}
+function apiRequest(base,api,apisArray,authorizedApis){
+    $.ajax({
+        url:base+apisArray[api],
+        dataType: 'json',
+        success: function (dataList) {
+            $(dataList).each(function(index,data){
+                if('true'==data.needAppToken){
+                    $('.authorizedApis a[data-id='+api+']',navTab.getCurrentPanel()).next().append('<li><a tname="apis" tvalue="'+data.name+'">'+data.name+'</a></li>');
+                }
+            });
+            if(++apiCounter==apisArray.length){
+                $(".authorizedApis", navTab.getCurrentPanel()).addClass('tree').jTree();
+                for(authorizedApi in authorizedApis){
+                    $("input[type=checkbox][value="+authorizedApis[authorizedApi]+"]", navTab.getCurrentPanel()).click();
+                }
+                apiCounter=0;
+            }
+        }
+    });
 }
 function command(command,parametersName){
     $('input[name=sqlcommand]',navTab.getCurrentPanel()).val(command);

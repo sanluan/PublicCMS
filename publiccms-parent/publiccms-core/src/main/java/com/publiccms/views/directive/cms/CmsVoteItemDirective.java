@@ -3,18 +3,17 @@ package com.publiccms.views.directive.cms;
 // Generated 2020-3-26 11:46:48 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.entities.cms.CmsVoteItem;
-import com.publiccms.logic.service.cms.CmsVoteItemService;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsVoteItem;
+import com.publiccms.logic.service.cms.CmsVoteItemService;
 
 /**
  *
@@ -36,10 +35,7 @@ public class CmsVoteItemDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsVoteItem> entityList = service.getEntitys(ids);
-                Map<String, CmsVoteItem> map = new LinkedHashMap<>();
-                for (CmsVoteItem entity : entityList) {
-                    map.put(String.valueOf(entity.getId()), entity);
-                }
+                Map<String, CmsVoteItem> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null, null);
                 handler.put("map", map).render();
             }
         }

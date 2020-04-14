@@ -1,17 +1,12 @@
 package com.publiccms.views.directive.log;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.log.LogTask;
@@ -39,9 +34,8 @@ public class LogTaskDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<LogTask> entityList = service.getEntitys(ids);
-                Map<String, LogTask> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
-                        .collect(Collectors.toMap(k -> String.valueOf(k.getId()), Function.identity(),
-                                CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
+                Map<String, LogTask> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,
+                        entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

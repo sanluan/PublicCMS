@@ -28,20 +28,17 @@ public class ${entityName}${directiveSuffix} extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
             ${entityName} entity = service.getEntity(id);
             if (null != entity) {
                 handler.put("object", entity).render();
             }
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<${entityName}> entityList = service.getEntitys(ids);
-                Map<String, ${entityName}> map = new LinkedHashMap<>();
-                for (${entityName} entity : entityList) {
-                    map.put(String.valueOf(entity.getId()), entity);
-                }
+                Map<String, ${entityName}> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null, null);
                 handler.put("map", map).render();
             }
         }

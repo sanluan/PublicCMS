@@ -1,17 +1,12 @@
 package com.publiccms.views.directive.sys;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
@@ -37,8 +32,7 @@ public class SysSiteDirective extends AbstractTemplateDirective {
             Short[] ids = handler.getShortArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<SysSite> entityList = service.getEntitys(ids);
-                Map<String, SysSite> map = entityList.stream().collect(Collectors.toMap(k -> k.getId().toString(),
-                        Function.identity(), CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
+                Map<String, SysSite> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null, null);
                 handler.put("map", map).render();
             }
         }

@@ -3,17 +3,13 @@ package com.publiccms.views.directive.cms;
 // Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsCategoryModel;
@@ -47,9 +43,8 @@ public class CmsCategoryModelDirective extends AbstractTemplateDirective {
                         entityIds[i] = new CmsCategoryModelId(categoryId, modelIds[i]);
                     }
                     List<CmsCategoryModel> entityList = service.getEntitys(entityIds);
-                    Map<String, CmsCategoryModel> map = entityList.stream()
-                            .collect(Collectors.toMap(k -> k.getId().getModelId().toString(), Function.identity(),
-                                    CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
+                    Map<String, CmsCategoryModel> map = CommonUtils.listToMap(entityList, k -> k.getId().getModelId(),
+                            null, null);
                     handler.put("map", map).render();
                 }
             }

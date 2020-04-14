@@ -1,7 +1,7 @@
 package com.publiccms.views.directive.sys;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,7 +42,7 @@ public class SysConfigDataDirective extends AbstractTemplateDirective {
                     ids[i++] = new SysConfigDataId(site.getId(), s);
                 }
             }
-            Map<String, Map<String, String>> map = new HashMap<>();
+            Map<String, Map<String, String>> map = new LinkedHashMap<>();
             for (SysConfigData entity : service.getEntitys(ids)) {
                 map.put(entity.getId().getCode(), ExtendUtils.getExtendMap(entity.getData()));
             }

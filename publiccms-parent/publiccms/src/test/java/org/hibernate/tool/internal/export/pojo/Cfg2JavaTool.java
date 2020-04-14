@@ -274,7 +274,8 @@ public class Cfg2JavaTool {
 		return Cfg2HbmTool.getFilteredIdentifierGeneratorProperties(p, new Properties());
 	}
 
-	private String getJavaTypeName(Value value, boolean preferRawTypeNames) {
+	@SuppressWarnings("unused")
+    private String getJavaTypeName(Value value, boolean preferRawTypeNames) {
 		return (String) value.accept( new JavaTypeFromValueVisitor() );
 	}
 

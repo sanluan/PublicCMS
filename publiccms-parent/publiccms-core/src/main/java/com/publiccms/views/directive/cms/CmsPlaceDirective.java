@@ -1,17 +1,14 @@
 package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -55,18 +52,25 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsPlace> entityList = service.getEntitys(ids);
                 boolean absoluteURL = handler.getBoolean("absoluteURL", true);
-                entityList.forEach(e -> {
-                    Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
-                    if (null != clicks) {
-                        e.setClicks(e.getClicks() + clicks);
-                    }
-                    if (absoluteURL) {
+                Consumer<CmsPlace> consumer;
+                if (absoluteURL) {
+                    consumer = e -> {
+                        Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
+                        if (null != clicks) {
+                            e.setClicks(e.getClicks() + clicks);
+                        }
                         templateComponent.initPlaceCover(site, e);
-                    }
-                });
-                Map<String, CmsPlace> map = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
-                        .collect(Collectors.toMap(k -> k.getId().toString(), Function.identity(),
-                                CommonConstants.defaultMegerFunction(), LinkedHashMap::new));
+                    };
+                } else {
+                    consumer = e -> {
+                        Integer clicks = statisticsComponent.getPlaceClicks(e.getId());
+                        if (null != clicks) {
+                            e.setClicks(e.getClicks() + clicks);
+                        }
+                    };
+                }
+                Map<String, CmsPlace> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
+                        entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }

@@ -54,6 +54,7 @@ public class JdbcCollectionSecondPass extends CollectionSecondPass {
     	}
     }
 
+    @SuppressWarnings("unused")
     private void bindCollectionSecondPass(
             Collection collection,
             Map<?,?> persistentClasses,

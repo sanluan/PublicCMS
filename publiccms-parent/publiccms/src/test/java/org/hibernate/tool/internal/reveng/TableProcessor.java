@@ -22,7 +22,8 @@ public class TableProcessor {
 
 	private static final Logger log = Logger.getLogger(TableProcessor.class);
 
-	public static Collection<Table> processTables(
+	@SuppressWarnings("unused")
+    public static Collection<Table> processTables(
 			MetaDataDialect metaDataDialect, 
 			ReverseEngineeringStrategy revengStrategy, 
 			String  defaultSchema, 
