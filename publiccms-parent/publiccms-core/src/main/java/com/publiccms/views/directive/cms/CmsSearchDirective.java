@@ -50,8 +50,8 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             page = service.query(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true), site.getId(), word,
                     handler.getStringArray("field"), tagIds, handler.getInteger("categoryId"), handler.getBoolean("containChild"),
                     handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"), dictionaryValues,
-                    handler.getDate("startPublishDate"), currentDate, currentDate, handler.getString("orderField"), pageIndex,
-                    count);
+                    handler.getString("preTag"), handler.getString("postTag"), handler.getDate("startPublishDate"), currentDate,
+                    currentDate, handler.getString("orderField"), pageIndex, count);
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {

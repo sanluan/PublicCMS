@@ -98,6 +98,8 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param fields
      * @param tagIds
      * @param dictionaryValues
+     * @param preTag
+     * @param postTag
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -109,10 +111,11 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public PageHandler query(boolean projection, boolean fuzzy, Short siteId, String text, String[] fields, Long[] tagIds,
             Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+            String preTag, String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
+            Integer pageIndex, Integer pageSize) {
         return dao.query(projection, fuzzy, siteId, getCategoryIds(containChild, categoryId, categoryIds), modelIds, text, fields,
-                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, startPublishDate, endPublishDate,
-                expiryDate, orderField, pageIndex, pageSize);
+                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, preTag, postTag, startPublishDate,
+                endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
@@ -128,6 +131,8 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
+     * @param preTag
+     * @param postTag
      * @param orderField
      * @param pageIndex
      * @param pageSize
@@ -135,11 +140,11 @@ public class CmsContentService extends BaseService<CmsContent> {
      */
     @Transactional(readOnly = true)
     public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, Short siteId, String text, String[] fields,
-            Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues, Date startPublishDate,
-            Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+            Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues, String preTag, String postTag,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         return dao.facetQuery(projection, fuzzy, siteId, categoryIds, modelIds, text, fields,
-                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, startPublishDate, endPublishDate,
-                expiryDate, orderField, pageIndex, pageSize);
+                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, preTag, postTag, startPublishDate,
+                endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
@@ -366,8 +371,9 @@ public class CmsContentService extends BaseService<CmsContent> {
             for (CmsCategory c : categoryList) {
                 if (null != c && !category.getId().equals(c.getId())) {
                     CmsContent quote = new CmsContent(entity.getSiteId(), entity.getTitle(), entity.getUserId(), c.getId(),
-                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(), entity.isHasStatic(), 0, 0,
-                            0, 0, entity.getPublishDate(), entity.getCreateDate(), 0, entity.getStatus(), false);
+                            entity.getModelId(), entity.isCopied(), true, entity.isHasImages(), entity.isHasFiles(),
+                            entity.isHasStatic(), 0, 0, 0, 0, entity.getPublishDate(), entity.getCreateDate(), 0,
+                            entity.getStatus(), false);
                     quote.setUrl(entity.getUrl());
                     quote.setDescription(entity.getDescription());
                     quote.setAuthor(entity.getAuthor());

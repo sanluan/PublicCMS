@@ -11,7 +11,6 @@ import org.apache.lucene.index.Term;
 import org.apache.lucene.search.Sort;
 import org.apache.lucene.search.SortField;
 import org.apache.lucene.search.TermQuery;
-import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.BooleanJunction;
 import org.hibernate.search.query.dsl.MustJunction;
 import org.hibernate.search.query.dsl.QueryBuilder;
@@ -21,6 +20,7 @@ import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.handler.CmsFullTextQuery;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
@@ -55,18 +55,20 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
+     * @param preTag
+     * @param postTag
      * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     public PageHandler query(boolean projection, boolean fuzzy, Short siteId, Integer[] categoryIds, String[] modelIds,
-            String text, String[] fields, String tagIds, String[] dictionaryValues, Date startPublishDate, Date endPublishDate,
-            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+            String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag, String postTag,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        FullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
+        CmsFullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getPage(query, pageIndex, pageSize);
+        return getPage(query, CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
     }
 
     /**
@@ -82,21 +84,24 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
+     * @param preTag
+     * @param postTag
      * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, Short siteId, Integer[] categoryIds, String[] modelIds,
-            String text, String[] fields, String tagIds, String[] dictionaryValues, Date startPublishDate, Date endPublishDate,
-            Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+            String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag, String postTag,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        FullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
+        CmsFullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getFacetPage(queryBuilder, query, facetFields, 10, pageIndex, pageSize);
+        return getFacetPage(queryBuilder, query, facetFields, 10, CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag,
+                pageIndex, pageSize);
     }
 
-    private FullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean fuzzy, Short siteId,
+    private CmsFullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean fuzzy, Short siteId,
             Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField) {
         MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
@@ -153,14 +158,14 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             }
             termination.must(tempJunction.createQuery());
         }
-        FullTextQuery query = getFullTextQuery(termination.createQuery());
+        CmsFullTextQuery query = getCmsFullTextQuery(termination.createQuery());
         if ("publishDate".equals(orderField)) {
             Sort sort = new Sort(new SortField("publishDate", SortField.Type.LONG, true));
-            query.setSort(sort);
+            query.getFullTextQuery().setSort(sort);
         }
         if (projection) {
-            query.setProjection(projectionFields);
-            query.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+            query.getFullTextQuery().setProjection(projectionFields);
+            query.getFullTextQuery().setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         }
         return query;
     }

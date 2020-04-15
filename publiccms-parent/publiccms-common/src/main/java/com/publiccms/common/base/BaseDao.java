@@ -11,21 +11,27 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.search.highlight.Highlighter;
+import org.apache.lucene.search.highlight.QueryScorer;
+import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
 import org.hibernate.ObjectNotFoundException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.hibernate.search.FullTextSession;
 import org.hibernate.search.Search;
-import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.query.dsl.QueryBuilder;
 import org.hibernate.search.query.engine.spi.FacetManager;
 import org.hibernate.search.query.facet.Facet;
 import org.hibernate.search.query.facet.FacetSortOrder;
 import org.hibernate.search.query.facet.FacetingRequest;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ReflectionUtils;
+import org.springframework.web.util.HtmlUtils;
 
 import com.publiccms.common.constants.Constants;
+import com.publiccms.common.handler.CmsFullTextQuery;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
@@ -387,8 +393,7 @@ public abstract class BaseDao<E> {
      * @return full text query
      */
     protected QueryBuilder getFullTextQueryBuilder() {
-        FullTextSession fullTextSession = getFullTextSession();
-        return fullTextSession.getSearchFactory().buildQueryBuilder().forEntity(getEntityClass()).get();
+        return getFullTextSession().getSearchFactory().buildQueryBuilder().forEntity(getEntityClass()).get();
     }
 
     /**
@@ -398,62 +403,83 @@ public abstract class BaseDao<E> {
      * @param facetCount
      * @return full text query
      */
-    protected FullTextQuery getFullTextQuery(org.apache.lucene.search.Query query) {
-        FullTextSession fullTextSession = getFullTextSession();
-        return fullTextSession.createFullTextQuery(query, getEntityClass());
+    protected CmsFullTextQuery getCmsFullTextQuery(org.apache.lucene.search.Query query) {
+        return new CmsFullTextQuery(getFullTextSession().createFullTextQuery(query, getEntityClass()), query);
     }
 
     /**
      * @param fullTextQuery
+     * @param highLighterFieldNames
+     * @param preTag
+     * @param postTag
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    protected PageHandler getPage(FullTextQuery fullTextQuery, Integer pageIndex, Integer pageSize) {
-        return getPage(fullTextQuery, pageIndex, pageSize, Integer.MAX_VALUE);
+    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, String[] highLighterFieldNames, String preTag, String postTag,
+            Integer pageIndex, Integer pageSize) {
+        return getPage(fullTextQuery, highLighterFieldNames, preTag, postTag, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
      * @param fullTextQuery
+     * @param highLighterFieldNames
+     * @param preTag
+     * @param postTag
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(FullTextQuery fullTextQuery, Integer pageIndex, Integer pageSize, Integer maxResults) {
-        PageHandler page = new PageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
+    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, String[] highLighterFieldNames, String preTag, String postTag,
+            Integer pageIndex, Integer pageSize, Integer maxResults) {
+        PageHandler page = new PageHandler(pageIndex, pageSize, fullTextQuery.getFullTextQuery().getResultSize(), maxResults);
         if (CommonUtils.notEmpty(pageSize)) {
-            fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
+            fullTextQuery.getFullTextQuery().setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
-        page.setList(fullTextQuery.getResultList());
+        List<?> resultList = fullTextQuery.getFullTextQuery().getResultList();
+        if (CommonUtils.notEmpty(highLighterFieldNames)) {
+            @SuppressWarnings("unchecked")
+            List<E> entityList = (List<E>) resultList;
+            higtLighter(entityList, fullTextQuery, highLighterFieldNames, preTag, postTag);
+        }
+        page.setList(resultList);
         return page;
     }
 
     /**
      * @param fullTextQuery
      * @param facetFields
-     * @param valueMap
+     * @param facetCount
+     * @param highLighterFieldNames
+     * @param preTag
+     * @param postTag
      * @param pageIndex
      * @param pageSize
      * @return facet results page
      */
-    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery, String[] facetFields,
-            int facetCount, Integer pageIndex, Integer pageSize) {
-        return getFacetPage(queryBuilder, fullTextQuery, facetFields, facetCount, pageIndex, pageSize, Integer.MAX_VALUE);
+    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, CmsFullTextQuery fullTextQuery, String[] facetFields,
+            int facetCount, String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex, Integer pageSize) {
+        return getFacetPage(queryBuilder, fullTextQuery, facetFields, facetCount, highLighterFieldNames, preTag, postTag,
+                pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
      * @param fullTextQuery
      * @param facetFields
-     * @param valueMap
+     * @param facetCount
+     * @param highLighterFieldNames
+     * @param preTag
+     * @param postTag
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return facet results page
      */
-    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, FullTextQuery fullTextQuery, String[] facetFields,
-            int facetCount, Integer pageIndex, Integer pageSize, Integer maxResults) {
-        FacetManager facetManager = fullTextQuery.getFacetManager();
+    protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, CmsFullTextQuery fullTextQuery, String[] facetFields,
+            int facetCount, String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex, Integer pageSize,
+            Integer maxResults) {
+        FacetManager facetManager = fullTextQuery.getFullTextQuery().getFacetManager();
         Map<String, Map<String, Integer>> facetMap = new LinkedHashMap<>();
         for (String facetField : facetFields) {
             String facetFieldName = facetField + FACET_NAME_SUFFIX;
@@ -465,19 +491,71 @@ public abstract class BaseDao<E> {
                     facet -> facet.getCount(), Constants.defaultMegerFunction(), LinkedHashMap::new));
             facetMap.put(facetField, valueMap);
         }
-        FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize, fullTextQuery.getResultSize(), maxResults);
+        FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize, fullTextQuery.getFullTextQuery().getResultSize(),
+                maxResults);
         if (CommonUtils.notEmpty(pageSize)) {
-            fullTextQuery.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
+            fullTextQuery.getFullTextQuery().setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
-        page.setList(fullTextQuery.getResultList());
+        List<?> resultList = fullTextQuery.getFullTextQuery().getResultList();
+        if (CommonUtils.notEmpty(highLighterFieldNames)) {
+            @SuppressWarnings("unchecked")
+            List<E> entityList = (List<E>) resultList;
+            higtLighter(entityList, fullTextQuery, highLighterFieldNames, preTag, postTag);
+        }
+        page.setList(resultList);
         page.setFacetMap(facetMap);
         return page;
     }
 
+    /**
+     * @param resultList
+     * @param fullTextQuery
+     * @param highLighterFieldNames
+     * @param preTag
+     * @param postTag
+     */
+    protected void higtLighter(List<E> resultList, CmsFullTextQuery fullTextQuery, String[] highLighterFieldNames, String preTag,
+            String postTag) {
+        SimpleHTMLFormatter formatter;
+        if (CommonUtils.notEmpty(preTag) && CommonUtils.notEmpty(postTag)) {
+            formatter = new SimpleHTMLFormatter(preTag, postTag);
+        } else {
+            formatter = new SimpleHTMLFormatter();
+        }
+        QueryScorer queryScorer = new QueryScorer(fullTextQuery.getLuceneQuery());
+        Highlighter highlighter = new Highlighter(formatter, queryScorer);
+        try {
+            for (E e : resultList) {
+                for (String fieldName : highLighterFieldNames) {
+                    Object fieldValue = ReflectionUtils
+                            .invokeMethod(BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod(), e);
+                    String hightLightFieldValue = null;
+                    if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
+                        hightLightFieldValue = highlighter.getBestFragment(
+                                getFullTextSession().getSearchFactory().getAnalyzer("cms"), fieldName,
+                                HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME));
+                        if (CommonUtils.notEmpty(hightLightFieldValue)) {
+                            ReflectionUtils.invokeMethod(
+                                    BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
+                                    hightLightFieldValue);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ignore) {
+        }
+    }
+
+    /**
+     * @return session
+     */
     protected Session getSession() {
         return sessionFactory.getCurrentSession();
     }
 
+    /**
+     * @return fulltext session
+     */
     protected FullTextSession getFullTextSession() {
         return Search.getFullTextSession(sessionFactory.getCurrentSession());
     }

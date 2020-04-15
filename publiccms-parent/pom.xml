@@ -45,7 +45,7 @@
         <version.mybatis>3.5.4</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
         <version.mybatisSpring>2.0.3</version.mybatisSpring>
-        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn -->
+        <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene -->
         <version.lucene>5.5.5</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <version.jedis>3.2.0</version.jedis>
@@ -183,6 +183,11 @@
             <dependency>
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-backward-codecs</artifactId>
+                <version>${version.lucene}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.lucene</groupId>
+                <artifactId>lucene-highlighter</artifactId>
                 <version>${version.lucene}</version>
             </dependency>
             <dependency>

@@ -26,6 +26,7 @@ dependencies {
 
         "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}",
         "org.apache.lucene:lucene-backward-codecs:${luceneVersion}",
+        "org.apache.lucene:lucene-highlighter:${luceneVersion}",
 
         "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
         "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}",
