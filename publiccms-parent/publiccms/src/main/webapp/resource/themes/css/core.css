@@ -247,7 +247,7 @@ a.toggleCollapse{text-decoration:none}
 .searchBar .textInput,.searchBar span{float:left}
 .searchBar span{line-height:28px}
 .searchBar span.connect-string{font-size:16px}
-.searchBar ul.searchContent{display:block;overflow:hidden;height:32px;padding-right:100px;position:relative;}
+.searchBar ul.searchContent{display:block;overflow:hidden;height:32px;padding-right:180px;position:relative;}
 .searchBar ul.searchContent:before{font-size:18px;position:absolute;right:0;top:0;line-height:32px;width:30px;text-align:right}
 .searchBar ul.searchContent li{float:left;white-space:nowrap;display:block;overflow:hidden;height:28px;padding:2px 0}
 .searchBar ul.searchContentHover,.searchBar ul.searchContentHover li{height:auto}
