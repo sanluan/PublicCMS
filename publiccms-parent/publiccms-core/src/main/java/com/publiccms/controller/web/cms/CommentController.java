@@ -50,7 +50,7 @@ public class CommentController {
 
     /**
      * @param site
-     * @param user 
+     * @param user
      * @param entity
      * @param returnUrl
      * @param request
@@ -66,37 +66,39 @@ public class CommentController {
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
-        entity.setStatus(CmsCommentService.STATUS_PEND);
-        if (null != entity.getId()) {
-            CmsComment oldEntity = service.getEntity(entity.getId());
-            if (null != oldEntity && !oldEntity.isDisabled() && oldEntity.getUserId() == user.getId()) {
-                entity.setUpdateDate(CommonUtils.getDate());
-                entity = service.update(entity.getId(), entity, ignoreProperties);
-                logOperateService
-                        .save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.cmsComment",
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
-            }
-        } else {
-            Date now = CommonUtils.getDate();
-            entity.setSiteId(site.getId());
-            entity.setUserId(user.getId());
-            if (null != entity.getReplyId()) {
-                CmsComment reply = service.getEntity(entity.getReplyId());
-                if (null == reply) {
-                    entity.setReplyId(null);
-                } else {
-                    entity.setContentId(reply.getContentId());
-                    if (null == entity.getReplyUserId()) {
-                        entity.setReplyUserId(reply.getUserId());
+        if (CommonUtils.notEmpty(entity.getText())) {
+            entity.setStatus(CmsCommentService.STATUS_PEND);
+            if (null != entity.getId()) {
+                CmsComment oldEntity = service.getEntity(entity.getId());
+                if (null != oldEntity && !oldEntity.isDisabled() && oldEntity.getUserId() == user.getId()) {
+                    entity.setUpdateDate(CommonUtils.getDate());
+                    entity = service.update(entity.getId(), entity, ignoreProperties);
+                    logOperateService
+                            .save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.cmsComment",
+                                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                }
+            } else {
+                Date now = CommonUtils.getDate();
+                entity.setSiteId(site.getId());
+                entity.setUserId(user.getId());
+                if (null != entity.getReplyId()) {
+                    CmsComment reply = service.getEntity(entity.getReplyId());
+                    if (null == reply) {
+                        entity.setReplyId(null);
+                    } else {
+                        entity.setContentId(reply.getContentId());
+                        if (null == entity.getReplyUserId()) {
+                            entity.setReplyUserId(reply.getUserId());
+                        }
                     }
                 }
+                if (null != entity.getReplyUserId() && entity.getReplyUserId().equals(user.getId())) {
+                    entity.setReplyUserId(null);
+                }
+                service.save(entity);
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",
+                        RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
             }
-            if (null != entity.getReplyUserId() && entity.getReplyUserId().equals(user.getId())) {
-                entity.setReplyUserId(null);
-            }
-            service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",
-                    RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
