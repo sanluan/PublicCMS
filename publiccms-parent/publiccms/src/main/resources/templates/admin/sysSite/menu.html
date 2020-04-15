@@ -16,6 +16,11 @@
             <li>
                 <a href="sysSite/sql.html" target="navTab" rel="sysSite/sql"><i class="icon-bug icon-large"></i> <@t.menu 'site_sql'/></a>
             </li>
+        <#if getDictEnable?? && getDictEnable?is_method && getDictEnable()>
+            <li>
+                <a href="sysSite/dict.html" target="navTab" rel="sysSite/dict"><i class="icon-book icon-large"></i> <@t.menu 'dict'/></a>
+            </li>
+        </#if>
             <li>
                 <a href="sysSite/reCreateIndex?_csrf=<@_csrfToken admin=true/>" target="ajaxTodo" title="<@t.page 'confirm.recreate_index'/>"><i class="icon-refresh icon-large"></i> <@t.menu 'site_recreate_index'/></a>
             </li>

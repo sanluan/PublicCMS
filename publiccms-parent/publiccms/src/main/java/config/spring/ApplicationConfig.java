@@ -41,6 +41,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.search.MultiTokenFilterFactory;
 import com.publiccms.common.search.MultiTokenizerFactory;
+import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.MenuMessageComponent;
@@ -74,7 +75,7 @@ public class ApplicationConfig {
      */
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
-        CmsDataSource bean = new CmsDataSource(getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
+        CmsDataSource bean = new CmsDataSource(getDirPath(CmsDataSource.DATABASE_CONFIG_FILENAME));
         CmsDataSource.initDefaultDataSource();
         return bean;
     }
@@ -136,13 +137,6 @@ public class ApplicationConfig {
 
         MultiTokenFilterFactory.init(env.getProperty("cms.tokenFilterFactory"),
                 getMap(env.getProperty("cms.tokenFilterFactory.parameters")));
-        if ("hmmchinese".equalsIgnoreCase(env.getProperty("cms.tokenizerFactory"))) {
-            String dictDirPath = getDirPath("/dict/");
-            File dictDir = new File(dictDirPath);
-            if (dictDir.exists() && dictDir.isDirectory()) {
-                DictionaryReloader.reload(dictDirPath);// 自定义词库
-            }
-        }
         bean.setHibernateProperties(properties);
         return bean;
     }
@@ -201,6 +195,14 @@ public class ApplicationConfig {
         bean.setRootPath(getDirPath(CommonConstants.BLANK));
         bean.setMasterSiteIds(env.getProperty("cms.masterSiteIds"));
         bean.setDefaultSiteId(Short.parseShort(env.getProperty("cms.defaultSiteId")));
+        if ("hmmchinese".equalsIgnoreCase(env.getProperty("cms.tokenizerFactory"))) {
+            String dictDirPath = getDirPath(AnalyzerDictUtils.DIR_DICT);
+            File dictDir = new File(dictDirPath);
+            if (dictDir.exists() && dictDir.isDirectory()) {
+                DictionaryReloader.reload(dictDirPath);// 自定义词库
+            }
+            bean.setDictEnable(true);
+        }
         return bean;
     }
 

@@ -76,11 +76,28 @@ public class SiteComponent implements Cache {
     private String taskTemplateHistoryFilePath;
 
     private short defaultSiteId;
+    private boolean dictEnable = false;
+
     private Set<Short> masterSiteIdSet = new HashSet<>();
     @Autowired
     private SysDomainService sysDomainService;
     @Autowired
     private SysSiteService sysSiteService;
+
+    /**
+     * @param dictEnable
+     *            the dictEnable to set
+     */
+    public void setDictEnable(boolean dictEnable) {
+        this.dictEnable = dictEnable;
+    }
+
+    /**
+     * @return the dictEnable
+     */
+    public boolean isDictEnable() {
+        return dictEnable;
+    }
 
     /**
      * @param site

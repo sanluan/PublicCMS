@@ -10,13 +10,20 @@ import java.lang.reflect.Method;
  *
  */
 public class DictionaryReloader {
+    public static final String DICT_COREDICT = "/coredict.dct";
+    public static final String DICT_BIGRAMDICT = "/bigramdict.dct";
+    public static final String MEM_COREDICT = "/coredict.mem";
+    public static final String MEM_BIGRAMDICT = "/bigramdict.mem";
 
+    /**
+     * @param dctroot
+     */
     public synchronized static void reload(String dctroot) {
-        if (new File(dctroot + "/coredict.dct").exists() || new File(dctroot + "/coredict.mem").exists()) {
+        if (new File(dctroot + DICT_COREDICT).exists() || new File(dctroot + MEM_COREDICT).exists()) {
             WordDictionary dict = WordDictionary.getInstance();
             dict.load(dctroot);
         }
-        if (new File(dctroot + "/bigramdict.dct").exists() || new File(dctroot + "/bigramdict.mem").exists()) {
+        if (new File(dctroot + DICT_BIGRAMDICT).exists() || new File(dctroot + MEM_BIGRAMDICT).exists()) {
             BigramDictionary dict = BigramDictionary.getInstance();
             try {
                 Method method = BigramDictionary.class.getDeclaredMethod("load", String.class);

@@ -12,8 +12,18 @@
     </parent>
     <dependencies>
         <dependency>
+            <groupId>com.publiccms</groupId>
+            <artifactId>publiccms-core</artifactId>
+            <version>V4.0.202004.a</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-analyzers-smartcn</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

@@ -55,7 +55,7 @@
                         <input type="hidden" name="uuid" value="${uuid!}"/>
                         <input type="submit" value="Login"/>
                     </p>
-                    <#if _oauthList?has_content&&_oauthList?is_directive>
+                    <#if _oauthList??&&_oauthList?is_directive>
                         <@_oauthList>
                             <p><#list list as o><a href="${site.dynamicPath}/oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
                         </@_oauthList>

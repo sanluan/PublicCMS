@@ -1,7 +1,6 @@
 package com.publiccms.common.generator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashMap;
@@ -11,10 +10,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 
-import com.publiccms.common.tools.SmartcnDictUtils;
-import org.apache.lucene.analysis.cn.smart.hhmm.DictionaryReloader;
+import com.publiccms.common.tools.AnalyzerDictUtils;
 
 public class AnalyzerDictGenerator {
 
@@ -33,7 +32,8 @@ public class AnalyzerDictGenerator {
                     }
                 }
             }
-            generate(dirPath, wordMap);
+            new File(dirPath).mkdirs();
+            AnalyzerDictUtils.generate(dirPath, wordMap);
             DictionaryReloader.reload(dirPath);
         } catch (IOException | ClassNotFoundException e1) {
         }
@@ -51,26 +51,6 @@ public class AnalyzerDictGenerator {
             }
         } catch (Exception e) {
             e.getMessage();
-        }
-    }
-
-    public static void generate(String newCoreDir, Map<String, Integer> wordMap)
-            throws FileNotFoundException, ClassNotFoundException, IOException {
-        new File(newCoreDir).mkdirs();
-        Map<String, Map<String, Integer>> cnTFsMap = new HashMap<>();
-        Map<String, Integer> deliFreqsMap = SmartcnDictUtils.defaultDelimiterFreqsMap;
-        SmartcnDictUtils.readFromCoreMem(SmartChineseAnalyzer.class.getResourceAsStream("hhmm/coredict.mem"), cnTFsMap,
-                deliFreqsMap);
-        SmartcnDictUtils.mergeTFsMap(cnTFsMap, wordMap);
-        SmartcnDictUtils.create(newCoreDir + "/coredict.dct", SmartcnDictUtils.TYPE_CORE, cnTFsMap, deliFreqsMap);
-        SmartcnDictUtils.create(newCoreDir + "/bigramdict.dct", SmartcnDictUtils.TYPE_BIGRAM, cnTFsMap, deliFreqsMap);
-        File file = new File(newCoreDir + "/coredict.mem");
-        if (file.exists()) {
-            file.delete();
-        }
-        File file2 = new File(newCoreDir + "/bigramdict.mem");
-        if (file2.exists()) {
-            file2.delete();
         }
     }
 }

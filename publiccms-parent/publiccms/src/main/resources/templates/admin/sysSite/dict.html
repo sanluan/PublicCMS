@@ -1,0 +1,18 @@
+<form action="dict/save.do?callbackType=closeCurrent" method="post" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this,navTabAjaxDone);">
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+    <div class="pageFormContent" layoutH="50">
+        <dl class="nowrap">
+            <dt><@t.page 'dict'/>:</dt>
+            <dd>
+                <textarea name="dict" cols="50" rows="20">${getDict()!}</textarea>
+                <span class="info"><@t.page 'dict.description'/></span>
+            </dd>
+        </dl>
+    </div>
+</form>
