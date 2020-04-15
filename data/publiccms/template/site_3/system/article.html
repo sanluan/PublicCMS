@@ -36,7 +36,7 @@
 					<#assign related+=[a.id]/>
 	</#list>
 </@_contentRelatedList>
-<#if related?size lt 10>
+<#if content.tagIds?has_content && related?size lt 10>
 	<@_search tagId=content.tagIds count=11-related?size>
 		<#list page.list as a>
                  	<#if !related?seq_contains(a.id)>
