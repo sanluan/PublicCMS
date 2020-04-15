@@ -1,6 +1,6 @@
 <#ftl auto_esc=false/>
 {<#assign attribute=getContentAttribute(content.id)/>
-    <@_category id=content.categoryId absoluteURL=true>
+    <@_category id=content.categoryId>
         <#assign category=object/>
     </@_category>
     "id":"${content.id}",
@@ -16,10 +16,10 @@
     "text":"${(attribute.text?json_string)!}",
     "sourceUrl":"${(attribute.sourceUrl)!}",
     "source":"${(attribute.source)!}"<#if content.hasFiles>
-    ,"files:[<@_contentFileList contentId=content.id fileTypes='video,audio,other' absoluteURL=true><#list page.list as file>
+    ,"files:[<@_contentFileList contentId=content.id fileTypes='video,audio,other'><#list page.list as file>
         {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
     ]</#if><#if content.hasImages>
-    ,"images":[<@_contentFileList contentId=content.id fileTypes='image' absoluteURL=true><#list page.list as file>
+    ,"images":[<@_contentFileList contentId=content.id fileTypes='image'><#list page.list as file>
         {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
     ]</#if>
 </@_content>

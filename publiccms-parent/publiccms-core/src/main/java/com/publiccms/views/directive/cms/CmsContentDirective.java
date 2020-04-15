@@ -32,6 +32,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
+        boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
@@ -41,7 +42,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     entity.setClicks(entity.getClicks() + statistics.getClicks());
                     entity.setScores(entity.getScores() + statistics.getScores());
                 }
-                if (handler.getBoolean("absoluteURL", false)) {
+                if (absoluteURL) {
                     templateComponent.initContentUrl(site, entity);
                     templateComponent.initContentCover(site, entity);
                 }
@@ -63,7 +64,6 @@ public class CmsContentDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsContent> entityList = service.getEntitys(ids);
-                boolean absoluteURL = handler.getBoolean("absoluteURL", true);
                 Consumer<CmsContent> consumer;
                 if (absoluteURL) {
                     consumer = e -> {

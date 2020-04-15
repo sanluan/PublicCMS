@@ -15,7 +15,7 @@
     </thead>
     <tbody>
 <#if contentId?has_content>
-    <@_contentFileList contentId=contentId fileTypes=fileTypes>
+    <@_contentFileList contentId=contentId fileTypes=fileTypes absoluteURL=false>
         <#list page.list as file>
             <tr>
                 <td>

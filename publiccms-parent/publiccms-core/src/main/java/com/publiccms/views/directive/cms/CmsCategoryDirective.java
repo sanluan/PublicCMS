@@ -31,6 +31,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer id = handler.getInteger("id");
         String code = handler.getString("code");
+        boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id) || CommonUtils.notEmpty(code)) {
             CmsCategory entity;
@@ -40,7 +41,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 entity = service.getEntityByCode(site.getId(), code);
             }
             if (null != entity && site.getId() == entity.getSiteId()) {
-                if (handler.getBoolean("absoluteURL", false)) {
+                if (absoluteURL) {
                     templateComponent.initCategoryUrl(site, entity);
                 }
                 handler.put("object", entity);
@@ -61,7 +62,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsCategory> entityList = service.getEntitys(ids);
                 Consumer<CmsCategory> consumer = null;
-                if (handler.getBoolean("absoluteURL", true)) {
+                if (absoluteURL) {
                     consumer = e -> {
                         templateComponent.initCategoryUrl(site, e);
                     };

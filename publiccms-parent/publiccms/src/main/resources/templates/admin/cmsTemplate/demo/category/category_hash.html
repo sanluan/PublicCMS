@@ -1,5 +1,5 @@
 <#assign ids=(id!'_')?split('_')/>
-<@_category id=ids[0] containsAttribute=true absoluteURL=true;category>
+<@_category id=ids[0] containsAttribute=true;category>
 <#if ids[1]=getHash(category.code+category.id)?string>
 <!DOCTYPE html>
 <html lang="en">

@@ -31,11 +31,12 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
+        boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             CmsPlace entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
-                if (handler.getBoolean("absoluteURL", false)) {
+                if (absoluteURL) {
                     templateComponent.initPlaceCover(site, entity);
                 }
                 handler.put("object", entity);
@@ -51,7 +52,6 @@ public class CmsPlaceDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsPlace> entityList = service.getEntitys(ids);
-                boolean absoluteURL = handler.getBoolean("absoluteURL", true);
                 Consumer<CmsPlace> consumer;
                 if (absoluteURL) {
                     consumer = e -> {

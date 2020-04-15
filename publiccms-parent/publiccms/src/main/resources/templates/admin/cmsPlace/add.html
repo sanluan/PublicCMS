@@ -1,4 +1,4 @@
-<@_place id=id>
+<@_place id=id absoluteURL=false>
     <#assign a=object/>
 </@_place>
 <@_placeMetadata path=(a.path)!path!><#assign metadata=object/></@_placeMetadata>
@@ -6,9 +6,9 @@
 <#if !a?has_content&&itemType?has_content>
 <#switch itemType>
     <#case 'content'>
-        <@_content id=itemId><#assign content=object/></@_content><#break>
+        <@_content id=itemId absoluteURL=false><#assign content=object/></@_content><#break>
     <#case 'category'>
-        <@_category id=itemId><#assign category=object/></@_category><#break>
+        <@_category id=itemId absoluteURL=false><#assign category=object/></@_category><#break>
 </#switch>
 </#if>
 <form method="post" autocomplete="off" action="cmsPlace/save.do?callbackType=closeCurrent&navTabId=cmsPlace/dataList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">

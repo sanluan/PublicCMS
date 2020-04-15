@@ -35,7 +35,7 @@
             <div>${text?no_esc!}</div>
         <#if content.hasFiles>
             <div>
-                <@_contentFileList contentId=content.id fileTypes='video,audio,other' absoluteURL=true>
+                <@_contentFileList contentId=content.id fileTypes='video,audio,other'>
                     <#list page.list as file>
                         <a href="${(file.filePath)!}" target="_blank">${(file.filePath)!}</a>
                     </#list>
@@ -44,7 +44,7 @@
         </#if>
         <#if content.hasImages>
             <div>
-             <@_contentFileList contentId=content.id fileTypes='image' absoluteURL=true>
+             <@_contentFileList contentId=content.id fileTypes='image'>
                  <#list page.list as file>
                      <img src="${(file.filePath)!}" style="max-width:200px;max-height:200px;border:1px solid;"/>
                  </#list>
