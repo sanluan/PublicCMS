@@ -47,11 +47,17 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
             Integer pageIndex = handler.getInteger("pageIndex", 1);
             Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
             Date currentDate = CommonUtils.getMinuteDate();
+            boolean highlight = handler.getBoolean("highlight", false);
+            String preTag = null;
+            String postTag = null;
+            if (highlight) {
+                preTag = handler.getString("preTag");
+                postTag = handler.getString("postTag");
+            }
             try {
-                page = service.facetQuery(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true),
+                page = service.facetQuery(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true), highlight,
                         site.getId(), word, handler.getStringArray("field"), tagIds, handler.getIntegerArray("categoryId"),
-                        handler.getStringArray("modelId"), dictionaryValues, handler.getString("preTag"),
-                        handler.getString("postTag"), handler.getDate("startPublishDate"),
+                        handler.getStringArray("modelId"), dictionaryValues, preTag, postTag, handler.getDate("startPublishDate"),
                         handler.getDate("endPublishDate", currentDate), currentDate, handler.getString("orderField"), pageIndex,
                         count);
                 @SuppressWarnings("unchecked")

@@ -46,12 +46,19 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
         Integer pageIndex = handler.getInteger("pageIndex", 1);
         Integer count = handler.getInteger("pageSize", handler.getInteger("count", 30));
         Date currentDate = CommonUtils.getMinuteDate();
+        boolean highlight = handler.getBoolean("highlight", false);
+        String preTag = null;
+        String postTag = null;
+        if (highlight) {
+            preTag = handler.getString("preTag");
+            postTag = handler.getString("postTag");
+        }
         try {
-            page = service.query(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true), site.getId(), word,
-                    handler.getStringArray("field"), tagIds, handler.getInteger("categoryId"), handler.getBoolean("containChild"),
-                    handler.getIntegerArray("categoryIds"), handler.getStringArray("modelIds"), dictionaryValues,
-                    handler.getString("preTag"), handler.getString("postTag"), handler.getDate("startPublishDate"), currentDate,
-                    currentDate, handler.getString("orderField"), pageIndex, count);
+            page = service.query(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true), highlight,
+                    site.getId(), word, handler.getStringArray("field"), tagIds, handler.getInteger("categoryId"),
+                    handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
+                    handler.getStringArray("modelIds"), dictionaryValues, preTag, postTag, handler.getDate("startPublishDate"),
+                    currentDate, currentDate, handler.getString("orderField"), pageIndex, count);
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             if (null != list) {

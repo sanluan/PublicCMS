@@ -409,6 +409,7 @@ public abstract class BaseDao<E> {
 
     /**
      * @param fullTextQuery
+     * @param highlight
      * @param highLighterFieldNames
      * @param preTag
      * @param postTag
@@ -416,13 +417,14 @@ public abstract class BaseDao<E> {
      * @param pageSize
      * @return results page
      */
-    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, String[] highLighterFieldNames, String preTag, String postTag,
-            Integer pageIndex, Integer pageSize) {
-        return getPage(fullTextQuery, highLighterFieldNames, preTag, postTag, pageIndex, pageSize, Integer.MAX_VALUE);
+    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, boolean highlight, String[] highLighterFieldNames,
+            String preTag, String postTag, Integer pageIndex, Integer pageSize) {
+        return getPage(fullTextQuery, highlight, highLighterFieldNames, preTag, postTag, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
      * @param fullTextQuery
+     * @param highlight
      * @param highLighterFieldNames
      * @param preTag
      * @param postTag
@@ -431,15 +433,17 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, String[] highLighterFieldNames, String preTag, String postTag,
-            Integer pageIndex, Integer pageSize, Integer maxResults) {
+    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, boolean highlight, String[] highLighterFieldNames,
+            String preTag, String postTag, Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(pageIndex, pageSize, fullTextQuery.getFullTextQuery().getResultSize(), maxResults);
         if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.getFullTextQuery().setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
         @SuppressWarnings("unchecked")
         List<E> resultList = fullTextQuery.getFullTextQuery().getResultList();
-        higtLighter(resultList, fullTextQuery, highLighterFieldNames, preTag, postTag);
+        if (highlight) {
+            higtLighter(resultList, fullTextQuery, highLighterFieldNames, preTag, postTag);
+        }
         page.setList(resultList);
         return page;
     }
@@ -456,15 +460,17 @@ public abstract class BaseDao<E> {
      * @return facet results page
      */
     protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, CmsFullTextQuery fullTextQuery, String[] facetFields,
-            int facetCount, String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex, Integer pageSize) {
-        return getFacetPage(queryBuilder, fullTextQuery, facetFields, facetCount, highLighterFieldNames, preTag, postTag,
-                pageIndex, pageSize, Integer.MAX_VALUE);
+            int facetCount, boolean highlight, String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex,
+            Integer pageSize) {
+        return getFacetPage(queryBuilder, fullTextQuery, facetFields, facetCount, highlight, highLighterFieldNames, preTag,
+                postTag, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
      * @param fullTextQuery
      * @param facetFields
      * @param facetCount
+     * @param highlight
      * @param highLighterFieldNames
      * @param preTag
      * @param postTag
@@ -474,8 +480,8 @@ public abstract class BaseDao<E> {
      * @return facet results page
      */
     protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, CmsFullTextQuery fullTextQuery, String[] facetFields,
-            int facetCount, String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex, Integer pageSize,
-            Integer maxResults) {
+            int facetCount, boolean highlight, String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex,
+            Integer pageSize, Integer maxResults) {
         FacetManager facetManager = fullTextQuery.getFullTextQuery().getFacetManager();
         Map<String, Map<String, Integer>> facetMap = new LinkedHashMap<>();
         for (String facetField : facetFields) {
@@ -495,7 +501,9 @@ public abstract class BaseDao<E> {
         }
         @SuppressWarnings("unchecked")
         List<E> resultList = fullTextQuery.getFullTextQuery().getResultList();
-        higtLighter(resultList, fullTextQuery, highLighterFieldNames, preTag, postTag);
+        if (highlight) {
+            higtLighter(resultList, fullTextQuery, highLighterFieldNames, preTag, postTag);
+        }
         page.setList(resultList);
         page.setFacetMap(facetMap);
         return page;

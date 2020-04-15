@@ -45,6 +45,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     /**
      * @param projection
      * @param fuzzy
+     * @param highlight 
      * @param siteId
      * @param text
      * @param tagIds
@@ -62,18 +63,19 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, boolean fuzzy, Short siteId, Integer[] categoryIds, String[] modelIds,
+    public PageHandler query(boolean projection, boolean fuzzy, boolean highlight, Short siteId, Integer[] categoryIds, String[] modelIds,
             String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag, String postTag,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         CmsFullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getPage(query, CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
+        return getPage(query, highlight, CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
     }
 
     /**
      * @param projection
      * @param fuzzy
+     * @param highlight 
      * @param siteId
      * @param categoryIds
      * @param modelIds
@@ -91,13 +93,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, Short siteId, Integer[] categoryIds, String[] modelIds,
+    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, boolean highlight, Short siteId, Integer[] categoryIds, String[] modelIds,
             String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag, String postTag,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         CmsFullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getFacetPage(queryBuilder, query, facetFields, 10, CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag,
+        return getFacetPage(queryBuilder, query, facetFields, 10, highlight,  CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag,
                 pageIndex, pageSize);
     }
 
