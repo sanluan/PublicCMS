@@ -58,7 +58,7 @@ public class SysSiteServiceTest {
                 CmsContentService.STATUS_NORMAL, false);
         entity.setDescription(text);
         cmsService.save(entity);
-        PageHandler page = cmsService.query(false, true, (short) 1, "天津黑核科技有限公司", null, null, null, null, null, null, null,
+        PageHandler page = cmsService.query(false, true, true, (short) 1, "天津黑核科技有限公司", null, null, null, null, null, null, null,
                 "<em>", "</em>", null, null, CommonUtils.getMinuteDate(), null, null, null);
         for (CmsContent site : (List<CmsContent>) page.getList()) {
             System.out.println(site.getTitle() + "\t" + site.getDescription());
