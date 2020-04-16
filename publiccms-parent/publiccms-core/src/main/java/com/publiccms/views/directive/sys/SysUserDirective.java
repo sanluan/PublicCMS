@@ -27,7 +27,6 @@ public class SysUserDirective extends AbstractTemplateDirective {
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             SysUser entity = service.getEntity(id);
-            entity.setPassword(null);
             if (null != entity && site.getId() == entity.getSiteId()) {
                 entity.setPassword(null);
                 handler.put("object", entity).render();
