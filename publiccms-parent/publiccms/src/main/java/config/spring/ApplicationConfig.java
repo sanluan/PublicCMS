@@ -75,7 +75,7 @@ public class ApplicationConfig {
      */
     @Bean
     public DataSource dataSource() throws PropertyVetoException {
-        CmsDataSource bean = new CmsDataSource(getDirPath(CmsDataSource.DATABASE_CONFIG_FILENAME));
+        CmsDataSource bean = new CmsDataSource(getDirPath(CommonConstants.BLANK) + CmsDataSource.DATABASE_CONFIG_FILENAME);
         CmsDataSource.initDefaultDataSource();
         return bean;
     }
