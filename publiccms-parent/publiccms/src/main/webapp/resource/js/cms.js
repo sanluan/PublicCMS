@@ -91,8 +91,9 @@ function addUser(id,name){
     if(name){
         name=name.trim();
     }
-    if(id&&name){
-        $('.adminIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"adminIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+    if(id && name){
+        $box = $('<span></span>').text(name).append('<a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>').append($('<input type=\"hidden\" name=\"adminIds\"/>').val(id));
+        $('.adminIds',navTab.getCurrentPanel()).append($box);
     }
     $('input[name=\'userId\']',navTab.getCurrentPanel()).val('');
     $('input[name=\'nickName\']',navTab.getCurrentPanel()).val('');
