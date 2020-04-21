@@ -110,23 +110,26 @@ $('select[name=parameterType]').on('change',function() {
     }
 });
 function addParameter(parameterName,array,required,parameterType,parameterTypeText,alias) {
-    if(parameterName) {
+	if(parameterName) {
         parameterName=parameterName.trim();
     }
-    var text=parameterTypeText;
-    if(array){
-        text+='[<@t.page 'array'/>]';
-    }
-    text+=" : "+parameterName;
-    if(alias) {
-        alias=alias.trim();
-        text+=" > "+alias;
-    }
-    if(required){
-        text+=" <em>*</em>";
-    }
     if(parameterName){
-        $('.parametersBox',navTab.getCurrentPanel()).append("<span>"+text+" <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].name\" value=\""+parameterName+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].type\" value=\""+parameterType+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].array\" value=\""+array+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].required\" value=\""+required+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].alias\" value=\""+alias+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        var text=parameterTypeText;
+        if(array){
+            text+='[<@t.page 'array'/>]';
+        }
+        text+=' : '+parameterName;
+        if(alias) {
+            alias=alias.trim();
+            text+=' > '+alias;
+        }
+        if(required){
+            text+=' <em>*</em>';
+        }
+        $box = $('<span></span>').text(text);
+        $box.append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].name").val(parameterName)).append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].alias").val(alias));
+        $box.append("<input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].type\" value=\""+parameterType+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].array\" value=\""+array+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].required\" value=\""+required+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>");
+        $('.parametersBox',navTab.getCurrentPanel()).append($box);
     }
     $('input[name=\'parameterName\']',navTab.getCurrentPanel()).val('');
     $('input[name=\'parameterType\']',navTab.getCurrentPanel()).val('');
