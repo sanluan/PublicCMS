@@ -2,7 +2,7 @@ function addTagType(id,name){
     if(name){
         name=name.trim();
     }
-    if(id&&name){
+    if(id && name){
         $box = $('<span></span>').text(name).append('<a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>').append($('<input type=\"hidden\" name=\"tagTypes[].id\"/>').val(id));
         $('.tagsBox',navTab.getCurrentPanel()).append($box);
     }else if(name){
@@ -22,11 +22,27 @@ function reIndexTagType(){
         $('input[name$=\\.name]',this).attr('name','tagTypes['+tagIndex+'].name');
     });
 }
-function addTag(typeId,id,name){
+function addCategory(id, name, contentId){
     if(name){
         name=name.trim();
     }
-    if(id&&name){
+    if(id && name && 0==$('.categoryIds input[name=categoryIds][value='+id+']',navTab.getCurrentPanel()).length){
+        $box = $('<span></span>').text(name).append('<a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>');
+        if(contentId){
+            $box.append($('<input type=\"hidden\" name=\"contentIds\"/>').val(contentId));
+        }else{
+            $box.append($('<input type=\"hidden\" name=\"categoryIds\"/>').val(id));
+        }
+        $('.categoryIds',navTab.getCurrentPanel()).append($box);
+    }
+    $('input[name=\'quoteCategoryId\']',navTab.getCurrentPanel()).val('');
+    $('input[name=\'categoryName\']',navTab.getCurrentPanel()).val('');
+}
+function addTag(typeId, id, name){
+    if(name){
+        name=name.trim();
+    }
+    if(id && name){
         $box = $('<span></span>').text(name).append('<a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>').append($('<input type=\"hidden\" name=\"tags[].id\"/>').val(id));
         $('.tags_'+typeId,navTab.getCurrentPanel()).append($box);
     }else if(name){

@@ -74,20 +74,6 @@
 $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(){
     addCategory($('input[name=\'quoteCategoryId\']',navTab.getCurrentPanel()).val(), $(this).val(), null);
 });
-function addCategory(id,name,contentId){
-    if(name){
-        name=name.trim();
-    }
-    if(id&&name){
-        if(contentId){
-            $('.categoryIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"contentIds\" value=\""+contentId+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-        }else{
-            $('.categoryIds',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"categoryIds\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
-        }
-    }
-    $('input[name=\'quoteCategoryId\']',navTab.getCurrentPanel()).val('');
-    $('input[name=\'categoryName\']',navTab.getCurrentPanel()).val('');
-}
 <#if a?has_content>
 <@_contentList quoteId=a.id pageSize=100>
     <#list page.list as a>
