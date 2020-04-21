@@ -3,9 +3,11 @@ function addTagType(id,name){
         name=name.trim();
     }
     if(id&&name){
-        $('.tagsBox',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"tagTypes[].id\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        $box = $('<span></span>').text(name).append('<a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>').append($('<input type=\"hidden\" name=\"tagTypes[].id\"/>').val(id));
+        $('.tagsBox',navTab.getCurrentPanel()).append($box);
     }else if(name){
-        $('.tagsBox',navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"tagTypes[].name\" value=\""+name+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        $box = $('<span></span>').text(name).append('<a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>').append($('<input type=\"hidden\" name=\"tagTypes[].name\"/>').val(name));
+        $('.tagsBox',navTab.getCurrentPanel()).append($box);
     }
     reIndexTagType();
     $('input[name=\'type[].id\']',navTab.getCurrentPanel()).val('');
@@ -25,9 +27,11 @@ function addTag(typeId,id,name){
         name=name.trim();
     }
     if(id&&name){
-        $('.tags_'+typeId,navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"tags[].id\" value=\""+id+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        $box = $('<span></span>').text(name).append('<a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>').append($('<input type=\"hidden\" name=\"tags[].id\"/>').val(id));
+        $('.tags_'+typeId,navTab.getCurrentPanel()).append($box);
     }else if(name){
-        $('.tags_'+typeId,navTab.getCurrentPanel()).append("<span>"+name+" <input type=\"hidden\" name=\"tags[].name\" value=\""+name+"\"/><input type=\"hidden\" name=\"tags[].typeId\" value=\""+typeId+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a></span>");
+        $box = $('<span></span>').text(name).append('<a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>').append($('<input type=\"hidden\" name=\"tags[].name\"/>').val(name)).append($('<input type=\"hidden\" name=\"tags[].typeId\"/>').val(typeId));
+        $('.tags_'+typeId,navTab.getCurrentPanel()).append($box);
     }
     reIndexTag();
     $('input[name=\'tag['+typeId+'].id\']',navTab.getCurrentPanel()).val('');
