@@ -104,24 +104,7 @@
             </#list>
         </tbody>
     </table>
-    <#if page??>
-    <div class="pageBar panelBar">
-        <div class="pages">
-            <span><@t.page 'page_size'/>:</span>
-            <select class="combox" name="numPerPage">
-                <option value="30"${(page.pageSize=30)?then(' selected="true"','')?no_esc}>30</option>
-                <option value="50"${(page.pageSize=50)?then(' selected="true"','')?no_esc}>50</option>
-                <option value="100"${(page.pageSize=100)?then(' selected="true"','')?no_esc}>100</option>
-            </select>
-            <span><@t.page 'total_count' page.totalCount/></span>
-        </div>
-        <div class="pagination" targetType="dialog" rel="content_list" totalCount="${page.totalCount}" numPerPage="${page.pageSize}" pageNumShown="10" currentPage="${page.pageIndex}"></div>
-    </div>
-    <script>
-    $('select[name=numPerPage]',$.pdialog.getCurrent()).on('change',function(){
-        dwzPageBreak({targetType:dialog, numPerPage:this.value});
-    });
-    </script>
-    </#if>
+    <#assign rel='content_list'/>
+    <#include "../include_page/pageDialog.html"/>
 </div>
 </@_contentList>
