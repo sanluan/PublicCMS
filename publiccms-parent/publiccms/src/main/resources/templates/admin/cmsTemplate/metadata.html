@@ -123,10 +123,11 @@ function addParameter(parameterName,array,required,parameterType,parameterTypeTe
             alias=alias.trim();
             text+=' > '+alias;
         }
-        if(required){
-            text+=' <em>*</em>';
-        }
+        
         $box = $('<span></span>').text(text);
+        if(required){
+            $box.append('<em>*</em>');
+        }
         $box.append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].name").val(parameterName)).append($('<input type=\"hidden\"/>').attr("name","parameterTypeMap["+parameterName+"].alias").val(alias));
         $box.append("<input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].type\" value=\""+parameterType+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].array\" value=\""+array+"\"/> <input type=\"hidden\" name=\"parameterTypeMap["+parameterName+"].required\" value=\""+required+"\"/><a href=\"javascript:;\"><i class=\"icon-remove-sign\"></i></a>");
         $('.parametersBox',navTab.getCurrentPanel()).append($box);
