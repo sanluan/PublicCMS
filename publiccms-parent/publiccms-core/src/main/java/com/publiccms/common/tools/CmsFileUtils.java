@@ -156,8 +156,7 @@ public class CmsFileUtils {
      */
     public static FileSize getFileSize(String filePath, String suffix) {
         if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
-            try {
-                FileInputStream fis = new FileInputStream(filePath);
+            try (FileInputStream fis = new FileInputStream(filePath)){
                 BufferedImage bufferedImg = ImageIO.read(fis);
                 FileSize fileSize = new FileSize();
                 fileSize.setWidth(bufferedImg.getWidth());
