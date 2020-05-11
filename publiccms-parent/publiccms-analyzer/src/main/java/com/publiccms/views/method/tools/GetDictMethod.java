@@ -37,6 +37,6 @@ public class GetDictMethod extends BaseMethod {
 
     @Override
     public boolean needAppToken() {
-        return false;
+        return true;
     }
 }

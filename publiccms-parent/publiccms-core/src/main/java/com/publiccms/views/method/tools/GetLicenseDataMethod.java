@@ -26,7 +26,7 @@ public class GetLicenseDataMethod extends BaseMethod {
 
     @Override
     public boolean needAppToken() {
-        return true;
+        return false;
     }
 
     @Override
