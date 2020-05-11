@@ -5,7 +5,7 @@
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
     <packaging>pom</packaging>
-    <version>V4.0.202004.a</version>
+    <version>V4.0.202004.b</version>
     <modules>
         <module>publiccms</module>
         <module>publiccms-core</module>
@@ -21,10 +21,10 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.2.5.RELEASE</version.spring>
+        <version.spring>5.2.6.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.2.6.RELEASE</version.springBoot>
+        <version.springBoot>2.2.7.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.10</version.httpclient>

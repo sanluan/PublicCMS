@@ -8,33 +8,33 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.202004.a</version>
+        <version>V4.0.202004.b</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-core</artifactId>
-            <version>V4.0.202004.a</version>
+            <version>V4.0.202004.b</version>
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-oauth</artifactId>
-            <version>V4.0.202004.a</version>
+            <version>V4.0.202004.b</version>
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-redis</artifactId>
-            <version>V4.0.202004.a</version>
+            <version>V4.0.202004.b</version>
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-analyzer</artifactId>
-            <version>V4.0.202004.a</version>
+            <version>V4.0.202004.b</version>
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-trade</artifactId>
-            <version>V4.0.202004.a</version>
+            <version>V4.0.202004.b</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>

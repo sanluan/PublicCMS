@@ -7,13 +7,13 @@
 	<parent>
 		<groupId>com.publiccms</groupId>
 		<artifactId>publiccms-parent</artifactId>
-		<version>V4.0.202004.a</version>
+		<version>V4.0.202004.b</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>com.publiccms</groupId>
 			<artifactId>publiccms-core</artifactId>
-			<version>V4.0.202004.a</version>
+			<version>V4.0.202004.b</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
