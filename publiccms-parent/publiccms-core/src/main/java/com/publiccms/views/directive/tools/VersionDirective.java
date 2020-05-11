@@ -20,7 +20,13 @@ public class VersionDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         handler.put("cms", CmsVersion.getVersion());
         handler.put("revision", CmsVersion.getRevision());
-        handler.put("authorizationEdition", CmsVersion.isAuthorizationEdition());
+        boolean authorizationEdition = CmsVersion.isAuthorizationEdition();
+        handler.put("authorizationEdition", authorizationEdition);
+        if (authorizationEdition) {
+            handler.put("authorizationStartDate", CmsVersion.getLicense().getStartDate());
+            handler.put("authorizationEndDate", CmsVersion.getLicense().getEndDate());
+            handler.put("authorizationOrganization", CmsVersion.getLicense().getOrganization());
+        }
         handler.put("cluster", CmsVersion.getClusterId());
         handler.put("master", CmsVersion.isMaster());
         handler.render();

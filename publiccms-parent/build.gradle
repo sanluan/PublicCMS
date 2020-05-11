@@ -34,8 +34,8 @@ subprojects{
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.10"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-        jacksonVersion = "2.10.3"
-        jacksonDatabindVersion = "2.10.2"
+        jacksonVersion = "2.11.0"
+        jacksonDatabindVersion = "2.11.0"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.4.12.Final"
@@ -45,7 +45,7 @@ subprojects{
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.8.1"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
-        freemarkerVersion = "2.3.29"
+        freemarkerVersion = "2.3.30"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
         mybatisVersion = "3.5.4"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
@@ -53,13 +53,13 @@ subprojects{
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "5.5.5"
         // http://mvnrepository.com/artifact/redis.clients/jedis
-        jedisVersion = "3.2.0"
+        jedisVersion = "3.3.0"
         // http://mvnrepository.com/artifact/org.quartz-scheduler/quartz
         quartzVersion = "2.3.2"
         // https://mvnrepository.com/artifact/com.zaxxer/HikariCP
-        hikariCPVersion = "3.4.1"
+        hikariCPVersion = "3.4.5"
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
-        mysqlVersion = "8.0.18"
+        mysqlVersion = "8.0.20"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
         poiVersion = "4.1.2"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
@@ -67,7 +67,7 @@ subprojects{
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-        langVersion = "3.9"
+        langVersion = "3.10"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.13"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
@@ -81,7 +81,7 @@ subprojects{
         // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
         mailVersion = "1.6.2"
         // http://mvnrepository.com/artifact/org.apache.ant/ant
-        antVersion = "1.10.6"
+        antVersion = "1.10.7"
         // http://mvnrepository.com/artifact/javax.transaction/jta
         jtaVersion = "1.1"
         // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api

@@ -27,8 +27,8 @@ DWZ.regPlugins.push(function($p){
 });
 DWZ.regPlugins.push(function($p){
     if($('.cmsVersion',$p).length ) {
-        $.getJSON(Base64.decode('Ly9jbXMucHVibGljY21zLmNvbS9hcGkvZGlyZWN0aXZlL3ZlcnNpb24='), function(data) {
-            var fullVersion=$('.cmsVersion a',$p).eq(0).text();
+        var fullVersion=$('.cmsVersion a',$p).eq(0).text();
+        $.getJSON(Base64.decode('Ly9jbXMucHVibGljY21zLmNvbS9hcGkvZGlyZWN0aXZlL3ZlcnNpb24=')+"?version="+fullVersion, function(data) {
             var version=fullVersion.substring(0,fullVersion.lastIndexOf('.'));
             var revision=fullVersion.substring(fullVersion.lastIndexOf('.')+1);
             if(version!==data.cms ) {
