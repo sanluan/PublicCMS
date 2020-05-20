@@ -1,11 +1,8 @@
-<#if contentId?has_content || id?has_content>
+<#if id?has_content>
 <@_comment id=id>
-<#assign text=object.text!/>
-<#assign contentId=object.contentId!/>
+	<#assign text=object.text!/>
 </@_comment>
 </#if>
-<@_content id=contentId>
-<#assign content=object/>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -20,6 +17,16 @@
 		<div class="container">
 			<h1><a href="${content.url!}">${content.title}</a></h1>
 			<p>${content.description!}</p>
+			<div>
+                ${content.scores!} star
+                <#if user?has_content>
+                    <@_userScore userId=user.id itemType='content' itemId=content.id>
+                        <a href="javascript:unstar(${content.id});">Cancel rating</a>
+                        <#assign stared=true/>
+                    </@_userScore>
+                    <#if !stared?has_content><a href="javascript:star(${content.id});">Star</a></#if>
+                </#if>
+            </div>
 			<@import path="ftl/tools.ftl" namespace="t"/>
 			<#if error?has_content>
 			<p style="color:red"><@t.m error/></p>
@@ -36,13 +43,13 @@
 								<input type="hidden" name="replyId" value="${replyId!}"/>
 								</#if>
 								<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-								<input type="hidden" name="contentId" value="${contentId!}"/>
-								<input name="returnUrl" type="hidden" value="${site.dynamicPath}comment.html?contentId=${contentId!}" />
+								<input type="hidden" name="contentId" value="${content.id!}"/>
+								<input name="returnUrl" type="hidden" value="${site.dynamicPath}comment.html?contentId=${content.id!}" />
 								<textarea name="text" maxlength="1000">${text!}</textarea>
 								<input type="submit" value="提交"/>
 							</form>
 						</div>
-						<@_commentList advanced=true userId=user.id contentId=contentId status=2>
+						<@_commentList advanced=true userId=user.id contentId=content.id status=2>
 							<#if page.totalCount gt 0>
 								<h3>我的待审核评论</h3>
 								<ul>
@@ -67,10 +74,10 @@
 					</#if>
 				<#else>
 					<div class="comment-text-box user-login">
-						<div class="cover"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}">登录后发布评论</a></div>
+						<div class="cover"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
 					</div>
 				</#if>
-				<@_commentList contentId=contentId pageIndex=pageIndex pageSize=10>
+				<@_commentList contentId=content.id pageIndex=pageIndex pageSize=10>
 					<#list page.list as a>
 						<@t.merge 'userIds' a.userId!/>
 						<@t.merge 'userIds' a.replyUserId!/>
@@ -95,7 +102,7 @@
 					<#if page??>
 					<div class="page">
 						<#if !page.firstPage>
-						<a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=${page.prePage}">上一页</a>
+						<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.prePage}">上一页</a>
 						<#else>
 						<span>上一页</span>
 						</#if>
@@ -108,14 +115,14 @@
 						<#assign end=page.pageIndex+4/>
 						</#if>
 						<#if start gt 1>
-						<a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=1">1</a> ...
+						<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=1">1</a> ...
 						</#if>
-						<#list start..end as n><a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=${n}"<#if n=page.pageIndex> class="selected"</#if>>${n}</a></#list>
+						<#list start..end as n><a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${n}"<#if n=page.pageIndex> class="selected"</#if>>${n}</a></#list>
 						<#if end lt page.totalPage>
-						... <a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
+						... <a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
 						</#if>
 						<#if !page.lastPage>
-						<a href="${site.dynamicPath}comment.html?contentId=${contentId!}&pageIndex=${page.nextPage}">下一页</a>
+						<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.nextPage}">下一页</a>
 						<#else>
 						<span>下一页</span>
 						</#if>
@@ -136,6 +143,19 @@
 			return true;
 		}
 	</script>
+	 <script>
+function star(contentId){
+    $.getJSON('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+        alert("ok!");
+        location.reload();
+    });
+}
+function unstar(contentId){
+    $.getJSON('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+        alert("ok!");
+        location.reload();
+    });
+}
+    </script>
 </body>
 </html>
-</@_content>

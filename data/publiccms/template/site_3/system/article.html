@@ -15,8 +15,11 @@
 	</div>
 	<div class="container">
 		<article class="left-content">
-			<h1><a href="${url!}">${content.title}</a></h1>
-			<p class="author"><#if content.copied>来源：<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></p>
+			<header>
+				<h1><a href="${url!}">${content.title}</a></h1>
+				<p class="author">${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></p>
+				<#if content.copied><p class="author">来源：${(attribute.source)!} ${(attribute.sourceUrl)!}</p></#if>
+			</header>
 			<div id="content">${text?no_esc!}</div>
 			<div><@_tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="//search.publiccms.com/?tagId=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@_tag></div>
 			<@include path="/ftl/content_page.ftl"/>
@@ -64,12 +67,11 @@
 <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
 <script>
 	uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
-	var link=$('article .page a:last').attr('href');
-	if("undefined" != typeof link && "" != link ){
-		$('article #content img').each(function(){
-			$(this).wrapAll("<a href=\"" + link + "\" title=\"点击查看下一页\"></a>");
-		});
-	}
+	$('article #content img').each(function(){
+		if(!$(this).parent('a').length) {
+			$(this).wrapAll("<a href=\"" + $(this).attr("src") + "\" target=\"_blank\" title=\"点击查看图片\"></a>");
+		}
+	});
 	$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
 		$('article .author em').text(data.clicks);
 	});

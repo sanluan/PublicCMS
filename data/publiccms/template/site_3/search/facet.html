@@ -38,7 +38,7 @@
 			</div>
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <#if word?has_content||tagId?has_content>
-	<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId pageIndex=page count=10>
+	<@_facetSearch word=word tagId=tagId categoryId=categoryId modelId=modelId highlight=true pageIndex=page count=10>
 		<#assign modelFacet=page.facetMap['modelId']!/>
 		<#assign categoryFacet=page.facetMap['categoryId']!/>
 		<#if categoryFacet?has_content>

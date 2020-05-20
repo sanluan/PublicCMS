@@ -16,13 +16,15 @@
 	</div>
 	<div class="container">
 		<article>
-			<h3><@_content id=parent.parentId  absoluteURL=true><a href="${object.url}" target="_blank">《${object.title}》</a></@_content> ${(parent.title)!} ${content.title}</h3>
+			<header>
+				<h3><@_content id=parent.parentId  absoluteURL=true><a href="${object.url}" target="_blank">《${object.title}》</a></@_content> ${(parent.title)!} ${content.title}</h3>
+			</header>
 			<div id="content">
 				${text?no_esc!}
 			</div>
 			<div class="page">
-				<@_contentList parentId=content.parentId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">上一章</a></#list></#if></@_contentList>
-				<@_contentList parentId=content.parentId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1><#list page.list as a><a href="${a.url!}">下一章</a></#list></@_contentList>
+				<@_contentList parentId=content.parentId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><a href="${a.url!}">上一章 ${a.title}</a></#list></#if></@_contentList>
+				<@_contentList parentId=content.parentId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1><#list page.list as a><a href="${a.url!}">下一章  ${a.title}</a></#list></@_contentList>
 			</div>
 		</article>
 	</div>

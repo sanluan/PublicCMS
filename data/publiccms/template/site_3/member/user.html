@@ -10,7 +10,7 @@
 	<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 	<main>
 		<div class="container">
-			<h1><a href="${site.dynamicPath}user.html?id=${user.id}">${user.nickName!}的个人页面</a></h1>
+			<h1><a href="${site.dynamicPath}user.html?id=${user.id}">${user.nickName!}的个人页面</a><#if user.superuserAccess>[管理员]</#if></h1>
 			<div class="comment-box">
 				<@_commentList contentId=contentId userId=user.id pageIndex=pageIndex pageSize=10>
 					<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->

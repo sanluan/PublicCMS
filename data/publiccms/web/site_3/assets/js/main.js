@@ -22,10 +22,10 @@ $(function(){
 	// 头部动态效果
 	$(window).scroll(function(){
 		if(headerHeight-$(window).scrollTop()>0){
-			$('header').removeClass('fixed-position');
+			$('.header').removeClass('fixed-position');
 			$('main').removeClass('no-header');
 		} else {
-			$('header').addClass('fixed-position');
+			$('.header').addClass('fixed-position');
 			$('main').addClass('no-header');
 		}
 	});

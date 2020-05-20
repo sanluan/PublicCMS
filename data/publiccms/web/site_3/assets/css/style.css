@@ -11,7 +11,7 @@ table tr>td, table tr>th{border-right:1px solid #ddd;border-bottom:1px solid #dd
 .hide{display:none;}
 .float-right{float:right}
 
-header {width:100%;border-bottom:2px solid #222;padding:0px;background-color:#f9f9f9;}
+header.header{width:100%;border-bottom:2px solid #222;padding:0px;background-color:#f9f9f9;}
 header .top-bar {background-color:#222;border-bottom:2px solid #555;font-size:12px;line-height:32px;}
 header.fixed-position .top-bar {display:none;}
 header .top-bar ul li {display:inline-block;padding:0px 5px;*display:inline;*zoom:1;}
@@ -26,7 +26,7 @@ header .logo,header .slogan,header nav{padding:10px 0px;}
 header .logo {float:left;height:69px;width:193px;}
 header .logo img {width:100%;}
 header .nav-icon {background:url(../images/head-nav.png) 50% 50% no-repeat;background-size:40%;width:50px;height:50px;float:right;display:none;clear:both;}
-header .user-logout {display:none;}
+header .user-logout,main  .user-logout {display:none;}
 header .slogan {line-height:69px;float:left;padding-left:10px;font-size:14px;}
 header nav {float:right;margin-top:20px;}
 header nav a {text-decoration:none;color:#333;}
@@ -57,9 +57,9 @@ main article #content img {max-width:100%;}
 main .comment-box input[type=submit]{padding:5px 20px;color: #fff;background: #4271c0;border: 0;cursor: pointer;font-size: 15px;font-weight: bold;border-radius: 2px;}
 main .comment-box .comment-text-box{position:relative;width: 80%;margin: 0 auto;}
 main .comment-box .comment-text-box textarea{width:100%;height:100px;}
-main .comment-box .comment-text-box .cover{position:absolute;left:0;top:0;width:100%;height:100px;z-index:100;padding: 2px;border: 1px solid #ccc;}
+main .comment-box .comment-text-box .cover{width:100%;height:100px;z-index:100;padding: 2px;border: 1px solid #ccc;}
 main .comment-box .comment-text-box a{position:absolute;left:50%;top:40%;margin-left:-56px;}
-main .comment-box .reply{margin-left:40px;border:1px dashed #eee;padding:5px;background-color:#f6f6f6;}
+main .comment-box .reply{margin-left:30px;border:1px dashed #eee;padding:5px;background-color:#f6f6f6;}
 main .comment-box .username{color:#00f;}
 main .left-content {float:left;width:800px;}
 main .data-list ul {overflow:hidden;margin-bottom:10px;border:1px solid #eee;padding:5px 10px;clear:both;}
@@ -70,6 +70,7 @@ main .data-list ul li img {max-height:100px;border:1px solid #eee;margin-right:1
 main .data-list ul li {font-size:14px;color:#666;line-height:22px;}
 main .data-list ul li p {margin:5px 0;}
 main .data-list ul li p a {color:#58a;text-decoration:none;}
+main .data-list b{color:#f00}
 main .search {line-height:50px;text-align:center;margin-bottom:10px;}
 main .search-condition {border:1px solid #eee;margin-bottom:10px;padding:10px;}
 main .search-condition a {margin-right:10px;}
@@ -83,17 +84,11 @@ main .page .selected {border-color:#a7f;}
 main aside {float:right;width:380px;}
 main aside a {text-decoration:none;color:#333;}
 main aside ul {border:1px solid #eee;padding:5px 10px;}
-main aside ul.rank li a {width:300px;}
-main aside ul li,li.underline {padding:5px 0;border-bottom:1px dashed #eee;list-style:none;}
-main aside ul li:last-child,li.underline:last-child {border-bottom:0px;}
-main aside ul li span {float:right;color:#aaa;}
-main aside ul li:after {display:block;content:".";height:0;clear:both;visibility:hidden;}
-main aside ul li a {display:block;float:left;}
-main aside ul li a {width:350px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-
-#right-images img,#index-focus  img{  max-width:100%;  height:auto;  -webkit-border-radius:3px;  -moz-border-radius:3px;  border-radius:3px;}
-#right-images h4{  border:1px solid #000;  background:rgba(255,255,255,0.7);  position:absolute;  top:0px;  right:0px;  padding:2px 5px;}
-#index-focus{ margin-top:30px;}
+main aside ul>li,ul>li.underline {padding:5px 0;border-bottom:1px dashed #eee;list-style:none;overflow: hidden;}
+main aside ul>li {text-overflow:ellipsis;white-space:nowrap;}
+main aside ul>li:last-child,ul>li.underline:last-child {border-bottom:0px;}
+main aside ul>li span {float:right;color:#aaa;}
+main aside ul>li:after {display:block;content:".";height:0;clear:both;visibility:hidden;}
 
 footer {background-color:#222;padding-top:35px;border-top:4px solid #555;color:#ccc;font-size:13px;}
 footer a {color:#ffffff;}
@@ -119,6 +114,19 @@ footer .footer-bottom ul.friendlink a {border-bottom:1px solid #555;padding:0 4p
 .dialog .box{position:fixed;top:50%;margin-left:-200px;margin-top:-212px;left:50%;width:400px;height:424px;z-index:1000;background-color:#000;}
 .dialog .box img{width:100%;height:100%;}
 .mod-gallery .gallery-end, .mod-gallery .gallery-end a{line-height: 200px;}
+
+ol.vote>li {line-height: 30px;height: 30px;width:400px;margin:5px 0 0 0;max-width:95%;position: relative;}
+.progress-box {width: 100%;height: 100%;border: 1px solid #cccccc;display: inline-block;}
+.progress-bar {height:100%;opacity: 0.4;}
+.progress-text {text-align: center;position: absolute;top: 0;width: 100%;}
+.progress-text a {width: 100%;height: 100%;display: inline-block;}
+ol.vote>li:nth-child(3n+1) .progress-bar {background-color:red;}
+ol.vote>li:nth-child(3n+2) .progress-bar {background-color:green;}
+ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
+
+#right-images img,#index-focus  img{  max-width:100%;  height:auto;  -webkit-border-radius:3px;  -moz-border-radius:3px;  border-radius:3px;}
+#right-images h4{  border:1px solid #000;  background:rgba(255,255,255,0.7);  position:absolute;  top:0px;  right:0px;  padding:2px 5px;}
+#index-focus{ margin-top:30px;}
 
 @media screen and (min-width :1250px) {
 header.fixed-position {position:fixed;top:0;left:0;z-index:999;height:40px;}

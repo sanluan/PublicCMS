@@ -2,19 +2,19 @@
 <urlset  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
   <url>
-    <loc>${site.sitePath!}</loc>
+    <loc>https:${site.sitePath!}</loc>
     <lastmod>${.now?date}</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
+    <priority>1.0</priority>
   </url>
 <@_categoryList advanced=true queryAll=true count=100>
 	<#list page.list as a>
 		<#if !a.onlyUrl>
   <url>
-    <loc>${a.url!}</loc>
+    <loc>https:${a.url!}</loc>
     <lastmod>${.now?date}</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.7</priority>
   </url>
 		</#if>
 	</#list>
@@ -23,10 +23,10 @@
 	<#list page.list as a>
 <#if !a.onlyUrl>
   <url>
-    <loc>${a.url!}</loc>
+    <loc>https:${a.url!}</loc>
     <lastmod>${a.publishDate?date}</lastmod>
     <changefreq>never</changefreq>
-    <priority>0.1</priority>
+    <priority>0.3</priority>
   </url>
 </#if>
 	</#list>

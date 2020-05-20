@@ -8,47 +8,26 @@
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
 <main>
     <div class="container">
-		<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
-    	<#if error?has_content>
-			<p class="message red"><@t.m 'message.'+error/></p>
-		<#elseif message?has_content>
-			<p class="message"><@t.m "message."+message/></p>
-		<#else>
-			<#if user?has_content>
-				<p class="message">${user.nickName},您已经登录了!  <a href="javascript:$('form[name=logout]').submit();">退出登录</a></p>
-				<form name="logout" action="${site.dynamicPath}doLogout.do" method="post">
-					<input type="hidden" name="userId" value="${(user.id)!}"/>
-					<input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
-				</form>
-				<#if !user.emailChecked>
-					<form action="${site.dynamicPath}user/saveEmail.do" method="post" class="center login-form">
-						<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-						<input type="hidden" name="returnUrl" value="${site.dynamicPath}login.html"/>
-						<p>
-							<input type="email" class="input-text" name="email" placeholder="邮箱地址" title="邮箱地址" value="${user.email!}"/>
-							<input type="submit" class="button" value="验证邮箱"/>
-						</p>
-					</form>
+    	<#if user?has_content>
+    		<p class="message">${user.nickName},您已经登录了!  <a href="logout.html?returnUrl=${returnUrl!}">退出登录</a></p>
+    	<#else>
+	    	<form id="login" action="${site.dynamicPath}doLogin.do" method="post" class="center">
+				<@import path="/ftl/tools.ftl" namespace="t"/>
+				<#if error??>
+					<p class="message red"><@t.m error/></p>
 				</#if>
-			<#else>
-				<form id="login" action="${site.dynamicPath}doLogin.do" method="post" class="center">
-					<@import path="/ftl/tools.ftl" namespace="t"/>
-					<#if error??>
-						<p class="message red"><@t.m error/></p>
-					</#if>
-					<#if message??>
-						<p class="message"><@t.m "message."+message/></p>
-					</#if>
-					<p><input type="text" name="username" class="input-text" placeholder="用户名" title="用户名"/></p>
-					<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
-					<p class="text-center">
-						<input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
-						<input type="submit" class="button" value="登  录"/>
-					</p>
-					<p class="message">没有账号?请<a href="register.html?returnUrl=${(returnUrl?url)!}">注册</a></p>
-				</form>
-			</#if>
-		</#if>
+				<#if message??>
+					<p class="message"><@t.m "message."+message/></p>
+				</#if>
+				<p><input type="text" name="username" class="input-text" placeholder="用户名" title="用户名"/></p>
+				<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
+				<p class="text-center">
+					<input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
+					<input type="submit" class="button" value="登  录"/>
+				</p>
+				<p class="message">没有账号?请<a href="register.html?returnUrl=${(returnUrl?url)!}">注册</a></p>
+			</form>
+    	</#if>
     </div>
 </main>
 <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->

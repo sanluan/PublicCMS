@@ -18,13 +18,13 @@
 		<article>
 			<div id="content">
 				<div class="mod-gallery">
-					<div class="gallery-title">
+					<header class="gallery-title">
 						<h2><a href="${url!}">${content.title}</a></h2>
 						<span class="gallery-counter">
 							<i class="gallery-counter-now" data-gallery="counter-now">?</i>/<i class="gallery-counter-total" data-gallery="counter-total">?</i>
 						</span>
-						<span class="gallery-info"><#if content.copied>来源：<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></span>
-					</div>
+						<span class="gallery-info"><#if content.copied>来源：${(attribute.source)!} ${(attribute.sourceUrl)!}</#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} 阅读:<em>loading...</em></span>
+					</header>
 					<div class="gallery-description">
 						<p>
 						${content.description!}
@@ -42,7 +42,13 @@
 							</span>
 						</div>
 						<div class="gallery-photo">
-							<div class="gallery-photo-items" data-gallery="photo-items"></div>
+							<div class="gallery-photo-items" data-gallery="photo-items">
+<@_contentFileList contentId=content.id image=true pageSize=1>
+<#list page.list as a>
+			<img src="${a.filePath}" alt="${content.title}"/>
+</#list>
+</@_contentFileList>
+							</div>
 							<div class="gallery-photo-prev" data-gallery="photo-prev">
 								<a title="点击浏览上一张图片，支持'←'翻页" href="javascript:void(0);" hideFocus="true">上一页</a>
 							</div>
@@ -54,7 +60,11 @@
 <@_contentList modelId=content.modelId startPublishDate=content.publishDate orderType='asc' pageIndex=1 count=1>
 	<#list page.list as a>
 								<a href="${a.url!}">
-									<#if a.cover?has_content><img src="<@_thumb path=a.cover width=200 height=150/>" style="margin-top:20px;" alt="${a.title!}"></#if>
+									<@_contentFileList contentId=a.id image=true count=1>
+										<#list page.list as i>
+											<img src="<@_thumb path=i.filePath width=100 height=75/>" style="margin-top:20px;" alt="${a.title!}"/>
+										</#list>
+									</@_contentFileList>
 									<span>下一图集 &gt;</span>
 								</a>
 	<#else>
@@ -76,15 +86,11 @@
 		<#list page.list as a>
 								<span class="gallery-prev">
 									<a href="${a.url!}">
-										<#if a.cover?has_content>
-											<img src="<@_thumb path=a.cover width=100 height=75/>" alt="${a.title!}">
-										<#else>
-											<@_contentFileList contentId=a.id image=true count=1>
-												<#list page.list as i>
-													<img src="<@_thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
-												</#list>
-											</@_contentFileList>
-										</#if>
+										<@_contentFileList contentId=a.id image=true count=1>
+											<#list page.list as i>
+												<img src="<@_thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
+											</#list>
+										</@_contentFileList>
 										<span>&lt; 上一图集</span>
 									</a>
 								</span>
@@ -95,15 +101,11 @@
 	<#list page.list as a>
 								<span class="gallery-next">
 									<a href="${a.url!}">
-										<#if a.cover?has_content>
-											<img src="<@_thumb path=a.cover width=100 height=75/>" alt="${a.title!}">
-										<#else>
-											<@_contentFileList contentId=a.id image=true count=1>
-												<#list page.list as i>
-													<img src="<@_thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
-												</#list>
-											</@_contentFileList>
-										</#if>
+										<@_contentFileList contentId=a.id image=true count=1>
+											<#list page.list as i>
+												<img src="<@_thumb path=i.filePath width=100 height=75/>" alt="${a.title}"/>
+											</#list>
+										</@_contentFileList>
 										<span>下一图集 &gt;</span>
 									</a>
 								</span>

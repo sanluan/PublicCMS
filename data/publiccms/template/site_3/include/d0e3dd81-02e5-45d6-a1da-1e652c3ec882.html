@@ -1,0 +1,13 @@
+<@import path="/ftl/tools.ftl" namespace="t"/>
+<#list page.list as a>
+	<@_category id=a.itemId>
+		<@_contentList categoryId=object.id containChild=true count=4>
+			<#if page.totalCount gt 0>
+				<a href="${object.url}"><h3>${object.name!}</h3></a>
+				<#list page.list as a>
+					<@include path="/ftl/data-list.ftl"/>
+				</#list>
+			</#if>
+		</@_contentList>
+	</@_category>
+</#list>

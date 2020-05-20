@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+	<title>${metadata.alias!}</title>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<main>
+    <div class="container">
+		<h3>投票列表</h3>
+<@_voteList pageIndex=pageIndex pageSize=10>
+        <ul>
+    <#list page.list as a>
+            <li>
+				<h3><a href="${site.dynamicPath}vote.html?id=${a.id}">${a.title}</a></h3>
+				<p>${a.description}</p>
+                <p>${a.scores!} 人投票,截止日期:${(a.endDate)!}</p>
+				<#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
+				<@_voteItemList voteId=a.id pageSize=3>
+					<ol class="vote">
+						<#list page.list as v>
+						<li>
+							<div class="progress-box">
+								<div class="progress-bar" style="width:${show?then(v.scores*100/a.scores,100)}%;"></div>
+								<div class="progress-text">
+									<a href="${site.dynamicPath}vote.html?id=${a.id}" title="投票后查看">${v.title}<span class="float-right">${show?then(v.scores*100/a.scores+'%','')}</span></a>
+								</div>
+							</div>
+						</li>
+						</#list>
+					</ol>
+				</@_voteItemList>
+            </li>
+    </#list>
+        </ul>
+		<div class="page">
+            <#assign
+                url=site.dynamicPath+'votelist.html'
+                start=1
+                end=page.totalPage
+            />
+            <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+            </#if>
+            <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+            </#if>
+            <#if !page.firstPage>
+                <a href="${getPage(url,page.prePage,'pageIndex')}">上一页</a>
+            <#else>
+                <span>上一页</span>
+            </#if>
+            <#if start gt 1>
+                <a href="${url}">1</a> ...
+            </#if>
+            <#list start..end as n>
+                <#if n=page.pageIndex>
+                    ${n}
+                <#else>
+                    <a href="${getPage(url,n,'pageIndex')}">${n}</a>
+                </#if>
+            </#list>
+            <#if end lt page.totalPage>
+                ... <a href="${getPage(url,page.totalPage,'pageIndex')}">${page.totalPage}</a>
+            </#if>
+            <#if !page.lastPage>
+                <a href="${getPage(url,page.nextPage,'pageIndex')}">下一页</a>
+            <#else>
+                <span>下一页</span>
+            </#if>
+        </div>
+</@_voteList>
+    </div>
+</main>
+<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+</body>
+</html>

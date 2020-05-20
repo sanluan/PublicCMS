@@ -5,6 +5,20 @@
 	<meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
 	<meta name="description" content="${(metadata.extendData.description)!}"/>
 	<@_includePlace  path='/76c53ac2-4f88-4ef3-984b-c81d00a48089.html' /> <#-- header -->
+	<#if (metadata.extendData.gray)?has_content && metadata.extendData.gray=.now?string('yyyy-MM-dd') >
+	<style>
+html{
+filter: grayscale(100%);
+-webkit-filter: grayscale(100%);
+-moz-filter: grayscale(100%);
+-ms-filter: grayscale(100%);
+-o-filter: grayscale(100%);
+filter:url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
+filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
+-webkit-filter: grayscale(1);
+}
+	</style>
+	</#if>
 </head>
 <body>
 <@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
@@ -12,30 +26,42 @@
 	<div class="container">
 		<@_includePlace path="/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"/> <#-- 焦点图 -->
 		<div class="data-list left-content">
-<@import path="/ftl/tools.ftl" namespace="t"/>
-<#macro showCategory id count=3>
-		<@_category id=id>
-		<@_contentList categoryId=object.id containChild=true count=count>
-			<#if page.totalCount gt 0>
-				<a href="${object.url}"><h3>${object.name!}</h3></a>
-				<#list page.list as a>
-					<@include path="/ftl/data-list.ftl"/>
-				</#list>
-			</#if>
-		</@_contentList>
-</@_category>
-</#macro>
-<@showCategory metadata.extendData.category1!'' 3/>
-<@showCategory metadata.extendData.category2!'' 3/>
-<@showCategory metadata.extendData.category3!'' 3/>
+			<@_includePlace path="/d0e3dd81-02e5-45d6-a1da-1e652c3ec882.html"/> <#-- 首页推荐分类 -->		
 		</div>
-		<aside>			
+		<aside>
 			<div>
+				<@_voteList endStartDate=.now  pageSize=5>
+					<#if page.totalCount gt 0>
+				<h3><a href="${site.dynamicPath}votelist.html">最新投票</a></h3>
+				<ul>
+						<#list page.list as a>
+					<li>
+						<#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
+						<span><#if show>已截止<#else>截止:${(a.endDate)?string('MM-dd HH:mm')}</#if></span><a href="${site.dynamicPath}vote.html?id=${a.id}">${a.title}</a>
+						<@_voteItemList voteId=a.id pageSize=3>
+						<ol class="vote">
+							<#list page.list as v>
+							<li>
+								<div class="progress-box">
+									<div class="progress-bar" style="width:${show?then(v.scores*100/a.scores,100)}%;"></div>
+									<div class="progress-text">
+										<a href="${site.dynamicPath}vote.html?id=${a.id}" title="${v.title}">${v.title}<span class="float-right">${show?then(v.scores*100/a.scores+'%','投票后查看')}</span></a>
+									</div>
+								</div>
+							</li>
+							</#list>
+						</ol>
+						</@_voteItemList>
+					</li>
+						</#list>
+				</ul>
+					</#if>
+				</@_voteList>
 				<h3>近期热门</h3>
 				<ul class="rank">
 <@_contentList advanced=true modelId=1 status=1 startPublishDate=(.now?long-3600*1000*24*365)?number_to_datetime orderField='clicks' count=10>
 	<#list page.list as a>
-					<li><a href="${a.url!}">${a.title}</a><span>${a.clicks}</span></li>
+					<li><span>${a.clicks}</span><a href="${a.url!}">${a.title}</a></li>
 	</#list>
 </@_contentList>
 				</ul>
@@ -68,5 +94,14 @@
 <script>
 	$("header nav ul li a:contains('首页')").parent().addClass('selected');
 </script>
+	<#if (metadata.extendData.gray)?has_content && metadata.extendData.gray=.now?string('yyyy-MM-dd') >
+        <script src="${site.sitePath}assets/js/grayscale.js"></script>
+		<script>
+			var a = navigator.userAgent.toLowerCase();
+			if(a.indexOf("msie 10.0") !== -1 || a.indexOf("rv:11.0") !== -1) {
+				grayscale(document.getElementById('body'));
+			}
+		</script>
+	</#if>
 </body>
 </html>
