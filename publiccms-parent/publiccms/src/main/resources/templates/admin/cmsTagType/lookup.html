@@ -2,7 +2,7 @@
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return dialogSearch(this);" action="cmsTagType/lookup.html" method="post">
         <#include "../include_page/parameters.html"/>
-        <input type="hidden" name="field" value="${field!'tagTypeId'}"/>
+        <input type="hidden" name="field" value="${field!'typeId'}"/>
         <input type="hidden" name="nameField" value="${nameField!'tagTypeName'}"/>
         <div class="searchBar">
             <ul class="searchContent">
@@ -14,7 +14,7 @@
             <div class="subBar">
                 <ul>
                     <li>
-                        <button type="button" class="button" onclick="$.bringBack({'${field!'tagTypeId'}':'','${nameField!'tagTypeName'}':''});return false;"><@t.page 'button.clear_select'/></button>
+                        <button type="button" class="button" onclick="$.bringBack({'${field!'typeId'}':'','${nameField!'tagTypeName'}':''});return false;"><@t.page 'button.clear_select'/></button>
                         <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
                     </li>
                 </ul>
@@ -36,7 +36,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" onclick="$.bringBack({'${field!'tagId'}':'${a.id}','${nameField!'tagTypeName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'typeId'}':'${a.id}','${nameField!'tagTypeName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td class="exclude-translate">${(a.name)!}</td>

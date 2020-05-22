@@ -15,7 +15,7 @@
                 <input name="typeId" type="hidden" value="${(a.typeId)!}"/>
                 <#if a??&&a.typeId??><@_tagType id=a.typeId><#assign tagTypeName=object.name/></@_tagType></#if>
                 <input class="readonly" readonly="readonly" name="tagTypeName" type="text" size="10" value="${(tagTypeName)!}"/>
-                <a class="btnLook" href="cmsTagType/lookup.html?typeId=${(a.typeId)!}" width="920" lookupGroup=""><@t.page 'tag_type.select'/></a>
+                <a class="btnLook" href="cmsTagType/lookup.html" width="920" lookupGroup=""><@t.page 'tag_type.select'/></a>
             </dd>
         </dl>
         <dl class="nowrap">
