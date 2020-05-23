@@ -1,6 +1,7 @@
 package com.github.wxpay.sdk;
 
 import static com.github.wxpay.sdk.WXPayConstants.USER_AGENT;
+import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
 
 import java.io.InputStream;
 import java.security.KeyStore;
@@ -82,14 +83,14 @@ public class WXPayRequest {
                 .build();
         httpPost.setConfig(requestConfig);
 
-        StringEntity postEntity = new StringEntity(data, "UTF-8");
+        StringEntity postEntity = new StringEntity(data, DEFAULT_CHARSET_NAME);
         httpPost.addHeader("Content-Type", "text/xml");
         httpPost.addHeader("User-Agent", USER_AGENT + " " + config.getMchID());
         httpPost.setEntity(postEntity);
 
         HttpResponse httpResponse = httpClient.execute(httpPost);
         HttpEntity httpEntity = httpResponse.getEntity();
-        return EntityUtils.toString(httpEntity, "UTF-8");
+        return EntityUtils.toString(httpEntity, DEFAULT_CHARSET_NAME);
 
     }
 
