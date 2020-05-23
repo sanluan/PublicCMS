@@ -26,6 +26,8 @@ import com.publiccms.common.tools.ScanClassUtils;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
+import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
+
 /**
  *
  * SourceMaker 代码生成工具
@@ -274,7 +276,7 @@ public class SourceGenerator {
     public SourceGenerator() throws IOException {
         config = new freemarker.template.Configuration(Configuration.getVersion());
         config.setDirectoryForTemplateLoading(new File("src/test/resources/generator/"));
-        config.setDefaultEncoding("utf-8");
+        config.setDefaultEncoding(DEFAULT_CHARSET_NAME);
     }
 
 }

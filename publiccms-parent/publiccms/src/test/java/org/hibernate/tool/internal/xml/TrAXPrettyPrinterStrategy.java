@@ -11,13 +11,15 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.StringWriter;
 
+import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
+
 public class TrAXPrettyPrinterStrategy extends AbstractXMLPrettyPrinterStrategy {
     private int indent = 4;
     private boolean omitXmlDeclaration;
 
     @Override
     public String prettyPrint(String xml) throws Exception {
-        final Document document = newDocument(xml, "UTF-8");
+        final Document document = newDocument(xml, DEFAULT_CHARSET_NAME);
         removeWhitespace(document);
 
         final Transformer transformer = newTransformer(document);
@@ -32,7 +34,7 @@ public class TrAXPrettyPrinterStrategy extends AbstractXMLPrettyPrinterStrategy 
 
         final Transformer transformer = transformerFactory.newTransformer();
         transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+        transformer.setOutputProperty(OutputKeys.ENCODING, DEFAULT_CHARSET_NAME);
         transformer.setOutputProperty(OutputKeys.INDENT, "yes");
         transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, isOmitXmlDeclaration() ? "yes" : "no");
         try {

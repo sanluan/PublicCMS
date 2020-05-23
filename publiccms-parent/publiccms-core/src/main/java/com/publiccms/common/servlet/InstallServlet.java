@@ -37,6 +37,8 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
+
 /**
  *
  * InstallServlet
@@ -88,7 +90,7 @@ public class InstallServlet extends HttpServlet {
         this.cmsUpgrader = new CmsUpgrader(config);
         this.freemarkerConfiguration = new Configuration(Configuration.getVersion());
         freemarkerConfiguration.setClassForTemplateLoading(getClass(), "/initialization/template/");
-        freemarkerConfiguration.setDefaultEncoding("utf-8");
+        freemarkerConfiguration.setDefaultEncoding(DEFAULT_CHARSET_NAME);
         freemarkerConfiguration.setNumberFormat("#");
     }
 
@@ -292,7 +294,7 @@ public class InstallServlet extends HttpServlet {
         if (!response.isCommitted()) {
             try {
                 Template template = freemarkerConfiguration.getTemplate(null == step ? "index.html" : step + ".html");
-                response.setCharacterEncoding("utf-8");
+                response.setCharacterEncoding(DEFAULT_CHARSET_NAME);
                 response.setContentType("text/html");
                 template.process(model, response.getWriter());
             } catch (TemplateException | IOException e) {
