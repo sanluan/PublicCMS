@@ -7,6 +7,8 @@
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}.html</#noparse>'});return false;"><@t.page 'static_path'/>:category/{<@t.page 'category.id'/>}.html</a>
         </#if>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>}</a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse><@_categoryList parentId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@_categoryList></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_child'/></a>
+            <a href="javascript:;" onclick="$.bringBack({path:'<#noparse><@_contentList categoryId=category.id pageSize=1><#list page.list as a>${a.url}</#list></@_contentList></#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'category.first_content'/></a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category/${category.id}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template.name'/>/{<@t.page 'category.id'/>}</a>
             <a href="javascript:;" onclick="$.bringBack({path:'<#noparse>category.html?id=${category.id}_${getHash(category.code+category.id)}</#noparse>',templatePath:''});return false;"><@t.page 'dynamic_path'/>:<@t.page 'template_path'/>?id={<@t.page 'category.id'/>_<@t.page 'help.method.hash'/>(<@t.page 'category.code'/>+<@t.page 'category.id'/>)}</a>
         </li>
