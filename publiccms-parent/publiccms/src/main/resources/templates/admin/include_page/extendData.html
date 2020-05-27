@@ -1,7 +1,4 @@
 <#macro input name extend index value='' type='form' safe=true>
-    <#if !value??>
-        <#local value=extend.defaultValue!/>
-    </#if>
     <#local inputName=name+'['+index+'].value'/>
     <input name="${name}[${index}].name" type="hidden" value="${extend.id.code}"/>
     <#switch extend.inputType>
