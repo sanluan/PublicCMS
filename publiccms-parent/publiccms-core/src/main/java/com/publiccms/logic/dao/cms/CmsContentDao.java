@@ -45,7 +45,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     /**
      * @param projection
      * @param fuzzy
-     * @param highlight 
+     * @param highlight
      * @param siteId
      * @param text
      * @param tagIds
@@ -63,9 +63,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, boolean fuzzy, boolean highlight, Short siteId, Integer[] categoryIds, String[] modelIds,
-            String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag, String postTag,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+    public PageHandler query(boolean projection, boolean fuzzy, boolean highlight, Short siteId, Integer[] categoryIds,
+            String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag,
+            String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
+            Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         CmsFullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
@@ -75,7 +76,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     /**
      * @param projection
      * @param fuzzy
-     * @param highlight 
+     * @param highlight
      * @param siteId
      * @param categoryIds
      * @param modelIds
@@ -93,14 +94,15 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, boolean highlight, Short siteId, Integer[] categoryIds, String[] modelIds,
-            String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag, String postTag,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, boolean highlight, Short siteId, Integer[] categoryIds,
+            String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag,
+            String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
+            Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         CmsFullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getFacetPage(queryBuilder, query, facetFields, 10, highlight,  CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag,
-                pageIndex, pageSize);
+        return getFacetPage(queryBuilder, query, facetFields, 10, highlight, CommonUtils.notEmpty(text) ? textFields : null,
+                preTag, postTag, pageIndex, pageSize);
     }
 
     private CmsFullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean fuzzy, Short siteId,
@@ -223,8 +225,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             if (CommonUtils.notEmpty(queryEntitry.getCategoryIds())) {
                 queryHandler.condition("bean.categoryId in (:categoryIds)").setParameter("categoryIds",
                         queryEntitry.getCategoryIds());
-            } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
-                queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
             }
             if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
                 queryHandler.condition("bean.parentId is null");
