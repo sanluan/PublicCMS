@@ -2,6 +2,8 @@ package com.publiccms.common.tools;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * 用户密码工具类
  * 
@@ -27,7 +29,7 @@ public class UserPasswordUtils {
 
     public static boolean isWeek(String username, String password) {
         if (null != password) {
-            return WEAK_PASSWORD_LENGTH > password.length() || password.equalsIgnoreCase(username)
+            return WEAK_PASSWORD_LENGTH > password.length() || StringUtils.containsIgnoreCase(password, username)
                     || WEAK_PASSWORD_PATTERN.matcher(password).matches();
         }
         return true;
