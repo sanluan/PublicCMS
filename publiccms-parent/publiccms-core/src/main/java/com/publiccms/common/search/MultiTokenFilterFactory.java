@@ -49,7 +49,7 @@ public class MultiTokenFilterFactory extends TokenFilterFactory implements Resou
 
     @Override
     public void inform(ResourceLoader loader) throws IOException {
-        if (null != tokenFilterFactory && tokenFilterFactory instanceof ResourceLoaderAware) {
+        if (tokenFilterFactory instanceof ResourceLoaderAware) {
             ((ResourceLoaderAware) tokenFilterFactory).inform(loader);
         }
     }

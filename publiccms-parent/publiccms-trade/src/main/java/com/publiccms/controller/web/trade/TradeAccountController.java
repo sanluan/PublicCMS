@@ -64,11 +64,11 @@ public class TradeAccountController {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
-        if (null != paymentGateway && paymentGateway.enable(site.getId())) {
-            SysUser user = ControllerUtils.getUserFromSession(session);
-            if (null != user && null != change && 1 == change.compareTo(BigDecimal.ZERO)) {
+        if (null != paymentGateway && paymentGateway.enable(site.getId()) && null != change) {
+            if (1 == change.compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
                 Date now = CommonUtils.getDate();
+                SysUser user = ControllerUtils.getUserFromSession(session);
                 TradeOrder entity = new TradeOrder(site.getId(), user.getId(), change, ChargeProcessorComponent.GRADE_TYPE,
                         UUID.randomUUID().toString(), accountType, ip, TradeOrderService.STATUS_PENDING_PAY, false, now);
                 orderService.create(entity);

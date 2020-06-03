@@ -246,7 +246,7 @@ public class ConfigComponent implements SiteCache {
      * ConfigInfo
      *
      */
-    public class ConfigInfo implements java.io.Serializable {
+    public static class ConfigInfo implements java.io.Serializable {
 
         /**
          *

@@ -55,7 +55,7 @@ public class TemplateComponent implements Cache {
     /**
      * 包含目录 include directory
      */
-    public static String INCLUDE_DIRECTORY = "include";
+    public static final String INCLUDE_DIRECTORY = "include";
     /**
      * 管理后台上下文路径 Context Management Context Path Context
      */
