@@ -118,7 +118,7 @@ public class ZipUtils {
     public static void unzipHere(String zipFilePath, String encoding) throws IOException {
         int index = zipFilePath.lastIndexOf(Constants.SEPARATOR);
         if (0 > index) {
-            index = zipFilePath.lastIndexOf("\\");
+            index = zipFilePath.lastIndexOf('\\');
         }
         unzip(zipFilePath, zipFilePath.substring(0, index), encoding, true);
     }

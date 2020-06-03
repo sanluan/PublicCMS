@@ -152,19 +152,19 @@ public class PlaceController {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
-        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-        if (ControllerUtils.verifyCustom("manage",
-                null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
-                        || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
-                model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-        } else {
-            service.delete(id);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "delete.place",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        if (null != entity) {
+            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            if (ControllerUtils.verifyCustom("manage",
+                    CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
+                    model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            } else {
+                service.delete(id);
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "delete.place",
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+            }
         }
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     /**
@@ -186,19 +186,19 @@ public class PlaceController {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
-        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-        if (ControllerUtils.verifyCustom("manage",
-                null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
-                        || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
-                model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-        } else {
-            service.check(id, user.getId());
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        if (null != entity) {
+            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            if (ControllerUtils.verifyCustom("manage",
+                    CommonUtils.empty(metadata.getAdminIds()) || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
+                    model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            } else {
+                service.check(id, user.getId());
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+            }
         }
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     /**
@@ -220,36 +220,30 @@ public class PlaceController {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         CmsPlace entity = service.getEntity(id);
-        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
-        CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-        if (ControllerUtils.verifyCustom("manage",
-                null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
-                        || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
-                model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-        } else {
-            service.uncheck(id);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+        if (null != entity) {
+            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+            if (ControllerUtils.verifyCustom("manage",
+                    null == entity || null == user || CommonUtils.empty(metadata.getAdminIds())
+                            || !ArrayUtils.contains(metadata.getAdminIds(), user.getId()),
+                    model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            } else {
+                service.uncheck(id);
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
+                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+            }
         }
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     /**
      * @param site
      * @param id
      * @param request
-     * @return view name
      */
     @RequestMapping("click")
-    public String click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        ClickStatistics clickStatistics = statisticsComponent.placeClicks(site.getId(), id);
-        if (null != clickStatistics && CommonUtils.notEmpty(clickStatistics.getUrl())
-                && site.getId().equals(clickStatistics.getSiteId())) {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + clickStatistics.getUrl();
-        } else {
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
-        }
+    public void click(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
+        statisticsComponent.placeClicks(site.getId(), id);
     }
 
     /**

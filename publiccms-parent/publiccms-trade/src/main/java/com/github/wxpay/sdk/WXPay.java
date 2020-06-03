@@ -556,7 +556,7 @@ public class WXPay {
         String respStr = requestWithoutCert(url, fillRequestData(reqData), connectTimeoutMs, readTimeoutMs).trim();
         Map<String, String> ret;
         // 出现错误，返回XML数据
-        if (respStr.indexOf("<") == 0) {
+        if (respStr.indexOf('<') == 0) {
             ret = WXPayUtil.xmlToMap(respStr);
         } else {
             // 正常返回csv数据

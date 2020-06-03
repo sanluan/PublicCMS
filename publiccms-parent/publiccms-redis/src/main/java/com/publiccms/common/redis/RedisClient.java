@@ -78,8 +78,7 @@ public class RedisClient {
      * @param expiry
      */
     public void set(String region, Object key, Object value, Integer expiry) {
-        log.trace("set cache item. region=" + region + ", key=" + key + ", timeout="
-                + (CommonUtils.empty(expiry) ? 0 : expiry));
+        log.trace("set cache item. region=" + region + ", key=" + key + ", timeout=" + (CommonUtils.empty(expiry) ? 0 : expiry));
         createOrGetCache(region).put(key.toString(), value, expiry);
     }
 
@@ -121,17 +120,7 @@ public class RedisClient {
      * @return
      */
     public RedisCacheEntity<Object, Object> createOrGetCache(String region) {
-        RedisCacheEntity<Object, Object> cache = regionMap.get(region);
-        if (null == cache) {
-            synchronized (regionMap) {
-                if (null == cache) {
-                    cache = new RedisCacheEntity<>();
-                    cache.init(region, jedisPool);
-                    regionMap.put(region, cache);
-                }
-            }
-        }
-        return cache;
+        return regionMap.computeIfAbsent(region, k -> new RedisCacheEntity<>().init(region, jedisPool));
     }
 
     /**

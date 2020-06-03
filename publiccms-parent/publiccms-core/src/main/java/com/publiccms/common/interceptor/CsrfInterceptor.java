@@ -31,17 +31,15 @@ public class CsrfInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
         if (handler instanceof HandlerMethod) {
-            CsrfCache cache = methodCache.get(handler);
-            if (null == cache) {
+            CsrfCache cache = methodCache.computeIfAbsent((HandlerMethod) handler, k -> {
                 HandlerMethod handlerMethod = (HandlerMethod) handler;
                 Csrf csrf = handlerMethod.getMethodAnnotation(Csrf.class);
                 if (null == csrf) {
-                    cache = DEFAULT_CACHE;
+                    return DEFAULT_CACHE;
                 } else {
-                    cache = new CsrfCache(true, csrf.field());
+                    return new CsrfCache(true, csrf.field());
                 }
-                methodCache.put(handlerMethod, cache);
-            }
+            });
             if (cache.isEnable()) {
                 String value = request.getParameter(cache.getParameterName());
                 String token = admin ? ControllerUtils.getAdminToken(request) : ControllerUtils.getWebToken(request);

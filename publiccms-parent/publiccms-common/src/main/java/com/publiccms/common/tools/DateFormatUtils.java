@@ -42,11 +42,7 @@ public class DateFormatUtils {
             map.put(pattern, format);
             threadLocal.set(map);
         } else {
-            format = map.get(pattern);
-            if (null == format) {
-                format = new SimpleDateFormat(pattern);
-                map.put(pattern, format);
-            }
+            format = map.computeIfAbsent(pattern, k -> new SimpleDateFormat(pattern));
         }
         return format;
     }

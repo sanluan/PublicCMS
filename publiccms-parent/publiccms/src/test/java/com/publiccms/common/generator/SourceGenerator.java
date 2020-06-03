@@ -47,10 +47,9 @@ public class SourceGenerator {
         // 生成所有实体类的代码
         // sourceGenerator.generate(basePackage, overwrite);
         // 生成某个包所有实体类的代码
-//        sourceGenerator.generate(basePackage, "cms", overwrite);
+        // sourceGenerator.generate(basePackage, "cms", overwrite);
         // 生成某个实体类的代码
-         sourceGenerator.generate(Class.forName("com.publiccms.entities.cms.CmsVote"),
-         basePackage, overwrite);
+        sourceGenerator.generate(Class.forName("com.publiccms.entities.cms.CmsVote"), basePackage, overwrite);
     }
 
     /**
@@ -213,10 +212,8 @@ public class SourceGenerator {
                             imports.add(typeName);
                         }
                         String key = StringUtils.isNotBlank(column.name()) ? column.name() : field.getName();
-                        EntityCondition condition = conditionMap.get(key);
-                        if (null == condition) {
-                            condition = new EntityCondition(key, shortTypeName, column.title(), column.or(), column.like());
-                        }
+                        EntityCondition condition = conditionMap.computeIfAbsent(key,
+                                k -> new EntityCondition(key, shortTypeName, column.title(), column.or(), column.like()));
                         condition.getNameList().add(field.getName());
                         conditionMap.put(key, condition);
                     }
