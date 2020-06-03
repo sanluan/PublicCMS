@@ -1,6 +1,7 @@
 package com.github.wxpay.sdk;
 
 import com.github.wxpay.sdk.WXPayConstants.SignType;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Node;
@@ -8,6 +9,7 @@ import org.w3c.dom.NodeList;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
@@ -89,6 +91,8 @@ public class WXPayUtil {
             root.appendChild(filed);
         }
         TransformerFactory tf = TransformerFactory.newInstance();
+        tf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+        
         Transformer transformer = tf.newTransformer();
         DOMSource source = new DOMSource(document);
         transformer.setOutputProperty(OutputKeys.ENCODING, DEFAULT_CHARSET_NAME);
@@ -96,8 +100,7 @@ public class WXPayUtil {
         StringWriter writer = new StringWriter();
         StreamResult result = new StreamResult(writer);
         transformer.transform(source, result);
-        String output = writer.getBuffer().toString(); // .replaceAll("\n|\r",
-                                                       // "");
+        String output = writer.getBuffer().toString();
         try {
             writer.close();
         } catch (Exception ex) {
