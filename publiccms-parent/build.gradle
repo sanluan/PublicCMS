@@ -19,7 +19,7 @@ subprojects{
     apply plugin: "eclipse-wtp"
 	
 	group = 'com.publiccms'
-	version = 'V4.0.202004.a'
+	version = 'V4.0.202004.b'
 	
 	test.enabled = false
 	
@@ -29,10 +29,10 @@ subprojects{
         springVersion = "5.2.6.RELEASE"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "2.2.7.RELEASE"
+        springBootVersion = "2.3.0.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
-        httpclientVersion = "4.5.10"
+        httpclientVersion = "4.5.12"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
         jacksonVersion = "2.11.0"
         jacksonDatabindVersion = "2.11.0"
@@ -49,7 +49,13 @@ subprojects{
         // http://mvnrepository.com/artifact/org.mybatis/mybatis
         mybatisVersion = "3.5.4"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis-spring
-        mybatisSpringVersion = "2.0.3"
+        mybatisSpringVersion = "2.0.4"
+        // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
+        mybatisGenerator = "1.4.0"
+        // https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper
+        pageHelperVersion = "5.1.11"
+        // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
+        dynamicSqlVersion = "1.1.4"
         // https://mvnrepository.com/artifact/org.apache.lucene/lucene-analyzers-smartcn
         luceneVersion = "5.5.5"
         // http://mvnrepository.com/artifact/redis.clients/jedis
@@ -71,9 +77,9 @@ subprojects{
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.13"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        log4jVersion = "2.13.0"
+        log4jVersion = "2.13.3"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
-        extractorVersion = "2.12.0"
+        extractorVersion = "2.14.0"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         userAgentUtilsVersion = "1.21"
         // https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api
@@ -81,11 +87,13 @@ subprojects{
         // https://mvnrepository.com/artifact/javax.mail/javax.mail-api
         mailVersion = "1.6.2"
         // http://mvnrepository.com/artifact/org.apache.ant/ant
-        antVersion = "1.10.7"
+        antVersion = "1.10.8"
         // http://mvnrepository.com/artifact/javax.transaction/jta
         jtaVersion = "1.1"
         // https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api
         servletVersion = "4.0.1"
+        // http://mvnrepository.com/artifact/junit/junit
+        junitVersion = "4.12"
     }
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8

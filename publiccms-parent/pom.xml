@@ -24,10 +24,10 @@
         <version.spring>5.2.6.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.2.7.RELEASE</version.springBoot>
+        <version.springBoot>2.3.0.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
-        <version.httpclient>4.5.10</version.httpclient>
+        <version.httpclient>4.5.12</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <version.jackson>2.11.0</version.jackson>
         <version.jacksondatabind>2.11.0</version.jacksondatabind>
@@ -44,7 +44,13 @@
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <version.mybatis>3.5.4</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-        <version.mybatisSpring>2.0.3</version.mybatisSpring>
+        <version.mybatisSpring>2.0.4</version.mybatisSpring>
+		<!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
+		<version.mybatisGenerator>1.4.0</version.mybatisGenerator>
+        <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
+        <version.pagehelper>5.1.11</version.pagehelper>
+        <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
+        <version.dynamicSql>1.1.4</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene -->
         <version.lucene>5.5.5</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
@@ -66,9 +72,9 @@
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.13</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.13.0</version.log4j>
+        <version.log4j>2.13.3</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
-        <version.extractor>2.12.0</version.extractor>
+        <version.extractor>2.14.0</version.extractor>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
@@ -76,11 +82,13 @@
         <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
         <version.mail>1.6.2</version.mail>
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
-        <version.ant>1.10.7</version.ant>
+        <version.ant>1.10.8</version.ant>
         <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
         <version.jta>1.1</version.jta>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <version.servlet>4.0.1</version.servlet>
+		<!-- http://mvnrepository.com/artifact/junit/junit -->
+		<version.juint>4.12</version.juint>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -140,17 +148,6 @@
                 <version>${version.spring}</version>
             </dependency>
             <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis</artifactId>
-                <version>${version.mybatis}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>org.mybatis</groupId>
-                <artifactId>mybatis-spring</artifactId>
-                <version>${version.mybatisSpring}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.ehcache</groupId>
                 <artifactId>ehcache</artifactId>
                 <version>${version.ehcache}</version>
@@ -189,6 +186,31 @@
                 <groupId>org.apache.lucene</groupId>
                 <artifactId>lucene-highlighter</artifactId>
                 <version>${version.lucene}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis</artifactId>
+                <version>${version.mybatis}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis</groupId>
+                <artifactId>mybatis-spring</artifactId>
+                <version>${version.mybatisSpring}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.generator</groupId>
+                <artifactId>mybatis-generator-core</artifactId>
+                <version>${version.mybatisGenerator}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper</artifactId>
+                <version>${version.pagehelper}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mybatis.dynamic-sql</groupId>
+                <artifactId>mybatis-dynamic-sql</artifactId>
+                <version>${version.dynamicSql}</version>
             </dependency>
             <dependency>
                 <groupId>redis.clients</groupId>
@@ -284,28 +306,16 @@
                 <artifactId>javax.servlet-api</artifactId>
                 <version>${version.servlet}</version>
             </dependency>
-            <!-- http://mvnrepository.com/artifact/junit/junit -->
+
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.12</version>
+                <version>${version.juint}</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-test</artifactId>
                 <version>${version.spring}</version>
-            </dependency>
-            <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
-            <dependency>
-                <groupId>org.mybatis.generator</groupId>
-                <artifactId>mybatis-generator-core</artifactId>
-                <version>1.4.0</version>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
-            <dependency>
-                <groupId>org.mybatis.dynamic-sql</groupId>
-                <artifactId>mybatis-dynamic-sql</artifactId>
-                <version>1.1.4</version>
             </dependency>
             <dependency>
                 <groupId>org.springframework.boot</groupId>
