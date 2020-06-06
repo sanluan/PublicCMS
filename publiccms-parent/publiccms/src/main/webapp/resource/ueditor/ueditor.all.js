@@ -24413,6 +24413,7 @@ UE.plugin.register('insertfile', function (){
                 "flv":"icon_mv.gif",
                 "swf":"icon_mv.gif",
                 "rm":"icon_mv.gif",
+                "mp4":"icon_mv.gif",
                 "exe":"icon_exe.gif",
                 "psd":"icon_psd.gif",
                 "txt":"icon_txt.gif",
