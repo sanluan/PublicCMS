@@ -1,4 +1,4 @@
-<@_contentList categoryId=categoryId modelId=modelId title=title parentId=parentId userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@_contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelId title=title parentId=parentId userId=userId startPublishDate=startPublishDate orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" action="cmsPlace/lookup_content_list.html" onsubmit="return divSearch(this, 'lookup_content_list');" method="post">
         <#include "../include_page/parameters.html"/>

@@ -1,4 +1,4 @@
-<#assign maxlengthDisableTypes=['user','content','category','categoryType','tag','tagType','vote','date','datetime','file','image','video']/>
+<#assign maxlengthDisableTypes=['user','content','category','categoryType','tag','tagType','vote','date','datetime','file','image','video','dictionary']/>
 <#assign dictionaryTypes=['number','boolean','user','content','category','dictionary','categoryType','tagType','tag','vote']/>
 <#macro extendsFieldType inputName value='' searchable=false>
 <#local inputTypes={'text':t.pageMessage('input'),'number':t.pageMessage('number'),'file':t.pageMessage('file'),'image':t.pageMessage('image'),'video':t.pageMessage('video'),'password':t.pageMessage('password'),'editor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'kindeditor':t.pageMessage('kindeditor'),'textarea':t.pageMessage('textarea'),'date':t.pageMessage('date'),'datetime':t.pageMessage('datetime'),'template':t.pageMessage('template_path'),'boolean':t.pageMessage('true_or_false'),'user':t.pageMessage('user'),'content':t.pageMessage('content'),'category':t.pageMessage('category'),'dictionary':t.pageMessage('dictionary'),'categoryType':t.pageMessage('category_type'),'tagType':t.pageMessage('tag_type'),'vote':t.pageMessage('vote'),'tag':t.pageMessage('tag')}/>
@@ -16,9 +16,9 @@ $('.combox_${flag}').on('change',function(){
         $(this).closest('tr').find('a.btnLook').hide().prev().removeClass('required').hide();
     }
     if(-1<$.inArray($(this).val(), [<#list maxlengthDisableTypes as t>'${t}'<#sep>,</#list>])){
-        $(this).closest('tr').find('input[type=number]').hide();
+        $(this).closest('tr').find('input[name$=maxlength]').hide();
     }else{
-        $(this).closest('tr').find('input[type=number]').show();
+        $(this).closest('tr').find('input[name$=maxlength]').show();
     }
 });
 </script>

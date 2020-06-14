@@ -125,6 +125,14 @@
                 </dl>
             </div>
             <div class="pageFormContent categoryModel" layoutH="96">
+                <@_sysAuthorized roleIds=admin.roles url='cmsModel/list'>
+                <dl class="nowrap">
+                    <dt><@t.page 'model.management'/></dt>
+                    <dd>
+                        <a href="cmsModel/list.html" target="navTab" rel="cmsModel/list"><i class="icon-th-large icon-large"></i> <@t.page 'model.management'/></a>
+                    </dd>
+                </dl>
+                </@_sysAuthorized>
                 <div class="divider"></div>
 <#assign modelIndex=-1/>
 <#macro childModel parent index=1>
@@ -169,15 +177,6 @@
                         <@childModel a/>
                     </dd>
                 </dl>
-    <#else>
-                <dl class="nowrap">
-                    <dt><@t.page 'category.no_model'/></dt>
-                    <dd>
-                    <@_sysAuthorized roleIds=admin.roles url='cmsModel/list'>
-                        <a href="cmsModel/list.html" target="navTab" rel="cmsModel/list"><i class="icon-th-large icon-large"></i> <@t.page 'model.management'/></a>
-                    </@_sysAuthorized>
-                    </dd>
-                </dl>
     </#list>
 </@_modelList>
                 <dl class="nowrap categoryModelContentPath">
@@ -208,15 +207,17 @@ checkCategoryModel();
             </div>
             <div class="pageFormContent categoryModelContent" layoutH="96">
 <#assign contentExtendList=[]/>
+<#assign copy=false/>
 <#if a?has_content&&a.extendId?has_content>
     <@_sysExtendFieldList extendId=a.extendId>
         <#assign contentExtendList=list>
     </@_sysExtendFieldList>
+    <#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
 </#if>
 <#include "../include_page/extends.html"/>
                 <fieldset>
                     <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.invalid'/>:source,sourceUrl,text)(<@t.page 'metadata.default_value_description'/>)</legend>
-                    <@extends 'contentExtends' contentExtendList true/>
+                    <@extends 'contentExtends' contentExtendList true copy/>
                 </fieldset>
             </div>
         </div>
