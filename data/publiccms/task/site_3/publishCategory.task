@@ -2,9 +2,13 @@
 <#macro deal parentId>
 	<@_categoryList advanced=true parentId=parentId count=100>
 		<#list page.list as a>
-			<@_contentList categoryId=a.id containChild=a.containChild endPublishDate=.now count=a.pageSize>
-				<@_publishCategory id=a.id totalPage=page.totalPage><#assign dealCount++/></@_publishCategory>
-			</@_contentList>
+			<#if a.pageSize gt 500>
+				<@_publishCategory id=a.id totalPage=1><#assign dealCount++/></@_publishCategory>
+			<#else>
+				<@_contentList categoryId=a.id containChild=a.containChild endPublishDate=.now count=a.pageSize>
+					<@_publishCategory id=a.id totalPage=page.totalPage><#assign dealCount++/></@_publishCategory>
+				</@_contentList>
+			</#if>
 			<#if a.childIds?has_content><@deal a.id/></#if>
 		</#list>
 	</@_categoryList>

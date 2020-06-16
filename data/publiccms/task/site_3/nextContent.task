@@ -1,0 +1,21 @@
+<#assign pageCount=50/>
+<#assign dealCount=0/>
+<#-- 获取昨天发布的文章 -->
+<#assign dealDate=(.now?long-1000*3600*24)?number_to_date?string/>
+<@_contentList startPublishDate=dealDate ,pageIndex=1 count=pageCount>
+  <#list 1..page.totalPage as n>
+  <@_contentList startPublishDate=dealDate ,pageIndex=n count=pageCount>
+    <#list page.list as a>
+    <#-- 重新生成上一篇文章静态页面 -->
+    <@_contentList categoryId=a.categoryId endPublishDate=a.publishDate orderField='publishDate' pageIndex=2 pageSize=1>
+        <#if 2=page.pageIndex>
+          <#list page.list as a>
+            <@_publishContent id=a.id><#assign dealCount++/></@_publishContent>
+          </#list>
+        </#if>
+    </@_contentList>
+    </#list>
+  </@_contentList>
+  </#list>
+</@_contentList>
+共生成${dealCount}条内容静态页面

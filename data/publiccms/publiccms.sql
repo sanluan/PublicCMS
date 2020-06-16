@@ -287,12 +287,14 @@ INSERT INTO `sys_site` VALUES (3, NULL, 'PublicCMS官网', 1, '//site3.dev.publi
 -- ----------------------------
 -- Records of sys_task
 -- ----------------------------
-INSERT INTO `sys_task` VALUES (1, 3, '重新生成所有页面', 0, '0 0/2 * * ?', '重新生成所有页面', '/publishPage.task', NULL);
-INSERT INTO `sys_task` VALUES (2, 3, '重建索引', 0, '0 0 1 1 ? 2099', '重建全部索引', '/reCreateIndex.task', NULL);
-INSERT INTO `sys_task` VALUES (3, 3, '清理日志', 0, '0 0 1 * ?', '清理三个月以前的日志', '/clearLog.task', NULL);
-INSERT INTO `sys_task` VALUES (4, 3, '重新生成内容页面', 0, '0 0 1 1 ? 2099', '重新生成内容页面', '/publishContent.task', NULL);
-INSERT INTO `sys_task` VALUES (5, 3, '重新生成所有分类页面', 0, '0 0/6 * * ?', '重新生成所有分类页面', '/publishCategory.task', NULL);
-INSERT INTO `sys_task` VALUES (7, 3, '重新生成全站', 0, '0 0 1 1 ? 2099', '重新生成全站', '/publishAll.task', NULL);
+INSERT INTO `sys_task` VALUES (1, 3, '重新生成所有页面', 0, '0/20 * * * ?', '每20分钟执行', '/publishPage.task', NULL);
+INSERT INTO `sys_task` VALUES (2, 3, '重建索引', 0, '0 0 1 1 ? 2099', '手动执行', '/reCreateIndex.task', NULL);
+INSERT INTO `sys_task` VALUES (3, 3, '清理三个月以前日志', 0, '0 0 1 * ?', '每月1号凌晨执行', '/clearLog.task', NULL);
+INSERT INTO `sys_task` VALUES (4, 3, '重新生成内容页面', 0, '0 0 1 1 ? 2099', '手动执行', '/publishContent.task', NULL);
+INSERT INTO `sys_task` VALUES (5, 3, '重新生成所有分类页面', 0, '0 * * * ?', '每小时执行', '/publishCategory.task', NULL);
+INSERT INTO `sys_task` VALUES (7, 3, '重新生成全站', 0, '0 0 1 1 ? 2099', '手动执行', '/publishAll.task', NULL);
+INSERT INTO `sys_task` VALUES (8, 3, '重新生成昨天文章的上一篇文章', 0, '	1 0 * * ?', '	每天凌晨0:1执行', '/nextContent.task', NULL);
+
 
 -- ----------------------------
 -- Records of sys_user
