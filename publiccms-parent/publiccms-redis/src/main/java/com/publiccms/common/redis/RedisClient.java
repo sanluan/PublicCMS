@@ -120,7 +120,7 @@ public class RedisClient {
      * @return
      */
     public RedisCacheEntity<Object, Object> createOrGetCache(String region) {
-        return regionMap.computeIfAbsent(region, k -> new RedisCacheEntity<>().init(region, jedisPool));
+        return regionMap.computeIfAbsent(region, k -> new RedisCacheEntity<>().init(k, jedisPool));
     }
 
     /**

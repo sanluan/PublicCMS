@@ -213,7 +213,7 @@ public class SourceGenerator {
                         }
                         String key = StringUtils.isNotBlank(column.name()) ? column.name() : field.getName();
                         EntityCondition condition = conditionMap.computeIfAbsent(key,
-                                k -> new EntityCondition(key, shortTypeName, column.title(), column.or(), column.like()));
+                                k -> new EntityCondition(k, shortTypeName, column.title(), column.or(), column.like()));
                         condition.getNameList().add(field.getName());
                         conditionMap.put(key, condition);
                     }

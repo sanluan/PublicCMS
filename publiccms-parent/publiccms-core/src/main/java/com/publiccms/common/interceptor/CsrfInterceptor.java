@@ -32,8 +32,7 @@ public class CsrfInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
         if (handler instanceof HandlerMethod) {
             CsrfCache cache = methodCache.computeIfAbsent((HandlerMethod) handler, k -> {
-                HandlerMethod handlerMethod = (HandlerMethod) handler;
-                Csrf csrf = handlerMethod.getMethodAnnotation(Csrf.class);
+                Csrf csrf = k.getMethodAnnotation(Csrf.class);
                 if (null == csrf) {
                     return DEFAULT_CACHE;
                 } else {

@@ -1,5 +1,6 @@
 package com.publiccms.controller.web.cms;
 
+import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -7,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -41,6 +44,8 @@ import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
 
+import freemarker.template.TemplateException;
+
 /**
  *
  * PlaceController
@@ -49,6 +54,7 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
 @Controller
 @RequestMapping("place")
 public class PlaceController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     private CmsPlaceService service;
     @Autowired
@@ -63,6 +69,8 @@ public class PlaceController {
     protected SiteComponent siteComponent;
     @Autowired
     protected ConfigComponent configComponent;
+    @Autowired
+    private TemplateComponent templateComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "type", "path", "createDate", "userId", "disabled" };
 
@@ -196,6 +204,14 @@ public class PlaceController {
                 service.check(id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+                if (site.isUseSsi()) {
+                    try {
+                        templateComponent.staticPlace(site, entity.getPath(), metadata);
+                    } catch (IOException | TemplateException e) {
+                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                        log.error(e.getMessage(), e);
+                    }
+                }
             }
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
