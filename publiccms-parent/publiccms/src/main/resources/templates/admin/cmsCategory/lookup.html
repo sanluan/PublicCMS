@@ -1,28 +1,32 @@
-<#macro lookupTree parentId=''>
+<#if parentId?has_content>
+<ul>
     <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
-            <li>
-                <#if currentCategoryId?has_content&&a.id?string=currentCategoryId>
-                    <a href="javascript:;" class="exclude-translate" onclick="return false;">${a.name!}</a>
-                <#else>
+            <#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)>
+                <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
                     <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({parentId:'${a.id}',${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;">${a.name!}</a>
-                    <#if a.childIds?has_content>
-                        <ul>
-                            <@lookupTree a.id/>
-                        </ul>
-                    </#if>
-                </#if>
-            </li>
-        <#else>
-            <li><a><@t.page 'empty_directory'/></a></li>
+                </li>
+            </#if>
         </#list>
     </@_categoryList>
-</#macro>
+</ul>
+<#else>
 <div class="pageFormContent" layoutH="19">
     <ul class="tree treeFolder expand">
         <li>
             <a href="javascript:;" onclick="$.bringBack({${field!'categoryId'}:'',categoryId:'', categoryName:'',parentId:''});return false;"><@t.page 'button.clear_select'/></a>
         </li>
-        <@lookupTree/>
+        <@_categoryList advanced=true parentId=parentId pageSize=500>
+        <#list page.list as a>
+            <#if !(currentCategoryId?has_content) || !(a.id?string=currentCategoryId)>
+                <li<#if a.childIds?has_content> _src="cmsCategory/lookup.html?currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
+                    <a href="javascript:;" class="exclude-translate" onclick="$.bringBack({parentId:'${a.id}',${field!'categoryId'}:'${a.id}', categoryName:'${a.name}'});return false;">${a.name!}</a>
+                </li>
+            </#if>
+        <#else>
+            <li><a><@t.page 'empty_directory'/></a></li>
+        </#list>
+    </@_categoryList>
     </ul>
 </div>
+</#if>

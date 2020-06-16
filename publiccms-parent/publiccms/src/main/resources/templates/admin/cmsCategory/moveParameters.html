@@ -1,19 +1,16 @@
-<#macro categoryTree parentId=''>
-    <@_categoryList parentId=parentId advanced=true pageSize=500>
+<#if parentId?has_content>
+<ul>
+    <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
-            <li>
+            <li<#if a.childIds?has_content> _src="cmsCategory/moveParameters.html?parentId=${a.id}"</#if>>
                 <a href="javascript:;" class="exclude-translate" onclick="$('input[name=parentId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();">${a.name!}</a>
-            <#if a.childIds?has_content>
-                <ul>
-                    <@categoryTree a.id/>
-                </ul>
-            </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_categoryList>
-</#macro>
+</ul>
+<#else>
 <script>
 $('.pageContent table tbody tr input[name=ids]',navTab.getCurrentPanel()).each(function(){
     if($(this).is(":checked")){
@@ -33,8 +30,19 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
         <ul class="tree treeFolder expand">
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'category.parent.select'/></a>
-                <ul><@categoryTree/></ul>
+                <ul>
+                    <@_categoryList advanced=true pageSize=500>
+                        <#list page.list as a>
+                            <li<#if a.childIds?has_content> _src="cmsCategory/moveParameters.html?parentId=${a.id}"</#if>>
+                                <a href="javascript:;" class="exclude-translate" onclick="$('input[name=parentId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();">${a.name!}</a>
+                            </li>
+                        <#else>
+                            <li><a><@t.page 'empty_directory'/></a></li>
+                        </#list>
+                    </@_categoryList>
+                </ul>
             </li>
         </ul>
     </form>
 </div>
+</#if>

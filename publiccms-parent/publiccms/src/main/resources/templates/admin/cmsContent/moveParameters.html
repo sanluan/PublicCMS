@@ -1,4 +1,5 @@
-<#macro categoryTree parentId=''>
+<#if parentId?has_content>
+<ul>
     <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
             <@t.merge 'categoryIds' a.id!/>
@@ -6,20 +7,16 @@
         <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
         <#list page.list as a>
             <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
-                <li>
+                <li <#if a.childIds?has_content>_src="cmsContent/MoveParameters.html?parentId=${a.id}"</#if>>
                     <a href="javascript:;" class="exclude-translate" onclick="$('input[name=categoryId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();" target="ajax">${a.name!}</a>
-                <#if a.childIds?has_content>
-                    <ul>
-                        <@categoryTree a.id/>
-                    </ul>
-                </#if>
                 </li>
             </#if>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_categoryList>
-</#macro>
+</ul>
+<#else>
 <script>
 $('.pageContent table tbody tr input[name=ids]',navTab.getCurrentPanel()).each(function(){
     if($(this).is(":checked")){
@@ -39,7 +36,23 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
         <ul class="tree treeFolder expand">
             <li>
                 <a href="javascript:;" onclick="return false;"><@t.page 'category.select'/></a>
-                <ul><@categoryTree/></ul>
+                <ul>
+                <@_categoryList advanced=true pageSize=500>
+                    <#list page.list as a>
+                        <@t.merge 'categoryIds' a.id!/>
+                    </#list>
+                    <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+                    <#list page.list as a>
+                        <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
+                            <li<#if a.childIds?has_content> _src="cmsContent/moveParameters.html?parentId=${a.id}"</#if>>
+                                <a href="javascript:;" class="exclude-translate" onclick="$('input[name=categoryId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();" target="ajax">${a.name!}</a>
+                            </li>
+                        </#if>
+                    <#else>
+                        <li><a><@t.page 'empty_directory'/></a></li>
+                    </#list>
+                </@_categoryList>
+                </ul>
             </li>
         </ul>
     </div>
@@ -49,3 +62,4 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
         </ul>
     </div>
 </form>
+</#if>
