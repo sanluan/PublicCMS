@@ -16,7 +16,7 @@ import freemarker.template.TemplateModelException;
 /**
  *
  * GetPageMethod
- * 
+ *
  */
 @Component
 public class GetPageMethod extends BaseMethod {
@@ -61,7 +61,8 @@ public class GetPageMethod extends BaseMethod {
                 url += CommonConstants.getDefaultPage();
             }
             int index = url.lastIndexOf(CommonConstants.DOT);
-            if (-1 < index) {
+            int index2 = url.lastIndexOf(CommonConstants.SEPARATOR);
+            if (index2 < index) {
                 String prefixFilePath = url.substring(0, index);
                 String suffixFilePath = url.substring(index, url.length());
                 if (url.lastIndexOf(CommonConstants.SEPARATOR) < url.lastIndexOf(CommonConstants.UNDERLINE)) {

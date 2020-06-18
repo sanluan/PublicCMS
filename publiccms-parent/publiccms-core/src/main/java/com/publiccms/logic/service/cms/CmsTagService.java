@@ -76,10 +76,7 @@ public class CmsTagService extends BaseService<CmsTag> {
         if (CommonUtils.notEmpty(entitys)) {
             for (CmsTag entity : entitys) {
                 if (null != entity.getId()) {
-                    entity = getEntity(entity.getId());
-                    if (siteId == entity.getSiteId()) {
-                        idList.add(entity.getId());
-                    }
+                    idList.add(entity.getId());
                 } else {
                     entity.setSiteId(siteId);
                     save(entity);

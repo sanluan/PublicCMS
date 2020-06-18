@@ -134,7 +134,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         if (CommonUtils.notEmpty(dictionaryValues)) {
             for (String value : dictionaryValues) {
-                termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(value).createQuery());
+				if (CommonUtils.notEmpty(value)) {
+                	termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(value).createQuery());
+				}
             }
         }
         if (null != startPublishDate) {
