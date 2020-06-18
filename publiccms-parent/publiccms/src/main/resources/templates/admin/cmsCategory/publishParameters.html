@@ -5,7 +5,7 @@
         <dl>
             <dt><@t.page 'category.publish_page_count'/>:</dt>
             <@_contentList categoryId=id containChild=containChild pageSize=pageSize>
-            <dd><input class="required digits" type="number" name="max" max="${page.totalPage}" min="1" value="${(1+page.totalCount/pageSize?number)?string('0')}"/></dd>
+            <dd><input class="required digits" type="number" name="max" max="${page.totalPage}" min="1" value="<#if pageSize?number gt 500>1<#else>${page.totalPage}</#if>"/></dd>
             </@_contentList>
         </dl>
     </div>
