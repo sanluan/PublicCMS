@@ -193,9 +193,7 @@ public class TemplateComponent implements Cache {
      * @param entity
      */
     public void initContentUrl(SysSite site, CmsContent entity) {
-        if (!entity.isOnlyUrl()) {
-            entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
-        }
+        entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
     }
 
     /**
@@ -213,7 +211,7 @@ public class TemplateComponent implements Cache {
      * @return
      */
     public String getUrl(SysSite site, boolean hasStatic, String url) {
-        if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("/")) {
+        if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("/") || url.startsWith("#")) {
             return url;
         } else {
             return hasStatic ? site.getSitePath() + url : site.getDynamicPath() + url;
