@@ -274,7 +274,8 @@ CREATE TABLE `cms_tag` (
   `type_id` int(11) default NULL COMMENT '分类ID',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   PRIMARY KEY  (`id`),
-  KEY `cms_tag_site_id` (`site_id`)
+  KEY `cms_tag_site_id` (`site_id`,`name`),
+  KEY `cms_tag_type_id` (`type_id`)
 ) COMMENT='标签';
 
 -- ----------------------------
@@ -287,7 +288,7 @@ CREATE TABLE `cms_tag_type` (
   `name` varchar(50) NOT NULL COMMENT '名称',
   `count` int(11) NOT NULL COMMENT '标签数',
   PRIMARY KEY  (`id`),
-  KEY `cms_tag_type_site_id` (`site_id`)
+  KEY `cms_tag_type_site_id` (`site_id`,`name`)
 ) COMMENT='标签类型';
 
 

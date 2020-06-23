@@ -97,16 +97,6 @@ public abstract class BaseDao<E> {
     }
 
     /**
-     * 左Like查询
-     * 
-     * @param var
-     * @return left like query
-     */
-    public static String leftLike(String var) {
-        return "%" + var;
-    }
-
-    /**
      * 右Like查询
      * 
      * @param var
