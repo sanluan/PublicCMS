@@ -35,6 +35,10 @@ public class SysDomainService extends BaseService<SysDomain> {
         return dao.getPage(siteId, wild, pageIndex, pageSize);
     }
 
+    public int deleteBySiteId(Short siteId) {
+        return dao.deleteBySiteId(siteId);
+    }
+
     @Override
     public SysDomain update(Serializable id, SysDomain newEntity) {
         delete(id);
@@ -44,5 +48,5 @@ public class SysDomainService extends BaseService<SysDomain> {
 
     @Autowired
     private SysDomainDao dao;
-    
+
 }

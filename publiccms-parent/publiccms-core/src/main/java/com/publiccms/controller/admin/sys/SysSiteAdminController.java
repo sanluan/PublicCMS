@@ -1,8 +1,6 @@
 package com.publiccms.controller.admin.sys;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,14 +23,8 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
-import com.publiccms.entities.sys.SysDept;
-import com.publiccms.entities.sys.SysDomain;
-import com.publiccms.entities.sys.SysRole;
-import com.publiccms.entities.sys.SysRoleUser;
-import com.publiccms.entities.sys.SysRoleUserId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -40,12 +32,8 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
-import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysDomainService;
-import com.publiccms.logic.service.sys.SysRoleService;
-import com.publiccms.logic.service.sys.SysRoleUserService;
 import com.publiccms.logic.service.sys.SysSiteService;
-import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.tools.SqlService;
 
 /**
@@ -59,14 +47,6 @@ public class SysSiteAdminController {
     protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     private SysSiteService service;
-    @Autowired
-    private SysRoleService roleService;
-    @Autowired
-    private SysUserService userService;
-    @Autowired
-    private SysDeptService deptService;
-    @Autowired
-    private SysRoleUserService roleUserService;
     @Autowired
     private SysDomainService domainService;
     @Autowired
@@ -128,21 +108,7 @@ public class SysSiteAdminController {
                     || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.save(entity);
-            if (null == wild) {
-                wild = false;
-            }
-            domainService.save(new SysDomain(domain, entity.getId(), wild));
-            SysDept dept = new SysDept(entity.getId(), deptName, 0, true, true, true);
-            deptService.save(dept);// 初始化部门
-            SysRole role = new SysRole(entity.getId(), roleName, true, true);
-            roleService.save(role);// 初始化角色
-            String salt = UserPasswordUtils.getSalt();
-            SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt), salt, true,
-                    userName, dept.getId(), true, role.getId().toString(), null, false, true, false, null, null, 0,
-                    CommonUtils.getDate());
-            userService.save(user);// 初始化用户
-            roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
+            service.save(entity, domain, wild, roleName, deptName, userName, password);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.site",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
@@ -163,7 +129,6 @@ public class SysSiteAdminController {
      * @param model
      * @return view name
      */
-    @SuppressWarnings("unchecked")
     @RequestMapping("delete")
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Short id, HttpServletRequest request,
@@ -174,18 +139,12 @@ public class SysSiteAdminController {
         SysSite entity = service.getEntity(id);
         if (null != entity) {
             service.delete(id);
-            Long userId = admin.getId();
-            Date now = CommonUtils.getDate();
-            String ip = RequestUtils.getIpAddress(request);
-            for (SysDomain domain : (List<SysDomain>) domainService.getPage(entity.getId(), null, null, null).getList()) {
-                domainService.delete(domain.getName());
-                logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.domain",
-                        ip, now, JsonUtils.getString(entity)));
-            }
-            logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", ip,
-                    now, JsonUtils.getString(entity)));
+            domainService.deleteBySiteId(entity.getId());
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.site",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**
@@ -223,8 +182,8 @@ public class SysSiteAdminController {
         }
         model.addAttribute("sqlcommand", sqlcommand);
         model.addAttribute("sqlparameters", sqlparameters);
-        logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
+        logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "execsql.site",
+                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
         return CommonConstants.TEMPLATE_DONE;
     }
 

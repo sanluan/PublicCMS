@@ -35,6 +35,19 @@ public class SysDomainDao extends BaseDao<SysDomain> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
+    /**
+     * @param siteId
+     * @return results count
+     */
+    public int deleteBySiteId(Short siteId) {
+        if (CommonUtils.notEmpty(siteId)) {
+            QueryHandler queryHandler = getQueryHandler("delete from SysDomain bean");
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+            return delete(queryHandler);
+        }
+        return 0;
+    }
+
     @Override
     protected SysDomain init(SysDomain entity) {
         return entity;
