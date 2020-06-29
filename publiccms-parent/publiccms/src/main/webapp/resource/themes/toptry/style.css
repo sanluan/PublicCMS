@@ -16,13 +16,12 @@ header a{color:#afc5f6}
 
 #sidebar,#sidebar_s{background:#2c3343}
 .tabsPage{background:#edf1f5}
-#sidebar #menu{}
 .accordion .accordionHeader{background:#222836;}
 .accordion .accordionHeader h2.collapsable{color:#fff}
-.accordion .accordionContent{background:;}
+.accordion .accordionContent{background:#2c3343;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC}
 
-#leftside,.accordionContent .tree a,.accordionContent .tree div.hover{color:#8d95a7}
+#sidebar_s,.accordion .accordionHeader,.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div.hover{color:#8d95a7}
 .accordionContent .tree div.hover a{background:#19202f;color:#8d95a7}
 .accordionContent .tree div.selected a{background:#667ea7;color:#fff}
 

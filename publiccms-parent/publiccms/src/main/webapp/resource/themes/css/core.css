@@ -115,7 +115,7 @@ header .nav .selected ul{display:block}
 /* Accordion */
 .accordion{display:block}
 .accordion .accordionHeader{display:block;overflow:hidden;cursor:pointer}
-.accordion .accordionHeader h2{display:block;overflow:hidden;padding:0 10px 0 5px;height:45px;line-height:45px;font-weight:400}
+.accordion .accordionHeader h2{display:block;overflow:hidden;padding:0 10px 0 10px;height:45px;line-height:45px;font-weight:400}
 .accordion .accordionHeader h2>i{margin-right:5px}
 .accordion .accordionHeader h2 .icon{float:right;line-height:45px}
 .accordion .accordionContent{display:block;overflow:auto}
