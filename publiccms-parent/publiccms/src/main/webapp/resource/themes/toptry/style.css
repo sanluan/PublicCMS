@@ -14,10 +14,12 @@ header a{color:#afc5f6}
 #navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff}
 /* 主界面 */
 
-main,#sidebar,#sidebar_s{background:#2c3343}
+#sidebar,#sidebar_s{background:#2c3343}
 .tabsPage{background:#edf1f5}
-#sidebar #menu{background:#222836}
-main .accordion .accordionHeader h2.collapsable{color:#fff}
+#sidebar #menu{}
+.accordion .accordionHeader{background:#222836;}
+.accordion .accordionHeader h2.collapsable{color:#fff}
+.accordion .accordionContent{background:;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC}
 
 #leftside,.accordionContent .tree a,.accordionContent .tree div.hover{color:#8d95a7}

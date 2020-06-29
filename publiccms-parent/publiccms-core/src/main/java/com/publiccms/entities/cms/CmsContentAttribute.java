@@ -9,6 +9,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -32,6 +33,7 @@ public class CmsContentAttribute implements java.io.Serializable {
     @GeneratorColumn(title = "扩展数据")
     private String data;
     @GeneratorColumn(title = "全文索引文本")
+    @JsonIgnore
     private String searchText;
     @GeneratorColumn(title = "文本")
     private String text;

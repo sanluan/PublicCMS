@@ -118,6 +118,7 @@ public class CmsContent implements java.io.Serializable {
     private String tagIds;
     @GeneratorColumn(title = "数据字典值")
     @Field(store = Store.YES)
+    @JsonIgnore
     private String dictionaryValues;
     @GeneratorColumn(title = "封面")
     private String cover;
