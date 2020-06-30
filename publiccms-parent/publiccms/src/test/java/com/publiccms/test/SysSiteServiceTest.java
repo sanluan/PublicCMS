@@ -42,7 +42,7 @@ public class SysSiteServiceTest {
         // 不进入安装程序
         CmsVersion.setInitialized(true);
         // 数据目录地址，此目录中应该有 database.properties
-        CommonConstants.CMS_FILEPATH = "D://data/publiccms/";
+        CommonConstants.CMS_FILEPATH = "/Users/llz/IdeaProjects/PublicCMS/data/publiccms";
     }
 
     /**
