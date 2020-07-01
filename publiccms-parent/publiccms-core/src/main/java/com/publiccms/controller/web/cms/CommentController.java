@@ -92,9 +92,6 @@ public class CommentController {
                         }
                     }
                 }
-                if (null != entity.getReplyUserId() && entity.getReplyUserId().equals(user.getId())) {
-                    entity.setReplyUserId(null);
-                }
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",
                         RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
