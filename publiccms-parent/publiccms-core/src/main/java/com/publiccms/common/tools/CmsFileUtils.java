@@ -46,7 +46,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final List<String> IMAGE_FILE_SUFFIXS = Arrays.asList(".png", ".jpg", ".jpeg", ".gif", ".bmp");
+    public static final List<String> IMAGE_FILE_SUFFIXS = Arrays.asList(".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg");
 
     /**
      * 
