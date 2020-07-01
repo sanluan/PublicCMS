@@ -46,7 +46,7 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final List<String> IMAGE_FILE_SUFFIXS = Arrays.asList(new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" });
+    public static final List<String> IMAGE_FILE_SUFFIXS = Arrays.asList(new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg" });
 
     /**
      * 
@@ -163,6 +163,7 @@ public class CmsFileUtils {
                 fileSize.setHeight(bufferedImg.getHeight());
                 return fileSize;
             } catch (IOException e) {
+            } catch (NullPointerException e) {
             }
         }
         return EMPTY;
