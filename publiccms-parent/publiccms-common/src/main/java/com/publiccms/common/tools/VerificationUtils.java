@@ -14,11 +14,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import javax.crypto.Cipher;
-import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
-import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.commons.codec.binary.Base64;
 
@@ -284,49 +282,23 @@ public class VerificationUtils {
     }
 
     /**
-     * AES加密
+     * 3-DES加密
      *
      * @param input
      * @param key
-     * @return AES encode result
+     * @return 3-DES encode result
      */
 
     public static byte[] encrypt(String input, String key) {
         try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128, new SecureRandom(key.getBytes()));
-            SecretKey secretKey = keyGenerator.generateKey();
-            byte[] enCodeFormat = secretKey.getEncoded();
-            SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+            byte[] sha1Key = sha1Encode(key).getBytes(Constants.DEFAULT_CHARSET);
+            DESedeKeySpec dks = new DESedeKeySpec(sha1Key);
+            SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("DESede");
+            Cipher cipher = Cipher.getInstance("DESede");
+            cipher.init(Cipher.ENCRYPT_MODE, keyFactory.generateSecret(dks));
             return cipher.doFinal(input.getBytes(Constants.DEFAULT_CHARSET));
         } catch (Exception e) {
             return null;
-        }
-    }
-
-    /**
-     *
-     * AES解密
-     *
-     * @param input
-     * @param key
-     * @return 3-DES decode result
-     */
-    public static String decryptAES(byte[] input, String key) {
-        try {
-            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
-            keyGenerator.init(128, new SecureRandom(key.getBytes()));
-            SecretKey secretKey = keyGenerator.generateKey();
-            byte[] enCodeFormat = secretKey.getEncoded();
-            SecretKeySpec secretKeySpec = new SecretKeySpec(enCodeFormat, "AES");
-            Cipher cipher = Cipher.getInstance("AES");
-            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
-            byte ciphertext[] = cipher.doFinal(input);
-            return new String(ciphertext, Constants.DEFAULT_CHARSET);
-        } catch (Exception e) {
-            return Constants.BLANK;
         }
     }
 
@@ -338,7 +310,6 @@ public class VerificationUtils {
      * @param key
      * @return 3-DES decode result
      */
-    @Deprecated
     private static String decrypt3DES(byte[] input, String key) {
         try {
             byte[] sha1Key = sha1Encode(key).getBytes(Constants.DEFAULT_CHARSET);
@@ -363,8 +334,7 @@ public class VerificationUtils {
      * @return decode result
      */
     public static String decrypt(byte[] input, String key) {
-        String result = decryptAES(input, key);
-        return Constants.BLANK.equals(result) ? decrypt3DES(input, key) : result;
+        return decrypt3DES(input, key);
     }
 
     /**
