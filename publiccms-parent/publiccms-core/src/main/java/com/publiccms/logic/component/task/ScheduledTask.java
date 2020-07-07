@@ -14,6 +14,7 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.TriggerBuilder;
 import org.quartz.TriggerKey;
+import org.quartz.UnableToInterruptJobException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -156,6 +157,24 @@ public class ScheduledTask {
                 scheduler.pauseJob(JobKey.jobKey(getTaskName(id)));
             } catch (SchedulerException e) {
                 sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
+                logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
+            }
+        }
+    }
+    
+    /**
+     * 暂停任务计划
+     * 
+     * @param site
+     * @param id
+     */
+    public void interrupt(SysSite site, Integer id) {
+        if (CommonUtils.notEmpty(id)) {
+            Date startTime = CommonUtils.getDate();
+            try {
+                scheduler.interrupt(JobKey.jobKey(getTaskName(id)));
+            } catch (UnableToInterruptJobException e) {
+                sysTaskService.updateStatus(id, TASK_STATUS_RUNNING);
                 logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
             }
         }
