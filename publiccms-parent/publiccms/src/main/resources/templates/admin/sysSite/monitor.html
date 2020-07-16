@@ -12,7 +12,7 @@
 <body>
 <div class="container theme-showcase" role="main">
     <div class="page-header">
-        <a href=""><h1><@t.page 'report.cms'/></h1></a>
+        <h1><@t.page 'report.cms'/></h1>
     </div>
     <div class="row">
         <div id="memory_count" class="col-lg-4 col-md-6"></div>
@@ -137,8 +137,8 @@ echarts.init(document.getElementById('disk')).setOption({
             radius : '55%',
             center: ['50%', '60%'],
             data:[
-                {value:<@t.fileSize (totalSpace-freeSpace) false/>, name:'<@t.page 'report.used'/>'},
-                {value:<@t.fileSize freeSpace false/>, name:'<@t.page 'report.unused'/>'}
+                {value:${(totalSpace-freeSpace)/1024/1024}, name:'<@t.page 'report.used'/>'},
+                {value:${freeSpace/1024/1024}, name:'<@t.page 'report.unused'/>'}
             ]
         }
     ]

@@ -11,17 +11,17 @@ function siteDefaultConfig${id!}(type){
         if($('input[name=useSsi]',navTab.getCurrentPanel()).is(":checked")){
             $('input[name=useSsi]',navTab.getCurrentPanel()).click();
         }
-        $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
-        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
+        $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/");
+        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/");
     }else{
         if($('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
             $('input[name=useStatic]',navTab.getCurrentPanel()).click();
         }
-        $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
-        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
+        $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/");
+        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/");
     }
     <#if !a??>
-        $('input[name=domain]',navTab.getCurrentPanel()).val("${base?keep_after('//')?keep_before('/')?keep_before(':')}");
+        $('input[name=domain]',navTab.getCurrentPanel()).val(location.hostname);
     </#if>
     $('.info',navTab.getCurrentPanel()).show();
 }
