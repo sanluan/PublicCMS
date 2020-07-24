@@ -47,8 +47,8 @@ import com.publiccms.common.search.MultiTokenizerFactory;
 @DynamicUpdate
 @AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class), filters = {
         @TokenFilterDef(factory = MultiTokenFilterFactory.class) })
-//@Analyzer(definition = "cms") // Comment this line to enable elasticsearch
- @Analyzer(definition = "default") // Uncomment this line to enable elasticsearch
+@Analyzer(definition = "cms") // Comment this line to enable elasticsearch
+// @Analyzer(definition = "default") // Uncomment this line to enable elasticsearch
 @ClassBridge(impl = CmsContentBridge.class)
 @Indexed(interceptor = CmsContentInterceptor.class)
 public class CmsContent implements java.io.Serializable {

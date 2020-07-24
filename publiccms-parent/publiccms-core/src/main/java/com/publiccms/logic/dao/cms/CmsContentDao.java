@@ -43,7 +43,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] projectionFields = new String[] { "title", "categoryId", "modelId", "parentId", "author",
             "editor", "onlyUrl", "hasImages", "hasFiles", "url", "description", "tagIds", "publishDate" };
 
-    private static final Date startDate = new Date(0);
+    private static final Date startDate = new Date(1);
 
     /**
      * @param projection
@@ -73,8 +73,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         CmsFullTextQuery query = getQuery(queryBuilder, projection, phrase, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getPage(query, highlight, CommonUtils.notEmpty(text) ? titleField : null,
-                CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
+        return getPage(query, highlight, titleField, textFields, preTag, postTag, pageIndex, pageSize);
     }
 
     /**
@@ -105,8 +104,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         CmsFullTextQuery query = getQuery(queryBuilder, projection, phrase, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getFacetPage(queryBuilder, query, facetFields, 10, highlight, CommonUtils.notEmpty(text) ? titleField : null,
-                CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
+        return getFacetPage(queryBuilder, query, facetFields, 10, highlight, titleField, textFields, preTag, postTag, pageIndex,
+                pageSize);
     }
 
     private CmsFullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean phrase, Short siteId,
