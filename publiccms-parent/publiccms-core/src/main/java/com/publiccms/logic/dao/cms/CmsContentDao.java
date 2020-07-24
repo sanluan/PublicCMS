@@ -43,6 +43,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] projectionFields = new String[] { "title", "categoryId", "modelId", "parentId", "author",
             "editor", "onlyUrl", "hasImages", "hasFiles", "url", "description", "tagIds", "publishDate" };
 
+    private static final Date startDate = new Date(0);
+
     /**
      * @param projection
      * @param phrase
@@ -71,7 +73,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         CmsFullTextQuery query = getQuery(queryBuilder, projection, phrase, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getPage(query, highlight, CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
+        return getPage(query, highlight, CommonUtils.notEmpty(text) ? titleField : null,
+                CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
     }
 
     /**
@@ -102,8 +105,8 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
         CmsFullTextQuery query = getQuery(queryBuilder, projection, phrase, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getFacetPage(queryBuilder, query, facetFields, 10, highlight, CommonUtils.notEmpty(text) ? textFields : null,
-                preTag, postTag, pageIndex, pageSize);
+        return getFacetPage(queryBuilder, query, facetFields, 10, highlight, CommonUtils.notEmpty(text) ? titleField : null,
+                CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
     }
 
     private CmsFullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean phrase, Short siteId,
@@ -125,7 +128,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                     fields = textFields;
                 }
                 termination.must(term.onFields(textFields).matching(text).createQuery());
-            }            
+            }
         }
         if (CommonUtils.notEmpty(tagIds)) {
             TermContext term = queryBuilder.keyword();
@@ -145,7 +148,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             termination.must(queryBuilder.range().onField("publishDate").below(endPublishDate).createQuery());
         }
         if (null != expiryDate) {
-            termination.must(queryBuilder.range().onField("expiryDate").from(1L).to(expiryDate.getTime()).createQuery()).not();
+            termination.must(queryBuilder.range().onField("expiryDate").from(startDate).to(expiryDate).createQuery()).not();
         }
         if (CommonUtils.notEmpty(categoryIds)) {
             @SuppressWarnings("rawtypes")

@@ -47,8 +47,8 @@ import com.publiccms.common.search.MultiTokenizerFactory;
 @DynamicUpdate
 @AnalyzerDef(name = "cms", tokenizer = @TokenizerDef(factory = MultiTokenizerFactory.class), filters = {
         @TokenFilterDef(factory = MultiTokenFilterFactory.class) })
-@Analyzer(definition = "cms") // Comment this line to enable elasticsearch
-// @Analyzer(definition = "default") // Uncomment this line to enable elasticsearch
+//@Analyzer(definition = "cms") // Comment this line to enable elasticsearch
+ @Analyzer(definition = "default") // Uncomment this line to enable elasticsearch
 @ClassBridge(impl = CmsContentBridge.class)
 @Indexed(interceptor = CmsContentInterceptor.class)
 public class CmsContent implements java.io.Serializable {
@@ -138,7 +138,7 @@ public class CmsContent implements java.io.Serializable {
     private Date publishDate;
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Field(analyze = Analyze.NO, store = Store.YES, indexNullAs = "0")
+    @Field(analyze = Analyze.NO, store = Store.YES)
     @DateBridge(resolution = Resolution.SECOND)
     private Date expiryDate;
     @GeneratorColumn(title = "审核日期", order = true)
