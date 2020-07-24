@@ -15,6 +15,7 @@
         <module>publiccms-redis</module>
         <module>publiccms-j2cache</module>
         <module>publiccms-analyzer</module>
+        <module>publiccms-dmdialect</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
