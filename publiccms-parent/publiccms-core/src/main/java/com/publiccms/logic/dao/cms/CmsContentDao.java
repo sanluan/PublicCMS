@@ -36,6 +36,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @Repository
 public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] textFields = new String[] { "title", "author", "editor", "description" };
+    private static final String titleField = "title";
     private static final String[] tagFields = new String[] { "tagIds" };
     private static final String dictionaryField = "dictionaryValues";
     private static final String[] facetFields = new String[] { "categoryId", "modelId" };
@@ -44,7 +45,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 
     /**
      * @param projection
-     * @param fuzzy
+     * @param phrase
      * @param highlight
      * @param siteId
      * @param text
@@ -63,19 +64,19 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, boolean fuzzy, boolean highlight, Short siteId, Integer[] categoryIds,
+    public PageHandler query(boolean projection, boolean phrase, boolean highlight, Short siteId, Integer[] categoryIds,
             String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag,
             String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
             Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        CmsFullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
+        CmsFullTextQuery query = getQuery(queryBuilder, projection, phrase, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
         return getPage(query, highlight, CommonUtils.notEmpty(text) ? textFields : null, preTag, postTag, pageIndex, pageSize);
     }
 
     /**
      * @param projection
-     * @param fuzzy
+     * @param phrase
      * @param highlight
      * @param siteId
      * @param categoryIds
@@ -94,49 +95,47 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, boolean highlight, Short siteId, Integer[] categoryIds,
+    public FacetPageHandler facetQuery(boolean projection, boolean phrase, boolean highlight, Short siteId, Integer[] categoryIds,
             String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag,
             String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
             Integer pageSize) {
         QueryBuilder queryBuilder = getFullTextQueryBuilder();
-        CmsFullTextQuery query = getQuery(queryBuilder, projection, fuzzy, siteId, categoryIds, modelIds, text, fields, tagIds,
+        CmsFullTextQuery query = getQuery(queryBuilder, projection, phrase, siteId, categoryIds, modelIds, text, fields, tagIds,
                 dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
         return getFacetPage(queryBuilder, query, facetFields, 10, highlight, CommonUtils.notEmpty(text) ? textFields : null,
                 preTag, postTag, pageIndex, pageSize);
     }
 
-    private CmsFullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean fuzzy, Short siteId,
+    private CmsFullTextQuery getQuery(QueryBuilder queryBuilder, boolean projection, boolean phrase, Short siteId,
             Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField) {
         MustJunction termination = queryBuilder.bool().must(new TermQuery(new Term("siteId", siteId.toString())));
         if (CommonUtils.notEmpty(text)) {
             TermContext term = queryBuilder.keyword();
-            if (!fuzzy) {
-                term.fuzzy().withEditDistanceUpTo(0);
-            }
-            if (CommonUtils.notEmpty(fields)) {
-                for (String field : fields) {
-                    if (!ArrayUtils.contains(textFields, field)) {
-                        fields = textFields;
-                    }
-                }
+            if (phrase) {
+                termination.must(queryBuilder.phrase().onField(titleField).sentence(text).createQuery());
             } else {
-                fields = textFields;
-            }
-            termination.must(term.onFields(textFields).matching(text).createQuery());
+                if (CommonUtils.notEmpty(fields)) {
+                    for (String field : fields) {
+                        if (!ArrayUtils.contains(textFields, field)) {
+                            fields = textFields;
+                        }
+                    }
+                } else {
+                    fields = textFields;
+                }
+                termination.must(term.onFields(textFields).matching(text).createQuery());
+            }            
         }
         if (CommonUtils.notEmpty(tagIds)) {
             TermContext term = queryBuilder.keyword();
-            if (!fuzzy) {
-                term.fuzzy().withEditDistanceUpTo(0);
-            }
             termination.must(term.onFields(tagFields).matching(tagIds).createQuery());
         }
         if (CommonUtils.notEmpty(dictionaryValues)) {
             for (String value : dictionaryValues) {
-				if (CommonUtils.notEmpty(value)) {
-                	termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(value).createQuery());
-				}
+                if (CommonUtils.notEmpty(value)) {
+                    termination.must(queryBuilder.phrase().onField(dictionaryField).sentence(value).createQuery());
+                }
             }
         }
         if (null != startPublishDate) {

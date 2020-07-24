@@ -56,8 +56,8 @@ a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec
 .pageHeader{background:#f2f6f9;color:#31353e}
 .searchBar span.connect-string{color:#dde2ec;}
 .searchBar ul.searchContent:before{color:#667ea7}
-.panelBar .toolBar li a{color:#333;}
-.panelBar .toolBar li a>i{color:#3587ef}
+.panelBar .toolBar li a{color:#516485;}
+.panelBar .toolBar li a>i{color:#516485;}
 .panelBar .toolBar li a:hover>i{color:#fff}
 .panelBar .toolBar li a:hover{background:#667ea7;color:#fff}
 .panelBar .toolBar li.line{background:#e4e9f2}

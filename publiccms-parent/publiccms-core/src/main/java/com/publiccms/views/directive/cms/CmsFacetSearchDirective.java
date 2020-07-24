@@ -55,7 +55,7 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
                 postTag = handler.getString("postTag");
             }
             try {
-                page = service.facetQuery(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true), highlight,
+                page = service.facetQuery(handler.getBoolean("projection", false), handler.getBoolean("phrase", false), highlight,
                         site.getId(), word, handler.getStringArray("field"), tagIds, handler.getIntegerArray("categoryId"),
                         handler.getStringArray("modelId"), dictionaryValues, preTag, postTag, handler.getDate("startPublishDate"),
                         handler.getDate("endPublishDate", currentDate), currentDate, handler.getString("orderField"), pageIndex,
