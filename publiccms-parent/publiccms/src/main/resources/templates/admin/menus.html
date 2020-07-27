@@ -11,71 +11,19 @@
         <h2><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/> <i class="icon icon-chevron-up"></i></h2>
     </div>
     <div class="accordionContent">
-    <#switch a.url!''>
-        <#case 'cmsContent/list'>
-            <ul class="tree treeFolder">
-                <li>
-                    <@_sysDept id=admin.deptId>
-                        <#assign  dept=object/>
-                    </@_sysDept>
-                    <#if dept?has_content&&dept.ownsAllCategory>
-                        <a href="cmsContent/list.html" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'content.management'/>"><@t.page 'category'/></a>
-                    <#else>
-                        <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
-                    </#if>
-                    <ul>
-                        <@_categoryList advanced=true parentId=parentId pageSize=500>
-                            <#list page.list as a>
-                                <@t.merge 'categoryIds' a.id!/>
-                            </#list>
-                            <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
-                            <#list page.list as a>
-                                <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
-                                    <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
-                                        <a href="cmsContent/list.html?categoryId=${a.id}" class="exclude-translate" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'content.management'/>">${(a.name)!}</a>
-                                    </li>
-                                </#if>
-                            <#else>
-                                <li><a><@t.page 'empty_directory'/></a></li>
-                            </#list>
-                        </@_categoryList>
-                    </ul>
-                </li>
-            </ul>
-            <#break>
-        <#case 'cmsCategory/list'>
-            <ul class="tree treeFolder">
-                <li>
-                    <a href="cmsCategory/list.html" target="navTab" rel="cmsCategory/list" icon="<i class='icon-folder-open icon-large'></i>" title="<@t.page 'category.management'/>"><@t.page 'category.parent'/></a>
-                    <ul>
-                        <@_categoryList advanced=true parentId=parentId pageSize=500>
-                            <#list page.list as a>
-                                <#if a.childIds?has_content>
-                                <li _src="common/categoryTree.html?parentId=${a.id}">
-                                    <a href="cmsCategory/list.html?categoryId=${a.id}" class="exclude-translate" target="navTab" rel="cmsCategory/list" icon="<i class='icon-folder-open icon-large'></i>" title="<@t.page 'category.management'/>">${(a.name)!}</a>
-                                </li>
-                                </#if>
-                            </#list>
-                        </@_categoryList>
-                    </ul>
-                </li>
-            </ul>
-            <#break>
-        <#default>
-            <ul class="tree">
-            <@_sysModuleList parentId=a.id>
-                <#list page.list as a>
-                    <@t.merge 'childModuleIds' a.id!/>
-                </#list>
-                <@_sysRoleModule roleIds=admin.roles moduleIds=t.childModuleIds!><#assign childRoleModuleMap=map!/></@_sysRoleModule>
-                <#list page.list as a>
-                    <#if (childRoleModuleMap[a.id?string])?has_content&&childRoleModuleMap[a.id?string]>
-                <li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}" ${(a.url!'')?starts_with('report')?then('external="true"','')?no_esc}><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a></li>
-                    </#if>
-                </#list>
-            </@_sysModuleList>
-            </ul>
-    </#switch>
+        <ul class="tree">
+        <@_sysModuleList parentId=a.id>
+            <#list page.list as a>
+                <@t.merge 'childModuleIds' a.id!/>
+            </#list>
+            <@_sysRoleModule roleIds=admin.roles moduleIds=t.childModuleIds!><#assign childRoleModuleMap=map!/></@_sysRoleModule>
+            <#list page.list as a>
+                <#if (childRoleModuleMap[a.id?string])?has_content&&childRoleModuleMap[a.id?string]>
+            <li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}" ${(a.url!'')?starts_with('report')?then('external="true"','')?no_esc}><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a></li>
+                </#if>
+            </#list>
+        </@_sysModuleList>
+        </ul>
     </div>
         </#if>
     </#list>

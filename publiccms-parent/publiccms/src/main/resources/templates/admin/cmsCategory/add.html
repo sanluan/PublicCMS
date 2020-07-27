@@ -34,7 +34,7 @@
             </div>
         </div>
         <div class="tabsContent unitBox">
-            <div class="pageFormContent" layoutH="96">
+            <div class="pageFormContent" layoutH>
                 <dl>
                     <dt><@t.page 'category.parent'/>:</dt>
                     <dd>
@@ -104,7 +104,7 @@
     </@_sysExtendFieldList>
 </#if>
             </div>
-            <div class="pageFormContent onlyUrl" layoutH="96">
+            <div class="pageFormContent onlyUrl" layoutH>
                 <dl class="nowrap">
                     <dt><@t.page 'title'/>:</dt>
                     <dd><input name="title" type="text" maxlength="80" size="50" value="${(attribute.title)!}"/></dd>
@@ -124,7 +124,7 @@
                     </dd>
                 </dl>
             </div>
-            <div class="pageFormContent categoryModel" layoutH="96">
+            <div class="pageFormContent categoryModel" layoutH>
                 <@_sysAuthorized roleIds=admin.roles url='cmsModel/list'>
                 <dl class="nowrap">
                     <dt><@t.page 'model.management'/></dt>
@@ -205,7 +205,7 @@
 checkCategoryModel();
         </script>
             </div>
-            <div class="pageFormContent categoryModelContent" layoutH="96">
+            <div class="pageFormContent categoryModelContent" layoutH>
 <#assign contentExtendList=[]/>
 <#assign copy=false/>
 <#if a?has_content&&a.extendId?has_content>

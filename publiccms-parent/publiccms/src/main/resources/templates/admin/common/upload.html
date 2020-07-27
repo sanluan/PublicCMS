@@ -5,7 +5,7 @@
 </#if>
 <form action="file/doUpload.do" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <div class="pageFormContent" layoutH="50">
+    <div class="pageFormContent" layoutH>
         <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
         <dl class="nowrap">
             <dt><@t.page 'file'/>:</dt>

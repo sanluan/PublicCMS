@@ -1,225 +1,36 @@
-<@_sysDept id=admin.deptId>
-    <#assign
-        dept=object
-        containChild=object.ownsAllCategory
-    />
-</@_sysDept>
-<@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!><#assign deptCategory=object!/></@_sysDeptCategory>
-<#if !dept?has_content||(!dept.ownsAllCategory&&!deptCategory?has_content)>
-    <#assign error='verify.notEquals.siteId'/>
-    <#include "../common/ajaxError.html"/>
-<#else>
-    <#if parentId?has_content>
-        <@_content id=parentId><#assign parent=object/></@_content>
-    </#if>
-    <#if !admin.ownsAllContent><#assign userId=admin.id/></#if>
-<@_contentList advanced=true status=status categoryId=categoryId containChild=containChild
-            modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
-            startPublishDate=startPublishDate endPublishDate=endPublishDate
-            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters'><#assign authorizedMap=map/></@_sysAuthorized>
-<div class="pageHeader">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
-        <#include "../include_page/parameters.html"/>
-        <div class="searchBar">
-            <ul class="searchContent">
-                <li class="width:auto">
-                    <#include "../include_page/status.html"/>
-                </li>
-            <#if admin.ownsAllContent>
-                <li>
-                    <label><@t.page 'content.promulgator'/>:</label>
-                    <#include "../include_page/userId.html"/>
-                </li>
-            </#if>
-                <li>
-                    <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
-                    <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
-                </li>
-                <li>
-                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
-                </li>
-                <li style="width:auto">
-                    <label><@t.page 'model'/>:</label>
-                    <#include "../include_page/modelId.html"/>
-                </li>
-            </ul>
-            <div class="subBar">
-                <ul>
-                    <li>
-                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
-                    </li>
-                <#if authorizedMap['cmsContent/export']>
-                    <li>
-                        <a class="button" href="cmsContent/export.do?categoryId=${(parent.categoryId)!categoryId!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
-                    </li>
-                </#if>
-                </ul>
-            </div>
-        </div>
-    </form>
-</div>
 <div class="pageContent">
-    <div class="panelBar">
-        <ul class="toolBar">
-            <#if parent?has_content>
-                <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
-                <li class="line">line</li>
-            </#if>
-<#if authorizedMap['cmsContent/add']>
-    <#if categoryId?has_content>
-        <@_modelList parentId=(parent.modelId)!''>
-            <#list page.list as a>
-                <@t.merge 'tempModelIds' a.id!/>
-            </#list>
-            <@_categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@_categoryModel>
-            <#assign size=0/>
-            <#list page.list as a>
-                	<#if categoryModelMap?has_content&&categoryModelMap[a.id]?has_content>
-                    	<#assign size++/>
-            <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
-            		</#if>
-                <#if size gte 5&&a?has_next>
-            <li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}&parentId=${parentId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'content.add_more'/></a></li>
-                    <#break>
-                </#if>
-            </#list>
-            <#if size=0>
-                <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'category.edit'/>"><i class="icon-ban-circle icon-large"></i> <@t.page 'content.no_model'/></a></li>
-            </#if>
-        </@_modelList>
-    </#if>
-            <li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> <@t.page 'content.edit'/></a></li>
-        <#if authorizedMap['cmsContent/changeModelParameters']>
+    <div layoutH class="left-page-content">
+        <ul class="tree treeFolder">
             <li>
-                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" mask="true"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
+                <@_sysDept id=admin.deptId>
+                    <#assign  dept=object/>
+                </@_sysDept>
+                <#if dept?has_content&&dept.ownsAllCategory>
+                    <a href="common/content_list.html" target="ajax" rel="contentBox"><@t.page 'category'/></a>
+                <#else>
+                    <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
+                </#if>
+                <ul>
+                    <@_categoryList advanced=true parentId=parentId pageSize=500>
+                        <#list page.list as a>
+                            <@t.merge 'categoryIds' a.id!/>
+                        </#list>
+                        <@_sysDeptCategory deptId=admin.deptId!'' categoryIds=t.categoryIds!><#assign deptCategoryMap=map!/></@_sysDeptCategory>
+                        <#list page.list as a>
+                            <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
+                                <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
+                                    <a href="common/content_list.html?categoryId=${a.id}" class="exclude-translate" target="ajax" rel="contentBox">${(a.name)!}</a>
+                                </li>
+                            </#if>
+                        <#else>
+                            <li><a><@t.page 'empty_directory'/></a></li>
+                        </#list>
+                    </@_categoryList>
+                </ul>
             </li>
-        </#if>
-            <li class="line">line</li>
-</#if>
-        <#if authorizedMap['cmsContent/check']>
-            <li><a href="cmsContent/check.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
-        </#if>
-        <#if authorizedMap['cmsContent/reject']>
-            <li><a href="cmsContent/reject.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_reject'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_reject'/></a></li>
-        </#if>
-        <#if authorizedMap['cmsContent/uncheck']>
-            <li><a href="cmsContent/uncheck.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
-        </#if>
-        <#if authorizedMap['cmsContent/refresh'] && !site.useStatic>
-            <li><a href="cmsContent/refresh.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
-        </#if>
-        <#if authorizedMap['cmsContent/publish']>
-            <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
-        </#if>
-        <#if !parentId?has_content&&authorizedMap['cmsContent/moveParameters']>
-            <li><a href="cmsContent/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> <@t.page 'button.batch_move'/></a></li>
-        </#if>
-        <#if authorizedMap['cmsContent/delete']>
-            <li class="line">line</li>
-            <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
-        </#if>
         </ul>
     </div>
-    <table class="list" width="100%" layoutH="99">
-        <thead>
-            <tr>
-                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th width="30"><@t.page 'id'/></th>
-                <th width="150"><@t.page 'title'/></th>
-                <th width="40"><@t.page 'content.promulgator'/></th>
-                <th width="30"><@t.page 'category'/></th>
-                <th width="50"><@t.page 'model'/></th>
-                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
-                <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
-                <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
-                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
-                <th width="70"><@t.page 'expiry_date'/></th>
-                <th width="70"><@t.page 'create_date'/></th>
-                <th width="40" orderField="default" class="<#if !orderField??||'default'==orderField>desc<#else>order</#if>"><@t.page 'content.top_level'/></th>
-                <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
-                <th width="100"><@t.page 'operate'/></th>
-            </tr>
-        </thead>
-        <tbody>
-            <#list page.list as a>
-                <@t.merge 'userIds' a.userId!/>
-                <@t.merge 'userIds' a.checkUserId!/>
-                <@t.merge 'categoryIds' a.categoryId!/>
-                <@t.merge 'modelIds' a.modelId!/>
-            </#list>
-
-            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-            <@_category ids=t.categoryIds!><#assign categoryMap=map!/></@_category>
-            <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
-
-            <#list page.list as a>
-                <#assign contentId=(a.quoteContentId?has_content)?then(a.quoteContentId,a.id)/>
-            <tr target="sid" rel="${contentId}">
-                <td class="center"><input name="ids" value="${contentId}" type="checkbox"></td>
-                <td class="center">${a.id}</td>
-                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
-                <td class="center exclude-translate">
-                    ${(userMap[a.userId?string].nickName)!}
-                </td>
-                <td class="center exclude-translate">
-                    ${(categoryMap[a.categoryId?string].name)!}
-                </td>
-                <td class="center exclude-translate">
-                    ${(modelMap[a.modelId].name)!}
-                </td>
-                <td class="center">${a.scores!}</td>
-                <td class="center">
-                    <#if authorizedMap['cmsComment/list']>
-                        <a href="cmsComment/list.html?contentId=${contentId}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${a.comments!}</a>
-                    <#else>
-                        ${a.comments!}
-                    </#if>
-                </td>
-                <td class="center">${a.clicks!}</td>
-                <td class="center">${a.publishDate!}</td>
-                <td class="center">${a.expiryDate!}</td>
-                <td class="center">${a.createDate!}</td>
-                <td class="center">${a.sort!}</td>
-                <td>
-                    <@t.page 'status.content.'+a.status/>
-                    <#if 1=a.status || 3=a.status>/ <span class="exclude-translate">${(userMap[a.checkUserId?string].nickName)!}</span></#if>
-                </td>
-                <td>
-                    <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsContent/list.html?parentId=${contentId}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a>|
-                    </#if>
-                    <#if 1=a.status>
-                        <#if authorizedMap['cmsContent/sortParameters']>
-                            <#if dept?has_content>
-                                <a href="cmsContent/sortParameters.html?id=${a.id}&sort=${a.sort}" target="dialog" width="450" height="180" mask="true"><@t.page 'top'/></a>|
-                            </#if>
-                        </#if>
-                        <#if authorizedMap['cmsContent/push']>
-                            <a href="cmsContent/push.html?contentId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>|
-                        </#if>
-                        <#if authorizedMap['cmsContent/uncheck']>
-                            <a href="cmsContent/uncheck.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>|
-                        </#if>
-                    <#elseif 2=a.status>
-                        <#if authorizedMap['cmsContent/check']>
-                            <a href="cmsContent/check.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>|
-                        </#if>
-                        <#if authorizedMap['cmsContent/reject']>
-                            <a href="cmsContent/reject.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.reject'/>" target="ajaxTodo"><@t.page 'button.reject'/></a>|
-                        </#if>
-                    </#if>
-                    <#if authorizedMap['cmsContent/delete']>
-                        <a href="cmsContent/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
-                    </#if>
-                </td>
-            </tr>
-            </#list>
-        </tbody>
-    </table>
-    <#include "../include_page/page.html"/>
+    <div id="contentBox" style="margin-left:240px;">
+        <#include "../common/content_list.html"/>
+    </div>
 </div>
-</@_contentList>
-</#if>

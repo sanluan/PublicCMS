@@ -140,10 +140,10 @@ header .nav .selected ul{display:block}
 .panelBar .pages .combox .select a{height:26px;line-height:26px}
 
 .pagination{float:right;padding-left:7px}
-.pagination li, .pagination li.hover{padding:0 0 0 5px}
-.pagination a, .pagination li.hover a, .pagination li span{float:left;display:block;padding:0 5px 0 0;text-decoration:none;line-height:23px;}
+.pagination li, .pagination li:hover{padding:0 0 0 5px}
+.pagination a, .pagination li:hover a, .pagination li span{float:left;display:block;padding:0 5px 0 0;text-decoration:none;line-height:23px;}
 .pagination li.selected a{color:red;font-weight:bold}
-.pagination span, .pagination li.hover span{float:left;display:block;height:23px;line-height:23px;cursor:pointer}
+.pagination span, .pagination li:hover span{float:left;display:block;height:23px;line-height:23px;cursor:pointer}
 .pagination input{height:20px;line-height:20px}
 .pagination li .first span, .panelBar li .previous span{padding:0 0 0 10px}
 .pagination li .next span, .panelBar li .last span{padding:0 10px 0 0}
@@ -156,17 +156,28 @@ header .nav .selected ul{display:block}
 .pagination li.jumpto .textInput{float:left;width:30px;padding:1px;font-size:12px;border-color:#acaeaf}
 .pagination li.jumpto .goto{float:left;display:block;overflow:hidden;width:16px;height:19px;border:0;text-indent:-1000px;cursor:pointer;background:url(../images/goto.png) no-repeat center center;background-size:90% auto}
 
-/* CSS Table */
-table.list{border-collapse:collapse;border:solid 1px #ededed;position:relative}
-table.list th{font-weight:400;padding:5px 2px;line-height:26px;border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid;}
-table.list td{padding:4px 2px;line-height:26px;border-right:solid 1px #ededed}
-table.list th.order,table.list th.asc,table.list th.desc{cursor:pointer;position:relative}
-table.list th.asc:before,table.list th.desc:before,table.list th.order:before{font-size:16px;position:absolute;right:3px;top:50%;margin-top:-13px}
-table.list .right{text-align:right}
-table.list .center{text-align:center}
-table.list a:hover{text-decoration:underline}
-table.list td span.error{z-index:-1}
-table.nowrap tbody tr{border-bottom-width:1px;border-bottom-style:solid;}
+/* grid */
+.grid { display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
+.grid .gridHeader { display:block;overflow:hidden;width:auto;}
+.grid .gridScroller { display:block;overflow:auto;position:relative;}
+.grid .gridTbody { }
+.grid table { border:0;border-collapse:collapse;table-layout:fixed;}
+.grid .gridHeader th { padding:5px 3px;border-style:solid;border-width:0 1px 1px 0;vertical-align:top;white-space:nowrap;line-height:26px;cursor:default;}
+.grid .gridHeader th:hover, .grid .gridHeader th.thSelected { background-position:0 -50px;}
+.grid .gridHeader th.order,.grid .gridHeader th.asc,.grid .gridHeader th.desc{cursor:pointer;position:relative;}
+.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{position:absolute;right:0px;top:50%;margin-top:-13px}
+.grid .gridTbody td { border-right:solid 1px #ededed;overflow:hidden;padding:4px 3px;border-bottom:solid 1px #ededed;vertical-align:middle;line-height:26px;}
+.grid .gridTbody td div { display:block;overflow:hidden;height:26px;white-space:nowrap;line-height:26px;}
+.grid .gridTbody td div a{line-height:26px;}
+.grid .gridTbody td div a:hover{text-decoration:underline}
+.grid .gridCol { width:100%;display:block;overflow:hidden;height:26px;line-height:26px;white-space:nowrap;}
+.grid .gridTbody .selected td { border-bottom-style:dotted;border-bottom-width:1px;}
+.grid .gridTbody .selected .tdSelected {}
+.grid .gridTbody .tdSelected { }
+.grid .resizeMarker, .grid .resizeProxy { display:block;overflow:hidden;width:1px;position:absolute;}
+.grid .left { text-align:left;}
+.grid .right { text-align:right;}
+.grid .center { text-align:center;}
 
 /* Taskbar */
 #taskbar{overflow:hidden;height:40px;border-style:solid;border-width:0;border-color:#0f3255;background-color:#112746;background-repeat:repeat-x;position:absolute;z-index:30}
@@ -236,6 +247,8 @@ a.toggleCollapse{text-decoration:none}
 .themeList li div{display:block;overflow:hidden;width:13px;height:11px;cursor:pointer}
 .themeList li.toptry div{background-position:-60px 0}
 .themeList li.toptry .selected{background-position:-60px -20px}
+.themeList li.red div{background-position:-20px 0}
+.themeList li.red .selected{background-position:-20px -20px}
 
 .left-page-content{border-right-width:1px;border-right-style:solid;float:left;display:block;overflow:auto;width:240px;line-height:21px}
 .thumbnail{position:relative;overflow:hidden;margin-right:5px;border:1px dashed #cacbcc;display:inline-block;text-align:center}
@@ -366,7 +379,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:2
 .alert .error h1{font-weight:400;border:none;height:auto;line-height:40px;font-size:14px}
 .alert p{margin:10px}
 
-.alert .toolBar{display:block;overflow:hidden;height:30px;padding-top:5px;text-align:center}
+.alert .toolBar{display:block;overflow:hidden;height:32px;padding-top:5px;text-align:center}
 .alert .toolBar ul{overflow:hidden;display:inline-block;}
 .alert .toolBar li{float:left}
 .alert .toolBar .button, .alert .toolBar .buttonActive{margin-left:5px}
@@ -458,10 +471,11 @@ a.btnAttach:before{content:"\e607";font-family:iconfont;}
 .dialog .dialogHeader .restore:before{content:"\e671"}
 .dialog .dialogHeader .minimize:before{content:"\e675"}
 
-table.list th.asc:before, table.list th.desc:before, table.list th.order:before{font-family:iconfont;font-size:12px}
-table.list th.asc:before{content:"\e654"}
-table.list th.order:before{content:"\e623"}
-table.list th.desc:before{content:"\e668"}
+.grid .gridHeader th.asc:before, .grid .gridHeader th.desc:before, .grid .gridHeader th.order:before{font-family:iconfont;font-size:12px}
+.grid .gridHeader th.asc:before{content:"\e654"}
+.grid .gridHeader th.order:before{content:"\e623"}
+.grid .gridHeader th.desc:before{content:"\e668"}
+
 a.btnLook:before{content:"\e66a";font-family:iconfont;}
 a.btnSelect{display:block;width:22px;height:20px;overflow:hidden;float:left;margin-right:3px;text-align:center;}
 

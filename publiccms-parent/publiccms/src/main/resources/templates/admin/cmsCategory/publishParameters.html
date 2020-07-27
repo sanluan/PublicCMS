@@ -1,7 +1,7 @@
 <form action="cmsCategory/publish.do?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="ids" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <div class="pageFormContent" layoutH="50">
+    <div class="pageFormContent" layoutH>
         <dl>
             <dt><@t.page 'category.publish_page_count'/>:</dt>
             <@_contentList categoryId=id containChild=containChild pageSize=pageSize>

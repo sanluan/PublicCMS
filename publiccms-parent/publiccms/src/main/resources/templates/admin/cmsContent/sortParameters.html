@@ -2,7 +2,7 @@
 <form action="cmsContent/sort.do?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="id" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
-    <div class="pageFormContent" layoutH="0">
+    <div class="pageFormContent" layoutH>
         <dl>
             <dt><@t.page 'content.top_level'/>:</dt>
             <dd><input class="required digits" type="number" name="sort" max="${(dept.maxSort)!0}" min="0" value="${sort!0}"/></dd>
