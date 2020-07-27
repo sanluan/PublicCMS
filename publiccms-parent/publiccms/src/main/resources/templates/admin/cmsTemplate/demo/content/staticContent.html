@@ -112,7 +112,7 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
     <script>
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
             $('article p em').text(data.clicks);
