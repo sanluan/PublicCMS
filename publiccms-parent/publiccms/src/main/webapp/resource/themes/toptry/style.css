@@ -63,11 +63,10 @@ a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec
 .panelBar .toolBar li.line{background-color:#e4e9f2;}
 .panelBar.pageBar{background-color:#e8ebf2;}
 
-.grid .gridHeader { background-color:#EEE;}
 .grid { background-color:#FFF;}
 .grid table { border-color:#e4e9f2;}
-.grid .gridHeader, .grid .gridHeader th { border-color:#e4e9f2;}
-.grid table th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#31353e;}
+.grid .gridHeader, .grid .gridHeader th { background-color:#707CA1;border-color:#e4e9f2;}
+.grid .gridHeader th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#FFF;}
 .grid table td { border-color:#ededed;}
 .grid .resizeMarker, .grid .resizeProxy { background-color:#d0d0d0;}
 .grid .gridHeader th:hover, .grid .gridHeader th.thSelected { border-color:#e5eaf4;}

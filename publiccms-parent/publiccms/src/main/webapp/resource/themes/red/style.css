@@ -5,7 +5,7 @@ body,html{color:#31353e;}
 ::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.38);}
 a{color:#8f0006;}
 body h2.contentTitle{border-color:#e4e9f2;}
-.left-page-content{border-color:#faf9f9;background-color:#faf9f9;}
+.left-page-content{border-color:#FAE1E1;background-color:#faf9f9;}
 header{background-color:#8f0006;color:#afc5f6;}
 header .nav ul{background-color:#D8403D;}
 header .nav ul li a { color:#000;}
@@ -66,11 +66,10 @@ a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec
 .panelBar .toolBar li.line{background-color:#e4e9f2;}
 .panelBar.pageBar{background-color:#e8ebf2;}
 
-.grid .gridHeader { background-color:#EEE;}
 .grid { background-color:#FFF;}
 .grid table { border-color:#e4e9f2;}
-.grid .gridHeader, .grid .gridHeader th { border-color:#e4e9f2;}
-.grid table th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#31353e;}
+.grid .gridHeader, .grid .gridHeader th { border-color:#e4e9f2;background-color:#D8403D;}
+.grid table th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#FFF;}
 .grid table td { border-color:#ededed;}
 .grid .resizeMarker, .grid .resizeProxy { background-color:#d0d0d0;}
 .grid .gridHeader th:hover { border-color:#e5eaf4;}
