@@ -8,7 +8,7 @@
 </@_category>
 <@_category id=parentId><#assign category=object/></@_category>
 <@_categoryType id=typeId><#assign categoryType=object/></@_categoryType>
-<form method="post" autocomplete="off" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list<#if !(a?has_content)>&rel=page</#if>" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">

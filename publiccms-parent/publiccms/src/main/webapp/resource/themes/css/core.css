@@ -85,7 +85,7 @@ header .nav .selected ul{display:block;}
 .tabsPage .tabsPageHeader li.selected a, .tabsPage .tabsPageHeader li:hover a{font-weight:400;}
 .tabsPage .tabsPageHeader li .close{padding:0;padding-right:10px;}
 .tabsPage .tabsMove{height:100%;position:absolute;top:0;right:0;z-index:2;}
-.toggleCollapse,.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:35px;text-align:center;height:100%;line-height:45px;position:absolute;z-index:2;}
+.toggleCollapse,.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:45px;text-align:center;height:100%;line-height:45px;position:absolute;z-index:2;}
 .toggleCollapse{top:0px;left:0;border-right-width:1px;border-right-style:solid;width:45px;}
 .tabsPage .tabsLeft{top:0px;left:46px;width:45px;}
 .tabsPage .tabsRight{top:0px;right:35px;}
@@ -101,7 +101,7 @@ header .nav .selected ul{display:block;}
 /* Tree */
 .tree li{clear:both;display:block;line-height:30px;cursor:pointer;}
 .tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px;white-space:nowrap;}
-.tree div div{float:left;display:block;overflow:hidden;width:30px;height:30px;border:none;}
+.tree div div{float:left;display:block;overflow:hidden;width:25px;height:30px;border:none;}
 .tree.treeFolder li>div>div:first-child{padding-left:10px;}
 .tree a, .tree a:hover{text-decoration:none;}
 .tree .indent{background:none;}
@@ -132,7 +132,7 @@ header .nav .selected ul{display:block;}
 .panelBar li{float:left;display:block;overflow:hidden;height:auto;padding:0 5px;}
 .panelBar .toolBar li a{border-radius:2px;line-height:30px;display:block;overflow:hidden;padding:0 10px;text-decoration:none;}
 .panelBar .toolBar li a>i{margin-right:6px;}
-.panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:24px;width:1px;padding:0;position:relative;top:3px;}
+.panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:24px;width:1px;padding:0;top:3px;}
 
 .panelBar .pages{float:left;overflow:hidden;height:100%;padding:2px 5px;}
 .panelBar .pages span{float:left;line-height:28px;}
@@ -349,8 +349,8 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .comboxop .selected,body .comboxop a:hover{text-decoration:none;}
 
 /* contentTitle */
-h2.contentTitle{padding:5px 10px;line-height:24px;font-size:14px;border-bottom:solid 1px #CCC;}
-h3.contentTitle{line-height:24px;font-size:13px;border-bottom:solid 1px #CCC;clear:both;}
+h2.contentTitle{padding:5px 10px;font-size:14px;border-bottom:solid 1px #CCC;}
+h3.contentTitle{font-size:13px;border-bottom:solid 1px #CCC;clear:both;}
 .dialog h2.contentTitle{border:none;}
 
 /* rightMenu */

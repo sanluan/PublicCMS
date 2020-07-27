@@ -32,3 +32,5 @@ INSERT INTO `sys_module_lang` VALUES ('content_list', 'en', 'Content management'
 INSERT INTO `sys_module_lang` VALUES ('content_list', 'ja', 'コンテンツ管理');
 INSERT INTO `sys_module_lang` VALUES ('content_list', 'zh', '内容管理');
 ALTER TABLE  `cms_content` DROP INDEX  `cms_content_quote_content_id`;
+UPDATE `sys_module_lang` SET `value` = '私の' where `module_id` = 'myself' and `lang` = 'ja';
+UPDATE `sys_module_lang` SET `value` = '我的' where `module_id` = 'myself' and `lang` = 'zh';
