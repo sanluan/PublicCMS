@@ -5,7 +5,6 @@ body,html{color:#31353e;}
 ::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.38);}
 a{color:#8f0006;}
 body h2.contentTitle{border-color:#e4e9f2;}
-.left-page-content{border-color:#FAE1E1;background-color:#faf9f9;}
 header{background-color:#8f0006;color:#afc5f6;}
 header .nav ul{background-color:#D8403D;}
 header .nav ul li a { color:#000;}
@@ -51,6 +50,8 @@ header a{color:#efefef;}
 .formBar{background-color:#edf1f5;}
 .tagsBox span,.parametersBox span {background-color: #edf2f6;}
 
+.leftPageContent{border-color:#FAE1E1;background-color:#faf9f9;}
+
 button.buttonActive{color:#fff;background-color:#D8403D;border-color:#D8403D;}
 button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298;}
 a.button,button.button{color:#8f0006;background-color:#fff;border-color:#dde2ec;}
@@ -68,7 +69,7 @@ a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec
 
 .grid { background-color:#FFF;}
 .grid table { border-color:#e4e9f2;}
-.grid .gridHeader, .grid .gridHeader th { border-color:#e4e9f2;background-color:#D8403D;}
+.grid .gridHeader th { border-color:#e4e9f2;background-color:#D8403D;}
 .grid table th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#FFF;}
 .grid table td { border-color:#ededed;}
 .grid .resizeMarker, .grid .resizeProxy { background-color:#d0d0d0;}

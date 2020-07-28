@@ -1,18 +1,22 @@
-<#if fileTypes?has_content&&'image'=fileTypes>
-    <#assign accept=' accept="image/*"'/>
-<#elseif fileTypes?has_content&&'video'=fileTypes>
+<#if fileTypes?has_content&&'video'=fileTypes>
     <#assign accept=' accept="video/*"'/>
 </#if>
 <form action="file/doUpload.do" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <input type="hidden" name="field" value="${field!'fileName'}"/>
+    <input type="hidden" name="originalField" value="${originalField!}"/>
     <div class="pageFormContent" layoutH>
         <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
         <dl class="nowrap">
             <dt><@t.page 'file'/>:</dt>
             <dd>
-                <input type="hidden" name="field" value="${field!'fileName'}"/>
-                <input type="hidden" name="originalField" value="${originalField!}"/>
-                <input type="file" name="file" class="required" size="30"${accept!}/>
+                <#if fileTypes?has_content&&'image'=fileTypes>
+                    <div class="upload-wrap">
+                        <input type="file" name="file" accept="image/*" class="valid" style="left: 0px;">
+                    </div>
+                <#else>
+                    <input type="file" name="file" class="required" size="30"${accept!}/>
+                </#if>
             </dd>
         </dl>
         <ul class="tree" style="height:200px">

@@ -5,7 +5,6 @@ body,html{color:#31353e;}
 ::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.38);}
 a{color:#448af3;}
 body h2.contentTitle{border-color:#e4e9f2;}
-.left-page-content{border-color:#e4e9f2;background-color:#f2f6f9;}
 header{background-color:#131a23;color:#afc5f6;}
 header .nav ul{background-color:#667ea7;}
 header .nav ul li a { color:#000;}
@@ -48,6 +47,8 @@ header a{color:#afc5f6;}
 .formBar{background-color:#edf1f5;}
 .tagsBox span,.parametersBox span {background-color: #edf2f6;}
 
+.leftPageContent{border-color:#e4e9f2;background-color:#f2f6f9;}
+
 button.buttonActive{color:#fff;background-color:#667ea7;border-color:#667ea7;}
 button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298;}
 a.button,button.button{color:#516485;background-color:#fff;border-color:#dde2ec;}
@@ -65,7 +66,7 @@ a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec
 
 .grid { background-color:#FFF;}
 .grid table { border-color:#e4e9f2;}
-.grid .gridHeader, .grid .gridHeader th { background-color:#707CA1;border-color:#e4e9f2;}
+.grid .gridHeader th { background-color:#707CA1;border-color:#e4e9f2;}
 .grid .gridHeader th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#FFF;}
 .grid table td { border-color:#ededed;}
 .grid .resizeMarker, .grid .resizeProxy { background-color:#d0d0d0;}
@@ -73,7 +74,7 @@ a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec
 .grid .gridTbody tr:nth-child(even){background-color:#f8fcfe;}
 .grid .gridTbody tr:hover,.grid .gridTbody tr.selected { border-color:#cdd9ed;background-color:#cdd9ed;}
 .grid .error{background-color:#fb7e81;}
-.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#667ea7;}
+.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#FFFFFF;}
 
 table.list,table.list td{border-color:#e4e9f2;}
 table.list thead tr{background:#f8fcfe;}

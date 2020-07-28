@@ -6,6 +6,7 @@
             <option value="30"${(page.pageSize=30)?then(' selected="true"','')?no_esc}>30</option>
             <option value="50"${(page.pageSize=50)?then(' selected="true"','')?no_esc}>50</option>
             <option value="100"${(page.pageSize=100)?then(' selected="true"','')?no_esc}>100</option>
+            <option value="500"${(page.pageSize=500)?then(' selected="true"','')?no_esc}>500</option>
         </select>
         <span><@t.page 'total_count' page.totalCount/></span>
     </div>
