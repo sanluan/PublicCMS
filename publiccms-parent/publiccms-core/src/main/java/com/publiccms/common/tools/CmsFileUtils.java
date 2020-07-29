@@ -348,6 +348,22 @@ public class CmsFileUtils {
     /**
      * 上传文件
      *
+     * @param data
+     * @param fileName
+     * @return file name
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    public static String upload(byte[] data, String fileName) throws IllegalStateException, IOException {
+        File dest = new File(fileName);
+        dest.getParentFile().mkdirs();
+        FileUtils.writeByteArrayToFile(dest, data);
+        return dest.getName();
+    }
+
+    /**
+     * 上传文件
+     *
      * @param file
      * @param fileName
      * @return file name

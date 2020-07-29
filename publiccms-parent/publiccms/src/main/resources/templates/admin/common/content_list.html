@@ -75,21 +75,26 @@
             <#list page.list as a>
                 <@t.merge 'tempModelIds' a.id!/>
             </#list>
+            <li>
+                <a href="javascript:void(0)" class="addMore"><i class="icon-plus icon-large"></i> <@t.page 'content.add'/></a>
+                <ul>
             <@_categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@_categoryModel>
             <#assign size=0/>
             <#list page.list as a>
                     <#if categoryModelMap?has_content&&categoryModelMap[a.id]?has_content>
                         <#assign size++/>
-            <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
+            <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
                     </#if>
-                <#if size gte 5&&a?has_next>
-            <li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}&parentId=${parentId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'content.add_more'/></a></li>
+                <#if size gte 10&&a?has_next>
+            <li><a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}&parentId=${parentId!}" target="dialog" mask="true"><i class="icon-plus icon-large"></i> <@t.page 'content.add_more'/></a></li>
                     <#break>
                 </#if>
             </#list>
             <#if size=0>
                 <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'category.edit'/>"><i class="icon-ban-circle icon-large"></i> <@t.page 'content.no_model'/></a></li>
             </#if>
+                </ul>
+            </li>
         </@_modelList>
     </#if>
             <li><a href="cmsContent/add.html?id={sid}" target="navTab" rel="cmsContent/edit"><i class="icon-edit icon-large"></i> <@t.page 'content.edit'/></a></li>

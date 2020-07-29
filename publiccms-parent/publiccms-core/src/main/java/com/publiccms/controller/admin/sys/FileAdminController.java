@@ -25,6 +25,7 @@ import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -49,6 +50,8 @@ public class FileAdminController {
      * @param site
      * @param admin
      * @param file
+     * @param base64File
+     * @param originalFilename
      * @param field
      * @param originalField
      * @param request
@@ -59,21 +62,35 @@ public class FileAdminController {
     @Csrf
     @ResponseBody
     public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            String field, String originalField, HttpServletRequest request, ModelMap model) {
+            String base64File, String originalFilename, String field, String originalField, HttpServletRequest request,
+            ModelMap model) {
         Map<String, Object> result = new HashMap<>();
-        if (null != file && !file.isEmpty()) {
-            String originalName = file.getOriginalFilename();
-            String suffix = CmsFileUtils.getSuffix(originalName);
+        if (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File)) {
+            VerificationUtils.base64Decode(base64File);
+            String originalName;
+            String suffix;
+            if (null != file) {
+                originalName = file.getOriginalFilename();
+            } else {
+                originalName = originalFilename;
+            }
+            suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
                 String filePath = siteComponent.getWebFilePath(site, fileName);
                 try {
-                    CmsFileUtils.upload(file, filePath);
+                    byte[] fileData = VerificationUtils.base64Decode(base64File);
+                    if (null != file) {
+                        CmsFileUtils.upload(file, filePath);
+                        result.put("fileSize", file.getSize());
+                    } else {
+                        CmsFileUtils.upload(fileData, filePath);
+                        result.put("fileSize", fileData.length);
+                    }
                     result.put("field", field);
                     result.put(field, fileName);
                     String fileType = CmsFileUtils.getFileType(suffix);
                     result.put("fileType", fileType);
-                    result.put("fileSize", file.getSize());
                     if (CommonUtils.notEmpty(originalField)) {
                         result.put("originalField", originalField);
                         result.put(originalField, originalName);

@@ -28,15 +28,19 @@
     <div class="panelBar">
         <ul class="toolBar">
 <#if authorizedMap['cmsCategory/add']>
-            <li><a href="cmsCategory/add.html?parentId=${categoryId!}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'category.add'/></a></li>
-    <@_categoryTypeList pageSize=5>
+            <li>
+                <a href="cmsCategory/add.html?parentId=${categoryId!}" class="addMore" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i> <@t.page 'category.add'/></a>
+                <ul>
+    <@_categoryTypeList pageSize=10>
         <#list page.list as a>
-            <li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
+            <li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
         </#list>
-        <#if page.totalCount gt 5>
-            <li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus-sign icon-large"></i> <@t.page 'category.add_more'/></a></li>
+        <#if page.totalCount gt 10>
+            <li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus icon-large"></i> <@t.page 'category.add_more'/></a></li>
         </#if>
     </@_categoryTypeList>
+                </ul>
+            </li>
             <li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
             <li class="line">line</li>
 </#if>

@@ -10,14 +10,14 @@ header .nav ul{background-color:#D8403D;}
 header .nav ul li a { color:#000;}
 header a{color:#efefef;}
 #navMenu li{background-color:#8f0006;}
-#navMenu li.selected,#navMenu li:hover{background-color:#B3383D;}
+#navMenu li.selected,#navMenu li:hover{background-color:#b52e31;}
 #navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff;}
 /* 主界面 */
 
 #sidebar{background-color:#FAE1E1;}
 #sidebar_s{background-color:#FA5151;}
 .tabsPage{background-color:#edf1f5;}
-.accordion .accordionHeader{background-color:#B3383D;}
+.accordion .accordionHeader{background-color:#b52e31;}
 .accordion .accordionHeader h2.collapsable{color:#fff;}
 .accordion .accordionContent{background-color:#FAE1E1;}
 #splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
@@ -41,8 +41,8 @@ header a{color:#efefef;}
 .page.work-bench{background-color:#edf1f5;}
 
 .pageFormContent fieldset{background-color:#fff;}
-.pageFormContent fieldset legend{color:#B3383D;}
-.pageFormContent fieldset legend:before{background-color:#B3383D;}
+.pageFormContent fieldset legend{color:#b52e31;}
+.pageFormContent fieldset legend:before{background-color:#b52e31;}
 .pageFormContent label{color:#989eab;}
 .pageFormContent dt{color:#31353e;}
 .unit a.button:hover{background-color:#8f0006;color:#fff;border-color:#8f0006;}
@@ -65,6 +65,8 @@ a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec
 .panelBar .toolBar li a:hover>i{color:#fff;}
 .panelBar .toolBar li a:hover{background-color:#D8403D;color:#fff;}
 .panelBar .toolBar li.line{background-color:#e4e9f2;}
+.panelBar .toolBar li a.addMore{background-color:#FF9913}
+.panelBar .toolBar li>ul{border-color:#eceff3;}
 .panelBar.pageBar{background-color:#e8ebf2;}
 
 .grid { background-color:#FFF;}
@@ -91,7 +93,7 @@ table.list th.asc:before,table.list th.desc:before,table.list th.order:before{co
 table.nowrap tbody tr {border-color:#ededed;}
 
 .tabs .tabsHeaderContent>ul li a{color:#989eab;}
-.tabs .tabsHeader li.selected:before{background-color:#B3383D;}
+.tabs .tabsHeader li.selected:before{background-color:#b52e31;}
 .tabs .tabsHeader li.selected a{color:#31353e;}
 .tabs .tabsHeader ul{border-color:#dde2ec;box-sizing:border-box;}
 a.btnLook:before{color:#333;}
