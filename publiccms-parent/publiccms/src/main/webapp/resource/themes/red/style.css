@@ -79,7 +79,7 @@ a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec
 .grid .gridTbody tr:nth-child(even){background-color:#f8fcfe;}
 .grid .gridTbody tr:hover,.grid .gridTbody tr.selected { border-color:#edd9dd;background-color:#edd9dd;}
 .grid .error{background-color:#fb7e81;}
-.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#D8403D;}
+.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#FFFFFF;}
 
 table.list,table.list td{border-color:#e4e9f2;}
 table.list thead tr{background-color:#f8fcfe;}
@@ -112,7 +112,7 @@ footer a{color:#4d84ff;}
 .dialog .dialogHeader{background-color:#f2f6f9;}
 .dialog .dialogHeader_c a:hover{color:#3587ef;}
 .dialog .dialogHeader .close,.dialog .dialogHeader .maximize,.dialog .dialogHeader .minimize,.dialog .dialogHeader .restore{color:#a1a4a8;}
-.dialog .dialogContent .viewInfo,.dialogContent .pageContent{background-color:#fff;}
+.dialogContent .pageContent{background-color:#fff;}
 
 #taskbar{background-color:#131a23;}
 #taskbar li{color:#b5c3db;}

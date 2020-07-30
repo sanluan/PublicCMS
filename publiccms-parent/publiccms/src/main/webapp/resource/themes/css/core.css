@@ -126,7 +126,6 @@ header .nav .selected ul{display:block;}
 .accordion .accordionContent .tree.treeFolder a{line-height:30px;}
 .accordion .accordionContent .tree.treeFolder div div{height:30px;}
 
-/* Grid */
 .panelBar{display:block;overflow:hidden;height:auto;}
 .panelBar ul{overflow:hidden;padding:5px;}
 .panelBar li{float:left;display:block;overflow:hidden;height:auto;padding:0 5px;}
@@ -159,7 +158,7 @@ header .nav .selected ul{display:block;}
 .pagination li.jumpto .textInput{float:left;width:30px;padding:1px;font-size:12px;border-color:#acaeaf;}
 .pagination li.jumpto .goto{float:left;display:block;overflow:hidden;width:16px;height:19px;border:0;text-indent:-1000px;cursor:pointer;background:url(../images/goto.png) no-repeat center center;background-size:90% auto;}
 
-/* grid */
+/* Grid */
 .grid { display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
 .grid .gridHeader { display:block;overflow:hidden;width:auto;}
 .grid .gridScroller { display:block;overflow:auto;position:relative;}
@@ -171,6 +170,7 @@ header .nav .selected ul{display:block;}
 .grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{position:absolute;right:0px;top:50%;margin-top:-13px;}
 .grid .gridTbody td { border-right:solid 1px #ededed;overflow:hidden;padding:4px 3px;border-bottom:solid 1px #ededed;vertical-align:middle;line-height:26px;}
 .grid .gridTbody td div { display:block;overflow:hidden;white-space:nowrap;line-height:26px;}
+.grid .gridTbody td.wrap div{white-space:unset;}
 .grid .gridTbody td div a{line-height:26px;}
 .grid .gridTbody td div a:hover{text-decoration:underline;}
 .grid .gridCol { width:100%;display:block;overflow:hidden;height:26px;line-height:26px;white-space:nowrap;}
@@ -181,6 +181,8 @@ header .nav .selected ul{display:block;}
 .grid .left { text-align:left;}
 .grid .right { text-align:right;}
 .grid .center { text-align:center;}
+.grid .gridTbody td div .thumbnail{float:left;width:80px;}
+.grid .gridTbody td div .thumbnail img{max-width:100%;max-height:80px;}
 
 /* CSS Table */
 table.list{border-collapse:collapse;border:solid 1px #ededed;position:relative;}
@@ -308,6 +310,7 @@ a.toggleCollapse{text-decoration:none;}
 .pageFormContent dt{float:left;width:120px;padding:0 5px;}
 .pageFormContent dd{float:left;}
 .pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both;}
+.pageFormContent dl dd .thumbnail img{max-width:200px;max-height:200px;}
 
 #content{width:800px;}
 #content p{float:none;display:block;min-width:initial;padding:0;}
@@ -336,7 +339,6 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 
 /* Pages dialog */
 .dialog .pageHeader{margin:0;}
-.dialog .viewInfo{border-style:solid;border-width:1px 0 0 0;}
 
 /* combox */
 .combox{float:left;margin-right:3px;}
@@ -373,14 +375,6 @@ a.btnDel, a.btnLook, a.btnAttach{display:block;width:24px;height:28px;overflow:h
 .center a.btnDel, .center a.btnLook, .center a.btnAttach,
 .right a.btnDel, .right a.btnLook, .right a.btnAttach{display:inline-block;float:none;}
 a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:28px;position:absolute;top:0;left:3px;text-indent:0;}
-
-.viewInfo{padding:10px 5px;}
-.viewInfo dl{float:left;width:380px;line-height:22px;margin:0;padding:5px 0;position:relative;}
-.viewInfo dt{float:left;width:120px;padding:0 5px;text-align:right;}
-.viewInfo dd{width:220px;float:left;border-bottom:1px dotted #999;min-height:21px;}
-.viewInfo dl.nowrap{width:100%;height:auto;clear:both;}
-.viewInfo dl.nowrap dt{width:120px;}
-.viewInfo dl.nowrap dd{width:auto;}
 
 .sortDragPlaceholder{border:1px dashed #ccc;}
 #printBox{display:none;}

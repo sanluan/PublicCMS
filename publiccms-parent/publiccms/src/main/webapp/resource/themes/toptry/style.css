@@ -109,7 +109,7 @@ footer a{color:#4d84ff;}
 .dialog .dialogHeader{background-color:#f2f6f9;}
 .dialog .dialogHeader_c a:hover{color:#3587ef;}
 .dialog .dialogHeader .close,.dialog .dialogHeader .maximize,.dialog .dialogHeader .minimize,.dialog .dialogHeader .restore{color:#a1a4a8;}
-.dialog .dialogContent .viewInfo,.dialogContent .pageContent{background-color:#fff;}
+.dialogContent .pageContent{background-color:#fff;}
 
 #taskbar{background-color:#131a23;}
 #taskbar li{color:#b5c3db;}

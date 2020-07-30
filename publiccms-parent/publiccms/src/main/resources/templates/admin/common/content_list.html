@@ -134,19 +134,14 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
-                <th width="150"><@t.page 'title'/></th>
-                <th width="40"><@t.page 'content.promulgator'/></th>
-                <th width="30"><@t.page 'category'/></th>
-                <th width="50"><@t.page 'model'/></th>
+                <th width="150"><@t.page 'content'/></th>
                 <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
                 <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
-                <th width="70"><@t.page 'expiry_date'/></th>
-                <th width="70"><@t.page 'create_date'/></th>
                 <th width="40" orderField="default" class="<#if !orderField??||'default'==orderField>desc<#else>order</#if>"><@t.page 'content.top_level'/></th>
                 <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
-                <th width="120"><@t.page 'operate'/></th>
+                <th width="90"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -166,15 +161,20 @@
             <tr target="sid" rel="${contentId}">
                 <td class="center"><input name="ids" value="${contentId}" type="checkbox"></td>
                 <td class="center">${a.id}</td>
-                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
-                <td class="center exclude-translate">
-                    ${(userMap[a.userId?string].nickName)!}
-                </td>
-                <td class="center exclude-translate">
-                    ${(categoryMap[a.categoryId?string].name)!}
-                </td>
-                <td class="center exclude-translate">
-                    ${(modelMap[a.modelId].name)!}
+                <td>
+                    <div class="clearFix">
+                        <#if a.cover?has_content>
+                            <div class="thumbnail">
+                                <img src="${(a.cover)!}"/>
+                            </div>
+                        </#if>
+                        <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></h3>
+                        <p>
+                            <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickName)!}</span>
+                            <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
+                            <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
+                        </p>
+                    </div>
                 </td>
                 <td class="center">${a.scores!}</td>
                 <td class="center">
@@ -185,15 +185,13 @@
                     </#if>
                 </td>
                 <td class="center">${a.clicks!}</td>
-                <td class="center">${a.publishDate!}</td>
-                <td class="center">${a.expiryDate!}</td>
-                <td class="center">${a.createDate!}</td>
+                <td class="center" title="<@t.page 'create_date'/>:${a.createDate!}">${a.publishDate!}</td>
                 <td class="center">${a.sort!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
                     <#if 1=a.status || 3=a.status>/ <span class="exclude-translate">${(userMap[a.checkUserId?string].nickName)!}</span></#if>
                 </td>
-                <td>
+                <td class="wrap">
                     <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
                         <a href="cmsContent/list.html?parentId=${contentId}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a>|
                     </#if>
