@@ -181,8 +181,9 @@ header .nav .selected ul{display:block;}
 .grid .left { text-align:left;}
 .grid .right { text-align:right;}
 .grid .center { text-align:center;}
-.grid .gridTbody td div .thumbnail{float:left;width:80px;}
-.grid .gridTbody td div .thumbnail img{max-width:100%;max-height:80px;}
+table.table td .thumbnail,.grid .gridTbody td div .thumbnail{float:left;width:80px;}
+table.table td .thumbnail img,.grid .gridTbody td div .thumbnail img{max-width:80px;max-height:80px;}
+.grid .gridTbody td div .box{padding:5px;}
 
 /* CSS Table */
 table.list{border-collapse:collapse;border:solid 1px #ededed;position:relative;}
