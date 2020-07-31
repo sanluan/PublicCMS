@@ -397,8 +397,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:2
 .dialog .dialogHeader .minimize{right:65px;}
 .dialog .dialogHeader_c{padding:0;}
 .dialog .dialogHeader_c a:hover{text-decoration:none;}
-.dialog .dialogContent{display:block;overflow:hidden;padding:0;width:100%;}
-.dialog .dialogContent .pageFormContent,.dialog .dialogContent .pageContent{margin:0 5px;}
+.dialog .dialogContent{display:block;overflow:hidden;padding:0 5px;}
 .dialog .panelFooter_r{display:block;overflow:hidden;}
 .dialogProxy{opacity:0.8;filter:alpha(opacity=80);}
 .dialog .resizable_f_r{width:11px;height:11px;}
