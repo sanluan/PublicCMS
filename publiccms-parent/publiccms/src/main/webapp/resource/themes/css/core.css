@@ -47,20 +47,6 @@ header .nav .selected ul{display:block;}
 #navMenu li a{;display:block;font-size:13px;font-weight:400;line-height:60px;text-decoration:none;padding:0 18px;}
 #navMenu li a>i{margin-right:5px;}
 
-
-@media (max-width:1100px){
-    .logo{display:none;}
-    #navMenu{left:0px;}
-    footer{text-align:left;}
-;}
-
-@media (max-width:920px){
-    header .nav li{padding:0 5px;}
-    header .nav li a{line-height:25px;}
-    #navMenu{top:20px;}
-    #navMenu li a{line-height:40px;}
-;}
-
 /* Tabs */
 .tabs .tabsHeader{display:block;overflow:hidden;height:40px;padding-left:5px;}
 .tabs .tabsHeaderContent{display:block;overflow:hidden;height:100%;}
@@ -269,7 +255,7 @@ a.toggleCollapse{text-decoration:none;}
 
 .leftPageContent{border-right-width:1px;border-right-style:solid;float:left;display:block;overflow:auto;width:220px;line-height:21px;}
 .rightPageContent{margin-left:220px;}
-.thumbnail{position:relative;overflow:hidden;margin-right:5px;border:1px dashed #cacbcc;display:inline-block;text-align:center;}
+.thumbnail{position:relative;overflow:hidden;margin-right:5px;border:1px dashed #cacbcc;display:inline-block;text-align:center;line-height:0px;}
 
 /* Pages default */
 .page{display:block;overflow:hidden;float:left;width:100%;height:100%;-webkit-overflow-scrolling:touch;}
@@ -402,19 +388,17 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:2
 
 /* Dialog */
 .dialog{display:block;text-align:left;position:absolute;z-index:42;-moz-box-shadow: 0px 0px 18px rgba(157,159,168,.35);box-shadow: 0px 0px 18px rgba(157,159,168,.35);-ms-box-shadow: 0px 0px 18px rgba(157,159,168,.35);-o-box-shadow: 0px 0px 18px rgba(157,159,168,.35);-webkit-box-shadow: 0px 0px 18px rgba(157,159,168,.35);}
+.dialog .dialogHeader{padding-left:5px;position:relative;cursor:move;}
 .dialog .dialogHeader, .dialog .dialogHeader_c{display:block;overflow:hidden;height:40px;}
 .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize{font-family:iconfont;font-size:20px;display:block;overflow:hidden;width:22px;height:22px;position:absolute;top:10px;text-indent:0;}
 .dialog .dialogHeader h1{display:block;overflow:hidden;padding:0 5px 0 20px;font-weight:400;line-height:40px;height:40px;font-size:13px;}
-
-.dialog .dialogHeader{padding-left:5px;position:relative;cursor:move;}
-.dialog .dialogHeader_c{padding:0;}
-.dialog .dialogHeader_c a:hover{text-decoration:none;}
 .dialog .dialogHeader .close{right:10px;}
 .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore{display:none;right:37px;}
 .dialog .dialogHeader .minimize{right:65px;}
-
+.dialog .dialogHeader_c{padding:0;}
+.dialog .dialogHeader_c a:hover{text-decoration:none;}
 .dialog .dialogContent{display:block;overflow:hidden;padding:0;width:100%;}
-.dialog .dialogContent .pageFormContent{margin-right:5px;}
+.dialog .dialogContent .pageFormContent,.dialog .dialogContent .pageContent{margin:0 5px;}
 .dialog .panelFooter_r{display:block;overflow:hidden;}
 .dialogProxy{opacity:0.8;filter:alpha(opacity=80);}
 .dialog .resizable_f_r{width:11px;height:11px;}
@@ -515,3 +499,16 @@ header,main,#sidebar,footer{background-color:#333;}
 table.list tbody{background-color:#666;}
 .page{background-color:#fff;color:#333;}
 .tagsBox span{background-color:#e0e0e0;}
+
+@media (max-width:1100px){
+    .logo{display:none;}
+    #navMenu{left:0px;}
+    footer{text-align:left;}
+}
+
+@media (max-width:920px){
+    header .nav li{padding:0 5px;}
+    header .nav li a{line-height:25px;}
+    #navMenu{top:20px;}
+    #navMenu li a{line-height:40px;}
+}
