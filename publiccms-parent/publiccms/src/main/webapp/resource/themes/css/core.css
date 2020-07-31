@@ -254,7 +254,7 @@ a.toggleCollapse{text-decoration:none;}
 .themeList li.red .selected{background-position:-20px -20px;}
 
 .leftPageContent{border-right-width:1px;border-right-style:solid;float:left;display:block;overflow:auto;width:220px;line-height:21px;}
-.rightPageContent{margin-left:220px;}
+.rightPageContent{margin-left:221px;}
 .thumbnail{position:relative;overflow:hidden;margin-right:5px;border:1px dashed #cacbcc;display:inline-block;text-align:center;line-height:0px;}
 
 /* Pages default */
