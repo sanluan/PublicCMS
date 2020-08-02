@@ -133,7 +133,7 @@ function apiRequest(base,api,apisArray,authorizedApis){
             if(++apiCounter==apisArray.length){
                 $(".authorizedApis", navTab.getCurrentPanel()).addClass('tree').jTree();
                 for(authorizedApi in authorizedApis){
-                    $("input[type=checkbox][value="+authorizedApis[authorizedApi]+"]", navTab.getCurrentPanel()).click();
+                    $("input[type=checkbox][value=\""+authorizedApis[authorizedApi]+"\"]", navTab.getCurrentPanel()).click();
                 }
                 apiCounter=0;
             }
