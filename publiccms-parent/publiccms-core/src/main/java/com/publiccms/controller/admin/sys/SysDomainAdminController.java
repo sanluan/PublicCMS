@@ -124,7 +124,6 @@ public class SysDomainAdminController {
      */
     @RequestMapping("virify")
     @ResponseBody
-    @Csrf
     public boolean virify(String name, String domain, String oldName) {
         if (CommonUtils.notEmpty(name)) {
             if (CommonUtils.notEmpty(oldName) && !name.equals(oldName) && null != service.getEntity(name)

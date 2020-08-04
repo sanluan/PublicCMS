@@ -118,7 +118,6 @@ public class SysModuleAdminController {
      */
     @RequestMapping("virify")
     @ResponseBody
-    @Csrf
     public boolean virify(String id, String oldId) {
         if (CommonUtils.notEmpty(id)) {
             if (CommonUtils.notEmpty(oldId) && !id.equals(oldId) && null != service.getEntity(id)
