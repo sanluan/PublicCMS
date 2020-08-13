@@ -126,7 +126,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 } else {
                     fields = textFields;
                 }
-                termination.must(term.onFields(textFields).matching(text).createQuery());
+                termination.must(term.onFields(fields).matching(text).createQuery());
             }
         }
         if (CommonUtils.notEmpty(tagIds)) {
