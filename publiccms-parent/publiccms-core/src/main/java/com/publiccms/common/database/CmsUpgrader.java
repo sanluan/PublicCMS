@@ -84,7 +84,9 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         if (CommonUtils.notEmpty(timeZone)) {
             try {
                 sb.append("&serverTimezone=GMT");
-                sb.append(URLEncoder.encode(timeZone, Constants.DEFAULT_CHARSET_NAME));
+                if(!"Z".equalsIgnoreCase(timeZone)) {
+                    sb.append(URLEncoder.encode(timeZone, Constants.DEFAULT_CHARSET_NAME));
+                }
             } catch (UnsupportedEncodingException e) {
             }
         }
