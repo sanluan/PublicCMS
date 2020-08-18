@@ -271,7 +271,7 @@ public class SourceGenerator {
      *
      */
     public SourceGenerator() throws IOException {
-        config = new freemarker.template.Configuration(Configuration.getVersion());
+        config = new freemarker.template.Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         config.setDirectoryForTemplateLoading(new File("src/test/resources/generator/"));
         config.setDefaultEncoding(DEFAULT_CHARSET_NAME);
     }
