@@ -25,6 +25,7 @@ import com.publiccms.entities.cms.CmsCategoryModel;
 import com.publiccms.entities.cms.CmsCategoryModelId;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsTag;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysApp;
@@ -34,6 +35,7 @@ import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
+import com.publiccms.logic.service.cms.CmsContentFileService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.log.LogOperateService;
@@ -60,6 +62,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
     private ModelComponent modelComponent;
     @Autowired
     protected LogOperateService logOperateService;
+    @Autowired
+    private CmsContentFileService contentFileService;
 
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
@@ -74,6 +78,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
             CmsCategory category = categoryService.getEntity(entity.getCategoryId());
             CmsModel cmsModel = modelComponent.getMap(site).get(entity.getModelId());
             if (null != category && null != cmsModel && site.getId() == category.getSiteId() && category.isAllowContribute()) {
+                entity.setId(handler.getLong("id"));
                 entity.setOnlyUrl(cmsModel.isOnlyUrl());
                 entity.setHasImages(cmsModel.isHasImages());
                 entity.setHasFiles(cmsModel.isHasFiles());
@@ -152,6 +157,46 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     attribute.setSearchText(text);
                 }
                 attributeService.updateAttribute(entity.getId(), attribute);
+                if (entity.isHasImages() || entity.isHasFiles()) {
+                    List<CmsContentFile> files = null;
+                    if (entity.isHasFiles()) {
+                        files = new ArrayList<>();
+                        String[] filePaths = handler.getStringArray("filePaths");
+                        String[] fileDescriptions = handler.getStringArray("fileDescriptions");
+                        if (null != filePaths) {
+                            int i = 0;
+                            for (String filePath : filePaths) {
+                                CmsContentFile e = new CmsContentFile();
+                                e.setFilePath(filePath);
+                                if (null != fileDescriptions && fileDescriptions.length > i) {
+                                    e.setDescription(fileDescriptions[i]);
+                                }
+                                files.add(e);
+                                i++;
+                            }
+                        }
+                    }
+                    List<CmsContentFile> images = null;
+                    if (entity.isHasImages()) {
+                        images = new ArrayList<>();
+                        String[] imagePaths = handler.getStringArray("imagePaths");
+                        String[] imageDescriptions = handler.getStringArray("imageDescriptions");
+                        if (null != imagePaths) {
+                            int i = 0;
+                            for (String filePath : imagePaths) {
+                                CmsContentFile e = new CmsContentFile();
+                                e.setFilePath(filePath);
+                                if (null != imageDescriptions && imageDescriptions.length > i) {
+                                    e.setDescription(imageDescriptions[i]);
+                                }
+                                files.add(e);
+                                i++;
+                            }
+                        }
+                    }
+                    contentFileService.update(entity.getId(), user.getId(), files, images);// 更新保存图集，附件
+                }
+                handler.put("contentId", entity.getId());
                 handler.put("result", "success");
             }
         }
