@@ -32,6 +32,7 @@ import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.template.ModelComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryModelService;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
@@ -64,6 +65,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
     protected LogOperateService logOperateService;
     @Autowired
     private CmsContentFileService contentFileService;
+    @Autowired
+    private TemplateComponent templateComponent;
 
     @Override
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
@@ -122,9 +125,9 @@ public class ContentCreateDirective extends AbstractAppDirective {
                 attribute.setSourceUrl(handler.getString("sourceUrl"));
                 attribute.setText(handler.getString("text"));
                 attribute.setData(handler.getString("data"));
-
-                CmsContentAdminController.initContent(entity, cmsModel, handler.getBoolean("draft"),
-                        handler.getBoolean("checked"), attribute, false, CommonUtils.getDate());
+                Boolean checked = handler.getBoolean("checked");
+                CmsContentAdminController.initContent(entity, cmsModel, handler.getBoolean("draft"), checked, attribute, false,
+                        CommonUtils.getDate());
                 if (null != entity.getId()) {
                     CmsContent oldEntity = service.getEntity(entity.getId());
                     if (null != oldEntity && site.getId() == oldEntity.getSiteId()) {
@@ -195,6 +198,11 @@ public class ContentCreateDirective extends AbstractAppDirective {
                         }
                     }
                     contentFileService.update(entity.getId(), user.getId(), files, images);// 更新保存图集，附件
+                }
+                if (null != checked && checked) {
+                    service.check(site.getId(), user, new Long[] { entity.getId() });
+                    templateComponent.createContentFile(site, entity, category, categoryModel);
+                    templateComponent.createCategoryFile(site, category, null, null);
                 }
                 handler.put("contentId", entity.getId());
                 handler.put("result", "success");
