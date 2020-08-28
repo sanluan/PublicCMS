@@ -56,18 +56,7 @@ public class BasicColumnProcessor {
 				
 				//String columnDefaultValue = columnRs.getString("COLUMN_DEF"); TODO: only read if have a way to avoid issues with clobs/lobs and similar
 				int dbNullability = ((Integer)columnRs.get("NULLABLE")).intValue();
-				boolean isNullable = true;
-				switch (dbNullability) {
-				case DatabaseMetaData.columnNullable:
-				case DatabaseMetaData.columnNullableUnknown:
-					isNullable = true;
-					break;
-				case DatabaseMetaData.columnNoNulls:
-					isNullable = false;
-					break;
-				default:
-					isNullable = true;
-				}
+				boolean isNullable = dbNullability != DatabaseMetaData.columnNoNulls;
 				
 				int size = ((Integer)columnRs.get("COLUMN_SIZE")).intValue();
 				int decimalDigits = ((Integer)columnRs.get("DECIMAL_DIGITS")).intValue();
