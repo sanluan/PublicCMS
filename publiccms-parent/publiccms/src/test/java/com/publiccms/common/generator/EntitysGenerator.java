@@ -20,7 +20,7 @@ public class EntitysGenerator {
     public static void main(String[] args) {
         String jdbcProperties = "src/test/resources/hibernate/hibernate.properties";
         String revengFilePath = "src/test/resources/hibernate/hibernate.reveng.xml";
-        String packageName = "com.publiccms.entites";
+        String packageName = "com.publiccms.entities";
         String outputDirectory = "src/main/java";
         Properties properties = new Properties();
         try (FileInputStream is = new FileInputStream(new File(jdbcProperties));) {
