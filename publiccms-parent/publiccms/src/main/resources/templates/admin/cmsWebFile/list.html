@@ -76,7 +76,7 @@
                             <a href="cmsWebFile/unzipParameters.html?path=${filePath?url}"  target="dialog" mask="true"><@t.page 'button.decompress'/></a>|
                         </#if>
                         <#if editableSubfix?seq_contains(a.fileName?keep_after_last('.')?lower_case)>
-                          <a href="cmsWebFile/content.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'button.edit'/>:${filePath}"><@t.page 'button.edit'/></a>|
+                          <a href="cmsWebFile/content.html?path=${filePath?url}" target="navTab" rel="cmsWebFile/content:${filePath}" icon="<i class='icon-edit icon-large'></i>" title="${a.fileName}"><@t.page 'button.edit'/></a>|
                         </#if>
                         <a href="${site.sitePath+filePath?keep_after('/')}" target="_blank"><@t.page 'button.view'/></a>
                     </#if>
