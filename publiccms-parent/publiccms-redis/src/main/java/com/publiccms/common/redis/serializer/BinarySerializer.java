@@ -7,6 +7,7 @@ import java.io.ObjectOutputStream;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.core.ConfigurableObjectInputStream;
 
 /**
  *
@@ -32,14 +33,14 @@ public class BinarySerializer<T> implements Serializer<T> {
             return EMPTY_BYTES;
         }
     }
-
     @Override
     @SuppressWarnings("unchecked")
     public T deserialize(final byte[] bytes) {
         if (null == bytes || 0 == bytes.length) {
             return null;
         }
-        try (ByteArrayInputStream is = new ByteArrayInputStream(bytes); ObjectInputStream ois = new ObjectInputStream(is);) {
+        try (ByteArrayInputStream is = new ByteArrayInputStream(bytes);
+                ObjectInputStream ois = new ConfigurableObjectInputStream(is, Thread.currentThread().getContextClassLoader());) {
             return (T) ois.readObject();
         } catch (Exception e) {
             log.warn("Fail to deserialize bytes.", e);
