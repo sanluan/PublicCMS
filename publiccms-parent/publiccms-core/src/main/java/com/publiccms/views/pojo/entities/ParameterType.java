@@ -6,7 +6,11 @@ import com.publiccms.common.api.Config;
  * ParameterType
  * 
  */
-public class ParameterType {
+public class ParameterType implements java.io.Serializable {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     public static final String[] PARAMETER_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_TEXTAREA, Config.INPUTTYPE_CONTENT,
             Config.INPUTTYPE_USER, Config.INPUTTYPE_CATEGORY };
     private String type;

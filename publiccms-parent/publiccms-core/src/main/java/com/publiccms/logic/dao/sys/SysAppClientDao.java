@@ -73,9 +73,6 @@ public class SysAppClientDao extends BaseDao<SysAppClient> {
         case "lastLoginDate":
             queryHandler.order("bean.lastLoginDate ").append(orderType);
             break;
-        case "createDate":
-            queryHandler.order("bean.createDate ").append(orderType);
-            break;
         default:
             queryHandler.order("bean.createDate ").append(orderType);
         }
