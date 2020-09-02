@@ -158,10 +158,12 @@ public class CmsFileUtils {
         if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
             try (FileInputStream fis = new FileInputStream(filePath)) {
                 BufferedImage bufferedImg = ImageIO.read(fis);
-                FileSize fileSize = new FileSize();
-                fileSize.setWidth(bufferedImg.getWidth());
-                fileSize.setHeight(bufferedImg.getHeight());
-                return fileSize;
+                if (null != bufferedImg) {
+                    FileSize fileSize = new FileSize();
+                    fileSize.setWidth(bufferedImg.getWidth());
+                    fileSize.setHeight(bufferedImg.getHeight());
+                    return fileSize;
+                }
             } catch (IOException e) {
             }
         }

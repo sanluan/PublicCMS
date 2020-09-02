@@ -149,7 +149,7 @@ header .nav .selected ul{display:block;}
 .grid .gridHeader { display:block;overflow:hidden;width:auto;}
 .grid .gridScroller { display:block;overflow:auto;position:relative;}
 .grid .gridTbody { ;}
-.grid table { border:0;border-collapse:collapse;table-layout:fixed;}
+.grid table { border:0;border-collapse:collapse;table-layout:fixed;min-width:800px;}
 .grid .gridHeader th { padding:5px 3px;border-style:solid;border-width:0 1px 1px 0;vertical-align:top;white-space:nowrap;line-height:26px;cursor:default;}
 .grid .gridHeader th:hover, .grid .gridHeader th.thSelected { background-position:0 -50px;}
 .grid .gridHeader th.order,.grid .gridHeader th.asc,.grid .gridHeader th.desc{cursor:pointer;position:relative;}
