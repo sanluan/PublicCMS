@@ -24,7 +24,7 @@
             <dd>
                 <input name="configCode" type="hidden" value="${code!}"/>
                 <#if a?has_content&&!a.customed>
-                    <input class="required readonly" readonly="readonly" name="code" type="text" value="${(a.code)!}"/>
+                    <input class="required" readonly="readonly" name="code" type="text" value="${(a.code)!}"/>
                 <#else>
                     <input class="required" name="code" type="text" maxlength="20" size="20" value="${(a.code)!}"/>
                 </#if>
@@ -34,7 +34,7 @@
             <dt><@t.page 'description'/>:</dt>
             <dd>
                 <#if a?has_content&&!a.customed>
-                    <textarea class="required readonly" readonly="readonly" name="description" maxlength="150" cols="80" rows="3">${(a.description)!}</textarea>
+                    <textarea class="required" readonly="readonly" name="description" maxlength="150" cols="80" rows="3">${(a.description)!}</textarea>
                 <#else>
                     <textarea class="required" name="description" maxlength="150" cols="80" rows="3">${(a.description)!}</textarea>
                 </#if>

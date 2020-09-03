@@ -13,7 +13,7 @@
             <#if 'view'=type>
                 <a href="${site.sitePath+value}" target="_blank">${(value)!}</a>
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}"/>
+                <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" <#else>type="file" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type><a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="560" height="300"><@t.page 'attach'/></a></#if>
             </#if>
             <#break>
@@ -23,7 +23,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
+                <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image" lookupGroup="" width="560" height="300"><@t.page 'image'/></a>
                     <#if !preview?has_content>
@@ -39,7 +39,7 @@
                 <br/>
                 ${(value)!}
             <#else>
-                <input name="${inputName}" <#if 'customform'!=type>class="readonly<#if extend.required> required</#if>" type="text" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
+                <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="560" height="300"><@t.page 'video'/></a>
                 </#if>
