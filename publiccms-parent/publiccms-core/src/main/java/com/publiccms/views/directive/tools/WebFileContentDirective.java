@@ -23,7 +23,10 @@ public class WebFileContentDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path");
         if (CommonUtils.notEmpty(path)) {
-            handler.put("object", CmsFileUtils.getFileContent(siteComponent.getWebFilePath(getSite(handler), path))).render();
+            String fileContent = CmsFileUtils.getFileContent(siteComponent.getWebFilePath(getSite(handler), path));
+            if (null != fileContent) {
+                handler.put("object", fileContent).render();
+            }
         }
     }
 
