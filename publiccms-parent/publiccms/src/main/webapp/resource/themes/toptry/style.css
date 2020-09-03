@@ -54,6 +54,8 @@ button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298;}
 a.button,button.button{color:#516485;background-color:#fff;border-color:#dde2ec;}
 a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec;}
 .pagination li.jumpto .textInput,.textInput,input.disabled,input.error,input.focus,input.readonly,input.required,textarea.disabled,textarea.error,textarea.focus,textarea.readonly,textarea.required{border-color:#dde2ec;}
+input.disabled,textarea.disabled{background-color:#eee;cursor:not-allowed;}
+textarea.readonly,input.readonly{background-color:#eee;}
 .pageHeader{background-color:#f2f6f9;color:#31353e;}
 .searchBar span.connect-string{color:#dde2ec;}
 .searchBar ul.searchContent:before{color:#667ea7;}
