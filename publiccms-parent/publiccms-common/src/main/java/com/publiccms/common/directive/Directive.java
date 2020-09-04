@@ -13,12 +13,12 @@ public interface Directive {
     /**
      * @return name
      */
-    public String getName();
+    String getName();
 
     /**
      * @param handler
      * @throws IOException
      * @throws Exception
      */
-    public void execute(RenderHandler handler) throws IOException, Exception;
+    void execute(RenderHandler handler) throws IOException, Exception;
 }

@@ -2,12 +2,12 @@ package org.hibernate.tool.internal.export.pojo;
 
 public interface MetaAttributeConstants {
 
-	static final String GENERATED_CLASS = "generated-class";
-	static final String INTERFACE = "interface";
-	static final String CLASS_MODIFIER = "class-modifier";
-	static final String SCOPE_CLASS = "scope-class";
-	static final String CLASS_DESCRIPTION = "class-description";
-	static final String IMPLEMENTS = "implements";
-	static final String EXTENDS = "extends";
-	static final String GEN_PROPERTY = "gen-property"; // in templates.
+	String GENERATED_CLASS = "generated-class";
+	String INTERFACE = "interface";
+	String CLASS_MODIFIER = "class-modifier";
+	String SCOPE_CLASS = "scope-class";
+	String CLASS_DESCRIPTION = "class-description";
+	String IMPLEMENTS = "implements";
+	String EXTENDS = "extends";
+	String GEN_PROPERTY = "gen-property"; // in templates.
 }

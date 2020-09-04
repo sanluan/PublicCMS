@@ -22,6 +22,6 @@ public interface HttpDirective {
      * @throws IOException
      * @throws Exception
      */
-    public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-            HttpServletResponse response) throws IOException, Exception;
+    void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
+                 HttpServletResponse response) throws IOException, Exception;
 }

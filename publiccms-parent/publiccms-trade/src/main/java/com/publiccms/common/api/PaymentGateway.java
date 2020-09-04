@@ -9,15 +9,15 @@ import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradeRefund;
 
 public interface PaymentGateway extends Container<String> {
-    public String getAccountType();
+    String getAccountType();
 
-    public default Supplier<String> keyFunction() {
+    default Supplier<String> keyFunction() {
         return () -> getAccountType();
     }
 
-    public boolean enable(short siteId);
+    boolean enable(short siteId);
 
-    public boolean pay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response);
+    boolean pay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response);
 
-    public boolean refund(SysSite site, TradeOrder order, TradeRefund refund);
+    boolean refund(SysSite site, TradeOrder order, TradeRefund refund);
 }

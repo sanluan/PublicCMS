@@ -12,11 +12,11 @@ import java.util.Properties;
 public interface Exporter {
 	
 
-	public Properties getProperties();
+	Properties getProperties();
 	
 	/**
 	 * Called when exporter should start generating its output
 	 */
-	public void start();
+	void start();
 	
 }

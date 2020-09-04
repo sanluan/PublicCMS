@@ -9,5 +9,5 @@ public interface Cache {
     /**
      * 
      */
-    public void clear();
+    void clear();
 }

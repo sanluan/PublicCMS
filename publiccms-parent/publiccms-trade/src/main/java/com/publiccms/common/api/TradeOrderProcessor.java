@@ -5,13 +5,13 @@ import java.util.function.Supplier;
 import com.publiccms.entities.trade.TradeOrder;
 
 public interface TradeOrderProcessor extends Container<String> {
-    public String getTradeType();
+    String getTradeType();
 
-    public default Supplier<String> keyFunction() {
+    default Supplier<String> keyFunction() {
         return () -> getTradeType();
     }
 
-    public boolean paid(TradeOrder order);
+    boolean paid(TradeOrder order);
     
-    public boolean refunded(TradeOrder order);
+    boolean refunded(TradeOrder order);
 }

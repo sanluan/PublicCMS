@@ -18,7 +18,7 @@ public interface OauthGateway extends Container<String> {
     /**
      * @return channel
      */
-    public String getChannel();
+    String getChannel();
 
     default Supplier<String> keyFunction() {
         return () -> getChannel();
@@ -28,7 +28,7 @@ public interface OauthGateway extends Container<String> {
      * @param siteId
      * @return enabled
      */
-    public boolean enabled(short siteId);
+    boolean enabled(short siteId);
 
     /**
      * @param siteId
@@ -36,14 +36,14 @@ public interface OauthGateway extends Container<String> {
      * @param mobilde
      * @return authorize url
      */
-    public String getAuthorizeUrl(short siteId, String state, boolean mobilde);
+    String getAuthorizeUrl(short siteId, String state, boolean mobilde);
 
     /**
      * @param siteId
      * @param state
      * @return authorize url
      */
-    public String getAuthorizeUrl(short siteId, String state);
+    String getAuthorizeUrl(short siteId, String state);
 
     /**
      * @param siteId
@@ -52,7 +52,7 @@ public interface OauthGateway extends Container<String> {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public OauthAccess getOpenId(short siteId, String code) throws ClientProtocolException, IOException;
+    OauthAccess getOpenId(short siteId, String code) throws ClientProtocolException, IOException;
 
     /**
      * @param siteId
@@ -61,5 +61,5 @@ public interface OauthGateway extends Container<String> {
      * @throws ClientProtocolException
      * @throws IOException
      */
-    public OauthUser getUserInfo(short siteId, OauthAccess oauthAccess) throws ClientProtocolException, IOException;
+    OauthUser getUserInfo(short siteId, OauthAccess oauthAccess) throws ClientProtocolException, IOException;
 }

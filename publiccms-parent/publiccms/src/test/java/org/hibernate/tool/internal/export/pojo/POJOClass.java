@@ -21,11 +21,11 @@ public interface POJOClass extends ImportContext {
 	 * @return 
 	 *  
 	 */
-	public String getPackageDeclaration();
+	String getPackageDeclaration();
 	
-	public String getClassModifiers();
+	String getClassModifiers();
 
-	public String getQualifiedDeclarationName();
+	String getQualifiedDeclarationName();
 	
 	/**
 	 * Returns the javadoc associated with the class.
@@ -34,76 +34,76 @@ public interface POJOClass extends ImportContext {
 	 * @param indent how many spaces should be added
 	 * @return
 	 */
-	public String getClassJavaDoc(String fallback, int indent);
+	String getClassJavaDoc(String fallback, int indent);
 	
 	/**
 	 * 
 	 * @return declaration type "interface" or "class"
 	 */
-	public String getDeclarationType();
+	String getDeclarationType();
 	
 	/**
 	 * @return unqualified classname for this class (can be changed by meta attribute "generated-class")
 	 */
-	public String getDeclarationName();
+	String getDeclarationName();
 	
-	public String getImplementsDeclaration();
-	public String getImplements();
+	String getImplementsDeclaration();
+	String getImplements();
 	
-	public String getExtendsDeclaration();
-	public String getExtends();
+	String getExtendsDeclaration();
+	String getExtends();
 	
-	public String generateEquals(String thisName, String otherName, boolean useGenerics);
+	String generateEquals(String thisName, String otherName, boolean useGenerics);
 	
-	public boolean isComponent();
+	boolean isComponent();
 	
-	public String getExtraClassCode();
+	String getExtraClassCode();
 		
-	public boolean needsEqualsHashCode();
+	boolean needsEqualsHashCode();
 	
-	public boolean hasIdentifierProperty();
+	boolean hasIdentifierProperty();
 	
-	public String generateAnnColumnAnnotation(Property property);
-	public String generateAnnIdGenerator();
-	public String generateAnnTableUniqueConstraint();
-	public String generateBasicAnnotation(Property property);
-	public Iterator<Property> getAllPropertiesIterator();
+	String generateAnnColumnAnnotation(Property property);
+	String generateAnnIdGenerator();
+	String generateAnnTableUniqueConstraint();
+	String generateBasicAnnotation(Property property);
+	Iterator<Property> getAllPropertiesIterator();
 
-	public String getPackageName();
-	public String getShortName();
+	String getPackageName();
+	String getShortName();
 
-	public Iterator<Property> getToStringPropertiesIterator();
-	public Iterator<Property> getEqualsHashCodePropertiesIterator();
+	Iterator<Property> getToStringPropertiesIterator();
+	Iterator<Property> getEqualsHashCodePropertiesIterator();
 	
-	public boolean needsToString();
+	boolean needsToString();
 	
-	public String getFieldJavaDoc(Property property, int indent);
-	public String getFieldDescription(Property property);
+	String getFieldJavaDoc(Property property, int indent);
+	String getFieldDescription(Property property);
 
-	public Object getDecoratedObject();
+	Object getDecoratedObject();
 
-	public boolean isInterface();
+	boolean isInterface();
 	
-	public boolean isSubclass();
+	boolean isSubclass();
 
-	public List<Property> getPropertiesForFullConstructor();
-	public List<Property> getPropertyClosureForFullConstructor();
-	public List<Property> getPropertyClosureForSuperclassFullConstructor();
+	List<Property> getPropertiesForFullConstructor();
+	List<Property> getPropertyClosureForFullConstructor();
+	List<Property> getPropertyClosureForSuperclassFullConstructor();
 	
-	public boolean needsMinimalConstructor();
-	public boolean needsFullConstructor();
-	public List<Property> getPropertiesForMinimalConstructor();
-	public List<Property> getPropertyClosureForMinimalConstructor();
-	public List<Property> getPropertyClosureForSuperclassMinimalConstructor();
+	boolean needsMinimalConstructor();
+	boolean needsFullConstructor();
+	List<Property> getPropertiesForMinimalConstructor();
+	List<Property> getPropertyClosureForMinimalConstructor();
+	List<Property> getPropertyClosureForSuperclassMinimalConstructor();
 	
-	public POJOClass getSuperClass();
+	POJOClass getSuperClass();
 	
-	public String getJavaTypeName(Property p, boolean useGenerics);
-	public String getFieldInitialization(Property p, boolean useGenerics);
+	String getJavaTypeName(Property p, boolean useGenerics);
+	String getFieldInitialization(Property p, boolean useGenerics);
 	
-	public Property getIdentifierProperty();
+	Property getIdentifierProperty();
 	
-	public boolean hasVersionProperty();
-	public Property getVersionProperty();
+	boolean hasVersionProperty();
+	Property getVersionProperty();
 		
 }
