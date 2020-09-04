@@ -2,8 +2,6 @@ package boot;
 
 import java.time.Duration;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 import org.apache.catalina.valves.RemoteIpValve;
 import org.springframework.boot.SpringApplication;
@@ -72,14 +70,7 @@ public class SpringBootApplication {
      */
     @Bean
     public ServletContextInitializer webInitializer() {
-        return new ServletContextInitializer() {
-
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                new WebInitializer().onStartup(servletContext);
-            }
-
-        };
+        return servletContext -> new WebInitializer().onStartup(servletContext);
     }
 
     /**
@@ -87,12 +78,7 @@ public class SpringBootApplication {
      */
     @Bean
     public ServletContextInitializer adminInitializer() {
-        return new ServletContextInitializer() {
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                new AdminInitializer().onStartup(servletContext);
-            }
-        };
+        return servletContext -> new AdminInitializer().onStartup(servletContext);
     }
 
     /**
@@ -100,12 +86,7 @@ public class SpringBootApplication {
      */
     @Bean
     public ServletContextInitializer apiInitializer() {
-        return new ServletContextInitializer() {
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                new ApiInitializer().onStartup(servletContext);
-            }
-        };
+        return servletContext -> new ApiInitializer().onStartup(servletContext);
     }
 
     /**
@@ -113,12 +94,7 @@ public class SpringBootApplication {
      */
     @Bean
     public ServletContextInitializer installationInitializer() {
-        return new ServletContextInitializer() {
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                new InitializationInitializer().onStartup(servletContext);
-            }
-        };
+        return servletContext -> new InitializationInitializer().onStartup(servletContext);
     }
 
     /**
@@ -126,11 +102,6 @@ public class SpringBootApplication {
      */
     @Bean
     public ServletContextInitializer resourceInitializer() {
-        return new ServletContextInitializer() {
-            @Override
-            public void onStartup(ServletContext servletContext) throws ServletException {
-                new ResourceInitializer().onStartup(servletContext);
-            }
-        };
+        return servletContext -> new ResourceInitializer().onStartup(servletContext);
     }
 }

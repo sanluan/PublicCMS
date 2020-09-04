@@ -12,14 +12,7 @@ public interface PaymentGateway extends Container<String> {
     public String getAccountType();
 
     public default Supplier<String> keyFunction() {
-        return new Supplier<String>() {
-
-            @Override
-            public String get() {
-                return getAccountType();
-            }
-
-        };
+        return () -> getAccountType();
     }
 
     public boolean enable(short siteId);
