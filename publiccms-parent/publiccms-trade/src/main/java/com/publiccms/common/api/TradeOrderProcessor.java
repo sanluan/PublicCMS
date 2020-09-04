@@ -8,14 +8,7 @@ public interface TradeOrderProcessor extends Container<String> {
     public String getTradeType();
 
     public default Supplier<String> keyFunction() {
-        return new Supplier<String>() {
-
-            @Override
-            public String get() {
-                return getTradeType();
-            }
-
-        };
+        return () -> getTradeType();
     }
 
     public boolean paid(TradeOrder order);
