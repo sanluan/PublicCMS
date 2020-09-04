@@ -21,14 +21,7 @@ public interface OauthGateway extends Container<String> {
     public String getChannel();
 
     default Supplier<String> keyFunction() {
-        return new Supplier<String>() {
-
-            @Override
-            public String get() {
-                return getChannel();
-            }
-
-        };
+        return () -> getChannel();
     }
 
     /**
