@@ -1,6 +1,5 @@
 package com.publiccms.common.base;
 
-import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Map;
 
@@ -48,10 +47,9 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
     /**
      * @param model
      * @param handler
-     * @throws IOException
      * @throws Exception
      */
-    protected void expose(RenderHandler handler, Map<String, Object> model) throws IOException, Exception {
+    protected void expose(RenderHandler handler, Map<String, Object> model) throws Exception {
         HttpServletRequest request = handler.getRequest();
         if (null != request) {
             Enumeration<String> parameters = request.getParameterNames();
@@ -74,7 +72,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
 
     @Override
     public void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-            HttpServletResponse response) throws IOException, Exception {
+            HttpServletResponse response) throws Exception {
         HttpParameterHandler handler = new HttpParameterHandler(httpMessageConverter, mediaType, request, response);
         SysApp app = null;
         if (needAppToken() && (null == (app = getApp(handler)) || CommonUtils.empty(app.getAuthorizedApis()) || !ArrayUtils

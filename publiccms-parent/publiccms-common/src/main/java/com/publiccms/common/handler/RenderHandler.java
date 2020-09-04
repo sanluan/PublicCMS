@@ -184,18 +184,16 @@ public interface RenderHandler {
 
     /**
      * @return request
-     * @throws IOException
      * @throws Exception
      */
-    HttpServletRequest getRequest() throws IOException, Exception;
+    HttpServletRequest getRequest() throws Exception;
 
     /**
      * @param name
      * @return attribute
-     * @throws IOException
      * @throws Exception
      */
-    Object getAttribute(String name) throws IOException, Exception;
+    Object getAttribute(String name) throws Exception;
 
     /**
      * set renderd

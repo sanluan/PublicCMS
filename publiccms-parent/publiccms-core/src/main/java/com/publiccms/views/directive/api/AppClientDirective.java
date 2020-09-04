@@ -1,7 +1,5 @@
 package com.publiccms.views.directive.api;
 
-import java.io.IOException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,7 +22,7 @@ import com.publiccms.logic.service.sys.SysAppClientService;
 public class AppClientDirective extends AbstractAppDirective {
 
     @Override
-    public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
+    public void execute(RenderHandler handler, SysApp app, SysUser user) throws Exception {
         String uuid = handler.getString("uuid");
         String clientVersion = handler.getString("clientVersion");
         if (CommonUtils.notEmpty(uuid)) {

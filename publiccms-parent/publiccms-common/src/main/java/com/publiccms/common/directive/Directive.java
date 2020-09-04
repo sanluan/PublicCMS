@@ -1,6 +1,5 @@
 package com.publiccms.common.directive;
 
-import java.io.IOException;
 
 import com.publiccms.common.handler.RenderHandler;
 
@@ -17,8 +16,7 @@ public interface Directive {
 
     /**
      * @param handler
-     * @throws IOException
      * @throws Exception
      */
-    void execute(RenderHandler handler) throws IOException, Exception;
+    void execute(RenderHandler handler) throws Exception;
 }

@@ -1,6 +1,5 @@
 package com.publiccms.views.directive.sys;
 
-import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,7 +19,7 @@ import com.publiccms.logic.component.config.ConfigComponent.ConfigInfo;
 public class SysConfigDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws Exception {
         String code = handler.getString("code");
         if (CommonUtils.notEmpty(code)) {
             ConfigInfo entity = configComponent.getConfig(getSite(handler), code, handler.getLocale());

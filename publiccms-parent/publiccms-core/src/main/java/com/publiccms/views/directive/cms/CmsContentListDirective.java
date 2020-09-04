@@ -2,7 +2,6 @@ package com.publiccms.views.directive.cms;
 
 // Generated 2015-5-10 17:54:56 by com.publiccms.common.source.SourceGenerator
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -30,7 +29,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws Exception {
         CmsContentQuery queryEntity = new CmsContentQuery();
         SysSite site = getSite(handler);
         queryEntity.setSiteId(site.getId());

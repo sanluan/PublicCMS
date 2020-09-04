@@ -1,6 +1,5 @@
 package com.publiccms.common.directive;
 
-import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,9 +18,8 @@ public interface HttpDirective {
      * @param mediaType
      * @param request
      * @param response
-     * @throws IOException
      * @throws Exception
      */
     void execute(HttpMessageConverter<Object> httpMessageConverter, MediaType mediaType, HttpServletRequest request,
-                 HttpServletResponse response) throws IOException, Exception;
+                 HttpServletResponse response) throws Exception;
 }

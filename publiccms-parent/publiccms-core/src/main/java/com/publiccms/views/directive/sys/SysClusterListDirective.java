@@ -21,7 +21,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class SysClusterListDirective extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws Exception {
         PageHandler page = service.getPage(handler.getDate("startHeartbeatDate"), handler.getDate("endHeartbeatDate"),
                 handler.getBoolean("master"), handler.getString("orderField"), handler.getString("orderType"),
                 handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));

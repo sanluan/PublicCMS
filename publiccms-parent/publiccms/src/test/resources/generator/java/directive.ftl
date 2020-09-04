@@ -2,7 +2,6 @@ package ${base}.${directivePack};
 
 // Generated ${.now} by com.publiccms.common.generator.SourceGenerator
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,7 +26,7 @@ import com.publiccms.common.handler.RenderHandler;
 public class ${entityName}${directiveSuffix} extends AbstractTemplateDirective {
 
     @Override
-    public void execute(RenderHandler handler) throws IOException, Exception {
+    public void execute(RenderHandler handler) throws Exception {
         Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
             ${entityName} entity = service.getEntity(id);
