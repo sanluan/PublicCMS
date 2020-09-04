@@ -11,13 +11,13 @@ public interface Copyright {
      * @param licenseFilePath
      * @return whether to pass verify
      */
-    public boolean verify(String licenseFilePath);
+    boolean verify(String licenseFilePath);
 
     /**
      * @param licenseFilePath
      * @return license
      */
-    public License getLicense(String licenseFilePath);
+    License getLicense(String licenseFilePath);
 
     /**
      * @param licenseFilePath

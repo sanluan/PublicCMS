@@ -10,5 +10,5 @@ public interface SiteCache extends Cache {
     /**
      * @param siteId
      */
-    public void clear(short siteId);
+    void clear(short siteId);
 }

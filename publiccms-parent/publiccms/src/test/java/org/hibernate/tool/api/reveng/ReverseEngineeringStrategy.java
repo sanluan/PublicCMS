@@ -18,7 +18,7 @@ public interface ReverseEngineeringStrategy {
      * @param settings
      *            used for this
      */
-    public void setSettings(ReverseEngineeringSettings settings);
+    void setSettings(ReverseEngineeringSettings settings);
 
     /**
      * Configure the reverse engineering strategy. Called before reverse
@@ -28,20 +28,20 @@ public interface ReverseEngineeringStrategy {
      * 
      * @param runtimeInfo
      */
-    public void configure(ReverseEngineeringRuntimeInfo runtimeInfo);
+    void configure(ReverseEngineeringRuntimeInfo runtimeInfo);
 
     /**
      * Close any resources this strategy might have used. Called after reverse
      * engineering has been completed.
      */
-    public void close();
+    void close();
 
     /**
      * 
      * @param tableIdentifier
      * @return a fully-qualified class name
      */
-    public String tableToClassName(TableIdentifier tableIdentifier);
+    String tableToClassName(TableIdentifier tableIdentifier);
 
     /**
      * Return a property name for a Column.
@@ -51,11 +51,11 @@ public interface ReverseEngineeringStrategy {
      *            a columnname
      * @return a property name
      */
-    public String columnToPropertyName(TableIdentifier table, String column);
+    String columnToPropertyName(TableIdentifier table, String column);
 
-    public boolean excludeTable(TableIdentifier ti);
+    boolean excludeTable(TableIdentifier ti);
 
-    public boolean excludeColumn(TableIdentifier identifier, String columnName);
+    boolean excludeColumn(TableIdentifier identifier, String columnName);
 
     /**
      * Gets the preferred Hibernate type for an SQL type.
@@ -79,8 +79,8 @@ public interface ReverseEngineeringStrategy {
      *            "assigned", false otherwise.
      * @return The Preferred hibernate type name.
      */
-    public String columnToHibernateTypeName(TableIdentifier table, String columnName, int sqlType, int length, int precision,
-            int scale, boolean nullable, boolean generatedIdentifier);
+    String columnToHibernateTypeName(TableIdentifier table, String columnName, int sqlType, int length, int precision,
+                                     int scale, boolean nullable, boolean generatedIdentifier);
 
     /**
      * Gets the user defined foreign keys.
@@ -89,7 +89,7 @@ public interface ReverseEngineeringStrategy {
      *            the table to get the foreign keys for
      * @return a list of ForeignKey's
      */
-    public List<ForeignKey> getForeignKeys(TableIdentifier referencedTable);
+    List<ForeignKey> getForeignKeys(TableIdentifier referencedTable);
 
     /**
      * @param identifier
@@ -97,9 +97,9 @@ public interface ReverseEngineeringStrategy {
      * @return the identifier strategy name wanted for a specific table, null if
      *         use what the database metadata can tell.
      */
-    public String getTableIdentifierStrategyName(TableIdentifier identifier);
+    String getTableIdentifierStrategyName(TableIdentifier identifier);
 
-    public Properties getTableIdentifierProperties(TableIdentifier identifier);
+    Properties getTableIdentifierProperties(TableIdentifier identifier);
 
     /**
      * If a table does not have any primarykey columns reported, this method is
@@ -109,7 +109,7 @@ public interface ReverseEngineeringStrategy {
      * @return list of strings for each column name that is part of the primary
      *         key
      **/
-    public List<String> getPrimaryKeyColumnNames(TableIdentifier identifier);
+    List<String> getPrimaryKeyColumnNames(TableIdentifier identifier);
 
     /**
      * Given a class name return the name for its composite id if it will have
@@ -118,7 +118,7 @@ public interface ReverseEngineeringStrategy {
      * @param className
      * @return
      */
-    public String classNameToCompositeIdName(String className);
+    String classNameToCompositeIdName(String className);
 
     /**
      * Return explicit which column name should be used for optimistic lock
@@ -126,9 +126,9 @@ public interface ReverseEngineeringStrategy {
      * @param identifier
      * @return
      */
-    public String getOptimisticLockColumnName(TableIdentifier identifier);
+    String getOptimisticLockColumnName(TableIdentifier identifier);
 
-    public boolean useColumnForOptimisticLock(TableIdentifier identifier, String column);
+    boolean useColumnForOptimisticLock(TableIdentifier identifier, String column);
 
     /**
      * Return list of SchemaSelctors to be used when asking
@@ -136,7 +136,7 @@ public interface ReverseEngineeringStrategy {
      * 
      * @return list of {@link SchemaSelection} instances
      */
-    public List<SchemaSelection> getSchemaSelections();
+    List<SchemaSelection> getSchemaSelections();
 
     /**
      * Given a table name, return the wanted name for the identifier.
@@ -144,7 +144,7 @@ public interface ReverseEngineeringStrategy {
      * @param tableIdentifier
      * @return name to be used for identification
      */
-    public String tableToIdentifierPropertyName(TableIdentifier tableIdentifier);
+    String tableToIdentifierPropertyName(TableIdentifier tableIdentifier);
 
     /**
      * Given a table name, return the wanted name for a composite identifier.
@@ -152,7 +152,7 @@ public interface ReverseEngineeringStrategy {
      * @param identifier
      * @return
      */
-    public String tableToCompositeIdName(TableIdentifier identifier);
+    String tableToCompositeIdName(TableIdentifier identifier);
 
     /**
      * Return the list of metaattributes to assign to classes created based on
@@ -161,7 +161,7 @@ public interface ReverseEngineeringStrategy {
      * @param tableIdentifier
      * @return a Map from String to {@link MetaAttribute}
      */
-    public Map<String, MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier);
+    Map<String, MetaAttribute> tableToMetaAttributes(TableIdentifier tableIdentifier);
 
     /**
      * Return the list of metaattributes to assign to properties created based
@@ -171,7 +171,7 @@ public interface ReverseEngineeringStrategy {
      * @param column
      * @return a Map from String to {@link MetaAttribute}
      */
-    public Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier identifier, String column);
+    Map<String, MetaAttribute> columnToMetaAttributes(TableIdentifier identifier, String column);
 
     /**
      * Should this foreignkey be excluded as a oneToMany
@@ -183,8 +183,8 @@ public interface ReverseEngineeringStrategy {
      * @param referencedColumns
      * @return
      */
-    public boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List<Column> fromColumns,
-            TableIdentifier referencedTable, List<Column> referencedColumns);
+    boolean excludeForeignKeyAsCollection(String keyname, TableIdentifier fromTable, List<Column> fromColumns,
+                                          TableIdentifier referencedTable, List<Column> referencedColumns);
 
     /**
      * Should this foreignkey be excluded as a many-to-one
@@ -196,8 +196,8 @@ public interface ReverseEngineeringStrategy {
      * @param referencedColumns
      * @return
      */
-    public boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List<?> fromColumns,
-            TableIdentifier referencedTable, List<?> referencedColumns);
+    boolean excludeForeignKeyAsManytoOne(String keyname, TableIdentifier fromTable, List<?> fromColumns,
+                                         TableIdentifier referencedTable, List<?> referencedColumns);
 
     /**
      * is the collection inverse or not ?
@@ -209,8 +209,8 @@ public interface ReverseEngineeringStrategy {
      * @param referencedColumns
      * @return
      */
-    public boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List<?> columns,
-            TableIdentifier foreignKeyReferencedTable, List<?> referencedColumns);
+    boolean isForeignKeyCollectionInverse(String name, TableIdentifier foreignKeyTable, List<?> columns,
+                                          TableIdentifier foreignKeyReferencedTable, List<?> referencedColumns);
 
     /**
      * is the collection lazy or not ?
@@ -222,8 +222,8 @@ public interface ReverseEngineeringStrategy {
      * @param referencedColumns
      * @return
      */
-    public boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List<?> columns,
-            TableIdentifier foreignKeyReferencedTable, List<?> referencedColumns);
+    boolean isForeignKeyCollectionLazy(String name, TableIdentifier foreignKeyTable, List<?> columns,
+                                       TableIdentifier foreignKeyReferencedTable, List<?> referencedColumns);
 
     /**
      * Return a collection role name for a Collection based on the foreignkey.
@@ -241,8 +241,8 @@ public interface ReverseEngineeringStrategy {
      *            true if there is no other references to the same table
      * @return
      */
-    public String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List<?> fromColumns,
-            TableIdentifier referencedTable, List<?> referencedColumns, boolean uniqueReference);
+    String foreignKeyToCollectionName(String keyname, TableIdentifier fromTable, List<?> fromColumns,
+                                      TableIdentifier referencedTable, List<?> referencedColumns, boolean uniqueReference);
 
     /**
      * 
@@ -259,8 +259,8 @@ public interface ReverseEngineeringStrategy {
      *            true if there is no other references to the same table
      * @return
      */
-    public String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List<?> fromColumns,
-            TableIdentifier referencedTable, List<?> referencedColumns, boolean uniqueReference);
+    String foreignKeyToEntityName(String keyname, TableIdentifier fromTable, List<?> fromColumns,
+                                  TableIdentifier referencedTable, List<?> referencedColumns, boolean uniqueReference);
 
     /**
      * Used to rename the inverse one-to-one properties.
@@ -279,14 +279,14 @@ public interface ReverseEngineeringStrategy {
      *            true if there is no other references to the same table
      * @return null if use defaults or non-empty String with a specific name
      */
-    public String foreignKeyToInverseEntityName(String keyname, TableIdentifier fromTable, List<?> fromColumns,
-            TableIdentifier referencedTable, List<?> referencedColumns, boolean uniqueReference);
+    String foreignKeyToInverseEntityName(String keyname, TableIdentifier fromTable, List<?> fromColumns,
+                                         TableIdentifier referencedTable, List<?> referencedColumns, boolean uniqueReference);
 
     /**
      * @param table
      * @return true if this table is considered to be a many-to-many table.
      */
-    public boolean isManyToManyTable(Table table);
+    boolean isManyToManyTable(Table table);
 
     /**
      * 
@@ -299,13 +299,13 @@ public interface ReverseEngineeringStrategy {
      *            true if there is no other references to the same table
      * @return
      */
-    public String foreignKeyToManyToManyName(ForeignKey fromKey, TableIdentifier middleTable, ForeignKey toKey,
-            boolean uniqueReference);
+    String foreignKeyToManyToManyName(ForeignKey fromKey, TableIdentifier middleTable, ForeignKey toKey,
+                                      boolean uniqueReference);
 
-    public boolean isOneToOne(ForeignKey foreignKey);
+    boolean isOneToOne(ForeignKey foreignKey);
 
-    public AssociationInfo foreignKeyToAssociationInfo(ForeignKey foreignKey);
+    AssociationInfo foreignKeyToAssociationInfo(ForeignKey foreignKey);
 
-    public AssociationInfo foreignKeyToInverseAssociationInfo(ForeignKey foreignKey);
+    AssociationInfo foreignKeyToInverseAssociationInfo(ForeignKey foreignKey);
 
 }

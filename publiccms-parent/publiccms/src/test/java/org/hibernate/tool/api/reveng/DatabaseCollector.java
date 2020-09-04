@@ -13,19 +13,19 @@ import org.hibernate.mapping.Table;
  */
 public interface DatabaseCollector {
 
-	public Iterator<Table> iterateTables();
+	Iterator<Table> iterateTables();
 
-	public Table addTable(String schema, String catalog, String name);
+	Table addTable(String schema, String catalog, String name);
 
-	public void setOneToManyCandidates(Map<String, List<ForeignKey>> oneToManyCandidates);
+	void setOneToManyCandidates(Map<String, List<ForeignKey>> oneToManyCandidates);
 
-	public Table getTable(String schema, String catalog, String name);
+	Table getTable(String schema, String catalog, String name);
 
-	public Map<String, List<ForeignKey>> getOneToManyCandidates();
+	Map<String, List<ForeignKey>> getOneToManyCandidates();
 
-	public void addSuggestedIdentifierStrategy(String catalog, String schema, String name, String strategy);
+	void addSuggestedIdentifierStrategy(String catalog, String schema, String name, String strategy);
 	
-	public String getSuggestedIdentifierStrategy(String catalog, String schema, String name);
+	String getSuggestedIdentifierStrategy(String catalog, String schema, String name);
 	
 	
 }
