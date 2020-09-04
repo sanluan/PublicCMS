@@ -22,7 +22,7 @@ public interface MetaDataDialect {
 	 * Configure the metadatadialect. 
 	 * @param info a {@link ReverseEngineeringRuntimeInfo} to extract Connection and SQLExceptionConverter and other runtime info
 	 */
-	public void configure(ReverseEngineeringRuntimeInfo info);
+	void configure(ReverseEngineeringRuntimeInfo info);
 	
 	/** 
 	 * Return iterator over the tables that mathces catalog, schema and table
@@ -103,7 +103,7 @@ public interface MetaDataDialect {
 	 * @param table name
 	 * @return iterator with map elements that has "TABLE_NAME", "TABLE_SCHEMA", "TABLE_CAT", "HIBERNATE_STRATEGY" (null if no possible to determine strategy, otherwise return hibernate identifier strategy name/classname)
 	 */
-	public Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table);
+	Iterator<Map<String, Object>> getSuggestedPrimaryKeyStrategyName(String catalog, String schema, String table);
 
 	
 }

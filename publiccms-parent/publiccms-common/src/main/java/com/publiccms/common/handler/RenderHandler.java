@@ -20,7 +20,7 @@ public interface RenderHandler {
      * @throws IOException
      * @throws Exception
      */
-    public void render() throws Exception;
+    void render() throws Exception;
 
     /**
      * 打印
@@ -28,7 +28,7 @@ public interface RenderHandler {
      * @param value
      * @throws IOException
      */
-    public void print(String value) throws IOException;
+    void print(String value) throws IOException;
 
     /**
      * 获取Writer
@@ -36,14 +36,14 @@ public interface RenderHandler {
      * @return writer
      * @throws IOException
      */
-    public Writer getWriter() throws IOException;
+    Writer getWriter() throws IOException;
 
     /**
      * @param key
      * @param value
      * @return render handler
      */
-    public RenderHandler put(String key, Object value);
+    RenderHandler put(String key, Object value);
 
 
     /**
@@ -52,7 +52,7 @@ public interface RenderHandler {
      * @return string value
      * @throws Exception
      */
-    public String getString(String name, String defaultValue) throws Exception;
+    String getString(String name, String defaultValue) throws Exception;
 
     /**
      * @param name
@@ -60,7 +60,7 @@ public interface RenderHandler {
      * @return string value
      * @throws Exception
      */
-    public String getString(String name) throws Exception;
+    String getString(String name) throws Exception;
 
     /**
      * @param name
@@ -68,7 +68,7 @@ public interface RenderHandler {
      * @return character value
      * @throws Exception
      */
-    public Character getCharacter(String name) throws Exception;
+    Character getCharacter(String name) throws Exception;
 
     /**
      * @param name
@@ -77,7 +77,7 @@ public interface RenderHandler {
      * @throws Exception
      * @throws Exception
      */
-    public Integer getInteger(String name, Integer defaultValue) throws Exception;
+    Integer getInteger(String name, Integer defaultValue) throws Exception;
 
     /**
      * @param name
@@ -85,7 +85,7 @@ public interface RenderHandler {
      * @return int value
      * @throws Exception
      */
-    public Integer getInteger(String name) throws Exception;
+    Integer getInteger(String name) throws Exception;
 
     /**
      * @param name
@@ -93,7 +93,7 @@ public interface RenderHandler {
      * @return short value
      * @throws Exception
      */
-    public Short getShort(String name) throws Exception;
+    Short getShort(String name) throws Exception;
 
     /**
      * @param name
@@ -101,7 +101,7 @@ public interface RenderHandler {
      * @return long value
      * @throws Exception
      */
-    public Long getLong(String name) throws Exception;
+    Long getLong(String name) throws Exception;
 
     /**
      * @param name
@@ -109,7 +109,7 @@ public interface RenderHandler {
      * @return double value
      * @throws Exception
      */
-    public Double getDouble(String name) throws Exception;
+    Double getDouble(String name) throws Exception;
 
     /**
      * @param name
@@ -117,7 +117,7 @@ public interface RenderHandler {
      * @return int array value
      * @throws Exception
      */
-    public Integer[] getIntegerArray(String name) throws Exception;
+    Integer[] getIntegerArray(String name) throws Exception;
 
     /**
      * @param name
@@ -125,7 +125,7 @@ public interface RenderHandler {
      * @return long array value
      * @throws Exception
      */
-    public Long[] getLongArray(String name) throws Exception;
+    Long[] getLongArray(String name) throws Exception;
 
     /**
      * @param name
@@ -133,7 +133,7 @@ public interface RenderHandler {
      * @return long array value
      * @throws Exception
      */
-    public Short[] getShortArray(String name) throws Exception;
+    Short[] getShortArray(String name) throws Exception;
 
     /**
      * @param name
@@ -141,7 +141,7 @@ public interface RenderHandler {
      * @return string array value
      * @throws Exception
      */
-    public String[] getStringArray(String name) throws Exception;
+    String[] getStringArray(String name) throws Exception;
 
     /**
      * @param name
@@ -149,7 +149,7 @@ public interface RenderHandler {
      * @return bool value
      * @throws Exception
      */
-    public Boolean getBoolean(String name, Boolean defaultValue) throws Exception;
+    Boolean getBoolean(String name, Boolean defaultValue) throws Exception;
 
     /**
      * @param name
@@ -157,7 +157,7 @@ public interface RenderHandler {
      * @return bool value
      * @throws Exception
      */
-    public Boolean getBoolean(String name) throws Exception;
+    Boolean getBoolean(String name) throws Exception;
 
     /**
      * @param name
@@ -165,7 +165,7 @@ public interface RenderHandler {
      * @return date value
      * @throws Exception
      */
-    public Date getDate(String name) throws Exception;
+    Date getDate(String name) throws Exception;
 
     /**
      * @param name
@@ -174,20 +174,20 @@ public interface RenderHandler {
      * @return date value
      * @throws Exception
      */
-    public Date getDate(String name, Date defaultValue) throws Exception;
+    Date getDate(String name, Date defaultValue) throws Exception;
 
     /**
      * @return locale
      * @throws Exception
      */
-    public Locale getLocale() throws Exception;
+    Locale getLocale() throws Exception;
 
     /**
      * @return request
      * @throws IOException
      * @throws Exception
      */
-    public HttpServletRequest getRequest() throws IOException, Exception;
+    HttpServletRequest getRequest() throws IOException, Exception;
 
     /**
      * @param name
@@ -195,11 +195,11 @@ public interface RenderHandler {
      * @throws IOException
      * @throws Exception
      */
-    public Object getAttribute(String name) throws IOException, Exception;
+    Object getAttribute(String name) throws IOException, Exception;
 
     /**
      * set renderd
      */
-    public void setRenderd();
+    void setRenderd();
 
 }
