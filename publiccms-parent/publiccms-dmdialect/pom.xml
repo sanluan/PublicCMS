@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.202004.b</version>
+        <version>V4.0.202004.c</version>
     </parent>
     <artifactId>publiccms-dmdialect</artifactId>
     <dependencies>
