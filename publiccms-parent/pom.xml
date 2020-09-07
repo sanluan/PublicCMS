@@ -5,7 +5,7 @@
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
     <packaging>pom</packaging>
-    <version>V4.0.202004.b</version>
+    <version>V4.0.202004.c</version>
     <modules>
         <module>publiccms</module>
         <module>publiccms-core</module>
