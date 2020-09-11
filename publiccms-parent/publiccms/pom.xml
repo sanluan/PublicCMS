@@ -28,6 +28,11 @@
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
+            <artifactId>publiccms-j2cache</artifactId>
+            <version>V4.0.202004.c</version>
+        </dependency>
+        <dependency>
+            <groupId>com.publiccms</groupId>
             <artifactId>publiccms-analyzer</artifactId>
             <version>V4.0.202004.c</version>
         </dependency>

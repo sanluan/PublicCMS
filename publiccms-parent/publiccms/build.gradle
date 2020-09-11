@@ -7,6 +7,7 @@ dependencies {
     compile project(':publiccms-core')
     compile project(':publiccms-oauth')
 	compile project(':publiccms-redis')
+	compile project(':publiccms-j2cache')
 	compile project(':publiccms-analyzer')
 	compile project(':publiccms-trade')
     testCompile(
