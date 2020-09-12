@@ -18,7 +18,6 @@
     </#list>
 </@_categoryList>
     </nav>
-<#if category?has_content>
     <main>
         <h1>Latest content</h1>
 <@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex pageSize=category.pageSize>
@@ -80,11 +79,6 @@
             </ul>
         </aside>
     </main>
-<#else>
-    <main>
-        <h2>Category does not exist</h2>
-    </main>
-</#if>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>

@@ -27,7 +27,6 @@
     </#list>
 </@_categoryList>
     </nav>
-<#if content?has_content>
     <main>
         <article>
             <h1><a href="${content.url!}">${content.title}</a></h1>
@@ -124,11 +123,6 @@
             </ul>
         </aside>
     </main>
-<#else>
-    <main>
-        <h2>Content does not exist</h2>
-    </main>
-</#if>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
