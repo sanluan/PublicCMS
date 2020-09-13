@@ -11,7 +11,7 @@ dependencies {
 	compile project(':publiccms-analyzer')
 	compile project(':publiccms-trade')
     testCompile(
-        "junit:junit:${junitVersion}",
+        "org.junit.jupiter:junit-jupiter-engine:${junitVersion}",
         "org.springframework:spring-test:${springVersion}",
         "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
     )

@@ -4,16 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-
-import org.junit.BeforeClass;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.logic.service.tools.HqlService;
 
@@ -21,27 +20,27 @@ import config.spring.ApplicationConfig;
 
 /**
  *
- * SysSiteServiceTest
+ * SysSiteServiceTest https://junit.org/junit5/docs/current/user-guide/
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@DisplayName("hql query test case")
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class HqlTest {
     @Autowired
     HqlService hqlService;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
-        // 不进入安装程序
+     // 不进入安装程序 数据目录有 database.properties才能进行测试
         CmsVersion.setInitialized(true);
-        // 数据目录地址，此目录中应该有 database.properties
-        CommonConstants.CMS_FILEPATH = "E:\\repository\\PublicCMS\\data\\publiccms";
     }
 
     /**
      * 
      */
     @Test
+    @DisplayName("custom bean hql query test case")
     public void beanTest() {
         Map<String, Object> parameters = new HashMap<>();
         String hql = "select new com.publiccms.test.Bean(content.id,content.title,category.name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
@@ -56,6 +55,7 @@ public class HqlTest {
      * 
      */
     @Test
+    @DisplayName("map hql query test case")
     public void mapTest() {
         Map<String, Object> parameters = new HashMap<>();
         String hql = "select new map(content.id as id,content.title as title,category.name as name) from CmsContent content,CmsCategory category where content.categoryId=category.id";
@@ -71,6 +71,7 @@ public class HqlTest {
      * 
      */
     @Test
+    @DisplayName("array hql query test case")
     public void arrayTest() {
         Map<String, Object> parameters = new HashMap<>();
         String hql = "select content.id ,content.title,category.name from CmsContent content,CmsCategory category where content.categoryId=category.id";
@@ -89,6 +90,7 @@ public class HqlTest {
      * 
      */
     @Test
+    @DisplayName("list hql query test case")
     public void listTest() {
         Map<String, Object> parameters = new HashMap<>();
         String hql = "select new list(content.id ,content.title,category.name) from CmsContent content,CmsCategory category where content.categoryId=category.id";

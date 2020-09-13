@@ -8,15 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import com.publiccms.common.constants.CmsVersion;
-import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.entities.cms.CmsComment;
@@ -24,18 +23,16 @@ import com.publiccms.logic.service.cms.CmsCommentService;
 
 import config.spring.ApplicationConfig;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class CommentImportTest {
     @Autowired
     CmsCommentService commentsService;
 
-    @BeforeClass
+    @BeforeAll
     public static void init() {
-        // 不进入安装程序
+        // 不进入安装程序 数据目录有 database.properties才能进行测试
         CmsVersion.setInitialized(true);
-        // 数据目录地址，此目录中应该有 database.properties
-        CommonConstants.CMS_FILEPATH = "D://data/publiccms/";
     }
 
     // 搜狐畅言评论导入
