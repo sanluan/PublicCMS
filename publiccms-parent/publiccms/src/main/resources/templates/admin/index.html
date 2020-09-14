@@ -4,23 +4,23 @@
     <meta charset="utf-8">
     <title>${site.name} - <@t.page 'management_system'/></title>
     <meta name="viewport" content="width=device-width,initial-scale=0.6">
-    <link href="${res}/codemirror/lib/codemirror.css" rel="stylesheet" >
-    <link href="${res}/codemirror/addon/hint/show-hint.css" rel="stylesheet" >
-    <link href="${res}/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="${base}/resource/codemirror/lib/codemirror.css" rel="stylesheet" >
+    <link href="${base}/resource/codemirror/addon/hint/show-hint.css" rel="stylesheet" >
+    <link href="${base}/resource/font-awesome/css/font-awesome.min.css" rel="stylesheet"/>
     <!--[if IE 7]>
-    <link href="${res}/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet" >
+    <link href="${base}/resource/font-awesome/css/font-awesome-ie7.min.css" rel="stylesheet" >
     <![endif]-->
-    <link href="${res}/themes/css/core.css?version=5" rel="stylesheet" media="screen"/>
-    <link href="${res}/themes/css/print.css" rel="stylesheet" media="print"/>
+    <link href="${base}/resource/themes/css/core.css?version=5" rel="stylesheet" media="screen"/>
+    <link href="${base}/resource/themes/css/print.css" rel="stylesheet" media="print"/>
     <!--[if lte IE 9]>
-        <link href="${res}/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
-        <script src="${res}/js/html5shiv.min.js"></script>
-        <script src="${res}/js/respond.min.js"></script>
+        <link href="${base}/resource/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
+        <script src="${base}/resource/js/html5shiv.min.js"></script>
+        <script src="${base}/resource/js/respond.min.js"></script>
     <![endif]-->
 </head>
 <body scroll="no">
 <header>
-    <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${res}/logo.png</#if>"/></a>
+    <a class="logo" href="./"><img src="<#if siteAttribute.logo?has_content>${site.sitePath+siteAttribute.logo}<#else>${base}/resource/logo.png</#if>"/></a>
     <ul class="nav">
         <li><a href="${site.dynamicPath!}" target="_blank"><i class="icon-home icon-large"></i></a></li>
     <#if site.useStatic>
@@ -99,7 +99,7 @@
     <#list langs as k,v>
         <li<#if springMacroRequestContext.getMessage('page.lang')=k> class="current-lang"</#if>>
         	<a href="changeLocale?lang=${k}" target="ajaxTodo">
-        		<img src="${res}/themes/images/${k}.png" alt="${v}"/>${v}
+        		<img src="${base}/resource/themes/images/${k}.png" alt="${v}"/>${v}
         	</a>
         </li>
     </#list>
@@ -122,42 +122,42 @@
         <li theme="red"><div></div></li>
     </ul>
 </footer>
-<script src="${res}/js/jquery-1.12.4.min.js"></script>
-<script src="${res}/js/jquery.cookie.js"></script>
-<script src="${res}/js/jquery.validate.js"></script>
-<script src="${res}/js/jquery.bgiframe.js"></script>
-<script src="${res}/js/base64.js"></script>
-<script src="${res}/js/dwz.min.js?version=4"></script>
-<script src="${res}/js/dwz.plugins.js"></script>
-<script src="${res}/js/<@t.page 'dwz_regional_js'/>?version=1"></script>
-<script src="${res}/js/cms.js"></script>
+<script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
+<script src="${base}/resource/js/jquery.cookie.js"></script>
+<script src="${base}/resource/js/jquery.validate.js"></script>
+<script src="${base}/resource/js/jquery.bgiframe.js"></script>
+<script src="${base}/resource/js/base64.js"></script>
+<script src="${base}/resource/js/dwz.min.js?version=4"></script>
+<script src="${base}/resource/js/dwz.plugins.js"></script>
+<script src="${base}/resource/js/<@t.page 'dwz_regional_js'/>?version=1"></script>
+<script src="${base}/resource/js/cms.js"></script>
     <script>
-    var base="${adminBase}";
-    window.UEDITOR_HOME_URL="${res}/ueditor/";
-    window.CKEDITOR_BASEPATH="${res}/ckeditor/";
+    var base="${base+adminContextPath}";
+    window.UEDITOR_HOME_URL="${site.dynamicPath}/resource/ueditor/";
+    window.CKEDITOR_BASEPATH="${base}/resource/ckeditor/";
     window.CKEDITOR_LANGUAGE="<@t.page 'ckeditor.lang'/>";
     window.KINDEDITOR_OPTIONS= {
             width:'60%',
             height:'400px',
-            basePath:'${res}/kindeditor/',
-            uploadJson : '${adminBase}/kindeditor/upload.do',
-            fileManagerJson : '${adminBase}/cmsWebFile/fileList.html',
+            basePath:'${site.dynamicPath}/resource/kindeditor/',
+            uploadJson : '${base+adminContextPath}/kindeditor/upload.do',
+            fileManagerJson : '${base+adminContextPath}/cmsWebFile/fileList.html',
             allowFileManager : true
     };
-    DWZ.init("${adminBase}/common/dwz.frag.html", {
-        ckeditorResources:["${res}/ckeditor/ckeditor.js"],
-        kindeditorResources:["${res}/kindeditor/kindeditor-all-min.js","${res}/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
-        ueditorResources:["${res}/ueditor/ueditor.config.js","${res}/ueditor/ueditor.all.min.js","${res}/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
-        codemirrorResources:['${res}/codemirror/lib/codemirror.js','${res}/codemirror/mode/xml/xml.js','${res}/codemirror/mode/javascript/javascript.js','${res}/codemirror/mode/css/css.js',
-            '${res}/codemirror/mode/htmlmixed/htmlmixed.js','${res}/codemirror/mode/freemarker/freemarker.js','${res}/codemirror/mode/freemarkermixed/freemarkermixed.js',
-            '${res}/codemirror/mode/nginx/nginx.js','${res}/codemirror/addon/hint/show-hint.js','${res}/codemirror/addon/hint/javascript-hint.js','${res}/codemirror/addon/hint/html-hint.js',
-            '${res}/codemirror/addon/hint/css-hint.js','${res}/codemirror/addon/hint/xml-hint.js'],
+    DWZ.init("${base+adminContextPath}/common/dwz.frag.html", {
+        ckeditorResources:["${base}/resource/ckeditor/ckeditor.js"],
+        kindeditorResources:["${base}/resource/kindeditor/kindeditor-all-min.js","${base}/resource/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
+        ueditorResources:["${base}/resource/ueditor/ueditor.config.js","${base}/resource/ueditor/ueditor.all.min.js","${base}/resource/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
+        codemirrorResources:['${base}/resource/codemirror/lib/codemirror.js','${base}/resource/codemirror/mode/xml/xml.js','${base}/resource/codemirror/mode/javascript/javascript.js','${base}/resource/codemirror/mode/css/css.js',
+            '${base}/resource/codemirror/mode/htmlmixed/htmlmixed.js','${base}/resource/codemirror/mode/freemarker/freemarker.js','${base}/resource/codemirror/mode/freemarkermixed/freemarkermixed.js',
+            '${base}/resource/codemirror/mode/nginx/nginx.js','${base}/resource/codemirror/addon/hint/show-hint.js','${base}/resource/codemirror/addon/hint/javascript-hint.js','${base}/resource/codemirror/addon/hint/html-hint.js',
+            '${base}/resource/codemirror/addon/hint/css-hint.js','${base}/resource/codemirror/addon/hint/xml-hint.js'],
         loginUrl:"login_dialog.html", loginTitle:"<@t.page 'login'/>",
         pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"},
         debug:false,
         callback:function(){
             initEnv();
-            $("#themeList").theme({themeBase:"${res}/themes",defaultTheme:"toptry"});
+            $("#themeList").theme({themeBase:"${base}/resource/themes",defaultTheme:"toptry"});
     <@_sysAuthorized roleIds=admin.roles url='myself/password'>
         <#if admin.weakPassword>
             $.pdialog.open("myself/password.html?target=dialog", "_blank", "<@t.page 'user.new_password'/>", {mask: true, width: 410, height: 280});
