@@ -226,8 +226,12 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             } else if (CommonUtils.notEmpty(queryEntitry.getCategoryId())) {
                 queryHandler.condition("bean.categoryId = :categoryId").setParameter("categoryId", queryEntitry.getCategoryId());
             }
-            if (null != queryEntitry.getEmptyParent() && queryEntitry.getEmptyParent()) {
-                queryHandler.condition("bean.parentId is null");
+            if (null != queryEntitry.getEmptyParent()) {
+                if(queryEntitry.getEmptyParent()) {
+                    queryHandler.condition("bean.parentId is null");
+                }else {
+                    queryHandler.condition("bean.parentId is not null");
+                }
             }
         }
         if (null != queryEntitry.getDisabled()) {

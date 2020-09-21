@@ -166,6 +166,16 @@ public class IndexController {
                 String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
                 StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
                 if (CommonUtils.notEmpty(loginPath)) {
+                    if (null != id) {
+                        int index = requestPath.lastIndexOf(CommonConstants.DOT);
+                        if (0 < index) {
+                            requestPath = requestPath.substring(0, index);
+                        }
+                        requestPath = requestPath + CommonConstants.SEPARATOR + id;
+                        if (null != pageIndex) {
+                            requestPath = requestPath + CommonConstants.UNDERLINE + pageIndex;
+                        }
+                    }
                     return sb.append(loginPath).append("?returnUrl=")
                             .append(RequestUtils.getEncodePath(requestPath, request.getQueryString())).toString();
                 } else {
