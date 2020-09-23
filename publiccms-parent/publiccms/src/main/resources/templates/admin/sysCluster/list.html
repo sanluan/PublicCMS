@@ -38,7 +38,6 @@
                 <th><@t.page 'id'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'cluster.startup_date'/></th>
                 <th orderField="heartbeatDate" class="<#if orderField??&&'heartbeatDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'cluster.heartbeat_time'/></th>
-                <th><@t.page 'cluster.type'/></th>
                 <th><@t.page 'version'/></th>
                 <th><@t.page 'revision'/></th>
             </tr>
@@ -46,10 +45,9 @@
         <tbody>
             <#list page.list as a>
             <tr target="sid" rel="${a.uuid}">
-                <td>${a.uuid!}</td>
+                <td>${a.uuid!}<#if a.master>[<@t.page 'cluster.master'/>]</#if></td>
                 <td>${a.createDate!}</td>
                 <td>${a.heartbeatDate!}</td>
-                <td>${a.master?string(t.pageMessage('cluster.master'),t.pageMessage('cluster.normal'))}</td>
                 <td>${a.cmsVersion!}</td>
                 <td>${a.revision!}</td>
             </tr>
