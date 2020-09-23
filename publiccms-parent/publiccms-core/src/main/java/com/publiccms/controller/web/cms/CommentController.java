@@ -70,7 +70,8 @@ public class CommentController {
             entity.setStatus(CmsCommentService.STATUS_PEND);
             if (null != entity.getId()) {
                 CmsComment oldEntity = service.getEntity(entity.getId());
-                if (null != oldEntity && !oldEntity.isDisabled() && oldEntity.getUserId() == user.getId()) {
+                if (null != oldEntity && !oldEntity.isDisabled()
+                        && (oldEntity.getUserId() == user.getId() || user.isSuperuserAccess())) {
                     entity.setUpdateDate(CommonUtils.getDate());
                     entity = service.update(entity.getId(), entity, ignoreProperties);
                     logOperateService
