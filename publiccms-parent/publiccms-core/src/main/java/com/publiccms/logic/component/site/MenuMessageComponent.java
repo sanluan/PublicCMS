@@ -82,10 +82,10 @@ public class MenuMessageComponent extends AbstractMessageSource implements Cache
             synchronized (messageCache) {
                 messageMap = messageCache.get(lang);
                 if (null == messageMap) {
+                    messageMap = new HashMap<>();
                     @SuppressWarnings("unchecked")
                     List<SysModuleLang> list = (List<SysModuleLang>) sysModuleLangService.getList(null, lang);
                     if (CommonUtils.notEmpty(list)) {
-                        messageMap = new HashMap<>();
                         for (SysModuleLang entity : list) {
                             messageMap.put(PREFIX + entity.getId().getModuleId(), entity.getValue());
                         }

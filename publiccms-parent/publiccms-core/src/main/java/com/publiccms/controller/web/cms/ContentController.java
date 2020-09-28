@@ -111,14 +111,15 @@ public class ContentController {
         CmsContentAdminController.initContent(entity, cmsModel, draft, false, attribute, false, CommonUtils.getDate());
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
-            if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
-            }
-            entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
-                    : CmsContentAdminController.ignorePropertiesWithUrl);
-            if (null != entity.getId()) {
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.content",
-                        RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            if (null != oldEntity && ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
+                    && (oldEntity.getUserId() == user.getId() || user.isSuperuserAccess())) {
+                entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
+                        : CmsContentAdminController.ignorePropertiesWithUrl);
+                if (null != entity.getId()) {
+                    logOperateService
+                            .save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.content",
+                                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                }
             }
         } else {
             entity.setContribute(true);
