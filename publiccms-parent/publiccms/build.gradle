@@ -10,7 +10,7 @@ dependencies {
 	compile project(':publiccms-analyzer')
     testCompile(
         // http://mvnrepository.com/artifact/junit/junit
-        "junit:junit:4.12",
+        "junit:junit:4.13.1",
         "org.springframework:spring-test:${springVersion}",
         "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
     )
