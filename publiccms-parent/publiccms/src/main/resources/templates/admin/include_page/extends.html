@@ -1,5 +1,5 @@
 <#include "../include_page/extendsFieldType.html"/>
-<#macro extends name extendList=[] searchable=false>
+<#macro extends name extendList=[] searchable=false copy=false>
 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
     <thead>
         <tr>
@@ -20,7 +20,9 @@
         <#list extendList as extend>
             <tr>
                 <td>
+                <#if !copy>
                     <input type="hidden" name="${name}[${extend?index}].id.extendId" value="${(extend.id.extendId)!}"/>
+                </#if>
                     <input type="text" name="${name}[${extend?index}].id.code" value="${extend.id.code}" size="10" class="required letterstart"/>
                 </td>
                 <td>

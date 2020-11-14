@@ -125,10 +125,7 @@ public class SmartcnDictUtils {
         for (String key : keys) {
             Integer freq = source.get(key);
             String ch = key.substring(0, 1);
-            Map<String, Integer> tfs = charTermFreqsMap.get(ch);
-            if (null == tfs) {
-                tfs = new HashMap<>();
-            }
+            Map<String, Integer> tfs = charTermFreqsMap.computeIfAbsent(ch, k -> new HashMap<>());
             tfs.put(key.substring(1), freq);
             charTermFreqsMap.put(ch, tfs);
         }
@@ -180,11 +177,7 @@ public class SmartcnDictUtils {
     private static void merge(Map<String, Map<String, Integer>> tfsMap, Map<String, Map<String, Integer>> tempTfsMap,
             Set<String> keys) {
         for (String key : keys) {
-            Map<String, Integer> tfs = tfsMap.get(key);
-            if (null == tfs) {
-                tfs = new HashMap<>();
-                tfsMap.put(key, tfs);
-            }
+            Map<String, Integer> tfs = tfsMap.computeIfAbsent(key, k -> new HashMap<>());
             Map<String, Integer> temp = tempTfsMap.get(key);
             if (null != temp) {
                 tfs.putAll(temp);

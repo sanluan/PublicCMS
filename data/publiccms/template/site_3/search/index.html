@@ -39,7 +39,7 @@
 			</div>
 <@import path="/ftl/tools.ftl" namespace="t"/>
 <#if word?has_content||tagId?has_content||dictionaryValues?has_content>
-		<@_search word=word tagId=tagId dictionaryValues=dictionaryValues highlight=true pageIndex=page count=10>
+		<@_search word=word tagId=tagId categoryId=categoryId dictionaryValues=dictionaryValues containChild=true highlight=true pageIndex=page count=10>
 			<#if page.totalCount gt 0>
 				<#list page.list as a>
 					<@include path="/ftl/search-list.ftl"/>

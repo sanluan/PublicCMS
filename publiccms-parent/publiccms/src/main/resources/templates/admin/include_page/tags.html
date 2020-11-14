@@ -5,7 +5,7 @@
         <div class="tagsBox tags_${typeId!}" callback="reIndexTag()"></div>
         <input name="tag[${typeId!}].id" type="hidden"/>
         <input name="tag[${typeId!}].name" type="text" size="20" postField="name" suggestfields="id,name" lookupgroup="tag[${typeId!}]" suggestUrl="common/tagSuggest.html?typeId=${typeId!}"/>
-        <a href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
+        <a class="suggestButton" href="javascript:;" onclick="addTag('${typeId}',$('input[name=\'tag[${typeId!}].id\']',navTab.getCurrentPanel()).val(),$('input[name=\'tag[${typeId!}].name\']',navTab.getCurrentPanel()).val());return false;"><i class="icon-ok icon-large"></i> <@t.page 'button.add'/></a>
     </dd>
 </dl>
 </#macro>

@@ -7,16 +7,16 @@ dependencies {
     compile project(':publiccms-core')
     compile project(':publiccms-oauth')
 	compile project(':publiccms-redis')
+	compile project(':publiccms-j2cache')
 	compile project(':publiccms-analyzer')
+	compile project(':publiccms-trade')
     testCompile(
-        // http://mvnrepository.com/artifact/junit/junit
-        "junit:junit:4.13.1",
+        "org.junit.jupiter:junit-jupiter-engine:${junitVersion}",
         "org.springframework:spring-test:${springVersion}",
         "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
     )
     providedCompile(
-        // http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core
-        "org.mybatis.generator:mybatis-generator-core:1.4.0",
+        "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}",
         "javax.servlet:javax.servlet-api:${servletVersion}"
     )
     compile("org.apache.logging.log4j:log4j-web:${log4jVersion}",

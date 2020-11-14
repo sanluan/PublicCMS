@@ -93,7 +93,7 @@ public class CmsCategoryAdminController {
                         .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.category",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
-            
+
         } else {
             service.save(site.getId(), entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
@@ -122,7 +122,7 @@ public class CmsCategoryAdminController {
     public String move(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer[] ids, Integer parentId,
             HttpServletRequest request) {
         CmsCategory parent = service.getEntity(parentId);
-        if (CommonUtils.notEmpty(ids) && (null == parent || null != parent && site.getId() == parent.getSiteId())) {
+        if (CommonUtils.notEmpty(ids) && (null == parent || site.getId() == parent.getSiteId())) {
             for (Integer id : ids) {
                 move(site, id, parentId);
             }

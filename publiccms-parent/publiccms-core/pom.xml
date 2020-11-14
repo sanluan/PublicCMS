@@ -5,14 +5,14 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.202004.c</version>
+        <version>V4.0.202011.a</version>
     </parent>
     <artifactId>publiccms-core</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-common</artifactId>
-            <version>V4.0.202004.c</version>
+            <version>V4.0.202011.a</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
@@ -39,8 +39,16 @@
             <artifactId>javax.annotation-api</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-spring</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.mybatis.dynamic-sql</groupId>
             <artifactId>mybatis-dynamic-sql</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

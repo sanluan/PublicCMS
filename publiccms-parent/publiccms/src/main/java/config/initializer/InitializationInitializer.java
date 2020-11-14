@@ -2,7 +2,9 @@ package config.initializer;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.net.Authenticator;
+import java.nio.charset.Charset;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
@@ -42,6 +44,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
 
     @Override
     public void onStartup(ServletContext servletcontext) throws ServletException {
+        initEncoding();
         try {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
             initProxy(config);
@@ -96,6 +99,27 @@ public class InitializationInitializer implements WebApplicationInitializer {
         Dynamic registration = servletcontext.addServlet("install", new InstallServlet(config, startStep, version));
         registration.setLoadOnStartup(1);
         registration.addMapping(new String[] { INSTALL_SERVLET_MAPPING });
+    }
+
+    /**
+     * 字符集配置
+     * 
+     * @param config
+     * @throws IOException
+     */
+    public static void initEncoding() {
+        Charset old = Charset.defaultCharset();
+        if (!old.equals(CommonConstants.DEFAULT_CHARSET)) {
+            log.info("old file.encoding=" + old);
+            try {
+                Field field = Charset.class.getDeclaredField("defaultCharset");
+                field.setAccessible(true);
+                System.setProperty("file.encoding", CommonConstants.DEFAULT_CHARSET_NAME);
+                field.set(null, null);
+            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            }
+            log.info("new file.encoding=" + Charset.defaultCharset());
+        }
     }
 
     /**

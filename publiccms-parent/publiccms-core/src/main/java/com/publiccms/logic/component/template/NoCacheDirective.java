@@ -14,7 +14,6 @@ import freemarker.template.TemplateDirectiveModel;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateModel;
 
-
 public class NoCacheDirective implements TemplateDirectiveModel {
     protected final Log log = LogFactory.getLog(getClass());
 
@@ -23,7 +22,7 @@ public class NoCacheDirective implements TemplateDirectiveModel {
             TemplateDirectiveBody templateDirectiveBody) throws TemplateException, IOException {
         if (null != templateDirectiveBody) {
             TemplateModel model = environment.getVariable(TemplateCacheComponent.CACHE_VAR);
-            if (null != model && model instanceof TemplateBooleanModel) {
+            if (model instanceof TemplateBooleanModel) {
                 try {
                     DirectiveCallPlace directiveCallPlace = environment.getCurrentDirectiveCallPlace();
                     if (null != directiveCallPlace) {

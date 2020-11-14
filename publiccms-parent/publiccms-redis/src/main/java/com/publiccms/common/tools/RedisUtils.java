@@ -11,7 +11,7 @@ import redis.clients.jedis.JedisPoolConfig;
  * 
  */
 public class RedisUtils {
-    private static JedisPool pool;
+    private static volatile JedisPool pool;
 
     /**
      * @param redisProperties

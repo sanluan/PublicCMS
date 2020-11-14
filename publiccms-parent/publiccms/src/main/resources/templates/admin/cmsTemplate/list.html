@@ -20,16 +20,16 @@
     </@_templateList>
 </#macro>
 <div class="pageContent">
-    <div layoutH="0" class="left-page-content">
+    <div layoutH class="leftPageContent">
         <h2 class="contentTitle">
             <a class="button" href="cmsTemplate/metadata.html" target="ajax" rel="cmsTemplateBox"><@t.page 'template.create'/></a>
             <a class="button" href="cmsTemplate/demo.html" target="dialog" mask="true"><@t.page 'template.example'/></a></li>
         </h2>
-        <ul class="tree treeFolder" layoutH="48">
+        <ul class="tree treeFolder">
             <@templateTree ''/>
         </ul>
     </div>
-    <div id="cmsTemplateBox" style="margin-left:240px;">
+    <div id="cmsTemplateBox" class="unitBox rightPageContent">
         <#include "directory.html"/>
     </div>
 </div>

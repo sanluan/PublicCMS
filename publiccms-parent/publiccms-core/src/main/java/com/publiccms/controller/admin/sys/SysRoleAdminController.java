@@ -84,8 +84,8 @@ public class SysRoleAdminController {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
-            roleModuleService.updateRoleModules(entity.getId(), moduleIds);
             if (null != entity) {
+                roleModuleService.updateRoleModules(entity.getId(), moduleIds);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "update.role", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }

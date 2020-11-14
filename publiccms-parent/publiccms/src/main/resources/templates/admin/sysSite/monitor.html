@@ -3,16 +3,16 @@
 <head>
     <meta charset="utf-8">
     <title><@t.page 'report.cms'/></title>
-    <link href="${res}/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
-    <link href="${res}/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
-    <script src="${res}/js/jquery-1.9.1.min.js"></script>
-    <script src="${res}/bootstrap/js/bootstrap.min.js"></script>
-    <script src="${res}/js/echarts.common.min.js"></script>
+    <link href="${base}/resource/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="${base}/resource/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" media="screen"/>
+    <script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
+    <script src="${base}/resource/bootstrap/js/bootstrap.min.js"></script>
+    <script src="${base}/resource/js/echarts.common.min.js"></script>
 </head>
 <body>
 <div class="container theme-showcase" role="main">
     <div class="page-header">
-        <a href=""><h1><@t.page 'report.cms'/></h1></a>
+        <h1><@t.page 'report.cms'/></h1>
     </div>
     <div class="row">
         <div id="memory_count" class="col-lg-4 col-md-6"></div>
@@ -137,8 +137,8 @@ echarts.init(document.getElementById('disk')).setOption({
             radius : '55%',
             center: ['50%', '60%'],
             data:[
-                {value:<@t.fileSize (totalSpace-freeSpace) false/>, name:'<@t.page 'report.used'/>'},
-                {value:<@t.fileSize freeSpace false/>, name:'<@t.page 'report.unused'/>'}
+                {value:${(totalSpace-freeSpace)/1024/1024}, name:'<@t.page 'report.used'/>'},
+                {value:${freeSpace/1024/1024}, name:'<@t.page 'report.unused'/>'}
             ]
         }
     ]

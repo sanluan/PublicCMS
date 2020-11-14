@@ -31,11 +31,12 @@ public class CmsDictionaryDataDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             if (CommonUtils.notEmpty(value)) {
                 CmsDictionaryData entity = service.getEntity(new CmsDictionaryDataId(dictionaryId, site.getId(), value));
-                handler.put("object", entity).render();
+                if (null != entity) {
+                    handler.put("object", entity).render();
+                }
             } else {
                 String[] values = handler.getStringArray("values");
                 if (CommonUtils.notEmpty(values)) {
-
                     CmsDictionaryDataId[] ids = new CmsDictionaryDataId[values.length];
                     for (int i = 0; i < values.length; i++) {
                         ids[i] = new CmsDictionaryDataId(dictionaryId, site.getId(), values[i]);

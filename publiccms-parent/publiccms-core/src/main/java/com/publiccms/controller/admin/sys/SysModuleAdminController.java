@@ -94,15 +94,13 @@ public class SysModuleAdminController {
             if (!entity.getId().equals(oldId)) {
                 service.updateParentId(oldId, entity.getId());
             }
-            if (null != entity) {
-                @SuppressWarnings("unchecked")
-                List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService
-                        .getPage(null, entity.getId(), null, null).getList();
-                dealRoleAuthorized(roleModuleList);
-                sysModuleLangService.save(oldId, entity.getId(), moduleParameters.getLangList());
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
-            }
+            @SuppressWarnings("unchecked")
+            List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, entity.getId(), null, null)
+                    .getList();
+            dealRoleAuthorized(roleModuleList);
+            sysModuleLangService.save(oldId, entity.getId(), moduleParameters.getLangList());
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "update.module", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             service.save(entity);
             sysModuleLangService.save(null, entity.getId(), moduleParameters.getLangList());

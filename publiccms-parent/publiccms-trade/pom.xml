@@ -8,19 +8,19 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.202004.c</version>
+        <version>V4.0.202011.a</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-core</artifactId>
-            <version>V4.0.202004.c</version>
+            <version>V4.0.202011.a</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
         <dependency>
             <groupId>com.alipay.sdk</groupId>
             <artifactId>alipay-sdk-java</artifactId>
-            <version>4.9.153.ALL</version>
+            <version>4.10.124.ALL</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>

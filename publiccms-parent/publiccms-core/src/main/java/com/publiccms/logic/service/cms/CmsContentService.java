@@ -88,7 +88,7 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     /**
      * @param projection
-     * @param fuzzy
+     * @param phrase
      * @param highlight
      * @param siteId
      * @param categoryId
@@ -110,19 +110,19 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler query(boolean projection, boolean fuzzy, boolean highlight, Short siteId, String text, String[] fields,
+    public PageHandler query(boolean projection, boolean phrase, boolean highlight, Short siteId, String text, String[] fields,
             Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds,
             String[] dictionaryValues, String preTag, String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate,
             String orderField, Integer pageIndex, Integer pageSize) {
-        return dao.query(projection, fuzzy, highlight, siteId, getCategoryIds(containChild, categoryId, categoryIds), modelIds,
+        return dao.query(projection, phrase, highlight, siteId, getCategoryIds(containChild, categoryId, categoryIds), modelIds,
                 text, fields, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, preTag, postTag,
                 startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
      * @param projection
-     * @param fuzzy
-     * @param highlight 
+     * @param phrase
+     * @param highlight
      * @param siteId
      * @param categoryIds
      * @param modelIds
@@ -141,10 +141,11 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public FacetPageHandler facetQuery(boolean projection, boolean fuzzy, boolean highlight, Short siteId, String text, String[] fields,
-            Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues, String preTag, String postTag,
-            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
-        return dao.facetQuery(projection, fuzzy, highlight, siteId, categoryIds, modelIds, text, fields,
+    public FacetPageHandler facetQuery(boolean projection, boolean phrase, boolean highlight, Short siteId, String text,
+            String[] fields, Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues, String preTag,
+            String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
+            Integer pageSize) {
+        return dao.facetQuery(projection, phrase, highlight, siteId, categoryIds, modelIds, text, fields,
                 arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, preTag, postTag, startPublishDate,
                 endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
@@ -421,6 +422,9 @@ public class CmsContentService extends BaseService<CmsContent> {
                     quote.setCheckUserId(entity.getCheckUserId());
                     quote.setCheckDate(entity.getCheckDate());
                     quote.setPublishDate(entity.getPublishDate());
+                    quote.setHasStatic(entity.isHasStatic());
+                    quote.setHasFiles(entity.isHasFiles());
+                    quote.setHasImages(entity.isHasImages());
                 } else {
                     delete(quote.getId());
                 }
@@ -565,15 +569,16 @@ public class CmsContentService extends BaseService<CmsContent> {
             return categoryIds;
         } else if (null != containChild && containChild) {
             CmsCategory category = categoryDao.getEntity(categoryId);
-            if (null != category && CommonUtils.notEmpty(category.getChildIds())) {
+            if (null != category) {
                 String[] categoryStringIds = ArrayUtils.add(
                         StringUtils.splitByWholeSeparator(category.getChildIds(), CommonConstants.COMMA_DELIMITED),
                         String.valueOf(categoryId));
-                categoryIds = new Integer[categoryStringIds.length + 1];
+                categoryIds = new Integer[categoryStringIds.length];
                 for (int i = 0; i < categoryStringIds.length; i++) {
                     categoryIds[i] = Integer.parseInt(categoryStringIds[i]);
                 }
-                categoryIds[categoryStringIds.length] = categoryId;
+            } else {
+                categoryIds = new Integer[] { categoryId };
             }
         } else {
             categoryIds = new Integer[] { categoryId };

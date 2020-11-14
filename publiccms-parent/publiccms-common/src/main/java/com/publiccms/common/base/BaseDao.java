@@ -35,6 +35,7 @@ import com.publiccms.common.handler.CmsFullTextQuery;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.handler.RemoteMatchQueryScorer;
 import com.publiccms.common.tools.CommonUtils;
 
 /**
@@ -94,16 +95,6 @@ public abstract class BaseDao<E> {
      */
     public static String like(String var) {
         return "%" + var + "%";
-    }
-
-    /**
-     * 左Like查询
-     * 
-     * @param var
-     * @return left like query
-     */
-    public static String leftLike(String var) {
-        return "%" + var;
     }
 
     /**
@@ -417,14 +408,16 @@ public abstract class BaseDao<E> {
      * @param pageSize
      * @return results page
      */
-    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, boolean highlight, String[] highLighterFieldNames,
-            String preTag, String postTag, Integer pageIndex, Integer pageSize) {
-        return getPage(fullTextQuery, highlight, highLighterFieldNames, preTag, postTag, pageIndex, pageSize, Integer.MAX_VALUE);
+    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, boolean highlight, String defaultFieldName,
+            String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex, Integer pageSize) {
+        return getPage(fullTextQuery, highlight, defaultFieldName, highLighterFieldNames, preTag, postTag, pageIndex, pageSize,
+                Integer.MAX_VALUE);
     }
 
     /**
      * @param fullTextQuery
      * @param highlight
+     * @param defaultFieldName
      * @param highLighterFieldNames
      * @param preTag
      * @param postTag
@@ -433,16 +426,17 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, boolean highlight, String[] highLighterFieldNames,
-            String preTag, String postTag, Integer pageIndex, Integer pageSize, Integer maxResults) {
+    protected PageHandler getPage(CmsFullTextQuery fullTextQuery, boolean highlight, String defaultFieldName,
+            String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex, Integer pageSize,
+            Integer maxResults) {
         PageHandler page = new PageHandler(pageIndex, pageSize, fullTextQuery.getFullTextQuery().getResultSize(), maxResults);
         if (CommonUtils.notEmpty(pageSize)) {
             fullTextQuery.getFullTextQuery().setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
         }
         @SuppressWarnings("unchecked")
         List<E> resultList = fullTextQuery.getFullTextQuery().getResultList();
-        if (highlight) {
-            higtLighter(resultList, fullTextQuery, highLighterFieldNames, preTag, postTag);
+        if (highlight && CommonUtils.notEmpty(highLighterFieldNames)) {
+            higtLighter(resultList, fullTextQuery, defaultFieldName, highLighterFieldNames, preTag, postTag);
         }
         page.setList(resultList);
         return page;
@@ -460,10 +454,10 @@ public abstract class BaseDao<E> {
      * @return facet results page
      */
     protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, CmsFullTextQuery fullTextQuery, String[] facetFields,
-            int facetCount, boolean highlight, String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex,
-            Integer pageSize) {
-        return getFacetPage(queryBuilder, fullTextQuery, facetFields, facetCount, highlight, highLighterFieldNames, preTag,
-                postTag, pageIndex, pageSize, Integer.MAX_VALUE);
+            int facetCount, boolean highlight, String defaultFieldName, String[] highLighterFieldNames, String preTag,
+            String postTag, Integer pageIndex, Integer pageSize) {
+        return getFacetPage(queryBuilder, fullTextQuery, facetFields, facetCount, highlight, defaultFieldName,
+                highLighterFieldNames, preTag, postTag, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
@@ -471,6 +465,7 @@ public abstract class BaseDao<E> {
      * @param facetFields
      * @param facetCount
      * @param highlight
+     * @param defaultFieldName
      * @param highLighterFieldNames
      * @param preTag
      * @param postTag
@@ -480,8 +475,8 @@ public abstract class BaseDao<E> {
      * @return facet results page
      */
     protected FacetPageHandler getFacetPage(QueryBuilder queryBuilder, CmsFullTextQuery fullTextQuery, String[] facetFields,
-            int facetCount, boolean highlight, String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex,
-            Integer pageSize, Integer maxResults) {
+            int facetCount, boolean highlight, String defaultFieldName, String[] highLighterFieldNames, String preTag,
+            String postTag, Integer pageIndex, Integer pageSize, Integer maxResults) {
         FacetManager facetManager = fullTextQuery.getFullTextQuery().getFacetManager();
         Map<String, Map<String, Integer>> facetMap = new LinkedHashMap<>();
         for (String facetField : facetFields) {
@@ -501,8 +496,8 @@ public abstract class BaseDao<E> {
         }
         @SuppressWarnings("unchecked")
         List<E> resultList = fullTextQuery.getFullTextQuery().getResultList();
-        if (highlight) {
-            higtLighter(resultList, fullTextQuery, highLighterFieldNames, preTag, postTag);
+        if (highlight && CommonUtils.notEmpty(highLighterFieldNames)) {
+            higtLighter(resultList, fullTextQuery, defaultFieldName, highLighterFieldNames, preTag, postTag);
         }
         page.setList(resultList);
         page.setFacetMap(facetMap);
@@ -516,52 +511,36 @@ public abstract class BaseDao<E> {
      * @param preTag
      * @param postTag
      */
-    protected void higtLighter(List<E> resultList, CmsFullTextQuery fullTextQuery, String[] highLighterFieldNames, String preTag,
-            String postTag) {
+    protected void higtLighter(List<E> resultList, CmsFullTextQuery fullTextQuery, String defaultFieldName,
+            String[] highLighterFieldNames, String preTag, String postTag) {
         try {
-            if (CommonUtils.notEmpty(highLighterFieldNames)) {
-                SimpleHTMLFormatter formatter;
-                if (CommonUtils.notEmpty(preTag) && CommonUtils.notEmpty(postTag)) {
-                    formatter = new SimpleHTMLFormatter(preTag, postTag);
-                } else {
-                    formatter = new SimpleHTMLFormatter();
-                }
-                QueryScorer queryScorer = new QueryScorer(fullTextQuery.getLuceneQuery());
-                Highlighter highlighter = new Highlighter(formatter, queryScorer);
-                for (E e : resultList) {
-                    for (String fieldName : highLighterFieldNames) {
-                        Object fieldValue = ReflectionUtils
-                                .invokeMethod(BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod(), e);
-                        String hightLightFieldValue = null;
-                        if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
-                            String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME);
-                            hightLightFieldValue = highlighter.getBestFragment(
-                                    getFullTextSession().getSearchFactory().getAnalyzer("cms"), fieldName, safeValue);
-                            if (CommonUtils.notEmpty(hightLightFieldValue)) {
-                                ReflectionUtils.invokeMethod(
-                                        BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
-                                        hightLightFieldValue);
-                            } else {
-                                ReflectionUtils.invokeMethod(
-                                        BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
-                                        safeValue);
-                            }
-                        }
-                    }
-                }
+            SimpleHTMLFormatter formatter;
+            if (CommonUtils.notEmpty(preTag) && CommonUtils.notEmpty(postTag)) {
+                formatter = new SimpleHTMLFormatter(preTag, postTag);
             } else {
-                for (E e : resultList) {
-                    for (String fieldName : highLighterFieldNames) {
-                        Object fieldValue = ReflectionUtils
-                                .invokeMethod(BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod(), e);
-                        if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
-                            String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME);
+                formatter = new SimpleHTMLFormatter();
+            }
+            QueryScorer queryScorer = new RemoteMatchQueryScorer(fullTextQuery.getLuceneQuery(), defaultFieldName);
+            Highlighter highlighter = new Highlighter(formatter, queryScorer);
+            for (E e : resultList) {
+                for (String fieldName : highLighterFieldNames) {
+                    Object fieldValue = ReflectionUtils
+                            .invokeMethod(BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod(), e);
+                    String hightLightFieldValue = null;
+                    if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
+                        String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME);
+                        hightLightFieldValue = highlighter.getBestFragment(
+                                getFullTextSession().getSearchFactory().getAnalyzer("cms"), fieldName, safeValue);
+                        if (CommonUtils.notEmpty(hightLightFieldValue)) {
+                            ReflectionUtils.invokeMethod(
+                                    BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
+                                    hightLightFieldValue);
+                        } else {
                             ReflectionUtils.invokeMethod(
                                     BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e, safeValue);
                         }
                     }
                 }
-
             }
         } catch (Exception ignore) {
         }

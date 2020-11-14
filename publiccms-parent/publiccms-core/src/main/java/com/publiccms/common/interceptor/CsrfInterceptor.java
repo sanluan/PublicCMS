@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 
-public class CsrfInterceptor extends HandlerInterceptorAdapter {
+public class CsrfInterceptor implements HandlerInterceptor {
     protected Map<HandlerMethod, CsrfCache> methodCache = new HashMap<>();
     private CsrfCache DEFAULT_CACHE = new CsrfCache(false, null);
     private boolean admin = false;
@@ -31,17 +31,14 @@ public class CsrfInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
         if (handler instanceof HandlerMethod) {
-            CsrfCache cache = methodCache.get(handler);
-            if (null == cache) {
-                HandlerMethod handlerMethod = (HandlerMethod) handler;
-                Csrf csrf = handlerMethod.getMethodAnnotation(Csrf.class);
+            CsrfCache cache = methodCache.computeIfAbsent((HandlerMethod) handler, k -> {
+                Csrf csrf = k.getMethodAnnotation(Csrf.class);
                 if (null == csrf) {
-                    cache = DEFAULT_CACHE;
+                    return DEFAULT_CACHE;
                 } else {
-                    cache = new CsrfCache(true, csrf.field());
+                    return new CsrfCache(true, csrf.field());
                 }
-                methodCache.put(handlerMethod, cache);
-            }
+            });
             if (cache.isEnable()) {
                 String value = request.getParameter(cache.getParameterName());
                 String token = admin ? ControllerUtils.getAdminToken(request) : ControllerUtils.getWebToken(request);

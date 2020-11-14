@@ -16,8 +16,9 @@ public interface CacheEntity<K, V> {
     /**
      * @param region
      * @param properties
+     * @return entity
      */
-    void init(String region, Properties properties);
+    CacheEntity<K, V> init(String region, Properties properties);
 
     /**
      * @param key

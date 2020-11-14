@@ -88,7 +88,7 @@ public class InstallServlet extends HttpServlet {
         this.startStep = startStep;
         this.fromVersion = fromVersion;
         this.cmsUpgrader = new CmsUpgrader(config);
-        this.freemarkerConfiguration = new Configuration(Configuration.getVersion());
+        this.freemarkerConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         freemarkerConfiguration.setClassForTemplateLoading(getClass(), "/initialization/template/");
         freemarkerConfiguration.setDefaultEncoding(DEFAULT_CHARSET_NAME);
         freemarkerConfiguration.setNumberFormat("#");

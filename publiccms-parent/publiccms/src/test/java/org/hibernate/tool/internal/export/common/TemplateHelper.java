@@ -60,8 +60,8 @@ public class TemplateHelper {
     public void init(File outputDirectory, String[] templatePaths) {
         this.outputDirectory = outputDirectory;
         
-        context = new SimpleHash(new BeansWrapperBuilder(Configuration.getVersion()).build());
-    	freeMarkerEngine = new Configuration(Configuration.getVersion());
+        context = new SimpleHash(new BeansWrapperBuilder(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS).build());
+    	freeMarkerEngine = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         
         List<TemplateLoader> loaders = new ArrayList<TemplateLoader>();
         

@@ -11,7 +11,7 @@
 </@_content>
 <@_category id=categoryId!><#assign category=object/></@_category>
 <@_model id=modelId!><#assign model=object/></@_model>
-<div class="pageFormContent" layoutH="50">
+<div class="pageFormContent" layoutH>
     <#if model?has_content>
         <#assign fieldList=model.fieldList![]/>
         <@_content id=parentId>
@@ -134,7 +134,7 @@
                 <dt>${(model.fieldTextMap['cover'])!}:</dt>
                 <dd>
                     <div class="thumbnail">
-                        <img src="${(a.cover)!}" style="max-width:200px;max-height:200px;"/>
+                        <img src="${(a.cover)!}"/>
                     </div>
                 </dd>
             </dl>

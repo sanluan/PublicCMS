@@ -1,0 +1,116 @@
+<@_categoryList advanced=true parentId=categoryId allowContribute=allowContribute pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form autocomplete="off" class="pagerForm" action="common/category_list.html" onsubmit="return divSearch(this,'categoryBox');" method="post">
+        <#include "../include_page/parameters.html"/>
+        <input name="categoryId" type="hidden" value="${categoryId!}"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <select class="combox" name="allowContribute">
+                        <option value=""><@t.page 'contribute'/></option>
+                        <option value="true"${(allowContribute?has_content&&"true"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'allow_contribute'/></option>
+                        <option value="false"${(allowContribute?has_content&&"false"==allowContribute)?then(' selected="true"','')?no_esc}><@t.page 'forbid_contribute'/></option>
+                    </select>
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+<#if authorizedMap['cmsCategory/add']>
+            <li>
+                <a href="cmsCategory/add.html?parentId=${categoryId!}" class="addMore" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i> <@t.page 'category.add'/></a>
+                <ul>
+    <@_categoryTypeList pageSize=10>
+        <#list page.list as a>
+            <li><a href="cmsCategory/add.html?parentId=${categoryId!}&typeId=${a.id}" target="navTab" rel="cmsCategory/add"><i class="icon-plus icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
+        </#list>
+        <#if page.totalCount gt 10>
+            <li><a href="cmsCategory/addMore.html?parentId=${categoryId!}" target="dialog" mask="true"><i class="icon-plus icon-large"></i> <@t.page 'category.add_more'/></a></li>
+        </#if>
+    </@_categoryTypeList>
+                </ul>
+            </li>
+            <li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
+            <li class="line">line</li>
+</#if>
+        <#if authorizedMap['cmsCategory/publish']>
+            <li><a href="cmsCategory/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsCategory/moveParameters']>
+            <li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> <@t.page 'button.batch_move'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsCategory/delete']>
+            <li class="line">line</li>
+            <li><a href="cmsCategory/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+        </#if>
+        </ul>
+    </div>
+    <table class="table" width="100%" layoutH targetType="ajax" rel="categoryBox">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th width="30"><@t.page 'id'/></th>
+                <th><@t.page 'name'/></th>
+                <th><@t.page 'code'/></th>
+                <th><@t.page 'category_type'/></th>
+                <th><@t.page 'category.parent'/></th>
+                <th><@t.page 'category.page_size'/></th>
+                <th><@t.page 'contribute'/></th>
+                <th><@t.page 'display'/></th>
+                <th><@t.page 'sort'/></th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'parentIds' a.parentId!/>
+                <@t.merge 'typeIds' a.typeId!/>
+            </#list>
+            <@_category ids=t.parentIds!><#assign parentMap=map!/></@_category>
+            <@_categoryType ids=t.typeIds!><#assign typeMap=map!/></@_categoryType>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td><input name="ids" value="${a.id}" type="checkbox"></td>
+                <td>${a.id!}</td>
+                <td><a href="${a.url!}" class="exclude-translate" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('outer_chain')+']',''))!}</td>
+                <td class="exclude-translate">${a.code!}</td>
+                <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
+                <td class="exclude-translate">${(parentMap[a.parentId?string].name)!}</td>
+                <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then('['+t.pageMessage('category.contain_child')+']',''))!}</#if></td>
+                <td>${a.allowContribute?then(t.pageMessage('allow_contribute'),t.pageMessage('forbid_contribute'))}</td>
+                <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
+                <td>${a.sort!}</td>
+                <td>
+                <#if authorizedMap['cmsCategory/add']>
+                    <a href="cmsCategory/addMore.html?parentId=${a.id}" target="dialog" mask="true"><@t.page 'category.add_child'/></a>|
+                    <a href="cmsCategory/add.html?copyId=${a.id}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'category.add'/>"><@t.page 'category.copy'/></a>|
+                </#if>
+                <#if authorizedMap['cmsCategory/changeTypeParameters']>
+                    <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" target="dialog" mask="true"><@t.page 'category.change_type'/></a>|
+                </#if>
+                <#if authorizedMap['cmsPlace/push']>
+                    <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>|
+                </#if>
+                <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!a.onlyUrl>
+                    <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" target="dialog" width="450" height="180" mask="true"><@t.page 'button.publish'/></a>
+                </#if>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#assign rel='categoryBox'/>
+    <#include "../include_page/page.html"/>
+</div>
+</@_categoryList>

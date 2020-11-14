@@ -11,17 +11,17 @@ function siteDefaultConfig${id!}(type){
         if($('input[name=useSsi]',navTab.getCurrentPanel()).is(":checked")){
             $('input[name=useSsi]',navTab.getCurrentPanel()).click();
         }
-        $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
-        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
+        $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/");
+        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/");
     }else{
         if($('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
             $('input[name=useStatic]',navTab.getCurrentPanel()).click();
         }
-        $('input[name=sitePath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/webfile/");
-        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("${base?keep_after(':')}/");
+        $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/");
+        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/");
     }
     <#if !a??>
-        $('input[name=domain]',navTab.getCurrentPanel()).val("${base?keep_after('//')?keep_before('/')?keep_before(':')}");
+        $('input[name=domain]',navTab.getCurrentPanel()).val(location.hostname);
     </#if>
     $('.info',navTab.getCurrentPanel()).show();
 }
@@ -37,7 +37,7 @@ function siteDefaultConfig${id!}(type){
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
     </div>
-    <div class="pageFormContent" layoutH="50">
+    <div class="pageFormContent" layoutH>
     <#if parent?has_content>
         <dl class="nowrap">
             <dt><@t.page 'site.parent'/>:</dt>

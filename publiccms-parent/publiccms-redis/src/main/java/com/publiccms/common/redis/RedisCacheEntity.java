@@ -100,13 +100,14 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     @Override
-    public void init(String region, Properties properties) {
-        init(region, RedisUtils.createOrGetJedisPool(properties));
+    public RedisCacheEntity<K, V> init(String region, Properties properties) {
+        return init(region, RedisUtils.createOrGetJedisPool(properties));
     }
 
-    public void init(String region, JedisPool pool) {
+    public RedisCacheEntity<K, V> init(String region, JedisPool pool) {
         this.region = region;
         this.jedisPool = pool;
+        return this;
     }
 
     public String getRegion() {

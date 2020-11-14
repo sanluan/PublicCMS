@@ -340,7 +340,7 @@ public class CmsContentAdminController {
         CmsContent content = service.getEntity(entity.getContentId());
         CmsContent related = service.getEntity(entity.getRelatedContentId());
         if (null != content && null != related) {
-            if (null == entity || ControllerUtils.verifyNotEquals("siteId", site.getId(), content.getSiteId(), model)
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), content.getSiteId(), model)
                     || ControllerUtils.verifyNotEquals("siteId", site.getId(), related.getSiteId(), model)
                     || ControllerUtils.verifyCustom("noright",
                             !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()), model)) {
@@ -375,8 +375,8 @@ public class CmsContentAdminController {
             ModelMap model) {
         CmsContentRelated entity = cmsContentRelatedService.getEntity(id);
         if (null != entity) {
-            if (null == entity || ControllerUtils.verifyCustom("noright",
-                    !(admin.isOwnsAllContent() || entity.getUserId() == admin.getId()), model)) {
+            if (ControllerUtils.verifyCustom("noright", !(admin.isOwnsAllContent() || entity.getUserId() == admin.getId()),
+                    model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             CmsContent content = service.getEntity(entity.getContentId());
@@ -592,24 +592,12 @@ public class CmsContentAdminController {
         List<CmsContent> entityList = (List<CmsContent>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();
         for (CmsContent entity : entityList) {
-            List<Serializable> userIds = pksMap.get("userIds");
-            if (null == userIds) {
-                userIds = new ArrayList<>();
-                pksMap.put("userIds", userIds);
-            }
+            List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());
             userIds.add(entity.getUserId());
             userIds.add(entity.getCheckUserId());
-            List<Serializable> categoryIds = pksMap.get("categoryIds");
-            if (null == categoryIds) {
-                categoryIds = new ArrayList<>();
-                pksMap.put("categoryIds", categoryIds);
-            }
+            List<Serializable> categoryIds = pksMap.computeIfAbsent("categoryIds", k -> new ArrayList<>());
             categoryIds.add(entity.getCategoryId());
-            List<Serializable> modelIds = pksMap.get("modelIds");
-            if (null == modelIds) {
-                modelIds = new ArrayList<>();
-                pksMap.put("modelIds", modelIds);
-            }
+            List<Serializable> modelIds = pksMap.computeIfAbsent("modelIds", k -> new ArrayList<>());
             modelIds.add(entity.getModelId());
         }
         Map<Long, SysUser> userMap = new HashMap<>();

@@ -118,6 +118,7 @@ public class CmsContent implements java.io.Serializable {
     private String tagIds;
     @GeneratorColumn(title = "数据字典值")
     @Field(store = Store.YES)
+    @JsonIgnore
     private String dictionaryValues;
     @GeneratorColumn(title = "封面")
     private String cover;
@@ -137,7 +138,7 @@ public class CmsContent implements java.io.Serializable {
     private Date publishDate;
     @GeneratorColumn(title = "过期日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Field(analyze = Analyze.NO, store = Store.YES, indexNullAs = "0")
+    @Field(analyze = Analyze.NO, store = Store.YES)
     @DateBridge(resolution = Resolution.SECOND)
     private Date expiryDate;
     @GeneratorColumn(title = "审核日期", order = true)

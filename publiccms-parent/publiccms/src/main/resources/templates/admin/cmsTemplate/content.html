@@ -25,7 +25,7 @@
          <a class="button" href="cmsTemplate/help.html?path=${(path?url)!}" target="dialog" mask="true"><@t.page 'template.help'/></a>
          <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
     </h2>
-    <div class="pageFormContent" layoutH="109">
+    <div class="pageFormContent" layoutH>
            <div>
             <input name="path" type="hidden" value="${path}"/>
             <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>

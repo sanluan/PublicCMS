@@ -84,7 +84,7 @@ public class OauthController {
             HttpServletResponse response) {
         OauthGateway oauthGateway = oauthComponent.get(channel);
         SysSite site = siteComponent.getSite(request.getServerName());
-        if (null != oauthComponent && oauthGateway.enabled(site.getId())) {
+        if (null != oauthGateway && oauthGateway.enabled(site.getId())) {
             String state = UUID.randomUUID().toString();
             RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -126,7 +126,7 @@ public class OauthController {
 
         Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);
         RequestUtils.cancleCookie(request.getContextPath(), response, STATE_COOKIE_NAME, null);
-        if (null != oauthComponent && oauthGateway.enabled(site.getId()) && null != stateCookie && null != state
+        if (null != oauthGateway && oauthGateway.enabled(site.getId()) && null != stateCookie && null != state
                 && state.equals(stateCookie.getValue())) {
             try {
                 OauthAccess oauthAccess = oauthGateway.getOpenId(site.getId(), code);

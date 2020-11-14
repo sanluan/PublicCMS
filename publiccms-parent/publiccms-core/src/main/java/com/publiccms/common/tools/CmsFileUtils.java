@@ -46,17 +46,17 @@ public class CmsFileUtils {
     /**
      * 
      */
-    public static final List<String> IMAGE_FILE_SUFFIXS = Arrays.asList(new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg" });
+    public static final List<String> IMAGE_FILE_SUFFIXS = Arrays.asList(".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg");
 
     /**
      * 
      */
-    public static final List<String> VIDEO_FILE_SUFFIXS = Arrays.asList(new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm",
-            ".rmvb", ".mpeg", ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm" });
+    public static final List<String> VIDEO_FILE_SUFFIXS = Arrays.asList(".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
+            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm");
     /**
      * 
      */
-    public static final List<String> AUDIO_FILE_SUFFIXS = Arrays.asList(new String[] { ".mp3", ".wav", ".mid" });
+    public static final List<String> AUDIO_FILE_SUFFIXS = Arrays.asList(".mp3", ".wav", ".mid");
     /**
      * 
      */
@@ -156,14 +156,15 @@ public class CmsFileUtils {
      */
     public static FileSize getFileSize(String filePath, String suffix) {
         if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
-            try (FileInputStream fis = new FileInputStream(filePath)){
+            try (FileInputStream fis = new FileInputStream(filePath)) {
                 BufferedImage bufferedImg = ImageIO.read(fis);
-                FileSize fileSize = new FileSize();
-                fileSize.setWidth(bufferedImg.getWidth());
-                fileSize.setHeight(bufferedImg.getHeight());
-                return fileSize;
+                if (null != bufferedImg) {
+                    FileSize fileSize = new FileSize();
+                    fileSize.setWidth(bufferedImg.getWidth());
+                    fileSize.setHeight(bufferedImg.getHeight());
+                    return fileSize;
+                }
             } catch (IOException e) {
-            } catch (NullPointerException e) {
             }
         }
         return EMPTY;
@@ -344,6 +345,22 @@ public class CmsFileUtils {
         } else {
             return FILE_TYPE_OTHER;
         }
+    }
+
+    /**
+     * 上传文件
+     *
+     * @param data
+     * @param fileName
+     * @return file name
+     * @throws IllegalStateException
+     * @throws IOException
+     */
+    public static String upload(byte[] data, String fileName) throws IllegalStateException, IOException {
+        File dest = new File(fileName);
+        dest.getParentFile().mkdirs();
+        FileUtils.writeByteArrayToFile(dest, data);
+        return dest.getName();
     }
 
     /**

@@ -140,11 +140,12 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public void init(String region, Properties properties) {
+    public CacheEntity<K, V> init(String region, Properties properties) {
         try {
             this.size = Integer.parseInt(properties.getProperty("cache.defaultSize"));
         } catch (NumberFormatException e) {
             log.warn(e);
         }
+        return this;
     }
 }

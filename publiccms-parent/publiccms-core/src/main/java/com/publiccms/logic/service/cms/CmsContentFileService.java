@@ -24,7 +24,7 @@ import com.publiccms.logic.dao.cms.CmsContentFileDao;
 @Transactional
 public class CmsContentFileService extends BaseService<CmsContentFile> {
 
-    private String[] ignoreProperties = new String[] { "id", "userId", "contentId", "image" };
+    private String[] ignoreProperties = new String[] { "id", "userId", "contentId" };
 
     /**
      * @param contentId
@@ -80,9 +80,9 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
                 idList.add(entity.getId());
             }
         }
-        for (CmsContentFile extend : (List<CmsContentFile>) getPage(contentId, null, null, null, null, null, null).getList()) {
-            if (!idList.contains(extend.getId())) {
-                delete(extend.getId());
+        for (CmsContentFile file : (List<CmsContentFile>) getPage(contentId, null, null, null, null, null, null).getList()) {
+            if (!idList.contains(file.getId())) {
+                delete(file.getId());
             }
         }
     }

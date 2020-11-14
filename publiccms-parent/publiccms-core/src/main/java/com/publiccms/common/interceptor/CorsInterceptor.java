@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsProcessor;
 import org.springframework.web.cors.DefaultCorsProcessor;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -18,7 +18,7 @@ import com.publiccms.logic.component.site.SiteComponent;
  *
  */
 @Component
-public class CorsInterceptor extends HandlerInterceptorAdapter {
+public class CorsInterceptor implements HandlerInterceptor {
     public static final CorsProcessor corsProcessor = new DefaultCorsProcessor();
     @Autowired
     private CorsConfigComponent corsConfigComponent;

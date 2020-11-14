@@ -15,7 +15,7 @@
     </@_categoryList>
 </#macro>
 <div class="pageContent">
-    <div class="unitBox left-page-content" layoutH="0">
+    <div class="unitBox leftPageContent" layoutH>
         <ul class="tree treeFolder">
             <li>
                 <a href="cmsContent/push_content_list.html?contentId=${contentId!}" target="ajax" rel="push_content_list"><@t.page 'category'/></a>
@@ -25,7 +25,7 @@
             </li>
          </ul>
     </div>
-    <div id="push_content_list" class="unitBox">
+    <div id="push_content_list" class="unitBox rightPageContent">
         <#include "push_content_list.html"/>
     </div>
 </div>

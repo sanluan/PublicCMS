@@ -268,11 +268,7 @@ public class CmsPlaceAdminController {
         List<CmsPlace> entityList = (List<CmsPlace>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();
         for (CmsPlace entity : entityList) {
-            List<Serializable> userIds = pksMap.get("userIds");
-            if (null == userIds) {
-                userIds = new ArrayList<>();
-                pksMap.put("userIds", userIds);
-            }
+            List<Serializable> userIds = pksMap.computeIfAbsent("userIds",k->new ArrayList<>());
             userIds.add(entity.getUserId());
             userIds.add(entity.getCheckUserId());
         }

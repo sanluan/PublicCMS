@@ -1,5 +1,16 @@
 <@_sysSite id=siteId><#assign a=object/></@_sysSite>
-<div class="pageFormContent" layoutH="50">
+<@_disk>
+<#assign
+    realRootPath=rootPath?replace('\\','/')
+    dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')
+    dynamicLocation=a.dynamicPath?keep_after('//')?keep_after('/')
+    dynamicPort=a.dynamicPath?keep_after('//')?keep_before('/')?keep_after(':')
+    sitePath=a.sitePath?keep_after('//')?keep_before('/')?keep_before(':')
+    siteLocation=a.sitePath?keep_after('//')?keep_after('/')
+    sitePort=a.sitePath?keep_after('//')?keep_before('/')?keep_after(':')
+/>
+</@_disk>
+<div class="pageFormContent" layoutH>
     <dl class="nowrap">
         <dt><@t.page 'site'/>:</dt>
         <dd>
@@ -10,18 +21,8 @@
     <dl class="nowrap">
         <dt><@t.page 'server_config.nginx'/>:</dt>
         <dd>
-            <textarea class="code" mode="nginx"><@_disk>
-<#assign
-    rootPath=rootPath?replace('\\','/')
-    dynamicPath=a.dynamicPath?keep_after('//')?keep_before('/')?keep_before(':')
-    dynamicLocation=a.dynamicPath?keep_after('//')?keep_after('/')
-    dynamicPort=a.dynamicPath?keep_after('//')?keep_before('/')?keep_after(':')
-    sitePath=a.sitePath?keep_after('//')?keep_before('/')?keep_before(':')
-    siteLocation=a.sitePath?keep_after('//')?keep_after('/')
-    sitePort=a.sitePath?keep_after('//')?keep_before('/')?keep_after(':')
-/>
-<#if dynamicPath!=sitePath||dynamicPort!=sitePort||dynamicPath=sitePath&&dynamicLocation!=siteLocation||a.useSsi>
-    <@_sysDomainList advanced=true siteId=siteId>
+            <textarea class="code" mode="nginx">
+<@_sysDomainList advanced=true siteId=siteId>
 #${a.name} <@t.page 'server_config.site'/>
 server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
@@ -54,24 +55,23 @@ server {
 
         <#if a.useSsi>
     location /include/ {
-        alias ${rootPath}/web/site_${siteId}/include/;
+        alias ${realRootPath}/web/site_${siteId}/include/;
     }
         </#if>
         <#if dynamicPath=sitePath&&dynamicLocation!=siteLocation>
     #${a.name} <@t.page 'server_config.static'/>
     location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
-        alias   ${rootPath}/web/site_${siteId}/;
+        alias   ${realRootPath}/web/site_${siteId}/;
         index  index.html;
     }
         <#else>
     location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
-        alias   ${rootPath}/web/site_${siteId}/webfile/;
+        alias   ${realRootPath}/web/site_${siteId}/webfile/;
         index  index.html;
     }
         </#if>
 }
-    </@_sysDomainList>
-</#if>
+</@_sysDomainList>
 <#if dynamicPath!=sitePath||dynamicPort!=sitePort||!(dynamicPath=sitePath&&dynamicLocation!=siteLocation)>
 #${a.name} <@t.page 'server_config.static'/>
 server {
@@ -84,18 +84,18 @@ server {
 
         <#if siteLocation?has_content>
     location /include/ {
-        alias ${rootPath}/web/site_${siteId}/include/;
+        alias ${realRootPath}/web/site_${siteId}/include/;
     }
         </#if>
     </#if>
 
     location ${siteLocation?has_content?then('/'+siteLocation,'/')} {
-        alias   ${rootPath}/web/site_${siteId}/;
+        alias   ${realRootPath}/web/site_${siteId}/;
         index  index.html;
         add_header Access-Control-Allow-Origin *;
     }
 }
-</#if></@_disk></textarea>
+</#if></textarea>
             <span class="info"><@t.page 'server_config.nginx_config_description'/></span>
         </dd>
     </dl>
@@ -108,6 +108,66 @@ upstream cms {
     server localhost:8080  weight=1;
 }</textarea>
             <span class="info"><@t.page 'server_config.nginx_common_description'/></span>
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt><@t.page 'server_config.apache'/>:</dt>
+        <dd>
+            <textarea class="code" mode="xml">
+#${a.name} <@t.page 'server_config.site'/>
+<Directory "${realRootPath}/web/site_${siteId}/">
+    AllowOverride None
+    Options Indexes FollowSymLinks Includes
+    Require all granted
+</Directory>
+
+<VirtualHost *:${dynamicPort?has_content?then(dynamicPort,80)}>
+   ServerName ${dynamicPath}
+<@_sysDomainList advanced=true siteId=siteId>
+  <#if page.totalCount gt 0>
+   ServerAlias <#list page.list as d><#if d.name!=dynamicPath&&d.name!=sitePath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>
+  </#if>
+</@_sysDomainList>
+  <#if a.useSsi>
+   alias /include/ "${realRootPath}/web/site_${siteId}/include/"
+   AddType text/html .html .shtml
+   AddOutputFilter INCLUDES .html .shtml
+  </#if>
+   ProxyRequests off
+   ProxyPreserveHost On
+   ProxyPass ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} http://localhost:8080${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
+   ProxyPassReverse ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} http://localhost:8080${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
+   
+   <#if dynamicPath=sitePath&&dynamicLocation!=siteLocation>
+   #${a.name} <@t.page 'server_config.static'/>
+   Alias "/${siteLocation}" "${realRootPath}/web/site_${siteId}/"
+   <#else>
+   Alias "${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/" "${realRootPath}/web/site_${siteId}/webfile/"
+   </#if>
+</VirtualHost>
+
+<#if dynamicPath!=sitePath||dynamicPort!=sitePort||!(dynamicPath=sitePath&&dynamicLocation!=siteLocation)>
+#${a.name} <@t.page 'server_config.static'/>
+<VirtualHost *:${sitePort?has_content?then(sitePort,80)}>
+    ServerName ${sitePath}    
+    <#if a.useSsi>
+        <#if siteLocation?has_content>
+   alias /include/ "${realRootPath}/web/site_${siteId}/include/"
+   AddType text/html .html .shtml
+   AddOutputFilter INCLUDES .html .shtml
+        </#if>
+    </#if>
+    <#if siteLocation?has_content>
+    Alias "/${siteLocation}/" "${realRootPath}/web/site_${siteId}/"
+    <#else>
+    DocumentRoot "${realRootPath}/web/site_${siteId}/" 
+    </#if>
+    <IfModule headers_module>
+        Header set Access-Control-Allow-Origin "*"
+    </IfModule>
+</VirtualHost>
+</#if>
+</textarea>
         </dd>
     </dl>
     <dl class="nowrap">

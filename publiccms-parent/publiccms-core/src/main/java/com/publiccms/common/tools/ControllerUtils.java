@@ -12,7 +12,6 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
 
-import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -47,9 +46,6 @@ public class ControllerUtils {
         } else if (url.contains("\r") || url.contains("\n")) {
             return true;
         } else if (url.contains("://") || url.startsWith("//")) {
-            if (url.startsWith("//")) {
-                url = new StringBuilder(request.getScheme()).append(":").append(url).toString();
-            }
             if (unSafe(url, site, request)) {
                 if (CommonUtils.notEmpty(safeReturnUrl)) {
                     for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
@@ -68,12 +64,10 @@ public class ControllerUtils {
     }
 
     private static boolean unSafe(String url, SysSite site, HttpServletRequest request) {
-        String basePath = AbstractFreemarkerView.getBasePath(request.getScheme(), request.getServerPort(),
-                request.getServerName(), request.getContextPath()) + "/";
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
                 || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                || url.startsWith(basePath)) {
+                || url.startsWith(request.getContextPath() + "/")) {
             return false;
         } else {
             return true;

@@ -32,7 +32,7 @@ public class CmsDataSource extends MultiDataSource {
      * 
      */
     public static final String DATABASE_CONFIG_TEMPLATE = "config/database-template.properties";
-    private static CmsDataSource cmsDataSource;
+    private static volatile CmsDataSource cmsDataSource;
     private String dbconfigFilePath;
     private static boolean initialized = false;
 

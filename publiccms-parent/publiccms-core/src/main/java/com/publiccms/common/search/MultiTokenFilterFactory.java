@@ -23,13 +23,14 @@ public class MultiTokenFilterFactory extends TokenFilterFactory implements Resou
     public MultiTokenFilterFactory(Map<String, String> args) {
         super(args);
         Set<String> set = availableTokenFilters();
-        if (!set.contains(name)) {
-            name = "standard";
+        String currentName = name;
+        if (!set.contains(currentName)) {
+            currentName = "standard";
         }
         args.putAll(MultiTokenFilterFactory.args);
-        tokenFilterFactory = forName(name, args);
-        log.info(new StringBuilder().append(name).append(" token filter factory created,available token filters:").append(set)
-                .toString());
+        tokenFilterFactory = forName(currentName, args);
+        log.info(new StringBuilder().append(currentName).append(" token filter factory created,available token filters:")
+                .append(set).toString());
     }
 
     @Override
@@ -48,7 +49,7 @@ public class MultiTokenFilterFactory extends TokenFilterFactory implements Resou
 
     @Override
     public void inform(ResourceLoader loader) throws IOException {
-        if (null != tokenFilterFactory && tokenFilterFactory instanceof ResourceLoaderAware) {
+        if (tokenFilterFactory instanceof ResourceLoaderAware) {
             ((ResourceLoaderAware) tokenFilterFactory).inform(loader);
         }
     }

@@ -16,9 +16,6 @@ dependencies {
         "org.springframework:spring-orm:${springVersion}",
         "org.springframework:spring-webmvc:${springVersion}",
 
-        "org.mybatis:mybatis:${mybatisVersion}",
-        "org.mybatis:mybatis-spring:${mybatisSpringVersion}",
-
         "org.hibernate:hibernate-search-orm:${hibernateSearchVersion}",
         "org.hibernate:hibernate-jcache:${hibernateVersion}",
 
@@ -27,6 +24,8 @@ dependencies {
         "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}",
         "org.apache.lucene:lucene-backward-codecs:${luceneVersion}",
         "org.apache.lucene:lucene-highlighter:${luceneVersion}",
+        
+        "org.mybatis:mybatis:${mybatisVersion}",
 
         "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",
         "com.fasterxml.jackson.core:jackson-databind:${jacksonDatabindVersion}",

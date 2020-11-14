@@ -7,11 +7,13 @@ dependencies {
         "mysql:mysql-connector-java:${mysqlVersion}",
         "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}",
         "org.hibernate:hibernate-search-elasticsearch:${hibernateSearchVersion}",
-        "javax.annotation:javax.annotation-api:${annotationVersionVersion}",
+        "javax.annotation:javax.annotation-api:${annotationVersion}",
         "javax.servlet:javax.servlet-api:${servletVersion}",
         "org.apache.poi:poi-ooxml:${poiVersion}",
         "com.drewnoakes:metadata-extractor:${extractorVersion}",
-        // https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql
-        "org.mybatis.dynamic-sql:mybatis-dynamic-sql:1.1.4"
+        
+        "org.mybatis:mybatis-spring:${mybatisSpringVersion}",
+        "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}",
+        "com.github.pagehelper:pagehelper:${pageHelperVersion}"
     )
 }

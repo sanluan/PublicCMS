@@ -18,7 +18,6 @@
     </#list>
 </@_categoryList>
     </nav>
-<#if content?has_content>
     <main>
         <article>
             <h1><a href="${url!}">${content.title}</a></h1>
@@ -104,15 +103,10 @@
             </ul>
         </aside>
     </main>
-<#else>
-    <main>
-        <h2>Content does not exist</h2>
-    </main>
-</#if>
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-    <script src="${site.dynamicPath!}resource/js/jquery-1.9.1.min.js"></script>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
     <script>
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
             $('article p em').text(data.clicks);

@@ -1,132 +1,152 @@
-body,html{color:#31353e}
-::-webkit-scrollbar-corner,::-webkit-scrollbar-track{background-color:rgba(98,98,98,.4);border-radius:10px}
-::-webkit-scrollbar-thumb{border-radius:10px;background-color:rgba(0,0,0,.2)}
-::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(0,0,0,.35)}
-::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.38)}
-a{color:#448af3}
-body h2.contentTitle{border-color:#e4e9f2}
-.left-page-content{border-color:#e4e9f2}
-header{background:#131a23;color:#afc5f6}
-header .nav ul{background:#667ea7;}
+body,html{color:#31353e;}
+::-webkit-scrollbar-corner,::-webkit-scrollbar-track{background-color:rgba(98,98,98,.4);border-radius:10px;}
+::-webkit-scrollbar-thumb{border-radius:10px;background-color:rgba(0,0,0,.2);}
+::-webkit-scrollbar-thumb:vertical:hover{background-color:rgba(0,0,0,.35);}
+::-webkit-scrollbar-thumb:vertical:active{background-color:rgba(0,0,0,.38);}
+a{color:#448af3;}
+body h2.contentTitle{border-color:#e4e9f2;}
+header{background-color:#131a23;color:#afc5f6;}
+header .nav ul{background-color:#667ea7;}
 header .nav ul li a { color:#000;}
-header a{color:#afc5f6}
-#navMenu li.selected,#navMenu li:hover{background:#2c3343}
-#navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff}
+header a{color:#afc5f6;}
+#navMenu li.selected,#navMenu li:hover{background-color:#2c3343;}
+#navMenu li.selected a,#navMenu li:hover a,header .nav a:hover{color:#fff;}
 /* 主界面 */
 
-main,#sidebar,#sidebar_s{background:#2c3343}
-.tabsPage{background:#edf1f5}
-#sidebar #menu{background:#222836}
-main .accordion .accordionHeader h2.collapsable{color:#fff}
-#splitBarProxy{border-color:#c0c0c0;background-color:#CCC}
+#sidebar,#sidebar_s{background-color:#2c3343;}
+.tabsPage{background-color:#edf1f5;}
+.accordion .accordionHeader{background-color:#222836;}
+.accordion .accordionHeader h2.collapsable{color:#fff;}
+.accordion .accordionContent{background-color:#2c3343;}
+#splitBarProxy{border-color:#c0c0c0;background-color:#CCC;}
 
-#leftside,.accordionContent .tree a,.accordionContent .tree div.hover{color:#8d95a7}
-.accordionContent .tree div.hover a{background:#19202f;color:#8d95a7}
-.accordionContent .tree div.selected a{background:#667ea7;color:#fff}
+#sidebar_s,.accordion .accordionHeader,.accordion .accordionContent,.accordionContent .tree a,.accordionContent .tree div:hover{color:#8d95a7;}
+.accordionContent .tree div:hover a{background-color:#19202f;color:#8d95a7;}
+.accordionContent .tree div.selected a{background-color:#667ea7;color:#fff;}
 
-.tabsPage .tabsPageHeader{background:#516485}
-.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight,.toggleCollapse{color:#a8b6ce}
-.tabsPageHeader .toggleCollapse{border-color:#637799}
-.tabsPage .tabsPageHeader li a{color:#b5c3db}
-.tabsPage .tabsPageHeader li.selected,.tabsPage .tabsPageHeader li:hover{background:#667ea7}
-.tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{color:#fff}
-.tabsPage .tabsMoreList{background:#fff;border-color:#dde2ec}
+.tabsPage .tabsPageHeader{background-color:#516485;}
+.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight,.toggleCollapse{color:#a8b6ce;}
+.tabsPageHeader .toggleCollapse{border-color:#637799;}
+.tabsPage .tabsPageHeader li a{color:#b5c3db;}
+.tabsPage .tabsPageHeader li.selected,.tabsPage .tabsPageHeader li:hover{background-color:#667ea7;}
+.tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{color:#fff;}
+.tabsPage .tabsMoreList{background-color:#fff;border-color:#dde2ec;}
 .tabsPage .tabsMoreList li a{color:#333;}
-.tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background:#667ea7;color:#fff}
+.tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#667ea7;color:#fff;}
 
-.page{background:#fff}
-.page.work-bench{background:#edf1f5}
+.page{background-color:#fff;}
+.page.work-bench{background-color:#edf1f5;}
 
 .pageFormContent fieldset{background-color:#fff;}
 .pageFormContent fieldset legend{color:#3587ef;}
-.pageFormContent fieldset legend:before{background-color:#3587ef}
-.pageFormContent label{color:#989eab}
-.pageFormContent dt{color:#31353e}
-.unit a.button:hover{background:#516485;color:#fff;border-color:#516485}
-.divider{border-color:#d6dce6}
-.formBar{background:#edf1f5;}
-.tagsBox span,.parametersBox span {background: #edf2f6}
+.pageFormContent fieldset legend:before{background-color:#3587ef;}
+.pageFormContent label{color:#989eab;}
+.pageFormContent dt{color:#31353e;}
+.unit a.button:hover{background-color:#516485;color:#fff;border-color:#516485;}
+.divider{border-color:#d6dce6;}
+.formBar{background-color:#edf1f5;}
+.tagsBox span,.parametersBox span {background-color: #edf2f6;}
 
-button.buttonActive{color:#fff;background-color:#667ea7;border-color:#667ea7}
-button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298}
-a.button,button.button{color:#516485;background-color:#fff;border-color:#dde2ec}
-a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec}
-.pagination li.jumpto .textInput,.textInput,input.disabled,input.error,input.focus,input.readonly,input.required,textarea.disabled,textarea.error,textarea.focus,textarea.readonly,textarea.required{border-color:#dde2ec}
-.pageHeader{background:#f2f6f9;color:#31353e}
+.leftPageContent{border-color:#e4e9f2;background-color:#f2f6f9;}
+
+button.buttonActive{color:#fff;background-color:#667ea7;border-color:#667ea7;}
+button.buttonActive:hover{background-color:#5d7298;border-color:#5d7298;}
+a.button,button.button{color:#516485;background-color:#fff;border-color:#dde2ec;}
+a.button:hover,button.button:hover{background-color:#eceff3;border-color:#dde2ec;}
+.pagination li.jumpto .textInput,.textInput,input.disabled,input.error,input.focus,input.readonly,input.required,textarea.disabled,textarea.error,textarea.focus,textarea.readonly,textarea.required{border-color:#dde2ec;}
+input.disabled,textarea.disabled{background-color:#eee;cursor:not-allowed;}
+textarea.readonly,input.readonly{background-color:#eee;}
+.pageHeader{background-color:#f2f6f9;color:#31353e;}
 .searchBar span.connect-string{color:#dde2ec;}
-.searchBar ul.searchContent:before{color:#667ea7}
-.panelBar .toolBar li a{color:#333;}
-.panelBar .toolBar li a>i{color:#3587ef}
-.panelBar .toolBar li a:hover>i{color:#fff}
-.panelBar .toolBar li a:hover{background:#667ea7;color:#fff}
-.panelBar .toolBar li.line{background:#e4e9f2}
-.panelBar.pageBar{background:#e8ebf2}
+.searchBar ul.searchContent:before{color:#667ea7;}
+.panelBar .toolBar li a{color:#516485;background-color:#e4e9f2;}
+.panelBar .toolBar li a>i{color:#516485;}
+.panelBar .toolBar li a:hover>i{color:#fff;}
+.panelBar .toolBar li a:hover{background-color:#667ea7;color:#fff;}
+.panelBar .toolBar li.line{background-color:#e4e9f2;}
+.panelBar .toolBar li a.addMore{background-color:#FF9913}
+.panelBar .toolBar li>ul{border-color:#eceff3;}
+.panelBar.pageBar{background-color:#e8ebf2;}
 
-table.list,table.list td{border-color:#e4e9f2}
-table.list thead tr{background:#f8fcfe}
-table.list th{border-color:#e4e9f2;color:#31353e}
-table.list tbody {background-color:#fff}
-table.list tbody tr:nth-child(even){background:#f8fcfe}
-table.list tbody tr.hover td{background:#e5eaf4}
-table.list td a{color:#448af3}
-table.list tbody tr.selected td{background:#cdd9ed}
-table.list th.asc:before,table.list th.desc:before,table.list th.order:before{color:#667ea7}
+.grid { background-color:#FFF;}
+.grid table { border-color:#e4e9f2;}
+.grid .gridHeader th { background-color:#707CA1;border-color:#e4e9f2;}
+.grid .gridHeader th div { border-left-color:#e4e9f2;border-right-color:#d0d0d0;color:#FFF;}
+.grid table td { border-color:#ededed;}
+.grid .resizeMarker, .grid .resizeProxy { background-color:#d0d0d0;}
+.grid .gridHeader th:hover, .grid .gridHeader th.thSelected { border-color:#e5eaf4;}
+.grid .gridTbody tr:nth-child(even){background-color:#f8fcfe;}
+.grid .gridTbody tr:hover,.grid .gridTbody tr.selected { border-color:#cdd9ed;background-color:#cdd9ed;}
+.grid .error{background-color:#fb7e81;}
+.grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{color:#FFFFFF;}
+
+table.list,table.list td{border-color:#e4e9f2;}
+table.list thead tr{background:#f8fcfe;}
+table.list th{border-color:#e4e9f2;color:#31353e;}
+table.list tbody {background-color:#fff;}
+table.list tbody tr:nth-child(even){background:#f8fcfe;}
+table.list tbody tr.hover td{background:#e5eaf4;}
+table.list td a{color:#448af3;}
+table.list tbody tr.selected td{background:#cdd9ed;}
+table.list th.asc:before,table.list th.desc:before,table.list th.order:before{color:#667ea7;}
 table.nowrap tbody tr {border-color:#ededed;}
 
+.tabs .tabsHeader{background-color:#FFF;}
 .tabs .tabsHeaderContent>ul li a{color:#989eab;}
-.tabs .tabsHeader li.selected:before{background:#516485}
-.tabs .tabsHeader li.selected a{color:#31353e}
-.tabs .tabsHeader ul{border-color:#dde2ec;box-sizing:border-box}
+.tabs .tabsHeader li.selected:before{background-color:#516485;}
+.tabs .tabsHeader li.selected a{color:#31353e;}
+.tabs .tabsHeader ul{border-color:#dde2ec;box-sizing:border-box;}
 a.btnLook:before{color:#333;}
-footer{background:#131a23;color:#b5c3db}
-footer a{color:#4d84ff}
-.langList a{color:#4d84ff}
-.langList a:hover,.langList li.current-lang a{color:#fff}
+footer{background-color:#131a23;color:#b5c3db;}
+footer a{color:#4d84ff;}
+.langList a{color:#4d84ff;}
+.langList a:hover,.langList li.current-lang a{color:#fff;}
 /* 弹窗 */
-.alert .error h1{background:#f2f6f9}
-.alert .alertContent{background: #fff}
-.alert .toolBar .button{background:#667ea7;color:#fff;border-color:#667ea7}
-.alert .toolBar .button:hover{background:#5d7298;border-color:#5d7298}
-.alert h1{background: #f2f6f9;}
+.alert .error h1{background-color:#f2f6f9;}
+.alert .alertContent{background-color: #fff;}
+.alert .toolBar .button{background-color:#667ea7;color:#fff;border-color:#667ea7;}
+.alert .toolBar .button:hover{background-color:#5d7298;border-color:#5d7298;}
+.alert h1{background-color: #f2f6f9;}
 
-.dialog{background:#fff}
-.dialog .dialogHeader{background:#f2f6f9}
-.dialog .dialogHeader_c a:hover{color:#3587ef}
+.dialog{background-color:#fff;}
+.dialog .dialogHeader{background-color:#f2f6f9;}
+.dialog .dialogHeader_c a:hover{color:#3587ef;}
 .dialog .dialogHeader .close,.dialog .dialogHeader .maximize,.dialog .dialogHeader .minimize,.dialog .dialogHeader .restore{color:#a1a4a8;}
-.dialog .dialogContent .viewInfo,.dialogContent .pageContent{background-color:#fff}
+.dialog .dialogContent{background-color:#f2f6f9;}
+.dialog .dialogContent .pageFormContent,.dialog .dialogContent .pageContent{background-color:#fff;}
 
-#taskbar{background:#131a23}
-#taskbar li{color:#b5c3db}
-#taskbar .hover,#taskbar .selected{background-color:#222836;color:#fff}
+#taskbar{background-color:#131a23;}
+#taskbar li{color:#b5c3db;}
+#taskbar :hover,#taskbar .selected{background-color:#222836;color:#fff;}
 /* 日期控件 */
-#calendar{border-color:#e4e9f2}
+#calendar{border-color:#e4e9f2;}
 #calendar .main{background-color:#ffffff;}
-#calendar .foot,#calendar .head{background-color:#f2f6f9}
-#calendar .days dd:hover{background-color:#e4e4e4}
-#calendar dd,#calendar dt{color:#333}
-#calendar .days dd.other{color:#999}
-#calendar .days dd.disabled{background-color:#ccc;color:#d6d6d6;cursor:not-allowed}
-#calendar .days dd.slt,#calendar .days dd.slt:hover{background-color:#516485;color:#fff}
-#calendar .clearBut,#calendar .okBut{color:#333;background-color:#fff;border-color:#e4e9f2}
-#calendar .clearBut{border-color:#667ea7;background:#667ea7;color:#fff}
-#calendar .clearBut:hover{background-color:#5d7298;border-color:#5d7298}
-#calendar .okBut:hover{background-color:#eceff3;border-color:#dde2ec}
-#calendar .time{background-color:#fff}
-#calendar .tm .hh,#calendar .tm .mm,#calendar .tm .ss{background-color:#f2f6f9;border-color:#e4e9f2}
-#calendar .tm .hh li:hover,#calendar .tm .mm li:hover,#calendar .tm .ss li:hover{background-color:#516485;color:#fff}
-#calendar .close:hover{color:#3587ef}
+#calendar .foot,#calendar .head{background-color:#f2f6f9;}
+#calendar .days dd:hover{background-color:#e4e4e4;}
+#calendar dd,#calendar dt{color:#333;}
+#calendar .days dd.other{color:#999;}
+#calendar .days dd.disabled{background-color:#ccc;color:#d6d6d6;cursor:not-allowed;}
+#calendar .days dd.slt,#calendar .days dd.slt:hover{background-color:#516485;color:#fff;}
+#calendar .clearBut,#calendar .okBut{color:#333;background-color:#fff;border-color:#e4e9f2;}
+#calendar .clearBut{border-color:#667ea7;background-color:#667ea7;color:#fff;}
+#calendar .clearBut:hover{background-color:#5d7298;border-color:#5d7298;}
+#calendar .okBut:hover{background-color:#eceff3;border-color:#dde2ec;}
+#calendar .time{background-color:#fff;}
+#calendar .tm .hh,#calendar .tm .mm,#calendar .tm .ss{background-color:#f2f6f9;border-color:#e4e9f2;}
+#calendar .tm .hh li:hover,#calendar .tm .mm li:hover,#calendar .tm .ss li:hover{background-color:#516485;color:#fff;}
+#calendar .close:hover{color:#3587ef;}
 /* 树样式 */
-.accordionContent .tree div.selected div{color:#fff}
-.tree a{color:#333}
-.tree .hover,.tree .hover a,.tree .selected a{color:#3587ef}
+.accordionContent .tree div.selected div{color:#fff;}
+.tree a{color:#333;}
+.tree a:hover,.tree .selected a{color:#3587ef;}
 /* 右键菜单 */
-#contextmenu ul{border-color:#dde2ec}
-#contextmenu li{color:#333}
-#contextmenu li.disabled{color:#999}
-#contextmenu li.hover{background-color:#667ea7;color:#fff}
-#contextmenu li.hover.disabled{color:#999}
+#contextmenu ul{border-color:#dde2ec;}
+#contextmenu li{color:#333;}
+#contextmenu li.disabled{color:#999;}
+#contextmenu li:hover{background-color:#667ea7;color:#fff;}
+#contextmenu li:hover.disabled{color:#999;}
 /* 下拉菜单 */
-.combox .select a{border-color:#e4e9f2;background-color:#fff;color:#333}
-.comboxop{background-color:#fff;;border-color:#dde2ec}
-.comboxop a{color:#31353e}
-.comboxop .selected,body .comboxop a:hover{background-color:#667ea7;color:#fff}
+.combox .select a{border-color:#e4e9f2;background-color:#fff;color:#333;}
+.comboxop{background-color:#fff;;border-color:#dde2ec;}
+.comboxop a{color:#31353e;}
+.comboxop .selected,body .comboxop a:hover{background-color:#667ea7;color:#fff;}

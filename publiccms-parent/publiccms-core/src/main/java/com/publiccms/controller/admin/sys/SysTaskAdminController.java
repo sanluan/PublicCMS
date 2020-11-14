@@ -134,6 +134,31 @@ public class SysTaskAdminController {
      * @param model
      * @return view name
      */
+    @RequestMapping("interrupt")
+    @Csrf
+    public String interrupt(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id,
+            HttpServletRequest request, ModelMap model) {
+        SysTask entity = service.getEntity(id);
+        if (null != entity) {
+            if (ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+                return CommonConstants.TEMPLATE_ERROR;
+            }
+            service.updateStatus(id, ScheduledTask.TASK_STATUS_READY);
+            scheduledTask.interrupt(site, id);
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "interrupt.task", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param id
+     * @param request
+     * @param model
+     * @return view name
+     */
     @RequestMapping("resume")
     @Csrf
     public String resume(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, HttpServletRequest request,

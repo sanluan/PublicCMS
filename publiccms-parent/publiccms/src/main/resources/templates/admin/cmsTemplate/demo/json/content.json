@@ -22,5 +22,4 @@
     ,"images":[<@_contentFileList contentId=content.id fileTypes='image'><#list page.list as file>
         {"filePath":"${(file.filePath)!}"}<#sep>,</#list></@_contentFileList>
     ]</#if>
-</@_content>
 }

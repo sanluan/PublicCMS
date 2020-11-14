@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
-    <context id="context" defaultModelType="flat">
+    <context id="context" defaultModelType="flat"><!-- use targetRuntime="MyBatis3" for mapper.xml -->
         <property name="javaFileEncoding" value="UTF-8" />
         <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
         <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
@@ -15,7 +15,7 @@
             <property name="enableSubPackages" value="true" />
             <property name="trimStrings" value="true" />
         </javaModelGenerator>
-        <sqlMapGenerator targetPackage="mapper.cms.xml"
+        <sqlMapGenerator targetPackage="mapper.cms"
             targetProject="src/main/resources/" />
         <javaClientGenerator targetPackage="com.publiccms.mapper"
             targetProject="src/main/java/" type="XMLMAPPER" />

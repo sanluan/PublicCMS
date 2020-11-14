@@ -76,7 +76,7 @@ public class QQOauthComponent extends AbstractOauth {
             sb.append("access_token=" + oauthInfo.getAccessToken());
             String html = get(sb.toString());
             if (CommonUtils.notEmpty(html)) {
-                html = html.substring(html.indexOf("{"), html.indexOf("}") + 1);
+                html = html.substring(html.indexOf('{'), html.indexOf('}') + 1);
                 Map<String, String> map = CommonConstants.objectMapper.readValue(html, CommonConstants.objectMapper
                         .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
                 oauthInfo.setOpenId(map.get("openid"));

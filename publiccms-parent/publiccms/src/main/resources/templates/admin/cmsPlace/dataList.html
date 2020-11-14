@@ -60,7 +60,7 @@
             <li><a href="cmsPlace/clear.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.clear_all'/>" target="ajaxTodo"><i class="icon-wrench icon-large"></i> <@t.page 'button.clear_all'/></a></li>
         </ul>
     </div>
-    <table class="list" width="100%" layoutH="99">
+    <table class="table" width="100%" layoutH>
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
@@ -86,7 +86,7 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td><#if a.url?has_content><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a><#else>${a.title}</#if></td>
+                <td><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a></td>
                 <td>${a.publishDate}</td>
                 <td>${a.expiryDate!}</td>
                 <td>${a.createDate}</td>

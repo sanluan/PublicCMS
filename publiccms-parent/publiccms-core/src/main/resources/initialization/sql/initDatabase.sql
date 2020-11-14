@@ -137,8 +137,7 @@ CREATE TABLE `cms_content` (
   KEY `cms_content_check_date` (`check_date`,`update_date`),
   KEY `cms_content_scores` (`scores`,`comments`,`clicks`),
   KEY `cms_content_only_url` (`only_url`,`has_images`,`has_files`,`user_id`),
-  KEY `cms_content_status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
-  KEY `cms_content_quote_content_id`(`site_id`, `quote_content_id`)
+  KEY `cms_content_status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`)
 ) COMMENT='内容';
 
 -- ----------------------------
@@ -274,7 +273,8 @@ CREATE TABLE `cms_tag` (
   `type_id` int(11) default NULL COMMENT '分类ID',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   PRIMARY KEY  (`id`),
-  KEY `cms_tag_site_id` (`site_id`)
+  KEY `cms_tag_site_id` (`site_id`,`name`),
+  KEY `cms_tag_type_id` (`type_id`)
 ) COMMENT='标签';
 
 -- ----------------------------
@@ -287,7 +287,7 @@ CREATE TABLE `cms_tag_type` (
   `name` varchar(50) NOT NULL COMMENT '名称',
   `count` int(11) NOT NULL COMMENT '标签数',
   PRIMARY KEY  (`id`),
-  KEY `cms_tag_type_site_id` (`site_id`)
+  KEY `cms_tag_type_site_id` (`site_id`,`name`)
 ) COMMENT='标签类型';
 
 
@@ -792,23 +792,22 @@ INSERT INTO `sys_module` VALUES ('app_client_list', 'sysAppClient/list', NULL, '
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, 'icon-linux', 'system_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('category', NULL, NULL, 'icon-folder-open-alt', NULL, 1, 5);
-INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '', 'category_menu', 0, 0);
-INSERT INTO `sys_module` VALUES ('category_delete', NULL, 'cmsCategory/delete', '', 'category_menu', 0, 0);
-INSERT INTO `sys_module` VALUES ('category_extend', NULL, NULL, 'icon-road', 'category', 1, 2);
-INSERT INTO `sys_module` VALUES ('category_menu', 'cmsCategory/list', NULL, 'icon-folder-open', 'category', 1, 1);
-INSERT INTO `sys_module` VALUES ('category_move', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', '', 'category_menu', 0, 0);
-INSERT INTO `sys_module` VALUES ('category_publish', 'cmsCategory/publishParameters', 'cmsCategory/publish', '', 'category_menu', 0, 0);
-INSERT INTO `sys_module` VALUES ('category_push', 'cmsCategory/push_page', 'cmsPlace/push,cmsPlace/add,cmsPlace/save', '', 'category_menu', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '', 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_delete', NULL, 'cmsCategory/delete', '', 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_extend', NULL, NULL, 'icon-road', 'content', 1, 1);
+INSERT INTO `sys_module` VALUES ('category_list', 'cmsCategory/list', NULL, 'icon-folder-open', 'content_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('category_move', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', '', 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_publish', 'cmsCategory/publishParameters', 'cmsCategory/publish', '', 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_push', 'cmsCategory/push_page', 'cmsPlace/push,cmsPlace/add,cmsPlace/save', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_type_add', 'cmsCategoryType/add', 'cmsCategoryType/save', NULL, 'category_type_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('category_type_change', 'cmsCategory/changeTypeParameters', 'cmsCategory/changeType', '', 'category_menu', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_type_change', 'cmsCategory/changeTypeParameters', 'cmsCategory/changeType', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_type_delete', NULL, 'cmsCategoryType/delete', NULL, 'category_type_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_type_list', 'cmsCategoryType/list', NULL, 'icon-road', 'category_extend', 1, 1);
 INSERT INTO `sys_module` VALUES ('clearcache', NULL, 'clearCache', '', NULL, 0, 10);
 INSERT INTO `sys_module` VALUES ('comment_check', NULL, 'cmsComment/check', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_delete', NULL, 'cmsComment/delete', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_edit', 'cmsComment/edit', 'cmsComment/save', NULL, 'comment_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('comment_list', 'cmsComment/list', 'sysUser/lookup', 'icon-comment', 'content_extend', 1, 4);
+INSERT INTO `sys_module` VALUES ('comment_list', 'cmsComment/list', 'sysUser/lookup', 'icon-comment', 'content_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('comment_reply', 'cmsComment/reply', 'cmsComment/save', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_uncheck', NULL, 'cmsComment/uncheck', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_add', 'sysConfig/add', 'sysConfig/save', NULL, 'config_list', 0, 0);
@@ -820,19 +819,19 @@ INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, 'icon-co
 INSERT INTO `sys_module` VALUES ('config_list_data_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_menu', NULL, NULL, 'icon-gear', 'develop', 1, 2);
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, 'icon-file-text-alt', NULL, 1, 2);
-INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload', '', 'content_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check,cmsContent/reject', '', 'content_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', '', 'content_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('content_export', NULL, 'cmsContent/export', '', 'content_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('content_extend', NULL, NULL, 'icon-road', 'content', 1, 1);
-INSERT INTO `sys_module` VALUES ('content_menu', 'cmsContent/list', 'sysUser/lookup', 'icon-book', 'content', 1, 0);
-INSERT INTO `sys_module` VALUES ('content_move', 'cmsContent/moveParameters', 'cmsContent/move', '', 'content_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('content_publish', NULL, 'cmsContent/publish', '', 'content_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('content_push', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete', '', 'content_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload', NULL, 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check,cmsContent/reject', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_export', NULL, 'cmsContent/export', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_list', 'cmsContent/list', 'sysUser/lookup', 'icon-book', 'content_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('content_menu', NULL, NULL, 'icon-book', 'content', 1, 0);
+INSERT INTO `sys_module` VALUES ('content_move', 'cmsContent/moveParameters', 'cmsContent/move', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_publish', NULL, 'cmsContent/publish', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_push', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_delete', NULL, 'cmsContent/realDelete', NULL, 'content_recycle_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', 'sysUser/lookup', 'icon-trash', 'content_extend', 1, 3);
+INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', 'sysUser/lookup', 'icon-trash', 'content_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/recycle', NULL, 'content_recycle_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', '', 'content_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_category', 'cmsCategory/lookupByModelId', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_category_type', 'cmsCategoryType/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_content', 'cmsContent/lookup', 'cmsContent/lookup_list', NULL, 'content_add', 0, 0);
@@ -841,10 +840,10 @@ INSERT INTO `sys_module` VALUES ('content_select_tag_type', 'cmsTagType/lookup',
 INSERT INTO `sys_module` VALUES ('content_select_template', 'cmsTemplate/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_user', 'sysUser/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_vote', 'cmsVote/lookup', NULL, NULL, 'content_add', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', '', 'content_menu', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', '', 'content_menu', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', NULL, '', 'content_menu', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-ticket', 'content_extend', 1, 4);
+INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_view', 'cmsContent/view', NULL, '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-ticket', 'content_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('content_vote_add', 'cmsVote/add', 'cmsVote/save', NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote_delete', NULL, 'cmsVote/delete', NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote_view', 'cmsVote/view', NULL, NULL, 'content_vote', 0, 0);
@@ -926,7 +925,7 @@ INSERT INTO `sys_module` VALUES ('role_list', 'sysRole/list', NULL, 'icon-user-m
 INSERT INTO `sys_module` VALUES ('system_menu', NULL, NULL, 'icon-cogs', 'maintenance', 1, 2);
 INSERT INTO `sys_module` VALUES ('tag_add', 'cmsTag/add', 'cmsTagType/lookup,cmsTag/save', NULL, 'tag_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('tag_delete', NULL, 'cmsTag/delete', NULL, 'tag_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('tag_list', 'cmsTag/list', 'cmsTagType/lookup', 'icon-tag', 'content_extend', 1, 1);
+INSERT INTO `sys_module` VALUES ('tag_list', 'cmsTag/list', 'cmsTagType/lookup', 'icon-tag', 'content_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('tag_type_delete', NULL, 'cmsTagType/delete', NULL, 'tag_type_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('tag_type_list', 'cmsTagType/list', NULL, 'icon-tags', 'category_extend', 1, 2);
 INSERT INTO `sys_module` VALUES ('tag_type_save', 'cmsTagType/add', 'cmsTagType/save', NULL, 'tag_type_list', 0, 0);
@@ -968,7 +967,7 @@ INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, 'icon-
 INSERT INTO `sys_module` VALUES ('webfile_unzip', 'cmsWebFile/unzipParameters', 'cmsWebFile/unzip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload,cmsWebFile/check', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, 'icon-search', 'content_extend', 1, 2);
+INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, 'icon-search', 'content_menu', 1, 4);
 
 -- ----------------------------
 -- Table structure for sys_module_lang
@@ -1018,9 +1017,6 @@ INSERT INTO `sys_module_lang` VALUES ('app_issue', 'zh', '颁发授权');
 INSERT INTO `sys_module_lang` VALUES ('app_list', 'en', 'Application Authorization');
 INSERT INTO `sys_module_lang` VALUES ('app_list', 'ja', 'app権限');
 INSERT INTO `sys_module_lang` VALUES ('app_list', 'zh', '应用授权');
-INSERT INTO `sys_module_lang` VALUES ('category', 'en', 'Category');
-INSERT INTO `sys_module_lang` VALUES ('category', 'ja', '分類');
-INSERT INTO `sys_module_lang` VALUES ('category', 'zh', '分类');
 INSERT INTO `sys_module_lang` VALUES ('category_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('category_add', 'ja', '追加/変更');
 INSERT INTO `sys_module_lang` VALUES ('category_add', 'zh', '增加/修改');
@@ -1030,9 +1026,9 @@ INSERT INTO `sys_module_lang` VALUES ('category_delete', 'zh', '删除');
 INSERT INTO `sys_module_lang` VALUES ('category_extend', 'en', 'Category extension');
 INSERT INTO `sys_module_lang` VALUES ('category_extend', 'ja', '分類拡張');
 INSERT INTO `sys_module_lang` VALUES ('category_extend', 'zh', '分类扩展');
-INSERT INTO `sys_module_lang` VALUES ('category_menu', 'en', 'Category management');
-INSERT INTO `sys_module_lang` VALUES ('category_menu', 'ja', '分類管理');
-INSERT INTO `sys_module_lang` VALUES ('category_menu', 'zh', '分类管理');
+INSERT INTO `sys_module_lang` VALUES ('category_list', 'en', 'Category management');
+INSERT INTO `sys_module_lang` VALUES ('category_list', 'ja', '分類管理');
+INSERT INTO `sys_module_lang` VALUES ('category_list', 'zh', '分类管理');
 INSERT INTO `sys_module_lang` VALUES ('category_move', 'en', 'Move');
 INSERT INTO `sys_module_lang` VALUES ('category_move', 'ja', '移動');
 INSERT INTO `sys_module_lang` VALUES ('category_move', 'zh', '移动');
@@ -1114,9 +1110,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_delete', 'zh', '删除');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'en', 'Export');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'ja', '輸出');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'zh', '导出');
-INSERT INTO `sys_module_lang` VALUES ('content_extend', 'en', 'Content extension');
-INSERT INTO `sys_module_lang` VALUES ('content_extend', 'ja', 'コンテンツ拡張');
-INSERT INTO `sys_module_lang` VALUES ('content_extend', 'zh', '内容扩展');
+INSERT INTO `sys_module_lang` VALUES ('content_list', 'en', 'Content management');
+INSERT INTO `sys_module_lang` VALUES ('content_list', 'ja', 'コンテンツ管理');
+INSERT INTO `sys_module_lang` VALUES ('content_list', 'zh', '内容管理');
 INSERT INTO `sys_module_lang` VALUES ('content_menu', 'en', 'Content management');
 INSERT INTO `sys_module_lang` VALUES ('content_menu', 'ja', 'コンテンツ管理');
 INSERT INTO `sys_module_lang` VALUES ('content_menu', 'zh', '内容管理');
@@ -1262,8 +1258,8 @@ INSERT INTO `sys_module_lang` VALUES ('model_list', 'en', 'Model management');
 INSERT INTO `sys_module_lang` VALUES ('model_list', 'ja', 'コンテンツモデル管理');
 INSERT INTO `sys_module_lang` VALUES ('model_list', 'zh', '内容模型管理');
 INSERT INTO `sys_module_lang` VALUES ('myself', 'en', 'Myself');
-INSERT INTO `sys_module_lang` VALUES ('myself', 'ja', '個人');
-INSERT INTO `sys_module_lang` VALUES ('myself', 'zh', '个人');
+INSERT INTO `sys_module_lang` VALUES ('myself', 'ja', '私の');
+INSERT INTO `sys_module_lang` VALUES ('myself', 'zh', '我的');
 INSERT INTO `sys_module_lang` VALUES ('myself_content', 'en', 'My content');
 INSERT INTO `sys_module_lang` VALUES ('myself_content', 'ja', 'マイコンテンツ');
 INSERT INTO `sys_module_lang` VALUES ('myself_content', 'zh', '我的内容');

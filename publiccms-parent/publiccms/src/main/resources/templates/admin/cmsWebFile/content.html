@@ -14,10 +14,10 @@
     <h2 class="contentTitle">
         <a class="button" href="cmsWebFile/lookup.html?fullPath=true" target="dialog" mask="true"><@t.page 'webfile'/></a>
     </h2>
-    <div class="pageFormContent" layoutH="109">
+    <div class="pageFormContent" layoutH>
         <div class="clearfix">
             <label><@t.page 'path'/>:</label>
-            <input name="path" class="required" type="text" maxlength="500" size="50" value="${(path)!}<#if !content?has_content>/filename.html</#if>"/>
+            <input name="path" class="required" type="text" maxlength="500" size="50" value="${(path)!}<#if !content??>/filename.html</#if>"/>
         </div>
         <div>
             <textarea name="content" class="code" escape="true" mode="${editorType[fileType]?has_content?then(editorType[fileType],'htmlmixed')}">${content!}</textarea>

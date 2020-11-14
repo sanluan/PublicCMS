@@ -58,9 +58,6 @@
             <#if authorizedMap['cmsContent/uncheck']>
                 <li><a href="cmsContent/uncheck.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
             </#if>
-            <#if authorizedMap['cmsContent/refresh'] && !site.useStatic>
-                <li><a href="cmsContent/refresh.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
-            </#if>
             <#if authorizedMap['cmsContent/publish']>
                 <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
             </#if>
@@ -70,21 +67,18 @@
             </#if>
         </ul>
     </div>
-    <table class="list" width="100%" layoutH="99">
+    <table class="table" width="100%" layoutH>
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
-                <th width="150"><@t.page 'title'/></th>
-                <th width="30"><@t.page 'category'/></th>
-                <th width="50"><@t.page 'model'/></th>
+                <th width="150"><@t.page 'content'/></th>
                 <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
                 <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
-                <th width="70"><@t.page 'create_date'/></th>
                 <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
-                <th width="80"><@t.page 'operate'/></th>
+                <th width="70"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -103,24 +97,30 @@
             <tr target="sid" rel="${contentId}">
                 <td><input name="ids" value="${contentId}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td>${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></td>
                 <td>
-                    ${(categoryMap[a.categoryId?string].name)!}
+                    <div class="box">
+                        <#if a.cover?has_content>
+                            <div class="thumbnail">
+                                <img src="${(a.cover)!}"/>
+                            </div>
+                        </#if>
+                            <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></h3>
+                            <p>
+                                <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
+                                <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
+                            </p>
+                    </div>
                 </td>
-                <td>
-                    ${(modelMap[a.modelId].name)!}
-                </td>
-                <td>${a.scores!}</td>
-                <td>
+                <td class="center">${a.scores!}</td>
+                <td class="center">
                     <#if authorizedMap['cmsComment/list']>
                         <a href="cmsComment/list.html?contentId=${contentId}" target="navTab" rel="cmsComment/list" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>">${a.comments!}</a>
                     <#else>
                         ${a.comments!}
                     </#if>
                 </td>
-                <td>${a.clicks!}</td>
-                <td>${a.publishDate!}</td>
-                <td>${a.createDate!}</td>
+                <td class="center">${a.clicks!}</td>
+                <td class="center">${a.publishDate!}</td>
                 <td>
                     <@t.page 'status.content.'+a.status/>
                     <#if 1==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>

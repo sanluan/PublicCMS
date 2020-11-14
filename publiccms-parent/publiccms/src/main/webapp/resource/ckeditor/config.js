@@ -9,7 +9,7 @@ CKEDITOR.editorConfig = function( config ) {
   // config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 	// http://docs.ckeditor.com/#!/api/CKEDITOR.config
-    config.extraPlugins = 'codesnippet';
+    config.extraPlugins = 'codesnippet,lineheight';
     odeSnippet_theme: 'zenburn';
 
     config.filebrowserUploadUrl = base + '/ckeditor/upload.json';//定义图片上传的地址

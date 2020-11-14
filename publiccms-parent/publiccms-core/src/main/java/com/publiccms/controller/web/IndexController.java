@@ -329,6 +329,7 @@ public class IndexController {
                         entity.setScores(entity.getScores() + statistics.getScores());
                     }
                     templateComponent.initContentUrl(site, entity);
+                    templateComponent.initContentCover(site, entity);
                     model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;

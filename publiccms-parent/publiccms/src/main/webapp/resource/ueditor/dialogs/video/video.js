@@ -10,7 +10,7 @@
 
     var video = {},
         uploadVideoList = [],
-        isModifyUploadVideo = false,
+        isModifyUploadVideo = true,
         uploadFile;
 
     window.onload = function(){
@@ -59,8 +59,8 @@
                         parentAlign = domUtils.getComputedStyle(img.parentNode,"text-align");
                     updateAlignButton(parentAlign==="center"?"center":align);
                 }
-                if(hasUploadClass) {
-                    isModifyUploadVideo = true;
+                if(hasFakedClass) {
+                    isModifyUploadVideo = false;
                 }
             }
             createPreviewVideo(url);
@@ -263,14 +263,15 @@
         var conUrl = convert_url(url);
 
         conUrl = utils.unhtmlForUrl(conUrl);
-
+        var ext = url.substr(url.lastIndexOf('.') + 1);
+        if(ext == 'ogv') ext = 'ogg';
         $G("preview").innerHTML = '<div class="previewMsg"><span>'+lang.urlError+'</span></div>'+
-        '<embed class="previewVideo" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer"' +
+        '<video class="previewVideo video-js" controls preload="none" ' +
             ' src="' + conUrl + '"' +
             ' width="' + 420  + '"' +
-            ' height="' + 280  + '"' +
-            ' wmode="transparent" play="true" loop="false" menu="false" allowscriptaccess="never" allowfullscreen="true" >' +
-        '</embed>';
+            ' height="' + 280  + '">' +
+            '<source src="' + conUrl + '"type="video/' + ext + '" />' +
+        '</video>';
     }
 
 

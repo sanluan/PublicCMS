@@ -3,6 +3,7 @@ package com.publiccms.common.tools;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,11 +27,11 @@ public class AnalyzerDictUtils {
                 deliFreqsMap);
         File file = new File(newCoreDir + DictionaryReloader.MEM_COREDICT);
         if (file.exists()) {
-            file.delete();
+            Files.delete(file.toPath());
         }
         File file2 = new File(newCoreDir + DictionaryReloader.MEM_BIGRAMDICT);
         if (file2.exists()) {
-            file2.delete();
+            Files.delete(file2.toPath());
         }
     }
 }

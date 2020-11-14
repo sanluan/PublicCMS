@@ -1306,7 +1306,7 @@ var utils = UE.utils = {
             a.href = a.href;
         }
         return !(a.protocol == location.protocol && a.hostname == location.hostname &&
-        (a.port == location.port || (a.port == '80' && location.port == '') || (a.port == '' && location.port == '80')));
+        (a.port == location.port || (a.port == '80' && location.port == '') || (a.port == '' && location.port == '80') || (a.port == '443' && location.port == '') || (a.port == '' && location.port == '443')));
     },
     clearEmptyAttrs : function(obj){
         for(var p in obj){
@@ -24413,6 +24413,7 @@ UE.plugin.register('insertfile', function (){
                 "flv":"icon_mv.gif",
                 "swf":"icon_mv.gif",
                 "rm":"icon_mv.gif",
+                "mp4":"icon_mv.gif",
                 "exe":"icon_exe.gif",
                 "psd":"icon_psd.gif",
                 "txt":"icon_txt.gif",

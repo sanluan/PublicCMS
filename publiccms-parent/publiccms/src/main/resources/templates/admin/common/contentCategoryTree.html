@@ -7,7 +7,7 @@
     <#list page.list as a>
         <#if (deptCategoryMap[a.id?string])?has_content&&deptCategoryMap[a.id?string]>
             <li<#if a.childIds?has_content> _src="common/contentCategoryTree.html?parentId=${a.id}"</#if>>
-                <a href="cmsContent/list.html?categoryId=${a.id}" target="navTab" rel="cmsContent/list" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'content.management'/>"><span class="exclude-translate">${(a.name)!}</span></a>
+                <a href="common/content_list.html?categoryId=${a.id}" target="ajax" rel="contentBox" class="exclude-translate">${(a.name)!}</a>
             </li>
         </#if>
     <#else>

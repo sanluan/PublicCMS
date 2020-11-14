@@ -54,7 +54,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
             postTag = handler.getString("postTag");
         }
         try {
-            page = service.query(handler.getBoolean("projection", false), handler.getBoolean("fuzzy", true), highlight,
+            page = service.query(handler.getBoolean("projection", false), handler.getBoolean("phrase", false), highlight,
                     site.getId(), word, handler.getStringArray("field"), tagIds, handler.getInteger("categoryId"),
                     handler.getBoolean("containChild"), handler.getIntegerArray("categoryIds"),
                     handler.getStringArray("modelIds"), dictionaryValues, preTag, postTag, handler.getDate("startPublishDate"),

@@ -25,7 +25,7 @@ public class GetTemplateResultMethod extends BaseMethod {
      * 
      */
     public GetTemplateResultMethod() {
-        configuration = new Configuration(Configuration.getVersion());
+        configuration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         configuration.setDefaultEncoding(CommonConstants.DEFAULT_CHARSET_NAME);
         configuration.setTemplateUpdateDelayMilliseconds(0);
         configuration.setAPIBuiltinEnabled(false);

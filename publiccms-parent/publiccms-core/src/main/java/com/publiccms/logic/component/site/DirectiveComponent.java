@@ -90,7 +90,7 @@ public class DirectiveComponent {
         freemarkerVariables.putAll(methodMap);
         adminConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, adminConfiguration.getObjectWrapper()));
         templateComponent.setAdminConfiguration(adminConfiguration);
-        Configuration webConfiguration = new Configuration(Configuration.getVersion());
+        Configuration webConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         File webFile = new File(siteComponent.getWebTemplateFilePath());
         webFile.mkdirs();
         webConfiguration.setDirectoryForTemplateLoading(webFile);
@@ -100,7 +100,7 @@ public class DirectiveComponent {
         webConfiguration.setAllSharedVariables(new SimpleHash(webFreemarkerVariables, webConfiguration.getObjectWrapper()));
         templateComponent.setWebConfiguration(webConfiguration);
 
-        Configuration taskConfiguration = new Configuration(Configuration.getVersion());
+        Configuration taskConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         File taskFile = new File(siteComponent.getTaskTemplateFilePath());
         taskFile.mkdirs();
         taskConfiguration.setDirectoryForTemplateLoading(taskFile);

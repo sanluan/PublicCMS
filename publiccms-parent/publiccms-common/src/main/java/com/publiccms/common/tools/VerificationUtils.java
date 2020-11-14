@@ -270,7 +270,7 @@ public class VerificationUtils {
     public static String sha512Encode(String input) {
         return encode(input, "SHA-512");
     }
-    
+
     /**
      * sha256加密
      *
@@ -310,7 +310,7 @@ public class VerificationUtils {
      * @param key
      * @return 3-DES decode result
      */
-    public static String decrypt(byte[] input, String key) {
+    private static String decrypt3DES(byte[] input, String key) {
         try {
             byte[] sha1Key = sha1Encode(key).getBytes(Constants.DEFAULT_CHARSET);
             DESedeKeySpec dks = new DESedeKeySpec(sha1Key);
@@ -323,6 +323,18 @@ public class VerificationUtils {
         } catch (Exception e) {
             return Constants.BLANK;
         }
+    }
+
+    /**
+     *
+     * 解密
+     *
+     * @param input
+     * @param key
+     * @return decode result
+     */
+    public static String decrypt(byte[] input, String key) {
+        return decrypt3DES(input, key);
     }
 
     /**

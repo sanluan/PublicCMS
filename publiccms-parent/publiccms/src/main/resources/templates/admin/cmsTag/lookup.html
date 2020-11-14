@@ -23,7 +23,7 @@
     </form>
 </div>
 <div class="pageContent">
-    <table class="list" width="100%" layoutH="96">
+    <table class="table" width="100%" layoutH>
         <thead>
             <tr>
                 <th><@t.page 'select'/></th>
@@ -42,7 +42,7 @@
             <#list page.list as a>
             <tr>
                 <td>
-                    <a href="javascript:;" onclick="$.bringBack({'${field!'tagId'}':'${a.id}','${nameField!'name'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'tagId'}':'${a.id}','${nameField!'tagName'}':'${(a.name?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td class="exclude-translate">${(a.name)!}</td>

@@ -12,7 +12,7 @@
 <@_model id=modelId!><#assign model=object/></@_model>
 <script>
 </script>
-<form method="post" autocomplete="off" action="cmsContent/save.do?callbackType=closeCurrent&navTabId=cmsContent/list" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsContent/save.do?callbackType=closeCurrent&navTabId=cmsContent/list&forwardUrl=" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input name="parentId" type="hidden" value="${parentId!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
@@ -44,7 +44,7 @@
             </div>
         </div>
         <div class="tabsContent unitBox">
-            <div class="pageFormContent" layoutH="96">
+            <div class="pageFormContent" layoutH>
         <#if model?has_content>
             <#assign fieldList=model.fieldList![]/>
             <#assign requiredFieldList=model.requiredFieldList![]/>
@@ -230,7 +230,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
             </div>
         </#if>
             </div>
-            <div class="pageFormContent" layoutH="96">
+            <div class="pageFormContent" layoutH>
                 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                     <thead>
                         <tr>
