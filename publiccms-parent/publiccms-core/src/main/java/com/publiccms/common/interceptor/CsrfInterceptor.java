@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.method.HandlerMethod;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 
-public class CsrfInterceptor extends HandlerInterceptorAdapter {
+public class CsrfInterceptor implements HandlerInterceptor {
     protected Map<HandlerMethod, CsrfCache> methodCache = new HashMap<>();
     private CsrfCache DEFAULT_CACHE = new CsrfCache(false, null);
     private boolean admin = false;

@@ -5,7 +5,7 @@
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
     <packaging>pom</packaging>
-    <version>V4.0.202004.c</version>
+    <version>V4.0.202011.a</version>
     <modules>
         <module>publiccms</module>
         <module>publiccms-core</module>
@@ -22,10 +22,10 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.2.9.RELEASE</version.spring>
+        <version.spring>5.2.10.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.3.4.RELEASE</version.springBoot>
+        <version.springBoot>2.3.5.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.12</version.httpclient>
@@ -61,7 +61,7 @@
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <version.hikariCP>3.4.5</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <version.mysql>8.0.21</version.mysql>
+        <version.mysql>8.0.22</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
         <version.poi>4.1.2</version.poi>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
@@ -75,7 +75,7 @@
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
         <version.log4j>2.13.3</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
-        <version.extractor>2.14.0</version.extractor>
+        <version.extractor>2.15.0</version.extractor>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
@@ -32,7 +32,7 @@ import com.publiccms.logic.service.sys.SysUserTokenService;
  * WebContextInterceptor 权限拦截器
  *
  */
-public class WebContextInterceptor extends HandlerInterceptorAdapter {
+public class WebContextInterceptor implements HandlerInterceptor {
     protected UrlPathHelper urlPathHelper = new UrlPathHelper();
     protected final Log log = LogFactory.getLog(getClass());
     @Autowired
