@@ -7,16 +7,16 @@
     </#if>
     <#switch fileSuffix>
         <#case 'css'>
-            <#return '<link href="'+prefix+filePath+'" rel="stylesheet"/>'/><#break>
+            <#return '<link href="'+prefix+filePath+'" rel="stylesheet">'/><#break>
         <#case 'js'>
             <#return '<script src="'+prefix+filePath+'"></script>'/><#break>
         <#case 'jpg'>
         <#case 'png'>
         <#case 'bmp'>
         <#case 'gif'>
-            <#return '<img src="'+prefix+filePath+'"/>'/><#break>
+            <#return '<img src="'+prefix+filePath+'">'/><#break>
         <#case 'ico'>
-            <#return '<link rel="shortcut icon" href="'+prefix+filePath+'"/>'/><#break>
+            <#return '<link rel="shortcut icon" href="'+prefix+filePath+'">'/><#break>
         <#case 'ogg'>
         <#case 'webm'>
         <#case 'mpeg'>
@@ -27,7 +27,7 @@
         <#case 'avi'>
         <#case 'wmv'>
         <#case 'mp4'>
-            <#return '<video controls="controls"><source src="'+prefix+filePath+'" type="video/${fileSuffix}" /></video>'/><#break>
+            <#return '<video controls="controls"><source src="'+prefix+filePath+'" type="video/${fileSuffix}"></video>'/><#break>
         <#case 'wav'>
         <#case 'acc'>
         <#case 'mid'>
