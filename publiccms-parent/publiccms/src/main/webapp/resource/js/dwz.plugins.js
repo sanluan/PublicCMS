@@ -81,9 +81,7 @@ DWZ.regPlugins.push(function($p){
                     maximumWords: $this.attr("maxlength")
                 });
             }
-            setTimeout(function() {
-                editor.render($this[0]);
-            }, 10);
+            editor.render($this[0]);
             $this.attr("data-id","ueditorInstant"+editor.uid);
         }
     });
