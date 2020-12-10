@@ -23,10 +23,11 @@
                         <li><a href="javascript:;" <@getAction r'${(metadata.alias)!}'/>><@t.page 'template.name'/></a></li>
                 <#if metadata.useDynamic?has_content&&metadata.useDynamic&&metadata.acceptParameters?has_content>
                     <#list metadata.acceptParameters?split(',') as p>
+                        <#assign alias=metadata.parameterTypeMap[p].alias/>
                         <#if (metadata.parameterTypeMap[p].type)?has_content&&['user','content','category']?seq_contains(metadata.parameterTypeMap[p].type)>
-                            <li><a href="javascript:;" <@getAction r'<#list '+((metadata.parameterTypeMap[p].alias)!p)+r' as k,v>${k}:${v?c}</#list>'/>><@t.page 'parameter'/>:${p}</a></li>
+                            <li><a href="javascript:;" <@getAction r'<#list '+alias?has_content?then(alias,p)+r' as k,v>${k}:${v?c}</#list>'/>><@t.page 'parameter'/>:${p}</a></li>
                         <#else>
-                            <li><a href="javascript:;" <@getAction r'${('+((metadata.parameterTypeMap[p].alias)!p)+r')!}'/>><@t.page 'parameter'/>:${p}</a></li>
+                            <li><a href="javascript:;" <@getAction r'${('+alias?has_content?then(alias,p)+r')!}'/>><@t.page 'parameter'/>:${p}</a></li>
                         </#if>
                     </#list>
                 </#if>
