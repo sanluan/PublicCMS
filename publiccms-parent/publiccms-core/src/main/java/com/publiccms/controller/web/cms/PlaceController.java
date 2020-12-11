@@ -129,6 +129,7 @@ public class PlaceController {
                     userId = user.getId();
                     entity.setUserId(user.getId());
                 }
+                entity.setDisabled(false);
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB, "save.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));

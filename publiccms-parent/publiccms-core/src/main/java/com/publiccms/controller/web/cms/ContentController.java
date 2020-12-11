@@ -125,6 +125,11 @@ public class ContentController {
             entity.setContribute(true);
             entity.setSiteId(site.getId());
             entity.setUserId(user.getId());
+            entity.setDisabled(false);
+            entity.setClicks(0);
+            entity.setComments(0);
+            entity.setChilds(0);
+            entity.setScores(0);
             service.save(entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
                 service.updateChilds(entity.getParentId(), 1);

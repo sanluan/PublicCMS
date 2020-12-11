@@ -82,6 +82,8 @@ public class CommentController {
                 Date now = CommonUtils.getDate();
                 entity.setSiteId(site.getId());
                 entity.setUserId(user.getId());
+                entity.setDisabled(false);
+                entity.setReplies(0);
                 if (null != entity.getReplyId()) {
                     CmsComment reply = service.getEntity(entity.getReplyId());
                     if (null == reply) {

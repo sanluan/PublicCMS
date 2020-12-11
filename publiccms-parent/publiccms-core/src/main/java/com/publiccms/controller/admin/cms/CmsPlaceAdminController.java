@@ -133,6 +133,7 @@ public class CmsPlaceAdminController {
                 entity.setUserId(admin.getId());
                 entity.setSiteId(site.getId());
                 entity.setStatus(CmsPlaceService.STATUS_NORMAL);
+                entity.setCheckUserId(admin.getId());
                 service.save(entity);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
@@ -268,7 +269,7 @@ public class CmsPlaceAdminController {
         List<CmsPlace> entityList = (List<CmsPlace>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();
         for (CmsPlace entity : entityList) {
-            List<Serializable> userIds = pksMap.computeIfAbsent("userIds",k->new ArrayList<>());
+            List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());
             userIds.add(entity.getUserId());
             userIds.add(entity.getCheckUserId());
         }
@@ -326,7 +327,8 @@ public class CmsPlaceAdminController {
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
             }
         });
-
+        String filepath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+        view.setFilename(metadataComponent.getPlaceMetadata(filepath).getAlias());
         return view;
     }
 
