@@ -66,12 +66,12 @@ public class ZipUtils {
     }
 
     /**
-     * @param file
+     * @param sourceFilePath
      * @param out
      * @param basedir
      * @throws IOException
      */
-    private static void compress(Path sourceFilePath, ZipOutputStream out, String basedir) throws IOException {
+    public static void compress(Path sourceFilePath, ZipOutputStream out, String basedir) throws IOException {
         if (Files.isDirectory(sourceFilePath)) {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(sourceFilePath);) {
                 for (Path entry : stream) {
@@ -94,12 +94,23 @@ public class ZipUtils {
     }
 
     /**
+     * <code>
+       &#64;RequestMapping("export")
+       public void export(javax.servlet.http.HttpServletResponse response) {
+           try (ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream())) {
+              response.setHeader("content-disposition", "attachment;fileName=" + URLEncoder.encode("filename.zip", "utf-8")); 
+              ZipUtils.compressFile(new File("filename.txt"), zipOutputStream, "dir/filename.txt"); 
+           } catch (IOException e) {
+           }
+       }
+     * </code>
+     * 
      * @param file
      * @param out
-     * @param basedir
+     * @param fullName
      * @throws IOException
      */
-    private static void compressFile(File file, ZipOutputStream out, String fullName) throws IOException {
+    public static void compressFile(File file, ZipOutputStream out, String fullName) throws IOException {
         if (CommonUtils.notEmpty(file)) {
             ZipEntry entry = new ZipEntry(fullName);
             entry.setTime(file.lastModified());
@@ -112,7 +123,7 @@ public class ZipUtils {
 
     /**
      * @param zipFilePath
-     * @param encoding 
+     * @param encoding
      * @throws IOException
      */
     public static void unzipHere(String zipFilePath, String encoding) throws IOException {
@@ -125,7 +136,7 @@ public class ZipUtils {
 
     /**
      * @param zipFilePath
-     * @param encoding 
+     * @param encoding
      * @throws IOException
      */
     public static void unzip(String zipFilePath, String encoding) throws IOException {
@@ -135,7 +146,7 @@ public class ZipUtils {
     /**
      * @param zipFilePath
      * @param targetPath
-     * @param encoding 
+     * @param encoding
      * @param overwrite
      * @throws IOException
      */

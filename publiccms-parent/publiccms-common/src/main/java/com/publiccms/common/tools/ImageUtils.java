@@ -37,6 +37,28 @@ public class ImageUtils {
     }
 
     /**
+     * <code>
+     * &#64;RequestMapping(value = "getCaptchaImage")
+       public void getCaptchaImage(javax.servlet.http.HttpSession session,javax.servlet.http.HttpServletResponse response){
+           try{
+               String captcha = VerificationUtils.getRandomString("ABCDEFGHJKMNPQRSTUVWXYZ23456789", 4);
+               session.setAttribute("captcha", captcha);
+               ImageUtils.drawImage(100, 20, captcha, response.getOutputStream());
+           } catch(IOException e) {
+           }
+       }
+     * </code> <code>
+       &#64;RequestMapping(value = "doLogin", method = RequestMethod.POST)
+       public String login(@RequestAttribute SysSite site, javax.servlet.http.HttpSession session, String username, String password, String captcha,String returnUrl, Long clientId, String uuid,
+            javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, ModelMap model) {
+           String sessionCaptcha = (String)session.getAttribute("captcha");
+           session.removeAttribute("captcha");
+           if(null!=sessionCaptcha && sessionCaptcha.equals(captcha)) {
+               // login code
+           }
+       }
+     * </code>
+     * 
      * @param width
      * @param height
      * @param text
@@ -56,11 +78,13 @@ public class ImageUtils {
             for (int i = 0; i < text.length(); i++) {
                 g.setFont(font1);
                 g.setColor(getRandColor(0, 200));
-                g.drawString(String.valueOf(text.charAt(i)), i * fontWidth + 3, height - Constants.random.nextInt(height - fontSize));
+                g.drawString(String.valueOf(text.charAt(i)), i * fontWidth + 3,
+                        height - Constants.random.nextInt(height - fontSize));
                 g.setFont(font2);
                 for (int j = 0; j < 4; j++) {
                     g.setColor(getRandColor(100, 250));
-                    g.drawString(String.valueOf(text.charAt(i)), Constants.random.nextInt(width), Constants.random.nextInt(height));
+                    g.drawString(String.valueOf(text.charAt(i)), Constants.random.nextInt(width),
+                            Constants.random.nextInt(height));
                 }
             }
         }
