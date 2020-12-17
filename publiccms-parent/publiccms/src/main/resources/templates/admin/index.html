@@ -133,13 +133,13 @@
 <script src="${base}/resource/js/cms.js"></script>
     <script>
     var base="${base+adminContextPath}";
-    window.UEDITOR_HOME_URL="${site.dynamicPath}resource/ueditor/";
-    window.CKEDITOR_BASEPATH="${base}resource/ckeditor/";
+    window.UEDITOR_HOME_URL="${base}/resource/ueditor/";
+    window.CKEDITOR_BASEPATH="${base}/resource/ckeditor/";
     window.CKEDITOR_LANGUAGE="<@t.page 'ckeditor.lang'/>";
     window.KINDEDITOR_OPTIONS= {
             width:'60%',
             height:'400px',
-            basePath:'${site.dynamicPath}resource/kindeditor/',
+            basePath:'${base}/resource/kindeditor/',
             uploadJson : '${base+adminContextPath}/kindeditor/upload.do',
             fileManagerJson : '${base+adminContextPath}/cmsWebFile/fileList.html',
             allowFileManager : true
