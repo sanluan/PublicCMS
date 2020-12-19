@@ -159,8 +159,8 @@
 
             <#list page.list as a>
                 <#assign contentId=(a.quoteContentId?has_content)?then(a.quoteContentId,a.id)/>
-            <tr target="sid" rel="${contentId}">
-                <td class="center"><input name="ids" value="${contentId}" type="checkbox"></td>
+            <tr target="sid" rel="${a.id}">
+                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td class="center">${a.id}</td>
                 <td>
                     <div class="box">
