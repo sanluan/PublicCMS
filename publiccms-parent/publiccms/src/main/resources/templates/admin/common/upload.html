@@ -5,9 +5,9 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <input type="hidden" name="field" value="${field!'fileName'}"/>
     <input type="hidden" name="originalField" value="${originalField!}"/>
-    <div class="pageFormContent" layoutH>
+    <div class="pageFormContent layoutBox" layoutH>
         <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
-        <dl class="nowrap">
+        <dl class="nowrap contentTitle">
             <dt><@t.page 'file'/>:</dt>
             <dd>
                 <#if fileTypes?has_content&&'image'=fileTypes>
@@ -18,31 +18,47 @@
                     <input type="file" name="file" class="required" size="30"${accept!}/>
                 </#if>
             </dd>
+            <div class="clearfix"></div>
         </dl>
-        <ul class="tree" style="height:200px">
-        <#if admin?has_content>
-    <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=5>
-        <#list page.list as a>
-            <li><a href="javascript:;" data-src="${a.filePath!}" onclick="$.bringBack({'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${width!}','height':'${height!}','${originalField!'originalName'}':'${a.originalName!}'});return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
-        </#list>
-    </@_logUploadList>
-        </ul>
-        <script>
-            var imagesSuffix=["png","gif","jpg","jpeg","bmp","svg"];
-            $('ul li a',$.pdialog.getCurrent()).hover(function(){
-                var filenames=$(this).text().toLowerCase().split('.');
-                if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
-                    if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
-                        $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
-                    }else{
-                        $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
-                    }
-                }
-            },function(){
-                $('.preview',$.pdialog.getCurrent()).hide();
-            });
-        </script>
-        </#if>
+        <div class="clearfix"></div>
+        <div class="tabs">
+            <div class="tabsHeader">
+                <div class="tabsHeaderContent">
+                    <ul>
+                        <li><a href="javascript:;" onclick="return false;"><@t.page 'upload.log'/></a></li>
+                        <li><a href="common/file_list.html?field=${field!}&originalField=${originalField!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="return false;"><@t.page 'webfile'/></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tabsContent unitBox">
+                <div class="pageContent">
+                    <ul class="tree" style="height:340px;">
+            <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=5>
+                <#list page.list as a>
+                    <li><a href="javascript:;" data-src="${a.filePath!}" onclick="$.bringBack({'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${width!}','height':'${height!}','${originalField!'originalName'}':'${a.originalName!}'});return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
+                </#list>
+            </@_logUploadList>
+                </ul>
+                <script>
+                    var imagesSuffix=["png","gif","jpg","jpeg","bmp","svg"];
+                    $('ul li a',$.pdialog.getCurrent()).hover(function(){
+                        var filenames=$(this).text().toLowerCase().split('.');
+                        if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+                            if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
+                                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
+                            }else{
+                                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
+                            }
+                        }
+                    },function(){
+                        $('.preview',$.pdialog.getCurrent()).hide();
+                    });
+                </script>
+                </div>
+                <div id="fileBox" style="height:340px;">
+                </div>
+            </div>
+        </div>
     </div>
     <div class="formBar">
         <ul>

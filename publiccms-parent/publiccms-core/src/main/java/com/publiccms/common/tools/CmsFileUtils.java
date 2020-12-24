@@ -90,13 +90,26 @@ public class CmsFileUtils {
      * @return file info list
      */
     public static List<FileInfo> getFileList(String dirPath, String orderField) {
+        return getFileList(dirPath, true, orderField);
+    }
+
+    /**
+     * 获取目录下文件列表
+     *
+     * @param dirPath
+     * @param useFilter
+     * @param orderField
+     * @return file info list
+     */
+    public static List<FileInfo> getFileList(String dirPath, boolean useFilter, String orderField) {
         List<FileInfo> fileList = new ArrayList<>();
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(Paths.get(dirPath))) {
             for (Path entry : stream) {
                 Path fileNamePath = entry.getFileName();
                 if (null != fileNamePath) {
                     String fileName = fileNamePath.toString();
-                    if (!fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
+                    if (!useFilter
+                            || !fileName.endsWith(".data") && !TemplateComponent.INCLUDE_DIRECTORY.equalsIgnoreCase(fileName)) {
                         BasicFileAttributes attrs = Files.readAttributes(entry, BasicFileAttributes.class);
                         fileList.add(new FileInfo(fileName, attrs.isDirectory(), attrs));
                     }

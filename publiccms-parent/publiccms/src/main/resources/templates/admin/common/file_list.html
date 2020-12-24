@@ -1,0 +1,92 @@
+<#function fileType fileName>
+    <#assign fileSuffix = fileName?keep_after_last('.')/>
+    <#switch fileSuffix>
+        <#case 'jpg'>
+        <#case 'png'>
+        <#case 'bmp'>
+        <#case 'gif'>
+        <#case 'jpeg'>
+        <#case 'svg'>
+            <#return 'image'/><#break>
+        <#case 'ogg'>
+        <#case 'webm'>
+        <#case 'mpeg'>
+        <#case 'mpg'>
+        <#case 'mov'>
+        <#case 'rm'>
+        <#case 'ram'>
+        <#case 'avi'>
+        <#case 'wmv'>
+        <#case 'mp4'>
+        <#case 'flv'>
+        <#case 'swf'>
+        <#case 'mkv'>
+            <#return 'video'/><#break>
+        <#case 'wav'>
+        <#case 'acc'>
+        <#case 'mid'>
+        <#case 'midi'>
+        <#case 'wma'>
+        <#case 'mpga'>
+        <#case 'mp3'>
+            <#return 'audio'/><#break>
+        <#default>
+            <#return 'other'/>
+    </#switch>
+</#function >
+<div class="pageContent">
+    <table class="table" width="100%" layoutH>
+        <thead>
+            <tr>
+                <th><@t.page 'use'/></th>
+                <th width="30"></th>
+                <th><@t.page 'name'/></th>
+                <th><@t.page 'modified_date'/></th>
+                <th><@t.page 'create_date'/></th>
+                <th><@t.page 'file.size'/></th>
+            </tr>
+        </thead>
+        <tbody>
+    <@_webFileList path=path>
+        <#if path?has_content>
+            <tr>
+                <td></td>
+                <td class="tree"><div class="folder_expandable"></div></td>
+                <td>
+                    <a href="common/file_list.html?path=${path?keep_before_last('/')?url}&field=${field!}&originalField=${originalField!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${path?keep_before_last('/')}">
+                        <@t.page 'button.return'/>
+                    </a>
+                </td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </#if>
+        <#list list as a>
+        <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
+            <tr>
+                <td>
+                    <#if !a.directory && (!fileTypes?has_content || fileTypes = fileType(a.fileName))>
+                        <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${filePath!}','fileType':'${fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${a.fileName!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                    </#if>
+                </td>
+                <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
+                <td>
+                    <#if a.directory>
+                        <a href="common/file_list.html?path=${filePath?url}&field=${field!}&originalField=${originalField!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${filePath}">
+                            ${a.fileName}
+                        </a>
+                    <#else>
+                        ${a.fileName}
+                    </#if>
+                </td>
+                <td>${a.lastModifiedTime?datetime}</td>
+                <td>${a.creationTime?datetime}</td>
+                <td><@t.fileSize a.size/></td>
+            </tr>
+        </#list>
+    </@_webFileList>
+        </tbody>
+    </table>
+</div>

@@ -22,9 +22,8 @@ public class WebFileListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
-        handler.put("list",
-                CmsFileUtils.getFileList(siteComponent.getWebFilePath(getSite(handler), path), handler.getString("orderField")))
-                .render();
+        handler.put("list", CmsFileUtils.getFileList(siteComponent.getWebFilePath(getSite(handler), path), false,
+                handler.getString("orderField"))).render();
     }
 
     @Override
