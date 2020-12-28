@@ -105,7 +105,6 @@ public class WebContextInterceptor implements HandlerInterceptor {
                                 && null != (user = sysUserService.getEntity(userId)) && !user.isDisabled()) {
                             user.setPassword(null);
                             String ip = RequestUtils.getIpAddress(request);
-                            sysUserService.updateLoginStatus(user.getId(), ip);
                             logLoginService.save(new LogLogin(site.getId(), user.getName(), user.getId(), ip, channel, true,
                                     CommonUtils.getDate(), null));
                         } else {
