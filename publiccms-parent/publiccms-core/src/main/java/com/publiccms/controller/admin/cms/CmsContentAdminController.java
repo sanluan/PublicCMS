@@ -176,12 +176,17 @@ public class CmsContentAdminController {
         }
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
         if (null == entity.getParentId() && !entity.isOnlyUrl()) {
-            service.updateQuote(site.getId(), entity.getId(), contentParameters, cmsModel, category, attribute);
+            Set<Integer> categoryIdsSet = service.updateQuote(site.getId(), entity.getId(), contentParameters, cmsModel, category,
+                    attribute);
             if (CommonUtils.notEmpty(contentParameters.getCategoryIds())) {
                 List<CmsCategory> categoryList = categoryService.getEntitys(
                         contentParameters.getCategoryIds().toArray(new Integer[contentParameters.getCategoryIds().size()]));
                 service.saveQuote(site.getId(), entity.getId(), contentParameters, categoryList, cmsModel, category, attribute);
                 if (null != checked && checked) {
+                    if (!categoryIdsSet.isEmpty()) {
+                        categoryList
+                                .addAll(categoryService.getEntitys(categoryIdsSet.toArray(new Integer[categoryIdsSet.size()])));
+                    }
                     for (CmsCategory c : categoryList) {
                         templateComponent.createCategoryFile(site, c, null, null);
                     }

@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Future;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -400,11 +402,13 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param cmsModel
      * @param category
      * @param attribute
+     * @return categoryIds set
      */
     @SuppressWarnings("unchecked")
-    public void updateQuote(short siteId, Serializable id, CmsContentParameters contentParameters, CmsModel cmsModel,
+    public Set<Integer> updateQuote(short siteId, Serializable id, CmsContentParameters contentParameters, CmsModel cmsModel,
             CmsCategory category, CmsContentAttribute attribute) {
         CmsContent entity = getEntity(id);
+        Set<Integer> categoryIds = new HashSet<>();
         if (null != entity) {
             CmsContentQuery query = new CmsContentQuery();
             query.setSiteId(siteId);
@@ -427,9 +431,11 @@ public class CmsContentService extends BaseService<CmsContent> {
                     quote.setHasImages(entity.isHasImages());
                 } else {
                     delete(quote.getId());
+                    categoryIds.add(quote.getCategoryId());
                 }
             }
         }
+        return categoryIds;
     }
 
     /**
