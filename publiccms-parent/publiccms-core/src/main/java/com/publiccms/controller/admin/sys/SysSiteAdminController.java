@@ -108,7 +108,7 @@ public class SysSiteAdminController {
                     || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.save(entity, domain, wild, roleName, deptName, userName, password);
+            service.save(entity, domain, null == wild ? false : wild, roleName, deptName, userName, password);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.site",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
