@@ -217,17 +217,22 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                     </dd>
                 </dl>
             </#if>
-            <div class="clearfix">
+            <div class="clearfix"></div>
             <#if model.hasImages||model.hasFiles>
                 <#include "../include_page/contentFiles.html"/>
                 <#if model.hasImages>
+                <fieldset>
+                    <legend><@t.page 'image_list'/></legend>
                     <@contentFiles true id!/>
+                </fieldset>
                 </#if>
                 <#if model.hasFiles>
+                <fieldset>
+                    <legend><@t.page 'attach_list'/></legend>
                     <@contentFiles false id!/>
+                </fieldset>
                 </#if>
             </#if>
-            </div>
         </#if>
             </div>
             <div class="pageFormContent" layoutH>
