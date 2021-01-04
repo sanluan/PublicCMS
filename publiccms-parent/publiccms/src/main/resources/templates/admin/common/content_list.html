@@ -6,8 +6,12 @@
 </@_sysDept>
 <@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!><#assign deptCategory=object!/></@_sysDeptCategory>
 <#if !dept?has_content||(!dept.ownsAllCategory&&!deptCategory?has_content)>
-    <#assign error='verify.notEquals.siteId'/>
-    <#include "../common/ajaxError.html"/>
+    <#if categoryId?has_content>
+        <#assign error='verify.notEquals.siteId'/>
+        <#include "../common/ajaxError.html"/>
+    <#else>
+        <div class="pageContent"></div>
+    </#if>
 <#else>
     <#if parentId?has_content>
         <@_content id=parentId><#assign parent=object/></@_content>
