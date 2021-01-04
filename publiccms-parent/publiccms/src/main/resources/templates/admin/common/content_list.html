@@ -5,7 +5,7 @@
     />
 </@_sysDept>
 <@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!''><#assign deptCategory=object!/></@_sysDeptCategory>
-<#if deptCategory?has_content&&deptCategory>
+<#if deptCategory?has_content&&deptCategory || dept?has_content && dept.ownsAllCategory>
     <#if parentId?has_content>
         <@_content id=parentId><#assign parent=object/></@_content>
     </#if>
