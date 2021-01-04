@@ -4,11 +4,8 @@
         containChild=object.ownsAllCategory
     />
 </@_sysDept>
-<@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!><#assign deptCategory=object!/></@_sysDeptCategory>
-<#if !dept?has_content||(!dept.ownsAllCategory&&!deptCategory?has_content)>
-    <#assign error='verify.notEquals.siteId'/>
-    <#include "../common/ajaxError.html"/>
-<#else>
+<@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!''><#assign deptCategory=object!/></@_sysDeptCategory>
+<#if deptCategory?has_content&&deptCategory || dept?has_content && dept.ownsAllCategory>
     <#if parentId?has_content>
         <@_content id=parentId><#assign parent=object/></@_content>
     </#if>
@@ -228,4 +225,6 @@
     <#include "../include_page/page.html"/>
 </div>
 </@_contentList>
+<#else>
+    <div class="pageContent"><#if categoryId?has_content><@t.message 'verify.notEquals.siteId'/></#if></div>
 </#if>
