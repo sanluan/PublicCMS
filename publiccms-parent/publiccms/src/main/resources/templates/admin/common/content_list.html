@@ -7,8 +7,7 @@
 <@_sysDeptCategory deptId=admin.deptId!'' categoryId=categoryId!><#assign deptCategory=object!/></@_sysDeptCategory>
 <#if !dept?has_content||(!dept.ownsAllCategory&&!deptCategory?has_content)>
     <#if categoryId?has_content>
-        <#assign error='verify.notEquals.siteId'/>
-        <#include "../common/ajaxError.html"/>
+        <div class="pageContent"><@t.message 'verify.notEquals.siteId'/></div>
     <#else>
         <div class="pageContent"></div>
     </#if>
