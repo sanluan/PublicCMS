@@ -61,7 +61,7 @@
                     <dd>
                         <input name="categoryId" type="hidden" value="${categoryId!}"/>
                         <label style="width:auto">${(category.name)!}</label>
-                   <#if !parentId?has_content && !model.onlyUrl>
+                   <#if !parentId?has_content>
                         <input name="quoteCategoryId" type="hidden"/>
                         <input name="categoryName" type="hidden"/>
                         <div class="tagsBox categoryIds"></div>
@@ -69,7 +69,7 @@
                     </#if>
                     </dd>
                 </dl>
-                    <#if !parentId?has_content && !model.onlyUrl>
+                    <#if !parentId?has_content>
 <script>
 $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(){
     addCategory($('input[name=\'quoteCategoryId\']',navTab.getCurrentPanel()).val(), $(this).val(), null);

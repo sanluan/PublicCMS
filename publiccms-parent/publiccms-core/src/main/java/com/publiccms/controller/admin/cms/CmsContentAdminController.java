@@ -175,7 +175,7 @@ public class CmsContentAdminController {
             service.check(site.getId(), admin, new Long[] { entity.getId() });
         }
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
-        if (null == entity.getParentId() && !entity.isOnlyUrl()) {
+        if (null == entity.getParentId() && null == entity.getQuoteContentId()) {
             Set<Integer> categoryIdsSet = service.updateQuote(site.getId(), entity.getId(), contentParameters, cmsModel, category,
                     attribute);
             if (CommonUtils.notEmpty(contentParameters.getCategoryIds())) {
