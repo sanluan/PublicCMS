@@ -36,10 +36,9 @@ public class MyContentListDirective extends AbstractAppDirective {
         PageHandler page = service.getPage(
                 new CmsContentQuery(site.getId(), handler.getIntegerArray("status"), handler.getInteger("categoryId"),
                         handler.getIntegerArray("categoryIds"), false, handler.getStringArray("modelIds"),
-                        handler.getLong("parentId"), handler.getBoolean("emptyParent"), handler.getLong("quoteId"),
-                        handler.getBoolean("quote"), handler.getBoolean("onlyUrl"), handler.getBoolean("hasImages"),
-                        handler.getBoolean("hasCover"), handler.getBoolean("hasFiles"), null, user.getId(), null,
-                        handler.getDate("endPublishDate"), null),
+                        handler.getLong("parentId"), handler.getBoolean("emptyParent"), handler.getBoolean("onlyUrl"),
+                        handler.getBoolean("hasImages"), handler.getBoolean("hasCover"), handler.getBoolean("hasFiles"), null,
+                        user.getId(), null, handler.getDate("endPublishDate"), null),
                 handler.getBoolean("containChild"), null, null, handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", handler.getInteger("count", 30)));
         @SuppressWarnings("unchecked")

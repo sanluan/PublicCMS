@@ -5,6 +5,7 @@ import java.io.Serializable;
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
 
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.index.Term;
@@ -230,23 +231,15 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                         queryEntitry.getCategoryIds());
             }
             if (null != queryEntitry.getEmptyParent()) {
-                if(queryEntitry.getEmptyParent()) {
+                if (queryEntitry.getEmptyParent()) {
                     queryHandler.condition("bean.parentId is null");
-                }else {
+                } else {
                     queryHandler.condition("bean.parentId is not null");
                 }
             }
         }
         if (null != queryEntitry.getDisabled()) {
             queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", queryEntitry.getDisabled());
-        }
-        if (CommonUtils.notEmpty(queryEntitry.getQuoteId())) {
-            queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId",
-                    queryEntitry.getQuoteId());
-        } else {
-            if (null != queryEntitry.getEmptyQuote() && queryEntitry.getEmptyQuote()) {
-                queryHandler.condition("bean.quoteContentId is null");
-            }
         }
         if (CommonUtils.notEmpty(queryEntitry.getModelIds())) {
             queryHandler.condition("bean.modelId in (:modelIds)").setParameter("modelIds", queryEntitry.getModelIds());
@@ -318,6 +311,18 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         }
         queryHandler.order("bean.id desc");
         return getPage(queryHandler, pageIndex, pageSize);
+    }
+
+    @SuppressWarnings("unchecked")
+    public List<CmsContent> getListByQuoteId(Short siteId, Long quoteId) {
+        QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
+        if (CommonUtils.notEmpty(siteId)) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        if (CommonUtils.notEmpty(quoteId)) {
+            queryHandler.condition("bean.quoteContentId = :quoteContentId").setParameter("quoteContentId", quoteId);
+        }
+        return (List<CmsContent>) getList(queryHandler);
     }
 
     @Override

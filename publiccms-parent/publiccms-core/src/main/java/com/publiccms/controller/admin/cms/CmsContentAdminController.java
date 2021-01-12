@@ -569,8 +569,7 @@ public class CmsContentAdminController {
     private boolean publish(SysSite site, CmsContent entity, SysUser admin) {
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-        if (null != categoryModel && (admin.isOwnsAllContent() || entity.getUserId() == admin.getId())
-                && (!entity.isOnlyUrl() || null != entity.getQuoteContentId())) {
+        if (null != categoryModel && (admin.isOwnsAllContent() || entity.getUserId() == admin.getId())) {
             return templateComponent.createContentFile(site, entity, null, categoryModel);
         }
         return false;
