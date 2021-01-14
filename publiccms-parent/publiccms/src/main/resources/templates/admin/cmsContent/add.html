@@ -75,13 +75,13 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
     addCategory($('input[name=\'quoteCategoryId\']',navTab.getCurrentPanel()).val(), $(this).val(), null);
 });
 <#if a?has_content>
-<@_contentList quoteId=a.id pageSize=100>
-    <#list page.list as a>
+<@_contentQuoteList quoteId=a.id>
+    <#list list as a>
     <@_category id=a.categoryId>
     addCategory('${a.categoryId}','${object.name}','${a.id}');
     </@_category>
     </#list>
-</@_contentList>
+</@_contentQuoteList>
 </#if>
 </script>
                     </#if>

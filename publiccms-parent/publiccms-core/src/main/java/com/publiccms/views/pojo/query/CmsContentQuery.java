@@ -12,6 +12,7 @@ public class CmsContentQuery implements java.io.Serializable {
     private Short siteId;
     private Integer[] status;
     private Integer categoryId;
+    private Integer quoteId;
     private Integer[] categoryIds;
     private Boolean disabled;
     private String[] modelIds;
@@ -100,6 +101,21 @@ public class CmsContentQuery implements java.io.Serializable {
      */
     public void setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
+    }
+    
+    /**
+     * @return the quoteId
+     */
+    public Integer getQuoteId() {
+        return quoteId;
+    }
+    
+    /**
+     * @param quoteId
+     *            the quoteId to set
+     */
+    public void setQuoteId(Integer quoteId) {
+        this.quoteId = quoteId;
     }
 
     /**
