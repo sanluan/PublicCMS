@@ -13,9 +13,13 @@ import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.component.site.VisitComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
+import com.publiccms.logic.service.log.LogVisitDayService;
+import com.publiccms.logic.service.log.LogVisitService;
+import com.publiccms.logic.service.log.LogVisitSessionService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
@@ -36,6 +40,12 @@ public class ScheduledTaskComponent {
     @Autowired
     private SysUserTokenService userTokenService;
     @Autowired
+    private LogVisitService logVisitService;
+    @Autowired
+    private LogVisitSessionService logVisitSessionService;
+    @Autowired
+    private LogVisitDayService logVisitDayService;
+    @Autowired
     private LogLoginService logLoginService;
     @Autowired
     private LogOperateService logOperateService;
@@ -43,6 +53,8 @@ public class ScheduledTaskComponent {
     private LogTaskService logTaskService;
     @Autowired
     private CacheComponent cacheComponent;
+    @Autowired
+    private VisitComponent visitComponent;
     @Autowired
     private StatisticsComponent statisticsComponent;
 
@@ -56,6 +68,54 @@ public class ScheduledTaskComponent {
             appTokenService.delete(now);
             emailTokenService.delete(now);
             userTokenService.delete(now);
+        }
+    }
+
+    /**
+     * 10秒种清理访问日志
+     */
+    @Scheduled(fixedDelay = 10 * 1000L)
+    public void clearVisitLog() {
+        if (CmsVersion.isInitialized()) {
+            synchronized (visitComponent) {
+                visitComponent.clear();
+            }
+        }
+    }
+
+    /**
+     * 每分钟清理缓存
+     */
+    @Scheduled(cron = "10 * * * * ?")
+    public void dealLastMinuteVisitLog() {
+        if (CmsVersion.isInitialized()) {
+            synchronized (visitComponent) {
+                visitComponent.dealLastMinuteVisitLog();
+            }
+        }
+    }
+
+    /**
+     * 每小时清理缓存
+     */
+    @Scheduled(cron = "0 1 * * * ?")
+    public void dealLastHourVisitLog() {
+        if (CmsVersion.isInitialized()) {
+            synchronized (visitComponent) {
+                visitComponent.dealLastHourVisitLog();
+            }
+        }
+    }
+
+    /**
+     * 每天清理缓存
+     */
+    @Scheduled(cron = "0 10 0 * * ?")
+    public void dealLastDayVisitLog() {
+        if (CmsVersion.isInitialized()) {
+            synchronized (visitComponent) {
+                visitComponent.dealLastDayVisitLog();
+            }
         }
     }
 
@@ -93,6 +153,10 @@ public class ScheduledTaskComponent {
             logLoginService.delete(null, date);
             logOperateService.delete(null, date);
             logTaskService.delete(null, date);
+            logVisitDayService.delete(date);
+            date = DateUtils.addMonths(CommonUtils.getDate(), -3);
+            logVisitSessionService.delete(date);
+            logVisitService.delete(date);
         }
     }
 }

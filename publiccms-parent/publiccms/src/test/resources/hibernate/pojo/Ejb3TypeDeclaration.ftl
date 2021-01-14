@@ -11,5 +11,6 @@
 <#if uniqueConstraint?has_content>
     , uniqueConstraints = ${uniqueConstraint} 
 </#if>)
+@${pojo.importType("org.hibernate.annotations.DynamicUpdate")}
 </#if>
 </#if>

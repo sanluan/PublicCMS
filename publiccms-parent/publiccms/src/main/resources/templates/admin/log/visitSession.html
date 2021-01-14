@@ -1,0 +1,59 @@
+<@_logVisitSessionList sessionId=sessionId startVisitDate=startVisitDate endVisitDate=endVisitDate orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li class="colspan">
+                    <label>访问日期:</label>
+                    <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endVisitDate!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                    	<button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        </ul>
+    </div>
+    <table class="list" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th>会话</th>
+                <th orderField="lastVisitDate" class="<#if orderField??&&'lastVisitDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次访问时间</th>
+                <th>首次访问时间</th>
+                <th>IP</th>
+                <th>来源网址</th>
+                <th>搜索词</th>
+                <th>PV</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
+                <td>${a.id.sessionId!}</td>
+                <td>${a.lastVisitDate!}</td>
+                <td>${a.firstVisitDate!}</td>
+                <td>${a.ip!}</td>
+                <td>${a.refererUrl!}</td>
+                <td>${a.refererKeyword!}</td>
+                <td>${a.pv!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_logVisitSessionList>

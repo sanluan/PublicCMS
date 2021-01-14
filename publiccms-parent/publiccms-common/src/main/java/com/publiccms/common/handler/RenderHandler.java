@@ -90,6 +90,14 @@ public interface RenderHandler {
     /**
      * @param name
      * 
+     * @return byte value
+     * @throws Exception
+     */
+    Byte getByte(String name) throws Exception;
+
+    /**
+     * @param name
+     * 
      * @return short value
      * @throws Exception
      */

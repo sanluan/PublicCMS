@@ -103,6 +103,32 @@ public class TemplateModelUtils {
 
     /**
      * @param model
+     * @return byte value
+     * @throws TemplateModelException
+     */
+    public static Byte converByte(TemplateModel model) throws TemplateModelException {
+        if (null != model) {
+            if (model instanceof TemplateSequenceModel) {
+                model = ((TemplateSequenceModel) model).get(0);
+            }
+            if (model instanceof TemplateNumberModel) {
+                return ((TemplateNumberModel) model).getAsNumber().byteValue();
+            } else if (model instanceof TemplateScalarModel) {
+                String s = ((TemplateScalarModel) model).getAsString();
+                if (CommonUtils.notEmpty(s)) {
+                    try {
+                        return Byte.parseByte(s);
+                    } catch (NumberFormatException e) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param model
      * @return short value
      * @throws TemplateModelException
      */
