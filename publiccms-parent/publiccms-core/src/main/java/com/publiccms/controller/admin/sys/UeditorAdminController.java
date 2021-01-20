@@ -68,7 +68,7 @@ public class UeditorAdminController {
     protected static final String FIELD_NAME = "file";
     protected static final String SCRAW_TYPE = ".jpg";
 
-    protected static final String[] IMAGE_ALLOW_FILES = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg"};
+    protected static final String[] IMAGE_ALLOW_FILES = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp", ".svg" };
 
     protected static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
             ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
@@ -124,8 +124,7 @@ public class UeditorAdminController {
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
-    @ResponseBody
-    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
             HttpServletRequest request, ModelMap model) {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
@@ -145,12 +144,17 @@ public class UeditorAdminController {
                     map.put("url", fileName);
                     map.put("type", suffix);
                     map.put("original", originalName);
-                    return map;
+                    model.addAttribute("result", map);
                 } catch (IllegalStateException | IOException e) {
+                    model.addAttribute("result", getResultMap(false));
                 }
+            } else {
+                model.addAttribute("result", getResultMap(false));
             }
+        } else {
+            model.addAttribute("result", getResultMap(false));
         }
-        return getResultMap(false);
+        return "common/mapResult";
     }
 
     /**

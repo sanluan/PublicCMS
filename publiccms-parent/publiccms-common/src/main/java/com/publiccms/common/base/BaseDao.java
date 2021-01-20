@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.search.highlight.Highlighter;
 import org.apache.lucene.search.highlight.QueryScorer;
 import org.apache.lucene.search.highlight.SimpleHTMLFormatter;
@@ -520,7 +521,8 @@ public abstract class BaseDao<E> {
             } else {
                 formatter = new SimpleHTMLFormatter();
             }
-            QueryScorer queryScorer = new RemoteMatchQueryScorer(fullTextQuery.getLuceneQuery(), defaultFieldName);
+            Analyzer analyzer = getFullTextSession().getSearchFactory().getAnalyzer("cms");
+            QueryScorer queryScorer = new RemoteMatchQueryScorer(analyzer, fullTextQuery.getLuceneQuery(), defaultFieldName);
             Highlighter highlighter = new Highlighter(formatter, queryScorer);
             for (E e : resultList) {
                 for (String fieldName : highLighterFieldNames) {
@@ -529,8 +531,7 @@ public abstract class BaseDao<E> {
                     String hightLightFieldValue = null;
                     if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
                         String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME);
-                        hightLightFieldValue = highlighter.getBestFragment(
-                                getFullTextSession().getSearchFactory().getAnalyzer("cms"), fieldName, safeValue);
+                        hightLightFieldValue = highlighter.getBestFragment(analyzer, fieldName, safeValue);
                         if (CommonUtils.notEmpty(hightLightFieldValue)) {
                             ReflectionUtils.invokeMethod(
                                     BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
