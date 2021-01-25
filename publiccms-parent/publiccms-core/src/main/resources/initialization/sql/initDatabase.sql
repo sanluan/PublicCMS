@@ -138,7 +138,7 @@ CREATE TABLE `cms_content` (
   KEY `cms_content_scores` (`scores`,`comments`,`clicks`),
   KEY `cms_content_only_url` (`only_url`,`has_images`,`has_files`,`user_id`),
   KEY `cms_content_status` (`site_id`,`status`,`category_id`,`disabled`,`model_id`,`parent_id`,`sort`,`publish_date`,`expiry_date`),
-  KEY `cms_content_quote_content_id`` (`site_id`, `quote_content_id`)
+  KEY `cms_content_quote_content_id` (`site_id`, `quote_content_id`)
 ) COMMENT='内容';
 
 -- ----------------------------
