@@ -7,11 +7,18 @@
         </ul>
     </div>
     <div class="pageFormContent" layoutH>
-        <dl class="nowrap">
+        <dl>
             <dt><@t.page 'dict'/>:</dt>
             <dd>
                 <textarea name="dict" cols="50" rows="20">${getDict()!}</textarea>
                 <span class="info"><@t.page 'dict.description'/></span>
+            </dd>
+        </dl>
+        <dl>
+            <dt><@t.page 'skip_word'/>:</dt>
+            <dd>
+                <textarea name="skipWord" cols="50" rows="20">${getSkipWord()!}</textarea>
+                <span class="info"><@t.page 'skip_word.description'/></span>
             </dd>
         </dl>
     </div>

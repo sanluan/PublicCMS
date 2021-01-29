@@ -9,6 +9,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -79,6 +80,27 @@ public class SmartcnDictUtils {
     }
 
     /**
+     * 删除分词
+     * 
+     * @param tfsMap
+     * @param skipWordList 
+     */
+    public static void skipWord(Map<String, Map<String, Integer>> tfsMap, List<String> skipWordList) {
+        if (null != skipWordList) {
+            for (String word : skipWordList) {
+                String ch = word.substring(0, 1);
+                Map<String, Integer> temp = tfsMap.get(ch);
+                if (null != temp) {
+                    temp.remove(word.substring(1));
+                    if (temp.isEmpty()) {
+                        tfsMap.remove(ch);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
      * 增加新的分词
      * 
      * @param tfsMap
@@ -123,11 +145,13 @@ public class SmartcnDictUtils {
         Set<String> keys = source.keySet();
         Map<String, Map<String, Integer>> charTermFreqsMap = new HashMap<>();
         for (String key : keys) {
-            Integer freq = source.get(key);
-            String ch = key.substring(0, 1);
-            Map<String, Integer> tfs = charTermFreqsMap.computeIfAbsent(ch, k -> new HashMap<>());
-            tfs.put(key.substring(1), freq);
-            charTermFreqsMap.put(ch, tfs);
+            if (null != key && key.length() > 0) {
+                Integer freq = source.get(key);
+                String ch = key.substring(0, 1);
+                Map<String, Integer> tfs = charTermFreqsMap.computeIfAbsent(ch, k -> new HashMap<>());
+                tfs.put(key.substring(1), freq);
+                charTermFreqsMap.put(ch, tfs);
+            }
         }
         return charTermFreqsMap;
     }

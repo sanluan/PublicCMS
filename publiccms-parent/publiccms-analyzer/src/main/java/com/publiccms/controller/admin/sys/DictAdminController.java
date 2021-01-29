@@ -2,7 +2,9 @@ package com.publiccms.controller.admin.sys;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -49,14 +51,15 @@ public class DictAdminController {
      * @param site
      * @param admin
      * @param dict
+     * @param skipWord 
      * @param request
      * @param model
      * @return view name
      */
     @RequestMapping("save")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String dict, HttpServletRequest request,
-            ModelMap model) {
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String dict, String skipWord,
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -70,7 +73,15 @@ public class DictAdminController {
                     wordMap.put(word, 10);
                 }
             }
-            AnalyzerDictUtils.generate(dictDir, wordMap);
+            File skipWordFile = new File(dictDir + AnalyzerDictUtils.TXT_SKIPWORD);
+            FileUtils.writeStringToFile(skipWordFile, dict);
+            List<String> skipWordList = new ArrayList<>();
+            for (String word : FileUtils.readLines(dictFile)) {
+                if (!word.startsWith("#")) {
+                    skipWordList.add(word);
+                }
+            }
+            AnalyzerDictUtils.generate(dictDir, wordMap, null);
             DictionaryReloader.reload(dictDir);
         } catch (IOException | ClassNotFoundException e1) {
         }
