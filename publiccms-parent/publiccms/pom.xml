@@ -23,12 +23,7 @@
         </dependency>
         <dependency>
             <groupId>com.publiccms</groupId>
-            <artifactId>publiccms-redis</artifactId>
-            <version>V4.0.202011.b</version>
-        </dependency>
-        <dependency>
-            <groupId>com.publiccms</groupId>
-            <artifactId>publiccms-j2cache</artifactId>
+            <artifactId>publiccms-cache</artifactId>
             <version>V4.0.202011.b</version>
         </dependency>
         <dependency>

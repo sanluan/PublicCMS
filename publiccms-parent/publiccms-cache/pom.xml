@@ -1,0 +1,32 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.publiccms</groupId>
+        <artifactId>publiccms-parent</artifactId>
+        <version>V4.0.202011.b</version>
+    </parent>
+    <artifactId>publiccms-cache</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.publiccms</groupId>
+            <artifactId>publiccms-common</artifactId>
+            <version>V4.0.202011.b</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/net.oschina.j2cache/j2cache-core -->
+        <dependency>
+            <groupId>net.oschina.j2cache</groupId>
+            <artifactId>j2cache-core</artifactId>
+            <version>2.8.2-release</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+    </dependencies>
+</project>

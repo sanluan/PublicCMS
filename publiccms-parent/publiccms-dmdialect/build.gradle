@@ -1,7 +1,0 @@
-group = 'com.publiccms'
-
-dependencies {
-    compile (
-        "org.hibernate:hibernate-core:${hibernateVersion}"
-    )
-}
