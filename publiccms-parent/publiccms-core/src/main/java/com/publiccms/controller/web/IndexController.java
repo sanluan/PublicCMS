@@ -276,13 +276,19 @@ public class IndexController {
             if (parameterType.isArray() && CommonUtils.notEmpty(values)) {
                 Set<Long> set = new TreeSet<>();
                 for (String s : values) {
-                    try {
-                        set.add(Long.valueOf(s));
-                    } catch (NumberFormatException e) {
-                        return false;
+                    if (CommonUtils.notEmpty(s)) {
+                        try {
+                            set.add(Long.valueOf(s));
+                        } catch (NumberFormatException e) {
+                            return false;
+                        }
                     }
                 }
-                model.addAttribute(parameterName, set.toArray(new Long[set.size()]));
+                if (set.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, set.toArray(new Long[set.size()]));
+                }
             } else if (CommonUtils.notEmpty(values) && CommonUtils.notEmpty(values[0])) {
                 try {
                     model.addAttribute(parameterName, Long.valueOf(values[0]));
@@ -315,7 +321,11 @@ public class IndexController {
                     templateComponent.initContentUrl(site, e);
                     templateComponent.initContentCover(site, e);
                 });
-                model.addAttribute(parameterName, entityList);
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsContent entity = contentService.getEntity(Long.valueOf(values[0]));
@@ -354,7 +364,11 @@ public class IndexController {
                 entityList.forEach(e -> {
                     templateComponent.initCategoryUrl(site, e);
                 });
-                model.addAttribute(parameterName, entityList);
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsCategory entity = categoryService.getEntity(Integer.valueOf(values[0]));
@@ -384,7 +398,11 @@ public class IndexController {
                 List<SysUser> entityList = userService.getEntitys(set.toArray(new Long[set.size()]));
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
-                model.addAttribute(parameterName, entityList);
+                if (entityList.isEmpty() && parameterType.isRequired()) {
+                    return false;
+                } else {
+                    model.addAttribute(parameterName, entityList);
+                }
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     SysUser entity = userService.getEntity(Long.valueOf(values[0]));
