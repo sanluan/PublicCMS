@@ -315,6 +315,23 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param user
+     * @param id 
+     * @return result
+     */
+    public CmsContent check(short siteId, SysUser user, Serializable id) {
+        CmsContent entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId() && STATUS_DRAFT != entity.getStatus()
+                && STATUS_NORMAL != entity.getStatus() && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+            entity.setStatus(STATUS_NORMAL);
+            entity.setCheckUserId(user.getId());
+            entity.setCheckDate(CommonUtils.getDate());
+        }
+        return entity;
+    }
+
+    /**
+     * @param siteId
+     * @param user
      * @param ids
      * @return results list
      */

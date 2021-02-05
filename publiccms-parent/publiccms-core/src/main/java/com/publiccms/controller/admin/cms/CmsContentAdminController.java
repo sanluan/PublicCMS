@@ -172,7 +172,7 @@ public class CmsContentAdminController {
         entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity.getId(), contentParameters, cmsModel,
                 category.getExtendId(), attribute);
         if (null != checked && checked) {
-            service.check(site.getId(), admin, new Long[] { entity.getId() });
+            entity = service.check(site.getId(), admin, entity.getId());
         }
         templateComponent.createContentFile(site, entity, category, categoryModel);// 静态化
         if (null == entity.getParentId() && null == entity.getQuoteContentId()) {
