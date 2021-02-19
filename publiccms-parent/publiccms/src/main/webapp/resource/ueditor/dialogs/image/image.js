@@ -219,8 +219,10 @@
             if (src !== $G("url").value) $G("url").value = src;
             if(src) {
                 /* 设置表单内容 */
-                $G("width").value = '';
-                $G("height").value = '';
+                $G("width").value = img.width || '';
+                $G("width").title  = img.naturalWidth;
+                $G("height").value = img.height || '';
+                $G("height").title  = img.naturalHeight;
                 $G("border").value = img.getAttribute("border") || '0';
                 $G("vhSpace").value = img.getAttribute("vspace") || '0';
                 $G("title").value = img.title || img.alt || '';
@@ -232,7 +234,9 @@
         getData: function(){
             var data = {};
             for(var k in this.dom){
-                data[k] = this.dom[k].value;
+                if(k!='width' && k!='height' || $G(k).title !=this.dom[k].value){
+                    data[k] = this.dom[k].value;
+                }
             }
             return data;
         },
@@ -260,6 +264,17 @@
         getInsertList: function () {
             var data = this.getData();
             if(data['url']) {
+                var style="";
+                if(data['width']){
+                    style+="width:" + data['width'] + "px;";
+                } else {
+                    style+="width:auto;";
+                }
+                if(data['height']){
+                    style+="height:" + data['height'] + "px;";
+                } else {
+                    style+="height:auto;";
+                }
                 return [{
                     src: data['url'],
                     _src: data['url'],
@@ -269,7 +284,8 @@
                     floatStyle: data['align'] || '',
                     vspace: data['vhSpace'] || '',
                     title: data['title'] || '',
-                    alt: data['title'] || ''
+                    alt: data['title'] || '',
+                    style: style
                 }];
             } else {
                 return [];
