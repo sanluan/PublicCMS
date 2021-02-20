@@ -12,6 +12,6 @@ CKEDITOR.editorConfig = function( config ) {
     config.extraPlugins = 'codesnippet,lineheight';
     odeSnippet_theme: 'zenburn';
 
-    config.filebrowserUploadUrl = base + '/ckeditor/upload.json';//定义图片上传的地址
+    config.filebrowserUploadUrl = base + '/ckeditor/upload';//定义图片上传的地址
     config.filebrowserBrowseUrl = base + '/cmsWebFile/browse.html?type=image';  //定义图片的浏览服务器窗口.
 };

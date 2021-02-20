@@ -6811,6 +6811,7 @@ KindEditor.plugin('emoticons', function(K) {
 KindEditor.plugin('filemanager', function(K) {
 	var self = this, name = 'filemanager',
 		fileManagerJson = K.undef(self.fileManagerJson, self.basePath + 'php/file_manager_json.php'),
+		formatUploadUrl = K.undef(self.formatUploadUrl, true),
 		imgPath = self.pluginsPath + name + '/images/',
 		lang = self.lang(name + '.');
 	function makeFileTitle(filename, filesize, datetime) {
@@ -6876,8 +6877,11 @@ KindEditor.plugin('filemanager', function(K) {
 		}
 		var elList = [];
 		function bindEvent(el, result, data, createFunc) {
-			var fileUrl = K.formatUrl(result.current_url + data.filename, 'absolute'),
-				dirPath = encodeURIComponent(result.current_dir_path + data.filename + '/');
+			var fileUrl = result.current_url + data.filename,
+                dirPath = encodeURIComponent(result.current_dir_path + data.filename + '/');
+            if (formatUploadUrl) {
+                fileUrl = K.formatUrl(fileUrl, 'absolute');
+            }
 			if (data.is_dir) {
 				el.click(function(e) {
 					reloadPage(dirPath, orderTypeBox.val(), createFunc);

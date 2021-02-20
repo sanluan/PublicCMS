@@ -12,7 +12,7 @@
 <@_model id=modelId!><#assign model=object/></@_model>
 <script>
 </script>
-<form method="post" autocomplete="off" action="cmsContent/save.do?callbackType=closeCurrent&navTabId=cmsContent/list&forwardUrl=" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsContent/save?callbackType=closeCurrent&navTabId=cmsContent/list&forwardUrl=" class="pageForm required-validate" onsubmit="clickAddTag(); return validateCallback(this,navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input name="parentId" type="hidden" value="${parentId!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>

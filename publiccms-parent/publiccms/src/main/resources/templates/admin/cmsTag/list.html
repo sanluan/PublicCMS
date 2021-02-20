@@ -31,7 +31,7 @@
         <ul class="toolBar">
             <li><a href="cmsTag/add.html" target="navTab" rel="cmsTag/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'tag.add'/></a></li>
             <li><a href="cmsTag/add.html?id={sid}" target="navTab" rel="cmsTag/edit"><i class="icon-edit icon-large"></i> <@t.page 'tag.edit'/></a></li>
-            <li><a href="cmsTag/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsTag/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -60,7 +60,7 @@
                 <td>${a.searchCount!}</td>
                 <td>
                     <a href="cmsTag/add.html?id=${a.id}" target="navTab" rel="cmsTag/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'tag.edit'/>"><@t.page 'button.edit'/></a>|
-                    <a href="cmsTag/delete.do?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsTag/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

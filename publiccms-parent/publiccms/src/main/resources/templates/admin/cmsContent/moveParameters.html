@@ -28,7 +28,7 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
     $.pdialog.closeCurrent();
 }
 </script>
-<form action="cmsContent/move.do?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+<form action="cmsContent/move?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="categoryId" value=""/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="idsToMove"></div>

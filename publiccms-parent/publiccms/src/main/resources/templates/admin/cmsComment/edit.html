@@ -4,7 +4,7 @@
         contentId=a.contentId
     />
 </@_comment>
-<form action="cmsComment/save.do?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+<form action="cmsComment/save?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="id" value="${id!}"/>
     <input type="hidden" name="contentId" value="${contentId!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>

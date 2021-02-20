@@ -23,12 +23,12 @@
     <main>
         <#if user??>
             <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
-            <form action="${site.dynamicPath}doLogout.do" method="post">
+            <form action="${site.dynamicPath}doLogout" method="post">
                 <input type="hidden" name="userId" value="${(user.id)!}"/>
                 <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
             </form>
         <#else>
-            <form action="${site.dynamicPath}doRegister.do" method="post">
+            <form action="${site.dynamicPath}doRegister" method="post">
                 <#if error??>
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>

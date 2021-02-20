@@ -28,7 +28,7 @@
             <li><a href="sysApp/add.html?id={sid}" target="navTab" rel="sysApp/edit"><i class="icon-edit icon-large"></i> <@t.page 'app.edit'/></a></li>
         </#if>
         <#if authorizedMap['sysApp/delete']>
-            <li><a href="sysApp/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+            <li><a href="sysApp/delete?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </#if>
         </ul>
     </div>

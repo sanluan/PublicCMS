@@ -45,14 +45,14 @@
             <li class="line">line</li>
 </#if>
         <#if authorizedMap['cmsCategory/publish']>
-            <li><a href="cmsCategory/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
+            <li><a href="cmsCategory/publish?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/moveParameters']>
             <li><a href="cmsCategory/moveParameters.html" target="dialog" mask="true"><i class="icon-move icon-large"></i> <@t.page 'button.batch_move'/></a></li>
         </#if>
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>
-            <li><a href="cmsCategory/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsCategory/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
         </#if>
         </ul>
     </div>

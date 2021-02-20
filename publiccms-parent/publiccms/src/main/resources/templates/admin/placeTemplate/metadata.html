@@ -1,5 +1,5 @@
 <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
-<form method="post" autocomplete="off" action="cmsTemplate/savePlaceMetaData.do?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsTemplate/savePlaceMetaData?navTabId=placeTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
@@ -154,8 +154,8 @@ checkPageSize();
     <#items as a>
         <li>
             <figure>
-                <!-- ${a.itemType!} : ${a.itemId!} ,place/redirect.do:count and 301 jump to a.url,place/click.do:count and 302 jump to a.url-->
-                <a href="${site.dynamicPath}place/redirect.do?id=${a.id!}" target="_blank"><img src="${a.cover!}"></a>
+                <!-- ${a.itemType!} : ${a.itemId!} ,place/redirect:count and 301 jump to a.url,place/click:count and 302 jump to a.url-->
+                <a href="${site.dynamicPath}place/redirect?id=${a.id!}" target="_blank"><img src="${a.cover!}"></a>
                 <figcaption><a href="${a.url!}" target="_blank">${a.title!}</a>(${a.clicks!})</figcaption>
                 </#noparse><@t.page 'extend_field'/>:<#noparse><#assign attribute=getPlaceAttribute(a.id)/>
             </figure>

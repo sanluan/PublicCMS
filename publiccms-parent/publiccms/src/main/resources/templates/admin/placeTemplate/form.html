@@ -6,7 +6,7 @@
             fieldList=a.fieldList![]
             requiredFieldList=a.requiredFieldList![]
         />
-<form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save.do">
+<form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save">
 <#if a.allowAnonymous>
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
 </#if>
@@ -39,11 +39,11 @@
                     <p>
                         <a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickName)!}]
                     <#if 2=a.status>
-                        <a href="${site.dynamicPath}place/check.do?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@_csrfToken/>">Check</a> 
+                        <a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@_csrfToken/>">Check</a> 
                     <#elseif 1=a.status>
-                        <a href="${site.dynamicPath}place/uncheck.do?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@_csrfToken/>">Uncheck</a> 
+                        <a href="${site.dynamicPath}place/uncheck?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@_csrfToken/>">Uncheck</a> 
                     </#if>
-                        <a href="${site.dynamicPath}place/delete.do?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@_csrfToken/>">Delete</a>
+                        <a href="${site.dynamicPath}place/delete?id=${a.id}&returnUrl=${site.dynamicPath}&_csrf=<@_csrfToken/>">Delete</a>
                     </p>
             </#list>
         </@_placeList>

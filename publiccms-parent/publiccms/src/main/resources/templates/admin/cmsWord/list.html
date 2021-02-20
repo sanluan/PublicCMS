@@ -38,9 +38,9 @@
         <ul class="toolBar">
             <li><a href="cmsWord/add.html" target="navTab" rel="cmsWord/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'search_word.add'/></a></li>
             <li><a href="cmsWord/add.html?id={sid}" target="dialog" rel="cmsWord_edit"><i class="icon-edit icon-large"></i> <@t.page 'search_word.edit'/></a></li>
-            <li><a href="cmsWord/hidden.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_hide'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'button.hide'/></a></li>
-            <li><a href="cmsWord/show.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_show'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.show'/></a></li>
-            <li><a href="cmsWord/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+            <li><a href="cmsWord/hidden?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_hide'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'button.hide'/></a></li>
+            <li><a href="cmsWord/show?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_show'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.show'/></a></li>
+            <li><a href="cmsWord/delete?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -65,11 +65,11 @@
                 <td>
                     <a href="cmsWord/add.html?id=${a.id}" target="dialog" rel="cmsWord_edit" title="<@t.page 'search_word.edit'/>"><@t.page 'button.edit'/></a>|
                     <#if a.hidden>
-                        <a href="cmsWord/show.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.show'/>" target="ajaxTodo"><@t.page 'button.show'/></a>|
+                        <a href="cmsWord/show?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.show'/>" target="ajaxTodo"><@t.page 'button.show'/></a>|
                     <#else>
-                        <a href="cmsWord/hidden.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.hide'/>" target="ajaxTodo"><@t.page 'button.hide'/></a>|
+                        <a href="cmsWord/hidden?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.hide'/>" target="ajaxTodo"><@t.page 'button.hide'/></a>|
                     </#if>
-                    <a href="cmsWord/delete.do?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsWord/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

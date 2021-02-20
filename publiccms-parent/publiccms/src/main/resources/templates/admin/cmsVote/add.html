@@ -1,5 +1,5 @@
 <@_vote id=id><#assign a=object/></@_vote>
-<form method="post" autocomplete="off" action="cmsVote/save.do?callbackType=closeCurrent&navTabId=cmsVote/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsVote/save?callbackType=closeCurrent&navTabId=cmsVote/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">

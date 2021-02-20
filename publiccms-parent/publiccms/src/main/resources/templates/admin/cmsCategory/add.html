@@ -8,7 +8,7 @@
 </@_category>
 <@_category id=parentId><#assign category=object/></@_category>
 <@_categoryType id=typeId><#assign categoryType=object/></@_categoryType>
-<form method="post" autocomplete="off" action="cmsCategory/save.do?callbackType=closeCurrent&navTabId=cmsCategory/list&rel=page" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsCategory/save?callbackType=closeCurrent&navTabId=cmsCategory/list&rel=page" class="pageForm required-validate" onsubmit="clickAddTagType();return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
@@ -63,7 +63,7 @@
                 <dl class="nowrap">
                     <dt><@t.page 'code'/>:</dt>
                     <dd>
-                        <input class="required" name="code" remote="cmsCategory/virify.do<#if id?has_content>?oldCode=${(a.code)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/>
+                        <input class="required" name="code" remote="cmsCategory/virify<#if id?has_content>?oldCode=${(a.code)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" maxlength="50" size="20" value="<#if id?has_content>${(a.code)!}</#if>"/>
                     </dd>
                 </dl>
 <#include "../include_page/tagTypes.html"/>

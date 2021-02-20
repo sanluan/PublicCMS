@@ -27,7 +27,7 @@
                 <li><a href="sysModule/add.html?parentId=${parentId!}&deep=${deep}" target="navTab" rel="sysModule/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'module.add'/></a></li>
             </#if>
             <li><a href="sysModule/add.html?id={sid}&deep=${deep}" target="navTab" rel="sysModule/edit"><i class="icon-edit icon-large"></i> <@t.page 'module.edit'/></a></li>
-            <li><a href="sysModule/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+            <li><a href="sysModule/delete?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>

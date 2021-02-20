@@ -3,7 +3,7 @@
 <#elseif fileTypes?has_content&&'video'=fileTypes>
     <#assign accept=' accept="video/*"'/>
 </#if>
-<form action="file/doBatchUpload.do" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.batchBringBack)">
+<form action="file/doBatchUpload" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.batchBringBack)">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
         <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>

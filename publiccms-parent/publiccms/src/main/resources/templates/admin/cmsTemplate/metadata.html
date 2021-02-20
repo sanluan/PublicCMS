@@ -1,11 +1,11 @@
 <@_metadata path=path><#assign a=object/></@_metadata>
-<form method="post" action="cmsTemplate/saveMetaData.do?navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" action="cmsTemplate/saveMetaData?navTabId=cmsTemplate/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if a?has_content>
             <#if !site.parentId?has_content>
-                 <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
+                 <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
             </#if>
     <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
         <@_sysDeptPage deptId=admin.deptId!'' pages=path>

@@ -31,7 +31,7 @@
             <li><a href="cmsDictionary/add.html?id={sid}" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
         </#if>
         <#if authorizedMap['cmsDictionary/delete']>
-            <li><a href="cmsDictionary/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsDictionary/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
         </#if>
         </ul>
     </div>
@@ -54,7 +54,7 @@
                 <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
                 <td>
                 <#if authorizedMap['cmsDictionary/delete']>
-                    <a href="cmsDictionary/delete.do?ids=${a.id.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsDictionary/delete?ids=${a.id.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
                 </#if>
                 </td>
             </tr>

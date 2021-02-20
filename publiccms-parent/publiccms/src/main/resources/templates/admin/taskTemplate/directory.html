@@ -4,7 +4,7 @@
     <#else>
 <#if path?has_content>
     <a class="button" href="taskTemplate/content.html?path=${path?url}/" target="ajax" rel="taskTemplateBox"><@t.page 'task_template.create_here'/></a>
-    <a class="button" href="taskTemplate/delete.do?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
+    <a class="button" href="taskTemplate/delete?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
 </#if>
     </#if>
 </h2>

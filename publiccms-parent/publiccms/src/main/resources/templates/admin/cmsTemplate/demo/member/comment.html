@@ -42,7 +42,7 @@
         </#if>
     </@_commentList>
 </#if>
-        <form method="post" action="${site.dynamicPath}comment/save.do">
+        <form method="post" action="${site.dynamicPath}comment/save">
             <@_comment id=id>
                 <input type="hidden" name="id" value="${object.id}"/>
                 <#assign text=object.text!/>

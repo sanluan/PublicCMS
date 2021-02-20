@@ -23,7 +23,7 @@ if(0==$('.idsToMove input',$.pdialog.getCurrent()).length){
 }
 </script>
 <div class="pageFormContent" layoutH>
-    <form action="cmsCategory/move.do?callbackType=closeCurrent&navTabId=cmsCategory/list&rel=page" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <form action="cmsCategory/move?callbackType=closeCurrent&navTabId=cmsCategory/list&rel=page" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
         <input type="hidden" name="parentId" value=""/>
         <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
         <div class="idsToMove"></div>

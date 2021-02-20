@@ -1,9 +1,9 @@
-<form method="post" action="cmsTemplate/save.do" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" action="cmsTemplate/save" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if !site.parentId?has_content>
-            <li><a class="button" href="cmsTemplate/delete.do?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
         </#if>
     <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
         <@_sysDeptPage deptId=admin.deptId!'' pages=path>

@@ -36,7 +36,7 @@
                     </li>
                 <#if authorizedMap['cmsContent/export']>
                     <li>
-                        <a class="button" href="cmsContent/export.do?categoryId=${(parent.categoryId)!categoryId!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
+                        <a class="button" href="cmsContent/export?categoryId=${(parent.categoryId)!categoryId!}&_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><i class="icon-download-alt icon-large"></i> <@t.page 'button.export'/></a>
                     </li>
                 </#if>
                 </ul>
@@ -56,14 +56,14 @@
                 <li class="line">line</li>
             </#if>
             <#if authorizedMap['cmsContent/uncheck']>
-                <li><a href="cmsContent/uncheck.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
+                <li><a href="cmsContent/uncheck?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
             </#if>
             <#if authorizedMap['cmsContent/publish']>
-                <li><a href="cmsContent/publish.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
+                <li><a href="cmsContent/publish?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_publish'/>" target="selectedTodo" rel="ids"><i class="icon-file-text-alt icon-large"></i> <@t.page 'button.batch_publish'/></a></li>
             </#if>
             <#if authorizedMap['cmsContent/delete']>
             <li class="line">line</li>
-                <li><a href="cmsContent/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+                <li><a href="cmsContent/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
             </#if>
         </ul>
     </div>

@@ -4,7 +4,7 @@
 </@_sysModule>
 <@_sysModule id=parentId!><#assign module=object/></@_sysModule>
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>
-<form method="post" autocomplete="off" action="sysModule/save.do?callbackType=closeCurrent&navTabId=sysModule/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="sysModule/save?callbackType=closeCurrent&navTabId=sysModule/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="oldId" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
@@ -17,7 +17,7 @@
         <dl>
             <dt><@t.page 'id'/>:</dt>
             <dd>
-                <input class="required" remote="sysModule/virify.do?oldId=${id!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
+                <input class="required" remote="sysModule/virify?oldId=${id!}" data-msg-remote="<@t.message 'verify.hasExist.module'/>" name="id" type="text" size="20" maxlength="30" value="${id!(parentId?has_content)?then(parentId+'_','')}" />
                 <label><input name="menu" type="checkbox"<#if (!a?has_content||a.menu)&&deep lte 2> checked="checked"</#if>/><@t.page 'module.menu'/></label>
             </dd>
         </dl>

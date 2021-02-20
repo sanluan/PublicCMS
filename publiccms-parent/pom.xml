@@ -20,48 +20,47 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.2.10.RELEASE</version.spring>
+        <version.spring>5.3.4</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.3.5.RELEASE</version.springBoot>
+        <version.springBoot>2.4.3</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
-        <version.httpclient>4.5.12</version.httpclient>
+        <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.11.3</version.jackson>
-        <version.jacksondatabind>2.11.3</version.jacksondatabind>
+        <version.jackson>2.12.1</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.4.12.Final</version.hibernate>
+        <version.hibernate>5.4.25.Final</version.hibernate>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>5.11.5.Final</version.hibernateSearch>
+        <version.hibernateSearch>5.11.8.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.9.0</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
-        <version.freemarker>2.3.30</version.freemarker>
+        <version.freemarker>2.3.31</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <version.mybatis>3.5.5</version.mybatis>
+        <version.mybatis>3.5.6</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
-        <version.mybatisSpring>2.0.5</version.mybatisSpring>
+        <version.mybatisSpring>2.0.6</version.mybatisSpring>
 		<!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
 		<version.mybatisGenerator>1.4.0</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
         <version.pagehelper>5.2.0</version.pagehelper>
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
-        <version.dynamicSql>1.2.0</version.dynamicSql>
+        <version.dynamicSql>1.2.1</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>5.5.5</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>3.3.0</version.jedis>
+        <version.jedis>3.5.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
-        <version.hikariCP>3.4.5</version.hikariCP>
+        <version.hikariCP>4.0.2</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <version.mysql>8.0.22</version.mysql>
+        <version.mysql>8.0.23</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>4.1.2</version.poi>
+        <version.poi>5.0.0</version.poi>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <version.fileupload>1.4</version.fileupload>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
@@ -69,9 +68,9 @@
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <version.lang>3.11</version.lang>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
-        <version.codec>1.13</version.codec>
+        <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.13.3</version.log4j>
+        <version.log4j>2.14.0</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
         <version.extractor>2.15.0</version.extractor>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
@@ -229,11 +228,6 @@
             <dependency>
                 <groupId>com.fasterxml.jackson.core</groupId>
                 <artifactId>jackson-databind</artifactId>
-                <version>${version.jacksondatabind}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.fasterxml.jackson.core</groupId>
-                <artifactId>jackson-annotations</artifactId>
                 <version>${version.jackson}</version>
             </dependency>
             <dependency>

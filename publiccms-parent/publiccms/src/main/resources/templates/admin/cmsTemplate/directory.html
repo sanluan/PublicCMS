@@ -4,6 +4,6 @@
     <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
 <#else>
     <a class="button" href="cmsTemplate/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><@t.page 'template.upload'/></a>
-    <#if path?has_content><a class="button" href="cmsTemplate/delete.do?path=${path?url}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a></#if>
+    <#if path?has_content><a class="button" href="cmsTemplate/delete?path=${path?url}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a></#if>
 </#if>
 </h2>

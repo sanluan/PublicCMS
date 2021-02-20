@@ -1,13 +1,13 @@
 <@_placeMetadata path=path><#assign a=object/></@_placeMetadata>
-<form method="post" autocomplete="off" action="cmsTemplate/savePlace.do" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="cmsTemplate/savePlace" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
         <#if site.useSsi>
-            <li><a class="button" href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
+            <li><a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a></li>
         </#if>
         <#if !site.parentId?has_content>
-            <li><a class="button" href="cmsTemplate/deletePlace.do?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
         </#if>
         <#if a?has_content&&a.size gt 0>
     <@_sysAuthorized roleIds=admin.roles url='cmsPlace/dataList'>

@@ -61,6 +61,7 @@ public class SpringBootApplication {
         factory.setPort(Integer.valueOf(System.getProperty("cms.port", "8080")));
         factory.setContextPath(System.getProperty("cms.contextPath", "/publiccms"));
         factory.setDisplayName("PublicCMS");
+        factory.setRegisterDefaultServlet(true);
         factory.getSession().setTimeout(Duration.ofMinutes(20));
         return factory;
     }

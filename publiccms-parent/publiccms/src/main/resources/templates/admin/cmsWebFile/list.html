@@ -18,8 +18,8 @@
             <li><a href="cmsWebFile/content.html?path=${(path?url)!}" target="navTab" rel="cmsWebFile/content"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.create_file'/></a></li>
             <li><a href="cmsWebFile/directory.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-folder-close-alt icon-large"></i> <@t.page 'button.create_directory'/></a></li>
             <li><a href="cmsWebFile/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="200"><i class="icon-upload icon-large"></i> <@t.page 'button.upload_file'/></a></li>
-            <li><a href="cmsWebFile/zip.do?path=${(path?url)!'/'}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><i class="icon-upload icon-large"></i> <@t.page 'button.compress_current_directory'/></a></li>
-            <li><a href="cmsWebFile/delete.do?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete_file'/>" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+            <li><a href="cmsWebFile/zip?path=${(path?url)!'/'}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><i class="icon-upload icon-large"></i> <@t.page 'button.compress_current_directory'/></a></li>
+            <li><a href="cmsWebFile/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete_file'/>" target="selectedTodo" rel="paths"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -70,7 +70,7 @@
                 <td><@t.fileSize a.size/></td>
                 <td>
                     <#if a.directory>
-                        <a href="cmsWebFile/zip.do?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><@t.page 'button.compress'/></a>|
+                        <a href="cmsWebFile/zip?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><@t.page 'button.compress'/></a>|
                     <#else>
                         <#if a.fileName?ends_with('.zip')>
                             <a href="cmsWebFile/unzipParameters.html?path=${filePath?url}"  target="dialog" mask="true"><@t.page 'button.decompress'/></a>|

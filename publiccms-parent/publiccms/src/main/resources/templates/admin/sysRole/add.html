@@ -1,7 +1,7 @@
 <@_sysRole id=id>
     <#assign a=object/>
 </@_sysRole>
-<form method="post" autocomplete="off" action="sysRole/save.do?callbackType=closeCurrent&navTabId=sysRole/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="sysRole/save?callbackType=closeCurrent&navTabId=sysRole/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="${id!}" />
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">

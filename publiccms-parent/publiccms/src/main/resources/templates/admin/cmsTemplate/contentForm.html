@@ -8,7 +8,7 @@
         />
 <#assign formContent>
     <#if category.allowContribute>
-<form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save.do">
+<form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save">
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
     <input name="returnUrl" type="hidden" value="${site.dynamicPath}" />
     <input name="categoryId" type="hidden" value="${category.id!}"/>

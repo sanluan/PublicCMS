@@ -3,7 +3,7 @@
         <dt><@t.page 'operate'/>:</dt>
         <dd>
             <#if site.useSsi>
-                <a class="button" href="cmsTemplate/publishPlace.do?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a>
+                <a class="button" href="cmsTemplate/publishPlace?path=${(path?url)!}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.publish'/></a>
             </#if>
         </dd>
     </dl>

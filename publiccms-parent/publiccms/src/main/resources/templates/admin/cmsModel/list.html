@@ -27,7 +27,7 @@
             <li><a href="cmsModel/add.html?id={sid}" target="navTab" rel="cmsModel/edit"><i class="icon-edit icon-large"></i> <@t.page 'model.edit'/></a></li>
         <#if !site.parentId?has_content>
             <@_sysAuthorized roleIds=admin.roles url='cmsModel/delete'>
-                <li><a href="cmsModel/delete.do?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
+                <li><a href="cmsModel/delete?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
             </@_sysAuthorized>
         </#if>
         </ul>

@@ -67,7 +67,7 @@ public class KindEditorAdminController {
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             originalName, CmsFileUtils.getFileType(suffix), imgFile.getSize(), fileSize.getWidth(),
                             fileSize.getHeight(), RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
-                    map.put(RESULT_URL, fileName);
+                    map.put(RESULT_URL, site.getSitePath() + fileName);
                     return map;
                 } catch (IllegalStateException | IOException e) {
                     map.put(CommonConstants.MESSAGE, e.getMessage());
