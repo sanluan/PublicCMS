@@ -218,7 +218,8 @@ public class UeditorAdminController {
                         BufferedInputStream inputStream = new BufferedInputStream(entity.getContent());
                         FileType fileType = FileTypeDetector.detectFileType(inputStream);
                         String suffix = fileType.getCommonExtension();
-                        if (CommonUtils.notEmpty(suffix)) {
+                        if (null != fileType.getMimeType() && fileType.getMimeType().startsWith("image/")
+                                && CommonUtils.notEmpty(suffix)) {
                             String fileName = CmsFileUtils.getUploadFileName(suffix);
                             String filePath = siteComponent.getWebFilePath(site, fileName);
                             CmsFileUtils.copyInputStreamToFile(inputStream, filePath);
@@ -238,9 +239,13 @@ public class UeditorAdminController {
                     }
                     EntityUtils.consume(entity);
                 }
-                Map<String, Object> map = getResultMap(true);
-                map.put("list", list);
-                return map;
+                if (list.isEmpty()) {
+                    return getResultMap(false);
+                } else {
+                    Map<String, Object> map = getResultMap(true);
+                    map.put("list", list);
+                    return map;
+                }
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);
