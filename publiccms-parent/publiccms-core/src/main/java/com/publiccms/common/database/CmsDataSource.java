@@ -94,7 +94,7 @@ public class CmsDataSource extends MultiDataSource {
     public static void initDefaultDataSource() {
         if (null != cmsDataSource) {
             synchronized (cmsDataSource) {
-                if (!initialized && CmsVersion.isInitialized()) {
+                if (!initialized) {
                     try {
                         Properties properties = loadDatabaseConfig(cmsDataSource.dbconfigFilePath);
                         DataSource dataSource = initDataSource(properties);
@@ -103,6 +103,7 @@ public class CmsDataSource extends MultiDataSource {
                         cmsDataSource.setDefaultTargetDataSource(dataSource);
                         cmsDataSource.init();
                         initialized = true;
+                        CmsVersion.setInitialized(true);
                     } catch (IOException | PropertyVetoException e) {
                         CmsVersion.setInitialized(false);
                     }
