@@ -349,6 +349,9 @@ public class CmsFileUtils {
     }
 
     public static String getFileType(String suffix) {
+        if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
+            suffix = CommonConstants.DOT + suffix;
+        }
         if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
             return FILE_TYPE_IMAGE;
         } else if (VIDEO_FILE_SUFFIXS.contains(suffix)) {
