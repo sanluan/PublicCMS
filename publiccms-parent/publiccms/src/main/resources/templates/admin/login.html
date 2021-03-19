@@ -20,6 +20,7 @@
             	<input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/>
             </p>
             <p>
+                <label><input type="checkbox" name="secureLogin" checked="checked"/><@t.page 'secure_login'/></label>
                 <input type="submit" value="<@t.page 'login'/>"/>
                 <input type="hidden" name="returnUrl" value="${(returnUrl!)}"/>
                 <input type="hidden" name="encoding"/>
@@ -48,8 +49,10 @@ if(document.getElementsByTagName('input')[0].value){
     document.getElementsByTagName('input')[0].focus();
 }
 function encode(){
-    document.getElementsByName('password')[0].value = sha512(document.getElementsByName('password')[0].value);
-    document.getElementsByName('encoding')[0].value = 'sha512';
+    if(document.getElementsByName('secureLogin')[0].checked){
+        document.getElementsByName('password')[0].value = sha512(document.getElementsByName('password')[0].value);
+        document.getElementsByName('encoding')[0].value = 'sha512';
+    }
 }
 </script>
 </body>
