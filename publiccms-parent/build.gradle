@@ -26,15 +26,15 @@ subprojects{
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "5.3.4"
+        springVersion = "5.3.5"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "2.4.3"
+        springBootVersion = "2.4.4"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-        jacksonVersion = "2.12.1"
+        jacksonVersion = "2.12.2"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
         hibernateVersion = "5.4.25.Final"
