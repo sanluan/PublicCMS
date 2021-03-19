@@ -69,6 +69,7 @@ public class LoginAdminController {
      * @param username
      * @param password
      * @param returnUrl
+     * @param encoding
      * @param request
      * @param session
      * @param response
@@ -76,7 +77,7 @@ public class LoginAdminController {
      * @return view name
      */
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl,
+    public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encoding,
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
@@ -88,8 +89,9 @@ public class LoginAdminController {
         }
         String ip = RequestUtils.getIpAddress(request);
         SysUser user = service.findByName(site.getId(), username);
-        if (ControllerUtils.verifyNotExist("username", user, model) || ControllerUtils.verifyNotEquals("password",
-                UserPasswordUtils.passwordEncode(password, user.getSalt()), user.getPassword(), model)
+        if (ControllerUtils.verifyNotExist("username", user, model)
+                || ControllerUtils.verifyNotEquals("password",
+                        UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding), user.getPassword(), model)
                 || verifyNotAdmin(user, model) || verifyNotEnablie(user, model)) {
             model.addAttribute("username", username);
             model.addAttribute("returnUrl", returnUrl);
@@ -105,7 +107,7 @@ public class LoginAdminController {
         ControllerUtils.setAdminToSession(session, user);
         if (UserPasswordUtils.needUpdate(user.getSalt())) {
             String salt = UserPasswordUtils.getSalt();
-            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
         }
         if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
             service.updateWeekPassword(user.getId(), true);
@@ -135,6 +137,7 @@ public class LoginAdminController {
      * @param site
      * @param username
      * @param password
+     * @param encoding 
      * @param request
      * @param session
      * @param response
@@ -142,9 +145,9 @@ public class LoginAdminController {
      * @return view name
      */
     @RequestMapping(value = "loginDialog", method = RequestMethod.POST)
-    public String loginDialog(@RequestAttribute SysSite site, String username, String password, HttpServletRequest request,
-            HttpServletResponse response, HttpSession session, ModelMap model) {
-        if ("login".equals(login(site, username, password, null, request, session, response, model))) {
+    public String loginDialog(@RequestAttribute SysSite site, String username, String password, String encoding,
+            HttpServletRequest request, HttpServletResponse response, HttpSession session, ModelMap model) {
+        if ("login".equals(login(site, username, password, null, encoding, request, session, response, model))) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -156,6 +159,7 @@ public class LoginAdminController {
      * @param oldpassword
      * @param password
      * @param repassword
+     * @param encoding
      * @param request
      * @param response
      * @param model
@@ -164,9 +168,10 @@ public class LoginAdminController {
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     @Csrf
     public String changeMyselfPassword(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String oldpassword,
-            String password, String repassword, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+            String password, String repassword, String encoding, HttpServletRequest request, HttpServletResponse response,
+            ModelMap model) {
         SysUser user = service.getEntity(admin.getId());
-        String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt());
+        String encodedOldPassword = UserPasswordUtils.passwordEncode(oldpassword, user.getSalt(), encoding);
         if (null != user.getPassword()
                 && ControllerUtils.verifyNotEquals("password", user.getPassword(), encodedOldPassword, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -178,7 +183,7 @@ public class LoginAdminController {
             model.addAttribute(CommonConstants.MESSAGE, "message.needReLogin");
         }
         String salt = UserPasswordUtils.getSalt();
-        service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+        service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
         if (user.isWeakPassword() && !UserPasswordUtils.isWeek(user.getName(), password)) {
             service.updateWeekPassword(user.getId(), false);
         }

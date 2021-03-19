@@ -78,6 +78,7 @@ public class UserController {
      * @param oldpassword
      * @param password
      * @param repassword
+     * @param encoding
      * @param returnUrl
      * @param request
      * @param session
@@ -88,7 +89,8 @@ public class UserController {
     @RequestMapping(value = "changePassword", method = RequestMethod.POST)
     @Csrf
     public String changePassword(@RequestAttribute SysSite site, String oldpassword, String password, String repassword,
-            String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
+            String encoding, String returnUrl, HttpServletRequest request, HttpSession session, HttpServletResponse response,
+            ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
@@ -101,7 +103,7 @@ public class UserController {
         if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("password", password, model)
                 || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)
                 || null != user.getPassword() && ControllerUtils.verifyNotEquals("password", user.getPassword(),
-                        UserPasswordUtils.passwordEncode(oldpassword, user.getSalt()), model)) {
+                        UserPasswordUtils.passwordEncode(oldpassword, user.getSalt(), encoding), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         } else {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
@@ -116,7 +118,7 @@ public class UserController {
             }
             ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
             String salt = UserPasswordUtils.getSalt();
-            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+            service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
             if (user.isWeakPassword() && !UserPasswordUtils.isWeek(user.getName(), password)) {
                 service.updateWeekPassword(user.getId(), false);
             }

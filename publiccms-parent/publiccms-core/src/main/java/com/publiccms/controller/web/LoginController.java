@@ -64,10 +64,11 @@ public class LoginController {
     protected ConfigComponent configComponent;
 
     /**
-     * @param site 
+     * @param site
      * @param username
      * @param password
      * @param returnUrl
+     * @param encode
      * @param clientId
      * @param uuid
      * @param request
@@ -76,8 +77,8 @@ public class LoginController {
      * @return view name
      */
     @RequestMapping(value = "doLogin", method = RequestMethod.POST)
-    public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, Long clientId, String uuid,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+    public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encode,
+            Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
         if (CommonUtils.empty(loginPath)) {
@@ -102,8 +103,9 @@ public class LoginController {
             String ip = RequestUtils.getIpAddress(request);
             Date now = CommonUtils.getDate();
             if (ControllerUtils.verifyCustom("password",
-                    null == user || !UserPasswordUtils.passwordEncode(password, user.getSalt()).equals(user.getPassword()), model)
-                    || verifyNotEnablie(user, model)) {
+                    null == user
+                            || !UserPasswordUtils.passwordEncode(password, user.getSalt(), encode).equals(user.getPassword()),
+                    model) || verifyNotEnablie(user, model)) {
                 Long userId = null;
                 if (null != user) {
                     userId = user.getId();
@@ -114,13 +116,13 @@ public class LoginController {
             } else {
                 if (UserPasswordUtils.needUpdate(user.getSalt())) {
                     String salt = UserPasswordUtils.getSalt();
-                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encode), salt);
                 }
                 if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
                     service.updateWeekPassword(user.getId(), true);
                 }
                 service.updateLoginStatus(user.getId(), ip);
-                
+
                 if (null != clientId && null != uuid) {
                     SysAppClient appClient = appClientService.getEntity(clientId);
                     if (null != appClient && appClient.getSiteId() == site.getId() && appClient.getUuid().equals(uuid)
@@ -128,7 +130,7 @@ public class LoginController {
                         appClientService.updateUser(appClient.getId(), user.getId());
                     }
                 }
-                
+
                 String authToken = UUID.randomUUID().toString();
                 int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                         LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
@@ -164,10 +166,11 @@ public class LoginController {
     }
 
     /**
-     * @param site 
+     * @param site
      * @param entity
      * @param repassword
      * @param returnUrl
+     * @param encode 
      * @param clientId
      * @param uuid
      * @param request
@@ -176,8 +179,8 @@ public class LoginController {
      * @return view name
      */
     @RequestMapping(value = "doRegister", method = RequestMethod.POST)
-    public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, Long clientId, String uuid,
-            HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+    public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, String encode,
+            Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -203,7 +206,7 @@ public class LoginController {
         } else {
             String ip = RequestUtils.getIpAddress(request);
             String salt = UserPasswordUtils.getSalt();
-            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), salt));
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), salt, encode));
             entity.setSalt(salt);
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
@@ -236,7 +239,7 @@ public class LoginController {
     }
 
     /**
-     * @param site 
+     * @param site
      * @param userId
      * @param returnUrl
      * @param request
@@ -244,7 +247,8 @@ public class LoginController {
      * @return view name
      */
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
-    public String logout(@RequestAttribute SysSite site, Long userId, String returnUrl, HttpServletRequest request, HttpServletResponse response) {
+    public String logout(@RequestAttribute SysSite site, Long userId, String returnUrl, HttpServletRequest request,
+            HttpServletResponse response) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {

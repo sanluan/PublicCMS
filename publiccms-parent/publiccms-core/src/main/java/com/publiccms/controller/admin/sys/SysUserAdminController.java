@@ -55,6 +55,7 @@ public class SysUserAdminController {
      * @param admin
      * @param entity
      * @param repassword
+     * @param encoding 
      * @param roleIds
      * @param request
      * @param model
@@ -63,7 +64,7 @@ public class SysUserAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysUser entity, String repassword,
-            Integer[] roleIds, HttpServletRequest request, ModelMap model) {
+            String encoding, Integer[] roleIds, HttpServletRequest request, ModelMap model) {
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -98,7 +99,8 @@ public class SysUserAdminController {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
                 String salt = UserPasswordUtils.getSalt();
-                service.updatePassword(entity.getId(), UserPasswordUtils.passwordEncode(entity.getPassword(), salt), salt);
+                service.updatePassword(entity.getId(), UserPasswordUtils.passwordEncode(entity.getPassword(), salt, encoding),
+                        salt);
             }
             if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(oldEntity.getEmail())) {
                 entity.setEmailChecked(false);
@@ -119,7 +121,7 @@ public class SysUserAdminController {
             }
             entity.setSiteId(site.getId());
             entity.setSalt(UserPasswordUtils.getSalt());
-            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt(), encoding));
             entity.setWeakPassword(true);
             service.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {

@@ -136,6 +136,7 @@ public class SysDeptAdminController {
      * @param admin
      * @param entity
      * @param repassword
+     * @param encoding
      * @param roleIds
      * @param request
      * @param model
@@ -144,7 +145,7 @@ public class SysDeptAdminController {
     @RequestMapping("saveUser")
     @Csrf
     public String saveUser(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysUser entity, String repassword,
-            Integer[] roleIds, HttpServletRequest request, ModelMap model) {
+            String encoding, Integer[] roleIds, HttpServletRequest request, ModelMap model) {
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -181,7 +182,7 @@ public class SysDeptAdminController {
                     return CommonConstants.TEMPLATE_ERROR;
                 }
                 entity.setSalt(UserPasswordUtils.getSalt());
-                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
+                entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt(), encoding));
             } else {
                 entity.setPassword(user.getPassword());
                 if (CommonUtils.empty(entity.getEmail()) || !entity.getEmail().equals(user.getEmail())) {
@@ -206,7 +207,7 @@ public class SysDeptAdminController {
             entity.setDeptId(dept.getId());
             entity.setSiteId(site.getId());
             entity.setSalt(UserPasswordUtils.getSalt());
-            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt()));
+            entity.setPassword(UserPasswordUtils.passwordEncode(entity.getPassword(), entity.getSalt(), encoding));
             userService.save(entity);
             if (CommonUtils.notEmpty(roleIds)) {
                 for (Integer roleId : roleIds) {

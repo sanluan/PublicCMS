@@ -59,10 +59,11 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param deptName
      * @param userName
      * @param password
+     * @param encoding 
      * @return
      */
     public SysSite save(SysSite entity, String domain, boolean wild, String roleName, String deptName, String userName,
-            String password) {
+            String password, String encoding) {
         save(entity);
         domainService.save(new SysDomain(domain, entity.getId(), wild));
         SysDept dept = new SysDept(entity.getId(), deptName, 0, true, true, true);
@@ -70,8 +71,8 @@ public class SysSiteService extends BaseService<SysSite> {
         SysRole role = new SysRole(entity.getId(), roleName, true, true);
         roleService.save(role);// 初始化角色
         String salt = UserPasswordUtils.getSalt();
-        SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt), salt, true,
-                userName, dept.getId(), true, role.getId().toString(), null, false, true, false, null, null, 0,
+        SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt, encoding), salt,
+                true, userName, dept.getId(), true, role.getId().toString(), null, false, true, false, null, null, 0,
                 CommonUtils.getDate());
         userService.save(user);// 初始化用户
         roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射

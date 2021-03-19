@@ -40,6 +40,7 @@ public class LoginDirective extends AbstractAppDirective {
     public void execute(RenderHandler handler, SysApp app, SysUser user) throws IOException, Exception {
         String username = StringUtils.trim(handler.getString("username"));
         String password = StringUtils.trim(handler.getString("password"));
+        String encoding = StringUtils.trim(handler.getString("encoding"));
         boolean result = false;
         if (CommonUtils.notEmpty(username) && CommonUtils.notEmpty(password)) {
             SysSite site = getSite(handler);
@@ -50,10 +51,10 @@ public class LoginDirective extends AbstractAppDirective {
             }
             String ip = RequestUtils.getIpAddress(handler.getRequest());
             if (null != user && !user.isDisabled()
-                    && user.getPassword().equals(UserPasswordUtils.passwordEncode(password, user.getSalt()))) {
+                    && user.getPassword().equals(UserPasswordUtils.passwordEncode(password, user.getSalt(), encoding))) {
                 if (UserPasswordUtils.needUpdate(user.getSalt())) {
                     String salt = UserPasswordUtils.getSalt();
-                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt), salt);
+                    service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
                 }
                 if (!user.isWeakPassword() && UserPasswordUtils.isWeek(username, password)) {
                     service.updateWeekPassword(user.getId(), true);

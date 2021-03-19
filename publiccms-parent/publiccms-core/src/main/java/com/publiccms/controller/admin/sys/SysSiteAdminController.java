@@ -72,6 +72,7 @@ public class SysSiteAdminController {
      * @param deptName
      * @param userName
      * @param password
+     * @param encoding 
      * @param request
      * @param model
      * @return view name
@@ -79,8 +80,8 @@ public class SysSiteAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String domain,
-            Boolean wild, String roleName, String deptName, String userName, String password, HttpServletRequest request,
-            ModelMap model) {
+            Boolean wild, String roleName, String deptName, String userName, String password, String encoding,
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -108,7 +109,7 @@ public class SysSiteAdminController {
                     || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.save(entity, domain, null == wild ? false : wild, roleName, deptName, userName, password);
+            service.save(entity, domain, null == wild ? false : wild, roleName, deptName, userName, password, encoding);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.site",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
