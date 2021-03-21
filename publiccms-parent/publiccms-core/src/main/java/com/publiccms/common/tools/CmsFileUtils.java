@@ -1,6 +1,8 @@
 package com.publiccms.common.tools;
 
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -144,13 +146,23 @@ public class CmsFileUtils {
             BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
             Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-            img.createGraphics().drawImage(scaledImage, 0, 0, null);
+            Graphics2D g = img.createGraphics();
+            if (".png".equalsIgnoreCase(suffix)) {
+                img = g.getDeviceConfiguration().createCompatibleImage(img.getWidth(null), img.getHeight(null),
+                        Transparency.TRANSLUCENT);
+                g = img.createGraphics();
+            }
+            g.drawImage(scaledImage, 0, 0, null);
             if (null != suffix && suffix.length() > 1) {
                 ImageIO.write(img, suffix.substring(1), outputStream);
             } else {
                 ImageIO.write(img, DEFAULT_FORMAT_NAME, outputStream);
             }
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        thumb("D://a.jpg", "D://b.jpg", 144, 144, ".jpg");
     }
 
     /**
