@@ -143,13 +143,18 @@ public class CmsFileUtils {
     public static void thumb(String sourceFilePath, String thumbFilePath, int width, int height, String suffix)
             throws IOException {
         try (FileOutputStream outputStream = new FileOutputStream(thumbFilePath);) {
-            BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             BufferedImage sourceImage = ImageIO.read(new File(sourceFilePath));
+            if (width > sourceImage.getWidth()) {
+                width = sourceImage.getWidth();
+            }
+            if (height > sourceImage.getHeight()) {
+                height = sourceImage.getHeight();
+            }
+            BufferedImage img = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Image scaledImage = sourceImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
             Graphics2D g = img.createGraphics();
             if (".png".equalsIgnoreCase(suffix)) {
-                img = g.getDeviceConfiguration().createCompatibleImage(img.getWidth(null), img.getHeight(null),
-                        Transparency.TRANSLUCENT);
+                img = g.getDeviceConfiguration().createCompatibleImage(img.getWidth(), img.getHeight(), Transparency.TRANSLUCENT);
                 g = img.createGraphics();
             }
             g.drawImage(scaledImage, 0, 0, null);
@@ -159,10 +164,6 @@ public class CmsFileUtils {
                 ImageIO.write(img, DEFAULT_FORMAT_NAME, outputStream);
             }
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        thumb("D://a.jpg", "D://b.jpg", 144, 144, ".jpg");
     }
 
     /**
