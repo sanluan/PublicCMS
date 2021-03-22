@@ -37,7 +37,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
             <li><a href="${entityName?uncap_first}/add.html?id={sid}" target="navTab" rel="${entityName?uncap_first}/edit"><i class="icon-edit icon-large"></i> <#noparse><@t.page 'button.edit'/></#noparse></a></li>
         ${'</#'}if>
         ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
-            <li><a href="${entityName?uncap_first}/delete.do?_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.batch_delete'/></#noparse>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <#noparse><@t.page 'button.batch_delete'/></#noparse></a></li>
+            <li><a href="${entityName?uncap_first}/delete?_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.batch_delete'/></#noparse>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <#noparse><@t.page 'button.batch_delete'/></#noparse></a></li>
         ${'</#'}if>
         </ul>
     </div>
@@ -61,7 +61,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
                 </#list>
                 <td>
                 ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
-                    <a href="${entityName?uncap_first}/delete.do?ids=<#noparse>${a.id}</#noparse>&_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.delete'/></#noparse>"  target="ajaxTodo"><#noparse><@t.page 'button.delete'/></#noparse></a>
+                    <a href="${entityName?uncap_first}/delete?ids=<#noparse>${a.id}</#noparse>&_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.delete'/></#noparse>"  target="ajaxTodo"><#noparse><@t.page 'button.delete'/></#noparse></a>
                 ${'</#'}if>
                 </td>
             <#noparse>

@@ -1,5 +1,5 @@
 ${"<@_"+entityName?replace('Cms','')?uncap_first+" id=id><#assign a=object/></@_"+entityName?replace('Cms','')?uncap_first+">"}
-<form method="post" autocomplete="off" action="${entityName?uncap_first}/save.do?callbackType=closeCurrent&navTabId=${entityName?uncap_first}/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
+<form method="post" autocomplete="off" action="${entityName?uncap_first}/save?callbackType=closeCurrent&navTabId=${entityName?uncap_first}/list" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
     <input name="id" type="hidden" value="<#noparse>${id!}</#noparse>" />
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken admin=true/></#noparse>"/>
     <div class="formBar">
