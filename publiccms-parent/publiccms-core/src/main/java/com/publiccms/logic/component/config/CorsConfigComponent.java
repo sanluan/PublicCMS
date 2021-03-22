@@ -67,9 +67,18 @@ public class CorsConfigComponent implements SiteCache, Config {
             config.applyPermitDefaultValues();
             if (null != configData) {
                 config = new CorsConfiguration();
+                config.setAllowCredentials(CommonUtils.empty(configData.get(CONFIG_ALLOW_CREDENTIALS))
+                        || "true".equals(configData.get(CONFIG_ALLOW_CREDENTIALS)));
+
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_ORIGINS))) {
-                    config.setAllowedOrigins(Arrays
-                            .asList(StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), CommonConstants.COMMA_DELIMITED)));
+                    String[] array = StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), CommonConstants.COMMA_DELIMITED);
+                    for (String p : array) {
+                        if (p.contains(CorsConfiguration.ALL)) {
+                            config.addAllowedOriginPattern(p);
+                        } else {
+                            config.addAllowedOrigin(p);
+                        }
+                    }
                 }
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_METHODS))) {
                     config.setAllowedMethods(Arrays
@@ -83,8 +92,6 @@ public class CorsConfigComponent implements SiteCache, Config {
                     config.setExposedHeaders(Arrays
                             .asList(StringUtils.split(configData.get(CONFIG_EXPOSED_HEADERS), CommonConstants.COMMA_DELIMITED)));
                 }
-                config.setAllowCredentials(CommonUtils.empty(configData.get(CONFIG_ALLOW_CREDENTIALS))
-                        || "true".equals(configData.get(CONFIG_ALLOW_CREDENTIALS)));
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOW_CREDENTIALS))) {
                     try {
                         config.setMaxAge(Long.parseLong(configData.get(CONFIG_MAXAGE)));
@@ -103,14 +110,15 @@ public class CorsConfigComponent implements SiteCache, Config {
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws ClassNotFoundException
-     * @throws SecurityException 
-     * @throws NoSuchMethodException 
-     * @throws InvocationTargetException 
-     * @throws IllegalArgumentException 
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalArgumentException
      */
     @Autowired
     public void initCache(CacheEntityFactory cacheEntityFactory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException, SecurityException {
         cache = cacheEntityFactory.createCacheEntity("cors", CacheEntityFactory.MEMORY_CACHE_ENTITY);
     }
 
