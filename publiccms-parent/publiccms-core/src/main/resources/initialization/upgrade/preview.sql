@@ -43,3 +43,6 @@ CREATE TABLE `log_visit_session` (
   PRIMARY KEY (`site_id`,`session_id`,`visit_date`),
   KEY `log_visit_visit_date` (`site_id`,`visit_date`,`ip`)
 )  COMMENT = '访问会话';
+
+-- 2021-03-25 --
+UPDATE `sys_module` SET `authorized_url` =  'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete,cmsPlace/push' WHERE `id` ='content_push';
