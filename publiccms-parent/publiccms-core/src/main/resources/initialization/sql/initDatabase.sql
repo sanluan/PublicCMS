@@ -384,7 +384,7 @@ CREATE TABLE `log_login` (
   `channel` varchar(50) NOT NULL COMMENT '登录渠道',
   `result` tinyint(1) NOT NULL COMMENT '结果',
   `create_date` datetime NOT NULL COMMENT '创建日期',
-  `error_password` varchar(100) default NULL COMMENT '错误密码',
+  `error_password` varchar(255) default NULL COMMENT '错误密码',
   PRIMARY KEY  (`id`),
   KEY `log_login_result` (`result`),
   KEY `log_login_user_id` (`user_id`),

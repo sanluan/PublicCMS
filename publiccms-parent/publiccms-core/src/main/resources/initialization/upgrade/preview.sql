@@ -46,3 +46,5 @@ CREATE TABLE `log_visit_session` (
 
 -- 2021-03-25 --
 UPDATE `sys_module` SET `authorized_url` =  'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete,cmsPlace/push' WHERE `id` ='content_push';
+-- 20210329 --
+ALTER TABLE `log_login` MODIFY COLUMN `error_password` varchar(255) default NULL COMMENT '错误密码' AFTER `create_date`;

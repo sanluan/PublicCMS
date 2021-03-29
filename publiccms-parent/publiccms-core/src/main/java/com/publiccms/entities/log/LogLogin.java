@@ -148,7 +148,7 @@ public class LogLogin implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    @Column(name = "error_password", length = 100)
+    @Column(name = "error_password", length = 250)
     public String getErrorPassword() {
         return this.errorPassword;
     }

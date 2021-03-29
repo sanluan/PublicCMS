@@ -17,7 +17,7 @@ import com.publiccms.entities.log.LogLogin;
  */
 @Repository
 public class LogLoginDao extends BaseDao<LogLogin> {
-    
+
     /**
      * @param siteId
      * @param userId
@@ -89,6 +89,9 @@ public class LogLoginDao extends BaseDao<LogLogin> {
     protected LogLogin init(LogLogin entity) {
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
+        }
+        if (CommonUtils.notEmpty(entity.getErrorPassword()) && entity.getErrorPassword().length() > 255) {
+            entity.setErrorPassword(entity.getErrorPassword().substring(0, 255));
         }
         return entity;
     }
