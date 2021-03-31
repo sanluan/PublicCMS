@@ -39,7 +39,7 @@ public class CmsTagAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private String[] ignoreProperties = new String[] { "id", "siteId", "searchCount" };
+    private String[] ignoreProperties = new String[] { "id", "siteId" };
 
     /**
      * @param site
