@@ -43,7 +43,7 @@
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.30</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->
-        <version.mybatis>3.5.5</version.mybatis>
+        <version.mybatis>3.5.6</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
         <version.mybatisSpring>2.0.5</version.mybatisSpring>
 		<!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
