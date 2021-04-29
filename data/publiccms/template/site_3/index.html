@@ -5,23 +5,9 @@
 	<meta name="keywords" content="${(metadata.extendData.keywords)!}"/>
 	<meta name="description" content="${(metadata.extendData.description)!}"/>
 	<@_includePlace  path='/76c53ac2-4f88-4ef3-984b-c81d00a48089.html' /> <#-- header -->
-	<#if (metadata.extendData.gray)?has_content && metadata.extendData.gray=.now?string('yyyy-MM-dd') >
-	<style>
-html{
-filter: grayscale(100%);
--webkit-filter: grayscale(100%);
--moz-filter: grayscale(100%);
--ms-filter: grayscale(100%);
--o-filter: grayscale(100%);
-filter:url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
-filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
--webkit-filter: grayscale(1);
-}
-	</style>
-	</#if>
 </head>
 <body>
-<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
 	<div class="container">
 		<@_includePlace path="/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"/> <#-- 焦点图 -->
@@ -73,12 +59,6 @@ filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 				</div>
 			</div>
 			<div>
-				<h3>文档视频下载</h3>
-				<div class="page">
-						<a href="https://pan.baidu.com/s/1O2wRWaC6dSBlKVNxNr9xvQ" target="_blank">百度网盘</a>密码:65uk
-				</div>
-			</div>
-			<div>
 				<h3>源码下载</h3>
 				<div class="page">
 					<a href="https://gitee.com/sanluan/PublicCMS" target="_blank">GITEE</a>
@@ -91,17 +71,9 @@ filter:progid:DXImageTransform.Microsoft.BasicImage(grayscale=1);
 	<div class="clearfix-before"></div>
 </main>
 <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- footer -->
+<@_includePlace path="/ff78be16-6f75-42b3-b115-d9d9cf578f1c.html"/> <#-- 首页置灰控制 -->
 <script>
-	$("header nav ul li a:contains('首页')").parent().addClass('selected');
+	$("header nav ul li[data-id=home]").addClass('selected');
 </script>
-	<#if (metadata.extendData.gray)?has_content && metadata.extendData.gray=.now?string('yyyy-MM-dd') >
-        <script src="${site.sitePath}assets/js/grayscale.js"></script>
-		<script>
-			var a = navigator.userAgent.toLowerCase();
-			if(a.indexOf("msie 10.0") !== -1 || a.indexOf("rv:11.0") !== -1) {
-				grayscale(document.getElementById('body'));
-			}
-		</script>
-	</#if>
 </body>
 </html>

@@ -7,7 +7,7 @@
 	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
 	<div class="container">
 		<div class="left-content">
@@ -24,10 +24,10 @@
 					<@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
 					<#list page.list as a>
 						<li class="underline">
-							<p>${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》<span class="float-right"><a href="comment.html?id=${a.id}">编辑</a></span></p>
+							<p>${a.createDate} 评论《<a href="${contentMap[a.contentId?string].url}" target="_blank">${contentMap[a.contentId?string].title}</a>》<span class="float-right"><a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
 							<#if a.replyId?has_content>
 								<@_comment id=a.replyId>
-							<p class="reply"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${userMap[a.replyUserId?string].nickName}</a> : ${object.text!}</p>
+							<p class="reply"><a href="${site.dynamicPath}user.html?id=${a.replyUserId!}" target="_blank">@${(userMap[a.replyUserId?string].nickName)!}</a> : ${object.text!}</p>
 								</@_comment>
 							</#if>
 							<p>${a.text!}</p>

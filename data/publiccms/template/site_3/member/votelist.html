@@ -5,7 +5,7 @@
 	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
     <div class="container">
 		<h3>投票列表</h3>
@@ -15,7 +15,6 @@
             <li>
 				<h3><a href="${site.dynamicPath}vote.html?id=${a.id}">${a.title}</a></h3>
 				<p>${a.description}</p>
-                <p>${a.scores!} 人投票,截止日期:${(a.endDate)!}</p>
 				<#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
 				<@_voteItemList voteId=a.id pageSize=3>
 					<ol class="vote">

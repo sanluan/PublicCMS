@@ -4,9 +4,11 @@
 		<@_contentList categoryId=object.id containChild=true count=4>
 			<#if page.totalCount gt 0>
 				<a href="${object.url}"><h3>${object.name!}</h3></a>
+				<ul>
 				<#list page.list as a>
 					<@include path="/ftl/data-list.ftl"/>
 				</#list>
+				</ul>
 			</#if>
 		</@_contentList>
 	</@_category>

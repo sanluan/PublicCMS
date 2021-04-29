@@ -19,7 +19,7 @@
 		<#if result?has_content&&!error?has_content>
 			<p style="color:red">提交成功，请等待管理员审核！</p>
 		<#else>
-			<form method="post" action="${site.dynamicPath}place/save.do" onsubmit="return check();">
+			<form method="post" action="${site.dynamicPath}place/save" onsubmit="return check();">
 				<input name="path" type="hidden" value="${path}" />
 				<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
 				<input name="returnUrl" type="hidden" value="${site.dynamicPath}friendlink.html?result=true" />
@@ -39,10 +39,12 @@
 				<#list page.list as a>
 						<p>
 							<a href="${a.url}" target="_blank">${a.title}</a> ${a.clicks} [${(userMap[a.userId?string].nickName)!}]
-						<#if 0=a.status>
-							<a href="${site.dynamicPath}place/check.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">审核</a>
-						</#if>
-							<a href="${site.dynamicPath}place/delete.do?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html">删除</a>
+					<#if 2=a.status>
+                        <a href="${site.dynamicPath}place/check?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html&_csrf=<@_csrfToken/>">审核</a> 
+                    <#elseif 1=a.status>
+                        <a href="${site.dynamicPath}place/uncheck?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html&_csrf=<@_csrfToken/>">取消审核</a> 
+                    </#if>
+							<a href="${site.dynamicPath}place/delete?id=${a.id}&returnUrl=${site.dynamicPath}friendlink.html&_csrf=<@_csrfToken/>">删除</a>
 						</p>
 				</#list>
 			</@_placeList>

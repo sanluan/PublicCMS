@@ -5,7 +5,7 @@
 			<div class="cover"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
 		</div>
 		<div class="comment-text-box user-logout">
-			<form method="post" action="${site.dynamicPath}comment/save.do" onsubmit="return comment();">
+			<form method="post" action="${site.dynamicPath}comment/save" onsubmit="return comment();">
 				<input type="hidden" name="replyId" value=""/>
 				<input type="hidden" name="_csrf" value=""/>
 				<input type="hidden" name="contentId" value="${content.id}"/>

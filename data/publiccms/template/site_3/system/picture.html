@@ -8,7 +8,7 @@
 	<link href="${site.sitePath!}assets/gallery/style.css" rel="stylesheet"/>
 </head>
 <body>
-<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
 	<div class="container bread">
 		<@include path="/ftl/echoBread.ftl"/>
@@ -27,7 +27,7 @@
 					</header>
 					<div class="gallery-description">
 						<p>
-						${content.description!}
+							${content.description!}
 						</p>
 					</div>
 					<div class="gallery-content" data-gallery="content">
@@ -175,7 +175,7 @@ $(function(){
 				big: '${a.filePath}',
 				small: '<@_thumb path=a.filePath width=100 height=75/>',
 				thumb: '<@_thumb path=a.filePath width=100 height=75/>',
-				note: '${(a.description!content.description!)?js_string}'
+				note: '${((a.description!content.description!)?js_string)!}'
 			}<#if a?has_next>,</#if>
 </#list>
 </@_contentFileList>

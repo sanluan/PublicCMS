@@ -29,14 +29,13 @@
 		<div class="logo">
 			<a href="${site.sitePath}"><img src="${site.sitePath!}assets/images/logo.png" alt="Public CMS"/></a>
 		</div>
-
 		<span class="slogan"><@_sysConfigData code="site">${(object.slogan)!}</@_sysConfigData></span>
-		<nav class="clearfix-before">
+		<nav>
 			<ul>
-				<li><a href="${site.sitePath}">首页</a></li>
+				<li data-id="home"><a href="${site.sitePath}">首页</a></li>
 <@_categoryList>
 	<#list page.list as a>
-				<li>
+				<li data-id="${a.id}">
 					<a href="${a.url!}"<#if a.onlyUrl> target="_blank"</#if>>${a.name}</a>
 		<#if a.childIds?has_content>
 					<ul>

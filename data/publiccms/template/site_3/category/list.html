@@ -7,7 +7,7 @@
 <@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
-<@_includePlace path="/index.html/2ecdebcc-c087-4ed3-aecd-80f85ce6a6c6.html"/> <#-- 导航 -->
+<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
 	<nav class="container">
 		<@_categoryList parentId=category.parentId>
@@ -22,11 +22,13 @@
 	</div>
 	<div class="container">
 		<div class="data-list left-content">
-<@_contentList categoryId=category.id containChild=true pageIndex=pageIndex count=category.pageSize>
+<@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex count=category.pageSize>
 	<@import path="/ftl/tools.ftl" namespace="t"/>
+			<ul>
 	<#list page.list as a>
 		<@include path="/ftl/data-list.ftl"/>
 	</#list>
+			</ul>
 	<#if 1=pageIndex>
 			<div class="page">
 			<#if !page.lastPage>
@@ -48,7 +50,7 @@
 				<ul class="rank">
 <@_contentList categoryId=category.id containChild=true orderField='clicks' count=10>
 	<#list page.list as a>
-					<li><a href="${a.url!}" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+					<li><span>${a.clicks}</span><a href="${a.url!}" target="_blank">${a.title}</a></li>
 	</#list>
 </@_contentList>
 				</ul>
@@ -61,10 +63,10 @@
 <script>
 <#if category.parentId?has_content>
 	<@_category id=category.parentId>
-		$("header nav ul li a:contains('${object.name}')").parent().addClass('selected');
+		$("header nav ul li[data-id=${object.id}]").addClass('selected');
 	</@_category>
 <#else>
-	$("header nav ul li a:contains('${category.name}')").parent().addClass('selected');
+	$("header nav ul li[data-id=${category.id}]").addClass('selected');
 </#if>
 </script>
 </body>

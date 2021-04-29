@@ -1,4 +1,3 @@
-<ul>
 	<li>
 		<h3><a href="<#if a.onlyUrl>content/redirect.do?id=${a.id}<#else>${a.url}</#if>" target="_blank">${a.title?no_esc}</a><span>${a.publishDate?date}</span></h3>
 		<a href="<#if a.onlyUrl>content/redirect.do?id=${a.id}<#else>${a.url}</#if>" target="_blank">
@@ -14,5 +13,5 @@
 </#if>
 		</a>
 		<p<#if a.hasImages> class="clearfix-before"</#if>>${(a.description?no_esc)!}<a href="<#if a.onlyUrl>content/redirect.do?id=${a.id}<#else>${a.url}</#if>" target="_blank"> 详细 &gt;&gt;</a></p>
+		<div class="clearfix-before"></div>
 	</li>
-</ul>
