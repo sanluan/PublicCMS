@@ -1,7 +1,6 @@
-<@_content id=id absoluteURL=false>
+<@_content id=id!copyId absoluteURL=false>
     <#assign
         a=object
-        id=a.id
         parentId=a.parentId!''
         categoryId=a.categoryId!''
         modelId=a.modelId!''
@@ -74,6 +73,7 @@
 $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(){
     addCategory($('input[name=\'quoteCategoryId\']',navTab.getCurrentPanel()).val(), $(this).val(), null);
 });
+<#assign copy=false/>
 <#if a?has_content>
 <@_contentQuoteList quoteId=a.id>
     <#list list as a>
@@ -82,6 +82,7 @@ $('input[name=\'categoryName\']',navTab.getCurrentPanel()).on('change',function(
     </@_category>
     </#list>
 </@_contentQuoteList>
+<#if copyId?has_content && !id?has_content><#assign copy=true/></#if>
 </#if>
 </script>
                     </#if>
@@ -223,13 +224,13 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                 <#if model.hasImages>
                 <fieldset>
                     <legend><@t.page 'image_list'/></legend>
-                    <@contentFiles true id!/>
+                    <@contentFiles true id!copyId copy/>
                 </fieldset>
                 </#if>
                 <#if model.hasFiles>
                 <fieldset>
                     <legend><@t.page 'attach_list'/></legend>
-                    <@contentFiles false id!/>
+                    <@contentFiles false id!copyId copy/>
                 </fieldset>
                 </#if>
             </#if>
