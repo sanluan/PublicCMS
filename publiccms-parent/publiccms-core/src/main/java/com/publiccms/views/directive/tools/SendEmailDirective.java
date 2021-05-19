@@ -29,12 +29,13 @@ public class SendEmailDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        String email = handler.getString("email");
+        String[] email = handler.getStringArray("email");
+        String[] cc = handler.getStringArray("cc");
+        String[] bcc = handler.getStringArray("bcc");
         String title = handler.getString("title");
         String templatePath = handler.getString("templatePath");
         if (CommonUtils.notEmpty(email) && CommonUtils.notEmpty(title)) {
             SysSite site = getSite(handler);
-            String content = handler.getString("content");
             if (CommonUtils.notEmpty(templatePath)) {
                 Map<String, Object> model = new HashMap<>();
                 expose(handler, model);
@@ -43,12 +44,16 @@ public class SendEmailDirective extends AbstractTemplateDirective {
                 CmsPageData data = metadataComponent
                         .getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, templatePath));
                 model.put("metadata", metadata.getAsMap(data));
-                content = FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, templatePath),
+                String content = FreeMarkerUtils.generateStringByFile(SiteComponent.getFullTemplatePath(site, templatePath),
                         templateComponent.getWebConfiguration(), model);
+                handler.put("result", emailComponent.sendHtml(site.getId(), email, cc, bcc, title, content)).render();
+            } else {
+                String content = handler.getString("content");
+                if (CommonUtils.notEmpty(content)) {
+                    handler.put("result", emailComponent.send(site.getId(), email, cc, bcc, title, content)).render();
+                }
             }
-            if (CommonUtils.notEmpty(content)) {
-                handler.put("result", emailComponent.sendHtml(site.getId(), email, title, content)).render();
-            }
+
         }
     }
 

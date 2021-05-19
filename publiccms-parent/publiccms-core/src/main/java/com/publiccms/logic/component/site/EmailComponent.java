@@ -1,5 +1,7 @@
 package com.publiccms.logic.component.site;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -81,6 +83,10 @@ public class EmailComponent implements SiteCache, Config {
     /**
      * 
      */
+    public static final String CONFIG_PERSONAL = "personal";
+    /**
+     * 
+     */
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
 
     @Autowired
@@ -130,7 +136,39 @@ public class EmailComponent implements SiteCache, Config {
      * @throws MessagingException
      */
     public boolean send(short siteId, String toAddress, String title, String content) throws MessagingException {
-        return send(siteId, toAddress, title, content, false);
+        return send(siteId, new String[] { toAddress }, null, null, title, content, false, null, null);
+    }
+
+    /**
+     * @param siteId
+     * @param toAddress
+     * @param cc
+     * @param bcc
+     * @param title
+     * @param content
+     * @return whether to send successfully
+     * @throws MessagingException
+     */
+    public boolean send(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String content)
+            throws MessagingException {
+        return send(siteId, toAddress, cc, bcc, title, content, false, null, null);
+    }
+
+    /**
+     * @param siteId
+     * @param toAddress
+     * @param cc
+     * @param bcc
+     * @param title
+     * @param content
+     * @param fileName
+     * @param file
+     * @return whether to send successfully
+     * @throws MessagingException
+     */
+    public boolean send(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String content,
+            String fileName, File file) throws MessagingException {
+        return send(siteId, toAddress, cc, bcc, title, content, false, fileName, file);
     }
 
     /**
@@ -138,11 +176,43 @@ public class EmailComponent implements SiteCache, Config {
      * @param toAddress
      * @param title
      * @param html
-     * @return
+     * @return whether to send successfully
      * @throws MessagingException
      */
     public boolean sendHtml(short siteId, String toAddress, String title, String html) throws MessagingException {
-        return send(siteId, toAddress, title, html, true);
+        return send(siteId, new String[] { toAddress }, null, null, title, html, true, null, null);
+    }
+
+    /**
+     * @param siteId
+     * @param toAddress
+     * @param cc
+     * @param bcc
+     * @param title
+     * @param html
+     * @return whether to send successfully
+     * @throws MessagingException
+     */
+    public boolean sendHtml(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String html)
+            throws MessagingException {
+        return send(siteId, toAddress, cc, bcc, title, html, true, null, null);
+    }
+
+    /**
+     * @param siteId
+     * @param toAddress
+     * @param cc
+     * @param bcc
+     * @param title
+     * @param html
+     * @param fileName
+     * @param file
+     * @return whether to send successfully
+     * @throws MessagingException
+     */
+    public boolean sendHtml(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String html,
+            String fileName, File file) throws MessagingException {
+        return send(siteId, toAddress, cc, bcc, title, html, true, fileName, file);
     }
 
     /**
@@ -154,19 +224,34 @@ public class EmailComponent implements SiteCache, Config {
      * @return whether to send successfully
      * @throws MessagingException
      */
-    private boolean send(short siteId, String toAddress, String title, String content, boolean isHtml) throws MessagingException {
+    private boolean send(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String content,
+            boolean isHtml, String fileName, File file) throws MessagingException {
         Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_FROMADDRESS))) {
             JavaMailSender mailSender = getMailSender(siteId, config);
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(message, false, CommonConstants.DEFAULT_CHARSET_NAME);
             messageHelper.setTo(toAddress);
-            messageHelper.setFrom(config.get(CONFIG_FROMADDRESS));
+            if (CommonUtils.notEmpty(cc)) {
+                messageHelper.setCc(cc);
+            }
+            if (CommonUtils.notEmpty(bcc)) {
+                messageHelper.setBcc(bcc);
+            }
+            try {
+                messageHelper.setFrom(config.get(CONFIG_FROMADDRESS), config.get(CONFIG_PERSONAL));
+            } catch (UnsupportedEncodingException e) {
+                messageHelper.setFrom(config.get(CONFIG_FROMADDRESS));
+            }
             if (null != title) {
                 title = title.replaceAll("\r|\n", CommonConstants.BLANK);
             }
             messageHelper.setSubject(title);
             messageHelper.setText(content, isHtml);
+            if (null != file) {
+                messageHelper.setEncodeFilenames(true);
+                messageHelper.addAttachment(fileName, file);
+            }
             pool.execute(new SendTask(mailSender, message));
             return true;
         }
@@ -209,6 +294,8 @@ public class EmailComponent implements SiteCache, Config {
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_SSL), null));
         extendFieldList.add(new SysExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true, CONFIG_FROMADDRESS,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_FROMADDRESS), null));
+        extendFieldList.add(new SysExtendField(CONFIG_FROMADDRESS, INPUTTYPE_EMAIL, true, CONFIG_FROMADDRESS,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PERSONAL), null));
         return extendFieldList;
     }
 
