@@ -20,10 +20,10 @@
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.3.5</version.spring>
+        <version.spring>5.3.6</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.4.4</version.springBoot>
+        <version.springBoot>2.4.5</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
@@ -75,10 +75,10 @@
         <version.extractor>2.15.0</version.extractor>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
-        <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
-        <version.annotation>1.3.2</version.annotation>
-        <!-- https://mvnrepository.com/artifact/javax.mail/javax.mail-api -->
-        <version.mail>1.6.2</version.mail>
+        <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
+        <version.annotation>1.3.5</version.annotation>
+        <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
+        <version.mail>1.6.7</version.mail>
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
         <version.ant>1.10.9</version.ant>
         <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
@@ -246,19 +246,14 @@
                 <version>${version.jta}</version>
             </dependency>
             <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>javax.mail-api</artifactId>
-                <version>${version.mail}</version>
-            </dependency>
-            <dependency>
-                <groupId>javax.annotation</groupId>
-                <artifactId>javax.annotation-api</artifactId>
-                <version>${version.annotation}</version>
-            </dependency>
-            <dependency>
                 <groupId>com.sun.mail</groupId>
-                <artifactId>javax.mail</artifactId>
+                <artifactId>jakarta.mail</artifactId>
                 <version>${version.mail}</version>
+            </dependency>
+            <dependency>
+                <groupId>jakarta.annotation</groupId>
+                <artifactId>jakarta.annotation-api</artifactId>
+                <version>${version.annotation}</version>
             </dependency>
             <dependency>
                 <groupId>eu.bitwalker</groupId>
