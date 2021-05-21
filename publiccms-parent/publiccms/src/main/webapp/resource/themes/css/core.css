@@ -44,7 +44,7 @@ header .nav .selected ul{display:block;}
 
 #navMenu{float:left;display:block;position:absolute;top:0;left:202px;z-index:1;}
 #navMenu li{float:left;}
-#navMenu li a{;display:block;font-size:13px;font-weight:400;line-height:60px;text-decoration:none;padding:0 18px;}
+#navMenu li a{display:block;font-size:13px;font-weight:400;line-height:60px;text-decoration:none;padding:0 18px;}
 #navMenu li a>i{margin-right:5px;}
 
 /* Tabs */
@@ -148,7 +148,6 @@ header .nav .selected ul{display:block;}
 .grid { display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
 .grid .gridHeader { display:block;overflow:hidden;width:auto;}
 .grid .gridScroller { display:block;overflow:auto;position:relative;}
-.grid .gridTbody { ;}
 .grid table { border:0;border-collapse:collapse;table-layout:fixed;min-width:800px;}
 .grid .gridHeader th { padding:5px 3px;border-style:solid;border-width:0 1px 1px 0;vertical-align:top;white-space:nowrap;line-height:26px;cursor:default;}
 .grid .gridHeader th:hover, .grid .gridHeader th.thSelected { background-position:0 -50px;}
@@ -161,8 +160,6 @@ header .nav .selected ul{display:block;}
 .grid .gridTbody td div a:hover{text-decoration:underline;}
 .grid .gridCol { width:100%;display:block;overflow:hidden;height:26px;line-height:26px;white-space:nowrap;}
 .grid .gridTbody .selected td { border-bottom-style:dotted;border-bottom-width:1px;}
-.grid .gridTbody .selected .tdSelected {;}
-.grid .gridTbody .tdSelected { ;}
 .grid .resizeMarker, .grid .resizeProxy { display:block;overflow:hidden;width:1px;position:absolute;}
 .grid .left { text-align:left;}
 .grid .right { text-align:right;}
@@ -323,7 +320,6 @@ fieldset:first-child .unit:first-of-type p:last-child{padding:0;}
 .tagsBox span>a,.parametersBox span{margin-left:5px;}
 .parametersBox{line-height:25px;}
 .parametersBox span>em{color:#f00;}
-.parametersOperateBox{;}
 .parametersOperateBox label{width:auto;}
 
 /* Pages dialog */
@@ -488,11 +484,12 @@ a.btnSelect{display:block;width:22px;height:20px;overflow:hidden;float:left;marg
 .searchBar ul.searchContent:before{content:"\e631";font-family:iconfont;}
 .searchBar ul.searchContentHover:before{content:"\e6f8";}
 
-.ckbox{font-family:FontAwesome;vertical-align:-10%;font-size:1.3333333333333333em;text-decoration:inherit;display:inline-block;speak:none;}
+.ckbox{font-family:FontAwesome;vertical-align:-10%;font-size:1.3333333333333333em;text-decoration:inherit;display:inline-block;}
 .unchecked:before{content:"\f096";}
 .ckbox.indeterminate:before{content:"\f147";}
 .ckbox.checked:before{content:"\f046";}
 
+.panelBar .toolBar li:hover .addMore .icon-double-angle-down:before{content:"\f102";}
 /* basic color */
 body{color:#ccc;}
 a{color:#fff;}

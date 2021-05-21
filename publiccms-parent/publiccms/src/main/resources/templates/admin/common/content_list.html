@@ -74,7 +74,7 @@
                 <@t.merge 'tempModelIds' a.id!/>
             </#list>
             <li>
-                <a href="javascript:void(0)" class="addMore"><i class="icon-plus icon-large"></i> <@t.page 'content.add'/></a>
+                <a href="javascript:void(0)" class="addMore"><i class="icon-double-angle-down icon-large"></i> <@t.page 'content.add'/></a>
                 <ul>
             <@_categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@_categoryModel>
             <#assign size=0/>
@@ -170,6 +170,9 @@
                         <p>
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickName)!}</span>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
+                            <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
+                                <label><a href="cmsContent/list.html?parentId=${contentId}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
+                            </#if>
                             <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
                         </p>
                     </div>
@@ -190,9 +193,6 @@
                     <#if 1=a.status || 3=a.status>/ <span class="exclude-translate">${(userMap[a.checkUserId?string].nickName)!}</span></#if>
                 </td>
                 <td class="wrap">
-                    <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsContent/list.html?parentId=${contentId}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a>|
-                    </#if>
                     <#if 1=a.status>
                         <#if authorizedMap['cmsContent/sortParameters']>
                             <#if dept?has_content>
