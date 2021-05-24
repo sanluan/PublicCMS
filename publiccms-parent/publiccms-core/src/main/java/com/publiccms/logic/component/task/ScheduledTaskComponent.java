@@ -84,11 +84,11 @@ public class ScheduledTaskComponent {
     }
 
     /**
-     * 每分钟清理缓存
+     * 每分钟汇总访问数据
      */
     @Scheduled(cron = "10 * * * * ?")
     public void dealLastMinuteVisitLog() {
-        if (CmsVersion.isInitialized()) {
+        if (CmsVersion.isMaster()) {
             synchronized (visitComponent) {
                 visitComponent.dealLastMinuteVisitLog();
             }
@@ -96,11 +96,11 @@ public class ScheduledTaskComponent {
     }
 
     /**
-     * 每小时清理缓存
+     * 每小时汇总访问数据
      */
     @Scheduled(cron = "0 1 * * * ?")
     public void dealLastHourVisitLog() {
-        if (CmsVersion.isInitialized()) {
+        if (CmsVersion.isMaster()) {
             synchronized (visitComponent) {
                 visitComponent.dealLastHourVisitLog();
             }
@@ -108,11 +108,11 @@ public class ScheduledTaskComponent {
     }
 
     /**
-     * 每天清理缓存
+     * 每天汇总访问数据
      */
     @Scheduled(cron = "0 10 0 * * ?")
     public void dealLastDayVisitLog() {
-        if (CmsVersion.isInitialized()) {
+        if (CmsVersion.isMaster()) {
             synchronized (visitComponent) {
                 visitComponent.dealLastDayVisitLog();
             }

@@ -37,7 +37,8 @@ public class VisitComponent implements Cache {
 
     public void dealLastMinuteVisitLog() {
         Date now = CommonUtils.getMinuteDate();
-        List<LogVisitSession> entityList = logVisitService.getSessionList(DateUtils.addMinutes(now, -2), DateUtils.addMinutes(now, -1));
+        List<LogVisitSession> entityList = logVisitService.getSessionList(DateUtils.addMinutes(now, -2),
+                DateUtils.addMinutes(now, -1));
         logVisitSessionService.save(entityList);
     }
 

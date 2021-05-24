@@ -526,7 +526,7 @@ CREATE TABLE `trade_account`  (
   `amount` decimal(10, 2) NOT NULL COMMENT '金额',
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`),
-  KEY `trade_account_site_id`(`site_id`, `update_date`) 
+  KEY `trade_account_site_id`(`site_id`, `update_date`)
 ) COMMENT = '资金账户';
 
 -- ----------------------------
@@ -648,7 +648,7 @@ CREATE TABLE `sys_app_client` (
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   PRIMARY KEY (`id`),
   UNIQUE KEY `sys_app_client_site_id` (`site_id`,`channel`,`uuid`),
-  KEY `sys_app_client_user_id` (`user_id`,`disabled`,`create_date`) 
+  KEY `sys_app_client_user_id` (`user_id`,`disabled`,`create_date`)
 ) COMMENT='应用客户端';
 
 -- ----------------------------
@@ -734,7 +734,7 @@ DROP TABLE IF EXISTS `sys_dept_config`;
 CREATE TABLE `sys_dept_config` (
   `dept_id` int(11) NOT NULL COMMENT '部门ID',
   `config` varchar(100) NOT NULL COMMENT '配置',
-  PRIMARY KEY (`dept_id`,`config`) 
+  PRIMARY KEY (`dept_id`,`config`)
 ) COMMENT='部门配置';
 
 -- ----------------------------
@@ -1704,7 +1704,7 @@ CREATE TABLE `sys_task` (
   KEY `sys_task_status` (`status`),
   KEY `sys_task_site_id` (`site_id`),
   KEY `sys_task_update_date` (`update_date`)
-) AUTO_INCREMENT=8 COMMENT='任务计划';
+) COMMENT='任务计划';
 
 -- ----------------------------
 -- Table structure for sys_user
