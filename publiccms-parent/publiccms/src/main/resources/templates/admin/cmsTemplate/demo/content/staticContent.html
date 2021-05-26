@@ -112,5 +112,10 @@
             $('article p em').text(data.clicks);
         });
     </script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        ca.report('${site.dynamicPath}api/visit/record?itemType=content&itemId=${content.id}');
+    </script>
 </body>
 </html>

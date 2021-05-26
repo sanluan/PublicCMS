@@ -48,5 +48,10 @@
         </#if>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        ca.report('${site.dynamicPath}api/visit/record');
+    </script>
 </body>
 </html>

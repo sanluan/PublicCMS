@@ -1,6 +1,10 @@
 package com.publiccms.logic.service.log;
 
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 // Generated 2021-1-14 22:44:12 by com.publiccms.common.generator.SourceGenerator
 
@@ -8,10 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.entities.log.LogVisitDay;
-import com.publiccms.logic.dao.log.LogVisitDayDao;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.log.LogVisitDay;
+import com.publiccms.logic.dao.log.LogVisitDayDao;
 
 /**
  *
@@ -21,18 +26,37 @@ import com.publiccms.common.handler.PageHandler;
 @Service
 @Transactional
 public class LogVisitDayService extends BaseService<LogVisitDay> {
+    @Autowired
+    private LogVisitSessionService logVisitSessionService;
+    @Autowired
+    private LogVisitService logVisitService;
 
     /**
      * @param siteId
-     * @param visitDate
-     * @param visitHour
+     * @param startVisitDate
+     * @param endVisitDate
+     * @param hourAnalytics
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
+    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
-    public PageHandler getPage(short siteId, Date visitDate, Byte visitHour, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, visitDate, visitHour, pageIndex, pageSize);
+    public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, boolean hourAnalytics, Integer pageIndex,
+            Integer pageSize) {
+        PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, hourAnalytics, pageIndex, pageSize);
+        Date now = CommonUtils.getDate();
+        if ((null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
+            if (hourAnalytics) {
+                Calendar c = Calendar.getInstance();
+                ((List<LogVisitDay>) page.getList()).addAll(0,
+                        logVisitService.getHourList(now, (byte) c.get(Calendar.HOUR_OF_DAY)));
+            } else {
+                List<LogVisitDay> list = logVisitSessionService.getDayList(DateUtils.truncate(new Date(), Calendar.DATE));
+                ((List<LogVisitDay>) page.getList()).addAll(0, list);
+            }
+        }
+        return page;
     }
 
     /**

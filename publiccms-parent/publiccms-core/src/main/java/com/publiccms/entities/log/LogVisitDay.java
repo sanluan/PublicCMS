@@ -44,13 +44,15 @@ public class LogVisitDay implements java.io.Serializable {
         this.pv = pv;
     }
 
-    public LogVisitDay(short siteId, Date visitDate, byte visitHour, long pv) {
+    public LogVisitDay(short siteId, Date visitDate, byte visitHour, long pv, Long uv, Long ipviews) {
         this.id = new LogVisitDayId(siteId, visitDate, visitHour);
         this.pv = pv;
+        this.uv = uv;
+        this.ipviews = ipviews;
     }
 
-    public LogVisitDay(LogVisitDayId id, long pv, Long uv, Long ipviews) {
-        this.id = id;
+    public LogVisitDay(short siteId, Date visitDate, long pv, Long uv, Long ipviews) {
+        this.id = new LogVisitDayId(siteId, visitDate, (byte) -1);
         this.pv = pv;
         this.uv = uv;
         this.ipviews = ipviews;

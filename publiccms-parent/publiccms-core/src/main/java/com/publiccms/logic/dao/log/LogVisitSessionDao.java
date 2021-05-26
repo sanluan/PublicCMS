@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.publiccms.common.base.BaseDao;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.log.LogVisitDay;
 import com.publiccms.entities.log.LogVisitSession;
 
@@ -35,7 +36,7 @@ public class LogVisitSessionDao extends BaseDao<LogVisitSession> {
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogVisitSession bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
-        if (null != sessionId) {
+        if (CommonUtils.notEmpty(sessionId)) {
             queryHandler.condition("bean.id.sessionId = :sessionId").setParameter("sessionId", sessionId);
         }
         if (null != startVisitDate) {
@@ -58,10 +59,10 @@ public class LogVisitSessionDao extends BaseDao<LogVisitSession> {
     @SuppressWarnings("unchecked")
     public List<LogVisitDay> getDayList(Date visitDate) {
         QueryHandler queryHandler = getQueryHandler(
-                "select new LogVisitDay(new LogVisitDayId(bean.siteId,bean.visitDate,-1),count(*),count(distinct bean.sessionId),sum(bean.pv)) from LogVisitSession bean");
-        queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate", visitDate);
-        queryHandler.group("bean.siteId");
-        queryHandler.group("bean.visitDate");
+                "select new LogVisitDay(bean.id.siteId,bean.id.visitDate,sum(bean.pv),count(distinct bean.id.sessionId),count(distinct bean.ip)) from LogVisitSession bean");
+        queryHandler.condition("bean.id.visitDate = :visitDate").setParameter("visitDate", visitDate);
+        queryHandler.group("bean.id.siteId");
+        queryHandler.group("bean.id.visitDate");
         return (List<LogVisitDay>) getList(queryHandler);
     }
 
@@ -73,7 +74,7 @@ public class LogVisitSessionDao extends BaseDao<LogVisitSession> {
         if (null != begintime) {
             QueryHandler queryHandler = getQueryHandler("delete from LogVisitSession bean");
             if (null != begintime) {
-                queryHandler.condition("bean.visitDate <= :visitDate").setParameter("visitDate", begintime);
+                queryHandler.condition("bean.id.visitDate <= :visitDate").setParameter("visitDate", begintime);
             }
             return delete(queryHandler);
         }

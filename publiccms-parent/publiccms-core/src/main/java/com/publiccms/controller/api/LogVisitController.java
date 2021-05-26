@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogVisit;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.VisitComponent;
 
@@ -25,24 +27,28 @@ public class LogVisitController {
     private SiteComponent siteComponent;
 
     /**
+     * @param sessionId
+     * @param url
+     * @param title
+     * @param screenw
+     * @param screenh
      * @param site
      * @param userAgent
      * @param referer
-     * @param sessionId
-     * @param url
      * @param itemType
      * @param itemId
      * @param request
      */
     @RequestMapping("record")
     @ResponseBody
-    public void record(@RequestHeader(value = "User-Agent", required = false) String userAgent,
-            @RequestHeader(value = "Referer", required = false) String referer, String sessionId, String url, String itemType,
-            String itemId, HttpServletRequest request) {
+    public void record(@CookieValue("cmsAnalyticsSessionId") String sessionId, String url, String title, Integer screenw,
+            Integer screenh, @RequestHeader(value = "User-Agent", required = false) String userAgent, String referer,
+            String itemType, String itemId, HttpServletRequest request) {
         Calendar now = Calendar.getInstance();
         Date date = now.getTime();
-        LogVisit entity = new LogVisit(siteComponent.getSite(request.getServerName()).getId(), sessionId, date,
-                (byte) now.get(Calendar.HOUR_OF_DAY), RequestUtils.getIpAddress(request), url, date);
+        SysSite site = siteComponent.getSite(request.getServerName());
+        LogVisit entity = new LogVisit(site.getId(), sessionId, date, (byte) now.get(Calendar.HOUR_OF_DAY),
+                RequestUtils.getIpAddress(request), userAgent, url, title, screenw, screenh, referer, itemType, itemId, date);
         visitComponent.add(entity);
     }
 }

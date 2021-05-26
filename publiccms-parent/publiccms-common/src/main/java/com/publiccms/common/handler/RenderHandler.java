@@ -75,7 +75,6 @@ public interface RenderHandler {
      * @param defaultValue
      * @return int value
      * @throws Exception
-     * @throws Exception
      */
     Integer getInteger(String name, Integer defaultValue) throws Exception;
 
@@ -94,6 +93,14 @@ public interface RenderHandler {
      * @throws Exception
      */
     Byte getByte(String name) throws Exception;
+    
+    /**
+     * @param name
+     * @param defaultValue
+     * @return byte value
+     * @throws Exception
+     */
+    Byte getByte(String name, Byte defaultValue) throws Exception;
 
     /**
      * @param name

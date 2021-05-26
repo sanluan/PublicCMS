@@ -2,6 +2,7 @@ package com.publiccms.entities.log;
 // Generated 2021-1-14 22:33:12 by Hibernate Tools 6.0.0-SNAPSHOT
 
 import java.util.Date;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -36,10 +37,6 @@ public class LogVisitSession implements java.io.Serializable {
     private Date firstVisitDate;
     @GeneratorColumn(title = "IP", condition = true)
     private String ip;
-    @GeneratorColumn(title = "来源网址")
-    private String refererUrl;
-    @GeneratorColumn(title = "搜索词")
-    private String refererKeyword;
     @GeneratorColumn(title = "PV")
     private long pv;
 
@@ -58,17 +55,6 @@ public class LogVisitSession implements java.io.Serializable {
         this.lastVisitDate = lastVisitDate;
         this.firstVisitDate = firstVisitDate;
         this.ip = ip;
-        this.pv = pv;
-    }
-
-    public LogVisitSession(LogVisitSessionId id, Date lastVisitDate, Date firstVisitDate, String ip, String refererUrl,
-            String refererKeyword, long pv) {
-        this.id = id;
-        this.lastVisitDate = lastVisitDate;
-        this.firstVisitDate = firstVisitDate;
-        this.ip = ip;
-        this.refererUrl = refererUrl;
-        this.refererKeyword = refererKeyword;
         this.pv = pv;
     }
 
@@ -111,24 +97,6 @@ public class LogVisitSession implements java.io.Serializable {
 
     public void setIp(String ip) {
         this.ip = ip;
-    }
-
-    @Column(name = "referer_url", length = 2048)
-    public String getRefererUrl() {
-        return this.refererUrl;
-    }
-
-    public void setRefererUrl(String refererUrl) {
-        this.refererUrl = refererUrl;
-    }
-
-    @Column(name = "referer_keyword")
-    public String getRefererKeyword() {
-        return this.refererKeyword;
-    }
-
-    public void setRefererKeyword(String refererKeyword) {
-        this.refererKeyword = refererKeyword;
     }
 
     @Column(name = "pv", nullable = false)

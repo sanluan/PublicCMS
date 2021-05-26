@@ -1,16 +1,21 @@
-<@_logVisitDayList visitHour=visitHour pageIndex=pageNum pageSize=numPerPage>
+<@_logVisitDayList startVisitDate=startVisitDate endVisitDate=endVisitDate hourAnalytics=hourAnalytics pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
-                <li>
-                    <label>访问日期:</label>
-                    <input type="text" name="visitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${visitDate!}" />
+                <li class="colspan">
+                    <label><@t.page 'log.visit.visit_date'/>:</label>
+                    <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}" />
                 </li>
                 <li>
-                    <label>访问小时:</label>
-                    <input type="text" name="visitHour" value="${visitHour!}" />
+                    <label><@t.page 'log.visit.hour_analytics'/>:</label>
+                    <select class="combox" name="hourAnalytics">
+                        <option value="false"${(!(hourAnalytics?has_content)||"false"=hourAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'log.visit.hour_analytics.day'/></option>
+                        <option value="true"${(hourAnalytics?has_content&&"true"=hourAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'log.visit.hour_analytics.hour'/></option>
+                    </select>
                 </li>
             </ul>
             <div class="subBar">
@@ -32,8 +37,7 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th>日期</th>
-                <th>小时</th>
+                <th><@t.page 'log.visit.visit_date'/></th>
                 <th>PV</th>
                 <th>UV</th>
                 <th>IP Views</th>
@@ -43,8 +47,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td>${a.id.visitDate!}</td>
-                <td>${a.id.visitHour!}</td>
+                <td><a href="log/visit.html?queryStartCreateDate=${a.id.visitDate!}" target="navTab" rel="log/visit" title="<@t.page 'log.visit'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}<#if hourAnalytics?has_content && 'true'=hourAnalytics> ${a.id.visitHour!}:00:00</#if></a></td>
                 <td>${a.pv!}</td>
                 <td>${a.uv!}</td>
                 <td>${a.ipviews!}</td>

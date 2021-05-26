@@ -45,6 +45,12 @@ public class LogVisit implements java.io.Serializable {
     private String userAgent;
     @GeneratorColumn(title = "url")
     private String url;
+    @GeneratorColumn(title = "标题")
+    private String title;
+    @GeneratorColumn(title = "屏幕宽度")
+    private Integer screenWidth;
+    @GeneratorColumn(title = "屏幕高度")
+    private Integer screenHeight;
     @GeneratorColumn(title = "refererUrl")
     private String refererUrl;
     @GeneratorColumn(title = "项目类型")
@@ -66,20 +72,21 @@ public class LogVisit implements java.io.Serializable {
         this.url = url;
         this.createDate = createDate;
     }
-
-    public LogVisit(short siteId, String sessionId, Date visitDate, byte visitHour, String ip, String userAgent, String url,
-            String refererUrl, String itemType, String itemId, Date createDate) {
-        this.siteId = siteId;
-        this.sessionId = sessionId;
-        this.visitDate = visitDate;
-        this.visitHour = visitHour;
-        this.ip = ip;
-        this.userAgent = userAgent;
-        this.url = url;
-        this.refererUrl = refererUrl;
-        this.itemType = itemType;
-        this.itemId = itemId;
-        this.createDate = createDate;
+    public LogVisit(short siteId, String sessionId, Date visitDate, byte visitHour, String ip, String userAgent, String url, String title, Integer screenWidth, Integer screenHeight, String refererUrl, String itemType, String itemId, Date createDate) {
+       this.siteId = siteId;
+       this.sessionId = sessionId;
+       this.visitDate = visitDate;
+       this.visitHour = visitHour;
+       this.ip = ip;
+       this.userAgent = userAgent;
+       this.url = url;
+       this.title = title;
+       this.screenWidth = screenWidth;
+       this.screenHeight = screenHeight;
+       this.refererUrl = refererUrl;
+       this.itemType = itemType;
+       this.itemId = itemId;
+       this.createDate = createDate;
     }
 
     @Id
@@ -158,8 +165,35 @@ public class LogVisit implements java.io.Serializable {
     public void setUrl(String url) {
         this.url = url;
     }
-
-    @Column(name = "referer_url", length = 2048)
+    
+    @Column(name="title")
+    public String getTitle() {
+        return this.title;
+    }
+    
+    public void setTitle(String title) {
+        this.title = title;
+    }
+    
+    @Column(name="screen_width")
+    public Integer getScreenWidth() {
+        return this.screenWidth;
+    }
+    
+    public void setScreenWidth(Integer screenWidth) {
+        this.screenWidth = screenWidth;
+    }
+    
+    @Column(name="screen_height")
+    public Integer getScreenHeight() {
+        return this.screenHeight;
+    }
+    
+    public void setScreenHeight(Integer screenHeight) {
+        this.screenHeight = screenHeight;
+    }
+    
+    @Column(name="referer_url", length=2048)
     public String getRefererUrl() {
         return this.refererUrl;
     }

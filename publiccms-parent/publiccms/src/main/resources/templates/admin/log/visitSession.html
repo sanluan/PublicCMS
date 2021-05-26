@@ -5,10 +5,14 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li class="colspan">
-                    <label>访问日期:</label>
+                    <label><@t.page 'log.visit.session'/>:</label>
+                    <input type="text" name="sessionId" value="${sessionId!}"/>
+                </li>
+                <li class="colspan">
+                    <label><@t.page 'log.visit.visit_date'/>:</label>
                     <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
                     <span>-</span>
-                    <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endVisitDate!}" />
+                    <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}" />
                 </li>
             </ul>
             <div class="subBar">
@@ -30,12 +34,10 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th>会话</th>
-                <th orderField="lastVisitDate" class="<#if orderField??&&'lastVisitDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">上次访问时间</th>
-                <th>首次访问时间</th>
+                <th><@t.page 'log.visit.session'/></th>
+                <th orderField="lastVisitDate" class="<#if orderField??&&'lastVisitDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.visit.visit_date.last'/></th>
+                <th><@t.page 'log.visit.visit_date.first'/></th>
                 <th>IP</th>
-                <th>来源网址</th>
-                <th>搜索词</th>
                 <th>PV</th>
             </tr>
         </thead>
@@ -43,12 +45,10 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td>${a.id.sessionId!}</td>
+                <td><a href="log/visit.html?sessionId=${a.id.sessionId!}" target="navTab" rel="log/visit" icon="<i class='icon-bolt icon-large'></i>">${a.id.sessionId!}</a></td>
                 <td>${a.lastVisitDate!}</td>
                 <td>${a.firstVisitDate!}</td>
                 <td>${a.ip!}</td>
-                <td>${a.refererUrl!}</td>
-                <td>${a.refererKeyword!}</td>
                 <td>${a.pv!}</td>
             </tr>
             </#list>

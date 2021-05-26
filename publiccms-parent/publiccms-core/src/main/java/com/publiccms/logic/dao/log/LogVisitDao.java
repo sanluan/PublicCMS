@@ -63,8 +63,9 @@ public class LogVisitDao extends BaseDao<LogVisit> {
     @SuppressWarnings("unchecked")
     public List<LogVisitDay> getHourList(Date visitDate, byte visitHour) {
         QueryHandler queryHandler = getQueryHandler(
-                "select new LogVisitDay(bean.siteId,bean.visitDate,bean.visitHour,count(*)) from LogVisit bean");
+                "select new LogVisitDay(bean.siteId,bean.visitDate,bean.visitHour,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from LogVisit bean");
         queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate", visitDate);
+        queryHandler.condition("bean.visitHour = :visitHour").setParameter("visitHour", visitHour);
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.visitHour");

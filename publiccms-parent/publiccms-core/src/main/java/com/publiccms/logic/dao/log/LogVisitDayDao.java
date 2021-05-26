@@ -21,24 +21,31 @@ public class LogVisitDayDao extends BaseDao<LogVisitDay> {
 
     /**
      * @param siteId
-     * @param visitDate
-     * @param visitHour
+     * @param startVisitDate
+     * @param endVisitDate
+     * @param hourAnalytics
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(short siteId, Date visitDate, Byte visitHour, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, boolean hourAnalytics, Integer pageIndex,
+            Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from LogVisitDay bean");
         queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
-        if (null != visitDate) {
-            queryHandler.condition("bean.id.visitDate = :visitDate").setParameter("visitDate", visitDate);
+        if (null != startVisitDate) {
+            queryHandler.condition("bean.id.visitDate > :startVisitDate").setParameter("startVisitDate", startVisitDate);
         }
-        if (null != visitHour) {
-            queryHandler.condition("bean.id.visitHour = :visitHour").setParameter("visitHour", visitHour);
+        if (null != endVisitDate) {
+            queryHandler.condition("bean.id.visitDate <= :endVisitDate").setParameter("endVisitDate", endVisitDate);
+        }
+        if (hourAnalytics) {
+            queryHandler.condition("bean.id.visitHour != -1");
+        } else {
+            queryHandler.condition("bean.id.visitHour = -1");
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }
-    
+
     /**
      * @param begintime
      * @return number of data deleted
@@ -47,7 +54,7 @@ public class LogVisitDayDao extends BaseDao<LogVisitDay> {
         if (null != begintime) {
             QueryHandler queryHandler = getQueryHandler("delete from LogVisitDay bean");
             if (null != begintime) {
-                queryHandler.condition("bean.visitDate <= :visitDate").setParameter("visitDate", begintime);
+                queryHandler.condition("bean.id.visitDate <= :visitDate").setParameter("visitDate", begintime);
             }
             return delete(queryHandler);
         }

@@ -475,14 +475,17 @@ CREATE TABLE `log_visit` (
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `user_agent` varchar(255) DEFAULT NULL COMMENT 'User Agent',
   `url` varchar(2048) NOT NULL COMMENT '访问路径',
+  `title` varchar(255) DEFAULT NULL COMMENT '标题',
+  `screen_width` int(11) DEFAULT NULL COMMENT '屏幕宽度',
+  `screen_height` int(11) DEFAULT NULL COMMENT '屏幕高度',
   `referer_url` varchar(2048) DEFAULT NULL COMMENT '来源URL',
   `item_type` varchar(50) DEFAULT NULL COMMENT '项目类型',
   `item_id` varchar(50) DEFAULT NULL COMMENT '项目ID',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
-  KEY `log_visit_visit_date` (`site_id`,`visit_date`,`visit_hour`) ,
-  KEY `log_visit_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`,`ip`)
-) COMMENT = '访问日志';
+  KEY `log_visit_visit_date` (`site_id`,`visit_date`,`visit_hour`),
+  KEY `log_visit_session_id` (`site_id`,`session_id`,`visit_date`,`create_date`,`ip`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COMMENT='访问日志';
 
 -- ----------------------------
 -- Table structure for log_visit_day
@@ -510,8 +513,6 @@ CREATE TABLE `log_visit_session` (
   `last_visit_date` datetime DEFAULT NULL COMMENT '上次访问日期',
   `first_visit_date` datetime DEFAULT NULL COMMENT '首次访问日期',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
-  `referer_url` varchar(2048) DEFAULT NULL COMMENT '来源URL',
-  `referer_keyword` varchar(255) DEFAULT NULL COMMENT '来源搜索词',
   `pv` bigint(20) NOT NULL COMMENT 'PV',
   PRIMARY KEY (`site_id`,`session_id`,`visit_date`),
   KEY `log_visit_visit_date` (`site_id`,`visit_date`,`ip`)
@@ -922,6 +923,9 @@ INSERT INTO `sys_module` VALUES ('log_task', 'log/task', 'sysUser/lookup', 'icon
 INSERT INTO `sys_module` VALUES ('log_task_delete', NULL, 'logTask/delete', NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_task_view', 'log/taskView', NULL, NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_upload', 'log/upload', 'sysUser/lookup', 'icon-list-alt', 'log_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('log_visit', 'log/visit', 'log/visitView', 'icon-bolt', 'log_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('log_visit_day', 'log/visitDay', NULL, 'icon-calendar', 'log_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 'icon-comment-alt', 'log_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
 INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);
@@ -1299,6 +1303,15 @@ INSERT INTO `sys_module_lang` VALUES ('log_task_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('log_upload', 'en', 'Upload log');
 INSERT INTO `sys_module_lang` VALUES ('log_upload', 'ja', 'ファイルアップロードログ');
 INSERT INTO `sys_module_lang` VALUES ('log_upload', 'zh', '文件上传日志');
+INSERT INTO `sys_module_lang` VALUES ('log_visit', 'en', 'Visit log');
+INSERT INTO `sys_module_lang` VALUES ('log_visit', 'ja', 'アクセスログ');
+INSERT INTO `sys_module_lang` VALUES ('log_visit', 'zh', '访问日志');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_day', 'en', 'Daily visit log');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_day', 'ja', '毎日の訪問ログ');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_day', 'zh', '日访问日志');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'en', 'Visit session');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'ja', 'アクセスセッション');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'zh', '访问日志会话');
 INSERT INTO `sys_module_lang` VALUES ('maintenance', 'en', 'Maintain');
 INSERT INTO `sys_module_lang` VALUES ('maintenance', 'ja', '維持');
 INSERT INTO `sys_module_lang` VALUES ('maintenance', 'zh', '维护');

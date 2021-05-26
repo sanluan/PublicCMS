@@ -69,10 +69,15 @@
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
     <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
-<script>
-function logout(){
-    $("form[name=logout]").submit();
-}
-</script>
+    <script>
+    function logout(){
+        $("form[name=logout]").submit();
+    }
+    </script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        ca.report('${site.dynamicPath}api/visit/record');
+    </script>
 </body>
 </html>

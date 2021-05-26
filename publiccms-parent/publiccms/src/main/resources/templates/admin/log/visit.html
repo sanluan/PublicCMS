@@ -1,4 +1,4 @@
-<@_logVisitList sessionId=sessionId  startCreateDate=startCreateDate endCreateDate=endCreateDate 
+<@_logVisitList sessionId=sessionId!querySessionId  startCreateDate=startCreateDate!queryStartCreateDate endCreateDate=endCreateDate!queryEndCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -6,14 +6,14 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>会话:</label>
-                    <input type="text" name="sessionId" value="${sessionId!}" />
+                    <label><@t.page 'log.visit.session'/>:</label>
+                    <input type="text" name="sessionId" value="${sessionId!querySessionId!}" />
                 </li>
                 <li class="colspan">
-                    <label>创建日期</label>
-                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
+                    <label><@t.page 'log.visit.visit_date'/>:</label>
+                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!queryStartCreateDate!}" />
                     <span>-</span>
-                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
+                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!queryEndCreateDate!}" />
                 </li>
             </ul>
             <div class="subBar">
@@ -36,11 +36,13 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th>ID</th>
-                <th>会话</th>
-                <th>url</th>
-                <th>项目类型</th>
-                <th>项目ID</th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+                <th><@t.page 'log.visit.session'/></th>
+                <th><@t.page 'url'/></th>
+                <th><@t.page 'title'/></th>
+                <th><@t.page 'log.visit.screen'/></th>
+                <th><@t.page 'log.visit.referer'/></th>
+                <td>IP</td>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.visit.visit_date'/></th>
             </tr>
         </thead>
         <tbody>
@@ -48,10 +50,12 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td>${a.sessionId!}</td>
-                <td>${a.url!}</td>
-                <td>${a.itemType!}</td>
-                <td>${a.itemId!}</td>
+                <td><a href="log/visitView.html?id=${a.id}" target="dialog" rel="operateTask">${a.sessionId!}</a></td>
+                <td><a href="${a.url}" target="_blank">${a.url!}</a></td>
+                <td>${a.title!}</td>
+                <td>${a.screenWidth!}*${a.screenHeight!}</td>
+                <td>${a.refererUrl!}</td>
+                <td>${a.ip!}</td>
                 <td>${a.createDate!}</td>
             </tr>
             </#list>

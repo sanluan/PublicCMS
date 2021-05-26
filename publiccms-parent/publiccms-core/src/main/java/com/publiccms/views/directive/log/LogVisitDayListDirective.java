@@ -21,8 +21,9 @@ public class LogVisitDayListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getDate("visitDate"), handler.getByte("visitHour"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getDate("startVisitDate"),
+                handler.getDate("endVisitDate"), handler.getBoolean("hourAnalytics", false), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }
 

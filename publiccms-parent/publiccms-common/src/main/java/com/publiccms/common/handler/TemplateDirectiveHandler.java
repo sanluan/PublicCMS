@@ -120,8 +120,7 @@ public class TemplateDirectiveHandler extends BaseHandler {
     }
     
     @Override
-    public Byte getByte(String name) throws TemplateModelException {
-        regristerParameter(PARAMETER_TYPE_SHORT, name);
+    public Byte getByteWithoutRegister(String name) throws TemplateModelException {
         return TemplateModelUtils.converByte(parameters.get(name));
     }
 
