@@ -34,7 +34,6 @@
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
-                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th>ID</th>
                 <th><@t.page 'log.visit.session'/></th>
                 <th><@t.page 'url'/></th>
@@ -47,8 +46,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
-                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
+            <tr>
                 <td>${a.id!}</td>
                 <td><a href="log/visitView.html?id=${a.id}" target="dialog" rel="operateTask">${a.sessionId!}</a></td>
                 <td><a href="${a.url}" target="_blank">${a.url!}</a></td>

@@ -36,7 +36,6 @@
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
-                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'log.visit.visit_date'/></th>
                 <th>PV</th>
                 <th>UV</th>
@@ -45,8 +44,7 @@
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.id}">
-                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
+            <tr>
                 <td><a href="log/visit.html?queryStartCreateDate=${a.id.visitDate!}" target="navTab" rel="log/visit" title="<@t.page 'log.visit'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}<#if hourAnalytics?has_content && 'true'=hourAnalytics> ${a.id.visitHour!}:00:00</#if></a></td>
                 <td>${a.pv!}</td>
                 <td>${a.uv!}</td>
