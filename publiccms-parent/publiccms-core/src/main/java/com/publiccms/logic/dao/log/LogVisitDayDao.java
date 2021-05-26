@@ -43,6 +43,8 @@ public class LogVisitDayDao extends BaseDao<LogVisitDay> {
         } else {
             queryHandler.condition("bean.id.visitHour = -1");
         }
+        queryHandler.order("bean.id.visitDate ").append(ORDERTYPE_DESC);
+        queryHandler.order("bean.id.visitHour ").append(ORDERTYPE_DESC);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
