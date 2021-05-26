@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,7 +40,7 @@ public class LogVisitController {
      */
     @RequestMapping("record")
     @ResponseBody
-    public void record(@CookieValue("cmsAnalyticsSessionId") String sessionId, String url, String title, Integer screenw,
+    public void record(String sessionId, String url, String title, Integer screenw,
             Integer screenh, @RequestHeader(value = "User-Agent", required = false) String userAgent, String referer,
             String itemType, String itemId, HttpServletRequest request) {
         Calendar now = Calendar.getInstance();

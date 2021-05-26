@@ -56,6 +56,7 @@ if (typeof window.cmsAnalytics !== 'object') {
     }
     function getParams(){
       var params=[];
+      params.push('sessionId='+encodeURIComponent(getCookie(cmsAnalytics.sessionIdName)));
       params.push('lang='+encodeURIComponent(getLang()));
       params.push('screenw='+window.screen.width || 0);
       params.push('screenh='+window.screen.height || 0);
