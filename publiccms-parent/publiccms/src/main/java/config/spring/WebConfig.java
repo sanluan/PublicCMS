@@ -67,6 +67,7 @@ public class WebConfig implements WebMvcConfigurer {
         bean.setViewClass(DefaultWebFreeMarkerView.class);
         bean.setPrefix("/web/");
         bean.setContentType("text/html;charset=UTF-8");
+        bean.setExposeSpringMacroHelpers(false);
         cacheComponent.registerCachingViewResolverList(bean);
         return bean;
     }
@@ -84,6 +85,7 @@ public class WebConfig implements WebMvcConfigurer {
         bean.setConfiguration(templateComponent.getWebConfiguration());
         bean.setViewClass(WebFreeMarkerView.class);
         bean.setContentType("text/html;charset=UTF-8");
+        bean.setExposeSpringMacroHelpers(false);
         cacheComponent.registerCachingViewResolverList(bean);
         return bean;
     }

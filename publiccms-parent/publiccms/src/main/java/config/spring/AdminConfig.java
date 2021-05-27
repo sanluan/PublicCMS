@@ -85,6 +85,7 @@ public class AdminConfig implements WebMvcConfigurer {
         bean.setViewClass(AdminFreeMarkerView.class);
         bean.setPrefix("/admin/");
         bean.setSuffix(".html");
+        bean.setExposeSpringMacroHelpers(false);
         bean.setContentType("text/html;charset=UTF-8");
         cacheComponent.registerCachingViewResolverList(bean);
         return bean;
