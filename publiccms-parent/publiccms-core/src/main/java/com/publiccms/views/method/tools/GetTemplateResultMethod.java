@@ -9,6 +9,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.FreeMarkerUtils;
 
+import freemarker.cache.StringTemplateLoader;
 import freemarker.core.TemplateClassResolver;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateModelException;
@@ -32,6 +33,7 @@ public class GetTemplateResultMethod extends BaseMethod {
         configuration.setNewBuiltinClassResolver(TemplateClassResolver.ALLOWS_NOTHING_RESOLVER);
         configuration.setLogTemplateExceptions(false);
         configuration.setBooleanFormat("c");
+        configuration.setTemplateLoader(new StringTemplateLoader());
     }
 
     @SuppressWarnings("unchecked")
