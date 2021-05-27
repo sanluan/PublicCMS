@@ -4,6 +4,7 @@ import java.util.Enumeration;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 
@@ -12,6 +13,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
+import com.publiccms.common.view.SafeRequestContext;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.BeanComponent;
 
@@ -46,6 +48,13 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * Import Context
      */
     public static final String CONTEXT_IMPORT = "import";
+
+    @Override
+    protected void doRender(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
+            throws Exception {
+        model.put(SPRING_MACRO_REQUEST_CONTEXT_ATTRIBUTE, new SafeRequestContext(request, response, getServletContext(), model));
+        super.doRender(model, request, response);
+    }
 
     @Override
     protected void exposeHelpers(Map<String, Object> model, HttpServletRequest request) throws Exception {

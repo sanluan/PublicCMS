@@ -8,13 +8,13 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.202011.b</version>
+        <version>V4.0.202011.c</version>
     </parent>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-core</artifactId>
-            <version>V4.0.202011.b</version>
+            <version>V4.0.202011.c</version>
         </dependency>
         <dependency>
             <groupId>org.apache.lucene</groupId>
