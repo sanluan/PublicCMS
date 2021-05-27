@@ -28,7 +28,11 @@
     <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
     <script>
         var ca = cmsAnalytics();
-        ca.report('${site.dynamicPath}api/visit/record');
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
     </script>
 </body>
 </html>

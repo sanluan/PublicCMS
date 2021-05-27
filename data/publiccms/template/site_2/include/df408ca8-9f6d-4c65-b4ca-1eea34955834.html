@@ -4,6 +4,15 @@
 </footer>
 <script type="text/javascript" src="${site.sitePath}assets/js/jquery.js"></script>
 <script type="text/javascript" src="${site.sitePath}assets/js/roll.js"></script>
+<script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+<script>
+	var ca = cmsAnalytics();
+	var url='${site.dynamicPath}api/visit/record';
+	if("string" ==typeof itemString){
+		url=url+"?"+itemString;
+	}
+	ca.report(url);
+</script>
 <script type="text/javascript">
 $(function(){
 	$(".nav ul li a").mouseover(function() {

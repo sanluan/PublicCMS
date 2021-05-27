@@ -56,4 +56,8 @@ var main = new Vue({
 <script>
 	<@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
 </script>
+<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
+<script>
+	cmsAnalytics().report('${site.dynamicPath}api/visit/record');
+</script>
 </body>

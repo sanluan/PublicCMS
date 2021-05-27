@@ -1,4 +1,4 @@
-<#assign pageCount=50/>
+<#assign pageCount=500/>
 <#assign dealCount=0/>
 <@_contentList advanced=true pageIndex=1 count=pageCount>
   <#list 1..page.totalPage as n>

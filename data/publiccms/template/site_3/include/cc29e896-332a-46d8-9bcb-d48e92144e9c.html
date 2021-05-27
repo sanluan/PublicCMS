@@ -52,7 +52,7 @@
 		<img src="//www.publiccms.com/assets/images/wechat_account_1.jpg" alt="微信">
 	</div>
 </div>
-<script src="${site.sitePath!}assets/js/jquery-1.9.1.min.js"></script>
+<script src="${site.sitePath}assets/js/jquery-1.12.4.min.js"></script>
 <script src="${site.sitePath!}assets/js/jquery.cookie.js"></script>
 <script src="${site.sitePath}assets/swiper/swiper.min.js"></script>
 <!-- 百度编辑器 -->
@@ -61,4 +61,13 @@
 <script src="${site.sitePath!}assets/js/main.js?3"></script>
 <script>
 	<@_sysConfigData code="site">${(object.statistics?no_esc)!}</@_sysConfigData>
+</script>
+<script src="${site.sitePath}assets/js/cms.analytics.js"></script>
+<script>
+	var ca = cmsAnalytics();
+	var url='${site.dynamicPath}api/visit/record';
+	if("string" ==typeof itemString){
+		url=url+"?"+itemString;
+	}
+	ca.report(url);
 </script>

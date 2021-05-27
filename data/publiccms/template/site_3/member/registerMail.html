@@ -9,7 +9,7 @@
 		<h2>${user.nickName}:</h2>
 		<p>您刚刚在<a href="https:${site.sitePath}">【${site.name}】</a>发起了验证邮箱请求</p>
 		<p>请通过访问下面的链接地址，验证您的邮箱地址</p>
-		<p>链接地址:<a href="https:${site.dynamicPath}user/verifyEmail?authToken=${authToken}">https:${site.dynamicPath}user/verifyEmail.do?authToken=${authToken}</a></p>
+		<p>链接地址:<a href="https:${site.dynamicPath}user/verifyEmail?authToken=${authToken}">https:${site.dynamicPath}user/verifyEmail?authToken=${authToken}</a></p>
 		<p>若链接无法直接点击，请拷贝粘贴到浏览器地址栏处即可打开，该链接将于${expiryDate?datetime}过期</p>
 		<p>验证邮箱后，您可以同时使用邮箱地址${email}或用户名${user.name}登录</p>
 		<p>如非您本人操作，请忽略此邮件，并为此给您带来的打扰表示道歉</p>

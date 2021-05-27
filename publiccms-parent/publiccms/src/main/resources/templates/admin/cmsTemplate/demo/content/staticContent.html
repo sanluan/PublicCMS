@@ -106,16 +106,24 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
+    <script>
+    var itemString="itemType=content&itemId=${content.id}";
+    </script>
+    
     <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
     <script>
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
             $('article p em').text(data.clicks);
         });
     </script>
-    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
     <script>
         var ca = cmsAnalytics();
-        ca.report('${site.dynamicPath}api/visit/record?itemType=content&itemId=${content.id}');
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
     </script>
 </body>
 </html>

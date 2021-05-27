@@ -37,9 +37,12 @@
     </div>
 	<div class="clearfix-before"></div>
 </main>
-<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- footer -->
-<script>
-	$("header nav ul li[data-id=${category.id}]").addClass('selected');
-</script>
+	<script>
+		var itemString="itemType=category&itemId=${category.id}";
+	</script>
+	<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- footer -->
+	<script>
+		$("header nav ul li[data-id=${category.id}]").addClass('selected');
+	</script>
 </body>
 </html>

@@ -41,7 +41,6 @@
             </ul>
         </#if>
     </@_commentList>
-</#if>
         <form method="post" action="${site.dynamicPath}comment/save">
             <@_comment id=id>
                 <input type="hidden" name="id" value="${object.id}"/>
@@ -55,6 +54,10 @@
             <p><textarea name="text" cols="100" rows="4" maxlength="1000">${text!}</textarea></p>
             <p><input type="submit" value="Submit"/></p>
         </form>
+<#else>
+        <a href="login.html?returnUrl=${(site.dynamicPath+'comment.html?contentId='+content.id)?url}">Login</a>
+        <a href="register.html?returnUrl=${(site.dynamicPath+'comment.html?contentId='+content.id)?url}">Register</a>
+</#if>
 <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
 <@_commentList contentId=content.id pageIndex=pageIndex>
     <#list page.list as a>
@@ -116,10 +119,18 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
+    <script>
+    var itemString="itemType=content&itemId=${content.id}";
+    </script>
+
     <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
     <script>
         var ca = cmsAnalytics();
-        ca.report('${site.dynamicPath}api/visit/record?itemType=content&itemId=${content.id}');
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
     </script>
 </body>
 </html>

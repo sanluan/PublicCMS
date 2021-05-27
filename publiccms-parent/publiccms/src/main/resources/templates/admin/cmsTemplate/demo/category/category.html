@@ -83,5 +83,18 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
+    <script>
+    var itemString="itemType=category&itemId=${category.id}";
+    </script>
+    
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
+    </script>
 </body>
 </html>
