@@ -33,13 +33,13 @@
         </dd>
     </dl>
     <dl>
-        <dt>IP:</dt>
+        <dt><@t.page 'log.visit.ip'/>:</dt>
         <dd>
             ${a.ip!}
         </dd>
     </dl>
     <dl>
-        <dt>itemType:</dt>
+        <dt><@t.page 'log.visit.item'/>:</dt>
         <dd>
             ${a.itemType!}:${a.itemId!}
         </dd>
@@ -52,21 +52,15 @@
     </dl>
     <@_userAgent userAgent=a.userAgent>
     <dl>
-        <dt>browser:</dt>
+        <dt>${object.browserType!}:</dt>
         <dd>
-            ${object.browserGroup}:${object.browserVersion}
+            ${object.browserGroup!}:${object.browserVersion!}
         </dd>
     </dl>
     <dl>
-        <dt>operatingSystem:</dt>
+        <dt>${object.deviceType!}:</dt>
         <dd>
-            ${object.operatingSystemGroup}:${object.operatingSystem}
-        </dd>
-    </dl>
-    <dl>
-        <dt>deviceType:</dt>
-        <dd>
-            ${object.deviceType}
+            ${object.operatingSystemGroup}:${object.operatingSystem!}
         </dd>
     </dl>
     </@_userAgent>

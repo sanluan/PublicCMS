@@ -52,8 +52,7 @@ public class LogVisitDayService extends BaseService<LogVisitDay> {
                 ((List<LogVisitDay>) page.getList()).addAll(0,
                         logVisitService.getHourList(now, (byte) c.get(Calendar.HOUR_OF_DAY)));
             } else {
-                List<LogVisitDay> list = logVisitSessionService.getDayList(DateUtils.truncate(new Date(), Calendar.DATE));
-                ((List<LogVisitDay>) page.getList()).addAll(0, list);
+                ((List<LogVisitDay>) page.getList()).addAll(0, logVisitSessionService.getDayList(now));
             }
         }
         return page;

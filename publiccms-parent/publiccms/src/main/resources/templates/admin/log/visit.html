@@ -7,7 +7,7 @@
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'log.visit.session'/>:</label>
-                    <input type="text" name="sessionId" value="${sessionId!querySessionId!}" />
+                    <input type="text" name="sessionId" value="${sessionId!querySessionId!}" size="40"/>
                 </li>
                 <li class="colspan">
                     <label><@t.page 'log.visit.visit_date'/>:</label>
@@ -34,14 +34,14 @@
     <table class="list" width="100%" layoutH="92">
         <thead>
             <tr>
-                <th>ID</th>
-                <th><@t.page 'log.visit.session'/></th>
-                <th><@t.page 'url'/></th>
-                <th><@t.page 'title'/></th>
-                <th><@t.page 'log.visit.screen'/></th>
-                <th><@t.page 'log.visit.referer'/></th>
-                <td>IP</td>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.visit.visit_date'/></th>
+                <th width="20">ID</th>
+                <th width="50"><@t.page 'log.visit.session'/></th>
+                <th width="180"><@t.page 'title'/>/<@t.page 'url'/></th>
+                <th width="100"><@t.page 'log.visit.screen'/></th>
+                <th width="100"><@t.page 'log.visit.referer'/></th>
+                <th width="50"><@t.page 'log.visit.item'/></th>
+                <td width="70"><@t.page 'log.visit.ip'/></td>
+                <th width="50" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.visit.visit_date'/></th>
             </tr>
         </thead>
         <tbody>
@@ -49,10 +49,24 @@
             <tr>
                 <td>${a.id!}</td>
                 <td><a href="log/visitView.html?id=${a.id}" target="dialog" rel="operateTask">${a.sessionId!}</a></td>
-                <td><a href="${a.url}" target="_blank">${a.url!}</a></td>
-                <td>${a.title!}</td>
-                <td>${a.screenWidth!}*${a.screenHeight!}</td>
+                <td>
+                    <div class="box">
+                        <p>${a.title!}</p>
+                        <p><a href="${a.url}" target="_blank">${a.url!}</a></p>
+                    </div>
+                </td>
+                <td>
+                    <div class="box">
+                    <@_userAgent userAgent=a.userAgent>
+                        <p>${object.browserType!}:${object.browserGroup!} ${object.browserVersion!}</p>
+                        <p>${object.deviceType!}:${a.screenWidth!}*${a.screenHeight!}</p>
+                    </@_userAgent>
+                    </div>
+                </td>
                 <td>${a.refererUrl!}</td>
+                <td>
+                    ${a.itemType!}${a.itemId?has_content?then(':','')}${a.itemId!}
+                </td>
                 <td>${a.ip!}</td>
                 <td>${a.createDate!}</td>
             </tr>

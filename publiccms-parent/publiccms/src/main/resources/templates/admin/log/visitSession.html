@@ -6,7 +6,7 @@
             <ul class="searchContent">
                 <li class="colspan">
                     <label><@t.page 'log.visit.session'/>:</label>
-                    <input type="text" name="sessionId" value="${sessionId!}"/>
+                    <input type="text" name="sessionId" value="${sessionId!}" size="40"/>
                 </li>
                 <li class="colspan">
                     <label><@t.page 'log.visit.visit_date'/>:</label>
@@ -36,7 +36,7 @@
                 <th><@t.page 'log.visit.session'/></th>
                 <th orderField="lastVisitDate" class="<#if orderField??&&'lastVisitDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.visit.visit_date.last'/></th>
                 <th><@t.page 'log.visit.visit_date.first'/></th>
-                <th>IP</th>
+                <th><@t.page 'log.visit.ip'/></th>
                 <th>PV</th>
             </tr>
         </thead>

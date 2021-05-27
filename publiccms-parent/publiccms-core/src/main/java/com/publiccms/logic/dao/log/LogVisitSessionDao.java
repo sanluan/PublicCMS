@@ -1,7 +1,10 @@
 package com.publiccms.logic.dao.log;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import org.apache.commons.lang3.time.DateUtils;
 
 // Generated 2021-1-14 22:44:06 by com.publiccms.common.generator.SourceGenerator
 
@@ -60,7 +63,7 @@ public class LogVisitSessionDao extends BaseDao<LogVisitSession> {
     public List<LogVisitDay> getDayList(Date visitDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogVisitDay(bean.id.siteId,bean.id.visitDate,sum(bean.pv),count(distinct bean.id.sessionId),count(distinct bean.ip)) from LogVisitSession bean");
-        queryHandler.condition("bean.id.visitDate = :visitDate").setParameter("visitDate", visitDate);
+        queryHandler.condition("bean.id.visitDate = :visitDate").setParameter("visitDate", DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
         queryHandler.group("bean.id.siteId");
         queryHandler.group("bean.id.visitDate");
         return (List<LogVisitDay>) getList(queryHandler);

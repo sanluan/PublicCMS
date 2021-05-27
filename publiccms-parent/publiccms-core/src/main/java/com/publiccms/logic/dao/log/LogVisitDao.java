@@ -1,9 +1,11 @@
 package com.publiccms.logic.dao.log;
 
+import java.util.Calendar;
 // Generated 2021-1-14 22:43:59 by com.publiccms.common.generator.SourceGenerator
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
@@ -64,7 +66,7 @@ public class LogVisitDao extends BaseDao<LogVisit> {
     public List<LogVisitDay> getHourList(Date visitDate, byte visitHour) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogVisitDay(bean.siteId,bean.visitDate,bean.visitHour,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from LogVisit bean");
-        queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate", visitDate);
+        queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate", DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
         queryHandler.condition("bean.visitHour = :visitHour").setParameter("visitHour", visitHour);
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.visitDate");
@@ -113,6 +115,18 @@ public class LogVisitDao extends BaseDao<LogVisit> {
     protected LogVisit init(LogVisit entity) {
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
+        }
+        if (CommonUtils.notEmpty(entity.getTitle()) && entity.getTitle().length() > 255) {
+            entity.setTitle(entity.getTitle().substring(0, 255));
+        }
+        if (CommonUtils.notEmpty(entity.getUserAgent()) && entity.getUserAgent().length() > 500) {
+            entity.setUserAgent(entity.getUserAgent().substring(0, 500));
+        }
+        if (CommonUtils.notEmpty(entity.getItemType()) && entity.getItemType().length() > 50) {
+            entity.setItemType(entity.getItemType().substring(0, 50));
+        }
+        if (CommonUtils.notEmpty(entity.getItemId()) && entity.getItemId().length() > 50) {
+            entity.setItemId(entity.getItemId().substring(0, 50));
         }
         return entity;
     }

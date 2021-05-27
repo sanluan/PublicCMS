@@ -16,23 +16,71 @@
     </div>
     <div class="row">
         <div id="todayVisit" class="col-lg-6 col-md-12"></div>
-        <div id="visit" class="col-lg-6 col-md-12"></div>
-        <div id="register" class="col-lg-4 col-md-6"></div>
-        <div id="login" class="col-lg-4 col-md-6"></div>
-        <div id="operate" class="col-lg-4 col-md-6"></div>
-        <div id="comment" class="col-lg-4 col-md-6"></div>
+        <div id="yestodayVisit" class="col-lg-6 col-md-12"></div>
+        <div id="visit" class="col-lg-12 col-md-12"></div>
+        <div id="register" class="col-lg-6 col-md-6"></div>
+        <div id="login" class="col-lg-6 col-md-6"></div>
+        <div id="operate" class="col-lg-6 col-md-6"></div>
+        <div id="comment" class="col-lg-6 col-md-6"></div>
     </div>
 <script>
 document.getElementById('todayVisit').style.height=document.getElementById('todayVisit').offsetWidth*0.5+'px';
-document.getElementById('visit').style.height=document.getElementById('visit').offsetWidth*0.5+'px';
-document.getElementById('register').style.height=document.getElementById('register').offsetWidth+'px';
-document.getElementById('login').style.height=document.getElementById('login').offsetWidth+'px';
-document.getElementById('operate').style.height=document.getElementById('operate').offsetWidth+'px';
-document.getElementById('comment').style.height=document.getElementById('comment').offsetWidth+'px';
-<@_logVisitDayList startVisitDate=(.now?long-30*86400000)?number_to_date hourAnalytics=true>
+document.getElementById('yestodayVisit').style.height=document.getElementById('yestodayVisit').offsetWidth*0.5+'px';
+document.getElementById('visit').style.height=document.getElementById('visit').offsetWidth*0.33+'px';
+document.getElementById('register').style.height=document.getElementById('register').offsetWidth*0.5+'px';
+document.getElementById('login').style.height=document.getElementById('login').offsetWidth*0.5+'px';
+document.getElementById('operate').style.height=document.getElementById('operate').offsetWidth*0.5+'px';
+document.getElementById('comment').style.height=document.getElementById('comment').offsetWidth*0.5+'px';
+<@_logVisitDayList startVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
 echarts.init(document.getElementById('todayVisit')).setOption({
     title: {
         text: '${.now?date} <@t.page 'log.visit'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis',
+           axisPointer: {
+           type: 'cross'
+        }
+    },
+    legend: {
+        data: ['PV', 'UV', 'IP Views'],
+        top:30
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        data: [<#list page.list?reverse as a>'${a.id.visitHour!}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+           name:'PV',
+           type:'line',
+           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>]
+       },
+       {
+           name:'UV',
+           type:'line',
+           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>]
+       },
+       {
+           name:'IP Views',
+           type:'line',
+           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>]
+       },]
+});
+</@_logVisitDayList>
+<@_logVisitDayList startVisitDate=(.now?long-2*86400000)?number_to_date endVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
+echarts.init(document.getElementById('yestodayVisit')).setOption({
+    title: {
+        text: '${(.now?long-86400000)?number_to_date?date} <@t.page 'log.visit'/>',
         x:'center'
     },
     tooltip : {

@@ -473,7 +473,7 @@ CREATE TABLE `log_visit` (
   `visit_date` date NOT NULL COMMENT '访问日期',
   `visit_hour` tinyint(4) NOT NULL COMMENT '访问小时',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
-  `user_agent` varchar(255) DEFAULT NULL COMMENT 'User Agent',
+  `user_agent` varchar(500) DEFAULT NULL COMMENT 'User Agent',
   `url` varchar(2048) NOT NULL COMMENT '访问路径',
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
   `screen_width` int(11) DEFAULT NULL COMMENT '屏幕宽度',
@@ -923,9 +923,9 @@ INSERT INTO `sys_module` VALUES ('log_task', 'log/task', 'sysUser/lookup', 'icon
 INSERT INTO `sys_module` VALUES ('log_task_delete', NULL, 'logTask/delete', NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_task_view', 'log/taskView', NULL, NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_upload', 'log/upload', 'sysUser/lookup', 'icon-list-alt', 'log_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('log_visit', 'log/visit', 'log/visitView', 'icon-bolt', 'log_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('log_visit_day', 'log/visitDay', NULL, 'icon-calendar', 'log_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 'icon-comment-alt', 'log_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('log_visit', 'log/visit', 'log/visitView', 'icon-bolt', 'log_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('log_visit_day', 'log/visitDay', NULL, 'icon-calendar', 'log_menu', 1, 7);
+INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 'icon-comment-alt', 'log_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
 INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);

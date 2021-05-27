@@ -8,7 +8,7 @@ CREATE TABLE `log_visit` (
   `visit_date` date NOT NULL COMMENT '访问日期',
   `visit_hour` tinyint(4) NOT NULL COMMENT '访问小时',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
-  `user_agent` varchar(255) DEFAULT NULL COMMENT 'User Agent',
+  `user_agent` varchar(500) DEFAULT NULL COMMENT 'User Agent',
   `url` varchar(2048) NOT NULL COMMENT '访问路径',
   `title` varchar(255) DEFAULT NULL COMMENT '标题',
   `screen_width` int(11) DEFAULT NULL COMMENT '屏幕宽度',
@@ -50,9 +50,9 @@ UPDATE `sys_module` SET `authorized_url` =  'cmsContent/push_content,cmsContent/
 -- 20210329 --
 ALTER TABLE `log_login` MODIFY COLUMN `error_password` varchar(255) default NULL COMMENT '错误密码' AFTER `create_date`;
 -- 2021-05-26 --
-INSERT INTO `sys_module` VALUES ('log_visit', 'log/visit', 'log/visitView', 'icon-bolt', 'log_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('log_visit_day', 'log/visitDay', NULL, 'icon-calendar', 'log_menu', 1, 0);
-INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 'icon-comment-alt', 'log_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('log_visit', 'log/visit', 'log/visitView', 'icon-bolt', 'log_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('log_visit_day', 'log/visitDay', NULL, 'icon-calendar', 'log_menu', 1, 7);
+INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 'icon-comment-alt', 'log_menu', 1, 6);
 INSERT INTO `sys_module_lang` VALUES ('log_visit', 'en', 'Visit log');
 INSERT INTO `sys_module_lang` VALUES ('log_visit', 'ja', 'アクセスログ');
 INSERT INTO `sys_module_lang` VALUES ('log_visit', 'zh', '访问日志');
