@@ -154,7 +154,7 @@ header .nav .selected ul{display:block;}
 .grid .gridHeader th.order,.grid .gridHeader th.asc,.grid .gridHeader th.desc{cursor:pointer;position:relative;}
 .grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{position:absolute;right:0px;top:50%;margin-top:-13px;}
 .grid .gridTbody td { border-right:solid 1px #ededed;overflow:hidden;padding:4px 3px;border-bottom:solid 1px #ededed;vertical-align:middle;line-height:26px;}
-.grid .gridTbody td div { display:block;overflow:hidden;white-space:nowrap;line-height:26px;}
+.grid .gridTbody td div { display:block;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;line-height:26px;}
 .grid .gridTbody td.wrap div{white-space:unset;}
 .grid .gridTbody td div a{line-height:26px;}
 .grid .gridTbody td div a:hover{text-decoration:underline;}
@@ -477,6 +477,10 @@ a.btnAttach:before{content:"\e607";font-family:iconfont;}
 .grid .gridHeader th.asc:before{content:"\e654";}
 .grid .gridHeader th.order:before{content:"\e623";}
 .grid .gridHeader th.desc:before{content:"\e668";}
+table.list th.asc:before, table.list th.desc:before, table.list th.order:before{font-family:iconfont;font-size:12px}
+table.list th.asc:before{content:"\e654"}
+table.list th.order:before{content:"\e623"}
+table.list th.desc:before{content:"\e668"}
 
 a.btnLook:before{content:"\e66a";font-family:iconfont;}
 a.btnSelect{display:block;width:22px;height:20px;overflow:hidden;float:left;margin-right:3px;text-align:center;}

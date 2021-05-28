@@ -41,7 +41,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
         ${'</#'}if>
         </ul>
     </div>
-    <table class="list" width="100%" layoutH="92">
+    <table class="table" width="100%" layoutH="92">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>

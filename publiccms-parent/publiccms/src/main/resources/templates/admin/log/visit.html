@@ -31,7 +31,7 @@
         <ul class="toolBar">
         </ul>
     </div>
-    <table class="list" width="100%" layoutH="92">
+    <table class="table" width="100%" layoutH="92">
         <thead>
             <tr>
                 <th width="20">ID</th>
@@ -40,7 +40,7 @@
                 <th width="100"><@t.page 'log.visit.screen'/></th>
                 <th width="100"><@t.page 'log.visit.referer'/></th>
                 <th width="50"><@t.page 'log.visit.item'/></th>
-                <td width="70"><@t.page 'log.visit.ip'/></td>
+                <th width="70"><@t.page 'log.visit.ip'/></th>
                 <th width="50" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.visit.visit_date'/></th>
             </tr>
         </thead>
