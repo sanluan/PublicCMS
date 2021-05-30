@@ -13,12 +13,12 @@ import com.publiccms.logic.service.cms.CmsContentService;
 public class CmsContentInterceptor implements EntityIndexingInterceptor<CmsContent> {
     @Override
     public IndexingOverride onAdd(CmsContent entity) {
-        if (CmsContentService.STATUS_NORMAL == entity.getStatus() && !entity.isDisabled()) {
+        if (CmsContentService.STATUS_NORMAL == entity.getStatus() && null == entity.getQuoteContentId() && !entity.isDisabled()) {
             return IndexingOverride.APPLY_DEFAULT;
         }
         return IndexingOverride.SKIP;
     }
-    
+
     @Override
     public IndexingOverride onDelete(CmsContent entity) {
         return IndexingOverride.APPLY_DEFAULT;
@@ -26,7 +26,7 @@ public class CmsContentInterceptor implements EntityIndexingInterceptor<CmsConte
 
     @Override
     public IndexingOverride onUpdate(CmsContent entity) {
-        if (CmsContentService.STATUS_NORMAL == entity.getStatus() && !entity.isDisabled()) {
+        if (CmsContentService.STATUS_NORMAL == entity.getStatus() && null == entity.getQuoteContentId() && !entity.isDisabled()) {
             return IndexingOverride.UPDATE;
         }
         return IndexingOverride.REMOVE;
