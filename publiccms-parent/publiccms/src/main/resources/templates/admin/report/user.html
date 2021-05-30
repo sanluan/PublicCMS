@@ -26,7 +26,7 @@
 <script>
 document.getElementById('todayVisit').style.height=document.getElementById('todayVisit').offsetWidth*0.5+'px';
 document.getElementById('yestodayVisit').style.height=document.getElementById('yestodayVisit').offsetWidth*0.5+'px';
-document.getElementById('visit').style.height=document.getElementById('visit').offsetWidth*0.33+'px';
+document.getElementById('visit').style.height='450px';
 document.getElementById('register').style.height=document.getElementById('register').offsetWidth*0.5+'px';
 document.getElementById('login').style.height=document.getElementById('login').offsetWidth*0.5+'px';
 document.getElementById('operate').style.height=document.getElementById('operate').offsetWidth*0.5+'px';
@@ -38,10 +38,7 @@ echarts.init(document.getElementById('todayVisit')).setOption({
         x:'center'
     },
     tooltip : {
-        trigger: 'axis',
-           axisPointer: {
-           type: 'cross'
-        }
+        trigger: 'axis'
     },
     legend: {
         data: ['PV', 'UV', 'IP Views'],
@@ -52,8 +49,15 @@ echarts.init(document.getElementById('todayVisit')).setOption({
             saveAsImage: {}
         }
     },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
     xAxis: {
         type: 'category',
+        boundaryGap: false,
         data: [<#list page.list?reverse as a>'${a.id.visitHour!}'<#sep>,</#list>]
     },
     yAxis: {
@@ -63,7 +67,8 @@ echarts.init(document.getElementById('todayVisit')).setOption({
     {
            name:'PV',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+           areaStyle: {}
        },
        {
            name:'UV',
@@ -74,7 +79,7 @@ echarts.init(document.getElementById('todayVisit')).setOption({
            name:'IP Views',
            type:'line',
            data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>]
-       },]
+       }]
 });
 </@_logVisitDayList>
 <@_logVisitDayList startVisitDate=(.now?long-2*86400000)?number_to_date endVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
@@ -84,10 +89,13 @@ echarts.init(document.getElementById('yestodayVisit')).setOption({
         x:'center'
     },
     tooltip : {
-        trigger: 'axis',
-           axisPointer: {
-           type: 'cross'
-        }
+        trigger: 'axis'
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
     },
     legend: {
         data: ['PV', 'UV', 'IP Views'],
@@ -100,6 +108,7 @@ echarts.init(document.getElementById('yestodayVisit')).setOption({
     },
     xAxis: {
         type: 'category',
+        boundaryGap: false,
         data: [<#list page.list?reverse as a>'${a.id.visitHour!}'<#sep>,</#list>]
     },
     yAxis: {
@@ -109,7 +118,8 @@ echarts.init(document.getElementById('yestodayVisit')).setOption({
     {
            name:'PV',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+           areaStyle: {}
        },
        {
            name:'UV',
@@ -120,7 +130,7 @@ echarts.init(document.getElementById('yestodayVisit')).setOption({
            name:'IP Views',
            type:'line',
            data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>]
-       },]
+       }]
 });
 </@_logVisitDayList>
 <@_logVisitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
@@ -130,15 +140,18 @@ echarts.init(document.getElementById('visit')).setOption({
         x:'center'
     },
     tooltip : {
-        trigger: 'axis',
-           axisPointer: {
-           type: 'cross'
-        }
+        trigger: 'axis'
     },
     toolbox: {
         feature: {
             saveAsImage: {}
         }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
     },
     legend: {
         data: ['PV', 'UV', 'IP Views'],
@@ -146,6 +159,7 @@ echarts.init(document.getElementById('visit')).setOption({
     },
     xAxis: {
         type: 'category',
+        boundaryGap: false,
         data: [<#list page.list?reverse as a>'${a.id.visitDate?date}'<#sep>,</#list>]
     },
     yAxis: {
@@ -155,7 +169,8 @@ echarts.init(document.getElementById('visit')).setOption({
     {
            name:'PV',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+           areaStyle: {}
        },
        {
            name:'UV',
@@ -166,7 +181,7 @@ echarts.init(document.getElementById('visit')).setOption({
            name:'IP Views',
            type:'line',
            data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>]
-       },]
+       }]
 });
 </@_logVisitDayList>
 echarts.init(document.getElementById('register')).setOption({
@@ -176,18 +191,22 @@ echarts.init(document.getElementById('register')).setOption({
         x:'center'
     },
     tooltip : {
-        trigger: 'axis',
-           axisPointer: {
-           type: 'cross'
-        }
+        trigger: 'axis'
     },
     toolbox: {
         feature: {
             saveAsImage: {}
         }
     },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
     xAxis: {
         type: 'category',
+        boundaryGap: false,
         data: [<#list 30..0 as a>'${(.now?long-a*86400000)?number_to_date}'<#sep>,</#list>]
     },
     yAxis: {
@@ -212,6 +231,12 @@ echarts.init(document.getElementById('login')).setOption({
         feature: {
             saveAsImage: {}
         }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
     },
     xAxis: {
         type: 'category',
@@ -241,6 +266,12 @@ echarts.init(document.getElementById('operate')).setOption({
             saveAsImage: {}
         }
     },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
     xAxis: {
         type: 'category',
         boundaryGap: false,
@@ -268,6 +299,12 @@ echarts.init(document.getElementById('comment')).setOption({
         feature: {
             saveAsImage: {}
         }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
     },
     xAxis: {
         type: 'category',
