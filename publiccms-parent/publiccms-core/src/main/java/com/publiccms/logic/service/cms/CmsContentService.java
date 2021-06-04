@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletionStage;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -163,7 +163,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @return results page
      */
-    public Future<?> reCreateIndex() {
+    public CompletionStage<?> reCreateIndex() {
         return dao.reCreateIndex();
     }
 

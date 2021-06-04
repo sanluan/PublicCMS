@@ -74,7 +74,7 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
                     });
                 }
             } catch (Exception e) {
-                page = new FacetPageHandler(pageIndex, count, 0, null);
+                page = new FacetPageHandler(pageIndex, count);
             }
             handler.put("page", page).render();
         }

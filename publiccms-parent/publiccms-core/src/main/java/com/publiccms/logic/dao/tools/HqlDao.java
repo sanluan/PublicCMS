@@ -3,7 +3,6 @@ package com.publiccms.logic.dao.tools;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
@@ -18,7 +17,7 @@ import com.publiccms.common.tools.CommonUtils;
  */
 @Repository
 public class HqlDao extends BaseDao<Object> {
-    
+
     /**
      * @param hql
      * @param parameters
@@ -52,13 +51,6 @@ public class HqlDao extends BaseDao<Object> {
     public int delete(String hql) {
         QueryHandler queryHandler = getQueryHandler(hql);
         return delete(queryHandler);
-    }
-
-    /**
-     * @return analyzer
-     */
-    public Analyzer getAnalyzer() {
-        return getFullTextSession().getSearchFactory().getAnalyzer("cms");
     }
 
     @Override

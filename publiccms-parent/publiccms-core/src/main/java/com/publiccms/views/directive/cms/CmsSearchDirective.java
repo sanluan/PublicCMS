@@ -73,7 +73,7 @@ public class CmsSearchDirective extends AbstractTemplateDirective {
                 });
             }
         } catch (Exception e) {
-            page = new PageHandler(pageIndex, count, 0, null);
+            page = new PageHandler(pageIndex, count);
         }
         handler.put("page", page).render();
     }

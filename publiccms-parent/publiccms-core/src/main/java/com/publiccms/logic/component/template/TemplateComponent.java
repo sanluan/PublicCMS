@@ -284,14 +284,16 @@ public class TemplateComponent implements Cache {
             String[] texts = StringUtils.splitByWholeSeparator(attribute.getText(), pageBreakTag);
             if (createMultiContentPage) {
                 for (int i = 1; i < texts.length; i++) {
-                    PageHandler page = new PageHandler(i + 1, 1, texts.length, null);
+                    PageHandler page = new PageHandler(i + 1, 1);
+                    page.setTotalCount(texts.length);
                     model.put("text", texts[i]);
                     model.put("page", page);
                     createStaticFile(site, fullTemplatePath, filePath, i + 1, metadataMap, model);
                 }
                 pageIndex = 1;
             }
-            PageHandler page = new PageHandler(pageIndex, 1, texts.length, null);
+            PageHandler page = new PageHandler(pageIndex, 1);
+            page.setTotalCount(texts.length);
             model.put("page", page);
             model.put("text", texts[page.getPageIndex() - 1]);
         }

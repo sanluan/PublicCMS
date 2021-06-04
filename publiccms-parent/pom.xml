@@ -31,10 +31,10 @@
         <version.jackson>2.12.2</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.4.25.Final</version.hibernate>
-        <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
+        <version.hibernate>5.4.30.Final</version.hibernate>
+        <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>5.11.8.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.0.3.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.9.0</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -43,14 +43,14 @@
         <version.mybatis>3.5.6</version.mybatis>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis-spring -->
         <version.mybatisSpring>2.0.6</version.mybatisSpring>
-		<!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
-		<version.mybatisGenerator>1.4.0</version.mybatisGenerator>
+        <!-- http://mvnrepository.com/artifact/org.mybatis.generator/mybatis-generator-core -->
+        <version.mybatisGenerator>1.4.0</version.mybatisGenerator>
         <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper -->
         <version.pagehelper>5.2.0</version.pagehelper>
         <!-- https://mvnrepository.com/artifact/org.mybatis.dynamic-sql/mybatis-dynamic-sql -->
         <version.dynamicSql>1.2.1</version.dynamicSql>
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
-        <version.lucene>5.5.5</version.lucene>
+        <version.lucene>8.7.0</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
         <version.jedis>3.5.1</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
@@ -85,8 +85,8 @@
         <version.jta>1.1</version.jta>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <version.servlet>4.0.1</version.servlet>
-		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-		<version.juint>5.7.0</version.juint>
+        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+        <version.juint>5.7.0</version.juint>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -161,13 +161,18 @@
                 <version>${version.hibernate}</version>
             </dependency>
             <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-search-orm</artifactId>
+                <groupId>org.hibernate.search</groupId>
+                <artifactId>hibernate-search-mapper-orm</artifactId>
                 <version>${version.hibernateSearch}</version>
             </dependency>
             <dependency>
-                <groupId>org.hibernate</groupId>
-                <artifactId>hibernate-search-elasticsearch</artifactId>
+                <groupId>org.hibernate.search</groupId>
+                <artifactId>hibernate-search-backend-elasticsearch</artifactId>
+                <version>${version.hibernateSearch}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.hibernate.search</groupId>
+                <artifactId>hibernate-search-backend-lucene</artifactId>
                 <version>${version.hibernateSearch}</version>
             </dependency>
             <dependency>

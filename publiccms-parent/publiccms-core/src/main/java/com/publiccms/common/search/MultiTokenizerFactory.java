@@ -62,4 +62,11 @@ public class MultiTokenizerFactory extends TokenizerFactory implements ResourceL
         MultiTokenizerFactory.name = name;
         MultiTokenizerFactory.args = args;
     }
+
+    /**
+     * @return the name
+     */
+    public static String getName() {
+        return name;
+    }
 }

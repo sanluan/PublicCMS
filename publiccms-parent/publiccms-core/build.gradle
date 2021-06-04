@@ -6,7 +6,7 @@ dependencies {
         "com.zaxxer:HikariCP:${hikariCPVersion}",
         "mysql:mysql-connector-java:${mysqlVersion}",
         "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}",
-        "org.hibernate:hibernate-search-elasticsearch:${hibernateSearchVersion}",
+        "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}",
         "jakarta.annotation:jakarta.annotation-api:${annotationVersion}",
         "javax.servlet:javax.servlet-api:${servletVersion}",
         "org.apache.poi:poi-ooxml:${poiVersion}",

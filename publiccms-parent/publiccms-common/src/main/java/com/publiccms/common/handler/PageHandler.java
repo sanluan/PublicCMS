@@ -35,18 +35,7 @@ public class PageHandler implements java.io.Serializable {
      * @param totalCount
      * @param maxCount
      */
-    public PageHandler(Integer pageIndex, Integer pageSize, long totalCount, Integer maxCount) {
-        this(pageIndex, pageSize, totalCount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) totalCount, maxCount);
-    }
-
-    /**
-     * @param pageIndex
-     * @param pageSize
-     * @param totalCount
-     * @param maxCount
-     */
-    public PageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxCount) {
-        setTotalCount(getTotalCount(totalCount, maxCount));
+    public PageHandler(Integer pageIndex, Integer pageSize) {
         setPageSize(null != pageSize ? pageSize : 0);
         setPageIndex(null != pageIndex ? pageIndex : 1);
         init();
@@ -57,18 +46,6 @@ public class PageHandler implements java.io.Serializable {
      */
     public void init() {
         pageSize = 1 > pageSize ? DEFAULT_PAGE_SIZE : MAX_PAGE_SIZE < pageSize ? MAX_PAGE_SIZE : pageSize;
-        totalCount = 0 > totalCount ? 0 : totalCount;
-        totalPage = getTotalPage(totalCount, pageSize);
-        pageIndex = 1 > pageIndex ? 1 : pageIndex > totalPage ? totalPage : pageIndex;
-    }
-
-    /**
-     * @param totalCount
-     * @param maxCount
-     * @return total count
-     */
-    public static int getTotalCount(int totalCount, Integer maxCount) {
-        return null != maxCount && maxCount < totalCount ? maxCount : totalCount;
     }
 
     /**
@@ -106,8 +83,18 @@ public class PageHandler implements java.io.Serializable {
      * @param totalCount
      *            the totalCount to set
      */
+    public void setTotalCount(long totalCount) {
+        setTotalCount(totalCount > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) totalCount);
+    }
+
+    /**
+     * @param totalCount
+     *            the totalCount to set
+     */
     public void setTotalCount(int totalCount) {
-        this.totalCount = totalCount;
+        this.totalCount = totalCount = 0 > totalCount ? 0 : totalCount;
+        this.totalPage = getTotalPage(totalCount, pageSize);
+        pageIndex = 1 > pageIndex ? 1 : pageIndex > totalPage ? totalPage : pageIndex;
     }
 
     /**

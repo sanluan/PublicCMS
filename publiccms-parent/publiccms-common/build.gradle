@@ -16,7 +16,8 @@ dependencies {
         "org.springframework:spring-orm:${springVersion}",
         "org.springframework:spring-webmvc:${springVersion}",
 
-        "org.hibernate:hibernate-search-orm:${hibernateSearchVersion}",
+        "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}",
+        "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}",
         "org.hibernate:hibernate-jcache:${hibernateVersion}",
 
         "org.ehcache:ehcache:${ehcacheVersion}",

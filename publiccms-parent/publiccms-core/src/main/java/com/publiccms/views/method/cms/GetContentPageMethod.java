@@ -37,7 +37,8 @@ public class GetContentPageMethod extends BaseMethod {
                 pageBreakTag = CommonConstants.getUeditorPageBreakTag();
             }
             String[] texts = StringUtils.splitByWholeSeparator(text, pageBreakTag);
-            PageHandler page = new PageHandler(pageIndex, 1, texts.length, null);
+            PageHandler page = new PageHandler(pageIndex, 1);
+            page.setTotalCount(texts.length);
             Map<String, Object> resultMap = new HashMap<>();
             resultMap.put("page", page);
             resultMap.put("text", texts[page.getPageIndex() - 1]);

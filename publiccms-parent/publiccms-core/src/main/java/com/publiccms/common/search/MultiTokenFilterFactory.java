@@ -53,4 +53,11 @@ public class MultiTokenFilterFactory extends TokenFilterFactory implements Resou
             ((ResourceLoaderAware) tokenFilterFactory).inform(loader);
         }
     }
+
+    /**
+     * @return the name
+     */
+    public static String getName() {
+        return name;
+    }
 }

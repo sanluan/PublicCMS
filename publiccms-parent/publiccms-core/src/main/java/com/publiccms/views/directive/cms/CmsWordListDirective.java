@@ -36,7 +36,7 @@ public class CmsWordListDirective extends AbstractTemplateDirective {
                     handler.getDate("endCreateDate"), handler.getString("name"), orderField, handler.getString("orderType"),
                     pageIndex, count);
         } catch (Exception e) {
-            page = new PageHandler(pageIndex, count, 0, null);
+            page = new PageHandler(pageIndex, count);
         }
         handler.put("page", page).render();
     }

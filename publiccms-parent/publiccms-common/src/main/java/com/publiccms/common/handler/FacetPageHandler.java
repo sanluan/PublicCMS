@@ -13,22 +13,20 @@ public class FacetPageHandler extends PageHandler {
      */
     private static final long serialVersionUID = 1L;
 
-    private Map<String, Map<String, Integer>> facetMap;
+    private Map<String, Map<String, Long>> facetMap;
 
     /**
      * @param pageIndex
      * @param pageSize
-     * @param totalCount
-     * @param maxResults
      */
-    public FacetPageHandler(Integer pageIndex, Integer pageSize, int totalCount, Integer maxResults) {
-        super(pageIndex, pageSize, totalCount, maxResults);
+    public FacetPageHandler(Integer pageIndex, Integer pageSize) {
+        super(pageIndex, pageSize);
     }
 
     /**
      * @return facet result map
      */
-    public Map<String, Map<String, Integer>> getFacetMap() {
+    public Map<String, Map<String, Long>> getFacetMap() {
         return facetMap;
     }
 
@@ -36,7 +34,7 @@ public class FacetPageHandler extends PageHandler {
      * @param facetMap
      *            the facetMap to set
      */
-    public void setFacetMap(Map<String, Map<String, Integer>> facetMap) {
+    public void setFacetMap(Map<String, Map<String, Long>> facetMap) {
         this.facetMap = facetMap;
     }
 
