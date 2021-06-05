@@ -21,6 +21,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.hibernate.search.backend.lucene.LuceneBackend;
+import org.hibernate.search.engine.backend.Backend;
 import org.hibernate.search.engine.search.aggregation.AggregationKey;
 import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
 import org.hibernate.search.engine.search.query.SearchResult;
@@ -588,10 +589,10 @@ public abstract class BaseDao<E> {
     }
 
     /**
-     * @return analyzer
+     * @return backend
      */
-    public Analyzer getAnalyzer() {
-        return Search.mapping(sessionFactory).backend().unwrap(LuceneBackend.class).analyzer("cms").get();
+    public Backend getSearchBackend() {
+        return Search.mapping(sessionFactory).backend();
     }
 
     @SuppressWarnings("unchecked")

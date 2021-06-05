@@ -18,6 +18,7 @@ dependencies {
 
         "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}",
         "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}",
+        "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}",
         "org.hibernate:hibernate-jcache:${hibernateVersion}",
 
         "org.ehcache:ehcache:${ehcacheVersion}",

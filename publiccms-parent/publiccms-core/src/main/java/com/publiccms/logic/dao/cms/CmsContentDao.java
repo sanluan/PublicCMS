@@ -8,10 +8,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
+import org.hibernate.search.backend.lucene.LuceneBackend;
+import org.hibernate.search.engine.backend.Backend;
 import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
 import org.hibernate.search.engine.search.query.dsl.SearchQuerySelectStep;
 import org.hibernate.search.engine.search.query.dsl.SearchQueryWhereStep;
@@ -36,7 +39,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  */
 @Repository
 public class CmsContentDao extends BaseDao<CmsContent> {
-    private static final String[] textFields = new String[] { "title", "author", "editor", "description" };
+    private static final String[] textFields = new String[] { "title", "author", "editor", "description", "text" };
     private static final String titleField = "title";
     private static final String[] tagFields = new String[] { "tagIds" };
     private static final String dictionaryField = "dictionaryValues";
@@ -124,11 +127,15 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 } else {
                     fields = textFields;
                 }
-                MultiFieldQueryParser queryParser = new MultiFieldQueryParser(fields, getAnalyzer());
-                try {
-                    return queryParser.parse(text);
-                } catch (ParseException e) {
-                    return null;
+                Backend backend = getSearchBackend();
+                if (backend instanceof LuceneBackend) {
+                    Analyzer analyzer = backend.unwrap(LuceneBackend.class).analyzer("cms").get();
+                    MultiFieldQueryParser queryParser = new MultiFieldQueryParser(fields, analyzer);
+                    try {
+                        return queryParser.parse(text);
+                    } catch (ParseException e) {
+                        return null;
+                    }
                 }
             }
         }

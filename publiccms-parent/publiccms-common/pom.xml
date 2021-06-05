@@ -71,6 +71,10 @@
             <artifactId>hibernate-search-backend-lucene</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.hibernate.search</groupId>
+            <artifactId>hibernate-search-backend-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-backward-codecs</artifactId>
         </dependency>

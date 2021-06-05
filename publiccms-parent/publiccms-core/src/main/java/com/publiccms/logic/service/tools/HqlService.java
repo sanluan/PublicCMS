@@ -6,8 +6,11 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.hibernate.search.backend.lucene.LuceneBackend;
+import org.hibernate.search.engine.backend.Backend;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,17 +65,21 @@ public class HqlService extends BaseService<Object> {
     public Set<String> getToken(String text) {
         Set<String> list = new LinkedHashSet<>();
         if (CommonUtils.notEmpty(text)) {
-            try (StringReader stringReader = new StringReader(text);
-                    TokenStream tokenStream = dao.getAnalyzer().tokenStream(CommonConstants.BLANK, stringReader)) {
-                CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
-                tokenStream.reset();
-                while (tokenStream.incrementToken()) {
-                    list.add(charTermAttribute.toString());
+            Backend backend = dao.getSearchBackend();
+            if (backend instanceof LuceneBackend) {
+                Analyzer analyzer = backend.unwrap(LuceneBackend.class).analyzer("cms").get();
+                try (StringReader stringReader = new StringReader(text);
+                        TokenStream tokenStream = analyzer.tokenStream(CommonConstants.BLANK, stringReader)) {
+                    CharTermAttribute charTermAttribute = tokenStream.addAttribute(CharTermAttribute.class);
+                    tokenStream.reset();
+                    while (tokenStream.incrementToken()) {
+                        list.add(charTermAttribute.toString());
+                    }
+                    tokenStream.end();
+                    return list;
+                } catch (IOException e) {
+                    return list;
                 }
-                tokenStream.end();
-                return list;
-            } catch (IOException e) {
-                return list;
             }
         }
         return list;
@@ -87,5 +94,5 @@ public class HqlService extends BaseService<Object> {
 
     @Autowired
     private HqlDao dao;
-    
+
 }

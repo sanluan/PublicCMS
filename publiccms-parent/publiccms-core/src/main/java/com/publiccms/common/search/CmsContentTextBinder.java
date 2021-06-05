@@ -10,10 +10,10 @@ public class CmsContentTextBinder implements TypeBinder {
 
     @Override
     public void bind(TypeBindingContext context) {
-        context.dependencies().useRootOnly();
-        IndexFieldReference<String> fullNameField = context.indexSchemaElement().field("text", f -> f.asString().analyzer("cms"))
+        context.dependencies().use("id");
+        IndexFieldReference<String> textField = context.indexSchemaElement().field("text", f -> f.asString().analyzer("cms"))
                 .toReference();
-        context.bridge(CmsContent.class, new CmsContentTextBridge(fullNameField));
+        context.bridge(CmsContent.class, new CmsContentTextBridge(textField));
     }
 
 }
