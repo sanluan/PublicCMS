@@ -6,18 +6,20 @@ import java.io.Serializable;
 
 import java.util.Date;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.PhraseQuery;
 import org.apache.lucene.search.Query;
 import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
+import org.hibernate.search.engine.search.predicate.dsl.BooleanPredicateClausesStep;
 import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
 import org.hibernate.search.engine.search.query.dsl.SearchQuerySelectStep;
-import org.hibernate.search.engine.search.query.dsl.SearchQueryWhereStep;
 import org.hibernate.search.mapper.orm.common.EntityReference;
 import org.hibernate.search.mapper.orm.search.loading.dsl.SearchLoadingOptionsStep;
 import org.hibernate.search.util.common.data.Range;
@@ -72,12 +74,21 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag,
             String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
             Integer pageSize) {
+        if (CommonUtils.notEmpty(fields)) {
+            for (String field : fields) {
+                if (!ArrayUtils.contains(textFields, field)) {
+                    fields = textFields;
+                }
+            }
+        } else {
+            fields = textFields;
+        }
 
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(projection, phrase, siteId, categoryIds,
                 modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
 
-        return getPage(optionsStep, highlight, getHigtLighterQuery(highlight, phrase, text, fields), titleField, textFields,
-                preTag, postTag, pageIndex, pageSize);
+        return getPage(optionsStep, highlight, higtLighterQuery(highlight, phrase, text, fields), titleField, fields, preTag,
+                postTag, pageIndex, pageSize);
     }
 
     /**
@@ -105,37 +116,40 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag,
             String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
             Integer pageSize) {
+        if (CommonUtils.notEmpty(fields)) {
+            for (String field : fields) {
+                if (!ArrayUtils.contains(textFields, field)) {
+                    fields = textFields;
+                }
+            }
+        } else {
+            fields = textFields;
+        }
 
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(projection, phrase, siteId, categoryIds,
                 modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
 
-        return getFacetPage(optionsStep, facetFields, 10, highlight, getHigtLighterQuery(highlight, phrase, text, fields),
-                titleField, textFields, preTag, postTag, pageIndex, pageSize);
+        return getFacetPage(optionsStep, facetFields, 10, highlight, higtLighterQuery(highlight, phrase, text, fields),
+                titleField, fields, preTag, postTag, pageIndex, pageSize);
     }
 
-    private Query getHigtLighterQuery(boolean highlight, boolean phrase, String text, String[] fields) {
+    private Query higtLighterQuery(boolean highlight, boolean phrase, String text, String[] fields) {
         if (highlight && CommonUtils.notEmpty(text)) {
             if (phrase) {
                 return new PhraseQuery(titleField, text);
             } else {
-                if (CommonUtils.notEmpty(fields)) {
-                    for (String field : fields) {
-                        if (!ArrayUtils.contains(textFields, field)) {
-                            fields = textFields;
-                        }
-                    }
-                } else {
-                    fields = textFields;
-                }
                 Backend backend = getSearchBackend();
+                Analyzer analyzer;
                 if (backend instanceof LuceneBackend) {
-                    Analyzer analyzer = backend.unwrap(LuceneBackend.class).analyzer("cms").get();
-                    MultiFieldQueryParser queryParser = new MultiFieldQueryParser(fields, analyzer);
-                    try {
-                        return queryParser.parse(text);
-                    } catch (ParseException e) {
-                        return null;
-                    }
+                    analyzer = backend.unwrap(LuceneBackend.class).analyzer("cms").get();
+                } else {
+                    analyzer = new StandardAnalyzer();
+                }
+                MultiFieldQueryParser queryParser = new MultiFieldQueryParser(fields, analyzer);
+                try {
+                    return queryParser.parse(text);
+                } catch (ParseException e) {
+                    return null;
                 }
             }
         }
@@ -145,35 +159,14 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(boolean projection, boolean phrase, Short siteId,
             Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField) {
-        SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = getSearchSession()
-                .search(getEntityClass());
-        SearchQueryWhereStep<?, CmsContent, SearchLoadingOptionsStep, ?> whereStep;
-        if (projection) {
-            whereStep = selectStep.select(f -> f.entity());
-        } else {
-            whereStep = selectStep;
-        }
-        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = whereStep.where(f -> f.bool(b -> {
+
+        Consumer<? super BooleanPredicateClausesStep<?>> clauseContributor = b -> {
             b.must(t -> t.match().field("siteId").matching(siteId));
             if (CommonUtils.notEmpty(text)) {
                 if (phrase) {
                     b.must(t -> t.phrase().field(titleField).matching(text));
                 } else {
-                    boolean safe = true;
-                    if (CommonUtils.notEmpty(fields)) {
-                        for (String field : fields) {
-                            if (!ArrayUtils.contains(textFields, field)) {
-                                safe = false;
-                            }
-                        }
-                    } else {
-                        safe = false;
-                    }
-                    if (safe) {
-                        b.must(t -> t.match().fields(fields).matching(text));
-                    } else {
-                        b.must(t -> t.match().fields(textFields).matching(text));
-                    }
+                    b.must(t -> t.match().fields(fields).matching(text));
                 }
             }
             if (CommonUtils.notEmpty(tagIds)) {
@@ -187,13 +180,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 }
             }
             if (null != startPublishDate) {
-                b.must(f.range().field("publishDate").greaterThan(startPublishDate));
+                b.must(t -> t.range().field("publishDate").greaterThan(startPublishDate));
             }
             if (null != endPublishDate) {
                 b.must(t -> t.range().field("publishDate").atMost(endPublishDate));
             }
             if (null != expiryDate) {
-                b.must(t -> t.bool().mustNot(f.range().field("expiryDate").range(Range.canonical(startDate, expiryDate))));
+                b.must(t -> t.bool().mustNot(t.range().field("expiryDate").range(Range.canonical(startDate, expiryDate))));
             }
             if (CommonUtils.notEmpty(categoryIds)) {
                 for (Integer categoryId : categoryIds) {
@@ -205,7 +198,16 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                     b.must(t -> t.match().field("modelId").matching(modelId));
                 }
             }
-        }));
+        };
+        SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = getSearchSession()
+                .search(getEntityClass());
+        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep;
+        if (projection) {
+            optionsStep = selectStep.select(f -> f.entity()).where(f -> f.bool(clauseContributor));
+        } else {
+            optionsStep = selectStep.where(f -> f.bool(clauseContributor));
+        }
+
         if ("publishDate".equals(orderField)) {
             optionsStep.sort(f -> f.field("publishDate").desc());
         }
