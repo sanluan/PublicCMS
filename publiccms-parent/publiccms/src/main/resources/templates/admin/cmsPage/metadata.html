@@ -23,7 +23,7 @@
             <dl class="nowrap">
                 <dt><@t.page 'dynamic_page'/>:</dt>
                 <dd>
-                    <label><a class="button" href="${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if a.acceptParameters?has_content>?<#list a.acceptParameters?split(',') as p>${p}=<#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
+                    <label><a class="button" href="${site.dynamicPath+(path?starts_with('/'))?then(path?keep_after('/'),path)}<#if a.acceptParameters?has_content>?<#list a.acceptParameters?split(',') as p>${p}=<#if 'content'=(a.parameterTypeMap[p].type)!><@_contentList pageSize=1><#list page.list as a>${a.id}</#list></@_contentList><#elseif 'category'=(a.parameterTypeMap[p].type)!><@_categoryList pageSize=1><#list page.list as a>${a.id}</#list></@_categoryList></#if><#sep>&</#list></#if>" target="_blank"><@t.page 'button.view_page'/></a></label>
                     <#if 10 lte (a.cacheTime)!0>
                         <label><a class="button" href="cmsPage/clearCache?path=${path}&_csrf=<@_csrfToken admin=true/>" target="ajaxTodo"><@t.page 'button.clear_cache'/></a></label>
                     </#if>
