@@ -44,8 +44,9 @@ public class SysRepoSyncAdminController {
 		}
 		String log = null;
 		try {
-			String dir = CommonConstants.CMS_FILEPATH + String.format("/template/site_%d/repo", site.getId());
-			String shPath = dir + "/sync.sh";
+			Short siteId = site.getId();
+			String dir = CommonConstants.CMS_FILEPATH + String.format("/template/site_%d/repo", siteId);
+			String shPath = String.format("%s/sync.sh %d", dir, siteId);
 			Process ps = Runtime.getRuntime().exec("sh " + shPath, null, new File(dir));
 			ps.waitFor();
 
