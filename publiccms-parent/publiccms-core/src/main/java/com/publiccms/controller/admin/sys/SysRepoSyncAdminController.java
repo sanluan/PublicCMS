@@ -17,10 +17,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Map;
 
 /**
@@ -47,6 +44,10 @@ public class SysRepoSyncAdminController {
 			Short siteId = site.getId();
 			String dir = CommonConstants.CMS_FILEPATH + String.format("/template/site_%d/repo", siteId);
 			String shPath = String.format("%s/sync.sh %d", dir, siteId);
+			File shFile = new File(shPath);
+			if (!shFile.exists()) {
+				throw new FileNotFoundException(String.format("template/site_%d/sync.sh Not found, create it using 'Repo Sync template(sync.sh)'", siteId));
+			}
 			Process ps = Runtime.getRuntime().exec("sh " + shPath, null, new File(dir));
 			ps.waitFor();
 

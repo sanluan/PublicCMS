@@ -1026,7 +1026,7 @@ INSERT INTO `sys_module` VALUES ('webfile_unzip', 'cmsWebFile/unzipParameters', 
 INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload,cmsWebFile/check', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, 'icon-search', 'content_menu', 1, 4);
-INSERT INTO `sys_module` VALUES ('repo_sync', 'cmsWebFile/list', NULL, 'icon-refresh', 'file_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('repo_sync', 'sysRepoSync/sync', NULL, 'icon-refresh', 'file_menu', 1, 5);
 
 -- ----------------------------
 -- Table structure for sys_module_lang
