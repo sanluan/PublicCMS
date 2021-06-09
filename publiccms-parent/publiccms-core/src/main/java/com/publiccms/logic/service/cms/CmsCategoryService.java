@@ -117,16 +117,14 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     }
 
     /**
-     * @param siteId
      * @param entity
      * @return
      */
-    public CmsCategory save(Short siteId, CmsCategory entity) {
+    public CmsCategory save(CmsCategory entity) {
         if (entity.isOnlyUrl()) {
             entity.setUrl(entity.getPath());
         }
-        entity.setSiteId(siteId);
-        save(entity);
+        super.save(entity);
         addChildIds(entity.getParentId(), entity.getId());
         return entity;
     }
@@ -185,20 +183,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             return childIds.toString();
         } else {
             return null;
-        }
-    }
-
-    /**
-     * @param siteId
-     * @param oldParentId
-     * @param parentId
-     */
-    public void generateChildIds(short siteId, Integer oldParentId, Integer parentId) {
-        if (null != oldParentId && !oldParentId.equals(parentId)) {
-            generateChildIds(siteId, oldParentId, parentId);
-            generateChildIds(siteId, parentId);
-        } else if (null != parentId && null == oldParentId) {
-            generateChildIds(siteId, parentId);
         }
     }
 

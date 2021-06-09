@@ -93,9 +93,9 @@ public class CmsCategoryAdminController {
                         .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.category",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
-
         } else {
-            service.save(site.getId(), entity);
+            entity.setSiteId(site.getId());
+            service.save(entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "save.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }

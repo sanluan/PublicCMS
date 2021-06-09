@@ -36,9 +36,9 @@
 						"elseif", "escape", "fallback", "function", "flush", "ftl", "global", "if", "import",
 						"include", "items", "list", "local", "lt", "macro", "nested","noautoesc", "noescape", "noparse", "nt","outputformat",
 						"recover", "recurse", "return", "rt", "sep", "setting", "stop", "switch", "t", "visit" ];
-				var specialVariables = [ "auto_esc" , "current_template_name", "data_model", "error", "globals", "lang", "locale",
+				var specialVariables = [ "auto_esc" , "caller_template_name", "current_template_name", "data_model", "error", "get_optional_template", "globals", "lang", "locale",
 						"locale_object", "locals", "main", "main_template_name", "namespace", "node", "now",
-						"output_encoding " , "output_format" , "template_name", "url_escaping_charset", "vars", "version" ];
+						"output_encoding " , "output_format" , "template_name" , "time_zone" , "url_escaping_charset", "vars", "version" ];
 
 				var freemarkerStartTagArray = [ "#", "@" ];
 
@@ -49,7 +49,7 @@
 				var regs = {
 					operatorChars : /[+\-*&%=<>!?:;,|&]/, validIdentifier : /[a-zA-Z0-9_]/, stringChar : /['"]/
 				};
-				
+
 				var helpers = {
 					cont : function(style, lastType, lastFreemarkerMode) {
 						last = lastType;
