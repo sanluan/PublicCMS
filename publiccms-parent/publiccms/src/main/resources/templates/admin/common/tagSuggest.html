@@ -1,3 +1,5 @@
+<#ftl auto_esc=false/>
+<#escape x as x?json_string>
 [
 <@_tagList name=name typeId=typeId pageSize=10>
     <#list page.list as a>
@@ -5,3 +7,4 @@
     </#list>
 </@_tagList>
 ]
+</#escape>

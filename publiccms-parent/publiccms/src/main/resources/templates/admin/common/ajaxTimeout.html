@@ -1,7 +1,10 @@
+<#ftl auto_esc=false/>
+<#escape x as x?json_string>
 {
     "statusCode":"301",
-    "message":"<#if message?has_content><@t.message message/><#else><@t.message 'message.timeout'/></#if>",
+    "message":"<#if message?has_content><@t.message message?replace('\n','')?replace('\\','\\\\')/><#else><@t.message 'message.timeout'/></#if>",
     "navTabId":"",
     "callbackType":"",
     "forwardUrl":""
 }
+</#escape>

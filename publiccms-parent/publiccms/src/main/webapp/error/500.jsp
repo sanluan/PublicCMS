@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" session="false" trimDirectiveWhitespaces="true"%>
 <%  
 String basePath = "//" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + "/";  
-%>
-<%!String exceptionMsgForInner(Throwable e) {
+String exceptionMsgForInner(Throwable e) {
 	String errorMessage = e.getLocalizedMessage();
 	if (null == errorMessage){
 	    errorMessage = "";
@@ -16,7 +15,14 @@ String basePath = "//" + request.getServerName() + ":" + request.getServerPort()
 		}
 	}
 	return errorMessage.trim();
-}%>
+}
+Throwable throwable;
+try{
+    throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
+}catch(Exception e){
+    throwable = e;
+}
+%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -45,12 +51,6 @@ String basePath = "//" + request.getServerName() + ":" + request.getServerPort()
 		<div style="display: none;" id=divexception>
 			<textarea rows="40" style="width:100%">
 <%
-	Throwable throwable;
-	try{
-	    throwable = (Throwable) request.getAttribute("javax.servlet.error.exception");
-	}catch(Exception e){
-	    throwable = e;
-	}
 	out.println(exceptionMsgForInner(throwable));
 %>
 			</textarea>

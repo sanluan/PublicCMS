@@ -1,7 +1,10 @@
+<#ftl auto_esc=false/>
+<#escape x as x?json_string>
 {
     "statusCode":"300",
-    "message":"<#if message??><@t.message message/><#else><@t.message 'message.unauthorizedUrl'/></#if>",
+    "message":"<#if message??><@t.message message?replace('\n','')?replace('\\','\\\\')/><#else><@t.message 'message.unauthorizedUrl'/></#if>",
     "navTabId":"",
     "callbackType":"",
     "forwardUrl":""
 }
+</#escape>
