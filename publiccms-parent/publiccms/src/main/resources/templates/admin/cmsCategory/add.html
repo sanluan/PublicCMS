@@ -222,4 +222,10 @@ checkCategoryModel();
             </div>
         </div>
     </div>
+<#if showAdvancedOptions?has_content && 'true' = showAdvancedOptions>
+    <script>
+    $('input[name=showAdvancedOptions]',navTab.getCurrentPanel()).click();
+    $('.tabs',navTab.getCurrentPanel()).attr('currentIndex',$('li.categoryModelControl').index('.tabsHeaderContent ul li')); 
+    </script>
+</#if>
 </form>
