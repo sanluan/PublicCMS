@@ -1,4 +1,4 @@
-<@_place id=id absoluteURL=false>
+<@_place id=id!copyId absoluteURL=false>
     <#assign a=object/>
 </@_place>
 <@_placeMetadata path=(a.path)!path!><#assign metadata=object/></@_placeMetadata>
@@ -6,14 +6,16 @@
 <#if !a?has_content&&itemType?has_content>
 <#switch itemType>
     <#case 'content'>
-        <@_content id=itemId absoluteURL=false><#assign content=object/></@_content><#break>
+        <@_content id=itemId absoluteURL=false><#assign content=object/></@_content>
+    <#break>
     <#case 'category'>
-        <@_category id=itemId absoluteURL=false><#assign category=object/></@_category><#break>
+        <@_category id=itemId absoluteURL=false><#assign category=object/></@_category>
+    <#break>
 </#switch>
 </#if>
 <form method="post" autocomplete="off" action="cmsPlace/save?callbackType=closeCurrent&navTabId=cmsPlace/dataList" class="pageForm required-validate" onsubmit="return validateCallback(this,navTabAjaxDone);">
-    <input name="id" type="hidden" value="${(a.id)!}" />
-    <input name="path" type="hidden" value="${(a.path)!(path)!}" />
+    <input name="id" type="hidden" value="${id!}"/>
+    <input name="path" type="hidden" value="${(a.path)!(path)!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>

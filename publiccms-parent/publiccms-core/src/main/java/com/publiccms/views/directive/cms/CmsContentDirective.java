@@ -33,6 +33,7 @@ public class CmsContentDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
+        boolean absoluteId = handler.getBoolean("absoluteId", true);
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
@@ -41,6 +42,9 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 if (null != statistics) {
                     entity.setClicks(entity.getClicks() + statistics.getClicks());
                     entity.setScores(entity.getScores() + statistics.getScores());
+                }
+                if (absoluteId && null != entity.getQuoteContentId()) {
+                    entity.setId(entity.getQuoteContentId());
                 }
                 if (absoluteURL) {
                     templateComponent.initContentUrl(site, entity);
@@ -72,12 +76,18 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                             e.setClicks(e.getClicks() + statistics.getClicks());
                             e.setScores(e.getScores() + statistics.getScores());
                         }
+                        if (absoluteId && null != e.getQuoteContentId()) {
+                            e.setId(e.getQuoteContentId());
+                        }
                         templateComponent.initContentUrl(site, e);
                         templateComponent.initContentCover(site, e);
                     };
                 } else {
                     consumer = e -> {
                         CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                        if (absoluteId && null != e.getQuoteContentId()) {
+                            e.setId(e.getQuoteContentId());
+                        }
                         if (null != statistics) {
                             e.setClicks(e.getClicks() + statistics.getClicks());
                             e.setScores(e.getScores() + statistics.getScores());
