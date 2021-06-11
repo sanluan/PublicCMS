@@ -5,6 +5,7 @@ import org.hibernate.search.engine.backend.document.IndexFieldReference;
 import org.hibernate.search.mapper.pojo.bridge.TypeBridge;
 import org.hibernate.search.mapper.pojo.bridge.runtime.TypeBridgeWriteContext;
 
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.logic.component.BeanComponent;
@@ -20,6 +21,7 @@ public class CmsContentTextBridge implements TypeBridge<CmsContent> {
     public void write(DocumentElement target, CmsContent bridgedElement, TypeBridgeWriteContext context) {
         CmsContentAttribute bridgedElementAttribute = BeanComponent.getContentAttributeService()
                 .getEntity(bridgedElement.getId());
-        target.addValue(this.field, bridgedElementAttribute.getSearchText());
+        target.addValue(this.field,
+                null == bridgedElementAttribute ? CommonConstants.BLANK : bridgedElementAttribute.getSearchText());
     }
 }

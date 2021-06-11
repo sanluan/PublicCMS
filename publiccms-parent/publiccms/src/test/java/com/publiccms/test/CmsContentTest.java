@@ -41,8 +41,8 @@ public class CmsContentTest {
         contentService.save(entity);
         PageHandler page = contentService.query(false, true, true, (short) 1, "天津黑核科技有限公司", null, null, null, null, null, null,
                 null, "<em>", "</em>", null, null, CommonUtils.getMinuteDate(), null, null, null);
-        for (CmsContent site : (List<CmsContent>) page.getList()) {
-            System.out.println(site.getTitle() + "\t" + site.getDescription());
+        for (CmsContent content : (List<CmsContent>) page.getList()) {
+            System.out.println(content.getTitle() + "\t" + content.getDescription());
         }
     }
 
