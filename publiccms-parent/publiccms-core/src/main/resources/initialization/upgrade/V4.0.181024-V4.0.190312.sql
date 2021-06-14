@@ -71,28 +71,28 @@ INSERT INTO `sys_module_lang` VALUES ('content_export', 'zh', '导出');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'en', 'Export');
 ALTER TABLE `cms_place` ADD COLUMN `check_user_id` bigint(20) NULL COMMENT '审核用户' AFTER `user_id`;
 ALTER TABLE `cms_place` 
-	DROP INDEX `publish_date`,
-	DROP INDEX `site_id`,
-	DROP INDEX `item_type`,
-	DROP INDEX `user_id`,
-	DROP INDEX `path`,
-	DROP INDEX `disabled`,
-	DROP INDEX `create_date`,
-	DROP INDEX `status`,
-	DROP INDEX `item_id`,
-	ADD INDEX `publish_date`(`publish_date`, `create_date`) ,
-	ADD INDEX `site_id`(`site_id`, `path`, `status`, `disabled`),
-	ADD INDEX `item_type`(`item_type`, `item_id`) ,
-	ADD INDEX `user_id`(`user_id`, `check_user_id`) ;
+    DROP INDEX `publish_date`,
+    DROP INDEX `site_id`,
+    DROP INDEX `item_type`,
+    DROP INDEX `user_id`,
+    DROP INDEX `path`,
+    DROP INDEX `disabled`,
+    DROP INDEX `create_date`,
+    DROP INDEX `status`,
+    DROP INDEX `item_id`,
+    ADD INDEX `publish_date`(`publish_date`, `create_date`) ,
+    ADD INDEX `site_id`(`site_id`, `path`, `status`, `disabled`),
+    ADD INDEX `item_type`(`item_type`, `item_id`) ,
+    ADD INDEX `user_id`(`user_id`, `check_user_id`) ;
 UPDATE `sys_module` SET `authorized_url` =  'cmsPlace/dataList,cmsPlace/export' WHERE `id` ='place_data_list';
 UPDATE `sys_module` SET `authorized_url` =  'sysUser/lookup' WHERE `id` ='place_list';
 -- 2018-12-22 --
 ALTER TABLE `cms_comment` 
     ADD COLUMN `reply_id` bigint(20) NULL COMMENT '回复ID' AFTER `user_id`,
-	DROP INDEX `site_id`,
-	ADD INDEX `site_id`(`site_id`, `content_id`, `status`, `disabled`),
-	ADD INDEX `update_date`(`update_date`, `create_date`),
-	ADD INDEX `reply_id`(`site_id`, `reply_id`);
+    DROP INDEX `site_id`,
+    ADD INDEX `site_id`(`site_id`, `content_id`, `status`, `disabled`),
+    ADD INDEX `update_date`(`update_date`, `create_date`),
+    ADD INDEX `reply_id`(`site_id`, `reply_id`);
 ALTER TABLE `cms_comment` 
     ADD COLUMN `reply_user_id` bigint(20) NULL COMMENT '回复用户ID' AFTER `reply_id`,
     DROP INDEX `reply_id`,
@@ -118,15 +118,15 @@ update cms_category set code=CONCAT(code,id) where (site_id,code) in (
 );
 ALTER TABLE `cms_category`
     MODIFY COLUMN `code` varchar(50) NOT NULL COMMENT '编码' AFTER `tag_type_ids`,
-	DROP INDEX `site_id`,
-	DROP INDEX `parent_id`,
-	DROP INDEX `disabled`,
+    DROP INDEX `site_id`,
+    DROP INDEX `parent_id`,
+    DROP INDEX `disabled`,
     DROP INDEX `type_id`,
     DROP INDEX `allow_contribute`,
     DROP INDEX `hidden`,
-	ADD INDEX `type_id`(`type_id`, `allow_contribute`),
-	ADD INDEX `site_id`(`site_id`, `parent_id`, `hidden`, `disabled`),
-	ADD UNIQUE INDEX `code`(`site_id`, `code`);
+    ADD INDEX `type_id`(`type_id`, `allow_contribute`),
+    ADD INDEX `site_id`(`site_id`, `parent_id`, `hidden`, `disabled`),
+    ADD UNIQUE INDEX `code`(`site_id`, `code`);
 ALTER TABLE `cms_content` 
     ADD COLUMN `quote_content_id` bigint(20) NULL COMMENT '引用内容ID' AFTER `parent_id`,
     ADD INDEX `quote_content_id`(`site_id`, `quote_content_id`);
@@ -138,13 +138,13 @@ ALTER TABLE `cms_content`
 -- 2019-01-24 --
 ALTER TABLE `cms_dictionary` 
     MODIFY COLUMN `id` varchar(20) NOT NULL FIRST,
-	DROP PRIMARY KEY,
-	ADD PRIMARY KEY (`id`, `site_id`);
+    DROP PRIMARY KEY,
+    ADD PRIMARY KEY (`id`, `site_id`);
 ALTER TABLE `cms_dictionary_data` 
     MODIFY COLUMN `dictionary_id` varchar(20) NOT NULL COMMENT '字典' FIRST,
     ADD COLUMN `site_id` smallint(0) NOT NULL COMMENT '站点ID' AFTER `dictionary_id`,
-	DROP PRIMARY KEY,
-	ADD PRIMARY KEY (`dictionary_id`, `site_id`, `value`);
+    DROP PRIMARY KEY,
+    ADD PRIMARY KEY (`dictionary_id`, `site_id`, `value`);
 update cms_dictionary_data a set a.site_id = (select site_id from cms_dictionary b where a.dictionary_id = b.id);
 ALTER TABLE `sys_extend_field` 
     MODIFY COLUMN `dictionary_id` varchar(20) NULL DEFAULT NULL COMMENT '数据字典ID' AFTER `default_value`;
@@ -158,10 +158,10 @@ INSERT INTO `sys_module_lang`(`module_id`, `lang`, `value`) VALUES ('myself_devi
 INSERT INTO `sys_module_lang`(`module_id`, `lang`, `value`) VALUES ('myself_device', 'ja', '私の端末');
 INSERT INTO `sys_module_lang`(`module_id`, `lang`, `value`) VALUES ('myself_device', 'zh', '我的设备');
 ALTER TABLE `sys_app_client` 
-	ADD COLUMN `id` bigint(20) NOT NULL AUTO_INCREMENT FIRST,
-	DROP PRIMARY KEY,
-	ADD PRIMARY KEY (`id`),
-	ADD UNIQUE INDEX(`site_id`, `channel`, `uuid`);
+    ADD COLUMN `id` bigint(20) NOT NULL AUTO_INCREMENT FIRST,
+    DROP PRIMARY KEY,
+    ADD PRIMARY KEY (`id`),
+    ADD UNIQUE INDEX(`site_id`, `channel`, `uuid`);
 -- 2019-02-15 --
 ALTER TABLE `cms_place` 
     MODIFY COLUMN `path` varchar(100) NOT NULL COMMENT '模板路径' AFTER `site_id`;
@@ -179,8 +179,8 @@ ALTER TABLE `sys_role_authorized`
 ALTER TABLE `cms_content_attribute` 
     ADD COLUMN `search_text` longtext NULL COMMENT '全文索引文本' AFTER `data`;
 ALTER TABLE `sys_extend_field` 
-	ADD COLUMN `searchable` tinyint(1) NOT NULL COMMENT '是否可搜索' AFTER `required`,
-	MODIFY COLUMN `maxlength` int(11) NULL DEFAULT NULL COMMENT '最大长度' AFTER `searchable`;
+    ADD COLUMN `searchable` tinyint(1) NOT NULL COMMENT '是否可搜索' AFTER `required`,
+    MODIFY COLUMN `maxlength` int(11) NULL DEFAULT NULL COMMENT '最大长度' AFTER `searchable`;
 -- 2019-02-22 --
 UPDATE `sys_module` SET `parent_id` = 'config_menu' where id = 'domain_list';
 UPDATE `sys_module` SET `authorized_url` =  'cmsPlace/export',`url` = 'cmsPlace/dataList' WHERE `id` ='place_data_list';

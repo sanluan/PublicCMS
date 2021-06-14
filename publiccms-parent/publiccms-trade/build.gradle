@@ -1,8 +1,13 @@
+configurations {
+    instrumentedJars {
+        extendsFrom implementation
+    }
+}
 dependencies {
-	compile project(':publiccms-core')
-	compile(
-        "javax.servlet:javax.servlet-api:${servletVersion}",
-        // https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java
-        "com.alipay.sdk:alipay-sdk-java:4.10.124.ALL"
-    )
+    implementation project(path:':publiccms-core', configuration: 'instrumentedJars')
+    implementation project(':publiccms-core')
+
+    // https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java
+    implementation "com.alipay.sdk:alipay-sdk-java:4.10.124.ALL"
+    runtimeOnly "javax.servlet:javax.servlet-api:${servletVersion}"
 }

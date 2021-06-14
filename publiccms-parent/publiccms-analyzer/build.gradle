@@ -1,5 +1,13 @@
+configurations {
+    instrumentedJars {
+        extendsFrom implementation
+    }
+}
+
 dependencies {
-    compile project(':publiccms-core')
-	compile ("org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}")
-	compile("javax.servlet:javax.servlet-api:${servletVersion}")
+    implementation project(path:':publiccms-core', configuration: 'instrumentedJars')
+    implementation project(':publiccms-core')
+
+    implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
+    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
 }

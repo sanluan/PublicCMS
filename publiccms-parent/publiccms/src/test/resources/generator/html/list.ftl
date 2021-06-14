@@ -21,7 +21,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
             <div class="subBar">
                 <ul>
                     <li>
-                    	<button type="submit" class="buttonActive"><#noparse><@t.page 'button.search'/></#noparse></button>
+                        <button type="submit" class="buttonActive"><#noparse><@t.page 'button.search'/></#noparse></button>
                     </li>
                 </ul>
             </div>

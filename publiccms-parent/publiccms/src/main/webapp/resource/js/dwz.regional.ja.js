@@ -40,7 +40,7 @@
 
 
     $.setMessage('statusCode_503','サーバーは現在過負荷状態になるか、ただいまメンテナンス中です!');
-    $.setMessage('validateFormError','提出データが不完全、{0}フィールドにエラーがあります。修正してから提出してください！');	
+    $.setMessage('validateFormError','提出データが不完全、{0}フィールドにエラーがあります。修正してから提出してください！');    
     $.setMessage('sessionTimout','タイムアウトしました、再度ログインしてください！');
     $.setMessage('alertSelectMsg','一つのデータを選択してください!');
     $.setMessage('forwardConfirmMsg','次へ!');

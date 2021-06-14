@@ -28,8 +28,8 @@ INSERT INTO `sys_module` VALUES ('141', '修改内容模型', 'cmsContent/change
 -- 20180605 --
 DELETE FROM `sys_module` WHERE id < 1000;
 ALTER TABLE `sys_module`
-	MODIFY COLUMN `id` varchar(30) NOT NULL FIRST,
-	MODIFY COLUMN `parent_id` varchar(30) NULL DEFAULT NULL COMMENT '父模块' AFTER `attached`;
+    MODIFY COLUMN `id` varchar(30) NOT NULL FIRST,
+    MODIFY COLUMN `parent_id` varchar(30) NULL DEFAULT NULL COMMENT '父模块' AFTER `attached`;
 ALTER TABLE `sys_role` MODIFY COLUMN `show_all_module` tinyint(1) NOT NULL COMMENT '显示全部模块' AFTER `owns_all_right`;
 ALTER TABLE `sys_site` MODIFY COLUMN `id` smallint(6) NOT NULL AUTO_INCREMENT FIRST;
 ALTER TABLE `cms_place` MODIFY COLUMN `site_id` smallint(6) NOT NULL COMMENT '站点ID' AFTER `id`;
@@ -375,9 +375,9 @@ INSERT INTO `sys_module_lang` VALUES ('word_list', '', '搜索词管理');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'en', 'Search word management');
 
 ALTER TABLE `sys_module` DROP COLUMN `name`,
-	DROP INDEX `parent_id`,
-	DROP INDEX `url`,
-	ADD INDEX `parent_id`(`parent_id`, `menu`);
+    DROP INDEX `parent_id`,
+    DROP INDEX `url`,
+    ADD INDEX `parent_id`(`parent_id`, `menu`);
 
 INSERT INTO `sys_module` VALUES ('app_add', 'sysApp/add', 'sysApp/save', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_disable', NULL, 'sysAppClient/disable', NULL, 'app_client_list', 0, 0);

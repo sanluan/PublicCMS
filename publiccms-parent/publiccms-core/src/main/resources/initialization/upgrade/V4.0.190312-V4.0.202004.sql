@@ -143,8 +143,8 @@ INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'zh', '退款');
 UPDATE `sys_module` SET `url` = 'cmsCategory/lookupByModelId' WHERE `id` ='content_select_category';
 -- 2019-07-25 --
 ALTER TABLE `sys_cluster` 
-	MODIFY COLUMN `cms_version` varchar(20) NULL DEFAULT NULL COMMENT '版本' AFTER `master`,
-	ADD COLUMN `revision` varchar(20) NULL COMMENT '修订' AFTER `cms_version`;
+    MODIFY COLUMN `cms_version` varchar(20) NULL DEFAULT NULL COMMENT '版本' AFTER `master`,
+    ADD COLUMN `revision` varchar(20) NULL COMMENT '修订' AFTER `cms_version`;
 -- 2019-08-22 --
 ALTER TABLE `cms_content` 
 CHANGE COLUMN `dictionar_values` `dictionary_values` text  NULL COMMENT '数据字典值' AFTER `tag_ids`;

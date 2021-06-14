@@ -1,42 +1,46 @@
+configurations {
+    instrumentedJars {
+        extendsFrom implementation
+    }
+}
+
 dependencies {
-    compile (
-        "commons-fileupload:commons-fileupload:${fileuploadVersion}",
-        "org.apache.commons:commons-collections4:${collectionsVersion}",
-        "org.apache.commons:commons-lang3:${langVersion}",
-        "commons-codec:commons-codec:${codecVersion}",
+    implementation "commons-fileupload:commons-fileupload:${fileuploadVersion}"
+    implementation "org.apache.commons:commons-collections4:${collectionsVersion}"
+    implementation "org.apache.commons:commons-lang3:${langVersion}"
+    implementation "commons-codec:commons-codec:${codecVersion}"
 
-        "org.apache.httpcomponents:httpmime:${httpclientVersion}",
-        "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}",
+    implementation "org.apache.httpcomponents:httpmime:${httpclientVersion}"
+    implementation "org.apache.httpcomponents:httpclient-cache:${httpclientVersion}"
 
-        "org.apache.ant:ant:${antVersion}",
+    implementation "org.apache.ant:ant:${antVersion}"
 
-        "org.freemarker:freemarker:${freemarkerVersion}",
+    implementation "org.freemarker:freemarker:${freemarkerVersion}"
 
-        "org.springframework:spring-context-support:${springVersion}",
-        "org.springframework:spring-orm:${springVersion}",
-        "org.springframework:spring-webmvc:${springVersion}",
+    implementation "org.springframework:spring-context-support:${springVersion}"
+    implementation "org.springframework:spring-orm:${springVersion}"
+    implementation "org.springframework:spring-webmvc:${springVersion}"
 
-        "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}",
-        "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}",
-        "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}",
-        "org.hibernate:hibernate-jcache:${hibernateVersion}",
+    implementation "org.hibernate.search:hibernate-search-mapper-orm:${hibernateSearchVersion}"
+    implementation "org.hibernate.search:hibernate-search-backend-lucene:${hibernateSearchVersion}"
+    implementation "org.hibernate.search:hibernate-search-backend-elasticsearch:${hibernateSearchVersion}"
+    implementation "org.hibernate:hibernate-jcache:${hibernateVersion}"
 
-        "org.ehcache:ehcache:${ehcacheVersion}",
+    implementation "org.ehcache:ehcache:${ehcacheVersion}"
 
-        "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}",
-        "org.apache.lucene:lucene-backward-codecs:${luceneVersion}",
-        "org.apache.lucene:lucene-highlighter:${luceneVersion}",
-        
-        "org.mybatis:mybatis:${mybatisVersion}",
+    implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
+    implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"
+    implementation "org.apache.lucene:lucene-highlighter:${luceneVersion}"
 
-        "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}",
+    implementation "org.mybatis:mybatis:${mybatisVersion}"
 
-	    "javax.transaction:jta:${jtaVersion}",
-	    "com.sun.mail:jakarta.mail:${mailVersion}",
-        "javax.servlet:javax.servlet-api:${servletVersion}"
-    )
-    compile(
-        "org.quartz-scheduler:quartz:${quartzVersion}") {
+    implementation "com.fasterxml.jackson.core:jackson-databind:${jacksonVersion}"
+
+    implementation "javax.transaction:jta:${jtaVersion}"
+    implementation "com.sun.mail:jakarta.mail:${mailVersion}"
+    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
+
+    implementation ("org.quartz-scheduler:quartz:${quartzVersion}") {
         exclude group:"com.mchange"
         exclude group:"com.zaxxer" 
     }

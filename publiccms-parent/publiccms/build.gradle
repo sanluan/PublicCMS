@@ -1,33 +1,31 @@
-apply plugin: "war"
-//apply plugin: 'org.springframework.boot'
-
-group = 'com.publiccms'
+plugins {
+    id "war"
+//    id 'org.springframework.boot'
+}
 
 dependencies {
-    compile project(':publiccms-core')
-    compile project(':publiccms-oauth')
-	compile project(':publiccms-redis')
-	compile project(':publiccms-j2cache')
-	compile project(':publiccms-analyzer')
-	compile project(':publiccms-trade')
-    testCompile(
-        "org.junit.jupiter:junit-jupiter-engine:${junitVersion}",
-        "org.springframework:spring-test:${springVersion}",
-        "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
-    )
-    providedCompile(
-        "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}",
-        "javax.servlet:javax.servlet-api:${servletVersion}"
-    )
-    compile("org.apache.logging.log4j:log4j-web:${log4jVersion}",
-    "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}")
-    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
+    implementation project(path:':publiccms-core', configuration: 'instrumentedJars')
+    implementation project(':publiccms-core')
+    implementation project(path:':publiccms-oauth', configuration: 'instrumentedJars')
+    implementation project(':publiccms-oauth')
+    implementation project(path:':publiccms-cache', configuration: 'instrumentedJars')
+    implementation project(':publiccms-cache')
+    implementation project(path:':publiccms-analyzer', configuration: 'instrumentedJars')
+    implementation project(':publiccms-analyzer')
+    implementation project(path:':publiccms-trade', configuration: 'instrumentedJars')
+    implementation project(':publiccms-trade')
+
+    implementation "org.apache.logging.log4j:log4j-web:${log4jVersion}"
+    implementation "org.apache.logging.log4j:log4j-slf4j-impl:${log4jVersion}"
+    implementation ("org.springframework.boot:spring-boot-starter-web:${springBootVersion}") {
         exclude group:"org.springframework.boot", module: 'spring-boot-starter-logging'
     }
-    compile fileTree(dir: 'src/main/webapp/WEB-INF/lib', include: ['*.jar'])
-}
-war{
-    archiveName = "${project.name}.war"
+    implementation fileTree('src/main/webapp/WEB-INF/lib')
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
+    testImplementation "org.springframework:spring-test:${springVersion}"
+    testImplementation "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
+    providedCompile "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}"
+    providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
 }
 eclipse {
     wtp {

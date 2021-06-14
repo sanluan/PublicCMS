@@ -98,9 +98,9 @@
    <ul class="langList">
     <#list langs as k,v>
         <li<#if springMacroRequestContext.getMessage('page.lang')=k> class="current-lang"</#if>>
-        	<a href="changeLocale?lang=${k}" target="ajaxTodo">
-        		<img src="${base}/resource/themes/images/${k}.png" alt="${v}"/>${v}
-        	</a>
+            <a href="changeLocale?lang=${k}" target="ajaxTodo">
+                <img src="${base}/resource/themes/images/${k}.png" alt="${v}"/>${v}
+            </a>
         </li>
     </#list>
     </ul>

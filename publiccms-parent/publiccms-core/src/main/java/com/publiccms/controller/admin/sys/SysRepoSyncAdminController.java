@@ -35,41 +35,41 @@ import com.publiccms.logic.service.log.LogOperateService;
 @RequestMapping("sysRepoSync")
 public class SysRepoSyncAdminController {
 
-	@Autowired
-	protected LogOperateService logOperateService;
+    @Autowired
+    protected LogOperateService logOperateService;
 
-	@GetMapping(value = "sync", produces = "text/html;charset=utf-8")
-	public String sync(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
-					   HttpServletRequest request, ModelMap model) {
-		if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-			return CommonConstants.TEMPLATE_ERROR;
-		}
-		String log = null;
-		try {
-			Short siteId = site.getId();
-			String dir = CommonConstants.CMS_FILEPATH + String.format("/template/site_%d/repo", siteId);
-			String shPath = String.format("%s/sync.sh %d", dir, siteId);
-			File shFile = new File(shPath);
-			if (!shFile.exists()) {
-				throw new FileNotFoundException(String.format("template/site_%d/sync.sh Not found, create it using 'Repo Sync template(sync.sh)'", siteId));
-			}
-			Process ps = Runtime.getRuntime().exec("sh " + shPath, null, new File(dir));
-			ps.waitFor();
+    @GetMapping(value = "sync", produces = "text/html;charset=utf-8")
+    public String sync(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
+                       HttpServletRequest request, ModelMap model) {
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        String log = null;
+        try {
+            Short siteId = site.getId();
+            String dir = CommonConstants.CMS_FILEPATH + String.format("/template/site_%d/repo", siteId);
+            String shPath = String.format("%s/sync.sh %d", dir, siteId);
+            File shFile = new File(shPath);
+            if (!shFile.exists()) {
+                throw new FileNotFoundException(String.format("template/site_%d/sync.sh Not found, create it using 'Repo Sync template(sync.sh)'", siteId));
+            }
+            Process ps = Runtime.getRuntime().exec("sh " + shPath, null, new File(dir));
+            ps.waitFor();
 
-			BufferedReader br = new BufferedReader(new InputStreamReader(ps.getInputStream()));
-			StringBuilder sb = new StringBuilder();
-			String line;
-			while ((line = br.readLine()) != null) {
-				sb.append(line).append("<br/>");
-			}
-			log = sb.toString();
-		} catch (Exception e) {
-			e.printStackTrace();
-			log = e.toString();
-		} finally {
-			logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "repo.sync",
-					RequestUtils.getIpAddress(request), CommonUtils.getDate(), log));
-		}
-		return log;
-	}
+            BufferedReader br = new BufferedReader(new InputStreamReader(ps.getInputStream()));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line).append("<br/>");
+            }
+            log = sb.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+            log = e.toString();
+        } finally {
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "repo.sync",
+                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), log));
+        }
+        return log;
+    }
 }

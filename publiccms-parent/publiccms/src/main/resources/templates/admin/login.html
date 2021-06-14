@@ -7,17 +7,17 @@
 </head>
 <body>
 <div class="login_body">
-	<div class="login_body_left"><img src="<#if siteAttribute.square_logo?has_content>${site.sitePath+siteAttribute.square_logo}<#else>${base}/resource/square_logo.png</#if>"/></div>
+    <div class="login_body_left"><img src="<#if siteAttribute.square_logo?has_content>${site.sitePath+siteAttribute.square_logo}<#else>${base}/resource/square_logo.png</#if>"/></div>
     <div class="login_form clearfix">
         <form action="${base+adminContextPath}/login" method="post" onsubmit="encode()">
             <p class="logo">${site.name}</p>
             <p>
-            	<i class="iconfont iconfont-user"></i>
-            	<input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${(user.name)!}"/>
+                <i class="iconfont iconfont-user"></i>
+                <input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${(user.name)!}"/>
             </p>
             <p>
-            	<i class="iconfont iconfont-key"></i>
-            	<input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/>
+                <i class="iconfont iconfont-key"></i>
+                <input type="password" name="password" placeholder="<@t.page 'password'/>" title="<@t.page 'password'/>"/>
             </p>
             <p>
                 <label><input type="checkbox" name="secureLogin" checked="checked"/><@t.page 'secure_login'/></label>
@@ -36,7 +36,7 @@
         </form>
         <p>
             <#list langs as k,v>
-		        <a<#if springMacroRequestContext.getMessage('page.lang')=k> class="current-lang"</#if> href="${base+adminContextPath}/changeLocale?lang=${k}&returnUrl=${(adminContextPath+'/')?url}">${v}</a>
+                <a<#if springMacroRequestContext.getMessage('page.lang')=k> class="current-lang"</#if> href="${base+adminContextPath}/changeLocale?lang=${k}&returnUrl=${(adminContextPath+'/')?url}">${v}</a>
             </#list>
         </p>
     </div>

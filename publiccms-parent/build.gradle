@@ -1,28 +1,33 @@
 buildscript {
-	repositories {
-		jcenter()
-		mavenCentral()
-	}
-	/**
-	dependencies {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "aliyun"
+            url "https://maven.aliyun.com/repository/public/"
+        }
+    }
+    /**
+    dependencies {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-gradle-plugin
         classpath("org.springframework.boot:spring-boot-gradle-plugin:2.1.3.RELEASE")
     }*/
 }
 
-apply plugin: 'idea'
-apply plugin: 'eclipse'
+plugins {
+    id 'idea'
+    id 'eclipse'
+}
 
-subprojects{
+subprojects {
     apply plugin: "java"
     apply plugin: 'idea'
     apply plugin: "eclipse-wtp"
-	
-	group = 'com.publiccms'
-	version = 'V4.0.202011.c'
-	
-	test.enabled = false
-	
+
+    group = 'com.publiccms'
+    version = 'V4.0.202011.c'
+    
+    test.enabled = false
+    
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
@@ -94,22 +99,21 @@ subprojects{
         // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
         junitVersion = "5.7.0"
     }
-	sourceCompatibility = 1.8
-	targetCompatibility = 1.8
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
 
     [compileJava]*.options*.encoding = "UTF-8"
     [compileTestJava]*.options*.encoding = "UTF-8"
 
     repositories {
-		mavenLocal()
-		// jcenter()
+        mavenLocal()
         mavenCentral()
     }
     eclipse {
-	    wtp {
-	        facet {
-	            facet name: "jst.java", version: "1.8"
-	        }
-	    }
-	}
+        wtp {
+            facet {
+                facet name: "jst.java", version: "1.8"
+            }
+        }
+    }
 }

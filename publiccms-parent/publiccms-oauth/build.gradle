@@ -1,6 +1,12 @@
+configurations {
+    instrumentedJars {
+        extendsFrom implementation
+    }
+}
+
 dependencies {
-	compile project(':publiccms-core')
-	compile(
-        "javax.servlet:javax.servlet-api:${servletVersion}"
-    )
+    implementation project(path:':publiccms-core', configuration: 'instrumentedJars')
+    implementation project(':publiccms-core')
+
+    runtimeOnly "javax.servlet:javax.servlet-api:${servletVersion}"
 }

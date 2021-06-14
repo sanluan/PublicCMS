@@ -1,18 +1,22 @@
-group = 'com.publiccms'
+configurations {
+    instrumentedJars {
+        extendsFrom implementation
+    }
+}
 
 dependencies {
-    compile project(':publiccms-common')
-    compile (
-        "com.zaxxer:HikariCP:${hikariCPVersion}",
-        "mysql:mysql-connector-java:${mysqlVersion}",
-        "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}",
-        "jakarta.annotation:jakarta.annotation-api:${annotationVersion}",
-        "javax.servlet:javax.servlet-api:${servletVersion}",
-        "org.apache.poi:poi-ooxml:${poiVersion}",
-        "com.drewnoakes:metadata-extractor:${extractorVersion}",
-        
-        "org.mybatis:mybatis-spring:${mybatisSpringVersion}",
-        "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}",
-        "com.github.pagehelper:pagehelper:${pageHelperVersion}"
-    )
+    implementation  project(path:':publiccms-common', configuration: 'instrumentedJars')
+    implementation  project(':publiccms-common')
+
+    implementation "com.zaxxer:HikariCP:${hikariCPVersion}"
+    implementation "mysql:mysql-connector-java:${mysqlVersion}"
+    implementation "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}"
+    implementation "jakarta.annotation:jakarta.annotation-api:${annotationVersion}"
+    implementation "javax.servlet:javax.servlet-api:${servletVersion}"
+    implementation "org.apache.poi:poi-ooxml:${poiVersion}"
+    implementation "com.drewnoakes:metadata-extractor:${extractorVersion}"
+
+    implementation "org.mybatis:mybatis-spring:${mybatisSpringVersion}"
+    implementation "org.mybatis.dynamic-sql:mybatis-dynamic-sql:${dynamicSqlVersion}"
+    implementation "com.github.pagehelper:pagehelper:${pageHelperVersion}"
 }

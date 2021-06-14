@@ -74,7 +74,7 @@ public class UeditorAdminController {
             ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
     public static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
             new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
-                    ".pptx", ".pdf", ".txt", ".md", ".xml" });
+                    ".pptx", ".pdf", ".txt", ".md", ".xml", ".ofd", ".psd" });
 
     /**
      * @param request

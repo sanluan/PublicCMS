@@ -66,11 +66,11 @@ public class LogVisitDayId  implements java.io.Serializable {
 
    public boolean equals(Object other) {
          if ( (this == other ) ) return true;
-		 if ( (other == null ) ) return false;
-		 if ( !(other instanceof LogVisitDayId) ) return false;
-		 LogVisitDayId castOther = ( LogVisitDayId ) other; 
+         if ( (other == null ) ) return false;
+         if ( !(other instanceof LogVisitDayId) ) return false;
+         LogVisitDayId castOther = ( LogVisitDayId ) other; 
          
-		 return (this.getSiteId()==castOther.getSiteId())
+         return (this.getSiteId()==castOther.getSiteId())
  && ( (this.getVisitDate()==castOther.getVisitDate()) || ( this.getVisitDate()!=null && castOther.getVisitDate()!=null && this.getVisitDate().equals(castOther.getVisitDate()) ) )
  && (this.getVisitHour()==castOther.getVisitHour());
    }

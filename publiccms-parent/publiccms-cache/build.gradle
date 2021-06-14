@@ -1,11 +1,15 @@
-group = 'com.publiccms'
+configurations {
+    instrumentedJars {
+        extendsFrom implementation
+    }
+}
 
 dependencies {
-    compile project(':publiccms-common')
+    implementation project(path:':publiccms-common', configuration: 'instrumentedJars')
+    implementation project(':publiccms-common')
+
     // https://mvnrepository.com/artifact/net.oschina.j2cache/j2cache-core
-    compile (
-        "net.oschina.j2cache:j2cache-core:2.8.2-release",
-        "redis.clients:jedis:${jedisVersion}",
-        "org.mybatis:mybatis:${mybatisVersion}"
-    )
+    implementation "net.oschina.j2cache:j2cache-core:2.8.2-release"
+    implementation "redis.clients:jedis:${jedisVersion}"
+    implementation "org.mybatis:mybatis:${mybatisVersion}"
 }
