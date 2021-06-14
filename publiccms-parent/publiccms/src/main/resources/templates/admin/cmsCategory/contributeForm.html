@@ -1,0 +1,24 @@
+<div class="pageFormContent" layoutH>
+    <ul class="tree treeFolder expand">
+        <ul>
+    <@_categoryModelList categoryId=categoryId>
+        <#list list as a>
+            <@t.merge 'modelIds' a.id.modelId!/>
+        </#list>
+        <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
+        <#list list as a>
+            <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
+        </#list>
+    </@_categoryModelList>
+    </ul>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>
+<script>
+$('ul li a',$.pdialog.getCurrent()).click(function(){
+    $.pdialog.closeCurrent();
+});
+</script>

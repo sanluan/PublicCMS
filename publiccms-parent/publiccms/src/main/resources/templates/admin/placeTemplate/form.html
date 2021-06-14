@@ -6,6 +6,11 @@
             fieldList=a.fieldList![]
             requiredFieldList=a.requiredFieldList![]
         />
+<#if !a.allowAnonymous>
+<#noparse>
+<#if user?has_content>
+</#noparse>
+</#if>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save">
 <#if a.allowAnonymous>
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
@@ -49,6 +54,13 @@
         </@_placeList>
     </#if>
 </#noparse>
+            <#if !a.allowAnonymous>
+<#noparse>
+<#else>
+please <a href="${site.dynamicPath}login.html">login</a>
+</#if>
+</#noparse>
+            </#if>
         <#else>
 <@t.message 'verify.custom.contribute'/>
     </#if>

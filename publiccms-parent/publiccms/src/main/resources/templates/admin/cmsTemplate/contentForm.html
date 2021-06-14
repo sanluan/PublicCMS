@@ -8,6 +8,7 @@
         />
 <#assign formContent>
     <#if category.allowContribute>
+<#noparse><#if user?has_content></#noparse>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>content/save">
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
     <input name="returnUrl" type="hidden" value="${site.dynamicPath}" />
@@ -34,6 +35,10 @@
     <@extendData 'modelExtendDataList' extendList extendValue 'customform'/>
     <p><input type="submit" value="<@t.page 'button.save'/>"/></p>
 </form>
+<#noparse>
+<#else>
+please <a href="${site.dynamicPath}login.html">login</a>
+</#if></#noparse>
     <#else>
 <@t.message 'verify.custom.contribute'/>
     </#if>
@@ -59,4 +64,9 @@
             <textarea cols="80" rows="20"><@html_escape>${(formContent)!}</@html_escape></textarea>
         </dd>
     </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
 </div>

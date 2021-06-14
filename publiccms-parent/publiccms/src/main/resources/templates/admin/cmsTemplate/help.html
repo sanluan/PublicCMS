@@ -204,18 +204,7 @@
                 <@_categoryList queryAll=true allowContribute=true pageSize=500>
                     <#list page.list as a>
                         <li>
-                            <a href="javascript:;" class="exclude-translate">${(a.name)!}</a>
-                            <ul>
-                        <@_categoryModelList categoryId=a.id>
-                            <#list list as a>
-                                <@t.merge 'modelIds' a.id.modelId!/>
-                            </#list>
-                            <@_model ids=t.modelIds!><#assign modelMap=map!/></@_model>
-                            <#list list as a>
-                                <li><a href="cmsTemplate/contentForm.html?categoryId=${a.id.categoryId}&modelId=${a.id.modelId}" class="exclude-translate" target="dialog" mask="true">${(modelMap[a.id.modelId].name)!}</a></li>
-                            </#list>
-                        </@_categoryModelList>
-                            </ul>
+                            <a href="cmsCategory/contributeForm.html?categoryId=${a.id}" class="exclude-translate" target="dialog" mask="true">${(a.name)!}</a>
                         </li>
                     </#list>
                 </@_categoryList>
@@ -233,9 +222,7 @@
                     </li>
                 <#elseif object.allowContribute>
                     <li>
-                        <a href="placeTemplate/form.html?path=${(path?url)!}" target="dialog" mask="true">
-                            ${(object.alias)!a.fileName}
-                        </a>
+                        <a href="placeTemplate/form.html?path=${(path?url)!}" target="dialog" mask="true">${(object.alias)!a.fileName}</a>
                     </li>
                 </#if>
             </@_placeMetadata>

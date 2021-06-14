@@ -23,7 +23,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
@@ -88,7 +88,15 @@
                 <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
                 <td class="exclude-translate">${(parentMap[a.parentId?string].name)!}</td>
                 <td><#if !a.onlyUrl>${a.pageSize!}${(a.containChild?then('['+t.pageMessage('category.contain_child')+']',''))!}</#if></td>
-                <td>${a.allowContribute?then(t.pageMessage('allow_contribute'),t.pageMessage('forbid_contribute'))}</td>
+                <td>
+                    <#if a.allowContribute>
+                        <#if authorizedMap['cmsCategory/contributeForm']>
+                    <a href="cmsCategory/contributeForm.html?categoryId=${a.id}" target="dialog" mask="true" title="<@t.page 'help.contribute_form'/>"><@t.page 'allow_contribute'/></a>
+                        <#else>
+                    <@t.page 'allow_contribute'/>
+                        </#if>
+                    </#if>
+                </td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.sort!}</td>
                 <td>

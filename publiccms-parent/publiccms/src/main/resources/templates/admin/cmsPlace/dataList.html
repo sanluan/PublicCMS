@@ -97,10 +97,8 @@
                     <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
                 <td>
-                    <#if authorizedMap['cmsContent/add']>
-                        <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="<@t.page 'place_data.edit'/>"><@t.page 'button.edit'/></a>|
-                        <a href="cmsPlace/add.html?copyId=${a.id}" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>|
-                    </#if>
+                    <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="<@t.page 'place_data.edit'/>"><@t.page 'button.edit'/></a>|
+                    <a href="cmsPlace/add.html?copyId=${a.id}" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>|
                     <#if 2=a.status>
                         <a href="cmsPlace/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>|
                     <#elseif 1=a.status>
