@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,7 +89,7 @@ public class EmailComponent implements SiteCache, Config {
      * 
      */
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
-
+    private final Log log = LogFactory.getLog(getClass());
     @Autowired
     private ConfigComponent configComponent;
 
@@ -252,6 +253,8 @@ public class EmailComponent implements SiteCache, Config {
                 messageHelper.setEncodeFilenames(true);
                 messageHelper.addAttachment(fileName, file);
             }
+            log.info(String.format("%s send a email to %s title [%s]", config.get(CONFIG_FROMADDRESS),
+                    StringUtils.join(toAddress, CommonConstants.COMMA), title));
             pool.execute(new SendTask(mailSender, message));
             return true;
         }
