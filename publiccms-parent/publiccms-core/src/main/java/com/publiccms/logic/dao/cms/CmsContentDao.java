@@ -41,7 +41,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  */
 @Repository
 public class CmsContentDao extends BaseDao<CmsContent> {
-    private static final String[] textFields = new String[] { "author", "editor", "description", "text" };
+    private static final String[] textFields = new String[] { "title", "author", "editor", "description", "text" };
     private static final String titleField = "title";
     private static final String descriptionField = "description";
     private static final String[] tagFields = new String[] { "tagIds" };
@@ -167,13 +167,17 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 if (phrase) {
                     b.must(t -> t.phrase().field(titleField).matching(text));
                 } else {
-                    if (ArrayUtils.contains(fields, titleField)) {
-                        b.must(t -> t.match().field(titleField).matching(text).boost(2.0f));
-                    }
-                    if (ArrayUtils.contains(fields, descriptionField)) {
-                        b.must(t -> t.match().field(titleField).matching(text).boost(1.5f));
-                    }
-                    b.must(t -> t.match().fields(ArrayUtils.removeElements(fields, titleField, "description")).matching(text));
+                    Consumer<? super BooleanPredicateClausesStep<?>> keywordFiledsContributor = c -> {
+                        if (ArrayUtils.contains(fields, titleField)) {
+                            c.should(t -> t.match().field(titleField).matching(text).boost(2.0f));
+                        }
+                        if (ArrayUtils.contains(fields, descriptionField)) {
+                            c.should(t -> t.match().field(titleField).matching(text).boost(1.5f));
+                        }
+                        c.should(t -> t.match().fields(ArrayUtils.removeElements(fields, titleField, "description"))
+                                .matching(text));
+                    };
+                    b.must(f -> f.bool(keywordFiledsContributor));
                 }
             }
             if (CommonUtils.notEmpty(tagIds)) {
