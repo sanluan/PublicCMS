@@ -196,7 +196,7 @@ public class ApplicationConfig {
         bean.setRootPath(getDirPath(CommonConstants.BLANK));
         bean.setMasterSiteIds(env.getProperty("cms.masterSiteIds"));
         bean.setDefaultSiteId(Short.parseShort(env.getProperty("cms.defaultSiteId")));
-        if ("hmmchinese".equalsIgnoreCase(env.getProperty("cms.tokenizerFactory"))) {
+        if ("hmmChinese".equalsIgnoreCase(env.getProperty("cms.tokenizerFactory"))) {
             String dictDirPath = getDirPath(AnalyzerDictUtils.DIR_DICT);
             File dictDir = new File(dictDirPath);
             if (dictDir.exists() && dictDir.isDirectory()) {

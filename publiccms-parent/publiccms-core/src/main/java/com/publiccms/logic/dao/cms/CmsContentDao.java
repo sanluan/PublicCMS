@@ -41,8 +41,9 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
  */
 @Repository
 public class CmsContentDao extends BaseDao<CmsContent> {
-    private static final String[] textFields = new String[] { "title", "author", "editor", "description", "text" };
+    private static final String[] textFields = new String[] { "author", "editor", "description", "text" };
     private static final String titleField = "title";
+    private static final String descriptionField = "description";
     private static final String[] tagFields = new String[] { "tagIds" };
     private static final String dictionaryField = "dictionaryValues";
     private static final String[] facetFields = new String[] { "categoryId", "modelId" };
@@ -166,7 +167,13 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 if (phrase) {
                     b.must(t -> t.phrase().field(titleField).matching(text));
                 } else {
-                    b.must(t -> t.match().fields(fields).matching(text));
+                    if (ArrayUtils.contains(fields, titleField)) {
+                        b.must(t -> t.match().field(titleField).matching(text).boost(2.0f));
+                    }
+                    if (ArrayUtils.contains(fields, descriptionField)) {
+                        b.must(t -> t.match().field(titleField).matching(text).boost(1.5f));
+                    }
+                    b.must(t -> t.match().fields(ArrayUtils.removeElements(fields, titleField, "description")).matching(text));
                 }
             }
             if (CommonUtils.notEmpty(tagIds)) {
