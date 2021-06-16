@@ -230,7 +230,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 /* ----------------------------------------------------------------- Pages */
 /* Layout */
 #leftside{position:absolute;top:0;left:0;height:100%;}
-#sidebar{position:absolute;left:0px;z-index:20;overflow:hidden;display:block;top:0;bottom:0;width:202px;}
+#sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:202px;}
 #sidebar #menu{overflow:auto;}
 a.toggleCollapse{text-decoration:none;}
 #sidebar_s{display:none;width:14px;line-height:45px;height:100%;position:absolute;cursor:pointer;top:0;left:0;z-index:21;text-align:center;}
