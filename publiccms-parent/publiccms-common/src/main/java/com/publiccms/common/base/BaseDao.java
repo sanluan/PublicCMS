@@ -1,6 +1,7 @@
 package com.publiccms.common.base;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
 import java.util.HashMap;
@@ -328,39 +329,26 @@ public abstract class BaseDao<E> {
 
     /**
      * @param optionsStep
-     * @param highlight
-     * @param query
-     * @param defaultFieldName
-     * @param highLighterFieldNames
-     * @param preTag
-     * @param postTag
+     * @param highLighterQuery
      * @param pageIndex
      * @param pageSize
      * @return page
      */
-    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, boolean highlight,
-            org.apache.lucene.search.Query query, String defaultFieldName, String[] highLighterFieldNames, String preTag,
-            String postTag, Integer pageIndex, Integer pageSize) {
-        return getPage(optionsStep, highlight, query, defaultFieldName, highLighterFieldNames, preTag, postTag, pageIndex,
-                pageSize, Integer.MAX_VALUE);
+    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+            Integer pageIndex, Integer pageSize) {
+        return getPage(optionsStep, highLighterQuery, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
      * @param optionsStep
      * @param highlight
-     * @param query
-     * @param defaultFieldName
-     * @param highLighterFieldNames
-     * @param preTag
-     * @param postTag
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
-    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, boolean highlight,
-            org.apache.lucene.search.Query query, String defaultFieldName, String[] highLighterFieldNames, String preTag,
-            String postTag, Integer pageIndex, Integer pageSize, Integer maxResults) {
+    protected PageHandler getPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, HighLighterQuery highLighterQuery,
+            Integer pageIndex, Integer pageSize, Integer maxResults) {
         PageHandler page = new PageHandler(pageIndex, pageSize);
         SearchResult<E> result;
         if (null == pageSize) {
@@ -380,12 +368,8 @@ public abstract class BaseDao<E> {
         }
 
         List<E> resultList = result.hits();
+        higtLighter(resultList, highLighterQuery);
         page.setList(resultList);
-
-        if (highlight && CommonUtils.notEmpty(highLighterFieldNames)) {
-            higtLighter(resultList, query, defaultFieldName, highLighterFieldNames, preTag, postTag);
-        }
-
         return page;
     }
 
@@ -393,41 +377,28 @@ public abstract class BaseDao<E> {
      * @param optionsStep
      * @param facetFields
      * @param facetCount
-     * @param highlight
-     * @param query
-     * @param defaultFieldName
-     * @param highLighterFieldNames
-     * @param preTag
-     * @param postTag
+     * @param highLighterQuery
      * @param pageIndex
      * @param pageSize
      * @return page
      */
     protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, String[] facetFields,
-            int facetCount, boolean highlight, org.apache.lucene.search.Query query, String defaultFieldName,
-            String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex, Integer pageSize) {
-        return getFacetPage(optionsStep, facetFields, facetCount, highlight, query, defaultFieldName, highLighterFieldNames,
-                preTag, postTag, pageIndex, pageSize, Integer.MAX_VALUE);
+            int facetCount, HighLighterQuery highLighterQuery, Integer pageIndex, Integer pageSize) {
+        return getFacetPage(optionsStep, facetFields, facetCount, highLighterQuery, pageIndex, pageSize, Integer.MAX_VALUE);
     }
 
     /**
      * @param optionsStep
      * @param facetFields
      * @param facetCount
-     * @param highlight
-     * @param defaultFieldName
-     * @param highLighterFieldNames
-     * @param preTag
-     * @param postTag
+     * @param highLighterQuery
      * @param pageIndex
      * @param pageSize
      * @param maxResults
      * @return results page
      */
     protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, String[] facetFields,
-            int facetCount, boolean highlight, org.apache.lucene.search.Query query, String defaultFieldName,
-            String[] highLighterFieldNames, String preTag, String postTag, Integer pageIndex, Integer pageSize,
-            Integer maxResults) {
+            int facetCount, HighLighterQuery highLighterQuery, Integer pageIndex, Integer pageSize, Integer maxResults) {
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize);
         SearchResult<E> result;
         if (null == pageSize) {
@@ -446,12 +417,8 @@ public abstract class BaseDao<E> {
             }
         }
         List<E> resultList = result.hits();
-
+        higtLighter(resultList, highLighterQuery);
         page.setList(resultList);
-
-        if (highlight && CommonUtils.notEmpty(highLighterFieldNames)) {
-            higtLighter(resultList, query, defaultFieldName, highLighterFieldNames, preTag, postTag);
-        }
 
         Map<String, AggregationKey<Map<String, Long>>> keyMap = new HashMap<>();
         for (String facetField : facetFields) {
@@ -470,17 +437,14 @@ public abstract class BaseDao<E> {
 
     /**
      * @param resultList
-     * @param fullTextQuery
-     * @param highLighterFieldNames
-     * @param preTag
-     * @param postTag
+     * @param highLighterQuery
      */
-    protected void higtLighter(List<E> resultList, org.apache.lucene.search.Query query, String defaultFieldName,
-            String[] highLighterFieldNames, String preTag, String postTag) {
-        try {
+    protected void higtLighter(List<E> resultList, HighLighterQuery highLighterQuery) {
+        if (highLighterQuery.isHighlight() && null != highLighterQuery.getQuery()
+                && CommonUtils.notEmpty(highLighterQuery.getFields())) {
             SimpleHTMLFormatter formatter;
-            if (CommonUtils.notEmpty(preTag) && CommonUtils.notEmpty(postTag)) {
-                formatter = new SimpleHTMLFormatter(preTag, postTag);
+            if (CommonUtils.notEmpty(highLighterQuery.getPreTag()) && CommonUtils.notEmpty(highLighterQuery.getPostTag())) {
+                formatter = new SimpleHTMLFormatter(highLighterQuery.getPreTag(), highLighterQuery.getPostTag());
             } else {
                 formatter = new SimpleHTMLFormatter();
             }
@@ -491,28 +455,35 @@ public abstract class BaseDao<E> {
             } else {
                 analyzer = new StandardAnalyzer();
             }
-            QueryScorer queryScorer = new QueryScorer(query, defaultFieldName);
+            QueryScorer queryScorer = new QueryScorer(highLighterQuery.getQuery(), highLighterQuery.getDefaultFieldName());
             Highlighter highlighter = new Highlighter(formatter, queryScorer);
             for (E e : resultList) {
-                for (String fieldName : highLighterFieldNames) {
-                    Object fieldValue = ReflectionUtils
-                            .invokeMethod(BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod(), e);
-                    String hightLightFieldValue = null;
-                    if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
-                        String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue), Constants.DEFAULT_CHARSET_NAME);
-                        hightLightFieldValue = highlighter.getBestFragment(analyzer, fieldName, safeValue);
-                        if (CommonUtils.notEmpty(hightLightFieldValue)) {
-                            ReflectionUtils.invokeMethod(
-                                    BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
-                                    hightLightFieldValue);
-                        } else {
-                            ReflectionUtils.invokeMethod(
-                                    BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e, safeValue);
+                for (String fieldName : highLighterQuery.getFields()) {
+                    try {
+                        Method method = BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getReadMethod();
+                        if (null != method) {
+                            Object fieldValue = ReflectionUtils.invokeMethod(method, e);
+                            String hightLightFieldValue = null;
+                            if (fieldValue instanceof String && CommonUtils.notEmpty(String.valueOf(fieldValue))) {
+                                String safeValue = HtmlUtils.htmlEscape(String.valueOf(fieldValue),
+                                        Constants.DEFAULT_CHARSET_NAME);
+                                hightLightFieldValue = highlighter.getBestFragment(analyzer, fieldName, safeValue);
+                                if (CommonUtils.notEmpty(hightLightFieldValue)) {
+                                    ReflectionUtils.invokeMethod(
+                                            BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
+                                            hightLightFieldValue);
+                                } else {
+                                    ReflectionUtils.invokeMethod(
+                                            BeanUtils.getPropertyDescriptor(getEntityClass(), fieldName).getWriteMethod(), e,
+                                            safeValue);
+                                }
+                            }
                         }
+                    } catch (Exception ignore) {
+                        ignore.printStackTrace();
                     }
                 }
             }
-        } catch (Exception ignore) {
         }
     }
 

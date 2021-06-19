@@ -14,7 +14,6 @@ import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.PhraseQuery;
-import org.apache.lucene.search.Query;
 import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
 import org.hibernate.search.engine.search.predicate.dsl.BooleanPredicateClausesStep;
@@ -26,6 +25,7 @@ import org.hibernate.search.util.common.data.Range;
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
+import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -42,6 +42,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @Repository
 public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String[] textFields = new String[] { "title", "author", "editor", "description", "text" };
+    private static final String[] highLighterTextFields = new String[] { "title", "description" };
     private static final String titleField = "title";
     private static final String descriptionField = "description";
     private static final String[] tagFields = new String[] { "tagIds" };
@@ -51,10 +52,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     private static final Date startDate = new Date(1);
 
     /**
+     * @param siteId
      * @param projection
      * @param phrase
-     * @param highlight
-     * @param siteId
+     * @param highLighterQuery
      * @param text
      * @param tagIds
      * @param dictionaryValues
@@ -64,17 +65,14 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
-     * @param preTag
-     * @param postTag
      * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler query(boolean projection, boolean phrase, boolean highlight, Short siteId, Integer[] categoryIds,
-            String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag,
-            String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
-            Integer pageSize) {
+    public PageHandler query(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
+            Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         if (CommonUtils.notEmpty(fields)) {
             for (String field : fields) {
                 if (!ArrayUtils.contains(textFields, field)) {
@@ -84,19 +82,17 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         } else {
             fields = textFields;
         }
-
-        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(projection, phrase, siteId, categoryIds,
+        initHighLighterQuery(highLighterQuery, phrase, text);
+        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(siteId, projection, phrase, categoryIds,
                 modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-
-        return getPage(optionsStep, highlight, higtLighterQuery(highlight, phrase, text, fields), titleField, fields, preTag,
-                postTag, pageIndex, pageSize);
+        return getPage(optionsStep, highLighterQuery, pageIndex, pageSize);
     }
 
     /**
+     * @param siteId
      * @param projection
      * @param phrase
-     * @param highlight
-     * @param siteId
+     * @param highLighterQuery
      * @param categoryIds
      * @param modelIds
      * @param text
@@ -106,17 +102,14 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
-     * @param preTag
-     * @param postTag
      * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public FacetPageHandler facetQuery(boolean projection, boolean phrase, boolean highlight, Short siteId, Integer[] categoryIds,
-            String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues, String preTag,
-            String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
-            Integer pageSize) {
+    public FacetPageHandler facetQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
+            Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         if (CommonUtils.notEmpty(fields)) {
             for (String field : fields) {
                 if (!ArrayUtils.contains(textFields, field)) {
@@ -126,18 +119,17 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         } else {
             fields = textFields;
         }
-
-        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(projection, phrase, siteId, categoryIds,
+        initHighLighterQuery(highLighterQuery, phrase, text);
+        SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(siteId, projection, phrase, categoryIds,
                 modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-
-        return getFacetPage(optionsStep, facetFields, 10, highlight, higtLighterQuery(highlight, phrase, text, fields),
-                titleField, fields, preTag, postTag, pageIndex, pageSize);
+        return getFacetPage(optionsStep, facetFields, 10, highLighterQuery, pageIndex, pageSize);
     }
 
-    private Query higtLighterQuery(boolean highlight, boolean phrase, String text, String[] fields) {
-        if (highlight && CommonUtils.notEmpty(text)) {
+    private void initHighLighterQuery(HighLighterQuery highLighterQuery, boolean phrase, String text) {
+        if (highLighterQuery.isHighlight() && CommonUtils.notEmpty(text)) {
+            highLighterQuery.setFields(highLighterTextFields);
             if (phrase) {
-                return new PhraseQuery(titleField, text);
+                highLighterQuery.setQuery(new PhraseQuery(titleField, text));
             } else {
                 Backend backend = getSearchBackend();
                 Analyzer analyzer;
@@ -146,18 +138,16 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 } else {
                     analyzer = new StandardAnalyzer();
                 }
-                MultiFieldQueryParser queryParser = new MultiFieldQueryParser(fields, analyzer);
+                MultiFieldQueryParser queryParser = new MultiFieldQueryParser(highLighterTextFields, analyzer);
                 try {
-                    return queryParser.parse(text);
+                    highLighterQuery.setQuery(queryParser.parse(text));
                 } catch (ParseException e) {
-                    return null;
                 }
             }
         }
-        return null;
     }
 
-    private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(boolean projection, boolean phrase, Short siteId,
+    private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(Short siteId, boolean projection, boolean phrase,
             Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField) {
 

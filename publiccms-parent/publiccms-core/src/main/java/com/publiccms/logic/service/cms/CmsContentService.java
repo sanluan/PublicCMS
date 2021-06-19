@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.BaseService;
+import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
@@ -89,10 +90,10 @@ public class CmsContentService extends BaseService<CmsContent> {
     public static final Integer[] STATUS_NORMAL_ARRAY = new Integer[] { STATUS_NORMAL };
 
     /**
+     * @param siteId
      * @param projection
      * @param phrase
-     * @param highlight
-     * @param siteId
+     * @param highLighterQuery
      * @param categoryId
      * @param containChild
      * @param categoryIds
@@ -101,8 +102,6 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param fields
      * @param tagIds
      * @param dictionaryValues
-     * @param preTag
-     * @param postTag
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
@@ -112,20 +111,20 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler query(boolean projection, boolean phrase, boolean highlight, Short siteId, String text, String[] fields,
-            Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds,
-            String[] dictionaryValues, String preTag, String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate,
-            String orderField, Integer pageIndex, Integer pageSize) {
-        return dao.query(projection, phrase, highlight, siteId, getCategoryIds(containChild, categoryId, categoryIds), modelIds,
-                text, fields, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, preTag, postTag,
+    public PageHandler query(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery, String text,
+            String[] fields, Long[] tagIds, Integer categoryId, Boolean containChild, Integer[] categoryIds, String[] modelIds,
+            String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
+            Integer pageIndex, Integer pageSize) {
+        return dao.query(siteId, projection, phrase, highLighterQuery, getCategoryIds(containChild, categoryId, categoryIds),
+                modelIds, text, fields, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues,
                 startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
+     * @param siteId
      * @param projection
      * @param phrase
-     * @param highlight
-     * @param siteId
+     * @param highLighterQuery
      * @param categoryIds
      * @param modelIds
      * @param text
@@ -135,21 +134,18 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param startPublishDate
      * @param endPublishDate
      * @param expiryDate
-     * @param preTag
-     * @param postTag
      * @param orderField
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
-    public FacetPageHandler facetQuery(boolean projection, boolean phrase, boolean highlight, Short siteId, String text,
-            String[] fields, Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues, String preTag,
-            String postTag, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex,
-            Integer pageSize) {
-        return dao.facetQuery(projection, phrase, highlight, siteId, categoryIds, modelIds, text, fields,
-                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, preTag, postTag, startPublishDate,
-                endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+    public FacetPageHandler facetQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
+            String text, String[] fields, Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues,
+            Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
+        return dao.facetQuery(siteId, projection, phrase, highLighterQuery, categoryIds, modelIds, text, fields,
+                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, startPublishDate, endPublishDate,
+                expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
@@ -315,7 +311,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param siteId
      * @param user
-     * @param id 
+     * @param id
      * @return result
      */
     public CmsContent check(short siteId, SysUser user, Serializable id) {
