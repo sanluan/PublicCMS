@@ -165,6 +165,10 @@ public class QueryHandler {
     }
 
     public <T> Query<T> initQuery(Query<T> query) {
+        return initQuery(query, true);
+    }
+
+    public <T> Query<T> initQuery(Query<T> query, boolean pageable) {
         if (null != map) {
             for (String key : map.keySet()) {
                 query.setParameter(key, map.get(key));
@@ -175,11 +179,13 @@ public class QueryHandler {
                 query.setParameterList(key, arrayMap.get(key));
             }
         }
-        if (null != firstResult) {
-            query.setFirstResult(firstResult);
-        }
-        if (null != maxResults) {
-            query.setMaxResults(maxResults);
+        if (pageable) {
+            if (null != firstResult) {
+                query.setFirstResult(firstResult);
+            }
+            if (null != maxResults) {
+                query.setMaxResults(maxResults);
+            }
         }
         if (null != cacheable) {
             query.setCacheable(cacheable);

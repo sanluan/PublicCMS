@@ -314,11 +314,11 @@ public abstract class BaseDao<E> {
             page.setList(list);
             page.setTotalCount(list.size());
         } else {
+            page.setTotalCount(countResult(queryHandler, countHql));
             if (0 != pageSize) {
                 queryHandler.setFirstResult(page.getFirstResult()).setMaxResults(page.getPageSize());
                 page.setList(getList(queryHandler));
             }
-            page.setTotalCount(countResult(queryHandler, countHql));
             if (null != maxResults && page.getTotalCount() > maxResults) {
                 page.setTotalCount(maxResults);
             }
@@ -526,7 +526,7 @@ public abstract class BaseDao<E> {
             countHql = queryHandler.getCountSql();
         }
         Query<?> query = getSession().createQuery(countHql);
-        List<?> list = queryHandler.initQuery(query).list();
+        List<?> list = queryHandler.initQuery(query, false).list();
         if (list.isEmpty()) {
             return 0;
         } else {
@@ -545,7 +545,7 @@ public abstract class BaseDao<E> {
      */
     protected long count(QueryHandler queryHandler) {
         Query<?> query = getSession().createQuery(queryHandler.getSql());
-        List<?> list = queryHandler.initQuery(query).list();
+        List<?> list = queryHandler.initQuery(query, false).list();
         if (list.isEmpty()) {
             return 0;
         } else {
