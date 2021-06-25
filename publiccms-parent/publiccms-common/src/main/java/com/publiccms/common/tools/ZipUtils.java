@@ -82,7 +82,7 @@ public class ZipUtils {
                         ZipEntry zipEntry = new ZipEntry(fullName + Constants.SEPARATOR);
                         out.putNextEntry(zipEntry);
                         compress(entry, out, fullName);
-                    } else {
+                    } else if (!entry.getFileName().endsWith(".zip")) {
                         compressFile(entry.toFile(), out, fullName);
                     }
                 }

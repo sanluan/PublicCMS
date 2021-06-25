@@ -5,8 +5,12 @@ import java.io.Serializable;
 // Generated 2015-5-8 16:50:23 by com.publiccms.common.source.SourceGenerator
 
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.lucene.analysis.Analyzer;
@@ -16,7 +20,9 @@ import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.search.PhraseQuery;
 import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
+import org.hibernate.search.engine.search.aggregation.AggregationKey;
 import org.hibernate.search.engine.search.predicate.dsl.BooleanPredicateClausesStep;
+import org.hibernate.search.engine.search.query.SearchResult;
 import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
 import org.hibernate.search.engine.search.query.dsl.SearchQuerySelectStep;
 import org.hibernate.search.mapper.orm.common.EntityReference;
@@ -47,7 +53,6 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     private static final String descriptionField = "description";
     private static final String[] tagFields = new String[] { "tagIds" };
     private static final String dictionaryField = "dictionaryValues";
-    private static final String[] facetFields = new String[] { "categoryId", "modelId" };
 
     private static final Date startDate = new Date(1);
 
@@ -122,7 +127,30 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         initHighLighterQuery(highLighterQuery, phrase, text);
         SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> optionsStep = getOptionsStep(siteId, projection, phrase, categoryIds,
                 modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField);
-        return getFacetPage(optionsStep, facetFields, 10, highLighterQuery, pageIndex, pageSize);
+
+        AggregationKey<Map<Integer, Long>> categoryIdKey = AggregationKey.of("categoryIdKey");
+        AggregationKey<Map<String, Long>> modelIdKey = AggregationKey.of("modelIdKey");
+
+        Function<SearchQueryOptionsStep<?, CmsContent, ?, ?, ?>, SearchQueryOptionsStep<?, CmsContent, ?, ?, ?>> facetFieldKeys = o -> {
+            o.aggregation(categoryIdKey, f -> f.terms().field("categoryId", Integer.class).orderByCountDescending()
+                    .minDocumentCount(1).maxTermCount(10));
+            o.aggregation(modelIdKey,
+                    f -> f.terms().field("modelId", String.class).orderByCountDescending().minDocumentCount(1).maxTermCount(10));
+            return o;
+        };
+
+        Function<SearchResult<CmsContent>, Map<String, Map<String, Long>>> facetFieldResult = r -> {
+            Map<Integer, Long> temp = r.aggregation(categoryIdKey);
+            Map<String, Long> value = new LinkedHashMap<>();
+            for (Entry<Integer, Long> entry : temp.entrySet()) {
+                value.put(entry.getKey().toString(), entry.getValue());
+            }
+            Map<String, Map<String, Long>> map = new LinkedHashMap<>();
+            map.put("categoryId", value);
+            map.put("modelId", r.aggregation(modelIdKey));
+            return map;
+        };
+        return getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, highLighterQuery, pageIndex, pageSize);
     }
 
     private void initHighLighterQuery(HighLighterQuery highLighterQuery, boolean phrase, String text) {

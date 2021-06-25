@@ -1,12 +1,18 @@
 package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.file.Paths;
 
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.tools.zip.ZipOutputStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,11 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
+import com.publiccms.common.tools.ZipUtils;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -163,6 +171,7 @@ public class CmsTemplateAdminController {
      * @param admin
      * @param files
      * @param path
+     * @param encoding
      * @param request
      * @param model
      * @return view name
@@ -170,7 +179,7 @@ public class CmsTemplateAdminController {
     @RequestMapping("doUpload")
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
-            HttpServletRequest request, ModelMap model) {
+            String encoding, HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -178,15 +187,22 @@ public class CmsTemplateAdminController {
             try {
                 for (MultipartFile file : files) {
                     String filePath = path + CommonConstants.SEPARATOR + file.getOriginalFilename();
-                    CmsFileUtils.upload(file, siteComponent.getWebTemplateFilePath(site, filePath));
-                    CmsPageMetadata metadata = new CmsPageMetadata();
-                    metadata.setUseDynamic(true);
-                    metadataComponent.updateTemplateMetadata(filePath, metadata);
-                    templateComponent.clearTemplateCache();
-                    cacheComponent.clearViewCache();
+                    String destFullFileName = siteComponent.getWebTemplateFilePath(site, filePath);
+                    CmsFileUtils.upload(file, destFullFileName);
+                    if (destFullFileName.endsWith(".zip") && CmsFileUtils.isFile(destFullFileName)) {
+                        ZipUtils.unzipHere(destFullFileName, encoding);
+                        CmsFileUtils.delete(destFullFileName);
+                        metadataComponent.clear();
+                    } else {
+                        CmsPageMetadata metadata = new CmsPageMetadata();
+                        metadata.setUseDynamic(true);
+                        metadataComponent.updateTemplateMetadata(filePath, metadata);
+                    }
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "upload.web.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), filePath));
                 }
+                templateComponent.clearTemplateCache();
+                cacheComponent.clearViewCache();
             } catch (IOException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
                 log.error(e.getMessage(), e);
@@ -194,6 +210,30 @@ public class CmsTemplateAdminController {
             }
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param request
+     * @param response
+     */
+    @RequestMapping("export")
+    @Csrf
+    public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
+        if (null != site.getParentId()) {
+            String filePath = siteComponent.getWebTemplateFilePath(site, CommonConstants.SEPARATOR);
+            try {
+                response.setHeader("content-disposition",
+                        "attachment;fileName=" + URLEncoder.encode(site.getName() + "_template.zip", "utf-8"));
+            } catch (UnsupportedEncodingException e1) {
+            }
+            try (ServletOutputStream outputStream = response.getOutputStream();
+                    ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);) {
+                zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+                ZipUtils.compress(Paths.get(filePath), zipOutputStream, Constants.BLANK);
+            } catch (IOException e) {
+            }
+        }
     }
 
     /**

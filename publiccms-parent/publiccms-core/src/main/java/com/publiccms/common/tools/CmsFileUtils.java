@@ -285,6 +285,22 @@ public class CmsFileUtils {
     }
 
     /**
+     * 移动文件或目录
+     *
+     * @param filePath
+     * @param backupFilePath
+     * @return whether to move successfully
+     */
+    public static boolean delete(String filePath) {
+        File file = new File(filePath);
+        if (CommonUtils.notEmpty(file)) {
+            FileUtils.deleteQuietly(file);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * 修改文件内容
      * 
      * @param filePath

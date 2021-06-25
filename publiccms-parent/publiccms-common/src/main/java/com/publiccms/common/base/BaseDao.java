@@ -4,12 +4,10 @@ import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.CompletionStage;
+import java.util.function.Function;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -24,7 +22,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.hibernate.search.backend.lucene.LuceneBackend;
 import org.hibernate.search.engine.backend.Backend;
-import org.hibernate.search.engine.search.aggregation.AggregationKey;
 import org.hibernate.search.engine.search.predicate.dsl.SearchPredicateFactory;
 import org.hibernate.search.engine.search.query.SearchResult;
 import org.hibernate.search.engine.search.query.dsl.SearchQueryOptionsStep;
@@ -51,12 +48,6 @@ import com.publiccms.common.tools.CommonUtils;
  */
 public abstract class BaseDao<E> {
     protected final Log log = LogFactory.getLog(getClass());
-    /**
-     * 分面名称搜索前缀
-     * 
-     * Aggregation key suffix
-     */
-    public final static String AGGREGATION_KEY_SUFFIX = "Key";
     /**
      * 倒序
      * 
@@ -375,16 +366,19 @@ public abstract class BaseDao<E> {
 
     /**
      * @param optionsStep
-     * @param facetFields
-     * @param facetCount
+     * @param facetFieldKeys
+     * @param facetFieldResult
      * @param highLighterQuery
      * @param pageIndex
      * @param pageSize
      * @return page
      */
-    protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, String[] facetFields,
-            int facetCount, HighLighterQuery highLighterQuery, Integer pageIndex, Integer pageSize) {
-        return getFacetPage(optionsStep, facetFields, facetCount, highLighterQuery, pageIndex, pageSize, Integer.MAX_VALUE);
+    protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
+            Function<SearchQueryOptionsStep<?, E, ?, ?, ?>, SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
+            Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
+            Integer pageIndex, Integer pageSize) {
+        return getFacetPage(optionsStep, facetFieldKeys, facetFieldResult, highLighterQuery, pageIndex, pageSize,
+                Integer.MAX_VALUE);
     }
 
     /**
@@ -397,9 +391,12 @@ public abstract class BaseDao<E> {
      * @param maxResults
      * @return results page
      */
-    protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep, String[] facetFields,
-            int facetCount, HighLighterQuery highLighterQuery, Integer pageIndex, Integer pageSize, Integer maxResults) {
+    protected FacetPageHandler getFacetPage(SearchQueryOptionsStep<?, E, ?, ?, ?> optionsStep,
+            Function<SearchQueryOptionsStep<?, E, ?, ?, ?>, SearchQueryOptionsStep<?, E, ?, ?, ?>> facetFieldKeys,
+            Function<SearchResult<E>, Map<String, Map<String, Long>>> facetFieldResult, HighLighterQuery highLighterQuery,
+            Integer pageIndex, Integer pageSize, Integer maxResults) {
         FacetPageHandler page = new FacetPageHandler(pageIndex, pageSize);
+        facetFieldKeys.apply(optionsStep);
         SearchResult<E> result;
         if (null == pageSize) {
             result = optionsStep.fetch(0, maxResults);
@@ -410,7 +407,6 @@ public abstract class BaseDao<E> {
             } else {
                 result = optionsStep.fetch(page.getFirstResult(), page.getPageSize());
             }
-
             page.setTotalCount(result.total().hitCount());
             if (null != maxResults && page.getTotalCount() > maxResults) {
                 page.setTotalCount(maxResults);
@@ -419,19 +415,7 @@ public abstract class BaseDao<E> {
         List<E> resultList = result.hits();
         higtLighter(resultList, highLighterQuery);
         page.setList(resultList);
-
-        Map<String, AggregationKey<Map<String, Long>>> keyMap = new HashMap<>();
-        for (String facetField : facetFields) {
-            AggregationKey<Map<String, Long>> key = AggregationKey.of(facetField + AGGREGATION_KEY_SUFFIX);
-            optionsStep.aggregation(key,
-                    f -> f.terms().field(facetField, String.class).orderByCountDescending().minDocumentCount(1).maxTermCount(10));
-            keyMap.put(facetField, key);
-        }
-
-        page.setFacetMap(new LinkedHashMap<>());
-        for (Entry<String, AggregationKey<Map<String, Long>>> entry : keyMap.entrySet()) {
-            page.getFacetMap().put(entry.getKey(), result.aggregation(entry.getValue()));
-        }
+        page.setFacetMap(facetFieldResult.apply(result));
         return page;
     }
 
