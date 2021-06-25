@@ -8,6 +8,6 @@ dependencies {
     implementation project(':publiccms-core')
 
     // https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java
-    implementation "com.alipay.sdk:alipay-sdk-java:4.10.124.ALL"
+    implementation "com.alipay.sdk:alipay-sdk-java:4.14.8.ALL"
     runtimeOnly "javax.servlet:javax.servlet-api:${servletVersion}"
 }
