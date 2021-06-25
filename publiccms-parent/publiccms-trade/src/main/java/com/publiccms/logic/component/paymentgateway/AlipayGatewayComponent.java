@@ -21,8 +21,8 @@ import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.publiccms.common.api.Config;
-import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradeOrderProcessor;
+import com.publiccms.common.base.AbstractPaymentGateway;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
@@ -34,7 +34,7 @@ import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
 import com.publiccms.logic.service.trade.TradeOrderService;
 
 @Component
-public class AlipayGatewayComponent implements PaymentGateway, Config {
+public class AlipayGatewayComponent extends AbstractPaymentGateway implements Config {
     /**
      * 
      */
@@ -146,7 +146,7 @@ public class AlipayGatewayComponent implements PaymentGateway, Config {
                 if ("10000".equalsIgnoreCase(alipay_response.getCode())) {
                     TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
                     if (null != tradeOrderProcessor && tradeOrderProcessor.refunded(order)) {
-                        service.processed(order.getSiteId(), order.getId());
+                        service.close(order.getSiteId(), order.getId());
                     }
                     return true;
                 } else {

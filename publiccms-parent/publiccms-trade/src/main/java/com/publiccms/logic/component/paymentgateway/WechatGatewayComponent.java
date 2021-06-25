@@ -15,8 +15,8 @@ import org.springframework.stereotype.Component;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConstants;
 import com.publiccms.common.api.Config;
-import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradeOrderProcessor;
+import com.publiccms.common.base.AbstractPaymentGateway;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
@@ -28,7 +28,7 @@ import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
 import com.publiccms.logic.service.trade.TradeOrderService;
 
 @Component
-public class WechatGatewayComponent implements PaymentGateway, Config {
+public class WechatGatewayComponent extends AbstractPaymentGateway implements Config {
     /**
      * 
      */
@@ -136,7 +136,7 @@ public class WechatGatewayComponent implements PaymentGateway, Config {
                         && WXPayConstants.SUCCESS.equalsIgnoreCase(result.get("result_code"))) {
                     TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
                     if (null != tradeOrderProcessor && tradeOrderProcessor.refunded(order)) {
-                        service.processed(order.getSiteId(), order.getId());
+                        service.close(order.getSiteId(), order.getId());
                     }
                     return true;
                 } else {

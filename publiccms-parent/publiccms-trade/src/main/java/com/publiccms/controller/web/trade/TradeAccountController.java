@@ -71,7 +71,7 @@ public class TradeAccountController {
                 SysUser user = ControllerUtils.getUserFromSession(session);
                 TradeOrder entity = new TradeOrder(site.getId(), user.getId(), change, ChargeProcessorComponent.GRADE_TYPE,
                         UUID.randomUUID().toString(), accountType, ip, TradeOrderService.STATUS_PENDING_PAY, false, now);
-                orderService.create(entity);
+                orderService.create(site.getId(), entity);
                 TradeAccountHistory history = new TradeAccountHistory(site.getId(), UUID.randomUUID().toString(), user.getId(),
                         user.getId(), change, BigDecimal.ZERO, BigDecimal.ZERO, TradeAccountHistoryService.STATUS_PEND, null,
                         now);

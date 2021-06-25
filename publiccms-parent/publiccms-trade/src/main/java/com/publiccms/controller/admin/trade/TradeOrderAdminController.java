@@ -21,6 +21,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradeRefund;
+import com.publiccms.logic.component.orderprocessor.ChargeProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.trade.TradeOrderService;
 import com.publiccms.logic.service.trade.TradeRefundService;
@@ -31,8 +32,27 @@ import com.publiccms.logic.service.trade.TradeRefundService;
  * 
  */
 @Controller
-@RequestMapping("tradeRefund")
-public class TradeRefundAdminController {
+@RequestMapping("tradeOrder")
+public class TradeOrderAdminController {
+
+    /**
+     * @param site
+     * @param admin
+     * @param id
+     * @param model
+     * @return operate result
+     */
+    @RequestMapping("process")
+    @Csrf
+    public String process(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, ModelMap model) {
+        TradeOrder entity = orderService.getEntity(id);
+        if (ControllerUtils.verifyNotEmpty("order", entity, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        chargeProcessorComponent.paid(entity);
+        orderService.processed(site.getId(), entity.getId());
+        return CommonConstants.TEMPLATE_DONE;
+    }
 
     /**
      * @param site
@@ -46,7 +66,7 @@ public class TradeRefundAdminController {
      */
     @RequestMapping("refund")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, BigDecimal refundAmount,
+    public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, BigDecimal refundAmount,
             String reply, HttpServletRequest request, ModelMap model) {
         TradeRefund entity = service.getEntity(id);
         if (ControllerUtils.verifyNotEmpty("refund", entity, model)) {
@@ -73,6 +93,8 @@ public class TradeRefundAdminController {
 
     @Autowired
     private PaymentGatewayComponent gatewayComponent;
+    @Autowired
+    private ChargeProcessorComponent chargeProcessorComponent;
     @Autowired
     private TradeRefundService service;
     @Autowired

@@ -7,33 +7,24 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.api.PaymentGateway;
-import com.publiccms.common.api.TradeOrderProcessor;
-import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.base.AbstractPaymentGateway;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.entities.trade.TradeOrder;
-import com.publiccms.entities.trade.TradeOrderHistory;
 import com.publiccms.entities.trade.TradeRefund;
-import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 import com.publiccms.logic.service.trade.TradeAccountService;
-import com.publiccms.logic.service.trade.TradeOrderHistoryService;
 import com.publiccms.logic.service.trade.TradeOrderService;
 
 @Component
-public class AccountGatewayComponent implements PaymentGateway {
+public class AccountGatewayComponent extends AbstractPaymentGateway {
     /**
      * 
      */
     @Autowired
     private TradeOrderService service;
     @Autowired
-    private TradeOrderHistoryService historyService;
-    @Autowired
     private TradeAccountService accountService;
-    @Autowired
-    private TradeOrderProcessorComponent tradeOrderProcessorComponent;
 
     @Override
     public String getAccountType() {
@@ -47,15 +38,7 @@ public class AccountGatewayComponent implements PaymentGateway {
                         order.getUserId(), TradeAccountHistoryService.STATUS_PAY, order.getAmount().negate(),
                         order.getDescription())) {
             if (service.paid(order.getSiteId(), order.getId(), order.getAccountSerialNumber())) {
-                TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
-                if (null != tradeOrderProcessor && tradeOrderProcessor.paid(order)) {
-                    service.processed(order.getSiteId(), order.getId());
-                    return true;
-                } else {
-                    TradeOrderHistory history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),
-                            TradeOrderHistoryService.OPERATE_PROCESS_ERROR);
-                    historyService.save(history);
-                }
+                return confirmPay(site, order, callbackUrl, response);
             } else {
                 accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(), order.getUserId(),
                         TradeAccountHistoryService.STATUS_REFUND, order.getAmount(), order.getDescription());
@@ -87,5 +70,4 @@ public class AccountGatewayComponent implements PaymentGateway {
     public boolean enable(short siteId) {
         return true;
     }
-
 }

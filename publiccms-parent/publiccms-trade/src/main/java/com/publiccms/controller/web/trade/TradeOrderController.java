@@ -27,7 +27,6 @@ import com.github.wxpay.sdk.WXPayUtil;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.PaymentGateway;
-import com.publiccms.common.api.TradeOrderProcessor;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -43,7 +42,6 @@ import com.publiccms.logic.component.paymentgateway.AlipayGatewayComponent;
 import com.publiccms.logic.component.paymentgateway.WechatConfig;
 import com.publiccms.logic.component.paymentgateway.WechatGatewayComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
-import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
 import com.publiccms.logic.service.trade.TradeOrderHistoryService;
 import com.publiccms.logic.service.trade.TradeOrderService;
 import com.publiccms.logic.service.trade.TradeRefundService;
@@ -86,13 +84,14 @@ public class TradeOrderController {
      * @param total_fee
      * @param trade_no
      * @param request
+     * @param response
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "notify/alipay")
     @ResponseBody
     public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String total_fee, String trade_no,
-            HttpServletRequest request) throws Exception {
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
@@ -108,14 +107,8 @@ public class TradeOrderController {
                         if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
                                 && order.getAmount().toString().equals(total_fee)) {
                             if (service.paid(site.getId(), order.getId(), trade_no)) {
-                                TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
-                                if (null != tradeOrderProcessor && tradeOrderProcessor.paid(order)) {
-                                    service.processed(order.getSiteId(), order.getId());
-                                } else {
-                                    history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),
-                                            TradeOrderHistoryService.OPERATE_PROCESS_ERROR);
-                                    historyService.save(history);
-                                }
+                                order = service.getEntity(order.getId());
+                                alipayGatewayComponent.confirmPay(site, order, null, response);
                             }
                         }
                         return "success";
@@ -132,13 +125,18 @@ public class TradeOrderController {
     /**
      * @param site
      * @param body
+     * @param response
      * @return
      * @throws Exception
      */
     @RequestMapping(value = "notify/wechat")
     @ResponseBody
-    public String notifyWechat(@RequestAttribute SysSite site, @RequestBody String body) throws Exception {
+    public String notifyWechat(@RequestAttribute SysSite site, @RequestBody String body, HttpServletResponse response)
+            throws Exception {
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
+        Map<String, String> resultMap = new HashMap<>();
+        resultMap.put("return_code", WXPayConstants.FAIL);
+        resultMap.put("return_msg", "OK");
         if (CommonUtils.notEmpty(config)) {
             WechatConfig wechatConfig = new WechatConfig(config.get(WechatGatewayComponent.CONFIG_APPID),
                     config.get(WechatGatewayComponent.CONFIG_MCHID), config.get(WechatGatewayComponent.CONFIG_KEY),
@@ -157,15 +155,10 @@ public class TradeOrderController {
                         TradeOrder order = service.getEntity(orderId);
                         if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
                                 && order.getAmount().toString().equals(result.get("total_fee"))) {
-                            if (service.paid(site.getId(), order.getId(), result.get("transaction_id"))) {
-                                TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
-                                if (null != tradeOrderProcessor && tradeOrderProcessor.paid(order)) {
-                                    service.processed(order.getSiteId(), order.getId());
-                                } else {
-                                    history = new TradeOrderHistory(order.getSiteId(), order.getId(), CommonUtils.getDate(),
-                                            TradeOrderHistoryService.OPERATE_PROCESS_ERROR);
-                                    historyService.save(history);
-                                }
+                            order = service.getEntity(orderId);
+                            if (wechatGatewayComponent.confirmPay(site, order, null, response)) {
+                                resultMap.put("return_code", WXPayConstants.SUCCESS);
+                                resultMap.put("return_msg", "OK");
                             }
                         }
                     }
@@ -173,10 +166,7 @@ public class TradeOrderController {
             } catch (Exception e) {
             }
         }
-        Map<String, String> response = new HashMap<>();
-        response.put("return_code", WXPayConstants.SUCCESS);
-        response.put("return_msg", "OK");
-        return WXPayUtil.mapToXml(response);
+        return WXPayUtil.mapToXml(resultMap);
     }
 
     /**
@@ -216,6 +206,10 @@ public class TradeOrderController {
     @Autowired
     private PaymentGatewayComponent gatewayComponent;
     @Autowired
+    private WechatGatewayComponent wechatGatewayComponent;
+    @Autowired
+    private AlipayGatewayComponent alipayGatewayComponent;
+    @Autowired
     protected ConfigComponent configComponent;
     @Autowired
     private TradeOrderService service;
@@ -223,7 +217,5 @@ public class TradeOrderController {
     private TradeRefundService refundService;
     @Autowired
     private TradeOrderHistoryService historyService;
-    @Autowired
-    private TradeOrderProcessorComponent tradeOrderProcessorComponent;
 
 }

@@ -40,6 +40,10 @@ public class TradeOrderService extends BaseService<TradeOrder> {
      * 
      */
     public static final int STATUS_REFUNDED = 3;
+    /**
+     * 
+     */
+    public static final int STATUS_CLOSE = 6;
 
     /**
      * 
@@ -66,8 +70,8 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean create(TradeOrder entity) {
-        if (null != entity) {
+    public boolean create(short siteId, TradeOrder entity) {
+        if (null != entity && siteId == entity.getSiteId()) {
             entity.setStatus(STATUS_PENDING_PAY);
             save(entity);
             TradeOrderHistory history = new TradeOrderHistory(entity.getSiteId(), entity.getId(), CommonUtils.getDate(),
@@ -148,6 +152,21 @@ public class TradeOrderService extends BaseService<TradeOrder> {
             Date now = CommonUtils.getDate();
             entity.setUpdateDate(now);
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_REFUND);
+            historyDao.save(history);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public boolean close(short siteId, long orderId) {
+        TradeOrder entity = getEntity(orderId);
+        if (null != entity && siteId == entity.getSiteId()
+                && (entity.getStatus() == STATUS_REFUNDED || entity.getStatus() == STATUS_PENDING_PAY)) {
+            entity.setStatus(STATUS_CLOSE);
+            Date now = CommonUtils.getDate();
+            entity.setUpdateDate(now);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_CLOSE);
             historyDao.save(history);
             return true;
         }

@@ -70,3 +70,4 @@ INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'zh', '仓库同步');
 
 -- 2021-06-14 --
 UPDATE `sys_module` SET `authorized_url` = 'cmsTemplate/save,cmsTemplate/chipLookup,cmsWebFile/lookup,placeTemplate/form,cmsTemplate/contentForm,cmsCategory/contributeForm,cmsTemplate/demo,cmsTemplate/help,cmsTemplate/upload,cmsTemplate/doUpload' WHERE `id` ='template_content';
+UPDATE `sys_module` SET `authorized_url` = 'tradeOrder/refund' WHERE `id` ='refund_refund';

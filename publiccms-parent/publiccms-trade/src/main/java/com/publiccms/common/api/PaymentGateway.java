@@ -19,5 +19,7 @@ public interface PaymentGateway extends Container<String> {
 
     boolean pay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response);
 
+    boolean confirmPay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response);
+
     boolean refund(SysSite site, TradeOrder order, TradeRefund refund);
 }

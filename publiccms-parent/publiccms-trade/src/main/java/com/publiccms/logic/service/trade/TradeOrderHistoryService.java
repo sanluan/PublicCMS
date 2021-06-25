@@ -51,6 +51,10 @@ public class TradeOrderHistoryService extends BaseService<TradeOrderHistory> {
     /**
      * 
      */
+    public static final String OPERATE_CLOSE = "close";
+    /**
+     * 
+     */
     public static final String OPERATE_CANNEL = "cannel";
 
     /**
