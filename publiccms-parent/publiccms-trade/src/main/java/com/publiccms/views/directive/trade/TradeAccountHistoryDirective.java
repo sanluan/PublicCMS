@@ -3,7 +3,6 @@ package com.publiccms.views.directive.trade;
 // Generated 2019-6-16 9:47:27 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,10 +35,7 @@ public class TradeAccountHistoryDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeAccountHistory> entityList = service.getEntitys(ids);
-                Map<String, TradeAccountHistory> map = new LinkedHashMap<>();
-                for (TradeAccountHistory entity : entityList) {
-                    map.put(String.valueOf(entity.getId()), entity);
-                }
+                Map<String, TradeAccountHistory> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null, null);
                 handler.put("map", map).render();
             }
         }

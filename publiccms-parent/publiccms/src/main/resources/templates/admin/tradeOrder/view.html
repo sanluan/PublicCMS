@@ -1,0 +1,88 @@
+<@_tradeProductOrder id=id><#assign a=object/></@_tradeProductOrder>
+<div class="pageFormContent" layoutH>
+    <dl class="nowrap">
+        <dt>内容标题:</dt>
+        <dd class="exclude-translate" >
+            <@_content id=a.contentId>
+            <div class="box">
+                <#if a.cover?has_content>
+                    <div class="thumbnail">
+                        <img src="${(a.cover)!}"/>
+                    </div>
+                </#if>
+                <a href="cmsContent/view.html?id=${object.id}" class="exclude-translate" target="dialog" rel="viewContent${object.id}">${(object.title)!}</a>
+            </div>
+            </@_content>
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt>产品标题:</dt>
+        <dd class="exclude-translate" >
+            <@_contentProduct id=a.productId>
+            <div class="box">
+                <#if a.cover?has_content>
+                    <div class="thumbnail">
+                        <img src="${(a.cover)!}"/>
+                    </div>
+                </#if>
+                ${(object.title)!}
+            </div>
+            </@_contentProduct>
+        </dd>
+    </dl>
+     <dl>
+        <dt>收货地址:</dt>
+        <dd class="exclude-translate" >${(a.address)!}</dd>
+    </dl>
+    <dl>
+        <dt>收件人:</dt>
+        <dd class="exclude-translate" >${(a.addressee)!}</dd>
+    </dl>
+    <dl>
+        <dt>电话:</dt>
+        <dd class="exclude-translate" >${(a.telephone)!}</dd>
+    </dl>
+    <dl>
+        <dt>IP:</dt>
+        <dd class="exclude-translate" >${(a.ip)!}</dd>
+    </dl>
+    <dl>
+        <dt>备注:</dt>
+        <dd class="exclude-translate" >${(a.remark)!}</dd>
+    </dl>
+    <dl>
+        <dt>订单状态:</dt>
+        <dd class="exclude-translate" >${(a.status)!}</dd>
+    </dl>
+    <dl>
+        <dt>是否处理:</dt>
+        <dd class="exclude-translate" >${(a.processed?c)!} / ${(a.processDate)!}</dd>
+    </dl>
+    <dl>
+        <dt>处理信息:</dt>
+        <dd class="exclude-translate" >${(a.processInfo)!}</dd>
+    </dl>
+    <dl>
+        <dt>更新日期:</dt>
+        <dd class="exclude-translate" >
+            ${(a.updateDate)!}
+        </dd>
+    </dl>
+    <dl>
+        <dt>创建日期:</dt>
+        <dd class="exclude-translate" >
+            ${(a.createDate)!}
+        </dd>
+    </dl>
+    <dl>
+        <dt>付款日期:</dt>
+        <dd>
+            ${(a.paymentDate)!}
+        </dd>
+    </dl>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

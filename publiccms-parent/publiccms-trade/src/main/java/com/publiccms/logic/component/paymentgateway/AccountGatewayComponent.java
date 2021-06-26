@@ -10,11 +10,11 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractPaymentGateway;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeAccountHistory;
-import com.publiccms.entities.trade.TradeOrder;
+import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 import com.publiccms.logic.service.trade.TradeAccountService;
-import com.publiccms.logic.service.trade.TradeOrderService;
+import com.publiccms.logic.service.trade.TradePaymentService;
 
 @Component
 public class AccountGatewayComponent extends AbstractPaymentGateway {
@@ -22,7 +22,7 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
      * 
      */
     @Autowired
-    private TradeOrderService service;
+    private TradePaymentService service;
     @Autowired
     private TradeAccountService accountService;
 
@@ -32,16 +32,17 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     }
 
     @Override
-    public boolean pay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response) {
-        if (null != order && order.getStatus() == TradeOrderService.STATUS_PENDING_PAY
-                && null != accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(),
-                        order.getUserId(), TradeAccountHistoryService.STATUS_PAY, order.getAmount().negate(),
-                        order.getDescription())) {
-            if (service.paid(order.getSiteId(), order.getId(), order.getAccountSerialNumber())) {
-                return confirmPay(site, order, callbackUrl, response);
+    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+        if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
+                && null != accountService.change(payment.getSiteId(), payment.getAccountSerialNumber(), payment.getUserId(),
+                        payment.getUserId(), TradeAccountHistoryService.STATUS_PAY, payment.getAmount().negate(),
+                        payment.getDescription())) {
+            if (service.paid(payment.getSiteId(), payment.getId(), payment.getAccountSerialNumber())) {
+                return confirmPay(site, payment, callbackUrl, response);
             } else {
-                accountService.change(order.getSiteId(), order.getAccountSerialNumber(), order.getUserId(), order.getUserId(),
-                        TradeAccountHistoryService.STATUS_REFUND, order.getAmount(), order.getDescription());
+                accountService.change(payment.getSiteId(), payment.getAccountSerialNumber(), payment.getUserId(),
+                        payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(),
+                        payment.getDescription());
             }
         }
         try {
@@ -52,13 +53,13 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     }
 
     @Override
-    public boolean refund(SysSite site, TradeOrder order, TradeRefund refund) {
-        if (null != order && service.refunded(order.getSiteId(), order.getId())) {
-            TradeAccountHistory history = accountService.change(order.getSiteId(), order.getAccountSerialNumber(),
-                    order.getUserId(), order.getUserId(), TradeAccountHistoryService.STATUS_REFUND, order.getAmount().negate(),
-                    order.getDescription());
+    public boolean refund(SysSite site, TradePayment payment, TradeRefund refund) {
+        if (null != payment && service.refunded(payment.getSiteId(), payment.getId())) {
+            TradeAccountHistory history = accountService.change(payment.getSiteId(), payment.getAccountSerialNumber(),
+                    payment.getUserId(), payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND,
+                    payment.getAmount().negate(), payment.getDescription());
             if (null == history) {
-                service.pendingRefund(order.getSiteId(), order.getId());
+                service.pendingRefund(payment.getSiteId(), payment.getId());
             } else {
                 return true;
             }

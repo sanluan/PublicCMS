@@ -51,7 +51,7 @@ public class LogVisitSessionDao extends BaseDao<LogVisitSession> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.lastVisitDate " + orderType);
+        queryHandler.order("bean.lastVisitDate ").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

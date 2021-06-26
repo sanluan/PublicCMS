@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.publiccms.entities.cms.CmsContentFile;
+import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.cms.CmsContentRelated;
 import com.publiccms.entities.cms.CmsTag;
 import com.publiccms.views.pojo.entities.ExtendData;
@@ -24,6 +25,7 @@ public class CmsContentParameters implements java.io.Serializable {
     private Set<Long> contentIds;
     private List<CmsContentFile> files;
     private List<CmsContentFile> images;
+    private List<CmsContentProduct> products;
     private List<ExtendData> modelExtendDataList;
     private List<ExtendData> categoryExtendDataList;
     private List<CmsTag> tags;
@@ -126,6 +128,20 @@ public class CmsContentParameters implements java.io.Serializable {
      */
     public void setImages(List<CmsContentFile> images) {
         this.images = images;
+    }
+
+    /**
+     * @return the products
+     */
+    public List<CmsContentProduct> getProducts() {
+        return products;
+    }
+
+    /**
+     * @param products the products to set
+     */
+    public void setProducts(List<CmsContentProduct> products) {
+        this.products = products;
     }
 
     /**

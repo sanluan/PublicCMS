@@ -2,6 +2,7 @@ package com.publiccms.common.handler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Iterator;
@@ -140,6 +141,12 @@ public class TemplateDirectiveHandler extends BaseHandler {
     public Double getDouble(String name) throws TemplateModelException {
         regristerParameter(PARAMETER_TYPE_DOUBLE, name);
         return TemplateModelUtils.converDouble(parameters.get(name));
+    }
+    
+    @Override
+    public BigDecimal getBigDecimal(String name) throws TemplateModelException {
+        regristerParameter(PARAMETER_TYPE_DOUBLE, name);
+        return TemplateModelUtils.converBigDecimal(parameters.get(name));
     }
 
     @Override

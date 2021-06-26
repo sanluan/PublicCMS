@@ -1,0 +1,67 @@
+<@_contentProductList title=title price=price orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label>价格:</label>
+                    <input type="text" name="price" value="${price!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContentProduct/add'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        <#if authorizedMap['cmsContentProduct/add']>
+            <li><a href="cmsContentProduct/add.html?id={sid}" target="navTab" rel="cmsContentProduct/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
+        </#if>
+        </ul>
+    </div>
+    <table class="table" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th>ID</th>
+                <th>内容</th>
+                <th>上传用户</th>
+                <th>封面</th>
+                <th>标题</th>
+                <th orderField="price" class="<#if orderField??&&'price'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">价格</th>
+                <th>最小购买数量</th>
+                <th>最大购买数量</th>
+                <th orderField="inventory" class="<#if orderField??&&'inventory'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">库存</th>
+                <th orderField="sales" class="<#if orderField??&&'sales'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">销量</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
+                <td>${a.id!}</td>
+                <td>${a.contentId!}</td>
+                <td>${a.userId!}</td>
+                <td>${a.cover!}</td>
+                <td>${a.title!}</td>
+                <td>${a.price!}</td>
+                <td>${a.minQuantity!}</td>
+                <td>${a.maxQuantity!}</td>
+                <td>${a.inventory!}</td>
+                <td>${a.sales!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_contentProductList>

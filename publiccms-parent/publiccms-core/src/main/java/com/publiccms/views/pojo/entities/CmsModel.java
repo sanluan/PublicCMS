@@ -26,6 +26,7 @@ public class CmsModel implements java.io.Serializable {
     private boolean onlyUrl;
     private boolean hasImages;
     private boolean hasFiles;
+    private boolean hasProducts;
     private boolean searchable;
     private List<String> fieldList;
     private List<String> requiredFieldList;
@@ -142,6 +143,20 @@ public class CmsModel implements java.io.Serializable {
      */
     public void setHasFiles(boolean hasFiles) {
         this.hasFiles = hasFiles;
+    }
+
+    /**
+     * @return the hasProducts
+     */
+    public boolean isHasProducts() {
+        return hasProducts;
+    }
+
+    /**
+     * @param hasProducts the hasProducts to set
+     */
+    public void setHasProducts(boolean hasProducts) {
+        this.hasProducts = hasProducts;
     }
 
     /**

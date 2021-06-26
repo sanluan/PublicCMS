@@ -49,7 +49,7 @@ public class SourceGenerator {
         // 生成某个包所有实体类的代码
         // sourceGenerator.generate(basePackage, "cms", overwrite);
         // 生成某个实体类的代码
-        sourceGenerator.generate(Class.forName("com.publiccms.entities.log.LogVisitDay"), basePackage, overwrite);
+        sourceGenerator.generate(Class.forName("com.publiccms.entities.trade.TradeOrderProduct"), basePackage, overwrite);
     }
 
     /**
@@ -99,7 +99,7 @@ public class SourceGenerator {
     /**
      * 
      */
-    public static final String TEMPLATE_BASE_PATH = WEB_BASE_PATH + "templates/";
+    public static final String TEMPLATE_BASE_PATH = WEB_BASE_PATH + "templates/admin/";
 
     /**
      * 生成所有实体类的代码

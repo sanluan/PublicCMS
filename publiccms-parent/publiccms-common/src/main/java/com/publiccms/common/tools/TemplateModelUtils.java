@@ -1,5 +1,6 @@
 package com.publiccms.common.tools;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 
@@ -196,6 +197,32 @@ public class TemplateModelUtils {
                 if (CommonUtils.notEmpty(s)) {
                     try {
                         return Double.parseDouble(s);
+                    } catch (NumberFormatException e) {
+                        return null;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param model
+     * @return bigDecimal value
+     * @throws TemplateModelException
+     */
+    public static BigDecimal converBigDecimal(TemplateModel model) throws TemplateModelException {
+        if (null != model) {
+            if (model instanceof TemplateSequenceModel) {
+                converBigDecimal(((TemplateSequenceModel) model).get(0));
+            }
+            if (model instanceof TemplateNumberModel) {
+                return new BigDecimal(((TemplateNumberModel) model).getAsNumber().doubleValue());
+            } else if (model instanceof TemplateScalarModel) {
+                String s = ((TemplateScalarModel) model).getAsString();
+                if (CommonUtils.notEmpty(s)) {
+                    try {
+                        return new BigDecimal(s);
                     } catch (NumberFormatException e) {
                         return null;
                     }

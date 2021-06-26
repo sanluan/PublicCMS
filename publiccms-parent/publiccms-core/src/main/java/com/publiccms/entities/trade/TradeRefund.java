@@ -32,7 +32,7 @@ public class TradeRefund implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "订单ID", condition = true)
-    private long orderId;
+    private long paymentId;
     @GeneratorColumn(title = "申请退款金额")
     private BigDecimal amount;
     @GeneratorColumn(title = "原因")
@@ -55,16 +55,16 @@ public class TradeRefund implements java.io.Serializable {
     public TradeRefund() {
     }
 
-    public TradeRefund(long orderId, BigDecimal amount, int status, Date createDate) {
-        this.orderId = orderId;
+    public TradeRefund(long paymentId, BigDecimal amount, int status, Date createDate) {
+        this.paymentId = paymentId;
         this.amount = amount;
         this.status = status;
         this.createDate = createDate;
     }
 
-    public TradeRefund(long orderId, BigDecimal amount, String reason, Date updateDate, Long refundUserId,
+    public TradeRefund(long paymentId, BigDecimal amount, String reason, Date updateDate, Long refundUserId,
             BigDecimal refundAmount, int status, String reply, Date createDate, Date processingDate) {
-        this.orderId = orderId;
+        this.paymentId = paymentId;
         this.amount = amount;
         this.reason = reason;
         this.updateDate = updateDate;
@@ -88,13 +88,13 @@ public class TradeRefund implements java.io.Serializable {
         this.id = id;
     }
 
-    @Column(name = "order_id", nullable = false)
-    public long getOrderId() {
-        return this.orderId;
+    @Column(name = "payment_id", nullable = false)
+    public long getPaymentId() {
+        return this.paymentId;
     }
 
-    public void setOrderId(long orderId) {
-        this.orderId = orderId;
+    public void setPaymentId(long paymentId) {
+        this.paymentId = paymentId;
     }
 
     @Column(name = "amount", nullable = false, precision = 10)

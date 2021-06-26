@@ -29,11 +29,11 @@
         <#list columnList as a><#if a.order>
             case "${a.name}" : queryHandler.order("bean.${a.name} " + orderType); break;
         </#if></#list>
-            default : queryHandler.order("bean.id " + orderType);
+            default : queryHandler.order("bean.id ").append(orderType);
         }
     <#else>
         <#list columnList as a><#if a.order>
-        queryHandler.order("bean.${a.name} " + orderType);
+        queryHandler.order("bean.${a.name} ").append(orderType);
         <#break/>
         </#if></#list>
     </#if>

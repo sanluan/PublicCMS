@@ -46,18 +46,18 @@ public class TradeRefundService extends BaseService<TradeRefund> {
 
     /**
      * 
-     * @param orderId
+     * @param paymentId
      * @param refundUserId
      * @param status
-     * @param orderType
+     * @param paymentType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long orderId, Long refundUserId, Integer status, String orderType, Integer pageIndex,
+    public PageHandler getPage(Long paymentId, Long refundUserId, Integer status, String paymentType, Integer pageIndex,
             Integer pageSize) {
-        return dao.getPage(orderId, refundUserId, status, orderType, pageIndex, pageSize);
+        return dao.getPage(paymentId, refundUserId, status, paymentType, pageIndex, pageSize);
     }
 
     /**
@@ -69,9 +69,10 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean updateAmound(long refundId, BigDecimal amount, String reason) {
         TradeRefund entity = getEntity(refundId);
-        if (null != entity && entity.getStatus() == STATUS_PENDING) {
+        if (null != entity && entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_REFUSE) {
             entity.setAmount(amount);
             entity.setReason(reason);
+            entity.setStatus(STATUS_PENDING);
             entity.setUpdateDate(CommonUtils.getDate());
             return true;
         }
@@ -107,7 +108,8 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean updateStatus(long refundId, Long refundUserId, int status) {
         TradeRefund entity = getEntity(refundId);
-        if (null != entity && entity.getStatus() == STATUS_PENDING) {
+        if (null != entity && entity.getStatus() != status && entity.getStatus() != STATUS_CANCELLED
+                && entity.getStatus() != STATUS_REFUNDED) {
             entity.setStatus(status);
             if (status == STATUS_REFUNDED || status == STATUS_FAIL) {
                 entity.setRefundUserId(refundUserId);

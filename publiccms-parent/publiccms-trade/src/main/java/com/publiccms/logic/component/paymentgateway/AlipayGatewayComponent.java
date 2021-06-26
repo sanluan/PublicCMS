@@ -21,17 +21,17 @@ import com.alipay.api.request.AlipayTradeRefundRequest;
 import com.alipay.api.request.AlipayTradeWapPayRequest;
 import com.alipay.api.response.AlipayTradeRefundResponse;
 import com.publiccms.common.api.Config;
-import com.publiccms.common.api.TradeOrderProcessor;
+import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.base.AbstractPaymentGateway;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.entities.trade.TradeOrder;
+import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
-import com.publiccms.logic.service.trade.TradeOrderService;
+import com.publiccms.logic.component.trade.PaymentProcessorComponent;
+import com.publiccms.logic.service.trade.TradePaymentService;
 
 @Component
 public class AlipayGatewayComponent extends AbstractPaymentGateway implements Config {
@@ -74,9 +74,9 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
-    private TradeOrderService service;
+    private TradePaymentService service;
     @Autowired
-    private TradeOrderProcessorComponent tradeOrderProcessorComponent;
+    private PaymentProcessorComponent tradePaymentProcessorComponent;
 
     /**
      * @param site
@@ -93,19 +93,19 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean pay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response) {
-        if (null != order) {
-            Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
+    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+        if (null != payment) {
+            Map<String, String> config = configComponent.getConfigData(payment.getSiteId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config)) {
                 AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
                         config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
                         config.get(CONFIG_ALIPAY_PUBLIC_KEY), AlipayConstants.SIGN_TYPE_RSA2);
                 AlipayTradeWapPayRequest alipay_request = new AlipayTradeWapPayRequest();
                 AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
-                model.setOutTradeNo(String.valueOf(order.getId()));
-                model.setSubject(order.getDescription());
-                model.setTotalAmount(order.getAmount().toString());
-                model.setBody(order.getDescription());
+                model.setOutTradeNo(String.valueOf(payment.getId()));
+                model.setSubject(payment.getDescription());
+                model.setTotalAmount(payment.getAmount().toString());
+                model.setBody(payment.getDescription());
                 model.setTimeoutExpress(config.get(CONFIG_TIMEOUT_EXPRESS));
                 model.setProductCode(config.get(CONFIG_PRODUCT_CODE));
                 alipay_request.setBizModel(model);
@@ -126,31 +126,31 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean refund(SysSite site, TradeOrder order, TradeRefund refund) {
-        Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
-        if (null != order && CommonUtils.notEmpty(config) && service.refunded(order.getSiteId(), order.getId())) {
+    public boolean refund(SysSite site, TradePayment payment, TradeRefund refund) {
+        Map<String, String> config = configComponent.getConfigData(payment.getSiteId(), CONFIG_CODE);
+        if (null != payment && CommonUtils.notEmpty(config) && service.refunded(payment.getSiteId(), payment.getId())) {
             AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
                     config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
                     config.get(CONFIG_ALIPAY_PUBLIC_KEY));
             AlipayTradeRefundRequest alipay_request = new AlipayTradeRefundRequest();
 
             AlipayTradeRefundModel model = new AlipayTradeRefundModel();
-            model.setOutTradeNo(String.valueOf(refund.getOrderId()));
-            model.setTradeNo(order.getAccountSerialNumber());
+            model.setOutTradeNo(String.valueOf(refund.getPaymentId()));
+            model.setTradeNo(payment.getAccountSerialNumber());
             model.setRefundAmount(refund.getRefundAmount().toString());
             model.setRefundReason(refund.getReason());
-            model.setOutRequestNo(String.valueOf(refund.getOrderId()));
+            model.setOutRequestNo(String.valueOf(refund.getPaymentId()));
             alipay_request.setBizModel(model);
             try {
                 AlipayTradeRefundResponse alipay_response = client.execute(alipay_request);
                 if ("10000".equalsIgnoreCase(alipay_response.getCode())) {
-                    TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
-                    if (null != tradeOrderProcessor && tradeOrderProcessor.refunded(order)) {
-                        service.close(order.getSiteId(), order.getId());
+                    TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent.get(payment.getTradeType());
+                    if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(payment)) {
+                        service.close(payment.getSiteId(), payment.getId());
                     }
                     return true;
                 } else {
-                    service.pendingRefund(order.getSiteId(), order.getId());
+                    service.pendingRefund(payment.getSiteId(), payment.getId());
                 }
             } catch (AlipayApiException e) {
             }

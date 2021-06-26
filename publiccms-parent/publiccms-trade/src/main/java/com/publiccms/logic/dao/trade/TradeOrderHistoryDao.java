@@ -13,7 +13,7 @@ import com.publiccms.entities.trade.TradeOrderHistory;
 
 /**
  *
- * TradeOrderHistoryDao
+ * TradePaymentHistoryDao
  * 
  */
 @Repository
@@ -23,7 +23,7 @@ public class TradeOrderHistoryDao extends BaseDao<TradeOrderHistory> {
      * 
      * @param siteId
      * @param orderId
-     *            * @param startCreateDate
+     * @param startCreateDate
      * @param endCreateDate
      * @param orderType
      * @param pageIndex
@@ -48,7 +48,7 @@ public class TradeOrderHistoryDao extends BaseDao<TradeOrderHistory> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.createDate " + orderType);
+        queryHandler.order("bean.createDate ").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

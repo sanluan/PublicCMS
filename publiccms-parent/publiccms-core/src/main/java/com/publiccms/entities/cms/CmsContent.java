@@ -86,6 +86,9 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "有附件列表", condition = true)
     @GenericField
     private boolean hasFiles;
+    @GeneratorColumn(title = "有产品列表", condition = true)
+    @GenericField
+    private boolean hasProducts;
     @GeneratorColumn(title = "有静态化")
     private boolean hasStatic;
     @GeneratorColumn(title = "地址")
@@ -137,8 +140,8 @@ public class CmsContent implements java.io.Serializable {
     }
 
     public CmsContent(short siteId, String title, long userId, int categoryId, String modelId, boolean copied, boolean onlyUrl,
-            boolean hasImages, boolean hasFiles, boolean hasStatic, int childs, int scores, int comments, int clicks,
-            Date publishDate, Date createDate, int sort, int status, boolean disabled) {
+            boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, int childs, int scores, int comments,
+            int clicks, Date publishDate, Date createDate, int sort, int status, boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
@@ -148,6 +151,7 @@ public class CmsContent implements java.io.Serializable {
         this.onlyUrl = onlyUrl;
         this.hasImages = hasImages;
         this.hasFiles = hasFiles;
+        this.hasProducts = hasProducts;
         this.hasStatic = hasStatic;
         this.childs = childs;
         this.scores = scores;
@@ -162,9 +166,10 @@ public class CmsContent implements java.io.Serializable {
 
     public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
             Long quoteContentId, boolean contribute, boolean copied, String author, String editor, boolean onlyUrl,
-            boolean hasImages, boolean hasFiles, boolean hasStatic, String url, String description, String tagIds,
-            String dictionaryValues, String cover, int childs, int scores, int comments, int clicks, Date publishDate,
-            Date expiryDate, Date checkDate, Date updateDate, Date createDate, int sort, int status, boolean disabled) {
+            boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, String url, String description,
+            String tagIds, String dictionaryValues, String cover, int childs, int scores, int comments, int clicks,
+            Date publishDate, Date expiryDate, Date checkDate, Date updateDate, Date createDate, int sort, int status,
+            boolean disabled) {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
@@ -180,6 +185,7 @@ public class CmsContent implements java.io.Serializable {
         this.onlyUrl = onlyUrl;
         this.hasImages = hasImages;
         this.hasFiles = hasFiles;
+        this.hasProducts = hasProducts;
         this.hasStatic = hasStatic;
         this.url = url;
         this.description = description;
@@ -345,6 +351,15 @@ public class CmsContent implements java.io.Serializable {
 
     public void setHasFiles(boolean hasFiles) {
         this.hasFiles = hasFiles;
+    }
+    
+    @Column(name = "has_products", nullable = false)
+    public boolean isHasProducts() {
+        return this.hasProducts;
+    }
+    
+    public void setHasProducts(boolean hasProducts) {
+        this.hasProducts = hasProducts;
     }
 
     @Column(name = "has_static", nullable = false)

@@ -27,13 +27,13 @@ public class TradeAccountHistoryDao extends BaseDao<TradeAccountHistory> {
      * @param status
      * @param startCreateDate
      * @param endCreateDate
-     * @param orderType
+     * @param paymentType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     public PageHandler getPage(Short siteId, Long accountId, Long userId, Integer status, Date startCreateDate,
-            Date endCreateDate, String orderType, Integer pageIndex, Integer pageSize) {
+            Date endCreateDate, String paymentType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from TradeAccountHistory bean");
         if (null != siteId) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -53,10 +53,10 @@ public class TradeAccountHistoryDao extends BaseDao<TradeAccountHistory> {
         if (null != endCreateDate) {
             queryHandler.condition("bean.createDate <= :endCreateDate").setParameter("endCreateDate", endCreateDate);
         }
-        if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
-            orderType = ORDERTYPE_DESC;
+        if (!ORDERTYPE_ASC.equalsIgnoreCase(paymentType)) {
+            paymentType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.createDate " + orderType);
+        queryHandler.order("bean.createDate ").append(paymentType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

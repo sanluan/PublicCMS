@@ -15,17 +15,17 @@ import org.springframework.stereotype.Component;
 import com.github.wxpay.sdk.WXPay;
 import com.github.wxpay.sdk.WXPayConstants;
 import com.publiccms.common.api.Config;
-import com.publiccms.common.api.TradeOrderProcessor;
+import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.base.AbstractPaymentGateway;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.entities.trade.TradeOrder;
+import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.trade.TradeOrderProcessorComponent;
-import com.publiccms.logic.service.trade.TradeOrderService;
+import com.publiccms.logic.component.trade.PaymentProcessorComponent;
+import com.publiccms.logic.service.trade.TradePaymentService;
 
 @Component
 public class WechatGatewayComponent extends AbstractPaymentGateway implements Config {
@@ -64,9 +64,9 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
-    private TradeOrderService service;
+    private TradePaymentService service;
     @Autowired
-    private TradeOrderProcessorComponent tradeOrderProcessorComponent;
+    private PaymentProcessorComponent tradePaymentProcessorComponent;
 
     /**
      * @param site
@@ -83,9 +83,9 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean pay(SysSite site, TradeOrder order, String callbackUrl, HttpServletResponse response) {
-        if (null != order) {
-            Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
+    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+        if (null != payment) {
+            Map<String, String> config = configComponent.getConfigData(payment.getSiteId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config)) {
                 WechatConfig wechatConfig = new WechatConfig(config.get(CONFIG_APPID), config.get(CONFIG_MCHID),
                         config.get(CONFIG_KEY), config.get(CONFIG_CERT));
@@ -94,11 +94,11 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 try {
                     WXPay wxpay = new WXPay(wechatConfig, config.get(CONFIG_NOTIFYURL), usesandbox);
                     Map<String, String> reqData = new HashMap<>();
-                    reqData.put("body", order.getDescription());
+                    reqData.put("body", payment.getDescription());
                     reqData.put("attach", site.getName());
-                    reqData.put("out_trade_no", String.valueOf(order.getId()));
-                    reqData.put("total_fee", String.valueOf((order.getAmount().multiply(new BigDecimal(100))).intValue()));
-                    reqData.put("spbill_create_ip", order.getIp());
+                    reqData.put("out_trade_no", String.valueOf(payment.getId()));
+                    reqData.put("total_fee", String.valueOf((payment.getAmount().multiply(new BigDecimal(100))).intValue()));
+                    reqData.put("spbill_create_ip", payment.getIp());
                     reqData.put("notify_url", config.get(CONFIG_NOTIFYURL));
                     reqData.put("trade_type", "MWEB");
                     reqData.put("scene_info", "{\"h5_info\": {\"type\":\"Wap\",\"wap_url\": \"" + site.getSitePath()
@@ -117,9 +117,9 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean refund(SysSite site, TradeOrder order, TradeRefund refund) {
-        Map<String, String> config = configComponent.getConfigData(order.getSiteId(), CONFIG_CODE);
-        if (null != order && CommonUtils.notEmpty(config) && service.refunded(order.getSiteId(), order.getId())) {
+    public boolean refund(SysSite site, TradePayment payment, TradeRefund refund) {
+        Map<String, String> config = configComponent.getConfigData(payment.getSiteId(), CONFIG_CODE);
+        if (null != payment && CommonUtils.notEmpty(config) && service.refunded(payment.getSiteId(), payment.getId())) {
             WechatConfig wechatConfig = new WechatConfig(config.get(CONFIG_APPID), config.get(CONFIG_MCHID),
                     config.get(CONFIG_KEY), config.get(CONFIG_CERT));
             boolean usesandbox = CommonUtils.notEmpty(config.get(CONFIG_USESANDBOX))
@@ -127,20 +127,20 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
             try {
                 WXPay wxpay = new WXPay(wechatConfig, config.get(CONFIG_NOTIFYURL), usesandbox);
                 Map<String, String> reqData = new HashMap<>();
-                reqData.put("out_trade_no", String.valueOf(order.getId()));
+                reqData.put("out_trade_no", String.valueOf(payment.getId()));
                 reqData.put("out_refund_no", String.valueOf(refund.getId()));
-                reqData.put("total_fee", String.valueOf((order.getAmount().multiply(new BigDecimal(100))).intValue()));
+                reqData.put("total_fee", String.valueOf((payment.getAmount().multiply(new BigDecimal(100))).intValue()));
                 reqData.put("refund_fee", String.valueOf((refund.getAmount().multiply(new BigDecimal(100))).intValue()));
                 Map<String, String> result = wxpay.refund(reqData);
                 if (WXPayConstants.SUCCESS.equalsIgnoreCase(result.get("return_code"))
                         && WXPayConstants.SUCCESS.equalsIgnoreCase(result.get("result_code"))) {
-                    TradeOrderProcessor tradeOrderProcessor = tradeOrderProcessorComponent.get(order.getTradeType());
-                    if (null != tradeOrderProcessor && tradeOrderProcessor.refunded(order)) {
-                        service.close(order.getSiteId(), order.getId());
+                    TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent.get(payment.getTradeType());
+                    if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(payment)) {
+                        service.close(payment.getSiteId(), payment.getId());
                     }
                     return true;
                 } else {
-                    service.pendingRefund(order.getSiteId(), order.getId());
+                    service.pendingRefund(payment.getSiteId(), payment.getId());
                 }
             } catch (Exception e) {
             }

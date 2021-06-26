@@ -2,6 +2,7 @@ package com.publiccms.common.handler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.Locale;
@@ -132,6 +133,20 @@ public class HttpParameterHandler extends BaseHandler {
         if (CommonUtils.notEmpty(result)) {
             try {
                 return Double.valueOf(result);
+            } catch (NumberFormatException e) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public BigDecimal getBigDecimal(String name) {
+        regristerParameter(PARAMETER_TYPE_BIGDECIMAL, name);
+        String result = getStringWithoutRegister(name);
+        if (CommonUtils.notEmpty(result)) {
+            try {
+                return new BigDecimal(result);
             } catch (NumberFormatException e) {
                 return null;
             }

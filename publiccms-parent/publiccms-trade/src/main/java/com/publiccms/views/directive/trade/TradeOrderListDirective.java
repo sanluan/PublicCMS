@@ -1,6 +1,6 @@
 package com.publiccms.views.directive.trade;
 
-// Generated 2019-6-15 18:52:24 by com.publiccms.common.generator.SourceGenerator
+// Generated 2021-6-26 20:16:25 by com.publiccms.common.generator.SourceGenerator
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,16 +21,10 @@ public class TradeOrderListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getString("tradeType"),
-                handler.getString("serialNumber"), handler.getString("accountType"), handler.getString("accountSerialNumber"),
-                handler.getInteger("status"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"),
-                handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+        PageHandler page = service.getPage(getSite(handler).getId(),handler.getLong("userId"), 
+                handler.getLong("paymentId"), handler.getBoolean("processed"), 
+                handler.getString("orderType"), handler.getInteger("pageIndex",1), handler.getInteger("pageSize",30));
         handler.put("page", page).render();
-    }
-
-    @Override
-    public boolean needAppToken() {
-        return true;
     }
 
     @Autowired

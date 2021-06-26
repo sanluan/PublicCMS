@@ -25,18 +25,19 @@ public class CommonUtils {
 
     /**
      * @param <T>
+     * @param <F>
      * @param list
      * @param keyMapper
      * @param consumer
      * @param filter
      * @return
      */
-    public static <T> Map<String, T> listToMap(List<T> list, Function<T, String> keyMapper, Consumer<T> consumer,
+    public static <T, F> Map<F, T> listToMap(List<T> list, Function<T, F> keyMapper, Consumer<T> consumer,
             Predicate<T> filter) {
         if (null != consumer) {
             list.forEach(consumer);
         }
-        Map<String, T> map;
+        Map<F, T> map;
         if (null == filter) {
             map = list.stream().collect(
                     Collectors.toMap(keyMapper, Function.identity(), Constants.defaultMegerFunction(), LinkedHashMap::new));

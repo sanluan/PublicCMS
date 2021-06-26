@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.entities.trade.TradeOrderHistory;
-import com.publiccms.logic.dao.trade.TradeOrderHistoryDao;
+import com.publiccms.logic.dao.trade.TradePaymentHistoryDao;
 
 /**
  *
@@ -31,19 +31,15 @@ public class TradeOrderHistoryService extends BaseService<TradeOrderHistory> {
     /**
      * 
      */
+    public static final String OPERATE_PAID = "paid";
+    /**
+     * 
+     */
     public static final String OPERATE_PROCESSED = "processed";
     /**
      * 
      */
-    public static final String OPERATE_PROCESS_ERROR = "processError";
-    /**
-     * 
-     */
-    public static final String OPERATE_NOTIFY = "notify";
-    /**
-     * 
-     */
-    public static final String OPERATE_PENDING_REFUND = "pendingRefund";
+    public static final String OPERATE_CANCELPAY = "cancelPay";
     /**
      * 
      */
@@ -52,10 +48,6 @@ public class TradeOrderHistoryService extends BaseService<TradeOrderHistory> {
      * 
      */
     public static final String OPERATE_CLOSE = "close";
-    /**
-     * 
-     */
-    public static final String OPERATE_CANNEL = "cannel";
 
     /**
      * 
@@ -75,6 +67,6 @@ public class TradeOrderHistoryService extends BaseService<TradeOrderHistory> {
     }
 
     @Autowired
-    private TradeOrderHistoryDao dao;
+    private TradePaymentHistoryDao dao;
 
 }

@@ -2,6 +2,7 @@ package com.publiccms.common.handler;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Locale;
 
@@ -125,6 +126,13 @@ public interface RenderHandler {
      * @throws Exception
      */
     Double getDouble(String name) throws Exception;
+    /**
+     * @param name
+     * 
+     * @return bigDecimal value
+     * @throws Exception
+     */
+    BigDecimal getBigDecimal(String name) throws Exception;
 
     /**
      * @param name

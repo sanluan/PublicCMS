@@ -72,6 +72,13 @@ public abstract class BaseHandler implements RenderHandler {
      */
     public static final String PARAMETER_TYPE_DOUBLE = "double";
     /**
+     * BigDecimal类型参数
+     * 
+     * BigDecimal type parameter
+     * 
+     */
+    public static final String PARAMETER_TYPE_BIGDECIMAL = "decimal";
+    /**
      * Boolean类型参数
      * 
      * Boolean type parameter

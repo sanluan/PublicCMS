@@ -20,19 +20,19 @@ public class TradeRefundDao extends BaseDao<TradeRefund> {
 
     /**
      * 
-     * @param orderId
+     * @param paymentId
      * @param refundUserId
      * @param status
-     * @param orderType
+     * @param paymentType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long orderId, Long refundUserId, Integer status, String orderType, Integer pageIndex,
+    public PageHandler getPage(Long paymentId, Long refundUserId, Integer status, String paymentType, Integer pageIndex,
             Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from TradeRefund bean");
-        if (CommonUtils.notEmpty(orderId)) {
-            queryHandler.condition("bean.orderId = :orderId").setParameter("orderId", orderId);
+        if (CommonUtils.notEmpty(paymentId)) {
+            queryHandler.condition("bean.paymentId = :paymentId").setParameter("paymentId", paymentId);
         }
         if (CommonUtils.notEmpty(refundUserId)) {
             queryHandler.condition("bean.refundUserId = :refundUserId").setParameter("refundUserId", refundUserId);
@@ -40,10 +40,10 @@ public class TradeRefundDao extends BaseDao<TradeRefund> {
         if (CommonUtils.notEmpty(status)) {
             queryHandler.condition("bean.status = :status").setParameter("status", status);
         }
-        if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
-            orderType = ORDERTYPE_DESC;
+        if (!ORDERTYPE_ASC.equalsIgnoreCase(paymentType)) {
+            paymentType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.createDate " + orderType);
+        queryHandler.order("bean.createDate ").append(paymentType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

@@ -21,8 +21,8 @@ public class TradeRefundListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getLong("orderId"), handler.getLong("refundUserId"),
-                handler.getInteger("status"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+        PageHandler page = service.getPage(handler.getLong("paymentId"), handler.getLong("refundUserId"),
+                handler.getInteger("status"), handler.getString("paymentType"), handler.getInteger("pageIndex", 1),
                 handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }

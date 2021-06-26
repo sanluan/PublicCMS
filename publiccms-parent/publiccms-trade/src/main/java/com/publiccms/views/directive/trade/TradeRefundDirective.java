@@ -3,7 +3,6 @@ package com.publiccms.views.directive.trade;
 // Generated 2019-6-15 20:08:45 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,10 +35,7 @@ public class TradeRefundDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeRefund> entityList = service.getEntitys(ids);
-                Map<String, TradeRefund> map = new LinkedHashMap<>();
-                for (TradeRefund entity : entityList) {
-                    map.put(String.valueOf(entity.getId()), entity);
-                }
+                Map<String, TradeRefund> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null, null);
                 handler.put("map", map).render();
             }
         }

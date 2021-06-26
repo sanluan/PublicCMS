@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
@@ -27,13 +28,13 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeAccountHistory;
-import com.publiccms.entities.trade.TradeOrder;
+import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
-import com.publiccms.logic.component.orderprocessor.ChargeProcessorComponent;
+import com.publiccms.logic.component.paymentprocessor.ChargeProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
-import com.publiccms.logic.service.trade.TradeOrderService;
+import com.publiccms.logic.service.trade.TradePaymentService;
 
 /**
  *
@@ -46,6 +47,7 @@ public class TradeAccountController {
 
     /**
      * @param site
+     * @param user
      * @param change
      * @param accountType
      * @param returnUrl
@@ -56,7 +58,7 @@ public class TradeAccountController {
      */
     @RequestMapping("recharge/{accountType}")
     @Csrf
-    public String recharge(@RequestAttribute SysSite site, BigDecimal change, @PathVariable("accountType") String accountType,
+    public String recharge(@RequestAttribute SysSite site, @SessionAttribute SysUser user, BigDecimal change, @PathVariable("accountType") String accountType,
             String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
@@ -68,16 +70,15 @@ public class TradeAccountController {
             if (1 == change.compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
                 Date now = CommonUtils.getDate();
-                SysUser user = ControllerUtils.getUserFromSession(session);
-                TradeOrder entity = new TradeOrder(site.getId(), user.getId(), change, ChargeProcessorComponent.GRADE_TYPE,
-                        UUID.randomUUID().toString(), accountType, ip, TradeOrderService.STATUS_PENDING_PAY, false, now);
-                orderService.create(site.getId(), entity);
+                TradePayment entity = new TradePayment(site.getId(), user.getId(), change, ChargeProcessorComponent.GRADE_TYPE,
+                        UUID.randomUUID().toString(), accountType, ip, TradePaymentService.STATUS_PENDING_PAY, false, now);
+                paymentService.create(site.getId(), entity);
                 TradeAccountHistory history = new TradeAccountHistory(site.getId(), UUID.randomUUID().toString(), user.getId(),
                         user.getId(), change, BigDecimal.ZERO, BigDecimal.ZERO, TradeAccountHistoryService.STATUS_PEND, null,
                         now);
                 historyService.save(history);
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradeOrder/pay/" + accountType
-                        + "?orderId=" + entity.getId() + "&returnUrl=" + returnUrl;
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay/" + accountType
+                        + "?paymentId=" + entity.getId() + "&returnUrl=" + returnUrl;
             }
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
@@ -88,7 +89,7 @@ public class TradeAccountController {
     @Autowired
     protected ConfigComponent configComponent;
     @Autowired
-    private TradeOrderService orderService;
+    private TradePaymentService paymentService;
     @Autowired
     private TradeAccountHistoryService historyService;
 }

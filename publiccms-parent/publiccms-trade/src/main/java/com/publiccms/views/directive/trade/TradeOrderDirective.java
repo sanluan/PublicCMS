@@ -1,20 +1,19 @@
 package com.publiccms.views.directive.trade;
 
-// Generated 2019-6-15 18:52:24 by com.publiccms.common.generator.SourceGenerator
+// Generated 2021-6-26 20:16:25 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.publiccms.common.base.AbstractTemplateDirective;
-import com.publiccms.common.handler.RenderHandler;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.logic.service.trade.TradeOrderService;
+import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -36,18 +35,10 @@ public class TradeOrderDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeOrder> entityList = service.getEntitys(ids);
-                Map<String, TradeOrder> map = new LinkedHashMap<>();
-                for (TradeOrder entity : entityList) {
-                    map.put(String.valueOf(entity.getId()), entity);
-                }
+                Map<String, TradeOrder> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null, null);
                 handler.put("map", map).render();
             }
         }
-    }
-
-    @Override
-    public boolean needAppToken() {
-        return true;
     }
 
     @Autowired

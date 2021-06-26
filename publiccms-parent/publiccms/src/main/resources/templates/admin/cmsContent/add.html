@@ -234,6 +234,13 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                 </fieldset>
                 </#if>
             </#if>
+            <#if model.hasProducts>
+                <#include "../include_page/contentProducts.html"/>
+                <fieldset>
+                    <legend>产品列表</legend>
+                    <@contentProducts id!copyId copy/>
+                </fieldset>
+            </#if>
         </#if>
             </div>
             <div class="pageFormContent" layoutH>
