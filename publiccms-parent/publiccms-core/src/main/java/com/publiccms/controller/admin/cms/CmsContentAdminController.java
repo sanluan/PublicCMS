@@ -208,6 +208,7 @@ public class CmsContentAdminController {
             CmsContentAttribute attribute, boolean base64, Date now) {
         entity.setHasFiles(cmsModel.isHasFiles());
         entity.setHasImages(cmsModel.isHasImages());
+        entity.setHasProducts(cmsModel.isHasProducts());
         entity.setOnlyUrl(cmsModel.isOnlyUrl());
         if ((null == checked || !checked) && null != draft && draft) {
             entity.setStatus(CmsContentService.STATUS_DRAFT);

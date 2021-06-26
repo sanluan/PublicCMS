@@ -47,11 +47,11 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     /**
      * 
      */
-    public static final int STATUS_REFUNDED = 3;
+    public static final int STATUS_CLOSE = 4;
     /**
      * 
      */
-    public static final int STATUS_CLOSE = 4;
+    public static final int STATUS_REFUNDED = 5;
 
     /**
      * @param siteId
@@ -75,11 +75,15 @@ public class TradeOrderService extends BaseService<TradeOrder> {
             entity.setId(null);
             entity.setSiteId(siteId);
             entity.setUserId(userId);
-            entity.setCreateDate(null);
             entity.setProcessed(false);
             entity.setProcessInfo(null);
             entity.setAmount(BigDecimal.ZERO);
             entity.setStatus(STATUS_PENDING);
+            entity.setPaymentDate(null);
+            entity.setPaymentId(null);
+            entity.setProcessUserId(null);
+            entity.setCreateDate(null);
+            entity.setUpdateDate(null);
             entity.setIp(ip);
             save(entity);
             TradeOrderHistory history = new TradeOrderHistory(entity.getSiteId(), entity.getId(), CommonUtils.getDate(),
@@ -141,10 +145,12 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean processed(short siteId, long orderId) {
+    public boolean processed(short siteId, long orderId, long userId, String processInfo) {
         TradeOrder entity = getEntity(orderId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
             entity.setProcessed(true);
+            entity.setProcessUserId(userId);
+            entity.setProcessInfo(processInfo);
             Date now = CommonUtils.getDate();
             entity.setProcessDate(now);
             entity.setUpdateDate(now);

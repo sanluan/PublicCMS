@@ -58,8 +58,9 @@ public class TradeAccountController {
      */
     @RequestMapping("recharge/{accountType}")
     @Csrf
-    public String recharge(@RequestAttribute SysSite site, @SessionAttribute SysUser user, BigDecimal change, @PathVariable("accountType") String accountType,
-            String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
+    public String recharge(@RequestAttribute SysSite site, @SessionAttribute SysUser user, BigDecimal change,
+            @PathVariable("accountType") String accountType, String returnUrl, HttpServletRequest request, HttpSession session,
+            ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
@@ -77,8 +78,8 @@ public class TradeAccountController {
                         user.getId(), change, BigDecimal.ZERO, BigDecimal.ZERO, TradeAccountHistoryService.STATUS_PEND, null,
                         now);
                 historyService.save(history);
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay/" + accountType
-                        + "?paymentId=" + entity.getId() + "&returnUrl=" + returnUrl;
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="
+                        + entity.getId() + "&returnUrl=" + returnUrl;
             }
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

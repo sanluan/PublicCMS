@@ -321,6 +321,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (null != queryEntitry.getHasFiles()) {
             queryHandler.condition("bean.hasFiles = :hasFiles").setParameter("hasFiles", queryEntitry.getHasFiles());
         }
+        if (null != queryEntitry.getHasProducts()) {
+            queryHandler.condition("bean.hasProducts = :hasProducts").setParameter("hasProducts", queryEntitry.getHasProducts());
+        }
         if (null != queryEntitry.getHasCover()) {
             if (queryEntitry.getHasCover()) {
                 queryHandler.condition("bean.cover is not null");

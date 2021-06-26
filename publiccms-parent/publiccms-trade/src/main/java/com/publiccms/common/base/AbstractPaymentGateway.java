@@ -1,7 +1,5 @@
 package com.publiccms.common.base;
 
-import java.io.IOException;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,21 +23,15 @@ public abstract class AbstractPaymentGateway implements PaymentGateway {
     private PaymentProcessorComponent paymentProcessorComponent;
 
     @Override
-    public boolean confirmPay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean confirmPay(SysSite site, TradePayment payment, HttpServletResponse response) {
         TradePaymentProcessor paymentProcessor = paymentProcessorComponent.get(payment.getTradeType());
         if (null != paymentProcessor && paymentProcessor.paid(payment)) {
-            service.processed(site.getId(), payment.getId());
+            service.processed(site.getId(), payment.getId(), payment.getUserId());
             return true;
         } else {
             TradePaymentHistory history = new TradePaymentHistory(payment.getSiteId(), payment.getId(), CommonUtils.getDate(),
                     TradePaymentHistoryService.OPERATE_PROCESS_ERROR);
             historyService.save(history);
-        }
-        if (null != callbackUrl) {
-            try {
-                response.sendRedirect(callbackUrl);
-            } catch (IOException e) {
-            }
         }
         return false;
     }

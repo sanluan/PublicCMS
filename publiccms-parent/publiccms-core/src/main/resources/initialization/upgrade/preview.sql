@@ -111,7 +111,7 @@ ALTER TABLE `trade_payment`
   ADD INDEX `trade_payment_site_id`(`site_id`, `user_id`, `status`) ,
   ADD INDEX `trade_payment_trade_type`(`trade_type`, `serial_number`) ,
   ADD INDEX `trade_payment_create_date`(`create_date`);
-ALTER TABLE `publiccms`.`trade_payment_history` 
+ALTER TABLE `trade_payment_history` 
   DROP INDEX `trade_order_history_site_id`,
   DROP INDEX `trade_order_history_create_date`,
   ADD INDEX `trade_payment_history_site_id`(`site_id`, `payment_id`, `operate`),
@@ -127,7 +127,7 @@ CREATE TABLE `trade_order` (
   `telephone` varchar(100) DEFAULT NULL COMMENT '电话',
   `ip` varchar(130) NOT NULL COMMENT 'IP地址',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  `status` int(11) NOT NULL COMMENT '状态:0待确认,1已确认,2无效订单,3已退款,4已关闭',
+  `status` int(11) NOT NULL COMMENT '状态:0待确认,1已确认,2无效订单,3已付款,4已关闭,5已退款',
   `processed` tinyint(1) NOT NULL COMMENT '已处理',
   `process_info` varchar(255) DEFAULT NULL COMMENT '处理信息',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
@@ -167,3 +167,7 @@ ALTER TABLE `cms_content`
 	ADD COLUMN `has_products` tinyint(1) NOT NULL COMMENT '拥有产品列表' AFTER `has_files`,
 	DROP INDEX `cms_content_only_url`,
 	ADD INDEX `cms_content_only_url`(`only_url`, `has_images`, `has_files`, `has_products`, `user_id`) ;
+ALTER TABLE `trade_payment` 
+    ADD COLUMN `process_user_id` bigint(20) NULL COMMENT '处理用户ID' AFTER `processed`;
+ALTER TABLE `trade_order` 
+    ADD COLUMN `process_user_id` bigint(20) NULL COMMENT '处理用户ID' AFTER `processed`;

@@ -55,6 +55,8 @@ public class TradeOrder implements java.io.Serializable {
     private int status;
     @GeneratorColumn(title = "是否处理", condition = true)
     private boolean processed;
+    @GeneratorColumn(title = "处理用户ID")
+    private Long processUserId;
     @GeneratorColumn(title = "处理信息")
     private String processInfo;
     @GeneratorColumn(title = "更新日期")
@@ -80,8 +82,8 @@ public class TradeOrder implements java.io.Serializable {
     }
 
     public TradeOrder(short siteId, long userId, BigDecimal amount, Long paymentId, String address, String addressee,
-            String telephone, String ip, String remark, int status, boolean processed, String processInfo, Date updateDate,
-            Date createDate, Date processDate, Date paymentDate) {
+            String telephone, String ip, String remark, int status, boolean processed, long processUserId, String processInfo,
+            Date updateDate, Date createDate, Date processDate, Date paymentDate) {
         this.siteId = siteId;
         this.userId = userId;
         this.amount = amount;
@@ -93,6 +95,7 @@ public class TradeOrder implements java.io.Serializable {
         this.remark = remark;
         this.status = status;
         this.processed = processed;
+        this.processUserId = processUserId;
         this.processInfo = processInfo;
         this.updateDate = updateDate;
         this.createDate = createDate;
@@ -209,6 +212,15 @@ public class TradeOrder implements java.io.Serializable {
 
     public void setProcessed(boolean processed) {
         this.processed = processed;
+    }
+
+    @Column(name = "process_user_id")
+    public Long getProcessUserId() {
+        return this.processUserId;
+    }
+
+    public void setProcessUserId(Long processUserId) {
+        this.processUserId = processUserId;
     }
 
     @Column(name = "process_info")

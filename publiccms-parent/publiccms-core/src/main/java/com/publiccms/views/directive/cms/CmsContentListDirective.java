@@ -57,6 +57,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setOnlyUrl(handler.getBoolean("onlyUrl"));
         queryEntity.setHasImages(handler.getBoolean("hasImages"));
         queryEntity.setHasFiles(handler.getBoolean("hasFiles"));
+        queryEntity.setHasProducts(handler.getBoolean("hasProducts"));
         queryEntity.setHasCover(handler.getBoolean("hasCover"));
         queryEntity.setUserId(handler.getLong("userId"));
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));

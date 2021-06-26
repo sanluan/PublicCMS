@@ -1,13 +1,13 @@
 <#macro contentProducts contentId='' copy=false>
-<table class="list nowrap itemDetail products" addButton="<@t.page 'button.new_line'/>"<#if image> batchUploadUrl="common/batchUpload.html?field=cover&fileTypes=image"</#if> width="100%">
+<table class="list nowrap itemDetail products" addButton="<@t.page 'button.new_line'/>" batchUploadUrl="common/batchUpload.html?field=cover&fileTypes=image" width="100%">
     <thead>
         <tr>
-            <th type="attach" name="${name}[#index#].cover" size="50" lookupGroup="${name}[#index#]" lookupUrl="common/upload.html?field=cover&fileTypes=image"><@t.page 'cover'/></th>
-            <th type="text" name="${name}[#index#].title" fieldAttrs="{'maxlength':100}"><@t.page 'title'/></th>
-            <th type="text" name="${name}[#index#].price" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}">价格</th>
-            <th type="text" name="${name}[#index#].minQuantity" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}">最低数量</th>
-            <th type="text" name="${name}[#index#].maxQuantity" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}">最高数量</th>
-            <th type="text" name="${name}[#index#].inventory" fieldClass="required digits" fieldAttrs="{'maxlength':20}" size="10">库存</th>
+            <th type="attach" name="products[#index#].cover" size="50" lookupGroup="products[#index#]" lookupUrl="common/upload.html?field=cover&fileTypes=image"><@t.page 'cover'/></th>
+            <th type="text" name="products[#index#].title" fieldClass="required"  size="50" fieldAttrs="{'maxlength':100}"><@t.page 'title'/></th>
+            <th type="text" name="products[#index#].price" fieldClass="required number" size="10" fieldAttrs="{'maxlength':20}">价格</th>
+            <th type="text" name="products[#index#].inventory" fieldClass="required digits" fieldAttrs="{'maxlength':20,min:1}" size="10">库存</th>
+            <th type="text" name="products[#index#].minQuantity" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}">最低数量</th>
+            <th type="text" name="products[#index#].maxQuantity" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}">最高数量</th>
             <th type="del" width="60"><@t.page 'operate'/></th>
         </tr>
     </thead>
@@ -17,24 +17,24 @@
         <#list page.list as product>
             <tr>
                 <td>
-                    <#if !copy><input type="hidden" name="${name}[${product?index}].id" value="${product.id}"/></#if>
-                    <input type="text" name="${name}[${product?index}].cover" value="${(product.cover)!}" size="50"/>
-                    <a class="btnAttach" lookupGroup="${name}[${product?index}]" href="common/upload.html?field=cover&productTypes=image" width="1000" height="600"><@t.page 'cover'/></a>
+                    <#if !copy><input type="hidden" name="products[${product?index}].id" value="${product.id}"/></#if>
+                    <input type="text" name="products[${product?index}].cover" value="${(product.cover)!}" size="50"/>
+                    <a class="btnAttach" lookupGroup="products[${product?index}]" href="common/upload.html?field=cover&productTypes=image" width="1000" height="600"><@t.page 'cover'/></a>
                 </td>
                 <td>
-                    <input type="text" name="${name}[${product?index}].title" maxlength="100" value="${(product.title)!}">
+                    <input type="text" name="products[${product?index}].title" class="required" maxlength="100" size="50" value="${(product.title)!}">
                 </td>
                 <td>
-                    <input type="text" name="${name}[${product?index}].price" class="required digits" value="${(product.price)!}" size="10" maxlength="20"/>
+                    <input type="text" name="products[${product?index}].price" class="required number" value="${(product.price)!}" size="10" maxlength="20"/>
                 </td>
                 <td>
-                    <input type="text" name="${name}[${product?index}].inventory" class="required digits" value="${product.inventory!100}" size="10" maxlength="20"/>
+                    <input type="text" name="products[${product?index}].inventory" class="required digits" value="${product.inventory!100}" min="1" size="10" maxlength="20"/>
                 </td>
                 <td>
-                    <input type="text" name="${name}[${product?index}].minQuantity" class="digits" value="${(product.minQuantity)!}" size="10" maxlength="20"/>
+                    <input type="text" name="products[${product?index}].minQuantity" class="digits" value="${(product.minQuantity)!}" size="10" maxlength="20"/>
                 </td>
                 <td>
-                    <input type="text" name="${name}[${product?index}].maxQuantity" class="digits" value="${(product.maxQuantity)!}" size="10" maxlength="20"/>
+                    <input type="text" name="products[${product?index}].maxQuantity" class="digits" value="${(product.maxQuantity)!}" size="10" maxlength="20"/>
                 </td>
                 <td>
                     <a href="javascript:void(0)" class="btnDel"><@t.page 'button.delete'/></a>
@@ -46,5 +46,5 @@
     </tbody>
 </table>
 <#include "../include_page/preview.html"/>
-<@preview name '.products' 'tr td input[name$=cover]'/>
+<@preview 'product' '.products' 'tr td input[name$=cover]'/>
 </#macro>

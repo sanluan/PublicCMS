@@ -4,7 +4,6 @@ package com.publiccms.controller.admin.trade;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,17 +13,11 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.JsonUtils;
-import com.publiccms.common.tools.RequestUtils;
-import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-
-import com.publiccms.entities.trade.TradeOrder;
-import com.publiccms.entities.log.LogOperate;
-import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeOrderService;
+
 /**
  *
  * TradeOrderAdminController
@@ -34,29 +27,19 @@ import com.publiccms.logic.service.trade.TradeOrderService;
 @RequestMapping("tradeOrder")
 public class TradeOrderAdminController {
 
-    private String[] ignoreProperties = new String[]{ "id" };
-    
     /**
      * @param site
      * @param admin
-     * @param entity
+     * @param orderId
      * @param request
      * @param model
      * @return operate result
      */
-    @RequestMapping("save")
+    @RequestMapping("confirm")
     @Csrf
-    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, TradeOrder entity, HttpServletRequest request,
-             ModelMap model) {
-        if (null != entity.getId()) {
-            entity = service.update(entity.getId(), entity, ignoreProperties);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.tradeOrder", 
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
-        } else {
-            service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.tradeOrder", 
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
-        }
+    public String confirm(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, long orderId,
+            HttpServletRequest request, ModelMap model) {
+        service.confirm(site.getId(), orderId);
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -64,20 +47,17 @@ public class TradeOrderAdminController {
      * @param ids
      * @param request
      * @param site
-     * @param admin 
-     * @param _csrf 
+     * @param admin
+     * @param orderId
+     * @param processInfo
      * @param model
      * @return operate result
      */
-    @RequestMapping("delete")
+    @RequestMapping("process")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, String _csrf, HttpServletRequest request, 
-            ModelMap model) {
-        if (CommonUtils.notEmpty(ids)) {
-            service.delete(ids);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.tradeOrder",
-                            RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, ',')));
-        }
+    public String process(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, long orderId, String processInfo,
+            HttpServletRequest request, ModelMap model) {
+        service.processed(site.getId(), orderId, admin.getId(), processInfo);
         return CommonConstants.TEMPLATE_DONE;
     }
 

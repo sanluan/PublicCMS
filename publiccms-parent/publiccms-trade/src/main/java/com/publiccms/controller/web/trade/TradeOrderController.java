@@ -31,7 +31,7 @@ import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
-import com.publiccms.logic.component.paymentprocessor.ChargeProcessorComponent;
+import com.publiccms.logic.component.paymentprocessor.ProductProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeOrderService;
@@ -74,13 +74,13 @@ public class TradeOrderController {
             if (1 == order.getAmount().compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
                 Date now = CommonUtils.getDate();
-                TradePayment entity = new TradePayment(site.getId(), user.getId(), order.getAmount(),
-                        ChargeProcessorComponent.GRADE_TYPE, String.valueOf(orderId), accountType, ip,
+                TradePayment entity = new TradePayment(site.getId(), order.getUserId(), order.getAmount(),
+                        ProductProcessorComponent.GRADE_TYPE, String.valueOf(orderId), accountType, ip,
                         TradePaymentService.STATUS_PENDING_PAY, false, now);
                 paymentService.create(site.getId(), entity);
                 service.pay(site.getId(), orderId, entity.getId());
-                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay/" + accountType
-                        + "?paymentId=" + entity.getId() + "&returnUrl=" + returnUrl;
+                return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="
+                        + entity.getId() + "&returnUrl=" + returnUrl;
             }
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
@@ -105,6 +105,9 @@ public class TradeOrderController {
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
+        }
+        if (CommonUtils.empty(orderIdField)) {
+            orderIdField = "orderId";
         }
         Long orderId = service.create(site.getId(), user.getId(), entity, RequestUtils.getIpAddress(request),
                 tradeOrderParameters.getTradeOrderProductList());

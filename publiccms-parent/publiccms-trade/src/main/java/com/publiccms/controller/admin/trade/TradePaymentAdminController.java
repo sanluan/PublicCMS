@@ -48,7 +48,7 @@ public class TradePaymentAdminController {
         if (ControllerUtils.verifyNotEmpty("payment", entity, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        paymentService.processed(site.getId(), entity.getId());
+        paymentService.processed(site.getId(), entity.getId(), admin.getId());
         return CommonConstants.TEMPLATE_DONE;
     }
 

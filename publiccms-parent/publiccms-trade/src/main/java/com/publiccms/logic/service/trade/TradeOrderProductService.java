@@ -68,14 +68,16 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
                 if (null != content && !content.isDisabled() && CmsContentService.STATUS_NORMAL == content.getStatus()
                         && now.after(content.getPublishDate())
                         && (null == content.getExpiryDate() || now.before(content.getExpiryDate())) && null != product
-                        && 0 < product.getInventory() && 0 < entity.getQuantity()
-                        && product.getInventory() >= entity.getQuantity()) {
+                        && product.getContentId() == content.getId() && 0 < product.getInventory() && 0 < entity.getQuantity()
+                        && product.getInventory() >= entity.getQuantity()
+                        && (null == product.getMinQuantity() || product.getMinQuantity() <= entity.getQuantity())
+                        && (null == product.getMaxQuantity() || product.getMaxQuantity() >= entity.getQuantity())) {
                     entity.setId(null);
                     entity.setSiteId(siteId);
                     entity.setOrderId(orderId);
                     entity.setPrice(product.getPrice());
                     entity.setAmount(product.getPrice().multiply(new BigDecimal(entity.getQuantity())));
-                    amount.add(entity.getAmount());
+                    amount = amount.add(entity.getAmount());
                 } else {
                     return null;
                 }

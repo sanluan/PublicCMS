@@ -24,9 +24,6 @@
                 <dd>
                     <input class="required" name="id" type="text" maxlength="20" size="20" value="${(a.id)!}"/>
                     <label><input name="onlyUrl" type="checkbox"/><@t.page 'url'/></label>
-                    <label><input name="hasChild" type="checkbox"/><@t.page 'model.has_child'/></label>
-                    <label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label>
-                    <label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_attachs'/></label>
                 </dd>
             </dl>
             <dl class="nowrap">
@@ -48,6 +45,13 @@
         </fieldset>
         <fieldset class="systemField">
             <legend><@t.page 'content.system_field'/></legend>
+            <div class="unit">
+                <p><label><input name="hasChild" type="checkbox"/><@t.page 'model.has_child'/></label></p>
+                <p><label><input name="hasImages" type="checkbox"/><@t.page 'model.has_images'/></label></p>
+                <p><label><input name="hasFiles" type="checkbox"/><@t.page 'model.has_attachs'/></label></p>
+                <p><label><input name="hasProducts" type="checkbox"/>拥有产品列表</label></p>
+            </div>
+            <div class="divider"></div>
             <dl class="nowrap">
                 <dt>
                     <label><@t.page 'field.title'/>(title):</label>

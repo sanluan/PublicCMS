@@ -34,20 +34,21 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     @Override
     public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
-                && null != accountService.change(payment.getSiteId(), payment.getAccountSerialNumber(), payment.getUserId(),
+                && null != accountService.change(payment.getSiteId(), payment.getSerialNumber(), payment.getUserId(),
                         payment.getUserId(), TradeAccountHistoryService.STATUS_PAY, payment.getAmount().negate(),
                         payment.getDescription())) {
-            if (service.paid(payment.getSiteId(), payment.getId(), payment.getAccountSerialNumber())) {
-                return confirmPay(site, payment, callbackUrl, response);
+            if (service.paid(payment.getSiteId(), payment.getId(), payment.getSerialNumber())) {
+                if (confirmPay(site, payment, response)) {
+                    try {
+                        response.sendRedirect(callbackUrl);
+                    } catch (IOException e) {
+                    }
+                }
+                return true;
             } else {
-                accountService.change(payment.getSiteId(), payment.getAccountSerialNumber(), payment.getUserId(),
-                        payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(),
-                        payment.getDescription());
+                accountService.change(payment.getSiteId(), payment.getSerialNumber(), payment.getUserId(), payment.getUserId(),
+                        TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(), payment.getDescription());
             }
-        }
-        try {
-            response.sendRedirect(callbackUrl);
-        } catch (IOException e) {
         }
         return false;
     }
@@ -55,7 +56,7 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     @Override
     public boolean refund(SysSite site, TradePayment payment, TradeRefund refund) {
         if (null != payment && service.refunded(payment.getSiteId(), payment.getId())) {
-            TradeAccountHistory history = accountService.change(payment.getSiteId(), payment.getAccountSerialNumber(),
+            TradeAccountHistory history = accountService.change(payment.getSiteId(), payment.getSerialNumber(),
                     payment.getUserId(), payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND,
                     payment.getAmount().negate(), payment.getDescription());
             if (null == history) {

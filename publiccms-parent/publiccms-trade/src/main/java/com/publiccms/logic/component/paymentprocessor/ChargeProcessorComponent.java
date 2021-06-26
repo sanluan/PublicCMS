@@ -22,13 +22,13 @@ public class ChargeProcessorComponent implements TradePaymentProcessor {
     @Override
     public boolean paid(TradePayment payment) {
         return payment.isProcessed()
-                || null != accountService.change(payment.getSiteId(), payment.getAccountSerialNumber(), payment.getUserId(),
+                || null != accountService.change(payment.getSiteId(), payment.getSerialNumber(), payment.getUserId(),
                         payment.getUserId(), TradeAccountHistoryService.STATUS_CHARGE, payment.getAmount(), payment.getDescription());
     }
 
     @Override
     public boolean refunded(TradePayment payment) {
-        return payment.isProcessed() || null != accountService.change(payment.getSiteId(), payment.getAccountSerialNumber(),
+        return payment.isProcessed() || null != accountService.change(payment.getSiteId(), payment.getSerialNumber(),
                 payment.getUserId(), payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount().negate(),
                 payment.getDescription());
     }

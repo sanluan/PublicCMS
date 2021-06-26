@@ -83,10 +83,11 @@ public class TradePaymentService extends BaseService<TradePayment> {
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean processed(short siteId, long paymentId) {
+    public boolean processed(short siteId, long paymentId, long userId) {
         TradePayment entity = getEntity(paymentId);
         if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
             entity.setProcessed(true);
+            entity.setProcessUserId(userId);
             Date now = CommonUtils.getDate();
             entity.setProcessDate(now);
             entity.setUpdateDate(now);

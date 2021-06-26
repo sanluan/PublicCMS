@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,21 +62,20 @@ public class TradePaymentController {
      * @param model
      * @throws Exception
      */
-    @RequestMapping(value = "pay/{accountType}")
-    public void pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, Long paymentId,
-            String returnUrl, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+    @RequestMapping(value = "pay")
+    public void pay(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
+            HttpServletResponse response, ModelMap model) throws Exception {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
-        PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         TradePayment entity = service.getEntity(paymentId);
+        PaymentGateway paymentGateway = gatewayComponent.get(entity.getAccountType());
         if (null != paymentGateway && null == entity
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             response.sendRedirect(returnUrl);
-        }
-        if (!paymentGateway.pay(site, entity, returnUrl, response)) {
+        } else if (!paymentGateway.pay(site, entity, returnUrl, response)) {
             response.sendRedirect(returnUrl);
         }
     }
@@ -93,6 +91,7 @@ public class TradePaymentController {
      * @throws Exception
      */
     @RequestMapping(value = "cancel")
+    @Csrf
     public String cancel(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) throws Exception {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
@@ -141,7 +140,7 @@ public class TradePaymentController {
                                 && payment.getAmount().toString().equals(total_fee)) {
                             if (service.paid(site.getId(), payment.getId(), trade_no)) {
                                 payment = service.getEntity(payment.getId());
-                                alipayGatewayComponent.confirmPay(site, payment, null, response);
+                                alipayGatewayComponent.confirmPay(site, payment, response);
                             }
                         }
                         return "success";
@@ -189,9 +188,11 @@ public class TradePaymentController {
                         if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
                                 && payment.getAmount().toString().equals(result.get("total_fee"))) {
                             payment = service.getEntity(paymentId);
-                            if (wechatGatewayComponent.confirmPay(site, payment, null, response)) {
-                                resultMap.put("return_code", WXPayConstants.SUCCESS);
-                                resultMap.put("return_msg", "OK");
+                            if (service.paid(site.getId(), payment.getId(), result.get("transaction_id"))) {
+                                if (wechatGatewayComponent.confirmPay(site, payment, response)) {
+                                    resultMap.put("return_code", WXPayConstants.SUCCESS);
+                                    resultMap.put("return_msg", "OK");
+                                }
                             }
                         }
                     }
@@ -246,7 +247,7 @@ public class TradePaymentController {
      * @param model
      * @return
      */
-    @RequestMapping(value = "cancel")
+    @RequestMapping(value = "cancelRefund")
     @Csrf
     public String cancel(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long refundId, String returnUrl,
             HttpServletRequest request, HttpSession session, ModelMap model) {

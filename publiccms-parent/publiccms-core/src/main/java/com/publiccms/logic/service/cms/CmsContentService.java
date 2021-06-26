@@ -33,7 +33,6 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.dao.cms.CmsCategoryDao;
 import com.publiccms.logic.dao.cms.CmsContentDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
@@ -50,18 +49,6 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @Service
 @Transactional
 public class CmsContentService extends BaseService<CmsContent> {
-    @Autowired
-    private SysExtendService extendService;
-    @Autowired
-    private SysExtendFieldService extendFieldService;
-    @Autowired
-    private CmsTagService tagService;
-    @Autowired
-    private CmsContentFileService contentFileService;
-    @Autowired
-    private CmsContentAttributeService attributeService;
-    @Autowired
-    private CmsContentRelatedService cmsContentRelatedService;
     private static String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
             Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE,
             Config.INPUTTYPE_TAGTYPE };
@@ -198,6 +185,9 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (entity.isHasImages() || entity.isHasFiles()) {
                 contentFileService.update(entity.getId(), userId, entity.isHasFiles() ? contentParameters.getFiles() : null,
                         entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
+            }
+            if (entity.isHasProducts()) {
+                contentProductService.update(entity.getId(), userId, contentParameters.getProducts());
             }
             String text = HtmlUtils.removeHtmlTag(attribute.getText());
             if (null != text) {
@@ -589,7 +579,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         if (CommonUtils.empty(categoryId)) {
             return categoryIds;
         } else if (null != containChild && containChild) {
-            CmsCategory category = categoryDao.getEntity(categoryId);
+            CmsCategory category = categoryService.getEntity(categoryId);
             if (null != category) {
                 String[] categoryStringIds = ArrayUtils.add(
                         StringUtils.splitByWholeSeparator(category.getChildIds(), CommonConstants.COMMA_DELIMITED),
@@ -642,5 +632,19 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Autowired
     private CmsContentDao dao;
     @Autowired
-    private CmsCategoryDao categoryDao;
+    private CmsCategoryService categoryService;
+    @Autowired
+    private SysExtendService extendService;
+    @Autowired
+    private SysExtendFieldService extendFieldService;
+    @Autowired
+    private CmsTagService tagService;
+    @Autowired
+    private CmsContentFileService contentFileService;
+    @Autowired
+    private CmsContentProductService contentProductService;
+    @Autowired
+    private CmsContentAttributeService attributeService;
+    @Autowired
+    private CmsContentRelatedService cmsContentRelatedService;
 }
