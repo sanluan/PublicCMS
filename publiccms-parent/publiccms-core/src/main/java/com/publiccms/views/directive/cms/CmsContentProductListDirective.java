@@ -25,9 +25,10 @@ public class CmsContentProductListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        PageHandler page = service.getPage(handler.getLong("contentId"), handler.getLong("userId"),
-                handler.getBigDecimal("price"), handler.getString("orderField"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
+        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("contentId"), handler.getLong("userId"),
+                handler.getString("title"), handler.getBigDecimal("startPrice"), handler.getBigDecimal("endPrice"),
+                handler.getString("orderField"), handler.getString("orderType"), handler.getInteger("pageIndex", 1),
+                handler.getInteger("pageSize", 30));
         @SuppressWarnings("unchecked")
         List<CmsContentProduct> list = (List<CmsContentProduct>) page.getList();
         if (null != list) {

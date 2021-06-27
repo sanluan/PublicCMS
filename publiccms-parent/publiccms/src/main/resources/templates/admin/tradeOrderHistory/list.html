@@ -1,4 +1,4 @@
-<@_tradeOrderHistoryList orderIdId=orderIdId operate=operate
+<@_tradeOrderHistoryList paymentId=paymentId operate=operate
             startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
@@ -8,7 +8,7 @@
             <ul class="searchContent">
                 <li>
                     <label>订单ID：</label>
-                    <input type="text" name="orderIdId" value="${orderIdId!}" />
+                    <input type="text" name="paymentId" value="${paymentId!}" />
                 </li>
                 <li>
                     <label>操作：</label>
@@ -46,7 +46,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${a.orderIdId!}</td>
+                <td>${a.paymentId!}</td>
                 <td>${a.createDate!}</td>
                 <td>${a.operate!}</td>
                 <td>${a.content!}</td>

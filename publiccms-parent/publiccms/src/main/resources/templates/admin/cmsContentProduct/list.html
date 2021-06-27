@@ -1,12 +1,20 @@
-<@_contentProductList title=title price=price orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<@_contentProductList title=title userId=userId startPrice=startPrice endPrice=endPrice orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
+                    <label><@t.page 'title'/>:</label>
+                    <input type="text" name="title" value="${title!}" />
+                </li>
+                <li>
+                    <label><@t.page 'content.promulgator'/>:</label>
+                    <#include "../include_page/userId.html"/>
+                </li>
+                <li>
                     <label>价格:</label>
-                    <input type="text" name="price" value="${price!}" />
+                    <input type="text" name="startPrice" value="${endPprice!}" size="10"/><span>-</span><input type="text" name="endPrice" value="${endPrice!}" size="10"/>
                 </li>
             </ul>
             <div class="subBar">
@@ -32,11 +40,9 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th>ID</th>
-                <th>内容</th>
-                <th>上传用户</th>
-                <th>封面</th>
-                <th>标题</th>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'title'/></th>
+                <th><@t.page 'content.promulgator'/></th>
                 <th orderField="price" class="<#if orderField??&&'price'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">价格</th>
                 <th>最小购买数量</th>
                 <th>最大购买数量</th>
@@ -46,13 +52,29 @@
         </thead>
         <tbody>
             <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+                <@t.merge 'contentIds' a.contentId!/>
+            </#list>
+            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+            <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td>${a.contentId!}</td>
-                <td>${a.userId!}</td>
-                <td>${a.cover!}</td>
-                <td>${a.title!}</td>
+                <td>
+                    <div class="box">
+                        <#if a.cover?has_content || (contentMap[a.contentId?string].cover)?has_content>
+                            <div class="thumbnail">
+                                <img src="${(a.cover)!(contentMap[a.contentId?string].cover)!}"/>
+                            </div>
+                        </#if>
+                        <h3>${a.title!}</h3>
+                        <p class="exclude-translate">
+                            <a href="cmsContent/view.html?id=${a.contentId!}" class="exclude-translate" target="dialog" rel="viewContent${a.contentId!}">${(contentMap[a.contentId?string].title)!}</a>
+                        </p>
+                    </div>
+                </td>
+                <td>${(userMap[a.userId?string].nickName)!}</td>
                 <td>${a.price!}</td>
                 <td>${a.minQuantity!}</td>
                 <td>${a.maxQuantity!}</td>

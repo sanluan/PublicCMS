@@ -26,12 +26,15 @@ import com.publiccms.logic.dao.cms.CmsContentProductDao;
 @Transactional
 public class CmsContentProductService extends BaseService<CmsContentProduct> {
 
-    private String[] ignoreProperties = new String[] { "id", "userId", "contentId" };
+    private String[] ignoreProperties = new String[] { "id", "userId", "siteId", "contentId" };
 
     /**
+     * @param siteId
      * @param contentId
      * @param userId
-     * @param price
+     * @param title
+     * @param startPrice
+     * @param endPrice
      * @param orderField
      * @param orderType
      * @param pageIndex
@@ -39,24 +42,26 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long contentId, Long userId, BigDecimal price, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
-        return dao.getPage(contentId, userId, price, orderField, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Long contentId, Long userId, String title, BigDecimal startPrice,
+            BigDecimal endPrice, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, contentId, userId, title, startPrice, endPrice, orderField, orderType, pageIndex, pageSize);
     }
 
     /**
+     * @param siteId
      * @param contentId
      * @param userId
      * @param products
      */
     @SuppressWarnings("unchecked")
-    public void update(long contentId, Long userId, List<CmsContentProduct> products) {
+    public void update(short siteId, long contentId, Long userId, List<CmsContentProduct> products) {
         Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(products)) {
             for (CmsContentProduct entity : products) {
-                if (null != entity.getId()) {
+                if (null != entity.getId() && siteId == entity.getSiteId()) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
+                    entity.setSiteId(siteId);
                     entity.setUserId(userId);
                     entity.setContentId(contentId);
                     save(entity);
@@ -64,8 +69,8 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
                 idList.add(entity.getId());
             }
         }
-        for (CmsContentProduct product : (List<CmsContentProduct>) getPage(contentId, null, null, null, null, null, null)
-                .getList()) {
+        for (CmsContentProduct product : (List<CmsContentProduct>) getPage(siteId, contentId, null, null, null, null, null, null,
+                null, null).getList()) {
             if (!idList.contains(product.getId())) {
                 delete(product.getId());
             }

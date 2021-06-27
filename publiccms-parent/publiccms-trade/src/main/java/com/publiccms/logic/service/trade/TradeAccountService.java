@@ -13,10 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeAccount;
 import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.logic.dao.trade.TradeAccountDao;
 import com.publiccms.logic.dao.trade.TradeAccountHistoryDao;
+import com.publiccms.logic.service.sys.SysUserService;
 
 /**
  *
@@ -42,10 +44,15 @@ public class TradeAccountService extends BaseService<TradeAccount> {
     public TradeAccount getOrCreate(short siteId, long accountId) {
         TradeAccount entity = getEntity(accountId);
         if (null == entity) {
-            entity = new TradeAccount(accountId, siteId, BigDecimal.ZERO);
-            save(entity);
+            SysUser user = userService.getEntity(accountId);
+            if (null != user && siteId == user.getSiteId()) {
+                entity = new TradeAccount(accountId, siteId, BigDecimal.ZERO);
+                save(entity);
+            }
+        } else if (siteId == entity.getSiteId()) {
+            return entity;
         }
-        return entity;
+        return null;
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -53,15 +60,17 @@ public class TradeAccountService extends BaseService<TradeAccount> {
             BigDecimal change, String description) {
         if (null != change) {
             TradeAccount account = getOrCreate(siteId, accountId);
-            BigDecimal balance = change.add(account.getAmount());
-            if (0 <= balance.compareTo(BigDecimal.ZERO)) {
-                Date now = CommonUtils.getDate();
-                TradeAccountHistory history = new TradeAccountHistory(siteId, serialNumber, accountId, userId, change,
-                        account.getAmount(), balance, status, description, now);
-                historyDao.save(history);
-                account.setAmount(balance);
-                account.setUpdateDate(now);
-                return history;
+            if (null != account) {
+                BigDecimal balance = change.add(account.getAmount());
+                if (0 <= balance.compareTo(BigDecimal.ZERO)) {
+                    Date now = CommonUtils.getDate();
+                    TradeAccountHistory history = new TradeAccountHistory(siteId, serialNumber, accountId, userId, change,
+                            account.getAmount(), balance, status, description, now);
+                    historyDao.save(history);
+                    account.setAmount(balance);
+                    account.setUpdateDate(now);
+                    return history;
+                }
             }
         }
         return null;
@@ -71,5 +80,7 @@ public class TradeAccountService extends BaseService<TradeAccount> {
     private TradeAccountDao dao;
     @Autowired
     private TradeAccountHistoryDao historyDao;
+    @Autowired
+    private SysUserService userService;
 
 }

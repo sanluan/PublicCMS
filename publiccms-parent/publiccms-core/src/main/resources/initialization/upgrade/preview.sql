@@ -74,6 +74,7 @@ UPDATE `sys_module` SET `authorized_url` = 'taskTemplate/save,taskTemplate/uploa
 -- 2021-06026 --
 CREATE TABLE `cms_content_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `content_id` bigint(20) NOT NULL COMMENT '内容',
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
@@ -84,21 +85,22 @@ CREATE TABLE `cms_content_product` (
   `inventory` int(11) NOT NULL COMMENT '库存',
   `sales` int(11) NOT NULL COMMENT '销量',
   PRIMARY KEY (`id`),
-  KEY `cms_content_product_content_id` (`content_id`),
-  KEY `cms_content_product_user_id` (`user_id`),
-  KEY `cms_content_product_sales` (`sales`),
-  KEY `cms_content_product_inventory` (`inventory`),
-  KEY `cms_content_product_price` (`price`)
+  KEY `cms_content_product_content_id` (`site_id`, `content_id`),
+  KEY `cms_content_product_user_id` (`site_id`, `user_id`),
+  KEY `cms_content_product_sales` (`site_id`, `sales`),
+  KEY `cms_content_product_inventory` (`site_id`, `inventory`),
+  KEY `cms_content_product_price` (`site_id`, `price`)
 ) COMMENT='内容商品';
-INSERT INTO `sys_module` VALUES ('product_list', 'cmsContentProduct/list', NULL, NULL, 'content_menu', 1, 7);
+INSERT INTO `sys_module` VALUES ('product_list', 'cmsContentProduct/list', NULL, 'icon-truck', 'content_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('product_add', 'cmsContentProduct/add', 'cmsContentProduct/save', NULL, 'product_list', 1, 0);
-INSERT INTO `sys_module_lang` VALUES ('product_list', 'en', 'Product');
-INSERT INTO `sys_module_lang` VALUES ('product_list', 'ja', '製品');
-INSERT INTO `sys_module_lang` VALUES ('product_list', 'zh', '产品');
+INSERT INTO `sys_module_lang` VALUES ('product_list', 'en', 'Product management');
+INSERT INTO `sys_module_lang` VALUES ('product_list', 'ja', '製品管理');
+INSERT INTO `sys_module_lang` VALUES ('product_list', 'zh', '产品管理');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'en', 'Edit');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'ja', '変更');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'zh', '修改');
-
+UPDATE `sys_module` SET `sort` = '6' where id = 'word_list';
+UPDATE `sys_module` SET `sort` = '7' where id = 'content_recycle_list';
 RENAME TABLE `trade_order` TO `trade_payment`;
 RENAME TABLE `trade_order_history` TO `trade_payment_history`;
 ALTER TABLE `trade_payment_history` CHANGE COLUMN `order_id` `payment_id` bigint(20) NOT NULL COMMENT '订单ID' AFTER `site_id`;

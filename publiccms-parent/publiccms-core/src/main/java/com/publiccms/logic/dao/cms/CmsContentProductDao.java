@@ -21,26 +21,38 @@ import com.publiccms.entities.cms.CmsContentProduct;
 public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
 
     /**
+     * @param siteId
      * @param contentId
      * @param userId
-     * @param price
+     * @param title
+     * @param startPrice
+     * @param endPrice
      * @param orderField
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long contentId, Long userId, BigDecimal price, String orderField, String orderType,
-            Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long contentId, Long userId, String title, BigDecimal startPrice,
+            BigDecimal endPrice, String orderField, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsContentProduct bean");
+        if (CommonUtils.notEmpty(siteId)) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
         if (CommonUtils.notEmpty(contentId)) {
             queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
         }
         if (CommonUtils.notEmpty(userId)) {
             queryHandler.condition("bean.userId = :userId").setParameter("userId", userId);
         }
-        if (null != price) {
-            queryHandler.condition("bean.price = :price").setParameter("price", price);
+        if (null != startPrice) {
+            queryHandler.condition("bean.price > :startPrice").setParameter("startPrice", startPrice);
+        }
+        if (null != endPrice) {
+            queryHandler.condition("bean.price <= :endPrice").setParameter("endPrice", endPrice);
+        }
+        if (null != title) {
+            queryHandler.condition("bean.title like :title").setParameter("title", like(title));
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
@@ -66,6 +78,9 @@ public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
 
     @Override
     protected CmsContentProduct init(CmsContentProduct entity) {
+        if (CommonUtils.empty(entity.getCover())) {
+            entity.setCover(null);
+        }
         return entity;
     }
 

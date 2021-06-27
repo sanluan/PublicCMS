@@ -28,6 +28,8 @@ public class CmsContentProduct implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private Long id;
+    @GeneratorColumn(title = "站点", condition = true)
+    private short siteId;
     @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
     @GeneratorColumn(title = "上传用户", condition = true)
@@ -50,7 +52,8 @@ public class CmsContentProduct implements java.io.Serializable {
     public CmsContentProduct() {
     }
 
-    public CmsContentProduct(long contentId, long userId, String title, BigDecimal price, int inventory, int sales) {
+    public CmsContentProduct(short siteId, long contentId, long userId, String title, BigDecimal price, int inventory, int sales) {
+        this.siteId = siteId;
         this.contentId = contentId;
         this.userId = userId;
         this.title = title;
@@ -59,8 +62,9 @@ public class CmsContentProduct implements java.io.Serializable {
         this.sales = sales;
     }
 
-    public CmsContentProduct(long contentId, long userId, String cover, String title, BigDecimal price, Integer minQuantity,
+    public CmsContentProduct(short siteId, long contentId, long userId, String cover, String title, BigDecimal price, Integer minQuantity,
             Integer maxQuantity, int inventory, int sales) {
+        this.siteId = siteId;
         this.contentId = contentId;
         this.userId = userId;
         this.cover = cover;
@@ -82,6 +86,15 @@ public class CmsContentProduct implements java.io.Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Column(name = "site_id", nullable = false)
+    public short getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(short siteId) {
+        this.siteId = siteId;
     }
 
     @Column(name = "content_id", nullable = false)

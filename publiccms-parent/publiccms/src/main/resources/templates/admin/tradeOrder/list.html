@@ -1,5 +1,4 @@
-<@_tradeProductOrderList userId=userId 
-            paymentId=paymentId processed=processed 
+<@_tradeOrderList userId=userId paymentId=paymentId processed=processed 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -7,16 +6,19 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>用户ID:</label>
-                    <input type="text" name="userId" value="${userId!}" />
+                    <label><@t.page 'user'/>：</label>
+                    <#include "../include_page/userId.html"/>
                 </li>
                 <li>
                     <label>支付ID:</label>
                     <input type="text" name="paymentId" value="${paymentId!}" />
                 </li>
                 <li>
-                    <label>是否处理:</label>
-                    <input type="text" name="processed" value="${processed!}" />
+                    <select class="combox" name="processed">
+                        <option value=""${(!processed?has_content)?then(' selected="true"','')?no_esc}>已处理</option>
+                        <option value="false"${(processed??&&"false"=processed)?then(' selected="true"','')?no_esc}>否</option>
+                        <option value="true"${(processed??&&"true"=processed)?then(' selected="true"','')?no_esc}>是</option>
+                    </select>
                 </li>
             </ul>
             <div class="subBar">
@@ -47,10 +49,7 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th>ID</th>
-                <th>站点ID</th>
                 <th>用户ID</th>
-                <th>内容ID</th>
-                <th>产品ID</th>
                 <th>支付ID</th>
                 <th>收货地址</th>
                 <th>收件人</th>
@@ -72,10 +71,7 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td>${a.siteId!}</td>
                 <td>${a.userId!}</td>
-                <td>${a.contentId!}</td>
-                <td>${a.productId!}</td>
                 <td>${a.paymentId!}</td>
                 <td>${a.address!}</td>
                 <td>${a.addressee!}</td>
@@ -100,4 +96,4 @@
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_tradeProductOrderList>
+</@_tradeOrderList>

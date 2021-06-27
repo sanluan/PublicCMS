@@ -10,22 +10,22 @@
     </div>
     <div class="pageContent">
         <div class="pageFormContent" layoutH="56">
-            <dl>
-                <dt><@t.page 'cover'/>:</dt>
-                <dd>
-                    <input class="required" name="cover" type="text" size="30" value="${(a.cover)!}"/>
-                    <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
-                    <#include "../include_page/preview.html"/>
-                    <@preview 'product' 'input[name=cover]'/>
-                </dd>
-            </dl>
             <dl class="nowrap">
                 <dt>标题:</dt>
                 <dd><input class="required" name="title" type="text" size="80"  maxlength="100" value="${(a.title)!}"/></dd>
             </dl>
             <dl>
+                <dt><@t.page 'cover'/>:</dt>
+                <dd>
+                    <input name="cover" type="text" size="30" value="${(a.cover)!}"/>
+                    <a class="btnAttach" href="common/upload.html?field=cover&fileTypes=image" lookupGroup="" width="1000" height="600"><@t.page 'cover'/></a>
+                    <#include "../include_page/preview.html"/>
+                    <@preview 'product' 'input[name=cover]'/>
+                </dd>
+            </dl>
+            <dl>
                 <dt>价格:</dt>
-                <dd><input class="required digits" name="price" type="text" size="10" maxlength="20" value="${(a.price)!}"/></dd>
+                <dd><input class="required number" name="price" type="text" size="10" maxlength="20" value="${(a.price)!}"/></dd>
             </dl>
             <dl>
                 <dt>库存:</dt>

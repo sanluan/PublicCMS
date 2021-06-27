@@ -38,24 +38,6 @@ public class TradePaymentAdminController {
      * @param site
      * @param admin
      * @param id
-     * @param model
-     * @return operate result
-     */
-    @RequestMapping("process")
-    @Csrf
-    public String process(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, ModelMap model) {
-        TradePayment entity = paymentService.getEntity(id);
-        if (ControllerUtils.verifyNotEmpty("payment", entity, model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        paymentService.processed(site.getId(), entity.getId(), admin.getId());
-        return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param site
-     * @param admin
-     * @param id
      * @param refundAmount
      * @param reply
      * @param request

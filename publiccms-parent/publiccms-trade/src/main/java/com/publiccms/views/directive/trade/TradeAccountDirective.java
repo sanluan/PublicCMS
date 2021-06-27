@@ -27,7 +27,7 @@ public class TradeAccountDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long id = handler.getLong("id");
         if (CommonUtils.notEmpty(id)) {
-            TradeAccount entity = service.getEntity(id);
+            TradeAccount entity = service.getOrCreate(getSite(handler).getId(), id);
             if (null != entity) {
                 handler.put("object", entity).render();
             }

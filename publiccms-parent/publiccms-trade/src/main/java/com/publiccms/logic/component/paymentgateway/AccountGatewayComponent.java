@@ -33,21 +33,24 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
 
     @Override
     public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
-        if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
-                && null != accountService.change(payment.getSiteId(), payment.getSerialNumber(), payment.getUserId(),
-                        payment.getUserId(), TradeAccountHistoryService.STATUS_PAY, payment.getAmount().negate(),
-                        payment.getDescription())) {
-            if (service.paid(payment.getSiteId(), payment.getId(), payment.getSerialNumber())) {
-                if (confirmPay(site, payment, response)) {
-                    try {
-                        response.sendRedirect(callbackUrl);
-                    } catch (IOException e) {
+        if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY) {
+            TradeAccountHistory history = accountService.change(payment.getSiteId(), payment.getSerialNumber(),
+                    payment.getUserId(), payment.getUserId(), TradeAccountHistoryService.STATUS_PAY, payment.getAmount().negate(),
+                    payment.getDescription());
+            if (null != history) {
+                if (service.paid(payment.getSiteId(), payment.getId(), history.getId().toString())) {
+                    if (confirmPay(site, payment, response)) {
+                        try {
+                            response.sendRedirect(callbackUrl);
+                        } catch (IOException e) {
+                        }
                     }
+                    return true;
+                } else {
+                    accountService.change(payment.getSiteId(), payment.getSerialNumber(), payment.getUserId(),
+                            payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(),
+                            payment.getDescription());
                 }
-                return true;
-            } else {
-                accountService.change(payment.getSiteId(), payment.getSerialNumber(), payment.getUserId(), payment.getUserId(),
-                        TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(), payment.getDescription());
             }
         }
         return false;

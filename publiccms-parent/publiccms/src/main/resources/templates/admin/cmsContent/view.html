@@ -184,6 +184,29 @@
                 </dl>
             </#if>
         </#if>
+        <#if a.hasProducts>
+            <dl class="nowrap">
+                <dt>产品列表:</dt>
+                <dd>
+            <@_contentProductList contentId=a.id>
+                <#list page.list as product>
+                    <div class="unit">
+                        <#if product.cover?has_content>
+                            <p class="thumbnail">
+                                <img src="${(product.cover)!}" style="max-width:200px;max-height:200px;"/>
+                            </p>
+                        </#if>
+                        <p><label><@t.page 'title'/>:</label>${product.title}</p>
+                        <p><label>价格:</label>${product.price}</p>
+                        <p><label>库存:</label>${product.inventory}</p>
+                        <p><label>销量:</label>${product.sales}</p>
+                    </div>
+                    <div class="divider"></div>
+                </#list>
+            </@_contentProductList>
+                </dd>
+            </dl>
+        </#if>
         <#if fieldList?seq_contains('content')>
             <dl class="nowrap">
                 <dt>${(model.fieldTextMap['content'])!}:</dt>

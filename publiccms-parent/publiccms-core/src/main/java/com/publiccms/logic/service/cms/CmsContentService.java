@@ -172,11 +172,11 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @return results list
      */
     @Transactional(readOnly = true)
-    public List<CmsContent> getListByQuoteId(Short siteId, Long quoteId) {
+    public List<CmsContent> getListByQuoteId(short siteId, Long quoteId) {
         return dao.getListByQuoteId(siteId, quoteId);
     }
 
-    public CmsContent saveTagAndAttribute(Short siteId, Long userId, Long id, CmsContentParameters contentParameters,
+    public CmsContent saveTagAndAttribute(short siteId, Long userId, Long id, CmsContentParameters contentParameters,
             CmsModel cmsModel, Integer extendId, CmsContentAttribute attribute) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
@@ -187,7 +187,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                         entity.isHasImages() ? contentParameters.getImages() : null);// 更新保存图集，附件
             }
             if (entity.isHasProducts()) {
-                contentProductService.update(entity.getId(), userId, contentParameters.getProducts());
+                contentProductService.update(siteId, entity.getId(), userId, contentParameters.getProducts());
             }
             String text = HtmlUtils.removeHtmlTag(attribute.getText());
             if (null != text) {
