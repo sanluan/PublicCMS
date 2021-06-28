@@ -32,13 +32,10 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/reply'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsComment/edit,cmsComment/check,cmsComment/uncheck,cmsComment/delete,cmsComment/reply'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
-        <#if authorizedMap['cmsComment/reply']>
-            <li><a href="cmsComment/edit.html?id={sid}"  target="dialog" mask="true"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
-        </#if>
         <#if authorizedMap['cmsComment/check']>
             <li><a href="cmsComment/check?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
         </#if>
@@ -90,20 +87,23 @@
                 </td>
                 <td><textarea rows="3" cols="50">${a.text!}</textarea></td>
                 <td>
+                    <#if authorizedMap['cmsComment/edit']>
+                        <a href="cmsComment/edit.html?id=${a.id}" class="edit btnText blue" target="dialog" mask="true"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    </#if>
                     <#if authorizedMap['cmsComment/reply']>
-                        <a href="cmsComment/reply.html?replyId=${a.replyId!a.id}" target="dialog" mask="true"><@t.page 'comment.reply'/></a> |
+                        <a href="cmsComment/reply.html?replyId=${a.replyId!a.id}" class="btnText blue" target="dialog" mask="true"><i class="icon-reply"></i> <@t.page 'comment.reply'/></a>
                     </#if>
                 <#if 1=a.status>
                     <#if authorizedMap['cmsComment/uncheck']>
-                        <a href="cmsComment/uncheck?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.uncheck'/>"  target="ajaxTodo"><@t.page 'button.uncheck'/></a> |
+                        <a href="cmsComment/uncheck?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.uncheck'/>" target="ajaxTodo"><i class="icon-eraser"></i> <@t.page 'button.uncheck'/></a>
                     </#if>
                 <#else>
                     <#if authorizedMap['cmsComment/check']>
-                        <a href="cmsComment/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.check'/>"  target="ajaxTodo"><@t.page 'button.check'/></a> |
+                        <a href="cmsComment/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i> <@t.page 'button.check'/></a>
                     </#if>
                 </#if>
                 <#if authorizedMap['cmsComment/delete']>
-                    <a href="cmsComment/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsComment/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </#if>
                 </td>
             </tr>

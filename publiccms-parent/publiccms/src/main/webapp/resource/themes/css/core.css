@@ -225,8 +225,6 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 .button:hover{text-decoration:none;}
 .buttonActive{font-weight:bold;}
 
-.page.work-bench a.button{height:27px;line-height:27px;padding:0 15px;font-size:13px;}
-
 /* ----------------------------------------------------------------- Pages */
 /* Layout */
 #leftside{position:absolute;top:0;left:0;height:100%;}
@@ -302,7 +300,7 @@ a.toggleCollapse{text-decoration:none;}
 #content p{float:none;display:block;min-width:initial;padding:0;}
 .CodeMirror{height:100%;line-height:16px;}
 
-fieldset{border:none;margin:0 0 10px 0;position:relative;padding:40px 20px 20px 20px;-moz-box-shadow: 0px 0px 5px 1px #DDE4EF;box-shadow: 0px 0px 5px 1px #DDE4EF;-ms-box-shadow: 0px 0px 5px 1px #DDE4EF;-o-box-shadow: 0px 0px 5px 1px #DDE4EF;-webkit-box-shadow: 0px 0px 5px 1px #DDE4EF;}
+fieldset{border:none;margin:0 0 15px 0;position:relative;padding:40px 20px 20px 20px;border-radius:5px;-moz-box-shadow: 0px 0px 5px 1px #DDE4EF;box-shadow: 0px 0px 5px 1px #DDE4EF;-ms-box-shadow: 0px 0px 5px 1px #DDE4EF;-o-box-shadow: 0px 0px 5px 1px #DDE4EF;-webkit-box-shadow: 0px 0px 5px 1px #DDE4EF;}
 fieldset:hover {-moz-box-shadow: 0px 0px 5px 2px #DDE4EF;box-shadow: 0px 0px 5px 2px #DDE4EF;-ms-box-shadow: 0px 0px 5px 2px #DDE4EF;-o-box-shadow: 0px 0px 5px 2px #DDE4EF;-webkit-box-shadow: 0px 0px 5px 2px #DDE4EF;}
 fieldset>label, .pageFormContent>label{margin-bottom:10px;}
 fieldset legend{position:absolute;top:0;font-weight:400;font-size:13px;padding:0;line-height:40px;padding-left:9px;}
@@ -483,7 +481,6 @@ table.list th.order:before{content:"\e623"}
 table.list th.desc:before{content:"\e668"}
 
 a.btnLook:before{content:"\e66a";font-family:iconfont;}
-a.btnSelect{display:block;width:22px;height:20px;overflow:hidden;float:left;margin-right:3px;text-align:center;}
 
 .searchBar ul.searchContent:before{content:"\e631";font-family:iconfont;}
 .searchBar ul.searchContentHover:before{content:"\e6f8";}

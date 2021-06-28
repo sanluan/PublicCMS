@@ -166,10 +166,19 @@ CREATE TABLE `trade_order_product` (
   KEY `trade_order_product_site_id` (`site_id`,`order_id`)
 ) COMMENT='产品订单';
 ALTER TABLE `cms_content` 
-	ADD COLUMN `has_products` tinyint(1) NOT NULL COMMENT '拥有产品列表' AFTER `has_files`,
-	DROP INDEX `cms_content_only_url`,
-	ADD INDEX `cms_content_only_url`(`only_url`, `has_images`, `has_files`, `has_products`, `user_id`) ;
+    ADD COLUMN `has_products` tinyint(1) NOT NULL COMMENT '拥有产品列表' AFTER `has_files`,
+    DROP INDEX `cms_content_only_url`,
+    ADD INDEX `cms_content_only_url`(`only_url`, `has_images`, `has_files`, `has_products`, `user_id`) ;
 ALTER TABLE `trade_payment` 
     ADD COLUMN `process_user_id` bigint(20) NULL COMMENT '处理用户ID' AFTER `processed`;
 ALTER TABLE `trade_order` 
     ADD COLUMN `process_user_id` bigint(20) NULL COMMENT '处理用户ID' AFTER `processed`;
+-- 2021-06-28 --
+ALTER TABLE `trade_refund` 
+    ADD COLUMN `site_id` smallint(0) NOT NULL COMMENT '站点ID' AFTER `id`,
+    ADD COLUMN `user_id` bigint(20) NOT NULL COMMENT '用户ID' AFTER `payment_id`,
+    DROP INDEX `trade_refund_order_id`,
+ALTER TABLE `cms_content_related` 
+    DROP INDEX `cms_content_related_user_id`,
+    ADD INDEX `cms_content_related_user_id`(`content_id`, `sort`);
+    ADD INDEX `trade_refund_user_id`(`user_id`, `payment_id`, `status`);

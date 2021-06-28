@@ -73,12 +73,14 @@ echarts.init(document.getElementById('todayVisit')).setOption({
        {
            name:'UV',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+           areaStyle: {}
        },
        {
            name:'IP Views',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+           areaStyle: {}
        }]
 });
 </@_logVisitDayList>
@@ -124,12 +126,14 @@ echarts.init(document.getElementById('yestodayVisit')).setOption({
        {
            name:'UV',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+           areaStyle: {}
        },
        {
            name:'IP Views',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+           areaStyle: {}
        }]
 });
 </@_logVisitDayList>
@@ -175,12 +179,14 @@ echarts.init(document.getElementById('visit')).setOption({
        {
            name:'UV',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+           areaStyle: {}
        },
        {
            name:'IP Views',
            type:'line',
-           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>]
+           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+           areaStyle: {}
        }]
 });
 </@_logVisitDayList>
@@ -216,7 +222,8 @@ echarts.init(document.getElementById('register')).setOption({
     {
            name:'<@t.page 'register'/>',
            type:'line',
-           data:[<#list 30..0 as a><@_sysUserList startRegisteredDate=(.now?long-a*86400000)?number_to_date?string endRegisteredDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_sysUserList><#sep>,</#list>]
+           data:[<#list 30..0 as a><@_sysUserList startRegisteredDate=(.now?long-a*86400000)?number_to_date?string endRegisteredDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_sysUserList><#sep>,</#list>],
+           areaStyle: {}
        }]
 });
 echarts.init(document.getElementById('login')).setOption({
@@ -250,7 +257,8 @@ echarts.init(document.getElementById('login')).setOption({
     {
         name:'<@t.page 'login'/>',
         type:'line',
-        data:[<#list 30..0 as a><@_logLoginList startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logLoginList><#sep>,</#list>]
+        data:[<#list 30..0 as a><@_logLoginList startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logLoginList><#sep>,</#list>],
+        areaStyle: {}
     }]
 });
 echarts.init(document.getElementById('operate')).setOption({
@@ -284,7 +292,8 @@ echarts.init(document.getElementById('operate')).setOption({
     {
         name:'<@t.page 'operate'/>',
         type:'line',
-        data:[<#list 30..0 as a><@_logOperateList channel='web_manager' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>]
+        data:[<#list 30..0 as a><@_logOperateList channel='web_manager' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>],
+        areaStyle: {}
     }]
 });
 echarts.init(document.getElementById('comment')).setOption({
@@ -318,7 +327,8 @@ echarts.init(document.getElementById('comment')).setOption({
     {
         name:'<@t.page 'operate'/>',
         type:'line',
-        data:[<#list 30..0 as a><@_logOperateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>]
+        data:[<#list 30..0 as a><@_logOperateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>],
+        areaStyle: {}
     }]
 });
 </script>

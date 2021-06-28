@@ -87,7 +87,7 @@
                     ${a.ip!}
                 </td>
                 <td>${a.createDate!}</td>
-                <td><@t.cut a.content 60 '...<a href="log/operateView.html?id=${a.id}" target="dialog" rel="operateTask">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>
+                <td><@t.cut a.content 60 '...<a href="log/operateView.html?id=${a.id}" class="btnText" target="dialog" rel="operateTask">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/></td>
             </tr>
             </#list>
         </tbody>

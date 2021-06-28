@@ -120,10 +120,10 @@
                 </td>
                 <td>
                     <#if authorizedMap['cmsContent/recycle']>
-                        <a href="cmsContent/recycle?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><@t.page 'button.recycle'/></a>|
+                        <a href="cmsContent/recycle?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><@t.page 'button.recycle'/></a>
                     </#if>
                     <#if authorizedMap['cmsContent/realDelete']>
-                        <a href="cmsContent/realDelete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                        <a href="cmsContent/realDelete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                     </#if>
                 </td>
             </tr>

@@ -204,6 +204,9 @@
                 <#if a.hasFiles>
                     $('input[name=hasFiles]',navTab.getCurrentPanel()).click();
                 </#if>
+                <#if a.hasProducts>
+                    $('input[name=hasProducts]',navTab.getCurrentPanel()).click();
+                </#if>
 
                 <#if a.fieldList?has_content>
                     <#list a.fieldList as field>

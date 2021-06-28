@@ -41,7 +41,6 @@
     </@_categoryTypeList>
                 </ul>
             </li>
-            <li><a href="cmsCategory/add.html?id={sid}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
             <li class="line">line</li>
 </#if>
         <#if authorizedMap['cmsCategory/publish']>
@@ -101,17 +100,18 @@
                 <td>${a.sort!}</td>
                 <td>
                 <#if authorizedMap['cmsCategory/add']>
-                    <a href="cmsCategory/addMore.html?parentId=${a.id}" target="dialog" mask="true"><@t.page 'category.add_child'/></a>|
-                    <a href="cmsCategory/add.html?copyId=${a.id}" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'category.add'/>"><@t.page 'button.copy'/></a>|
+                    <a href="cmsCategory/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i> <@t.page 'category.edit'/></a>
+                    <a href="cmsCategory/addMore.html?parentId=${a.id}" class="btnText blue" target="dialog" mask="true"><i class="icon-plus"></i> <@t.page 'category.add_child'/></a>
+                    <a href="cmsCategory/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsCategory/add" icon="<i class='icon-plus-sign-alt'></i>" title="<@t.page 'category.add'/>"><i class="icon-copy"></i> <@t.page 'button.copy'/></a>
                 </#if>
                 <#if authorizedMap['cmsCategory/changeTypeParameters']>
-                    <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" target="dialog" mask="true"><@t.page 'category.change_type'/></a>|
+                    <a href="cmsCategory/changeTypeParameters.html?id=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'category.change_type'/></a>
                 </#if>
                 <#if authorizedMap['cmsPlace/push']>
-                    <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" target="dialog" mask="true"><@t.page 'button.push'/></a>|
+                    <a href="cmsPlace/push.html?itemType=category&itemId=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'button.push'/></a>
                 </#if>
                 <#if authorizedMap['cmsCategory/publishParameters']&&site.useStatic&&!a.onlyUrl>
-                    <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" target="dialog" width="450" height="180" mask="true"><@t.page 'button.publish'/></a>
+                    <a href="cmsCategory/publishParameters.html?id=${a.id}&pageSize=${a.pageSize}&containChild=${a.containChild?then('true','false')}" class="btnText blue" target="dialog" width="450" height="180" mask="true"><@t.page 'button.publish'/></a>
                 </#if>
                 </td>
             </tr>

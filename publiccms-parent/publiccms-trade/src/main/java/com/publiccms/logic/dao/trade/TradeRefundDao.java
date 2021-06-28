@@ -20,6 +20,8 @@ public class TradeRefundDao extends BaseDao<TradeRefund> {
 
     /**
      * 
+     * @param siteId 
+     * @param userId 
      * @param paymentId
      * @param refundUserId
      * @param status
@@ -28,9 +30,15 @@ public class TradeRefundDao extends BaseDao<TradeRefund> {
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long paymentId, Long refundUserId, Integer status, String paymentType, Integer pageIndex,
-            Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Long refundUserId, Integer status, String paymentType,
+            Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from TradeRefund bean");
+        if (CommonUtils.notEmpty(siteId)) {
+            queryHandler.condition("bean.paymentId = :paymentId").setParameter("paymentId", paymentId);
+        }
+        if (CommonUtils.notEmpty(userId)) {
+            queryHandler.condition("bean.paymentId = :paymentId").setParameter("paymentId", paymentId);
+        }
         if (CommonUtils.notEmpty(paymentId)) {
             queryHandler.condition("bean.paymentId = :paymentId").setParameter("paymentId", paymentId);
         }

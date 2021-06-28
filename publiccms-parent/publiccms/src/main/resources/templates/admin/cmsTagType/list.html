@@ -23,8 +23,6 @@
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="cmsTagType/add.html" target="navTab" rel="cmsTagType/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'tag_type.add'/></a></li>
-            <li><a href="cmsTagType/add.html?id={sid}" target="navTab" rel="cmsTagType/edit"><i class="icon-edit icon-large"></i> <@t.page 'tag_type.edit'/></a></li>
-            <li><a href="cmsTagType/delete?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -33,6 +31,7 @@
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
                 <th><@t.page 'tag_type.tag_count'/></th>
+                <th width="50"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -41,6 +40,10 @@
                 <td>${a.id!}</td>
                 <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.count!}</td>
+                <td>
+                    <a href="cmsTagType/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsTagType/edit"><i class="icon-edit"></i> <@t.page 'tag_type.edit'/></a>
+                    <a href="cmsTagType/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                </td>
             </tr>
             </#list>
         </tbody>

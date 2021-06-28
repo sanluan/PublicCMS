@@ -30,13 +30,6 @@
 </div>
 <@_sysAuthorized roleIds=admin.roles urls='tradeRefund/refundParameters'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
-    <div class="panelBar">
-        <ul class="toolBar">
-        <#if authorizedMap['tradeRefund/refundParameters']>
-            <li><a href="tradeRefund/refundParameters.html?id={sid}" target="dialog" rel="tradeRefund/refundParameters"><i class="icon-plus-sign-alt icon-large"></i> 退款</a></li>
-        </#if>
-        </ul>
-    </div>
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
@@ -66,7 +59,7 @@
                 <td>${a.createDate!}</td>
                 <td>
                 <#if authorizedMap['tradeRefund/refundParameters'] && 0=a.status>
-                    <a href="tradeRefund/refundParameters.html?id=${a.id}" target="dialog" rel="tradeRefund/refundParameters">退款</a>
+                    <a href="tradeRefund/refundParameters.html?id=${a.id}" target="dialog" rel="tradeRefund/refundParameters"><i class="icon-plus-sign-alt"></i> 退款</a>
                 </#if>
                 </td>
             </tr>

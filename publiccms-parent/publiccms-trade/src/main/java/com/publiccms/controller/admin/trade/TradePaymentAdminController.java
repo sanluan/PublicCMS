@@ -60,14 +60,14 @@ public class TradePaymentAdminController {
         if (ControllerUtils.verifyNotEmpty("paymentGateway", paymentGateway, model)
                 || ControllerUtils.verifyCustom("tradePaymentStatus", !paymentService.refunded(site.getId(), payment.getId()),
                         model)
-                || ControllerUtils.verifyCustom("refundStatus", !service.updateResund(id, refundAmount, reply), model)) {
+                || ControllerUtils.verifyCustom("refundStatus", !service.updateResund(site.getId(),id, refundAmount, reply), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (paymentGateway.refund(site, payment, entity)) {
-            service.updateStatus(entity.getId(), admin.getId(), TradeRefundService.STATUS_REFUNDED);
+            service.updateStatus(site.getId(), entity.getId(), admin.getId(), TradeRefundService.STATUS_REFUNDED);
         } else {
             paymentService.pendingRefund(site.getId(), payment.getId());
-            service.updateStatus(entity.getId(), admin.getId(), TradeRefundService.STATUS_FAIL);
+            service.updateStatus(site.getId(), entity.getId(), admin.getId(), TradeRefundService.STATUS_FAIL);
         }
         return CommonConstants.TEMPLATE_DONE;
     }

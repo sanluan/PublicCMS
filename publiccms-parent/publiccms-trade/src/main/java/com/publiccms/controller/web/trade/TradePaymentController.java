@@ -227,12 +227,16 @@ public class TradePaymentController {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null == entity.getId()) {
+            entity.setSiteId(site.getId());
             entity.setRefundAmount(null);
             entity.setReply(null);
             entity.setRefundUserId(null);
+            entity.setUserId(user.getId());
+            entity.setStatus(TradeRefundService.STATUS_PENDING);
+            entity.setCreateDate(null);
             refundService.save(entity);
         } else {
-            refundService.updateAmound(entity.getId(), entity.getAmount(), entity.getReason());
+            refundService.updateAmound(entity.getId(), user.getId(), entity.getAmount(), entity.getReason());
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
@@ -256,7 +260,7 @@ public class TradePaymentController {
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
-        refundService.updateStatus(refundId, null, TradeRefundService.STATUS_CANCELLED);
+        refundService.updateStatus(site.getId(), refundId, null, TradeRefundService.STATUS_CANCELLED);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 

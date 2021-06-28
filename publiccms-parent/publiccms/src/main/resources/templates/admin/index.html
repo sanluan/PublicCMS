@@ -12,6 +12,7 @@
     <![endif]-->
     <link href="${base}/resource/themes/css/core.css?version=5" rel="stylesheet" media="screen"/>
     <link href="${base}/resource/themes/css/print.css" rel="stylesheet" media="print"/>
+    <link href="${base}/resource/css/cms.css" rel="stylesheet" media="screen"/>
     <!--[if lte IE 9]>
         <link href="${base}/resource/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
         <script src="${base}/resource/js/html5shiv.min.js"></script>
@@ -76,7 +77,7 @@
         <div class="tabsPageHeader">
             <div class="tabsPageHeaderContent">
                 <ul class="navTab-tab">
-                    <li tabid="main" class="main"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> <@t.page 'workgin_table'/></a></li>
+                    <li tabid="main" class="main" url="main.html"><a href="javascript:;" onclick="return false;"><i class="icon-home icon-large"></i> <@t.page 'workgin_table'/></a></li>
                 </ul>
             </div>
             <a href="javascript:;" onclick="return false;" class="toggleCollapse"><i class="icon icon-chevron-sign-left icon-large"></i></a>
@@ -146,14 +147,24 @@
             allowFileManager : true,
             formatUploadUrl : false
     };
-    DWZ.init("${base+adminContextPath}/common/dwz.frag.html", {
-        ckeditorResources:["${base}/resource/ckeditor/ckeditor.js"],
-        kindeditorResources:["${base}/resource/kindeditor/kindeditor-all.js","${base}/resource/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
-        ueditorResources:["${base}/resource/ueditor/ueditor.config.js","${base}/resource/ueditor/ueditor.all.min.js","${base}/resource/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
-        codemirrorResources:['${base}/resource/codemirror/lib/codemirror.js','${base}/resource/codemirror/mode/xml/xml.js','${base}/resource/codemirror/mode/javascript/javascript.js','${base}/resource/codemirror/mode/css/css.js',
+    window.editor = {
+        ckeditorResources: ["${base}/resource/ckeditor/ckeditor.js"],
+        ueditorResources: ["${base}/resource/ueditor/ueditor.config.js","${base}/resource/ueditor/ueditor.all.min.js","${base}/resource/ueditor/lang/<@t.page 'ueditor.lang_js'/>"],
+        kindeditorResources: ["${base}/resource/kindeditor/kindeditor-all.js","${base}/resource/kindeditor/<@t.page 'kindeditor.lang_js'/>"],
+        ckeditorInitd: false,
+        ueditorInitd: false,
+        kindeditorInitd: false,
+        index: 0
+    };
+    window.codemirror = {
+        resources: ['${base}/resource/codemirror/lib/codemirror.js','${base}/resource/codemirror/mode/xml/xml.js','${base}/resource/codemirror/mode/javascript/javascript.js','${base}/resource/codemirror/mode/css/css.js',
             '${base}/resource/codemirror/mode/htmlmixed/htmlmixed.js','${base}/resource/codemirror/mode/freemarker/freemarker.js','${base}/resource/codemirror/mode/freemarkermixed/freemarkermixed.js',
             '${base}/resource/codemirror/mode/nginx/nginx.js','${base}/resource/codemirror/addon/hint/show-hint.js','${base}/resource/codemirror/addon/hint/javascript-hint.js','${base}/resource/codemirror/addon/hint/html-hint.js',
             '${base}/resource/codemirror/addon/hint/css-hint.js','${base}/resource/codemirror/addon/hint/xml-hint.js'],
+        initd: false,
+        index: 0
+    };
+    DWZ.init("${base+adminContextPath}/common/dwz.frag.html", {
         loginUrl:"login_dialog.html", loginTitle:"<@t.page 'login'/>",
         pageInfo:{pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderType"},
         debug:false,

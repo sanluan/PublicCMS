@@ -1,4 +1,4 @@
-<@_tradeProductOrder id=id><#assign a=object/></@_tradeProductOrder>
+<@_tradeOrder id=id><#assign a=object/></@_tradeOrder>
 <div class="pageFormContent" layoutH>
     <dl class="nowrap">
         <dt>内容标题:</dt>
@@ -31,16 +31,11 @@
         </dd>
     </dl>
      <dl>
-        <dt>收货地址:</dt>
-        <dd class="exclude-translate" >${(a.address)!}</dd>
-    </dl>
-    <dl>
-        <dt>收件人:</dt>
-        <dd class="exclude-translate" >${(a.addressee)!}</dd>
-    </dl>
-    <dl>
-        <dt>电话:</dt>
-        <dd class="exclude-translate" >${(a.telephone)!}</dd>
+        <dt>收货人:</dt>
+        <dd class="exclude-translate" >
+            <p>${a.addressee!} <label>联系电话:</label>${a.telephone!}</p>
+            <p><label>收货地址:</label>${a.address!}</p>
+        </dd>
     </dl>
     <dl>
         <dt>IP:</dt>
@@ -55,18 +50,18 @@
         <dd class="exclude-translate" >${(a.status)!}</dd>
     </dl>
     <dl>
+        <dt>付款日期:</dt>
+        <dd>
+            ${(a.paymentDate)!}
+        </dd>
+    </dl>
+    <dl>
         <dt>是否处理:</dt>
-        <dd class="exclude-translate" >${(a.processed?c)!} / ${(a.processDate)!}</dd>
+        <dd class="exclude-translate" >${(a.processed)!} / ${(a.processDate)!}</dd>
     </dl>
     <dl>
         <dt>处理信息:</dt>
         <dd class="exclude-translate" >${(a.processInfo)!}</dd>
-    </dl>
-    <dl>
-        <dt>更新日期:</dt>
-        <dd class="exclude-translate" >
-            ${(a.updateDate)!}
-        </dd>
     </dl>
     <dl>
         <dt>创建日期:</dt>
@@ -75,9 +70,9 @@
         </dd>
     </dl>
     <dl>
-        <dt>付款日期:</dt>
-        <dd>
-            ${(a.paymentDate)!}
+        <dt>更新日期:</dt>
+        <dd class="exclude-translate" >
+            ${(a.updateDate)!}
         </dd>
     </dl>
 </div>

@@ -53,9 +53,6 @@
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
-            <li><a href="sysUser/add.html?id={sid}" target="navTab" rel="sysUser/edit"><i class="icon-edit icon-large"></i> <@t.page 'user.edit'/></a></li>
-            <li><a href="sysUser/enable?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'button.enable'/></a></li>
-            <li><a href="sysUser/disable?id={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.disable'/></a></li>
         </ul>
     </div>
     <table class="table" width="100%" layoutH>
@@ -86,11 +83,17 @@
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate!}</td>
                 <td>
-                    <a href="log/login.html?userId=${a.id}" target="navTab" rel="log/login">
+                    <a href="sysUser/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit icon-large"></i> <@t.page 'user.edit'/></a>
+                    <#if a.disabled>
+                        <a href="sysUser/enable?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle icon-large"></i> <@t.page 'button.enable'/></a>
+                    <#else>
+                        <a href="sysUser/disable?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle icon-large"></i> <@t.page 'button.disable'/></a>
+                    </#if>
+                    <a href="log/login.html?userId=${a.id}" class="btnText" target="navTab" rel="log/login">
                         <@t.page 'log.login'/>
                     </a>
                     <#if a.superuserAccess>
-                        <a href="log/operate.html?userId=${a.id}" target="navTab" rel="log/operate">
+                        <a href="log/operate.html?userId=${a.id}" class="btnText" target="navTab" rel="log/operate">
                             <@t.page 'log.operate'/>
                         </a>
                     </#if>

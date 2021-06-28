@@ -164,7 +164,7 @@
             <@_contentFileList contentId=a.id fileTypes='image'>
                 <#list page.list as file>
                     <div class="thumbnail">
-                        <img src="${(file.filePath)!}" style="max-width:200px;max-height:200px;"/>
+                        <img src="${(file.filePath)!}"/>
                     </div>
                 </#list>
             </@_contentFileList>
@@ -193,7 +193,7 @@
                     <div class="unit">
                         <#if product.cover?has_content>
                             <p class="thumbnail">
-                                <img src="${(product.cover)!}" style="max-width:200px;max-height:200px;"/>
+                                <img src="${(product.cover)!}"/>
                             </p>
                         </#if>
                         <p><label><@t.page 'title'/>:</label>${product.title}</p>

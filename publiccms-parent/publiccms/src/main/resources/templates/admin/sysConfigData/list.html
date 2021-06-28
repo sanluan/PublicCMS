@@ -1,15 +1,11 @@
 <div class="pageContent">
-    <div class="panelBar">
-        <ul class="toolBar">
-            <li><a href="sysConfigData/edit.html?code={sid}" target="navTab" rel="sysConfigData/edit"><i class="icon-edit icon-large"></i> <@t.page 'config_data.edit'/></a></li>
-        </ul>
-    </div>
 <@_sysConfigList>
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
                 <th width="200"><@t.page 'code'/></th>
                 <th><@t.page 'description'/></th>
+                <th width="50"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -19,9 +15,11 @@
             <@_sysDeptConfig deptId=admin.deptId!'' configs=t.configs!><#assign deptConfigMap=map!/></@_sysDeptConfig>
     <#list list as a>
         <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]>
-            <tr target="sid" rel="${a.code}">
+            <tr target="sid" rel="${a.code!}">
                 <td>${(a.code)!}</td>
                 <td>${(a.description)!}</td>
+                <td>
+                    <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i> <@t.page 'config_data.edit'/></a>
                 </td>
             </tr>
         </#if>

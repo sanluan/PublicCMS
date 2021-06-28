@@ -1,0 +1,23 @@
+@charset "UTF-8";
+a.btnText{padding: 4px 5px;word-break: keep-all;white-space: nowrap;background-color: #ddd;border-radius: 2px;margin-right:2px;}a.btnText.red{background-color: #edd;}a.btnText.green{background-color: #ded;}a.btnText.blue{background-color: #dde;}a.btnText.warn{background-color: #edd;color: #f33;}
+a.btnText:hover{text-decoration: none;}
+.grid .gridTbody td div a.btnText:hover,table.list a.btnText:hover{text-decoration:none;}
+
+.unit ul{padding: 0;margin: 0;list-style: none;}
+.unit ul li{padding: 20px;min-width:380px;width:25%;float:left;}
+.unit ul li .card{padding:10px;border-radius:5px;color:#fff;background-color:#0099CC;position: relative;font-size:16px;-moz-box-shadow: 0px 0px 5px 1px #DDE4EF;box-shadow: 0px 0px 5px 1px #DDE4EF;-ms-box-shadow: 0px 0px 5px 1px #DDE4EF;-o-box-shadow: 0px 0px 5px 1px #DDE4EF;-webkit-box-shadow: 0px 0px 5px 1px #DDE4EF;}
+.unit ul li .card a{color:#fff;}
+.unit ul li .card p{line-height:26px;float:unset;}
+.unit ul li .card p label{color:#fff;}
+.unit ul li .card h1{font-size:36px;line-height:36px;}
+.unit ul li .card h2{font-size:32px;line-height:36px;}
+.unit ul li .card h3{font-size:28px;line-height:36px;}
+.unit ul li .card h4{font-size:24px;line-height:36px;}
+.unit ul li .card h5{font-size:20px;line-height:36px;}
+.unit ul li .card h6{font-size:16px;line-height:36px;}
+.unit ul li:nth-child(1) .card,.unit ul.re li:nth-child(5) .card{background: #0099CC;}
+.unit ul li:nth-child(2) .card,.unit ul.re li:nth-child(4) .card{background: #FF9933;}
+.unit ul li:nth-child(3) .card,.unit ul.re li:nth-child(3) .card{background: #CC6699;}
+.unit ul li:nth-child(4) .card,.unit ul.re li:nth-child(2) .card{background: #996699;}
+.unit ul li:nth-child(5) .card,.unit ul.re li:nth-child(1) .card{background: #336699;}
+.unit ul li .card .icon{font-size:38px;position: absolute;top:20px;right: 20px;color: rgba(255, 255, 255, 0.12);}

@@ -31,63 +31,75 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='tradeProductOrder/add,tradeProductOrder/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='tradeOrder/confirm,tradeOrder/invalid,tradeOrder/process,tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
-    <div class="panelBar">
-        <ul class="toolBar">
-        <#if authorizedMap['tradeProductOrder/add']>
-            <li><a href="tradeProductOrder/add.html" target="navTab" rel="tradeProductOrder/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
-            <li><a href="tradeProductOrder/add.html?id={sid}" target="navTab" rel="tradeProductOrder/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
-        </#if>
-        <#if authorizedMap['tradeProductOrder/delete']>
-            <li><a href="tradeProductOrder/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
-        </#if>
-        </ul>
-    </div>
     <table class="table" width="100%" layoutH="92">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th>ID</th>
-                <th>用户ID</th>
-                <th>支付ID</th>
-                <th>收货地址</th>
+                <th>用户</th>
                 <th>收件人</th>
-                <th>电话</th>
-                <th>IP</th>
                 <th>备注</th>
                 <th>订单状态</th>
                 <th>是否处理</th>
-                <th>处理信息</th>
-                <th>更新日期</th>
+                <th>付款信息</th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
-                <th>处理日期</th>
-                <th>付款日期</th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
             <#list page.list as a>
+                <@t.merge 'userIds' a.userId!/>
+                <@t.merge 'userIds' a.processUserId!/>
+            </#list>
+            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td>${a.userId!}</td>
-                <td>${a.paymentId!}</td>
-                <td>${a.address!}</td>
-                <td>${a.addressee!}</td>
-                <td>${a.telephone!}</td>
-                <td>${a.ip!}</td>
+                <td>
+                    <div class="box">
+                        <p>${(userMap[a.userId?string].nickName)!}</p>
+                        <p>${a.ip!}</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="box">
+                        <p>${a.addressee!}</p>
+                        <p><label>收货地址:</label>${a.address!}</p>
+                    </div>
+                </td>
                 <td>${a.remark!}</td>
                 <td>${a.status!}</td>
-                <td>${a.processed!}</td>
-                <td>${a.processInfo!}</td>
-                <td>${a.updateDate!}</td>
-                <td>${a.createDate!}</td>
-                <td>${a.processDate!}</td>
-                <td>${a.paymentDate!}</td>
                 <td>
-                <#if authorizedMap['tradeProductOrder/delete']>
-                    <a href="tradeProductOrder/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <div class="box">
+                        <p>${a.processed!} ${a.processDate!}</p>
+                        <p>${a.processInfo!}</p>
+                    </div>
+                    
+                </td>
+                <td>
+                    <div class="box">
+                        <p>${a.paymentId!}</p>
+                        <p>${a.paymentDate!}</p>
+                    </div>
+                </td>
+                <td>${a.createDate!}</td>
+                <td>
+                <#if 3=a.status || 0 = a.status>
+                    <#if authorizedMap['tradeOrder/confirm']>
+                    <a href="tradeOrder/confirm?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="确定要确认吗" target="ajaxTodo">确认订单</a>
+                    </#if>
+                    <#if authorizedMap['tradeOrder/invalid']>
+                    <a href="tradeOrder/invalid?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="确定要设置无效吗" target="ajaxTodo">无效订单</a>
+                    </#if>
+                </#if>
+                <#if 1=a.status && !a.processed && authorizedMap['tradeOrder/process']>
+                    <a href="tradeOrder/processParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true">处理订单</a>
+                </#if>
+                <#if authorizedMap['tradeOrderHistory/list']>
+                    <a href="tradeOrderHistory/list.html?queryOrderId=${a.id}" class="btnText" target="navTab" rel="tradeOrderHistory/list">订单历史</a>
                 </#if>
                 </td>
             </tr>

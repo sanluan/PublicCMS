@@ -12,17 +12,13 @@
     </form>
 </div>
 <div class="pageContent">
-    <div class="panelBar">
-        <ul class="toolBar">
-            <li><a href="sysAppToken/delete?authToken={sid}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
-        </ul>
-    </div>
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
                 <th><@t.page 'app.token'/></th>
                 <th><@t.page 'expiry_date'/></th>
                 <th><@t.page 'authorize_date'/></th>
+                <th width="50"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -31,6 +27,9 @@
                 <td>${a.authToken!}</td>
                 <td>${a.expiryDate!}</td>
                 <td>${a.createDate!}</td>
+                <td>
+                    <a href="sysAppToken/delete?authToken=${a.authToken}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                </td>
             </tr>
             </#list>
         </tbody>

@@ -3,7 +3,7 @@
     <div class="formBar">
         <ul>
         <#if !site.parentId?has_content>
-            <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><@t.page 'button.delete'/></a></li>
+            <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
         </#if>
     <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
         <@_sysDeptPage deptId=admin.deptId!'' pages=path>

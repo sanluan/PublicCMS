@@ -6,7 +6,7 @@ SET FOREIGN_KEY_CHECKS=0;
 DROP TABLE IF EXISTS `cms_category`;
 CREATE TABLE `cms_category` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `parent_id` int(11) default NULL COMMENT '父分类ID',
   `type_id` int(11) default NULL COMMENT '分类类型',
@@ -63,7 +63,7 @@ CREATE TABLE `cms_category_model` (
 DROP TABLE IF EXISTS `cms_category_type`;
 CREATE TABLE `cms_category_type` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `sort` int(11) NOT NULL COMMENT '排序',
   `extend_id` int(11) default NULL COMMENT '扩展ID',
@@ -76,7 +76,7 @@ CREATE TABLE `cms_category_type` (
 DROP TABLE IF EXISTS `cms_comment`;
 CREATE TABLE `cms_comment` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `reply_id` bigint(20) DEFAULT NULL COMMENT '回复ID',
   `reply_user_id` bigint(20) DEFAULT NULL COMMENT '回复用户ID',
@@ -100,7 +100,7 @@ CREATE TABLE `cms_comment` (
 DROP TABLE IF EXISTS `cms_content`;
 CREATE TABLE `cms_content` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `user_id` bigint(20) NOT NULL COMMENT '发表用户',
   `check_user_id` bigint(20) default NULL COMMENT '审核用户',
@@ -186,7 +186,7 @@ CREATE TABLE `cms_content_file` (
 -- ----------------------------
 CREATE TABLE `cms_content_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `content_id` bigint(20) NOT NULL COMMENT '内容',
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
@@ -227,7 +227,7 @@ CREATE TABLE `cms_content_related` (
 DROP TABLE IF EXISTS `cms_dictionary`;
 CREATE TABLE `cms_dictionary` (
   `id` varchar(20) NOT NULL,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(100) NOT NULL COMMENT '名称',
   `multiple` tinyint(1) NOT NULL COMMENT '允许多选',
   PRIMARY KEY (`id`,`site_id`),
@@ -1823,7 +1823,7 @@ CREATE TABLE `trade_order` (
 -- ----------------------------
 CREATE TABLE `trade_order_history` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `order_id` bigint(20) NOT NULL COMMENT '订单ID',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `operate` varchar(100) NOT NULL COMMENT '操作',
@@ -1852,19 +1852,21 @@ CREATE TABLE `trade_order_product` (
 -- Table structure for trade_refund
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_refund`;
-CREATE TABLE `trade_refund`  (
+CREATE TABLE `trade_refund` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `order_id` bigint(20) NOT NULL COMMENT '订单ID',
-  `amount` decimal(10, 2) NOT NULL COMMENT '申请退款金额',
-  `reason` varchar(255) NULL DEFAULT NULL COMMENT '退款原因',
-  `update_date` datetime NULL DEFAULT NULL COMMENT '更新日期',
-  `refund_user_id` bigint(20) NULL DEFAULT NULL COMMENT '退款操作人员',
-  `refund_amount` decimal(10, 2) NULL DEFAULT NULL COMMENT '退款金额',
+  `site_id` smallint(0) NOT NULL COMMENT '站点',
+  `payment_id` bigint(20) NOT NULL COMMENT '订单ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `amount` decimal(10,2) NOT NULL COMMENT '申请退款金额',
+  `reason` varchar(255) DEFAULT NULL COMMENT '退款原因',
+  `update_date` datetime DEFAULT NULL COMMENT '更新日期',
+  `refund_user_id` bigint(20) DEFAULT NULL COMMENT '退款操作人员',
+  `refund_amount` decimal(10,2) DEFAULT NULL COMMENT '退款金额',
   `status` int(11) NOT NULL COMMENT '状态:0待退款,1已退款,2取消退款,3拒绝退款,4退款失败',
-  `reply` varchar(255) NULL DEFAULT NULL COMMENT '回复',
+  `reply` varchar(255) DEFAULT NULL COMMENT '回复',
   `create_date` datetime NOT NULL COMMENT '创建日期',
-  `processing_date` datetime NULL DEFAULT NULL COMMENT '处理日期',
+  `processing_date` datetime DEFAULT NULL COMMENT '处理日期',
   PRIMARY KEY (`id`),
-  KEY `trade_refund_order_id`(`order_id`, `status`),
-  KEY `trade_refund_create_date` (`create_date`)
-) COMMENT = '退款申请';
+  KEY `trade_refund_create_date` (`create_date`),
+  KEY `trade_refund_user_id` (`user_id`,`payment_id`,`status`)
+) COMMENT='退款申请';

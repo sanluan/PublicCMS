@@ -229,7 +229,7 @@
         <#else>
     <dl class="nowrap">
         <dt>${(e.name)}:</dt>
-        <dd<#if 'editor'=e.inputType> id="content"</#if>>
+        <dd<#if 'editor'=e.inputType> style="width:90%;"</#if>>
             <@input name e e?index+fromIndex value type/>
             <span class="info">${(htmlSafe?then(e.description?no_esc,e.description))!}</span>
         </dd>

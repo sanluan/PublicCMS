@@ -247,7 +247,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                 <table class="list nowrap itemDetail" addButton="<@t.page 'button.new_line'/>" width="100%">
                     <thead>
                         <tr>
-                            <th type="lookup" name="contentRelateds[#index#].title" size="30" fieldClass="required" fieldAttrs="{maxlength:255,width:1080,height:500}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId"><@t.page 'content.select'/></th>
+                            <th type="lookup" name="contentRelateds[#index#].title" size="30" fieldClass="required" fieldAttrs="{maxlength:255,width:1200,height:580}" lookupGroup="contentRelateds[#index#]" lookupUrl="cmsContent/lookup.html" lookupPk="relatedContentId"><@t.page 'content.select'/></th>
                             <th type="text" name="contentRelateds[#index#].url" size="40" fieldClass="required" fieldAttrs="{maxlength:2048}"><@t.page 'address'/></th>
                             <th type="textarea" name="contentRelateds[#index#].description" fieldAttrs="{maxlength:150,rows:2,cols:60}"><@t.page 'description'/></th>
                             <th type="text" name="contentRelateds[#index#].sort" fieldClass="required digits" defaultval="#index#" size="5"><@t.page 'sort'/></th>
@@ -263,7 +263,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                                 <input type="hidden" name="contentRelateds[${related?index}].id" value="${related.id}"/>
                                 <input type="hidden" name="contentRelateds[${related?index}].relatedContentId" value="${related.relatedContentId!}"/>
                                 <input class="required" type="text" name="contentRelateds[${related?index}].title" value="${related.title}" size="30" maxlength="255" class="required" />
-                                <a class="btnLook" href="cmsContent/lookup.html" lookupGroup="contentRelateds[${related?index}]" lookupPk="relatedContentId" width="1080" height="500"><@t.page 'content.select'/></a>
+                                <a class="btnLook" href="cmsContent/lookup.html" lookupGroup="contentRelateds[${related?index}]" lookupPk="relatedContentId" width="1200" height="580"><@t.page 'content.select'/></a>
                             </td>
                             <td>
                                 <input class="required" type="text" name="contentRelateds[${related?index}].url" value="${(related.url)!}" size="40" maxlength="2048"/>

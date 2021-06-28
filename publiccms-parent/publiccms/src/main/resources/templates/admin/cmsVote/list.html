@@ -39,7 +39,6 @@
         <ul class="toolBar">
         <#if authorizedMap['cmsVote/add']>
             <li><a href="cmsVote/add.html" target="navTab" rel="cmsVote/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
-            <li><a href="cmsVote/add.html?id={sid}" target="navTab" rel="cmsVote/edit"><i class="icon-edit icon-large"></i> <@t.page 'button.edit'/></a></li>
         </#if>
         <#if authorizedMap['cmsVote/delete']>
             <li><a href="cmsVote/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
@@ -72,8 +71,11 @@
                 <td>${a.endDate!}</td>
                 <td>${a.createDate!}</td>
                 <td>
+                <#if authorizedMap['cmsVote/add']>
+                    <a href="cmsVote/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsVote/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                </#if>
                 <#if authorizedMap['cmsVote/delete']>
-                    <a href="cmsVote/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsVote/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </#if>
                 </td>
             </tr>

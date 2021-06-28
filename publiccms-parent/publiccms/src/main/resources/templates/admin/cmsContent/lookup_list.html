@@ -1,5 +1,5 @@
 <@_contentList advanced=true status=1 endPublishDate=.now categoryId=categoryId modelId=modelId title=title
-    parentId=parentId emptyQuote=true containChild=true userId=userId startPublishDate=startPublishDate 
+    parentId=parentId containChild=true userId=userId startPublishDate=startPublishDate 
     orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" action="cmsContent/lookup_list.html" onsubmit="return divSearch(this, 'content_list');" method="post">
@@ -26,12 +26,12 @@
                 </li>
             </ul>
             <div class="subBar">
-                    <ul>
-                        <li>
-                            <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
-                        </li>
-                    </ul>
-                </div>
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
         </div>
     </form>
 </div>
@@ -39,19 +39,13 @@
     <table class="table" width="100%" layoutH rel="content_list">
         <thead>
             <tr>
-                <th width="30"><@t.page 'use'/></th>
-                <th width="30"><@t.page 'id'/></th>
-                <th><@t.page 'title'/></th>
-                <th><@t.page 'content.promulgator'/></th>
-                <th><@t.page 'category'/></th>
-                <th><@t.page 'model'/></th>
+                <th width="20"><@t.page 'use'/></th>
+                <th width="20"><@t.page 'id'/></th>
+                <th width="200"><@t.page 'content'/></th>
                 <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
                 <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
-                <th width="60" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
-                <th width="60"><@t.page 'create_date'/></th>
-                <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
-                <th width="40"><@t.page 'content.child'/></th>
+                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
             </tr>
         </thead>
         <tbody>
@@ -69,37 +63,26 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
-                    <a href="javascript:;" class="btnSelect" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                    <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'relatedContentId'}':'${a.id}', url:'${a.url!}', title:'${a.title?js_string}', description:'${(a.description!)?js_string}'}); return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
                 </td>
                 <td>${a.id}</td>
                 <td>
-                    <a href="${a.url!}" target="_blank">
-                        ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<span class="exclude-translate">${a.title!}</span>
-                    </a>
-                </td>
-                <td class="exclude-translate">
-                     ${(userMap[a.userId?string].nickName)!}
-                </td>
-                <td class="exclude-translate">
-                    ${(categoryMap[a.categoryId?string].name)!}
-                </td>
-                <td class="exclude-translate">
-                     ${(modelMap[a.modelId].name)!}
+                    <div class="box">
+                        <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></h3>
+                        <p>
+                            <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickName)!}</span>
+                            <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
+                            <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
+                                <label><a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list"><@t.page 'content.child_management'/></a></label>
+                            </#if>
+                            <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
+                        </p>
+                    </div>
                 </td>
                 <td>${a.scores!}</td>
                 <td>${a.comments!}</td>
                 <td>${a.clicks!}</td>
                 <td>${a.publishDate!}</td>
-                <td>${a.createDate!}<#if a.updateDate??>/${a.updateDate}</#if></td>
-                <td>
-                    <@t.page 'status.content.'+a.status/>
-                    <#if 2==a.status>/<span class="exclude-translate">${(userMap[a.checkUserId?string].nickName)!}</span></#if>
-                </td>
-                <td>
-                    <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="cmsContent/lookup_list.html?parentId=${a.id}&categoryId=${a.categoryId}&field=${field!'relatedContentId'}" target="ajax" rel="content_list"><@t.page 'content.child_management'/></a>
-                    </#if>
-                </td>
             </tr>
             </#list>
         </tbody>

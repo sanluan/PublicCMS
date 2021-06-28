@@ -46,7 +46,6 @@
     <div class="panelBar">
         <ul class="toolBar">
             <li><a href="cmsPlace/add.html?path=${(path?url)!}" target="navTab" rel="cmsPlace/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'place_data.add'/></a></li>
-            <li><a href="cmsPlace/add.html?id={sid}" target="navTab" rel="cmsPlace/edit"><i class="icon-edit icon-large"></i> <@t.page 'place_data.edit'/></a></li>
             <li><a href="cmsPlace/refresh?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_refresh'/>" target="selectedTodo" rel="ids"><i class="icon-refresh icon-large"></i> <@t.page 'button.batch_refresh'/></a></li>
             <li><a href="cmsPlace/check?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_check'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_check'/></a></li>
             <li><a href="cmsPlace/uncheck?_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.batch_uncheck'/>" target="selectedTodo" rel="ids"><i class="icon-check icon-large"></i> <@t.page 'button.batch_uncheck'/></a></li>
@@ -65,14 +64,14 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
-                <th><@t.page 'title'/></th>
-                <th width="140" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
-                <th width="140"><@t.page 'expiry_date'/></th>
-                <th width="140" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
-                <th width="100"><@t.page 'content.promulgator'/></th>
+                <th width="150"><@t.page 'title'/></th>
+                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="70"><@t.page 'expiry_date'/></th>
+                <th width="70" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th width="60"><@t.page 'content.promulgator'/></th>
                 <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
-                <th width="140"><@t.page 'operate'/></th>
+                <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -97,14 +96,14 @@
                     <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
                 <td>
-                    <a href="cmsPlace/add.html?id=${a.id}" target="navTab" rel="cmsPlace/edit" title="<@t.page 'place_data.edit'/>"><@t.page 'button.edit'/></a>|
-                    <a href="cmsPlace/add.html?copyId=${a.id}" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>|
+                    <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
                     <#if 2=a.status>
-                        <a href="cmsPlace/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.check'/></a>|
+                        <a href="cmsPlace/check?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText green" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-check"></i> <@t.page 'button.check'/></a>
                     <#elseif 1=a.status>
-                        <a href="cmsPlace/uncheck?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><@t.page 'button.uncheck'/></a>|
+                        <a href="cmsPlace/uncheck?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText red" title="<@t.page 'confirm.check'/>" target="ajaxTodo"><i class="icon-eraser"></i> <@t.page 'button.uncheck'/></a>
                     </#if>
-                    <a href="cmsPlace/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'button.delete'/></a>
+                    <a href="cmsPlace/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>&path=${(path?url)!}" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </td>
             </tr>
     </#list>

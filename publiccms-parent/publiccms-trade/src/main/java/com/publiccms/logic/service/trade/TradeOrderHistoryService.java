@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.entities.trade.TradeOrderHistory;
-import com.publiccms.logic.dao.trade.TradePaymentHistoryDao;
+import com.publiccms.logic.dao.trade.TradeOrderHistoryDao;
 
 /**
  *
@@ -36,6 +36,14 @@ public class TradeOrderHistoryService extends BaseService<TradeOrderHistory> {
      * 
      */
     public static final String OPERATE_PROCESSED = "processed";
+    /**
+     * 
+     */
+    public static final String OPERATE_INVALID = "invalid";
+    /**
+     * 
+     */
+    public static final String OPERATE_CONFIRM = "confirm";
     /**
      * 
      */
@@ -67,6 +75,6 @@ public class TradeOrderHistoryService extends BaseService<TradeOrderHistory> {
     }
 
     @Autowired
-    private TradePaymentHistoryDao dao;
+    private TradeOrderHistoryDao dao;
 
 }

@@ -105,11 +105,25 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean confirm(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && siteId == entity.getSiteId()) {
+        if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PAID) {
             entity.setStatus(STATUS_CONFIRMED);
             Date now = CommonUtils.getDate();
             entity.setUpdateDate(now);
-            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_PROCESSED);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_CONFIRM);
+            historyDao.save(history);
+            return true;
+        }
+        return false;
+    }
+
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public boolean invalid(short siteId, long orderId) {
+        TradeOrder entity = getEntity(orderId);
+        if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PAID) {
+            entity.setStatus(STATUS_INVALID);
+            Date now = CommonUtils.getDate();
+            entity.setUpdateDate(now);
+            TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_INVALID);
             historyDao.save(history);
             return true;
         }
@@ -193,8 +207,8 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean close(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && siteId == entity.getSiteId() && (entity.getStatus() == STATUS_PENDING
-                || entity.getStatus() == STATUS_INVALID || entity.getStatus() == STATUS_REFUNDED)) {
+        if (null != entity && siteId == entity.getSiteId()
+                && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_INVALID)) {
             entity.setStatus(STATUS_CLOSE);
             Date now = CommonUtils.getDate();
             entity.setUpdateDate(now);

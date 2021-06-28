@@ -1,0 +1,67 @@
+<@_tradeOrder id=id><#assign a=object/></@_tradeOrder>
+<form action="tradeOrder/process?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="ids" value="${id!}"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="pageFormContent" layoutH>
+        <dl class="nowrap">
+            <dt>产品详情:</dt>
+            <dd class="exclude-translate" >
+                <@_tradeOrderProductList orderId=a.id>
+                <#list page.list as op>
+                    <@t.merge 'contentIds' op.contentId!/>
+                    <@t.merge 'productIds' op.productId!/>
+                </#list>
+                <@_content ids=t.contentIds!><#assign contentMap=map!/></@_content>
+                <@_contentProduct ids=t.productIds!><#assign productMap=map!/></@_contentProduct>
+                <#list page.list as op>
+                    <div class="unit">
+                        <#if (productMap[op.productId?string].cover)?has_content || (contentMap[op.contentId?string].cover)?has_content>
+                            <p class="thumbnail">
+                                <img src="${(productMap[op.productId?string].cover)!(contentMap[op.contentId?string].cover)!}"/>
+                            </p>
+                        </#if>
+                        <p><label><@t.page 'title'/>:</label><a href="cmsContent/view.html?id=${op.contentId!}" class="exclude-translate" target="dialog" rel="viewContent${op.contentId!}">${(contentMap[op.contentId?string].title)!}</a> - ${(productMap[op.productId?string].title)!}</p>
+                        <p><label>价格:</label>${op.price!}</p>
+                        <p><label>数量:</label>${op.quantity!}</p>
+                        <p><label>备注:</label>${op.remark!}</p>
+                    </div>
+                    <div class="divider"></div>
+                </#list>
+            </@_tradeOrderProductList>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt>收货信息:</dt>
+            <dd class="exclude-translate" >
+                <p>${a.addressee!} <label>联系电话:</label>${a.telephone!}</p>
+                <p><label>收货地址:</label>${a.address!}</p>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt>备注:</dt>
+            <dd class="exclude-translate" >${(a.remark)!}</dd>
+        </dl>
+        <dl>
+            <dt>创建日期:</dt>
+            <dd class="exclude-translate" >
+                ${(a.createDate)!}
+            </dd>
+        </dl>
+        <dl>
+            <dt>付款日期:</dt>
+            <dd>
+                ${(a.paymentDate)!}
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt>发货信息:</dt>
+            <dd><input class="required" type="text" value="" size="80" maxlength="200"/></dd>
+        </dl>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive">处理订单</button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>

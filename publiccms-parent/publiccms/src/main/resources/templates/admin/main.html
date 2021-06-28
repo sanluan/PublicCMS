@@ -1,97 +1,221 @@
 <div class="pageFormContent" layoutH>
+<script src="${base}/resource/js/echarts.common.min.js"></script>
 <fieldset>
     <legend><@t.page 'my_account'/></legend>
     <div class="unit">
-        <p>
-            <label><@t.page 'myself.my_pending_content'/>:</label>
-            <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
-                <@_contentList advanced=true status=2 userId=admin.id pageSize=0>
-                    ${page.totalCount}
-                </@_contentList>
-            </a>
-        </p>
-        <p>
-            <label><@t.page 'myself.my_draft'/>:</label>
-            <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
-                <@_contentList advanced=true status=0 userId=admin.id pageSize=0>
-                    ${page.totalCount}
-                </@_contentList>
-            </a>
-        </p>
-        <p>
-            <a class="button" href="main.html" target="navTab" rel="main"><i class="icon-refresh"></i> <@t.page 'button.refresh'/></a>
-        </p>
+        <ul>
+            <li>
+                <div class="card">
+                    <p><@t.page 'myself.my_pending_content'/></p>
+                    <a href="myself/contentList.html?status=2" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
+                        <@_contentList advanced=true status=2 userId=admin.id pageSize=0>
+                            <h3>${page.totalCount}</h3>
+                        </@_contentList>
+                    </a>
+                    <i class="icon-book icon-large icon"></i>
+                </div>
+            </li>
+            <li>
+                <div class="card">
+                    <p><@t.page 'myself.my_draft'/></p>
+                    <a href="myself/contentList.html?status=0" icon="<i class='icon-book icon-large'></i>" title="<@t.page 'my_content'/>" target="navTab" rel="myself/contentList">
+                        <@_contentList advanced=true status=0 userId=admin.id pageSize=0>
+                            <h3>${page.totalCount}</h3>
+                        </@_contentList>
+                    </a>
+                    <i class="icon-edit icon-large icon"></i>
+                </div>
+            </li>
+            <li>
+                <a class="button" href="main.html" target="navTab" rel="main"><i class="icon-refresh"></i> <@t.page 'button.refresh'/></a>
+            </li>
+        </ul>
     </div>
-    <div class="divider"></div>
     <div class="unit">
-        <p>
-            <label><@t.page 'user.login_count'/>:</label>
-            <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="<@t.page 'my_login_log'/>" target="navTab" rel="myself/logLogin">${admin.loginCount}</a>
-        </p>
-        <p>
-            <label><@t.page 'user.last_login_date'/>:</label>${admin.lastLoginDate!}
-        </p>
-        <p>
-            <label><@t.page 'user.last_login_ip'/>:</label>${admin.lastLoginIp!}
-        </p>
-        <p>
-            <label><@t.page 'my_login_token'/>:</label>
-            <a href="myself/userTokenList.html" icon="<i class='icon-unlock-alt icon-large'></i>" title="<@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList"><@_sysUserTokenList userId=admin.id pageSize=0>${page.totalCount}</@_sysUserTokenList></a>
-        </p>
+        <ul class="re">
+            <li>
+                <div class="card">
+                    <p><@t.page 'user.login_count'/></p>
+                    <a href="myself/logLogin.html" icon="<i class='icon-signin icon-large'></i>" title="<@t.page 'my_login_log'/>" target="navTab" rel="myself/logLogin"><h3>${admin.loginCount}<h3></a>
+                    <i class="icon-signin icon-large icon"></i>
+                </div>
+            </li>
+            <li>
+                <div class="card">
+                    <p><@t.page 'my_login_token'/></p>
+                    <a href="myself/userTokenList.html" icon="<i class='icon-unlock-alt icon-large'></i>" title="<@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList"><h6><@_sysUserTokenList userId=admin.id pageSize=0>${page.totalCount}</@_sysUserTokenList></h6></a>
+                    <i class="icon-unlock-alt icon-large icon-large icon"></i>
+                </div>
+            </li>
+            <li>
+                <div class="card">
+                    <p>
+                        <label><@t.page 'user.last_login_date'/>:</label>${admin.lastLoginDate!}
+                    </p>
+                    <p>
+                        <label><@t.page 'user.last_login_ip'/>:</label>${admin.lastLoginIp!}
+                    </p>
+                    <i class="icon-time icon-large icon"></i>
+                </div>
+            </li>
+        </ul>
     </div>
 </fieldset>
 <@_sysAuthorized roleIds=admin.roles url='cmsComment/list'>
     <fieldset>
         <legend><@t.page 'comment.management'/></legend>
         <div class="unit">
-            <p>
-                <label><@t.page 'comment.uncheck'/>:</label>
-                <a href="cmsComment/list.html?status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
-                    <@_commentList advanced=true status=2 pageSize=0>
-                        ${page.totalCount}
-                    </@_commentList>
-                </a>
-            </p>
-            <p>
-                <label><@t.page 'content.comments'/>:</label>
-                <a href="cmsComment/list.html?status=1&status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
-                    <@_commentList advanced=true status='1,2' pageSize=0>
-                        ${page.totalCount}
-                    </@_commentList>
-                </a>
-            </p>
+            <ul class="clearfix">
+                <li>
+                    <div class="card">
+                        <p><@t.page 'comment.uncheck'/></p>
+                        <a href="cmsComment/list.html?status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
+                            <@_commentList advanced=true status=2 pageSize=0>
+                                <h3>${page.totalCount}</h3>
+                            </@_commentList>
+                        </a>
+                        <i class="icon-comment icon-large icon-large icon"></i>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <p><@t.page 'content.comments'/></p>
+                        <a href="cmsComment/list.html?status=1&status=2" icon="<i class='icon-comment icon-large'></i>" title="<@t.page 'comment.management'/>" target="navTab" rel="cmsComment/list">
+                            <@_commentList advanced=true status='1,2' pageSize=0>
+                                <h3>${page.totalCount}</h3>
+                            </@_commentList>
+                        </a>
+                        <i class="icon-comments icon-large icon"></i>
+                    </div>
+                </li>
+            </ul>
+            <div id="comment" style="height:350px;"></div>
         </div>
+<script>
+echarts.init(document.getElementById('comment')).setOption({
+    title: {
+        text: '<@t.page 'comment'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list 30..0 as a>'${(.now?long-a*86400000)?number_to_date}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+        name:'<@t.page 'operate'/>',
+        type:'line',
+        data:[<#list 30..0 as a><@_logOperateList operate='save.cmsComment' startCreateDate=(.now?long-a*86400000)?number_to_date?string endCreateDate=(.now?long-(a-1)*86400000)?number_to_date?string>${page.totalCount}</@_logOperateList><#sep>,</#list>],
+        areaStyle: {}
+    }]
+});
+</script>
    </fieldset>
 </@_sysAuthorized>
 <@_sysAuthorized roleIds=admin.roles url='report/user'>
     <fieldset>
         <legend><@t.page 'report.user'/></legend>
         <div class="unit">
-            <p>
-                <label><@t.page 'register'/>:</label>
-                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-                    <@_sysUserList startRegisteredDate=.now?long?number_to_date?string>
-                       ${page.totalCount}
-                    </@_sysUserList>
-                </a>
-            </p>
-            <p>
-                <label><@t.page 'login'/>:</label>
-                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-                    <@_logLoginList startCreateDate=.now?long?number_to_date?string>
-                       ${page.totalCount}
-                    </@_logLoginList>
-                </a>
-            </p>
-            <p>
-                <label><@t.page 'operate'/>:</label>
-                <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
-                    <@_logOperateList startCreateDate=.now?long?number_to_date?string>
-                       ${page.totalCount}
-                    </@_logOperateList>
-                </a>
-            </p>
+            <div id="visit" style="height:350px;"></div>
+            <ul class="re">
+                <li>
+                    <div class="card">
+                        <p><@t.page 'register'/></p>
+                        <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                            <@_sysUserList startRegisteredDate=.now?long?number_to_date?string>
+                               <h3>${page.totalCount}</h3>
+                            </@_sysUserList>
+                        </a>
+                        <i class="icon-signal icon-large icon"></i>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <p><@t.page 'login'/></p>
+                        <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                            <@_logLoginList startCreateDate=.now?long?number_to_date?string>
+                               <h3>${page.totalCount}</h3>
+                            </@_logLoginList>
+                        </a>
+                        <i class="icon-ticket icon-large icon"></i>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <p><@t.page 'operate'/></p>
+                        <a href="report/user.html" icon="<i class='icon-male icon-large'></i>" title="<@t.page 'report.user'/>" target="navTab" external="true" rel="report/user">
+                            <@_logOperateList startCreateDate=.now?long?number_to_date?string>
+                               <h3>${page.totalCount}</h3>
+                            </@_logOperateList>
+                        </a>
+                        <i class="icon-list-alt icon-large icon"></i>
+                    </div>
+                </li>
+            </ul>
         </div>
+<script>
+<@_logVisitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
+echarts.init(document.getElementById('visit')).setOption({
+    title: {
+        text: '<@t.page 'log.visit'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    legend: {
+        data: ['PV', 'UV', 'IP Views'],
+        top:30
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list page.list?reverse as a>'${a.id.visitDate?date}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+           name:'PV',
+           type:'line',
+           data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+           areaStyle: {}
+       },
+       {
+           name:'UV',
+           type:'line',
+           data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+           areaStyle: {}
+       },
+       {
+           name:'IP Views',
+           type:'line',
+           data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+           areaStyle: {}
+       }]
+});
+</@_logVisitDayList>
+</script>
     </fieldset>
 </@_sysAuthorized>
 <@_version>

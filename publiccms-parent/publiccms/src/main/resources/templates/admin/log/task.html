@@ -68,7 +68,7 @@
                 <td>
                     <#if a.endtime?has_content>${a.success?string(t.pageMessage('success'),t.pageMessage('fail'))}</#if>
                 </td>
-                <td><a href="log/taskView.html?id=${a.id}" target="dialog" rel="viewTask"><@t.page 'button.view_more'/></a></td>
+                <td><a href="log/taskView.html?id=${a.id}" class="btnText" target="dialog" rel="viewTask"><@t.page 'button.view_more'/></a></td>
             </tr>
             </#list>
         </tbody>

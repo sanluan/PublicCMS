@@ -14,6 +14,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -31,6 +32,11 @@ public class TradeRefund implements java.io.Serializable {
 
     @GeneratorColumn(title = "ID")
     private Long id;
+    @GeneratorColumn(title = "站点", condition = true)
+    @JsonIgnore
+    private short siteId;
+    @GeneratorColumn(title = "用户", condition = true)
+    private long userId;
     @GeneratorColumn(title = "订单ID", condition = true)
     private long paymentId;
     @GeneratorColumn(title = "申请退款金额")
@@ -55,15 +61,19 @@ public class TradeRefund implements java.io.Serializable {
     public TradeRefund() {
     }
 
-    public TradeRefund(long paymentId, BigDecimal amount, int status, Date createDate) {
+    public TradeRefund(short siteId, long userId, long paymentId, BigDecimal amount, int status, Date createDate) {
+        this.siteId = siteId;
+        this.userId = userId;
         this.paymentId = paymentId;
         this.amount = amount;
         this.status = status;
         this.createDate = createDate;
     }
 
-    public TradeRefund(long paymentId, BigDecimal amount, String reason, Date updateDate, Long refundUserId,
+    public TradeRefund(short siteId,long userId, long paymentId, BigDecimal amount, String reason, Date updateDate, Long refundUserId,
             BigDecimal refundAmount, int status, String reply, Date createDate, Date processingDate) {
+        this.siteId = siteId;
+        this.userId = userId;
         this.paymentId = paymentId;
         this.amount = amount;
         this.reason = reason;
@@ -86,6 +96,24 @@ public class TradeRefund implements java.io.Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Column(name = "site_id", nullable = false)
+    public short getSiteId() {
+        return this.siteId;
+    }
+
+    public void setSiteId(short siteId) {
+        this.siteId = siteId;
+    }
+
+    @Column(name = "user_id", nullable = false)
+    public long getUserId() {
+        return this.userId;
+    }
+
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     @Column(name = "payment_id", nullable = false)

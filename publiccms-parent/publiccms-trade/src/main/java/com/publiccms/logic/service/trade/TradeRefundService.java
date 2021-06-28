@@ -46,6 +46,8 @@ public class TradeRefundService extends BaseService<TradeRefund> {
 
     /**
      * 
+     * @param siteId 
+     * @param userId 
      * @param paymentId
      * @param refundUserId
      * @param status
@@ -55,21 +57,23 @@ public class TradeRefundService extends BaseService<TradeRefund> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long paymentId, Long refundUserId, Integer status, String paymentType, Integer pageIndex,
-            Integer pageSize) {
-        return dao.getPage(paymentId, refundUserId, status, paymentType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Long refundUserId, Integer status, String paymentType,
+            Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, paymentId, refundUserId, status, paymentType, pageIndex, pageSize);
     }
 
     /**
      * @param refundId
+     * @param userId
      * @param amount
      * @param reason
      * @return
      */
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean updateAmound(long refundId, BigDecimal amount, String reason) {
+    public boolean updateAmound(long refundId, long userId, BigDecimal amount, String reason) {
         TradeRefund entity = getEntity(refundId);
-        if (null != entity && entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_REFUSE) {
+        if (null != entity && entity.getUserId() == userId && entity.getStatus() == STATUS_PENDING
+                || entity.getStatus() == STATUS_REFUSE) {
             entity.setAmount(amount);
             entity.setReason(reason);
             entity.setStatus(STATUS_PENDING);
@@ -80,15 +84,16 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     }
 
     /**
+     * @param siteId
      * @param refundId
      * @param refundAmount
      * @param reply
      * @return
      */
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean updateResund(long refundId, BigDecimal refundAmount, String reply) {
+    public boolean updateResund(short siteId, long refundId, BigDecimal refundAmount, String reply) {
         TradeRefund entity = getEntity(refundId);
-        if (null != entity && entity.getStatus() == STATUS_PENDING) {
+        if (null != entity && entity.getSiteId() == siteId && entity.getStatus() == STATUS_PENDING) {
             if (null == refundAmount) {
                 refundAmount = entity.getAmount();
             }
@@ -100,16 +105,18 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     }
 
     /**
+     * @param siteId 
      * @param refundId
+     * @param userId
      * @param refundUserId
      * @param status
      * @return
      */
     @Transactional(isolation = Isolation.SERIALIZABLE)
-    public boolean updateStatus(long refundId, Long refundUserId, int status) {
+    public boolean updateStatus(short siteId, long refundId, Long refundUserId, int status) {
         TradeRefund entity = getEntity(refundId);
-        if (null != entity && entity.getStatus() != status && entity.getStatus() != STATUS_CANCELLED
-                && entity.getStatus() != STATUS_REFUNDED) {
+        if (null != entity && entity.getSiteId() == siteId && entity.getStatus() != status
+                && entity.getStatus() != STATUS_CANCELLED && entity.getStatus() != STATUS_REFUNDED) {
             entity.setStatus(status);
             if (status == STATUS_REFUNDED || status == STATUS_FAIL) {
                 entity.setRefundUserId(refundUserId);

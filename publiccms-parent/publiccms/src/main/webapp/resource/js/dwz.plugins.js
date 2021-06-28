@@ -46,34 +46,34 @@ DWZ.regPlugins.push(function($p){
 DWZ.regPlugins.push(function($p){
     $("textarea.editor", $p).each(function(i) {
         var $this = $(this);
-        var index= DWZ.editor.index++;
+        var index= window.editor.index++;
         var dataId="editor_"+index;
         if("ckeditor"==$this.attr("editorType")) {
-            if(!DWZ.editor.ckeditorInitd){
-                $.each(DWZ.editor.ckeditorResources, function(index, url){
+            if(!window.editor.ckeditorInitd){
+                $.each(window.editor.ckeditorResources, function(index, url){
                     $.ajax({url: url, type: "GET", async: false, dataType: "script"});
                 });
-                DWZ.editor.ckeditorInitd=true;
+                window.editor.ckeditorInitd=true;
             }
             $this.attr("id",dataId);
             CKEDITOR.replace(dataId);
             $this.attr("data-id",dataId);
         } else if("kindeditor"==$this.attr("editorType")) {
-            if(!DWZ.editor.kindeditorInitd){
-                $.each(DWZ.editor.kindeditorResources, function(index, url){
+            if(!window.editor.kindeditorInitd){
+                $.each(window.editor.kindeditorResources, function(index, url){
                     $.ajax({url: url, type: "GET", async: false, dataType: "script"});
                 });
-                DWZ.editor.kindeditorInitd=true;
+                window.editor.kindeditorInitd=true;
             }
             $this.attr("id",dataId);
             KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
             $this.attr("data-id",dataId);
         } else {
-            if(!DWZ.editor.ueditorInitd){
-                $.each(DWZ.editor.ueditorResources, function(index, url){
+            if(!window.editor.ueditorInitd){
+                $.each(window.editor.ueditorResources, function(index, url){
                     $.ajax({url: url, type: "GET", async: false, dataType: "script"});
                 });
-                DWZ.editor.ueditorInitd=true;
+                window.editor.ueditorInitd=true;
             }
             var editor = new baidu.editor.ui.Editor();
             if ($this.attr("maxlength") ){
@@ -87,13 +87,13 @@ DWZ.regPlugins.push(function($p){
     });
     $("textarea.code", $p).each(function() {
         var $this = $(this);
-        var index= DWZ.codemirror.index++;
+        var index= window.codemirror.index++;
         var dataId="editor_"+index;
-        if(!DWZ.codemirror.initd){
-            $.each(DWZ.codemirror.resources, function(index, url){
+        if(!window.codemirror.initd){
+            $.each(window.codemirror.resources, function(index, url){
                 $.ajax({url: url, type: "GET", async: false, dataType: "script"});
             });
-            DWZ.codemirror.initd=true;
+            window.codemirror.initd=true;
         }
         var mode = 'htmlmixed'
         if($(this).attr('mode')){

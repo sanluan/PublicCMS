@@ -68,7 +68,7 @@
             <tr>
                 <td>
                     <#if !a.directory && (!fileTypes?has_content || fileTypes = fileType(a.fileName))>
-                        <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${filePath!}','fileType':'${fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${a.fileName!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                        <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'fileName'}':'${filePath!}','fileType':'${fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${a.fileName!}'});return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
                     </#if>
                 </td>
                 <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
