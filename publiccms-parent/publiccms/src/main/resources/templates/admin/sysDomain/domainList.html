@@ -6,18 +6,18 @@
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
-                <th><@t.page 'domain'/></th>
-                <th><@t.page 'domain.template_directory'/></th>
+                <th width="200"><@t.page 'domain'/></th>
+                <th width="100"><@t.page 'domain.template_directory'/></th>
                 <th width="50"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
             <#list page.list as a>
-            <tr target="sid" rel="${a.name}">
+            <tr target="sid" rel="${a.name!}">
                 <td><a href="http://${(a.name)!}">${(a.name)!}</a></td>
                 <td>${(a.path)!}</td>
                 <td>
-                    <a href="sysDomain/config.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysDomain/config"><i class="icon-edit"></i> <@t.page 'domain.edit'/></a>
+                    <a href="sysDomain/config.html?id=${a.name!}" class="edit btnText blue" target="navTab" rel="sysDomain/config"><i class="icon-edit"></i> <@t.page 'domain.edit'/></a>
                 </td>
             </tr>
             </#list>

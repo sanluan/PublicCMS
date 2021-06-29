@@ -41,7 +41,7 @@
                 <th>最大购买数量</th>
                 <th orderField="inventory" class="<#if orderField??&&'inventory'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">库存</th>
                 <th orderField="sales" class="<#if orderField??&&'sales'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">销量</th>
-                <th width="50"><@t.page 'operate'/></th>
+                <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -75,7 +75,7 @@
                 <td>${a.inventory!}</td>
                 <td>${a.sales!}</td>
                 <td>
-                    <a href="cmsContentProduct/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsContentProduct/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    <a href="cmsContentProduct/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsContentProduct_edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 </td>
             </tr>
             </#list>

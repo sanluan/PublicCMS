@@ -20,9 +20,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
-import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentProductService;
-import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 
@@ -39,7 +37,8 @@ public class CmsContentProductAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private String[] ignoreProperties = new String[] { "id", "siteId", "contentId" };
+    private String[] ignoreProperties = new String[] { "id", "siteId", "contentId", "userId", "title", "cover", "inventory",
+            "sales" };
 
     /**
      * @param site
@@ -60,7 +59,6 @@ public class CmsContentProductAdminController {
             }
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                templateComponent.createContentFile(site, contentService.getEntity(entity.getContentId()), null, null);
                 logOperateService.save(new LogOperate(entity.getSiteId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "update.conentProduct", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                         JsonUtils.getString(entity)));
@@ -71,8 +69,4 @@ public class CmsContentProductAdminController {
 
     @Autowired
     private CmsContentProductService service;
-    @Autowired
-    private CmsContentService contentService;
-    @Autowired
-    private TemplateComponent templateComponent;
 }

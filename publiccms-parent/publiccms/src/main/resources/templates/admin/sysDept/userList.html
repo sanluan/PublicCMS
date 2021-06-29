@@ -84,12 +84,8 @@
                     <#else>
                         <a href="sysDept/disableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.disable'/>" target="ajaxTodo"><i class="icon-ban-circle"></i> <@t.page 'button.disable'/></a>
                     </#if>
-                    <a href="log/login.html?userId=${a.id}" target="navTab" rel="log/login">
-                        <@t.page 'log.login'/>
-                    </a>
-                    <a href="log/operate.html?userId=${a.id}" target="navTab" rel="log/operate">
-                        <@t.page 'log.operate'/>
-                    </a>
+                    <a href="log/login.html?userId=${a.id}" class="btnText" target="navTab" rel="log/login"><@t.page 'log.login'/></a>
+                    <a href="log/operate.html?userId=${a.id}" class="btnText" target="navTab" rel="log/operate"><@t.page 'log.operate'/></a>
                 </td>
             </tr>
             </#list>
