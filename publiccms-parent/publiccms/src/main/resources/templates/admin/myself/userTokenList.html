@@ -27,7 +27,7 @@
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'authorize_date'/></th>
                 <th orderField="expiryDate" class="<#if orderField??&&'expiryDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'expiry_date'/></th>
                 <th><@t.page 'log.login_ip'/></th>
-                <th width="50"><@t.page 'operate'/></th>
+                <th><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>
@@ -38,7 +38,7 @@
                 <td>${a.expiryDate!}</td>
                 <td>${a.loginIp!}</td>
                 <td>
-                    <a href="sysUserToken/delete?authToken=${a.id}" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <a href="sysUserToken/delete?authToken=${a.authToken}" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </td>
             </tr>
             </#list>

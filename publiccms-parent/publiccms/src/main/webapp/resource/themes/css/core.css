@@ -61,8 +61,8 @@ header .nav .selected ul{display:block;}
 
 .tabsPage{margin-left:202px;position:relative;}
 .tabsPage .tabsPageHeader{display:block;height:45px;position:relative;}
-.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:91px;margin-right:91px;position:relative;}
-.tabsPage .tabsPageHeaderMargin{margin:0 81px 0 81px;}
+.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:46px;margin-right:91px;position:relative;}
+.tabsPage .tabsPageHeaderMargin{margin:0 81px 0 46px;}
 .tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute;}
 .tabsPage .tabsPageHeader li{float:left;display:block;height:100%;position:relative;}
 .tabsPage .tabsPageHeader li a{font-size:12px;display:inline-block;max-width:112px;padding:0 12px;line-height:45px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -71,9 +71,8 @@ header .nav .selected ul{display:block;}
 .tabsPage .tabsPageHeader li.selected a, .tabsPage .tabsPageHeader li:hover a{font-weight:400;}
 .tabsPage .tabsPageHeader li .close{padding:0;padding-right:10px;}
 .tabsPage .tabsMove{height:100%;position:absolute;top:0;right:0;z-index:2;}
-.toggleCollapse,.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:45px;text-align:center;height:100%;line-height:45px;position:absolute;z-index:2;}
-.toggleCollapse{top:0px;left:0;border-right-width:1px;border-right-style:solid;width:45px;}
-.tabsPage .tabsLeft{top:0px;left:46px;width:45px;}
+.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:45px;text-align:center;height:100%;line-height:45px;position:absolute;z-index:2;}
+.tabsPage .tabsLeft{top:0px;width:45px;}
 .tabsPage .tabsRight{top:0px;right:35px;}
 .tabsPage .tabsMore{top:0px;right:0;}
 .tabsPage .tabsMoreList{display:none;overflow-x:hidden;overflow-y:auto;width:170px;max-height:380px;padding:2px;border-style:solid;border-width:1px;position:absolute;top:45px;right:0;z-index:3;}
@@ -230,7 +229,6 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 #leftside{position:absolute;top:0;left:0;height:100%;}
 #sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:202px;}
 #sidebar #menu{overflow:auto;}
-a.toggleCollapse{text-decoration:none;}
 #sidebar_s{display:none;width:14px;line-height:45px;height:100%;position:absolute;cursor:pointer;top:0;left:0;z-index:21;text-align:center;}
 #splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
 #splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:200px;z-index:20;}

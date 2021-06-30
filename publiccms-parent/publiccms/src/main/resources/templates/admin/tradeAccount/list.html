@@ -1,20 +1,4 @@
 <@_tradeAccountList pageIndex=pageNum pageSize=numPerPage>
-<div class="pageHeader">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
-        <#include "../include_page/parameters.html"/>
-        <div class="searchBar">
-            <ul class="searchContent">
-            </ul>
-            <div class="subBar">
-                <ul>
-                    <li>
-                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </form>
-</div>
 <@_sysAuthorized roleIds=admin.roles urls='tradeAccount/add,tradeAccount/rechargeParameters,tradeAccountHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">

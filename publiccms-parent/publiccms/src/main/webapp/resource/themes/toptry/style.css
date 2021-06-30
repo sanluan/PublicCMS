@@ -25,8 +25,7 @@ header a{color:#afc5f6;}
 .accordionContent .tree div.selected a{background-color:#667ea7;color:#fff;}
 
 .tabsPage .tabsPageHeader{background-color:#516485;}
-.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight,.toggleCollapse{color:#a8b6ce;}
-.tabsPageHeader .toggleCollapse{border-color:#637799;}
+.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#a8b6ce;}
 .tabsPage .tabsPageHeader li a{color:#b5c3db;}
 .tabsPage .tabsPageHeader li.selected,.tabsPage .tabsPageHeader li:hover{background-color:#667ea7;}
 .tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{color:#fff;}
