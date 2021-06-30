@@ -198,5 +198,5 @@ INSERT INTO `sys_module` VALUES ('payment_history_list', 'tradePaymentHistory/li
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'en', 'Payment history');
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'ja', '支払歴');
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'zh', '支付历史');
-ALTER TABLE `cms_content` 
-    CHANGE COLUMN  `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3已退款,4已关闭' after `ip`;
+ALTER TABLE `trade_payment` 
+    CHANGE COLUMN  `status` `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3已退款,4已关闭' after `ip`;
