@@ -51,6 +51,10 @@ public class TradePaymentHistoryService extends BaseService<TradePaymentHistory>
     /**
      * 
      */
+    public static final String OPERATE_REFUND_RESPONSE = "refundResponse";
+    /**
+     * 
+     */
     public static final String OPERATE_CLOSE = "close";
 
     /**

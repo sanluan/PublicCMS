@@ -99,10 +99,12 @@ INSERT INTO `sys_module_lang` VALUES ('product_list', 'zh', '产品管理');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'en', 'Edit');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'ja', '変更');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'zh', '修改');
-UPDATE `sys_module` SET `sort` = '6' where id = 'word_list';
-UPDATE `sys_module` SET `sort` = '7' where id = 'content_recycle_list';
+UPDATE `sys_module` SET `sort` = '6' WHERE `id` = 'word_list';
+UPDATE `sys_module` SET `sort` = '7' WHERE `id` = 'content_recycle_list';
 RENAME TABLE `trade_order` TO `trade_payment`;
 RENAME TABLE `trade_order_history` TO `trade_payment_history`;
+ALTER TABLE `trade_refund` 
+    CHANGE COLUMN `order_id` `payment_id` bigint(20) NOT NULL COMMENT '订单ID' AFTER `id`;
 ALTER TABLE `trade_payment_history` CHANGE COLUMN `order_id` `payment_id` bigint(20) NOT NULL COMMENT '订单ID' AFTER `site_id`;
 ALTER TABLE `trade_payment` 
   DROP INDEX `trade_order_account_type`,
@@ -178,8 +180,23 @@ ALTER TABLE `trade_order`
 ALTER TABLE `trade_refund` 
     ADD COLUMN `site_id` smallint(0) NOT NULL COMMENT '站点ID' AFTER `id`,
     ADD COLUMN `user_id` bigint(20) NOT NULL COMMENT '用户ID' AFTER `payment_id`,
-    DROP INDEX `trade_refund_order_id`,
+    DROP INDEX `trade_refund_order_id`;
 ALTER TABLE `cms_content_related` 
     DROP INDEX `cms_content_related_user_id`,
     ADD INDEX `cms_content_related_user_id`(`content_id`, `sort`);
+ALTER TABLE `trade_refund` 
     ADD INDEX `trade_refund_user_id`(`user_id`, `payment_id`, `status`);
+-- 2021-06-30 --
+INSERT INTO `sys_module` VALUES ('trade_payment', 'tradePayment/list', 'sysUser/lookup', 'icon-money', 'trade_menu', 1, 3);
+INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'en', 'Payment management');
+INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'ja', '支払い管理');
+INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'zh', '支付管理');
+UPDATE `sys_module` SET `sort` = '7' WHERE `id` = 'account_history_list';
+UPDATE `sys_module` SET `sort` = '6' WHERE `id` = 'account_list';
+UPDATE `sys_module` SET `sort` = '5' WHERE `id` = 'refund_list';
+INSERT INTO `sys_module` VALUES ('payment_history_list', 'tradePaymentHistory/list', NULL, 'icon-exchange', 'trade_menu', 1, 4);
+INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'en', 'Payment history');
+INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'ja', '支払歴');
+INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'zh', '支付历史');
+ALTER TABLE `cms_content` 
+    CHANGE COLUMN  `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3已退款,4已关闭' after `ip`;

@@ -1,5 +1,6 @@
 package com.publiccms.controller.web.trade;
 
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -21,9 +23,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.internal.util.AlipaySignature;
-import com.github.wxpay.sdk.WXPay;
-import com.github.wxpay.sdk.WXPayConstants;
-import com.github.wxpay.sdk.WXPayUtil;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.PaymentGateway;
@@ -40,13 +39,14 @@ import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.paymentgateway.AlipayGatewayComponent;
-import com.publiccms.logic.component.paymentgateway.WechatConfig;
 import com.publiccms.logic.component.paymentgateway.WechatGatewayComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
 import com.publiccms.logic.service.trade.TradeRefundService;
+import com.wechat.pay.contrib.apache.httpclient.auth.AutoUpdateCertificatesVerifier;
+import com.wechat.pay.contrib.apache.httpclient.util.AesUtil;
 
 @Controller
 @RequestMapping("tradePayment")
@@ -156,6 +156,8 @@ public class TradePaymentController {
 
     /**
      * @param site
+     * @param signature
+     * @param serial
      * @param body
      * @param response
      * @return
@@ -163,44 +165,73 @@ public class TradePaymentController {
      */
     @RequestMapping(value = "notify/wechat")
     @ResponseBody
-    public String notifyWechat(@RequestAttribute SysSite site, @RequestBody String body, HttpServletResponse response)
+    public Map<String, String> notifyWechat(@RequestAttribute SysSite site,
+            @RequestHeader(value = "Wechatpay-Signature") String signature,
+            @RequestHeader(value = "Wechatpay-Serial") String serial, @RequestBody String body, HttpServletResponse response)
             throws Exception {
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         Map<String, String> resultMap = new HashMap<>();
-        resultMap.put("return_code", WXPayConstants.FAIL);
-        resultMap.put("return_msg", "OK");
-        if (CommonUtils.notEmpty(config)) {
-            WechatConfig wechatConfig = new WechatConfig(config.get(WechatGatewayComponent.CONFIG_APPID),
-                    config.get(WechatGatewayComponent.CONFIG_MCHID), config.get(WechatGatewayComponent.CONFIG_KEY),
-                    config.get(WechatGatewayComponent.CONFIG_CERT));
-            boolean usesandbox = CommonUtils.notEmpty(config.get(WechatGatewayComponent.CONFIG_USESANDBOX))
-                    && "true".equals(config.get(WechatGatewayComponent.CONFIG_USESANDBOX));
+        resultMap.put("code", "FAIL");
+        resultMap.put("message", "error");
+        if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(WechatGatewayComponent.CONFIG_KEY))) {
+            byte[] apiV3Key = config.get(WechatGatewayComponent.CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
+            AutoUpdateCertificatesVerifier verifier = wechatGatewayComponent.getVerifier(site.getId(), config, apiV3Key);
             try {
-                WXPay wxpay = new WXPay(wechatConfig, usesandbox);
-                Map<String, String> result = wxpay.processResponseXml(body);
-                if (WXPayConstants.SUCCESS.equalsIgnoreCase(result.get("return_code"))) {
-                    long paymentId = Long.parseLong(result.get("out_trade_no"));
-                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), paymentId, CommonUtils.getDate(),
-                            TradePaymentHistoryService.OPERATE_NOTIFY, body);
-                    historyService.save(history);
-                    if (WXPayConstants.SUCCESS.equalsIgnoreCase(result.get("result_code"))) {
-                        TradePayment payment = service.getEntity(paymentId);
-                        if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
-                                && payment.getAmount().toString().equals(result.get("total_fee"))) {
-                            payment = service.getEntity(paymentId);
-                            if (service.paid(site.getId(), payment.getId(), result.get("transaction_id"))) {
-                                if (wechatGatewayComponent.confirmPay(site, payment, response)) {
-                                    resultMap.put("return_code", WXPayConstants.SUCCESS);
-                                    resultMap.put("return_msg", "OK");
+                if (verifier.verify(serial, body.getBytes(CommonConstants.DEFAULT_CHARSET), signature)) {
+                    Map<String, Object> result = CommonConstants.objectMapper.readValue(body, CommonConstants.objectMapper
+                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
+                    @SuppressWarnings("unchecked")
+                    Map<String, String> resource = (Map<String, String>) result.get("resource");
+                    if (null != resource) {
+                        AesUtil decryptor = new AesUtil(apiV3Key);
+                        String decodeResult = decryptor.decryptToString(
+                                resource.get("associated_data").replaceAll("\"", "").getBytes(CommonConstants.DEFAULT_CHARSET),
+                                resource.get("nonce").replaceAll("\"", "").getBytes(CommonConstants.DEFAULT_CHARSET),
+                                resource.get("ciphertext"));
+                        Map<String, Object> data = CommonConstants.objectMapper.readValue(decodeResult,
+                                CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class,
+                                        String.class));
+                        long paymentId = Long.parseLong((String) data.get("out_trade_no"));
+                        TradePaymentHistory history = new TradePaymentHistory(site.getId(), paymentId, CommonUtils.getDate(),
+                                TradePaymentHistoryService.OPERATE_NOTIFY, decodeResult);
+                        historyService.save(history);
+                        @SuppressWarnings("unchecked")
+                        Map<String, Object> amount = (Map<String, Object>) data.get("trade_state");
+                        if ("SUCCESS".equalsIgnoreCase((String) data.get("trade_state")) && null != amount) {
+                            TradePayment payment = service.getEntity(paymentId);
+                            if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
+                                    && (payment.getAmount().multiply(new BigDecimal(100)))
+                                            .intValue() == (int) amount.get("payer_total")) {
+                                payment = service.getEntity(paymentId);
+                                if (service.paid(site.getId(), payment.getId(), (String) result.get("transaction_id"))) {
+                                    if (wechatGatewayComponent.confirmPay(site, payment, response)) {
+                                        resultMap.put("code", "SUCCESS");
+                                        resultMap.put("message", "OK");
+                                    } else {
+                                        resultMap.put("message", "payment confirm error");
+                                    }
+                                } else {
+                                    resultMap.put("message", "payment status update error");
                                 }
+                            } else {
+                                resultMap.put("message", "payment status error");
                             }
+                        } else {
+                            resultMap.put("message", "error trade_state");
                         }
+                    } else {
+                        resultMap.put("message", "response error empty resource");
                     }
+                } else {
+                    resultMap.put("message", "response verify error");
                 }
             } catch (Exception e) {
+                resultMap.put("message", e.getMessage());
             }
+        } else {
+            resultMap.put("message", "empty config");
         }
-        return WXPayUtil.mapToXml(resultMap);
+        return resultMap;
     }
 
     /**

@@ -22,6 +22,12 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>4.14.8.ALL</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.wechatpay-apiv3/wechatpay-apache-httpclient -->
+        <dependency>
+            <groupId>com.github.wechatpay-apiv3</groupId>
+            <artifactId>wechatpay-apache-httpclient</artifactId>
+            <version>0.2.2</version>
+        </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>

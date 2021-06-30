@@ -761,8 +761,8 @@ CREATE TABLE `sys_module` (
 -- Records of sys_module
 -- ----------------------------
 INSERT INTO `sys_module` VALUES ('account_add', 'tradeAccount/add', 'tradeAccount/save', '', 'account_list', 0, 1);
-INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', 'sysUser/lookup', 'icon-book', 'trade_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('account_list', 'tradeAccount/list', NULL, 'icon-credit-card', 'trade_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', 'sysUser/lookup', 'icon-book', 'trade_menu', 1, 7);
+INSERT INTO `sys_module` VALUES ('account_list', 'tradeAccount/list', NULL, 'icon-credit-card', 'trade_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('account_recharge', 'tradeAccount/rechargeParameters', 'tradeAccount/recharge', '', 'account_list', 0, 2);
 INSERT INTO `sys_module` VALUES ('app_add', 'sysApp/add', 'sysApp/save', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_client_disable', NULL, 'sysAppClient/disable', NULL, 'app_client_list', 0, 0);
@@ -881,6 +881,7 @@ INSERT INTO `sys_module` VALUES ('page_select_content', 'cmsContent/lookup', 'cm
 INSERT INTO `sys_module` VALUES ('page_select_tag_type', 'cmsTagType/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_template', 'cmsTemplate/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_user', 'sysUser/lookup', NULL, NULL, 'page_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('payment_history_list', 'tradePaymentHistory/list', NULL, 'icon-exchange', 'trade_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('place_add', 'cmsPlace/add', 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/uncheck', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'place_list', 0, 0);
@@ -900,7 +901,7 @@ INSERT INTO `sys_module` VALUES ('place_template_webfile', 'cmsWebFile/lookup', 
 INSERT INTO `sys_module` VALUES ('place_view', 'cmsPlace/view', NULL, NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('product_list', 'cmsContentProduct/list', NULL, 'icon-truck', 'content_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('product_add', 'cmsContentProduct/add', 'cmsContentProduct/save', NULL, 'product_list', 1, 0);
-INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup', 'icon-signout', 'trade_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup', 'icon-signout', 'trade_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeOrder/refund', '', 'refund_list', 0, 1);
 INSERT INTO `sys_module` VALUES ('repo_sync', 'sysRepoSync/sync', NULL, 'icon-refresh', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('report_user', 'report/user', NULL, 'icon-male', 'user_menu', 1, 5);
@@ -941,6 +942,7 @@ INSERT INTO `sys_module` VALUES ('template_place_form', 'placeTemplate/form', NU
 INSERT INTO `sys_module` VALUES ('template_upload', 'cmsTemplate/upload', 'cmsTemplate/doUpload', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_website_file', 'cmsWebFile/lookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 0, 4);
+INSERT INTO `sys_module` VALUES ('trade_payment', 'tradePayment/list', 'sysUser/lookup', 'icon-money', 'trade_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('user_add', 'sysUser/add', 'sysDept/lookup,sysUser/save', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_disable', NULL, 'sysUser/disable', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_enable', NULL, 'sysUser/enable', NULL, 'user_list', 0, 0);
@@ -1332,6 +1334,9 @@ INSERT INTO `sys_module_lang` VALUES ('page_select_template', 'zh', '选择模�
 INSERT INTO `sys_module_lang` VALUES ('page_select_user', 'en', 'Select user');
 INSERT INTO `sys_module_lang` VALUES ('page_select_user', 'ja', 'ユーザーを選択');
 INSERT INTO `sys_module_lang` VALUES ('page_select_user', 'zh', '选择用户');
+INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'en', 'Payment history');
+INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'ja', '支払歴');
+INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'zh', '支付历史');
 INSERT INTO `sys_module_lang` VALUES ('place_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('place_add', 'ja', '推奨ビットデータの追加/変更');
 INSERT INTO `sys_module_lang` VALUES ('place_add', 'zh', '增加/修改推荐位数据');
@@ -1509,6 +1514,9 @@ INSERT INTO `sys_module_lang` VALUES ('template_website_file', 'zh', '网站文�
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'en', 'Trade menegent');
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'ja', 'ビジネス管理');
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'zh', '商务管理');
+INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'en', 'Payment management');
+INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'ja', '支払い管理');
+INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'zh', '支付管理');
 INSERT INTO `sys_module_lang` VALUES ('user_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('user_add', 'ja', '追加/変更');
 INSERT INTO `sys_module_lang` VALUES ('user_add', 'zh', '增加/修改');
@@ -1762,7 +1770,7 @@ CREATE TABLE `trade_payment`  (
   `account_type` varchar(20) NOT NULL COMMENT '支付账户类型',
   `account_serial_number` varchar(100) NULL DEFAULT NULL COMMENT '支付账号流水',
   `ip` varchar(130) NOT NULL COMMENT 'IP地址',
-  `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3退款成功',
+  `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3已退款,4已关闭',
   `processed` tinyint(1) NOT NULL COMMENT '已处理',
   `user_id` bigint(20) NULL COMMENT '处理用户ID',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',

@@ -33,7 +33,7 @@
                 <td>${a.updateDate!}</td>
                 <td class="wrap">
                 <#if authorizedMap['tradeAccount/rechargeParameters']>
-                    <a href="tradeAccount/rechargeParameters.html?id=${a.id}" class="btnText green" target="dialog" rel="tradeAccount_rechargeParameters"><@t.page 'button.recharge'/></a>
+                    <a href="tradeAccount/rechargeParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'button.recharge'/></a>
                 </#if>
                 <#if authorizedMap['tradeAccountHistory/list']>
                     <a href="tradeAccountHistory/list.html?id=${a.id}" class="btnText" target="navTab" rel="tradeAccountHistory/list"><@t.page 'account.history'/></a>
