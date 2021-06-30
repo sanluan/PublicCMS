@@ -35,4 +35,11 @@ public abstract class AbstractPaymentGateway implements PaymentGateway {
         }
         return false;
     }
+
+    protected String getNotifyUrl(String notifyUrl) {
+        if (null != notifyUrl && notifyUrl.startsWith("//")) {
+            notifyUrl = "https:" + notifyUrl;
+        }
+        return notifyUrl;
+    }
 }

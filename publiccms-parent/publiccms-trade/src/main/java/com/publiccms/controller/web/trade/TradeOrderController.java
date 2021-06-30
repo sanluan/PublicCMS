@@ -77,7 +77,7 @@ public class TradeOrderController {
                 TradePayment entity = new TradePayment(site.getId(), order.getUserId(), order.getAmount(),
                         ProductProcessorComponent.GRADE_TYPE, String.valueOf(orderId), accountType, ip,
                         TradePaymentService.STATUS_PENDING_PAY, false, now);
-                entity.setDescription("order:" + orderId);
+                entity.setDescription(order.getTitle());
                 paymentService.create(site.getId(), entity);
                 service.pay(site.getId(), orderId, entity.getId());
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="

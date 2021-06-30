@@ -1806,6 +1806,7 @@ CREATE TABLE `trade_order` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `title` varchar(255) NOT NULL COMMENT '标题',
   `amount` decimal(10,2) NOT NULL COMMENT '总金额',
   `payment_id` bigint(20) DEFAULT NULL COMMENT '支付订单ID',
   `address` varchar(255) DEFAULT NULL COMMENT '地址',

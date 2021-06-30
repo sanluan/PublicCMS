@@ -62,7 +62,7 @@
                 <td>${a.createDate!}</td>
                 <td class="wrap">
                 <#if authorizedMap['tradeRefund/refundParameters'] && 0=a.status>
-                    <a href="tradeRefund/refundParameters.html?id=${a.id}" target="dialog" rel="tradeRefund/refundParameters"><i class="icon-plus-sign-alt"></i> <@t.page 'refund'/></a>
+                    <a href="tradeRefund/refundParameters.html?id=${a.id}" class="btnText red" target="dialog" mask="true"><i class="icon-plus-sign-alt"></i> <@t.page 'refund'/></a>
                 </#if>
                 </td>
             </tr>

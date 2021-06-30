@@ -31,6 +31,10 @@ public class TradePaymentHistoryService extends BaseService<TradePaymentHistory>
     /**
      * 
      */
+    public static final String OPERATE_PAYERROR = "payError";
+    /**
+     * 
+     */
     public static final String OPERATE_PROCESSED = "processed";
     /**
      * 

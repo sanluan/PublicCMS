@@ -37,6 +37,8 @@ public class TradeOrder implements java.io.Serializable {
     private short siteId;
     @GeneratorColumn(title = "用户ID", condition = true)
     private long userId;
+    @GeneratorColumn(title = "标题", condition = true, like = true)
+    private String title;
     @GeneratorColumn(title = "总金额")
     private BigDecimal amount;
     @GeneratorColumn(title = "支付ID", condition = true)
@@ -73,10 +75,11 @@ public class TradeOrder implements java.io.Serializable {
     public TradeOrder() {
     }
 
-    public TradeOrder(short siteId, long userId, BigDecimal amount, String ip, int status, boolean confirmed, boolean processed,
-            Date createDate) {
+    public TradeOrder(short siteId, long userId, String title, BigDecimal amount, String ip, int status, boolean confirmed,
+            boolean processed, Date createDate) {
         this.siteId = siteId;
         this.userId = userId;
+        this.title = title;
         this.amount = amount;
         this.ip = ip;
         this.status = status;
@@ -85,11 +88,12 @@ public class TradeOrder implements java.io.Serializable {
         this.createDate = createDate;
     }
 
-    public TradeOrder(short siteId, long userId, BigDecimal amount, Long paymentId, String address, String addressee,
-            String telephone, String ip, String remark, int status, boolean confirmed, boolean processed, long processUserId,
-            String processInfo, Date updateDate, Date createDate, Date processDate, Date paymentDate) {
+    public TradeOrder(short siteId, long userId, String title, BigDecimal amount, Long paymentId, String address,
+            String addressee, String telephone, String ip, String remark, int status, boolean confirmed, boolean processed,
+            long processUserId, String processInfo, Date updateDate, Date createDate, Date processDate, Date paymentDate) {
         this.siteId = siteId;
         this.userId = userId;
+        this.title = title;
         this.amount = amount;
         this.paymentId = paymentId;
         this.address = address;
@@ -136,6 +140,15 @@ public class TradeOrder implements java.io.Serializable {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    @Column(name = "title", nullable = false)
+    public String getTitle() {
+        return this.title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     @Column(name = "amount", nullable = false, precision = 10)

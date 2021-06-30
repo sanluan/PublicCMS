@@ -28,9 +28,11 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradePayment;
+import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
+import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
 
 @Component
@@ -76,6 +78,8 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     @Autowired
     private TradePaymentService service;
     @Autowired
+    private TradePaymentHistoryService historyService;
+    @Autowired
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
     /**
@@ -109,7 +113,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
                 model.setTimeoutExpress(config.get(CONFIG_TIMEOUT_EXPRESS));
                 model.setProductCode(config.get(CONFIG_PRODUCT_CODE));
                 alipay_request.setBizModel(model);
-                alipay_request.setNotifyUrl(config.get(CONFIG_NOTIFYURL));
+                alipay_request.setNotifyUrl(getNotifyUrl(config.get(CONFIG_NOTIFYURL)));
                 alipay_request.setReturnUrl(callbackUrl);
                 try {
                     String form = client.pageExecute(alipay_request).getBody();
@@ -153,6 +157,9 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
                     service.pendingRefund(payment.getSiteId(), payment.getId());
                 }
             } catch (AlipayApiException e) {
+                TradePaymentHistory history = new TradePaymentHistory(site.getId(), payment.getId(), CommonUtils.getDate(),
+                        TradePaymentHistoryService.OPERATE_PAYERROR, e.getMessage());
+                historyService.save(history);
             }
         }
         return false;

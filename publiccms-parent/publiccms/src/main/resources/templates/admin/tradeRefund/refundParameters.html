@@ -1,5 +1,5 @@
 <@_tradeRefund id=id><#assign refund=object/></@_tradeRefund>
-<form action="tradeOrder/refund?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+<form action="tradePayment/refund?callbackType=closeCurrent" method="post" autocomplete="off" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
     <input type="hidden" name="id" value="${id!}"/>
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
@@ -13,7 +13,7 @@
         </dl>
         <dl>
             <dt><@t.page 'refund.amount'/>:</dt>
-            <dd><input class="required digits" type="number" name="refundAmount" max="${(refund.amount)!0}" min="0" value="${(refund.amount)!}"/></dd>
+            <dd><input class="required number" type="text" name="refundAmount" max="${(refund.amount)!0}" min="0" value="${(refund.amount)!}"/></dd>
         </dl>
         <dl>
             <dt><@t.page 'reply'/>:</dt>

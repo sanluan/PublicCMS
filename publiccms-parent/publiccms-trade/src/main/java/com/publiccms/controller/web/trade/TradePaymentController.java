@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -51,6 +53,7 @@ import com.wechat.pay.contrib.apache.httpclient.util.AesUtil;
 @Controller
 @RequestMapping("tradePayment")
 public class TradePaymentController {
+    protected final Log log = LogFactory.getLog(getClass());
 
     /**
      * @param site
@@ -124,6 +127,7 @@ public class TradePaymentController {
     @ResponseBody
     public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String total_fee, String trade_no,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
+        log.info("alipay notify out_trade_no:" + out_trade_no + ",total_fee:" + total_fee + ",trade_no:" + trade_no);
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
@@ -169,6 +173,7 @@ public class TradePaymentController {
             @RequestHeader(value = "Wechatpay-Signature") String signature,
             @RequestHeader(value = "Wechatpay-Serial") String serial, @RequestBody String body, HttpServletResponse response)
             throws Exception {
+        log.info("wechat notify signature:" + signature + ",serial:" + serial + ",body:" + body);
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("code", "FAIL");
@@ -255,7 +260,7 @@ public class TradePaymentController {
         }
         if (null != user && ControllerUtils.verifyCustom("tradePaymentStatus",
                 !service.pendingRefund(site.getId(), entity.getPaymentId()), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
         if (null == entity.getId()) {
             entity.setSiteId(site.getId());

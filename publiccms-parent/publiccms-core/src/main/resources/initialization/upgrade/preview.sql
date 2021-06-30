@@ -200,3 +200,6 @@ INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'ja', '支払歴')
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'zh', '支付历史');
 ALTER TABLE `trade_payment` 
     CHANGE COLUMN  `status` `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3已退款,4已关闭' after `ip`;
+-- 2021-07-01 --
+ALTER TABLE `trade_order` 
+    ADD COLUMN `title` varchar(255) NOT NULL COMMENT '标题' AFTER `user_id`;
