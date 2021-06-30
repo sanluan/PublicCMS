@@ -77,7 +77,7 @@
                 <td>${a.lastLoginDate!}</td>
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate!}</td>
-                <td>
+                <td class="wrap">
                     <a href="sysDept/addUser.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysUser/edit"><i class="icon-edit"></i> <@t.page 'user.edit'/></a>
                     <#if a.disabled>
                         <a href="sysDept/enableUser?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.enable'/>" target="ajaxTodo"><i class="icon-circle"></i> <@t.page 'button.enable'/></a>

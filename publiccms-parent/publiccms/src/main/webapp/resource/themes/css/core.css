@@ -154,7 +154,7 @@ header .nav .selected ul{display:block;}
 .grid .gridHeader th.asc:before,.grid .gridHeader th.desc:before,.grid .gridHeader th.order:before{position:absolute;right:0px;top:50%;margin-top:-13px;}
 .grid .gridTbody td { border-right:solid 1px #ededed;overflow:hidden;padding:4px 3px;border-bottom:solid 1px #ededed;vertical-align:middle;line-height:26px;}
 .grid .gridTbody td div { display:block;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;line-height:26px;}
-.grid .gridTbody td.wrap div{white-space:unset;}
+.grid .gridTbody td.wrap div{white-space:normal;}
 .grid .gridTbody td div a{line-height:26px;}
 .grid .gridTbody td div a:hover{text-decoration:underline;}
 .grid .gridCol { width:100%;display:block;overflow:hidden;height:26px;line-height:26px;white-space:nowrap;}

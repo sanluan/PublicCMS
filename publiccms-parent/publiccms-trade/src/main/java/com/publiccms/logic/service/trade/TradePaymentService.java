@@ -63,7 +63,7 @@ public class TradePaymentService extends BaseService<TradePayment> {
      */
     @Transactional(readOnly = true)
     public PageHandler getPage(Short siteId, Long userId, String tradeType, String serialNumber, String accountType,
-            String accountSerialNumber, Integer status, Date startCreateDate, Date endCreateDate, String paymentType,
+            String accountSerialNumber, Integer[] status, Date startCreateDate, Date endCreateDate, String paymentType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, tradeType, serialNumber, accountType, accountSerialNumber, status, startCreateDate,
                 endCreateDate, paymentType, pageIndex, pageSize);

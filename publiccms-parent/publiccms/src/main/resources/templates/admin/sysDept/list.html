@@ -74,7 +74,7 @@
                 <td>${a.ownsAllCategory?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.maxSort}</td>
                 <td>${a.ownsAllPage?then(t.pageMessage('yes'),'')}</td>
-                <td>
+                <td class="wrap">
                     <a href="sysDept/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysDept/edit"><i class="icon-edit"></i> <@t.page 'dept.edit'/></a>
                     <a href="sysDept/list.html?parentId=${a.id}" class="btnText" target="navTab" rel="sysDept/list"><@t.page 'dept.child_management'/></a>
                 <#if a.userId?has_content&&a.userId=admin.id>

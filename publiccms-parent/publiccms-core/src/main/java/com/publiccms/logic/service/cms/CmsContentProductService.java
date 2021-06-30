@@ -58,7 +58,7 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
         Set<Long> idList = new HashSet<>();
         if (CommonUtils.notEmpty(products)) {
             for (CmsContentProduct entity : products) {
-                if (null != entity.getId() && siteId == entity.getSiteId()) {
+                if (null != entity.getId()) {
                     update(entity.getId(), entity, ignoreProperties);
                 } else {
                     entity.setSiteId(siteId);
@@ -78,14 +78,16 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
     }
 
     /**
-     * @param contentId
+     * @param siteId
      * @param tradeOrderProductList
      */
-    public void deduction(long contentId, List<TradeOrderProduct> tradeOrderProductList) {
+    public void deduction(short siteId, List<TradeOrderProduct> tradeOrderProductList) {
         if (null != tradeOrderProductList) {
             for (TradeOrderProduct orderProduct : tradeOrderProductList) {
-                CmsContentProduct entity = getEntity(orderProduct.getProductId());
-                entity.setInventory(entity.getInventory() - orderProduct.getQuantity());
+                if (siteId == orderProduct.getSiteId()) {
+                    CmsContentProduct entity = getEntity(orderProduct.getProductId());
+                    entity.setInventory(entity.getInventory() - orderProduct.getQuantity());
+                }
             }
         }
     }

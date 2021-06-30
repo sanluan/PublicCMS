@@ -4,7 +4,7 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="pageFormContent" layoutH>
         <dl class="nowrap">
-            <dt>标题:</dt>
+            <dt><@t.page 'title'/>:</dt>
             <dd>${(a.title)!}</dd>
         </dl>
     <#if (a.cover)?has_content>
@@ -18,20 +18,20 @@
         </dl>
     </#if>
         <dl>
-            <dt>价格:</dt>
+            <dt><@t.page 'product.price'/>:</dt>
             <dd><input class="required number" name="price" type="text" size="10" maxlength="20" value="${(a.price)!}"/></dd>
         </dl>
         <dl>
-            <dt>库存:</dt>
+            <dt><@t.page 'product.inventory'/>:</dt>
             <dd><input class="required digits" name="inventory" type="text" size="10" maxlength="20" value="${(a.inventory)!}"/></dd>
         </dl>
         <dl>
-            <dt>最小购买数量:</dt>
-            <dd><input class="digits"  name="minQuantity" type="text" size="10" maxlength="20" value="${(a.minQuantity)!}"/></dd>
-        </dl>
-        <dl>
-            <dt>最大购买数量:</dt>
-            <dd><input class="digits" name="maxQuantity" type="text" size="10" maxlength="20" value="${(a.maxQuantity)!}"/></dd>
+            <dt><@t.page 'product.quantity_limit'/>:</dt>
+            <dd>
+                <input class="digits"  name="minQuantity" type="text" size="10" maxlength="20" value="${(a.minQuantity)!}"/>
+                <span>-</span>
+                <input class="digits" name="maxQuantity" type="text" size="10" maxlength="20" value="${(a.maxQuantity)!}"/>
+            </dd>
         </dl>
     </div>
     <div class="formBar">

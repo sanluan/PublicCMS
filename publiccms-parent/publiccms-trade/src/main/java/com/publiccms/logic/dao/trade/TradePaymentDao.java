@@ -36,7 +36,7 @@ public class TradePaymentDao extends BaseDao<TradePayment> {
      * @return results page
      */
     public PageHandler getPage(Short siteId, Long userId, String tradeType, String serialNumber, String accountType,
-            String accountSerialNumber, Integer status, Date startCreateDate, Date endCreateDate, String paymentType,
+            String accountSerialNumber, Integer[] status, Date startCreateDate, Date endCreateDate, String paymentType,
             Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from TradePayment bean");
         if (null != siteId) {
@@ -59,7 +59,7 @@ public class TradePaymentDao extends BaseDao<TradePayment> {
                     accountSerialNumber);
         }
         if (CommonUtils.notEmpty(status)) {
-            queryHandler.condition("bean.status = :status").setParameter("status", status);
+            queryHandler.condition("bean.status in (:status)").setParameter("status", status);
         }
         if (null != startCreateDate) {
             queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);

@@ -1,4 +1,4 @@
-<@_tradeRefundList orderId=orderId refundUserId=refundUserId status=status 
+<@_tradeRefundList paymentId=paymentId refundUserId=refundUserId status=status 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -6,15 +6,18 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label>订单ID：</label>
-                    <input type="text" name="orderId" value="${orderId!}" />
+                    <label><@t.page 'payment.id'/>:</label>
+                    <input type="text" name="paymentId" value="${paymentId!}" />
                 </li>
                 <li>
-                    <label>退款操作用户：</label>
-                    <input type="text" name="refundUserId" value="${refundUserId!}" />
+                    <label><@t.page 'operate_user'/>:</label>
+                    <#if refundUserId?has_content><@_sysUser id=refundUserId><#assign u=object/></@_sysUser></#if>
+                    <input name="refundUserId" value="${(u.id)!}" type="hidden"/>
+                    <input name="nickName" readonly="readonly" size="10" value="${(u.nickName)!}" type="text"/>
+                    <a class="btnLook" href="sysUser/lookup.html?field=refundUserId" width="920" lookupGroup=""><@t.page 'user.select'/></a>
                 </li>
                 <li>
-                    <label>状态：</label>
+                    <label><@t.page 'status'/>:</label>
                     <input type="text" name="status" value="${status!}" />
                 </li>
             </ul>
@@ -33,15 +36,15 @@
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>订单ID</th>
-                <th>申请退款金额</th>
-                <th>原因</th>
-                <th>退款操作用户</th>
-                <th>退款金额</th>
-                <th>状态</th>
-                <th>回复</th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'payment.id'/></th>
+                <th><@t.page 'amount'/></th>
+                <th><@t.page 'refund.reason'/></th>
+                <th><@t.page 'operate_user'/></th>
+                <th><@t.page 'refund.amount'/></th>
+                <th><@t.page 'status'/></th>
+                <th><@t.page 'reply'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -54,12 +57,12 @@
                 <td>${a.reason!}</td>
                 <td>${a.refundUserId!}</td>
                 <td>${a.refundAmount!}</td>
-                <td>${a.status!}</td>
+                <td><@t.page 'status.refund.'+a.status/></td>
                 <td>${a.reply!}</td>
                 <td>${a.createDate!}</td>
-                <td>
+                <td class="wrap">
                 <#if authorizedMap['tradeRefund/refundParameters'] && 0=a.status>
-                    <a href="tradeRefund/refundParameters.html?id=${a.id}" target="dialog" rel="tradeRefund/refundParameters"><i class="icon-plus-sign-alt"></i> 退款</a>
+                    <a href="tradeRefund/refundParameters.html?id=${a.id}" target="dialog" rel="tradeRefund/refundParameters"><i class="icon-plus-sign-alt"></i> <@t.page 'refund'/></a>
                 </#if>
                 </td>
             </tr>

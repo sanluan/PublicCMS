@@ -68,7 +68,7 @@
                 <td>${a.lastModifiedTime?datetime}</td>
                 <td>${a.creationTime?datetime}</td>
                 <td><@t.fileSize a.size/></td>
-                <td>
+                <td class="wrap">
                     <#if a.directory>
                         <a href="cmsWebFile/zip?path=${filePath?url}&_csrf=<@_csrfToken admin=true/>" class="btnText blue" title="<@t.page 'confirm.compress_directory'/>" target="ajaxTodo"><@t.page 'button.compress'/></a>
                     <#else>

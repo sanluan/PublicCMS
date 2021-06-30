@@ -13,7 +13,7 @@
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label>价格:</label>
+                    <label><@t.page 'product.price'/>:</label>
                     <input type="text" name="startPrice" value="${endPprice!}" size="10"/><span>-</span><input type="text" name="endPrice" value="${endPrice!}" size="10"/>
                 </li>
             </ul>
@@ -36,11 +36,10 @@
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'content.promulgator'/></th>
-                <th orderField="price" class="<#if orderField??&&'price'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">价格</th>
-                <th>最小购买数量</th>
-                <th>最大购买数量</th>
-                <th orderField="inventory" class="<#if orderField??&&'inventory'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">库存</th>
-                <th orderField="sales" class="<#if orderField??&&'sales'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">销量</th>
+                <th orderField="price" class="<#if orderField??&&'price'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.price'/></th>
+                <th><@t.page 'product.quantity_limit'/></th>
+                <th orderField="inventory" class="<#if orderField??&&'inventory'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.inventory'/></th>
+                <th orderField="sales" class="<#if orderField??&&'sales'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.sales'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -70,11 +69,10 @@
                 </td>
                 <td>${(userMap[a.userId?string].nickName)!}</td>
                 <td>${a.price!}</td>
-                <td>${a.minQuantity!}</td>
-                <td>${a.maxQuantity!}</td>
+                <td>${a.minQuantity!} - ${a.maxQuantity!}</td>
                 <td>${a.inventory!}</td>
                 <td>${a.sales!}</td>
-                <td>
+                <td class="wrap">
                     <a href="cmsContentProduct/add.html?id=${a.id}" class="edit btnText blue" target="dialog" rel="cmsContentProduct_edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 </td>
             </tr>

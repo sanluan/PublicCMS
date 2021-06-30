@@ -98,7 +98,7 @@
                 </td>
                 <td>${a.hidden?then(t.pageMessage('hidden'),t.pageMessage('show'))}</td>
                 <td>${a.sort!}</td>
-                <td>
+                <td class="wrap">
                 <#if authorizedMap['cmsCategory/add']>
                     <a href="cmsCategory/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsCategory/edit"><i class="icon-edit"></i> <@t.page 'category.edit'/></a>
                     <a href="cmsCategory/addMore.html?parentId=${a.id}" class="btnText blue" target="dialog" mask="true"><i class="icon-plus"></i> <@t.page 'category.add_child'/></a>

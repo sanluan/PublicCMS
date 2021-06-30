@@ -1,4 +1,4 @@
-<@_tradeOrderList userId=userId paymentId=paymentId processed=processed 
+<@_tradeOrderList userId=userId paymentId=paymentId processed=processed status=status
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -6,18 +6,28 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'user'/>：</label>
+                    <label><@t.page 'user'/>:</label>
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label>支付ID:</label>
+                    <label><@t.page 'payment.id'/>:</label>
                     <input type="text" name="paymentId" value="${paymentId!}" />
                 </li>
                 <li>
+                    <label><@t.page 'status'/>:</label>
+                    <#list 0..4 as s>
+                        <label style="width:auto">
+                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                            <@t.page 'status.order.'+s/>
+                        </label>
+                    </#list>
+                </li>
+                <li>
+                    <label><@t.page 'order.process'/>:</label>
                     <select class="combox" name="processed">
-                        <option value=""${(!processed?has_content)?then(' selected="true"','')?no_esc}>已处理</option>
-                        <option value="false"${(processed??&&"false"=processed)?then(' selected="true"','')?no_esc}>否</option>
-                        <option value="true"${(processed??&&"true"=processed)?then(' selected="true"','')?no_esc}>是</option>
+                        <option value=""${(!processed?has_content)?then(' selected="true"','')?no_esc}><@t.page 'order.all'/></option>
+                        <option value="false"${(processed??&&"false"=processed)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
+                        <option value="true"${(processed??&&"true"=processed)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
                     </select>
                 </li>
             </ul>
@@ -31,20 +41,20 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='tradeOrder/confirm,tradeOrder/invalid,tradeOrder/process,tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='tradeOrder/confirm,tradeOrder/invalid,tradeOrder/process,tradeOrder/close,tradeOrderHistory/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <table class="table" width="100%" layoutH="92">
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th>ID</th>
-                <th>用户</th>
-                <th>收件人</th>
-                <th>备注</th>
-                <th>订单状态</th>
-                <th>是否处理</th>
-                <th>付款信息</th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'user'/></th>
+                <th><@t.page 'receiver'/></th>
+                <th><@t.page 'remark'/></th>
+                <th><@t.page 'status'/></th>
+                <th><@t.page 'order.process'/></th>
+                <th><@t.page 'payment'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -66,40 +76,43 @@
                 </td>
                 <td>
                     <div class="box">
-                        <p>${a.addressee!}</p>
-                        <p><label>收货地址:</label>${a.address!}</p>
+                        <p>${a.addressee!} <label><@t.page 'telephone'/>:</label>${a.telephone!}</p>
+                        <p><label><@t.page 'shipping_address'/>:</label>${a.address!}</p>
                     </div>
                 </td>
                 <td>${a.remark!}</td>
-                <td>${a.status!}</td>
+                <td><@t.page 'status.order.'+a.status/></td>
                 <td>
                     <div class="box">
-                        <p>${a.processed!} ${a.processDate!}</p>
-                        <p>${a.processInfo!}</p>
+                        <p>${a.processed?then(t.pageMessage('yes'),'')} ${a.processDate!}</p>
+                        <p><#if a.processInfo?has_content><label><@t.page 'order.process_info'/>:</label></#if>${a.processInfo!}</p>
                     </div>
-                    
                 </td>
                 <td>
                     <div class="box">
-                        <p>${a.paymentId!}</p>
+                        <p><#if a.paymentId?has_content><label><@t.page 'payment.id'/>:</label></#if>${a.paymentId!}</p>
                         <p>${a.paymentDate!}</p>
                     </div>
                 </td>
                 <td>${a.createDate!}</td>
-                <td>
-                <#if 3=a.status || 0 = a.status>
+                <td class="wrap">
+                    <a href="tradeOrder/view.html?id=${a.id}" class="btnText edit" target="dialog" rel="viewOrder${a.id}"><@t.page 'button.view'/></a>
+                <#if !a.confirmed && ( 0 = a.status || 2 = a.status)>
                     <#if authorizedMap['tradeOrder/confirm']>
-                    <a href="tradeOrder/confirm?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="确定要确认吗" target="ajaxTodo">确认订单</a>
+                    <a href="tradeOrder/confirmParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'order.confirm'/></a>
                     </#if>
                     <#if authorizedMap['tradeOrder/invalid']>
-                    <a href="tradeOrder/invalid?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="确定要设置无效吗" target="ajaxTodo">无效订单</a>
+                    <a href="tradeOrder/invalid?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.invalid_order'/>" target="ajaxTodo"><@t.page 'order.invalid'/></a>
                     </#if>
                 </#if>
-                <#if 1=a.status && !a.processed && authorizedMap['tradeOrder/process']>
-                    <a href="tradeOrder/processParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true">处理订单</a>
+                <#if 1=a.status && a.confirmed && !a.processed && authorizedMap['tradeOrder/process']>
+                    <a href="tradeOrder/processParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'order.process'/></a>
+                </#if>
+                <#if (0=a.status || 1=a.status || 3=a.status ) && authorizedMap['tradeOrder/close']>
+                    <a href="tradeOrder/close?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.close_order'/>" target="ajaxTodo"><@t.page 'button.close'/></a>
                 </#if>
                 <#if authorizedMap['tradeOrderHistory/list']>
-                    <a href="tradeOrderHistory/list.html?queryOrderId=${a.id}" class="btnText" target="navTab" rel="tradeOrderHistory/list">订单历史</a>
+                    <a href="tradeOrderHistory/list.html?queryOrderId=${a.id}" class="btnText" target="navTab" rel="tradeOrderHistory/list"><@t.page 'order.history'/></a>
                 </#if>
                 </td>
             </tr>

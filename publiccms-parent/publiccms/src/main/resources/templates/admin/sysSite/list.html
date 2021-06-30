@@ -53,7 +53,7 @@
                 <td><a href="${a.dynamicPath!}" target="_blank">${a.dynamicPath!}</a></td>
                 <td>${a.useStatic?then(t.pageMessage('yes'),t.pageMessage('no'))} ${a.useSsi?then('['+t.pageMessage('ssi_enabled')+']','')}</td>
                 <td><a href="${a.sitePath!}" target="_blank">${a.sitePath!}</a></td>
-                <td>
+                <td class="wrap">
                     <a href="sysSite/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="sysSite/edit"><i class="icon-edit"></i> <@t.page 'site.edit'/></a>
                     <a href="sysDomain/add.html?siteId=${a.id!}" class="btnText blue" target="navTab" rel="sysDomain/add"><@t.page 'domain.add'/></a>
                     <a href="sysDomain/list.html?siteId=${a.id!}" class="btnText" target="navTab" rel="sysDomain/list"><@t.page 'domain.list'/></a>

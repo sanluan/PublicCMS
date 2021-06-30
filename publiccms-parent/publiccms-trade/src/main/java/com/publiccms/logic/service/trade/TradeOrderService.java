@@ -19,6 +19,7 @@ import com.publiccms.entities.trade.TradeOrderHistory;
 import com.publiccms.entities.trade.TradeOrderProduct;
 import com.publiccms.logic.dao.trade.TradeOrderDao;
 import com.publiccms.logic.dao.trade.TradeOrderHistoryDao;
+import com.publiccms.logic.service.cms.CmsContentProductService;
 
 /**
  *
@@ -35,28 +36,25 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     /**
      * 
      */
-    public static final int STATUS_CONFIRMED = 1;
+    public static final int STATUS_INVALID = 1;
     /**
      * 
      */
-    public static final int STATUS_INVALID = 2;
+    public static final int STATUS_PAID = 2;
     /**
      * 
      */
-    public static final int STATUS_PAID = 3;
+    public static final int STATUS_REFUNDED = 3;
     /**
      * 
      */
     public static final int STATUS_CLOSE = 4;
-    /**
-     * 
-     */
-    public static final int STATUS_REFUNDED = 5;
 
     /**
      * @param siteId
      * @param userId
      * @param paymentId
+     * @param status
      * @param processed
      * @param orderType
      * @param pageIndex
@@ -64,9 +62,9 @@ public class TradeOrderService extends BaseService<TradeOrder> {
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Boolean processed, String orderType, Integer pageIndex,
-            Integer pageSize) {
-        return dao.getPage(siteId, userId, paymentId, processed, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Integer[] status, Boolean processed, String orderType,
+            Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, userId, paymentId, status, processed, orderType, pageIndex, pageSize);
     }
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
@@ -75,10 +73,11 @@ public class TradeOrderService extends BaseService<TradeOrder> {
             entity.setId(null);
             entity.setSiteId(siteId);
             entity.setUserId(userId);
-            entity.setProcessed(false);
-            entity.setProcessInfo(null);
             entity.setAmount(BigDecimal.ZERO);
             entity.setStatus(STATUS_PENDING);
+            entity.setConfirmed(false);
+            entity.setProcessed(false);
+            entity.setProcessInfo(null);
             entity.setPaymentDate(null);
             entity.setPaymentId(null);
             entity.setProcessUserId(null);
@@ -105,10 +104,12 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean confirm(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PAID) {
-            entity.setStatus(STATUS_CONFIRMED);
+        if (null != entity && siteId == entity.getSiteId() && !entity.isConfirmed()
+                && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_PAID)) {
             Date now = CommonUtils.getDate();
+            entity.setConfirmed(true);
             entity.setUpdateDate(now);
+            productService.deduction(siteId, tradeOrderProductService.getList(siteId, orderId));
             TradeOrderHistory history = new TradeOrderHistory(siteId, orderId, now, TradeOrderHistoryService.OPERATE_CONFIRM);
             historyDao.save(history);
             return true;
@@ -119,7 +120,8 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean invalid(short siteId, long orderId) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && siteId == entity.getSiteId() && entity.getStatus() == STATUS_PAID) {
+        if (null != entity && siteId == entity.getSiteId()
+                && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_PAID)) {
             entity.setStatus(STATUS_INVALID);
             Date now = CommonUtils.getDate();
             entity.setUpdateDate(now);
@@ -161,7 +163,7 @@ public class TradeOrderService extends BaseService<TradeOrder> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean processed(short siteId, long orderId, long userId, String processInfo) {
         TradeOrder entity = getEntity(orderId);
-        if (null != entity && siteId == entity.getSiteId() && !entity.isProcessed()) {
+        if (null != entity && siteId == entity.getSiteId() && entity.isConfirmed() && !entity.isProcessed()) {
             entity.setProcessed(true);
             entity.setProcessUserId(userId);
             entity.setProcessInfo(processInfo);
@@ -221,6 +223,8 @@ public class TradeOrderService extends BaseService<TradeOrder> {
 
     @Autowired
     private TradeOrderDao dao;
+    @Autowired
+    private CmsContentProductService productService;
     @Autowired
     private TradeOrderProductService tradeOrderProductService;
     @Autowired

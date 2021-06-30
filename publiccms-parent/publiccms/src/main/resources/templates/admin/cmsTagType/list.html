@@ -40,7 +40,7 @@
                 <td>${a.id!}</td>
                 <td class="exclude-translate">${(a.name)!}</td>
                 <td>${a.count!}</td>
-                <td>
+                <td class="wrap">
                     <a href="cmsTagType/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsTagType/edit"><i class="icon-edit"></i> <@t.page 'tag_type.edit'/></a>
                     <a href="cmsTagType/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </td>

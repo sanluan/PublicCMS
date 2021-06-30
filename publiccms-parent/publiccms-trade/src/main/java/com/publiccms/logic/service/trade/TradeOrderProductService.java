@@ -44,6 +44,18 @@ public class TradeOrderProductService extends BaseService<TradeOrderProduct> {
         return dao.getPage(siteId, orderId, pageIndex, pageSize);
     }
 
+    /**
+     * @param siteId
+     * @param orderId
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    @Transactional(readOnly = true)
+    public List<TradeOrderProduct> getList(Short siteId, Long orderId) {
+        return dao.getList(siteId, orderId);
+    }
+
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public BigDecimal create(short siteId, long orderId, List<TradeOrderProduct> tradeOrderProductList) {
         BigDecimal amount = BigDecimal.ZERO;

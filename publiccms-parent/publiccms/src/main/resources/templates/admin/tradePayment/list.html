@@ -7,31 +7,36 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'user'/>：</label>
+                    <label><@t.page 'user'/>:</label>
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label>订单类型：</label>
+                    <label><@t.page 'payment.type'/>:</label>
                     <input type="text" name="tradeType" value="${tradeType!}" />
                 </li>
                 <li>
-                    <label>订单流水：</label>
+                    <label><@t.page 'serial_number'/>:</label>
                     <input type="text" name="serialNumber" value="${serialNumber!}" />
                 </li>
                 <li>
-                    <label>账户类型：</label>
+                    <label><@t.page 'payment.account_type'/>:</label>
                     <input type="text" name="accountType" value="${accountType!}" />
                 </li>
                 <li>
-                    <label>账户流水：</label>
+                    <label><@t.page 'payment.account_serial_number'/>:</label>
                     <input type="text" name="accountSerialNumber" value="${accountSerialNumber!}" />
                 </li>
                 <li>
-                    <label>状态：</label>
-                    <input type="text" name="status" value="${status!}" />
+                    <label><@t.page 'status'/>:</label>
+                    <#list 0..3 as s>
+                        <label style="width:auto">
+                            <input <@t.compare status!'' s?string 'checked="checked"'/> name="status" value="${s}" type="checkbox"/>
+                            <@t.page 'status.payment.'+s/>
+                        </label>
+                    </#list>
                 </li>
                 <li class="colspan">
-                    <label>创建日期：</label>
+                    <label><@t.page 'create_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
@@ -52,18 +57,16 @@
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>用户ID</th>
-                <th>用户</th>
-                <th>金额</th>
-                <th>描述</th>
-                <th>订单类型</th>
-                <th>订单流水</th>
-                <th>账户类型</th>
-                <th>账户流水</th>
-                <th>IP</th>
-                <th>状态</th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'user'/></th>
+                <th><@t.page 'amount'/></th>
+                <th><@t.page 'payment.type'/></th>
+                <th><@t.page 'serial_number'/></th>
+                <th><@t.page 'payment.account_type'/></th>
+                <th><@t.page 'payment.account_serial_number'/></th>
+                <th><@t.page 'status'/></th>
+                <th><@t.page 'payment.process'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -75,22 +78,30 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>${a.userId!}</td>
-                <td class="center">
-                    ${(userMap[a.userId?string].nickName)!}
+                <td>
+                    <div class="box">
+                        <p>${(userMap[a.userId?string].nickName)!}</p>
+                        <p>${a.ip!}</p>
+                    </div>
                 </td>
-                <td>${a.amount!}</td>
-                <td>${a.description!}</td>
+                <td>
+                    <div class="box">
+                        ${a.description!}
+                        ${a.amount!}
+                    </div>
+                </td>
                 <td>${a.tradeType!}</td>
                 <td>${a.serialNumber!}</td>
                 <td>${a.accountType!}</td>
                 <td>${a.accountSerialNumber!}</td>
-                <td>${a.ip!}</td>
-                <td>${a.status!}</td>
-                <td>${a.createDate!}</td>
+                <td><@t.page 'status.payment.'+a.status/></td>
                 <td>
+                    ${a.processed?then(t.pageMessage('yes'),'')} ${a.processDate!}
+                </td>
+                <td>${a.createDate!}</td>
+                <td class="wrap">
                     <#if authorizedMap['tradePaymentHistory/list']>
-                        <a href="tradePaymentHistory/list.html?queryPaymentId=${a.id}" class="btnText" target="navTab" rel="tradePaymentHistory/list">支付历史</a>
+                        <a href="tradePaymentHistory/list.html?queryPaymentId=${a.id}" class="btnText" target="navTab" rel="tradePaymentHistory/list"><@t.page 'payment.history'/></a>
                     </#if>
                 </td>
             </tr>

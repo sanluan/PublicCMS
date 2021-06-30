@@ -27,7 +27,7 @@
                 <td>${a.authToken!}</td>
                 <td>${a.expiryDate!}</td>
                 <td>${a.createDate!}</td>
-                <td>
+                <td class="wrap">
                     <a href="sysAppToken/delete?authToken=${a.authToken}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </td>
             </tr>

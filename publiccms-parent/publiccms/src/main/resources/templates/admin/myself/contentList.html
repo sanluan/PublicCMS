@@ -121,7 +121,7 @@
                     <@t.page 'status.content.'+a.status/>
                     <#if 1==a.status>/${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
-                <td>
+                <td class="wrap">
                     <#if authorizedMap['cmsContent/add']>
                         <a href="cmsContent/add.html?id=${a.id}&navTabId=myself/contentList" class="edit btnText blue" target="navTab" rel="myself/contentList/edit"><i class="icon-edit"></i> <@t.page 'content.edit'/></a></li>
                     </#if>

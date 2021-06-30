@@ -44,7 +44,7 @@
             </dd>
         </dl>
         <dl class="nowrap">
-            <dt><@t.page 'comment.reply'/>:</dt>
+            <dt><@t.page 'reply'/>:</dt>
             <dd>
                 <textarea name="text" rows="3" cols="50"></textarea>
             </dd>
@@ -52,7 +52,7 @@
         <@_commentList advanced=true replyId=a.id>
             <#if page.totalCount gt 0>
             <fieldset>
-                <legend><@t.page 'comment.reply'/></legend>
+                <legend><@t.page 'reply'/></legend>
                 <#list page.list as a>
                     <@t.merge 'userIds' a.userId!/>
                     <@t.merge 'userIds' a.replyUserId!/>
@@ -63,14 +63,14 @@
                 <dl class="nowrap">
                     <dt>${(userMap[a.userId?string].nickName)!}:</dt>
                     <dd>
-                        <div><@t.page 'comment.reply'/> ${(userMap[a.replyUserId?string].nickName)!} : ${a.text!}</div>
+                        <div><@t.page 'reply'/> ${(userMap[a.replyUserId?string].nickName)!} : ${a.text!}</div>
                         <p><label><@t.page 'status'/>:</label><@t.page 'status.content.'+a.status/></p>
                         <p>
                             <label><@t.page 'operate'/>:</label>
                             <#if authorizedMap['cmsComment/edit']>
                                 <a href="cmsComment/edit.html?id=${a.id}" class="edit btnText blue" target="dialog" mask="true"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                             </#if>
-                            <a href="cmsComment/reply.html?replyId=${a.replyId!a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'comment.reply'/></a>
+                            <a href="cmsComment/reply.html?replyId=${a.replyId!a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'reply'/></a>
                         </p>
                     </dd>
                 </dl>

@@ -49,7 +49,7 @@
                 <td>${a.url!}</td>
                 <td><#if a.parentId?has_content><@t.menu a.parentId/></#if></td>
                 <td>${a.sort!}</td>
-                <td>
+                <td class="wrap">
                     <a href="sysModule/add.html?id=${a.id}&deep=${deep}" class="edit btnText blue" target="navTab" rel="sysModule/edit"><i class="icon-edit"></i> <@t.page 'module.edit'/></a></li>
                     <a href="sysModule/delete?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a></li>
                     <#if deep lte 2>

@@ -118,7 +118,7 @@
                     <@t.page 'status.content.'+a.status/>
                     <#if 1=a.status>/ ${(checkUserMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
-                <td>
+                <td class="wrap">
                     <#if authorizedMap['cmsContent/recycle']>
                         <a href="cmsContent/recycle?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.recycle'/>" target="ajaxTodo"><@t.page 'button.recycle'/></a>
                     </#if>

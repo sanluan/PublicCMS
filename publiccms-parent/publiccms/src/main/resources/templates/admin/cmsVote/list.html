@@ -56,7 +56,7 @@
                 <th orderField="startDate" class="<#if orderField??&&'startDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'start_date'/></th>
                 <th orderField="endDate" class="<#if orderField??&&'endDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'end_date'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
-                <th><@t.page 'operate'/></th>
+                <th class="wrap"><@t.page 'operate'/></th>
             </tr>
         </thead>
         <tbody>

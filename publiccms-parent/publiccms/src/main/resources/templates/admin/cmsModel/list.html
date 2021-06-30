@@ -46,7 +46,7 @@
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>
-                <td>
+                <td class="wrap">
                     <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i> <@t.page 'model.edit'/></a>
                     <#if a.hasChild>
                         <a href="cmsModel/list.html?parentId=${a.id?url}" class="btnText" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a>

@@ -23,7 +23,7 @@ public class TradePaymentListDirective extends AbstractTemplateDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getString("tradeType"),
                 handler.getString("serialNumber"), handler.getString("accountType"), handler.getString("accountSerialNumber"),
-                handler.getInteger("status"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"),
+                handler.getIntegerArray("status"), handler.getDate("startCreateDate"), handler.getDate("endCreateDate"),
                 handler.getString("paymentType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
         handler.put("page", page).render();
     }

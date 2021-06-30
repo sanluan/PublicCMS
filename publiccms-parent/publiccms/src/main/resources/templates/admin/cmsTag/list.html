@@ -57,7 +57,7 @@
                 <td class="exclude-translate">${(a.name)!}</td>
                 <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
                 <td>${a.searchCount!}</td>
-                <td>
+                <td class="wrap">
                     <a href="cmsTag/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsTag/edit" icon="<i class='icon-edit'></i>" title="<@t.page 'tag.edit'/>"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                     <a href="cmsTag/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </td>

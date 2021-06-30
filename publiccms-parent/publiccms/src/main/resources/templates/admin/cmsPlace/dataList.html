@@ -95,7 +95,7 @@
                     <@t.page 'status.place.data.'+a.status/>
                     <#if 1=a.status&&a.checkUserId?has_content>/ ${(userMap[a.checkUserId?string].nickName)!}</#if>
                 </td>
-                <td>
+                <td class="wrap">
                     <a href="cmsPlace/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsPlace/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                     <a href="cmsPlace/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsPlace/add" icon="<i class='icon-plus-sign-alt icon-large'></i>" title="<@t.page 'place_data.add'/>"><@t.page 'button.copy'/></a>
                     <#if 2=a.status>

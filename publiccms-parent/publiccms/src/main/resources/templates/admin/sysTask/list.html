@@ -51,7 +51,7 @@
                 <td>${(a.cronExpression)!}</td>
                 <td>${(a.filePath)!}</td>
                 <td><@t.page 'status.task.'+a.status/></td>
-                <td>
+                <td class="wrap">
                     <a href="sysTask/add.html?id=${a.id}" class="edit btnText green" target="navTab" rel="sysTask/edit"><i class="icon-edit"></i> <@t.page 'task.edit'/></a>
                     <#if a.status=0>
                         <a href="sysTask/runOnce?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText green" title="<@t.page 'confirm.exec'/>" target="ajaxTodo"><@t.page 'button.exec'/></a>

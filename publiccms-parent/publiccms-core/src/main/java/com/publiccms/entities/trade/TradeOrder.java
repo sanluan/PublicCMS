@@ -51,8 +51,10 @@ public class TradeOrder implements java.io.Serializable {
     private String ip;
     @GeneratorColumn(title = "备注")
     private String remark;
-    @GeneratorColumn(title = "订单状态")
+    @GeneratorColumn(title = "订单状态", condition = true)
     private int status;
+    @GeneratorColumn(title = "是否确认", condition = true)
+    private boolean confirmed;
     @GeneratorColumn(title = "是否处理", condition = true)
     private boolean processed;
     @GeneratorColumn(title = "处理用户ID")
@@ -71,19 +73,21 @@ public class TradeOrder implements java.io.Serializable {
     public TradeOrder() {
     }
 
-    public TradeOrder(short siteId, long userId, BigDecimal amount, String ip, int status, boolean processed, Date createDate) {
+    public TradeOrder(short siteId, long userId, BigDecimal amount, String ip, int status, boolean confirmed, boolean processed,
+            Date createDate) {
         this.siteId = siteId;
         this.userId = userId;
         this.amount = amount;
         this.ip = ip;
         this.status = status;
+        this.confirmed = confirmed;
         this.processed = processed;
         this.createDate = createDate;
     }
 
     public TradeOrder(short siteId, long userId, BigDecimal amount, Long paymentId, String address, String addressee,
-            String telephone, String ip, String remark, int status, boolean processed, long processUserId, String processInfo,
-            Date updateDate, Date createDate, Date processDate, Date paymentDate) {
+            String telephone, String ip, String remark, int status, boolean confirmed, boolean processed, long processUserId,
+            String processInfo, Date updateDate, Date createDate, Date processDate, Date paymentDate) {
         this.siteId = siteId;
         this.userId = userId;
         this.amount = amount;
@@ -94,6 +98,7 @@ public class TradeOrder implements java.io.Serializable {
         this.ip = ip;
         this.remark = remark;
         this.status = status;
+        this.confirmed = confirmed;
         this.processed = processed;
         this.processUserId = processUserId;
         this.processInfo = processInfo;
@@ -203,6 +208,15 @@ public class TradeOrder implements java.io.Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    @Column(name = "confirmed", nullable = false)
+    public boolean isConfirmed() {
+        return this.confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
     @Column(name = "processed", nullable = false)

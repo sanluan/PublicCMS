@@ -10,11 +10,11 @@
                     <#include "../include_page/userId.html"/>
                 </li>
                 <li>
-                    <label>状态：</label>
+                    <label><@t.page 'status'/>:</label>
                     <input type="text" name="status" value="${status!}" />
                 </li>
                 <li class="colspan">
-                    <label>创建日期：</label>
+                    <label><@t.page 'create_date'/>:</label>
                     <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
                     <span>-</span>
                     <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${endCreateDate!}" />
@@ -34,17 +34,17 @@
     <table class="table" width="100%" layoutH>
         <thead>
             <tr>
-                <th>ID</th>
-                <th>流水号</th>
-                <th>账户ID</th>
+                <th><@t.page 'id'/></th>
+                <th><@t.page 'serial_number'/></th>
+                <th><@t.page 'account.id'/></th>
                 <th><@t.page 'user'/></th>
-                <th>操作用户</th>
-                <th>金额</th>
-                <th>变动</th>
-                <th>余额</th>
-                <th>状态</th>
-                <th>描述</th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>">创建日期</th>
+                <th><@t.page 'operate_user'/></th>
+                <th><@t.page 'amount'/></th>
+                <th><@t.page 'amount_change'/></th>
+                <th><@t.page 'balance'/></th>
+                <th><@t.page 'status'/></th>
+                <th><@t.page 'description'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
             </tr>
         </thead>
         <tbody>

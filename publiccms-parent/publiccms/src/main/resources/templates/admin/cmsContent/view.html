@@ -186,7 +186,7 @@
         </#if>
         <#if a.hasProducts>
             <dl class="nowrap">
-                <dt>产品列表:</dt>
+                <dt><@t.page 'product_list'/>:</dt>
                 <dd>
             <@_contentProductList contentId=a.id>
                 <#list page.list as product>
@@ -197,9 +197,9 @@
                             </p>
                         </#if>
                         <p><label><@t.page 'title'/>:</label>${product.title}</p>
-                        <p><label>价格:</label>${product.price}</p>
-                        <p><label>库存:</label>${product.inventory}</p>
-                        <p><label>销量:</label>${product.sales}</p>
+                        <p><label><@t.page 'product.price'/>:</label>${product.price}</p>
+                        <p><label><@t.page 'product.inventory'/>:</label>${product.inventory}</p>
+                        <p><label><@t.page 'product.sales'/>:</label>${product.sales}</p>
                     </div>
                     <div class="divider"></div>
                 </#list>

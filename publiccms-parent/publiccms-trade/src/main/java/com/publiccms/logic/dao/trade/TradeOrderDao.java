@@ -22,14 +22,15 @@ public class TradeOrderDao extends BaseDao<TradeOrder> {
      * @param siteId
      * @param userId
      * @param paymentId
+     * @param status 
      * @param processed
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Boolean processed, String orderType, Integer pageIndex,
-            Integer pageSize) {
+    public PageHandler getPage(Short siteId, Long userId, Long paymentId, Integer[] status, Boolean processed, String orderType,
+            Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from TradeOrder bean");
         if (null != siteId) {
             queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
@@ -39,6 +40,9 @@ public class TradeOrderDao extends BaseDao<TradeOrder> {
         }
         if (CommonUtils.notEmpty(paymentId)) {
             queryHandler.condition("bean.paymentId = :paymentId").setParameter("paymentId", paymentId);
+        }
+        if (CommonUtils.notEmpty(status)) {
+            queryHandler.condition("bean.status in (:status)").setParameter("status", status);
         }
         if (null != processed) {
             queryHandler.condition("bean.processed = :processed").setParameter("processed", processed);

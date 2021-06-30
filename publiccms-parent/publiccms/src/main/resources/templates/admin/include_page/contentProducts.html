@@ -4,10 +4,10 @@
         <tr>
             <th type="attach" name="products[#index#].cover" size="50" lookupGroup="products[#index#]" lookupUrl="common/upload.html?field=cover&fileTypes=image"><@t.page 'cover'/></th>
             <th type="text" name="products[#index#].title" fieldClass="required"  size="50" fieldAttrs="{'maxlength':100}"><@t.page 'title'/></th>
-            <th type="text" name="products[#index#].price" fieldClass="required number" size="10" fieldAttrs="{'maxlength':20}">价格</th>
-            <th type="text" name="products[#index#].inventory" fieldClass="required digits" fieldAttrs="{'maxlength':20,min:1}" size="10">库存</th>
-            <th type="text" name="products[#index#].minQuantity" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}">最低数量</th>
-            <th type="text" name="products[#index#].maxQuantity" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}">最高数量</th>
+            <th type="text" name="products[#index#].price" fieldClass="required number" size="10" fieldAttrs="{'maxlength':20}"><@t.page 'product.price'/></th>
+            <th type="text" name="products[#index#].inventory" fieldClass="required digits" fieldAttrs="{'maxlength':20,min:1}" size="10"><@t.page 'product.inventory'/></th>
+            <th type="text" name="products[#index#].minQuantity" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}"><@t.page 'product.quantity_limit.min'/></th>
+            <th type="text" name="products[#index#].maxQuantity" fieldClass="digits" size="10" fieldAttrs="{'maxlength':20}"><@t.page 'product.quantity_limit.max'/></th>
             <th type="del" width="60"><@t.page 'operate'/></th>
         </tr>
     </thead>
