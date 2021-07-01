@@ -49,6 +49,7 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'user'/></th>
+                <th><@t.page 'title'/></th>
                 <th><@t.page 'receiver'/></th>
                 <th><@t.page 'remark'/></th>
                 <th><@t.page 'status'/></th>
@@ -74,6 +75,7 @@
                         <p>${a.ip!}</p>
                     </div>
                 </td>
+                <td>${a.title!}</td>
                 <td>
                     <div class="box">
                         <p>${a.addressee!} <label><@t.page 'telephone'/>:</label>${a.telephone!}</p>

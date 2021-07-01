@@ -164,7 +164,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     requestMap.put("mchid", config.get(CONFIG_MCHID));
                     requestMap.put("appid", config.get(CONFIG_APPID));
                     requestMap.put("description", null == payment.getDescription() ? "order" : payment.getDescription());
-                    requestMap.put("notify_url", getNotifyUrl(config.get(CONFIG_NOTIFYURL)));
+                    requestMap.put("notify_url", config.get(CONFIG_NOTIFYURL));
                     requestMap.put("out_trade_no", "00000" + payment.getId());
                     Map<String, Object> amountMap = new HashMap<>();
                     amountMap.put("total", (payment.getAmount().multiply(new BigDecimal(100))).intValue());

@@ -56,16 +56,18 @@ public class InitializationInitializer implements WebApplicationInitializer {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
                 if (CmsVersion.getVersion().equals(version)) {
                     CmsDataSource.initDefaultDataSource();
-                    log.info("PublicCMS " + CmsVersion.getVersion() + " will start normally in " + CommonConstants.CMS_FILEPATH);
+                    log.info(String.format("PublicCMS %s will start normally in %s", CmsVersion.getVersion(),
+                            CommonConstants.CMS_FILEPATH));
                 } else {
                     createInstallServlet(servletcontext, config, InstallServlet.STEP_CHECKDATABASE, version);
-                    log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CommonConstants.CMS_FILEPATH
-                            + ", please upgrade your database!");
+                    log.warn(String.format("PublicCMS %s installer will start in %s, please upgrade your database!",
+                            CmsVersion.getVersion(), CommonConstants.CMS_FILEPATH));
                 }
             } else {
                 createInstallServlet(servletcontext, config, null, null);
-                log.warn("PublicCMS " + CmsVersion.getVersion() + " installer will start in " + CommonConstants.CMS_FILEPATH
-                        + ", please configure your database information and initialize the database!");
+                log.warn(String.format(
+                        "PublicCMS %s installer will start in %s, please configure your database information and initialize the database!",
+                        CmsVersion.getVersion(), CommonConstants.CMS_FILEPATH));
             }
         } catch (IOException e) {
             throw new ServletException(e);
@@ -87,8 +89,8 @@ public class InitializationInitializer implements WebApplicationInitializer {
         } catch (Exception e) {
         }
         if (!file.exists()) {
-            log.warn("PublicCMS " + CmsVersion.getVersion()
-                    + " the cms.filePath parameter is invalid , try to use the temporary directory.");
+            log.warn(String.format("PublicCMS %s the cms.filePath parameter is invalid , try to use the temporary directory.",
+                    CmsVersion.getVersion()));
             file = new File(defaultPath, "data/publiccms");
         }
         CommonConstants.CMS_FILEPATH = file.getAbsolutePath();
@@ -109,7 +111,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
     public static void initEncoding() {
         Charset old = Charset.defaultCharset();
         if (!old.equals(CommonConstants.DEFAULT_CHARSET)) {
-            log.info("old file.encoding=" + old);
+            log.info(String.format("old file.encoding = %s", old));
             try {
                 Field field = Charset.class.getDeclaredField("defaultCharset");
                 field.setAccessible(true);
@@ -117,7 +119,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
                 field.set(null, null);
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             }
-            log.info("new file.encoding=" + Charset.defaultCharset());
+            log.info(String.format("new file.encoding = %s" ,Charset.defaultCharset()));
         }
     }
 

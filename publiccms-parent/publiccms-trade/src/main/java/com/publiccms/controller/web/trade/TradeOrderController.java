@@ -83,6 +83,9 @@ public class TradeOrderController {
                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="
                         + entity.getId() + "&returnUrl=" + returnUrl;
             }
+        } else if (null != order.getPaymentId()) {
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath() + "tradePayment/pay?paymentId="
+                    + order.getPaymentId() + "&returnUrl=" + returnUrl;
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }

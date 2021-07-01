@@ -37,7 +37,7 @@
             </li>
             <li>
                 <div class="card">
-                    <i class="icon-unlock-alt icon-large icon-large icon"></i>
+                    <i class="icon-unlock-alt icon-large icon"></i>
                     <p><@t.page 'my_login_token'/></p>
                     <a href="myself/userTokenList.html" icon="<i class='icon-unlock-alt icon-large'></i>" title="<@t.page 'my_login_token'/>" target="navTab" rel="myself/userTokenList">
                         <h3><@_sysUserTokenList userId=admin.id pageSize=0>${page.totalCount}</@_sysUserTokenList></h3>
@@ -46,7 +46,6 @@
             </li>
             <li>
                 <div class="card">
-                    <i class="icon-time icon-large icon"></i>
                     <p>
                         <label><@t.page 'user.last_login_date'/>:</label>${admin.lastLoginDate!}
                     </p>

@@ -4,8 +4,8 @@ a.btnText:hover{text-decoration: none;}
 .grid .gridTbody td div a.btnText:hover,table.list a.btnText:hover{text-decoration:none;}
 
 .unit ul{padding: 0;margin: 0;list-style: none;}
-.unit ul li{padding: 20px;min-width:380px;width:25%;float:left;}
-.unit ul li .card{padding:10px;height:75px;border-radius:5px;border-style:solid;border-width:1px;font-size:16px;-moz-box-shadow: 0px 0px 5px 1px #DDE4EF;box-shadow: 0px 0px 5px 1px #DDE4EF;-ms-box-shadow: 0px 0px 5px 1px #DDE4EF;-o-box-shadow: 0px 0px 5px 1px #DDE4EF;-webkit-box-shadow: 0px 0px 5px 1px #DDE4EF;}
+.unit ul li{min-width:300px;width:33%;float:left;}
+.unit ul li .card{padding:10px;height:75px;margin:10px;border-radius:5px;border-style:solid;border-width:1px;font-size:16px;-moz-box-shadow: 0px 0px 5px 1px #DDE4EF;box-shadow: 0px 0px 5px 1px #DDE4EF;-ms-box-shadow: 0px 0px 5px 1px #DDE4EF;-o-box-shadow: 0px 0px 5px 1px #DDE4EF;-webkit-box-shadow: 0px 0px 5px 1px #DDE4EF;}
 .unit ul li .card p{line-height:26px;float:none;color:#333;}
 .unit ul li .card a{color:#333;}
 .unit ul li .card .button{margin:15px;}
@@ -15,7 +15,7 @@ a.btnText:hover{text-decoration: none;}
 .unit ul li .card h4{font-size:20px;line-height:32px;font-weight:normal;}
 .unit ul li .card h5{font-size:18px;line-height:32px;font-weight:normal;}
 .unit ul li .card h6{font-size:16px;line-height:32px;font-weight:normal;}
-.unit ul li .card .icon{font-size:38px;width:45px;float:left;padding:10px;margin-right:10px;opacity: 0.6;}
+.unit ul li .card .icon{font-size:38px;width:45px;float:left;padding:10px;margin-right:5px;opacity: 0.6;}
 .unit ul li:nth-child(5n) .card,.unit ul li:nth-child(5n) .card .icon{border-color: #0099CC;color: #0099CC;}
 .unit ul li:nth-child(5n+1) .card,.unit ul li:nth-child(5n+1) .card .icon{border-color: #FF9933;color: #FF9933;}
 .unit ul li:nth-child(5n+2) .card,.unit ul li:nth-child(5n+2) .card .icon{border-color: #CC6699;color: #CC6699;}

@@ -73,6 +73,10 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
      * 
      */
     public static final String CONFIG_NOTIFYURL = "notifyUrl";
+    /**
+     * 
+     */
+    public static final String CONFIG_ENCRYPTKEY = "encryptKey";
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
@@ -103,7 +107,8 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
             if (CommonUtils.notEmpty(config)) {
                 AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
                         config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
-                        config.get(CONFIG_ALIPAY_PUBLIC_KEY), AlipayConstants.SIGN_TYPE_RSA2);
+                        config.get(CONFIG_ALIPAY_PUBLIC_KEY), AlipayConstants.SIGN_TYPE_RSA2, config.get(CONFIG_ENCRYPTKEY),
+                        AlipayConstants.ENCRYPT_TYPE_AES);
                 AlipayTradeWapPayRequest alipay_request = new AlipayTradeWapPayRequest();
                 AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
                 model.setOutTradeNo(String.valueOf(payment.getId()));
@@ -113,12 +118,15 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
                 model.setTimeoutExpress(config.get(CONFIG_TIMEOUT_EXPRESS));
                 model.setProductCode(config.get(CONFIG_PRODUCT_CODE));
                 alipay_request.setBizModel(model);
-                alipay_request.setNotifyUrl(getNotifyUrl(config.get(CONFIG_NOTIFYURL)));
+                alipay_request.setNotifyUrl(config.get(CONFIG_NOTIFYURL));
                 alipay_request.setReturnUrl(callbackUrl);
                 try {
                     String form = client.pageExecute(alipay_request).getBody();
                     response.setContentType("text/html;charset=" + CommonConstants.DEFAULT_CHARSET_NAME);
+                    response.getWriter()
+                            .write("<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head><body>");
                     response.getWriter().write(form);
+                    response.getWriter().write("</body></html>");
                     response.getWriter().flush();
                     response.getWriter().close();
                     return true;
@@ -189,6 +197,9 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
         extendFieldList.add(new SysExtendField(CONFIG_PRODUCT_CODE, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRODUCT_CODE), getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_PRODUCT_CODE + CONFIG_CODE_DESCRIPTION_SUFFIX)));
+        extendFieldList.add(new SysExtendField(CONFIG_ENCRYPTKEY, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ENCRYPTKEY), getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ENCRYPTKEY + CONFIG_CODE_DESCRIPTION_SUFFIX)));
         extendFieldList.add(new SysExtendField(CONFIG_NOTIFYURL, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_NOTIFYURL),
                 getMessage(locale,

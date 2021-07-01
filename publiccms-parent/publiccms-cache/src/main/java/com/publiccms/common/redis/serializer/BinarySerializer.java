@@ -29,7 +29,7 @@ public class BinarySerializer<T> implements Serializer<T> {
             oos.flush();
             return os.toByteArray();
         } catch (Exception e) {
-            log.warn("Fail to serializer graph. graph=" + graph, e);
+            log.warn(String.format("Fail to serializer graph. graph = %s", graph), e);
             return EMPTY_BYTES;
         }
     }

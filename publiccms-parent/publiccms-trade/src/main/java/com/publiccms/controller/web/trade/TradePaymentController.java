@@ -161,6 +161,8 @@ public class TradePaymentController {
     /**
      * @param site
      * @param signature
+     * @param timestamp
+     * @param nonce
      * @param serial
      * @param body
      * @param response
@@ -171,10 +173,12 @@ public class TradePaymentController {
     @ResponseBody
     public Map<String, String> notifyWechat(@RequestAttribute SysSite site,
             @RequestHeader(value = "Wechatpay-Signature") String signature,
-            @RequestHeader(value = "Wechatpay-Serial") String serial, @RequestBody String body, HttpServletResponse response)
-            throws Exception {
-        log.info("wechat notify signature:" + signature + ",serial:" + serial + ",body:" + body);
-        Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
+            @RequestHeader(value = "Wechatpay-Timestamp") String timestamp,
+            @RequestHeader(value = "Wechatpay-Nonce") String nonce, @RequestHeader(value = "Wechatpay-Serial") String serial,
+            @RequestBody String body, HttpServletResponse response) throws Exception {
+        log.info(String.format("wechat notify signature:%s,serial:%s,timestamp:%s,nonce:%s,body:%s", signature, serial, timestamp,
+                nonce, body));
+        Map<String, String> config = configComponent.getConfigData(site.getId(), WechatGatewayComponent.CONFIG_CODE);
         Map<String, String> resultMap = new HashMap<>();
         resultMap.put("code", "FAIL");
         resultMap.put("message", "error");
@@ -182,9 +186,11 @@ public class TradePaymentController {
             byte[] apiV3Key = config.get(WechatGatewayComponent.CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
             AutoUpdateCertificatesVerifier verifier = wechatGatewayComponent.getVerifier(site.getId(), config, apiV3Key);
             try {
-                if (verifier.verify(serial, body.getBytes(CommonConstants.DEFAULT_CHARSET), signature)) {
+                StringBuilder sb = new StringBuilder();
+                sb.append(timestamp).append("\n").append(nonce).append("\n").append(body).append("\n");
+                if (verifier.verify(serial, sb.toString().getBytes(CommonConstants.DEFAULT_CHARSET), signature)) {
                     Map<String, Object> result = CommonConstants.objectMapper.readValue(body, CommonConstants.objectMapper
-                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
+                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
                     @SuppressWarnings("unchecked")
                     Map<String, String> resource = (Map<String, String>) result.get("resource");
                     if (null != resource) {
@@ -195,13 +201,13 @@ public class TradePaymentController {
                                 resource.get("ciphertext"));
                         Map<String, Object> data = CommonConstants.objectMapper.readValue(decodeResult,
                                 CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class,
-                                        String.class));
+                                        Object.class));
                         long paymentId = Long.parseLong((String) data.get("out_trade_no"));
                         TradePaymentHistory history = new TradePaymentHistory(site.getId(), paymentId, CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_NOTIFY, decodeResult);
                         historyService.save(history);
                         @SuppressWarnings("unchecked")
-                        Map<String, Object> amount = (Map<String, Object>) data.get("trade_state");
+                        Map<String, Object> amount = (Map<String, Object>) data.get("amount");
                         if ("SUCCESS".equalsIgnoreCase((String) data.get("trade_state")) && null != amount) {
                             TradePayment payment = service.getEntity(paymentId);
                             if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
@@ -212,28 +218,37 @@ public class TradePaymentController {
                                     if (wechatGatewayComponent.confirmPay(site, payment, response)) {
                                         resultMap.put("code", "SUCCESS");
                                         resultMap.put("message", "OK");
+                                        log.info("OK");
                                     } else {
+                                        log.info("payment confirm error");
                                         resultMap.put("message", "payment confirm error");
                                     }
                                 } else {
+                                    log.info("payment status update error");
                                     resultMap.put("message", "payment status update error");
                                 }
                             } else {
+                                log.info("payment status error");
                                 resultMap.put("message", "payment status error");
                             }
                         } else {
+                            log.info("error trade_state");
                             resultMap.put("message", "error trade_state");
                         }
                     } else {
+                        log.info("response error empty resource");
                         resultMap.put("message", "response error empty resource");
                     }
                 } else {
+                    log.info("response verify error");
                     resultMap.put("message", "response verify error");
                 }
             } catch (Exception e) {
+                log.info(e.getMessage());
                 resultMap.put("message", e.getMessage());
             }
         } else {
+            log.info("empty config");
             resultMap.put("message", "empty config");
         }
         return resultMap;
