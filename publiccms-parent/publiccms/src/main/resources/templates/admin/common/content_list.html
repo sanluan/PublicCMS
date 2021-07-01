@@ -165,10 +165,10 @@
                             <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickName)!}</span>
                             <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
+                                <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
                             </#if>
-                            <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
                         </p>
+                        <#if a.expiryDate?has_content><p><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></p></#if>
                     </div>
                 </td>
                 <td class="center">${a.scores!}</td>

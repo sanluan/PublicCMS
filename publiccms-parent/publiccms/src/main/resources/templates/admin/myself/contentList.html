@@ -103,6 +103,9 @@
                             <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></h3>
                             <p>
                                 <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
+                                <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
+                                    <label><a href="myself/contentList.html?parentId=${contentId}" class="btnText" target="navTab" rel="myself/contentList"><@t.page 'content.child_management'/></a></label>
+                                </#if>
                                 <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
                             </p>
                     </div>
@@ -124,9 +127,6 @@
                 <td class="wrap">
                     <#if authorizedMap['cmsContent/add']>
                         <a href="cmsContent/add.html?id=${a.id}&navTabId=myself/contentList" class="edit btnText blue" target="navTab" rel="myself/contentList/edit"><i class="icon-edit"></i> <@t.page 'content.edit'/></a></li>
-                    </#if>
-                    <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                        <a href="myself/contentList.html?parentId=${contentId}" class="btnText" target="navTab" rel="myself/contentList"><@t.page 'content.child_management'/></a>
                     </#if>
                     <#if authorizedMap['cmsContent/push']>
                         <#if 1==a.status>
