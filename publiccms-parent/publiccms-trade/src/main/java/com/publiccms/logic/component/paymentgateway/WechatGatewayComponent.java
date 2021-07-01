@@ -238,9 +238,9 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                             TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);
                     historyService.save(history);
-                    Map<String, String> result = CommonConstants.objectMapper.readValue(bodyAsString, CommonConstants.objectMapper
-                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
-                    if ("SUCCESS".equalsIgnoreCase(result.get("status"))) {
+                    Map<String, Object> result = CommonConstants.objectMapper.readValue(bodyAsString, CommonConstants.objectMapper
+                            .getTypeFactory().constructMapLikeType(HashMap.class, String.class, Object.class));
+                    if ("SUCCESS".equalsIgnoreCase((String) result.get("status"))) {
                         TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent.get(payment.getTradeType());
                         if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(siteId, payment)) {
                             service.refunded(siteId, payment.getId());
@@ -249,7 +249,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     } else {
                         TradePaymentHistory history1 = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_REFUNDERROR,
-                                String.format("response result status error: %s", result.get("status")));
+                                String.format("response result status: %s", result.get("status")));
                         historyService.save(history1);
                         service.pendingRefund(siteId, payment.getId());
                     }
@@ -264,6 +264,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                         TradePaymentHistoryService.OPERATE_REFUNDERROR, e.getMessage());
                 historyService.save(history);
+                e.printStackTrace();
             }
         }
         return false;

@@ -33,7 +33,6 @@ import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.paymentprocessor.ProductProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
-import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeOrderService;
 import com.publiccms.logic.service.trade.TradePaymentService;
 import com.publiccms.views.pojo.model.TradeOrderParameters;
@@ -148,8 +147,6 @@ public class TradeOrderController {
     private TradeOrderService service;
     @Autowired
     private TradePaymentService paymentService;
-    @Autowired
-    protected LogOperateService logOperateService;
     @Autowired
     protected ConfigComponent configComponent;
     @Autowired

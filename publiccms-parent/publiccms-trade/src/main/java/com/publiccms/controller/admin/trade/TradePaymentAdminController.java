@@ -2,10 +2,6 @@ package com.publiccms.controller.admin.trade;
 
 import java.math.BigDecimal;
 
-// Generated 2019-6-15 20:08:45 by com.publiccms.common.generator.SourceGenerator
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,14 +36,13 @@ public class TradePaymentAdminController {
      * @param id
      * @param refundAmount
      * @param reply
-     * @param request
      * @param model
      * @return operate result
      */
     @RequestMapping("refund")
     @Csrf
     public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, BigDecimal refundAmount,
-            String reply, HttpServletRequest request, ModelMap model) {
+            String reply, ModelMap model) {
         TradeRefund entity = service.getEntity(id);
         if (ControllerUtils.verifyNotEmpty("refund", entity, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -67,6 +62,25 @@ public class TradePaymentAdminController {
             paymentService.pendingRefund(site.getId(), payment.getId());
             service.updateStatus(site.getId(), entity.getId(), admin.getId(), TradeRefundService.STATUS_FAIL);
         }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param id
+     * @param reply
+     * @param model
+     * @return operate result
+     */
+    @RequestMapping("refuse")
+    @Csrf
+    public String refuse(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, String reply, ModelMap model) {
+        TradeRefund entity = service.getEntity(id);
+        if (ControllerUtils.verifyNotEmpty("refund", entity, model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        service.refuseResund(site.getId(), id, admin.getId(), reply);
         return CommonConstants.TEMPLATE_DONE;
     }
 

@@ -13,7 +13,6 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradeRefund;
-import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.trade.TradeOrderService;
 import com.publiccms.logic.service.trade.TradeRefundService;
 
@@ -92,6 +91,4 @@ public class TradeOrderAdminController {
     private TradeOrderService service;
     @Autowired
     private TradeRefundService refundService;
-    @Autowired
-    protected LogOperateService logOperateService;
 }

@@ -107,7 +107,7 @@
                     <a href="tradeOrder/invalid?id=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.invalid_order'/>" target="ajaxTodo"><@t.page 'order.invalid'/></a>
                     </#if>
                 </#if>
-                <#if 1=a.status && a.confirmed && !a.processed && authorizedMap['tradeOrder/process']>
+                <#if 2=a.status && a.confirmed && !a.processed && authorizedMap['tradeOrder/process']>
                     <a href="tradeOrder/processParameters.html?id=${a.id}" class="btnText green" target="dialog" mask="true"><@t.page 'order.process'/></a>
                 </#if>
                 <#if (0=a.status || 1=a.status || 3=a.status ) && authorizedMap['tradeOrder/close']>

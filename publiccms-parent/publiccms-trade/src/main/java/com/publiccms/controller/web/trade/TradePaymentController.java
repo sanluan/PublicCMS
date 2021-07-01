@@ -210,34 +210,66 @@ public class TradePaymentController {
                         TradePaymentHistory history = new TradePaymentHistory(site.getId(), paymentId, CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_NOTIFY, decodeResult);
                         historyService.save(history);
-                        @SuppressWarnings("unchecked")
-                        Map<String, Object> amount = (Map<String, Object>) data.get("amount");
-                        if ("SUCCESS".equalsIgnoreCase((String) data.get("trade_state")) && null != amount) {
-                            TradePayment payment = service.getEntity(paymentId);
-                            if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
-                                    && (payment.getAmount().multiply(new BigDecimal(100)))
-                                            .intValue() == (int) amount.get("payer_total")) {
-                                payment = service.getEntity(paymentId);
-                                if (service.paid(site.getId(), payment.getId(), (String) result.get("transaction_id"))) {
-                                    if (wechatGatewayComponent.confirmPay(site.getId(), payment, response)) {
+                        if ("REFUND.SUCCESS".equalsIgnoreCase((String) result.get("event_type"))) {
+                            @SuppressWarnings("unchecked")
+                            Map<String, Integer> amount = (Map<String, Integer>) data.get("amount");
+                            if ("SUCCESS".equalsIgnoreCase((String) data.get("refund_status")) && null != amount) {
+                                TradePayment payment = service.getEntity(paymentId);
+                                TradeRefund refund = refundService.getEntity(Long.parseLong((String) data.get("out_refund_no")));
+                                if (null != payment && null != refund && refund.getStatus() == TradeRefundService.STATUS_PENDING
+                                        && (refund.getRefundAmount().multiply(new BigDecimal(100))).intValue() == amount
+                                                .get("refund")) {
+                                    TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent
+                                            .get(payment.getTradeType());
+                                    if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(site.getId(), payment)) {
+                                        service.refunded(site.getId(), payment.getId());
+                                        refundService.updateStatus(site.getId(), refund.getId(), refund.getRefundUserId(),
+                                                TradeRefundService.STATUS_REFUNDED);
                                         resultMap.put("code", "SUCCESS");
                                         resultMap.put("message", "OK");
                                         log.info("OK");
                                     } else {
-                                        log.info("payment confirm error");
-                                        resultMap.put("message", "payment confirm error");
+                                        log.info("order status update error");
+                                        resultMap.put("message", "order status update error");
                                     }
                                 } else {
-                                    log.info("payment status update error");
-                                    resultMap.put("message", "payment status update error");
+                                    log.info("payment status error");
+                                    resultMap.put("message", "payment status error");
                                 }
                             } else {
-                                log.info("payment status error");
-                                resultMap.put("message", "payment status error");
+                                log.info("error trade_state");
+                                resultMap.put("message", "error trade_state");
                             }
-                        } else {
-                            log.info("error trade_state");
-                            resultMap.put("message", "error trade_state");
+                        } else if ("TRANSACTION.SUCCESS".equalsIgnoreCase((String) result.get("event_type"))) {
+                            @SuppressWarnings("unchecked")
+                            Map<String, Object> amount = (Map<String, Object>) data.get("amount");
+                            if ("SUCCESS".equalsIgnoreCase((String) data.get("trade_state")) && null != amount) {
+                                TradePayment payment = service.getEntity(paymentId);
+                                if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
+                                        && (payment.getAmount().multiply(new BigDecimal(100)))
+                                                .intValue() == (int) amount.get("payer_total")) {
+                                    payment = service.getEntity(paymentId);
+                                    if (service.paid(site.getId(), payment.getId(), (String) result.get("transaction_id"))) {
+                                        if (wechatGatewayComponent.confirmPay(site.getId(), payment, response)) {
+                                            resultMap.put("code", "SUCCESS");
+                                            resultMap.put("message", "OK");
+                                            log.info("OK");
+                                        } else {
+                                            log.info("payment confirm error");
+                                            resultMap.put("message", "payment confirm error");
+                                        }
+                                    } else {
+                                        log.info("payment status update error");
+                                        resultMap.put("message", "payment status update error");
+                                    }
+                                } else {
+                                    log.info("payment status error");
+                                    resultMap.put("message", "payment status error");
+                                }
+                            } else {
+                                log.info("error trade_state");
+                                resultMap.put("message", "error trade_state");
+                            }
                         }
                     } else {
                         log.info("response error empty resource");
@@ -319,6 +351,8 @@ public class TradePaymentController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
+    @Autowired
+    private PaymentProcessorComponent tradePaymentProcessorComponent;
     @Autowired
     private PaymentProcessorComponent paymentProcessorComponent;
     @Autowired

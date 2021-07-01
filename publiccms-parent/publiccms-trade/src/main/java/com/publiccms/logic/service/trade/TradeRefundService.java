@@ -46,8 +46,8 @@ public class TradeRefundService extends BaseService<TradeRefund> {
 
     /**
      * 
-     * @param siteId 
-     * @param userId 
+     * @param siteId
+     * @param userId
      * @param paymentId
      * @param refundUserId
      * @param status
@@ -86,6 +86,26 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     /**
      * @param siteId
      * @param refundId
+     * @param refundUserId 
+     * @param reply
+     * @return
+     */
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public boolean refuseResund(short siteId, long refundId, Long refundUserId, String reply) {
+        TradeRefund entity = getEntity(refundId);
+        if (null != entity && entity.getSiteId() == siteId
+                && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_FAIL)) {
+            entity.setRefundUserId(refundUserId);
+            entity.setStatus(STATUS_REFUSE);
+            entity.setReply(reply);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param siteId
+     * @param refundId
      * @param refundAmount
      * @param reply
      * @return
@@ -93,7 +113,8 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public boolean updateResund(short siteId, long refundId, BigDecimal refundAmount, String reply) {
         TradeRefund entity = getEntity(refundId);
-        if (null != entity && entity.getSiteId() == siteId && entity.getStatus() == STATUS_PENDING) {
+        if (null != entity && entity.getSiteId() == siteId
+                && (entity.getStatus() == STATUS_PENDING || entity.getStatus() == STATUS_FAIL)) {
             if (null == refundAmount) {
                 refundAmount = entity.getAmount();
             }
@@ -105,7 +126,7 @@ public class TradeRefundService extends BaseService<TradeRefund> {
     }
 
     /**
-     * @param siteId 
+     * @param siteId
      * @param refundId
      * @param userId
      * @param refundUserId
