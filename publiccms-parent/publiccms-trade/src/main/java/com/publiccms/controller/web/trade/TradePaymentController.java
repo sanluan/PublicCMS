@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.internal.util.AlipaySignature;
+import com.alipay.easysdk.kernel.util.Signer;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.PaymentGateway;
@@ -133,8 +132,7 @@ public class TradePaymentController {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
                     .collect(Collectors.toMap(e -> e.getKey(), e -> StringUtils.join(e.getValue(), ",")));
             try {
-                if (AlipaySignature.rsaCheckV1(params, config.get(AlipayGatewayComponent.CONFIG_ALIPAY_PUBLIC_KEY),
-                        CommonConstants.DEFAULT_CHARSET_NAME, "RSA2")) {
+                if (Signer.verifyParams(params, config.get(AlipayGatewayComponent.CONFIG_ALIPAY_PUBLIC_KEY))) {
                     try {
                         TradePaymentHistory history = new TradePaymentHistory(site.getId(), out_trade_no, CommonUtils.getDate(),
                                 TradePaymentHistoryService.OPERATE_NOTIFY, JsonUtils.getString(params));
@@ -154,7 +152,7 @@ public class TradePaymentController {
                 } else {
                     log.info("response verify error");
                 }
-            } catch (AlipayApiException e) {
+            } catch (Exception e) {
                 log.info(e.getMessage());
             }
         }

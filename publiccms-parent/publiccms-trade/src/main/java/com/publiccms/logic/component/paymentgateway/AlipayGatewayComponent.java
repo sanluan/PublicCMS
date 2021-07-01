@@ -1,6 +1,5 @@
 package com.publiccms.logic.component.paymentgateway;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -11,18 +10,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.alipay.api.AlipayApiException;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.AlipayConstants;
-import com.alipay.api.DefaultAlipayClient;
-import com.alipay.api.domain.AlipayTradeRefundModel;
-import com.alipay.api.domain.AlipayTradeWapPayModel;
-import com.alipay.api.request.AlipayTradeRefundRequest;
-import com.alipay.api.request.AlipayTradeWapPayRequest;
-import com.alipay.api.response.AlipayTradeRefundResponse;
-import com.publiccms.common.api.Config;
+import com.alipay.easysdk.factory.MultipleFactory;
+import com.alipay.easysdk.kernel.AlipayConstants;
+import com.alipay.easysdk.kernel.Config;
+import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.base.AbstractPaymentGateway;
+import com.publiccms.common.cache.CacheEntity;
+import com.publiccms.common.cache.CacheEntityFactory;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
@@ -36,7 +31,7 @@ import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
 
 @Component
-public class AlipayGatewayComponent extends AbstractPaymentGateway implements Config {
+public class AlipayGatewayComponent extends AbstractPaymentGateway implements com.publiccms.common.api.Config, SiteCache {
     /**
      * 
      */
@@ -48,7 +43,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     /**
      * 
      */
-    public static final String CONFIG_URL = "url";
+    public static final String CONFIG_GATEWAY = "gateway";
     /**
      * 
      */
@@ -86,6 +81,8 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     @Autowired
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
+    private CacheEntity<Short, MultipleFactory> cache;
+
     /**
      * @param site
      * @param showAll
@@ -100,28 +97,46 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
         return CONFIG_CODE;
     }
 
+    /**
+     * @param siteId
+     * @param config
+     * @return factory
+     */
+    public MultipleFactory getFactory(short siteId, Map<String, String> config) {
+        MultipleFactory factory = cache.get(siteId);
+        if (null == factory) {
+            synchronized (cache) {
+                factory = cache.get(siteId);
+                if (null == factory) {
+                    factory = new MultipleFactory();
+                    Config c = new Config();
+                    c.protocol = "https";
+                    c.gatewayHost = config.get(CONFIG_GATEWAY);
+                    c.signType = AlipayConstants.RSA2;
+                    c.appId = config.get(CONFIG_APPID);
+                    c.merchantPrivateKey = config.get(CONFIG_PRIVATE_KEY);
+                    c.alipayPublicKey = config.get(CONFIG_ALIPAY_PUBLIC_KEY);
+                    c.notifyUrl = config.get(CONFIG_NOTIFYURL);
+                    c.encryptKey = config.get(CONFIG_ENCRYPTKEY);
+                    factory.setOptions(c);
+                    cache.put(siteId, factory);
+                }
+            }
+        }
+        return factory;
+    }
+
     @Override
     public boolean pay(short siteId, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
             Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
-            if (CommonUtils.notEmpty(config)) {
-                AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
-                        config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
-                        config.get(CONFIG_ALIPAY_PUBLIC_KEY), AlipayConstants.SIGN_TYPE_RSA2, config.get(CONFIG_ENCRYPTKEY),
-                        AlipayConstants.ENCRYPT_TYPE_AES);
-                AlipayTradeWapPayRequest alipay_request = new AlipayTradeWapPayRequest();
-                AlipayTradeWapPayModel model = new AlipayTradeWapPayModel();
-                model.setOutTradeNo(String.valueOf(payment.getId()));
-                model.setSubject(payment.getDescription());
-                model.setTotalAmount(payment.getAmount().toString());
-                model.setBody(payment.getDescription());
-                model.setTimeoutExpress(config.get(CONFIG_TIMEOUT_EXPRESS));
-                model.setProductCode(config.get(CONFIG_PRODUCT_CODE));
-                alipay_request.setBizModel(model);
-                alipay_request.setNotifyUrl(config.get(CONFIG_NOTIFYURL));
-                alipay_request.setReturnUrl(callbackUrl);
+            if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
+                MultipleFactory factory = getFactory(siteId, config);
                 try {
-                    String form = client.pageExecute(alipay_request).getBody();
+                    String form = factory
+                            .Wap().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS)).pay(payment.getDescription(),
+                                    String.valueOf(payment.getId()), payment.getAmount().toString(), callbackUrl, callbackUrl)
+                            .getBody();
                     response.setContentType("text/html;charset=" + CommonConstants.DEFAULT_CHARSET_NAME);
                     response.getWriter()
                             .write("<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head><body>");
@@ -130,7 +145,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
                     response.getWriter().flush();
                     response.getWriter().close();
                     return true;
-                } catch (AlipayApiException | IOException e) {
+                } catch (Exception e) {
                 }
             }
         }
@@ -140,22 +155,12 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     @Override
     public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
         Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
-        if (null != payment && CommonUtils.notEmpty(config) && service.refunded(siteId, payment.getId())) {
-            AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
-                    config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
-                    config.get(CONFIG_ALIPAY_PUBLIC_KEY));
-            AlipayTradeRefundRequest alipay_request = new AlipayTradeRefundRequest();
-
-            AlipayTradeRefundModel model = new AlipayTradeRefundModel();
-            model.setOutTradeNo(String.valueOf(refund.getPaymentId()));
-            model.setTradeNo(payment.getAccountSerialNumber());
-            model.setRefundAmount(refund.getRefundAmount().toString());
-            model.setRefundReason(refund.getReason());
-            model.setOutRequestNo(String.valueOf(refund.getPaymentId()));
-            alipay_request.setBizModel(model);
+        if (null != payment && CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))
+                && service.refunded(siteId, payment.getId())) {
+            MultipleFactory factory = getFactory(siteId, config);
             try {
-                AlipayTradeRefundResponse alipay_response = client.execute(alipay_request);
-                if ("10000".equalsIgnoreCase(alipay_response.getCode())) {
+                if ("10000".equalsIgnoreCase(factory.Common()
+                        .refund(String.valueOf(refund.getPaymentId()), refund.getRefundAmount().toString()).getCode())) {
                     TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent.get(payment.getTradeType());
                     if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(siteId, payment)) {
                         service.refunded(siteId, payment.getId());
@@ -164,7 +169,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
                 } else {
                     service.pendingRefund(siteId, payment.getId());
                 }
-            } catch (AlipayApiException e) {
+            } catch (Exception e) {
                 TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                         TradePaymentHistoryService.OPERATE_PAYERROR, e.getMessage());
                 historyService.save(history);
@@ -176,9 +181,9 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
         List<SysExtendField> extendFieldList = new ArrayList<>();
-        extendFieldList.add(new SysExtendField(CONFIG_URL, INPUTTYPE_TEXT,
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_URL),
-                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_URL + CONFIG_CODE_DESCRIPTION_SUFFIX)));
+        extendFieldList.add(new SysExtendField(CONFIG_GATEWAY, INPUTTYPE_TEXT,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_GATEWAY), getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_GATEWAY + CONFIG_CODE_DESCRIPTION_SUFFIX)));
         extendFieldList.add(new SysExtendField(CONFIG_APPID, INPUTTYPE_TEXT,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_APPID), getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_APPID + CONFIG_CODE_DESCRIPTION_SUFFIX)));
@@ -189,7 +194,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_TIMEOUT_EXPRESS),
                 getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_TIMEOUT_EXPRESS + CONFIG_CODE_DESCRIPTION_SUFFIX),
-                "30M"));
+                "30m"));
         extendFieldList.add(new SysExtendField(CONFIG_ALIPAY_PUBLIC_KEY, INPUTTYPE_TEXTAREA,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALIPAY_PUBLIC_KEY),
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALIPAY_PUBLIC_KEY
@@ -208,13 +213,34 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
         return extendFieldList;
     }
 
+    /**
+     * @param cacheEntityFactory
+     * @throws IllegalAccessException
+     * @throws InstantiationException
+     * @throws ClassNotFoundException
+     */
+    @Autowired
+    public void initCache(CacheEntityFactory cacheEntityFactory)
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        cache = cacheEntityFactory.createCacheEntity(CONFIG_CODE, CacheEntityFactory.MEMORY_CACHE_ENTITY);
+    }
+
     @Override
     public boolean enable(short siteId) {
         Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
-        if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_URL))) {
+        if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
             return true;
         }
         return false;
     }
 
+    @Override
+    public void clear(short siteId) {
+        cache.remove(siteId);
+    }
+
+    @Override
+    public void clear() {
+        cache.clear();
+    }
 }

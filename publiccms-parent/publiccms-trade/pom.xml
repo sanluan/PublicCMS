@@ -16,11 +16,11 @@
             <artifactId>publiccms-core</artifactId>
             <version>V4.0.202011.c</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-sdk-java -->
+        <!-- https://mvnrepository.com/artifact/com.alipay.sdk/alipay-easysdk -->
         <dependency>
             <groupId>com.alipay.sdk</groupId>
-            <artifactId>alipay-sdk-java</artifactId>
-            <version>4.14.8.ALL</version>
+            <artifactId>alipay-easysdk</artifactId>
+            <version>2.2.0</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/com.github.wechatpay-apiv3/wechatpay-apache-httpclient -->
         <dependency>

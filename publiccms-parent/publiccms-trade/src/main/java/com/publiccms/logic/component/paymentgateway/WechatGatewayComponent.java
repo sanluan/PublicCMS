@@ -223,6 +223,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 requestMap.put("out_trade_no", getOutTradeNo(payment.getId()));
                 requestMap.put("out_refund_no", String.valueOf(refund.getId()));
                 requestMap.put("reason", null == refund.getReply() ? refund.getReason() : refund.getReply());
+                requestMap.put("notify_url", config.get(CONFIG_NOTIFYURL));
                 Map<String, Object> amountMap = new HashMap<>();
                 amountMap.put("refund", (refund.getRefundAmount().multiply(new BigDecimal(100))).intValue());
                 amountMap.put("total", (payment.getAmount().multiply(new BigDecimal(100))).intValue());

@@ -217,7 +217,7 @@ label.alt{display:block;overflow:hidden;position:absolute;line-height:20px;}
 .nowrap span.error{position:static;}
 
 /* Button */
-.button,.buttonActive,.buttonDisabled{display:inline-block;height:30px;padding:0 20px;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;line-height:30px;white-space:nowrap;font-size:13px;letter-spacing:.03em;position:relative;overflow:hidden;}
+.button,.buttonActive,.buttonDisabled{display:inline-block;height:30px;padding:0 15px;border-width:1px;border-style:solid;border-radius:2px;cursor:pointer;text-align:center;line-height:30px;white-space:nowrap;font-size:13px;letter-spacing:.03em;position:relative;overflow:hidden;}
 button.button,button.buttonActive{height:30px;}
 button.buttonActive{border-width:1px;border-style:solid;font-size:13px;font-weight:400;}
 a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 0px 5px 1px #DDE4EF;box-shadow: 0px 0px 5px 1px #DDE4EF;-ms-box-shadow: 0px 0px 5px 1px #DDE4EF;-o-box-shadow: 0px 0px 5px 1px #DDE4EF;-webkit-box-shadow: 0px 0px 5px 1px #DDE4EF;}
