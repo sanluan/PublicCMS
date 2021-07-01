@@ -78,7 +78,7 @@ public class TradePaymentController {
         if (null != paymentGateway && null == entity
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             response.sendRedirect(returnUrl);
-        } else if (!paymentGateway.pay(site, entity, returnUrl, response)) {
+        } else if (!paymentGateway.pay(site.getId(), entity, returnUrl, response)) {
             response.sendRedirect(returnUrl);
         }
     }
@@ -108,7 +108,7 @@ public class TradePaymentController {
         }
         TradePaymentProcessor paymentProcessor = paymentProcessorComponent.get(entity.getTradeType());
         if (null != paymentProcessor && service.cancel(site.getId(), paymentId)) {
-            paymentProcessor.cancel(entity);
+            paymentProcessor.cancel(site.getId(), entity);
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
@@ -144,14 +144,18 @@ public class TradePaymentController {
                                 && payment.getAmount().toString().equals(total_fee)) {
                             if (service.paid(site.getId(), payment.getId(), trade_no)) {
                                 payment = service.getEntity(payment.getId());
-                                alipayGatewayComponent.confirmPay(site, payment, response);
+                                alipayGatewayComponent.confirmPay(site.getId(), payment, response);
                             }
                         }
                         return "success";
                     } catch (NumberFormatException e) {
+                        log.info(e.getMessage());
                     }
+                } else {
+                    log.info("response verify error");
                 }
             } catch (AlipayApiException e) {
+                log.info(e.getMessage());
             }
         }
         return "fail";
@@ -215,7 +219,7 @@ public class TradePaymentController {
                                             .intValue() == (int) amount.get("payer_total")) {
                                 payment = service.getEntity(paymentId);
                                 if (service.paid(site.getId(), payment.getId(), (String) result.get("transaction_id"))) {
-                                    if (wechatGatewayComponent.confirmPay(site, payment, response)) {
+                                    if (wechatGatewayComponent.confirmPay(site.getId(), payment, response)) {
                                         resultMap.put("code", "SUCCESS");
                                         resultMap.put("message", "OK");
                                         log.info("OK");

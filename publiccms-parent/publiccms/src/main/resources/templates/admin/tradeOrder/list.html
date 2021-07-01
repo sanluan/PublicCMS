@@ -69,14 +69,14 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td>
+                <td class="exclude-translate">
                     <div class="box">
                         <p>${(userMap[a.userId?string].nickName)!}</p>
                         <p>${a.ip!}</p>
                     </div>
                 </td>
-                <td>${a.title!}</td>
-                <td>
+                <td class="exclude-translate">${a.title!}</td>
+                <td class="exclude-translate">
                     <div class="box">
                         <p>${a.addressee!} <label><@t.page 'telephone'/>:</label>${a.telephone!}</p>
                         <p><label><@t.page 'shipping_address'/>:</label>${a.address!}</p>
@@ -87,7 +87,7 @@
                 <td>
                     <div class="box">
                         <p>${a.processed?then(t.pageMessage('yes'),'')} ${a.processDate!}</p>
-                        <p><#if a.processInfo?has_content><label><@t.page 'order.process_info'/>:</label></#if>${a.processInfo!}</p>
+                        <p class="exclude-translate"><#if a.processInfo?has_content><label><@t.page 'order.process_info'/>:</label></#if>${a.processInfo!}</p>
                     </div>
                 </td>
                 <td>

@@ -26,7 +26,7 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td class="center">
+                <td class="exclude-translate center">
                     ${(userMap[a.id?string].nickName)!}
                 </td>
                 <td>${a.amount!}</td>

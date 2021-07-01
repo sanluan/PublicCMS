@@ -11,6 +11,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -89,6 +91,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     private PaymentProcessorComponent tradePaymentProcessorComponent;
 
     private CacheEntity<Short, AutoUpdateCertificatesVerifier> cache;
+    protected final Log log = LogFactory.getLog(getClass());
 
     /**
      * @param siteId
@@ -142,16 +145,16 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(short siteId, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
-            Map<String, String> config = configComponent.getConfigData(payment.getSiteId(), CONFIG_CODE);
+            Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))) {
                 try {
                     byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                     byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                     PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
-                    AutoUpdateCertificatesVerifier verifier = getVerifier(site.getId(), config, apiV3Key, merchantPrivateKey);
+                    AutoUpdateCertificatesVerifier verifier = getVerifier(siteId, config, apiV3Key, merchantPrivateKey);
 
                     WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                             .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
@@ -165,7 +168,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     requestMap.put("appid", config.get(CONFIG_APPID));
                     requestMap.put("description", null == payment.getDescription() ? "order" : payment.getDescription());
                     requestMap.put("notify_url", config.get(CONFIG_NOTIFYURL));
-                    requestMap.put("out_trade_no", "00000" + payment.getId());
+                    requestMap.put("out_trade_no", getOutTradeNo(payment.getId()));
                     Map<String, Object> amountMap = new HashMap<>();
                     amountMap.put("total", (payment.getAmount().multiply(new BigDecimal(100))).intValue());
                     requestMap.put("amount", amountMap);
@@ -184,27 +187,30 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         return true;
                     }
                 } catch (Exception e) {
-                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), payment.getId(), CommonUtils.getDate(),
+                    TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                             TradePaymentHistoryService.OPERATE_PAYERROR, e.getMessage());
                     historyService.save(history);
                 }
             }
         }
         return false;
+    }
 
+    private String getOutTradeNo(long paymentId) {
+        return "00000" + paymentId;
     }
 
     @Override
-    public boolean refund(SysSite site, TradePayment payment, TradeRefund refund) {
-        Map<String, String> config = configComponent.getConfigData(payment.getSiteId(), CONFIG_CODE);
+    public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
+        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
         if (null != payment && CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))
-                && service.refunded(payment.getSiteId(), payment.getId())) {
+                && service.refunded(siteId, payment.getId())) {
             try {
                 byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                 byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                 PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
-                AutoUpdateCertificatesVerifier verifier = getVerifier(site.getId(), config, apiV3Key, merchantPrivateKey);
+                AutoUpdateCertificatesVerifier verifier = getVerifier(siteId, config, apiV3Key, merchantPrivateKey);
 
                 WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                         .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
@@ -214,36 +220,50 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 httpPost.addHeader("Accept", "application/json");
                 httpPost.addHeader("Content-type", "application/json; charset=utf-8");
                 Map<String, Object> requestMap = new HashMap<>();
-                requestMap.put("out_trade_no", "00000" + payment.getId());
+                requestMap.put("out_trade_no", getOutTradeNo(payment.getId()));
                 requestMap.put("out_refund_no", String.valueOf(refund.getId()));
                 requestMap.put("reason", null == refund.getReply() ? refund.getReason() : refund.getReply());
                 Map<String, Object> amountMap = new HashMap<>();
-                amountMap.put("refund", (refund.getAmount().multiply(new BigDecimal(100))).intValue());
+                amountMap.put("refund", (refund.getRefundAmount().multiply(new BigDecimal(100))).intValue());
                 amountMap.put("total", (payment.getAmount().multiply(new BigDecimal(100))).intValue());
                 amountMap.put("currency", "CNY");
                 requestMap.put("amount", amountMap);
-                httpPost.setEntity(new StringEntity(JsonUtils.getString(requestMap), CommonConstants.DEFAULT_CHARSET));
+                String requestBody = JsonUtils.getString(requestMap);
+                httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
                 CloseableHttpResponse res = httpClient.execute(httpPost);
                 HttpEntity entity = res.getEntity();
                 if (200 == res.getStatusLine().getStatusCode() && null != entity) {
                     String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
-                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), payment.getId(), CommonUtils.getDate(),
+                    log.info(String.format("refund request: %s, response: %s", requestBody, bodyAsString));
+                    TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                             TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);
                     historyService.save(history);
                     Map<String, String> result = CommonConstants.objectMapper.readValue(bodyAsString, CommonConstants.objectMapper
                             .getTypeFactory().constructMapLikeType(HashMap.class, String.class, String.class));
                     if ("SUCCESS".equalsIgnoreCase(result.get("status"))) {
                         TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent.get(payment.getTradeType());
-                        if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(payment)) {
-                            service.refunded(payment.getSiteId(), payment.getId());
+                        if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(siteId, payment)) {
+                            service.refunded(siteId, payment.getId());
                         }
+                        return true;
                     } else {
-                        service.pendingRefund(payment.getSiteId(), payment.getId());
+                        TradePaymentHistory history1 = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                                TradePaymentHistoryService.OPERATE_REFUNDERROR,
+                                String.format("response result status error: %s", result.get("status")));
+                        historyService.save(history1);
+                        service.pendingRefund(siteId, payment.getId());
                     }
                 } else {
-                    service.pendingRefund(payment.getSiteId(), payment.getId());
+                    TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                            TradePaymentHistoryService.OPERATE_REFUNDERROR,
+                            String.format("response status error: %d", res.getStatusLine().getStatusCode()));
+                    historyService.save(history);
+                    service.pendingRefund(siteId, payment.getId());
                 }
             } catch (Exception e) {
+                TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                        TradePaymentHistoryService.OPERATE_REFUNDERROR, e.getMessage());
+                historyService.save(history);
             }
         }
         return false;

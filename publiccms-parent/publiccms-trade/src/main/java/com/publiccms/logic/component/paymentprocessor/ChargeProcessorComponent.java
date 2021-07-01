@@ -20,21 +20,20 @@ public class ChargeProcessorComponent implements TradePaymentProcessor {
     }
 
     @Override
-    public boolean paid(TradePayment payment) {
+    public boolean paid(short siteId, TradePayment payment) {
+        return payment.isProcessed() || null != accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(),
+                payment.getUserId(), TradeAccountHistoryService.STATUS_CHARGE, payment.getAmount(), payment.getDescription());
+    }
+
+    @Override
+    public boolean refunded(short siteId, TradePayment payment) {
         return payment.isProcessed()
-                || null != accountService.change(payment.getSiteId(), payment.getSerialNumber(), payment.getUserId(),
-                        payment.getUserId(), TradeAccountHistoryService.STATUS_CHARGE, payment.getAmount(), payment.getDescription());
+                || null != accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(), payment.getUserId(),
+                        TradeAccountHistoryService.STATUS_REFUND, payment.getAmount().negate(), payment.getDescription());
     }
 
     @Override
-    public boolean refunded(TradePayment payment) {
-        return payment.isProcessed() || null != accountService.change(payment.getSiteId(), payment.getSerialNumber(),
-                payment.getUserId(), payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount().negate(),
-                payment.getDescription());
-    }
-
-    @Override
-    public boolean cancel(TradePayment payment) {
+    public boolean cancel(short siteId, TradePayment payment) {
         return true;
     }
 

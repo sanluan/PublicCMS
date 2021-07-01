@@ -78,13 +78,13 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>
+                <td class="exclude-translate">
                     <div class="box">
                         <p>${(userMap[a.userId?string].nickName)!}</p>
                         <p>${a.ip!}</p>
                     </div>
                 </td>
-                <td>
+                <td class="exclude-translate">
                     <div class="box">
                         ${a.description!}
                         ${a.amount!}

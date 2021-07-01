@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
@@ -23,13 +22,13 @@ public abstract class AbstractPaymentGateway implements PaymentGateway {
     private PaymentProcessorComponent paymentProcessorComponent;
 
     @Override
-    public boolean confirmPay(SysSite site, TradePayment payment, HttpServletResponse response) {
+    public boolean confirmPay(short siteId, TradePayment payment, HttpServletResponse response) {
         TradePaymentProcessor paymentProcessor = paymentProcessorComponent.get(payment.getTradeType());
-        if (null != paymentProcessor && paymentProcessor.paid(payment)) {
-            service.processed(site.getId(), payment.getId(), payment.getUserId());
+        if (null != paymentProcessor && paymentProcessor.paid(siteId, payment)) {
+            service.processed(siteId, payment.getId(), payment.getUserId());
             return true;
         } else {
-            TradePaymentHistory history = new TradePaymentHistory(payment.getSiteId(), payment.getId(), CommonUtils.getDate(),
+            TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                     TradePaymentHistoryService.OPERATE_PROCESS_ERROR);
             historyService.save(history);
         }

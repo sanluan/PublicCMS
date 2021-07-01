@@ -101,9 +101,9 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(short siteId, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
-            Map<String, String> config = configComponent.getConfigData(payment.getSiteId(), CONFIG_CODE);
+            Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
             if (CommonUtils.notEmpty(config)) {
                 AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
                         config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
@@ -138,9 +138,9 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean refund(SysSite site, TradePayment payment, TradeRefund refund) {
-        Map<String, String> config = configComponent.getConfigData(payment.getSiteId(), CONFIG_CODE);
-        if (null != payment && CommonUtils.notEmpty(config) && service.refunded(payment.getSiteId(), payment.getId())) {
+    public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
+        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+        if (null != payment && CommonUtils.notEmpty(config) && service.refunded(siteId, payment.getId())) {
             AlipayClient client = new DefaultAlipayClient(config.get(CONFIG_URL), config.get(CONFIG_APPID),
                     config.get(CONFIG_PRIVATE_KEY), null, CommonConstants.DEFAULT_CHARSET_NAME,
                     config.get(CONFIG_ALIPAY_PUBLIC_KEY));
@@ -157,15 +157,15 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements Co
                 AlipayTradeRefundResponse alipay_response = client.execute(alipay_request);
                 if ("10000".equalsIgnoreCase(alipay_response.getCode())) {
                     TradePaymentProcessor tradePaymentProcessor = tradePaymentProcessorComponent.get(payment.getTradeType());
-                    if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(payment)) {
-                        service.close(payment.getSiteId(), payment.getId());
+                    if (null != tradePaymentProcessor && tradePaymentProcessor.refunded(siteId, payment)) {
+                        service.refunded(siteId, payment.getId());
                     }
                     return true;
                 } else {
-                    service.pendingRefund(payment.getSiteId(), payment.getId());
+                    service.pendingRefund(siteId, payment.getId());
                 }
             } catch (AlipayApiException e) {
-                TradePaymentHistory history = new TradePaymentHistory(site.getId(), payment.getId(), CommonUtils.getDate(),
+                TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                         TradePaymentHistoryService.OPERATE_PAYERROR, e.getMessage());
                 historyService.save(history);
             }

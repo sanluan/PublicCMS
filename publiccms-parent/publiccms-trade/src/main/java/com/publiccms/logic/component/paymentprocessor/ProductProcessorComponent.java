@@ -19,19 +19,18 @@ public class ProductProcessorComponent implements TradePaymentProcessor {
     }
 
     @Override
-    public boolean paid(TradePayment payment) {
-        return payment.isProcessed() || orderService.paid(payment.getSiteId(), Long.parseLong(payment.getSerialNumber()));
+    public boolean paid(short siteId, TradePayment payment) {
+        return payment.isProcessed() || orderService.paid(siteId, Long.parseLong(payment.getSerialNumber()));
     }
 
     @Override
-    public boolean refunded(TradePayment payment) {
-        return payment.isProcessed() || orderService.refunded(payment.getSiteId(), Long.parseLong(payment.getSerialNumber()));
+    public boolean refunded(short siteId, TradePayment payment) {
+        return payment.isProcessed() || orderService.refunded(siteId, Long.parseLong(payment.getSerialNumber()));
     }
 
     @Override
-    public boolean cancel(TradePayment payment) {
-        return payment.isProcessed()
-                || orderService.cancelPayment(payment.getSiteId(), Long.parseLong(payment.getSerialNumber()));
+    public boolean cancel(short siteId, TradePayment payment) {
+        return payment.isProcessed() || orderService.cancelPayment(siteId, Long.parseLong(payment.getSerialNumber()));
     }
 
 }

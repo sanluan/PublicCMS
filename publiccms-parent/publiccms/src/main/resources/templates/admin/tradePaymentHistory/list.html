@@ -37,8 +37,8 @@
             <tr>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'payment.id'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
+                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'content'/></th>
             </tr>
         </thead>
@@ -47,9 +47,11 @@
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
                 <td>${a.paymentId!}</td>
-                <td>${a.createDate!}</td>
                 <td>${a.operate!}</td>
-                <td>${a.content!}</td>
+                <td>${a.createDate!}</td>
+                <td class="exclude-translate">
+                    <@t.cut a.content!'' 60 '...<a href="tradePaymentHistory/view.html?id=${a.id}" class="btnText" target="dialog" rel="tradePaymentHistoryView">'?no_esc+t.pageMessage('button.view_more')+'</a>'?no_esc/>
+                </td>
             </tr>
             </#list>
         </tbody>

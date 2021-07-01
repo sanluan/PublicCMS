@@ -54,11 +54,11 @@
                 <td>${a.id!}</td>
                 <td>${a.orderId!}</td>
                 <td>${a.amount!}</td>
-                <td>${a.reason!}</td>
+                <td class="exclude-translate">${a.reason!}</td>
                 <td>${a.refundUserId!}</td>
                 <td>${a.refundAmount!}</td>
                 <td><@t.page 'status.refund.'+a.status/></td>
-                <td>${a.reply!}</td>
+                <td class="exclude-translate">${a.reply!}</td>
                 <td>${a.createDate!}</td>
                 <td class="wrap">
                 <#if authorizedMap['tradeRefund/refundParameters'] && 0=a.status>

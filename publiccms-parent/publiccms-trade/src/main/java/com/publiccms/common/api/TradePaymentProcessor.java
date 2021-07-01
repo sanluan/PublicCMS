@@ -11,9 +11,9 @@ public interface TradePaymentProcessor extends Container<String> {
         return () -> getTradeType();
     }
 
-    boolean paid(TradePayment payment);
+    boolean paid(short siteId, TradePayment payment);
 
-    boolean refunded(TradePayment payment);
+    boolean refunded(short siteId, TradePayment payment);
 
-    boolean cancel(TradePayment payment);
+    boolean cancel(short siteId, TradePayment payment);
 }

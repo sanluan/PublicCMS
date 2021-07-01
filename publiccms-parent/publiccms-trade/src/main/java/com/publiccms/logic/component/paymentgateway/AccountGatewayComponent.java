@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractPaymentGateway;
-import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradeRefund;
@@ -32,14 +31,14 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     }
 
     @Override
-    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(short siteId, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY) {
-            TradeAccountHistory history = accountService.change(payment.getSiteId(), payment.getSerialNumber(),
-                    payment.getUserId(), payment.getUserId(), TradeAccountHistoryService.STATUS_PAY, payment.getAmount().negate(),
+            TradeAccountHistory history = accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(),
+                    payment.getUserId(), TradeAccountHistoryService.STATUS_PAY, payment.getAmount().negate(),
                     payment.getDescription());
             if (null != history) {
-                if (service.paid(payment.getSiteId(), payment.getId(), history.getId().toString())) {
-                    if (confirmPay(site, payment, response)) {
+                if (service.paid(siteId, payment.getId(), history.getId().toString())) {
+                    if (confirmPay(siteId, payment, response)) {
                         try {
                             response.sendRedirect(callbackUrl);
                         } catch (IOException e) {
@@ -47,9 +46,8 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
                     }
                     return true;
                 } else {
-                    accountService.change(payment.getSiteId(), payment.getSerialNumber(), payment.getUserId(),
-                            payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(),
-                            payment.getDescription());
+                    accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(), payment.getUserId(),
+                            TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(), payment.getDescription());
                 }
             }
         }
@@ -57,13 +55,13 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     }
 
     @Override
-    public boolean refund(SysSite site, TradePayment payment, TradeRefund refund) {
-        if (null != payment && service.refunded(payment.getSiteId(), payment.getId())) {
-            TradeAccountHistory history = accountService.change(payment.getSiteId(), payment.getSerialNumber(),
-                    payment.getUserId(), payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND,
-                    payment.getAmount().negate(), payment.getDescription());
+    public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
+        if (null != payment && service.refunded(siteId, payment.getId())) {
+            TradeAccountHistory history = accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(),
+                    payment.getUserId(), TradeAccountHistoryService.STATUS_REFUND, payment.getAmount().negate(),
+                    payment.getDescription());
             if (null == history) {
-                service.pendingRefund(payment.getSiteId(), payment.getId());
+                service.pendingRefund(siteId, payment.getId());
             } else {
                 return true;
             }
