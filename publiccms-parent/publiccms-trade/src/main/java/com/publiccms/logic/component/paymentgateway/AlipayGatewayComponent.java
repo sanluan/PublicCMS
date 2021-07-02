@@ -134,7 +134,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
                 MultipleFactory factory = getFactory(site.getId(), config);
                 try {
                     String form;
-                    if ("FAST_INSTANT_TRADE_PAY".equalsIgnoreCase(callbackUrl)) {
+                    if ("FAST_INSTANT_TRADE_PAY".equalsIgnoreCase(config.get(CONFIG_PRODUCT_CODE))) {
                         form = factory.Page().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS))
                                 .pay(payment.getDescription(), String.valueOf(payment.getId()), payment.getAmount().toString(),
                                         callbackUrl)

@@ -74,10 +74,12 @@ public class TradePaymentController {
         }
         TradePayment entity = service.getEntity(paymentId);
         PaymentGateway paymentGateway = gatewayComponent.get(entity.getAccountType());
-        if (null != paymentGateway && null == entity
+        if (null == paymentGateway || null == entity
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
+            log.info("pay parameter error");
             response.sendRedirect(returnUrl);
         } else if (!paymentGateway.pay(site, entity, returnUrl, response)) {
+            log.info("pay error");
             response.sendRedirect(returnUrl);
         }
     }

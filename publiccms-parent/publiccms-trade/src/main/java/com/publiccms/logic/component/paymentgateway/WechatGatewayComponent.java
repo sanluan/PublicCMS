@@ -38,6 +38,7 @@ import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
@@ -190,11 +191,15 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                     Map<String, Object> sceneMap = new HashMap<>();
                     sceneMap.put("payer_client_ip", payment.getIp());
                     requestMap.put("scene_info", sceneMap);
-                    httpPost.setEntity(new StringEntity(JsonUtils.getString(requestMap), CommonConstants.DEFAULT_CHARSET));
+                    String requestBody = JsonUtils.getString(requestMap);
+                    httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
+                    log.info(String.format("pay request: %s", requestBody));
                     CloseableHttpResponse res = httpClient.execute(httpPost);
                     HttpEntity entity = res.getEntity();
+                    log.info(String.format("pay response status: %d", res.getStatusLine().getStatusCode()));
                     if (200 == res.getStatusLine().getStatusCode() && null != entity) {
                         String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
+                        log.info(String.format("pay response: %s", bodyAsString));
                         Map<String, String> result = CommonConstants.objectMapper.readValue(bodyAsString,
                                 CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class,
                                         String.class));
@@ -202,7 +207,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                             response.sendRedirect(result.get("h5_url"));
                         } else {
                             Template template = templateComponent.getWebConfiguration()
-                                    .getTemplate(config.get(CONFIG_RESULTPAGE));
+                                    .getTemplate(SiteComponent.getFullTemplatePath(site, config.get(CONFIG_RESULTPAGE)));
                             Map<String, Object> model = new HashMap<>();
                             AbstractFreemarkerView.exposeSite(model, site);
                             model.putAll(result);
@@ -256,11 +261,13 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 requestMap.put("amount", amountMap);
                 String requestBody = JsonUtils.getString(requestMap);
                 httpPost.setEntity(new StringEntity(requestBody, CommonConstants.DEFAULT_CHARSET));
+                log.info(String.format("refund request: %s", requestBody));
                 CloseableHttpResponse res = httpClient.execute(httpPost);
                 HttpEntity entity = res.getEntity();
+                log.info(String.format("refund response status: %d", res.getStatusLine().getStatusCode()));
                 if (200 == res.getStatusLine().getStatusCode() && null != entity) {
                     String bodyAsString = EntityUtils.toString(entity, CommonConstants.DEFAULT_CHARSET);
-                    log.info(String.format("refund request: %s, response: %s", requestBody, bodyAsString));
+                    log.info(String.format("refund response: %s", bodyAsString));
                     TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
                             TradePaymentHistoryService.OPERATE_REFUND_RESPONSE, bodyAsString);
                     historyService.save(history);
