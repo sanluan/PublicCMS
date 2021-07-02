@@ -127,11 +127,11 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     }
 
     @Override
-    public boolean pay(short siteId, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
-            Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+            Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
-                MultipleFactory factory = getFactory(siteId, config);
+                MultipleFactory factory = getFactory(site.getId(), config);
                 try {
                     String form;
                     if ("FAST_INSTANT_TRADE_PAY".equalsIgnoreCase(callbackUrl)) {

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.SiteCache;
 import com.publiccms.common.api.TradePaymentProcessor;
+import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractPaymentGateway;
 import com.publiccms.common.cache.CacheEntity;
 import com.publiccms.common.cache.CacheEntityFactory;
@@ -158,16 +159,16 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     }
 
     @Override
-    public boolean pay(short siteId, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
-            Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+            Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))) {
                 try {
                     byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                     byte[] privateKey = config.get(CONFIG_PRIVATEKEY).getBytes(CommonConstants.DEFAULT_CHARSET);
                     PrivateKey merchantPrivateKey = PemUtil.loadPrivateKey(new ByteArrayInputStream(privateKey));
 
-                    AutoUpdateCertificatesVerifier verifier = getVerifier(siteId, config, apiV3Key, merchantPrivateKey);
+                    AutoUpdateCertificatesVerifier verifier = getVerifier(site.getId(), config, apiV3Key, merchantPrivateKey);
 
                     WechatPayHttpClientBuilder builder = WechatPayHttpClientBuilder.create()
                             .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
@@ -203,6 +204,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                             Template template = templateComponent.getWebConfiguration()
                                     .getTemplate(config.get(CONFIG_RESULTPAGE));
                             Map<String, Object> model = new HashMap<>();
+                            AbstractFreemarkerView.exposeSite(model, site);
                             model.putAll(result);
                             model.put("payment", payment);
                             template.process(model, response.getWriter());
@@ -210,7 +212,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         return true;
                     }
                 } catch (Exception e) {
-                    TradePaymentHistory history = new TradePaymentHistory(siteId, payment.getId(), CommonUtils.getDate(),
+                    TradePaymentHistory history = new TradePaymentHistory(site.getId(), payment.getId(), CommonUtils.getDate(),
                             TradePaymentHistoryService.OPERATE_PAYERROR, e.getMessage());
                     historyService.save(history);
                 }

@@ -77,7 +77,7 @@ public class TradePaymentController {
         if (null != paymentGateway && null == entity
                 || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             response.sendRedirect(returnUrl);
-        } else if (!paymentGateway.pay(site.getId(), entity, returnUrl, response)) {
+        } else if (!paymentGateway.pay(site, entity, returnUrl, response)) {
             response.sendRedirect(returnUrl);
         }
     }
@@ -115,7 +115,7 @@ public class TradePaymentController {
     /**
      * @param site
      * @param out_trade_no
-     * @param buyer_pay_amount 
+     * @param buyer_pay_amount
      * @param trade_no
      * @param request
      * @param response
@@ -126,7 +126,8 @@ public class TradePaymentController {
     @ResponseBody
     public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String buyer_pay_amount, String trade_no,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        log.info("alipay notify out_trade_no:" + out_trade_no + ",buyer_pay_amount:" + buyer_pay_amount + ",trade_no:" + trade_no);
+        log.info(
+                "alipay notify out_trade_no:" + out_trade_no + ",buyer_pay_amount:" + buyer_pay_amount + ",trade_no:" + trade_no);
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()

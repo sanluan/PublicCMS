@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractPaymentGateway;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradeRefund;
@@ -31,14 +32,14 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
     }
 
     @Override
-    public boolean pay(short siteId, TradePayment payment, String callbackUrl, HttpServletResponse response) {
+    public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY) {
-            TradeAccountHistory history = accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(),
+            TradeAccountHistory history = accountService.change(site.getId(), payment.getSerialNumber(), payment.getUserId(),
                     payment.getUserId(), TradeAccountHistoryService.STATUS_PAY, payment.getAmount().negate(),
                     payment.getDescription());
             if (null != history) {
-                if (service.paid(siteId, payment.getId(), history.getId().toString())) {
-                    if (confirmPay(siteId, payment, response)) {
+                if (service.paid(site.getId(), payment.getId(), history.getId().toString())) {
+                    if (confirmPay(site.getId(), payment, response)) {
                         try {
                             response.sendRedirect(callbackUrl);
                         } catch (IOException e) {
@@ -46,7 +47,7 @@ public class AccountGatewayComponent extends AbstractPaymentGateway {
                     }
                     return true;
                 } else {
-                    accountService.change(siteId, payment.getSerialNumber(), payment.getUserId(), payment.getUserId(),
+                    accountService.change(site.getId(), payment.getSerialNumber(), payment.getUserId(), payment.getUserId(),
                             TradeAccountHistoryService.STATUS_REFUND, payment.getAmount(), payment.getDescription());
                 }
             }
