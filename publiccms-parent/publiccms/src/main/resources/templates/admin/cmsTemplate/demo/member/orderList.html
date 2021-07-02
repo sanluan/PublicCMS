@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+    <style type="text/css">
+        .right{float:right;}
+        .gray{color:gray;}
+        .border{border:1px solid gray;}
+        .underline{border-bottom:1px dashed gray;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+        <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+    <@_tradeOrderList userId=user.id pageIndex=pageIndex pageSize=10>
+        <h3>Orders</h3>
+        <ul>
+        <#list page.list as a>
+            <li class="underline">
+                <p><@message 'page.status.order.'+a.status/><span class="right">${a.createDate!}</span></p>
+                <p class="gray"><label>Processed</label>${a.processed?then('Yes','No')} ${a.processDate!} <label>Payment date:</label>${a.paymentDate!}</p>
+                <p><a href="${site.dynamicPath}order.html?id=${a.id}">${a.title!}</a><span class="right"><label>Remark:</label>${a.remark!}</span></p>
+            </li>
+        </#list>
+        </ul>
+        <div>
+            <#assign
+                start=1
+                end=page.totalPage
+            />
+            <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+            </#if>
+            <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+            </#if>
+            <#if !page.firstPage>
+                <a href="${getPage('orderList.html',page.prePage,'pageIndex')}">Previous page</a>
+            <#else>
+                <span>Previous page</span>
+            </#if>
+            <#if start gt 1>
+                <a href="${'orderList.html'}">1</a> ...
+            </#if>
+            <#list start..end as n>
+                <#if n=page.pageIndex>
+                    ${n}
+                <#else>
+                    <a href="${getPage('orderList.html',n,'pageIndex')}">${n}</a>
+                </#if>
+            </#list>
+            <#if end lt page.totalPage>
+                ... <a href="${getPage('orderList.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+            </#if>
+            <#if !page.lastPage>
+                <a href="${getPage('orderList.html',page.nextPage,'pageIndex')}">Next page</a>
+            <#else>
+                <span>Next page</span>
+            </#if>
+        </div>
+    </@_tradeOrderList>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
+    <script>
+    var itemString="itemType=user&itemId=${user.id}";
+    </script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
+    </script>
+</body>
+</html>

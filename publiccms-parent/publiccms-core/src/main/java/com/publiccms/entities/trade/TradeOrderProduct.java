@@ -1,6 +1,7 @@
 package com.publiccms.entities.trade;
 // Generated 2021-6-26 22:14:06 by Hibernate Tools 6.0.0-SNAPSHOT
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.publiccms.common.database.CmsUpgrader;
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
@@ -29,6 +30,7 @@ public class TradeOrderProduct implements java.io.Serializable {
     @GeneratorColumn(title = "ID")
     private Long id;
     @GeneratorColumn(title = "站点ID", condition = true)
+    @JsonIgnore
     private short siteId;
     @GeneratorColumn(title = "订单ID", condition = true)
     private long orderId;

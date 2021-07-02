@@ -37,10 +37,16 @@ public class TradeOrderDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<TradeOrder> entityList = service.getEntitys(ids);
-                Map<String, TradeOrder> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,  entity -> site.getId() == entity.getSiteId());
+                Map<String, TradeOrder> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,
+                        entity -> site.getId() == entity.getSiteId());
                 handler.put("map", map).render();
             }
         }
+    }
+
+    @Override
+    public boolean needAppToken() {
+        return true;
     }
 
     @Autowired

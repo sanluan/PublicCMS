@@ -13,7 +13,6 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
@@ -31,6 +30,7 @@ import com.publiccms.entities.trade.TradeAccountHistory;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.paymentgateway.AccountGatewayComponent;
 import com.publiccms.logic.component.paymentprocessor.ChargeProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
@@ -56,10 +56,10 @@ public class TradeAccountController {
      * @param model
      * @return operate result
      */
-    @RequestMapping("recharge/{accountType}")
+    @RequestMapping("recharge")
     @Csrf
     public String recharge(@RequestAttribute SysSite site, @SessionAttribute SysUser user, BigDecimal change,
-            @PathVariable("accountType") String accountType, String returnUrl, HttpServletRequest request, HttpSession session,
+            String accountType, String returnUrl, HttpServletRequest request, HttpSession session,
             ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
@@ -67,7 +67,8 @@ public class TradeAccountController {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
-        if (null != paymentGateway && paymentGateway.enable(site.getId()) && null != change) {
+        if (null != paymentGateway && !accountType.equalsIgnoreCase(accountGatewayComponent.getAccountType())
+                && paymentGateway.enable(site.getId()) && null != change) {
             if (1 == change.compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
                 Date now = CommonUtils.getDate();
@@ -85,6 +86,8 @@ public class TradeAccountController {
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
+    @Autowired
+    private AccountGatewayComponent accountGatewayComponent;
     @Autowired
     private PaymentGatewayComponent gatewayComponent;
     @Autowired

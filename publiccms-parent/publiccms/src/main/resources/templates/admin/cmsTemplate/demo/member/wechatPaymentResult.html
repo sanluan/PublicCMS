@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>${metadata.alias!}</title>
+    <title>payment</title>
     <style>
         .text-center{ text-align:center;}
+        .qr{height:200px;}
     </style>
 </head>
 <body>
@@ -12,7 +13,7 @@
         <h1>${(site.name)!}</h1>
     </header>
     <nav>
-        <a href="${base}">Home</a>
+        <a href="${site.useStatic?then(site.sitePath,site.dynamicPath)}">Home</a>
 <@_categoryList>
     <#list page.list as a>
         <a href="${a.url!}" target="_blank">${a.name}</a>

@@ -215,6 +215,9 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
     <#if !useDynamic?has_content||'true'=useDynamic>
             $('input[name=useDynamic]',navTab.getCurrentPanel()).prop('checked',true).trigger('change');
     </#if>
+    <#if needLogin?has_content&&'true'=needLogin>
+        $('input[name=needLogin]',navTab.getCurrentPanel()).click();
+    </#if>
     <#switch demo>
         <#case "index.html">
             <#if site.useStatic>

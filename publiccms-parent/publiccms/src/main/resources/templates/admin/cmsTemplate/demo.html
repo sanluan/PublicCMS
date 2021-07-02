@@ -1,23 +1,32 @@
 <div class="pageFormContent" layoutH>
     <ul class="tree treeFolder">
         <li>
-            <a href="javascript:;" onclick="return false;"><@t.page 'dynamic_page'/></a>
+            <a href="javascript:;" onclick="return false;"><@t.page 'function_page'/></a>
             <ul>
                 <li><a href="cmsTemplate/metadata.html?demo=index.html&name=home_page" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=index_zh_CN.html&name=home_page_zh_CN&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page_zh_CN'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=index_en.html&name=home_page_en&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page_en'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=index_ja.html&name=home_page_ja&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'home_page_ja'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=random.html&name=random_content_page" target="ajax" rel="cmsTemplateBox"><@t.page 'random_content_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=member/comment.html&name=comment_page&acceptParameters=id;number,replyId;number,contentId;content,pageIndex;number,error" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=search.html&name=search_page&acceptParameters=word,pageIndex;number,tagId" target="ajax" rel="cmsTemplateBox"><@t.page 'search_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=vote.html&name=vote_page&acceptParameters=pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'vote_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=sitemap.xml&name=sitemap" target="ajax" rel="cmsTemplateBox"><@t.page 'sitemap'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=comment.html&name=comment_page&acceptParameters=id;number,replyId;number,contentId;content,pageIndex;number,error" target="ajax" rel="cmsTemplateBox"><@t.page 'comment_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=ftl/tools.ftl&name=tools.ftl" target="ajax" rel="cmsTemplateBox">tools.ftl</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascript:;" onclick="return false;"><@t.page 'user_center'/></a>
+            <ul>
                 <li><a href="cmsTemplate/metadata.html?demo=member/login.html&name=login_page&acceptParameters=error,message,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'login_page'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=member/register.html&name=register_page&acceptParameters=error,message,name,nickname,openId,channel,returnUrl" target="ajax" rel="cmsTemplateBox"><@t.page 'register_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=member/vote.html&name=vote_page&acceptParameters=pageIndex;number" target="ajax" rel="cmsTemplateBox"><@t.page 'vote_page'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/account.html&name=refund&needLogin=true" target="ajax" rel="cmsTemplateBox"><@t.page 'account'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=member/order.html&name=order&acceptParameters=orderId;number&acceptArrayParameters=productId;number,quantity;number" target="ajax" rel="cmsTemplateBox"><@t.page 'order'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/orderList.html&name=order_list&needLogin=true" target="ajax" rel="cmsTemplateBox"><@t.page 'order_list'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/paymentList.html&name=payment_list&needLogin=true" target="ajax" rel="cmsTemplateBox"><@t.page 'payment_list'/></a></li>
+                <li><a href="cmsTemplate/metadata.html?demo=member/refund.html&name=refund&needLogin=true" target="ajax" rel="cmsTemplateBox"><@t.page 'refund'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=member/wechatPaymentResult.html&name=wechat_payment_result&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'wechat_payment_result'/></a></li>
                 <li><a href="cmsTemplate/metadata.html?demo=member/verifymail.html&name=email_page&useDynamic=false" target="ajax" rel="cmsTemplateBox"><@t.page 'email_page'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=sitemap.xml&name=sitemap" target="ajax" rel="cmsTemplateBox"><@t.page 'sitemap'/></a></li>
-                <li><a href="cmsTemplate/metadata.html?demo=ftl/tools.ftl&name=tools.ftl" target="ajax" rel="cmsTemplateBox">tools.ftl</a></li>
             </ul>
         </li>
         <li>

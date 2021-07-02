@@ -27,6 +27,11 @@ public class TradeOrderListDirective extends AbstractTemplateDirective {
         handler.put("page", page).render();
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private TradeOrderService service;
 

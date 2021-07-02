@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+    <style type="text/css">
+        .right{float:right;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+    <@_tradeAccount id=user.id>
+        <h3>My account</h3>
+        <p><label>Amount:</label>${object.amount}<span class="right"><label>Last update:</label>${object.updateDate!}</span></p>
+        <form action="${site.dynamicPath}tradeAccount/recharge/alipay" method="post">
+            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+            <input type="hidden" name="returnUrl" value="${site.dymamicPath}account.html"/>
+            <p><label>Recharge amount:</label><input type="text" name="change" min="0.01"/></p>
+            <p>Use <label><input type="text" name="accountType" value="alipay"/>Alipay</label><label><input type="text" name="accountType" value="wechat"/>Wechat</label></p>
+            <p><input type="submit" value="Submit"/></p>
+        </form>
+    </@_tradeAccount>
+    <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+    <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+    <@_tradeAccountHistoryList userId=user.id pageIndex=pageIndex pageSize=10>
+        <h3>My account history</h3>
+        <ul>
+        <#list page.list as a>
+            <@merge 'userIds' a.userId!/>
+        </#list>
+        <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+        <#list page.list as a>
+            <li class="underline">
+                <p><@message 'page.status.accountHistory.'+a.status/><span class="right">${a.createDate!} <label>Operator:</label>${(userMap[a.userId?string].nickName)!}</span></p>
+                <p class="gray"><label>Serial number:</label>${a.serialNumber!} <label>Amount:</label>${a.amount!} <label>Change:</label>${a.amountChange!} <label>Balance:</label>${a.balance!} </p>
+                <p>${a.description!}<span class="right"><label>Replay:</label>${a.reply!}</span></p>
+            </li>
+        </#list>
+        </ul>
+        <div>
+            <#assign
+                start=1
+                end=page.totalPage
+            />
+            <#if (page.pageIndex-5) gt start>
+                <#assign start=page.pageIndex-4/>
+            </#if>
+            <#if (page.pageIndex+5) lt end>
+                <#assign end=page.pageIndex+4/>
+            </#if>
+            <#if !page.firstPage>
+                <a href="${getPage('account.html',page.prePage,'pageIndex')}">Previous page</a>
+            <#else>
+                <span>Previous page</span>
+            </#if>
+            <#if start gt 1>
+                <a href="${'account.html'}">1</a> ...
+            </#if>
+            <#list start..end as n>
+                <#if n=page.pageIndex>
+                    ${n}
+                <#else>
+                    <a href="${getPage('account.html',n,'pageIndex')}">${n}</a>
+                </#if>
+            </#list>
+            <#if end lt page.totalPage>
+                ... <a href="${getPage('account.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+            </#if>
+            <#if !page.lastPage>
+                <a href="${getPage('account.html',page.nextPage,'pageIndex')}">Next page</a>
+            <#else>
+                <span>Next page</span>
+            </#if>
+        </div>
+    </@_tradeAccountHistoryList>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
+    <script>
+    var itemString="itemType=user&itemId=${user.id}";
+    </script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
+    </script>
+</body>
+</html>

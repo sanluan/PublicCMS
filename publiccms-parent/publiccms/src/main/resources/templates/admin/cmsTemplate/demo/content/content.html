@@ -31,7 +31,27 @@
         <article>
             <h1><a href="${content.url!}">${content.title}</a></h1>
             <p><#if content.copied>Source:<a href="${(attribute.sourceUrl)!}" target="_blank">${(attribute.source)!}</a></#if> ${content.author!} ${content.editor!} ${content.publishDate?datetime} Views:<em>loading...</em></p>
-            <div>${text?no_esc!}</div>
+            <div>${(text?no_esc)!}</div>
+        <#if content.hasProducts>
+            <div>
+                <form action="${site.dynamicPath}member/order.html">
+                <@_contentProductList contentId=content.id fileTypes='video,audio,other'>
+                    <#list page.list as product>
+                        <label>
+                            <input type="radio" name="productId" value="${product.id}"/>
+                            <#if product.cover?has_content>
+                                <img src="<@_thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/>
+                            <#else>
+                                ${product.title}
+                            </#if>
+                        </label>
+                    </#list>
+                </@_contentProductList>
+                    <input type="number" name="quantity" value="1"/>
+                    <input type="submit" value="Buy"/>
+                </form>
+            </div>
+        </#if>
         <#if content.hasFiles>
             <div>
                 <@_contentFileList contentId=content.id fileTypes='video,audio,other'>
@@ -96,19 +116,19 @@
             <div>
          <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
          <@_commentList contentId=content.id pageSize=10>
-                <#list page.list as a>
-                    <@merge 'userIds' a.userId!/>
-                    <@merge 'userIds' a.replyUserId!/>
-                </#list>
-                <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
-                <#list page.list as a>
+            <#list page.list as a>
+                <@merge 'userIds' a.userId!/>
+                <@merge 'userIds' a.replyUserId!/>
+            </#list>
+            <@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
                 <dl class="nowrap">
                     <dt>${(userMap[a.userId?string].nickName)!}<#if a.replyUserId?has_content> reply ${(userMap[a.replyUserId?string].nickName)!}</#if>:</dt>
                     <dd>
                         <div>${a.text!}</div>
                     </dd>
                 </dl>
-                </#list>
+            </#list>
         </@_commentList>
             </div>
         </article>
@@ -126,12 +146,28 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-    <script>
-    var itemString="itemType=content&itemId=${content.id}";
-    </script>
-    
     <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
-    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <#if content.hasProducts>
+    <script>
+    $('input[name=productId]').change(function(){
+        var selectedProductId=this.value;
+        if(selectedProductId){
+            $.getJSON('${site.dynamicPath!}api/directive/contentProduct?id='+selectedProductId, function(data){
+                if($('input[name=productId]:checked').val() == selectedProductId){
+                    if(data.object.minQuantity){
+                        $('input[name=quantity]').attr('min', data.object.minQuantity);
+                    }
+                    if(data.object.maxQuantity && data.object.maxQuantity<data.object.inventory){
+                        $('input[name=quantity]').attr('max', data.object.maxQuantity);
+                    }else{
+                        $('input[name=quantity]').attr('max', data.object.inventory);
+                    }
+                }
+            });
+        }
+    })
+    </script>
+    </#if>
     <script>
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
             $('article p em').text(data.clicks);
@@ -151,6 +187,10 @@ function unscore(contentId){
     });
 }
     </script>
+    <script>
+    var itemString="itemType=content&itemId=${content.id}";
+    </script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';
