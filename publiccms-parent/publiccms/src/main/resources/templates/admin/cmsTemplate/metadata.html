@@ -244,6 +244,15 @@ $('.parametersBox',navTab.getCurrentPanel()).on('click','span>a',function(){
         </#if>
         </#list>
     </#if>
+    <#if acceptArrayParameters?has_content>
+        <#list acceptParameters?split(",") as p>
+        <#if p?contains(';')>
+        addParameter("${p?split(";")[0]}",true,${['user','content','category']?seq_contains(p?split(";")[1])?c},"${p?split(";")[1]}","${t.pageMessage(p?split(";")[1])}","${['user','content','category']?seq_contains(p?split(";")[1])?then(p?split(";")[1],'')}");
+        <#else>
+        addParameter("${p}",true,false,"text","${t.pageMessage('text')}","");
+        </#if>
+        </#list>
+    </#if>
         </script>
 <#else>
         <textarea name="content" class="hide"><@html_escape><#include "demo/default.html" parse=false/></@html_escape></textarea>

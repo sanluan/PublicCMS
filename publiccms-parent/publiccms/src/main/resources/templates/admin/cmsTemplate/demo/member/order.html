@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+        <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+        <#if orderId?has_content>
+        <@_tradeOrder id=orderId>
+            <p><label>Status:</label>:<@message 'page.status.order.'+object.status/></p>
+            <p><label>Shipping address::</label>${object.address!}</p>
+            <p><label>Receiver:</label>:${object.addressee!}</p>
+            <p><label>Telephone:</label>:${object.telephone!}</p>
+            <p><label>Remark:</label>:${object.remark!}</p>
+            <p><label>Amount:</label>:${object.amount!}</p>
+            <@_tradeOrderProductList orderId=orderId>
+                <#list page.list as op>
+                <@_content id=op.contentId>
+                    <p>
+                        <#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
+                        <a href="${object.url}" target="_blank">${object.title}</a>
+                    </p>
+                </@_content>
+                <@_contentProduct id=op.productId>
+
+                    <p>
+                        <#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
+                        product:${object.title} <label>price::</label>:${op.price} Remark:${op.remark!}
+                        <label>Quantity:</label>${op.quantity!}
+                    </p>
+                </@_contentProduct>
+                </#list>
+            </@_tradeOrderProductList>
+            <#if 0=object.status>
+                <#if object.paymentId?has_content>
+                    <a href="${site.dynamicPath}tradePayment/pay?paymentId=${object.paymentId}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Continue to pay</a> 
+                    <a href="${site.dynamicPath}tradePayment/cancel?paymentId=${object.paymentId}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@_csrfToken/>">Change payment method</a>
+                    <a href="${site.dynamicPath}tradeOrder/close?orderId=${object.id}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@_csrfToken/>">Close order</a>
+                <#else>
+                <a href="${site.dynamicPath}tradeOrder/pay/alipay?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Alipay</a>
+                <a href="${site.dynamicPath}tradeOrder/pay/wechat?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Wechat</a>
+                <@_tradeAccount id=object.userId;account>
+                    <#if account.amount gte object.amount>
+                        <a href="${site.dynamicPath}tradeOrder/pay/account?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">Account balance payment(${account.amount!})</a>
+                    </#if>
+                </@_tradeAccount>
+                </#if>
+            </#if>
+        </@_tradeOrder>
+        <#else>
+        <#if productId?has_content && quantity?has_content && productId?size=quantity?size>
+        <form action="${site.dynamicPath}tradeOrder/create" method="POST">          
+            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+            <input type="hidden" name="returnUrl" value="${site.dynamicPath}order.html"/>
+            <input type="hidden" name="orderIdField" value="orderId"/>
+            <p><label>Shipping address:</label><input type="text" name="address" required="required"></p>
+            <p><label>Receiver:</label><input type="text" name="addressee" required="required"></p>
+            <p><label>Telephone:</label><input type="text" name="telephone" required="required"></p>
+            <p><label>Remark:</label><input type="text" name="remark" required="required"></p>           
+                <#list productId as p>
+                    <@_contentProduct id=p;product>
+                        <@_content id=product.contentId>
+                            <p>
+                                <#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/></#if> <a href="${object.url}" target="_blank">${object.title}</a>
+                            </p>
+                            <#if p?is_first><input type="hidden" name="title" value="${object.title} - ${product.title}"/></#if>
+                        </@_content>                
+                        <p>
+                            <#if product.cover?has_content><img src="${product.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
+                            product:${product.title} <label>price::</label>${product.price} <label>inventory::</label>${product.inventory}
+                        </p>
+                        <input type="hidden" name="tradeOrderProductList[${p?index}].contentId" value="${product.contentId}"/>
+                        <input type="hidden" name="tradeOrderProductList[${p?index}].productId" value="${product.id}"/>
+                        <label>Quantity:</label><input type="text" name="tradeOrderProductList[${p?index}].quantity" value="${quantity[p?index]}" required="required"/>
+                        <label>Remark:</label><input type="text" name="tradeOrderProductList[${p?index}].remark"/>
+                    </@_contentProduct>
+                </#list>
+                <input type="submit" value="Submit"/>
+            </form>
+            <#else>
+            <h3>Parameter error</h3>
+            </#if>
+        </#if>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
+    </script>
+</body>
+</html>

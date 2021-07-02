@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>${metadata.alias!}</title>
+    <style>
+        .text-center{ text-align:center;}
+    </style>
+</head>
+<body>
+    <header>
+        <h1>${(site.name)!}</h1>
+    </header>
+    <nav>
+        <a href="${base}">Home</a>
+<@_categoryList>
+    <#list page.list as a>
+        <a href="${a.url!}" target="_blank">${a.name}</a>
+    </#list>
+</@_categoryList>
+    </nav>
+    <main>
+        <h3 class="text-center">${payment.description!}</h3>
+        <p class="text-center"><label>Amount:</label>${payment.amount!}</p>
+        <div class="text-center qr"></div>
+        <p class="text-center">WeChat scan and pay</p>
+    </main>
+    <footer>
+        Copyright &copy; ${.now?string('yyyy')}
+    </footer>
+    <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
+    <script src="${site.dynamicPath!}resource/js/jquery.qrcode.min.js"></script>
+    <script>
+    $('.qr').qrcode({width: 200,height: 200,text: "${code_url!}"});
+    </script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script>
+        var ca = cmsAnalytics();
+        var url='${site.dynamicPath}api/visit/record';
+        if("string" ==typeof itemString){
+            url=url+"?"+itemString;
+        }
+        ca.report(url);
+    </script>
+</body>
+</html>

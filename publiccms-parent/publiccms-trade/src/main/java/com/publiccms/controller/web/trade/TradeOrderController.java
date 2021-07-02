@@ -48,7 +48,6 @@ public class TradeOrderController {
     /**
      * @param site
      * @param accountType
-     * @param user
      * @param orderId
      * @param paymentId
      * @param returnUrl
@@ -59,9 +58,8 @@ public class TradeOrderController {
      * @throws Exception
      */
     @RequestMapping(value = "pay/{accountType}")
-    public String pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType,
-            @SessionAttribute SysUser user, long orderId, String returnUrl, HttpServletRequest request,
-            HttpServletResponse response, ModelMap model) throws Exception {
+    public String pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, long orderId,
+            String returnUrl, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
