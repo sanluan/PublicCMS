@@ -133,10 +133,19 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
                 MultipleFactory factory = getFactory(siteId, config);
                 try {
-                    String form = factory
-                            .Wap().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS)).pay(payment.getDescription(),
-                                    String.valueOf(payment.getId()), payment.getAmount().toString(), callbackUrl, callbackUrl)
-                            .getBody();
+                    String form;
+                    if ("FAST_INSTANT_TRADE_PAY".equalsIgnoreCase(callbackUrl)) {
+                        form = factory.Page().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS))
+                                .pay(payment.getDescription(), String.valueOf(payment.getId()), payment.getAmount().toString(),
+                                        callbackUrl)
+                                .getBody();
+                    } else {
+                        form = factory.Wap().optional("timeout_express", config.get(CONFIG_TIMEOUT_EXPRESS))
+                                .pay(payment.getDescription(), String.valueOf(payment.getId()), payment.getAmount().toString(),
+                                        callbackUrl, callbackUrl)
+                                .getBody();
+                    }
+
                     response.setContentType("text/html;charset=" + CommonConstants.DEFAULT_CHARSET_NAME);
                     response.getWriter()
                             .write("<html><head><meta http-equiv='Content-Type' content='text/html;charset=UTF-8'></head><body>");

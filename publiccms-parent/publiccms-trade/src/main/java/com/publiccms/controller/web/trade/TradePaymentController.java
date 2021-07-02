@@ -115,7 +115,7 @@ public class TradePaymentController {
     /**
      * @param site
      * @param out_trade_no
-     * @param total_fee
+     * @param buyer_pay_amount 
      * @param trade_no
      * @param request
      * @param response
@@ -124,9 +124,9 @@ public class TradePaymentController {
      */
     @RequestMapping(value = "notify/alipay")
     @ResponseBody
-    public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String total_fee, String trade_no,
+    public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String buyer_pay_amount, String trade_no,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        log.info("alipay notify out_trade_no:" + out_trade_no + ",total_fee:" + total_fee + ",trade_no:" + trade_no);
+        log.info("alipay notify out_trade_no:" + out_trade_no + ",buyer_pay_amount:" + buyer_pay_amount + ",trade_no:" + trade_no);
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
@@ -139,7 +139,7 @@ public class TradePaymentController {
                         historyService.save(history);
                         TradePayment payment = service.getEntity(out_trade_no);
                         if (null != payment && payment.getStatus() == TradePaymentService.STATUS_PENDING_PAY
-                                && payment.getAmount().toString().equals(total_fee)) {
+                                && payment.getAmount().toString().equals(buyer_pay_amount)) {
                             if (service.paid(site.getId(), payment.getId(), trade_no)) {
                                 payment = service.getEntity(payment.getId());
                                 alipayGatewayComponent.confirmPay(site.getId(), payment, response);

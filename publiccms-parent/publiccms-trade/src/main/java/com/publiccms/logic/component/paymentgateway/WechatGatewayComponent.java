@@ -37,6 +37,7 @@ import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
@@ -46,6 +47,8 @@ import com.wechat.pay.contrib.apache.httpclient.auth.PrivateKeySigner;
 import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Credentials;
 import com.wechat.pay.contrib.apache.httpclient.auth.WechatPay2Validator;
 import com.wechat.pay.contrib.apache.httpclient.util.PemUtil;
+
+import freemarker.template.Template;
 
 @Component
 public class WechatGatewayComponent extends AbstractPaymentGateway implements Config, SiteCache {
@@ -81,8 +84,18 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
      * 
      */
     public static final String CONFIG_NOTIFYURL = "notifyUrl";
+    /**
+     * 
+     */
+    public static final String CONFIG_APITYPE = "apiType";
+    /**
+     * 
+     */
+    public static final String CONFIG_RESULTPAGE = "resultPage";
     @Autowired
     private ConfigComponent configComponent;
+    @Autowired
+    private TemplateComponent templateComponent;
     @Autowired
     private TradePaymentService service;
     @Autowired
@@ -160,7 +173,8 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                             .withMerchant(config.get(CONFIG_MCHID), config.get(CONFIG_SERIALNO), merchantPrivateKey)
                             .withValidator(new WechatPay2Validator(verifier));
                     CloseableHttpClient httpClient = builder.build();
-                    HttpPost httpPost = new HttpPost("https://api.mch.weixin.qq.com/v3/pay/transactions/h5");
+                    HttpPost httpPost = new HttpPost(
+                            "https://api.mch.weixin.qq.com/v3/pay/transactions/" + config.get(CONFIG_APITYPE));
                     httpPost.addHeader("Accept", "application/json");
                     httpPost.addHeader("Content-type", "application/json; charset=utf-8");
                     Map<String, Object> requestMap = new HashMap<>();
@@ -183,7 +197,16 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                         Map<String, String> result = CommonConstants.objectMapper.readValue(bodyAsString,
                                 CommonConstants.objectMapper.getTypeFactory().constructMapLikeType(HashMap.class, String.class,
                                         String.class));
-                        response.sendRedirect(result.get("h5_url"));
+                        if ("h5".equalsIgnoreCase(config.get(CONFIG_APITYPE))) {
+                            response.sendRedirect(result.get("h5_url"));
+                        } else {
+                            Template template = templateComponent.getWebConfiguration()
+                                    .getTemplate(config.get(CONFIG_RESULTPAGE));
+                            Map<String, Object> model = new HashMap<>();
+                            model.putAll(result);
+                            model.put("payment", payment);
+                            template.process(model, response.getWriter());
+                        }
                         return true;
                     }
                 } catch (Exception e) {
@@ -293,6 +316,17 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_NOTIFYURL),
                 getMessage(locale,
                         CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_NOTIFYURL + CONFIG_CODE_DESCRIPTION_SUFFIX,
+                        site.getDynamicPath())));
+        extendFieldList.add(new SysExtendField(CONFIG_APITYPE, INPUTTYPE_TEXT, false,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_APITYPE),
+                getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_APITYPE + CONFIG_CODE_DESCRIPTION_SUFFIX,
+                        site.getDynamicPath()),
+                "native"));
+        extendFieldList.add(new SysExtendField(CONFIG_RESULTPAGE, INPUTTYPE_TEMPLATE,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RESULTPAGE),
+                getMessage(locale,
+                        CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_RESULTPAGE + CONFIG_CODE_DESCRIPTION_SUFFIX,
                         site.getDynamicPath())));
         return extendFieldList;
     }
