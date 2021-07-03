@@ -31,22 +31,24 @@
             <li class="underline">
                 <p><@message 'page.status.payment.'+a.status/><span class="right">${a.createDate!}</span></p>
                 <p class="gray"><label>Amount</label>${a.amount!} <label>Account type:</label>${a.accountType!}</p>
-                <p>${a.description!}<span class="right"><label>Trade type:</label>${a.tradeType!}</span></p>
-                <p>
-                <#if 0=object.status>
-                    <a href="${site.dynamicPath}tradePayment/pay?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}">Continue to pay</a> 
-                    <a href="${site.dynamicPath}tradePayment/cancel?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}&_csrf=<@_csrfToken/>">Cancel payment</a>
-                <#elseif 1=object.status>
+                <p>${a.description!}<span class="right"><label>Trade type:</label>${a.tradeType!}</span></p>                
+                <#if 0=a.status>
+                    <p>
+                        <a href="${site.dynamicPath}tradePayment/pay?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}">Continue to pay</a> 
+                        <a href="${site.dynamicPath}tradePayment/cancel?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}&_csrf=<@_csrfToken/>">Cancel payment</a>
+                    </p>
+                <#elseif 1=a.status>
                     <form action="${site.dynamicPath}tradePayment/refund" method="POST">
-                        <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-                        <input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
-                        <input type="hidden" name="paymentId" value="${a.id}"/>
-                        <label>Amount:</label><input type="text" name="amount" required="required" value="${a.amount}" max="${a.amount}"/>
-                        <label>Reason:</label><input type="text" name="reason" required="required"/>
-                        <input type="submit" value="Apply refund"/>
+                        <p>
+                            <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                            <input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
+                            <input type="hidden" name="paymentId" value="${a.id}"/>
+                            <label>Amount:</label><input type="text" name="amount" required="required" value="${a.amount}" max="${a.amount}"/>
+                            <label>Reason:</label><input type="text" name="reason" required="required"/>
+                            <input type="submit" value="Apply refund"/>
+                        </p>
                     </form>
-                </#if>
-                </p>
+                </#if>                
             </li>
         </#list>
         </ul>

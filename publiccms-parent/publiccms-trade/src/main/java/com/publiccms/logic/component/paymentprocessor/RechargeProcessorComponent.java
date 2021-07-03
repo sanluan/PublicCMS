@@ -9,8 +9,8 @@ import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 import com.publiccms.logic.service.trade.TradeAccountService;
 
 @Component
-public class ChargeProcessorComponent implements TradePaymentProcessor {
-    public static final String GRADE_TYPE = "charge";
+public class RechargeProcessorComponent implements TradePaymentProcessor {
+    public static final String GRADE_TYPE = "recharge";
     @Autowired
     private TradeAccountService accountService;
 

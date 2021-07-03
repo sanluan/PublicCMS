@@ -31,7 +31,7 @@ import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.LoginConfigComponent;
 import com.publiccms.logic.component.paymentgateway.AccountGatewayComponent;
-import com.publiccms.logic.component.paymentprocessor.ChargeProcessorComponent;
+import com.publiccms.logic.component.paymentprocessor.RechargeProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.trade.TradeAccountHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
@@ -58,9 +58,8 @@ public class TradeAccountController {
      */
     @RequestMapping("recharge")
     @Csrf
-    public String recharge(@RequestAttribute SysSite site, @SessionAttribute SysUser user, BigDecimal change,
-            String accountType, String returnUrl, HttpServletRequest request, HttpSession session,
-            ModelMap model) {
+    public String recharge(@RequestAttribute SysSite site, @SessionAttribute SysUser user, BigDecimal change, String accountType,
+            String returnUrl, HttpServletRequest request, HttpSession session, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
@@ -72,8 +71,9 @@ public class TradeAccountController {
             if (1 == change.compareTo(BigDecimal.ZERO)) {
                 String ip = RequestUtils.getIpAddress(request);
                 Date now = CommonUtils.getDate();
-                TradePayment entity = new TradePayment(site.getId(), user.getId(), change, ChargeProcessorComponent.GRADE_TYPE,
+                TradePayment entity = new TradePayment(site.getId(), user.getId(), change, RechargeProcessorComponent.GRADE_TYPE,
                         UUID.randomUUID().toString(), accountType, ip, TradePaymentService.STATUS_PENDING_PAY, false, now);
+                entity.setDescription("recharge");
                 paymentService.create(site.getId(), entity);
                 TradeAccountHistory history = new TradeAccountHistory(site.getId(), UUID.randomUUID().toString(), user.getId(),
                         user.getId(), change, BigDecimal.ZERO, BigDecimal.ZERO, TradeAccountHistoryService.STATUS_PEND, null,

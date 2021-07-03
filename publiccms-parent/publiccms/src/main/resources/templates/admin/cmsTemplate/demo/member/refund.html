@@ -32,6 +32,17 @@
                 <p><@message 'page.status.refund.'+a.status/><span class="right">${a.createDate!}</span></p>
                 <p class="gray"><label>Order id:</label>${a.orderId!} <label>Apply amount:</label>${a.amount!} <label>Refund amount:</label>${a.refundAmount!}</p>
                 <p>${a.reason!}<span class="right"><label>Replay:</label>${a.reply!}</span></p>
+                <#if 0=a.status||3=a.status>
+                    <form action="${site.dynamicPath}tradePayment/refund" method="POST">
+                        <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+                        <input type="hidden" name="id" value="${a.id}"/>
+                        <input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
+                        <input type="hidden" name="paymentId" value="${a.id}"/>
+                        <label>Amount:</label><input type="text" name="amount" required="required" value="${a.amount!}" max="${a.amount}"/>
+                        <label>Reason:</label><input type="text" name="reason" required="required" value="${a.reason!}"/>
+                        <input type="submit" value="Update"/>
+                    </form>
+                </#if>
             </li>
         </#list>
         </ul>

@@ -30,7 +30,7 @@
         <#list page.list as a>
             <li class="underline">
                 <p><@message 'page.status.order.'+a.status/><span class="right">${a.createDate!}</span></p>
-                <p class="gray"><label>Processed</label>${a.processed?then('Yes','No')} ${a.processDate!} <label>Payment date:</label>${a.paymentDate!}</p>
+                <p class="gray"><label>Processed:</label>${a.processed?then('Yes','No')} ${a.processDate!} <label>Payment date:</label>${a.paymentDate!}</p>
                 <p><a href="${site.dynamicPath}order.html?id=${a.id}">${a.title!}</a><span class="right"><label>Remark:</label>${a.remark!}</span></p>
             </li>
         </#list>

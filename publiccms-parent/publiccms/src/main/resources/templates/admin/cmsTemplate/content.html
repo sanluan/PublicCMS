@@ -26,7 +26,7 @@
          <a class="button" href="<@t.page 'template.manual.url'/>" target="_blank"><@t.page 'template.manual'/></a>
     </h2>
     <div class="pageFormContent" layoutH>
-           <div>
+        <div class="exclude-translate">
             <input name="path" type="hidden" value="${path}"/>
             <textarea name="content" class="code" escape="true" mode="freemarkermixed"><@_templateContent path=path>${(object)!}</@_templateContent></textarea>
         </div>

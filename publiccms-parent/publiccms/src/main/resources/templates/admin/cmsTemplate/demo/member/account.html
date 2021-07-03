@@ -25,9 +25,9 @@
         <p><label>Amount:</label>${object.amount}<span class="right"><label>Last update:</label>${object.updateDate!}</span></p>
         <form action="${site.dynamicPath}tradeAccount/recharge/alipay" method="post">
             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-            <input type="hidden" name="returnUrl" value="${site.dymamicPath}account.html"/>
-            <p><label>Recharge amount:</label><input type="text" name="change" min="0.01"/></p>
-            <p>Use <label><input type="text" name="accountType" value="alipay"/>Alipay</label><label><input type="text" name="accountType" value="wechat"/>Wechat</label></p>
+            <input type="hidden" name="returnUrl" value="${site.dynamicPath}account.html"/>
+            <p><label>Recharge amount:</label><input type="text" name="change" min="0.01" required="required"/></p>
+            <p>Use <label><input type="radio" name="accountType" value="alipay"/>Alipay</label><label><input type="radio" name="accountType" value="wechat"/>Wechat</label></p>
             <p><input type="submit" value="Submit"/></p>
         </form>
     </@_tradeAccount>

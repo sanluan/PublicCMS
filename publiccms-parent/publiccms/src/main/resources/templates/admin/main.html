@@ -248,19 +248,21 @@ echarts.init(document.getElementById('visit')).setOption({
                 <label><@t.page 'disk_space'/>:</label><@t.fileSize totalSpace/>
             </p>
         </@_disk>
-            <div class="divider"></div>
-            <div class="unit">
-                <p>
-                    <label><@t.page 'site.count'/>:</label>
-                    <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@_sysSiteList pageSize=0>${page.totalCount}</@_sysSiteList></a>
-                </p>
-                <p>
-                    <label><@t.page 'domain.count'/>:</label>
-                    <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@_sysDomainList advanced=true pageSize=0>${page.totalCount}</@_sysDomainList></a>
-                </p>
-            </div>
     </@_masterSite>
         </div>
+    <@_masterSite>
+        <div class="divider"></div>
+        <div class="unit">
+            <p>
+                <label><@t.page 'site.count'/>:</label>
+                <a href="sysSite/list.html" icon="<i class='icon-sitemap icon-large'></i>" title="<@t.menu 'site_list'/>" target="navTab" rel="sysSite/list"><@_sysSiteList pageSize=0>${page.totalCount}</@_sysSiteList></a>
+            </p>
+            <p>
+                <label><@t.page 'domain.count'/>:</label>
+                <a href="sysDomain/list.html" icon="<i class='icon-qrcode icon-large'></i>" title="<@t.menu 'site_domain_list'/>" target="navTab" rel="sysDomain/list"><@_sysDomainList advanced=true pageSize=0>${page.totalCount}</@_sysDomainList></a>
+            </p>
+        </div>
+    </@_masterSite>
     </fieldset>
 </@_version>
 </div>

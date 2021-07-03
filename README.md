@@ -15,7 +15,7 @@ https://github.com/sanluan/PublicCMS
 
 ## 参与开发
 
-切换到develop分支
+切换到develop分支,免费版本切换到2017分支
 
 ## 授权协议
 
@@ -89,14 +89,18 @@ docker run -d -p 8080:8080 mypubliccms
 
 ![](doc/structure.png)
 
-## Public CMS管理后台
+## Public CMS管理后台 - 中文
 
 ![](doc/management.png)
 
-## Public CMS Management
+## Public CMS管理後臺 - 繁體
+
+![](doc/management_traditional_cn.png)
+
+## Public CMS Management - English
 
 ![](doc/management_en.png)
 
-## Public CMS 管理バックグラウンド
+## Public CMS 管理バックグラウンド - 日本語
 
 ![](doc/management_ja.png)
