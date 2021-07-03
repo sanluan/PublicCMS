@@ -187,10 +187,6 @@ ALTER TABLE `cms_content_related`
 ALTER TABLE `trade_refund` 
     ADD INDEX `trade_refund_user_id`(`user_id`, `payment_id`, `status`);
 -- 2021-06-30 --
-INSERT INTO `sys_module` VALUES ('trade_payment', 'tradePayment/list', 'sysUser/lookup', 'icon-money', 'trade_menu', 1, 3);
-INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'en', 'Payment management');
-INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'ja', '支払い管理');
-INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'zh', '支付管理');
 UPDATE `sys_module` SET `sort` = '7' WHERE `id` = 'account_history_list';
 UPDATE `sys_module` SET `sort` = '6' WHERE `id` = 'account_list';
 UPDATE `sys_module` SET `sort` = '5' WHERE `id` = 'refund_list';
@@ -203,3 +199,26 @@ ALTER TABLE `trade_payment`
 -- 2021-07-01 --
 ALTER TABLE `trade_order` 
     ADD COLUMN `title` varchar(255) NOT NULL COMMENT '标题' AFTER `user_id`;
+-- 2021-07-03 --
+UPDATE `sys_module` SET `authorized_url` = 'tradeAccount/save,sysUser/lookup' WHERE `id` ='account_add';
+INSERT INTO `sys_module` VALUES ('order_confirm', 'tradeOrder/confirmParameters', 'tradeOrder/confirm', NULL, 'order_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process', NULL, 'order_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('order_view', 'tradeOrder/view', NULL, NULL, 'order_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('order_confirm', 'en', 'Confirm order');
+INSERT INTO `sys_module_lang` VALUES ('order_confirm', 'ja', '注文の確認');
+INSERT INTO `sys_module_lang` VALUES ('order_confirm', 'zh', '确认订单');
+INSERT INTO `sys_module_lang` VALUES ('order_process', 'en', 'Process order');
+INSERT INTO `sys_module_lang` VALUES ('order_process', 'ja', 'プロセスオーダー');
+INSERT INTO `sys_module_lang` VALUES ('order_process', 'zh', '处理订单');
+INSERT INTO `sys_module_lang` VALUES ('order_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('order_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('order_view', 'zh', '查看');
+INSERT INTO `sys_module` VALUES ('payment_list', 'tradePayment/list', 'sysUser/lookup', 'icon-money', 'trade_menu', 1, 3);
+INSERT INTO `sys_module_lang` VALUES ('payment_list', 'en', 'Payment management');
+INSERT INTO `sys_module_lang` VALUES ('payment_list', 'ja', '支払い管理');
+INSERT INTO `sys_module_lang` VALUES ('payment_list', 'zh', '支付管理');
+UPDATE `sys_module` SET `authorized_url` = 'tradePaymentHistory/view' WHERE `id` ='payment_history_list';
+INSERT INTO `sys_module` VALUES ('refund_refuse', 'tradeRefund/refuseParameters', 'tradeOrder/refuse', '', 'refund_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'en', 'Refuse');
+INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'ja', 'ごみ');
+INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'zh', '拒绝');

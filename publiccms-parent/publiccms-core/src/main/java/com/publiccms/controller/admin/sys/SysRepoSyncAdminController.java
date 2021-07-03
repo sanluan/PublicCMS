@@ -39,8 +39,8 @@ public class SysRepoSyncAdminController {
     protected LogOperateService logOperateService;
 
     @GetMapping(value = "sync", produces = "text/html;charset=utf-8")
-    public String sync(@RequestAttribute SysSite site, @SessionAttribute SysUser admin,
-                       HttpServletRequest request, ModelMap model) {
+    public String sync(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
+            ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
@@ -51,11 +51,11 @@ public class SysRepoSyncAdminController {
             String shPath = String.format("%s/sync.sh %d", dir, siteId);
             File shFile = new File(shPath);
             if (!shFile.exists()) {
-                throw new FileNotFoundException(String.format("template/site_%d/sync.sh Not found, create it using 'Repo Sync template(sync.sh)'", siteId));
+                throw new FileNotFoundException(String
+                        .format("template/site_%d/sync.sh Not found, create it using 'Repo Sync template(sync.sh)'", siteId));
             }
             Process ps = Runtime.getRuntime().exec("sh " + shPath, null, new File(dir));
             ps.waitFor();
-
             BufferedReader br = new BufferedReader(new InputStreamReader(ps.getInputStream()));
             StringBuilder sb = new StringBuilder();
             String line;

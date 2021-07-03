@@ -760,7 +760,7 @@ CREATE TABLE `sys_module` (
 -- ----------------------------
 -- Records of sys_module
 -- ----------------------------
-INSERT INTO `sys_module` VALUES ('account_add', 'tradeAccount/add', 'tradeAccount/save', '', 'account_list', 0, 1);
+INSERT INTO `sys_module` VALUES ('account_add', 'tradeAccount/add', 'tradeAccount/save,sysUser/lookup', '', 'account_list', 0, 1);
 INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', 'sysUser/lookup', 'icon-book', 'trade_menu', 1, 7);
 INSERT INTO `sys_module` VALUES ('account_list', 'tradeAccount/list', NULL, 'icon-credit-card', 'trade_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('account_recharge', 'tradeAccount/rechargeParameters', 'tradeAccount/recharge', '', 'account_list', 0, 2);
@@ -867,8 +867,11 @@ INSERT INTO `sys_module` VALUES ('myself_log_operate', 'myself/logOperate', NULL
 INSERT INTO `sys_module` VALUES ('myself_menu', NULL, NULL, 'icon-user', 'myself', 1, 0);
 INSERT INTO `sys_module` VALUES ('myself_password', 'myself/password', 'changePassword', 'icon-key', 'myself_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', 'sysUserToken/delete', 'icon-unlock-alt', 'myself_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('order_confirm', 'tradeOrder/confirmParameters', 'tradeOrder/confirm', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list', NULL, 'icon-calendar', 'trade_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/lookup', 'icon-barcode', 'trade_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process', NULL, 'order_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('order_view', 'tradeOrder/view', NULL, NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page', NULL, NULL, 'icon-tablet', NULL, 1, 3);
 INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,sysUser/lookup,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', 'icon-globe', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('page_menu', NULL, NULL, 'icon-globe', 'page', 1, 0);
@@ -881,7 +884,8 @@ INSERT INTO `sys_module` VALUES ('page_select_content', 'cmsContent/lookup', 'cm
 INSERT INTO `sys_module` VALUES ('page_select_tag_type', 'cmsTagType/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_template', 'cmsTemplate/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_user', 'sysUser/lookup', NULL, NULL, 'page_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('payment_history_list', 'tradePaymentHistory/list', NULL, 'icon-exchange', 'trade_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('payment_history_list', 'tradePaymentHistory/list', 'tradePaymentHistory/view', 'icon-exchange', 'trade_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('payment_list', 'tradePayment/list', 'sysUser/lookup', 'icon-money', 'trade_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('place_add', 'cmsPlace/add', 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/uncheck', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'place_list', 0, 0);
@@ -902,7 +906,8 @@ INSERT INTO `sys_module` VALUES ('place_view', 'cmsPlace/view', NULL, NULL, 'pla
 INSERT INTO `sys_module` VALUES ('product_list', 'cmsContentProduct/list', NULL, 'icon-truck', 'content_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('product_add', 'cmsContentProduct/add', 'cmsContentProduct/save', NULL, 'product_list', 1, 0);
 INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup', 'icon-signout', 'trade_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeOrder/refund', '', 'refund_list', 0, 1);
+INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeOrder/refund', '', 'refund_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('refund_refuse', 'tradeRefund/refuseParameters', 'tradeOrder/refuse', '', 'refund_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('repo_sync', 'sysRepoSync/sync', NULL, 'icon-refresh', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('report_user', 'report/user', NULL, 'icon-male', 'user_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('role_add', 'sysRole/add', 'sysRole/save', NULL, 'role_list', 0, 0);
@@ -942,7 +947,6 @@ INSERT INTO `sys_module` VALUES ('template_place_form', 'placeTemplate/form', NU
 INSERT INTO `sys_module` VALUES ('template_upload', 'cmsTemplate/upload', 'cmsTemplate/doUpload', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_website_file', 'cmsWebFile/lookup', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 0, 4);
-INSERT INTO `sys_module` VALUES ('trade_payment', 'tradePayment/list', 'sysUser/lookup', 'icon-money', 'trade_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('user_add', 'sysUser/add', 'sysDept/lookup,sysUser/save', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_disable', NULL, 'sysUser/disable', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_enable', NULL, 'sysUser/enable', NULL, 'user_list', 0, 0);
@@ -1292,12 +1296,21 @@ INSERT INTO `sys_module_lang` VALUES ('myself_password', 'zh', '修改密码');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'en', 'My login token');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'ja', '私のログイン授権');
 INSERT INTO `sys_module_lang` VALUES ('myself_token', 'zh', '我的登录授权');
+INSERT INTO `sys_module_lang` VALUES ('order_confirm', 'en', 'Confirm order');
+INSERT INTO `sys_module_lang` VALUES ('order_confirm', 'ja', '注文の確認');
+INSERT INTO `sys_module_lang` VALUES ('order_confirm', 'zh', '确认订单');
 INSERT INTO `sys_module_lang` VALUES ('order_history_list', 'en', 'Order history');
 INSERT INTO `sys_module_lang` VALUES ('order_history_list', 'ja', 'オーダー履歴');
 INSERT INTO `sys_module_lang` VALUES ('order_history_list', 'zh', '订单历史');
 INSERT INTO `sys_module_lang` VALUES ('order_list', 'en', 'Order management');
 INSERT INTO `sys_module_lang` VALUES ('order_list', 'ja', 'オーダー管理');
 INSERT INTO `sys_module_lang` VALUES ('order_list', 'zh', '订单管理');
+INSERT INTO `sys_module_lang` VALUES ('order_process', 'en', 'Process order');
+INSERT INTO `sys_module_lang` VALUES ('order_process', 'ja', 'プロセスオーダー');
+INSERT INTO `sys_module_lang` VALUES ('order_process', 'zh', '处理订单');
+INSERT INTO `sys_module_lang` VALUES ('order_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('order_view', 'ja', '見る');
+INSERT INTO `sys_module_lang` VALUES ('order_view', 'zh', '查看');
 INSERT INTO `sys_module_lang` VALUES ('page', 'en', 'Page');
 INSERT INTO `sys_module_lang` VALUES ('page', 'ja', 'ページ');
 INSERT INTO `sys_module_lang` VALUES ('page', 'zh', '页面');
@@ -1334,6 +1347,9 @@ INSERT INTO `sys_module_lang` VALUES ('page_select_template', 'zh', '选择模�
 INSERT INTO `sys_module_lang` VALUES ('page_select_user', 'en', 'Select user');
 INSERT INTO `sys_module_lang` VALUES ('page_select_user', 'ja', 'ユーザーを選択');
 INSERT INTO `sys_module_lang` VALUES ('page_select_user', 'zh', '选择用户');
+INSERT INTO `sys_module_lang` VALUES ('payment_list', 'en', 'Payment management');
+INSERT INTO `sys_module_lang` VALUES ('payment_list', 'ja', '支払い管理');
+INSERT INTO `sys_module_lang` VALUES ('payment_list', 'zh', '支付管理');
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'en', 'Payment history');
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'ja', '支払歴');
 INSERT INTO `sys_module_lang` VALUES ('payment_history_list', 'zh', '支付历史');
@@ -1400,6 +1416,9 @@ INSERT INTO `sys_module_lang` VALUES ('refund_list', 'zh', '退款管理');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'en', 'Refund');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'ja', '払い戻し');
 INSERT INTO `sys_module_lang` VALUES ('refund_refund', 'zh', '退款');
+INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'en', 'Refuse');
+INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'ja', 'ごみ');
+INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'zh', '拒绝');
 INSERT INTO `sys_module_lang` VALUES ('report_user', 'en', 'User report');
 INSERT INTO `sys_module_lang` VALUES ('report_user', 'ja', 'ユーザーデータの監視');
 INSERT INTO `sys_module_lang` VALUES ('report_user', 'zh', '用户数据监控');
@@ -1514,9 +1533,6 @@ INSERT INTO `sys_module_lang` VALUES ('template_website_file', 'zh', '网站文�
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'en', 'Trade menegent');
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'ja', 'ビジネス管理');
 INSERT INTO `sys_module_lang` VALUES ('trade_menu', 'zh', '商务管理');
-INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'en', 'Payment management');
-INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'ja', '支払い管理');
-INSERT INTO `sys_module_lang` VALUES ('trade_payment', 'zh', '支付管理');
 INSERT INTO `sys_module_lang` VALUES ('user_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('user_add', 'ja', '追加/変更');
 INSERT INTO `sys_module_lang` VALUES ('user_add', 'zh', '增加/修改');
