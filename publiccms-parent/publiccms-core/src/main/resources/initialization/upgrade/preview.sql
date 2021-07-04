@@ -62,11 +62,6 @@ INSERT INTO `sys_module_lang` VALUES ('log_visit_day', 'zh', '日访问日志');
 INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'en', 'Visit session');
 INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'ja', 'アクセスセッション');
 INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'zh', '访问日志会话');
--- 2021-06-08 --
-INSERT INTO `sys_module` VALUES ('repo_sync', 'sysRepoSync/sync', 'sysRepoSync/doSync', 'icon-refresh', 'file_menu', 1, 5);
-INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'en', 'Repo Sync');
-INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'ja', '倉庫同期');
-INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'zh', '仓库同步');
 -- 2021-06-25 --
 UPDATE `sys_module` SET `authorized_url` = 'tradeOrder/refund' WHERE `id` ='refund_refund';
 UPDATE `sys_module` SET `authorized_url` = 'cmsTemplate/save,cmsTemplate/chipLookup,cmsWebFile/lookup,placeTemplate/form,cmsTemplate/contentForm,cmsCategory/contributeForm,cmsTemplate/demo,cmsTemplate/help,cmsTemplate/upload,cmsTemplate/doUpload,cmsTemplate/export' WHERE `id` ='template_content';
@@ -224,3 +219,6 @@ INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'ja', 'ごみ');
 INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'zh', '拒绝');
 -- 2021-07-04 --
 UPDATE `sys_module` SET `menu` = '1' WHERE `id` ='trade_menu';
+-- 2021-06-08 --
+DELETE FROM `sys_module` WHERE `id` ='repo_sync';
+DELETE FROM `sys_module_lang` WHERE `module_id` ='repo_sync';

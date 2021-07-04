@@ -908,7 +908,6 @@ INSERT INTO `sys_module` VALUES ('product_add', 'cmsContentProduct/add', 'cmsCon
 INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup', 'icon-signout', 'trade_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeOrder/refund', '', 'refund_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('refund_refuse', 'tradeRefund/refuseParameters', 'tradeOrder/refuse', '', 'refund_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('repo_sync', 'sysRepoSync/sync', 'sysRepoSync/doSync', 'icon-refresh', 'file_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('report_user', 'report/user', NULL, 'icon-male', 'user_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('role_add', 'sysRole/add', 'sysRole/save', NULL, 'role_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('role_delete', NULL, 'sysRole/delete', NULL, 'role_list', 0, 0);
@@ -1569,9 +1568,6 @@ INSERT INTO `sys_module_lang` VALUES ('webfile_zip', 'zh', '压缩');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'en', 'Search word management');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'ja', '検索ワード管理');
 INSERT INTO `sys_module_lang` VALUES ('word_list', 'zh', '搜索词管理');
-INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'en', 'Repo Sync');
-INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'ja', '倉庫同期');
-INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'zh', '仓库同步');
 
 -- ----------------------------
 -- Table structure for sys_role

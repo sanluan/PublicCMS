@@ -1,9 +1,14 @@
 package com.publiccms.controller.admin.sys;
 
+import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +77,7 @@ public class SysSiteAdminController {
      * @param deptName
      * @param userName
      * @param password
-     * @param encoding 
+     * @param encoding
      * @param request
      * @param model
      * @return view name
@@ -151,8 +156,8 @@ public class SysSiteAdminController {
     /**
      * @param site
      * @param admin
-     * @param sqlcommand
-     * @param sqlparameters
+     * @param command
+     * @param parameters
      * @param oldurl
      * @param newurl
      * @param request
@@ -161,16 +166,16 @@ public class SysSiteAdminController {
      */
     @RequestMapping("execSql")
     @Csrf
-    public String execSql(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String sqlcommand,
-            String[] sqlparameters, HttpServletRequest request, ModelMap model) {
+    public String execSql(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String command, String[] parameters,
+            HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if ("update_url".contains(sqlcommand)) {
-            if (null != sqlparameters && 2 == sqlparameters.length) {
+        if ("update_url".contains(command)) {
+            if (null != parameters && 2 == parameters.length) {
                 try {
-                    String oldurl = sqlparameters[0];
-                    String newurl = sqlparameters[1];
+                    String oldurl = parameters[0];
+                    String newurl = parameters[1];
                     int i = sqlService.updateContentAttribute(oldurl, newurl);
                     i += sqlService.updateContentRelated(oldurl, newurl);
                     i += sqlService.updatePlace(oldurl, newurl);
@@ -181,11 +186,74 @@ public class SysSiteAdminController {
                 }
             }
         }
-        model.addAttribute("sqlcommand", sqlcommand);
-        model.addAttribute("sqlparameters", sqlparameters);
+        model.addAttribute("sqlcommand", command);
+        model.addAttribute("sqlparameters", parameters);
         logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "execsql.site",
                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @author Qicz
+     * 
+     * @param site
+     * @param admin
+     * @param command
+     * @param parameters
+     * @param request
+     * @param model
+     * @return
+     * @since 2021/6/4 13:59
+     */
+    @RequestMapping(value = "execScript")
+    @Csrf
+    public String execScript(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String command, String[] parameters,
+            HttpServletRequest request, ModelMap model) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
+            return CommonConstants.TEMPLATE_ERROR;
+        }
+        String log = null;
+        if ("sync.bat".equalsIgnoreCase(command) || "sync.sh".equalsIgnoreCase(command)) {
+            try {
+                String dir = CommonConstants.CMS_FILEPATH + "/script";
+                String[] cmdarray = parameters;
+                if (command.toLowerCase().endsWith(".sh")) {
+                    String filePath = String.format("%s/sync.sh", dir);
+                    File script = new File(filePath);
+                    if (!script.exists()) {
+                        FileUtils.copyInputStreamToFile(this.getClass().getResourceAsStream("/script/sync.sh"), script);
+                    }
+                    cmdarray = ArrayUtils.insert(0, cmdarray, filePath);
+                    cmdarray = ArrayUtils.insert(0, cmdarray, "sh");
+                } else {
+                    String filePath = String.format("%s/sync.bat", dir);
+                    File script = new File(filePath);
+                    if (!script.exists()) {
+                        FileUtils.copyInputStreamToFile(this.getClass().getResourceAsStream("/script/sync.bat"), script);
+                    }
+                    cmdarray = ArrayUtils.insert(0, cmdarray, filePath);
+                }
+                Process ps = Runtime.getRuntime().exec(cmdarray, null, new File(dir));
+                ps.waitFor();
+                BufferedReader br = new BufferedReader(new InputStreamReader(ps.getInputStream()));
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = br.readLine()) != null) {
+                    sb.append(line).append("\n");
+                }
+                log = sb.toString();
+            } catch (Exception e) {
+                log = e.toString();
+            } finally {
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                        "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), log));
+            }
+        }
+        return CommonConstants.TEMPLATE_DONE;
+
     }
 
     /**

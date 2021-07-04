@@ -140,13 +140,13 @@ function apiRequest(base,api,apisArray,authorizedApis){
         }
     });
 }
-function command(command,parametersName){
-    $('input[name=sqlcommand]',navTab.getCurrentPanel()).val(command);
-    $('.sqlcommandBox',navTab.getCurrentPanel()).empty();
+function commandParameter(command,parametersName){
+    $('input[name=command]',navTab.getCurrentPanel()).val(command);
+    $('.commandBox',navTab.getCurrentPanel()).empty();
     if(parametersName ) {
         var parameters = parametersName.split(",");
         for(i=0; i<parameters.length; i++ ){
-            $('.sqlcommandBox',navTab.getCurrentPanel()).append('<label>'+parameters[i]+':</label><input name="sqlparameters" type="text" class="required"/>').initUI();
+            $('.commandBox',navTab.getCurrentPanel()).append('<label>'+parameters[i]+':</label><input name="parameters" type="text" class="required"/>').initUI();
         }
     }
 }

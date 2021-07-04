@@ -10,14 +10,14 @@
         <dl class="nowrap">
             <dt>SQL Command:</dt>
             <dd>
-                <input name="sqlcommand" type="text" readonly="readonly" class="required"/>
-                <span class="info"><button type="button" class="button" onclick="command('update_url','oldurl,newurl')"><@t.page 'sql.example.1'/></button></span>
+                <input name="command" type="text" readonly="readonly" class="required"/>
+                <span class="info"><button type="button" class="button" onclick="commandParameter('update_url','oldurl,newurl')"><@t.page 'sql.example.1'/></button></span>
             </dd>
         </dl>
         <dl class="nowrap">
             <dt><@t.page 'parameter'/>:</dt>
             <dd>
-                <p class="sqlcommandBox"></p>
+                <p class="commandBox"></p>
             </dd>
         </dl>
 <@_logOperateList operate='execSql.site' pageSize=10>
