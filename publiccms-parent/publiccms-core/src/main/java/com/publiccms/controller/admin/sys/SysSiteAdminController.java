@@ -158,8 +158,6 @@ public class SysSiteAdminController {
      * @param admin
      * @param command
      * @param parameters
-     * @param oldurl
-     * @param newurl
      * @param request
      * @param model
      * @return view name

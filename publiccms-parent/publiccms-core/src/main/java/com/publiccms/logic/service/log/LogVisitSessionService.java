@@ -61,7 +61,7 @@ public class LogVisitSessionService extends BaseService<LogVisitSession> {
     }
 
     /**
-     * @param entity
+     * @param entityList
      */
     public void save(List<LogVisitSession> entityList) {
         for (LogVisitSession entity : entityList) {

@@ -212,7 +212,7 @@ public abstract class BaseDao<E> {
     /**
      * 更新
      * 
-     * @param query
+     * @param queryHandler
      * @return number of data affected
      */
     protected int update(QueryHandler queryHandler) {
@@ -224,7 +224,7 @@ public abstract class BaseDao<E> {
     /**
      * 刪除
      * 
-     * @param query
+     * @param queryHandler
      * @return number of data deleted
      */
     protected int delete(QueryHandler queryHandler) {
@@ -233,8 +233,9 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取列表
-     * 
+    * @param <T>
      * @param query
+     * @param queryHandler
      * @return results list
      */
     protected <T> List<T> getList(Query<T> query, QueryHandler queryHandler) {
@@ -249,7 +250,7 @@ public abstract class BaseDao<E> {
     /**
      * 获取列表
      * 
-     * @param query
+     * @param queryHandler
      * @return results list
      */
     protected List<E> getEntityList(QueryHandler queryHandler) {
@@ -260,7 +261,7 @@ public abstract class BaseDao<E> {
     /**
      * 获取列表
      * 
-     * @param query
+     * @param queryHandler
      * @return results list
      */
     protected List<?> getList(QueryHandler queryHandler) {
@@ -332,7 +333,7 @@ public abstract class BaseDao<E> {
 
     /**
      * @param optionsStep
-     * @param highlight
+     * @param highLighterQuery
      * @param pageIndex
      * @param pageSize
      * @param maxResults
@@ -383,8 +384,8 @@ public abstract class BaseDao<E> {
 
     /**
      * @param optionsStep
-     * @param facetFields
-     * @param facetCount
+     * @param facetFieldKeys
+     * @param facetFieldResult
      * @param highLighterQuery
      * @param pageIndex
      * @param pageSize
@@ -472,7 +473,7 @@ public abstract class BaseDao<E> {
     }
 
     /**
-     * @param query
+     * @param queryHandler
      * @param countHql
      * @return number of results
      */
@@ -495,7 +496,7 @@ public abstract class BaseDao<E> {
     }
 
     /**
-     * @param query
+     * @param queryHandler
      * @return number of data
      */
     protected long count(QueryHandler queryHandler) {

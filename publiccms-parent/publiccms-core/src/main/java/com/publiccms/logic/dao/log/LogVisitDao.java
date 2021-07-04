@@ -57,7 +57,6 @@ public class LogVisitDao extends BaseDao<LogVisit> {
     }
 
     /**
-     * @param sessionId
      * @param visitDate
      * @param visitHour
      * @return results page

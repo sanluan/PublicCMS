@@ -31,7 +31,6 @@ public class LogVisitController {
      * @param title
      * @param screenw
      * @param screenh
-     * @param site
      * @param userAgent
      * @param referer
      * @param itemType

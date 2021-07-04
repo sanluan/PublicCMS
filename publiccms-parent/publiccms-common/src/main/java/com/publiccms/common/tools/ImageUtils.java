@@ -53,7 +53,7 @@ public class ImageUtils {
             javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, ModelMap model) {
            String sessionCaptcha = (String)session.getAttribute("captcha");
            session.removeAttribute("captcha");
-           if(null!=sessionCaptcha && sessionCaptcha.equals(captcha)) {
+           if(null!=sessionCaptcha &amp;&amp; sessionCaptcha.equals(captcha)) {
                // login code
            }
        }

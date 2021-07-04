@@ -21,7 +21,7 @@ public class ExcelView extends AbstractXlsxStreamingView {
      * <code>
        &#64;RequestMapping("export")
        public ExcelView export() {
-           ExcelView view = new ExcelView(workbook -> {
+           ExcelView view = new ExcelView(workbook -&gt; {
                Sheet sheet = workbook.createSheet("sheetname");
                int i = 0, j = 0;
                Row row = sheet.createRow(i++);

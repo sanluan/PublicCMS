@@ -32,8 +32,6 @@ public class PageHandler implements java.io.Serializable {
     /**
      * @param pageIndex
      * @param pageSize
-     * @param totalCount
-     * @param maxCount
      */
     public PageHandler(Integer pageIndex, Integer pageSize) {
         setPageSize(null != pageSize ? pageSize : 0);

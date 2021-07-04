@@ -28,9 +28,6 @@ public class LogVisitService extends BaseService<LogVisit> {
     /**
      * @param siteId
      * @param sessionId
-     * @param startVisitDate
-     * @param endVisitDate
-     * @param visitHour
      * @param startCreateDate
      * @param endCreateDate
      * @param orderType
@@ -55,7 +52,6 @@ public class LogVisitService extends BaseService<LogVisit> {
     }
 
     /**
-     * @param sessionId
      * @param visitDate
      * @param visitHour
      * @return results page

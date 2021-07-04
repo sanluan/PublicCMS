@@ -57,7 +57,6 @@ public class CmsCommentAdminController {
      * @param site
      * @param admin
      * @param entity
-     * @param returnUrl
      * @param request
      * @param model
      * @return
