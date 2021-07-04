@@ -946,7 +946,7 @@ INSERT INTO `sys_module` VALUES ('template_place', 'placeTemplate/lookup', NULL,
 INSERT INTO `sys_module` VALUES ('template_place_form', 'placeTemplate/form', NULL, NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_upload', 'cmsTemplate/upload', 'cmsTemplate/doUpload', NULL, 'template_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('template_website_file', 'cmsWebFile/lookup', NULL, NULL, 'template_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 0, 4);
+INSERT INTO `sys_module` VALUES ('trade_menu', NULL, NULL, 'icon-money', 'maintenance', 1, 4);
 INSERT INTO `sys_module` VALUES ('user_add', 'sysUser/add', 'sysDept/lookup,sysUser/save', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_disable', NULL, 'sysUser/disable', NULL, 'user_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('user_enable', NULL, 'sysUser/enable', NULL, 'user_list', 0, 0);
@@ -1788,7 +1788,7 @@ CREATE TABLE `trade_payment`  (
   `ip` varchar(130) NOT NULL COMMENT 'IP地址',
   `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3已退款,4已关闭',
   `processed` tinyint(1) NOT NULL COMMENT '已处理',
-  `user_id` bigint(20) NULL COMMENT '处理用户ID',
+  `process_user_id` bigint(20) NULL COMMENT '处理用户ID',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `process_date` datetime DEFAULT NULL COMMENT '处理日期',

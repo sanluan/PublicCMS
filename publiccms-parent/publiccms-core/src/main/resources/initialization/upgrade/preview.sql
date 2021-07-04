@@ -222,3 +222,5 @@ INSERT INTO `sys_module` VALUES ('refund_refuse', 'tradeRefund/refuseParameters'
 INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'en', 'Refuse');
 INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'ja', 'ごみ');
 INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'zh', '拒绝');
+-- 2021-07-04 --
+UPDATE `sys_module` SET `menu` = '1' WHERE `id` ='trade_menu';
