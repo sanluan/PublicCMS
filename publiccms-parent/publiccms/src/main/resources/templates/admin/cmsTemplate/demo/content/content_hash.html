@@ -47,6 +47,7 @@
                         </label>
                     </#list>
                 </@_contentProductList>
+                    <label>Price:</label><span class="price">0</span>
                     <input type="number" name="quantity" value="1"/>
                     <input type="submit" value="Buy"/>
                 </form>
@@ -146,11 +147,29 @@
     <footer>
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
-    <script>
-    var itemString="itemType=content&itemId=${content.id}";
-    </script>
     <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
-    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <#if content.hasProducts>
+    <script>
+    $('input[name=productId]').change(function(){
+        var selectedProductId=this.value;
+        if(selectedProductId){
+            $.getJSON('${site.dynamicPath!}api/directive/contentProduct?id='+selectedProductId, function(data){
+                if($('input[name=productId]:checked').val() == selectedProductId){
+                    $('.price').text(data.object.price);
+                    if(data.object.minQuantity){
+                        $('input[name=quantity]').attr('min', data.object.minQuantity);
+                    }
+                    if(data.object.maxQuantity && data.object.maxQuantity<data.object.inventory){
+                        $('input[name=quantity]').attr('max', data.object.maxQuantity);
+                    }else{
+                        $('input[name=quantity]').attr('max', data.object.inventory);
+                    }
+                }
+            });
+        }
+    })
+    </script>
+    </#if>
     <script>
         $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
             $('article p em').text(data.clicks);
@@ -170,6 +189,10 @@ function unscore(contentId){
     });
 }
     </script>
+    <script>
+    var itemString="itemType=content&itemId=${content.id}";
+    </script>
+    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';

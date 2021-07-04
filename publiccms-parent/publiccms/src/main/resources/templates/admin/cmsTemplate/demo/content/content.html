@@ -47,6 +47,7 @@
                         </label>
                     </#list>
                 </@_contentProductList>
+                    <label>Price:</label><span class="price">0</span>
                     <input type="number" name="quantity" value="1"/>
                     <input type="submit" value="Buy"/>
                 </form>
@@ -154,6 +155,7 @@
         if(selectedProductId){
             $.getJSON('${site.dynamicPath!}api/directive/contentProduct?id='+selectedProductId, function(data){
                 if($('input[name=productId]:checked').val() == selectedProductId){
+                    $('.price').text(data.object.price);
                     if(data.object.minQuantity){
                         $('input[name=quantity]').attr('min', data.object.minQuantity);
                     }
