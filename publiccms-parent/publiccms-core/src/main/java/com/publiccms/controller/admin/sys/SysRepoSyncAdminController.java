@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -38,8 +38,9 @@ public class SysRepoSyncAdminController {
     @Autowired
     protected LogOperateService logOperateService;
 
-    @GetMapping(value = "sync", produces = "text/html;charset=utf-8")
-    public String sync(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
+    @RequestMapping(value = "doSync", produces = "text/html;charset=utf-8")
+    @Csrf
+    public String doSync(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
             ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -70,6 +71,7 @@ public class SysRepoSyncAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "repo.sync",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), log));
         }
-        return log;
+        model.put(CommonConstants.MESSAGE, log);
+        return CommonConstants.TEMPLATE_DONE;
     }
 }

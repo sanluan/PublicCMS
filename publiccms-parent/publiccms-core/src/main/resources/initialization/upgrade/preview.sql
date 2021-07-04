@@ -63,7 +63,7 @@ INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'en', 'Visit session'
 INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'ja', 'アクセスセッション');
 INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'zh', '访问日志会话');
 -- 2021-06-08 --
-INSERT INTO `sys_module` VALUES ('repo_sync', 'sysRepoSync/sync', NULL, 'icon-refresh', 'file_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('repo_sync', 'sysRepoSync/sync', 'sysRepoSync/doSync', 'icon-refresh', 'file_menu', 1, 5);
 INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'en', 'Repo Sync');
 INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'ja', '倉庫同期');
 INSERT INTO `sys_module_lang` VALUES ('repo_sync', 'zh', '仓库同步');
