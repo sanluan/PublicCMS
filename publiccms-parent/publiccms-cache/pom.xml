@@ -6,14 +6,13 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.202011.c</version>
+        <version>${version.publiccms}</version>
     </parent>
     <artifactId>publiccms-cache</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-common</artifactId>
-            <version>V4.0.202011.c</version>
         </dependency>
         <!-- https://mvnrepository.com/artifact/net.oschina.j2cache/j2cache-core -->
         <dependency>

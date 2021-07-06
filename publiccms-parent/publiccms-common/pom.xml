@@ -6,7 +6,7 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.202011.c</version>
+        <version>${version.publiccms}</version>
     </parent>
     <artifactId>publiccms-common</artifactId>
     <name>publiccms-common</name>

@@ -6,7 +6,7 @@
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
     <packaging>pom</packaging>
-    <version>V4.0.202011.c</version>
+    <version>${version.publiccms}</version>
     <modules>
         <module>publiccms</module>
         <module>publiccms-core</module>
@@ -19,6 +19,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <version.publiccms>V4.0.202011.c</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
         <version.spring>5.3.8</version.spring>
@@ -91,6 +92,36 @@
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-common</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-core</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-oauth</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-cache</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-analyzer</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-trade</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>

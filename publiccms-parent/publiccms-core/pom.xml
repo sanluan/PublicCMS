@@ -6,14 +6,13 @@
     <parent>
         <groupId>com.publiccms</groupId>
         <artifactId>publiccms-parent</artifactId>
-        <version>V4.0.202011.c</version>
+        <version>${version.publiccms}</version>
     </parent>
     <artifactId>publiccms-core</artifactId>
     <dependencies>
         <dependency>
             <groupId>com.publiccms</groupId>
             <artifactId>publiccms-common</artifactId>
-            <version>V4.0.202011.c</version>
         </dependency>
         <dependency>
             <groupId>com.zaxxer</groupId>
