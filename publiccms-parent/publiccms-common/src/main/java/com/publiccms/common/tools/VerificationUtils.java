@@ -245,7 +245,7 @@ public class VerificationUtils {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance(type);
             messageDigest.update(input.getBytes());
-            return bypeToHex(messageDigest.digest());
+            return byteToHex(messageDigest.digest());
         } catch (NoSuchAlgorithmException e) {
             return input;
         }
@@ -341,7 +341,7 @@ public class VerificationUtils {
      * @param buffer
      * @return hex
      */
-    public static String bypeToHex(byte buffer[]) {
+    public static String byteToHex(byte buffer[]) {
         StringBuilder sb = new StringBuilder(buffer.length * 2);
         for (int i = 0; i < buffer.length; i++) {
             sb.append(Character.forDigit((buffer[i] & 240) >> 4, 16));
