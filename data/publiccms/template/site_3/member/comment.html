@@ -88,7 +88,7 @@
 						<ul>
 							<#list page.list as a>
 							<li class="underline">
-								<p><span class="username">${userMap[a.userId?string].nickName}</span> ${a.createDate?string('yyyy-MM-dd hh:mm')}<span class="float-right"><a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
+								<p><span class="username">${userMap[a.userId?string].nickName}</span> ${a.createDate?string('yyyy-MM-dd HH:mm')}<span class="float-right"><a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
 								<#if a.replyId?has_content>
 									<@_comment id=a.replyId>
 										<p class="reply"><span class="username">@${userMap[a.replyUserId?string].nickName}</span> : ${object.text!}</p>

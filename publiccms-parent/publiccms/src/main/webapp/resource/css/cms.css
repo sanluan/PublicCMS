@@ -16,8 +16,5 @@ a.btnText:hover{text-decoration: none;}
 .unit ul li .card h5{font-size:18px;line-height:32px;font-weight:normal;}
 .unit ul li .card h6{font-size:16px;line-height:32px;font-weight:normal;}
 .unit ul li .card .icon{font-size:38px;width:45px;float:left;padding:10px;margin-right:5px;opacity: 0.6;}
-.unit ul li:nth-child(5n) .card,.unit ul li:nth-child(5n) .card .icon{border-color: #0099CC;color: #0099CC;}
-.unit ul li:nth-child(5n+1) .card,.unit ul li:nth-child(5n+1) .card .icon{border-color: #FF9933;color: #FF9933;}
-.unit ul li:nth-child(5n+2) .card,.unit ul li:nth-child(5n+2) .card .icon{border-color: #CC6699;color: #CC6699;}
-.unit ul li:nth-child(5n+3) .card,.unit ul li:nth-child(5n+3) .card .icon{border-color: #996699;color: #996699;}
-.unit ul li:nth-child(5n+4) .card,.unit ul li:nth-child(5n+4) .card .icon{border-color: #336699;color: #336699;}
+.unit ul li:nth-child(2n) .card,.unit ul li:nth-child(2n) .card .icon{border-color: #336699;color: #336699;}
+.unit ul li:nth-child(2n+1) .card,.unit ul li:nth-child(2n+1) .card .icon{border-color: #0099CC;color: #0099CC;}

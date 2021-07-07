@@ -41,11 +41,7 @@ if (typeof window.cmsAnalytics !== 'object') {
       }
     }
     function getReferrer() {
-      var w=window;
-      if(window.top!==window){
-        w=window.top;
-      }
-      return w.document.referrer || document.referrer;
+      return window.document.referrer || document.referrer;
     }
 
     function getLang(){

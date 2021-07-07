@@ -7,6 +7,13 @@
 <body>
 <@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
+	<nav class="container">
+		<@_categoryList parentId=category.id>
+			<#list page.list as a>
+				<a href="${a.url}">${a.name}</a>
+			</#list>
+		</@_categoryList>
+	</nav>
 	<div class="container bread">
 		<@include path="/ftl/echoBread.ftl"/>
 		<@echoBread category.id/>

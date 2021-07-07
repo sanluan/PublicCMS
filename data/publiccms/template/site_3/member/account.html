@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <title>${(metadata.alias)!}</title>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+    <main>
+		<div class="container">
+			<@_tradeAccount id=user.id>
+				<h3>My account</h3>
+				<p><label>Amount:</label>${object.amount}<span class="right"><label>Last update:</label>${object.updateDate!}</span></p>
+				<form action="${site.dynamicPath}tradeAccount/recharge/alipay" method="post">
+					<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+					<input type="hidden" name="returnUrl" value="${site.dynamicPath}account.html"/>
+					<p><label>Recharge amount:</label><input type="text" name="change" min="0.01" required="required"/></p>
+					<p>Use <label><input type="radio" name="accountType" value="alipay"/>Alipay</label><label><input type="radio" name="accountType" value="wechat"/>Wechat</label></p>
+					<p><input type="submit" value="Submit"/></p>
+				</form>
+			</@_tradeAccount>
+			<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+			<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+			<@_tradeAccountHistoryList userId=user.id pageIndex=pageIndex pageSize=10>
+				<h3>My account history</h3>
+				<ul>
+				<#list page.list as a>
+					<@merge 'userIds' a.userId!/>
+				</#list>
+				<@_sysUser ids=userIds!><#assign userMap=map!/></@_sysUser>
+				<#list page.list as a>
+					<li class="underline">
+						<p><@message 'page.status.accountHistory.'+a.status/><span class="right">${a.createDate!} <label>Operator:</label>${(userMap[a.userId?string].nickName)!}</span></p>
+						<p class="gray"><label>Serial number:</label>${a.serialNumber!} <label>Amount:</label>${a.amount!} <label>Change:</label>${a.amountChange!} <label>Balance:</label>${a.balance!} </p>
+						<p>${a.description!}<span class="right"><label>Replay:</label>${a.reply!}</span></p>
+					</li>
+				</#list>
+				</ul>
+				<div>
+					<#assign
+						start=1
+						end=page.totalPage
+					/>
+					<#if (page.pageIndex-5) gt start>
+						<#assign start=page.pageIndex-4/>
+					</#if>
+					<#if (page.pageIndex+5) lt end>
+						<#assign end=page.pageIndex+4/>
+					</#if>
+					<#if !page.firstPage>
+						<a href="${getPage('account.html',page.prePage,'pageIndex')}">Previous page</a>
+					<#else>
+						<span>Previous page</span>
+					</#if>
+					<#if start gt 1>
+						<a href="${'account.html'}">1</a> ...
+					</#if>
+					<#list start..end as n>
+						<#if n=page.pageIndex>
+							${n}
+						<#else>
+							<a href="${getPage('account.html',n,'pageIndex')}">${n}</a>
+						</#if>
+					</#list>
+					<#if end lt page.totalPage>
+						... <a href="${getPage('account.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+					</#if>
+					<#if !page.lastPage>
+						<a href="${getPage('account.html',page.nextPage,'pageIndex')}">Next page</a>
+					<#else>
+						<span>Next page</span>
+					</#if>
+				</div>
+			</@_tradeAccountHistoryList>
+		</div>
+    </main>
+    <script>
+    var itemString="itemType=user&itemId=${user.id}";
+    </script>
+    <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->   
+</body>
+</html> 

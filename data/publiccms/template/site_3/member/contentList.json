@@ -6,7 +6,7 @@
             "title":"${a.title?json_string}",
             "url":"${a.url!}",
             "description":"${(a.description?json_string)!}",
-            "publishDate":"${a.publishDate}",
+            "publishDate":"${a.publishDate?date}",
             "cover":"${a.cover!}"
         }<#sep>,
     </#list>

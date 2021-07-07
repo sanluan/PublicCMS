@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+	<title>${content.title} - ${category.name}</title>
+	<meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
+	<meta name="description" content="${content.description!}"/>
+	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
+</head>
+<body>
+	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
+	<main>
+		<div class="container bread">
+			<@include path="/ftl/echoBread.ftl"/>
+			<@echoBread category.id/>
+		</div>
+		<div class="container">
+			<#if content.hasProducts>
+            <div class="product">
+				<@_contentProductList contentId=content.id fileTypes='video,audio,other'>
+				<div class="gallery">
+					<div class="product-gallery swiper-container">
+						<div class="swiper-wrapper">
+							<#if content.cover?has_content>
+								<div class="swiper-slide"><img src="${content.cover!}" alt="${content.title}"></div>
+							</#if>
+							<#list page.list as product>
+								<#if product.cover?has_content><div class="swiper-slide"><img src="${product.cover!}" alt="${product.title}"></div></#if>
+							</#list>
+						</div>						
+					</div> 
+					<div class="thumb-list swiper-container">
+						<div class="swiper-wrapper">								
+							<#if content.cover?has_content>
+							<div class="swiper-slide"><a href="javascript:void(0);"><img src="${content.cover!}" alt="${content.title}"></a></div>
+							</#if>
+							<#list page.list as product>
+							<#if product.cover?has_content>
+							<div class="swiper-slide" data-id="${product.id!}"><a href="javascript:void(0);"><img src="${product.cover!}" alt="${product.title}"></a></div>
+							</#if>
+							</#list>
+						</div>
+					</div>
+				</div>
+				<div class="property">
+					<header>
+						<h1><a href="${url!}">${content.title}</a></h1>
+						<p><label>价格</label> <span class="price">${(page.list[0].price)!}</span></p>
+						<p><label>库存</label> <span class="inventory">${(page.list[0].inventory)!}</span></p>
+					</header>
+					<form action="${site.dynamicPath}order.html">
+						<p><label>型号</label>
+						<#list page.list as product>
+							<label><input type="radio" name="productId" value="${product.id}"/><#if product.cover?has_content><img src="<@_thumb path=product.cover width=30 height=30/>" title="${product.title}" alt="${product.title}" style="max-width:30px;max-height30px;border:1px solid;"/><#else>${product.title}</#if></label>												
+						</#list>
+						</p>					
+						<p><label>数量</label><input type="number" name="quantity" value="1" min="1" size="4"/></p>
+						<input type="submit" value="立刻购买"/>
+					</form>
+				</div>
+				</@_contentProductList>
+            </div>
+        </#if>
+			<div class="clearfix-before"></div>
+			<aside class="product-aside">
+				<div>
+					<a href="${siteAttribute.searchPath!}?tagId=${content.tagIds!}" target="_blank"><h3>相关推荐</h3></a>
+					<ul>
+	<#if content.tagIds?has_content>
+		<@_search tagId=content.tagIds modelId=content.modelId count=10>
+			<#list page.list as a>
+						<li>
+						<#if a.cover?has_content>
+							<p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}"><img src="${a.cover!}" alt="${a.title!}"/></a></p>
+						</#if>
+							<p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}">${a.title}</a></p>
+						</li>
+			</#list>
+		</@_search>
+	<#else>
+			<@_contentList categoryId=content.categoryId modelId=content.modelId pageSize=10>
+				<#list page.list as a>
+						<li>
+						<#if a.cover?has_content>
+							<p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}"><img src="${a.cover!}" alt="${a.title!}"/></a></p>
+						</#if>
+							<p><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url}</#if>" title="${a.title}">${a.title}</a></p>
+						</li>
+				</#list>
+			</@_contentList>
+	</#if>
+					</ul>
+				</div>
+			</aside>
+			<div class="product-introduce">
+				<div class="box">
+					<div class="navtab ">
+						<ul class="tabhead">
+							<li><a href="javascript:void(0);">产品详情</a></li>
+							<li><a href="javascript:void(0);">评论</a></li>
+						</ul>
+						<div class="clearfix-before">
+							<div class="tabcontent">
+								<article id="content">				
+									${text?no_esc!}
+									<div class="clearfix-before"></div>
+								</article>
+							</div>
+							<div class="tabcontent">
+								<@import path="/ftl/tools.ftl" namespace="t"/>
+								<@include path="/ftl/comment.ftl"/><#-- 评论 -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="clearfix-before"></div>				
+		</div>
+	</main>
+	<script>
+		var itemString="itemType=content&itemId=${content.id}";
+	</script>
+	<@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->
+	<script>
+		var thumbSwiper = new Swiper('.thumb-list', {
+			spaceBetween: 10,
+			slidesPerView: 5,
+			freeMode: true,
+			watchSlidesVisibility: true,
+			watchSlidesProgress: true,
+		});
+		var gallerySwiper = new Swiper('.product-gallery', {
+			mousewheel: true,
+			effect: 'coverflow',
+			speed: 300,
+			thumbs: {
+				swiper: thumbSwiper,
+			  }
+		});
+		$('input[name=productId]').change(function(){
+			var selectedProductId=this.value;
+			if(selectedProductId){
+				$.getJSON('${site.dynamicPath!}api/directive/contentProduct?id='+selectedProductId, function(data){
+					if($('input[name=productId]:checked').val() == selectedProductId){
+						$('.price').text(data.object.price);
+						$('.inventory').text(data.object.inventory);
+						if(data.object.minQuantity){
+							$('input[name=quantity]').attr('min', data.object.minQuantity);
+							if(parseInt($('input[name=quantity]').val()) < data.object.minQuantity){
+								$('input[name=quantity]').val(data.object.minQuantity);
+							}
+						}
+						if(data.object.maxQuantity && data.object.maxQuantity<data.object.inventory){
+							$('input[name=quantity]').attr('max', data.object.maxQuantity);
+						}else{
+							$('input[name=quantity]').attr('max', data.object.inventory);
+						}
+						if(parseInt($('input[name=quantity]').val()) > parseInt($('input[name=quantity]').attr('max'))){
+							$('input[name=quantity]').val($('input[name=quantity]').attr('max'));
+						}
+					}
+				});
+				var index= $('.thumb-list .swiper-slide[data-id='+selectedProductId+']').index();
+				if(0<=index){
+					gallerySwiper.slideTo(index);
+				}
+			}			
+		});		
+		uParse('#content',{rootPath: '${site.sitePath!}assets/ueditor'});
+		$.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){});
+	</script>
+</body>
+</html>
