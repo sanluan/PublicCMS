@@ -41,6 +41,7 @@ public class TradeAccountService extends BaseService<TradeAccount> {
         return dao.getPage(siteId, pageIndex, pageSize);
     }
 
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public TradeAccount getOrCreate(short siteId, long accountId) {
         TradeAccount entity = getEntity(accountId);
         if (null == entity) {

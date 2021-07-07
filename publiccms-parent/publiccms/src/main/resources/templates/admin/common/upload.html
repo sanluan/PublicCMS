@@ -33,7 +33,7 @@
             <div class="tabsContent unitBox">
                 <div class="pageContent">
                     <ul class="tree" style="height:340px;">
-            <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=5>
+            <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=10>
                 <#list page.list as a>
                     <li><a href="javascript:;" data-src="${a.filePath!}" onclick="$.bringBack({'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${width!}','height':'${height!}','${originalField!'originalName'}':'${a.originalName!}'});return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
                 </#list>
