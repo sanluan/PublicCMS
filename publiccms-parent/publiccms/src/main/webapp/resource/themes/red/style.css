@@ -28,7 +28,7 @@ header a{color:#efefef;}
 .accordionContent .tree div.selected a{background-color:#FA5151;color:#fff;}
 
 .tabsPage .tabsPageHeader{background-color:#dde2ec;}
-.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#666666;}
+.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#666666;border-color:#666666;}
 .tabsPage .tabsPageHeader li a{color:#333333;}
 .tabsPage .tabsPageHeader li.selected,.tabsPage .tabsPageHeader li:hover{background-color:#edd9dd;}
 .tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{color:#8f0006;}

@@ -61,20 +61,21 @@ header .nav .selected ul{display:block;}
 
 .tabsPage{margin-left:202px;position:relative;}
 .tabsPage .tabsPageHeader{display:block;height:45px;position:relative;}
-.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:46px;margin-right:91px;position:relative;}
-.tabsPage .tabsPageHeaderMargin{margin:0 81px 0 46px;}
+.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:36px;margin-right:72px;position:relative;}
+.tabsPage .tabsPageHeaderMargin{margin:0 72px 0 36px;}
 .tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute;}
 .tabsPage .tabsPageHeader li{float:left;display:block;height:100%;position:relative;}
 .tabsPage .tabsPageHeader li a{font-size:12px;display:inline-block;max-width:112px;padding:0 12px;line-height:45px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tabsPage .tabsPageHeader li a>i{margin-right:5px;}
 .tabsPage .tabsPageHeader li a:hover{text-decoration:none;}
 .tabsPage .tabsPageHeader li.selected a, .tabsPage .tabsPageHeader li:hover a{font-weight:400;}
-.tabsPage .tabsPageHeader li .close{padding:0;padding-right:10px;}
+.tabsPage .tabsPageHeader li .close{padding:0;padding-right:10px;opacity:0.4;}
+.tabsPage .tabsPageHeader li:hover .close,.tabsPage .tabsPageHeader li.selected .close{opacity:1;}
 .tabsPage .tabsMove{height:100%;position:absolute;top:0;right:0;z-index:2;}
-.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:45px;text-align:center;height:100%;line-height:45px;position:absolute;z-index:2;}
-.tabsPage .tabsLeft{top:0px;width:45px;}
-.tabsPage .tabsRight{top:0px;right:35px;}
-.tabsPage .tabsMore{top:0px;right:0;}
+.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{border-style:solid;text-decoration:none;display:block;overflow:hidden;width:35px;text-align:center;height:100%;line-height:45px;position:absolute;z-index:2;}
+.tabsPage .tabsLeft{top:0px;border-width:0 1px 0 0;}
+.tabsPage .tabsRight{top:0px;right:36px;border-width:0 0 0 1px;}
+.tabsPage .tabsMore{top:0px;right:0;border-width:0 0 0 1px;}
 .tabsPage .tabsMoreList{display:none;overflow-x:hidden;overflow-y:auto;width:170px;max-height:380px;padding:2px;border-style:solid;border-width:1px;position:absolute;top:45px;right:0;z-index:3;}
 .tabsPage .tabsMoreList li{display:block;overflow:hidden;height:30px;line-height:21px;}
 .tabsPage .tabsMoreList li a{display:block;width:100%;height:30px;padding:0 10px;box-sizing:border-box;white-space:nowrap;line-height:30px;}
