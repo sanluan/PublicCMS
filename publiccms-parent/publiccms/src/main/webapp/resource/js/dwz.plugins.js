@@ -43,6 +43,35 @@ DWZ.regPlugins.push(function($p){
         });
     }
 });
+function loadScripts(urls, callback) {
+    function loadScript(url, callback){
+        var script = document.createElement("script")
+        script.type = "text/javascript";
+        if (script.readyState){
+            script.onreadystatechange = function(){
+                if (script.readyState == "loaded" || script.readyState == "complete"){
+                    script.onreadystatechange = null;
+                    callback();
+                }
+            };
+        } else {
+            script.onload = function(){
+                callback();
+            };
+        }
+        script.src = url;
+        document.getElementsByTagName("head")[0].appendChild(script);
+    }
+    var i = 0,count = urls.length-1;
+    var loadOrCallback=function(){
+        if (i == count) {
+            callback && callback();
+        }else{
+            loadScript(urls[++i],loadOrCallback);
+        }
+    };
+    loadScript(urls[i],loadOrCallback);
+}
 DWZ.regPlugins.push(function($p){
     $("textarea.editor", $p).each(function(i) {
         var $this = $(this);
@@ -50,39 +79,53 @@ DWZ.regPlugins.push(function($p){
         var dataId="editor_"+index;
         if("ckeditor"==$this.attr("editorType")) {
             if(!window.editor.ckeditorInitd){
-                $.each(window.editor.ckeditorResources, function(index, url){
-                    $.ajax({url: url, type: "GET", async: false, dataType: "script"});
+                loadScripts(window.editor.ckeditorResources,function(){
+                    window.editor.ckeditorInitd=true;
+                    $this.attr("id",dataId);
+                    CKEDITOR.replace(dataId);
+                    $this.attr("data-id",dataId);
                 });
-                window.editor.ckeditorInitd=true;
+            } else {
+                $this.attr("id",dataId);
+                CKEDITOR.replace(dataId);
+                $this.attr("data-id",dataId);
             }
-            $this.attr("id",dataId);
-            CKEDITOR.replace(dataId);
-            $this.attr("data-id",dataId);
         } else if("kindeditor"==$this.attr("editorType")) {
             if(!window.editor.kindeditorInitd){
-                $.each(window.editor.kindeditorResources, function(index, url){
-                    $.ajax({url: url, type: "GET", async: false, dataType: "script"});
+                loadScripts(window.editor.kindeditorResources,function(){
+                    window.editor.kindeditorInitd=true;
+                    $this.attr("id",dataId);
+                    KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
+                    $this.attr("data-id",dataId);
                 });
-                window.editor.kindeditorInitd=true;
+            } else {
+                $this.attr("id",dataId);
+                KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
+                $this.attr("data-id",dataId);
             }
-            $this.attr("id",dataId);
-            KindEditor.create('#'+dataId,window.KINDEDITOR_OPTIONS);
-            $this.attr("data-id",dataId);
         } else {
             if(!window.editor.ueditorInitd){
-                $.each(window.editor.ueditorResources, function(index, url){
-                    $.ajax({url: url, type: "GET", async: false, dataType: "script"});
+                loadScripts(window.editor.ueditorResources,function(){
+                    window.editor.ueditorInitd=true;
+                    var editor = new baidu.editor.ui.Editor();
+                    if ($this.attr("maxlength") ){
+                        editor.setOpt({
+                            maximumWords: $this.attr("maxlength")
+                        });
+                    }
+                    editor.render($this[0]);
+                    $this.attr("data-id","ueditorInstant"+editor.uid);
                 });
-                window.editor.ueditorInitd=true;
+            } else {
+                var editor = new baidu.editor.ui.Editor();
+                if ($this.attr("maxlength") ){
+                    editor.setOpt({
+                        maximumWords: $this.attr("maxlength")
+                    });
+                }
+                editor.render($this[0]);
+                $this.attr("data-id","ueditorInstant"+editor.uid);
             }
-            var editor = new baidu.editor.ui.Editor();
-            if ($this.attr("maxlength") ){
-                editor.setOpt({
-                    maximumWords: $this.attr("maxlength")
-                });
-            }
-            editor.render($this[0]);
-            $this.attr("data-id","ueditorInstant"+editor.uid);
         }
     });
     $("textarea.code", $p).each(function() {
