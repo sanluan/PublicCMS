@@ -43,7 +43,7 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 /**
  *
  * CmsContentDao
- * 
+ *
  */
 @Repository
 public class CmsContentDao extends BaseDao<CmsContent> {
@@ -190,9 +190,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                             c.should(t -> t.match().field(titleField).matching(text).boost(2.0f));
                         }
                         if (ArrayUtils.contains(fields, descriptionField)) {
-                            c.should(t -> t.match().field(titleField).matching(text).boost(1.5f));
+                            c.should(t -> t.match().field(descriptionField).matching(text).boost(1.5f));
                         }
-                        c.should(t -> t.match().fields(ArrayUtils.removeElements(fields, titleField, "description"))
+                        c.should(t -> t.match().fields(ArrayUtils.removeElements(fields, titleField, descriptionField))
                                 .matching(text));
                     };
                     b.must(f -> f.bool(keywordFiledsContributor));
