@@ -20,13 +20,15 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
 
     /**
      * @param extendId
+     * @param inputType
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<SysExtendField> getList(Integer extendId) {
+    public List<SysExtendField> getList(Integer extendId, String[] inputType) {
         if (CommonUtils.notEmpty(extendId)) {
             QueryHandler queryHandler = getQueryHandler("from SysExtendField bean");
             queryHandler.condition("bean.id.extendId = :extendId").setParameter("extendId", extendId);
+            queryHandler.condition("bean.inputType in (:inputType)").setParameter("inputType", inputType);
             queryHandler.order("bean.sort asc");
             return (List<SysExtendField>) getList(queryHandler);
         }

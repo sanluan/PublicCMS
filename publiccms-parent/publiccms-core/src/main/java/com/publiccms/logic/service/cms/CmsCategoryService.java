@@ -96,7 +96,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
             CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());
             if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendId())) {
-                List<SysExtendField> categoryTypeExtendList = extendFieldService.getList(categoryType.getExtendId());
+                List<SysExtendField> categoryTypeExtendList = extendFieldService.getList(categoryType.getExtendId(), null);
                 Map<String, String> map = ExtendUtils.getSysExtentDataMap(categoryParameters.getExtendDataList(),
                         categoryTypeExtendList);
                 attribute.setData(ExtendUtils.getExtendString(map));
@@ -203,7 +203,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     /**
      * @param siteId
      * @param ids
-     * @return 
+     * @return
      */
     public List<CmsCategory> delete(short siteId, Integer[] ids) {
         List<CmsCategory> entityList = new ArrayList<>();
@@ -259,7 +259,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
             entity.setHasStatic(hasStatic);
         }
     }
-    
+
     @Autowired
     private CmsCategoryDao dao;
 }

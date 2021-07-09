@@ -222,3 +222,6 @@ UPDATE `sys_module` SET `menu` = '1' WHERE `id` ='trade_menu';
 -- 2021-06-08 --
 DELETE FROM `sys_module` WHERE `id` ='repo_sync';
 DELETE FROM `sys_module_lang` WHERE `module_id` ='repo_sync';
+-- 2021-07-09 --
+ALTER TABLE `sys_extend_field` 
+  ASS INDEX `sys_extend_field_input_type` (`input_type`);

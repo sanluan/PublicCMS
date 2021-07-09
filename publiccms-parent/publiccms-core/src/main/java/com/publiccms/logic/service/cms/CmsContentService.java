@@ -201,7 +201,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             List<SysExtendField> categoryExtendList = null;
             Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
             if (null != extendId && null != extendService.getEntity(extendId)) {
-                categoryExtendList = extendFieldService.getList(extendId);
+                categoryExtendList = extendFieldService.getList(extendId, null);
                 Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
                         categoryExtendList);
                 if (CommonUtils.notEmpty(map)) {

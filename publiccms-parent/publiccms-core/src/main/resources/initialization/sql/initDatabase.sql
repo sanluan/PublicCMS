@@ -737,6 +737,7 @@ CREATE TABLE `sys_extend_field` (
   `dictionary_id` varchar(20) default NULL COMMENT '数据字典ID',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
+  KEY `sys_extend_field_input_type` (`input_type`),
   KEY `sys_extend_field_sort` (`sort`)
 ) COMMENT='扩展字段';
 

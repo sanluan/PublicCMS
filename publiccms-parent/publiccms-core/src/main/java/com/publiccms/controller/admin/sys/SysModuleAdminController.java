@@ -152,7 +152,7 @@ public class SysModuleAdminController {
             List<SysRoleModule> roleModuleList = (List<SysRoleModule>) roleModuleService.getPage(null, id, null, null).getList();
             roleModuleService.deleteByModuleId(id);
             dealRoleAuthorized(roleModuleList);
-            logOperateService.save(new LogOperate(siteComponent.getSite(request.getServerName()).getId(), admin.getId(),
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "delete.module", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), JsonUtils.getString(entity)));
         }

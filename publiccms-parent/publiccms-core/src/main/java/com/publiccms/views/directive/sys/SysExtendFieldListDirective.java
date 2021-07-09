@@ -22,7 +22,8 @@ public class SysExtendFieldListDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer extendId = handler.getInteger("extendId");
-        handler.put("list", service.getList(extendId)).render();
+        String[] inputType = handler.getStringArray("inputType");
+        handler.put("list", service.getList(extendId, inputType)).render();
     }
 
     @Override
