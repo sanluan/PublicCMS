@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Wed Aug 10 2016 11:06:16 GMT+0800 (CST)
+ * build: Fri Jul 09 2021 17:23:11 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -11015,7 +11015,7 @@ UE.commands['imagefloat'] = {
                             pN.appendChild(tmpNode);
                             domUtils.setStyle(tmpNode, 'float', '');
 
-                            me.execCommand('insertHtml', '<p id="_img_parent_tmp" style="text-align:center">' + pN.innerHTML + '</p>',true);
+                            me.execCommand('insertHtml', '<p id="_img_parent_tmp" style="text-align:center">' + pN.innerHTML + '</p>', true);
 
                             tmpNode = me.document.getElementById('_img_parent_tmp');
                             tmpNode.removeAttribute('id');
@@ -14527,7 +14527,7 @@ UE.plugin.register('copy', function () {
  * @author zhanyi
  */
 UE.plugins['paste'] = function () {
-    function getClipboardData(callback, event) {
+    function getClipboardData(callback) {
         var doc = this.document;
         if (doc.getElementById('baidu_pastebin')) {
             return;
@@ -20335,20 +20335,21 @@ UE.plugins['table'] = function () {
                                 domUtils.fillNode(me.document, td);
                             }
                             removeStyleSize(td, true);
-//                          domUtils.removeAttributes(td, ['style'])
+//                            domUtils.removeAttributes(td, ['style'])
                         });
                     });
                 }
                 html.html = div.innerHTML;
             }
         });
-        me.addListener('afterpaste', function (html) {
+
+        me.addListener('afterpaste', function () {
             utils.each(domUtils.getElementsByTagName(me.body, "table"), function (table) {
                 if (table.offsetWidth > me.body.offsetWidth) {
                     var defaultValue = getDefaultValue(me, table);
                     table.style.width = me.body.offsetWidth - (needIEHack ? parseInt(domUtils.getComputedStyle(me.body, 'margin-left'), 10) * 2 : 0) - defaultValue.tableBorder * 2 - (me.options.offsetWidth || 0) + 'px'
                 }
-            });
+            })
         });
         me.addListener('blur', function () {
             tableCopyList = null;
@@ -23416,6 +23417,8 @@ UE.commands['insertparagraph'] = {
     }
 };
 
+
+
 // plugins/template.js
 ///import core
 ///import plugins\inserthtml.js
@@ -23517,7 +23520,7 @@ UE.plugin.register('autoupload', function (){
                 successHandler = function(data) {
                     var link = urlPrefix + data.url,
                         loader = me.document.getElementById(loadingId);
-    
+
                     var rng = me.selection.getRange(),
                         bk = rng.createBookmark();
                     rng.selectNode(loader).select();
@@ -23525,6 +23528,7 @@ UE.plugin.register('autoupload', function (){
                     rng.moveToBookmark(bk).select();
                 };
             }
+
             /* 插入loading的占位符 */
             me.execCommand('inserthtml', loadingHtml);
         }
@@ -23559,7 +23563,7 @@ UE.plugin.register('autoupload', function (){
             try{
                 var json = (new Function("return " + utils.trim(e.target.response)))();
                 if (json.state == 'SUCCESS' && json.url) {
-                    successHandler(json , img);
+                    successHandler(json, img);
                 } else {
                     errorHandler(json.state);
                 }
