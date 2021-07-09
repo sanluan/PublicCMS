@@ -213,7 +213,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
             <#if fieldList?seq_contains('content')>
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['content'])!}:</dt>
-                    <dd style="width:90%">
+                    <dd>
                         <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
                     </dd>
                 </dl>
