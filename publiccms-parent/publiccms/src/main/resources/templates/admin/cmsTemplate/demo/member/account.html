@@ -33,7 +33,7 @@
     </@_tradeAccount>
     <#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
     <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
-    <@_tradeAccountHistoryList userId=user.id pageIndex=pageIndex pageSize=10>
+    <@_tradeAccountHistoryList accountId=user.id pageIndex=pageIndex pageSize=10>
         <h3>My account history</h3>
         <ul>
         <#list page.list as a>

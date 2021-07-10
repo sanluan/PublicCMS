@@ -280,12 +280,12 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 .pageFormContent p{float:left;display:block;min-width:380px;min-height:16px;margin:0;padding:5px 0;position:relative;}
 .pageFormContent p.nowrap{width:100%;}
 .pageFormContent .radioGroup{float:left;display:block;overflow:hidden;}
-.pageFormContent label{float:left;width:100px;padding:0px 10px;}
+.pageFormContent label{float:left;width:100px;padding:0px 10px;line-height:26px;}
 .pageFormContent label.radioButton{float:left;width:auto;padding:0 10px 0 0;}
 .pageFormContent .textInput,.pageFormContent select{float:left;}
-.pageFormContent .inputInfo{padding:0 5px;line-height:21px;}
-.pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:21px;}
-.pageFormContent span.info{color:#7F7F7F;line-height:21px;}
+.pageFormContent .inputInfo{padding:0 5px;line-height:26px;}
+.pageFormContent span.unit, .pageFormContent a.unit{padding:0 5px;line-height:26px;}
+.pageFormContent span.info{color:#7F7F7F;line-height:26px;}
 .pageFormContent span.info:before{display:block;content:".";height:0;clear:both;visibility:hidden;}
 
 .pageFormContent dl{float:left;line-height:22px;width:50%;margin:0;padding:5px 0;position:relative;}

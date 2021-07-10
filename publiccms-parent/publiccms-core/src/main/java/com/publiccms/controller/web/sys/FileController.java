@@ -47,15 +47,15 @@ public class FileController {
 
     /**
      * @param site
+     * @param user
      * @param file
-     * @param user 
      * @param request
      * @return view name
      */
     @RequestMapping(value = "doUpload", method = RequestMethod.POST)
     @Csrf
     @ResponseBody
-    public Map<String, Object> upload(@RequestAttribute SysSite site, MultipartFile file, @SessionAttribute SysUser user, 
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser user, MultipartFile file,
             HttpServletRequest request) {
         Map<String, Object> result = new HashMap<>();
         result.put("success", false);

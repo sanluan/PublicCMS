@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -44,6 +45,7 @@ public class SysUserTokenAdminController {
      * @return view name
      */
     @RequestMapping("delete")
+    @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String authToken,
             HttpServletRequest request, ModelMap model) {
         SysUserToken entity = service.getEntity(authToken);
