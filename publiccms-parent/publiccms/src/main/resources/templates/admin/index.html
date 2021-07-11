@@ -12,12 +12,15 @@
     <![endif]-->
     <link href="${base}/resource/themes/css/core.css?version=6" rel="stylesheet" media="screen"/>
     <link href="${base}/resource/themes/css/print.css" rel="stylesheet" media="print"/>
-    <link href="${base}/resource/css/cms.css" rel="stylesheet" media="screen"/>
+    <link href="${base}/resource/themes/css/cms.css" rel="stylesheet" media="screen"/>
     <!--[if lte IE 9]>
         <link href="${base}/resource/themes/css/ieHack.css" rel="stylesheet" media="screen"/>
         <script src="${base}/resource/js/html5shiv.min.js"></script>
         <script src="${base}/resource/js/respond.min.js"></script>
     <![endif]-->
+    <script>
+    var echartsInitFunc=[];
+    </script>
 </head>
 <body>
 <header>
@@ -178,6 +181,11 @@
         </#if>
     </@_sysAuthorized>
             $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
+        }
+    });
+    loadScripts(["${base}/resource/js/echarts.common.min.js"],function(){
+        for(var i=0;i<echartsInitFunc.length;i++){
+            echartsInitFunc[i]();
         }
     });
 </script>

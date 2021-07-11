@@ -910,6 +910,7 @@ INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/loo
 INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeOrder/refund', '', 'refund_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('refund_refuse', 'tradeRefund/refuseParameters', 'tradeOrder/refuse', '', 'refund_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('report_user', 'report/user', NULL, 'icon-male', 'user_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('report_visit', 'report/visit', NULL, 'icon-bolt', 'user_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('role_add', 'sysRole/add', 'sysRole/save', NULL, 'role_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('role_delete', NULL, 'sysRole/delete', NULL, 'role_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('role_list', 'sysRole/list', NULL, 'icon-user-md', 'user_menu', 1, 3);
@@ -1422,6 +1423,9 @@ INSERT INTO `sys_module_lang` VALUES ('refund_refuse', 'zh', '拒绝');
 INSERT INTO `sys_module_lang` VALUES ('report_user', 'en', 'User report');
 INSERT INTO `sys_module_lang` VALUES ('report_user', 'ja', 'ユーザーデータの監視');
 INSERT INTO `sys_module_lang` VALUES ('report_user', 'zh', '用户数据监控');
+INSERT INTO `sys_module_lang` VALUES ('report_visit', 'en', 'Visit report');
+INSERT INTO `sys_module_lang` VALUES ('report_visit', 'ja', 'アクセス監視');
+INSERT INTO `sys_module_lang` VALUES ('report_visit', 'zh', '用户访问监控');
 INSERT INTO `sys_module_lang` VALUES ('role_add', 'en', 'Add/edit');
 INSERT INTO `sys_module_lang` VALUES ('role_add', 'ja', '追加/変更');
 INSERT INTO `sys_module_lang` VALUES ('role_add', 'zh', '增加/修改');

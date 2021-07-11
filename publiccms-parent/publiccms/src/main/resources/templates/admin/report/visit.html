@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="<@t.page 'lang'/>">
+<head>
+    <meta charset="utf-8">
+    <title><@t.page 'report.visit'/></title>
+    <link href="${base}/resource/themes/css/core.css?version=6" rel="stylesheet" media="screen"/>
+    <link href="${base}/resource/themes/toptry/style.css" rel="stylesheet" media="screen"/>
+</head>
+<body style="overflow: auto;">
+<div class="pageFormContent card" layoutH>
+    <fieldset>
+        <legend><@t.page 'report.visit'/></legend>
+        <div class="unit">
+            <p>
+                <a class="button" href="report/visit.html" target="navTab" rel="report/visit"><i class="icon-refresh"></i> <@t.page 'button.refresh'/></a>
+            </p>
+        </div>
+        <div class="unit clearfix">
+            <div id="todayVisit" style="width:50%;min-width:400px;float:left;"></div>
+            <div id="yestodayVisit" style="width:50%;min-width:400px;float:left;"></div>
+        </div>
+        <div class="unit">
+            <div id="allVisit" style="width:100%;"></div>
+        </div>
+    </fieldset>
+</div>
+<script src="${base}/resource/js/jquery-1.12.4.min.js"></script>
+<script src="${base}/resource/js/echarts.common.min.js"></script>
+<script>
+document.getElementById('todayVisit').style.height=document.getElementById('todayVisit').offsetWidth*0.5+'px';
+document.getElementById('yestodayVisit').style.height=document.getElementById('yestodayVisit').offsetWidth*0.5+'px';
+document.getElementById('allVisit').style.height='450px';
+<@_logVisitDayList startVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
+echarts.init(document.getElementById('todayVisit')).setOption({
+    title: {
+        text: '${.now?date} <@t.page 'log.visit'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    legend: {
+        data: ['PV', 'UV', 'IP Views'],
+        top:30
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list page.list?reverse as a>'${a.id.visitHour!}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+        name:'PV',
+        type:'line',
+        data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+        areaStyle: {}
+    },
+    {
+       name:'UV',
+       type:'line',
+       data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+       areaStyle: {}
+    },
+    {
+       name:'IP Views',
+       type:'line',
+       data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+       areaStyle: {}
+    }]
+});
+</@_logVisitDayList>
+<@_logVisitDayList startVisitDate=(.now?long-2*86400000)?number_to_date endVisitDate=(.now?long-86400000)?number_to_date hourAnalytics=true>
+echarts.init(document.getElementById('yestodayVisit')).setOption({
+    title: {
+        text: '${(.now?long-86400000)?number_to_date?date} <@t.page 'log.visit'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    legend: {
+        data: ['PV', 'UV', 'IP Views'],
+        top:30
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list page.list?reverse as a>'${a.id.visitHour!}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+       name:'PV',
+       type:'line',
+       data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+       areaStyle: {}
+   },
+   {
+       name:'UV',
+       type:'line',
+       data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+       areaStyle: {}
+   },
+   {
+       name:'IP Views',
+       type:'line',
+       data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+       areaStyle: {}
+   }]
+});
+</@_logVisitDayList>
+<@_logVisitDayList startVisitDate=(.now?long-30*86400000)?number_to_date>
+echarts.init(document.getElementById('allVisit')).setOption({
+    title: {
+        text: '<@t.page 'log.visit'/>',
+        x:'center'
+    },
+    tooltip : {
+        trigger: 'axis'
+    },
+    toolbox: {
+        feature: {
+            saveAsImage: {}
+        }
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    legend: {
+        data: ['PV', 'UV', 'IP Views'],
+        top:30
+    },
+    xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: [<#list page.list?reverse as a>'${a.id.visitDate?date}'<#sep>,</#list>]
+    },
+    yAxis: {
+        type: 'value'
+    },
+    series: [
+    {
+       name:'PV',
+       type:'line',
+       data:[<#list page.list?reverse as a>${a.pv!}<#sep>,</#list>],
+       areaStyle: {}
+    },
+    {
+       name:'UV',
+       type:'line',
+       data:[<#list page.list?reverse as a>${a.uv!}<#sep>,</#list>],
+       areaStyle: {}
+    },
+    {
+       name:'IP Views',
+       type:'line',
+       data:[<#list page.list?reverse as a>${a.ipviews!}<#sep>,</#list>],
+       areaStyle: {}
+    }]
+});
+</@_logVisitDayList>
+</script>

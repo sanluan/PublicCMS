@@ -37,11 +37,11 @@ header a{color:#efefef;}
 .tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#D8403D;color:#fff;}
 
 .page{background-color:#fff;}
-.page.work-bench{background-color:#edf1f5;}
+.pageFormContent.card{background-color:#edf1f5;}
 
-.pageFormContent fieldset{background-color:#fff;}
-.pageFormContent fieldset legend{color:#b52e31;}
-.pageFormContent fieldset legend:before{background-color:#b52e31;}
+fieldset{background-color:#fff;}
+fieldset legend{color:#b52e31;}
+fieldset legend:before{background-color:#b52e31;}
 .pageFormContent label{color:#989eab;}
 .pageFormContent dt{color:#31353e;}
 .unit a.button:hover{background-color:#8f0006;color:#fff;border-color:#8f0006;}
