@@ -49,7 +49,6 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th><@t.page 'user.username'/></th>
                 <th><@t.page 'channel'/></th>
                 <th><@t.page 'log.login_ip'/></th>
                 <th><@t.page 'result'/></th>
@@ -61,9 +60,8 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td class="exclude-translate">${(a.name)!}</td>
                 <td class="exclude-translate">${a.channel!}</td>
-                <td class="exclude-translate">${a.ip!}</td>
+                <td>${a.ip!}</td>
                 <td>${a.result?then(t.pageMessage('success'),t.pageMessage('fail'))}</td>
                 <td>${a.createDate!}</td>
                 <td class="exclude-translate">${(a.errorPassword)!}</td>

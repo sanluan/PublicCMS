@@ -28,7 +28,9 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
         if (CommonUtils.notEmpty(extendId)) {
             QueryHandler queryHandler = getQueryHandler("from SysExtendField bean");
             queryHandler.condition("bean.id.extendId = :extendId").setParameter("extendId", extendId);
-            queryHandler.condition("bean.inputType in (:inputType)").setParameter("inputType", inputType);
+            if (CommonUtils.notEmpty(inputType)) {
+                queryHandler.condition("bean.inputType in (:inputType)").setParameter("inputType", inputType);
+            }
             queryHandler.order("bean.sort asc");
             return (List<SysExtendField>) getList(queryHandler);
         }
