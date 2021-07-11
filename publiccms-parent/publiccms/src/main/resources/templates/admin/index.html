@@ -19,6 +19,7 @@
         <script src="${base}/resource/js/respond.min.js"></script>
     <![endif]-->
     <script>
+    var echartsInited=false;
     var echartsInitFunc=[];
     </script>
 </head>
@@ -187,6 +188,7 @@
         for(var i=0;i<echartsInitFunc.length;i++){
             echartsInitFunc[i]();
         }
+        echartsInited=true;
     });
 </script>
 </body>
