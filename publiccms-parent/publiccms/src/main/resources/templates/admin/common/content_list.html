@@ -14,7 +14,7 @@
             modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" action="common/content_list.html" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
@@ -77,6 +77,11 @@
             <li>
                 <a href="cmsContent/addMore.html?categoryId=${(parent.categoryId)!categoryId!}&parentId=${parentId!}" target="dialog" mask="true" class="addMore"><i class="icon-double-angle-down icon-large"></i> <@t.page 'content.add'/></a>
                 <ul>
+            <@_category id=categoryId>
+                <#if object.typeId?has_content && authorizedMap['cmsCategory/add']>
+                    <li><a href="cmsCategory/add.html?id=${categoryId!}" target="navTab" rel="cmsCategory/edit"><i class="icon-edit icon-large"></i> <@t.page 'category.edit'/></a></li>
+               </#if>
+            </@_category>
             <@_categoryModel modelIds=t.tempModelIds categoryId=categoryId><#assign categoryModelMap=map/></@_categoryModel>
             <#list page.list as a>
                 <#if categoryModelMap?has_content&&categoryModelMap[a.id]?has_content>
@@ -84,8 +89,8 @@
                     <li><a href="cmsContent/add.html?categoryId=${(parent.categoryId)!categoryId!}&modelId=${a.id}&parentId=${parentId!}" target="navTab" rel="cmsContent/add"><i class="icon-plus icon-large"></i> <@t.page 'button.add_some_things' a.name/></a></li>
                 </#if>
             </#list>
-            <#if size=0>
-                    <li><a href="cmsCategory/add.html?id=${categoryId!}&showAdvancedOptions=true" target="navTab" rel="cmsCategory/edit" icon="<i class='icon-edit icon-large'></i>" title="<@t.page 'category.edit'/>"><i class="icon-ban-circle icon-large"></i> <@t.page 'content.no_model'/></a></li>
+            <#if size=0 && authorizedMap['cmsCategory/add']>
+                    <li><a href="cmsCategory/add.html?id=${categoryId!}&showAdvancedOptions=true" target="navTab" rel="cmsCategory/edit" title="<@t.page 'category.edit'/>"><i class="icon-edit icon-large"></i> <@t.page 'content.no_model'/></a></li>
             </#if>
                 </ul>
             </li>
