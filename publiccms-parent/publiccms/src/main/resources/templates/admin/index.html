@@ -18,10 +18,7 @@
         <script src="${base}/resource/js/html5shiv.min.js"></script>
         <script src="${base}/resource/js/respond.min.js"></script>
     <![endif]-->
-    <script>
-    var echartsInited=false;
-    var echartsInitFunc=[];
-    </script>
+    <script src="${base}/resource/js/echarts.common.min.js"></script>
 </head>
 <body>
 <header>
@@ -183,12 +180,6 @@
     </@_sysAuthorized>
             $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
         }
-    });
-    loadScripts(["${base}/resource/js/echarts.common.min.js"],function(){
-        for(var i=0;i<echartsInitFunc.length;i++){
-            echartsInitFunc[i]();
-        }
-        echartsInited=true;
     });
 </script>
 </body>

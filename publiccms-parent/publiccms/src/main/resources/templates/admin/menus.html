@@ -19,7 +19,7 @@
             <@_sysRoleModule roleIds=admin.roles moduleIds=t.childModuleIds!><#assign childRoleModuleMap=map!/></@_sysRoleModule>
             <#list page.list as a>
                 <#if (childRoleModuleMap[a.id?string])?has_content&&childRoleModuleMap[a.id?string]>
-            <li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}" ${(a.url!'')?starts_with('report')?then('external="true"','')?no_esc}><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a></li>
+            <li><a href="${(a.url)!}" target="navTab" rel="${(a.url)!}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a></li>
                 </#if>
             </#list>
         </@_sysModuleList>
