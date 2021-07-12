@@ -27,11 +27,12 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
     /**
      * @param extendId
      * @param inputType
-     * @return
+     * @param searchable
+     * @return result list
      */
     @Transactional(readOnly = true)
-    public List<SysExtendField> getList(Integer extendId, String[] inputType) {
-        return dao.getList(extendId, inputType);
+    public List<SysExtendField> getList(Integer extendId, String[] inputType, Boolean searchable) {
+        return dao.getList(extendId, inputType, searchable);
     }
 
     /**
@@ -56,7 +57,7 @@ public class SysExtendFieldService extends BaseService<SysExtendField> {
                     codeList.add(entity.getId().getCode());
                 }
             }
-            for (SysExtendField extend : getList(extendId, null)) {
+            for (SysExtendField extend : getList(extendId, null, null)) {
                 if (!codeList.contains(extend.getId().getCode())) {
                     delete(extend.getId());
                 }

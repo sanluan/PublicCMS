@@ -103,8 +103,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             String[] dictionaryValues, Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField,
             Integer pageIndex, Integer pageSize) {
         return dao.query(siteId, projection, phrase, highLighterQuery, getCategoryIds(containChild, categoryId, categoryIds),
-                modelIds, text, fields, arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues,
-                startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
+                modelIds, text, fields, tagIds, dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField,
+                pageIndex, pageSize);
     }
 
     /**
@@ -130,9 +130,8 @@ public class CmsContentService extends BaseService<CmsContent> {
     public FacetPageHandler facetQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
             String text, String[] fields, Long[] tagIds, Integer[] categoryIds, String[] modelIds, String[] dictionaryValues,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
-        return dao.facetQuery(siteId, projection, phrase, highLighterQuery, categoryIds, modelIds, text, fields,
-                arrayToDelimitedString(tagIds, CommonConstants.BLANK_SPACE), dictionaryValues, startPublishDate, endPublishDate,
-                expiryDate, orderField, pageIndex, pageSize);
+        return dao.facetQuery(siteId, projection, phrase, highLighterQuery, categoryIds, modelIds, text, fields, tagIds,
+                dictionaryValues, startPublishDate, endPublishDate, expiryDate, orderField, pageIndex, pageSize);
     }
 
     /**
@@ -201,7 +200,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             List<SysExtendField> categoryExtendList = null;
             Map<String, String> map = ExtendUtils.getExtentDataMap(contentParameters.getModelExtendDataList(), modelExtendList);
             if (null != extendId && null != extendService.getEntity(extendId)) {
-                categoryExtendList = extendFieldService.getList(extendId, null);
+                categoryExtendList = extendFieldService.getList(extendId, null, null);
                 Map<String, String> categoryMap = ExtendUtils.getSysExtentDataMap(contentParameters.getCategoryExtendDataList(),
                         categoryExtendList);
                 if (CommonUtils.notEmpty(map)) {

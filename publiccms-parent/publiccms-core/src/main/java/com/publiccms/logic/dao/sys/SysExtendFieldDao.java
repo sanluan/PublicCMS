@@ -21,15 +21,19 @@ public class SysExtendFieldDao extends BaseDao<SysExtendField> {
     /**
      * @param extendId
      * @param inputType
+     * @param searchable 
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<SysExtendField> getList(Integer extendId, String[] inputType) {
+    public List<SysExtendField> getList(Integer extendId, String[] inputType, Boolean searchable) {
         if (CommonUtils.notEmpty(extendId)) {
             QueryHandler queryHandler = getQueryHandler("from SysExtendField bean");
             queryHandler.condition("bean.id.extendId = :extendId").setParameter("extendId", extendId);
             if (CommonUtils.notEmpty(inputType)) {
                 queryHandler.condition("bean.inputType in (:inputType)").setParameter("inputType", inputType);
+            }
+            if (null != searchable) {
+                queryHandler.condition("bean.searchable = :searchable").setParameter("searchable", searchable);
             }
             queryHandler.order("bean.sort asc");
             return (List<SysExtendField>) getList(queryHandler);

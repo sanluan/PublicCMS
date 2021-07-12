@@ -12,6 +12,7 @@ import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.search.engine.backend.analysis.AnalyzerNames;
 import org.hibernate.search.engine.backend.types.Aggregable;
 import org.hibernate.search.engine.backend.types.Sortable;
 import org.hibernate.search.mapper.pojo.bridge.mapping.annotation.RoutingBinderRef;
@@ -98,10 +99,10 @@ public class CmsContent implements java.io.Serializable {
     @FullTextField
     private String description;
     @GeneratorColumn(title = "标签")
-    @GenericField
+    @FullTextField(analyzer = AnalyzerNames.WHITESPACE)
     private String tagIds;
     @GeneratorColumn(title = "数据字典值")
-    @GenericField
+    @FullTextField(analyzer = AnalyzerNames.WHITESPACE)
     @JsonIgnore
     private String dictionaryValues;
     @GeneratorColumn(title = "封面")

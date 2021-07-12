@@ -76,7 +76,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @return results page
      */
     public PageHandler query(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
-            Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
+            Integer[] categoryIds, String[] modelIds, String text, String[] fields, Long[] tagIds, String[] dictionaryValues,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         if (CommonUtils.notEmpty(fields)) {
             for (String field : fields) {
@@ -113,7 +113,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
      * @return results page
      */
     public FacetPageHandler facetQuery(Short siteId, boolean projection, boolean phrase, HighLighterQuery highLighterQuery,
-            Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
+            Integer[] categoryIds, String[] modelIds, String text, String[] fields, Long[] tagIds, String[] dictionaryValues,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField, Integer pageIndex, Integer pageSize) {
         if (CommonUtils.notEmpty(fields)) {
             for (String field : fields) {
@@ -176,7 +176,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     }
 
     private SearchQueryOptionsStep<?, CmsContent, ?, ?, ?> getOptionsStep(Short siteId, boolean projection, boolean phrase,
-            Integer[] categoryIds, String[] modelIds, String text, String[] fields, String tagIds, String[] dictionaryValues,
+            Integer[] categoryIds, String[] modelIds, String text, String[] fields, Long[] tagIds, String[] dictionaryValues,
             Date startPublishDate, Date endPublishDate, Date expiryDate, String orderField) {
 
         Consumer<? super BooleanPredicateClausesStep<?>> clauseContributor = b -> {
@@ -199,12 +199,17 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 }
             }
             if (CommonUtils.notEmpty(tagIds)) {
-                b.must(t -> t.match().fields(tagFields).matching(tagIds));
+                Consumer<? super BooleanPredicateClausesStep<?>> tagIdsFiledsContributor = c -> {
+                    for (Long tagId : tagIds) {
+                        c.should(t -> t.match().fields(tagFields).matching(tagId.toString()));
+                    }
+                };
+                b.must(f -> f.bool(tagIdsFiledsContributor));
             }
             if (CommonUtils.notEmpty(dictionaryValues)) {
                 for (String value : dictionaryValues) {
                     if (CommonUtils.notEmpty(value)) {
-                        b.must(t -> t.phrase().fields(dictionaryField).matching(value));
+                        b.must(t -> t.match().fields(dictionaryField).matching(value));
                     }
                 }
             }

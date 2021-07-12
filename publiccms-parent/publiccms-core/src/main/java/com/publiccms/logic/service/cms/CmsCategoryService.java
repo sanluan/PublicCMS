@@ -96,7 +96,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
 
             CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());
             if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendId())) {
-                List<SysExtendField> categoryTypeExtendList = extendFieldService.getList(categoryType.getExtendId(), null);
+                List<SysExtendField> categoryTypeExtendList = extendFieldService.getList(categoryType.getExtendId(), null, null);
                 Map<String, String> map = ExtendUtils.getSysExtentDataMap(categoryParameters.getExtendDataList(),
                         categoryTypeExtendList);
                 attribute.setData(ExtendUtils.getExtendString(map));
