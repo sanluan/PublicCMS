@@ -224,7 +224,7 @@ DELETE FROM `sys_module` WHERE `id` ='repo_sync';
 DELETE FROM `sys_module_lang` WHERE `module_id` ='repo_sync';
 -- 2021-07-09 --
 ALTER TABLE `sys_extend_field` 
-  ASS INDEX `sys_extend_field_input_type` (`extend_id`, `input_type`,`searchable`);
+  ADD INDEX `sys_extend_field_input_type` (`extend_id`, `input_type`,`searchable`);
 -- 2021-07-11 --
 INSERT INTO `sys_module` VALUES ('report_visit', 'report/visit', NULL, 'icon-bolt', 'user_menu', 1, 6);
 INSERT INTO `sys_module_lang` VALUES ('report_visit', 'en', 'Visit report');
