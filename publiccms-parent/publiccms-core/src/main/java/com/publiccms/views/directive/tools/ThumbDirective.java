@@ -53,6 +53,8 @@ public class ThumbDirective extends AbstractTemplateDirective {
                     handler.print(path);
                 }
             }
+        } else {
+            handler.print(path);
         }
     }
 

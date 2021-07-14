@@ -32,21 +32,19 @@ public class PublishPlaceDirective extends AbstractTaskDirective {
     public void execute(RenderHandler handler) throws IOException, Exception {
         String path = handler.getString("path", CommonConstants.SEPARATOR);
         SysSite site = getSite(handler);
-        if (site.isUseSsi()) {
-            String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
-            if (CmsFileUtils.isFile(filePath)) {
-                Map<String, Boolean> map = new LinkedHashMap<>();
-                try {
-                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
-                    templateComponent.staticPlace(site, path, metadata);
-                    map.put(path, true);
-                } catch (IOException | TemplateException e) {
-                    map.put(path, false);
-                }
-                handler.put("map", map).render();
-            } else if (CmsFileUtils.isDirectory(filePath)) {
-                handler.put("map", dealDir(site, path)).render();
+        String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+        if (CmsFileUtils.isFile(filePath)) {
+            Map<String, Boolean> map = new LinkedHashMap<>();
+            try {
+                CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+                templateComponent.staticPlace(site, path, metadata);
+                map.put(path, true);
+            } catch (IOException | TemplateException e) {
+                map.put(path, false);
             }
+            handler.put("map", map).render();
+        } else if (CmsFileUtils.isDirectory(filePath)) {
+            handler.put("map", dealDir(site, path)).render();
         }
     }
 
