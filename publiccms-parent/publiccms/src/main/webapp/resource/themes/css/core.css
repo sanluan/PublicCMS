@@ -48,9 +48,9 @@ header .nav .selected ul{display:block;}
 #navMenu li a>i{margin-right:5px;}
 
 /* Tabs */
-.tabs .tabsHeader{display:block;overflow:hidden;height:40px;padding-left:5px;}
+.tabs .tabsHeader{display:block;overflow:hidden;height:35px;padding-left:5px;}
 .tabs .tabsHeaderContent{display:block;overflow:hidden;height:100%;}
-.tabs .tabsHeaderContent>ul li a{line-height:40px;}
+.tabs .tabsHeaderContent>ul li a{line-height:35px;}
 .tabs .tabsHeader ul{display:block;height:100%;border-bottom-width:1px;border-bottom-style:solid;box-sizing:border-box;}
 .tabs .tabsHeader li{float:left;display:block;height:100%;margin-right:2px;line-height:35px;}
 .tabs .tabsHeader li a{float:left;display:block;height:100%;padding:0 15px;line-height:35px;}
@@ -60,23 +60,23 @@ header .nav .selected ul{display:block;}
 .tabs .tabsContent{display:block;overflow:auto;}
 
 .tabsPage{margin-left:202px;position:relative;}
-.tabsPage .tabsPageHeader{display:block;height:45px;position:relative;}
-.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:36px;margin-right:72px;position:relative;}
-.tabsPage .tabsPageHeaderMargin{margin:0 72px 0 36px;}
+.tabsPage .tabsPageHeader{display:block;height:35px;position:relative;}
+.tabsPage .tabsPageHeaderContent{display:block;overflow:hidden;height:100%;margin-left:30px;margin-right:60px;position:relative;}
+.tabsPage .tabsPageHeaderMargin{margin:0 60px 0 30px;}
 .tabsPage .tabsPageHeader ul{display:block;width:10000px;z-index:1;position:absolute;}
 .tabsPage .tabsPageHeader li{float:left;display:block;height:100%;position:relative;}
-.tabsPage .tabsPageHeader li a{font-size:12px;display:inline-block;max-width:112px;padding:0 12px;line-height:45px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.tabsPage .tabsPageHeader li a{font-size:12px;display:inline-block;max-width:112px;padding:0 12px;line-height:35px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .tabsPage .tabsPageHeader li a>i{margin-right:5px;}
 .tabsPage .tabsPageHeader li a:hover{text-decoration:none;}
 .tabsPage .tabsPageHeader li.selected a, .tabsPage .tabsPageHeader li:hover a{font-weight:400;}
 .tabsPage .tabsPageHeader li .close{padding:0;padding-right:10px;opacity:0.4;}
 .tabsPage .tabsPageHeader li:hover .close,.tabsPage .tabsPageHeader li.selected .close{opacity:1;}
 .tabsPage .tabsMove{height:100%;position:absolute;top:0;right:0;z-index:2;}
-.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{border-style:solid;text-decoration:none;display:block;overflow:hidden;width:35px;text-align:center;height:100%;line-height:45px;position:absolute;z-index:2;}
-.tabsPage .tabsLeft{top:0px;border-width:0 1px 0 0;}
-.tabsPage .tabsRight{top:0px;right:36px;border-width:0 0 0 1px;}
-.tabsPage .tabsMore{top:0px;right:0;border-width:0 0 0 1px;}
-.tabsPage .tabsMoreList{display:none;overflow-x:hidden;overflow-y:auto;width:170px;max-height:380px;padding:2px;border-style:solid;border-width:1px;position:absolute;top:45px;right:0;z-index:3;}
+.tabsPage .tabsLeft, .tabsPage .tabsRight, .tabsPage .tabsMore{text-decoration:none;display:block;overflow:hidden;width:30px;text-align:center;height:100%;line-height:35px;position:absolute;z-index:2;}
+.tabsPage .tabsLeft{top:0px;}
+.tabsPage .tabsRight{top:0px;right:30px;}
+.tabsPage .tabsMore{top:0px;right:0;}
+.tabsPage .tabsMoreList{display:none;overflow-x:hidden;overflow-y:auto;width:170px;max-height:380px;padding:2px;border-style:solid;border-width:1px;position:absolute;top:35px;right:0;z-index:3;}
 .tabsPage .tabsMoreList li{display:block;overflow:hidden;height:30px;line-height:21px;}
 .tabsPage .tabsMoreList li a{display:block;width:100%;height:30px;padding:0 10px;box-sizing:border-box;white-space:nowrap;line-height:30px;}
 .tabsPage .tabsMoreList li a>i{width:16px;text-align:center;display:inline-block;margin-right:5px;}
@@ -101,48 +101,46 @@ header .nav .selected ul{display:block;}
 /* Accordion */
 .accordion{display:block;}
 .accordion .accordionHeader{display:block;overflow:hidden;cursor:pointer;}
-.accordion .accordionHeader h2{display:block;overflow:hidden;padding:0 10px 0 10px;height:45px;line-height:45px;font-weight:400;}
+.accordion .accordionHeader h2{display:block;overflow:hidden;padding:0 10px 0 10px;height:35px;line-height:35px;font-weight:400;}
 .accordion .accordionHeader h2>i{margin-right:5px;}
-.accordion .accordionHeader h2 .icon{float:right;line-height:45px;}
+.accordion .accordionHeader h2 .icon{float:right;line-height:35px;}
 .accordion .accordionContent{display:block;overflow:auto;}
-.accordion .accordionContent .tree a{line-height:40px;height:auto;}
+.accordion .accordionContent .tree a{line-height:35px;height:auto;}
 .accordion .accordionContent .tree div{height:auto;}
-.accordion .accordionContent .tree div div{background:0 0;width:25px;height:40px;}
+.accordion .accordionContent .tree div div{background:0 0;width:25px;height:35px;}
 .accordion .accordionContent .tree a>i{margin-right:5px;width:16px;display:inline-block;text-align:center;}
 .accordion .accordionContent .tree.treeFolder a{line-height:30px;}
 .accordion .accordionContent .tree.treeFolder div div{height:30px;}
 
-.panelBar{display:block;overflow:hidden;height:auto;}
-.panelBar ul{overflow:hidden;padding:5px;}
+.panelBar{display:block;overflow:hidden;height:auto;line-height:30px;}
+.panelBar ul{overflow:hidden;}
 .panelBar li{float:left;display:block;overflow:hidden;height:auto;padding:0 5px;}
 .panelBar .toolBar li a{border-radius:2px;line-height:30px;display:block;overflow:hidden;padding:0 10px;text-decoration:none;}
 .panelBar .toolBar li a>i{margin-right:6px;}
-.panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:30px;width:1px;padding:0;top:3px;}
+.panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:30px;width:1px;padding:0;}
 .panelBar .toolBar li>ul{display:none;position:absolute;z-index:10;padding:0px;background-color:#FFF;border-width:0px 1px 1px 1px;border-bottom-left-radius:2px;border-bottom-right-radius: 2px;border-style:solid;}
 .panelBar .toolBar li>ul>li{float:none;padding:5px 0 0 0;}
 .panelBar .toolBar li:hover>ul{display:block;}
 
-.panelBar .pages{float:left;overflow:hidden;height:100%;padding:2px 5px;}
+.panelBar .pages{float:left;overflow:hidden;height:100%;padding:0 5px;}
 .panelBar .pages span{float:left;line-height:28px;}
 .panelBar .pages select{float:left;margin:0 3px;font-size:12px;}
 .panelBar .pages .combox .select a{height:26px;line-height:26px;}
 
 .pagination{float:right;padding-left:7px;}
 .pagination li, .pagination li:hover{padding:0 0 0 5px;}
-.pagination a, .pagination li:hover a, .pagination li span{float:left;display:block;padding:0 5px 0 0;text-decoration:none;line-height:23px;}
+.pagination a, .pagination li:hover a, .pagination li span{float:left;display:block;padding-right:5px;text-decoration:none;}
 .pagination li.selected a{color:red;font-weight:bold;}
-.pagination span, .pagination li:hover span{float:left;display:block;height:23px;line-height:23px;cursor:pointer;}
-.pagination input{height:20px;line-height:20px;}
-.pagination li .first span, .panelBar li .previous span{padding:0 0 0 10px;}
-.pagination li .next span, .panelBar li .last span{padding:0 10px 0 0;}
+.pagination span, .pagination li:hover span{float:left;display:block;cursor:pointer;}
+.pagination li .first span, .panelBar li .previous span{padding-left:10px;}
+.pagination li .next span, .panelBar li .last span{padding-right:10px;}
 .pagination li .last{margin-right:5px;}
 .pagination li.disabled{background:none;}
 .pagination li.disabled span, .grid .pagination li.disabled a{cursor:default;}
 .pagination li.disabled span span{color:#666;}
 .pagination li.disabled .last{margin-right:5px;}
-.pagination li.jumpto{padding:2px 2px 0 7px;}
-.pagination li.jumpto .textInput{float:left;width:30px;padding:1px;font-size:12px;border-color:#acaeaf;}
-.pagination li.jumpto .goto{float:left;display:block;overflow:hidden;width:16px;height:19px;border:0;text-indent:-1000px;cursor:pointer;background:url(../images/goto.png) no-repeat center center;background-size:90% auto;}
+.pagination li.jumpto .textInput{float:left;width:30px;padding:1px;margin-top:4px;font-size:12px;border-color:#acaeaf;}
+.pagination li.jumpto .goto{width:16px;line-height:30px;text-align:center;}
 
 /* Grid */
 .grid { display:block;overflow:hidden;width:100%;border-width:0 1px;position:relative;}
@@ -230,7 +228,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 #leftside{position:absolute;top:0;left:0;height:100%;}
 #sidebar{position:absolute;left:0px;z-index:20;display:block;top:0;bottom:0;width:202px;}
 #sidebar #menu{overflow:auto;}
-#sidebar_s{display:none;width:14px;line-height:45px;height:100%;position:absolute;cursor:pointer;top:0;left:0;z-index:21;text-align:center;}
+#sidebar_s{display:none;width:14px;line-height:40px;height:100%;position:absolute;cursor:pointer;top:0;left:0;z-index:21;text-align:center;}
 #splitBar{display:block;overflow:hidden;width:2px;cursor:col-resize;position:absolute;top:70px;left:200px;z-index:20;}
 #splitBarProxy{display:none;overflow:hidden;width:2px;border-style:solid;border-width:1px;cursor:col-resize;position:absolute;left:200px;z-index:20;}
 #splitBar,#splitBarProxy{top:60px;}
@@ -451,7 +449,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:2
 .icons label{width:200px;}
 /* custom icon */
 .icon-backward:before, .icon-chevron-down:before, .icon-chevron-up:before, .icon-forward:before, .icon-rubbish:before{font-family:iconfont;vertical-align:unset;}
-.tabsPageHeader .icon-backward:before,.icon-forward:before{line-height:45px;}
+.tabsPageHeader .icon-backward:before,.icon-forward:before{line-height:35px;}
 .icon-chevron-up:before{content:"\e654";}
 .icon-chevron-down:before{content:"\e668";}
 .icon-backward:before{content:"\e6ea";font-size:20px;}

@@ -25,10 +25,11 @@ header a{color:#afc5f6;}
 .accordionContent .tree div.selected a{background-color:#667ea7;color:#fff;}
 
 .tabsPage .tabsPageHeader{background-color:#516485;}
-.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#a8b6ce;border-color:#a8b6ce;}
+.tabsPage .tabsLeft,.tabsPage .tabsMore,.tabsPage .tabsRight{color:#a8b6ce;}
 .tabsPage .tabsPageHeader li a{color:#b5c3db;}
-.tabsPage .tabsPageHeader li.selected,.tabsPage .tabsPageHeader li:hover{background-color:#667ea7;}
-.tabsPage .tabsPageHeader li.selected a,.tabsPage .tabsPageHeader li:hover a{color:#fff;}
+.tabsPage .tabsPageHeader li.selected{background-color:#f2f6f9;color:#667ea7}
+.tabsPage .tabsPageHeader li:hover,.tabsPage .tabsPageHeader li:hover a{color:#dde2ec;}
+.tabsPage .tabsPageHeader li.selected a{color:#516485;}
 .tabsPage .tabsMoreList{background-color:#fff;border-color:#dde2ec;}
 .tabsPage .tabsMoreList li a{color:#333;}
 .tabsPage .tabsMoreList li a:hover,.tabsPage .tabsMoreList li.selected a{background-color:#667ea7;color:#fff;}
