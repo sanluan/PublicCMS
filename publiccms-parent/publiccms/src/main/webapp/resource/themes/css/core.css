@@ -114,10 +114,10 @@ header .nav .selected ul{display:block;}
 
 .panelBar{display:block;overflow:hidden;height:auto;line-height:30px;}
 .panelBar ul{overflow:hidden;}
-.panelBar li{float:left;display:block;overflow:hidden;height:auto;padding:0 5px;}
-.panelBar .toolBar li a{border-radius:2px;line-height:30px;display:block;overflow:hidden;padding:0 10px;text-decoration:none;}
+.panelBar li{float:left;display:block;overflow:hidden;height:auto;padding:2px 5px;}
+.panelBar .toolBar li a{border-radius:2px;line-height:26px;display:block;overflow:hidden;padding:0 10px;text-decoration:none;}
 .panelBar .toolBar li a>i{margin-right:6px;}
-.panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:30px;width:1px;padding:0;}
+.panelBar .toolBar li.line{display:block;overflow:hidden;text-indent:-1000px;height:26px;width:1px;padding:0px;margin-top:2px;}
 .panelBar .toolBar li>ul{display:none;position:absolute;z-index:10;padding:0px;background-color:#FFF;border-width:0px 1px 1px 1px;border-bottom-left-radius:2px;border-bottom-right-radius: 2px;border-style:solid;}
 .panelBar .toolBar li>ul>li{float:none;padding:5px 0 0 0;}
 .panelBar .toolBar li:hover>ul{display:block;}
