@@ -112,7 +112,7 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
         Copyright &copy; ${.now?string('yyyy')}
     </footer>
     <script src="${site.dynamicPath!}resource/js/jquery-1.12.4.min.js"></script>
-    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
 <#if user?has_content>
 <script>
 function vote(itemId){

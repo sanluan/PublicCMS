@@ -34,7 +34,7 @@
     <script>
     $('.qr').qrcode({width: 200,height: 200,text: "${code_url!}"});
     </script>
-    <script src="${site.sitePath}resource/js/cms.analytics.js"></script>
+    <script src="${site.dynamicPath}resource/js/cms.analytics.js"></script>
     <script>
         var ca = cmsAnalytics();
         var url='${site.dynamicPath}api/visit/record';
