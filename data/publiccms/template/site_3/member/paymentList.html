@@ -7,72 +7,73 @@
 <body>
 	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
     <main>
-		<div class="container">
-			<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-			<@_tradePaymentList userId=user.id pageIndex=pageIndex pageSize=10>
-				<h3>Orders</h3>
-				<ul>
-				<#list page.list as a>
-					<li class="underline">
-						<p><@message 'page.status.payment.'+a.status/><span class="right">${a.createDate!}</span></p>
-						<p class="gray"><label>Amount</label>${a.amount!} <label>Account type:</label>${a.accountType!}</p>
-						<p>${a.description!}<span class="right"><label>Trade type:</label>${a.tradeType!}</span></p>                
-						<#if 0=a.status>
-							<p>
-								<a href="${site.dynamicPath}tradePayment/pay?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}">Continue to pay</a> 
-								<a href="${site.dynamicPath}tradePayment/cancel?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}&_csrf=<@_csrfToken/>">Cancel payment</a>
-							</p>
-						<#elseif 1=a.status>
-							<form action="${site.dynamicPath}tradePayment/refund" method="POST">
-								<p>
-									<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-									<input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
-									<input type="hidden" name="paymentId" value="${a.id}"/>
-									<label>Amount:</label><input type="text" name="amount" required="required" value="${a.amount}" max="${a.amount}"/>
-									<label>Reason:</label><input type="text" name="reason" required="required"/>
-									<input type="submit" value="Apply refund"/>
-								</p>
-							</form>
-						</#if>                
-					</li>
-				</#list>
-				</ul>
-				<div>
-					<#assign
-						start=1
-						end=page.totalPage
-					/>
-					<#if (page.pageIndex-5) gt start>
-						<#assign start=page.pageIndex-4/>
-					</#if>
-					<#if (page.pageIndex+5) lt end>
-						<#assign end=page.pageIndex+4/>
-					</#if>
-					<#if !page.firstPage>
-						<a href="${getPage('paymentList.html',page.prePage,'pageIndex')}">Previous page</a>
-					<#else>
-						<span>Previous page</span>
-					</#if>
-					<#if start gt 1>
-						<a href="${'paymentList.html'}">1</a> ...
-					</#if>
-					<#list start..end as n>
-						<#if n=page.pageIndex>
-							${n}
-						<#else>
-							<a href="${getPage('paymentList.html',n,'pageIndex')}">${n}</a>
-						</#if>
-					</#list>
-					<#if end lt page.totalPage>
-						... <a href="${getPage('paymentList.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
-					</#if>
-					<#if !page.lastPage>
-						<a href="${getPage('paymentList.html',page.nextPage,'pageIndex')}">Next page</a>
-					<#else>
-						<span>Next page</span>
-					</#if>
+		<div class="container clearfix-after">
+			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+			<div class="right-content">
+				<div class="box">
+					<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+					<@_tradePaymentList userId=user.id pageIndex=pageIndex pageSize=10>
+						<h3>付款记录</h3>
+						<ul>
+						<#list page.list as a>
+							<li class="underline">
+								<p><@message 'page.status.payment.'+a.status/><span class="right">${a.createDate!}</span></p>
+								<p class="gray"><label>金额</label>${a.amount!} <label>账户类型:</label>${a.accountType!}</p>
+								<p>${a.description!}<span class="right"><label>交易类型:</label>${a.tradeType!}</span></p>                
+								<#if 0=a.status>
+									<p>
+										<a href="${site.dynamicPath}tradePayment/pay?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}">继续付款</a> 
+										<a href="${site.dynamicPath}tradePayment/cancel?paymentId=${a.id}&returnUrl=https:${(site.dynamicPath+'paymentList.html')?url}&_csrf=<@_csrfToken/>">取消付款</a>
+									</p>
+								<#elseif 1=a.status>
+									<form action="${site.dynamicPath}tradePayment/refund" method="POST">
+										<p>
+											<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+											<input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
+											<input type="hidden" name="paymentId" value="${a.id}"/>
+											<label class="input-label">金额:</label><input type="text" name="amount" required="required" value="${a.amount}" max="${a.amount}"/>
+											<label class="input-label">原因:</label><input type="text" name="reason" required="required"/>
+											<input class="button" type="submit" value="申请退款"/>
+										</p>
+									</form>
+								</#if>                
+							</li>
+						</#list>
+						</ul>
+						<div class="page">
+							<#assign
+								start=1
+								end=page.totalPage
+							/>
+							<#if (page.pageIndex-5) gt start>
+								<#assign start=page.pageIndex-4/>
+							</#if>
+							<#if (page.pageIndex+5) lt end>
+								<#assign end=page.pageIndex+4/>
+							</#if>
+							<#if !page.firstPage>
+								<a href="${getPage('paymentList.html',page.prePage,'pageIndex')}">上一页</a>
+							<#else>
+								<span>上一页</span>
+							</#if>
+							<#if start gt 1>
+								<a href="${'paymentList.html'}">1</a> ...
+							</#if>
+							<#list start..end as n>
+								<a href="${getPage('paymentList.html',n,'pageIndex')}"${(n=page.pageIndex)?then(' class="selected"'?no_esc,'')}>${n}</a>
+							</#list>
+							<#if end lt page.totalPage>
+								... <a href="${getPage('paymentList.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+							</#if>
+							<#if !page.lastPage>
+								<a href="${getPage('paymentList.html',page.nextPage,'pageIndex')}">下一页</a>
+							<#else>
+								<span>下一页</span>
+							</#if>
+						</div>
+					</@_tradePaymentList>
 				</div>
-			</@_tradePaymentList>
+			</div>
 		</div>
     </main>
     <script>

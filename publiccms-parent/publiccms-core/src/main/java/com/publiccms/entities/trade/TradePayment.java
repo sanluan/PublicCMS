@@ -55,7 +55,7 @@ public class TradePayment implements java.io.Serializable {
     private int status;
     @GeneratorColumn(title = "已处理", condition = true)
     private boolean processed;
-    @GeneratorColumn(title = "处理用户ID")
+    @GeneratorColumn(title = "处理用户")
     private Long processUserId;
     @GeneratorColumn(title = "更新日期")
     private Date updateDate;

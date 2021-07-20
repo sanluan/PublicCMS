@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<title>${attribute.title!medata.alias!}</title>
+	<title>${(attribute.title)!category.name}</title>
+	<meta name="keywords" content="${(attribute.keywords)!}"/>
+	<meta name="description" content="${(attribute.description)!}"/>
 	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- header -->
 </head>
 <body>
@@ -11,7 +13,7 @@
 		<@include path="/ftl/echoBread.ftl"/>
 		<@echoBread category.id/>
 	</div>
-    <div class="container">
+    <div class="container  clearfix-after">
 		<div class="left-content">
 			${getHtml('http://download.publiccms.com/')?no_esc}
 		</div>
@@ -35,7 +37,6 @@
 			</div>
 		</aside>	
     </div>
-	<div class="clearfix-before"></div>
 </main>
 	<script>
 		var itemString="itemType=category&itemId=${category.id}";

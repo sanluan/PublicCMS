@@ -24,7 +24,7 @@ public class CmsVoteItem implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private Long id;
-    @GeneratorColumn(title = "投票ID", condition = true)
+    @GeneratorColumn(title = "投票", condition = true)
     private long voteId;
     @GeneratorColumn(title = "标题")
     private String title;

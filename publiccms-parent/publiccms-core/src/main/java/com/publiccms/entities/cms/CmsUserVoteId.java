@@ -17,9 +17,9 @@ public class CmsUserVoteId implements java.io.Serializable {
     */
     private static final long serialVersionUID = 1L;
 
-    @GeneratorColumn(title = "用户ID", condition = true)
+    @GeneratorColumn(title = "用户", condition = true)
     private long userId;
-    @GeneratorColumn(title = "投票ID", condition = true)
+    @GeneratorColumn(title = "投票", condition = true)
     private long voteId;
 
     public CmsUserVoteId() {

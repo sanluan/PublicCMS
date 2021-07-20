@@ -1,6 +1,6 @@
 <@_commentList contentId=content.id  pageSize=10>
 	<div class="comment-box">
-		<p><a href="${site.dynamicPath}comment.html?contentId=${content.id}">评论</a>：<span class="float-right"><a href="${site.dynamicPath}login.html?returnUrl=${url?url}" class="nickname"></a></span></p>
+		<p><a name="comments" href="${site.dynamicPath}comment.html?contentId=${content.id}">评论</a>：<span class="float-right"><a href="${site.dynamicPath}login.html?returnUrl=${url?url}" class="nickname"></a></span></p>
 		<div class="comment-text-box user-login">
 			<div class="cover"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
 		</div>

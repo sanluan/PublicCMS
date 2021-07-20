@@ -2,9 +2,9 @@
 ALTER TABLE  `cms_content`
     ADD INDEX `cms_content_quote_content_id`(`site_id`, `quote_content_id`);
 CREATE TABLE `log_visit` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `session_id` varchar(50) NOT NULL COMMENT '会话ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `session_id` varchar(50) NOT NULL COMMENT '会话',
   `visit_date` date NOT NULL COMMENT '访问日期',
   `visit_hour` tinyint(4) NOT NULL COMMENT '访问小时',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
@@ -15,7 +15,7 @@ CREATE TABLE `log_visit` (
   `screen_height` int(11) DEFAULT NULL COMMENT '屏幕高度',
   `referer_url` varchar(2048) DEFAULT NULL COMMENT '来源URL',
   `item_type` varchar(50) DEFAULT NULL COMMENT '项目类型',
-  `item_id` varchar(50) DEFAULT NULL COMMENT '项目ID',
+  `item_id` varchar(50) DEFAULT NULL COMMENT '项目',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
   KEY `log_visit_visit_date` (`site_id`,`visit_date`,`visit_hour`),
@@ -23,7 +23,7 @@ CREATE TABLE `log_visit` (
 ) COMMENT='访问日志';
 
 CREATE TABLE `log_visit_day` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `visit_date` date NOT NULL COMMENT '日期',
   `visit_hour` tinyint(4) NOT NULL COMMENT '小时',
   `pv` bigint(20) NOT NULL COMMENT 'Page Views',
@@ -34,8 +34,8 @@ CREATE TABLE `log_visit_day` (
 )  COMMENT = '访问汇总';
 
 CREATE TABLE `log_visit_session` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `session_id` varchar(50) NOT NULL COMMENT '会话ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `session_id` varchar(50) NOT NULL COMMENT '会话',
   `visit_date` date NOT NULL COMMENT '日期',
   `last_visit_date` datetime DEFAULT NULL COMMENT '上次访问日期',
   `first_visit_date` datetime DEFAULT NULL COMMENT '首次访问日期',
@@ -69,7 +69,7 @@ UPDATE `sys_module` SET `authorized_url` = 'taskTemplate/save,taskTemplate/uploa
 -- 2021-06026 --
 CREATE TABLE `cms_content_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `content_id` bigint(20) NOT NULL COMMENT '内容',
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `cover` varchar(255) DEFAULT NULL COMMENT '封面图',
@@ -99,8 +99,8 @@ UPDATE `sys_module` SET `sort` = '7' WHERE `id` = 'content_recycle_list';
 RENAME TABLE `trade_order` TO `trade_payment`;
 RENAME TABLE `trade_order_history` TO `trade_payment_history`;
 ALTER TABLE `trade_refund` 
-    CHANGE COLUMN `order_id` `payment_id` bigint(20) NOT NULL COMMENT '订单ID' AFTER `id`;
-ALTER TABLE `trade_payment_history` CHANGE COLUMN `order_id` `payment_id` bigint(20) NOT NULL COMMENT '订单ID' AFTER `site_id`;
+    CHANGE COLUMN `order_id` `payment_id` bigint(20) NOT NULL COMMENT '订单' AFTER `id`;
+ALTER TABLE `trade_payment_history` CHANGE COLUMN `order_id` `payment_id` bigint(20) NOT NULL COMMENT '订单' AFTER `site_id`;
 ALTER TABLE `trade_payment` 
   DROP INDEX `trade_order_account_type`,
   DROP INDEX `trade_order_site_id`,
@@ -116,11 +116,11 @@ ALTER TABLE `trade_payment_history`
   ADD INDEX `trade_payment_history_site_id`(`site_id`, `payment_id`, `operate`),
   ADD INDEX `trade_payment_history_create_date`(`create_date`);
 CREATE TABLE `trade_order` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `amount` decimal(10,2) NOT NULL COMMENT '总金额',
-  `payment_id` bigint(20) DEFAULT NULL COMMENT '支付订单ID',
+  `payment_id` bigint(20) DEFAULT NULL COMMENT '支付订单',
   `address` varchar(255) DEFAULT NULL COMMENT '地址',
   `addressee` varchar(100) DEFAULT NULL COMMENT '收件人',
   `telephone` varchar(100) DEFAULT NULL COMMENT '电话',
@@ -140,9 +140,9 @@ CREATE TABLE `trade_order` (
   KEY `trade_order_payment_id` (`site_id`,`payment_id`)
 ) COMMENT='产品订单';
 CREATE TABLE `trade_order_history` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `order_id` bigint(20) NOT NULL COMMENT '订单ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `order_id` bigint(20) NOT NULL COMMENT '订单',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `operate` varchar(100) NOT NULL COMMENT '操作',
   `content` text COMMENT '内容',
@@ -151,11 +151,11 @@ CREATE TABLE `trade_order_history` (
   KEY `trade_order_history_create_date` (`create_date`)
 ) COMMENT='订单流水';
 CREATE TABLE `trade_order_product` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `order_id` bigint(20) NOT NULL COMMENT '用户id',
-  `content_id` bigint(20) NOT NULL COMMENT '内容ID',
-  `product_id` bigint(20) NOT NULL COMMENT '产品ID',
+  `order_id` bigint(20) NOT NULL COMMENT '用户',
+  `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `product_id` bigint(20) NOT NULL COMMENT '产品',
   `price` decimal(10,2) NOT NULL COMMENT '价格',
   `quantity` int(11) NOT NULL COMMENT '数量',
   `amount` decimal(10,2) NOT NULL COMMENT '总金额',
@@ -168,17 +168,17 @@ ALTER TABLE `cms_content`
     DROP INDEX `cms_content_only_url`,
     ADD INDEX `cms_content_only_url`(`only_url`, `has_images`, `has_files`, `has_products`, `user_id`) ;
 ALTER TABLE `trade_payment` 
-    ADD COLUMN `process_user_id` bigint(20) NULL COMMENT '处理用户ID' AFTER `processed`;
+    ADD COLUMN `process_user_id` bigint(20) NULL COMMENT '处理用户' AFTER `processed`;
 ALTER TABLE `trade_order` 
-    ADD COLUMN `process_user_id` bigint(20) NULL COMMENT '处理用户ID' AFTER `processed`;
+    ADD COLUMN `process_user_id` bigint(20) NULL COMMENT '处理用户' AFTER `processed`;
 -- 2021-06-28 --
 ALTER TABLE `trade_refund` 
-    ADD COLUMN `site_id` smallint(0) NOT NULL COMMENT '站点ID' AFTER `id`,
-    ADD COLUMN `user_id` bigint(20) NOT NULL COMMENT '用户ID' AFTER `payment_id`,
+    ADD COLUMN `site_id` smallint(0) NOT NULL COMMENT '站点' AFTER `id`,
+    ADD COLUMN `user_id` bigint(20) NOT NULL COMMENT '用户' AFTER `payment_id`,
     DROP INDEX `trade_refund_order_id`;
 ALTER TABLE `cms_content_related` 
     DROP INDEX `cms_content_related_user_id`,
-    ADD INDEX `cms_content_related_user_id`(`content_id`, `sort`);
+    ADD INDEX `cms_content_related_content_id`(`content_id`, `sort`);
 ALTER TABLE `trade_refund` 
     ADD INDEX `trade_refund_user_id`(`user_id`, `payment_id`, `status`);
 -- 2021-06-30 --
@@ -230,3 +230,5 @@ INSERT INTO `sys_module` VALUES ('report_visit', 'report/visit', NULL, 'icon-bol
 INSERT INTO `sys_module_lang` VALUES ('report_visit', 'en', 'Visit report');
 INSERT INTO `sys_module_lang` VALUES ('report_visit', 'ja', 'アクセス監視');
 INSERT INTO `sys_module_lang` VALUES ('report_visit', 'zh', '网站访问监控');
+-- 221-07-20 --
+ALTER TABLE `trade_payment_history` COMMENT = '支付订单流水';

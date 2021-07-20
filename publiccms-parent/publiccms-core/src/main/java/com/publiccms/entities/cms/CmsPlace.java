@@ -43,7 +43,7 @@ public class CmsPlace implements java.io.Serializable {
     private Long checkUserId;
     @GeneratorColumn(title = "项目类型", condition = true)
     private String itemType;
-    @GeneratorColumn(title = "项目ID", condition = true)
+    @GeneratorColumn(title = "项目", condition = true)
     private Long itemId;
     @GeneratorColumn(title = "标题")
     private String title;

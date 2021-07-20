@@ -10,7 +10,7 @@
 <main>
     <div class="container">
 		<h3><a href="${site.dynamicPath}votelist.html">投票</a> - ${vote.title!}</h3>
-		 <p>${vote.description}</p>
+		<p>${vote.description}</p>
 		<p>${vote.scores!} 人投票,开始日期:${(vote.startDate)!},截止日期:${(vote.endDate)!}</p>
          <#if vote.startDate lt .now && .now lt vote.endDate><#assign available=true/><#else><#assign available=false/></#if>
 		<#if available && user?has_content><@_userVote userId=user.id voteId=vote.id><#assign myvote=object/></@_userVote></#if>
@@ -40,6 +40,58 @@
 			</#list>
 		</ol>
 		</@_voteItemList>
+		<div class="comment-box">
+			<h3>投票记录</h3>
+			<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
+			<@_userVoteList voteId=vote.id pageIndex=pageIndex pageSize=10>
+			<ul>
+				<#list page.list as a>
+					<@t.merge 'itemIds' a.itemId!/>
+					<@t.merge 'userIds' a.id.userId!/>
+				</#list>
+				<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+				<@_voteItem ids=t.itemIds! ><#assign voteItemMap=map!/></@_voteItem>
+				<#list page.list as a>
+					<li class="underline">
+						<p><a href="${site.dynamicPath}userVoteList.html?id=${a.id.userId}" target="_blank">${userMap[a.id.userId?string].nickName}</a> ${a.createDate?date} <label>投给了:</label>《${voteItemMap[a.itemId?string].title}》</p>
+					</li>
+				<#else>
+					<li class="underline"><p>没有数据</p></li>
+				</#list>
+			</ul>
+			<div class="page">
+				<#assign
+				start=1
+				end=page.totalPage
+				/>
+				<#if (page.pageIndex-5) gt start>
+				<#assign start=page.pageIndex-4/>
+				</#if>
+				<#if (page.pageIndex+5) lt end>
+				<#assign end=page.pageIndex+4/>
+				</#if>
+				<#if !page.firstPage>
+				<a href="${getPage('myScore.html',page.prePage,'pageIndex')}">上一页</a>
+				<#else>
+				<span>上一页</span>
+				</#if>
+				<#if start gt 1>
+				<a href="${'myScore.html'}">1</a> ...
+				</#if>
+				<#list start..end as n>
+				<a href="${getPage('myScore.html',n,'pageIndex')}"${(n=page.pageIndex)?then(' class="selected"'?no_esc,'')}>${n}</a>
+				</#list>
+				<#if end lt page.totalPage>
+				... <a href="${getPage('myScore.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+				</#if>
+				<#if !page.lastPage>
+				<a href="${getPage('myScore.html',page.nextPage,'pageIndex')}">下一页</a>
+				<#else>
+				<span>下一页</span>
+				</#if>
+			</div>
+			</@_userVoteList>					
+		</div>
     </div>
 </main>
 	<script>

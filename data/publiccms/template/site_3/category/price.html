@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-	<title>${attribute.title!medata.alias!}</title>
+	<title>${(attribute.title)!category.name}</title>
+	<meta name="keywords" content="${(attribute.keywords)!}"/>
+	<meta name="description" content="${(attribute.description)!}"/>
 	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- header -->
 </head>
 <body>
@@ -18,7 +20,7 @@
 		<@include path="/ftl/echoBread.ftl"/>
 		<@echoBread category.id/>
 	</div>
-    <div class="container">
+    <div class="container  clearfix-after">
 		<div class="left-content">
 			<div class="navtab">
 				<ul class="tabhead">
@@ -42,7 +44,7 @@
 						<ul>
 							<#list page.list as a>
 								<li>
-									<h3><span>${a.publishDate?date}</span><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>">${a.title}</a></h3>
+									<h4><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>">${a.title}</a></h4>
 									<p>${a.description!}</p>
 									<div class="clearfix-before"></div>
 								</li>
@@ -58,7 +60,6 @@
 			</@_categoryList>
 		</aside>
     </div>
-	<div class="clearfix-before"></div>
 </main>
 	<script>
 		var itemString="itemType=category&itemId=${category.id}";

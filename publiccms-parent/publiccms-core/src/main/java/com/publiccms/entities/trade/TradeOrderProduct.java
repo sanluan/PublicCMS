@@ -29,14 +29,14 @@ public class TradeOrderProduct implements java.io.Serializable {
 
     @GeneratorColumn(title = "ID")
     private Long id;
-    @GeneratorColumn(title = "站点ID", condition = true)
+    @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
-    @GeneratorColumn(title = "订单ID", condition = true)
+    @GeneratorColumn(title = "订单", condition = true)
     private long orderId;
-    @GeneratorColumn(title = "内容ID")
+    @GeneratorColumn(title = "内容")
     private long contentId;
-    @GeneratorColumn(title = "产品ID")
+    @GeneratorColumn(title = "产品")
     private long productId;
     @GeneratorColumn(title = "价格")
     private BigDecimal price;

@@ -39,7 +39,7 @@ public class CmsCategory implements java.io.Serializable {
     private Integer typeId;
     @GeneratorColumn(title = "子分类")
     private String childIds;
-    @GeneratorColumn(title = "标签ID")
+    @GeneratorColumn(title = "标签")
     private String tagTypeIds;
     @GeneratorColumn(title = "编码")
     private String code;
@@ -71,7 +71,7 @@ public class CmsCategory implements java.io.Serializable {
     @GeneratorColumn(title = "是否删除", condition = true)
     @JsonIgnore
     private boolean disabled;
-    @GeneratorColumn(title = "扩展ID")
+    @GeneratorColumn(title = "扩展")
     private Integer extendId;
 
     public CmsCategory() {

@@ -32,14 +32,14 @@ public class TradeAccountHistory implements java.io.Serializable {
 
     @GeneratorColumn(title = "ID")
     private Long id;
-    @GeneratorColumn(title = "站点ID", condition = true)
+    @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
     @GeneratorColumn(title = "流水号")
     private String serialNumber;
-    @GeneratorColumn(title = "账户ID", condition = true)
+    @GeneratorColumn(title = "账户", condition = true)
     private long accountId;
-    @GeneratorColumn(title = "用户ID", condition = true)
+    @GeneratorColumn(title = "用户", condition = true)
     private Long userId;
     @GeneratorColumn(title = "变动")
     private BigDecimal amountChange;

@@ -10,7 +10,7 @@
 	article .cover img{ width:144px;height:192px;}
 	article .info{ margin-left:155px;}
 	#content{ clear:both;}
-	article ul li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+	article ul.chapter-list li{ float:left;width:280px;margin:2px 10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 </style>
 </head>
 <body>
@@ -21,7 +21,7 @@
 			<@echoBread category.id/>
 		</div>
 		<div class="container">
-			<article>
+			<article class="clearfix-after">
 				<header>
 					<div class="cover"><img src="${content.cover!}"></div>
 					<div class="info">
@@ -39,7 +39,7 @@
 						<p>${content.description}</p>
 					</div>
 				</header>
-				<div id="content">
+				<div id="content" class="clearfix-after">
 					${text?no_esc!}
 				</div>
 	<@_contentList parentId=content.id pageIndex=1 count=100>
@@ -50,7 +50,7 @@
 	<@_contentList parentId=a.id endPublishDate=.now pageIndex=1 count=100>
 		<#list 1..page.totalPage as n>
 			<@_contentList parentId=a.id orderType='asc' pageIndex=n count=100>
-				<ul>
+				<ul class="clearfix-after chapter-list">
 				<#list page.list as a>
 					<li><a href="${a.url!}">${a.title}</a></li>
 				</#list>
@@ -61,10 +61,11 @@
 				</#list>
 			</@_contentList>
 		</#list>
-	</@_contentList>			
-			</article>
+	</@_contentList>
+				<@import path="/ftl/tools.ftl" namespace="t"/>
+				<@include path="/ftl/comment.ftl"/><#-- 评论 -->
+			</article>			
 		</div>
-		<div class="clearfix-before"></div>
 	</main>
 	<script>
 		var itemString="itemType=content&itemId=${content.id}";

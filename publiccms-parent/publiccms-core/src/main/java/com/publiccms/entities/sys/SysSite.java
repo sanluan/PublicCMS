@@ -27,7 +27,7 @@ public class SysSite implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private Short id;
-    @GeneratorColumn(title = "父站点ID", condition = true)
+    @GeneratorColumn(title = "父站点", condition = true)
     private Short parentId;
     @GeneratorColumn(title = "名称", condition = true, like = true)
     private String name;

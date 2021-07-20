@@ -7,9 +7,14 @@
 <body>
 <@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
-    <div class="container">
+    <div class="container clearfix-after">
 		<#if user??>
-			<p class="message">${user.nickName},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
+			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+			<div class="right-content">
+				<div class="box">
+					<p class="message">${user.nickName},您已经登录了! 您可以选择<a href="logout.html">退出登录</a></p>
+				</div>
+		    </div>
 		<#else>
 			<@import path="/ftl/tools.ftl" namespace="t"/>
 			<form action="${site.dynamicPath}doRegister" method="post" class="center login-form">
@@ -19,17 +24,17 @@
 				<#if message??>
 					<p class="message"><@t.m "message."+message/></p>
 				</#if>
-				<p><input type="text" name="name" class="input-text" placeholder="用户名" title="用户名" value="${name!}"/></p>
-				<p><input type="text" name="nickName" class="input-text" placeholder="昵称" title="昵称"  value="${nickName!}"/></p>
-				<p><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
-				<p><input type="password" name="repassword" class="input-text" placeholder="重复密码" title="重复密码"/></p>
+				<p class="text-center"><input type="text" name="name" class="input-text" placeholder="用户名" title="用户名" value="${name!}"/></p>
+				<p class="text-center"><input type="text" name="nickName" class="input-text" placeholder="昵称" title="昵称"  value="${nickName!}"/></p>
+				<p class="text-center"><input type="password" name="password" class="input-text" placeholder="密码" title="密码"/></p>
+				<p class="text-center"><input type="password" name="repassword" class="input-text" placeholder="重复密码" title="重复密码"/></p>
 				<p class="text-center">
 					<input type="hidden" name="returnUrl" value="${site.sitePath}"/>
-                    <#if channel??><input type="hidden" name="channel" value="${channel!}"/></#if>
-                    <#if openId??><input type="hidden" name="openId" value="${openId!}"/></#if>
+                    <input type="hidden" name="clientId" value="${clientId!}"/>
+                    <input type="hidden" name="uuid" value="${uuid!}"/>
 					<input type="submit" class="button" value="注册"/>
 				</p>
-				<p class="message">已有账号?请<a href="login.html?returnUrl=${(returnUrl!site.sitePath!)?url}">登录</a></p>
+				<p class="text-center message">已有账号?请<a href="login.html?returnUrl=${(returnUrl!site.sitePath!)?url}">登录</a></p>
 			</form>
 		</#if>
     </div>

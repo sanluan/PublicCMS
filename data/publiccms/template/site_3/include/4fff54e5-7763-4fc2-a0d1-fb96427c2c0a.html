@@ -1,2 +1,17 @@
-<@_includePlace path="/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
-<@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+<h3>站内搜索</h3>
+<div class="search">
+	<form action="${siteAttribute.searchPath!}" method="get">
+		<input type="text" name="word" value="${(word)!}"/>
+		<input class="button" type="submit" value="搜索"/>
+	</form>
+	<@_wordList count=6>
+	<p>
+		热门搜索：
+		<#list page.list as a>
+		<a href="${siteAttribute.searchPath!}?word=${a.name?url}">${a.name}</a>
+	</#list>
+	</p>
+	</@_wordList>
+</div>
+<@_includePlace path="/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
+<@_includePlace path="/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->

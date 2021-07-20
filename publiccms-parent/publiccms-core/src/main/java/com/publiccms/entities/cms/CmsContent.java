@@ -65,7 +65,7 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "父内容", condition = true)
     @GenericField
     private Long parentId;
-    @GeneratorColumn(title = "引用内容ID", condition = true)
+    @GeneratorColumn(title = "引用内容", condition = true)
     @GenericField
     private Long quoteContentId;
     @GeneratorColumn(title = "是否转载")

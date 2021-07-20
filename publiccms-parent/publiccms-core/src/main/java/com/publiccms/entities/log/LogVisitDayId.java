@@ -19,7 +19,7 @@ public class LogVisitDayId  implements java.io.Serializable {
      */
     private static final long serialVersionUID = 1L;
 
-    @GeneratorColumn(title = "站点ID", condition = true)
+    @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
     @GeneratorColumn(title = "访问日期", condition = true)
     private Date visitDate;

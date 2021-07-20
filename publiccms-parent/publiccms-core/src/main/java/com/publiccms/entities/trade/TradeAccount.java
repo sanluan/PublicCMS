@@ -24,9 +24,9 @@ public class TradeAccount implements java.io.Serializable {
     *
     */
     private static final long serialVersionUID = 1L;
-    @GeneratorColumn(title = "用户ID")
+    @GeneratorColumn(title = "用户")
     private long id;
-    @GeneratorColumn(title = "站点ID", condition = true)
+    @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
     @GeneratorColumn(title = "金额")

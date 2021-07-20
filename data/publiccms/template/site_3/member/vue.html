@@ -17,7 +17,7 @@
 						<a>{{ message }}</a>
 					</div>
 				</div>
-				<div class="container">
+				<div class="container clearfix-after">
 					<a href="#" class="nav-icon"></a>
 					<div class="logo">
 						<a v-bind:href="dynamicPath+'vue.html'"><img v-bind:src="sitePath+'assets/images/logo.png'" v-if="sitePath !== ''" alt="Public CMS"></a>
@@ -32,7 +32,6 @@
 							</li>
 						</ul>
 					</nav>
-					<div class="clearfix-before"></div>
 				</div>
 			</header>
 			<main>
@@ -45,13 +44,12 @@
 					</div> 
 					<div class="data-list">
 						<ul>
-							<li v-for="content in contentList">
+							<li v-for="content in contentList" class="clearfix-after">
 								<a v-if="content.cover !== ''" v-bind:href="content.url">
 									<img v-bind:src="content.cover" v-bind:alt=" content.title "/>
 								</a>
 								<h3><span>{{ content.publishDate}}</span><a v-bind:href="content.url">{{ content.title }}</a></h3>								
 								<p>{{ content.description }}</p>
-								<div class="clearfix-before"></div>
 							</li>
 						</ul>
 					</div>

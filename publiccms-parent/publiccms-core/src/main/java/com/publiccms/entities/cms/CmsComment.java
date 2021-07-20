@@ -34,13 +34,13 @@ public class CmsComment implements java.io.Serializable {
     private short siteId;
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
-    @GeneratorColumn(title = "回复ID", condition = true)
+    @GeneratorColumn(title = "回复评论", condition = true)
     private Long replyId;
-    @GeneratorColumn(title = "回复用户ID", condition = true)
+    @GeneratorColumn(title = "回复用户", condition = true)
     private Long replyUserId;
     @GeneratorColumn(title = "回复数", condition = true)
     private int replies;
-    @GeneratorColumn(title = "内容ID", condition = true)
+    @GeneratorColumn(title = "内容", condition = true)
     private long contentId;
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;

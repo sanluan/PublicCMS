@@ -37,7 +37,7 @@ public class TradeRefund implements java.io.Serializable {
     private short siteId;
     @GeneratorColumn(title = "用户", condition = true)
     private long userId;
-    @GeneratorColumn(title = "订单ID", condition = true)
+    @GeneratorColumn(title = "订单", condition = true)
     private long paymentId;
     @GeneratorColumn(title = "申请退款金额")
     private BigDecimal amount;

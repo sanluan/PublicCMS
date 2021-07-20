@@ -7,89 +7,97 @@
 <body>
 	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
     <main>
-		<div class="container">
-			<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
-			<#if orderId?has_content>
-			<@_tradeOrder id=orderId>				              
-				<p><label>订单状态</label>:<@t.m 'page.status.order.'+object.status/></p>
-				<p><label>已确认:</label>:${object.confirmed?then('是','否')}</p>
-				<p><label>已处理:</label>:${object.processed?then('是','否')}</p>
-				<p><label>邮寄地址</label>：${object.address!}</p>
-				<p><label>收件人</label>：${object.addressee!}</p>
-				<p><label>联系电话</label>：${object.telephone!}</p>
-				<p><label>备注</label>：${object.remark!}</p>
-				<p><label>总金额</label>：${object.amount!}</p>
-				<@_tradeOrderProductList orderId=orderId>
-					<#list page.list as op>
-					<@_content id=op.contentId>
-						<p>
-							<#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
-							<a href="${object.url}" target="_blank">${object.title}</a>
-						</p>
-					</@_content>
-					<@_contentProduct id=op.productId>
-
-						<p>
-							<#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
-							型号：${object.title} 价格:${op.price} 备注:${op.remark!}
-							<label>数量</label>${op.quantity!}
-						</p>
-					</@_contentProduct>
-					</#list>
-				</@_tradeOrderProductList>
-				<#if 0=object.status>
-					<#if object.paymentId?has_content>
-						<a href="${site.dynamicPath}tradePayment/pay?paymentId=${object.paymentId}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">继续支付</a> 
-						<a href="${site.dynamicPath}tradePayment/cancel?paymentId=${object.paymentId}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@_csrfToken/>">更换支付方式</a>
-						<a href="${site.dynamicPath}tradeOrder/close?orderId=${object.id}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@_csrfToken/>">关闭订单</a>
-					<#else>
-					<a href="${site.dynamicPath}tradeOrder/pay/alipay?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">支付宝支付</a> <a href="${site.dynamicPath}tradeOrder/pay/wechat?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">微信支付</a> <a href="${site.dynamicPath}tradeOrder/pay/account?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">账户余额支付</a>
-					</#if>
-				<#elseif 2=object.status && object.paymentId?has_content>
-					<form action="${site.dynamicPath}tradePayment/refund" method="POST">
-						<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-						<input type="hidden" name="returnUrl" value="${site.dynamicPath}order.html?orderId=${object.id}"/>
-						<input type="hidden" name="paymentId" value="${object.paymentId}"/>
-						<label>金额</label><input type="text" name="amount" required="required" value="${object.amount}" max="${object.amount}"/>
-						<label>原因</label><input type="text" name="reason" required="required"/>
-						<input type="submit" value="提交订单"/>
-					</form>
-				</#if>
-			</@_tradeOrder>
-			<#else>
-			<#if productId?has_content && quantity?has_content && productId?size=quantity?size>
-			<form action="${site.dynamicPath}tradeOrder/create" method="POST">			
-				<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-				<input type="hidden" name="returnUrl" value="${site.dynamicPath}order.html"/>
-				<input type="hidden" name="orderIdField" value="orderId"/>
-				<p><label>邮寄地址</label><input type="text" name="address" required="required"></p>
-				<p><label>收件人</label><input type="text" name="addressee" required="required"></p>
-				<p><label>联系电话</label><input type="text" name="telephone" required="required"></p>
-				<p><label>备注</label><input type="text" name="remark" required="required"></p>			
-					<#list productId as p>
-						<@_contentProduct id=p;product>
-							<@_content id=product.contentId>
+		<div class="container clearfix-after">
+			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+			<div class="right-content">
+				<div class="box">
+					<h3>订单</h3>
+					<@import path="/ftl/tools.ftl" namespace="t"/><#-- 工具 -->
+					<#if orderId?has_content>
+					<@_tradeOrder id=orderId>				              
+						<p><label class="input-label">订单状态</label>:<@t.m 'page.status.order.'+object.status/></p>
+						<p><label class="input-label">已确认:</label>:${object.confirmed?then('是','否')}</p>
+						<p><label class="input-label">已处理:</label>:${object.processed?then('是','否')}</p>
+						<p><label class="input-label">邮寄地址</label>：${object.address!}</p>
+						<p><label class="input-label">收件人</label>：${object.addressee!}</p>
+						<p><label class="input-label">联系电话</label>：${object.telephone!}</p>
+						<p><label class="input-label">备注</label>：${object.remark!}</p>
+						<p><label class="input-label">总金额</label>：${object.amount!}</p>
+						<@_tradeOrderProductList orderId=orderId>
+							<#list page.list as op>
+							<@_content id=op.contentId>
 								<p>
-									<#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/></#if>  <a href="${object.url}" target="_blank">${object.title}</a>
+									<#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
+									<a href="${object.url}" target="_blank">${object.title}</a>
 								</p>
-								<#if p?is_first><input type="hidden" name="title" value="${object.title} - ${product.title}"/></#if>				
-							</@_content>				
-							<p>
-								<#if product.cover?has_content><img src="${product.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
-								型号：${product.title} 价格:${product.price} 库存:${product.inventory}
-							</p>
-							<input type="hidden" name="tradeOrderProductList[${p?index}].contentId" value="${product.contentId}"/>
-							<input type="hidden" name="tradeOrderProductList[${p?index}].productId" value="${product.id}"/>
-							<label>数量</label><input type="text" name="tradeOrderProductList[${p?index}].quantity" value="${quantity[p?index]}" required="required"/>
-							<label>备注</label><input type="text" name="tradeOrderProductList[${p?index}].remark" required="required"/>
-						</@_contentProduct>
-					</#list>
-					<input type="submit" value="提交订单"/>
-				</form>
-				<#else>
-				参数错误
-				</#if>
-			</#if>
+							</@_content>
+							<@_contentProduct id=op.productId>
+
+								<p>
+									<#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
+									型号：${object.title} 价格:${op.price} 备注:${op.remark!}
+									<label class="input-label">数量</label>${op.quantity!}
+								</p>
+							</@_contentProduct>
+							</#list>
+						</@_tradeOrderProductList>
+						<#if 0=object.status>
+							<#if object.paymentId?has_content>
+								<a href="${site.dynamicPath}tradePayment/pay?paymentId=${object.paymentId}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">继续支付</a> 
+								<a href="${site.dynamicPath}tradePayment/cancel?paymentId=${object.paymentId}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@_csrfToken/>">更换支付方式</a>
+								<a href="${site.dynamicPath}tradeOrder/close?orderId=${object.id}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}&_csrf=<@_csrfToken/>">关闭订单</a>
+							<#else>
+							<a href="${site.dynamicPath}tradeOrder/pay/alipay?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">支付宝支付</a> <a href="${site.dynamicPath}tradeOrder/pay/wechat?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">微信支付</a> <a href="${site.dynamicPath}tradeOrder/pay/account?orderId=${orderId!}&returnUrl=https:${(site.dynamicPath+'order.html?orderId='+orderId)?url}">账户余额支付</a>
+							</#if>
+						<#elseif 2=object.status && object.paymentId?has_content>
+							<form action="${site.dynamicPath}tradePayment/refund" method="POST">
+								<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+								<input type="hidden" name="returnUrl" value="${site.dynamicPath}order.html?orderId=${object.id}"/>
+								<input type="hidden" name="paymentId" value="${object.paymentId}"/>
+								<label class="input-label">金额</label><input type="text" name="amount" required="required" value="${object.amount}" max="${object.amount}"/>
+								<label class="input-label">原因</label><input type="text" name="reason" required="required"/>
+								<input class="button" type="submit" value="提交订单"/>
+							</form>
+						</#if>
+					</@_tradeOrder>
+					<#else>
+					<#if productId?has_content && quantity?has_content && productId?size=quantity?size>
+					<form action="${site.dynamicPath}tradeOrder/create" method="POST">			
+						<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+						<input type="hidden" name="returnUrl" value="${site.dynamicPath}order.html"/>
+						<input type="hidden" name="orderIdField" value="orderId"/>
+						<p><label class="input-label">邮寄地址</label><input type="text" name="address" required="required"></p>
+						<p><label class="input-label">收件人</label><input type="text" name="addressee" required="required"></p>
+						<p><label class="input-label">联系电话</label><input type="text" name="telephone" required="required"></p>
+						<p><label class="input-label">备注</label><input type="text" name="remark" required="required"></p>			
+							<#list productId as p>
+								<@_contentProduct id=p;product>
+									<@_content id=product.contentId>
+										<p>
+											<#if object.cover?has_content><img src="${object.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/></#if>  <a href="${object.url}" target="_blank">${object.title}</a>
+										</p>
+										<#if p?is_first><input type="hidden" name="title" value="${object.title} - ${product.title}"/></#if>				
+									</@_content>				
+									<p>
+										<#if product.cover?has_content><img src="${product.cover}" style="max-width:200px;max-height:200px;border:1px solid;"/><br></#if>
+										型号：${product.title} 价格:${product.price} 库存:${product.inventory}
+									</p>
+								<p>
+									<input type="hidden" name="tradeOrderProductList[${p?index}].contentId" value="${product.contentId}"/>
+									<input type="hidden" name="tradeOrderProductList[${p?index}].productId" value="${product.id}"/>
+									<label class="input-label">数量</label><input type="text" name="tradeOrderProductList[${p?index}].quantity" value="${quantity[p?index]}" required="required"/>
+									<label class="input-label">备注</label><input type="text" name="tradeOrderProductList[${p?index}].remark" required="required"/>
+								</p>
+								</@_contentProduct>
+							</#list>
+							<p><input class="button" type="submit" value="提交订单"/></p>
+						</form>
+						<#else>
+						参数错误
+						</#if>
+					</#if>
+				</div>
+			</div>
 		</div>
 	</main>
     <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->

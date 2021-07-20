@@ -28,7 +28,7 @@ public class SysExtend implements java.io.Serializable {
     private Integer id;
     @GeneratorColumn(title = "扩展类型")
     private String itemType;
-    @GeneratorColumn(title = "扩展项目ID")
+    @GeneratorColumn(title = "扩展项目")
     private int itemId;
 
     public SysExtend() {

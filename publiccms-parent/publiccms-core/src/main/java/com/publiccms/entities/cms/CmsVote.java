@@ -28,7 +28,7 @@ public class CmsVote implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private Long id;
-    @GeneratorColumn(title = "站点ID", condition = true)
+    @GeneratorColumn(title = "站点", condition = true)
     private short siteId;
     @GeneratorColumn(title = "开始日期", condition = true, order = true)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

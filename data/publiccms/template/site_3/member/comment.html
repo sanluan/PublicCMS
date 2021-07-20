@@ -14,55 +14,87 @@
 <body>
 	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 	<main>
-		<div class="container">
-			<h1><a href="${content.url!}">${content.title}</a></h1>
-			<p>${content.description!}</p>
-			<div>
-                ${content.scores!} star
-                <#if user?has_content>
-                    <@_userScore userId=user.id itemType='content' itemId=content.id>
-                        <a href="javascript:unstar(${content.id});">Cancel rating</a>
-                        <#assign stared=true/>
-                    </@_userScore>
-                    <#if !stared?has_content><a href="javascript:star(${content.id});">Star</a></#if>
-                </#if>
-            </div>
-			<@import path="ftl/tools.ftl" namespace="t"/>
-			<#if error?has_content>
-			<p style="color:red"><@t.m error/></p>
-			</#if>
-			<div class="comment-box">
-				<#if user?has_content>
-					<#if !pageIndex?has_content || pageIndex=1>
-						<p>发布评论：<span class="float-right"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}">${(user.nickName)!}</a></span></p>
-						<div class="comment-text-box user-logout">
-							<form method="post" action="${site.dynamicPath}comment/save">
-								<input type="hidden" name="id" value="${id!}"/>
-								<#if replyId?has_content>
-								<p class="reply"><@_comment id=replyId><span class="username">@<@_sysUser id=object.userId>${object.nickName}</@_sysUser></span> : ${object.text!}</@_comment></p>
-								<input type="hidden" name="replyId" value="${replyId!}"/>
-								</#if>
-								<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-								<input type="hidden" name="contentId" value="${content.id!}"/>
-								<input name="returnUrl" type="hidden" value="${site.dynamicPath}comment.html?contentId=${content.id!}" />
-								<textarea name="text" maxlength="1000">${text!}</textarea>
-								<input type="submit" value="提交"/>
-							</form>
-						</div>
-						<@_commentList advanced=true userId=user.id contentId=content.id status=2>
+		<div class="container clearfix-after">
+			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+			<div class="right-content">
+				<div class="box">
+					<h1><a href="${content.url!}">${content.title}</a></h1>
+					<p>${content.description!}</p>
+					<div>
+						${content.scores!} 赞
+						<#if user?has_content>
+							<@_userScore userId=user.id itemType='content' itemId=content.id>
+								<a href="javascript:unstar(${content.id});">取消点赞</a>
+								<#assign stared=true/>
+							</@_userScore>
+							<#if !stared?has_content><a href="javascript:star(${content.id});">点赞</a></#if>
+						</#if>
+					</div>
+					<@import path="ftl/tools.ftl" namespace="t"/>
+					<#if error?has_content>
+					<p style="color:red"><@t.m error/></p>
+					</#if>
+					<div class="comment-box">
+						<#if user?has_content>
+							<#if !pageIndex?has_content || pageIndex=1>
+								<p>发布评论：<span class="float-right"><a href="${site.dynamicPath}login.html?returnUrl=${content.url?url}">${(user.nickName)!}</a></span></p>
+								<div class="comment-text-box user-logout">
+									<form method="post" action="${site.dynamicPath}comment/save">
+										<input type="hidden" name="id" value="${id!}"/>
+										<#if replyId?has_content>
+										<p class="reply"><@_comment id=replyId><span class="username">@<@_sysUser id=object.userId>${object.nickName}</@_sysUser></span> : ${object.text!}</@_comment></p>
+										<input type="hidden" name="replyId" value="${replyId!}"/>
+										</#if>
+										<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+										<input type="hidden" name="contentId" value="${content.id!}"/>
+										<input name="returnUrl" type="hidden" value="${site.dynamicPath}comment.html?contentId=${content.id!}" />
+										<textarea name="text" maxlength="1000">${text!}</textarea>
+										<input type="submit" value="提交"/>
+									</form>
+								</div>
+								<@_commentList advanced=true userId=user.id contentId=content.id status=2>
+									<#if page.totalCount gt 0>
+										<h3>我的待审核评论</h3>
+										<ul>
+											<#list page.list as a>
+											<@t.merge 'userIds' a.replyUserId!/>
+											</#list>
+											<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+											<#list page.list as a>
+											<li class="underline">
+												<p>${a.createDate}<span class="float-right"><a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
+												<#if a.replyId?has_content>
+													<@_comment id=a.replyId>
+														<p class="reply"><a href="${site.dynamicPath}user.html?id=${a.userId}" target="_blank">${userMap[a.userId?string].nickName}</a> : ${object.text!}</p>
+													</@_comment>
+												</#if>
+												<p>${a.text!}</p>
+											</li>
+											</#list>
+										</ul>
+									</#if>
+								</@_commentList>
+							</#if>
+						<#else>
+							<div class="comment-text-box user-login">
+								<div class="cover"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
+							</div>
+						</#if>
+						<@_commentList contentId=content.id pageIndex=pageIndex pageSize=10>
+							<#list page.list as a>
+								<@t.merge 'userIds' a.userId!/>
+								<@t.merge 'userIds' a.replyUserId!/>
+							</#list>
+							<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
 							<#if page.totalCount gt 0>
-								<h3>我的待审核评论</h3>
+								<h3>内容评论</h3>
 								<ul>
 									<#list page.list as a>
-									<@t.merge 'userIds' a.replyUserId!/>
-									</#list>
-									<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-									<#list page.list as a>
 									<li class="underline">
-										<p>${a.createDate}<span class="float-right"><a href="comment.html?id=${a.id}&contentId=${a.contentId}">编辑</a></span></p>
+										<p><a href="${site.dynamicPath}user.html?id=${a.userId}" target="_blank">${userMap[a.userId?string].nickName}</a> ${a.createDate?string('yyyy-MM-dd HH:mm')}<span class="float-right"><a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
 										<#if a.replyId?has_content>
 											<@_comment id=a.replyId>
-												<p class="reply"><span class="username">@${userMap[a.replyUserId?string].nickName}</span> : ${object.text!}</p>
+												<p class="reply"><a href="${site.dynamicPath}user.html?id=${a.userId}" target="_blank">@${userMap[a.userId?string].nickName}</a> : ${object.text!}</p>
 											</@_comment>
 										</#if>
 										<p>${a.text!}</p>
@@ -70,65 +102,38 @@
 									</#list>
 								</ul>
 							</#if>
-						</@_commentList>
-					</#if>
-				<#else>
-					<div class="comment-text-box user-login">
-						<div class="cover"><a href="${site.dynamicPath}login.html">登录后发布评论</a></div>
-					</div>
-				</#if>
-				<@_commentList contentId=content.id pageIndex=pageIndex pageSize=10>
-					<#list page.list as a>
-						<@t.merge 'userIds' a.userId!/>
-						<@t.merge 'userIds' a.replyUserId!/>
-					</#list>
-					<@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
-					<#if page.totalCount gt 0>
-						<h3>内容评论</h3>
-						<ul>
-							<#list page.list as a>
-							<li class="underline">
-								<p><span class="username">${userMap[a.userId?string].nickName}</span> ${a.createDate?string('yyyy-MM-dd HH:mm')}<span class="float-right"><a href="${site.dynamicPath}comment.html?contentId=${content.id!}&replyId=${a.id}">回复</a></span></p>
-								<#if a.replyId?has_content>
-									<@_comment id=a.replyId>
-										<p class="reply"><span class="username">@${userMap[a.replyUserId?string].nickName}</span> : ${object.text!}</p>
-									</@_comment>
+							<#if page??>
+							<div class="page">
+								<#if !page.firstPage>
+								<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.prePage}">上一页</a>
+								<#else>
+								<span>上一页</span>
 								</#if>
-								<p>${a.text!}</p>
-							</li>
-							</#list>
-						</ul>
-					</#if>
-					<#if page??>
-					<div class="page">
-						<#if !page.firstPage>
-						<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.prePage}">上一页</a>
-						<#else>
-						<span>上一页</span>
-						</#if>
-						<#assign start=1/>
-						<#if (page.pageIndex-5) gt start>
-						<#assign start=page.pageIndex-4/>
-						</#if>
-						<#assign end=page.totalPage/>
-						<#if (page.pageIndex+5) lt end>
-						<#assign end=page.pageIndex+4/>
-						</#if>
-						<#if start gt 1>
-						<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=1">1</a> ...
-						</#if>
-						<#list start..end as n><a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${n}"<#if n=page.pageIndex> class="selected"</#if>>${n}</a></#list>
-						<#if end lt page.totalPage>
-						... <a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
-						</#if>
-						<#if !page.lastPage>
-						<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.nextPage}">下一页</a>
-						<#else>
-						<span>下一页</span>
-						</#if>
+								<#assign start=1/>
+								<#if (page.pageIndex-5) gt start>
+								<#assign start=page.pageIndex-4/>
+								</#if>
+								<#assign end=page.totalPage/>
+								<#if (page.pageIndex+5) lt end>
+								<#assign end=page.pageIndex+4/>
+								</#if>
+								<#if start gt 1>
+								<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=1">1</a> ...
+								</#if>
+								<#list start..end as n><a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${n}"<#if n=page.pageIndex> class="selected"</#if>>${n}</a></#list>
+								<#if end lt page.totalPage>
+								... <a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.totalPage}">${page.totalPage}</a>
+								</#if>
+								<#if !page.lastPage>
+								<a href="${site.dynamicPath}comment.html?contentId=${content.id!}&pageIndex=${page.nextPage}">下一页</a>
+								<#else>
+								<span>下一页</span>
+								</#if>
+							</div>
+							</#if>
+						</@_commentList>
 					</div>
-					</#if>
-				</@_commentList>
+				</div>
 			</div>
 		</div>
 	</main>
@@ -146,13 +151,11 @@
 	 <script>
 function star(contentId){
     $.getJSON('${site.dynamicPath!}score/score?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
-        alert("ok!");
         location.reload();
     });
 }
 function unstar(contentId){
     $.getJSON('${site.dynamicPath!}score/unscore?itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
-        alert("ok!");
         location.reload();
     });
 }

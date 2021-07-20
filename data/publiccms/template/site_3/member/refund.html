@@ -7,66 +7,67 @@
 <body>
 	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
     <main>
-		<div class="container">
-			<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-			<@_tradeRefundList userId=user.id pageIndex=pageIndex pageSize=10>
-				<h3>Refunds</h3>
-				<ul>
-				<#list page.list as a>
-					<li class="underline">
-						<p><@message 'page.status.refund.'+a.status/><span class="right">${a.createDate!}</span></p>
-						<p class="gray"><label>Order id:</label>${a.orderId!} <label>Apply amount:</label>${a.amount!} <label>Refund amount:</label>${a.refundAmount!}</p>
-						<p>${a.reason!}<span class="right"><label>Replay:</label>${a.reply!}</span></p>
-						<#if 0=a.status||3=a.status>
-							<form action="${site.dynamicPath}tradePayment/refund" method="POST">
-								<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-								<input type="hidden" name="id" value="${a.id}"/>
-								<input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
-								<input type="hidden" name="paymentId" value="${a.id}"/>
-								<label>Amount:</label><input type="text" name="amount" required="required" value="${a.amount!}" max="${a.amount}"/>
-								<label>Reason:</label><input type="text" name="reason" required="required" value="${a.reason!}"/>
-								<input type="submit" value="Update"/>
-							</form>
-						</#if>
-					</li>
-				</#list>
-				</ul>
-				<div>
-					<#assign
-						start=1
-						end=page.totalPage
-					/>
-					<#if (page.pageIndex-5) gt start>
-						<#assign start=page.pageIndex-4/>
-					</#if>
-					<#if (page.pageIndex+5) lt end>
-						<#assign end=page.pageIndex+4/>
-					</#if>
-					<#if !page.firstPage>
-						<a href="${getPage('refund.html',page.prePage,'pageIndex')}">Previous page</a>
-					<#else>
-						<span>Previous page</span>
-					</#if>
-					<#if start gt 1>
-						<a href="${'refund.html'}">1</a> ...
-					</#if>
-					<#list start..end as n>
-						<#if n=page.pageIndex>
-							${n}
-						<#else>
-							<a href="${getPage('refund.html',n,'pageIndex')}">${n}</a>
-						</#if>
-					</#list>
-					<#if end lt page.totalPage>
-						... <a href="${getPage('refund.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
-					</#if>
-					<#if !page.lastPage>
-						<a href="${getPage('refund.html',page.nextPage,'pageIndex')}">Next page</a>
-					<#else>
-						<span>Next page</span>
-					</#if>
+		<div class="container clearfix-after">
+			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+			<div class="right-content">
+				<div class="box">
+					<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+					<@_tradeRefundList userId=user.id pageIndex=pageIndex pageSize=10>
+						<h3>我的退款记录</h3>
+						<ul>
+						<#list page.list as a>
+							<li class="underline">
+								<p><@message 'page.status.refund.'+a.status/><span class="right">${a.createDate!}</span></p>
+								<p class="gray"><label>订单号:</label>${a.orderId!} <label>申请退款金额:</label>${a.amount!} <label>实际退款金额:</label>${a.refundAmount!}</p>
+								<p>${a.reason!}<span class="right"><label>回复:</label>${a.reply!}</span></p>
+								<#if 0=a.status||3=a.status>
+									<form action="${site.dynamicPath}tradePayment/refund" method="POST">
+										<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+										<input type="hidden" name="id" value="${a.id}"/>
+										<input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
+										<input type="hidden" name="paymentId" value="${a.id}"/>
+										<label class="input-label">金额:</label><input type="text" name="amount" required="required" value="${a.amount!}" max="${a.amount}"/>
+										<label class="input-label">原因:</label><input type="text" name="reason" required="required" value="${a.reason!}"/>
+										<input class="button" type="submit" value="修改退款申请"/>
+									</form>
+								</#if>
+							</li>
+						</#list>
+						</ul>
+						<div class="page">
+							<#assign
+								start=1
+								end=page.totalPage
+							/>
+							<#if (page.pageIndex-5) gt start>
+								<#assign start=page.pageIndex-4/>
+							</#if>
+							<#if (page.pageIndex+5) lt end>
+								<#assign end=page.pageIndex+4/>
+							</#if>
+							<#if !page.firstPage>
+								<a href="${getPage('refund.html',page.prePage,'pageIndex')}">上一页</a>
+							<#else>
+								<span>上一页</span>
+							</#if>
+							<#if start gt 1>
+								<a href="${'refund.html'}">1</a> ...
+							</#if>
+							<#list start..end as n>
+								<a href="${getPage('refund.html',n,'pageIndex')}"${(n=page.pageIndex)?then(' class="selected"'?no_esc,'')}>${n}</a>
+							</#list>
+							<#if end lt page.totalPage>
+								... <a href="${getPage('refund.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+							</#if>
+							<#if !page.lastPage>
+								<a href="${getPage('refund.html',page.nextPage,'pageIndex')}">下一页</a>
+							<#else>
+								<span>下一页</span>
+							</#if>
+						</div>
+					</@_tradeRefundList>
 				</div>
-			</@_tradeRefundList>
+			</div>
 		</div>
     </main>
     <script>

@@ -33,7 +33,7 @@ public class CmsCategoryType implements java.io.Serializable {
     private String name;
     @GeneratorColumn(title = "排序")
     private int sort;
-    @GeneratorColumn(title = "扩展ID")
+    @GeneratorColumn(title = "扩展")
     private Integer extendId;
 
     public CmsCategoryType() {

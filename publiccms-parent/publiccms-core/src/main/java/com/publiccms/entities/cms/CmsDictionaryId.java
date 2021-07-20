@@ -18,7 +18,7 @@ public class CmsDictionaryId implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private String id;
-    @GeneratorColumn(title = "站点ID")
+    @GeneratorColumn(title = "站点")
     private short siteId;
 
     public CmsDictionaryId() {

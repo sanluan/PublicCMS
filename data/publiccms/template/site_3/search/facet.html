@@ -12,12 +12,14 @@
 	<div class="container bread">
 		<a href="${site.sitePath!}">首页</a>  &gt; <a href="${siteAttribute.searchPath!}">搜索</a>
 	</div>
-	<div class="container">
+	<div class="container clearfix-after">
 		<div class="data-list left-content">
 			<div class="search">
 				<form action="facet.html" method="get">
-					<input type="text" name="word" value="${word!}"/>					
-					<input type="submit" value="搜索"/>
+					<div class="search-box">
+						<input type="text" name="word" value="${word!}"/>					
+						<input type="submit" class="button" value="搜索"/>
+					</div>
 					<#if categoryId?has_content><input type="hidden" name="categoryId" value="${categoryId!}"/></#if>
 					<#if modelId?has_content><input type="hidden" name="modelId" value="${modelId!}"/></#if>
 				<#if dictionaryValues?has_content>
@@ -25,9 +27,9 @@
 						<input type="hidden" name="dictionaryValues" value="${d}"/>
 					</#list>
 				</#if>
-				<#if tagIds?has_content>
-					<#list tagIds as t>
-						<input type="hidden" name="tagIds" value="${t}"/>
+				<#if tagId?has_content>
+					<#list tagId as t>
+						<input type="hidden" name="tagId" value="${t}"/>
 					</#list>
 				</#if>
 				</form>
@@ -35,7 +37,7 @@
 					<p>
 						热门标签：
 						<#list page.list as a>
-							<a href="?tagIds=${a.id}">${a.name}</a>
+							<a href="?tagId=${a.id}">${a.name}</a>
 						</#list>
 					</p>
 				</@_tagList>
@@ -49,7 +51,7 @@
 				</@_wordList>
 			</div>
 		<@import path="/ftl/tools.ftl" namespace="t"/>
-		<@_facetSearch word=word tagId=tagIds categoryId=categoryId dictionaryValues=dictionaryValues modelId=modelId highlight=true pageIndex=pageIndex pageSize=10>
+		<@_facetSearch word=word tagId=tagId categoryId=categoryId dictionaryValues=dictionaryValues modelId=modelId highlight=true pageIndex=pageIndex pageSize=10>
 			<#if (page.facetMap.categoryId)?has_content||categoryId?has_content>
 				<div class="search-condition">
 					<label>分类:</label>
@@ -80,17 +82,16 @@
 					</#if>						
 				</div>
 			</#if>
-	<@_tag ids=tagIds>
+	<@_tag ids=tagId>
 		<#if map?has_content>
 			<div class="search-condition">
 				<label>标签:</label>
-				<#list map?keys as k>${map[k].name} <a href="javascript:search('tagIds','');">X</a></#list>
+				<#list map?keys as k>${map[k].name} <a href="javascript:search('tagId','');">X</a></#list>
 			</div>
 		</#if>
 	</@_tag>
 		<#macro dictionarySearch extendList>
 			<#list extendList as extend>
-				<#if 'dictionary'=extend.inputType>
 				<div class="search-condition">
 						<@_dictionary id=extend.dictionaryId>
 					<label>${object.name}:</label>
@@ -102,11 +103,10 @@
 						</@_dictionaryDataList>
 					</@_dictionary>
 				</div>
-				</#if>
 			</#list>
 		</#macro>
 		<#if (firstCategory.extendId)?has_content>
-			<@_sysExtendFieldList extendId=firstCategory.extendId>
+			<@_sysExtendFieldList extendId=firstCategory.extendId inputType='dictionary' searchable=true>
 				<@dictionarySearch list/>
 			</@_sysExtendFieldList>
 		</#if>
@@ -116,24 +116,7 @@
 		<#if page.totalCount gt 0>
 			<ul>
 			<#list page.list as a>
-					<li>
-						<h3><a href="<#if a.onlyUrl>content/redirect.do?id=${a.id}<#else>${a.url}</#if>" target="_blank">${a.title?no_esc}</a><span>${a.publishDate?date}</span></h3>
-						<a href="<#if a.onlyUrl>content/redirect.do?id=${a.id}<#else>${a.url}</#if>" target="_blank">
-				<#if a.cover?has_content>
-							<img src="<@_thumb path=a.cover width=144 height=192/>" alt="${a.title}"/>
-				</#if>
-				<#if a.hasImages>
-						<@_contentFileList contentId=a.id image=true count=2>
-							<#list page.list as i>
-								<img src="<@_thumb path=i.filePath width=144 height=192/>" alt="${a.title}"/>
-							</#list>
-						</@_contentFileList>
-				</#if>
-						</a>
-						<p<#if a.hasImages> class="clearfix-before"</#if>>${(a.description?no_esc)!}<a href="<#if a.onlyUrl>content/redirect.do?id=${a.id}<#else>${a.url}</#if>" target="_blank"> 详细 &gt;&gt;</a></p>
-						<p><@_tag ids=a.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="javascript:search('tagIds',${k});">${map[k].name}</a><#sep>,</#list></@_tag></p>
-						<div class="clearfix-before"></div>
-					</li>
+					<@include path="/ftl/search-list.ftl"/><#-- 搜索列表 -->
 			</#list>
 			</ul>
 			<div class="page">
@@ -167,7 +150,8 @@
 	</@_facetSearch>
 		</div>
 		<aside>
-			<@_includePlace path="/4fff54e5-7763-4fc2-a0d1-fb96427c2c0a.html"/> <#-- 左侧推荐 -->
+			<@_includePlace path="/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
+			<@_includePlace path="/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
 		</aside>
 	</div>
 </main>

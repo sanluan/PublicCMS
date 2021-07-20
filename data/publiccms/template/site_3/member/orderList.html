@@ -1,61 +1,62 @@
 <!DOCTYPE html>
 <html lang="zh_CN">
 <head>
-    <title>订单</title>
+    <title>${(metadata.alias)!}</title>
 	<@_includePlace path="/76c53ac2-4f88-4ef3-984b-c81d00a48089.html"/> <#-- 头部Header -->
 </head>
 <body>
 	<@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
     <main>
-		<div class="container">
-			<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
-			<@_tradeOrderList userId=user.id pageIndex=pageIndex pageSize=10>
-				<h3>Orders</h3>
-				<ul>
-				<#list page.list as a>
-					<li class="underline">
-						<p><@message 'page.status.order.'+a.status/><span class="right">${a.createDate!}</span></p>
-						<p class="gray"><label>Processed:</label>${a.processed?then('Yes','No')} ${a.processDate!} <label>Payment date:</label>${a.paymentDate!}</p>
-						<p><a href="${site.dynamicPath}order.html?id=${a.id}">${a.title!}</a><span class="right"><label>Remark:</label>${a.remark!}</span></p>
-					</li>
-				</#list>
-				</ul>
-				<div>
-					<#assign
-						start=1
-						end=page.totalPage
-					/>
-					<#if (page.pageIndex-5) gt start>
-						<#assign start=page.pageIndex-4/>
-					</#if>
-					<#if (page.pageIndex+5) lt end>
-						<#assign end=page.pageIndex+4/>
-					</#if>
-					<#if !page.firstPage>
-						<a href="${getPage('orderList.html',page.prePage,'pageIndex')}">Previous page</a>
-					<#else>
-						<span>Previous page</span>
-					</#if>
-					<#if start gt 1>
-						<a href="${'orderList.html'}">1</a> ...
-					</#if>
-					<#list start..end as n>
-						<#if n=page.pageIndex>
-							${n}
-						<#else>
-							<a href="${getPage('orderList.html',n,'pageIndex')}">${n}</a>
-						</#if>
-					</#list>
-					<#if end lt page.totalPage>
-						... <a href="${getPage('orderList.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
-					</#if>
-					<#if !page.lastPage>
-						<a href="${getPage('orderList.html',page.nextPage,'pageIndex')}">Next page</a>
-					<#else>
-						<span>Next page</span>
-					</#if>
+		<div class="container clearfix-after">
+			<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+			<div class="right-content">
+				<div class="box">
+					<#macro message code>${springMacroRequestContext.getMessage(code)}</#macro>
+					<@_tradeOrderList userId=user.id pageIndex=pageIndex pageSize=10>
+						<h3>我的订单</h3>
+						<ul>
+						<#list page.list as a>
+							<li class="underline">
+								<p><@message 'page.status.order.'+a.status/><span class="float-right">${a.createDate!}</span></p>
+								<p class="gray"><label>已处理:</label>${a.processed?then('是','否')} ${a.processDate!} <label>支付日期:</label>${a.paymentDate!}</p>
+								<p><a href="${site.dynamicPath}order.html?id=${a.id}">${a.title!}</a><span class="float-right"><label>备注:</label>${a.remark!}</span></p>
+							</li>
+						</#list>
+						</ul>
+						<div class="page">
+							<#assign
+								start=1
+								end=page.totalPage
+							/>
+							<#if (page.pageIndex-5) gt start>
+								<#assign start=page.pageIndex-4/>
+							</#if>
+							<#if (page.pageIndex+5) lt end>
+								<#assign end=page.pageIndex+4/>
+							</#if>
+							<#if !page.firstPage>
+								<a href="${getPage('orderList.html',page.prePage,'pageIndex')}">上一页</a>
+							<#else>
+								<span>上一页</span>
+							</#if>
+							<#if start gt 1>
+								<a href="${'orderList.html'}">1</a> ...
+							</#if>
+							<#list start..end as n>
+								<a href="${getPage('orderList.html',n,'pageIndex')}"${(n=page.pageIndex)?then(' class="selected"'?no_esc,'')}>${n}</a>
+							</#list>
+							<#if end lt page.totalPage>
+								... <a href="${getPage('orderList.html',page.totalPage,'pageIndex')}">${page.totalPage}</a>
+							</#if>
+							<#if !page.lastPage>
+								<a href="${getPage('orderList.html',page.nextPage,'pageIndex')}">下一页</a>
+							<#else>
+								<span>下一页</span>
+							</#if>
+						</div>
+					</@_tradeOrderList>
 				</div>
-			</@_tradeOrderList>
+			</div>
 		</div>
     </main>
 	<script>

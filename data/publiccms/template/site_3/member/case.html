@@ -7,45 +7,54 @@
 <body>
 <@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
-    <div class="container">
-		<h3>展示您的成果，有助于吸引更多的客户！</h3>
-		<@import path="ftl/tools.ftl" namespace="t"/>
+    <div class="container clearfix-after">
+		<@_includePlace path="/c936c718-5f19-426f-b3ff-13a5a8d63044.html"/> <#-- 个人中心导航 -->
+		<div class="right-content">
+			<div class="box">
+				<h3>展示您的成果，有助于吸引更多的客户！</h3>
+				<@import path="ftl/tools.ftl" namespace="t"/>
 
-		<#if error?has_content>
-			<p style="color:red"><@t.m error/></p>
-		</#if>
+				<#if error?has_content>
+					<p style="color:red"><@t.m error/></p>
+				</#if>
 
-		<#if result?has_content&&!error?has_content>
-			<p style="color:red">提交成功，请等待管理员审核！</p>
-		<#else>
-			<form method="post" action="${site.dynamicPath}content/save" onsubmit="return check();">
-				<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
-				<input name="returnUrl" type="hidden" value="${site.dynamicPath}case.html?result=true" />
-				<input name="categoryId" type="hidden" value="19"/>
-				<input name="modelId" type="hidden" value="1"/>
-				<input name="author" type="hidden" value="${(user.nickName)!}"/>
-				<p><label>案例名:</label><input name="title" type="text" size="60" maxlength="255"/></p>
-				<p><label>案例网址，介绍:</label><textarea name="text" cols="80" rows="20"></textarea></p>
-				<p><label>建设单位名:</label>    <input name="categoryExtendDataList[0].name" type="hidden" value="builder"/>
+				<#if result?has_content&&!error?has_content>
+					<p style="color:red">提交成功，请等待管理员审核！</p>
+				<#else>
+					<form method="post" action="${site.dynamicPath}content/save" onsubmit="return check();">
+						<input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
+						<input name="returnUrl" type="hidden" value="${site.dynamicPath}case.html?result=true" />
+						<input name="categoryId" type="hidden" value="19"/>
+						<input name="modelId" type="hidden" value="1"/>
+						<input name="author" type="hidden" value="${(user.nickName)!}"/>
+						<p><label class="input-label">案例名:</label><input name="title" type="text" size="30" maxlength="255"/></p>
+						<p><label class="input-label">案例介绍:</label><textarea name="text" style="width:60%;height:200px;"></textarea></p>
+						<p>
+							<label class="input-label">建设单位名:</label>
+							<input name="categoryExtendDataList[0].name" type="hidden" value="builder"/>
 							<input name="categoryExtendDataList[0].value" type="text" size="30" value=""/>
-			</p>
-				<p><label>显示建设单位:</label>    <input name="categoryExtendDataList[1].name" type="hidden" value="show"/>
+						</p>
+						<p>
+							<label class="input-label">显示建设单位:</label>
+							<input name="categoryExtendDataList[1].name" type="hidden" value="show"/>
 							<select class="combox" name="categoryExtendDataList[1].value">
 								<option value="true">是</option>
 								<option value="false" selected="true">否</option>
 							</select>
-			</p>
-				<p><input type="submit" value="提交"/></p>
-			</form>
-		</#if>
+						</p>
+						<p><input class="button" type="submit" value="提交"/></p>
+					</form>
+				</#if>
 
-		<#if user?has_content>
-			<@_contentList categoryId=19 advanced=true userId=user.id>
-				<#list page.list as a>
-					<p>[<@t.m 'page.status.content.'+a.status/>]${(a.title)!}  (${a.clicks!}) </p>
-				</#list>
-			</@_contentList>
-		</#if>
+				<#if user?has_content>
+					<@_contentList categoryId=19 advanced=true userId=user.id>
+						<#list page.list as a>
+							<p>[<@t.m 'page.status.content.'+a.status/>]${(a.title)!}  (${a.clicks!}) </p>
+						</#list>
+					</@_contentList>
+				</#if>
+			</div>
+		</div>
     </div>
 </main>
 <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- 尾部Footer -->

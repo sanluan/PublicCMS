@@ -9,17 +9,34 @@
 <body>
 <@_includePlace path="/23e95a91-0063-4498-99ef-aa3fc4a79c4c.html"/> <#-- 导航 -->
 <main>
-	<div class="container">
-		<@_includePlace path="/index.html/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"/> <#-- 焦点图 -->
+	<div class="container clearfix-after">
+		<@_includePlace path="/94fe86e5-45b3-4896-823a-37c6d7d6c578.html"/> <#-- 焦点图 -->
 		<div class="data-list left-content">
 			<@_includePlace path="/d0e3dd81-02e5-45d6-a1da-1e652c3ec882.html"/> <#-- 首页推荐分类 -->		
 		</div>
 		<aside>
 			<div>
+				<a href="${siteAttribute.searchPath!}"><h3>站内搜索</h3></a>
+				<div class="search">
+					<form action="${siteAttribute.searchPath!}" method="get">
+						<div class="search-box">
+							<input type="text" name="word" value="${(word)!}"/>
+							<input type="submit" class="button" value="搜索"/>
+						</div>
+					</form>
+					<@_wordList count=5>
+						<div>
+							热门搜索：
+							<#list page.list as a>
+								<a href="${siteAttribute.searchPath!}?word=${a.name?url}">${a.name}</a>
+							</#list>
+						</div>
+					</@_wordList>
+				</div>
 				<@_voteList endStartDate=.now  pageSize=5>
 					<#if page.totalCount gt 0>
-				<h3><a href="${site.dynamicPath}votelist.html">最新投票</a></h3>
-				<ul>
+				<a href="${site.dynamicPath}votelist.html"><h3>最新投票</h3></a>
+				<ul class="hoverShadow">
 						<#list page.list as a>
 					<li>
 						<#if .now gt a.endDate && a.scores gt 0><#assign show=true/><#else><#assign show=false/></#if>
@@ -44,7 +61,7 @@
 					</#if>
 				</@_voteList>
 				<h3>近期热门</h3>
-				<ul class="rank">
+				<ul class="rank hoverShadow">
 <@_contentList advanced=true modelId=1 status=1 startPublishDate=(.now?long-3600*1000*24*365)?number_to_datetime orderField='clicks' count=10>
 	<#list page.list as a>
 					<li><span>${a.clicks}</span><a href="${a.url!}">${a.title}</a></li>
@@ -65,10 +82,9 @@
 					<a href="https://github.com/sanluan/PublicCMS" target="_blank">GITHUB</a>
 				</div>
 			</div>
-            <@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+            <@_includePlace path="/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
 		</aside>
 	</div>
-	<div class="clearfix-before"></div>
 </main>
 <@_includePlace path="/cc29e896-332a-46d8-9bcb-d48e92144e9c.html"/> <#-- footer -->
 <@_includePlace path="/ff78be16-6f75-42b3-b115-d9d9cf578f1c.html"/> <#-- 首页置灰控制 -->

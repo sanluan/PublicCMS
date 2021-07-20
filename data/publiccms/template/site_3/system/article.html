@@ -13,7 +13,7 @@
 			<@include path="/ftl/echoBread.ftl"/>
 			<@echoBread category.id/>
 		</div>
-		<div class="container">
+		<div class="container  clearfix-after">
 			<article class="left-content">
 				<header>
 					<h1><a href="${url!}">${content.title}</a></h1>
@@ -23,18 +23,42 @@
 				<div id="content">
 					${text?no_esc!}
 					<div class="clearfix-before"></div>
+					<#if content.hasFiles>
+						<@_contentFileList contentId=content.id fileTypes='video,audio,other'>
+							<#list page.list as file>
+						<p><a href="${(file.filePath)!}" target="_blank">${(file.description)!}</a> </p>
+							</#list>
+						</@_contentFileList>
+					</#if>
+					<#if content.hasImages>
+						 <@_contentFileList contentId=content.id fileTypes='image'>
+							 <#list page.list as file>
+								 <figure class="text-center">
+									 <img src="${(file.filePath)!}" alt="${(file.description)!}"/>
+									 <p>图${file?counter} ${(file.description)!}</p>
+								</figure>					
+							 </#list>
+						 </@_contentFileList>
+					</#if>
 				</div>
 				<div><@_tag ids=content.tagIds><#if map?has_content>标签:</#if><#list map?keys as k><a href="//search.publiccms.com/?tagId=${k}" target="_blank">${map[k].name}</a><#sep>,</#list></@_tag></div>
 				<@include path="/ftl/content_page.ftl"/>
+				<div class="content-related clearfix-after">
+					<div class="prev">
+						<@_contentList categoryId=content.categoryId endPublishDate=content.publishDate orderField='publishDate' pageIndex=2 count=1><#if 2=page.pageIndex><#list page.list as a><span class="float-right">《上一篇</span><a href="${a.url!}">${a.title}</a></#list><#else><span>没有了</span></#if></@_contentList>
+					</div>
+					<div class="next float-right text-right">
+						<@_contentList categoryId=content.categoryId startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 count=1><#list page.list as a><span>下一篇》</span><a href="${a.url!}">${a.title}</a><#else><span>没有了</span></#list></@_contentList>
+					</div>
+				</div>
 				<@import path="/ftl/tools.ftl" namespace="t"/>
 				<@include path="/ftl/comment.ftl"/><#-- 评论 -->
 			</article>
 			<aside>
-				<@_includePlace path="/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
-				<@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+				<@_includePlace path="/4fff54e5-7763-4fc2-a0d1-fb96427c2c0a.html"/> <#-- 右侧推荐 -->
 				<div>
 					<a href="${siteAttribute.searchPath!}?tagId=${content.tagIds!}" target="_blank"><h3>相关推荐</h3></a>
-					<ul>
+					<ul class="hoverShadow">
 	<@_contentRelatedList contentId=content.id pageSize=10>
 		<#list page.list as a>
 						<li><a href="${a.url!}" target="_blank" title="${a.title}">${a.title}</a></li>
@@ -61,7 +85,6 @@
 				</div>
 			</aside>
 		</div>
-		<div class="clearfix-before"></div>
 	</main>
 	<script>
 		var itemString="itemType=content&itemId=${content.id}";

@@ -1,0 +1,18 @@
+<aside class="left-aside clearfix-after">
+	<@_category code='guide'>
+<@_categoryList parentId=object.id>
+	<#list page.list as a>
+	<div>
+		<h3 class="circle"><a href="${a.url}" title="${a.name}">${a.name}</a></h3>
+		<ul>
+			<@_contentList categoryId=a.id containChild=a.containChild pageSize=100 orderType='asc'>
+				<#list page.list as a>
+			<li data-id="${a.id}"><a href="${a.url}" title="${a.title}">${a.title}</a></li>
+				</#list>
+			</@_contentList>
+		</ul>
+	</div>
+	</#list>
+</@_categoryList>
+	</@_category>
+</aside>

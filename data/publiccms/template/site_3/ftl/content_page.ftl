@@ -1,4 +1,4 @@
-<#if page??>
+<#if page?? && page.totalCount gt 1>
 	<div class="page">
 		<#if !page.firstPage>
 			<a href="${getPage(url,page.prePage)}">上一页</a>

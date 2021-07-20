@@ -20,7 +20,7 @@
 		<@include path="/ftl/echoBread.ftl"/>
 		<@echoBread category.id/>
 	</div>
-	<div class="container">
+	<div class="container  clearfix-after">
 		<div class="data-list left-content">
 <@_contentList categoryId=category.id containChild=category.containChild pageIndex=pageIndex count=category.pageSize>
 	<@import path="/ftl/tools.ftl" namespace="t"/>
@@ -43,8 +43,7 @@
 </@_contentList>
 		</div>
 		<aside>
-			<@_includePlace path="/category/list.html/49d393ca-f0f1-4723-a9b0-6f9b6d7cc04d.html"/> <#-- 编辑推荐 -->
-			<@_includePlace path="/category/list.html/3435e9a7-565a-4f93-8670-9c272a1d51cc.html"/> <#-- 精彩图集 -->
+			<@_includePlace path="/4fff54e5-7763-4fc2-a0d1-fb96427c2c0a.html"/> <#-- 右侧推荐 -->
 			<div>
 				<h3>热门排行</h3>
 				<ul class="rank">
@@ -57,7 +56,6 @@
 			</div>
 		</aside>
 	</div>
-	<div class="clearfix-before"></div>
 </main>
 	<script>
 		var itemString="itemType=category&itemId=${category.id}";

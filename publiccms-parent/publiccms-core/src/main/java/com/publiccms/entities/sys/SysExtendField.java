@@ -43,7 +43,7 @@ public class SysExtendField implements java.io.Serializable {
     private String inputType;
     @GeneratorColumn(title = "默认值")
     private String defaultValue;
-    @GeneratorColumn(title = "数据字典ID")
+    @GeneratorColumn(title = "数据字典")
     private String dictionaryId;
     @GeneratorColumn(title = "顺序", order = true)
     private int sort;

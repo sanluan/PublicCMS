@@ -13,9 +13,9 @@
 			<@include path="/ftl/echoBread.ftl"/>
 			<@echoBread category.id/>
 		</div>
-		<div class="container">
+		<div class="container  clearfix-after">
 			<#if content.hasProducts>
-            <div class="product">
+            <div class="product  clearfix-after">
 				<@_contentProductList contentId=content.id fileTypes='video,audio,other'>
 				<div class="gallery">
 					<div class="product-gallery swiper-container">
@@ -60,11 +60,10 @@
 				</@_contentProductList>
             </div>
         </#if>
-			<div class="clearfix-before"></div>
-			<aside class="product-aside">
+			<aside class="left-aside clearfix-after">
 				<div>
-					<a href="${siteAttribute.searchPath!}?tagId=${content.tagIds!}" target="_blank"><h3>相关推荐</h3></a>
-					<ul>
+					<h3 class="circle">相关推荐</h3>
+					<ul class="hoverShadow">
 	<#if content.tagIds?has_content>
 		<@_search tagId=content.tagIds modelId=content.modelId count=10>
 			<#list page.list as a>
@@ -91,18 +90,17 @@
 					</ul>
 				</div>
 			</aside>
-			<div class="product-introduce">
+			<div class="right-content">
 				<div class="box">
 					<div class="navtab ">
 						<ul class="tabhead">
 							<li><a href="javascript:void(0);">产品详情</a></li>
 							<li><a href="javascript:void(0);">评论</a></li>
 						</ul>
-						<div class="clearfix-before">
+						<div>
 							<div class="tabcontent">
-								<article id="content">				
+								<article id="content" class=" clearfix-after">				
 									${text?no_esc!}
-									<div class="clearfix-before"></div>
 								</article>
 							</div>
 							<div class="tabcontent">
@@ -113,7 +111,6 @@
 					</div>
 				</div>
 			</div>
-			<div class="clearfix-before"></div>				
 		</div>
 	</main>
 	<script>

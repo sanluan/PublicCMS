@@ -3,6 +3,7 @@ package com.publiccms.test;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.service.sys.SysSiteService;
@@ -26,6 +28,12 @@ import config.spring.ApplicationConfig;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = ApplicationConfig.class)
 public class SysSiteServiceTest {
+    @BeforeAll
+    public static void init() {
+        // 不进入安装程序 数据目录有 database.properties才能进行测试
+        CmsVersion.setInitialized(true);
+    }
+
     @Autowired
     private SysSiteService siteService;
     @Autowired

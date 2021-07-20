@@ -8,9 +8,9 @@ CREATE TABLE `cms_category` (
   `id` int(11) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
-  `parent_id` int(11) default NULL COMMENT '父分类ID',
+  `parent_id` int(11) default NULL COMMENT '父分类',
   `type_id` int(11) default NULL COMMENT '分类类型',
-  `child_ids` text COMMENT '所有子分类ID',
+  `child_ids` text COMMENT '所有子分类',
   `tag_type_ids` text default NULL COMMENT '标签分类',
   `code` varchar(50) NOT NULL COMMENT '编码',
   `template_path` varchar(255) default NULL COMMENT '模板路径',
@@ -25,7 +25,7 @@ CREATE TABLE `cms_category` (
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   `hidden` tinyint(1) NOT NULL COMMENT '隐藏',
   `disabled` tinyint(1) NOT NULL COMMENT '是否删除',
-  `extend_id` int(11) default NULL COMMENT '扩展ID',
+  `extend_id` int(11) default NULL COMMENT '扩展',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `cms_category_code` (`site_id`,`code`),
   KEY `cms_category_sort` (`sort`),
@@ -38,7 +38,7 @@ CREATE TABLE `cms_category` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_category_attribute`;
 CREATE TABLE `cms_category_attribute` (
-  `category_id` int(11) NOT NULL COMMENT '分类ID',
+  `category_id` int(11) NOT NULL COMMENT '分类',
   `title` varchar(80) default NULL COMMENT '标题',
   `keywords` varchar(100) default NULL COMMENT '关键词',
   `description` varchar(300) default NULL COMMENT '描述',
@@ -51,7 +51,7 @@ CREATE TABLE `cms_category_attribute` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_category_model`;
 CREATE TABLE `cms_category_model` (
-  `category_id` int(11) NOT NULL COMMENT '分类ID',
+  `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型编码',
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
   PRIMARY KEY  (`category_id`,`model_id`)
@@ -66,7 +66,7 @@ CREATE TABLE `cms_category_type` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `sort` int(11) NOT NULL COMMENT '排序',
-  `extend_id` int(11) default NULL COMMENT '扩展ID',
+  `extend_id` int(11) default NULL COMMENT '扩展',
   PRIMARY KEY  (`id`),
   KEY `cms_category_type_site_id` (`site_id`)
 ) COMMENT='分类类型';
@@ -75,11 +75,11 @@ CREATE TABLE `cms_category_type` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_comment`;
 CREATE TABLE `cms_comment` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
-  `reply_id` bigint(20) DEFAULT NULL COMMENT '回复ID',
-  `reply_user_id` bigint(20) DEFAULT NULL COMMENT '回复用户ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
+  `reply_id` bigint(20) DEFAULT NULL COMMENT '回复评论',
+  `reply_user_id` bigint(20) DEFAULT NULL COMMENT '回复用户',
   `replies` int(11) NOT NULL default 0 COMMENT '回复数',
   `content_id` bigint(20) NOT NULL COMMENT '文章内容',
   `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
@@ -106,8 +106,8 @@ CREATE TABLE `cms_content` (
   `check_user_id` bigint(20) default NULL COMMENT '审核用户',
   `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型',
-  `parent_id` bigint(20) default NULL COMMENT '父内容ID',
-  `quote_content_id` bigint(20) NULL COMMENT '引用内容ID',
+  `parent_id` bigint(20) default NULL COMMENT '父内容',
+  `quote_content_id` bigint(20) NULL COMMENT '引用内容',
   `copied` tinyint(1) NOT NULL COMMENT '是否转载',
   `contribute` tinyint(1) NOT NULL default 0 COMMENT '是否投稿',
   `author` varchar(50) default NULL COMMENT '作者',
@@ -184,6 +184,7 @@ CREATE TABLE `cms_content_file` (
 -- ----------------------------
 -- Table structure for cms_content_product
 -- ----------------------------
+DROP TABLE IF EXISTS `cms_content_product`;
 CREATE TABLE `cms_content_product` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
@@ -217,7 +218,7 @@ CREATE TABLE `cms_content_related` (
   `description` varchar(300) default NULL COMMENT '推荐简介',
   `sort` int(11) NOT NULL COMMENT '排序',
   PRIMARY KEY  (`id`),
-  KEY `cms_content_related_user_id` (`content_id`,`related_content_id`,`user_id`,`sort`),
+  KEY `cms_content_related_content_id`(`content_id`, `sort`),
   KEY `cms_content_related_related_content_id` (`related_content_id`)
 ) COMMENT='推荐推荐';
 
@@ -240,7 +241,7 @@ CREATE TABLE `cms_dictionary` (
 DROP TABLE IF EXISTS `cms_dictionary_data`;
 CREATE TABLE `cms_dictionary_data` (
   `dictionary_id` varchar(20) NOT NULL COMMENT '字典',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `value` varchar(50) NOT NULL COMMENT '值',
   `text` varchar(100) NOT NULL COMMENT '文字',
   PRIMARY KEY  (`dictionary_id`,`site_id`,`value`)
@@ -252,12 +253,12 @@ CREATE TABLE `cms_dictionary_data` (
 DROP TABLE IF EXISTS `cms_place`;
 CREATE TABLE `cms_place` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `path` varchar(100) NOT NULL COMMENT '模板路径',
   `user_id` bigint(20) default NULL COMMENT '提交用户',
   `check_user_id` bigint(20) default NULL COMMENT '审核用户',
   `item_type` varchar(50) default NULL COMMENT '推荐项目类型',
-  `item_id` bigint(20) default NULL COMMENT '推荐项目ID',
+  `item_id` bigint(20) default NULL COMMENT '推荐项目',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `url` varchar(1000) default NULL COMMENT '超链接',
   `cover` varchar(255) default NULL COMMENT '封面图',
@@ -280,7 +281,7 @@ CREATE TABLE `cms_place` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_place_attribute`;
 CREATE TABLE `cms_place_attribute` (
-  `place_id` bigint(20) NOT NULL COMMENT '位置ID',
+  `place_id` bigint(20) NOT NULL COMMENT '位置',
   `data` longtext COMMENT '数据JSON',
   PRIMARY KEY  (`place_id`)
 ) COMMENT='推荐位数据扩展';
@@ -291,9 +292,9 @@ CREATE TABLE `cms_place_attribute` (
 DROP TABLE IF EXISTS `cms_tag`;
 CREATE TABLE `cms_tag` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
-  `type_id` int(11) default NULL COMMENT '分类ID',
+  `type_id` int(11) default NULL COMMENT '分类',
   `search_count` int(11) NOT NULL COMMENT '搜索次数',
   PRIMARY KEY  (`id`),
   KEY `cms_tag_site_id` (`site_id`,`name`),
@@ -306,7 +307,7 @@ CREATE TABLE `cms_tag` (
 DROP TABLE IF EXISTS `cms_tag_type`;
 CREATE TABLE `cms_tag_type` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `count` int(11) NOT NULL COMMENT '标签数',
   PRIMARY KEY  (`id`),
@@ -319,9 +320,9 @@ CREATE TABLE `cms_tag_type` (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_user_score`;
 CREATE TABLE `cms_user_score`  (
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `item_type` varchar(50) NOT NULL COMMENT '类型',
-  `item_id` bigint(20) NOT NULL COMMENT '项目ID',
+  `item_id` bigint(20) NOT NULL COMMENT '项目',
   `create_date` datetime NOT NULL,
   PRIMARY KEY (`user_id`, `item_type`, `item_id`),
   INDEX `cms_user_score_item_type`(`item_type`, `item_id`, `create_date`),
@@ -333,8 +334,8 @@ CREATE TABLE `cms_user_score`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `cms_user_vote`;
 CREATE TABLE `cms_user_vote`  (
-`vote_id` bigint(20) NOT NULL COMMENT '投票ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+`vote_id` bigint(20) NOT NULL COMMENT '投票',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `item_id` bigint(20) NOT NULL COMMENT '投票选项',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -348,7 +349,7 @@ CREATE TABLE `cms_user_vote`  (
 DROP TABLE IF EXISTS `cms_vote`;
 CREATE TABLE `cms_vote`  (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime NULL COMMENT '结束日期',
   `scores` int(11) NOT NULL COMMENT '总票数',
@@ -399,9 +400,9 @@ CREATE TABLE `cms_word` (
 DROP TABLE IF EXISTS `log_login`;
 CREATE TABLE `log_login` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '用户名',
-  `user_id` bigint(20) default NULL COMMENT '用户ID',
+  `user_id` bigint(20) default NULL COMMENT '用户',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `channel` varchar(50) NOT NULL COMMENT '登录渠道',
   `result` tinyint(1) NOT NULL COMMENT '结果',
@@ -422,8 +423,8 @@ CREATE TABLE `log_login` (
 DROP TABLE IF EXISTS `log_operate`;
 CREATE TABLE `log_operate` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) default NULL COMMENT '用户ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `user_id` bigint(20) default NULL COMMENT '用户',
   `channel` varchar(50) NOT NULL COMMENT '操作渠道',
   `operate` varchar(40) NOT NULL COMMENT '操作',
   `ip` varchar(130) default NULL COMMENT 'IP',
@@ -444,7 +445,7 @@ CREATE TABLE `log_operate` (
 DROP TABLE IF EXISTS `log_task`;
 CREATE TABLE `log_task` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `task_id` int(11) NOT NULL COMMENT '任务',
   `begintime` datetime NOT NULL COMMENT '开始时间',
   `endtime` datetime default NULL COMMENT '结束时间',
@@ -463,8 +464,8 @@ CREATE TABLE `log_task` (
 DROP TABLE IF EXISTS `log_upload`;
 CREATE TABLE `log_upload` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `channel` varchar(50) NOT NULL COMMENT '操作渠道',
   `original_name` varchar(255) DEFAULT NULL COMMENT '原文件名',
   `file_type` varchar(20) NOT NULL COMMENT '文件类型',
@@ -489,9 +490,9 @@ CREATE TABLE `log_upload` (
 -- ----------------------------
 DROP TABLE IF EXISTS `log_visit`;
 CREATE TABLE `log_visit` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `session_id` varchar(50) NOT NULL COMMENT '会话ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `session_id` varchar(50) NOT NULL COMMENT '会话',
   `visit_date` date NOT NULL COMMENT '访问日期',
   `visit_hour` tinyint(4) NOT NULL COMMENT '访问小时',
   `ip` varchar(130) NOT NULL COMMENT 'IP',
@@ -502,7 +503,7 @@ CREATE TABLE `log_visit` (
   `screen_height` int(11) DEFAULT NULL COMMENT '屏幕高度',
   `referer_url` varchar(2048) DEFAULT NULL COMMENT '来源URL',
   `item_type` varchar(50) DEFAULT NULL COMMENT '项目类型',
-  `item_id` varchar(50) DEFAULT NULL COMMENT '项目ID',
+  `item_id` varchar(50) DEFAULT NULL COMMENT '项目',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`id`),
   KEY `log_visit_visit_date` (`site_id`,`visit_date`,`visit_hour`),
@@ -514,7 +515,7 @@ CREATE TABLE `log_visit` (
 -- ----------------------------
 DROP TABLE IF EXISTS `log_visit_day`;
 CREATE TABLE `log_visit_day` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `visit_date` date NOT NULL COMMENT '日期',
   `visit_hour` tinyint(4) NOT NULL COMMENT '小时',
   `pv` bigint(20) NOT NULL COMMENT 'Page Views',
@@ -529,8 +530,8 @@ CREATE TABLE `log_visit_day` (
 -- ----------------------------
 DROP TABLE IF EXISTS `log_visit_session`;
 CREATE TABLE `log_visit_session` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `session_id` varchar(50) NOT NULL COMMENT '会话ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `session_id` varchar(50) NOT NULL COMMENT '会话',
   `visit_date` date NOT NULL COMMENT '日期',
   `last_visit_date` datetime DEFAULT NULL COMMENT '上次访问日期',
   `first_visit_date` datetime DEFAULT NULL COMMENT '首次访问日期',
@@ -545,7 +546,7 @@ CREATE TABLE `log_visit_session` (
 DROP TABLE IF EXISTS `sys_app`;
 CREATE TABLE `sys_app` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `app_key` varchar(50) NOT NULL COMMENT 'APP key',
   `app_secret` varchar(50) NOT NULL COMMENT 'APP secret',
@@ -562,7 +563,7 @@ CREATE TABLE `sys_app` (
 DROP TABLE IF EXISTS `sys_app_client`;
 CREATE TABLE `sys_app_client` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `channel` varchar(20) NOT NULL COMMENT '渠道',
   `uuid` varchar(50) NOT NULL COMMENT '唯一标识',
   `user_id` bigint(20) DEFAULT NULL COMMENT '绑定用户',
@@ -582,7 +583,7 @@ CREATE TABLE `sys_app_client` (
 DROP TABLE IF EXISTS `sys_app_token`;
 CREATE TABLE `sys_app_token` (
   `auth_token` varchar(40) NOT NULL COMMENT '授权验证',
-  `app_id` int(11) NOT NULL COMMENT '应用ID',
+  `app_id` int(11) NOT NULL COMMENT '应用',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
   PRIMARY KEY  (`auth_token`),
@@ -611,7 +612,7 @@ CREATE TABLE `sys_cluster` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config_data`;
 CREATE TABLE `sys_config_data` (
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `code` varchar(50) NOT NULL COMMENT '配置项编码',
   `data` longtext NOT NULL COMMENT '值',
   PRIMARY KEY  (`site_id`,`code`)
@@ -623,9 +624,9 @@ CREATE TABLE `sys_config_data` (
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
-  `parent_id` int(11) default NULL COMMENT '父部门ID',
+  `parent_id` int(11) default NULL COMMENT '父部门',
   `description` varchar(300) default NULL COMMENT '描述',
   `user_id` bigint(20) default NULL COMMENT '负责人',
   `max_sort` INT NOT NULL DEFAULT 1000 COMMENT  '最大内容置顶级别',
@@ -646,8 +647,8 @@ INSERT INTO `sys_dept` VALUES ('1', '1', 'Technical department', null, '', '1', 
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept_category`;
 CREATE TABLE `sys_dept_category` (
-  `dept_id` int(11) NOT NULL COMMENT '部门ID',
-  `category_id` int(11) NOT NULL COMMENT '分类ID',
+  `dept_id` int(11) NOT NULL COMMENT '部门',
+  `category_id` int(11) NOT NULL COMMENT '分类',
   PRIMARY KEY  (`dept_id`,`category_id`)
 ) COMMENT='部门分类';
 
@@ -657,7 +658,7 @@ CREATE TABLE `sys_dept_category` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept_config`;
 CREATE TABLE `sys_dept_config` (
-  `dept_id` int(11) NOT NULL COMMENT '部门ID',
+  `dept_id` int(11) NOT NULL COMMENT '部门',
   `config` varchar(100) NOT NULL COMMENT '配置',
   PRIMARY KEY (`dept_id`,`config`)
 ) COMMENT='部门配置';
@@ -667,7 +668,7 @@ CREATE TABLE `sys_dept_config` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept_page`;
 CREATE TABLE `sys_dept_page` (
-  `dept_id` int(11) NOT NULL COMMENT '部门ID',
+  `dept_id` int(11) NOT NULL COMMENT '部门',
   `page` varchar(100) NOT NULL COMMENT '页面',
   PRIMARY KEY  (`dept_id`,`page`),
   KEY `sys_dept_page_page` (`page`)
@@ -680,7 +681,7 @@ CREATE TABLE `sys_dept_page` (
 DROP TABLE IF EXISTS `sys_domain`;
 CREATE TABLE `sys_domain` (
   `name` varchar(100) NOT NULL COMMENT '域名',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `wild` tinyint(1) NOT NULL COMMENT '通配域名',
   `path` varchar(100) default NULL COMMENT '路径',
   PRIMARY KEY  (`name`),
@@ -700,7 +701,7 @@ INSERT INTO `sys_domain` VALUES ('localhost', '1', '1', '');
 DROP TABLE IF EXISTS `sys_email_token`;
 CREATE TABLE `sys_email_token` (
   `auth_token` varchar(40) NOT NULL COMMENT '验证码',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `email` varchar(100) NOT NULL COMMENT '邮件地址',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `expiry_date` datetime NOT NULL COMMENT '过期日期',
@@ -716,7 +717,7 @@ DROP TABLE IF EXISTS `sys_extend`;
 CREATE TABLE `sys_extend` (
   `id` int(11) NOT NULL auto_increment,
   `item_type` varchar(20) NOT NULL COMMENT '扩展类型',
-  `item_id` int(11) NOT NULL COMMENT '扩展项目ID',
+  `item_id` int(11) NOT NULL COMMENT '扩展项目',
   PRIMARY KEY  (`id`)
 ) COMMENT='扩展';
 
@@ -725,7 +726,7 @@ CREATE TABLE `sys_extend` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_extend_field`;
 CREATE TABLE `sys_extend_field` (
-  `extend_id` int(11) NOT NULL COMMENT '扩展ID',
+  `extend_id` int(11) NOT NULL COMMENT '扩展',
   `code` varchar(20) NOT NULL COMMENT '编码',
   `required` tinyint(1) NOT NULL COMMENT '是否必填',
   `searchable` tinyint(1) NOT NULL COMMENT '是否可搜索',
@@ -734,7 +735,7 @@ CREATE TABLE `sys_extend_field` (
   `description` varchar(100) default NULL COMMENT '解释',
   `input_type` varchar(20) NOT NULL COMMENT '表单类型',
   `default_value` varchar(50) default NULL COMMENT '默认值',
-  `dictionary_id` varchar(20) default NULL COMMENT '数据字典ID',
+  `dictionary_id` varchar(20) default NULL COMMENT '数据字典',
   `sort` int(11) NOT NULL default '0' COMMENT '顺序',
   PRIMARY KEY  (`extend_id`,`code`),
   KEY `sys_extend_field_input_type` (`extend_id`, `input_type`,`searchable`),
@@ -966,7 +967,7 @@ INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, 'icon-search
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_module_lang`;
 CREATE TABLE `sys_module_lang`  (
-  `module_id` varchar(30) NOT NULL COMMENT '模块ID',
+  `module_id` varchar(30) NOT NULL COMMENT '模块',
   `lang` varchar(20) NOT NULL COMMENT '语言',
   `value` varchar(100) NULL DEFAULT NULL COMMENT '值',
   PRIMARY KEY (`module_id`, `lang`),
@@ -1580,7 +1581,7 @@ INSERT INTO `sys_module_lang` VALUES ('word_list', 'zh', '搜索词管理');
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `owns_all_right` tinyint(1) NOT NULL COMMENT '拥有全部权限',
   `show_all_module` tinyint(1) NOT NULL COMMENT '显示全部模块',
@@ -1598,7 +1599,7 @@ INSERT INTO `sys_role` VALUES ('1', '1', 'superuser', '1', '0');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_authorized`;
 CREATE TABLE `sys_role_authorized` (
-  `role_id` int(11) NOT NULL COMMENT '角色ID',
+  `role_id` int(11) NOT NULL COMMENT '角色',
   `url` varchar(100) NOT NULL COMMENT '授权地址',
   PRIMARY KEY  (`role_id`,`url`)
 ) COMMENT='角色授权地址';
@@ -1612,8 +1613,8 @@ CREATE TABLE `sys_role_authorized` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_module`;
 CREATE TABLE `sys_role_module` (
-  `role_id` int(11) NOT NULL COMMENT '角色ID',
-  `module_id` varchar(30) NOT NULL COMMENT '模块ID',
+  `role_id` int(11) NOT NULL COMMENT '角色',
+  `module_id` varchar(30) NOT NULL COMMENT '模块',
   PRIMARY KEY  (`role_id`,`module_id`),
   KEY `sys_role_module_module_id` (`module_id`)
 ) COMMENT='角色授权模块';
@@ -1627,8 +1628,8 @@ CREATE TABLE `sys_role_module` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_user`;
 CREATE TABLE `sys_role_user` (
-  `role_id` int(11) NOT NULL COMMENT '角色ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `role_id` int(11) NOT NULL COMMENT '角色',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   PRIMARY KEY  (`role_id`,`user_id`),
   KEY `sys_role_user_user_id` (`user_id`)
 ) COMMENT='用户角色';
@@ -1644,7 +1645,7 @@ INSERT INTO `sys_role_user` VALUES ('1', '1');
 DROP TABLE IF EXISTS `sys_site`;
 CREATE TABLE `sys_site` (
   `id` smallint(6) NOT NULL auto_increment,
-  `parent_id` smallint(6) DEFAULT NULL COMMENT '父站点ID',
+  `parent_id` smallint(6) DEFAULT NULL COMMENT '父站点',
   `name` varchar(50) NOT NULL COMMENT '站点名',
   `use_static` tinyint(1) NOT NULL COMMENT '启用静态化',
   `site_path` varchar(255) NOT NULL COMMENT '站点地址',
@@ -1667,7 +1668,7 @@ INSERT INTO `sys_site` VALUES ('1', null ,'PublicCMS', '0', '//dev.publiccms.com
 DROP TABLE IF EXISTS `sys_task`;
 CREATE TABLE `sys_task` (
   `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `status` int(11) NOT NULL COMMENT '状态',
   `cron_expression` varchar(50) NOT NULL COMMENT '表达式',
@@ -1686,7 +1687,7 @@ CREATE TABLE `sys_task` (
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
   `id` bigint(20) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(128) NOT NULL COMMENT '密码',
   `salt` varchar(20) DEFAULT NULL COMMENT '混淆码,为空时则密码为md5,为10位时sha512(sha512(password)+salt)',
@@ -1726,8 +1727,8 @@ INSERT INTO `sys_user` VALUES ('1', '1', 'admin', '2134b56595c73a647716b0a8e33f9
 DROP TABLE IF EXISTS `sys_user_token`;
 CREATE TABLE `sys_user_token` (
   `auth_token` varchar(40) NOT NULL COMMENT '登录授权',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `channel` varchar(50) NOT NULL COMMENT '渠道',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `expiry_date` datetime DEFAULT NULL COMMENT '过期日期',
@@ -1744,8 +1745,8 @@ CREATE TABLE `sys_user_token` (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_account`;
 CREATE TABLE `trade_account`  (
-  `id` bigint(20) NOT NULL COMMENT '用户ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `id` bigint(20) NOT NULL COMMENT '用户',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `amount` decimal(10, 2) NOT NULL COMMENT '金额',
   `update_date` datetime NULL DEFAULT NULL COMMENT '更新日期',
   PRIMARY KEY (`id`),
@@ -1757,11 +1758,11 @@ CREATE TABLE `trade_account`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_account_history`;
 CREATE TABLE `trade_account_history` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
   `serial_number` varchar(100) NOT NULL COMMENT '流水号',
-  `account_id` bigint(20) NOT NULL COMMENT '账户ID',
-  `user_id` bigint(20) DEFAULT NULL COMMENT '操作用户ID',
+  `account_id` bigint(20) NOT NULL COMMENT '账户',
+  `user_id` bigint(20) DEFAULT NULL COMMENT '操作用户',
   `amount_change` decimal(10,2) NOT NULL COMMENT '变动金额',
   `amount` decimal(10,2) NOT NULL COMMENT '变动金额',
   `balance` decimal(10,2) NOT NULL COMMENT '变动金额',
@@ -1777,9 +1778,9 @@ CREATE TABLE `trade_account_history` (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_payment`;
 CREATE TABLE `trade_payment`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `amount` decimal(10, 2) NOT NULL COMMENT '金额',
   `description` varchar(255) NULL DEFAULT NULL COMMENT '描述',
   `trade_type` varchar(20) NOT NULL COMMENT '订单类型',
@@ -1789,7 +1790,7 @@ CREATE TABLE `trade_payment`  (
   `ip` varchar(130) NOT NULL COMMENT 'IP地址',
   `status` int(11) NOT NULL COMMENT '状态:0待支付,1已支付,2待退款,3已退款,4已关闭',
   `processed` tinyint(1) NOT NULL COMMENT '已处理',
-  `process_user_id` bigint(20) NULL COMMENT '处理用户ID',
+  `process_user_id` bigint(20) NULL COMMENT '处理用户',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `process_date` datetime DEFAULT NULL COMMENT '处理日期',
@@ -1806,9 +1807,9 @@ CREATE TABLE `trade_payment`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_payment_history`;
 CREATE TABLE `trade_payment_history`  (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
-  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
-  `payment_id` bigint(20) NOT NULL COMMENT '订单ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `payment_id` bigint(20) NOT NULL COMMENT '订单',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `operate` varchar(100) NOT NULL COMMENT '操作',
   `content` text COMMENT '内容',
@@ -1819,13 +1820,14 @@ CREATE TABLE `trade_payment_history`  (
 -- ----------------------------
 -- Table structure for trade_order
 -- ----------------------------
+DROP TABLE IF EXISTS `trade_order`;
 CREATE TABLE `trade_order` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `user_id` bigint(20) NOT NULL COMMENT '用户id',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `amount` decimal(10,2) NOT NULL COMMENT '总金额',
-  `payment_id` bigint(20) DEFAULT NULL COMMENT '支付订单ID',
+  `payment_id` bigint(20) DEFAULT NULL COMMENT '支付订单',
   `address` varchar(255) DEFAULT NULL COMMENT '地址',
   `addressee` varchar(100) DEFAULT NULL COMMENT '收件人',
   `telephone` varchar(100) DEFAULT NULL COMMENT '电话',
@@ -1834,7 +1836,7 @@ CREATE TABLE `trade_order` (
   `status` int(11) NOT NULL COMMENT '状态:0待确认,1无效订单,2已付款,3已退款,4已关闭',
   `confirmed` tinyint(1) NOT NULL COMMENT '已确认',
   `processed` tinyint(1) NOT NULL COMMENT '已处理',
-  `user_id` bigint(20) NULL COMMENT '处理用户ID',
+  `process_user_id` bigint(20) NULL COMMENT '处理用户',
   `process_info` varchar(255) DEFAULT NULL COMMENT '处理信息',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
   `create_date` datetime NOT NULL COMMENT '创建日期',
@@ -1848,10 +1850,11 @@ CREATE TABLE `trade_order` (
 -- ----------------------------
 -- Table structure for trade_order_history
 -- ----------------------------
+DROP TABLE IF EXISTS `trade_order_history`;
 CREATE TABLE `trade_order_history` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `order_id` bigint(20) NOT NULL COMMENT '订单ID',
+  `order_id` bigint(20) NOT NULL COMMENT '订单',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `operate` varchar(100) NOT NULL COMMENT '操作',
   `content` text COMMENT '内容',
@@ -1862,12 +1865,13 @@ CREATE TABLE `trade_order_history` (
 -- ----------------------------
 -- Table structure for trade_order_product
 -- ----------------------------
+DROP TABLE IF EXISTS `trade_order_product`;
 CREATE TABLE `trade_order_product` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `order_id` bigint(20) NOT NULL COMMENT '用户id',
-  `content_id` bigint(20) NOT NULL COMMENT '内容ID',
-  `product_id` bigint(20) NOT NULL COMMENT '产品ID',
+  `order_id` bigint(20) NOT NULL COMMENT '用户',
+  `content_id` bigint(20) NOT NULL COMMENT '内容',
+  `product_id` bigint(20) NOT NULL COMMENT '产品',
   `price` decimal(10,2) NOT NULL COMMENT '价格',
   `quantity` int(11) NOT NULL COMMENT '数量',
   `amount` decimal(10,2) NOT NULL COMMENT '总金额',
@@ -1880,10 +1884,10 @@ CREATE TABLE `trade_order_product` (
 -- ----------------------------
 DROP TABLE IF EXISTS `trade_refund`;
 CREATE TABLE `trade_refund` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(0) NOT NULL COMMENT '站点',
-  `payment_id` bigint(20) NOT NULL COMMENT '订单ID',
-  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `payment_id` bigint(20) NOT NULL COMMENT '订单',
+  `user_id` bigint(20) NOT NULL COMMENT '用户',
   `amount` decimal(10,2) NOT NULL COMMENT '申请退款金额',
   `reason` varchar(255) DEFAULT NULL COMMENT '退款原因',
   `update_date` datetime DEFAULT NULL COMMENT '更新日期',
@@ -1897,3 +1901,5 @@ CREATE TABLE `trade_refund` (
   KEY `trade_refund_create_date` (`create_date`),
   KEY `trade_refund_user_id` (`user_id`,`payment_id`,`status`)
 ) COMMENT='退款申请';
+
+SET FOREIGN_KEY_CHECKS = 1;

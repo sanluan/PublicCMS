@@ -34,16 +34,16 @@ public class TradeOrder implements java.io.Serializable {
 
     @GeneratorColumn(title = "ID")
     private Long id;
-    @GeneratorColumn(title = "站点ID", condition = true)
+    @GeneratorColumn(title = "站点", condition = true)
     @JsonIgnore
     private short siteId;
-    @GeneratorColumn(title = "用户ID", condition = true)
+    @GeneratorColumn(title = "用户", condition = true)
     private long userId;
     @GeneratorColumn(title = "标题", condition = true, like = true)
     private String title;
     @GeneratorColumn(title = "总金额")
     private BigDecimal amount;
-    @GeneratorColumn(title = "支付ID", condition = true)
+    @GeneratorColumn(title = "支付", condition = true)
     private Long paymentId;
     @GeneratorColumn(title = "收货地址")
     private String address;
@@ -61,7 +61,7 @@ public class TradeOrder implements java.io.Serializable {
     private boolean confirmed;
     @GeneratorColumn(title = "是否处理", condition = true)
     private boolean processed;
-    @GeneratorColumn(title = "处理用户ID")
+    @GeneratorColumn(title = "处理用户")
     private Long processUserId;
     @GeneratorColumn(title = "处理信息")
     private String processInfo;

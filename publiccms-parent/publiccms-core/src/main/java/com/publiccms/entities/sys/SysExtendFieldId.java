@@ -17,7 +17,7 @@ public class SysExtendFieldId implements java.io.Serializable {
      * 
      */
     private static final long serialVersionUID = 1L;
-    @GeneratorColumn(title = "扩展ID", condition = true)
+    @GeneratorColumn(title = "扩展", condition = true)
     @JsonIgnore
     private int extendId;
     @GeneratorColumn(title = "字段")
