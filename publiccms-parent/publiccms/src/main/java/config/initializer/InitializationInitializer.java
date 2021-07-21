@@ -55,6 +55,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
             if (file.exists()) {
                 String version = FileUtils.readFileToString(file, CommonConstants.DEFAULT_CHARSET_NAME);
                 if (CmsVersion.getVersion().equals(version)) {
+                    CmsVersion.setInitialized(true);
                     CmsDataSource.initDefaultDataSource();
                     log.info(String.format("PublicCMS %s will start normally in %s", CmsVersion.getVersion(),
                             CommonConstants.CMS_FILEPATH));
