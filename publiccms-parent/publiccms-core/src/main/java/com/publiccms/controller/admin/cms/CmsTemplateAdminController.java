@@ -219,19 +219,17 @@ public class CmsTemplateAdminController {
     @RequestMapping("export")
     @Csrf
     public void export(@RequestAttribute SysSite site, HttpServletResponse response) {
-        if (null != site.getParentId()) {
-            String filePath = siteComponent.getWebTemplateFilePath(site, CommonConstants.SEPARATOR);
-            try {
-                response.setHeader("content-disposition",
-                        "attachment;fileName=" + URLEncoder.encode(site.getName() + "_template.zip", "utf-8"));
-            } catch (UnsupportedEncodingException e1) {
-            }
-            try (ServletOutputStream outputStream = response.getOutputStream();
-                    ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);) {
-                zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
-                ZipUtils.compress(Paths.get(filePath), zipOutputStream, Constants.BLANK);
-            } catch (IOException e) {
-            }
+        String filePath = siteComponent.getWebTemplateFilePath(site, CommonConstants.SEPARATOR);
+        try {
+            response.setHeader("content-disposition",
+                    "attachment;fileName=" + URLEncoder.encode(site.getName() + "_template.zip", "utf-8"));
+        } catch (UnsupportedEncodingException e1) {
+        }
+        try (ServletOutputStream outputStream = response.getOutputStream();
+                ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);) {
+            zipOutputStream.setEncoding(Constants.DEFAULT_CHARSET_NAME);
+            ZipUtils.compress(Paths.get(filePath), zipOutputStream, Constants.BLANK);
+        } catch (IOException e) {
         }
     }
 
