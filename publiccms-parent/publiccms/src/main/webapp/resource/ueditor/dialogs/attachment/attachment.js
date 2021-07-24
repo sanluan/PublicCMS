@@ -439,8 +439,10 @@
             }
 
             uploader.on('fileQueued', function (file) {
-                fileCount++;
-                fileSize += file.size;
+                if (file.ext && acceptExtensions.indexOf(file.ext.toLowerCase()) != -1 && file.size <= imageMaxSize) {
+                    fileCount++;
+                    fileSize += file.size;
+                }
 
                 if (fileCount === 1) {
                     $placeHolder.addClass('element-invisible');
@@ -451,9 +453,11 @@
             });
 
             uploader.on('fileDequeued', function (file) {
-                fileCount--;
-                fileSize -= file.size;
-
+                if (file.ext && acceptExtensions.indexOf(file.ext.toLowerCase()) != -1 && file.size <= imageMaxSize) {
+                    fileCount--;
+                    fileSize -= file.size;
+                }
+                
                 removeFile(file);
                 updateTotalProgress();
             });

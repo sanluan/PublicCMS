@@ -36,6 +36,15 @@ public class HtmlUtils {
                 } else if (contains(source, i + 1, "nbsp;")) {// &quot;
                     buffer.append(" ");
                     i += 5;
+                }else if (contains(source, i + 1, "ldquo;")) {// &quot;
+                    buffer.append("“");
+                    i += 6;
+                }else if (contains(source, i + 1, "rdquo;")) {// &quot;
+                    buffer.append("”");
+                    i += 6;
+                }else if (contains(source, i + 1, "#39;")) {// &quot;
+                    buffer.append("'");
+                    i += 4;
                 } else {
                     buffer.append(c);
                 }

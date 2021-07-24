@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Fri Jul 09 2021 17:23:11 GMT+0800 (中国标准时间)
+ * build: Sat Jul 24 2021 21:58:06 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -737,7 +737,7 @@ var utils = UE.utils = {
     },
 
     /**
-     * 将str中的html符号转义,将转义“'，&，<，"，>”五个字符
+     * 将str中的html符号转义,将转义“'，&，<，"，>，”，“”七个字符
      * @method unhtml
      * @param { String } str 需要转义的字符串
      * @return { String } 转义后的字符串
@@ -751,7 +751,7 @@ var utils = UE.utils = {
      * ```
      */
     unhtml:function (str, reg) {
-        return str ? str.replace(reg || /[&<">'](?:(amp|lt|quot|gt|#39|nbsp|#\d+);)?/g, function (a, b) {
+        return str ? str.replace(reg || /[&<">'](?:(amp|lt|ldquo|rdquo|quot|gt|#39|nbsp|#\d+);)?/g, function (a, b) {
             if (b) {
                 return a;
             } else {
@@ -759,6 +759,8 @@ var utils = UE.utils = {
                     '<':'&lt;',
                     '&':'&amp;',
                     '"':'&quot;',
+                    "“": "&ldquo;",
+                    "”": "&rdquo;",
                     '>':'&gt;',
                     "'":'&#39;'
                 }[a]
@@ -778,6 +780,8 @@ var utils = UE.utils = {
                 '<':'&lt;',
                 '&':'&amp;',
                 '"':'&quot;',
+                "&ldquo;": "“",
+                "&rdquo;": "”",
                 '>':'&gt;',
                 "'":'&#39;'
             }[a]
@@ -9381,7 +9385,10 @@ var filterWord = UE.filterWord = function () {
 var htmlparser = UE.htmlparser = function (htmlstr,ignoreBlank) {
     //todo 原来的方式  [^"'<>\/] 有\/就不能配对上 <TD vAlign=top background=../AAA.JPG> 这样的标签了
     //先去掉了，加上的原因忘了，这里先记录
-    var re_tag = /<(?:(?:\/([^>]+)>)|(?:!--([\S|\s]*?)-->)|(?:([^\s\/<>]+)\s*((?:(?:"[^"]*")|(?:'[^']*')|[^"'<>])*)\/?>))/g,
+    //var re_tag = /<(?:(?:\/([^>]+)>)|(?:!--([\S|\s]*?)-->)|(?:([^\s\/<>]+)\s*((?:(?:"[^"]*")|(?:'[^']*')|[^"'<>])*)\/?>))/g,
+    //以上的正则表达式无法匹配:<div style="text-align:center;font-family:" font-size:14px;"=""><img src="http://hs-album.oss.aliyuncs.com/static/27/78/35/image/20161206/20161206174331_41105.gif" alt="" /><br /></div>
+    //修改为如下正则表达式:
+    var re_tag = /<(?:(?:\/([^>]+)>)|(?:!--([\S|\s]*?)-->)|(?:([^\/\s>]+)((?:\s+[\w\-:.]+(?:\s*=\s*?(?:(?:"[^"]*")|(?:'[^']*')|[^\s"'\/>]+))?)*)[\S\s]*?(\/?)>))/g,
         re_attr = /([\w\-:.]+)(?:(?:\s*=\s*(?:(?:"([^"]*)")|(?:'([^']*)')|([^\s>]+)))|(?=\s|$))/g;
 
     //ie下取得的html可能会有\n存在，要去掉，在处理replace(/[\t\r\n]*/g,'');代码高量的\n不能去除
@@ -14880,6 +14887,7 @@ UE.plugins['paste'] = function () {
                 rtfContent = clipboardData.getData('text/rtf');
             }
             getClipboardData.call(me, function (div) {
+                div.innerHTML = UE.filterWord(div.innerHTML);
                 var wordImages=[];
                 utils.each(domUtils.getElementsByTagName(div, "img"), function (img) {
                     if (img.getAttribute('src') && img.getAttribute('src').indexOf( 'file://' ) === 0  ) {
@@ -16312,6 +16320,12 @@ UE.plugins['list'] = function () {
                     holder.onresize = null;
                     textarea = null;
                     holder = null;
+                },
+                focus: function (){
+                    textarea.focus();
+                },
+                blur: function (){
+                    textarea.blur();
                 }
             };
         },
@@ -16344,6 +16358,15 @@ UE.plugins['list'] = function () {
                     holder.removeChild(dom);
                     dom = null;
                     codeEditor = null;
+                },
+                focus: function (){
+                    codeEditor.focus();
+                },
+                blur: function (){
+                    // codeEditor.blur();
+                    // since codemirror not support blur()
+                    codeEditor.setOption('readOnly', true);
+                    codeEditor.setOption('readOnly', false);
                 }
             };
         }
@@ -16355,6 +16378,8 @@ UE.plugins['list'] = function () {
         var sourceMode = false;
         var sourceEditor;
         var orgSetContent;
+        var orgFocus;
+        var orgBlur;
         opt.sourceEditor = browser.ie  ? 'textarea' : (opt.sourceEditor || 'codemirror');
 
         me.setOpt({
@@ -16461,6 +16486,18 @@ UE.plugins['list'] = function () {
                     me.getContent = function (){
                         return sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
                     };
+                    
+                    orgFocus = me.focus;
+                    orgBlur = me.blur;
+            
+                    me.focus = function(){
+                        sourceEditor.focus();
+                    };
+            
+                    me.blur = function(){
+                        orgBlur.call(me);
+                        sourceEditor.blur();
+                    };
                 } else {
                     me.iframe.style.cssText = bakCssText;
                     var cont = sourceEditor.getContent() || '<p>' + (browser.ie ? '' : '<br/>')+'</p>';
@@ -16479,13 +16516,16 @@ UE.plugins['list'] = function () {
                     sourceEditor = null;
                     //还原getContent方法
                     me.getContent = oldGetContent;
+                    
+                    me.focus = orgFocus;
+                    me.blur = orgBlur;
+
                     var first = me.body.firstChild;
                     //trace:1106 都删除空了，下边会报错，所以补充一个p占位
                     if(!first){
                         me.body.innerHTML = '<p>'+(browser.ie?'':'<br/>')+'</p>';
                         first = me.body.firstChild;
                     }
-
 
                     //要在ifm为显示时ff才能取到selection,否则报错
                     //这里不能比较位置了
@@ -17512,6 +17552,7 @@ UE.plugins['autoheight'] = function () {
         isFullscreen = f
     });
     me.addListener('destroy', function () {
+        domUtils.un(me.window, "scroll", fixedScrollTop);
         me.removeListener('contentchange afterinserthtml keyup mouseup',adjustHeight)
     });
     me.enableAutoHeight = function () {
@@ -17558,17 +17599,20 @@ UE.plugins['autoheight'] = function () {
 
         });
         //修复内容过多时，回到顶部，顶部内容被工具栏遮挡问题
-        var lastScrollY;
-        window.onscroll = function(){
-            if(lastScrollY === null){
-                lastScrollY = this.scrollY
-            }else if(this.scrollY == 0 && lastScrollY != 0){
-                me.window.scrollTo(0,0);
-                lastScrollY = null;
-            }
-        }
+        domUtils.on(me.window, "scroll", fixedScrollTop);
     });
-
+    
+    var lastScrollY;
+    
+    function fixedScrollTop() {
+        if (!me.window) return;
+        if (lastScrollY === null) {
+            lastScrollY = me.window.scrollY;
+        } else if (me.window.scrollY == 0 && lastScrollY != 0) {
+            me.window.scrollTo(0, 0);
+            lastScrollY = null;
+        }
+    }
 
 };
 
@@ -17979,8 +18023,8 @@ UE.plugins['video'] = function (){
         //在table或者td边缘有可能存在选中tr的情况
         var cell = start && domUtils.findParentByTagName(start, ["td", "th"], true),
             tr = cell && cell.parentNode,
-            caption = start && domUtils.findParentByTagName(start, 'caption', true),
-            table = caption ? caption.parentNode : tr && tr.parentNode.parentNode;
+            table = tr && domUtils.findParentByTagName(tr, ["table"]),
+            caption = table && table.getElementsByTagName('caption')[0];
 
         return {
             cell:cell,
@@ -18598,12 +18642,14 @@ UE.plugins['video'] = function (){
             var range = this.cellsRange,
                 leftTopCell = this.getCell(range.beginRowIndex, this.indexTable[range.beginRowIndex][range.beginColIndex].cellIndex);
 
-            if (leftTopCell.tagName == "TH" && range.endRowIndex !== range.beginRowIndex) {
-                var index = this.indexTable,
-                    info = this.getCellInfo(leftTopCell);
-                leftTopCell = this.getCell(1, index[1][info.colIndex].cellIndex);
-                range = this.getCellsRange(leftTopCell, this.getCell(index[this.rowsNum - 1][info.colIndex].rowIndex, index[this.rowsNum - 1][info.colIndex].cellIndex));
-            }
+            // 这段关于行表头或者列表头的特殊处理会导致表头合并范围错误
+            // 为什么有这段代码的原因未明，暂且注释掉，希望原作者看到后出面说明下
+            //if (leftTopCell.tagName == "TH" && range.endRowIndex !== range.beginRowIndex) {
+            //    var index = this.indexTable,
+            //        info = this.getCellInfo(leftTopCell);
+            //    leftTopCell = this.getCell(1, index[1][info.colIndex].cellIndex);
+            //    range = this.getCellsRange(leftTopCell, this.getCell(index[this.rowsNum - 1][info.colIndex].rowIndex, index[this.rowsNum - 1][info.colIndex].cellIndex));
+            //}
 
             // 删除剩余的Cells
             var cells = this.getCells(range);
@@ -18646,6 +18692,7 @@ UE.plugins['video'] = function (){
             var numCols = this.colsNum,
                 table = this.table,
                 row = table.insertRow(rowIndex), cell,
+                thead = null,
                 isInsertTitle = typeof sourceCell == 'string' && sourceCell.toUpperCase() == 'TH';
 
             function replaceTdToTh(colIndex, cell, tableRow) {
@@ -18676,6 +18723,10 @@ UE.plugins['video'] = function (){
                     cell.getAttribute('vAlign') && cell.setAttribute('vAlign', cell.getAttribute('vAlign'));
                     row.appendChild(cell);
                     if(!isInsertTitle) replaceTdToTh(colIndex, cell, row);
+                }
+                if(isInsertTitle) {
+                    thead = table.createTHead();
+                    thead.insertBefore(row, thead.firstChild);
                 }
             } else {
                 var infoRow = this.indexTable[rowIndex],
@@ -23294,7 +23345,8 @@ UE.plugins['catchremoteimage'] = function () {
             catcherFieldName = me.getOpt('catcherFieldName');
 
         var remoteImages = [],
-            imgs = domUtils.getElementsByTagName(me.document, "img"),
+            loadingIMG =  me.options.themePath + me.options.theme + '/images/spacer.gif',
+            imgs = me.document.querySelectorAll('[style*="url"],img'),
             test = function (src, urls) {
                 if (src.indexOf(location.host) != -1 || /(^\.)|(^\/)/.test(src)) {
                     return true;
@@ -23313,9 +23365,27 @@ UE.plugins['catchremoteimage'] = function () {
             if (ci.getAttribute("word_img")) {
                 continue;
             }
-            var src = ci.getAttribute("_src") || ci.src || "";
-            if (/^(https?|ftp):/i.test(src) && !test(src, catcherLocalDomain)) {
-                remoteImages.push(src);
+            if(ci.nodeName == "IMG"){
+                var src = ci.getAttribute("_src") || ci.src || "";
+                if (/^(https?|ftp):/i.test(src) && !test(src, catcherLocalDomain)) {
+                    remoteImages.push(src);
+                    // 添加上传时的uploading动画
+                    domUtils.setAttributes(ci, {
+                        class: "loadingclass",
+                        _src: src,
+                        src: loadingIMG
+                    })
+                }
+            } else {
+                // 获取背景图片url
+                var backgroundImageurl = ci.style.cssText.replace(/.*\s?url\([\'\"]?/, '').replace(/[\'\"]?\).*/, '');
+                if (/^(https?|ftp):/i.test(backgroundImageurl) && !test(backgroundImageurl, catcherLocalDomain)) {
+                    remoteImages.push(backgroundImageurl);
+                    ci.style.cssText = ci.style.cssText.replace(backgroundImageurl, loadingIMG);
+                    domUtils.setAttributes(ci, {
+                        "data-background": backgroundImageurl
+                    })
+                }
             }
         }
 
@@ -23332,15 +23402,53 @@ UE.plugins['catchremoteimage'] = function () {
                     /* 获取源路径和新路径 */
                     var i, j, ci, cj, oldSrc, newSrc, list = info.list;
 
+                    /* 抓取失败统计 */
+                    var catchFailList = [];
+                    /* 抓取成功统计 */
+                    var catchSuccessList = [];
+                    /* 抓取失败时显示的图片 */
+                    var failIMG = me.options.themePath + me.options.theme + '/images/img-cracked.png';
                     for (i = 0; ci = imgs[i++];) {
                         oldSrc = ci.getAttribute("_src") || ci.src || "";
+                        oldBgIMG = ci.getAttribute("data-background") || "";
                         for (j = 0; cj = list[j++];) {
-                            if (oldSrc == cj.source && cj.state == "SUCCESS") {  //抓取失败时不做替换处理
+                            if (oldSrc == cj.source && cj.state == "SUCCESS") {
                                 newSrc = catcherUrlPrefix + cj.url;
+                                // 上传成功是删除uploading动画
+                                domUtils.removeClasses( ci, "loadingclass" );
                                 domUtils.setAttributes(ci, {
                                     "src": newSrc,
-                                    "_src": newSrc
+                                    "_src": newSrc,
+                                    "data-catchResult":"img_catchSuccess"   // 添加catch成功标记
                                 });
+                                catchSuccessList.push(ci);
+                                break;
+                            } else if (oldSrc == cj.source && cj.state == "FAIL") {
+                                // 替换成统一的失败图片
+                                domUtils.removeClasses( ci, "loadingclass" );
+                                domUtils.setAttributes(ci, {
+                                    "src": failIMG,
+                                    "_src": failIMG,
+                                    "data-catchResult":"img_catchFail" // 添加catch失败标记
+                                });
+                                catchFailList.push(ci);
+                                break;
+                            } else if (oldBgIMG == cj.source && cj.state == "SUCCESS") {
+                                newBgIMG = catcherUrlPrefix + cj.url;
+                                ci.style.cssText = ci.style.cssText.replace(loadingIMG, newBgIMG);
+                                domUtils.removeAttributes(ci,"data-background");
+                                domUtils.setAttributes(ci, {
+                                    "data-catchResult":"img_catchSuccess"   // 添加catch成功标记
+                                });
+                                catchSuccessList.push(ci);
+                                break;
+                            } else if (oldBgIMG == cj.source && cj.state == "FAIL"){
+                                ci.style.cssText = ci.style.cssText.replace(loadingIMG, failIMG);
+                                domUtils.removeAttributes(ci,"data-background");
+                                domUtils.setAttributes(ci, {
+                                    "data-catchResult":"img_catchFail"   // 添加catch失败标记
+                                });
+                                catchFailList.push(ci);
                                 break;
                             }
                         }
@@ -24299,6 +24407,7 @@ UE.plugin.register('simpleupload', function (){
                             loader.setAttribute('alt', json.original || '');
                             loader.removeAttribute('id');
                             domUtils.removeClasses(loader, 'loadingclass');
+                            me.fireEvent('contentchange');
                         } else {
                             showErrorLoader && showErrorLoader(json.state);
                         }
@@ -26716,7 +26825,7 @@ UE.ui = baidu.editor.ui = {};
                     options.className =  'edui-for-' + name;
                 }
                 if(cssRules){
-                    options.cssRules = '.edui-default .edui-for-'+ name +' .edui-dialog-content  {'+ cssRules +'}'
+                    options.cssRules = '.edui-for-'+ name +' .edui-dialog-content  {'+ cssRules +'}'
                 }
             }
             this.initOptions(utils.extend({
@@ -26742,6 +26851,7 @@ UE.ui = baidu.editor.ui = {};
             var me = this,
                 theme=this.editor.options.theme;
             if(this.cssRules){
+                this.cssRules = '.edui-' + theme + ' ' + this.cssRules;
                 utils.cssRule('edui-customize-'+this.name+'-style',this.cssRules);
             }
             this.initUIBase();
