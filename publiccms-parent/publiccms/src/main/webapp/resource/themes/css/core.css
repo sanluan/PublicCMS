@@ -29,7 +29,7 @@ a:hover{text-decoration:underline;}
 
 header{display:block;overflow:hidden;height:60px;position:relative;}
 main{overflow:hidden;position:relative;}
-footer{text-align:center;width:100%;height:40px;line-height:40px;z-index:-1;font-size:12px;position: fixed;bottom:0px;}
+footer{text-align:center;width:100%;height:30px;line-height:30px;z-index:-1;font-size:12px;position: fixed;bottom:0px;}
 
 /* Menu */
 header .logo{float:left;width:202px;height:100%;}
@@ -179,13 +179,13 @@ table.list td span.error{z-index:-1;}
 table.nowrap tbody tr{border-bottom-width:1px;border-bottom-style:solid;}
 
 /* Taskbar */
-#taskbar{overflow:hidden;height:40px;border-style:solid;border-width:0;border-color:#0f3255;background-color:#112746;background-repeat:repeat-x;position:absolute;z-index:30;left:0px;display:none;}
+#taskbar{overflow:hidden;height:30px;border-style:solid;border-width:0;border-color:#0f3255;background-color:#112746;position:absolute;z-index:30;left:0px;display:none;}
 #taskbar .taskbarContent{display:block;overflow:hidden;height:100%;position:relative;}
 #taskbar .taskbarMargin{margin:0 20px;}
 #taskbar ul{position:absolute;width:10000px;}
-#taskbar li{float:left;height:40px;max-width:240px;margin-left:2px;padding-right:30px;padding-left:10px;position:relative;cursor:pointer;}
-#taskbar li .taskbutton{float:left;display:block;height:100%;width:100%;display:block;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;line-height:40px;}
-#taskbar .taskbarLeft, #taskbar .taskbarRight{display:block;overflow:hidden;display:none;width:18px;height:100%;position:absolute;top:0;color:#fff;font-size:18px;line-height:40px;text-align:center;}
+#taskbar li{float:left;height:30px;max-width:220px;margin-left:2px;padding-right:30px;padding-left:10px;position:relative;cursor:pointer;}
+#taskbar li .taskbutton{float:left;display:block;height:100%;width:100%;display:block;text-overflow:ellipsis;white-space:nowrap;overflow:hidden;line-height:30px;}
+#taskbar .taskbarLeft, #taskbar .taskbarRight{display:block;overflow:hidden;display:none;width:18px;height:100%;position:absolute;top:0;color:#fff;font-size:18px;line-height:30px;text-align:center;}
 #taskbar .taskbarLeft, #taskbar .taskbarRight{left:2px;cursor:pointer;}
 #taskbar .taskbarLeftDisabled, #taskbar .taskbarRightDisabled{cursor:not-allowed;color:#666;}
 #taskbar .taskbarRight{left:auto;right:0px;}
@@ -236,10 +236,10 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 .langList{position:absolute;right:0px;}
 .langList li{float:right;padding:0px 10px;}
 .langList a,.langList a:hover,.langList li.current-lang a{text-decoration:none;}
-.langList a img{height:20px;position:relative;top:5px;border-radius:50%;margin-right:5px;}
+.langList a img{height:18px;position:relative;top:5px;border-radius:50%;margin-right:5px;}
 
 .themeList li div{background:url(../images/themeButton.png) no-repeat;}
-.themeList{float:left;padding:14px 12px 15px;}
+.themeList{float:left;padding:10px 12px 15px;}
 .themeList li{float:left;padding:0px 3px;}
 .themeList li div{display:block;overflow:hidden;width:13px;height:11px;cursor:pointer;}
 .themeList li.toptry div{background-position:-60px 0;}
