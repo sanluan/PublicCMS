@@ -8,8 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.logging.Log;
@@ -141,8 +139,8 @@ public class FileAdminController {
                     result.put("title", originalName);
                     File dest = File.createTempFile("temp_", suffix);
                     file.transferTo(dest);
-                    if (".docx".equalsIgnoreCase(suffix)) {
-                        result.put("text", DocToHtmlUtils.docxToHtml(dest, new ImageManager(new File(""), "") {
+                    if (".docx".equalsIgnoreCase(suffix) || ".xlsx".equalsIgnoreCase(suffix) || ".xls".equalsIgnoreCase(suffix)) {
+                        ImageManager imageManager = new ImageManager(new File(""), "") {
                             private String fileName;
 
                             @Override
@@ -156,7 +154,7 @@ public class FileAdminController {
                                     FileSize fileSize = CmsFileUtils.getFileSize(filePath, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, new File(imagePath).getName(), fileType,
-                                            file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                                            imageData.length, fileSize.getWidth(), fileSize.getHeight(),
                                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
                                 } catch (IllegalStateException | IOException e) {
                                     e.printStackTrace();
@@ -167,8 +165,13 @@ public class FileAdminController {
                             public String resolve(String uri) {
                                 return site.getSitePath() + fileName;
                             }
-                        }));
-                    } else {
+                        };
+                        if (".docx".equalsIgnoreCase(suffix)) {
+                            result.put("text", DocToHtmlUtils.docxToHtml(dest, imageManager));
+                        } else {
+                            result.put("text", DocToHtmlUtils.excelToHtml(dest, imageManager));
+                        }
+                    } else if (".doc".equalsIgnoreCase(suffix)) {
                         result.put("text", DocToHtmlUtils.docToHtml(dest, new PicturesManager() {
                             @Override
                             public String savePicture(byte[] content, PictureType pictureType, String suggestedName,
@@ -184,7 +187,7 @@ public class FileAdminController {
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
                                     FileSize fileSize = CmsFileUtils.getFileSize(filePath, imagesuffix);
                                     logUploadService.save(new LogUpload(site.getId(), admin.getId(),
-                                            LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, fileType, file.getSize(),
+                                            LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, fileType, content.length,
                                             fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
                                             CommonUtils.getDate(), fileName));
                                     return site.getSitePath() + fileName;
@@ -196,8 +199,9 @@ public class FileAdminController {
 
                         }));
                     }
-                } catch (IllegalStateException | IOException | ParserConfigurationException | TransformerException e) {
+                } catch (Exception e) {
                     log.error(e.getMessage(), e);
+                    result.put("text", e.getMessage());
                 }
             }
         }

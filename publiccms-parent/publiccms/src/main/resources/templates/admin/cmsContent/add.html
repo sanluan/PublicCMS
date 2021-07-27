@@ -214,7 +214,7 @@ $('input[name=timing]',navTab.getCurrentPanel()).click();
                 <dl class="nowrap">
                     <dt>${(model.fieldTextMap['content'])!}:</dt>
                     <dd>
-                        <div><a class="button" href="common/import.html" lookupGroup="" width="500" height="200"><@t.page 'import_word'/></a></div>
+                        <div><a class="button" href="common/import.html" lookupGroup="" width="500" height="200"><@t.page 'import_doc'/></a></div>
                         <textarea name="text" class="editor<#if requiredFieldList?seq_contains('content')> required</#if>" escape="true" editorType="${model.editorType!}">${(attribute.text)!}</textarea>
                     </dd>
                 </dl>
