@@ -800,7 +800,7 @@ INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, 'icon-co
 INSERT INTO `sys_module` VALUES ('config_list_data_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_menu', NULL, NULL, 'icon-gear', 'develop', 1, 2);
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, 'icon-file-text-alt', NULL, 1, 2);
-INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload', NULL, 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,file/doImport,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload', NULL, 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check,cmsContent/reject', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_export', NULL, 'cmsContent/export', '', 'content_list', 0, 0);
@@ -858,7 +858,7 @@ INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 
 INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', NULL, 'icon-th-large', 'config_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, 'icon-key', NULL, 1, 1);
 INSERT INTO `sys_module` VALUES ('myself_content', 'myself/contentList', NULL, 'icon-book', 'myself_menu', 1, 2);
-INSERT INTO `sys_module` VALUES ('myself_content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload', NULL, 'myself_content', 0, 0);
+INSERT INTO `sys_module` VALUES ('myself_content_add', 'cmsContent/add', 'file/doUpload,file/doImport,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload', NULL, 'myself_content', 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_delete', NULL, 'cmsContent/delete', NULL, 'myself_content', 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_publish', NULL, 'cmsContent/publish', NULL, 'myself_content', 0, 0);
 INSERT INTO `sys_module` VALUES ('myself_content_push', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsContent/push_to_place,cmsContent/related', NULL, 'myself_content', 0, 0);
