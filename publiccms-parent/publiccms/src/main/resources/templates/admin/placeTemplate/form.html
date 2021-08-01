@@ -12,7 +12,7 @@
 </#noparse>
 </#if>
 <form method="post" action="<#noparse>${site.dynamicPath}</#noparse>place/save">
-<#if a.allowAnonymous>
+<#if !a.allowAnonymous>
     <input type="hidden" name="_csrf" value="<#noparse><@_csrfToken/></#noparse>"/>
 </#if>
     <input name="path" type="hidden" value="${(path)!}" />
