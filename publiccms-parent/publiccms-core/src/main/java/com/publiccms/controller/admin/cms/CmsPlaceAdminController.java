@@ -1,5 +1,6 @@
 package com.publiccms.controller.admin.cms;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -13,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.DateFormatUtils;
@@ -54,7 +58,10 @@ import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
 import com.publiccms.logic.service.sys.SysUserService;
+import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
+
+import freemarker.template.TemplateException;
 
 /**
  * 
@@ -64,6 +71,7 @@ import com.publiccms.views.pojo.model.ExtendDataParameters;
 @Controller
 @RequestMapping("cmsPlace")
 public class CmsPlaceAdminController {
+    protected final Log log = LogFactory.getLog(getClass());
     @Autowired
     private CmsPlaceService service;
     @Autowired
@@ -80,6 +88,8 @@ public class CmsPlaceAdminController {
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    private TemplateComponent templateComponent;
 
     private String[] ignoreProperties = new String[] { "id", "siteId", "status", "userId", "type", "clicks", "path", "createDate",
             "disabled" };
@@ -139,10 +149,18 @@ public class CmsPlaceAdminController {
                         "save.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
+            CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
             Map<String, String> map = ExtendUtils.getExtentDataMap(extendDataParameters.getExtendDataList(),
-                    metadataComponent.getPlaceMetadata(filePath).getExtendList());
+                    metadata.getExtendList());
             String extentString = ExtendUtils.getExtendString(map);
             attributeService.updateAttribute(entity.getId(), extentString);
+            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                try {
+                    templateComponent.staticPlace(site, entity.getPath(), metadata);
+                } catch (IOException | TemplateException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -174,6 +192,15 @@ public class CmsPlaceAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "refresh.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
+            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
+                try {
+                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+                    templateComponent.staticPlace(site, path, metadata);
+                } catch (IOException | TemplateException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -204,6 +231,15 @@ public class CmsPlaceAdminController {
             service.check(site.getId(), admin.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
+                try {
+                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+                    templateComponent.staticPlace(site, path, metadata);
+                } catch (IOException | TemplateException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -234,6 +270,15 @@ public class CmsPlaceAdminController {
             service.uncheck(site.getId(), ids, path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "check.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
+                try {
+                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+                    templateComponent.staticPlace(site, path, metadata);
+                } catch (IOException | TemplateException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -357,6 +402,15 @@ public class CmsPlaceAdminController {
             service.delete(site.getId(), path);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "clear.place",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
+            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
+                try {
+                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+                    templateComponent.staticPlace(site, path, metadata);
+                } catch (IOException | TemplateException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -388,6 +442,15 @@ public class CmsPlaceAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.place", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
+            if (CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
+                try {
+                    String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
+                    CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
+                    templateComponent.staticPlace(site, path, metadata);
+                } catch (IOException | TemplateException e) {
+                    log.error(e.getMessage(), e);
+                }
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }
