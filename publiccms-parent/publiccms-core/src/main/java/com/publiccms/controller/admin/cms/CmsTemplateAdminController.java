@@ -153,7 +153,7 @@ public class CmsTemplateAdminController {
                             "update.place.template", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
                 templateComponent.clearTemplateCache();
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site, path))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
                     CmsPlaceMetadata metadata = metadataComponent.getPlaceMetadata(filePath);
                     templateComponent.staticPlace(site, path, metadata);
                 }
@@ -324,7 +324,7 @@ public class CmsTemplateAdminController {
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 templateComponent.clearTemplateCache();
-                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site, path))) {
+                if (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path))) {
                     templateComponent.staticPlace(site, path, metadata);
                 }
             } catch (IOException | TemplateException e) {
@@ -390,7 +390,7 @@ public class CmsTemplateAdminController {
     public String publishPlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             HttpServletRequest request, ModelMap model) {
         try {
-            if (CommonUtils.notEmpty(path) && (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site, path)))) {
+            if (CommonUtils.notEmpty(path) && (site.isUseSsi() || CmsFileUtils.exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path)))) {
                 CmsPlaceMetadata metadata = metadataComponent
                         .getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path));
                 templateComponent.staticPlace(site, path, metadata);
