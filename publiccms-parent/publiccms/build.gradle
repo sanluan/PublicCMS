@@ -24,6 +24,10 @@ dependencies {
     testImplementation "org.junit.jupiter:junit-jupiter-engine:${junitVersion}"
     testImplementation "org.springframework:spring-test:${springVersion}"
     testImplementation "org.springframework.boot:spring-boot-devtools:${springBootVersion}"
+    testImplementation ("org.hibernate:hibernate-tools:${hibernateVersion}") {
+        exclude group:"org.eclipse.jdt", module: 'org.eclipse.jdt.core'
+    }
+
     providedCompile "org.mybatis.generator:mybatis-generator-core:${mybatisGenerator}"
     providedCompile "javax.servlet:javax.servlet-api:${servletVersion}"
 }
