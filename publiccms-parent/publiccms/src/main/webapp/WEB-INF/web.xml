@@ -8,19 +8,19 @@
     <display-name>PublicCMS</display-name>
     <error-page>
         <exception-type>java.lang.Throwable</exception-type>
-        <location>/error/500.jsp</location>
+        <location>/error/500.html</location>
     </error-page>
     <error-page>
         <error-code>500</error-code>
-        <location>/error/500.jsp</location>
+        <location>/error/500.html</location>
     </error-page>
     <error-page>
         <error-code>404</error-code>
-        <location>/error/404.jsp</location>
+        <location>/error/404.html</location>
     </error-page>
     <error-page>
         <error-code>403</error-code>
-        <location>/error/403.jsp</location>
+        <location>/error/403.html</location>
     </error-page>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>

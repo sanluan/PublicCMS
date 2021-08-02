@@ -1,19 +1,21 @@
 package boot;
 
 import java.time.Duration;
-
+import java.util.Set;
 
 import org.apache.catalina.valves.RemoteIpValve;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.web.embedded.jetty.JettyServletWebServerFactory;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
 import org.springframework.boot.web.embedded.undertow.UndertowServletWebServerFactory;
+import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.boot.web.servlet.ServletContextInitializer;
 import org.springframework.boot.web.servlet.server.AbstractServletWebServerFactory;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.http.HttpStatus;
 
 import com.publiccms.common.constants.CommonConstants;
 
@@ -58,6 +60,11 @@ public class SpringBootApplication {
             tomcat.addEngineValves(valve);
             factory = tomcat;
         }
+        Set<ErrorPage> errorPageSet = factory.getErrorPages();
+        errorPageSet.add(new ErrorPage(Throwable.class, "/error/500.html"));
+        errorPageSet.add(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error/500.jsp"));
+        errorPageSet.add(new ErrorPage(HttpStatus.NOT_FOUND, "/error/404.html"));
+        errorPageSet.add(new ErrorPage(HttpStatus.FORBIDDEN, "/error/403.html"));
         factory.setPort(Integer.valueOf(System.getProperty("cms.port", "8080")));
         factory.setContextPath(System.getProperty("cms.contextPath", "/publiccms"));
         factory.setDisplayName("PublicCMS");

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
@@ -171,6 +172,15 @@ public class PlaceController {
                 service.delete(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "delete.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+                if (site.isUseSsi() || CmsFileUtils
+                        .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                    try {
+                        templateComponent.staticPlace(site, entity.getPath(), metadata);
+                    } catch (IOException | TemplateException e) {
+                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                        log.error(e.getMessage(), e);
+                    }
+                }
             }
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
@@ -205,7 +215,8 @@ public class PlaceController {
                 service.check(id, user.getId());
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
-                if (site.isUseSsi()) {
+                if (site.isUseSsi() || CmsFileUtils
+                        .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
                     try {
                         templateComponent.staticPlace(site, entity.getPath(), metadata);
                     } catch (IOException | TemplateException e) {
@@ -248,6 +259,15 @@ public class PlaceController {
                 service.uncheck(id);
                 logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
+                if (site.isUseSsi() || CmsFileUtils
+                        .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
+                    try {
+                        templateComponent.staticPlace(site, entity.getPath(), metadata);
+                    } catch (IOException | TemplateException e) {
+                        model.addAttribute(CommonConstants.ERROR, e.getMessage());
+                        log.error(e.getMessage(), e);
+                    }
+                }
             }
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

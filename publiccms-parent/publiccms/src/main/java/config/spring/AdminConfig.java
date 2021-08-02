@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
-import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.publiccms.common.handler.FullBeanNameGenerator;
@@ -55,22 +54,6 @@ public class AdminConfig implements WebMvcConfigurer {
             localeResolver.setDefaultLocale(Locale.forLanguageTag(defaultLocale));
         }
         return localeResolver;
-    }
-
-    /**
-     * 视图层解析器,SpringBoot不支持jsp的加载路径
-     * 
-     * @return jsp view resolver
-     */
-    @Bean
-    public ViewResolver jspViewResolver() {
-        InternalResourceViewResolver bean = new InternalResourceViewResolver();
-        bean.setOrder(1);
-        bean.setPrefix("/WEB-INF/jsp/");
-        bean.setSuffix(".jsp");
-        bean.setContentType("text/html;charset=UTF-8");
-        cacheComponent.registerCachingViewResolverList(bean);
-        return bean;
     }
 
     /**
