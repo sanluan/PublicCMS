@@ -82,7 +82,7 @@
         <!-- https://mvnrepository.com/artifact/jakarta.mail/jakarta.mail-api -->
         <version.mail>1.6.7</version.mail>
         <!-- http://mvnrepository.com/artifact/org.apache.ant/ant -->
-        <version.ant>1.10.9</version.ant>
+        <version.ant>1.10.11</version.ant>
         <!-- http://mvnrepository.com/artifact/javax.transaction/jta -->
         <version.jta>1.1</version.jta>
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
