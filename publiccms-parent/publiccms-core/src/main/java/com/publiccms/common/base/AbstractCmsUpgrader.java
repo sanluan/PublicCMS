@@ -42,11 +42,6 @@ public abstract class AbstractCmsUpgrader {
      */
     public static final String IDENTIFIER_GENERATOR = IDENTIFIER_GENERATOR_IDENTITY;
     protected String version;
-    protected Properties config;
-
-    public AbstractCmsUpgrader(Properties config) {
-        this.config = config;
-    }
 
     /**
      * @param stringWriter

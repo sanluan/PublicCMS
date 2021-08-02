@@ -20,6 +20,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
@@ -44,6 +45,7 @@ import com.publiccms.common.search.MultiTokenFilterFactory;
 import com.publiccms.common.search.MultiTokenizerFactory;
 import com.publiccms.common.tools.AnalyzerDictUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.IdWorker;
 import com.publiccms.logic.component.site.DirectiveComponent;
 import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -58,6 +60,7 @@ import config.initializer.InitializationInitializer;
  *
  */
 @Configuration
+@EnableAspectJAutoProxy
 @ComponentScan(basePackages = "com.publiccms", excludeFilters = { @ComponentScan.Filter(value = { Controller.class }) })
 @MapperScan(basePackages = "com.publiccms.logic.mapper")
 @PropertySource({ "classpath:" + CommonConstants.CMS_CONFIG_FILE })
@@ -67,6 +70,18 @@ public class ApplicationConfig {
 
     @Autowired
     private Environment env;
+
+    /**
+     * 序列生成器
+     *
+     * @return idWorker
+     * @throws PropertyVetoException
+     */
+    @Bean
+    public IdWorker idWorker() throws PropertyVetoException {
+        IdWorker bean = new IdWorker(Long.valueOf(env.getProperty("cms.workerId")));
+        return bean;
+    }
 
     /**
      * 数据源

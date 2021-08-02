@@ -27,14 +27,14 @@
     <@_sysModuleList parentId=parentId advanced=true>
         <#if page.totalCount gt 0>
             <ul>
-                <#list page.list as a>
-                    <li>
-                        <a tname="moduleIds" tvalue="${a.id}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>
-                        <#if deep lte 3>
-                            <@moduleTree a.id deep+1/>
-                        </#if>
-                    </li>
-                </#list>
+            <#list page.list as a>
+                <li>
+                    <a tname="moduleIds" tvalue="${a.id}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>
+                    <#if deep lte 3>
+                        <@moduleTree a.id deep+1/>
+                    </#if>
+                </li>
+            </#list>
             </ul>
         </#if>
     </@_sysModuleList>

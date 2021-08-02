@@ -1,5 +1,7 @@
 package com.publiccms.common.servlet;
 
+import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,8 +10,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -36,8 +41,6 @@ import com.publiccms.common.tools.VerificationUtils;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-
-import static com.publiccms.common.constants.Constants.DEFAULT_CHARSET_NAME;
 
 /**
  *
@@ -84,10 +87,10 @@ public class InstallServlet extends HttpServlet {
      * @param startStep
      * @param fromVersion
      */
-    public InstallServlet(Properties config, String startStep, String fromVersion) {
+    public InstallServlet(String startStep, String fromVersion) {
         this.startStep = startStep;
         this.fromVersion = fromVersion;
-        this.cmsUpgrader = new CmsUpgrader(config);
+        this.cmsUpgrader = new CmsUpgrader();
         this.freemarkerConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         freemarkerConfiguration.setClassForTemplateLoading(getClass(), "/initialization/template/");
         freemarkerConfiguration.setDefaultEncoding(DEFAULT_CHARSET_NAME);
@@ -238,15 +241,28 @@ public class InstallServlet extends HttpServlet {
         }
     }
 
-    private String install(Connection connection, boolean useSimple) throws SQLException, IOException {
+    public static String installDatasource(Connection connection) throws SQLException, IOException {
         StringWriter stringWriter = new StringWriter();
         ScriptRunner runner = new ScriptRunner(connection);
         runner.setLogWriter(null);
         runner.setErrorLogWriter(new PrintWriter(stringWriter));
         runner.setAutoCommit(true);
-        try (InputStream inputStream = getClass().getResourceAsStream("/initialization/sql/initDatabase.sql")) {
+        try (InputStream inputStream = InstallServlet.class.getResourceAsStream("/initialization/sql/initDatasource.sql")) {
             runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
         }
+        return stringWriter.toString();
+    }
+
+    public static String install(Connection connection, boolean useSimple) throws SQLException, IOException {
+        StringWriter stringWriter = new StringWriter();
+        ScriptRunner runner = new ScriptRunner(connection);
+        runner.setLogWriter(null);
+        runner.setErrorLogWriter(new PrintWriter(stringWriter));
+        runner.setAutoCommit(true);
+        try (InputStream inputStream = InstallServlet.class.getResourceAsStream("/initialization/sql/initDatabase.sql")) {
+            runner.runScript(new InputStreamReader(inputStream, CommonConstants.DEFAULT_CHARSET));
+        }
+        stringWriter.append(installDatasource(connection));
         if (useSimple) {
             File file = new File(CommonConstants.CMS_FILEPATH + "/publiccms.sql");
             if (file.exists()) {
@@ -268,6 +284,29 @@ public class InstallServlet extends HttpServlet {
                 StringWriter stringWriter = new StringWriter();
                 try {
                     cmsUpgrader.update(stringWriter, connection, version);
+                    try (PreparedStatement preparedStatement = connection
+                            .prepareStatement("select * from sys_datasource where disabled = 0");
+                            ResultSet resultSet = preparedStatement.executeQuery();) {
+                        while (resultSet.next()) {
+                            String config = resultSet.getString("config");
+                            try {
+                                Properties properties = new Properties();
+                                properties.load(new StringReader(config));
+                                String password = properties.getProperty("jdbc.password");
+                                String encryptPassword = properties.getProperty("jdbc.encryptPassword");
+                                if (null != encryptPassword) {
+                                    password = VerificationUtils.decrypt(VerificationUtils.base64Decode(encryptPassword),
+                                            CommonConstants.ENCRYPT_KEY);
+                                }
+                                try (Connection conn = DatabaseUtils.getConnection(properties.getProperty("jdbc.driverClassName"),
+                                        properties.getProperty("jdbc.url"), properties.getProperty("jdbc.username"), password)) {
+                                    cmsUpgrader.update(stringWriter, connection, version);
+                                }
+                            } catch (Exception e) {
+                                stringWriter.append(e.getMessage());
+                            }
+                        }
+                    }
                     map.put("history", stringWriter.toString());
                     map.put("message", "success");
                 } catch (Exception e) {

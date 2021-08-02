@@ -67,7 +67,7 @@ public class CmsDataSource extends MultiDataSource {
      * @throws IOException
      * @throws PropertyVetoException
      */
-    public static DataSource initDataSource(Properties properties) throws IOException, PropertyVetoException {
+    public static DataSource getDataSource(Properties properties) throws IOException, PropertyVetoException {
         HikariConfig config = new HikariConfig();
         config.setDriverClassName(properties.getProperty("jdbc.driverClassName"));
         config.setJdbcUrl(properties.getProperty("jdbc.url"));
@@ -97,9 +97,10 @@ public class CmsDataSource extends MultiDataSource {
                 if (!initialized && CmsVersion.isInitialized()) {
                     try {
                         Properties properties = loadDatabaseConfig(cmsDataSource.dbconfigFilePath);
-                        DataSource dataSource = initDataSource(properties);
-                        cmsDataSource.getDataSources().put("default", dataSource);
-                        cmsDataSource.setTargetDataSources(cmsDataSource.getDataSources());
+                        DataSource dataSource = getDataSource(properties);
+                        Map<Object, Object> map = new HashMap<>();
+                        map.put("default", dataSource);
+                        cmsDataSource.setTargetDataSources(map);
                         cmsDataSource.setDefaultTargetDataSource(dataSource);
                         cmsDataSource.init();
                         initialized = true;
@@ -129,12 +130,15 @@ public class CmsDataSource extends MultiDataSource {
      */
     public void put(Object name, Object dataSource) {
         dataSources.put(name, dataSource);
+        setTargetDataSources(dataSources);
+        init();
     }
 
     /**
-     * @return database source map
+     * @param name
+     * @return
      */
-    public Map<Object, Object> getDataSources() {
-        return dataSources;
+    public boolean contains(Object name) {
+        return dataSources.containsKey(name);
     }
 }

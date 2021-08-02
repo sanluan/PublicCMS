@@ -6,9 +6,12 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.publiccms.logic.component.site.DatasourceComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.handler.RenderHandler;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.common.handler.PageHandler;
 
 /**
@@ -32,13 +35,19 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
             status = CmsCommentService.STATUS_NORMAL;
             disabled = false;
         }
-        PageHandler page = service.getPage(getSite(handler).getId(), handler.getLong("userId"), handler.getLong("replyId"),
-                handler.getBoolean("emptyReply", false), handler.getLong("replyUserId"), handler.getLong("contentId"),
-                checkUserId, status, disabled, handler.getString("orderField"), handler.getString("orderType"),
-                handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
-        handler.put("page", page).render();
+        SysSite site = getSite(handler);
+        try {
+            CmsDataSource.setDataSourceName(datasourceComponent.getRandomDatabase(site.getId()));
+            PageHandler page = service.getPage(site.getId(), handler.getLong("userId"), handler.getLong("replyId"),
+                    handler.getBoolean("emptyReply", false), handler.getLong("replyUserId"), handler.getLong("contentId"),
+                    checkUserId, status, disabled, handler.getString("orderField"), handler.getString("orderType"),
+                    handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", handler.getInteger("count", 30)));
+            handler.put("page", page).render();
+        } finally {
+            CmsDataSource.resetDataSourceName();
+        }
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;
@@ -46,5 +55,7 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsCommentService service;
+    @Autowired
+    private DatasourceComponent datasourceComponent;
 
 }

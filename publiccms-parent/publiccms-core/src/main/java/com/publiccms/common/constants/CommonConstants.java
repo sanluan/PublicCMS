@@ -79,10 +79,6 @@ public class CommonConstants extends Constants{
      */
     public static final String ERROR = "error";
     
-    /**
-     * 错误页面
-     */
-    public static final String ERROR_PAGE = "error.html";
     
     /**
      * json类型

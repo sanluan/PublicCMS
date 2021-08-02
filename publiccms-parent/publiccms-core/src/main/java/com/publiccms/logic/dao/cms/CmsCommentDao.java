@@ -91,8 +91,24 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
+    /**
+     * @param siteIds
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    public PageHandler getPage(Short[] siteIds, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from CmsComment bean");
+        queryHandler.condition("bean.siteId in (:siteIds)").setParameter("siteIds", siteIds);
+        queryHandler.order("bean.id asc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
+
     @Override
     protected CmsComment init(CmsComment entity) {
+        if (null == entity.getId()) {
+            entity.setId(getId());
+        }
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
         }

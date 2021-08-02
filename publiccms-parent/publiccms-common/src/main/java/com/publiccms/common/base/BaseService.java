@@ -108,7 +108,6 @@ public abstract class BaseService<E> {
     public Serializable save(E entity) {
         return dao.save(entity);
     }
-
     /**
      * @param entityList
      */

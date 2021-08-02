@@ -386,6 +386,19 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
+    /**
+     * @param siteIds
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    public PageHandler getPage(Short[] siteIds, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
+        queryHandler.condition("bean.siteId in (:siteIds)").setParameter("siteIds", siteIds);
+        queryHandler.order("bean.id asc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
+
     @SuppressWarnings("unchecked")
     public List<CmsContent> getListByQuoteId(Short siteId, Long quoteId) {
         QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
@@ -400,6 +413,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
 
     @Override
     protected CmsContent init(CmsContent entity) {
+        if (null == entity.getId()) {
+            entity.setId(getId());
+        }
         Date now = CommonUtils.getDate();
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(now);

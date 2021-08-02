@@ -34,7 +34,6 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
         <ul class="toolBar">
         ${'<#'}if authorizedMap['${entityName?uncap_first}/add']>
             <li><a href="${entityName?uncap_first}/add.html" target="navTab" rel="${entityName?uncap_first}/add"><i class="icon-plus-sign-alt icon-large"></i> <#noparse><@t.page 'button.add'/></#noparse></a></li>
-            <li><a href="${entityName?uncap_first}/add.html?id={sid}" target="navTab" rel="${entityName?uncap_first}/edit"><i class="icon-edit icon-large"></i> <#noparse><@t.page 'button.edit'/></#noparse></a></li>
         ${'</#'}if>
         ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
             <li><a href="${entityName?uncap_first}/delete?_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.batch_delete'/></#noparse>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <#noparse><@t.page 'button.batch_delete'/></#noparse></a></li>
@@ -60,8 +59,11 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
                 <td>${r"${a."+a.name+"!}"}</td>
                 </#list>
                 <td>
+                ${'<#'}if authorizedMap['${entityName?uncap_first}/add']>
+                    <a href="${entityName?uncap_first}/add.html?id=<#noparse>${a.id}</#noparse>" class="edit btnText blue" target="navTab" rel="${entityName?uncap_first}/edit"><i class="icon-edit"></i> <#noparse><@t.page 'button.edit'/></#noparse></a>
+                ${'</#'}if>
                 ${'<#'}if authorizedMap['${entityName?uncap_first}/delete']>
-                    <a href="${entityName?uncap_first}/delete?ids=<#noparse>${a.id}</#noparse>&_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" title="<#noparse><@t.page 'confirm.delete'/></#noparse>"  target="ajaxTodo"><#noparse><@t.page 'button.delete'/></#noparse></a>
+                    <a href="${entityName?uncap_first}/delete?ids=<#noparse>${a.id}</#noparse>&_csrf=<#noparse><@_csrfToken admin=true/></#noparse>" class="btnText warn" title="<#noparse><@t.page 'confirm.delete'/></#noparse>"  target="ajaxTodo"><i class="icon-trash"></i> <#noparse><@t.page 'button.delete'/></#noparse></a>
                 ${'</#'}if>
                 </td>
             <#noparse>

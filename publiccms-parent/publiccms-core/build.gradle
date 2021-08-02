@@ -8,6 +8,8 @@ dependencies {
     implementation  project(path:':publiccms-common', configuration: 'instrumentedJars')
     implementation  project(':publiccms-common')
 
+    implementation "org.springframework:spring-aop:${springVersion}"
+    implementation "org.aspectj:aspectjweaver:${aspectjVersion}"
     implementation "com.zaxxer:HikariCP:${hikariCPVersion}"
     implementation "mysql:mysql-connector-java:${mysqlVersion}"
     implementation "eu.bitwalker:UserAgentUtils:${userAgentUtilsVersion}"

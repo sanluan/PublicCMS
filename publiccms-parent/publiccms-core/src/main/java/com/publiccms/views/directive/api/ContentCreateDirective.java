@@ -146,7 +146,7 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     entity.setUserId(user.getId());
                     service.save(entity);
                     if (CommonUtils.notEmpty(entity.getParentId())) {
-                        service.updateChilds(entity.getParentId(), 1);
+                        service.updateChilds(site.getId(), entity.getParentId(), 1);
                     }
                     logOperateService.save(new LogOperate(site.getId(), user.getId(), app.getChannel(), "save.content",
                             RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), JsonUtils.getString(entity)));

@@ -34,6 +34,8 @@ subprojects {
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
         springBootVersion = "2.5.3"
+        // https://mvnrepository.com/artifact/org.aspectj/aspectjweaver
+        aspectjVersion = "1.9.7"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.13"

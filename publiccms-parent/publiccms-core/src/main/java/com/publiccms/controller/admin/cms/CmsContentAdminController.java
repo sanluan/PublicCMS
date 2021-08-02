@@ -165,9 +165,9 @@ public class CmsContentAdminController {
         } else {
             entity.setSiteId(site.getId());
             entity.setUserId(admin.getId());
-            service.save(entity);
+            service.save(site.getId(), entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
-                service.updateChilds(entity.getParentId(), 1);
+                service.updateChilds(site.getId(), entity.getParentId(), 1);
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "save.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
@@ -497,7 +497,7 @@ public class CmsContentAdminController {
                             !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.changeModel(id, modelId);
+            service.changeModel(site.getId(), id, modelId);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "changeModel.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     new StringBuilder().append(id).append(" to ").append(modelId).toString()));
@@ -711,7 +711,7 @@ public class CmsContentAdminController {
                 if (null != attribute && null != attribute.getText() && attribute.getText().length() > 32767) {
                     long length = attribute.getText().length();
                     int m = 0;
-                    while ((length = length  - 32767) > 0) {
+                    while ((length = length - 32767) > 0) {
                         m++;
                         row.createCell(j++).setCellValue(StringUtils.substring(attribute.getText(), m * 32767, (m + 1) * 32767));
                     }

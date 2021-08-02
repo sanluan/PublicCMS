@@ -151,7 +151,7 @@ public class SysUserService extends BaseService<SysUser> {
      */
     public SysUser updateStatus(Serializable id, boolean status) {
         SysUser entity = getEntity(id);
-        if (null != entity) {
+        if (null != entity && entity.isDisabled() != status) {
             entity.setDisabled(status);
         }
         return entity;

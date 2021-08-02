@@ -37,6 +37,7 @@ import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.IdWorker;
 
 /**
  * DAO基类
@@ -109,6 +110,10 @@ public abstract class BaseDao<E> {
      */
     public E getEntity(Serializable id) {
         return null == id ? null : getSession().get(getEntityClass(), id);
+    }
+
+    public long getId() {
+        return idWorker.nextId();
     }
 
     /**
@@ -233,7 +238,8 @@ public abstract class BaseDao<E> {
 
     /**
      * 获取列表
-    * @param <T>
+     * 
+     * @param <T>
      * @param query
      * @param queryHandler
      * @return results list
@@ -568,4 +574,6 @@ public abstract class BaseDao<E> {
 
     @Autowired
     protected SessionFactory sessionFactory;
+    @Autowired
+    protected IdWorker idWorker;
 }

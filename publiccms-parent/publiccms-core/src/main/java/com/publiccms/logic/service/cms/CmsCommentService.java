@@ -1,8 +1,10 @@
 package com.publiccms.logic.service.cms;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.publiccms.common.annotation.CopyToDatasource;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
@@ -61,11 +64,33 @@ public class CmsCommentService extends BaseService<CmsComment> {
     }
 
     /**
+     * @param siteIds
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Short[] siteIds, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteIds, pageIndex, pageSize);
+    }
+
+    /**
+     * @param siteId
+     * @param entity
+     * @return
+     */
+    @CopyToDatasource
+    public Serializable save(short siteId, CmsComment entity) {
+        return save(entity);
+    }
+
+    /**
      * @param siteId
      * @param ids
      * @param userId
      * @return
      */
+    @CopyToDatasource
     public Set<CmsContent> check(short siteId, Serializable[] ids, long userId) {
         Date now = CommonUtils.getDate();
         Set<CmsContent> contentSet = new HashSet<>();
@@ -91,6 +116,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param ids
      * @return
      */
+    @CopyToDatasource
     public Set<CmsContent> uncheck(short siteId, Serializable[] ids) {
         Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
@@ -114,6 +140,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param replies
      * @return
      */
+    @CopyToDatasource
     public CmsComment updateReplies(short siteId, Serializable id, int replies) {
         CmsComment entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -127,6 +154,7 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @param ids
      * @return
      */
+    @CopyToDatasource
     public Set<CmsContent> delete(short siteId, Serializable[] ids) {
         Set<CmsContent> contentSet = new HashSet<>();
         for (CmsComment entity : getEntitys(ids)) {
@@ -138,6 +166,22 @@ public class CmsCommentService extends BaseService<CmsComment> {
             }
         }
         return contentSet;
+    }
+
+    /**
+     * @param entityList
+     * @return
+     */
+    public List<CmsComment> batchUpdate(List<CmsComment> entityList) {
+        List<CmsComment> resultList = new ArrayList<>();
+        if (CommonUtils.notEmpty(entityList)) {
+            for (CmsComment entity : entityList) {
+                if (null == update(entity.getId(), entity)) {
+                    resultList.add(entity);
+                }
+            }
+        }
+        return resultList;
     }
 
     @Autowired

@@ -95,7 +95,7 @@ public class CmsCommentAdminController {
             if (null != entity.getReplyUserId() && entity.getReplyUserId().equals(admin.getId())) {
                 entity.setReplyUserId(null);
             }
-            service.save(entity);
+            service.save(site.getId(), entity);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "save.cmsComment", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }

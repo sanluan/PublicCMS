@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.publiccms.common.annotation.CopyToDatasource;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.base.HighLighterQuery;
@@ -166,6 +168,17 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
+     * @param siteIds
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    @Transactional(readOnly = true)
+    public PageHandler getPage(Short[] siteIds, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteIds, pageIndex, pageSize);
+    }
+
+    /**
      * @param siteId
      * @param quoteId
      * @return results list
@@ -280,6 +293,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
+    @CopyToDatasource
     public List<CmsContent> refresh(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         List<CmsContent> list = getEntitys(ids);
@@ -303,6 +317,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param id
      * @return result
      */
+    @CopyToDatasource
     public CmsContent check(short siteId, SysUser user, Serializable id) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId() && STATUS_DRAFT != entity.getStatus()
@@ -320,6 +335,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
+    @CopyToDatasource
     public List<CmsContent> check(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -340,6 +356,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
+    @CopyToDatasource
     public List<CmsContent> reject(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -360,6 +377,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return results list
      */
+    @CopyToDatasource
     public List<CmsContent> uncheck(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -381,6 +399,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param category
      * @param attribute
      */
+    @CopyToDatasource
     public void saveQuote(short siteId, Serializable id, CmsContentParameters contentParameters, List<CmsCategory> categoryList,
             CmsModel cmsModel, CmsCategory category, CmsContentAttribute attribute) {
         CmsContent entity = getEntity(id);
@@ -416,6 +435,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param attribute
      * @return categoryIds set
      */
+    @CopyToDatasource
     public Set<Integer> updateQuote(short siteId, Serializable id, CmsContentParameters contentParameters, CmsModel cmsModel,
             CmsCategory category, CmsContentAttribute attribute) {
         CmsContent entity = getEntity(id);
@@ -447,9 +467,35 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
+     * @param siteId
+     * @param entity
+     * @return
+     */
+    @CopyToDatasource
+    public Serializable save(short siteId, CmsContent entity) {
+        return save(entity);
+    }
+
+    /**
      * @param entitys
      */
     public void updateStatistics(Collection<CmsContentStatistics> entitys) {
+        Map<Short, List<CmsContentStatistics>> siteMap = new HashMap<>();
+        for (CmsContentStatistics entityStatistics : entitys) {
+            List<CmsContentStatistics> list = siteMap.computeIfAbsent(entityStatistics.getSiteId(), k -> new ArrayList<>());
+            list.add(entityStatistics);
+        }
+        for (Map.Entry<Short, List<CmsContentStatistics>> entry : siteMap.entrySet()) {
+            contentService.updateStatistics(entry.getKey(), entry.getValue());
+        }
+    }
+
+    /**
+     * @param siteId
+     * @param entitys
+     */
+    @CopyToDatasource
+    public void updateStatistics(short siteId, Collection<CmsContentStatistics> entitys) {
         for (CmsContentStatistics entityStatistics : entitys) {
             CmsContent entity = getEntity(entityStatistics.getId());
             if (null != entity) {
@@ -479,6 +525,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param categoryId
      * @return result
      */
+    @CopyToDatasource
     public CmsContent updateCategoryId(short siteId, Serializable id, int categoryId) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
@@ -488,11 +535,13 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
+     * @param siteId
      * @param id
      * @param num
      * @return result
      */
-    public CmsContent updateChilds(Serializable id, int num) {
+    @CopyToDatasource
+    public CmsContent updateChilds(short siteId, Serializable id, int num) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setChilds(entity.getChilds() + num);
@@ -501,10 +550,12 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
+     * @param siteId
      * @param id
      * @param modelId
      */
-    public void changeModel(Serializable id, String modelId) {
+    @CopyToDatasource
+    public void changeModel(short siteId, Serializable id, String modelId) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setModelId(modelId);
@@ -517,7 +568,8 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param sort
      * @return result
      */
-    public CmsContent sort(Short siteId, Long id, int sort) {
+    @CopyToDatasource
+    public CmsContent sort(short siteId, Long id, int sort) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setSort(sort);
@@ -526,12 +578,14 @@ public class CmsContentService extends BaseService<CmsContent> {
     }
 
     /**
+     * @param siteId
      * @param id
      * @param url
      * @param hasStatic
      * @return result
      */
-    public CmsContent updateUrl(Serializable id, String url, boolean hasStatic) {
+    @CopyToDatasource
+    public CmsContent updateUrl(short siteId, Serializable id, String url, boolean hasStatic) {
         CmsContent entity = getEntity(id);
         if (null != entity) {
             entity.setUrl(url);
@@ -545,6 +599,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param categoryIds
      * @return number of data deleted
      */
+    @CopyToDatasource
     public int deleteByCategoryIds(short siteId, Integer[] categoryIds) {
         return dao.deleteByCategoryIds(siteId, categoryIds);
     }
@@ -555,6 +610,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return list of data deleted
      */
+    @CopyToDatasource
     public List<CmsContent> delete(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -565,7 +621,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                         quote.setDisabled(true);
                     }
                 } else {
-                    updateChilds(entity.getParentId(), -1);
+                    updateChilds(siteId, entity.getParentId(), -1);
                 }
                 entity.setDisabled(true);
                 entityList.add(entity);
@@ -601,6 +657,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param ids
      * @return
      */
+    @CopyToDatasource
     public List<CmsContent> recycle(short siteId, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
@@ -608,7 +665,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 entity.setDisabled(false);
                 entityList.add(entity);
                 if (null != entity.getParentId()) {
-                    updateChilds(entity.getParentId(), 1);
+                    updateChilds(siteId, entity.getParentId(), 1);
                 }
             }
         }
@@ -619,6 +676,7 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param siteId
      * @param ids
      */
+    @CopyToDatasource
     public void realDelete(Short siteId, Long[] ids) {
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && entity.isDisabled()) {
@@ -628,8 +686,26 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
     }
 
+    /**
+     * @param entityList
+     * @return
+     */
+    public List<CmsContent> batchUpdate(List<CmsContent> entityList) {
+        List<CmsContent> resultList = new ArrayList<>();
+        if (CommonUtils.notEmpty(entityList)) {
+            for (CmsContent entity : entityList) {
+                if (null == update(entity.getId(), entity)) {
+                    resultList.add(entity);
+                }
+            }
+        }
+        return resultList;
+    }
+
     @Autowired
     private CmsContentDao dao;
+    @Autowired
+    private CmsContentService contentService;
     @Autowired
     private CmsCategoryService categoryService;
     @Autowired

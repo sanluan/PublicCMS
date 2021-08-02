@@ -132,7 +132,7 @@ public class ContentController {
             entity.setScores(0);
             service.save(entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
-                service.updateChilds(entity.getParentId(), 1);
+                service.updateChilds(site.getId(), entity.getParentId(), 1);
             }
             logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.content",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));

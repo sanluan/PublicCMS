@@ -140,5 +140,4 @@ public class SysSite implements java.io.Serializable {
     public void setDisabled(boolean disabled) {
         this.disabled = disabled;
     }
-
 }

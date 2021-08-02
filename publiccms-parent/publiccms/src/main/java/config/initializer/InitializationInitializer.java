@@ -60,12 +60,12 @@ public class InitializationInitializer implements WebApplicationInitializer {
                     log.info(String.format("PublicCMS %s will start normally in %s", CmsVersion.getVersion(),
                             CommonConstants.CMS_FILEPATH));
                 } else {
-                    createInstallServlet(servletcontext, config, InstallServlet.STEP_CHECKDATABASE, version);
+                    createInstallServlet(servletcontext, InstallServlet.STEP_CHECKDATABASE, version);
                     log.warn(String.format("PublicCMS %s installer will start in %s, please upgrade your database!",
                             CmsVersion.getVersion(), CommonConstants.CMS_FILEPATH));
                 }
             } else {
-                createInstallServlet(servletcontext, config, null, null);
+                createInstallServlet(servletcontext, null, null);
                 log.warn(String.format(
                         "PublicCMS %s installer will start in %s, please configure your database information and initialize the database!",
                         CmsVersion.getVersion(), CommonConstants.CMS_FILEPATH));
@@ -97,8 +97,8 @@ public class InitializationInitializer implements WebApplicationInitializer {
         CommonConstants.CMS_FILEPATH = file.getAbsolutePath();
     }
 
-    private static void createInstallServlet(ServletContext servletcontext, Properties config, String startStep, String version) {
-        Dynamic registration = servletcontext.addServlet("install", new InstallServlet(config, startStep, version));
+    private static void createInstallServlet(ServletContext servletcontext, String startStep, String version) {
+        Dynamic registration = servletcontext.addServlet("install", new InstallServlet(startStep, version));
         registration.setLoadOnStartup(1);
         registration.addMapping(new String[] { INSTALL_SERVLET_MAPPING });
     }
@@ -120,7 +120,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
                 field.set(null, null);
             } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
             }
-            log.info(String.format("new file.encoding = %s" ,Charset.defaultCharset()));
+            log.info(String.format("new file.encoding = %s", Charset.defaultCharset()));
         }
     }
 
