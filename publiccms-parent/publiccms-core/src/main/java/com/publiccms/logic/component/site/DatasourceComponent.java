@@ -367,6 +367,11 @@ public class DatasourceComponent implements SiteCache {
                 saveContentList(datasource, saveFirst, list);
                 if (!page.isLastPage()) {
                     for (int i = 2; i <= page.getTotalPage(); i++) {
+                        try {
+                            Thread.sleep(100L);
+                        } catch (InterruptedException e) {
+                            log.error(e.getMessage());
+                        }
                         list = (List<CmsContent>) contentService.getPage(siteIds, i, PageHandler.MAX_PAGE_SIZE).getList();
                         saveContentList(datasource, saveFirst, list);
                     }
@@ -379,6 +384,11 @@ public class DatasourceComponent implements SiteCache {
                 saveCommentList(datasource, saveFirst, list);
                 if (!page.isLastPage()) {
                     for (int i = 2; i <= page.getTotalPage(); i++) {
+                        try {
+                            Thread.sleep(100L);
+                        } catch (InterruptedException e) {
+                            log.error(e.getMessage());
+                        }
                         list = (List<CmsComment>) commentService.getPage(siteIds, i, PageHandler.MAX_PAGE_SIZE).getList();
                         saveCommentList(datasource, saveFirst, list);
                     }
