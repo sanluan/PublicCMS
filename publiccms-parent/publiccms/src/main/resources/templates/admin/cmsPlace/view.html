@@ -17,7 +17,7 @@
     <dl>
         <dt><@t.page 'publish_date'/>:</dt>
         <dd>
-            ${(a.publishDate)}
+            ${(a.publishDate)!}
         </dd>
     </dl>
 <#if (a.cover)?has_content>
