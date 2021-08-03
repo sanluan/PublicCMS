@@ -87,9 +87,9 @@ public class ScheduledTaskComponent {
     }
     
     /**
-     * 30秒种清理已禁用的数据源
+     * 30分钟清理已禁用的数据源
      */
-    @Scheduled(fixedDelay = 30 * 1000L)
+    @Scheduled(cron = "01 0/30 * * * ?")
     public void cleanDisabledDatasource() {
         if (CmsVersion.isInitialized()) {
             synchronized (datasourceComponent) {
