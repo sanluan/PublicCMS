@@ -32,7 +32,12 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
      */
     private final static String VERSION_20170708 = "V2017.0708", VERSION_20180210 = "V4.0.20180210",
             VERSION_180707 = "V4.0.180707", VERSION_180825 = "V4.0.180825", VERSION_181024 = "V4.0.181024",
-            VERSION_190312 = "V4.0.190312", VERSION_202004 = "V4.0.202004", VERSION_202011 = "V4.0.202011";
+            VERSION_190312 = "V4.0.190312", VERSION_202004 = "V4.0.202004", VERSION_202011 = "V4.0.202011",
+            VERSION_202107 = "V4.0.202107";
+    /**
+    *
+    */
+    private final static List<String> UPDATE_DATAOURCE_VERSION_LIST = Arrays.asList(VERSION_202107);
     /**
      *
      */
@@ -63,6 +68,20 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             runScript(stringWriter, connection, VERSION_202004, VERSION_202011);
         case VERSION_202011:
             runScript(stringWriter, connection, VERSION_202011, CmsVersion.getVersion());
+        }
+    }
+
+    @Override
+    public boolean needUpdateDatasource(String fromVersion) {
+        return UPDATE_DATAOURCE_VERSION_LIST.contains(fromVersion);
+    }
+
+    @Override
+    public void updateDatasource(StringWriter stringWriter, Connection connection, String fromVersion)
+            throws SQLException, IOException {
+        switch (fromVersion) {
+        case VERSION_202107:
+            runScript(stringWriter, connection, "datasource-" + VERSION_202107, CmsVersion.getVersion());
         }
     }
 
@@ -103,4 +122,5 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
     public int getDefaultPort() {
         return 3306;
     }
+
 }

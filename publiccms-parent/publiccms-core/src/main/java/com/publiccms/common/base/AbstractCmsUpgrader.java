@@ -54,6 +54,26 @@ public abstract class AbstractCmsUpgrader {
             throws SQLException, IOException;
 
     /**
+     * @param stringWriter
+     * @param connection
+     * @param fromVersion
+     * @throws SQLException
+     * @throws IOException
+     */
+    public abstract void updateDatasource(StringWriter stringWriter, Connection connection, String fromVersion)
+            throws SQLException, IOException;
+
+    /**
+     * @param stringWriter
+     * @param connection
+     * @param fromVersion
+     * @return is needed to update datasource
+     * @throws SQLException
+     * @throws IOException
+     */
+    public abstract boolean needUpdateDatasource(String fromVersion);
+
+    /**
      * @return version list
      */
     public abstract List<String> getVersionList();
