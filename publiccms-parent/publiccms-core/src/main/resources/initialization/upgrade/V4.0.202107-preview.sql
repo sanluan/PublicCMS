@@ -5,14 +5,23 @@ CREATE TABLE `sys_site_datasource` (
   `site_id` smallint(11) NOT NULL COMMENT '站点ID',
   `datasource` varchar(50) NOT NULL COMMENT '数据源名称',
   PRIMARY KEY (`site_id`,`datasource`),
-  KEY `sys_site_datasource_datasource` (`datasource`) 
+  KEY `sys_site_datasource_datasource` (`datasource`)
 ) COMMENT='站点数据源';
-ALTER TABLE `cms_content_file` 
+DROP TABLE IF EXISTS `sys_datasource`;
+CREATE TABLE `sys_datasource` (
+  `name` varchar(50) NOT NULL COMMENT '名称',
+  `config` varchar(1000) NOT NULL COMMENT '配置',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
+  `update_date` datetime DEFAULT NULL COMMENT '更新日期',
+  `disabled` tinyint(1) NOT NULL COMMENT '禁用',
+  PRIMARY KEY (`name`)
+) COMMENT='数据源';
+ALTER TABLE `cms_content_file`
 	DROP INDEX `cms_content_file_content_id`,
 	DROP INDEX `cms_content_file_sort`,
 	DROP INDEX `cms_content_file_user_id`,
 	ADD INDEX `cms_content_file_content_id`(`content_id`, `sort`);
-ALTER TABLE `cms_content` 
+ALTER TABLE `cms_content`
     MODIFY COLUMN `id` bigint(20) NOT NULL FIRST;
-ALTER TABLE `cms_comment` 
+ALTER TABLE `cms_comment`
     MODIFY COLUMN `id` bigint(20) NOT NULL FIRST;

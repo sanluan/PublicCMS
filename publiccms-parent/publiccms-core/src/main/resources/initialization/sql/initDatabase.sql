@@ -544,10 +544,10 @@ CREATE TABLE `sys_config_data` (
   `data` longtext NOT NULL COMMENT '值',
   PRIMARY KEY  (`site_id`,`code`)
 ) COMMENT='站点配置';
-DROP TABLE IF EXISTS `sys_datasource`;
 -- ----------------------------
 -- Table structure for sys_datasource
 -- ----------------------------
+DROP TABLE IF EXISTS `sys_datasource`;
 CREATE TABLE `sys_datasource` (
   `name` varchar(50) NOT NULL COMMENT '名称',
   `config` varchar(1000) NOT NULL COMMENT '配置',
@@ -1607,7 +1607,7 @@ CREATE TABLE `sys_site_datasource` (
   `site_id` smallint(11) NOT NULL COMMENT '站点ID',
   `datasource` varchar(50) NOT NULL COMMENT '数据源名称',
   PRIMARY KEY (`site_id`,`datasource`),
-  KEY `sys_site_datasource_datasource` (`datasource`) 
+  KEY `sys_site_datasource_datasource` (`datasource`)
 ) COMMENT='站点数据源';
 -- ----------------------------
 -- Table structure for sys_task
