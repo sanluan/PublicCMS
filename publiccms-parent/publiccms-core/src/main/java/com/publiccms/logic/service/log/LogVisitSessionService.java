@@ -44,12 +44,13 @@ public class LogVisitSessionService extends BaseService<LogVisitSession> {
     }
 
     /**
+     * @param siteId 
      * @param visitDate
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<LogVisitDay> getDayList(Date visitDate) {
-        return dao.getDayList(visitDate);
+    public List<LogVisitDay> getDayList(Short siteId, Date visitDate) {
+        return dao.getDayList(siteId, visitDate);
     }
 
     /**

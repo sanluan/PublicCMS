@@ -42,23 +42,25 @@ public class LogVisitService extends BaseService<LogVisit> {
     }
 
     /**
+     * @param siteId 
      * @param startCreateDate
      * @param endCreateDate
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<LogVisitSession> getSessionList(Date startCreateDate, Date endCreateDate) {
-        return dao.getSessionList(startCreateDate, endCreateDate);
+    public List<LogVisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate) {
+        return dao.getSessionList(siteId, startCreateDate, endCreateDate);
     }
 
     /**
+     * @param siteId
      * @param visitDate
      * @param visitHour
      * @return results page
      */
     @Transactional(readOnly = true)
-    public List<LogVisitDay> getHourList(Date visitDate, Byte visitHour) {
-        return dao.getHourList(visitDate, visitHour);
+    public List<LogVisitDay> getHourList(Short siteId, Date visitDate, Byte visitHour) {
+        return dao.getHourList(siteId, visitDate, visitHour);
     }
 
     /**

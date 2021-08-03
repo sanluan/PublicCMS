@@ -57,15 +57,20 @@ public class LogVisitDao extends BaseDao<LogVisit> {
     }
 
     /**
+     * @param siteId 
      * @param visitDate
      * @param visitHour
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<LogVisitDay> getHourList(Date visitDate, byte visitHour) {
+    public List<LogVisitDay> getHourList(Short siteId, Date visitDate, byte visitHour) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogVisitDay(bean.siteId,bean.visitDate,bean.visitHour,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from LogVisit bean");
-        queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate", DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
+        if (null != siteId) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate",
+                DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
         queryHandler.condition("bean.visitHour = :visitHour").setParameter("visitHour", visitHour);
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.visitDate");
@@ -74,14 +79,18 @@ public class LogVisitDao extends BaseDao<LogVisit> {
     }
 
     /**
+     * @param siteId 
      * @param startCreateDate
      * @param endCreateDate
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<LogVisitSession> getSessionList(Date startCreateDate, Date endCreateDate) {
+    public List<LogVisitSession> getSessionList(Short siteId,Date startCreateDate, Date endCreateDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogVisitSession(bean.siteId,bean.sessionId,bean.visitDate,max(bean.createDate), min(bean.createDate), bean.ip, count(*)) from LogVisit bean");
+        if (null != siteId) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
         if (null != startCreateDate) {
             queryHandler.condition("bean.createDate > :startCreateDate").setParameter("startCreateDate", startCreateDate);
         }

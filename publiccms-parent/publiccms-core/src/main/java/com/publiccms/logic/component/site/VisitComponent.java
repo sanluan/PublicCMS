@@ -37,7 +37,7 @@ public class VisitComponent implements Cache {
 
     public void dealLastMinuteVisitLog() {
         Date now = CommonUtils.getMinuteDate();
-        List<LogVisitSession> entityList = logVisitService.getSessionList(DateUtils.addMinutes(now, -2),
+        List<LogVisitSession> entityList = logVisitService.getSessionList(null, DateUtils.addMinutes(now, -2),
                 DateUtils.addMinutes(now, -1));
         logVisitSessionService.save(entityList);
     }
@@ -45,14 +45,14 @@ public class VisitComponent implements Cache {
     public void dealLastHourVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.HOUR_OF_DAY, -1);
-        List<LogVisitDay> entityList = logVisitService.getHourList(now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY));
+        List<LogVisitDay> entityList = logVisitService.getHourList(null, now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY));
         logVisitDayService.save(entityList);
     }
 
     public void dealLastDayVisitLog() {
         Calendar now = Calendar.getInstance();
         now.add(Calendar.DAY_OF_MONTH, -1);
-        List<LogVisitDay> entityList = logVisitSessionService.getDayList(now.getTime());
+        List<LogVisitDay> entityList = logVisitSessionService.getDayList(null, now.getTime());
         logVisitDayService.save(entityList);
     }
 

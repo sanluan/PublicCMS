@@ -50,9 +50,9 @@ public class LogVisitDayService extends BaseService<LogVisitDay> {
             if (hourAnalytics) {
                 Calendar c = Calendar.getInstance();
                 ((List<LogVisitDay>) page.getList()).addAll(0,
-                        logVisitService.getHourList(now, (byte) c.get(Calendar.HOUR_OF_DAY)));
+                        logVisitService.getHourList(siteId, now, (byte) c.get(Calendar.HOUR_OF_DAY)));
             } else {
-                ((List<LogVisitDay>) page.getList()).addAll(0, logVisitSessionService.getDayList(now));
+                ((List<LogVisitDay>) page.getList()).addAll(0, logVisitSessionService.getDayList(siteId, now));
             }
         }
         return page;

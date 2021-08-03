@@ -56,14 +56,19 @@ public class LogVisitSessionDao extends BaseDao<LogVisitSession> {
     }
 
     /**
+     * @param siteId
      * @param visitDate
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<LogVisitDay> getDayList(Date visitDate) {
+    public List<LogVisitDay> getDayList(Short siteId, Date visitDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogVisitDay(bean.id.siteId,bean.id.visitDate,sum(bean.pv),count(distinct bean.id.sessionId),count(distinct bean.ip)) from LogVisitSession bean");
-        queryHandler.condition("bean.id.visitDate = :visitDate").setParameter("visitDate", DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
+        if (null != siteId) {
+            queryHandler.condition("bean.id.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        queryHandler.condition("bean.id.visitDate = :visitDate").setParameter("visitDate",
+                DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
         queryHandler.group("bean.id.siteId");
         queryHandler.group("bean.id.visitDate");
         return (List<LogVisitDay>) getList(queryHandler);
