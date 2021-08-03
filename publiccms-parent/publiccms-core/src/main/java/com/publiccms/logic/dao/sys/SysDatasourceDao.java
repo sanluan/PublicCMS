@@ -1,5 +1,8 @@
 package com.publiccms.logic.dao.sys;
 
+import java.util.Date;
+import java.util.List;
+
 // Generated 2021-8-2 11:31:34 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.stereotype.Repository;
@@ -35,6 +38,19 @@ public class SysDatasourceDao extends BaseDao<SysDatasource> {
         }
         queryHandler.order("bean.createDate ").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
+    }
+
+    /**
+     * @param startUpdateDate
+     * @return results list
+     */
+    @SuppressWarnings("unchecked")
+    public List<SysDatasource> getList(Date startUpdateDate) {
+        QueryHandler queryHandler = getQueryHandler("from SysDatasource bean");
+        queryHandler.condition("bean.disabled = :disabled").setParameter("disabled", true);
+        queryHandler.condition("bean.updateDate is not null");
+        queryHandler.condition("bean.updateDate >= :updateDate").setParameter("updateDate", startUpdateDate);
+        return (List<SysDatasource>) getList(queryHandler);
     }
 
     @Override

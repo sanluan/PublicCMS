@@ -1,6 +1,8 @@
 package com.publiccms.logic.service.sys;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 // Generated 2021-8-2 11:31:34 by com.publiccms.common.generator.SourceGenerator
 
@@ -33,6 +35,14 @@ public class SysDatasourceService extends BaseService<SysDatasource> {
     @Transactional(readOnly = true)
     public PageHandler getPage(Boolean disabled, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(disabled, orderType, pageIndex, pageSize);
+    }
+    
+    /**
+     * @param startUpdateDate
+     * @return results list
+     */
+    public List<SysDatasource> getList(Date startUpdateDate) {
+        return dao.getList(startUpdateDate);
     }
 
     /**

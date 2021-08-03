@@ -171,8 +171,9 @@ public class SysDatasourceAdminController {
         }
         SysDatasource entity = service.getEntity(id);
         if (null != entity) {
-            service.disabled(id);
+            service.disabled(entity.getName());
             siteDatasourceService.deleteByDatasource(entity.getName());
+            datasourceComponent.removeDatasource(site.getId(), entity.getName());
             logOperateService
                     .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "disable.datasource",
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));

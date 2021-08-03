@@ -31,6 +31,10 @@ public class CmsDataSource extends MultiDataSource {
     /**
      * 
      */
+    public static final String DEFAULT_DATABASE_NAME = "default";
+    /**
+     * 
+     */
     public static final String DATABASE_CONFIG_TEMPLATE = "config/database-template.properties";
     private static volatile CmsDataSource cmsDataSource;
     private String dbconfigFilePath;
@@ -99,7 +103,7 @@ public class CmsDataSource extends MultiDataSource {
                         Properties properties = loadDatabaseConfig(cmsDataSource.dbconfigFilePath);
                         DataSource dataSource = getDataSource(properties);
                         Map<Object, Object> map = new HashMap<>();
-                        map.put("default", dataSource);
+                        map.put(DEFAULT_DATABASE_NAME, dataSource);
                         cmsDataSource.setTargetDataSources(map);
                         cmsDataSource.setDefaultTargetDataSource(dataSource);
                         cmsDataSource.init();
@@ -130,6 +134,15 @@ public class CmsDataSource extends MultiDataSource {
      */
     public void put(Object name, Object dataSource) {
         dataSources.put(name, dataSource);
+        setTargetDataSources(dataSources);
+        init();
+    }
+
+    /**
+     * @param name
+     */
+    public void remove(Object name) {
+        dataSources.remove(name);
         setTargetDataSources(dataSources);
         init();
     }

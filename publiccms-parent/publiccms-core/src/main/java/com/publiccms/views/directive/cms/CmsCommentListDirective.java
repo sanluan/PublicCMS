@@ -37,7 +37,7 @@ public class CmsCommentListDirective extends AbstractTemplateDirective {
         }
         SysSite site = getSite(handler);
         try {
-            CmsDataSource.setDataSourceName(datasourceComponent.getRandomDatabase(site.getId()));
+            CmsDataSource.setDataSourceName(datasourceComponent.getRandomDatasource(site.getId()));
             PageHandler page = service.getPage(site.getId(), handler.getLong("userId"), handler.getLong("replyId"),
                     handler.getBoolean("emptyReply", false), handler.getLong("replyUserId"), handler.getLong("contentId"),
                     checkUserId, status, disabled, handler.getString("orderField"), handler.getString("orderType"),

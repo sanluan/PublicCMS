@@ -65,7 +65,7 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
         queryEntity.setStartPublishDate(handler.getDate("startPublishDate"));
         try {
             if (!handler.getBoolean("advanced", false)) {
-                CmsDataSource.setDataSourceName(datasourceComponent.getRandomDatabase(site.getId()));
+                CmsDataSource.setDataSourceName(datasourceComponent.getRandomDatasource(site.getId()));
             }
             PageHandler page = service.getPage(queryEntity, handler.getBoolean("containChild"), handler.getString("orderField"),
                     handler.getString("orderType"), handler.getInteger("pageIndex", 1),

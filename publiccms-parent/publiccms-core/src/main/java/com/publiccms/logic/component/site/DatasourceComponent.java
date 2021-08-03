@@ -7,11 +7,13 @@ import java.lang.reflect.Method;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -52,10 +54,6 @@ import com.publiccms.logic.service.sys.SysSiteDatasourceService;
 @Component
 public class DatasourceComponent implements SiteCache {
 
-    @Pointcut("@annotation(com.publiccms.common.annotation.CopyToDatasource)")
-    public void copy() {
-    }
-
     protected final Log log = LogFactory.getLog(getClass());
     private static ExecutorService pool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
     @Autowired
@@ -70,33 +68,36 @@ public class DatasourceComponent implements SiteCache {
     private CmsDataSource dataSource;
     private CacheEntity<Short, List<String>> cache;
 
-    /**
-     * @param siteId
-     * @param config
-     * @return datasource list
-     */
-    private List<String> getDatasourceList(short siteId) {
-        List<String> datasources = cache.get(siteId);
-        if (null == datasources) {
-            synchronized (cache) {
-                datasources = cache.get(siteId);
-                if (null == datasources) {
-                    datasources = new ArrayList<>();
-                    List<SysSiteDatasource> list = siteDatasourceService.getList(siteId, null);
-                    for (SysSiteDatasource siteDatasource : list) {
-                        datasources.add(siteDatasource.getId().getDatasource());
-                    }
-                    cache.put(siteId, datasources);
-                }
-            }
-        }
-        return datasources;
+    @Pointcut("@annotation(com.publiccms.common.annotation.CopyToDatasource)")
+    public void copy() {
     }
 
-    private void createDatasource(SysDatasource entity) throws IOException, PropertyVetoException {
-        Properties properties = new Properties();
-        properties.load(new StringReader(entity.getConfig()));
-        dataSource.put(entity.getName(), CmsDataSource.getDataSource(properties));
+    @Around("copy()")
+    public Object copy(ProceedingJoinPoint pjp) throws Throwable {
+        short siteId = 0;
+        MethodSignature ms = (MethodSignature) pjp.getSignature();
+        Method method = ms.getMethod();
+        CopyToDatasource annotation = method.getAnnotation(CopyToDatasource.class);
+        String field = annotation.field();
+        Object[] args = pjp.getArgs();
+        String[] parameterNames = ms.getParameterNames();
+        for (int i = 0; i < parameterNames.length; i++) {
+            if (field.equalsIgnoreCase(parameterNames[i])) {
+                siteId = (short) args[i];
+                break;
+            }
+        }
+        if (0 != siteId) {
+            try {
+                Object result = pjp.proceed();
+                pool.execute(new WriteTask(siteId, pjp));
+                return result;
+            } finally {
+                CmsDataSource.resetDataSourceName();
+            }
+        } else {
+            return pjp.proceed();
+        }
     }
 
     /**
@@ -143,10 +144,24 @@ public class DatasourceComponent implements SiteCache {
     }
 
     /**
+     * @param datasource
+     * @param siteId
+     */
+    public void removeDatasource(short siteId, String datasource) {
+        if (dataSource.contains(datasource)) {
+            dataSource.remove(datasource);
+        }
+        List<String> list = cache.get(siteId);
+        if (null != list) {
+            list.remove(datasource);
+        }
+    }
+
+    /**
      * @param siteId
      * @return
      */
-    public String getRandomDatabase(short siteId) {
+    public String getRandomDatasource(short siteId) {
         List<String> datasourceList = getDatasourceList(siteId);
         if (CommonUtils.notEmpty(datasourceList)) {
             String datasource;
@@ -169,35 +184,7 @@ public class DatasourceComponent implements SiteCache {
                 }
             }
         }
-        return null;
-    }
-
-    @Around("copy()")
-    public Object copy(ProceedingJoinPoint pjp) throws Throwable {
-        short siteId = 0;
-        MethodSignature ms = (MethodSignature) pjp.getSignature();
-        Method method = ms.getMethod();
-        CopyToDatasource annotation = method.getAnnotation(CopyToDatasource.class);
-        String field = annotation.field();
-        Object[] args = pjp.getArgs();
-        String[] parameterNames = ms.getParameterNames();
-        for (int i = 0; i < parameterNames.length; i++) {
-            if (field.equalsIgnoreCase(parameterNames[i])) {
-                siteId = (short) args[i];
-                break;
-            }
-        }
-        if (0 != siteId) {
-            try {
-                Object result = pjp.proceed();
-                pool.execute(new WriteTask(siteId, pjp));
-                return result;
-            } finally {
-                CmsDataSource.resetDataSourceName();
-            }
-        } else {
-            return pjp.proceed();
-        }
+        return CmsDataSource.DEFAULT_DATABASE_NAME;
     }
 
     private void saveContentList(String datasource, boolean saveFirst, List<CmsContent> list) {
@@ -268,6 +255,35 @@ public class DatasourceComponent implements SiteCache {
         cache = cacheEntityFactory.createCacheEntity("datasource");
     }
 
+    /**
+     * @param siteId
+     * @param config
+     * @return datasource list
+     */
+    private List<String> getDatasourceList(short siteId) {
+        List<String> datasources = cache.get(siteId);
+        if (null == datasources) {
+            synchronized (cache) {
+                datasources = cache.get(siteId);
+                if (null == datasources) {
+                    datasources = new ArrayList<>();
+                    List<SysSiteDatasource> list = siteDatasourceService.getList(siteId, null);
+                    for (SysSiteDatasource siteDatasource : list) {
+                        datasources.add(siteDatasource.getId().getDatasource());
+                    }
+                    cache.put(siteId, datasources);
+                }
+            }
+        }
+        return datasources;
+    }
+
+    private void createDatasource(SysDatasource entity) throws IOException, PropertyVetoException {
+        Properties properties = new Properties();
+        properties.load(new StringReader(entity.getConfig()));
+        dataSource.put(entity.getName(), CmsDataSource.getDataSource(properties));
+    }
+
     @Override
     public void clear() {
         cache.clear();
@@ -276,6 +292,21 @@ public class DatasourceComponent implements SiteCache {
     @Override
     public void clear(short siteId) {
         cache.remove(siteId);
+    }
+
+    public void cleanDisabledDatasource(int length) {
+        Date now = CommonUtils.getMinuteDate();
+        boolean cleanFlag = false;
+        List<SysDatasource> entityList = service.getList(DateUtils.addMinutes(now, -length));
+        for (SysDatasource entity : entityList) {
+            if (dataSource.contains(entity.getName())) {
+                dataSource.remove(entity.getName());
+            }
+            cleanFlag = true;
+        }
+        if (cleanFlag) {
+            clear();
+        }
     }
 
     /**

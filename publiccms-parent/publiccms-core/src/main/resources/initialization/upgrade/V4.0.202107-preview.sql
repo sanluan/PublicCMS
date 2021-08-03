@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS `sys_site_datasource`;
 CREATE TABLE `sys_site_datasource` (
   `site_id` smallint(11) NOT NULL COMMENT '站点ID',
   `datasource` varchar(50) NOT NULL COMMENT '数据源名称',
-  PRIMARY KEY (`site_id`,`datasource`) USING BTREE,
+  PRIMARY KEY (`site_id`,`datasource`),
   KEY `sys_site_datasource_datasource` (`datasource`) 
 ) COMMENT='站点数据源';
 ALTER TABLE `cms_content_file` 
