@@ -52,7 +52,7 @@
                 <td class="exclude-translate">${a.name!}</td>
                 <td>${a.multiple?then(t.pageMessage('multiple_select'),t.pageMessage('single_select'))}</td>
                 <td class="wrap">
-                    <a href="cmsDictionary/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    <a href="cmsDictionary/add.html?id=${a.id.id}" class="edit btnText blue" target="navTab" rel="cmsDictionary/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 <#if authorizedMap['cmsDictionary/delete']>
                     <a href="cmsDictionary/delete?ids=${a.id.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                 </#if>
