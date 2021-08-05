@@ -25,3 +25,9 @@ ALTER TABLE `cms_content`
     MODIFY COLUMN `id` bigint(20) NOT NULL FIRST;
 ALTER TABLE `cms_comment`
     MODIFY COLUMN `id` bigint(20) NOT NULL FIRST;
+ALTER TABLE `sys_site` 
+	ADD COLUMN `directory` varchar(50) NULL COMMENT '目录' AFTER `parent_id`,
+	DROP INDEX `sys_site_parent_id`,
+	ADD UNIQUE INDEX `sys_site_parent_id`(`parent_id`, `directory`);
+ALTER TABLE `sys_domain` 
+    ADD COLUMN `multiple` tinyint(1) NOT NULL COMMENT '站点群' AFTER `wild`;

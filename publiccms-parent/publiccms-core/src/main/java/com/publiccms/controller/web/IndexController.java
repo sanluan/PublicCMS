@@ -75,8 +75,6 @@ public class IndexController {
     @Autowired
     private StatisticsComponent statisticsComponent;
 
-    private UrlPathHelper urlPathHelper = new UrlPathHelper();
-
     /**
      * METADATA页面请求统一分发
      * 
@@ -123,7 +121,7 @@ public class IndexController {
     public String restPage(@RequestAttribute SysSite site, @PathVariable("id") long id,
             @PathVariable("pageIndex") Integer pageIndex, @RequestBody(required = false) String body, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) {
-        String requestPath = urlPathHelper.getLookupPathForRequest(request);
+        String requestPath = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
             requestPath = requestPath.substring(0, requestPath.lastIndexOf(CommonConstants.SEPARATOR, requestPath.length() - 2))
                     + CommonConstants.getDefaultSubfix();
@@ -147,7 +145,7 @@ public class IndexController {
     @RequestMapping({ CommonConstants.SEPARATOR, "/**" })
     public String page(@RequestAttribute SysSite site, @RequestBody(required = false) String body, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) {
-        String requestPath = urlPathHelper.getLookupPathForRequest(request);
+        String requestPath = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (requestPath.endsWith(CommonConstants.SEPARATOR)) {
             requestPath += CommonConstants.getDefaultPage();
         }

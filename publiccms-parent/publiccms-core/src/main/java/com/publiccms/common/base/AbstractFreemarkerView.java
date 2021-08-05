@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
@@ -48,6 +50,10 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * Import Context
      */
     public static final String CONTEXT_IMPORT = "import";
+    /**
+     * Domain Context
+     */
+    public static final String CONTEXT_ADMIN_CONTEXT_PATH = "adminContextPath";
 
     @Override
     protected void doRender(Map<String, Object> model, HttpServletRequest request, HttpServletResponse response)
@@ -64,17 +70,24 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
 
     /**
      * @param model
+     * @param admin
      * @param request
      */
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
         String serverName = request.getServerName();
         model.put(CONTEXT_BASE, request.getContextPath());
         model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(serverName));
-        exposeSite(model, BeanComponent.getSiteComponent().getSite(serverName));
+        SysSite site = ControllerUtils.getSiteFromAttribute(request);
+        if (null == site) {
+            site = BeanComponent.getSiteComponent().getSite(serverName,
+                    UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+        }
+        exposeSite(model, site);
     }
 
     /**
      * @param model
+     * @param admin
      * @param site
      */
     public static void exposeSite(Map<String, Object> model, SysSite site) {

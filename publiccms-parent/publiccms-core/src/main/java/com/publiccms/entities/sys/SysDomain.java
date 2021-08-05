@@ -27,22 +27,26 @@ public class SysDomain implements java.io.Serializable {
     private short siteId;
     @GeneratorColumn(title = "通配", condition = true)
     private boolean wild;
+    @GeneratorColumn(title = "多站点", condition = true)
+    private boolean multiple;
     @GeneratorColumn(title = "路径")
     private String path;
 
     public SysDomain() {
     }
 
-    public SysDomain(String name, short siteId, boolean wild) {
+    public SysDomain(String name, short siteId, boolean wild, boolean multiple) {
         this.name = name;
         this.siteId = siteId;
         this.wild = wild;
+        this.multiple = multiple;
     }
 
-    public SysDomain(String name, short siteId, boolean wild, String path) {
+    public SysDomain(String name, short siteId, boolean wild, boolean multiple, String path) {
         this.name = name;
         this.siteId = siteId;
         this.wild = wild;
+        this.multiple = multiple;
         this.path = path;
     }
 
@@ -72,6 +76,15 @@ public class SysDomain implements java.io.Serializable {
 
     public void setWild(boolean wild) {
         this.wild = wild;
+    }
+
+    @Column(name = "multiple", nullable = false)
+    public boolean isMultiple() {
+        return this.multiple;
+    }
+
+    public void setMultiple(boolean multiple) {
+        this.multiple = multiple;
     }
 
     @Column(name = "path", length = 100)

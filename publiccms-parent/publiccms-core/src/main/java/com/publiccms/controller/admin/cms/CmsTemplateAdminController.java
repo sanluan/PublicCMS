@@ -88,9 +88,6 @@ public class CmsTemplateAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String content,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, path);
@@ -135,9 +132,6 @@ public class CmsTemplateAdminController {
     @Csrf
     public String savePlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String content,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
@@ -180,9 +174,6 @@ public class CmsTemplateAdminController {
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
             String encoding, HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
@@ -245,10 +236,6 @@ public class CmsTemplateAdminController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
             ModelMap model) {
-
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path)) {
             String filePath = siteComponent.getWebTemplateFilePath(site, path);
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(filePath);
@@ -282,9 +269,6 @@ public class CmsTemplateAdminController {
     @Csrf
     public String deletePlace(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path)) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             String backupFilePath = siteComponent.getWebTemplateBackupFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
@@ -430,7 +414,7 @@ public class CmsTemplateAdminController {
             CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(siteComponent.getWebTemplateFilePath(site, path));
             if (site.isUseStatic() && CommonUtils.notEmpty(metadata.getPublishPath())) {
                 String templatePath = SiteComponent.getFullTemplatePath(site, path);
-                CmsPageData data = metadataComponent.getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, path));
+                CmsPageData data = metadataComponent.getTemplateData(siteComponent.getWebTemplateFilePath(site, path));
                 templateComponent.createStaticFile(site, templatePath, metadata.getPublishPath(), null, metadata.getAsMap(data),
                         null);
             }

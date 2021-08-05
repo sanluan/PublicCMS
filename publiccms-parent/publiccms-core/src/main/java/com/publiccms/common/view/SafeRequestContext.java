@@ -114,7 +114,7 @@ public class SafeRequestContext {
 
         this.responseEncodedHtmlEscape = WebUtils.getResponseEncodedHtmlEscape(this.webApplicationContext.getServletContext());
 
-        this.urlPathHelper = new UrlPathHelper();
+        this.urlPathHelper = UrlPathHelper.defaultInstance;
 
         if (this.webApplicationContext.containsBean(RequestContextUtils.REQUEST_DATA_VALUE_PROCESSOR_BEAN_NAME)) {
             this.requestDataValueProcessor = this.webApplicationContext

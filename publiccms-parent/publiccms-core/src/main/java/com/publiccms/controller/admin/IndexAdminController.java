@@ -31,7 +31,6 @@ import com.publiccms.logic.component.site.SiteComponent;
  */
 @Controller
 public class IndexAdminController {
-    private UrlPathHelper urlPathHelper = new UrlPathHelper();
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
@@ -39,13 +38,14 @@ public class IndexAdminController {
 
     /**
      * 页面请求统一分发
+     * @param site 
      * 
      * @param request
      * @return view name
      */
     @RequestMapping("/**")
-    public String page(HttpServletRequest request) {
-        String path = urlPathHelper.getLookupPathForRequest(request);
+    public String page(@RequestAttribute SysSite site, HttpServletRequest request) {
+        String path = UrlPathHelper.defaultInstance.getLookupPathForRequest(request);
         if (CommonUtils.notEmpty(path)) {
             if (CommonConstants.SEPARATOR.equals(path) || path.endsWith(CommonConstants.SEPARATOR)) {
                 path += CommonConstants.getDefaultPage();

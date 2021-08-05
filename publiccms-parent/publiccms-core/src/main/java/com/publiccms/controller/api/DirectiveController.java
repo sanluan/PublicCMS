@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractTaskDirective;
@@ -55,7 +56,7 @@ public class DirectiveController {
         try {
             HttpDirective directive = actionMap.get(action);
             if (null != directive) {
-                request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, siteComponent.getSite(request.getServerName()));
+                request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, siteComponent.getSite(request.getServerName(), UrlPathHelper.defaultInstance.getLookupPathForRequest(request)));
                 directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             } else {
                 HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,
@@ -72,6 +73,20 @@ public class DirectiveController {
             }
             log.error(e.getMessage(), e);
         }
+    }
+
+    /**
+     * 接口指令统一分发
+     * 
+     * @param directory
+     * @param action
+     * @param request
+     * @param response
+     */
+    @RequestMapping("{directory}/directive/{action}")
+    public void directive(@PathVariable String directory, @PathVariable String action, HttpServletRequest request,
+            HttpServletResponse response) {
+        directive(action, request, response);
     }
 
     /**

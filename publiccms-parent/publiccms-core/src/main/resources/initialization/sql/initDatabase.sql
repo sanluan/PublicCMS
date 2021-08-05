@@ -573,7 +573,7 @@ CREATE TABLE `sys_dept` (
   `owns_all_config` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有全部配置权限',
   PRIMARY KEY  (`id`),
   KEY `sys_dept_site_id` (`site_id`)
-) AUTO_INCREMENT=3 COMMENT='部门';
+) AUTO_INCREMENT=2 COMMENT='部门';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -621,6 +621,7 @@ CREATE TABLE `sys_domain` (
   `name` varchar(100) NOT NULL COMMENT '域名',
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `wild` tinyint(1) NOT NULL COMMENT '通配域名',
+  `multiple` tinyint(1) NOT NULL COMMENT '站点群',
   `path` varchar(100) default NULL COMMENT '路径',
   PRIMARY KEY  (`name`),
   KEY `sys_domain_site_id` (`site_id`)
@@ -629,8 +630,8 @@ CREATE TABLE `sys_domain` (
 -- ----------------------------
 -- Records of sys_domain
 -- ----------------------------
-INSERT INTO `sys_domain` VALUES ('dev.publiccms.com', '1', '1', '');
-INSERT INTO `sys_domain` VALUES ('localhost', '1', '1', '');
+INSERT INTO `sys_domain` VALUES ('dev.publiccms.com', '1', '1', '0', '');
+INSERT INTO `sys_domain` VALUES ('localhost', '1', '1', '0', '');
 
 
 -- ----------------------------
@@ -1584,6 +1585,7 @@ DROP TABLE IF EXISTS `sys_site`;
 CREATE TABLE `sys_site` (
   `id` smallint(6) NOT NULL auto_increment,
   `parent_id` smallint(6) DEFAULT NULL COMMENT '父站点',
+  `directory` varchar(50) NULL COMMENT '目录',
   `name` varchar(50) NOT NULL COMMENT '站点名',
   `use_static` tinyint(1) NOT NULL COMMENT '启用静态化',
   `site_path` varchar(255) NOT NULL COMMENT '站点地址',
@@ -1591,14 +1593,14 @@ CREATE TABLE `sys_site` (
   `dynamic_path` varchar(255) NOT NULL COMMENT '动态站点地址',
   `disabled` tinyint(1) NOT NULL COMMENT '禁用',
   PRIMARY KEY  (`id`),
-  KEY `sys_site_disabled` (`disabled`),
-  KEY `sys_site_parent_id` (`parent_id`)
+  UNIQUE KEY `sys_site_parent_id` (`parent_id`, `directory`),
+  KEY `sys_site_disabled` (`disabled`)
 ) AUTO_INCREMENT=2 COMMENT='站点';
 
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES ('1', null ,'PublicCMS', '0', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
+INSERT INTO `sys_site` VALUES ('1', null ,null ,'PublicCMS', '0', '//dev.publiccms.com:8080/publiccms/webfile/', '0', '//dev.publiccms.com:8080/publiccms/', '0');
 -- ----------------------------
 -- Table structure for sys_site_datasource
 -- ----------------------------

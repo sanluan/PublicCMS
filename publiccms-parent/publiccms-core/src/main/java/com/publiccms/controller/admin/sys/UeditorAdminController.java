@@ -77,13 +77,14 @@ public class UeditorAdminController {
                     ".pptx", ".pdf", ".txt", ".md", ".xml", ".ofd", ".psd" });
 
     /**
+     * @param site
      * @param request
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_CONFIG)
     @ResponseBody
-    public UeditorConfig config(HttpServletRequest request) {
-        String urlPrefix = siteComponent.getSite(request.getServerName()).getSitePath();
+    public UeditorConfig config(@RequestAttribute SysSite site, HttpServletRequest request) {
+        String urlPrefix = site.getSitePath();
         UeditorConfig config = new UeditorConfig();
         config.setImageActionName(ACTION_UPLOAD);
         config.setSnapscreenActionName(ACTION_UPLOAD);
@@ -255,6 +256,7 @@ public class UeditorAdminController {
     }
 
     /**
+     * @param site
      * @param admin
      * @param start
      * @param request
@@ -264,13 +266,13 @@ public class UeditorAdminController {
     @SuppressWarnings("unchecked")
     @RequestMapping(params = "action=" + ACTION_LISTFILE)
     @ResponseBody
-    public Map<String, Object> listfile(@SessionAttribute SysUser admin, Integer start, HttpServletRequest request,
-            HttpSession session) {
+    public Map<String, Object> listfile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start,
+            HttpServletRequest request, HttpSession session) {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(siteComponent.getSite(request.getServerName()).getId(), admin.getId(), null,
-                null, null, null, null, null, start / 20 + 1, 20);
+        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, null, null, null, null, null,
+                start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
         List<Map<String, Object>> list = new ArrayList<>();

@@ -106,6 +106,19 @@ public class ApiController {
     }
 
     /**
+     * 接口指令统一分发
+     * @param directory 
+     * @param api
+     * @param request
+     * @param response
+     */
+    @RequestMapping("{directory}/{api}")
+    public void api(@PathVariable String directory, @PathVariable String api, HttpServletRequest request,
+            HttpServletResponse response) {
+        api(api, request, response);
+    }
+
+    /**
      * 接口列表
      *
      * @return result

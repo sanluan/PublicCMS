@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
@@ -74,16 +75,16 @@ public class OauthController {
 
     /**
      * @param channel
+     * @param site 
      * @param returnUrl
      * @param request
      * @param response
      * @return view name
      */
     @RequestMapping(value = "login/{channel}")
-    public String login(@PathVariable("channel") String channel, String returnUrl, HttpServletRequest request,
+    public String login(@PathVariable("channel") String channel, @RequestAttribute SysSite site, String returnUrl, HttpServletRequest request,
             HttpServletResponse response) {
         OauthGateway oauthGateway = oauthComponent.get(channel);
-        SysSite site = siteComponent.getSite(request.getServerName());
         if (null != oauthGateway && oauthGateway.enabled(site.getId())) {
             String state = UUID.randomUUID().toString();
             RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
@@ -99,6 +100,7 @@ public class OauthController {
 
     /**
      * @param channel
+     * @param site 
      * @param state
      * @param code
      * @param request
@@ -108,10 +110,9 @@ public class OauthController {
      * @return view name
      */
     @RequestMapping(value = "callback/{channel}")
-    public String callback(@PathVariable("channel") String channel, String state, String code, HttpServletRequest request,
+    public String callback(@PathVariable("channel") String channel, @RequestAttribute SysSite site, String state, String code, HttpServletRequest request,
             HttpSession session, HttpServletResponse response, ModelMap model) {
         OauthGateway oauthGateway = oauthComponent.get(channel);
-        SysSite site = siteComponent.getSite(request.getServerName());
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), response, RETURN_URL, null);
         String returnUrl;

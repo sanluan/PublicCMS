@@ -299,7 +299,13 @@ public class ControllerUtils {
         }
         return false;
     }
-
+    /**
+     * @param request 
+     * @return SysSite
+     */
+    public static SysSite getSiteFromAttribute(HttpServletRequest request) {
+            return (SysSite) request.getAttribute(CommonConstants.getAttributeSite());
+    }
     /**
      * @param session
      * @return SysUser

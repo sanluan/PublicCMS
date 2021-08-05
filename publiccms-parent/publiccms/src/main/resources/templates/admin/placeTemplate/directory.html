@@ -1,7 +1,5 @@
 <h2 class="contentTitle">
-    <#if site.parentId?has_content>
-        <button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button>
-    <#else>
-        <#if path?has_content><a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a></#if>
-    </#if>
+<#if path?has_content>
+    <a class="button" href="cmsTemplate/deletePlace?path=${(path?url)!}&navTabId=placeTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
+</#if>
 </h2>

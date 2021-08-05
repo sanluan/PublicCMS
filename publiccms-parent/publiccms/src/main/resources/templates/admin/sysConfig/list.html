@@ -20,7 +20,7 @@
                 <td>${(a.description)!}</td>
                 <td class="wrap">
                     <a href="sysConfig/add.html?code=${a.code}" class="edit btnText blue" target="navTab" rel="sysConfig/edit"><i class="icon-edit"></i> <@t.page 'config.edit'/></a>
-                <#if a.customed&&!site.parentId?has_content>
+                <#if a.customed>
                     <a href="sysConfig/delete?code=${a.code}&navTabId=sysConfig/list&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><@t.page 'config.delete'/></a>
                 </#if>
                 </td>

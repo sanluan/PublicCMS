@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.directive.BaseHttpDirective;
@@ -38,7 +39,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
      */
     public SysSite getSite(RenderHandler handler) throws IOException, Exception {
         HttpServletRequest request = handler.getRequest();
-        return siteComponent.getSite(request.getServerName());
+        return siteComponent.getSite(request.getServerName(), UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
     }
 
     @Override

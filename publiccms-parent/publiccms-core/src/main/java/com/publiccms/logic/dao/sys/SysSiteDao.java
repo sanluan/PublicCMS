@@ -41,8 +41,23 @@ public class SysSiteDao extends BaseDao<SysSite> {
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
+    /**
+     * @param parentId
+     * @param directory
+     * @return entity
+     */
+    public SysSite getEntity(short parentId, String directory) {
+        QueryHandler queryHandler = getQueryHandler("from SysSite bean");
+        queryHandler.condition("bean.parentId = :parentId").setParameter("parentId", parentId);
+        queryHandler.condition("bean.directory = :directory").setParameter("directory", directory);
+        return getEntity(queryHandler);
+    }
+
     @Override
     protected SysSite init(SysSite entity) {
+        if (CommonUtils.empty(entity.getDirectory())) {
+            entity.setDirectory(null);
+        }
         return entity;
     }
 

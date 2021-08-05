@@ -105,15 +105,6 @@ public class SiteComponent implements Cache {
      * @return full file name
      */
     public static String getFullTemplatePath(SysSite site, String path) {
-        return getFullFileName(null == site.getParentId() ? site.getId() : site.getParentId(), path);
-    }
-
-    /**
-     * @param site
-     * @param path
-     * @return full file name
-     */
-    public static String getCurrentSiteFullTemplatePath(SysSite site, String path) {
         return getFullFileName(site.getId(), path);
     }
 
@@ -139,7 +130,8 @@ public class SiteComponent implements Cache {
      */
     public String getViewName(String serverName, String path) {
         SysDomain sysDomain = getDomain(serverName);
-        SysSite site = getSite(serverName);
+        SysSite site = getSite(serverName, path);
+        path = getPath(site, path);
         return getViewName(site, sysDomain, path);
     }
 
@@ -150,6 +142,7 @@ public class SiteComponent implements Cache {
      * @return view name
      */
     public String getViewName(SysSite site, SysDomain sysDomain, String path) {
+        path = getPath(site, path);
         if (CommonUtils.notEmpty(sysDomain.getPath())) {
             if (path.startsWith(CommonConstants.SEPARATOR) || sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
                 if (path.startsWith(CommonConstants.SEPARATOR) && sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
@@ -205,14 +198,78 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param serverName
+     * @param site
+     * @param path
      * @return site
      */
-    public SysSite getSite(String serverName) {
-        SysSite site = siteCache.get(serverName);
+    public String getPath(SysSite site, String path) {
+        if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
+            int index = 0;
+            if (path.startsWith(CommonConstants.SEPARATOR)) {
+                index = path.indexOf(CommonConstants.SEPARATOR, 1);
+            } else {
+                index = path.indexOf(CommonConstants.SEPARATOR);
+            }
+            if (0 < index) {
+                return path.substring(index, path.length());
+            }
+        }
+        return path;
+    }
+
+    /**
+     * @param id
+     * @return site
+     */
+    public SysSite getSiteById(String id) {
+        if (CommonUtils.notEmpty(id)) {
+            SysSite site = siteCache.get(id);
+            if (null == site) {
+                try {
+                    site = sysSiteService.getEntity(Short.parseShort(id));
+                    siteCache.put(id, site);
+                    return site;
+                } catch (NumberFormatException e) {
+                }
+            } else {
+                return site;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param serverName
+     * @param path
+     * @return site
+     */
+    public SysSite getSite(String serverName, String path) {
+        String directory = null;
+        if (CommonUtils.notEmpty(path)) {
+            int index = 0;
+            if (path.startsWith(CommonConstants.SEPARATOR)) {
+                index = path.indexOf(CommonConstants.SEPARATOR, 1);
+                if (0 < index) {
+                    directory = path.substring(1, index);
+                }
+            } else {
+                index = path.indexOf(CommonConstants.SEPARATOR);
+                if (0 < index) {
+                    directory = path.substring(0, index);
+                }
+            }
+        }
+        String cacheKey = null == directory ? serverName : (serverName + CommonConstants.SEPARATOR + directory);
+        SysSite site = siteCache.get(cacheKey);
         if (null == site) {
-            site = sysSiteService.getEntity(getDomain(serverName).getSiteId());
-            siteCache.put(serverName, site);
+            SysDomain domain = getDomain(serverName);
+            if (domain.isMultiple() && null != directory) {
+                site = sysSiteService.getEntity(domain.getSiteId(), directory);
+            }
+            if (null == site) {
+                site = sysSiteService.getEntity(domain.getSiteId());
+            }
+            siteCache.put(cacheKey, site);
         }
         return site;
     }
@@ -232,15 +289,6 @@ public class SiteComponent implements Cache {
      */
     public String getWebFilePath(SysSite site, String filePath) {
         return webFilePath + getFullFileName(site.getId(), filePath);
-    }
-
-    /**
-     * @param site
-     * @param filePath
-     * @return web file path
-     */
-    public String getParentSiteWebFilePath(SysSite site, String filePath) {
-        return webFilePath + getFullFileName(site.getParentId(), filePath);
     }
 
     /**
@@ -303,15 +351,6 @@ public class SiteComponent implements Cache {
      */
     public String getWebTemplateFilePath(SysSite site, String templatePath) {
         return getWebTemplateFilePath() + getFullTemplatePath(site, templatePath);
-    }
-
-    /**
-     * @param site
-     * @param templatePath
-     * @return web template file path
-     */
-    public String getCurrentSiteWebTemplateFilePath(SysSite site, String templatePath) {
-        return getWebTemplateFilePath() + getCurrentSiteFullTemplatePath(site, templatePath);
     }
 
     /**

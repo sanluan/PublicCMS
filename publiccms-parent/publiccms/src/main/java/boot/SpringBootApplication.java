@@ -65,6 +65,7 @@ public class SpringBootApplication {
         errorPageSet.add(new ErrorPage(HttpStatus.INTERNAL_SERVER_ERROR, "/error/500.jsp"));
         errorPageSet.add(new ErrorPage(HttpStatus.NOT_FOUND, "/error/404.html"));
         errorPageSet.add(new ErrorPage(HttpStatus.FORBIDDEN, "/error/403.html"));
+        errorPageSet.add(new ErrorPage(HttpStatus.BAD_REQUEST, "/error/400.html"));
         factory.setPort(Integer.valueOf(System.getProperty("cms.port", "8080")));
         factory.setContextPath(System.getProperty("cms.contextPath", "/publiccms"));
         factory.setDisplayName("PublicCMS");

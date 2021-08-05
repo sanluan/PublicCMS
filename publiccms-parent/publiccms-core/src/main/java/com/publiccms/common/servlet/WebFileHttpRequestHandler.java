@@ -49,15 +49,11 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
             if (path.endsWith(CommonConstants.SEPARATOR)) {
                 path += CommonConstants.getDefaultPage();
             }
-            SysSite site = siteComponent.getSite(request.getServerName());
+            SysSite site = siteComponent.getSite(request.getServerName(), path);
+            path = siteComponent.getPath(site, path);
             Resource resource = new FileSystemResource(siteComponent.getWebFilePath(site, path));
             if (resource.exists()) {
                 if (resource.isReadable()) {
-                    return resource;
-                }
-            } else if (null != site.getParentId()) {
-                resource = new FileSystemResource(siteComponent.getParentSiteWebFilePath(site, path));
-                if (resource.exists() && resource.isReadable()) {
                     return resource;
                 }
             }
@@ -70,7 +66,7 @@ public class WebFileHttpRequestHandler extends ResourceHttpRequestHandler {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        setUrlPathHelper(new UrlPathHelper());
+        setUrlPathHelper(UrlPathHelper.defaultInstance);
         if (null == getResourceHttpMessageConverter()) {
             setResourceHttpMessageConverter(new ResourceHttpMessageConverter());
         }

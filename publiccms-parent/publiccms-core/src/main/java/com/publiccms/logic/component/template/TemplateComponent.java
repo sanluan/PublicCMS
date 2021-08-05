@@ -272,7 +272,7 @@ public class TemplateComponent implements Cache {
         }
         String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-        CmsPageData data = metadataComponent.getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, templatePath));
+        CmsPageData data = metadataComponent.getTemplateData(siteComponent.getWebTemplateFilePath(site, templatePath));
         Map<String, Object> metadataMap = metadata.getAsMap(data);
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
         if (null != attribute && CommonUtils.notEmpty(filePath) && CommonUtils.notEmpty(attribute.getText())) {
@@ -371,7 +371,7 @@ public class TemplateComponent implements Cache {
         }
         String realTemplatePath = siteComponent.getWebTemplateFilePath(site, templatePath);
         CmsPageMetadata metadata = metadataComponent.getTemplateMetadata(realTemplatePath);
-        CmsPageData data = metadataComponent.getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(site, templatePath));
+        CmsPageData data = metadataComponent.getTemplateData(siteComponent.getWebTemplateFilePath(site, templatePath));
         Map<String, Object> metadataMap = metadata.getAsMap(data);
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
         if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {

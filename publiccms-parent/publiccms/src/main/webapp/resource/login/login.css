@@ -16,8 +16,9 @@ body:before{content:"";height:100%;right:0;left:50%;position:absolute;background
 .login_form{margin:0px auto;width:460px;float:left;padding:50px 80px;box-sizing:border-box;background:#fff;height:100%}
 .login_form>form{position:relative;}
 .login_form .logo{margin:0px;color:#667ea7;font-size:32px;margin-bottom:40px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;}
-.login_form input{line-height:26px;font-size:14px;color:#333;border-color:#dde2ec;box-sizing:border-box;border-radius:4px;padding:5px; padding-left:40px;border:1px solid #ccc; background:#FFF;}
-.login_form input[name=username],.login_form input[name=password]{width:100%;}
+.login_form .logo select{padding: 5px;font-size: 22px;box-sizing: border-box;border-radius:4px;border:1px solid #ccc;}
+.login_form input{line-height:26px;font-size:14px;color:#333;border-color:#dde2ec;box-sizing:border-box;border-radius:4px;padding:5px; padding-left:40px;border:1px solid #ccc;}
+.login_form input[name=username],.login_form input[name=password],.login_form .logo select{width:100%;}
 .login_form p{position:relative;margin:30px 0;}
 .login_form p>i{position:absolute;left:11px;color:#afc2da;line-height:38px;font-size:20px;}
 .login_form input[type=submit]{color:#FFF;height:40px;width:auto;background:#667ea7;border:none;padding:0 20px;float:right;}

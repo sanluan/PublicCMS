@@ -1,12 +1,8 @@
 <h2 class="contentTitle">
-<#if site.parentId?has_content>
-        <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
-<#else>
     <a class="button" href="taskTemplate/upload.html?path=${(path?url)!}" target="dialog" mask="true" width="500" height="250"><@t.page 'upload'/></a>
     <a class="button" href="taskTemplate/export?_csrf=<@_csrfToken admin=true/>" target="dwzExport" targetType="navTab"><@t.page 'button.export'/></a>
-    <#if path?has_content>
+<#if path?has_content>
     <a class="button" href="taskTemplate/content.html?path=${path?url}/" target="ajax" rel="taskTemplateBox"><@t.page 'task_template.create_here'/></a>
     <a class="button" href="taskTemplate/delete?path=${path?url}&navTabId=taskTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_directory'/>" target="ajaxTodo"><@t.page 'button.delete_directory'/></a>
-    </#if>
 </#if>
 </h2>

@@ -10,7 +10,20 @@
     <div class="login_body_left"><img src="<#if siteAttribute.square_logo?has_content>${site.sitePath+siteAttribute.square_logo}<#else>${base}/resource/square_logo.png</#if>"/></div>
     <div class="login_form clearfix">
         <form action="${base+adminContextPath}/login" method="post" onsubmit="encode()">
-            <p class="logo">${site.name}</p>
+            <p class="logo">
+                <#if domain.multiple>
+                    <select onchange="change(this)">
+                        <@_sysSite id=domain.siteId><option value="${object.id}"<#if object.id==site.id> selected="true"</#if>>${object.name}</option></@_sysSite>
+                        <@_sysSiteList parentId=domain.siteId pageSize=100>
+                            <#list page.list as a>
+                        <option value="${a.id}"<#if a.id==site.id> selected="true"</#if>>${a.name}</option>
+                            </#list>
+                        </@_sysSiteList>
+                    </select>
+                <#else>
+                    ${site.name}
+                </#if>
+            </p>
             <p>
                 <i class="iconfont iconfont-user"></i>
                 <input type="text" name="username" placeholder="<@t.page 'user.username'/>" title="<@t.page 'user.username'/>" value="${(user.name)!}"/>
@@ -53,6 +66,9 @@ function encode(){
         document.getElementsByName('password')[0].value = sha512(document.getElementsByName('password')[0].value);
         document.getElementsByName('encoding')[0].value = 'sha512';
     }
+}
+function change(obj){
+    location.href=location.href+(0<location.href.indexOf('?')?'&':'?')+'currentSiteId='+obj.options[obj.options.selectedIndex].value;
 }
 </script>
 </body>

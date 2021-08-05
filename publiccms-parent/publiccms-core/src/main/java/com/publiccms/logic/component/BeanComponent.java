@@ -19,13 +19,14 @@ import com.publiccms.logic.service.sys.SysTaskService;
  */
 @Component
 public class BeanComponent {
-    
+
     private static SiteComponent siteComponent;
     private static ConfigComponent configComponent;
     private static SysTaskService sysTaskService;
     private static LogTaskService logTaskService;
     private static SysSiteService siteService;
     private static ScheduledTask scheduledTask;
+
     private static CmsContentAttributeService contentAttributeService;
     private static TemplateComponent templateComponent;
 
@@ -86,7 +87,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param siteComponent the siteComponent to set
+     * @param siteComponent
+     *            the siteComponent to set
      */
     @Autowired
     public void setSiteComponent(SiteComponent siteComponent) {
@@ -94,7 +96,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param configComponent the configComponent to set
+     * @param configComponent
+     *            the configComponent to set
      */
     @Autowired
     public void setConfigComponent(ConfigComponent configComponent) {
@@ -102,7 +105,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param sysTaskService the sysTaskService to set
+     * @param sysTaskService
+     *            the sysTaskService to set
      */
     @Autowired
     public void setSysTaskService(SysTaskService sysTaskService) {
@@ -110,7 +114,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param logTaskService the logTaskService to set
+     * @param logTaskService
+     *            the logTaskService to set
      */
     @Autowired
     public void setLogTaskService(LogTaskService logTaskService) {
@@ -118,7 +123,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param siteService the siteService to set
+     * @param siteService
+     *            the siteService to set
      */
     @Autowired
     public void setSiteService(SysSiteService siteService) {
@@ -126,7 +132,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param scheduledTask the scheduledTask to set
+     * @param scheduledTask
+     *            the scheduledTask to set
      */
     @Autowired
     public void setScheduledTask(ScheduledTask scheduledTask) {
@@ -134,7 +141,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param contentAttributeService the contentAttributeService to set
+     * @param contentAttributeService
+     *            the contentAttributeService to set
      */
     @Autowired
     public void setContentAttributeService(CmsContentAttributeService contentAttributeService) {
@@ -142,7 +150,8 @@ public class BeanComponent {
     }
 
     /**
-     * @param templateComponent the templateComponent to set
+     * @param templateComponent
+     *            the templateComponent to set
      */
     @Autowired
     public void setTemplateComponent(TemplateComponent templateComponent) {

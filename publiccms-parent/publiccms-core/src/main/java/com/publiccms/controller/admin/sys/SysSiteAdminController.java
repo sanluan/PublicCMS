@@ -76,6 +76,7 @@ public class SysSiteAdminController {
      * @param entity
      * @param domain
      * @param wild
+     * @param multiple
      * @param roleName
      * @param deptName
      * @param userName
@@ -88,7 +89,7 @@ public class SysSiteAdminController {
     @RequestMapping("save")
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String domain,
-            Boolean wild, String roleName, String deptName, String userName, String password, String encoding,
+            Boolean wild, Boolean multiple, String roleName, String deptName, String userName, String password, String encoding,
             HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -117,12 +118,13 @@ public class SysSiteAdminController {
                     || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.save(entity, domain, null == wild ? false : wild, roleName, deptName, userName, password, encoding);
+            service.save(entity, domain, null == wild ? false : wild, null == multiple ? false : multiple, roleName, deptName, userName, password, encoding);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.site",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        if (!siteComponent.getSite(request.getServerName()).getId().equals(site.getId()) || site.getId().equals(entity.getId())
+        if (!siteComponent.getSite(request.getServerName(), null).getId().equals(site.getId()) || site.getId()
+                .equals(entity.getId())
                 && (!site.getSitePath().equals(entity.getSitePath()) || !site.getDynamicPath().equals(entity.getDynamicPath()))) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
@@ -212,9 +214,6 @@ public class SysSiteAdminController {
     public String execScript(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String command, String[] parameters,
             HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         String log = null;

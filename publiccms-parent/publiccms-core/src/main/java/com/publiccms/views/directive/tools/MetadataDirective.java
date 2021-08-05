@@ -28,7 +28,7 @@ public class MetadataDirective extends AbstractTemplateDirective {
             CmsPageMetadata metadata = metadataComponent
                     .getTemplateMetadata(siteComponent.getWebTemplateFilePath(getSite(handler), path));
             CmsPageData data = metadataComponent
-                    .getTemplateData(siteComponent.getCurrentSiteWebTemplateFilePath(getSite(handler), path));
+                    .getTemplateData(siteComponent.getWebTemplateFilePath(getSite(handler), path));
             handler.put("object", metadata.getAsMap(data)).render();
         }
     }

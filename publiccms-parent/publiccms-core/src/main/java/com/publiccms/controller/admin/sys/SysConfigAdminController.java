@@ -3,6 +3,7 @@ package com.publiccms.controller.admin.sys;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogOperate;
@@ -53,9 +53,6 @@ public class SysConfigAdminController {
     @RequestMapping("save")
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, @ModelAttribute SysConfig entity,
             String configCode, HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(configCode)) {
             Map<String, SysConfig> map = configComponent.getMap(site);
             map.remove(configCode);
@@ -85,9 +82,6 @@ public class SysConfigAdminController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String code, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         Map<String, SysConfig> modelMap = configComponent.getMap(site);
         SysConfig entity = modelMap.remove(code);
         if (null != entity) {

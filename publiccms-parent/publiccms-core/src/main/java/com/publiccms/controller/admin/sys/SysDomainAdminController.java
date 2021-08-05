@@ -1,6 +1,7 @@
 package com.publiccms.controller.admin.sys;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -40,7 +41,7 @@ public class SysDomainAdminController {
     @Autowired
     protected SiteComponent siteComponent;
 
-    private String[] ignoreProperties = new String[] { "siteId", "name", "wild" };
+    private String[] ignoreProperties = new String[] { "siteId", "name", "wild", "multiple" };
 
     /**
      * @param site
@@ -82,7 +83,7 @@ public class SysDomainAdminController {
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
-        if (!siteComponent.getSite(request.getServerName()).getId().equals(site.getId())) {
+        if (!siteComponent.getSite(request.getServerName(), null).getId().equals(site.getId())) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
             return CommonConstants.TEMPLATE_DONE;

@@ -22,6 +22,10 @@
         <error-code>403</error-code>
         <location>/error/403.html</location>
     </error-page>
+    <error-page>
+        <error-code>400</error-code>
+        <location>/error/400.html</location>
+    </error-page>
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>

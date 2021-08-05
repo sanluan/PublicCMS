@@ -8,7 +8,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsProcessor;
 import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.util.UrlPathHelper;
 
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 
@@ -27,8 +29,9 @@ public class CorsInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return corsProcessor.processRequest(corsConfigComponent.getConfig(siteComponent.getSite(request.getServerName())),
-                request, response);
+        SysSite site = siteComponent.getSite(request.getServerName(),
+                UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+        return corsProcessor.processRequest(corsConfigComponent.getConfig(site), request, response);
     }
-    
+
 }

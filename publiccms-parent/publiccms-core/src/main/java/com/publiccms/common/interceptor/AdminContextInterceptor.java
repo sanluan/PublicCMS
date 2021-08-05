@@ -2,16 +2,20 @@ package com.publiccms.common.interceptor;
 
 import java.io.IOException;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
+import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
@@ -32,6 +36,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
     private String unauthorizedUrl;
     private String[] needNotLoginUrls;
     private String[] needNotAuthorizedUrls;
+    private UrlPathHelper urlPathHelper = UrlPathHelper.defaultInstance;
 
     @Autowired
     private SysRoleAuthorizedService roleAuthorizedService;
@@ -44,10 +49,36 @@ public class AdminContextInterceptor extends WebContextInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        SysSite site = siteComponent.getSite(request.getServerName());
-        request.setAttribute("site", site);
-        String path = urlPathHelper.getLookupPathForRequest(request);
+        String currentSiteId = request.getParameter("currentSiteId");
         String ctxPath = urlPathHelper.getOriginatingContextPath(request);
+        if (null != currentSiteId) {
+            try {
+                RequestUtils.addCookie(ctxPath, response, CommonConstants.getCookiesSite(), currentSiteId, Integer.MAX_VALUE,
+                        null);
+                StringBuilder sb = new StringBuilder(ctxPath);
+                sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
+                response.sendRedirect(sb.toString());
+                return false;
+            } catch (IOException e) {
+                return true;
+            }
+        }
+        SysSite site = null;
+        SysDomain domain = siteComponent.getDomain(request.getServerName());
+        if (domain.isMultiple()) {
+            Cookie cookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesSite());
+            if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
+                site = siteComponent.getSiteById(cookie.getValue());
+                if (null == site) {
+                    RequestUtils.cancleCookie(ctxPath, response, CommonConstants.getCookiesSite(), null);
+                }
+            }
+        }
+        if (null == site) {
+            site = siteComponent.getSite(request.getServerName(), null);
+        }
+        request.setAttribute(CommonConstants.getAttributeSite(), site);
+        String path = urlPathHelper.getLookupPathForRequest(request);
         if (adminContextPath.equals(path)) {
             try {
                 StringBuilder sb = new StringBuilder(ctxPath);
@@ -105,16 +136,15 @@ public class AdminContextInterceptor extends WebContextInterceptor {
 
     private void redirectLogin(String ctxPath, String path, String queryString, String requestedWith,
             HttpServletResponse response) throws IOException {
+        StringBuilder sb = new StringBuilder(ctxPath);
+        sb.append(adminContextPath);
         if ("XMLHttpRequest".equalsIgnoreCase(requestedWith)) {
-            StringBuilder sb = new StringBuilder(ctxPath);
-            sb.append(adminContextPath).append(loginJsonUrl);
-            response.sendRedirect(sb.toString());
+            sb.append(loginJsonUrl);
         } else {
-            StringBuilder sb = new StringBuilder(ctxPath);
-            sb.append(adminContextPath).append(loginUrl).append("?returnUrl=");
+            sb.append(loginUrl).append("?returnUrl=");
             sb.append(RequestUtils.getEncodePath(adminContextPath + path, queryString));
-            response.sendRedirect(sb.toString());
         }
+        response.sendRedirect(sb.toString());
     }
 
     private boolean ownsAllRight(String roles) {
@@ -171,6 +201,13 @@ public class AdminContextInterceptor extends WebContextInterceptor {
      */
     public void setAdminContextPath(String adminContextPath) {
         this.adminContextPath = adminContextPath;
+    }
+
+    /**
+     * @return the adminContextPath
+     */
+    public String getAdminContextPath() {
+        return adminContextPath;
     }
 
     /**

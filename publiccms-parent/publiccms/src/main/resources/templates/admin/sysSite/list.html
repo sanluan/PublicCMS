@@ -39,6 +39,9 @@
             <tr>
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
+            <#if parentId?has_content>
+                <th><@t.page 'directory'/></th>
+            </#if>
                 <th><@t.page 'site.dynamic_path'/></th>
                 <th><@t.page 'site.enable_static'/></th>
                 <th><@t.page 'site.site_path'/></th>
@@ -50,6 +53,9 @@
             <tr target="sid" rel="${a.id}">
                 <td>${a.id}</td>
                 <td class="exclude-translate">${a.name!} <#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></td>
+            <#if parentId?has_content>
+                <td class="exclude-translate">${a.directory!}</td>
+            </#if>
                 <td><a href="${a.dynamicPath!}" target="_blank">${a.dynamicPath!}</a></td>
                 <td>${a.useStatic?then(t.pageMessage('yes'),t.pageMessage('no'))} ${a.useSsi?then('['+t.pageMessage('ssi_enabled')+']','')}</td>
                 <td><a href="${a.sitePath!}" target="_blank">${a.sitePath!}</a></td>

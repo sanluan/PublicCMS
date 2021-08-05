@@ -1,7 +1,6 @@
 package com.publiccms.common.base;
 
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,24 +51,7 @@ public abstract class AbstractTemplateDirective extends BaseTemplateDirective {
      * @throws Exception
      */
     protected void expose(RenderHandler handler, Map<String, Object> model) throws IOException, Exception {
-        HttpServletRequest request = handler.getRequest();
-        if (null != request) {
-            Enumeration<String> parameters = request.getParameterNames();
-            while (parameters.hasMoreElements()) {
-                String parameterName = parameters.nextElement();
-                String[] values = request.getParameterValues(parameterName);
-                if (CommonUtils.notEmpty(values)) {
-                    if (1 < values.length) {
-                        model.put(parameterName, values);
-                    } else {
-                        model.put(parameterName, values[0]);
-                    }
-                }
-            }
-            AbstractFreemarkerView.exposeAttribute(model, request);
-        } else {
-            AbstractFreemarkerView.exposeSite(model, getSite(handler));
-        }
+        AbstractFreemarkerView.exposeSite(model, getSite(handler));
     }
 
     @Override

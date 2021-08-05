@@ -55,17 +55,20 @@ public class SysSiteService extends BaseService<SysSite> {
      * @param entity
      * @param domain
      * @param wild
+     * @param multiple
      * @param roleName
      * @param deptName
      * @param userName
      * @param password
-     * @param encoding 
+     * @param encoding
      * @return
      */
-    public SysSite save(SysSite entity, String domain, boolean wild, String roleName, String deptName, String userName,
-            String password, String encoding) {
+    public SysSite save(SysSite entity, String domain, boolean wild, boolean multiple, String roleName, String deptName,
+            String userName, String password, String encoding) {
         save(entity);
-        domainService.save(new SysDomain(domain, entity.getId(), wild));
+        if (CommonUtils.notEmpty(domain)) {
+            domainService.save(new SysDomain(domain, entity.getId(), wild, multiple));
+        }
         SysDept dept = new SysDept(entity.getId(), deptName, 0, true, true, true);
         deptService.save(dept);// 初始化部门
         SysRole role = new SysRole(entity.getId(), roleName, true, true);
@@ -77,6 +80,16 @@ public class SysSiteService extends BaseService<SysSite> {
         userService.save(user);// 初始化用户
         roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射
         return entity;
+    }
+
+    /**
+     * @param parentId
+     * @param directory
+     * @return entity
+     */
+    @Transactional(readOnly = true)
+    public SysSite getEntity(short parentId, String directory) {
+        return dao.getEntity(parentId, directory);
     }
 
     /**

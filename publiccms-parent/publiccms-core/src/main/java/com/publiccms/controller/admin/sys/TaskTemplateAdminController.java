@@ -66,9 +66,6 @@ public class TaskTemplateAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, String content,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path)) {
             try {
                 String filePath = siteComponent.getTaskTemplateFilePath(site, path);
@@ -106,9 +103,6 @@ public class TaskTemplateAdminController {
     @Csrf
     public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile[] files, String path,
             String encoding, HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (null != files) {
             try {
                 for (MultipartFile file : files) {
@@ -165,9 +159,6 @@ public class TaskTemplateAdminController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String path, HttpServletRequest request,
             ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
         if (CommonUtils.notEmpty(path)) {
             String filePath = siteComponent.getTaskTemplateFilePath(site, path);
             String backupFilePath = siteComponent.getTaskTemplateBackupFilePath(site, path);

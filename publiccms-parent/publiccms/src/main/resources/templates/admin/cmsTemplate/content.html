@@ -2,20 +2,14 @@
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-        <#if !site.parentId?has_content>
             <li><a class="button" href="cmsTemplate/delete?path=${(path?url)!}&navTabId=cmsTemplate/list&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.delete_file'/>" target="ajaxTodo"><i class="icon-trash icon-large"></i> <@t.page 'button.delete'/></a></li>
-        </#if>
     <@_sysAuthorized roleIds=admin.roles url='cmsPage/metadata'>
         <@_sysDeptPage deptId=admin.deptId!'' pages=path>
             <li><a class="button" href="cmsPage/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'page.management'/></a></li>
         </@_sysDeptPage>
     </@_sysAuthorized>
             <li><a class="button" href="cmsTemplate/metadata.html?path=${(path?url)!}" target="ajax" rel="cmsTemplateBox"><@t.page 'metadata'/></a></li>
-        <#if site.parentId?has_content>
-            <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
-        <#else>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
-        </#if>
         </ul>
     </div>
     <h2 class="contentTitle">
