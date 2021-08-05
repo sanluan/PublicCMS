@@ -4,6 +4,12 @@
 <@_sysSite id=(a.parentId)!parentId><#assign parent=object/></@_sysSite>
 <script>
 function siteDefaultConfig${id!}(type){
+    var directory=$('input[name=directory]',navTab.getCurrentPanel()).val();
+    if(directory) {
+        directory += '/';
+    } else {
+        directory = ''
+    }
     if('static'==type){
         if(!$('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
             $('input[name=useStatic]',navTab.getCurrentPanel()).click();
@@ -11,14 +17,14 @@ function siteDefaultConfig${id!}(type){
         if($('input[name=useSsi]',navTab.getCurrentPanel()).is(":checked")){
             $('input[name=useSsi]',navTab.getCurrentPanel()).click();
         }
-        $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/");
-        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/");
+        $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/"+directory);
+        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/"+directory);
     }else{
         if($('input[name=useStatic]',navTab.getCurrentPanel()).is(":checked")){
             $('input[name=useStatic]',navTab.getCurrentPanel()).click();
         }
-        $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/");
-        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/");
+        $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/"+directory);
+        $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/"+directory);
     }
     <#if !a??>
         $('input[name=domain]',navTab.getCurrentPanel()).val(location.hostname);
@@ -31,8 +37,6 @@ function siteDefaultConfig${id!}(type){
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <div class="formBar">
         <ul>
-            <li><button type="button" class="button" onclick="siteDefaultConfig${id!}('static');return false;"><@t.page 'site.default_static_config'/></button></li>
-            <li><button type="button" class="button" onclick="siteDefaultConfig${id!}();return false;"><@t.page 'site.default_dynamic_config'/></button></li>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
@@ -54,7 +58,7 @@ function siteDefaultConfig${id!}(type){
             </dd>
         </dl>
     </#if>
-        <dl class="nowrap">
+        <dl>
             <dt><@t.page 'name'/>:</dt>
             <dd>
                 <input class="required" name="name" type="text" maxlength="255" size="30" value="${(a.name)!}"/>
@@ -62,6 +66,10 @@ function siteDefaultConfig${id!}(type){
                 <span class="info hide"><@t.page 'site.config.description'/></span>
             </dd>
         </dl>
+        <p>
+            <button type="button" class="button" onclick="siteDefaultConfig${id!}('static');return false;"><@t.page 'site.default_static_config'/></button>
+            <button type="button" class="button" onclick="siteDefaultConfig${id!}();return false;"><@t.page 'site.default_dynamic_config'/></button>
+        </p>
         <dl class="nowrap">
             <dt><@t.page 'site.dynamic_path'/>:</dt>
             <dd>
