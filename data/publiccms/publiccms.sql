@@ -251,9 +251,9 @@ INSERT INTO `sys_dept` VALUES (3, 3, '技术部', NULL, '', 3, 1000, 1, 1, 1);
 -- ----------------------------
 -- Records of sys_domain
 -- ----------------------------
-INSERT INTO `sys_domain` VALUES ('search.site3.dev.publiccms.com', 3, 0, '/search/');
-INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', 2, 1, '');
-INSERT INTO `sys_domain` VALUES ('site3.dev.publiccms.com', 3, 0, '/member/');
+INSERT INTO `sys_domain` VALUES ('search.site3.dev.publiccms.com', 3, 0, 0, '/search/');
+INSERT INTO `sys_domain` VALUES ('site2.dev.publiccms.com', 2, 1, 0, '');
+INSERT INTO `sys_domain` VALUES ('site3.dev.publiccms.com', 3, 0, 0, '/member/');
 
 -- ----------------------------
 -- Records of sys_extend
@@ -280,8 +280,8 @@ INSERT INTO `sys_role_user` VALUES (3, 3);
 -- ----------------------------
 -- Records of sys_site
 -- ----------------------------
-INSERT INTO `sys_site` VALUES (2, NULL, '企业中英文站点', 0, '//site2.dev.publiccms.com:8080/publiccms/webfile/', 0, '//site2.dev.publiccms.com:8080/publiccms/', 0);
-INSERT INTO `sys_site` VALUES (3, NULL, 'PublicCMS官网', 1, '//site3.dev.publiccms.com:8080/publiccms/webfile/', 0, '//site3.dev.publiccms.com:8080/publiccms/', 0);
+INSERT INTO `sys_site` VALUES (2, NULL, NULL, '企业中英文站点', 0, '//site2.dev.publiccms.com:8080/publiccms/webfile/', 0, '//site2.dev.publiccms.com:8080/publiccms/', 0);
+INSERT INTO `sys_site` VALUES (3, NULL, NULL, 'PublicCMS官网', 1, '//site3.dev.publiccms.com:8080/publiccms/webfile/', 0, '//site3.dev.publiccms.com:8080/publiccms/', 0);
 
 -- ----------------------------
 -- Records of sys_task
