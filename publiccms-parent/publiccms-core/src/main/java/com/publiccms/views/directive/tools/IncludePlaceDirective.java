@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.base.AbstractTemplateDirective;
+import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -30,8 +31,12 @@ public class IncludePlaceDirective extends AbstractTemplateDirective {
             CmsPlaceMetadata metadata = metadataComponent
                     .getPlaceMetadata(siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path));
             if (site.isUseSsi()) {
-                handler.print(new StringBuilder("<!--#include virtual=\"/").append(TemplateComponent.INCLUDE_DIRECTORY)
-                        .append(path).append("\"-->").toString());
+                StringBuilder sb = new StringBuilder("<!--#include virtual=\"/");
+                if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
+                    sb.append(site.getDirectory()).append(CommonConstants.SEPARATOR);
+                }
+                sb.append(TemplateComponent.INCLUDE_DIRECTORY).append(path).append("\"-->");
+                handler.print(sb.toString());
             } else {
                 String filePath = siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
                 if (CmsFileUtils.exists(filePath)) {

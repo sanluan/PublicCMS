@@ -15,9 +15,11 @@
                     <select onchange="change(this)">
                         <@_sysSite id=domain.siteId><option value="${object.id}"<#if object.id==site.id> selected="true"</#if>>${object.name}</option></@_sysSite>
                         <@_sysSiteList parentId=domain.siteId pageSize=100>
+                        <optgroup label="<@t.page 'site.child_management'/>">
                             <#list page.list as a>
                         <option value="${a.id}"<#if a.id==site.id> selected="true"</#if>>${a.name}</option>
                             </#list>
+                        </optgroup>
                         </@_sysSiteList>
                     </select>
                 <#else>
