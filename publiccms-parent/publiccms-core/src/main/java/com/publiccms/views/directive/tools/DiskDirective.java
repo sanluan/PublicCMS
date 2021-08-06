@@ -26,4 +26,8 @@ public class DiskDirective extends AbstractTemplateDirective {
         handler.render();
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
 }

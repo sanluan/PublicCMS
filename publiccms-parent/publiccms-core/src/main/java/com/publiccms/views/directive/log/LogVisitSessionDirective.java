@@ -35,6 +35,11 @@ public class LogVisitSessionDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private LogVisitSessionService service;
 

@@ -41,4 +41,9 @@ public class ExceptionDirective extends AbstractTemplateDirective {
         }
         return errorMessage.trim();
     }
+
+    @Override
+    public boolean httpEnabled() {
+        return false;
+    }
 }

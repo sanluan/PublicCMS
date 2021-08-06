@@ -33,6 +33,11 @@ public class CmsUserVoteDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private CmsUserVoteService service;
 

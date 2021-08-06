@@ -26,6 +26,11 @@ public class CmsUserScoreListDirective extends AbstractTemplateDirective {
         handler.put("page", page).render();
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private CmsUserScoreService service;
 

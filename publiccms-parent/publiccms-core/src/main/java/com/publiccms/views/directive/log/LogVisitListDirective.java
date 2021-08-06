@@ -27,6 +27,11 @@ public class LogVisitListDirective extends AbstractTemplateDirective {
         handler.put("page", page).render();
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private LogVisitService service;
 

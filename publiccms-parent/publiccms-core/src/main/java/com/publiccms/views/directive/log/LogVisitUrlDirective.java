@@ -36,6 +36,11 @@ public class LogVisitUrlDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private LogVisitUrlService service;
 

@@ -41,6 +41,11 @@ public class CmsWordDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private CmsWordService service;
 
