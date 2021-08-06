@@ -54,7 +54,8 @@ public class WebContextInterceptor implements HandlerInterceptor {
             if (null != currentSiteId) {
                 site = siteComponent.getSiteById(currentSiteId);
             }
-            if (null == site || site.getParentId() != domain.getSiteId() && site.getId() != domain.getSiteId()) {
+            if (null == site || (null == site.getParentId() || site.getParentId() != domain.getSiteId())
+                    && site.getId() != domain.getSiteId()) {
                 site = siteComponent.getSite(domain, request.getServerName(),
                         UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
             }

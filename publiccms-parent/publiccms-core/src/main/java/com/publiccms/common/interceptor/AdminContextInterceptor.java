@@ -69,7 +69,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             Cookie cookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesSite());
             if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
                 site = siteComponent.getSiteById(cookie.getValue());
-                if (null == site || site.getParentId() != domain.getSiteId() && site.getId() != domain.getSiteId()) {
+                if (null == site || (null == site.getParentId() || site.getParentId() != domain.getSiteId())
+                        && site.getId() != domain.getSiteId()) {
                     RequestUtils.cancleCookie(ctxPath, response, CommonConstants.getCookiesSite(), null);
                 }
             }
