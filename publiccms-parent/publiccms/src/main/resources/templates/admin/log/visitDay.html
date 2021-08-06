@@ -46,9 +46,9 @@
             <#list page.list as a>
             <tr>
                 <td><a href="log/visit.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="log/visit" title="<@t.page 'log.visit'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}<#if hourAnalytics?has_content && 'true'=hourAnalytics> ${a.id.visitHour!}:00:00</#if></a></td>
-                <td>${a.pv!}</td>
-                <td>${a.uv!}</td>
-                <td>${a.ipviews!}</td>
+                <td class="center">${a.pv!}</td>
+                <td class="center">${a.uv!}</td>
+                <td class="center">${a.ipviews!}</td>
             </tr>
             </#list>
         </tbody>

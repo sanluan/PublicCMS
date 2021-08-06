@@ -58,3 +58,11 @@ CREATE TABLE `log_visit_url` (
   PRIMARY KEY (`site_id`,`visit_date`,`url_md5`,`url_sha`),
   KEY `log_visit_session_id` (`site_id`,`visit_date`,`pv`)
 ) COMMENT='页面访问汇总';
+INSERT INTO `sys_module` VALUES ('log_visit_item', 'log/visitItem', NULL, 'icon-flag-checkered', 'log_menu', 1, 9);
+INSERT INTO `sys_module` VALUES ('log_visit_url', 'log/visitUrl', NULL, 'icon-link', 'log_menu', 1, 8);
+INSERT INTO `sys_module_lang` VALUES ('log_visit_item', 'en', 'Item visit log');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_item', 'ja', 'アイテム訪問ログ');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_item', 'zh', '项目访问日志');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'en', 'Page visit log');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'ja', 'ページアクセスログ');
+INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'zh', '页面访问日志');

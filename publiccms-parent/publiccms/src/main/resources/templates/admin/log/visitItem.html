@@ -1,4 +1,4 @@
-<@_logVisitDayList startVisitDate=startVisitDate endVisitDate=endVisitDate itemType=itemType itemId=itemId pageIndex=pageNum pageSize=numPerPage>
+<@_logVisitItemList startVisitDate=startVisitDate endVisitDate=endVisitDate itemType=itemType itemId=itemId pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
@@ -51,13 +51,13 @@
                 <td><a href="log/visit.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="log/visit" title="<@t.page 'log.visit'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
                 <td>${a.id.itemType!}</td>
                 <td>${a.id.itemId!}</td>
-                <td>${a.pv!}</td>
-                <td>${a.uv!}</td>
-                <td>${a.ipviews!}</td>
+                <td class="center">${a.pv!}</td>
+                <td class="center">${a.uv!}</td>
+                <td class="center">${a.ipviews!}</td>
             </tr>
             </#list>
         </tbody>
     </table>
     <#include "../include_page/page.html"/>
 </div>
-</@_logVisitDayList>
+</@_logVisitItemList>

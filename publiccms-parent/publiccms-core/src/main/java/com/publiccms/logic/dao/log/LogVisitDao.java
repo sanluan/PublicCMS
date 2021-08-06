@@ -88,6 +88,7 @@ public class LogVisitDao extends BaseDao<LogVisit> {
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.itemType");
         queryHandler.group("bean.itemId");
+        queryHandler.order("count(*) desc");
         return (List<LogVisitItem>) getList(queryHandler);
     }
 
@@ -108,6 +109,7 @@ public class LogVisitDao extends BaseDao<LogVisit> {
         queryHandler.group("bean.siteId");
         queryHandler.group("bean.visitDate");
         queryHandler.group("bean.url");
+        queryHandler.order("count(*) desc");
         return (List<LogVisitUrl>) getList(queryHandler);
     }
 

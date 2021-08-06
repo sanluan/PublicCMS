@@ -132,7 +132,7 @@
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
-                <th width="150"><@t.page 'content'/></th>
+                <th width="200"><@t.page 'content'/></th>
                 <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
                 <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
@@ -167,11 +167,11 @@
                         </#if>
                         <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></h3>
                         <p>
-                            <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickName)!}</span>
-                            <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
                                 <label><a href="cmsContent/list.html?parentId=${a.id}&categoryId=${a.categoryId!}" class="btnText" target="navTab" rel="cmsContent/list"><@t.page 'content.child_management'/></a></label>
                             </#if>
+                            <label><@t.page 'content.promulgator'/>:</label><span class="exclude-translate">${(userMap[a.userId?string].nickName)!}</span>
+                            <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
                         </p>
                         <#if a.expiryDate?has_content><p><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></p></#if>
                     </div>
