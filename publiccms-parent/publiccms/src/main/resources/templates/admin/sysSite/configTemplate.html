@@ -27,7 +27,7 @@
 server {
     listen       ${dynamicPort?has_content?then(dynamicPort,80)};
     #listen 443 ssl;
-    server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#sep> </#list>;
+    server_name  ${dynamicPath} <#list page.list as d><#if d.name!=dynamicPath>${d.name}</#if><#if d.wild> *.${d.name}</#if><#if d.multiple><#assign multipleDomain=d/></#if><#sep> </#list>;
     
     #ssl_certificate cert/xxx.pem;
     #ssl_certificate_key cert/xxx.key;
@@ -65,11 +65,37 @@ server {
         alias   ${realRootPath}/web/site_${siteId}/;
         index  index.html;
     }
+            <#if multipleDomain?has_content>
+                <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+                    <#list page.list as a>
+                        <#if a.directory?has_content>
+    #${a.name} <@t.page 'server_config.static'/>
+    location ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ {
+        alias   ${realRootPath}/web/site_${a.id}/;
+        index  index.html;
+    }
+                        </#if>
+                    </#list>
+                </@_sysSiteList>
+            </#if>
         <#else>
     location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/ {
         alias   ${realRootPath}/web/site_${siteId}/webfile/;
         index  index.html;
     }
+    
+            <#if multipleDomain?has_content>
+                <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+                    <#list page.list as a>
+                        <#if a.directory?has_content>
+    location ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}webfile/${a.directory}/ {
+        alias   ${realRootPath}/web/site_${a.id}/webfile/;
+        index  index.html;
+    }
+                        </#if>
+                    </#list>
+                </@_sysSiteList>
+            </#if>
         </#if>
 }
 </@_sysDomainList>
@@ -95,6 +121,19 @@ server {
         index  index.html;
         add_header Access-Control-Allow-Origin *;
     }
+    
+    <#if multipleDomain?has_content>
+        <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+            <#list page.list as a>
+                <#if a.directory?has_content>
+    location ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ {
+        alias   ${realRootPath}/web/site_${a.id}/;
+        index  index.html;
+    }
+                </#if>
+            </#list>
+        </@_sysSiteList>
+    </#if>
 }
 </#if></textarea>
             <span class="info"><@t.page 'server_config.nginx_config_description'/></span>
@@ -139,6 +178,15 @@ upstream cms {
    ProxyPass ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} http://localhost:8080${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
    ProxyPassReverse ${dynamicLocation?has_content?then('/'+dynamicLocation,'/')} http://localhost:8080${dynamicLocation?has_content?then('/'+dynamicLocation,'/')}
    
+   <#if multipleDomain?has_content>
+        <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+            <#list page.list as a>
+                <#if a.directory?has_content>
+    Alias ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ "${realRootPath}/web/site_${a.id}/webfile/"
+                </#if>
+            </#list>
+        </@_sysSiteList>
+    </#if>
    <#if dynamicPath=sitePath&&dynamicLocation!=siteLocation>
    #${a.name} <@t.page 'server_config.static'/>
    Alias "/${siteLocation}" "${realRootPath}/web/site_${siteId}/"
@@ -157,6 +205,16 @@ upstream cms {
    AddType text/html .html .shtml
    AddOutputFilter INCLUDES .html .shtml
         </#if>
+    </#if>
+    <#if multipleDomain?has_content>
+        <@_sysSiteList parentId=multipleDomain.siteId pageSize=100>
+            <#list page.list as a>
+                <#if a.directory?has_content>
+    #${a.name} <@t.page 'server_config.static'/>
+    alias ${siteLocation?has_content?then('/'+siteLocation,'/')}${a.directory}/ "${realRootPath}/web/site_${a.id}/"
+                </#if>
+            </#list>
+        </@_sysSiteList>
     </#if>
     <#if siteLocation?has_content>
     Alias "/${siteLocation}/" "${realRootPath}/web/site_${siteId}/"

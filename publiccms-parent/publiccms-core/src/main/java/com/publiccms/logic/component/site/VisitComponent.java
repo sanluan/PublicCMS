@@ -12,12 +12,17 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Cache;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogVisit;
 import com.publiccms.entities.log.LogVisitDay;
+import com.publiccms.entities.log.LogVisitItem;
 import com.publiccms.entities.log.LogVisitSession;
+import com.publiccms.entities.log.LogVisitUrl;
 import com.publiccms.logic.service.log.LogVisitDayService;
+import com.publiccms.logic.service.log.LogVisitItemService;
 import com.publiccms.logic.service.log.LogVisitService;
 import com.publiccms.logic.service.log.LogVisitSessionService;
+import com.publiccms.logic.service.log.LogVisitUrlService;
 
 /**
  *
@@ -30,6 +35,10 @@ public class VisitComponent implements Cache {
 
     @Autowired
     private LogVisitDayService logVisitDayService;
+    @Autowired
+    private LogVisitItemService logVisitItemService;
+    @Autowired
+    private LogVisitUrlService logVisitUrlService;
     @Autowired
     private LogVisitService logVisitService;
     @Autowired
@@ -47,6 +56,24 @@ public class VisitComponent implements Cache {
         now.add(Calendar.HOUR_OF_DAY, -1);
         List<LogVisitDay> entityList = logVisitService.getHourList(null, now.getTime(), (byte) now.get(Calendar.HOUR_OF_DAY));
         logVisitDayService.save(entityList);
+    }
+
+    public void dealLastDayItemVisitLog() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.HOUR_OF_DAY, -1);
+        List<LogVisitItem> entityList = logVisitService.getItemList(null, now.getTime(), null, null);
+        logVisitItemService.save(entityList);
+    }
+
+    public void dealLastDayUrlVisitLog() {
+        Calendar now = Calendar.getInstance();
+        now.add(Calendar.HOUR_OF_DAY, -1);
+        List<LogVisitUrl> entityList = logVisitService.getUrlList(null, now.getTime());
+        for (LogVisitUrl entity : entityList) {
+            entity.getId().setUrlMd5(VerificationUtils.md5Encode(entity.getUrl()));
+            entity.getId().setUrlSha(VerificationUtils.sha1Encode(entity.getUrl()));
+        }
+        logVisitUrlService.save(entityList);
     }
 
     public void dealLastDayVisitLog() {

@@ -1,19 +1,19 @@
-<@_logVisitList sessionId=sessionId!querySessionId  startCreateDate=startCreateDate!queryStartCreateDate endCreateDate=endCreateDate!queryEndCreateDate 
+<@_logVisitList sessionId=sessionId  startCreateDate=startCreateDate endCreateDate=endCreateDate
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" action="log/visit.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'log.visit.session'/>:</label>
-                    <input type="text" name="sessionId" value="${sessionId!querySessionId!}" size="40"/>
+                    <input type="text" name="sessionId" value="${sessionId!}" size="40"/>
                 </li>
                 <li class="colspan">
                     <label><@t.page 'log.visit.visit_date'/>:</label>
-                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!queryStartCreateDate!}" />
+                    <input type="text" name="startCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startCreateDate!}" />
                     <span>-</span>
-                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!queryEndCreateDate!}" />
+                    <input type="text" name="endCreateDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endCreateDate!}" />
                 </li>
             </ul>
             <div class="subBar">

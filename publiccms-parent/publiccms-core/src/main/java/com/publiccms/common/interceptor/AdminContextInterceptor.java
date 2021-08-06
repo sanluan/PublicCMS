@@ -49,33 +49,33 @@ public class AdminContextInterceptor extends WebContextInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
-        String currentSiteId = request.getParameter("currentSiteId");
-        String ctxPath = urlPathHelper.getOriginatingContextPath(request);
-        if (null != currentSiteId) {
-            try {
-                RequestUtils.addCookie(ctxPath, response, CommonConstants.getCookiesSite(), currentSiteId, Integer.MAX_VALUE,
-                        null);
-                StringBuilder sb = new StringBuilder(ctxPath);
-                sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
-                response.sendRedirect(sb.toString());
-                return false;
-            } catch (IOException e) {
-                return true;
-            }
-        }
         SysSite site = null;
         SysDomain domain = siteComponent.getDomain(request.getServerName());
+        String ctxPath = urlPathHelper.getOriginatingContextPath(request);
         if (domain.isMultiple()) {
+            String currentSiteId = request.getParameter("currentSiteId");
+            if (null != currentSiteId) {
+                try {
+                    RequestUtils.addCookie(ctxPath, response, CommonConstants.getCookiesSite(), currentSiteId, Integer.MAX_VALUE,
+                            null);
+                    StringBuilder sb = new StringBuilder(ctxPath);
+                    sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
+                    response.sendRedirect(sb.toString());
+                    return false;
+                } catch (IOException e) {
+                    return true;
+                }
+            }
             Cookie cookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesSite());
             if (null != cookie && CommonUtils.notEmpty(cookie.getValue())) {
                 site = siteComponent.getSiteById(cookie.getValue());
-                if (null == site) {
+                if (null == site || site.getParentId() != domain.getSiteId() && site.getId() != domain.getSiteId()) {
                     RequestUtils.cancleCookie(ctxPath, response, CommonConstants.getCookiesSite(), null);
                 }
             }
         }
         if (null == site) {
-            site = siteComponent.getSite(request.getServerName(), null);
+            site = siteComponent.getSite(domain, request.getServerName(), null);
         }
         request.setAttribute(CommonConstants.getAttributeSite(), site);
         String path = urlPathHelper.getLookupPathForRequest(request);

@@ -13,7 +13,9 @@ import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.entities.log.LogVisit;
 import com.publiccms.entities.log.LogVisitDay;
+import com.publiccms.entities.log.LogVisitItem;
 import com.publiccms.entities.log.LogVisitSession;
+import com.publiccms.entities.log.LogVisitUrl;
 import com.publiccms.logic.dao.log.LogVisitDao;
 
 /**
@@ -42,7 +44,7 @@ public class LogVisitService extends BaseService<LogVisit> {
     }
 
     /**
-     * @param siteId 
+     * @param siteId
      * @param startCreateDate
      * @param endCreateDate
      * @return results page
@@ -61,6 +63,29 @@ public class LogVisitService extends BaseService<LogVisit> {
     @Transactional(readOnly = true)
     public List<LogVisitDay> getHourList(Short siteId, Date visitDate, Byte visitHour) {
         return dao.getHourList(siteId, visitDate, visitHour);
+    }
+
+    /**
+     * @param siteId
+     * @param visitDate
+     * @param itemType
+     * @param itemId
+     * @return results page
+     */
+    @Transactional(readOnly = true)
+    public List<LogVisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId) {
+        return dao.getItemList(siteId, visitDate, itemType, itemId);
+    }
+
+    /**
+     * @param siteId
+     * @param visitDate
+     * @param visitHour
+     * @return results page
+     */
+    @Transactional(readOnly = true)
+    public List<LogVisitUrl> getUrlList(Short siteId, Date visitDate) {
+        return dao.getUrlList(siteId, visitDate);
     }
 
     /**

@@ -14,7 +14,9 @@ import com.publiccms.common.handler.QueryHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.log.LogVisit;
 import com.publiccms.entities.log.LogVisitDay;
+import com.publiccms.entities.log.LogVisitItem;
 import com.publiccms.entities.log.LogVisitSession;
+import com.publiccms.entities.log.LogVisitUrl;
 
 /**
  *
@@ -52,12 +54,65 @@ public class LogVisitDao extends BaseDao<LogVisit> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.createDate ").append(orderType);
+        queryHandler.order("bean.createDate").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 
     /**
-     * @param siteId 
+     * @param siteId
+     * @param visitDate
+     * @param itemType
+     * @param itemId
+     * @return results page
+     */
+    @SuppressWarnings("unchecked")
+    public List<LogVisitItem> getItemList(Short siteId, Date visitDate, String itemType, String itemId) {
+        QueryHandler queryHandler = getQueryHandler(
+                "select new LogVisitItem(bean.siteId,bean.visitDate,bean.itemType,bean.itemId,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from LogVisit bean");
+        if (null != siteId) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate",
+                DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
+        if (CommonUtils.notEmpty(itemType)) {
+            queryHandler.condition("bean.itemType = :itemType").setParameter("itemType", itemType);
+        } else {
+            queryHandler.condition("bean.itemId is not null");
+        }
+        if (CommonUtils.notEmpty(itemId)) {
+            queryHandler.condition("bean.itemId = :itemId").setParameter("itemId", itemId);
+        } else {
+            queryHandler.condition("bean.itemId is not null");
+        }
+        queryHandler.group("bean.siteId");
+        queryHandler.group("bean.visitDate");
+        queryHandler.group("bean.itemType");
+        queryHandler.group("bean.itemId");
+        return (List<LogVisitItem>) getList(queryHandler);
+    }
+
+    /**
+     * @param siteId
+     * @param visitDate
+     * @return results page
+     */
+    @SuppressWarnings("unchecked")
+    public List<LogVisitUrl> getUrlList(Short siteId, Date visitDate) {
+        QueryHandler queryHandler = getQueryHandler(
+                "select new LogVisitUrl(bean.siteId,bean.visitDate,bean.url,count(*),count(distinct bean.sessionId),count(distinct bean.ip)) from LogVisit bean");
+        if (null != siteId) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        queryHandler.condition("bean.visitDate = :visitDate").setParameter("visitDate",
+                DateUtils.truncate(visitDate, Calendar.DAY_OF_MONTH));
+        queryHandler.group("bean.siteId");
+        queryHandler.group("bean.visitDate");
+        queryHandler.group("bean.url");
+        return (List<LogVisitUrl>) getList(queryHandler);
+    }
+
+    /**
+     * @param siteId
      * @param visitDate
      * @param visitHour
      * @return results page
@@ -79,13 +134,13 @@ public class LogVisitDao extends BaseDao<LogVisit> {
     }
 
     /**
-     * @param siteId 
+     * @param siteId
      * @param startCreateDate
      * @param endCreateDate
      * @return results page
      */
     @SuppressWarnings("unchecked")
-    public List<LogVisitSession> getSessionList(Short siteId,Date startCreateDate, Date endCreateDate) {
+    public List<LogVisitSession> getSessionList(Short siteId, Date startCreateDate, Date endCreateDate) {
         QueryHandler queryHandler = getQueryHandler(
                 "select new LogVisitSession(bean.siteId,bean.sessionId,bean.visitDate,max(bean.createDate), min(bean.createDate), bean.ip, count(*)) from LogVisit bean");
         if (null != siteId) {

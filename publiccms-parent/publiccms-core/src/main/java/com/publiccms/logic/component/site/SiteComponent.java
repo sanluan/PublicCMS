@@ -221,6 +221,28 @@ public class SiteComponent implements Cache {
      * @param id
      * @return site
      */
+    public SysSite getSiteById(Short id) {
+        if (CommonUtils.notEmpty(id)) {
+            String key = id.toString();
+            SysSite site = siteCache.get(key);
+            if (null == site) {
+                try {
+                    site = sysSiteService.getEntity(id);
+                    siteCache.put(key, site);
+                    return site;
+                } catch (NumberFormatException e) {
+                }
+            } else {
+                return site;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @param id
+     * @return site
+     */
     public SysSite getSiteById(String id) {
         if (CommonUtils.notEmpty(id)) {
             SysSite site = siteCache.get(id);
@@ -239,13 +261,15 @@ public class SiteComponent implements Cache {
     }
 
     /**
+     * @param domain
      * @param serverName
      * @param path
      * @return site
      */
-    public SysSite getSite(String serverName, String path) {
+    public SysSite getSite(SysDomain domain, String serverName, String path) {
+        String cacheKey;
         String directory = null;
-        if (CommonUtils.notEmpty(path)) {
+        if (domain.isMultiple() && CommonUtils.notEmpty(path)) {
             int index = 0;
             if (path.startsWith(CommonConstants.SEPARATOR)) {
                 index = path.indexOf(CommonConstants.SEPARATOR, 1);
@@ -258,12 +282,13 @@ public class SiteComponent implements Cache {
                     directory = path.substring(0, index);
                 }
             }
+            cacheKey = null == directory ? serverName : (serverName + CommonConstants.SEPARATOR + directory);
+        } else {
+            cacheKey = serverName;
         }
-        String cacheKey = null == directory ? serverName : (serverName + CommonConstants.SEPARATOR + directory);
         SysSite site = siteCache.get(cacheKey);
         if (null == site) {
-            SysDomain domain = getDomain(serverName);
-            if (domain.isMultiple() && null != directory) {
+            if (null != directory) {
                 site = sysSiteService.getEntity(domain.getSiteId(), directory);
             }
             if (null == site) {
@@ -272,6 +297,16 @@ public class SiteComponent implements Cache {
             siteCache.put(cacheKey, site);
         }
         return site;
+    }
+
+    /**
+     * @param serverName
+     * @param path
+     * @return site
+     */
+    public SysSite getSite(String serverName, String path) {
+        SysDomain domain = getDomain(serverName);
+        return getSite(domain, serverName, path);
     }
 
     /**

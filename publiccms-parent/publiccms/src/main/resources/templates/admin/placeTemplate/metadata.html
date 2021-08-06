@@ -49,7 +49,7 @@
             </dd>
         </dl>
         <dl class="nowrap placeExtend">
-            <dt><@t.page 'place_data.item_type'/>:</dt>
+            <dt><@t.page 'item_type'/>:</dt>
             <dd>
                 <label><input name="acceptItemTypes" type="checkbox" value="content"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('content')> checked="checked"</#if>/><@t.page 'content'/></label>
                 <label><input name="acceptItemTypes" type="checkbox" value="page"<#if (a.acceptItemTypes)?has_content&&a.acceptItemTypes?seq_contains('page')> checked="checked"</#if>/><@t.page 'page'/></label>

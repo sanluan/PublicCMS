@@ -50,7 +50,7 @@ public class TradeOrderDao extends BaseDao<TradeOrder> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.createDate ").append(orderType);
+        queryHandler.order("bean.createDate").append(orderType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

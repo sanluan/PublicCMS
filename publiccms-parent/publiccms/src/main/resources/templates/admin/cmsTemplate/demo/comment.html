@@ -41,11 +41,12 @@
             </ul>
         </#if>
     </@_commentList>
-        <form method="post" action="${site.dynamicPath}comment/save">
+        <form method="post" action="${(parentSite.dynamicPath)!site.dynamicPath}comment/save">
             <@_comment id=id>
                 <input type="hidden" name="id" value="${object.id}"/>
                 <#assign text=object.text!/>
             </@_comment>
+            <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
             <input type="hidden" name="replyId" value="${replyId!}"/>
             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
             <input type="hidden" name="contentId" value="${content.id}"/>
@@ -129,6 +130,13 @@
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
+            <#if parentSite?has_conent>
+            url+='&currentSiteId=${site.id}';
+            </#if>
+        } else {
+            <#if parentSite?has_conent>
+            url+='?currentSiteId=${site.id}';
+            </#if>
         }
         ca.report(url);
     </script>

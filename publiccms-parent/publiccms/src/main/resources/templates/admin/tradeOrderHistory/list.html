@@ -1,14 +1,14 @@
-<@_tradeOrderHistoryList orderId=orderId!queryOrderId operate=operate
+<@_tradeOrderHistoryList orderId=orderId operate=operate
             startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" action="tradeOrderHistory/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'order.id'/>:</label>
-                    <input type="text" name="orderId" value="${orderId!queryOrderId!}" />
+                    <input type="text" name="orderId" value="${orderId!}" />
                 </li>
                 <li>
                     <label><@t.page 'operate'/>:</label>

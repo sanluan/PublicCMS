@@ -16,6 +16,7 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.view.MultiSiteImportDirective;
 import com.publiccms.common.view.MultiSiteIncludeDirective;
 import com.publiccms.common.view.SafeRequestContext;
+import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.BeanComponent;
 
@@ -34,6 +35,10 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      * Site Context
      */
     public static final String CONTEXT_SITE = "site";
+    /**
+     * Parent Site Context
+     */
+    public static final String CONTEXT_PARENT_SITE = "parentSite";
     /**
      * Site Context
      */
@@ -76,11 +81,12 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
     public static void exposeAttribute(Map<String, Object> model, HttpServletRequest request) {
         String serverName = request.getServerName();
         model.put(CONTEXT_BASE, request.getContextPath());
+        SysDomain domain = BeanComponent.getSiteComponent().getDomain(serverName);
         model.put(CONTEXT_DOMAIN, BeanComponent.getSiteComponent().getDomain(serverName));
         SysSite site = ControllerUtils.getSiteFromAttribute(request);
         if (null == site) {
-            site = BeanComponent.getSiteComponent().getSite(serverName,
-                    UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+            site = BeanComponent.getSiteComponent().getSite(domain, serverName,
+                    domain.isMultiple() ? UrlPathHelper.defaultInstance.getLookupPathForRequest(request) : null);
         }
         exposeSite(model, site);
     }
@@ -92,6 +98,9 @@ public abstract class AbstractFreemarkerView extends FreeMarkerView {
      */
     public static void exposeSite(Map<String, Object> model, SysSite site) {
         model.put(CONTEXT_SITE, site);
+        if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
+            model.put(CONTEXT_PARENT_SITE, BeanComponent.getSiteComponent().getSiteById(site.getParentId()));
+        }
         model.put(CONTEXT_SITE_ATTRIBUTE,
                 BeanComponent.getConfigComponent().getConfigData(site.getId(), Config.CONFIG_CODE_SITEA_TTRIBUTE));
         model.put(CONTEXT_INCLUDE, new MultiSiteIncludeDirective(site));

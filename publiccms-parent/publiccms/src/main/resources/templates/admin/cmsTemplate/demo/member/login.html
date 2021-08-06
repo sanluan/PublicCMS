@@ -28,12 +28,14 @@
         <#else>
             <#if user?has_content>
                 <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
-                <form name="logout" action="${site.dynamicPath}doLogout" method="post">
+                <form name="logout" action="${(parentSite.dynamicPath)!site.dynamicPath}doLogout" method="post">
+                    <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
                     <input type="hidden" name="userId" value="${(user.id)!}"/>
                     <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
                 </form>
                 <#if !user.emailChecked>
-                    <form action="${site.dynamicPath}user/saveEmail" method="post" class="center login-form">
+                    <form action="${(parentSite.dynamicPath)!site.dynamicPath}user/saveEmail" method="post" class="center login-form">
+                        <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
                         <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
                         <input type="hidden" name="returnUrl" value="${site.dynamicPath}login.html"/>
                         <p>
@@ -43,13 +45,14 @@
                     </form>
                 </#if>
             <#else>
-                <form action="${site.dynamicPath}doLogin" method="post">
+                <form action="${(parentSite.dynamicPath)!site.dynamicPath}doLogin" method="post">
                     <#if error??>
                         <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                     </#if>
                     <p><input type="text" name="username" placeholder="User name" title="User name"/></p>
                     <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                     <p>
+                        <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
                         <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
                         <input type="hidden" name="clientId" value="${clientId!}"/>
                         <input type="hidden" name="uuid" value="${uuid!}"/>
@@ -57,7 +60,7 @@
                     </p>
                     <#if _oauthList??&&_oauthList?is_directive>
                         <@_oauthList>
-                            <p><#list list as o><a href="${site.dynamicPath}oauth/login/${o}">Login by ${o}</a><#sep> </#list></p>
+                            <p><#list list as o><a href="${site.dynamicPath}oauth/login/${o}<#if parentSite?has_conent>?currentSiteId=${site.id}</#if>">Login by ${o}</a><#sep> </#list></p>
                         </@_oauthList>
                     </#if>
                     <p>No account?<a href="register.html?clientId=${clientId!}&uuid=${uuid!}&returnUrl=${returnUrl!}">Please register</a></p>
@@ -80,6 +83,13 @@
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
+            <#if parentSite?has_conent>
+            url+='&currentSiteId=${site.id}';
+            </#if>
+        } else {
+            <#if parentSite?has_conent>
+            url+='?currentSiteId=${site.id}';
+            </#if>
         }
         ca.report(url);
     </script>

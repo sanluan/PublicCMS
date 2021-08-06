@@ -1,0 +1,53 @@
+<@_logVisitDayList startVisitDate=startVisitDate endVisitDate=endVisitDate hourAnalytics=hourAnalytics pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li class="colspan">
+                    <label><@t.page 'log.visit.visit_date'/>:</label>
+                    <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        </ul>
+    </div>
+    <table class="table" width="100%" layoutH="92">
+        <thead>
+            <tr>
+                <th><@t.page 'log.visit.visit_date'/></th>
+                <th><@t.page 'url'/></th>
+                <th>PV</th>
+                <th>UV</th>
+                <th>IP Views</th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr>
+                <td><a href="log/visit.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="log/visit" title="<@t.page 'log.visit'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
+                <td>${a.url!}</td>
+                <td>${a.pv!}</td>
+                <td>${a.uv!}</td>
+                <td>${a.ipviews!}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_logVisitDayList>

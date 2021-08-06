@@ -128,7 +128,7 @@ public abstract class BaseDao<E> {
             return null;
         } else {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition("bean.").append(primaryKeyName).append("= :id").setParameter("id", id);
+            queryHandler.condition(String.format("bean.%s",primaryKeyName)).append("= :id").setParameter("id", id);
             return getEntity(queryHandler);
         }
     }
@@ -147,13 +147,13 @@ public abstract class BaseDao<E> {
      * 获取实体集合
      * 
      * @param ids
-     * @param pk
+     * @param primaryKeyName
      * @return entity list
      */
-    public List<E> getEntitys(Serializable[] ids, String pk) {
+    public List<E> getEntitys(Serializable[] ids, String primaryKeyName) {
         if (CommonUtils.notEmpty(ids)) {
             QueryHandler queryHandler = getQueryHandler("from").append(getEntityClass().getSimpleName()).append("bean");
-            queryHandler.condition("bean.").append(pk).append("in (:ids)").setParameter("ids", ids);
+            queryHandler.condition(String.format("bean.%s",primaryKeyName)).append("in (:ids)").setParameter("ids", ids);
             Query<E> query = getSession().createQuery(queryHandler.getSql(), getEntityClass());
             return getList(query, queryHandler);
         }

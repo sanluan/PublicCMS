@@ -16,7 +16,7 @@
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
-    <form class="pagerForm" autocomplete="off" action="common/content_list.html" onsubmit="return divSearch(this,'contentBox');" method="post">
+    <form class="pagerForm" action="common/content_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
         <input name="categoryId" type="hidden" value="${categoryId!}"/>
         <input name="parentId" type="hidden" value="${(parent.id)!}"/>

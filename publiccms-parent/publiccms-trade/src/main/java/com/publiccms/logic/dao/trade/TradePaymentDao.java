@@ -70,7 +70,7 @@ public class TradePaymentDao extends BaseDao<TradePayment> {
         if (!ORDERTYPE_ASC.equalsIgnoreCase(paymentType)) {
             paymentType = ORDERTYPE_DESC;
         }
-        queryHandler.order("bean.createDate ").append(paymentType);
+        queryHandler.order("bean.createDate").append(paymentType);
         return getPage(queryHandler, pageIndex, pageSize);
     }
 

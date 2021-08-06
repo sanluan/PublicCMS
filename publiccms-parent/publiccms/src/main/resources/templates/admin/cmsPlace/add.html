@@ -37,7 +37,7 @@
         </dl>
     <#if (metadata.acceptItemTypes)?has_content>
         <dl>
-            <dt><@t.page 'place_data.item_type'/>:</dt>
+            <dt><@t.page 'item_type'/>:</dt>
             <dd>
                 <input class="required" name="itemType" type="text" readonly="readonly" value="${(a.itemType)!itemType!}"/>
                 <input name="itemId" type="hidden" readonly="readonly" value="${(a.itemId)!itemId!}" />

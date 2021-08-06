@@ -23,12 +23,13 @@
     <main>
         <#if user??>
             <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
-            <form action="${site.dynamicPath}doLogout" method="post">
+            <form action="${(parentSite.dynamicPath)!site.dynamicPath}doLogout" method="post">
+                <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
                 <input type="hidden" name="userId" value="${(user.id)!}"/>
                 <input type="hidden" name="returnUrl" value="${returnUrl!site.sitePath!}"/>
             </form>
         <#else>
-            <form action="${site.dynamicPath}doRegister" method="post">
+            <form action="${(parentSite.dynamicPath)!site.dynamicPath}doRegister" method="post">
                 <#if error??>
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>
@@ -37,6 +38,7 @@
                 <p><input type="password" name="password" placeholder="Password" title="Password"/></p>
                 <p><input type="password" name="repassword" placeholder="Repeat password" title="Repeat password"/></p>
                 <p>
+                    <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
                     <input type="hidden" name="returnUrl" value="${returnUrl!}"/>
                     <input type="hidden" name="clientId" value="${clientId!}"/>
                     <input type="hidden" name="uuid" value="${uuid!}"/>
@@ -60,6 +62,13 @@ function logout(){
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
+            <#if parentSite?has_conent>
+            url+='&currentSiteId=${site.id}';
+            </#if>
+        } else {
+            <#if parentSite?has_conent>
+            url+='?currentSiteId=${site.id}';
+            </#if>
         }
         ca.report(url);
     </script>

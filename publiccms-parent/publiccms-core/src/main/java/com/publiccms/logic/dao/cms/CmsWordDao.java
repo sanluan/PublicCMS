@@ -57,13 +57,13 @@ public class CmsWordDao extends BaseDao<CmsWord> {
         }
         switch (orderField) {
         case "searchCount":
-            queryHandler.order("bean.searchCount ").append(orderType);
+            queryHandler.order("bean.searchCount").append(orderType);
             break;
         case "createDate":
-            queryHandler.order("bean.createDate ").append(orderType);
+            queryHandler.order("bean.createDate").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id ").append(orderType);
+            queryHandler.order("bean.id").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

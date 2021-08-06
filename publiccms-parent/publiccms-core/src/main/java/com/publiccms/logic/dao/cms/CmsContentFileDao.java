@@ -47,10 +47,10 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
         }
         switch (orderField) {
         case "size":
-            queryHandler.order("bean.size ").append(orderType);
+            queryHandler.order("bean.size").append(orderType);
             break;
         case "clicks":
-            queryHandler.order("bean.clicks ").append(orderType);
+            queryHandler.order("bean.clicks").append(orderType);
             break;
         default:
             queryHandler.order("bean.sort asc,bean.id asc");

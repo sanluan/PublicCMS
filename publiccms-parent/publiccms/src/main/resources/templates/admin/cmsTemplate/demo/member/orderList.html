@@ -85,6 +85,13 @@
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
+            <#if parentSite?has_conent>
+            url+='&currentSiteId=${site.id}';
+            </#if>
+        } else {
+            <#if parentSite?has_conent>
+            url+='?currentSiteId=${site.id}';
+            </#if>
         }
         ca.report(url);
     </script>

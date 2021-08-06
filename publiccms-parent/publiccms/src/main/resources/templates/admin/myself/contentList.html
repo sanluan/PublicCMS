@@ -8,8 +8,9 @@
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/export,cmsComment/list'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" action="myself/contentList.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
+        <input name="parentId" type="hidden" value="${(parent.id)!}"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li class="width:auto">

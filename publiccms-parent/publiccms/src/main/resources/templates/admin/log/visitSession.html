@@ -43,7 +43,7 @@
         <tbody>
             <#list page.list as a>
             <tr>
-                <td><a href="log/visit.html?querySessionId=${a.id.sessionId!}" target="navTab" rel="log/visit" icon="<i class='icon-bolt icon-large'></i>">${a.id.sessionId!}</a></td>
+                <td><a href="log/visit.html?sessionId=${a.id.sessionId!}" target="navTab" rel="log/visit" icon="<i class='icon-bolt icon-large'></i>">${a.id.sessionId!}</a></td>
                 <td>${a.lastVisitDate!}</td>
                 <td>${a.firstVisitDate!}</td>
                 <td>${a.ip!}</td>

@@ -66,19 +66,19 @@ public class CmsVoteDao extends BaseDao<CmsVote> {
         }
         switch (orderField) {
         case "startDate":
-            queryHandler.order("bean.startDate ").append(orderType);
+            queryHandler.order("bean.startDate").append(orderType);
             break;
         case "endDate":
-            queryHandler.order("bean.endDate ").append(orderType);
+            queryHandler.order("bean.endDate").append(orderType);
             break;
         case "scores":
-            queryHandler.order("bean.scores ").append(orderType);
+            queryHandler.order("bean.scores").append(orderType);
             break;
         case "createDate":
-            queryHandler.order("bean.createDate ").append(orderType);
+            queryHandler.order("bean.createDate").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id ").append(orderType);
+            queryHandler.order("bean.id").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

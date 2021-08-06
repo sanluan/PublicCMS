@@ -1,14 +1,13 @@
-<@_tradePaymentHistoryList paymentId=paymentId!queryPaymentId operate=operate
-            startCreateDate=startCreateDate endCreateDate=endCreateDate 
+<@_tradePaymentHistoryList paymentId=paymentId operate=operate startCreateDate=startCreateDate endCreateDate=endCreateDate 
             orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
-    <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+    <form class="pagerForm" action="tradePaymentHistory/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
                     <label><@t.page 'payment.id'/>:</label>
-                    <input type="text" name="paymentId" value="${paymentId!queryPaymentId!}" />
+                    <input type="text" name="paymentId" value="${paymentId!}" />
                 </li>
                 <li>
                     <label><@t.page 'operate'/>:</label>

@@ -91,7 +91,9 @@ public class SysSiteAdminController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, SysSite entity, String domain,
             Boolean wild, Boolean multiple, String roleName, String deptName, String userName, String password, String encoding,
             HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
+        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
+                || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
+                || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null == entity.getDynamicPath()) {
@@ -111,14 +113,13 @@ public class SysSiteAdminController {
                         "update.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
-            if (ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
-                    || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model)
-                    || ControllerUtils.verifyNotEmpty("userName", userName, model)
+            if (ControllerUtils.verifyNotEmpty("userName", userName, model)
                     || ControllerUtils.verifyNotEmpty("password", password, model)
                     || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            service.save(entity, domain, null == wild ? false : wild, null == multiple ? false : multiple, roleName, deptName, userName, password, encoding);
+            service.save(entity, domain, null == wild ? false : wild, null == multiple ? false : multiple, roleName, deptName,
+                    userName, password, encoding);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.site",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }

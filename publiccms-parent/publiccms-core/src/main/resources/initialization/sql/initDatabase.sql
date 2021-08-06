@@ -453,6 +453,22 @@ CREATE TABLE `log_visit_day` (
 ) COMMENT = '访问汇总';
 
 -- ----------------------------
+-- Table structure for log_visit_item
+-- ----------------------------
+DROP TABLE IF EXISTS `log_visit_item`;
+CREATE TABLE `log_visit_item` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `visit_date` date NOT NULL COMMENT '日期',
+  `item_type` varchar(50) NOT NULL COMMENT '项目类型',
+  `item_id` varchar(50) NOT NULL COMMENT '项目',
+  `pv` bigint(20) NOT NULL COMMENT 'Page Views',
+  `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
+  `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
+  PRIMARY KEY (`site_id`,`visit_date`,`item_type`,`item_id`),
+  KEY `log_visit_session_id` (`site_id`,`visit_date`,`item_type`, `item_id`, `pv`)
+) COMMENT='项目访问汇总';
+
+-- ----------------------------
 -- Table structure for log_visit_session
 -- ----------------------------
 DROP TABLE IF EXISTS `log_visit_session`;
@@ -467,6 +483,23 @@ CREATE TABLE `log_visit_session` (
   PRIMARY KEY (`site_id`,`session_id`,`visit_date`),
   KEY `log_visit_visit_date` (`site_id`,`visit_date`,`ip`)
 ) COMMENT = '访问会话';
+
+-- ----------------------------
+-- Table structure for log_visit_url
+-- ----------------------------
+DROP TABLE IF EXISTS `log_visit_url`;
+CREATE TABLE `log_visit_url` (
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `visit_date` date NOT NULL COMMENT '日期',
+  `url_md5` varchar(50) NOT NULL COMMENT 'URL MD5',
+  `url_sha` varchar(100) NOT NULL COMMENT 'URL SHA',
+  `url` varchar(2048) NOT NULL COMMENT 'URL',
+  `pv` bigint(20) NOT NULL COMMENT 'Page Views',
+  `uv` bigint(20) DEFAULT NULL COMMENT 'User Views',
+  `ipviews` bigint(20) DEFAULT NULL COMMENT 'IP数',
+  PRIMARY KEY (`site_id`,`visit_date`,`url_md5`,`url_sha`),
+  KEY `log_visit_session_id` (`site_id`,`visit_date`,`pv`)
+) COMMENT='页面访问汇总';
 -- ----------------------------
 -- Table structure for sys_app
 -- ----------------------------

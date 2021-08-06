@@ -49,10 +49,10 @@ public class SysUserTokenDao extends BaseDao<SysUserToken> {
         }
         switch (orderField) {
         case "expiryDate":
-            queryHandler.order("bean.expiryDate ").append(orderType);
+            queryHandler.order("bean.expiryDate").append(orderType);
             break;
         default:
-            queryHandler.order("bean.createDate ").append(orderType);
+            queryHandler.order("bean.createDate").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

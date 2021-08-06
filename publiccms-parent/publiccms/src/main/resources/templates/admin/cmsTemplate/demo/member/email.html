@@ -21,7 +21,8 @@
     </nav>
     <main>
         <h3>Modify email</h3>
-        <form action="${site.dynamicPath}user/saveEmail" method="post">
+        <form action="${(parentSite.dynamicPath)!site.dynamicPath}user/saveEmail" method="post">
+            <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
             <input type="hidden" name="returnUrl" value="${site.dynamicPath}email.html"/>
             <p><input type="email" name="email" placeholder="Email" title="Email" value="${user.email!}"/></p>
@@ -50,6 +51,13 @@
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
+            <#if parentSite?has_conent>
+            url+='&currentSiteId=${site.id}';
+            </#if>
+        } else {
+            <#if parentSite?has_conent>
+            url+='?currentSiteId=${site.id}';
+            </#if>
         }
         ca.report(url);
     </script>

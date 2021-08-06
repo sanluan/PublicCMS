@@ -76,20 +76,6 @@ public class DirectiveController {
     }
 
     /**
-     * 接口指令统一分发
-     * 
-     * @param directory
-     * @param action
-     * @param request
-     * @param response
-     */
-    @RequestMapping("{directory}/directive/{action}")
-    public void directive(@PathVariable String directory, @PathVariable String action, HttpServletRequest request,
-            HttpServletResponse response) {
-        directive(action, request, response);
-    }
-
-    /**
      * 接口列表
      * 
      * @return result

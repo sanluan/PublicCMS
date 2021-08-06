@@ -7,7 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,6 +19,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.VisitComponent;
 
 @Controller
+@RequestMapping("visit")
 public class LogVisitController {
     @Autowired
     private VisitComponent visitComponent;
@@ -38,7 +38,7 @@ public class LogVisitController {
      * @param itemId
      * @param request
      */
-    @RequestMapping("visit/record")
+    @RequestMapping("record")
     @ResponseBody
     public void record(String sessionId, String url, String title, Integer screenw, Integer screenh,
             @RequestHeader(value = "User-Agent", required = false) String userAgent, String referer, String itemType,
@@ -50,26 +50,5 @@ public class LogVisitController {
         LogVisit entity = new LogVisit(site.getId(), sessionId, date, (byte) now.get(Calendar.HOUR_OF_DAY),
                 RequestUtils.getIpAddress(request), userAgent, url, title, screenw, screenh, referer, itemType, itemId, date);
         visitComponent.add(entity);
-    }
-
-    /**
-     * @param directory 
-     * @param sessionId
-     * @param url
-     * @param title
-     * @param screenw
-     * @param screenh
-     * @param userAgent
-     * @param referer
-     * @param itemType
-     * @param itemId
-     * @param request
-     */
-    @RequestMapping("{directory}/visit/record")
-    @ResponseBody
-    public void record(@PathVariable String directory, String sessionId, String url, String title, Integer screenw,
-            Integer screenh, @RequestHeader(value = "User-Agent", required = false) String userAgent, String referer,
-            String itemType, String itemId, HttpServletRequest request) {
-        record(sessionId, url, title, screenw, screenh, userAgent, referer, itemType, itemId, request);
     }
 }

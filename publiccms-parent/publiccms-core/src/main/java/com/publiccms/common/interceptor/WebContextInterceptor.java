@@ -19,6 +19,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogLogin;
+import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
@@ -46,8 +47,20 @@ public class WebContextInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-        SysSite site = siteComponent.getSite(request.getServerName(),
-                UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+        SysDomain domain = siteComponent.getDomain(request.getServerName());
+        SysSite site = null;
+        if (domain.isMultiple()) {
+            String currentSiteId = request.getParameter("currentSiteId");
+            if (null != currentSiteId) {
+                site = siteComponent.getSiteById(currentSiteId);
+            }
+            if (null == site || site.getParentId() != domain.getSiteId() && site.getId() != domain.getSiteId()) {
+                site = siteComponent.getSite(domain, request.getServerName(),
+                        UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+            }
+        } else {
+            site = siteComponent.getSite(domain, request.getServerName(), null);
+        }
         request.setAttribute(CommonConstants.getAttributeSite(), site);
         HttpSession session = request.getSession(false);
         SysUser user = initUser(ControllerUtils.getUserFromSession(session), LogLoginService.CHANNEL_WEB,

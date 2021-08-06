@@ -51,7 +51,7 @@ public class CmsTagDao extends BaseDao<CmsTag> {
         }
         switch (orderField) {
         case "searchCount":
-            queryHandler.order("bean.searchCount ").append(orderType);
+            queryHandler.order("bean.searchCount").append(orderType);
             break;
         default:
             queryHandler.order("bean.id ").append(orderType);

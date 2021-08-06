@@ -62,16 +62,16 @@ public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
         }
         switch (orderField) {
         case "price":
-            queryHandler.order("bean.price ").append(orderType);
+            queryHandler.order("bean.price").append(orderType);
             break;
         case "inventory":
-            queryHandler.order("bean.inventory ").append(orderType);
+            queryHandler.order("bean.inventory").append(orderType);
             break;
         case "sales":
-            queryHandler.order("bean.sales ").append(orderType);
+            queryHandler.order("bean.sales").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id ").append(orderType);
+            queryHandler.order("bean.id").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

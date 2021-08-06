@@ -118,7 +118,7 @@
             <ul>
 <@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
     <#list page.list as a>
-                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#if parentSite?has_conent>&currentSiteId=${site.id}</#if><#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>
 </@_contentList>
             </ul>
@@ -133,7 +133,7 @@
     $('input[name=productId]').change(function(){
         var selectedProductId=this.value;
         if(selectedProductId){
-            $.getJSON('${site.dynamicPath!}api/directive/contentProduct?id='+selectedProductId, function(data){
+            $.getJSON('${site.dynamicPath!}api/directive/contentProduct?<#if parentSite?has_conent>currentSiteId=${site.id}&</#if>id='+selectedProductId, function(data){
                 if($('input[name=productId]:checked').val() == selectedProductId){
                     $('.price').text(data.object.price);
                     if(data.object.minQuantity){
@@ -151,7 +151,7 @@
     </script>
     </#if>
     <script>
-        $.getJSON('${site.dynamicPath!}api/contentClick?id=${content.id}', function(data){
+        $.getJSON('${site.dynamicPath!}api/contentClick?<#if parentSite?has_conent>currentSiteId=${site.id}&</#if>id=${content.id}', function(data){
             $('article p em').text(data.clicks);
         });
     </script>
@@ -164,6 +164,13 @@
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
+            <#if parentSite?has_conent>
+            url+='&currentSiteId=${site.id}';
+            </#if>
+        } else {
+            <#if parentSite?has_conent>
+            url+='?currentSiteId=${site.id}';
+            </#if>
         }
         ca.report(url);
     </script>

@@ -39,7 +39,7 @@ public class CmsVoteItemDao extends BaseDao<CmsVoteItem> {
         }
         switch (orderField) {
         case "scores":
-            queryHandler.order("bean.scores ").append(orderType);
+            queryHandler.order("bean.scores").append(orderType);
             break;
         default:
             queryHandler.order("bean.sort asc");

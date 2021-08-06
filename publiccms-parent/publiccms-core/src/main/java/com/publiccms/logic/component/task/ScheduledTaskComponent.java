@@ -19,8 +19,10 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.log.LogVisitDayService;
+import com.publiccms.logic.service.log.LogVisitItemService;
 import com.publiccms.logic.service.log.LogVisitService;
 import com.publiccms.logic.service.log.LogVisitSessionService;
+import com.publiccms.logic.service.log.LogVisitUrlService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysEmailTokenService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
@@ -46,6 +48,10 @@ public class ScheduledTaskComponent {
     private LogVisitSessionService logVisitSessionService;
     @Autowired
     private LogVisitDayService logVisitDayService;
+    @Autowired
+    private LogVisitItemService logVisitItemService;
+    @Autowired
+    private LogVisitUrlService logVisitUrlService;
     @Autowired
     private LogLoginService logLoginService;
     @Autowired
@@ -85,7 +91,7 @@ public class ScheduledTaskComponent {
             }
         }
     }
-    
+
     /**
      * 30分钟清理已禁用的数据源
      */
@@ -130,6 +136,8 @@ public class ScheduledTaskComponent {
         if (CmsVersion.isMaster()) {
             synchronized (visitComponent) {
                 visitComponent.dealLastDayVisitLog();
+                visitComponent.dealLastDayItemVisitLog();
+                visitComponent.dealLastDayUrlVisitLog();
             }
         }
     }
@@ -172,6 +180,8 @@ public class ScheduledTaskComponent {
             date = DateUtils.addMonths(CommonUtils.getDate(), -3);
             logVisitSessionService.delete(date);
             logVisitService.delete(date);
+            logVisitItemService.delete(date);
+            logVisitUrlService.delete(date);
         }
     }
 }

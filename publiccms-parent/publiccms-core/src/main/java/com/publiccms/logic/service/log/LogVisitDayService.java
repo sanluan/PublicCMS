@@ -45,7 +45,7 @@ public class LogVisitDayService extends BaseService<LogVisitDay> {
     public PageHandler getPage(short siteId, Date startVisitDate, Date endVisitDate, boolean hourAnalytics, Integer pageIndex,
             Integer pageSize) {
         PageHandler page = dao.getPage(siteId, startVisitDate, endVisitDate, hourAnalytics, pageIndex, pageSize);
-        Date now = CommonUtils.getDate();
+        Date now = CommonUtils.getMinuteDate();
         if ((null == pageIndex || 1 == pageIndex) && (null == endVisitDate || DateUtils.isSameDay(now, endVisitDate))) {
             if (hourAnalytics) {
                 Calendar c = Calendar.getInstance();

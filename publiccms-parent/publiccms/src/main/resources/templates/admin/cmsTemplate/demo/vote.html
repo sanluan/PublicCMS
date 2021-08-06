@@ -116,13 +116,13 @@ ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}
 <#if user?has_content>
 <script>
 function vote(itemId){
-    $.getJSON('${site.dynamicPath!}vote/vote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath!}vote/vote?<#if parentSite?has_conent>currentSiteId=${site.id}&</#if>itemId='+itemId+'<#if parentSite?has_conent>&currentSiteId=${site.id}</#if>&_csrf=<@_csrfToken/>', function(data){
         alert("Vote ok!");
         location.reload();
     });
 }
 function unvote(itemId){
-    $.getJSON('${site.dynamicPath!}vote/unvote?itemId='+itemId+'&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath!}vote/unvote?<#if parentSite?has_conent>currentSiteId=${site.id}&</#if>itemId='+itemId+'<#if parentSite?has_conent>&currentSiteId=${site.id}</#if>&_csrf=<@_csrfToken/>', function(data){
         alert("Cancel ok!");
         location.reload();
     });
@@ -134,6 +134,13 @@ function unvote(itemId){
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
+            <#if parentSite?has_conent>
+            url+='&currentSiteId=${site.id}';
+            </#if>
+        } else {
+            <#if parentSite?has_conent>
+            url+='?currentSiteId=${site.id}';
+            </#if>
         }
         ca.report(url);
     </script>

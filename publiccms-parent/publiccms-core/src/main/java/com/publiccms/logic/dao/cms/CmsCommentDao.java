@@ -74,19 +74,19 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
         }
         switch (orderField) {
         case "replies":
-            queryHandler.order("bean.replies ").append(orderType);
+            queryHandler.order("bean.replies").append(orderType);
             break;
         case "checkDate":
-            queryHandler.order("bean.checkDate ").append(orderType);
+            queryHandler.order("bean.checkDate").append(orderType);
             break;
         case "updateDate":
-            queryHandler.order("bean.updateDate ").append(orderType);
+            queryHandler.order("bean.updateDate").append(orderType);
             break;
         case "createDate":
-            queryHandler.order("bean.createDate ").append(orderType);
+            queryHandler.order("bean.createDate").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id ").append(orderType);
+            queryHandler.order("bean.id").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

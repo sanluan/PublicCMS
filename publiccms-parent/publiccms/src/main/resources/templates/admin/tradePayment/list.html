@@ -101,7 +101,7 @@
                 <td>${a.createDate!}</td>
                 <td class="wrap">
                     <#if authorizedMap['tradePaymentHistory/list']>
-                        <a href="tradePaymentHistory/list.html?queryPaymentId=${a.id}" class="btnText" target="navTab" rel="tradePaymentHistory/list"><@t.page 'payment.history'/></a>
+                        <a href="tradePaymentHistory/list.html?paymentId=${a.id}" class="btnText" target="navTab" rel="tradePaymentHistory/list"><@t.page 'payment.history'/></a>
                     </#if>
                 </td>
             </tr>
