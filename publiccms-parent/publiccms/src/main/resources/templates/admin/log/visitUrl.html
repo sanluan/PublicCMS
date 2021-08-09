@@ -1,3 +1,6 @@
+<#if !startVisitDate?has_content>
+    <#assign startVisitDate=(.now?long-7*24*3600*1000)?number_to_date/>
+</#if>
 <@_logVisitUrlList startVisitDate=startVisitDate endVisitDate=endVisitDate pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
@@ -40,7 +43,11 @@
             <#list page.list as a>
             <tr>
                 <td><a href="log/visit.html?startCreateDate=${a.id.visitDate!}" target="navTab" rel="log/visit" title="<@t.page 'log.visit'/>" icon="<i class='icon-bolt icon-large'></i>">${a.id.visitDate?date}</a></td>
-                <td>${a.url!}</td>
+                <td>
+                    <div class="box">
+                    <a href="${a.url}" target="_blank">${a.url!}</a>
+                    </div>
+                </td>
                 <td class="center">${a.pv!}</td>
                 <td class="center">${a.uv!}</td>
                 <td class="center">${a.ipviews!}</td>
