@@ -91,11 +91,13 @@ public class FileAdminController {
                     result.put(field, fileName);
                     String fileType = CmsFileUtils.getFileType(suffix);
                     result.put("fileType", fileType);
+                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                    result.put("width", fileSize.getWidth());
+                    result.put("height", fileSize.getHeight());
                     if (CommonUtils.notEmpty(originalField)) {
                         result.put("originalField", originalField);
                         result.put(originalField, originalName);
                     }
-                    FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
@@ -138,12 +140,14 @@ public class FileAdminController {
                         String fileType = CmsFileUtils.getFileType(suffix);
                         result.put("fileType", fileType);
                         result.put("fileSize", file.getSize());
+                        FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
+                        result.put("width", fileSize.getWidth());
+                        result.put("height", fileSize.getHeight());
                         if (CommonUtils.notEmpty(originalField)) {
                             result.put("originalField", originalField);
                             result.put(originalField, originalName);
                         }
                         resultList.add(result);
-                        FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
                         logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
