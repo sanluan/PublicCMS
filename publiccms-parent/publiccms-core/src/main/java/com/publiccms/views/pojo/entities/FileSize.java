@@ -1,8 +1,23 @@
 package com.publiccms.views.pojo.entities;
 
 public class FileSize {
+    private long fileSize;
     private Integer width;
     private Integer height;
+
+    /**
+     * @return the fileSize
+     */
+    public long getFileSize() {
+        return fileSize;
+    }
+
+    /**
+     * @param fileSize the fileSize to set
+     */
+    public void setFileSize(long fileSize) {
+        this.fileSize = fileSize;
+    }
 
     /**
      * @return the width

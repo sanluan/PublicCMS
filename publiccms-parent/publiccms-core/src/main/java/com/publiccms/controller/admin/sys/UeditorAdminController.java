@@ -226,11 +226,11 @@ public class UeditorAdminController {
                             CmsFileUtils.copyInputStreamToFile(inputStream, filePath);
                             FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
                             logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                                    CommonConstants.BLANK, CmsFileUtils.getFileType(suffix), entity.getContentLength(),
+                                    CommonConstants.BLANK, CmsFileUtils.getFileType(suffix), fileSize.getFileSize(),
                                     fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
                                     CommonUtils.getDate(), fileName));
                             Map<String, Object> map = getResultMap(true);
-                            map.put("size", entity.getContentLength());
+                            map.put("size", fileSize.getFileSize());
                             map.put("title", fileName);
                             map.put("url", fileName);
                             map.put("source", image);
