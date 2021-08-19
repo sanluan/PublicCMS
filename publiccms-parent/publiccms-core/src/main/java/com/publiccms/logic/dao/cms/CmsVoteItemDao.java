@@ -54,8 +54,8 @@ public class CmsVoteItemDao extends BaseDao<CmsVoteItem> {
 
     public void deleteByVoteId(Long voteId) {
         if (null != voteId) {
-            QueryHandler queryHandler = getQueryHandler("update from CmsVoteItem bean set bean.disabled = :disabled");
-            queryHandler.condition("bean.voteId = :voteId").setParameter("voteId", voteId).setParameter("disabled", true);
+            QueryHandler queryHandler = getQueryHandler("delete from CmsVoteItem bean");
+            queryHandler.condition("bean.voteId = :voteId").setParameter("voteId", voteId);
         }
     }
 

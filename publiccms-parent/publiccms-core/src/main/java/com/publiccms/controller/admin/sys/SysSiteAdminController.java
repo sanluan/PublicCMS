@@ -93,7 +93,8 @@ public class SysSiteAdminController {
             HttpServletRequest request, ModelMap model) {
         if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)
                 || ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
-                || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model)) {
+                || (null != domain
+                        && ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model))) {
             return CommonConstants.TEMPLATE_ERROR;
         }
         if (null == entity.getDynamicPath()) {
