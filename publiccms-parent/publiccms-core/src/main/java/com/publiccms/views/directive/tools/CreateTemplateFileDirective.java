@@ -21,7 +21,7 @@ import freemarker.template.TemplateException;
  */
 @Component
 public class CreateTemplateFileDirective extends AbstractTemplateDirective {
-    
+
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String templatePath = handler.getString("templatePath");
@@ -31,14 +31,15 @@ public class CreateTemplateFileDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             String templateFullPath = SiteComponent.getFullTemplatePath(site, templatePath);
             try {
-                handler.put("url", templateComponent.createStaticFile(site, templateFullPath, filePath, pageIndex, null, null))
+                handler.put("url",
+                        templateComponent.createStaticFile(site, templateFullPath, filePath, pageIndex, null, null, null))
                         .render();
             } catch (IOException | TemplateException e) {
                 handler.print(e.getMessage());
             }
         }
     }
-    
+
     @Override
     public boolean needAppToken() {
         return true;

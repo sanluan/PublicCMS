@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
@@ -96,12 +97,14 @@ public class TemplateComponent implements Cache {
      * @param pageIndex
      * @param metadataMap
      * @param model
+     * @param urlConsumer
      * @return static file path
      * @throws IOException
      * @throws TemplateException
      */
     public String createStaticFile(SysSite site, String fullTemplatePath, String filePath, Integer pageIndex,
-            Map<String, Object> metadataMap, Map<String, Object> model) throws IOException, TemplateException {
+            Map<String, Object> metadataMap, Map<String, Object> model, Consumer<String> urlConsumer)
+            throws IOException, TemplateException {
         if (CommonUtils.notEmpty(filePath)) {
             if (null == model) {
                 model = new HashMap<>();
@@ -113,7 +116,11 @@ public class TemplateComponent implements Cache {
             if (filePath.startsWith(CommonConstants.SEPARATOR)) {
                 filePath = filePath.substring(1);
             }
-            model.put("url", site.getSitePath() + filePath);
+            String fullPath = site.getSitePath() + filePath;
+            model.put("url", fullPath);
+            if (null != urlConsumer) {
+                urlConsumer.accept(fullPath);
+            }
             String staticFilePath;
             if (filePath.endsWith(CommonConstants.SEPARATOR)) {
                 staticFilePath = filePath + CommonConstants.getDefaultPage();
@@ -291,7 +298,11 @@ public class TemplateComponent implements Cache {
                     page.setTotalCount(texts.length);
                     model.put("text", texts[i]);
                     model.put("page", page);
-                    createStaticFile(site, fullTemplatePath, filePath, i + 1, metadataMap, model);
+                    createStaticFile(site, fullTemplatePath, filePath, i + 1, metadataMap, model, url -> {
+                        if (null == entity.getUrl()) {
+                            entity.setUrl(url);
+                        }
+                    });
                 }
                 pageIndex = 1;
             }
@@ -300,7 +311,11 @@ public class TemplateComponent implements Cache {
             model.put("page", page);
             model.put("text", texts[page.getPageIndex() - 1]);
         }
-        return createStaticFile(site, fullTemplatePath, filePath, pageIndex, metadataMap, model);
+        return createStaticFile(site, fullTemplatePath, filePath, pageIndex, metadataMap, model, url -> {
+            if (null == entity.getUrl()) {
+                entity.setUrl(url);
+            }
+        });
     }
 
     /**
@@ -358,6 +373,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.empty(pageIndex)) {
             pageIndex = 1;
         }
+        initCategoryUrl(site, entity);
         model.put("category", entity);
         CmsCategoryAttribute attribute = categoryAttributeService.getEntity(entity.getId());
         if (null != attribute) {
@@ -376,11 +392,19 @@ public class TemplateComponent implements Cache {
         String fullTemplatePath = SiteComponent.getFullTemplatePath(site, templatePath);
         if (CommonUtils.notEmpty(totalPage) && pageIndex + 1 <= totalPage) {
             for (int i = pageIndex + 1; i <= totalPage; i++) {
-                createStaticFile(site, fullTemplatePath, filePath, i, metadataMap, model);
+                createStaticFile(site, fullTemplatePath, filePath, i, metadataMap, model, url -> {
+                    if (null == entity.getUrl()) {
+                        entity.setUrl(url);
+                    }
+                });
             }
         }
 
-        return createStaticFile(site, fullTemplatePath, filePath, pageIndex, metadataMap, model);
+        return createStaticFile(site, fullTemplatePath, filePath, pageIndex, metadataMap, model, url -> {
+            if (null == entity.getUrl()) {
+                entity.setUrl(url);
+            }
+        });
     }
 
     private void exposePlace(SysSite site, String templatePath, CmsPlaceMetadata metadata, Map<String, Object> model) {
