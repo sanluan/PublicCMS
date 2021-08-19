@@ -23,7 +23,7 @@
     <@_tradeAccount id=user.id>
         <h3>My account</h3>
         <p><label>Amount:</label>${object.amount}<span class="right"><label>Last update:</label>${object.updateDate!}</span></p>
-        <form action="${(parentSite.dynamicPath)!site.dynamicPath}tradeAccount/recharge/alipay" method="post">
+        <form action="${(parentSite.dynamicPath)!site.dynamicPath}tradeAccount/recharge" method="post">
             <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
             <input type="hidden" name="returnUrl" value="${site.dynamicPath}account.html"/>
