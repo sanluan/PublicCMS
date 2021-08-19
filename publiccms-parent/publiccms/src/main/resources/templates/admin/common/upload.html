@@ -26,7 +26,7 @@
                 <div class="tabsHeaderContent">
                     <ul>
                         <li><a href="javascript:;" onclick="return false;"><@t.page 'upload.log'/></a></li>
-                        <li><a href="common/file_list.html?field=${field!}&originalField=${originalField!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="return false;"><@t.page 'webfile'/></a></li>
+                        <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="return false;"><@t.page 'webfile'/></a></li>
                     </ul>
                 </div>
             </div>
