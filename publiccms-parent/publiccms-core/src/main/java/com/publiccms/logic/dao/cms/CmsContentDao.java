@@ -192,8 +192,10 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                         if (ArrayUtils.contains(fields, descriptionField)) {
                             c.should(t -> t.match().field(descriptionField).matching(text).boost(1.5f));
                         }
-                        c.should(t -> t.match().fields(ArrayUtils.removeElements(fields, titleField, descriptionField))
-                                .matching(text));
+                        String[] tempFields = ArrayUtils.removeElements(fields, titleField, descriptionField);
+                        if (CommonUtils.notEmpty(tempFields)) {
+                            c.should(t -> t.match().fields(tempFields).matching(text));
+                        }
                     };
                     b.must(f -> f.bool(keywordFiledsContributor));
                 }
