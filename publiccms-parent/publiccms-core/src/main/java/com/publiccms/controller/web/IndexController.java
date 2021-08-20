@@ -327,18 +327,20 @@ public class IndexController {
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsContent entity = contentService.getEntity(Long.valueOf(values[0]));
-                    if ((null == entity || entity.isDisabled() || entity.getSiteId() != site.getId())
-                            && parameterType.isRequired()) {
-                        return false;
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        CmsContentStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
+                        if (null != statistics) {
+                            entity.setClicks(entity.getClicks() + statistics.getClicks());
+                            entity.setScores(entity.getScores() + statistics.getScores());
+                        }
+                        templateComponent.initContentUrl(site, entity);
+                        templateComponent.initContentCover(site, entity);
+                        model.addAttribute(parameterName, entity);
                     }
-                    CmsContentStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
-                    if (null != statistics) {
-                        entity.setClicks(entity.getClicks() + statistics.getClicks());
-                        entity.setScores(entity.getScores() + statistics.getScores());
-                    }
-                    templateComponent.initContentUrl(site, entity);
-                    templateComponent.initContentCover(site, entity);
-                    model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;
                 }
@@ -370,12 +372,14 @@ public class IndexController {
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     CmsCategory entity = categoryService.getEntity(Integer.valueOf(values[0]));
-                    if ((null == entity || entity.isDisabled() || entity.getSiteId() != site.getId())
-                            && parameterType.isRequired()) {
-                        return false;
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        templateComponent.initCategoryUrl(site, entity);
+                        model.addAttribute(parameterName, entity);
                     }
-                    templateComponent.initCategoryUrl(site, entity);
-                    model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;
                 }
@@ -404,11 +408,13 @@ public class IndexController {
             } else if (CommonUtils.notEmpty(values)) {
                 try {
                     SysUser entity = userService.getEntity(Long.valueOf(values[0]));
-                    if ((null == entity || entity.isDisabled() || entity.getSiteId() != site.getId())
-                            && parameterType.isRequired()) {
-                        return false;
+                    if (null == entity || entity.isDisabled() || entity.getSiteId() != site.getId()) {
+                        if (parameterType.isRequired()) {
+                            return false;
+                        }
+                    } else {
+                        model.addAttribute(parameterName, entity);
                     }
-                    model.addAttribute(parameterName, entity);
                 } catch (NumberFormatException e) {
                     return false;
                 }
