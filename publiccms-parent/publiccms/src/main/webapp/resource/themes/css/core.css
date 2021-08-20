@@ -383,7 +383,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:2
 .dialog .dialogHeader{padding-left:5px;position:relative;cursor:move;}
 .dialog .dialogHeader, .dialog .dialogHeader_c{display:block;overflow:hidden;height:40px;}
 .dialog .dialogHeader .close, .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore, .dialog .dialogHeader .minimize{font-family:iconfont;font-size:20px;display:block;overflow:hidden;width:22px;height:22px;position:absolute;top:10px;text-indent:0;}
-.dialog .dialogHeader h1{display:block;overflow:hidden;padding:0 5px 0 20px;font-weight:400;line-height:40px;height:40px;font-size:13px;}
+.dialog .dialogHeader h1{display:block;overflow:hidden;padding:0 100px 0 20px;font-weight:400;line-height:40px;height:40px;font-size:13px;}
 .dialog .dialogHeader .close{right:10px;}
 .dialog .dialogHeader .maximize, .dialog .dialogHeader .restore{display:none;right:37px;}
 .dialog .dialogHeader .minimize{right:65px;}
