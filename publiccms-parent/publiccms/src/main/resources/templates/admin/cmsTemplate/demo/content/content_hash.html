@@ -138,7 +138,7 @@
             <ul>
 <@_contentList categoryId=category.id containChild=true orderField='clicks' pageSize=10>
     <#list page.list as a>
-                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#if parentSite?has_conent>&currentSiteId=${site.id}</#if><#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
+                <li><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#if parentSite?has_content>&currentSiteId=${site.id}</#if><#else>${a.url!}</#if>" target="_blank">${a.title}</a><span>${a.clicks}</span></li>
     </#list>
 </@_contentList>
             </ul>
@@ -153,7 +153,7 @@
     $('input[name=productId]').change(function(){
         var selectedProductId=this.value;
         if(selectedProductId){
-            $.getJSON('${site.dynamicPath!}api/directive/contentProduct?<#if parentSite?has_conent>currentSiteId=${site.id}&</#if>id='+selectedProductId, function(data){
+            $.getJSON('${site.dynamicPath!}api/directive/contentProduct?<#if parentSite?has_content>currentSiteId=${site.id}&</#if>id='+selectedProductId, function(data){
                 if($('input[name=productId]:checked').val() == selectedProductId){
                     $('.price').text(data.object.price);
                     if(data.object.minQuantity){
@@ -171,19 +171,19 @@
     </script>
     </#if>
     <script>
-        $.getJSON('${site.dynamicPath!}api/contentClick?<#if parentSite?has_conent>currentSiteId=${site.id}&</#if>id=${content.id}', function(data){
+        $.getJSON('${site.dynamicPath!}api/contentClick?<#if parentSite?has_content>currentSiteId=${site.id}&</#if>id=${content.id}', function(data){
             $('article p em').text(data.clicks);
         });
     </script>
     <script>
 function score(contentId){
-    $.getJSON('${site.dynamicPath!}score/score?<#if parentSite?has_conent>currentSiteId=${site.id}&</#if>itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath!}score/score?<#if parentSite?has_content>currentSiteId=${site.id}&</#if>itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
         alert("Score ok!");
         location.reload();
     });
 }
 function unscore(contentId){
-    $.getJSON('${site.dynamicPath!}score/unscore?<#if parentSite?has_conent>currentSiteId=${site.id}&</#if>itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
+    $.getJSON('${site.dynamicPath!}score/unscore?<#if parentSite?has_content>currentSiteId=${site.id}&</#if>itemId='+contentId+'&itemType=content&_csrf=<@_csrfToken/>', function(data){
         alert("Cancel ok!");
         location.reload();
     });
@@ -198,11 +198,11 @@ function unscore(contentId){
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
-            <#if parentSite?has_conent>
+            <#if parentSite?has_content>
             url+='&currentSiteId=${site.id}';
             </#if>
         } else {
-            <#if parentSite?has_conent>
+            <#if parentSite?has_content>
             url+='?currentSiteId=${site.id}';
             </#if>
         }

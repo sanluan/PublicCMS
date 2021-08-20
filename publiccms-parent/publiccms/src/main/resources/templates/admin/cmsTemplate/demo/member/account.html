@@ -24,7 +24,7 @@
         <h3>My account</h3>
         <p><label>Amount:</label>${object.amount}<span class="right"><label>Last update:</label>${object.updateDate!}</span></p>
         <form action="${(parentSite.dynamicPath)!site.dynamicPath}tradeAccount/recharge" method="post">
-            <#if parentSite?has_conent><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
+            <#if parentSite?has_content><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
             <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
             <input type="hidden" name="returnUrl" value="${site.dynamicPath}account.html"/>
             <p><label>Recharge amount:</label><input type="text" name="change" min="0.01" required="required"/></p>
@@ -99,11 +99,11 @@
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
-            <#if parentSite?has_conent>
+            <#if parentSite?has_content>
             url+='&currentSiteId=${site.id}';
             </#if>
         } else {
-            <#if parentSite?has_conent>
+            <#if parentSite?has_content>
             url+='?currentSiteId=${site.id}';
             </#if>
         }
