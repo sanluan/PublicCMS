@@ -13,7 +13,7 @@
     <meta charset="utf-8">
     <title>${content.title} - ${(category.name)!}</title>
     <meta name="keywords" content="<#list getKeywords(content.title) as a>${a}<#sep>,</#list>"/>
-    <meta name="description" content="${content.description}"/>
+    <meta name="description" content="${(content.description)!}"/>
 </head>
 <body>
     <header>
