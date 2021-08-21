@@ -51,7 +51,7 @@ public class CmsCommentAdminController {
     private CmsContentService contentService;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "status",
-            "replyId", "replyUserId", "replies", "disabled" };
+            "replyId", "replyUserId", "replies", "scores", "disabled" };
 
     /**
      * @param site

@@ -36,6 +36,18 @@
                 <#if 1=a.status>/ <@_sysUser id=a.checkUserId>${object.nickName!}</@_sysUser></#if>
             </dd>
         </dl>
+        <dl>
+            <dt><@t.page 'content.score'/>:</dt>
+            <dd>
+                ${a.scores!}
+            </dd>
+        </dl>
+        <dl>
+            <dt><@t.page 'replies'/>:</dt>
+            <dd>
+                ${a.replies!}
+            </dd>
+        </dl>
         <dl class="nowrap">
             <dt><@t.page 'comment'/>:</dt>
             <dd>

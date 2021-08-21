@@ -54,6 +54,8 @@
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'content.promulgator'/></th>
                 <th width="150"><@t.page 'content'/></th>
+                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
+                <th width="30" orderField="replies" class="<#if orderField??&&'replies'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'replies'/></th>
                 <th orderField="updateDate" class="<#if orderField??&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'modified_date'/></th>
                 <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'status'/>/<@t.page 'inspector'/></th>
@@ -79,6 +81,8 @@
                 <td class="exclude-translate">
                     <a href="cmsContent/view.html?id=${a.contentId}" target="dialog" rel="viewContent${a.contentId}">${(contentMap[a.contentId?string].title)!}</a>
                 </td>
+                <td>${a.scores!}</td>
+                <td>${a.replies!}</td>
                 <td>${a.updateDate!}</td>
                 <td>${a.createDate!}</td>
                 <td>

@@ -76,6 +76,9 @@ public class CmsCommentDao extends BaseDao<CmsComment> {
         case "replies":
             queryHandler.order("bean.replies").append(orderType);
             break;
+        case "scores":
+            queryHandler.order("bean.scores").append(orderType);
+            break;
         case "checkDate":
             queryHandler.order("bean.checkDate").append(orderType);
             break;

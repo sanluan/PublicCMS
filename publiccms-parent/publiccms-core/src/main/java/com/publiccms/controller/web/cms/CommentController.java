@@ -46,7 +46,7 @@ public class CommentController {
     protected ConfigComponent configComponent;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "replyId",
-            "replyUserId", "replies", "disabled" };
+            "replyUserId", "replies", "scores", "disabled" };
 
     /**
      * @param site

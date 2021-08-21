@@ -20,7 +20,7 @@ CREATE TABLE `cms_comment` (
   `text` text COMMENT '内容',
   PRIMARY KEY (`id`),
   KEY `cms_comment_site_id` (`site_id`,`content_id`,`status`,`disabled`),
-  KEY `cms_comment_update_date` (`update_date`,`create_date`),
+  KEY `cms_comment_update_date` (`update_date`,`create_date`,`replies`,`scores`),
   KEY `cms_comment_reply_id` (`site_id`,`reply_user_id`,`reply_id`)
 ) COMMENT='评论';
 -- ----------------------------
