@@ -10,7 +10,7 @@ import org.springframework.web.servlet.DispatcherServlet;
 import org.springframework.web.servlet.support.AbstractDispatcherServletInitializer;
 
 import com.publiccms.common.constants.Constants;
-import com.publiccms.common.servlet.ErrorToNotFoundDispatcherServlet;
+import com.publiccms.common.servlet.CommonDispatcherServlet;
 
 /**
  *
@@ -31,7 +31,7 @@ public abstract class BaseServletInitializer extends AbstractDispatcherServletIn
 
     @Override
     protected DispatcherServlet createDispatcherServlet(WebApplicationContext servletAppContext) {
-        return new ErrorToNotFoundDispatcherServlet(servletAppContext);
+        return new CommonDispatcherServlet(servletAppContext);
     }
 
     @Override

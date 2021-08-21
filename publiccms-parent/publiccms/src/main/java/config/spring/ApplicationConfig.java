@@ -233,7 +233,8 @@ public class ApplicationConfig {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
         bean.setTemplateLoaderPath("classpath:/templates/");
         Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
-        if (CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))) {
+        if (CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))
+                && !"auto".equalsIgnoreCase(env.getProperty("cms.defaultLocale"))) {
             properties.put("locale", env.getProperty("cms.defaultLocale"));
         }
         bean.setFreemarkerSettings(properties);

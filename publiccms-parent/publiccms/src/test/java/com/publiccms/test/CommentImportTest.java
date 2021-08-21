@@ -31,6 +31,7 @@ public class CommentImportTest {
         // 不进入安装程序 数据目录有 database.properties才能进行测试
         CmsVersion.setInitialized(true);
     }
+
     @Autowired
     CmsCommentService commentsService;
 
@@ -53,7 +54,7 @@ public class CommentImportTest {
                         text += "![](" + i.get("url") + ")";
                     }
                 }
-                CmsComment entity = new CmsComment((short) 1, 1, null, null, 0,
+                CmsComment entity = new CmsComment((short) 1, 1, null, null, 0, 0,
                         Integer.parseInt((String) map.get("topicSourceId")), null, null, null,
                         DateFormatUtils.getDateFormat(DateFormatUtils.FULL_DATE_FORMAT_STRING).parse((String) map.get("ctime")),
                         CmsCommentService.STATUS_PEND, false, text);

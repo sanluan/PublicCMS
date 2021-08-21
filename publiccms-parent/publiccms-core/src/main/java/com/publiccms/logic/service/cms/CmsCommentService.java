@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.annotation.CopyToDatasource;
@@ -141,10 +142,27 @@ public class CmsCommentService extends BaseService<CmsComment> {
      * @return
      */
     @CopyToDatasource
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public CmsComment updateReplies(short siteId, Serializable id, int replies) {
         CmsComment entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setReplies(entity.getReplies() + replies);
+        }
+        return entity;
+    }
+
+    /**
+     * @param siteId
+     * @param id
+     * @param scores
+     * @return
+     */
+    @CopyToDatasource
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public CmsComment updateScores(short siteId, Serializable id, int scores) {
+        CmsComment entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId()) {
+            entity.setScores(entity.getScores() + scores);
         }
         return entity;
     }

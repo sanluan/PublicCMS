@@ -42,7 +42,7 @@ import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.sys.SysUserService;
-import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsPageData;
 import com.publiccms.views.pojo.entities.CmsPageMetadata;
 import com.publiccms.views.pojo.entities.ParameterType;
@@ -311,10 +311,9 @@ public class IndexController {
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
                 entityList.forEach(e -> {
-                    CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                     if (null != statistics) {
                         e.setClicks(e.getClicks() + statistics.getClicks());
-                        e.setScores(e.getScores() + statistics.getScores());
                     }
                     templateComponent.initContentUrl(site, e);
                     templateComponent.initContentCover(site, e);
@@ -332,10 +331,9 @@ public class IndexController {
                             return false;
                         }
                     } else {
-                        CmsContentStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
+                        ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                         if (null != statistics) {
                             entity.setClicks(entity.getClicks() + statistics.getClicks());
-                            entity.setScores(entity.getScores() + statistics.getScores());
                         }
                         templateComponent.initContentUrl(site, entity);
                         templateComponent.initContentCover(site, entity);

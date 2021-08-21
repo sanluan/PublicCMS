@@ -39,7 +39,7 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 
@@ -152,7 +152,7 @@ public class ContentController {
      */
     @RequestMapping("redirect")
     public String contentRedirect(@RequestAttribute SysSite site, Long id, HttpServletRequest request) {
-        CmsContentStatistics contentStatistics = statisticsComponent.contentClicks(site, id);
+        ClickStatistics contentStatistics = statisticsComponent.contentClicks(site, id);
         if (null != contentStatistics && null != contentStatistics.getUrl()
                 && site.getId().equals(contentStatistics.getSiteId())) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + contentStatistics.getUrl();

@@ -19,7 +19,7 @@ import com.publiccms.logic.component.site.SiteComponent;
  * WebDispatcherServlet 多站点动态请求处理Servlet
  *
  */
-public class WebDispatcherServlet extends ErrorToNotFoundDispatcherServlet {
+public class WebDispatcherServlet extends CommonDispatcherServlet {
     /**
      * 
      */

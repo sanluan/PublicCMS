@@ -66,3 +66,5 @@ INSERT INTO `sys_module_lang` VALUES ('log_visit_item', 'zh', '项目访问日�
 INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'en', 'Page visit log');
 INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'ja', 'ページアクセスログ');
 INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'zh', '页面访问日志');
+-- 2021-08-21 --
+ALTER TABLE `cms_comment` ADD COLUMN `scores` int(11) NOT NULL COMMENT '分数' AFTER `replies`;

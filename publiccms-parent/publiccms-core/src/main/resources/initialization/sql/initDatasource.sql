@@ -9,6 +9,7 @@ CREATE TABLE `cms_comment` (
   `reply_id` bigint(20) DEFAULT NULL COMMENT '回复评论',
   `reply_user_id` bigint(20) DEFAULT NULL COMMENT '回复用户',
   `replies` int(11) NOT NULL default 0 COMMENT '回复数',
+  `scores` int(11) NOT NULL COMMENT '分数',
   `content_id` bigint(20) NOT NULL COMMENT '文章内容',
   `check_user_id` bigint(20) DEFAULT NULL COMMENT '审核用户',
   `check_date` datetime DEFAULT NULL COMMENT '审核日期',

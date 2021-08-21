@@ -20,7 +20,7 @@ import com.publiccms.logic.component.site.DatasourceComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
 
 /**
@@ -76,10 +76,9 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                 boolean absoluteURL = handler.getBoolean("absoluteURL", true);
                 boolean absoluteId = handler.getBoolean("absoluteId", true);
                 list.forEach(e -> {
-                    CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                    ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                     if (null != statistics) {
                         e.setClicks(e.getClicks() + statistics.getClicks());
-                        e.setScores(e.getScores() + statistics.getScores());
                     }
                     if (absoluteId && null != e.getQuoteContentId()) {
                         e.setId(e.getQuoteContentId());

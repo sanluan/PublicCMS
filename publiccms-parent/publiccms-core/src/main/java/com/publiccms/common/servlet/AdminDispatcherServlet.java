@@ -5,7 +5,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.publiccms.common.constants.CmsVersion;
 
@@ -14,7 +13,7 @@ import com.publiccms.common.constants.CmsVersion;
  * AdminDispatcherServlet
  *
  */
-public class AdminDispatcherServlet extends ErrorToNotFoundDispatcherServlet {
+public class AdminDispatcherServlet extends CommonDispatcherServlet {
 
     /**
      * 
@@ -30,11 +29,6 @@ public class AdminDispatcherServlet extends ErrorToNotFoundDispatcherServlet {
     public AdminDispatcherServlet(WebApplicationContext applicationContext, HttpRequestHandler installHandler) {
         super(applicationContext);
         this.installHandler = installHandler;
-    }
-
-    @Override
-    public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        super.render(mv, request, response);
     }
 
     @Override

@@ -18,6 +18,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.annotation.CopyToDatasource;
@@ -38,7 +39,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.cms.CmsContentDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
-import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
 import com.publiccms.views.pojo.query.CmsContentQuery;
@@ -479,13 +480,13 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param entitys
      */
-    public void updateStatistics(Collection<CmsContentStatistics> entitys) {
-        Map<Short, List<CmsContentStatistics>> siteMap = new HashMap<>();
-        for (CmsContentStatistics entityStatistics : entitys) {
-            List<CmsContentStatistics> list = siteMap.computeIfAbsent(entityStatistics.getSiteId(), k -> new ArrayList<>());
+    public void updateStatistics(Collection<ClickStatistics> entitys) {
+        Map<Short, List<ClickStatistics>> siteMap = new HashMap<>();
+        for (ClickStatistics entityStatistics : entitys) {
+            List<ClickStatistics> list = siteMap.computeIfAbsent(entityStatistics.getSiteId(), k -> new ArrayList<>());
             list.add(entityStatistics);
         }
-        for (Map.Entry<Short, List<CmsContentStatistics>> entry : siteMap.entrySet()) {
+        for (Map.Entry<Short, List<ClickStatistics>> entry : siteMap.entrySet()) {
             contentService.updateStatistics(entry.getKey(), entry.getValue());
         }
     }
@@ -495,12 +496,11 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param entitys
      */
     @CopyToDatasource
-    public void updateStatistics(short siteId, Collection<CmsContentStatistics> entitys) {
-        for (CmsContentStatistics entityStatistics : entitys) {
+    public void updateStatistics(short siteId, Collection<ClickStatistics> entitys) {
+        for (ClickStatistics entityStatistics : entitys) {
             CmsContent entity = getEntity(entityStatistics.getId());
             if (null != entity) {
                 entity.setClicks(entity.getClicks() + entityStatistics.getClicks());
-                entity.setScores(entity.getScores() + entityStatistics.getScores());
             }
         }
     }
@@ -511,10 +511,28 @@ public class CmsContentService extends BaseService<CmsContent> {
      * @param comments
      * @return
      */
+    @CopyToDatasource
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public CmsContent updateComments(short siteId, Serializable id, int comments) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             entity.setComments(entity.getComments() + comments);
+        }
+        return entity;
+    }
+
+    /**
+     * @param siteId
+     * @param id
+     * @param scores
+     * @return
+     */
+    @CopyToDatasource
+    @Transactional(isolation = Isolation.SERIALIZABLE)
+    public CmsContent updateScores(short siteId, Serializable id, int scores) {
+        CmsContent entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId()) {
+            entity.setScores(entity.getScores() + scores);
         }
         return entity;
     }

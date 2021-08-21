@@ -19,7 +19,6 @@ import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.cms.CmsTagService;
 import com.publiccms.logic.service.cms.CmsWordService;
 import com.publiccms.views.pojo.entities.ClickStatistics;
-import com.publiccms.views.pojo.entities.CmsContentStatistics;
 
 /**
  *
@@ -29,7 +28,7 @@ import com.publiccms.views.pojo.entities.CmsContentStatistics;
 @Component
 public class StatisticsComponent implements Cache {
 
-    private CacheEntity<Long, CmsContentStatistics> contentCache;
+    private CacheEntity<Long, ClickStatistics> contentCache;
     private CacheEntity<Long, ClickStatistics> placeCache;
     private CacheEntity<Long, ClickStatistics> wordCache;
     private CacheEntity<Long, ClickStatistics> tagCache;
@@ -129,15 +128,15 @@ public class StatisticsComponent implements Cache {
      * @param id
      * @return content statistics
      */
-    public CmsContentStatistics contentClicks(SysSite site, Long id) {
+    public ClickStatistics contentClicks(SysSite site, Long id) {
         if (CommonUtils.notEmpty(id)) {
-            CmsContentStatistics clickStatistics = contentCache.get(id);
+            ClickStatistics clickStatistics = contentCache.get(id);
             if (null == clickStatistics) {
                 CmsContent entity = contentService.getEntity(id);
                 if (null != entity && !entity.isDisabled() && site.getId().equals(entity.getSiteId())) {
                     templateComponent.initContentUrl(site, entity);
-                    clickStatistics = new CmsContentStatistics(id, entity.getSiteId(), 1, 0, entity.getClicks(), entity.getUrl());
-                    List<CmsContentStatistics> list = contentCache.put(id, clickStatistics);
+                    clickStatistics = new ClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl());
+                    List<ClickStatistics> list = contentCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
                         contentService.updateStatistics(site.getId(), list);
                     }
@@ -152,48 +151,10 @@ public class StatisticsComponent implements Cache {
     }
 
     /**
-     * @param site
      * @param id
      * @return content statistics
      */
-    public CmsContentStatistics contentScores(SysSite site, Long id) {
-        return contentScores(site, id, true);
-    }
-
-    /**
-     * @param site
-     * @param id
-     * @param add
-     * @return content statistics
-     */
-    public CmsContentStatistics contentScores(SysSite site, Long id, boolean add) {
-        if (CommonUtils.notEmpty(id)) {
-            CmsContentStatistics clickStatistics = contentCache.get(id);
-            if (null == clickStatistics) {
-                CmsContent entity = contentService.getEntity(id);
-                if (null != entity && !entity.isDisabled() && site.getId().equals(entity.getSiteId())) {
-                    templateComponent.initContentUrl(site, entity);
-                    clickStatistics = new CmsContentStatistics(id, entity.getSiteId(), 0, add ? 1 : -1, entity.getClicks(),
-                            entity.getUrl());
-                    List<CmsContentStatistics> list = contentCache.put(id, clickStatistics);
-                    if (CommonUtils.notEmpty(list)) {
-                        contentService.updateStatistics(site.getId(), list);
-                    }
-                }
-            } else {
-                clickStatistics.addScores(add);
-            }
-            return clickStatistics;
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * @param id
-     * @return content statistics
-     */
-    public CmsContentStatistics getContentStatistics(Long id) {
+    public ClickStatistics getContentStatistics(Long id) {
         if (CommonUtils.notEmpty(id)) {
             return contentCache.get(id);
         }

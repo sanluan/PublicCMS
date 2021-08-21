@@ -5,7 +5,12 @@ package com.publiccms.views.directive.api;
 import java.io.IOException;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.publiccms.common.base.AbstractAppDirective;
+import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysApp;
 import com.publiccms.entities.sys.SysSite;
@@ -13,14 +18,8 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 import com.publiccms.views.pojo.query.CmsContentQuery;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import com.publiccms.common.handler.PageHandler;
-import com.publiccms.common.handler.RenderHandler;
 
 /**
  *
@@ -44,10 +43,9 @@ public class MyContentListDirective extends AbstractAppDirective {
         @SuppressWarnings("unchecked")
         List<CmsContent> list = (List<CmsContent>) page.getList();
         list.forEach(e -> {
-            CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+            ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
             if (null != statistics) {
                 e.setClicks(e.getClicks() + statistics.getClicks());
-                e.setScores(e.getScores() + statistics.getScores());
             }
             templateComponent.initContentUrl(site, e);
             templateComponent.initContentCover(site, e);

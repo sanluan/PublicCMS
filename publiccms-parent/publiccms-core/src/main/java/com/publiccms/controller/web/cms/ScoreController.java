@@ -7,15 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
-import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsUserScore;
 import com.publiccms.entities.cms.CmsUserScoreId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.StatisticsComponent;
+import com.publiccms.logic.service.cms.CmsCommentService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsUserScoreService;
-import com.publiccms.views.pojo.entities.CmsContentStatistics;
 
 /**
  * 
@@ -29,29 +28,39 @@ public class ScoreController {
     /**
      * @param site
      * @param user
+     * @param userId
      * @param itemType
      * @param itemId
      * @return
      */
     @RequestMapping("score")
-    @Csrf
     @ResponseBody
-    public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId) {
-        return score(site, user.getId(), itemType, itemId, true);
+    public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long userId, String itemType,
+            long itemId) {
+        if (null != userId && userId == user.getId()) {
+            return score(site, user.getId(), itemType, itemId, true);
+        } else {
+            return false;
+        }
     }
 
     /**
      * @param site
      * @param user
+     * @param userId
      * @param itemType
      * @param itemId
      * @return
      */
     @RequestMapping("unscore")
-    @Csrf
     @ResponseBody
-    public boolean unscore(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId) {
-        return score(site, user.getId(), itemType, itemId, false);
+    public boolean unscore(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long userId, String itemType,
+            long itemId) {
+        if (null != userId && userId == user.getId()) {
+            return score(site, user.getId(), itemType, itemId, false);
+        } else {
+            return false;
+        }
     }
 
     private boolean score(SysSite site, long userId, String itemType, long itemId, boolean score) {
@@ -60,20 +69,18 @@ public class ScoreController {
             CmsUserScore entity = service.getEntity(id);
             if (score) {
                 if (null == entity) {
-                    if ("content".equals(itemType)) {
-                        CmsContentStatistics contentStatistics = statisticsComponent.contentScores(site, itemId);
-                        if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
-                            entity = new CmsUserScore();
-                            entity.setId(id);
-                            service.save(entity);
-                            return true;
-                        }
+                    if ("content".equals(itemType) && null != contentService.updateScores(site.getId(), itemId, 1)
+                            || "comment".equals(itemType) && null != commentService.updateScores(site.getId(), itemId, 1)) {
+                        entity = new CmsUserScore();
+                        entity.setId(id);
+                        service.save(entity);
+                        return true;
                     }
                 }
             } else if (null != entity) {
                 if ("content".equals(itemType)) {
-                    CmsContentStatistics contentStatistics = statisticsComponent.contentScores(site, itemId, false);
-                    if (null != contentStatistics && site.getId().equals(contentStatistics.getSiteId())) {
+                    if ("content".equals(itemType) && null != contentService.updateScores(site.getId(), itemId, -1)
+                            || "comment".equals(itemType) && null != commentService.updateScores(site.getId(), itemId, -1)) {
                         service.delete(id);
                         return true;
                     }
@@ -86,6 +93,8 @@ public class ScoreController {
     @Autowired
     private CmsUserScoreService service;
     @Autowired
-    private StatisticsComponent statisticsComponent;
+    private CmsCommentService commentService;
+    @Autowired
+    private CmsContentService contentService;
 
 }

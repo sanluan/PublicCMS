@@ -3,7 +3,6 @@ package com.publiccms.common.servlet;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,12 +13,12 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 /**
- * 请求发生异常时，转换为404错误
+ * 兼容性提升
  * 
- * ErrorToNotFoundDispatcherServlet
+ * CommonDispatcherServlet
  *
  */
-public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
+public class CommonDispatcherServlet extends DispatcherServlet {
     /**
      * 
      */
@@ -30,18 +29,14 @@ public class ErrorToNotFoundDispatcherServlet extends DispatcherServlet {
     /**
      * @param webApplicationContext
      */
-    public ErrorToNotFoundDispatcherServlet(WebApplicationContext webApplicationContext) {
+    public CommonDispatcherServlet(WebApplicationContext webApplicationContext) {
         super(webApplicationContext);
     }
 
     @Override
     public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        try {
-            if (!response.isCommitted()) {
-                super.render(mv, request, response);
-            }
-        } catch (ServletException e) {
-            response.sendError(HttpServletResponse.SC_NOT_FOUND);
+        if (!response.isCommitted()) {
+            super.render(mv, request, response);
         }
     }
 

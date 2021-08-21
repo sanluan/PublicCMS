@@ -19,7 +19,7 @@ import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
 import com.publiccms.logic.service.cms.CmsContentService;
-import com.publiccms.views.pojo.entities.CmsContentStatistics;
+import com.publiccms.views.pojo.entities.ClickStatistics;
 
 /**
  *
@@ -38,10 +38,9 @@ public class CmsContentDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(id)) {
             CmsContent entity = service.getEntity(id);
             if (null != entity && site.getId() == entity.getSiteId()) {
-                CmsContentStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
+                ClickStatistics statistics = statisticsComponent.getContentStatistics(entity.getId());
                 if (null != statistics) {
                     entity.setClicks(entity.getClicks() + statistics.getClicks());
-                    entity.setScores(entity.getScores() + statistics.getScores());
                 }
                 if (absoluteId && null != entity.getQuoteContentId()) {
                     entity.setId(entity.getQuoteContentId());
@@ -71,10 +70,9 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                 Consumer<CmsContent> consumer;
                 if (absoluteURL) {
                     consumer = e -> {
-                        CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                        ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                         if (null != statistics) {
                             e.setClicks(e.getClicks() + statistics.getClicks());
-                            e.setScores(e.getScores() + statistics.getScores());
                         }
                         if (absoluteId && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
@@ -84,13 +82,12 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     };
                 } else {
                     consumer = e -> {
-                        CmsContentStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
+                        ClickStatistics statistics = statisticsComponent.getContentStatistics(e.getId());
                         if (absoluteId && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
                         if (null != statistics) {
                             e.setClicks(e.getClicks() + statistics.getClicks());
-                            e.setScores(e.getScores() + statistics.getScores());
                         }
                     };
                 }
