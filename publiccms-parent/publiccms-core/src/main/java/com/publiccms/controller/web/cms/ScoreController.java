@@ -37,7 +37,7 @@ public class ScoreController {
     @ResponseBody
     public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long userId, String itemType,
             long itemId) {
-        if (null != userId && userId == user.getId()) {
+        if (null != userId && userId.equals(user.getId())) {
             return score(site, user.getId(), itemType, itemId, true);
         } else {
             return false;
@@ -56,7 +56,7 @@ public class ScoreController {
     @ResponseBody
     public boolean unscore(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long userId, String itemType,
             long itemId) {
-        if (null != userId && userId == user.getId()) {
+        if (null != userId && userId.equals(user.getId())) {
             return score(site, user.getId(), itemType, itemId, false);
         } else {
             return false;
