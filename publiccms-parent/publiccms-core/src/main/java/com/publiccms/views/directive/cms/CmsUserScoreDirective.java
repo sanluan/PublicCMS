@@ -3,6 +3,8 @@ package com.publiccms.views.directive.cms;
 // Generated 2020-3-26 11:46:48 by com.publiccms.common.generator.SourceGenerator
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,10 +29,24 @@ public class CmsUserScoreDirective extends AbstractTemplateDirective {
         Long userId = handler.getLong("userId");
         String itemType = handler.getString("itemType");
         Long itemId = handler.getLong("itemId");
-        if (null != userId && CommonUtils.notEmpty(itemType) && null != itemId) {
-            CmsUserScore entity = service.getEntity(new CmsUserScoreId(userId, itemType, itemId));
-            if (null != entity) {
-                handler.put("object", entity).render();
+        if (null != userId && CommonUtils.notEmpty(itemType)) {
+            if (null != itemId) {
+                CmsUserScore entity = service.getEntity(new CmsUserScoreId(userId, itemType, itemId));
+                if (null != entity) {
+                    handler.put("object", entity).render();
+                }
+            } else {
+                Long[] itemIds = handler.getLongArray("itemIds");
+                if (CommonUtils.notEmpty(itemIds)) {
+                    CmsUserScoreId[] entityIds = new CmsUserScoreId[itemIds.length];
+                    for (int i = 0; i < itemIds.length; i++) {
+                        entityIds[i] = new CmsUserScoreId(userId, itemType, itemIds[i]);
+                    }
+                    List<CmsUserScore> entityList = service.getEntitys(entityIds);
+                    Map<String, CmsUserScore> map = CommonUtils.listToMap(entityList, k -> String.valueOf(k.getId().getItemId()),
+                            null, null);
+                    handler.put("map", map).render();
+                }
             }
         }
     }
