@@ -26,11 +26,6 @@ public class CmsUserVoteListDirective extends AbstractTemplateDirective {
         handler.put("page", page).render();
     }
 
-    @Override
-    public boolean needAppToken() {
-        return true;
-    }
-
     @Autowired
     private CmsUserVoteService service;
 

@@ -8,10 +8,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.entities.cms.CmsComment;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsUserScore;
 import com.publiccms.entities.cms.CmsUserScoreId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsUserScoreService;
@@ -67,23 +70,26 @@ public class ScoreController {
         if (CommonUtils.notEmpty(itemType)) {
             CmsUserScoreId id = new CmsUserScoreId(userId, itemType, itemId);
             CmsUserScore entity = service.getEntity(id);
-            if (score) {
-                if (null == entity) {
-                    if ("content".equals(itemType) && null != contentService.updateScores(site.getId(), itemId, 1)
-                            || "comment".equals(itemType) && null != commentService.updateScores(site.getId(), itemId, 1)) {
+            if (score && null == entity || !score && null != entity) {
+                int s = score ? 1 : -1;
+                if ("content".equals(itemType)) {
+                    CmsContent content = contentService.updateScores(site.getId(), itemId, s);
+                    if (null != content) {
                         entity = new CmsUserScore();
                         entity.setId(id);
                         service.save(entity);
-                        return true;
+                        templateComponent.createContentFile(site, content, null, null);
                     }
-                }
-            } else if (null != entity) {
-                if ("content".equals(itemType)) {
-                    if ("content".equals(itemType) && null != contentService.updateScores(site.getId(), itemId, -1)
-                            || "comment".equals(itemType) && null != commentService.updateScores(site.getId(), itemId, -1)) {
-                        service.delete(id);
-                        return true;
+                    return true;
+                } else if ("comment".equals(itemType)) {
+                    CmsComment comment = commentService.updateScores(site.getId(), itemId, s);
+                    if (null != comment) {
+                        entity = new CmsUserScore();
+                        entity.setId(id);
+                        service.save(entity);
+                        templateComponent.createContentFile(site, contentService.getEntity(comment.getContentId()), null, null);
                     }
+                    return true;
                 }
             }
         }
@@ -96,5 +102,7 @@ public class ScoreController {
     private CmsCommentService commentService;
     @Autowired
     private CmsContentService contentService;
+    @Autowired
+    private TemplateComponent templateComponent;
 
 }
