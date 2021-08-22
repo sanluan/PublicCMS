@@ -3,6 +3,7 @@ package com.publiccms.common.servlet;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -35,8 +36,16 @@ public class CommonDispatcherServlet extends DispatcherServlet {
 
     @Override
     public void render(ModelAndView mv, HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (!response.isCommitted()) {
-            super.render(mv, request, response);
+        try {
+            if (!response.isCommitted()) {
+                super.render(mv, request, response);
+            }
+        } catch (ServletException e) {
+            if (null != e.getMessage() && e.getMessage().contains("Could not resolve view with name")) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND);
+            } else {
+                throw e;
+            }
         }
     }
 

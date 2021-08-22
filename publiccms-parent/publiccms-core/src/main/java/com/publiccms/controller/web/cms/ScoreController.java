@@ -71,22 +71,29 @@ public class ScoreController {
             CmsUserScoreId id = new CmsUserScoreId(userId, itemType, itemId);
             CmsUserScore entity = service.getEntity(id);
             if (score && null == entity || !score && null != entity) {
-                int s = score ? 1 : -1;
                 if ("content".equals(itemType)) {
-                    CmsContent content = contentService.updateScores(site.getId(), itemId, s);
+                    CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1);
                     if (null != content) {
-                        entity = new CmsUserScore();
-                        entity.setId(id);
-                        service.save(entity);
+                        if (score) {
+                            entity = new CmsUserScore();
+                            entity.setId(id);
+                            service.save(entity);
+                        } else {
+                            service.delete(id);
+                        }
                         templateComponent.createContentFile(site, content, null, null);
                     }
                     return true;
                 } else if ("comment".equals(itemType)) {
-                    CmsComment comment = commentService.updateScores(site.getId(), itemId, s);
+                    CmsComment comment = commentService.updateScores(site.getId(), itemId, score ? 1 : -1);
                     if (null != comment) {
-                        entity = new CmsUserScore();
-                        entity.setId(id);
-                        service.save(entity);
+                        if (score) {
+                            entity = new CmsUserScore();
+                            entity.setId(id);
+                            service.save(entity);
+                        } else {
+                            service.delete(id);
+                        }
                         templateComponent.createContentFile(site, contentService.getEntity(comment.getContentId()), null, null);
                     }
                     return true;
