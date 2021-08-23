@@ -32,7 +32,7 @@ public class CmsUserScoreDao extends BaseDao<CmsUserScore> {
             queryHandler.condition("bean.id.userId = :userId").setParameter("userId", userId);
         }
         if (CommonUtils.notEmpty(itemType) && null != itemId) {
-            queryHandler.condition("bean.id.itemType = :itemType").setParameter("itemType", userId);
+            queryHandler.condition("bean.id.itemType = :itemType").setParameter("itemType", itemType);
             queryHandler.condition("bean.id.itemId = :itemId").setParameter("itemId", itemId);
         }
         queryHandler.order("bean.createDate desc");
