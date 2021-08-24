@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.publiccms.common.handler.FullBeanNameGenerator;
-import com.publiccms.common.interceptor.CorsInterceptor;
+import com.publiccms.common.interceptor.SiteInterceptor;
 
 /**
  * 
@@ -22,10 +22,10 @@ import com.publiccms.common.interceptor.CorsInterceptor;
         @ComponentScan.Filter(value = { Controller.class }) }, nameGenerator = FullBeanNameGenerator.class)
 public class ApiConfig implements WebMvcConfigurer {
     @Autowired
-    private CorsInterceptor corsInterceptor;
+    private SiteInterceptor siteInterceptor;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(corsInterceptor);
+        registry.addInterceptor(siteInterceptor);
     }
 }

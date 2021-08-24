@@ -11,7 +11,7 @@
         <ul>
         <#list page.list as a>
             <li>
-                <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#if parentSite?has_content>&currentSiteId=${site.id}</#if><#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
+                <h3><a href="<#if a.onlyUrl>${site.dynamicPath}content/redirect?id=${a.id}<#else>${a.url!}</#if>" target="_blank">${a.title}</a></h3>
                 <p>
                     <#if a.cover?has_content><img src="${a.cover}" alt="${a.title}"/></#if>
                     ${a.description!}
@@ -31,13 +31,6 @@
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
-            <#if parentSite?has_content>
-            url+='&currentSiteId=${site.id}';
-            </#if>
-        } else {
-            <#if parentSite?has_content>
-            url+='?currentSiteId=${site.id}';
-            </#if>
         }
         ca.report(url);
     </script>

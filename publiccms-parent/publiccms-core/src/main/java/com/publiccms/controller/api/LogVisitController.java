@@ -7,15 +7,14 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogVisit;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.VisitComponent;
 
 @Controller
@@ -23,10 +22,9 @@ import com.publiccms.logic.component.site.VisitComponent;
 public class LogVisitController {
     @Autowired
     private VisitComponent visitComponent;
-    @Autowired
-    private SiteComponent siteComponent;
 
     /**
+     * @param site 
      * @param sessionId
      * @param url
      * @param title
@@ -40,13 +38,11 @@ public class LogVisitController {
      */
     @RequestMapping("record")
     @ResponseBody
-    public void record(String sessionId, String url, String title, Integer screenw, Integer screenh,
+    public void record(@RequestAttribute SysSite site, String sessionId, String url, String title, Integer screenw, Integer screenh,
             @RequestHeader(value = "User-Agent", required = false) String userAgent, String referer, String itemType,
             String itemId, HttpServletRequest request) {
         Calendar now = Calendar.getInstance();
         Date date = now.getTime();
-        SysSite site = siteComponent.getSite(request.getServerName(),
-                UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
         LogVisit entity = new LogVisit(site.getId(), sessionId, date, (byte) now.get(Calendar.HOUR_OF_DAY),
                 RequestUtils.getIpAddress(request), userAgent, url, title, screenw, screenh, referer, itemType, itemId, date);
         visitComponent.add(entity);

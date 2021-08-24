@@ -62,7 +62,6 @@ public class WebContextInterceptor implements HandlerInterceptor {
         } else {
             site = siteComponent.getSite(domain, request.getServerName(), null);
         }
-        request.setAttribute(CommonConstants.getAttributeSite(), site);
         HttpSession session = request.getSession(false);
         SysUser user = initUser(ControllerUtils.getUserFromSession(session), LogLoginService.CHANNEL_WEB,
                 CommonConstants.getCookiesUser(), site, request, response);

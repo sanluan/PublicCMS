@@ -33,8 +33,7 @@
                 <p class="gray"><label>Order id:</label>${a.orderId!} <label>Apply amount:</label>${a.amount!} <label>Refund amount:</label>${a.refundAmount!}</p>
                 <p>${a.reason!}<span class="right"><label>Replay:</label>${a.reply!}</span></p>
                 <#if 0=a.status||3=a.status>
-                    <form action="${(parentSite.dynamicPath)!site.dynamicPath}tradePayment/refund" method="POST">
-                        <#if parentSite?has_content><input type="hidden" name="currentSiteId" value="${site.id}"/></#if>
+                    <form action="${site.dynamicPath}tradePayment/refund" method="POST">
                         <input type="hidden" name="_csrf" value="<@_csrfToken/>"/>
                         <input type="hidden" name="id" value="${a.id}"/>
                         <input type="hidden" name="returnUrl" value="${site.dynamicPath}paymentList.html"/>
@@ -97,13 +96,6 @@
         var url='${site.dynamicPath}api/visit/record';
         if("string" ==typeof itemString){
             url=url+"?"+itemString;
-            <#if parentSite?has_content>
-            url+='&currentSiteId=${site.id}';
-            </#if>
-        } else {
-            <#if parentSite?has_content>
-            url+='?currentSiteId=${site.id}';
-            </#if>
         }
         ca.report(url);
     </script>

@@ -17,7 +17,7 @@ import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import com.publiccms.common.handler.FullBeanNameGenerator;
-import com.publiccms.common.interceptor.CorsInterceptor;
+import com.publiccms.common.interceptor.SiteInterceptor;
 import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.interceptor.WebContextInterceptor;
 import com.publiccms.common.view.DefaultWebFreeMarkerView;
@@ -39,7 +39,7 @@ public class WebConfig implements WebMvcConfigurer {
     @Autowired
     private WebContextInterceptor webInterceptor;
     @Autowired
-    private CorsInterceptor corsInterceptor;
+    private SiteInterceptor siteInterceptor;
     @Autowired
     private CacheComponent cacheComponent;
 
@@ -109,6 +109,6 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(csrfInterceptor());
         registry.addInterceptor(webInterceptor);
-        registry.addInterceptor(corsInterceptor);
+        registry.addInterceptor(siteInterceptor);
     }
 }

@@ -17,9 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.util.UrlPathHelper;
 
-import com.publiccms.common.base.AbstractFreemarkerView;
 import com.publiccms.common.base.AbstractTaskDirective;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.constants.CommonConstants;
@@ -56,7 +54,6 @@ public class DirectiveController {
         try {
             HttpDirective directive = actionMap.get(action);
             if (null != directive) {
-                request.setAttribute(AbstractFreemarkerView.CONTEXT_SITE, siteComponent.getSite(request.getServerName(), UrlPathHelper.defaultInstance.getLookupPathForRequest(request)));
                 directive.execute(mappingJackson2HttpMessageConverter, CommonConstants.jsonMediaType, request, response);
             } else {
                 HttpParameterHandler handler = new HttpParameterHandler(mappingJackson2HttpMessageConverter,

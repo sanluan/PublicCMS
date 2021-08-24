@@ -10,17 +10,19 @@ import org.springframework.web.cors.DefaultCorsProcessor;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.util.UrlPathHelper;
 
+import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 
 /**
  * 
- * CorsContextInterceptor 权限拦截器
+ * SiteInterceptor 权限拦截器
  *
  */
 @Component
-public class CorsInterceptor implements HandlerInterceptor {
+public class SiteInterceptor implements HandlerInterceptor {
     public static final CorsProcessor corsProcessor = new DefaultCorsProcessor();
     @Autowired
     private CorsConfigComponent corsConfigComponent;
@@ -29,8 +31,22 @@ public class CorsInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        SysSite site = siteComponent.getSite(request.getServerName(),
-                UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+        SysDomain domain = siteComponent.getDomain(request.getServerName());
+        SysSite site = null;
+        if (domain.isMultiple()) {
+            String currentSiteId = request.getParameter("currentSiteId");
+            if (null != currentSiteId) {
+                site = siteComponent.getSiteById(currentSiteId);
+            }
+            if (null == site || (null == site.getParentId() || site.getParentId() != domain.getSiteId())
+                    && site.getId() != domain.getSiteId()) {
+                site = siteComponent.getSite(domain, request.getServerName(),
+                        UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+            }
+        } else {
+            site = siteComponent.getSite(domain, request.getServerName(), null);
+        }
+        request.setAttribute(CommonConstants.getAttributeSite(), site);
         return corsProcessor.processRequest(corsConfigComponent.getConfig(site), request, response);
     }
 
