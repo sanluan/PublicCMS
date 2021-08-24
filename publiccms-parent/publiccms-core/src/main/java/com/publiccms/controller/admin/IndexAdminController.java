@@ -1,7 +1,5 @@
 package com.publiccms.controller.admin;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,13 +13,10 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 import org.springframework.web.util.UrlPathHelper;
 
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 
 /**
@@ -34,7 +29,7 @@ public class IndexAdminController {
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
-    protected ConfigComponent configComponent;
+    protected SiteConfigComponent siteConfigComponent;
 
     /**
      * 页面请求统一分发
@@ -76,11 +71,7 @@ public class IndexAdminController {
         if (CommonUtils.empty(returnUrl)) {
             return CommonConstants.TEMPLATE_DONEANDREFRESH;
         } else {
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-            String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-            if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-                returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-            }
+            returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }

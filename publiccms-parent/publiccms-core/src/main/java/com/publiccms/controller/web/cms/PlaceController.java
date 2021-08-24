@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
@@ -31,8 +30,7 @@ import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -69,7 +67,7 @@ public class PlaceController {
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
-    protected ConfigComponent configComponent;
+    protected SiteConfigComponent siteConfigComponent;
     @Autowired
     private TemplateComponent templateComponent;
 
@@ -90,11 +88,7 @@ public class PlaceController {
     public String save(@RequestAttribute SysSite site, CmsPlace entity, String returnUrl, String _csrf,
             @ModelAttribute ExtendDataParameters placeParameters, HttpServletRequest request, HttpSession session,
             ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (null != entity && CommonUtils.notEmpty(entity.getPath())) {
             if (!entity.getPath().startsWith(CommonConstants.SEPARATOR)) {
                 entity.setPath(CommonConstants.SEPARATOR + entity.getPath());
@@ -156,11 +150,7 @@ public class PlaceController {
     @Csrf
     public String delete(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
             HttpServletRequest request, ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
@@ -199,11 +189,7 @@ public class PlaceController {
     @Csrf
     public String check(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
             HttpServletRequest request, ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());
@@ -242,11 +228,7 @@ public class PlaceController {
     @Csrf
     public String uncheck(@RequestAttribute SysSite site, Long id, @SessionAttribute SysUser user, String returnUrl,
             HttpServletRequest request, ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsPlace entity = service.getEntity(id);
         if (null != entity) {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath());

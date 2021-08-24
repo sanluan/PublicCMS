@@ -1,5 +1,7 @@
 package com.publiccms.controller.web.cms;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsComment;
 import com.publiccms.entities.cms.CmsContent;
@@ -14,6 +17,8 @@ import com.publiccms.entities.cms.CmsUserScore;
 import com.publiccms.entities.cms.CmsUserScoreId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -27,6 +32,8 @@ import com.publiccms.logic.service.cms.CmsUserScoreService;
 @Controller
 @RequestMapping("score")
 public class ScoreController {
+    @Autowired
+    protected ConfigComponent configComponent;
 
     /**
      * @param site
@@ -71,6 +78,9 @@ public class ScoreController {
             CmsUserScoreId id = new CmsUserScoreId(userId, itemType, itemId);
             CmsUserScore entity = service.getEntity(id);
             if (score && null == entity || !score && null != entity) {
+                Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+                boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE),
+                        false);
                 if ("content".equals(itemType)) {
                     CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1);
                     if (null != content) {
@@ -81,7 +91,9 @@ public class ScoreController {
                         } else {
                             service.delete(id);
                         }
-                        templateComponent.createContentFile(site, content, null, null);
+                        if (needStatic) {
+                            templateComponent.createContentFile(site, content, null, null);
+                        }
                     }
                     return true;
                 } else if ("comment".equals(itemType)) {
@@ -94,7 +106,10 @@ public class ScoreController {
                         } else {
                             service.delete(id);
                         }
-                        templateComponent.createContentFile(site, contentService.getEntity(comment.getContentId()), null, null);
+                        if (needStatic) {
+                            templateComponent.createContentFile(site, contentService.getEntity(comment.getContentId()), null,
+                                    null);
+                        }
                     }
                     return true;
                 }

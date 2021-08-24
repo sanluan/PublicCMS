@@ -35,7 +35,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.oauth.OauthComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
@@ -63,6 +63,8 @@ public class OauthController {
     @Autowired
     private ConfigComponent configComponent;
     @Autowired
+    protected SiteConfigComponent siteConfigComponent;
+    @Autowired
     private SysAppClientService appClientService;
     @Autowired
     private SysUserTokenService sysUserTokenService;
@@ -75,24 +77,21 @@ public class OauthController {
 
     /**
      * @param channel
-     * @param site 
+     * @param site
      * @param returnUrl
      * @param request
      * @param response
      * @return view name
      */
     @RequestMapping(value = "login/{channel}")
-    public String login(@PathVariable("channel") String channel, @RequestAttribute SysSite site, String returnUrl, HttpServletRequest request,
-            HttpServletResponse response) {
+    public String login(@PathVariable("channel") String channel, @RequestAttribute SysSite site, String returnUrl,
+            HttpServletRequest request, HttpServletResponse response) {
         OauthGateway oauthGateway = oauthComponent.get(channel);
         if (null != oauthGateway && oauthGateway.enabled(site.getId())) {
             String state = UUID.randomUUID().toString();
             RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-            String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-            if (!ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-                RequestUtils.addCookie(request.getContextPath(), response, RETURN_URL, returnUrl, null, null);
-            }
+            returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+            RequestUtils.addCookie(request.getContextPath(), response, RETURN_URL, returnUrl, null, null);
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + oauthGateway.getAuthorizeUrl(site.getId(), state);
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
@@ -100,7 +99,7 @@ public class OauthController {
 
     /**
      * @param channel
-     * @param site 
+     * @param site
      * @param state
      * @param code
      * @param request
@@ -110,16 +109,16 @@ public class OauthController {
      * @return view name
      */
     @RequestMapping(value = "callback/{channel}")
-    public String callback(@PathVariable("channel") String channel, @RequestAttribute SysSite site, String state, String code, HttpServletRequest request,
-            HttpSession session, HttpServletResponse response, ModelMap model) {
+    public String callback(@PathVariable("channel") String channel, @RequestAttribute SysSite site, String state, String code,
+            HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         OauthGateway oauthGateway = oauthComponent.get(channel);
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
         RequestUtils.cancleCookie(request.getContextPath(), response, RETURN_URL, null);
         String returnUrl;
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
+        String safeReturnUrl = config.get(SiteConfigComponent.CONFIG_RETURN_URL);
         if (null != cookie && CommonUtils.notEmpty(cookie.getValue())
-                && !ControllerUtils.isUnSafeUrl(cookie.getValue(), site, safeReturnUrl, request)) {
+                && !SiteConfigComponent.isUnSafeUrl(cookie.getValue(), site, safeReturnUrl, request.getContextPath())) {
             returnUrl = cookie.getValue();
         } else {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
@@ -142,7 +141,7 @@ public class OauthController {
                             Map<String, String> oauthConfig = configComponent.getConfigData(site.getId(),
                                     AbstractOauth.CONFIG_CODE);
                             if (null != oauthUser && CommonUtils.notEmpty(oauthConfig)
-                                    && CommonUtils.notEmpty(config.get(LoginConfigComponent.CONFIG_REGISTER_URL))) {
+                                    && CommonUtils.notEmpty(config.get(SiteConfigComponent.CONFIG_REGISTER_URL))) {
                                 appClient = new SysAppClient(site.getId(), channel, oauthAccess.getOpenId(),
                                         CommonUtils.getDate(), false);
                                 appClient.setClientVersion(CmsVersion.getVersion());
@@ -153,12 +152,12 @@ public class OauthController {
                                 model.addAttribute("uuid", oauthAccess.getOpenId());
                                 model.addAttribute("returnUrl", returnUrl);
                                 return UrlBasedViewResolver.REDIRECT_URL_PREFIX
-                                        + config.get(LoginConfigComponent.CONFIG_REGISTER_URL);
+                                        + config.get(SiteConfigComponent.CONFIG_REGISTER_URL);
                             }
                         } else if (null != appClient.getUserId() && !appClient.isDisabled()) {// 有授权则登录
                             appClientService.updateLastLogin(appClient.getId(), CmsVersion.getVersion(), ip);
-                            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                            int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                                    SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
                             user = sysUserService.getEntity(appClient.getUserId());
                             if (null != user && !user.isDisabled()) {
                                 String loginToken = UUID.randomUUID().toString();

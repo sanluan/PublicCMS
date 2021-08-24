@@ -1,7 +1,5 @@
 package com.publiccms.controller.web.cms;
 
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
@@ -29,8 +26,7 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.ModelComponent;
@@ -66,7 +62,7 @@ public class ContentController {
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
-    protected ConfigComponent configComponent;
+    protected SiteConfigComponent siteConfigComponent;
 
     /**
      * 保存内容
@@ -88,11 +84,7 @@ public class ContentController {
     public String save(@RequestAttribute SysSite site, CmsContent entity, @SessionAttribute SysUser user, Boolean draft,
             CmsContentAttribute attribute, @ModelAttribute CmsContentParameters contentParameters, String returnUrl,
             HttpServletRequest request, ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
         if (ControllerUtils.verifyNotEmpty("categoryModel", categoryModel, model)

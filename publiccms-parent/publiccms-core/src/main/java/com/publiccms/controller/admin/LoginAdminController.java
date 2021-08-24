@@ -35,7 +35,7 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
@@ -116,8 +116,8 @@ public class LoginAdminController {
         String authToken = UUID.randomUUID().toString();
         Date now = CommonUtils.getDate();
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
-                LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+        int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_MANAGER),
+                SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
         sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB_MANAGER, now,
                 DateUtils.addMinutes(now, expiryMinutes), ip));
         StringBuilder sb = new StringBuilder();
@@ -126,8 +126,8 @@ public class LoginAdminController {
                 expiryMinutes * 60, null);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
+        String safeReturnUrl = config.get(SiteConfigComponent.CONFIG_RETURN_URL);
+        if (SiteConfigComponent.isUnSafeUrl(returnUrl, site, safeReturnUrl, request.getContextPath())) {
             returnUrl = CommonConstants.getDefaultPage();
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
@@ -137,7 +137,7 @@ public class LoginAdminController {
      * @param site
      * @param username
      * @param password
-     * @param encoding 
+     * @param encoding
      * @param request
      * @param session
      * @param response

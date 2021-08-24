@@ -23,7 +23,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.logic.service.sys.SysUserTokenService;
@@ -63,8 +63,8 @@ public class LoginDirective extends AbstractAppDirective {
                 String authToken = UUID.randomUUID().toString();
                 Date now = CommonUtils.getDate();
                 Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                        LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                        SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 Date expiryDate = DateUtils.addMinutes(now, expiryMinutes);
                 sysUserTokenService
                         .save(new SysUserToken(authToken, site.getId(), user.getId(), app.getChannel(), now, expiryDate, ip));

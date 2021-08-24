@@ -33,7 +33,7 @@ import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.site.StatisticsComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
@@ -161,7 +161,7 @@ public class IndexController {
         if (metadata.isUseDynamic()) {
             if (metadata.isNeedLogin() && null == ControllerUtils.getUserFromSession(request.getSession())) {
                 Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
+                String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
                 StringBuilder sb = new StringBuilder(UrlBasedViewResolver.REDIRECT_URL_PREFIX);
                 if (CommonUtils.notEmpty(loginPath)) {
                     if (null != id) {

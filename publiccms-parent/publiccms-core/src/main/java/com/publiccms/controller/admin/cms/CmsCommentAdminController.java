@@ -1,6 +1,7 @@
 package com.publiccms.controller.admin.cms;
 
 import java.util.Date;
+import java.util.Map;
 import java.util.Set;
 
 // Generated 2018-11-7 16:25:07 by com.publiccms.common.generator.SourceGenerator
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
+import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -26,6 +28,8 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCommentService;
@@ -49,6 +53,8 @@ public class CmsCommentAdminController {
     private TemplateComponent templateComponent;
     @Autowired
     private CmsContentService contentService;
+    @Autowired
+    protected ConfigComponent configComponent;
 
     private String[] ignoreProperties = new String[] { "siteId", "userId", "createDate", "checkUserId", "checkDate", "status",
             "replyId", "replyUserId", "replies", "scores", "disabled" };
@@ -99,7 +105,9 @@ public class CmsCommentAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "save.cmsComment", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
-        if (CmsCommentService.STATUS_NORMAL == entity.getStatus()) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+        if (needStatic && CmsCommentService.STATUS_NORMAL == entity.getStatus()) {
             CmsContent content = contentService.getEntity(entity.getContentId());
             if (null != content && !content.isDisabled()) {
                 templateComponent.createContentFile(site, content, null, null);
@@ -122,8 +130,12 @@ public class CmsCommentAdminController {
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.check(site.getId(), ids, admin.getId());
-            for (CmsContent content : contentSet) {
-                templateComponent.createContentFile(site, content, null, null);// 静态化
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            if (needStatic) {
+                for (CmsContent content : contentSet) {
+                    templateComponent.createContentFile(site, content, null, null);// 静态化
+                }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "check.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
@@ -146,8 +158,12 @@ public class CmsCommentAdminController {
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.uncheck(site.getId(), ids);
-            for (CmsContent content : contentSet) {
-                templateComponent.createContentFile(site, content, null, null);// 静态化
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            if (needStatic) {
+                for (CmsContent content : contentSet) {
+                    templateComponent.createContentFile(site, content, null, null);// 静态化
+                }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "uncheck.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
@@ -170,8 +186,12 @@ public class CmsCommentAdminController {
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             Set<CmsContent> contentSet = service.delete(site.getId(), ids);
-            for (CmsContent content : contentSet) {
-                templateComponent.createContentFile(site, content, null, null);// 静态化
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_COMMENT), false);
+            if (needStatic) {
+                for (CmsContent content : contentSet) {
+                    templateComponent.createContentFile(site, content, null, null);// 静态化
+                }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.cmsComment", RequestUtils.getIpAddress(request), CommonUtils.getDate(),

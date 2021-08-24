@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.ui.ModelMap;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -39,40 +38,6 @@ public class ControllerUtils {
      */
     public static final Pattern EMAIL_PATTERN = Pattern
             .compile("(" + VALID_CHARS + "(\\." + VALID_CHARS + ")*@" + VALID_CHARS + "(\\." + VALID_CHARS + ")*)");
-
-    public static boolean isUnSafeUrl(String url, SysSite site, String safeReturnUrl, HttpServletRequest request) {
-        if (CommonUtils.empty(url)) {
-            return true;
-        } else if (url.contains("\r") || url.contains("\n")) {
-            return true;
-        } else if (url.contains("://") || url.startsWith("//")) {
-            if (unSafe(url, site, request)) {
-                if (CommonUtils.notEmpty(safeReturnUrl)) {
-                    for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
-                        if (url.startsWith(safeUrlPrefix)) {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
-    }
-
-    private static boolean unSafe(String url, SysSite site, HttpServletRequest request) {
-        String fixedUrl = url.substring(url.indexOf("://") + 1);
-        if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
-                || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                || url.startsWith(request.getContextPath() + "/")) {
-            return false;
-        } else {
-            return true;
-        }
-    }
 
     /**
      * @param response
@@ -299,13 +264,15 @@ public class ControllerUtils {
         }
         return false;
     }
+
     /**
-     * @param request 
+     * @param request
      * @return SysSite
      */
     public static SysSite getSiteFromAttribute(HttpServletRequest request) {
-            return (SysSite) request.getAttribute(CommonConstants.getAttributeSite());
+        return (SysSite) request.getAttribute(CommonConstants.getAttributeSite());
     }
+
     /**
      * @param session
      * @return SysUser

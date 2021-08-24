@@ -164,6 +164,14 @@ public class ConfigComponent implements SiteCache {
         }
     }
 
+    public static boolean getBoolean(String value, boolean defaultValue) {
+        if (CommonUtils.empty(value)) {
+            return defaultValue;
+        } else {
+            return "true".equalsIgnoreCase(value);
+        }
+    }
+
     /**
      * @param site
      * @return config map
@@ -230,14 +238,15 @@ public class ConfigComponent implements SiteCache {
      * @throws IllegalAccessException
      * @throws InstantiationException
      * @throws ClassNotFoundException
-     * @throws SecurityException 
-     * @throws NoSuchMethodException 
-     * @throws InvocationTargetException 
-     * @throws IllegalArgumentException 
+     * @throws SecurityException
+     * @throws NoSuchMethodException
+     * @throws InvocationTargetException
+     * @throws IllegalArgumentException
      */
     @Autowired
     public void initCache(CacheEntityFactory cacheEntityFactory)
-            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+            throws ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException,
+            InvocationTargetException, NoSuchMethodException, SecurityException {
         cache = cacheEntityFactory.createCacheEntity("config");
     }
 

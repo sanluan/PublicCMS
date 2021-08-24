@@ -67,8 +67,7 @@ public class CorsConfigComponent implements SiteCache, Config {
             config.applyPermitDefaultValues();
             if (null != configData) {
                 config = new CorsConfiguration();
-                config.setAllowCredentials(CommonUtils.empty(configData.get(CONFIG_ALLOW_CREDENTIALS))
-                        || "true".equals(configData.get(CONFIG_ALLOW_CREDENTIALS)));
+                config.setAllowCredentials(ConfigComponent.getBoolean(configData.get(CONFIG_ALLOW_CREDENTIALS), true));
 
                 if (CommonUtils.notEmpty(configData.get(CONFIG_ALLOWED_ORIGINS))) {
                     String[] array = StringUtils.split(configData.get(CONFIG_ALLOWED_ORIGINS), CommonConstants.COMMA_DELIMITED);

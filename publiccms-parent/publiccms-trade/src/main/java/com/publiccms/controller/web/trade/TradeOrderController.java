@@ -2,7 +2,6 @@ package com.publiccms.controller.web.trade;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.Map;
 
 // Generated 2021-6-26 20:16:25 by com.publiccms.common.generator.SourceGenerator
 
@@ -20,17 +19,14 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.trade.TradeOrder;
 import com.publiccms.entities.trade.TradePayment;
-import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.paymentprocessor.ProductProcessorComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
 import com.publiccms.logic.service.trade.TradeOrderService;
@@ -60,11 +56,7 @@ public class TradeOrderController {
     @RequestMapping(value = "pay/{accountType}")
     public String pay(@RequestAttribute SysSite site, @PathVariable("accountType") String accountType, long orderId,
             String returnUrl, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         PaymentGateway paymentGateway = gatewayComponent.get(accountType);
         TradeOrder order = service.getEntity(orderId);
         if (null != paymentGateway && paymentGateway.enable(site.getId()) && null == order.getPaymentId()) {
@@ -102,11 +94,7 @@ public class TradeOrderController {
     public String create(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeOrder entity,
             @ModelAttribute TradeOrderParameters tradeOrderParameters, String orderIdField, String returnUrl,
             HttpServletRequest request) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (CommonUtils.empty(orderIdField)) {
             orderIdField = "orderId";
         }
@@ -132,11 +120,7 @@ public class TradeOrderController {
     @Csrf
     public String close(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long orderId, String returnUrl,
             HttpServletRequest request) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         service.close(site.getId(), orderId);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
@@ -146,7 +130,7 @@ public class TradeOrderController {
     @Autowired
     private TradePaymentService paymentService;
     @Autowired
-    protected ConfigComponent configComponent;
+    protected SiteConfigComponent siteConfigComponent;
     @Autowired
     private PaymentGatewayComponent gatewayComponent;
 }

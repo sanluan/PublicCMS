@@ -25,7 +25,6 @@ import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.alipay.easysdk.kernel.util.Signer;
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.api.Config;
 import com.publiccms.common.api.PaymentGateway;
 import com.publiccms.common.api.TradePaymentProcessor;
 import com.publiccms.common.constants.CommonConstants;
@@ -38,7 +37,7 @@ import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.paymentgateway.AlipayGatewayComponent;
 import com.publiccms.logic.component.paymentgateway.WechatGatewayComponent;
 import com.publiccms.logic.component.trade.PaymentGatewayComponent;
@@ -67,11 +66,7 @@ public class TradePaymentController {
     @RequestMapping(value = "pay")
     public void pay(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) throws Exception {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         PaymentGateway paymentGateway = gatewayComponent.get(entity.getAccountType());
         if (null == paymentGateway || null == entity
@@ -98,11 +93,7 @@ public class TradePaymentController {
     @Csrf
     public String cancel(@RequestAttribute SysSite site, Long paymentId, String returnUrl, HttpServletRequest request,
             HttpServletResponse response, ModelMap model) throws Exception {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         TradePayment entity = service.getEntity(paymentId);
         if (null == entity || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
@@ -305,11 +296,7 @@ public class TradePaymentController {
     @Csrf
     public String refund(@RequestAttribute SysSite site, @SessionAttribute SysUser user, TradeRefund entity, String returnUrl,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (null != user && ControllerUtils.verifyCustom("tradePaymentStatus",
                 !service.pendingRefund(site.getId(), entity.getPaymentId()), model)) {
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
@@ -343,11 +330,7 @@ public class TradePaymentController {
     @Csrf
     public String cancel(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long refundId, String returnUrl,
             HttpServletRequest request, HttpSession session, ModelMap model) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         refundService.updateStatus(site.getId(), refundId, null, TradeRefundService.STATUS_CANCELLED);
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
@@ -364,6 +347,8 @@ public class TradePaymentController {
     private AlipayGatewayComponent alipayGatewayComponent;
     @Autowired
     protected ConfigComponent configComponent;
+    @Autowired
+    protected SiteConfigComponent siteConfigComponent;
     @Autowired
     private TradePaymentService service;
     @Autowired

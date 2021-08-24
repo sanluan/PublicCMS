@@ -35,7 +35,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
 import com.publiccms.logic.component.config.ConfigComponent;
-import com.publiccms.logic.component.config.LoginConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.sys.SysAppClientService;
@@ -62,6 +62,8 @@ public class LoginController {
     protected SiteComponent siteComponent;
     @Autowired
     protected ConfigComponent configComponent;
+    @Autowired
+    protected SiteConfigComponent siteConfigComponent;
 
     /**
      * @param site
@@ -80,14 +82,11 @@ public class LoginController {
     public String login(@RequestAttribute SysSite site, String username, String password, String returnUrl, String encode,
             Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String loginPath = config.get(LoginConfigComponent.CONFIG_LOGIN_PATH);
+        String loginPath = config.get(SiteConfigComponent.CONFIG_LOGIN_PATH);
         if (CommonUtils.empty(loginPath)) {
             loginPath = site.getDynamicPath();
         }
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         username = StringUtils.trim(username);
         password = StringUtils.trim(password);
         if (ControllerUtils.verifyNotEmpty("username", username, model)
@@ -132,8 +131,8 @@ public class LoginController {
                 }
 
                 String authToken = UUID.randomUUID().toString();
-                int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                        LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+                int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                        SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
                 addLoginStatus(user, authToken, request, response, expiryMinutes);
                 sysUserTokenService.save(new SysUserToken(authToken, site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, now,
                         DateUtils.addMinutes(now, expiryMinutes), ip));
@@ -170,7 +169,7 @@ public class LoginController {
      * @param entity
      * @param repassword
      * @param returnUrl
-     * @param encode 
+     * @param encode
      * @param clientId
      * @param uuid
      * @param request
@@ -185,12 +184,7 @@ public class LoginController {
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
         repassword = StringUtils.trim(repassword);
-
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         if (ControllerUtils.verifyNotEmpty("username", entity.getName(), model)
                 || ControllerUtils.verifyNotEmpty("nickname", entity.getNickName(), model)
                 || ControllerUtils.verifyNotEmpty("password", entity.getPassword(), model)
@@ -225,8 +219,9 @@ public class LoginController {
                     appClientService.updateUser(appClient.getId(), entity.getId());
                 }
             }
-            int expiryMinutes = ConfigComponent.getInt(config.get(LoginConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
-                    LoginConfigComponent.DEFAULT_EXPIRY_MINUTES);
+            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+            int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
+                    SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
 
             Date now = CommonUtils.getDate();
             String authToken = UUID.randomUUID().toString();
@@ -249,11 +244,7 @@ public class LoginController {
     @RequestMapping(value = "doLogout", method = RequestMethod.POST)
     public String logout(@RequestAttribute SysSite site, Long userId, String returnUrl, HttpServletRequest request,
             HttpServletResponse response) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-        String safeReturnUrl = config.get(LoginConfigComponent.CONFIG_RETURN_URL);
-        if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
-            returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
-        }
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         SysUser user = ControllerUtils.getUserFromSession(request.getSession());
         if (null != userId && null != user && userId.equals(user.getId())) {
             Cookie userCookie = RequestUtils.getCookie(request.getCookies(), CommonConstants.getCookiesUser());
