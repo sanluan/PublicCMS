@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.file.Paths;
+import java.util.Comparator;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -305,6 +306,9 @@ public class CmsTemplateAdminController {
             String filePath = siteComponent.getWebTemplateFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + path);
             try {
                 CmsFileUtils.createFile(filePath, content);
+                if (CommonUtils.notEmpty(metadata.getExtendList())) {
+                    metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+                }
                 metadataComponent.updatePlaceMetadata(filePath, metadata);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                         "update.template.meta", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
@@ -346,6 +350,9 @@ public class CmsTemplateAdminController {
             String filePath = siteComponent.getWebTemplateFilePath(site, path);
             try {
                 CmsFileUtils.createFile(filePath, content);
+                if (CommonUtils.notEmpty(metadata.getExtendList())) {
+                    metadata.getExtendList().sort(Comparator.comparing(e -> e.getSort()));
+                }
                 metadataComponent.updateTemplateMetadata(filePath, metadata);
                 templateComponent.clearTemplateCache();
                 cacheComponent.clearViewCache();

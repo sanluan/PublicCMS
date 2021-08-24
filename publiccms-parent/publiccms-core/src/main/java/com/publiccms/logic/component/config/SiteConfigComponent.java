@@ -120,13 +120,13 @@ public class SiteConfigComponent implements Config {
                 .add(new SysExtendField(CONFIG_EXPIRY_MINUTES_MANAGER, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES_MANAGER,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_MANAGER),
                         String.valueOf(DEFAULT_EXPIRY_MINUTES)));
-        extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_NUMBER, false, CONFIG_COMMENT_NEED_CHECK,
+        extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false, CONFIG_COMMENT_NEED_CHECK,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), "true"));
         if (site.isUseStatic()) {
-            extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_COMMENT, INPUTTYPE_NUMBER, false,
+            extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_COMMENT, INPUTTYPE_BOOLEAN, false,
                     CONFIG_STATIC_AFTER_COMMENT,
                     getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_COMMENT), "false"));
-            extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_SCORE, INPUTTYPE_NUMBER, false, CONFIG_STATIC_AFTER_SCORE,
+            extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_SCORE, INPUTTYPE_BOOLEAN, false, CONFIG_STATIC_AFTER_SCORE,
                     getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_STATIC_AFTER_SCORE), "false"));
         }
         return extendFieldList;
