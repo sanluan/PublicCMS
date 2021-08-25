@@ -68,7 +68,12 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
                 } else if (System.currentTimeMillis() < cacheValue.getExpiryDate()) {
                     return cacheValue.getValue();
                 } else {
-                    cachedMap.remove(key);
+                    try {
+                        lock.writeLock().lock();
+                        cachedMap.remove(key);
+                    } finally {
+                        lock.writeLock().unlock();
+                    }
                     return null;
                 }
             }
