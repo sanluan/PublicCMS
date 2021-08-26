@@ -25,8 +25,9 @@ public class UserAgentDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         String userAgent = handler.getString("userAgent");
+        HttpServletRequest request = null;
         if (null == userAgent) {
-            HttpServletRequest request = handler.getRequest();
+            request = handler.getRequest();
             if (null != request) {
                 userAgent = RequestUtils.getUserAgent(request);
             }
@@ -34,6 +35,7 @@ public class UserAgentDirective extends AbstractTemplateDirective {
         UserAgent ua = UserAgent.parseUserAgentString(userAgent);
         Map<String, Object> map = new HashMap<>();
         map.put("id", ua.getId());
+        map.put("ip", RequestUtils.getIpAddress(request));
         map.put("browser", ua.getBrowser());
         map.put("browserGroup", ua.getBrowser().getGroup());
         map.put("browserType", ua.getBrowser().getBrowserType());
