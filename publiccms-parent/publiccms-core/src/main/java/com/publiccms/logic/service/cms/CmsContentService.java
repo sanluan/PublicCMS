@@ -34,6 +34,8 @@ import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsContentAttribute;
+import com.publiccms.entities.cms.CmsContentFile;
+import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.cms.CmsContentDao;
@@ -203,8 +205,14 @@ public class CmsContentService extends BaseService<CmsContent> {
                 contentProductService.update(siteId, entity.getId(), userId, contentParameters.getProducts());
             }
             String text = HtmlUtils.removeHtmlTag(attribute.getText());
+            StringBuilder searchTextBuilder = new StringBuilder();
             if (null != text) {
                 attribute.setWordCount(text.length());
+                if (cmsModel.isSearchable()) {
+                    searchTextBuilder.append(text).append(CommonConstants.BLANK_SPACE);
+                }
+            } else {
+                attribute.setWordCount(0);
             }
             if (CommonUtils.empty(entity.getDescription())) {
                 entity.setDescription(StringUtils.substring(text, 0, 150));
@@ -224,27 +232,26 @@ public class CmsContentService extends BaseService<CmsContent> {
                 }
             }
             if (CommonUtils.notEmpty(map)) {
-                StringBuilder sb = new StringBuilder();
-                if (cmsModel.isSearchable() && CommonUtils.notEmpty(text)) {
-                    sb.append(text).append(CommonConstants.BLANK_SPACE);
-                }
                 List<String> dictionaryValueList = new ArrayList<>();
-                dealExtend(modelExtendList, dictionaryValueList, map, sb);
-                dealExtend(categoryExtendList, dictionaryValueList, map, sb);
+                dealExtend(modelExtendList, dictionaryValueList, map, searchTextBuilder);
+                dealExtend(categoryExtendList, dictionaryValueList, map, searchTextBuilder);
                 if (CommonUtils.notEmpty(dictionaryValueList)) {
                     String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
                     entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
                 }
                 attribute.setData(ExtendUtils.getExtendString(map));
-                attribute.setSearchText(sb.toString());
             } else {
                 attribute.setData(null);
                 entity.setDictionaryValues(null);
-                if (cmsModel.isSearchable()) {
-                    attribute.setSearchText(text);
-                } else {
-                    attribute.setSearchText(null);
-                }
+            }
+            dealFiles(entity.isHasFiles() ? contentParameters.getFiles() : null,
+                    entity.isHasImages() ? contentParameters.getImages() : null,
+                    entity.isHasProducts() ? contentParameters.getProducts() : null, searchTextBuilder);
+
+            if (searchTextBuilder.length() > 0) {
+                attribute.setSearchText(text);
+            } else {
+                attribute.setSearchText(null);
             }
 
             attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
@@ -255,8 +262,27 @@ public class CmsContentService extends BaseService<CmsContent> {
         return entity;
     }
 
+    private void dealFiles(List<CmsContentFile> files, List<CmsContentFile> images, List<CmsContentProduct> products,
+            StringBuilder searchTextBuilder) {
+        if (CommonUtils.notEmpty(files)) {
+            for (CmsContentFile file : files) {
+                searchTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+            }
+        }
+        if (CommonUtils.notEmpty(images)) {
+            for (CmsContentFile file : images) {
+                searchTextBuilder.append(file.getDescription()).append(CommonConstants.BLANK_SPACE);
+            }
+        }
+        if (CommonUtils.notEmpty(products)) {
+            for (CmsContentProduct product : products) {
+                searchTextBuilder.append(product.getTitle()).append(CommonConstants.BLANK_SPACE);
+            }
+        }
+    }
+
     private void dealExtend(List<SysExtendField> extendList, List<String> dictionaryValueList, Map<String, String> map,
-            StringBuilder sb) {
+            StringBuilder searchTextBuilder) {
         if (CommonUtils.notEmpty(extendList)) {
             for (SysExtendField extendField : extendList) {
                 if (extendField.isSearchable()) {
@@ -280,7 +306,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                             if (ArrayUtils.contains(FULLTEXT_SEARCHABLE_EDITOR, extendField.getInputType())) {
                                 value = HtmlUtils.removeHtmlTag(value);
                             }
-                            sb.append(value).append(CommonConstants.BLANK_SPACE);
+                            searchTextBuilder.append(value).append(CommonConstants.BLANK_SPACE);
                         }
                     }
                 }
