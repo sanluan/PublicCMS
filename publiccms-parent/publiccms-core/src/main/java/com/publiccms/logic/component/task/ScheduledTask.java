@@ -136,7 +136,7 @@ public class ScheduledTask {
                 JobKey jobKey = JobKey.jobKey(getTaskName(id));
                 JobDetail job = scheduler.getJobDetail(jobKey);
                 job.getJobDataMap().put(RUNONCE, true);
-                scheduler.triggerJob(jobKey);
+                scheduler.triggerJob(jobKey, job.getJobDataMap());
             } catch (SchedulerException e) {
                 sysTaskService.updateStatus(id, TASK_STATUS_ERROR);
                 logTaskService.save(new LogTask(site.getId(), id, startTime, CommonUtils.getDate(), false, e.getMessage()));
@@ -161,7 +161,7 @@ public class ScheduledTask {
             }
         }
     }
-    
+
     /**
      * 暂停任务计划
      * 

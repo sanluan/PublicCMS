@@ -30,13 +30,13 @@ public class ScheduledJob extends QuartzJobBean {
 
     @Override
     public void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        Integer taskId = (Integer) context.getJobDetail().getJobDataMap().get(ScheduledTask.ID);
+        Integer taskId = (Integer) context.getMergedJobDataMap().get(ScheduledTask.ID);
         SysTask task = BeanComponent.getSysTaskService().getEntity(taskId);
         if (null != task) {
-            Object flag = context.getJobDetail().getJobDataMap().get(ScheduledTask.RUNONCE);
+            Object flag = context.getMergedJobDataMap().get(ScheduledTask.RUNONCE);
             if (ScheduledTask.TASK_STATUS_READY == task.getStatus() && CmsVersion.isMaster() || null != flag) {
                 if (null != flag) {
-                    context.getJobDetail().getJobDataMap().remove(ScheduledTask.RUNONCE);
+                    context.getMergedJobDataMap().remove(ScheduledTask.RUNONCE);
                 }
                 BeanComponent.getSysTaskService().updateStatus(task.getId(), ScheduledTask.TASK_STATUS_RUNNING);
                 LogTask entity = new LogTask(task.getSiteId(), task.getId(), new Date(), false);

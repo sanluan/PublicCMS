@@ -249,7 +249,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                     entity.isHasProducts() ? contentParameters.getProducts() : null, searchTextBuilder);
 
             if (searchTextBuilder.length() > 0) {
-                attribute.setSearchText(text);
+                attribute.setSearchText(searchTextBuilder.toString());
             } else {
                 attribute.setSearchText(null);
             }
