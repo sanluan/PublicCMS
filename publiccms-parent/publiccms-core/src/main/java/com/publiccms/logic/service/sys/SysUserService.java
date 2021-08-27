@@ -9,6 +9,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
@@ -108,6 +109,7 @@ public class SysUserService extends BaseService<SysUser> {
      * @param ip
      * @return
      */
+    @Transactional(isolation = Isolation.SERIALIZABLE)
     public SysUser updateLoginStatus(Serializable id, String ip) {
         SysUser entity = getEntity(id);
         if (null != entity) {

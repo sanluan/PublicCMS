@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,8 +23,12 @@ public class CacheTest {
         try {
             CacheEntityFactory bean = new CacheEntityFactory("config/cache.properties");
             CacheEntity<String, String> wordCache = bean.createCacheEntity("word");
-            pool.execute(new TestTask(wordCache));
-        } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+            for (int i = 0; i < 100; i++) {
+                pool.execute(new TestTask(wordCache));
+            }
+            pool.awaitTermination(2, TimeUnit.MINUTES);
+        } catch (IOException | ClassNotFoundException | InstantiationException | InterruptedException
+                | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -50,7 +55,7 @@ class TestTask implements Runnable {
 
     @Override
     public void run() {
-        for (int i = 1; i <= 100000; i++) {
+        for (int i = 0; i <= 100000; i++) {
             List<String> aa = wordCache.put(getRandomString(20), getRandomString(20));
             if (null != aa) {
                 System.out.println(aa.size());

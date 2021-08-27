@@ -107,10 +107,8 @@ public class CmsContent implements java.io.Serializable {
     @GeneratorColumn(title = "子内容数")
     private int childs;
     @GeneratorColumn(title = "分数", order = true)
-    @GenericField(sortable = Sortable.YES)
     private int scores;
     @GeneratorColumn(title = "评论数", order = true)
-    @GenericField(sortable = Sortable.YES)
     private int comments;
     @GeneratorColumn(title = "点击数", order = true)
     @GenericField(sortable = Sortable.YES)
