@@ -220,6 +220,9 @@ public class SourceGenerator {
                 } else {
                     columnList.add(new EntityColumn(field.getName(), shortTypeName, false, field.getName()));
                 }
+                if ("id".equals(field.getName())) {
+                    model.put("idType", shortTypeName);
+                }
             }
         }
         model.put("imports", imports);

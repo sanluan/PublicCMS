@@ -72,7 +72,7 @@ public class ${entityName}${controllerSuffix} {
      */
     @RequestMapping("delete")
     @Csrf
-    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request, 
+    public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, ${idType!'Long'}[] ids, HttpServletRequest request, 
             ModelMap model) {
         if (CommonUtils.notEmpty(ids)) {
             service.delete(ids);
