@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -199,6 +200,8 @@ public class SysSiteAdminController {
         return CommonConstants.TEMPLATE_DONE;
     }
 
+    private static final Pattern PARAMETER_PATTERN = Pattern.compile("^[a-zA-Z][a-zA-Z0-9_\\-\\.]{1,191}$");
+
     /**
      * @author Qicz
      * 
@@ -223,6 +226,15 @@ public class SysSiteAdminController {
             try {
                 String dir = CommonConstants.CMS_FILEPATH + "/script";
                 String[] cmdarray = parameters;
+                if (null != cmdarray) {
+                    int i = 0;
+                    for (String c : cmdarray) {
+                        if (!PARAMETER_PATTERN.matcher(c).matches()) {
+                            cmdarray[i] = "";
+                        }
+                        i++;
+                    }
+                }
                 if (command.toLowerCase().endsWith(".sh")) {
                     String filePath = String.format("%s/sync.sh", dir);
                     File script = new File(filePath);
