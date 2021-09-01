@@ -60,7 +60,7 @@
                 </ul>
          <#if a?has_content>
            <script>
-        <@_sysSiteDatasourceList siteId=site.id>
+        <@_sysSiteDatasourceList>
         <#list list as a>
     $('.tree li a[tname=siteIds][tvalue=${a.id.siteId?js_string}]',navTab.getCurrentPanel()).prop('checked',true);
         </#list>
