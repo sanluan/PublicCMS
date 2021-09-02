@@ -191,8 +191,7 @@ public class IndexController {
                     return requestPath;
                 }
             }
-            CmsPageData data = metadataComponent.getTemplateData(
-                    siteComponent.getWebTemplateFilePath() + siteComponent.getCurrentViewNamePrefix(site, domain) + requestPath);
+            CmsPageData data = metadataComponent.getTemplateData(templatePath);
             model.addAttribute("metadata", metadata.getAsMap(data));
             if (metadata.isNeedBody()) {
                 model.addAttribute("body", body);
