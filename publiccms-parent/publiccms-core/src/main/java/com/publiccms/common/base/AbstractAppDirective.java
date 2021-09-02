@@ -2,12 +2,9 @@ package com.publiccms.common.base;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.util.UrlPathHelper;
 
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.directive.BaseHttpDirective;
@@ -19,7 +16,6 @@ import com.publiccms.entities.sys.SysAppToken;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.entities.sys.SysUserToken;
-import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.sys.SysAppService;
 import com.publiccms.logic.service.sys.SysAppTokenService;
 import com.publiccms.logic.service.sys.SysUserService;
@@ -38,8 +34,7 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
      * @throws Exception
      */
     public SysSite getSite(RenderHandler handler) throws IOException, Exception {
-        HttpServletRequest request = handler.getRequest();
-        return siteComponent.getSite(request.getServerName(), UrlPathHelper.defaultInstance.getLookupPathForRequest(request));
+        return (SysSite) handler.getAttribute(AbstractFreemarkerView.CONTEXT_SITE);
     }
 
     @Override
@@ -113,6 +108,4 @@ public abstract class AbstractAppDirective extends BaseHttpDirective {
     private SysAppTokenService appTokenService;
     @Autowired
     private SysAppService appService;
-    @Autowired
-    private SiteComponent siteComponent;
 }
