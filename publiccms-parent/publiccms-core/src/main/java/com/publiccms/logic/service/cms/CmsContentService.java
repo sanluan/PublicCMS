@@ -707,6 +707,9 @@ public class CmsContentService extends BaseService<CmsContent> {
             entity.setStatus(status);
             entity.setPublishDate(now);
             entity.setCreateDate(now);
+            entity.setClicks(0);
+            entity.setScores(0);
+            entity.setComments(0);
             if (status == STATUS_NORMAL) {
                 entity.setCheckUserId(userId);
                 entity.setCheckDate(now);
@@ -721,7 +724,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (null != attribute) {
                 CmsContentAttribute attributeEntity = new CmsContentAttribute();
                 BeanUtils.copyProperties(attribute, attributeEntity, CmsContentAttributeService.ignoreProperties);
-                attributeEntity.setContentId(content.getId());
+                attributeEntity.setContentId(entity.getId());
                 attributeService.save(attributeEntity);
             }
             @SuppressWarnings("unchecked")
@@ -732,7 +735,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                 for (CmsContentFile file : fileList) {
                     CmsContentFile contentFile = new CmsContentFile();
                     BeanUtils.copyProperties(file, contentFile, CmsContentFileService.ignoreProperties);
-                    contentFile.setContentId(content.getId());
+                    contentFile.setContentId(entity.getId());
                     contentFile.setUserId(userId);
                     resultList.add(contentFile);
                 }
@@ -747,7 +750,7 @@ public class CmsContentService extends BaseService<CmsContent> {
                     CmsContentProduct contentProduct = new CmsContentProduct();
                     BeanUtils.copyProperties(product, contentProduct, CmsContentProductService.ignoreProperties);
                     contentProduct.setSiteId(category.getSiteId());
-                    contentProduct.setContentId(content.getId());
+                    contentProduct.setContentId(entity.getId());
                     contentProduct.setUserId(userId);
                     resultList.add(contentProduct);
                 }
