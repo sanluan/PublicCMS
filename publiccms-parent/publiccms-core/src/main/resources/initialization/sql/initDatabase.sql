@@ -775,6 +775,7 @@ INSERT INTO `sys_module` VALUES ('content', NULL, NULL, 'icon-file-text-alt', NU
 INSERT INTO `sys_module` VALUES ('content_add', 'cmsContent/add', 'cmsContent/addMore,file/doUpload,file/doImport,cmsContent/lookup,cmsContent/lookup_list,cmsContent/save,ueditor,ckeditor/upload,kindeditor/upload,file/doBatchUpload', NULL, 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check,cmsContent/reject', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', '', 'content_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_distribute', 'cmsCategory/lookupBySiteId', 'cmsContent/distribute', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_export', NULL, 'cmsContent/export', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_list', 'cmsContent/list', 'sysUser/lookup', 'icon-book', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_menu', NULL, NULL, 'icon-book', 'content', 1, 0);
@@ -1074,6 +1075,9 @@ INSERT INTO `sys_module_lang` VALUES ('content_check', 'zh', '审核');
 INSERT INTO `sys_module_lang` VALUES ('content_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('content_delete', 'ja', '削除');
 INSERT INTO `sys_module_lang` VALUES ('content_delete', 'zh', '删除');
+INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'en', 'Distribute');
+INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'ja', '分布');
+INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'zh', '分发');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'en', 'Export');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'ja', '輸出');
 INSERT INTO `sys_module_lang` VALUES ('content_export', 'zh', '导出');

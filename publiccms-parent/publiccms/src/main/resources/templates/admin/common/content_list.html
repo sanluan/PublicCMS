@@ -14,7 +14,7 @@
             modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
-<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageHeader">
     <form class="pagerForm" action="common/content_list.html" autocomplete="off" onsubmit="return divSearch(this,'contentBox');" method="post">
         <#include "../include_page/parameters.html"/>
@@ -67,8 +67,7 @@
                 <li><a href="cmsContent/list.html?parentId=${(parent.parentId)!}&categoryId=${categoryId!}" target="navTab" rel="cmsContent/list"><i class="icon-circle-arrow-up icon-large"></i> <@t.page 'button.return'/></a></li>
                 <li class="line">line</li>
             </#if>
-<#if authorizedMap['cmsContent/add']>
-    <#if categoryId?has_content>
+<#if authorizedMap['cmsContent/add'] && categoryId?has_content>
         <@_modelList parentId=(parent.modelId)!''>
             <#list page.list as a>
                 <@t.merge 'tempModelIds' a.id!/>
@@ -95,12 +94,6 @@
                 </ul>
             </li>
         </@_modelList>
-    </#if>
-        <#if authorizedMap['cmsContent/changeModelParameters']>
-            <li>
-                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" mask="true"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
-            </li>
-        </#if>
             <li class="line">line</li>
 </#if>
         <#if authorizedMap['cmsContent/check']>
@@ -202,6 +195,9 @@
                         <#if authorizedMap['cmsContent/add']>
                             <a href="cmsContent/add.html?copyId=${a.id}" class="btnText blue" target="navTab" rel="cmsContent/add" icon="<i class='icon-plus'></i>" title="<@t.page 'content.add'/>"><i class="icon-copy"></i> <@t.page 'button.copy'/></a>
                         </#if>
+                        <#if authorizedMap['cmsCategory/lookupBySiteId']>
+                            <a href="cmsCategory/lookupBySiteId.html?id=${a.id}&modelId=${a.modelId!}&currentCategoryId=${a.categoryId!}" class="btnText blue" target="dialog" mask="true"><i class="icon-asterisk"></i> <@t.page 'button.distribute'/></a>
+                        </#if>
                         <#if authorizedMap['cmsContent/push']>
                             <a href="cmsContent/push.html?contentId=${a.id}" class="btnText blue" target="dialog" mask="true"><@t.page 'button.push'/></a>
                         </#if>
@@ -213,8 +209,8 @@
                             <a href="cmsContent/reject?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText red" title="<@t.page 'confirm.reject'/>" target="ajaxTodo"><i class="icon-exclamation"></i> <@t.page 'button.reject'/></a>
                         </#if>
                     </#if>
-                    <#if authorizedMap['cmsContent/delete']>
-                        <a href="cmsContent/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    <#if authorizedMap['cmsContent/changeModelParameters']>
+                        <a href="cmsContent/changeModelParameters.html?id=${a.id}&parentId=${(modelMap[a.modelId].parentId?url)!}" class="btnText red" target="dialog" mask="true"><i class="icon-list-alt"></i> <@t.page 'content.change_model'/></a>
                     </#if>
                 </td>
             </tr>

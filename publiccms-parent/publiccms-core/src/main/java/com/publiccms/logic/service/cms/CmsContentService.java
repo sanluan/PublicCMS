@@ -16,6 +16,7 @@ import java.util.concurrent.CompletionStage;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
@@ -58,7 +59,8 @@ public class CmsContentService extends BaseService<CmsContent> {
             Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE,
             Config.INPUTTYPE_TAGTYPE };
 
-    private static String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "editor" };
+    public static final String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "editor" };
+    public static final String[] ignoreProperties = new String[] { "id", "siteId" };
     /**
      * 
      */
@@ -694,6 +696,66 @@ public class CmsContentService extends BaseService<CmsContent> {
             categoryIds = new Integer[] { categoryId };
         }
         return categoryIds;
+    }
+
+    public CmsContent copy(CmsContent content, CmsCategory category, int status, Long userId) {
+        if (null != content && null != category) {
+            Date now = CommonUtils.getDate();
+            CmsContent entity = new CmsContent();
+            BeanUtils.copyProperties(content, entity, ignoreProperties);
+            entity.setSiteId(category.getSiteId());
+            entity.setStatus(status);
+            entity.setPublishDate(now);
+            entity.setCreateDate(now);
+            if (status == STATUS_NORMAL) {
+                entity.setCheckUserId(userId);
+                entity.setCheckDate(now);
+            } else {
+                entity.setCheckUserId(null);
+                entity.setCheckDate(null);
+            }
+            entity.setUserId(userId);
+            entity.setCategoryId(category.getId());
+            save(entity);
+            CmsContentAttribute attribute = attributeService.getEntity(content.getId());
+            if (null != attribute) {
+                CmsContentAttribute attributeEntity = new CmsContentAttribute();
+                BeanUtils.copyProperties(attribute, attributeEntity, CmsContentAttributeService.ignoreProperties);
+                attributeEntity.setContentId(content.getId());
+                attributeService.save(attributeEntity);
+            }
+            @SuppressWarnings("unchecked")
+            List<CmsContentFile> fileList = (List<CmsContentFile>) contentFileService
+                    .getPage(content.getId(), null, null, null, null, null, null).getList();
+            if (CommonUtils.notEmpty(fileList)) {
+                List<CmsContentFile> resultList = new ArrayList<>();
+                for (CmsContentFile file : fileList) {
+                    CmsContentFile contentFile = new CmsContentFile();
+                    BeanUtils.copyProperties(file, contentFile, CmsContentFileService.ignoreProperties);
+                    contentFile.setContentId(content.getId());
+                    contentFile.setUserId(userId);
+                    resultList.add(contentFile);
+                }
+                contentFileService.save(resultList);
+            }
+            @SuppressWarnings("unchecked")
+            List<CmsContentProduct> productList = (List<CmsContentProduct>) contentProductService
+                    .getPage(entity.getSiteId(), entity.getId(), null, null, null, null, null, null, null, null).getList();
+            if (CommonUtils.notEmpty(productList)) {
+                List<CmsContentProduct> resultList = new ArrayList<>();
+                for (CmsContentProduct product : productList) {
+                    CmsContentProduct contentProduct = new CmsContentProduct();
+                    BeanUtils.copyProperties(product, contentProduct, CmsContentProductService.ignoreProperties);
+                    contentProduct.setSiteId(category.getSiteId());
+                    contentProduct.setContentId(content.getId());
+                    contentProduct.setUserId(userId);
+                    resultList.add(contentProduct);
+                }
+                contentProductService.save(resultList);
+            }
+            return entity;
+        }
+        return null;
     }
 
     /**

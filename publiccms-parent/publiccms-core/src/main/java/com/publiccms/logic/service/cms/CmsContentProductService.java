@@ -27,7 +27,7 @@ import com.publiccms.logic.dao.cms.CmsContentProductDao;
 @Transactional
 public class CmsContentProductService extends BaseService<CmsContentProduct> {
 
-    private String[] ignoreProperties = new String[] { "id", "userId", "siteId", "contentId" };
+    public static final String[] ignoreProperties = new String[] { "id", "userId", "siteId", "contentId" };
 
     /**
      * @param siteId

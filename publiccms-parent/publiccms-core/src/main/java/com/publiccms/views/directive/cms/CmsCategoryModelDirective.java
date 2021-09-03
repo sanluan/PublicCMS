@@ -27,8 +27,8 @@ public class CmsCategoryModelDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Integer categoryId = handler.getInteger("categoryId");
+        String modelId = handler.getString("modelId");
         if (null != categoryId) {
-            String modelId = handler.getString("modelId");
             if (CommonUtils.notEmpty(modelId)) {
                 CmsCategoryModelId id = new CmsCategoryModelId(categoryId, modelId);
                 CmsCategoryModel entity = service.getEntity(id);
@@ -43,10 +43,22 @@ public class CmsCategoryModelDirective extends AbstractTemplateDirective {
                         entityIds[i] = new CmsCategoryModelId(categoryId, modelIds[i]);
                     }
                     List<CmsCategoryModel> entityList = service.getEntitys(entityIds);
-                    Map<String, CmsCategoryModel> map = CommonUtils.listToMap(entityList, k -> k.getId().getModelId(),
-                            null, null);
+                    Map<String, CmsCategoryModel> map = CommonUtils.listToMap(entityList, k -> k.getId().getModelId(), null,
+                            null);
                     handler.put("map", map).render();
                 }
+            }
+        } else if (CommonUtils.notEmpty(modelId)) {
+            Integer[] categoryIds = handler.getIntegerArray("categoryIds");
+            if (CommonUtils.notEmpty(categoryIds)) {
+                CmsCategoryModelId[] entityIds = new CmsCategoryModelId[categoryIds.length];
+                for (int i = 0; i < categoryIds.length; i++) {
+                    entityIds[i] = new CmsCategoryModelId(categoryIds[i], modelId);
+                }
+                List<CmsCategoryModel> entityList = service.getEntitys(entityIds);
+                Map<String, CmsCategoryModel> map = CommonUtils.listToMap(entityList,
+                        k -> String.valueOf(k.getId().getCategoryId()), null, null);
+                handler.put("map", map).render();
             }
         }
     }

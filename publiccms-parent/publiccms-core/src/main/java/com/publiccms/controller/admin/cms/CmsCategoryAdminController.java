@@ -35,6 +35,7 @@ import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.model.CmsCategoryParameters;
+import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
 import freemarker.template.TemplateException;
 
@@ -213,6 +214,22 @@ public class CmsCategoryAdminController {
         if (null != site && null != entity && site.getId() == entity.getSiteId()) {
             templateComponent.createCategoryFile(site, entity, null, max);
         }
+    }
+
+    /**
+     * @param siteId
+     * @param parentId
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("lookupBySiteId")
+    public String lookupBySiteId(short siteId, Integer parentId, ModelMap model) {
+        CmsCategoryQuery query = new CmsCategoryQuery();
+        query.setSiteId(siteId);
+        query.setParentId(parentId);
+        query.setDisabled(false);
+        model.addAttribute("page", service.getPage(query, 1, 500));
+        return "cmsCategory/lookupBySiteId";
     }
 
     /**

@@ -19,7 +19,7 @@ import com.publiccms.common.base.BaseService;
 @Transactional
 public class CmsContentAttributeService extends BaseService<CmsContentAttribute> {
     
-    private String[] ignoreProperties = new String[] { "contentId" };
+    public static final String[] ignoreProperties = new String[] { "contentId" };
 
     /**
      * @param ids

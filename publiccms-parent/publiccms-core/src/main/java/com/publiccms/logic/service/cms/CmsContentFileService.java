@@ -24,7 +24,7 @@ import com.publiccms.logic.dao.cms.CmsContentFileDao;
 @Transactional
 public class CmsContentFileService extends BaseService<CmsContentFile> {
 
-    private String[] ignoreProperties = new String[] { "id", "userId", "contentId" };
+    public static final String[] ignoreProperties = new String[] { "id", "userId", "contentId" };
 
     /**
      * @param contentId

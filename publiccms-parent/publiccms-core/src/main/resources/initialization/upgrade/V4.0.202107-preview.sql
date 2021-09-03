@@ -71,3 +71,8 @@ ALTER TABLE `cms_comment`
   ADD COLUMN `scores` int(11) NOT NULL COMMENT '分数' AFTER `replies`,
   DROP INDEX `cms_comment_update_date`,
   ADD INDEX `cms_comment_update_date` (`update_date`,`create_date`,`replies`,`scores`);
+-- 2021-09-03 --
+INSERT INTO `sys_module` VALUES ('content_distribute', 'cmsCategory/lookupBySiteId', 'cmsContent/distribute', '', 'content_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'en', 'Distribute');
+INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'ja', '分布');
+INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'zh', '分发');

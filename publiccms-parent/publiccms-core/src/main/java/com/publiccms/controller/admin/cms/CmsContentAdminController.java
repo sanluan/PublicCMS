@@ -51,6 +51,8 @@ import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptCategoryId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -63,6 +65,7 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
+import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
 import com.publiccms.views.pojo.model.CmsContentParameters;
@@ -100,6 +103,10 @@ public class CmsContentAdminController {
     protected LogOperateService logOperateService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    protected ConfigComponent configComponent;
+    @Autowired
+    private SysSiteService siteService;
 
     public static final String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "sort",
             "createDate", "updateDate", "clicks", "comments", "scores", "childs", "checkUserId", "disabled" };
@@ -756,6 +763,45 @@ public class CmsContentAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param id
+     * @param categoryIds
+     * @param request
+     * @return view name
+     */
+    @RequestMapping("distribute")
+    @Csrf
+    public String distribute(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long id, Integer[] categoryIds,
+            HttpServletRequest request) {
+        if (CommonUtils.notEmpty(categoryIds)) {
+            CmsContent entity = service.getEntity(id);
+            List<CmsCategory> categoryList = categoryService.getEntitys(categoryIds);
+            if (null != categoryList) {
+                for (CmsCategory category : categoryList) {
+                    Map<String, String> config = configComponent.getConfigData(category.getSiteId(),
+                            SiteConfigComponent.CONFIG_CODE_SITE);
+                    int status = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_STATUS),
+                            CmsContentService.STATUS_PEND);
+                    long userId = ConfigComponent.getLong(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_USER), 0);
+                    if (0 != userId) {
+                        CmsContent content = service.copy(entity, category, status, userId);
+                        if (null != content) {
+                            templateComponent.createContentFile(site, service.getEntity(content.getId()), category, null);
+                            templateComponent.createCategoryFile(siteService.getEntity(category.getSiteId()), category, null,
+                                    null);
+                        }
+                    }
+                }
+            }
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                    "copy.content", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    StringUtils.join(categoryIds, CommonConstants.COMMA)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }

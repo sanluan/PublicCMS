@@ -164,6 +164,18 @@ public class ConfigComponent implements SiteCache {
         }
     }
 
+    public static long getLong(String value, long defaultValue) {
+        if (CommonUtils.empty(value)) {
+            return defaultValue;
+        } else {
+            try {
+                return Long.parseLong(value);
+            } catch (NumberFormatException e) {
+                return defaultValue;
+            }
+        }
+    }
+
     public static boolean getBoolean(String value, boolean defaultValue) {
         if (CommonUtils.empty(value)) {
             return defaultValue;

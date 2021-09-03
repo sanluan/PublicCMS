@@ -1,0 +1,46 @@
+<#if siteId?has_content || parentId?has_content>
+<ul>
+    <#list page.list as a>
+        <@t.merge 'categoryIds' a.id!/>
+    </#list>
+    <@_categoryModel modelId=modelId categoryIds=t.categoryIds><#assign categoryModelMap=map/></@_categoryModel>
+    <#list page.list as a>
+        <li<#if a.childIds?has_content> _src="cmsCategory/lookupBySiteId?siteId=${siteId!}&modelId=${modelId!}&currentCategoryId=${currentCategoryId!}&parentId=${a.id}&field=${field!'categoryId'}"</#if>>
+            <a<#if (!currentCategoryId?has_content||a.id?string!=currentCategoryId)&&categoryModelMap?has_content&&categoryModelMap[a.id?string]?has_content> tname="categoryIds" tvalue="${a.id}"</#if> class="exclude-translate">${a.name!}</a>
+        </li>
+    <#else>
+        <li><a><@t.page 'empty_directory'/></a></li>
+    </#list>
+</ul>
+<#else>
+<form action="cmsContent/distribute?callbackType=closeCurrent" method="post" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
+    <input type="hidden" name="id" value="${id!}"/>
+    <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
+    <div class="pageFormContent" layoutH>
+        <ul class="tree treeFolder treeCheck excludeParent">
+            <#if site.parentId?has_content>
+                <li _src="cmsCategory/lookupBySiteId?siteId=${site.parentId}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
+                    <a href="javascript:;" class="exclude-translate"><@_sysSite id=site.parentId>${object.name!}</@_sysSite></a>
+                </li>
+            <#else>
+                <li _src="cmsCategory/lookupBySiteId?siteId=${site.id}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
+                    <a href="javascript:;" class="exclude-translate">${site.name!}[<@t.page 'site.current_site'/>]</a>
+                </li>
+            </#if>
+            <@_sysSiteList parentId=site.parentId!site.id name=name pageIndex=pageNum pageSize=numPerPage>
+                <#list page.list as a>
+                    <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
+                        <a href="javascript:;" class="exclude-translate">${a.name!}<#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></a>
+                    </li>
+                </#list>
+            </@_sysSiteList>
+        </ul>
+    </div>
+    <div class="formBar">
+        <ul>
+            <li><button type="submit" class="buttonActive"><@t.page 'button.distribute'/></button></li>
+            <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+        </ul>
+    </div>
+</form>
+</#if>

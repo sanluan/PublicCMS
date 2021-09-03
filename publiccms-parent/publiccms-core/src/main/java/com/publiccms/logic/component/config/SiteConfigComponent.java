@@ -55,6 +55,14 @@ public class SiteConfigComponent implements Config {
      */
     public static final String CONFIG_STATIC_AFTER_SCORE = "static_after_score";
     /**
+     * 
+     */
+    public static final String CONFIG_DEFAULT_CONTENT_STATUS = "default_content_status";
+    /**
+     * 
+     */
+    public static final String CONFIG_DEFAULT_CONTENT_USER = "default_content_user";
+    /**
      * default expiry minutes
      */
     public static final int DEFAULT_EXPIRY_MINUTES = 30 * 24 * 60;
@@ -122,6 +130,11 @@ public class SiteConfigComponent implements Config {
                         String.valueOf(DEFAULT_EXPIRY_MINUTES)));
         extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false, CONFIG_COMMENT_NEED_CHECK,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), "true"));
+        extendFieldList
+                .add(new SysExtendField(CONFIG_DEFAULT_CONTENT_STATUS, INPUTTYPE_NUMBER, true, CONFIG_DEFAULT_CONTENT_STATUS,
+                        getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_STATUS), "1"));
+        extendFieldList.add(new SysExtendField(CONFIG_DEFAULT_CONTENT_USER, INPUTTYPE_USER, CONFIG_DEFAULT_CONTENT_USER,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_DEFAULT_CONTENT_USER)));
         if (site.isUseStatic()) {
             extendFieldList.add(new SysExtendField(CONFIG_STATIC_AFTER_COMMENT, INPUTTYPE_BOOLEAN, false,
                     CONFIG_STATIC_AFTER_COMMENT,
