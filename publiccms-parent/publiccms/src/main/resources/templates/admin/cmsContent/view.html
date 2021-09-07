@@ -93,7 +93,7 @@
                 <dd class="exclude-translate">
                     <@_tag ids=a.tagIds>
                         <#list map as j,tag>
-                            <#if tag.typeId=k>
+                            <#if tag.typeId?string=k>
                                 ${tag.name},
                             </#if>
                         </#list>
