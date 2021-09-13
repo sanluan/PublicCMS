@@ -139,7 +139,7 @@ header .nav .selected ul{display:block;}
 .pagination li.disabled span, .grid .pagination li.disabled a{cursor:default;}
 .pagination li.disabled span span{color:#666;}
 .pagination li.disabled .last{margin-right:5px;}
-.pagination li.jumpto .textInput{float:left;width:30px;padding:1px;margin-top:4px;font-size:12px;border-color:#acaeaf;}
+.pagination li.jumpto .textInput{float:left;width:30px;padding:1px;margin-top:2px;font-size:12px;border-color:#acaeaf;}
 .pagination li.jumpto .goto{width:16px;line-height:30px;text-align:center;}
 
 /* Grid */

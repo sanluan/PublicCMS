@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Sat Jul 24 2021 21:58:06 GMT+0800 (中国标准时间)
+ * build: Mon Sep 13 2021 15:03:18 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -14881,7 +14881,7 @@ UE.plugins['paste'] = function () {
             if ((browser.ie || browser.opera) && ((!e.ctrlKey && !e.metaKey) || e.keyCode != '86')) {
                 return;
             }
-            var clipboardData = event.clipboardData;
+            var clipboardData = e.clipboardData;
             var rtfContent;
             if(0 < clipboardData.items.length && -1 < clipboardData.types.indexOf('text/rtf') ) {
                 rtfContent = clipboardData.getData('text/rtf');
