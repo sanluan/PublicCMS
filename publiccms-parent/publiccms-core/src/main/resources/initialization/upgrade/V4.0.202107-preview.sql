@@ -76,3 +76,7 @@ INSERT INTO `sys_module` VALUES ('content_distribute', 'cmsCategory/lookupBySite
 INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'en', 'Distribute');
 INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'ja', '分布');
 INSERT INTO `sys_module_lang` VALUES ('content_distribute', 'zh', '分发');
+-- 2021-09-20 --
+UPDATE `sys_module_lang` SET `value` =  'Product management' WHERE `lang` ='en' and module_id = 'product_list';
+UPDATE `sys_module_lang` SET `value` =  '製品管理' WHERE `lang` ='ja' and module_id = 'product_list';
+UPDATE `sys_module_lang` SET `value` =  '产品管理' WHERE `lang` ='zh' and module_id = 'product_list';
