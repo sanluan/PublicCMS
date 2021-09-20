@@ -1390,9 +1390,9 @@ INSERT INTO `sys_module_lang` VALUES ('place_template_webfile', 'zh', '网站文
 INSERT INTO `sys_module_lang` VALUES ('place_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('place_view', 'ja', '推奨ビットデータを見る');
 INSERT INTO `sys_module_lang` VALUES ('place_view', 'zh', '查看推荐位数据');
-INSERT INTO `sys_module_lang` VALUES ('product_list', 'en', 'Product');
-INSERT INTO `sys_module_lang` VALUES ('product_list', 'ja', '製品');
-INSERT INTO `sys_module_lang` VALUES ('product_list', 'zh', '产品');
+INSERT INTO `sys_module_lang` VALUES ('product_list', 'en', 'Product management');
+INSERT INTO `sys_module_lang` VALUES ('product_list', 'ja', '製品管理');
+INSERT INTO `sys_module_lang` VALUES ('product_list', 'zh', '产品管理');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'en', 'Edit');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'ja', '変更');
 INSERT INTO `sys_module_lang` VALUES ('product_add', 'zh', '修改');
