@@ -79,14 +79,14 @@ public class ScoreController {
             CmsUserScore entity = service.getEntity(id);
             if (score && null == entity || !score && null != entity) {
                 Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
-                boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE),
-                        false);
+                boolean needStatic = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_STATIC_AFTER_SCORE), false);
                 if ("content".equals(itemType)) {
                     CmsContent content = contentService.updateScores(site.getId(), itemId, score ? 1 : -1);
                     if (null != content) {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
+                            entity.setScores(1);
                             service.save(entity);
                         } else {
                             service.delete(id);
@@ -102,6 +102,7 @@ public class ScoreController {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
+                            entity.setScores(1);
                             service.save(entity);
                         } else {
                             service.delete(id);

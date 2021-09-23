@@ -440,6 +440,9 @@ public class CmsContentDao extends BaseDao<CmsContent> {
         if (CommonUtils.notEmpty(entity.getTitle()) && entity.getTitle().length() > 255) {
             entity.setTitle(entity.getTitle().substring(0, 255));
         }
+        if (CommonUtils.notEmpty(entity.getDescription()) && entity.getDescription().length() > 300) {
+            entity.setDescription(entity.getDescription().substring(0, 300));
+        }
         return entity;
     }
 

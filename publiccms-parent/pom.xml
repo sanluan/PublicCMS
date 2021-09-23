@@ -22,10 +22,10 @@
         <version.publiccms>V4.0.202107.a</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.3.9</version.spring>
+        <version.spring>5.3.10</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.5.3</version.springBoot>
+        <version.springBoot>2.5.4</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
         <version.aspectj>1.9.7</version.aspectj>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
