@@ -70,6 +70,7 @@ public class CommentController {
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, CmsComment entity, String returnUrl,
             HttpServletRequest request, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        CmsContent content = null;
         if (CommonUtils.notEmpty(entity.getText())) {
             Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             boolean needCheck = ConfigComponent.getBoolean(config.get(SiteConfigComponent.CONFIG_COMMENT_NEED_CHECK), true);
@@ -93,6 +94,7 @@ public class CommentController {
                 entity.setReplies(0);
                 if (!needCheck) {
                     entity.setStatus(CmsCommentService.STATUS_NORMAL);
+                    content = contentService.updateComments(site.getId(), entity.getContentId(), 1);
                 }
                 if (null != entity.getReplyId()) {
                     CmsComment reply = service.getEntity(entity.getReplyId());
@@ -110,7 +112,9 @@ public class CommentController {
                         RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
             }
             if (needStatic && CmsCommentService.STATUS_NORMAL == entity.getStatus()) {
-                CmsContent content = contentService.getEntity(entity.getContentId());
+                if (null == content) {
+                    content = contentService.getEntity(entity.getContentId());
+                }
                 if (null != content && !content.isDisabled()) {
                     templateComponent.createContentFile(site, content, null, null);
                 }
