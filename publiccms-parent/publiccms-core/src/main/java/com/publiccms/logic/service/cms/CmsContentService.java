@@ -38,6 +38,7 @@ import com.publiccms.entities.cms.CmsContentAttribute;
 import com.publiccms.entities.cms.CmsContentFile;
 import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysExtendField;
+import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.dao.cms.CmsContentDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
@@ -698,7 +699,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         return categoryIds;
     }
 
-    public CmsContent copy(CmsContent content, CmsCategory category, int status, Long userId) {
+    public CmsContent copy(SysSite site, CmsContent content, CmsCategory category, int status, Long userId) {
         if (null != content && null != category) {
             Date now = CommonUtils.getDate();
             CmsContent entity = new CmsContent();
@@ -710,6 +711,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             entity.setClicks(0);
             entity.setScores(0);
             entity.setComments(0);
+            entity.setTagIds(null);
             if (status == STATUS_NORMAL) {
                 entity.setCheckUserId(userId);
                 entity.setCheckDate(now);
@@ -725,6 +727,8 @@ public class CmsContentService extends BaseService<CmsContent> {
                 CmsContentAttribute attributeEntity = new CmsContentAttribute();
                 BeanUtils.copyProperties(attribute, attributeEntity, CmsContentAttributeService.ignoreProperties);
                 attributeEntity.setContentId(entity.getId());
+                attributeEntity.setSource(site.getName());
+                attributeEntity.setSourceUrl(content.getUrl());
                 attributeService.save(attributeEntity);
             }
             @SuppressWarnings("unchecked")
