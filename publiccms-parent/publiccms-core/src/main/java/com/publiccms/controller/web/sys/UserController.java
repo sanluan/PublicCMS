@@ -119,7 +119,7 @@ public class UserController {
                 service.updateWeekPassword(user.getId(), false);
             }
             model.addAttribute(CommonConstants.MESSAGE, CommonConstants.SUCCESS);
-            logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "changepassword",
+            logOperateService.save(new LogOperate(site.getId(), user.getId() , user.getDeptId(), LogLoginService.CHANNEL_WEB, "changepassword",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }

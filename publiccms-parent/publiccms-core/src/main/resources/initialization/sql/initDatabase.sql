@@ -221,17 +221,17 @@ CREATE TABLE `cms_survey` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `user_id` bigint(20) NOT NULL COMMENT '用户',
-    `survey_type` varchar(20) NOT NULL COMMENT '问卷类型',
-  `title` varchar(255) NOT NULL COMMENT '标题',
+  `survey_type` varchar(20) NOT NULL COMMENT '问卷类型',
+  `title` varchar(100) NOT NULL COMMENT '标题',
   `description` varchar(300) NOT NULL COMMENT '描述',
   `votes` int(11) NOT NULL COMMENT '投票数',
   `start_date` datetime NOT NULL COMMENT '开始日期',    
   `end_date` datetime DEFAULT NULL COMMENT '结束日期',
-  `create_time` datetime NOT NULL COMMENT '创建日期',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `cms_survey_site_id` (`site_id`,`survey_type`,`start_date`,`disabled`,`create_time`),
-    KEY `cms_survey_user_id` (`user_id`,`votes`)
+  PRIMARY KEY (`id`),
+  KEY `cms_survey_site_id` (`site_id`,`survey_type`,`start_date`,`disabled`,`create_date`),
+  KEY `cms_survey_user_id` (`user_id`,`votes`)
 ) COMMENT='问卷调查';
 
 
@@ -242,15 +242,16 @@ DROP TABLE IF EXISTS `cms_survey_question`;
 CREATE TABLE `cms_survey_question` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `survey_id` bigint(20) NOT NULL COMMENT '问卷',
-  `title` varchar(255) NOT NULL COMMENT '标题',
+  `title` varchar(100) NOT NULL COMMENT '标题',
   `score` int(11) DEFAULT NULL COMMENT '分数',
-  `input_type` varchar(20) NOT NULL COMMENT '表单类型',
-    `answer` varchar(255) DEFAULT NULL COMMENT '答案',
+  `question_type` varchar(20) NOT NULL COMMENT '问题类型',
+  `cover` varchar(255) NOT NULL COMMENT '图片',
+  `answer` varchar(255) DEFAULT NULL COMMENT '答案',
   `sort` int(11) NOT NULL COMMENT '排序',
-  PRIMARY KEY (`id`) USING BTREE,
+  PRIMARY KEY (`id`),
   KEY `cms_survey_question_survey_id` (`survey_id`,`sort`),
-    KEY `cms_survey_question_input_type` (`survey_id`,`input_type`,`sort`)
-) COMMENT='问题';
+  KEY `cms_survey_question_question_type` (`survey_id`,`question_type`,`sort`)
+) COMMENT='问卷调查问题';
 
 -- ----------------------------
 -- Table structure for cms_survey_question_item
@@ -260,13 +261,12 @@ CREATE TABLE `cms_survey_question_item` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `question_id` bigint(20) NOT NULL COMMENT '问题',
   `votes` int(11) NOT NULL COMMENT '投票数',
-  `title` varchar(255) NOT NULL COMMENT '标题',
-    `cover` varchar(255) NOT NULL COMMENT '图片',
-    `sort` int(11) NOT NULL COMMENT '排序',
-  PRIMARY KEY (`id`) USING BTREE,
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `sort` int(11) NOT NULL COMMENT '排序',
+  PRIMARY KEY (`id`),
   KEY `cms_survey_question_item_question_id` (`question_id`,`sort`),
-    KEY `cms_survey_question_item_votes` (`question_id`,`votes`)
-) COMMENT='选项';
+  KEY `cms_survey_question_item_votes` (`question_id`,`votes`)
+) COMMENT='问卷调查选项';
 -- ----------------------------
 -- Table structure for cms_tag
 -- ----------------------------
@@ -306,8 +306,8 @@ CREATE TABLE `cms_user_score`  (
   `item_id` bigint(20) NOT NULL COMMENT '项目',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`, `item_type`, `item_id`),
-  INDEX `cms_user_score_item_type`(`item_type`, `item_id`, `create_date`),
-  INDEX `cms_user_score_user_id`(`user_id`, `create_date`)
+  KEY `cms_user_score_item_type`(`item_type`, `item_id`, `create_date`),
+  KEY `cms_user_score_user_id`(`user_id`, `create_date`)
 ) COMMENT = '用户评分表';
 
 -- ----------------------------
@@ -317,8 +317,8 @@ DROP TABLE IF EXISTS `cms_user_survey`;
 CREATE TABLE `cms_user_survey` (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `survey_id` bigint(20) NOT NULL COMMENT '问卷',
-    `site_id` smallint(6) NOT NULL COMMENT '站点',
-    `score` int(11) DEFAULT NULL COMMENT '分数',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `score` int(11) DEFAULT NULL COMMENT '分数',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`,`survey_id`),
   KEY `cms_user_survey_site_id` (`site_id`,`score`,`create_date`)
@@ -331,10 +331,10 @@ DROP TABLE IF EXISTS `cms_user_survey_question`;
 CREATE TABLE `cms_user_survey_question` (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `question_id` bigint(20) NOT NULL COMMENT '问题',
-    `site_id` smallint(6) NOT NULL COMMENT '站点',
-    `survey_id` bigint(20) NOT NULL COMMENT '问卷',
-    `answer` varchar(255) DEFAULT NULL COMMENT '答案',
-    `score` int(11) DEFAULT NULL COMMENT '分数',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `survey_id` bigint(20) NOT NULL COMMENT '问卷',
+  `answer` varchar(255) DEFAULT NULL COMMENT '答案',
+  `score` int(11) DEFAULT NULL COMMENT '分数',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`,`question_id`),
   KEY `cms_user_survey_site_id` (`site_id`,`survey_id` ,`score`,`create_date`)
@@ -351,7 +351,7 @@ CREATE TABLE `cms_user_vote`  (
   `ip` varchar(130) NOT NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`, `vote_id`),
-  INDEX `cms_user_vote_vote_id`(`vote_id`, `ip`, `create_date`)
+  KEY `cms_user_vote_vote_id`(`vote_id`, `ip`, `create_date`)
 ) COMMENT='投票用户';
 
 -- ----------------------------
@@ -369,7 +369,7 @@ CREATE TABLE `cms_vote`  (
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '已禁用',
   PRIMARY KEY (`id`),
-  INDEX `cms_vote_site_id`(`site_id`, `start_date`, `disabled`)
+  KEY `cms_vote_site_id`(`site_id`, `start_date`, `disabled`)
 )  COMMENT='投票';
 
 -- ----------------------------
@@ -383,7 +383,7 @@ CREATE TABLE `cms_vote_item`  (
   `scores` int(11) NOT NULL COMMENT '票数',
   `sort` int(11) NOT NULL COMMENT '顺序',
   PRIMARY KEY (`id`),
-  INDEX `cms_vote_item_vote_id`(`vote_id`, `scores`, `sort`)
+  KEY `cms_vote_item_vote_id`(`vote_id`, `scores`, `sort`)
 )  COMMENT='投票选型';
 
 -- ----------------------------
@@ -436,13 +436,14 @@ CREATE TABLE `log_operate` (
   `id` bigint(20) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `user_id` bigint(20) default NULL COMMENT '用户',
+  `dept_id` int(11) default NULL COMMENT '部门',
   `channel` varchar(50) NOT NULL COMMENT '操作渠道',
   `operate` varchar(40) NOT NULL COMMENT '操作',
   `ip` varchar(130) default NULL COMMENT 'IP',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   `content` text NOT NULL COMMENT '内容',
   PRIMARY KEY  (`id`),
-  KEY `log_operate_user_id` (`user_id`),
+  KEY `log_operate_user_id` (`user_id`,`dept_id`),
   KEY `log_operate_operate` (`operate`),
   KEY `log_operate_create_date` (`create_date`),
   KEY `log_operate_ip` (`ip`),
@@ -867,7 +868,7 @@ INSERT INTO `sys_module` VALUES ('content_move', 'cmsContent/moveParameters', 'c
 INSERT INTO `sys_module` VALUES ('content_publish', NULL, 'cmsContent/publish', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_push', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete,cmsPlace/push', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_delete', NULL, 'cmsContent/realDelete', NULL, 'content_recycle_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', 'sysUser/lookup', 'icon-trash', 'content_menu', 1, 7);
+INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', 'sysUser/lookup', 'icon-trash', 'content_menu', 1, 9);
 INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/recycle', NULL, 'content_recycle_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_category', 'cmsCategory/lookupByModelId', NULL, NULL, 'content_add', 0, 0);
@@ -974,6 +975,12 @@ INSERT INTO `sys_module` VALUES ('report_visit', 'report/visit', NULL, 'icon-bol
 INSERT INTO `sys_module` VALUES ('role_add', 'sysRole/add', 'sysRole/save', NULL, 'role_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('role_delete', NULL, 'sysRole/delete', NULL, 'role_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('role_list', 'sysRole/list', NULL, 'icon-user-md', 'user_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('survey_add', 'cmsSurvey/add', 'cmsSurvey/save', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_delete', NULL, 'cmsSurvey/delete', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_list', 'cmsSurvey/list', NULL, 'icon-list-ul', 'content_menu', 1, 6);
+INSERT INTO `sys_module` VALUES ('survey_question_list', 'cmsSurveyQuestion/list', 'cmsSurveyQuestion/add,cmsSurveyQuestion/save,cmsSurveyQuestion/delete', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_user_list', 'cmsUserSurvey/list', 'cmsUserSurvey/add,cmsUserSurvey/save', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_view', 'cmsSurvey/view', NULL, NULL, 'survey_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('system_menu', NULL, NULL, 'icon-cogs', 'maintenance', 1, 2);
 INSERT INTO `sys_module` VALUES ('tag_add', 'cmsTag/add', 'cmsTagType/lookup,cmsTag/save', NULL, 'tag_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('tag_delete', NULL, 'cmsTag/delete', NULL, 'tag_list', 0, 0);
@@ -1019,7 +1026,7 @@ INSERT INTO `sys_module` VALUES ('webfile_list', 'cmsWebFile/list', NULL, 'icon-
 INSERT INTO `sys_module` VALUES ('webfile_unzip', 'cmsWebFile/unzipParameters', 'cmsWebFile/unzip', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_upload', 'cmsWebFile/upload', 'cmsWebFile/doUpload,cmsWebFile/check', NULL, 'webfile_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('webfile_zip', NULL, 'cmsWebFile/zip', NULL, 'webfile_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, 'icon-search', 'content_menu', 1, 6);
+INSERT INTO `sys_module` VALUES ('word_list', 'cmsWord/list', NULL, 'icon-search', 'content_menu', 1, 8);
 
 -- ----------------------------
 -- Table structure for sys_module_lang
@@ -1030,7 +1037,7 @@ CREATE TABLE `sys_module_lang`  (
   `lang` varchar(20) NOT NULL COMMENT '语言',
   `value` varchar(100) NULL DEFAULT NULL COMMENT '值',
   PRIMARY KEY (`module_id`, `lang`),
-  INDEX `sys_module_lang_lang`(`lang`)
+  KEY `sys_module_lang_lang`(`lang`)
 ) COMMENT = '模块语言';
 
 -- ----------------------------
@@ -1504,6 +1511,24 @@ INSERT INTO `sys_module_lang` VALUES ('role_delete', 'zh', '删除');
 INSERT INTO `sys_module_lang` VALUES ('role_list', 'en', 'Role management');
 INSERT INTO `sys_module_lang` VALUES ('role_list', 'ja', '役割管理');
 INSERT INTO `sys_module_lang` VALUES ('role_list', 'zh', '角色管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_list', 'en', 'Survey management');
+INSERT INTO `sys_module_lang` VALUES ('survey_list', 'ja', 'アンケート管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_list', 'zh', '问卷调查管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_add', 'zh', '增加/修改');
+INSERT INTO `sys_module_lang` VALUES ('survey_add', 'en', 'Add/edit');
+INSERT INTO `sys_module_lang` VALUES ('survey_add', 'ja', '追加/変更');
+INSERT INTO `sys_module_lang` VALUES ('survey_delete', 'zh', '删除');
+INSERT INTO `sys_module_lang` VALUES ('survey_delete', 'en', 'Delete');
+INSERT INTO `sys_module_lang` VALUES ('survey_delete', 'ja', '削除');
+INSERT INTO `sys_module_lang` VALUES ('survey_question_list', 'zh', '问题管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_question_list', 'en', 'Question management');
+INSERT INTO `sys_module_lang` VALUES ('survey_question_list', 'ja', '質問管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_user_list', 'zh', '答案管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_user_list', 'en', 'Answer management');
+INSERT INTO `sys_module_lang` VALUES ('survey_user_list', 'ja', '回答管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_view', 'zh', '查看');
+INSERT INTO `sys_module_lang` VALUES ('survey_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('survey_view', 'ja', '見る');
 INSERT INTO `sys_module_lang` VALUES ('system_menu', 'en', 'System maintenance');
 INSERT INTO `sys_module_lang` VALUES ('system_menu', 'ja', 'システムメンテナンス');
 INSERT INTO `sys_module_lang` VALUES ('system_menu', 'zh', '系统维护');

@@ -82,9 +82,9 @@ public class CommentController {
                         && (oldEntity.getUserId() == user.getId() || user.isSuperuserAccess())) {
                     entity.setUpdateDate(CommonUtils.getDate());
                     entity = service.update(entity.getId(), entity, ignoreProperties);
-                    logOperateService
-                            .save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.cmsComment",
-                                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(),
+                            LogLoginService.CHANNEL_WEB, "update.cmsComment", RequestUtils.getIpAddress(request),
+                            CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
             } else {
                 Date now = CommonUtils.getDate();
@@ -108,8 +108,8 @@ public class CommentController {
                     }
                 }
                 service.save(entity);
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "save.cmsComment",
-                        RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                        "save.cmsComment", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
             }
             if (needStatic && CmsCommentService.STATUS_NORMAL == entity.getStatus()) {
                 if (null == content) {

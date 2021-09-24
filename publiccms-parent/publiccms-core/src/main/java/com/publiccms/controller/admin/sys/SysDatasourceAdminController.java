@@ -102,12 +102,12 @@ public class SysDatasourceAdminController {
                 entity.setUpdateDate(CommonUtils.getDate());
                 service.update(entity.getName(), entity, ignoreProperties);
                 logOperateService.save(
-                        new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.datasource",
+                        new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.datasource",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             } else {
                 service.save(entity);
                 logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.datasource",
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.datasource",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             siteDatasourceService.dealSiteDataSources(siteIds, entity.getName());
@@ -143,7 +143,7 @@ public class SysDatasourceAdminController {
             try {
                 datasourceComponent.sync(false, null, entity, siteIdList.toArray(new Short[siteIdList.size()]));
                 logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "sync.datasource",
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "sync.datasource",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             } catch (IOException | PropertyVetoException e) {
                 model.addAttribute(CommonConstants.ERROR, e.getMessage());
@@ -175,7 +175,7 @@ public class SysDatasourceAdminController {
             siteDatasourceService.deleteByDatasource(entity.getName());
             datasourceComponent.removeDatasource(site.getId(), entity.getName());
             logOperateService
-                    .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "disable.datasource",
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "disable.datasource",
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;

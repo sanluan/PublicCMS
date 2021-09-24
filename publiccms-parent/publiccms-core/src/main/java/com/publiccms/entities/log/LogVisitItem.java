@@ -10,6 +10,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -17,6 +19,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "log_visit_item")
+@DynamicUpdate
 public class LogVisitItem implements java.io.Serializable {
 
     /**

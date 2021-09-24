@@ -22,6 +22,8 @@ import com.publiccms.logic.dao.cms.CmsSurveyDao;
 @Service
 @Transactional
 public class CmsSurveyService extends BaseService<CmsSurvey> {
+    public static final String SURVEY_TYPE_EXAM = "exam";
+    public static final String SURVEY_TYPE_SURVEY = "survey";
 
     /**
      * @param siteId

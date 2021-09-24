@@ -4,7 +4,7 @@ UPDATE `sys_module` SET `authorized_url` = 'file/doUpload,file/doImport,cmsConte
 -- 2021-08-02 --
 DROP TABLE IF EXISTS `sys_site_datasource`;
 CREATE TABLE `sys_site_datasource` (
-  `site_id` smallint(11) NOT NULL COMMENT '站点ID',
+  `site_id` smallint(6) NOT NULL COMMENT '站点ID',
   `datasource` varchar(50) NOT NULL COMMENT '数据源名称',
   PRIMARY KEY (`site_id`,`datasource`),
   KEY `sys_site_datasource_datasource` (`datasource`)
@@ -87,52 +87,52 @@ CREATE TABLE `cms_survey` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `user_id` bigint(20) NOT NULL COMMENT '用户',
-    `survey_type` varchar(20) NOT NULL COMMENT '问卷类型',
-  `title` varchar(255) NOT NULL COMMENT '标题',
+  `survey_type` varchar(20) NOT NULL COMMENT '问卷类型',
+  `title` varchar(100) NOT NULL COMMENT '标题',
   `description` varchar(300) NOT NULL COMMENT '描述',
   `votes` int(11) NOT NULL COMMENT '投票数',
   `start_date` datetime NOT NULL COMMENT '开始日期',
   `end_date` datetime DEFAULT NULL COMMENT '结束日期',
-  `create_time` datetime NOT NULL COMMENT '创建日期',
+  `create_date` datetime NOT NULL COMMENT '创建日期',
   `disabled` tinyint(1) NOT NULL COMMENT '是否禁用',
   PRIMARY KEY (`id`),
-  KEY `cms_survey_site_id` (`site_id`,`survey_type`,`start_date`,`disabled`,`create_time`),
-    KEY `cms_survey_user_id` (`user_id`,`votes`)
+  KEY `cms_survey_site_id` (`site_id`,`survey_type`,`start_date`,`disabled`,`create_date`),
+  KEY `cms_survey_user_id` (`user_id`,`votes`)
 ) COMMENT='问卷调查';
 
 DROP TABLE IF EXISTS `cms_survey_question`;
 CREATE TABLE `cms_survey_question` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
   `survey_id` bigint(20) NOT NULL COMMENT '问卷',
-  `title` varchar(255) NOT NULL COMMENT '标题',
+  `title` varchar(100) NOT NULL COMMENT '标题',
   `score` int(11) DEFAULT NULL COMMENT '分数',
-  `input_type` varchar(20) NOT NULL COMMENT '表单类型',
-    `answer` varchar(255) DEFAULT NULL COMMENT '答案',
+  `question_type` varchar(20) NOT NULL COMMENT '问题类型',
+  `cover` varchar(255) NOT NULL COMMENT '图片',
+  `answer` varchar(255) DEFAULT NULL COMMENT '答案',
   `sort` int(11) NOT NULL COMMENT '排序',
-  PRIMARY KEY (`id`) USING BTREE,
+  PRIMARY KEY (`id`),
   KEY `cms_survey_question_survey_id` (`survey_id`,`sort`),
-    KEY `cms_survey_question_input_type` (`survey_id`,`input_type`,`sort`)
-) COMMENT='问题';
+  KEY `cms_survey_question_question_type` (`survey_id`,`question_type`,`sort`)
+) COMMENT='问卷调查问题';
 
 DROP TABLE IF EXISTS `cms_survey_question_item`;
 CREATE TABLE `cms_survey_question_item` (
   `id` bigint(11) NOT NULL AUTO_INCREMENT,
   `question_id` bigint(20) NOT NULL COMMENT '问题',
   `votes` int(11) NOT NULL COMMENT '投票数',
-  `title` varchar(255) NOT NULL COMMENT '标题',
-    `cover` varchar(255) NOT NULL COMMENT '图片',
-    `sort` int(11) NOT NULL COMMENT '排序',
-  PRIMARY KEY (`id`) USING BTREE,
+  `title` varchar(100) NOT NULL COMMENT '标题',
+  `sort` int(11) NOT NULL COMMENT '排序',
+  PRIMARY KEY (`id`),
   KEY `cms_survey_question_item_question_id` (`question_id`,`sort`),
-    KEY `cms_survey_question_item_votes` (`question_id`,`votes`)
-) COMMENT='选项';
+  KEY `cms_survey_question_item_votes` (`question_id`,`votes`)
+) COMMENT='问卷调查选项';
 
 DROP TABLE IF EXISTS `cms_user_survey`;
 CREATE TABLE `cms_user_survey` (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `survey_id` bigint(20) NOT NULL COMMENT '问卷',
-    `site_id` smallint(6) NOT NULL COMMENT '站点',
-    `score` int(11) DEFAULT NULL COMMENT '分数',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `score` int(11) DEFAULT NULL COMMENT '分数',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`,`survey_id`),
   KEY `cms_user_survey_site_id` (`site_id`,`score`,`create_date`)
@@ -142,11 +142,42 @@ DROP TABLE IF EXISTS `cms_user_survey_question`;
 CREATE TABLE `cms_user_survey_question` (
   `user_id` bigint(20) NOT NULL COMMENT '用户',
   `question_id` bigint(20) NOT NULL COMMENT '问题',
-    `site_id` smallint(6) NOT NULL COMMENT '站点',
-    `survey_id` bigint(20) NOT NULL COMMENT '问卷',
-    `answer` varchar(255) DEFAULT NULL COMMENT '答案',
-    `score` int(11) DEFAULT NULL COMMENT '分数',
+  `site_id` smallint(6) NOT NULL COMMENT '站点',
+  `survey_id` bigint(20) NOT NULL COMMENT '问卷',
+  `answer` varchar(255) DEFAULT NULL COMMENT '答案',
+  `score` int(11) DEFAULT NULL COMMENT '分数',
   `create_date` datetime NOT NULL COMMENT '创建日期',
   PRIMARY KEY (`user_id`,`question_id`),
   KEY `cms_user_survey_site_id` (`site_id`,`survey_id` ,`score`,`create_date`)
 ) COMMENT='用户问卷答案';
+-- 2021-09-24 --
+ALTER TABLE `log_operate` 
+    ADD COLUMN `dept_id` int(11) NULL COMMENT '部门' AFTER `user_id`,
+    DROP INDEX `log_operate_user_id`,
+    ADD INDEX `log_operate_user_id`(`user_id`, `dept_id`);
+INSERT INTO `sys_module` VALUES ('survey_add', 'cmsSurvey/add', 'cmsSurvey/save', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_delete', NULL, 'cmsSurvey/delete', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_list', 'cmsSurvey/list', NULL, 'icon-list-ul', 'content_menu', 1, 6);
+INSERT INTO `sys_module` VALUES ('survey_question_list', 'cmsSurveyQuestion/list', 'cmsSurveyQuestion/add,cmsSurveyQuestion/save,cmsSurveyQuestion/delete', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_user_list', 'cmsUserSurvey/list', 'cmsUserSurvey/add,cmsUserSurvey/save', NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('survey_view', 'cmsSurvey/view', NULL, NULL, 'survey_list', 0, 0);
+INSERT INTO `sys_module_lang` VALUES ('survey_list', 'en', 'Survey management');
+INSERT INTO `sys_module_lang` VALUES ('survey_list', 'ja', 'アンケート管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_list', 'zh', '问卷调查管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_add', 'zh', '增加/修改');
+INSERT INTO `sys_module_lang` VALUES ('survey_add', 'en', 'Add/edit');
+INSERT INTO `sys_module_lang` VALUES ('survey_add', 'ja', '追加/変更');
+INSERT INTO `sys_module_lang` VALUES ('survey_delete', 'zh', '删除');
+INSERT INTO `sys_module_lang` VALUES ('survey_delete', 'en', 'Delete');
+INSERT INTO `sys_module_lang` VALUES ('survey_delete', 'ja', '削除');
+INSERT INTO `sys_module_lang` VALUES ('survey_question_list', 'zh', '问题管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_question_list', 'en', 'Question management');
+INSERT INTO `sys_module_lang` VALUES ('survey_question_list', 'ja', '質問管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_user_list', 'zh', '答案管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_user_list', 'en', 'Answer management');
+INSERT INTO `sys_module_lang` VALUES ('survey_user_list', 'ja', '回答管理');
+INSERT INTO `sys_module_lang` VALUES ('survey_view', 'zh', '查看');
+INSERT INTO `sys_module_lang` VALUES ('survey_view', 'en', 'View');
+INSERT INTO `sys_module_lang` VALUES ('survey_view', 'ja', '見る');
+UPDATE `sys_module` SET `sort` = '8' WHERE `id` = 'word_list';
+UPDATE `sys_module` SET `sort` = '9' WHERE `id` = 'content_recycle_list';

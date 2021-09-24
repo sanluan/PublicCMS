@@ -7,14 +7,14 @@
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
-                <li class="colspan">
+                <li>
                     <label><@t.page 'log.visit.visit_date'/>:</label>
                     <input type="text" name="startVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startVisitDate!}" />
                     <span>-</span>
                     <input type="text" name="endVisitDate" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endVisitDate!}" />
                 </li>
                 <li>
-                    <label><@t.page 'log.visit.hour_analytics'/>:</label>
+                    <label><@t.page 'analytics.type'/>:</label>
                     <select class="combox" name="hourAnalytics">
                         <option value="false"${(!(hourAnalytics?has_content)||"false"=hourAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'log.visit.hour_analytics.day'/></option>
                         <option value="true"${(hourAnalytics?has_content&&"true"=hourAnalytics)?then(' selected="true"','')?no_esc}><@t.page 'log.visit.hour_analytics.hour'/></option>

@@ -115,7 +115,7 @@ public class PlaceController {
                     return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "update.place",
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB, "update.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
             } else {
                 entity.setSiteId(site.getId());
@@ -126,7 +126,7 @@ public class PlaceController {
                 }
                 entity.setDisabled(false);
                 service.save(entity);
-                logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB, "save.place",
+                logOperateService.save(new LogOperate(site.getId(), userId, user.getDeptId(), LogLoginService.CHANNEL_WEB, "save.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getPath()));
             }
             Map<String, String> map = ExtendUtils.getExtentDataMap(placeParameters.getExtendDataList(),
@@ -160,7 +160,7 @@ public class PlaceController {
                     model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
                 service.delete(id);
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "delete.place",
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB, "delete.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils
                         .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
@@ -199,7 +199,7 @@ public class PlaceController {
                     model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
                 service.check(id, user.getId());
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB, "check.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils
                         .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {
@@ -239,7 +239,7 @@ public class PlaceController {
                     model) || ControllerUtils.verifyNotEquals("siteId", site.getId(), entity.getSiteId(), model)) {
             } else {
                 service.uncheck(id);
-                logOperateService.save(new LogOperate(site.getId(), user.getId(), LogLoginService.CHANNEL_WEB, "check.place",
+                logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB, "check.place",
                         RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
                 if (site.isUseSsi() || CmsFileUtils
                         .exists(siteComponent.getWebFilePath(site, TemplateComponent.INCLUDE_DIRECTORY + entity.getPath()))) {

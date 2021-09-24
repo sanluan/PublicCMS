@@ -128,6 +128,7 @@ echarts.init(document.getElementById('operate')).setOption({
 echarts.init(document.getElementById('userComment')).setOption({
     title: {
         text: '<@t.page 'comment'/>',
+        subtext: '<@t.page 'total'/>:<@_commentList pageSize=0>${page.totalCount}</@_commentList>',
         x:'center'
     },
     tooltip : {

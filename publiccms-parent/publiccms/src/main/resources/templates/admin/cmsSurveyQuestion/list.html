@@ -1,0 +1,85 @@
+<@_surveyQuestionList surveyId=surveyId orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" action="cmsSurveyQuestion/list.html" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
+        <#include "../include_page/parameters.html"/>
+        <input type="hidden" name="surveyId" value="${surveyId!}"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'survey'/>:</label>
+                    <label><@_survey id=surveyId>${object.title!}</@_survey></label>
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<@_sysAuthorized roleIds=admin.roles urls='cmsSurveyQuestion/add,cmsSurveyQuestion/delete'><#assign authorizedMap=map/></@_sysAuthorized>
+<div class="pageContent">
+    <div class="panelBar">
+        <ul class="toolBar">
+        <#if authorizedMap['cmsSurveyQuestion/add']>
+            <li><a href="cmsSurveyQuestion/add.html?surveyId=${surveyId!}" target="navTab" rel="cmsSurveyQuestion/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'button.add'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsSurveyQuestion/delete']>
+            <li><a href="cmsSurveyQuestion/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+        </#if>
+        </ul>
+    </div>
+    <table class="table" width="100%" layoutH>
+        <thead>
+            <tr>
+                <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th>ID</th>
+                <th><@t.page 'survey'/></th>
+                <th><@t.page 'title'/></th>
+                <th><@t.page 'content.score'/></th>
+                <th orderField="sort" class="<#if orderField??&&'sort'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'sort'/></th>
+                <th><@t.page 'operate'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+                <@t.merge 'surveyIds' a.surveyId!/>
+            </#list>
+
+            <@_survey ids=t.surveyIds!><#assign surveyMap=map!/></@_survey>
+        
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
+                <td class="center">${a.id!}</td>
+                <td><a href="cmsSurvey/view.html?id=${a.surveyId}" class="exclude-translate" target="dialog" rel="viewSurvey${a.surveyId}">${(surveyMap[a.surveyId?string].title)!}</a></td>
+                <td>
+                    <div class="box">
+                        <#if a.cover?has_content>
+                            <div class="thumbnail">
+                                <img src="${(a.cover)!}"/>
+                            </div>
+                        </#if>
+                        <h3>[<@t.page 'question.type.'+a.questionType/>] ${(a.title)!}</h3>
+                    </div>
+                </td>
+                <td class="center">${a.score!}</td>
+                <td class="center">${a.sort!}</td>
+                <td>
+                <#if authorizedMap['cmsSurveyQuestion/add']>
+                    <a href="cmsSurveyQuestion/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsSurvey/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                </#if>
+                <#if authorizedMap['cmsSurveyQuestion/delete']>
+                    <a href="cmsSurveyQuestion/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>"  target="ajaxTodo"><@t.page 'button.delete'/></a>
+                </#if>
+                </td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#include "../include_page/page.html"/>
+</div>
+</@_surveyQuestionList>

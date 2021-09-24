@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -16,6 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "cms_survey_question")
+@DynamicUpdate
 public class CmsSurveyQuestion implements java.io.Serializable {
 
     /**
@@ -30,8 +33,10 @@ public class CmsSurveyQuestion implements java.io.Serializable {
     private String title;
     @GeneratorColumn(title = "分数")
     private Integer score;
-    @GeneratorColumn(title = "表单类型", condition = true)
-    private String inputType;
+    @GeneratorColumn(title = "问题类型", condition = true)
+    private String questionType;
+    @GeneratorColumn(title = "图片")
+    private String cover;
     @GeneratorColumn(title = "答案")
     private String answer;
     @GeneratorColumn(title = "排序", order = true)
@@ -46,11 +51,13 @@ public class CmsSurveyQuestion implements java.io.Serializable {
         this.sort = sort;
     }
 
-    public CmsSurveyQuestion(long surveyId, String title, Integer score, String inputType, String answer, int sort) {
+    public CmsSurveyQuestion(long surveyId, String title, Integer score, String questionType, String cover, String answer,
+            int sort) {
         this.surveyId = surveyId;
         this.title = title;
         this.score = score;
-        this.inputType = inputType;
+        this.questionType = questionType;
+        this.cover = cover;
         this.answer = answer;
         this.sort = sort;
     }
@@ -76,7 +83,7 @@ public class CmsSurveyQuestion implements java.io.Serializable {
         this.surveyId = surveyId;
     }
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 100)
     public String getTitle() {
         return this.title;
     }
@@ -85,7 +92,7 @@ public class CmsSurveyQuestion implements java.io.Serializable {
         this.title = title;
     }
 
-    @Column(name = "score", nullable = false)
+    @Column(name = "score")
     public Integer getScore() {
         return this.score;
     }
@@ -94,13 +101,22 @@ public class CmsSurveyQuestion implements java.io.Serializable {
         this.score = score;
     }
 
-    @Column(name = "input_type", nullable = false, length = 20)
-    public String getInputType() {
-        return this.inputType;
+    @Column(name = "question_type", nullable = false, length = 20)
+    public String getQuestionType() {
+        return this.questionType;
     }
 
-    public void setInputType(String inputType) {
-        this.inputType = inputType;
+    public void setQuestionType(String questionType) {
+        this.questionType = questionType;
+    }
+
+    @Column(name = "cover")
+    public String getCover() {
+        return this.cover;
+    }
+
+    public void setCover(String cover) {
+        this.cover = cover;
     }
 
     @Column(name = "answer")

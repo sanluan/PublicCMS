@@ -188,7 +188,7 @@ public class FileAdminController {
                                     CmsFileUtils.upload(content, filePath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
                                     FileSize fileSize = CmsFileUtils.getFileSize(filePath, imagesuffix);
-                                    logUploadService.save(new LogUpload(site.getId(), admin.getId(),
+                                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), 
                                             LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, fileType, content.length,
                                             fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
                                             CommonUtils.getDate(), fileName));

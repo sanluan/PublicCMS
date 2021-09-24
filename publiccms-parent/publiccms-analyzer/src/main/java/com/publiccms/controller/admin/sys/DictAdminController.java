@@ -86,7 +86,7 @@ public class DictAdminController {
         } catch (IOException | ClassNotFoundException e1) {
         }
         try {
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.dict",
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.dict",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), dict));
             return CommonConstants.TEMPLATE_DONE;
         } catch (IllegalStateException e) {

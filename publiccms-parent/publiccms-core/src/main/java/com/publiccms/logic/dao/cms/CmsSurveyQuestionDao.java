@@ -20,19 +20,19 @@ public class CmsSurveyQuestionDao extends BaseDao<CmsSurveyQuestion> {
 
     /**
      * @param surveyId
-     * @param inputTypes
+     * @param questionTypes
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
-    public PageHandler getPage(Long surveyId, String[] inputTypes, String orderType, Integer pageIndex, Integer pageSize) {
+    public PageHandler getPage(Long surveyId, String[] questionTypes, String orderType, Integer pageIndex, Integer pageSize) {
         QueryHandler queryHandler = getQueryHandler("from CmsSurveyQuestion bean");
         if (CommonUtils.notEmpty(surveyId)) {
             queryHandler.condition("bean.surveyId = :surveyId").setParameter("surveyId", surveyId);
         }
-        if (CommonUtils.notEmpty(inputTypes)) {
-            queryHandler.condition("bean.inputTypes in (:inputTypes)").setParameter("inputTypes", inputTypes);
+        if (CommonUtils.notEmpty(questionTypes)) {
+            queryHandler.condition("bean.questionTypes in (:questionTypes)").setParameter("questionTypes", questionTypes);
         }
         if (!ORDERTYPE_ASC.equalsIgnoreCase(orderType)) {
             orderType = ORDERTYPE_DESC;

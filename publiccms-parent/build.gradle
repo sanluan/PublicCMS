@@ -48,7 +48,7 @@ subprojects {
         // http://hibernate.org/search/downloads/
         hibernateSearchVersion = "6.0.6.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
-        ehcacheVersion = "3.9.4"
+        ehcacheVersion = "3.9.6"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
         freemarkerVersion = "2.3.31"
         // http://mvnrepository.com/artifact/org.mybatis/mybatis

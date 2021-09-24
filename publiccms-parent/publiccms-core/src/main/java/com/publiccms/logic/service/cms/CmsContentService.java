@@ -807,7 +807,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         List<CmsContent> resultList = new ArrayList<>();
         if (CommonUtils.notEmpty(entityList)) {
             for (CmsContent entity : entityList) {
-                if (null == update(entity.getId(), entity)) {
+                if (null == update(entity.getId(), entity, ignoreProperties)) {
                     resultList.add(entity);
                 }
             }

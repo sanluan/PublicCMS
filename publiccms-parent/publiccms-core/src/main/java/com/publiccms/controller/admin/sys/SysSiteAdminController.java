@@ -111,8 +111,9 @@ public class SysSiteAdminController {
         if (null != entity.getId()) {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "update.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.site", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             if (ControllerUtils.verifyNotEmpty("userName", userName, model)
@@ -122,8 +123,9 @@ public class SysSiteAdminController {
             }
             service.save(entity, domain, null == wild ? false : wild, null == multiple ? false : multiple, roleName, deptName,
                     userName, password, encoding);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.site",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService
+                    .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                            "save.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         siteComponent.clear();
         if (!siteComponent.getSite(request.getServerName(), null).getId().equals(site.getId()) || site.getId()
@@ -155,8 +157,9 @@ public class SysSiteAdminController {
             service.delete(id);
             domainService.deleteBySiteId(entity.getId());
             siteDatasourceService.deleteBySiteId(entity.getId());
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.site",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
 
@@ -195,8 +198,8 @@ public class SysSiteAdminController {
         }
         model.addAttribute("sqlcommand", command);
         model.addAttribute("sqlparameters", parameters);
-        logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "execsql.site",
-                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
+        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
         return CommonConstants.TEMPLATE_DONE;
     }
 
@@ -263,8 +266,9 @@ public class SysSiteAdminController {
             } catch (Exception e) {
                 log = e.toString();
             } finally {
-                logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), log));
+                logOperateService
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                                "execscript.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), log));
             }
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -312,9 +316,8 @@ public class SysSiteAdminController {
     public String reCreateIndex(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, HttpServletRequest request,
             ModelMap model) {
         contentService.reCreateIndex();
-        Long userId = admin.getId();
-        logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "reCreateIndex",
-                RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));
+        logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                "reCreateIndex", RequestUtils.getIpAddress(request), CommonUtils.getDate(), CommonConstants.BLANK));
         return CommonConstants.TEMPLATE_DONE;
     }
 }

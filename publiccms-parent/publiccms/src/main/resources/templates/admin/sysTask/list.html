@@ -8,9 +8,9 @@
                     <label><@t.page 'status'/>:</label>
                     <select class="combox" name="status">
                         <option value=""${(!status?has_content)?then(' selected="true"','')?no_esc}><@t.page 'task.status'/></option>
-                        <option value="0"${(status??&&"0"==status)?then(' selected="true"','')?no_esc}><@t.page 'status.task.'+0/></option>
-                        <option value="1"${(status??&&"1"==status)?then(' selected="true"','')?no_esc}><@t.page 'status.task.'+1/></option>
-                        <option value="2"${(status??&&"2"==status)?then(' selected="true"','')?no_esc}><@t.page 'status.task.'+2/></option>
+                        <option value="0"${(status?has_content&&"0"=status)?then(' selected="true"','')?no_esc}><@t.page 'status.task.'+0/></option>
+                        <option value="1"${(status?has_content&&"1"=status)?then(' selected="true"','')?no_esc}><@t.page 'status.task.'+1/></option>
+                        <option value="2"${(status?has_content&&"2"=status)?then(' selected="true"','')?no_esc}><@t.page 'status.task.'+2/></option>
                     </select>
                 </li>
             </ul>

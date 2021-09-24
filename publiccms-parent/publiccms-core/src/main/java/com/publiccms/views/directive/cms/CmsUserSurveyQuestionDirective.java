@@ -28,20 +28,20 @@ public class CmsUserSurveyQuestionDirective extends AbstractTemplateDirective {
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         Long userId = handler.getLong("userId");
-        Long surveyId = handler.getLong("surveyId");
+        Long questionId = handler.getLong("questionId");
         SysSite site = getSite(handler);
         if (null != userId) {
-            if (null != surveyId) {
-                CmsUserSurveyQuestion entity = service.getEntity(new CmsUserSurveyQuestionId(userId, surveyId));
+            if (null != questionId) {
+                CmsUserSurveyQuestion entity = service.getEntity(new CmsUserSurveyQuestionId(userId, questionId));
                 if (null != entity && site.getId() == entity.getSiteId()) {
                     handler.put("object", entity).render();
                 }
             } else {
-                Long[] surveyIds = handler.getLongArray("surveyIds");
-                if (CommonUtils.notEmpty(surveyIds)) {
-                    CmsUserSurveyQuestionId[] entityIds = new CmsUserSurveyQuestionId[surveyIds.length];
-                    for (int i = 0; i < surveyIds.length; i++) {
-                        entityIds[i] = new CmsUserSurveyQuestionId(userId, surveyIds[i]);
+                Long[] questionIds = handler.getLongArray("questionIds");
+                if (CommonUtils.notEmpty(questionIds)) {
+                    CmsUserSurveyQuestionId[] entityIds = new CmsUserSurveyQuestionId[questionIds.length];
+                    for (int i = 0; i < questionIds.length; i++) {
+                        entityIds[i] = new CmsUserSurveyQuestionId(userId, questionIds[i]);
                     }
                     List<CmsUserSurveyQuestion> entityList = service.getEntitys(entityIds);
                     Map<String, CmsUserSurveyQuestion> map = CommonUtils.listToMap(entityList,
@@ -49,12 +49,12 @@ public class CmsUserSurveyQuestionDirective extends AbstractTemplateDirective {
                     handler.put("map", map).render();
                 }
             }
-        } else if (null != surveyId) {
+        } else if (null != questionId) {
             Long[] userIds = handler.getLongArray("userIds");
             if (CommonUtils.notEmpty(userIds)) {
                 CmsUserSurveyQuestionId[] entityIds = new CmsUserSurveyQuestionId[userIds.length];
                 for (int i = 0; i < userIds.length; i++) {
-                    entityIds[i] = new CmsUserSurveyQuestionId(userIds[i], surveyId);
+                    entityIds[i] = new CmsUserSurveyQuestionId(userIds[i], questionId);
                 }
                 List<CmsUserSurveyQuestion> entityList = service.getEntitys(entityIds);
                 Map<String, CmsUserSurveyQuestion> map = CommonUtils.listToMap(entityList,

@@ -95,14 +95,14 @@ public class SysConfigDataAdminController {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
                     logOperateService.save(
-                            new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.configData",
+                            new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.configData",
                                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
                 }
             } else {
                 entity.getId().setSiteId(site.getId());
                 service.save(entity);
                 logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.configData",
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.configData",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
             configComponent.removeCache(site.getId(), entity.getId().getCode());
@@ -141,7 +141,7 @@ public class SysConfigDataAdminController {
         SysConfigData entity = service.getEntity(new SysConfigDataId(site.getId(), code));
         if (null != entity) {
             service.delete(entity.getId());
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.configData", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             configComponent.removeCache(site.getId(), entity.getId().getCode());
         }

@@ -14,8 +14,8 @@
                 <li>
                     <select class="combox" name="master">
                         <option value=""${(!master?has_content)?then(' selected="true"','')?no_esc}><@t.page 'cluster.type'/></option>
-                        <option value="false"${(master??&&"false"=master)?then(' selected="true"','')?no_esc}><@t.page 'cluster.normal'/></option>
-                        <option value="true"${(master??&&"true"=master)?then(' selected="true"','')?no_esc}><@t.page 'cluster.master'/></option>
+                        <option value="false"${(master?has_content&&"false"=master)?then(' selected="true"','')?no_esc}><@t.page 'cluster.normal'/></option>
+                        <option value="true"${(master?has_content&&"true"=master)?then(' selected="true"','')?no_esc}><@t.page 'cluster.master'/></option>
                     </select>
                 </li>
             </ul>

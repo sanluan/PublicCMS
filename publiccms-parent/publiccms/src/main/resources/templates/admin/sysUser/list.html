@@ -15,15 +15,15 @@
                 <li>
                     <select class="combox" name="superuserAccess">
                         <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
-                        <option value="false"${(superuserAccess??&&"false"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
-                        <option value="true"${(superuserAccess??&&"true"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
+                        <option value="false"${(superuserAccess?has_content&&"false"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
+                        <option value="true"${(superuserAccess?has_content&&"true"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
                     </select>
                 </li>
                 <li>
                     <select class="combox" name="emailChecked">
                         <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
-                        <option value="false"${(emailChecked??&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'unverified'/></option>
-                        <option value="true"${(emailChecked??&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'verified'/></option>
+                        <option value="false"${(emailChecked?has_content&&"false"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'unverified'/></option>
+                        <option value="true"${(emailChecked?has_content&&"true"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'verified'/></option>
                     </select>
                 </li>
                 <li>

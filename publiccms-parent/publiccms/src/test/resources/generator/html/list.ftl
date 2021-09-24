@@ -5,7 +5,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
         <div class="searchBar">
             <ul class="searchContent">
             <#list conditionList as a><#if "Date"=a.type>
-                <li class="colspan">
+                <li>
                     <label>${a.title}:</label>
                     <input type="text" name="start${a.name?cap_first}" class="date" size="10" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${r"${start"+a.name?cap_first+"!}"}" />
                     <span>-</span>
@@ -40,7 +40,7 @@ ${"<@_"+entityName?replace('Cms','')?uncap_first+"List"} <#include "../include_c
         ${'</#'}if>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH="92">
+    <table class="table" width="100%" layoutH>
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>

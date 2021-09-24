@@ -29,16 +29,20 @@
         <#if page.totalCount gt 0>
     <fieldset>
         <legend><@t.page 'vote_item'/></legend>
+        <div class="unit">
+            <ol class="vote">
         <#list page.list as v>
-        <dl class="nowrap">
-            <dt>
-                ${v.title}
-            </dt>
-            <dd>
-                ${v.scores!}
-            </dd>
-        </dl>
+                <li>
+                    <div class="progress-box">
+                        <div class="progress-bar" style="width:${(object.scores gt 0)?then(v.scores*100/object.scores,100)}%;"></div>
+                        <div class="progress-text">
+                            ${v.title} (${v.scores!}/${object.scores})
+                        </div>
+                    </div>
+                </li>
         </#list>
+            </ol>
+        </div>
     </fieldset>
         </#if>
     </@_voteItemList>

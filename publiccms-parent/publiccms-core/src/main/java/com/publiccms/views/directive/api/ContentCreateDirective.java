@@ -136,8 +136,8 @@ public class ContentCreateDirective extends AbstractAppDirective {
                                         : CmsContentAdminController.ignorePropertiesWithUrl);
                     }
                     if (null != entity.getId()) {
-                        logOperateService.save(new LogOperate(site.getId(), user.getId(), app.getChannel(), "update.content",
-                                RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
+                        logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
+                                "update.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
                                 JsonUtils.getString(entity)));
                     }
                 } else {
@@ -148,8 +148,9 @@ public class ContentCreateDirective extends AbstractAppDirective {
                     if (CommonUtils.notEmpty(entity.getParentId())) {
                         service.updateChilds(site.getId(), entity.getParentId(), 1);
                     }
-                    logOperateService.save(new LogOperate(site.getId(), user.getId(), app.getChannel(), "save.content",
-                            RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                    logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(),
+                            "save.content", RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(),
+                            JsonUtils.getString(entity)));
                 }
                 String text = HtmlUtils.removeHtmlTag(attribute.getText());
                 attribute.setWordCount(text.length());

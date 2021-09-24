@@ -75,7 +75,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
             templateComponent.createCategoryFile(site, category, null, null);
         }
         logOperateService
-                .save(new LogOperate(site.getId(), user.getId(), app.getChannel(), uncheck ? "uncheck.content" : "check.content",
+                .save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), app.getChannel(), uncheck ? "uncheck.content" : "check.content",
                         RequestUtils.getIpAddress(handler.getRequest()), CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
     }
 

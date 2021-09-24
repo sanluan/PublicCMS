@@ -19,18 +19,25 @@ import com.publiccms.common.handler.PageHandler;
 @Service
 @Transactional
 public class CmsSurveyQuestionService extends BaseService<CmsSurveyQuestion> {
+    public static final String QUESTION_TYPE_RADIO = "radio";
+    public static final String QUESTION_TYPE_SELECT = "select";
+    public static final String QUESTION_TYPE_CHECKBOX = "checkbox";
+    public static final String QUESTION_TYPE_TEXT = "text";
+    public static final String QUESTION_TYPE_FILE = "file";
+    public static final String QUESTION_TYPE_PICTURE = "picture";
+    public static final String[] QUESTION_TYPES_DICT = { QUESTION_TYPE_RADIO, QUESTION_TYPE_SELECT, QUESTION_TYPE_CHECKBOX };
 
     /**
      * @param surveyId
-     * @param inputTypes
+     * @param questionTypes
      * @param orderType
      * @param pageIndex
      * @param pageSize
      * @return results page
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Long surveyId, String[] inputTypes, String orderType, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(surveyId, inputTypes, orderType, pageIndex, pageSize);
+    public PageHandler getPage(Long surveyId, String[] questionTypes, String orderType, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(surveyId, questionTypes, orderType, pageIndex, pageSize);
     }
 
     @Autowired

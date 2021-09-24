@@ -40,10 +40,9 @@
             </@_logUploadList>
                 </ul>
                 <script>
-                    var imagesSuffix=["png","gif","jpg","jpeg","bmp"];
                     $('ul li a',$.pdialog.getCurrent()).hover(function(){
                         var filenames=$(this).text().toLowerCase().split('.');
-                        if(-1 != $.inArray(filenames[filenames.length-1], imagesSuffix)){
+                        if(-1 != $.inArray(filenames[filenames.length-1], ["png","gif","jpg","jpeg","bmp"])){
                             if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
                                 $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
                             }else{

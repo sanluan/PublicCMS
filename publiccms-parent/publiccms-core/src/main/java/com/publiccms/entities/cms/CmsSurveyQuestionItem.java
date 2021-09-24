@@ -9,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -16,6 +18,7 @@ import org.hibernate.annotations.GenericGenerator;
  */
 @Entity
 @Table(name = "cms_survey_question_item")
+@DynamicUpdate
 public class CmsSurveyQuestionItem implements java.io.Serializable {
 
     /**
@@ -30,19 +33,16 @@ public class CmsSurveyQuestionItem implements java.io.Serializable {
     private int votes;
     @GeneratorColumn(title = "标题")
     private String title;
-    @GeneratorColumn(title = "图片")
-    private String cover;
     @GeneratorColumn(title = "排序", order = true)
     private int sort;
 
     public CmsSurveyQuestionItem() {
     }
 
-    public CmsSurveyQuestionItem(long questionId, int votes, String title, String cover, int sort) {
+    public CmsSurveyQuestionItem(long questionId, int votes, String title, int sort) {
         this.questionId = questionId;
         this.votes = votes;
         this.title = title;
-        this.cover = cover;
         this.sort = sort;
     }
 
@@ -76,22 +76,13 @@ public class CmsSurveyQuestionItem implements java.io.Serializable {
         this.votes = votes;
     }
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 100)
     public String getTitle() {
         return this.title;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    @Column(name = "cover")
-    public String getCover() {
-        return this.cover;
-    }
-
-    public void setCover(String cover) {
-        this.cover = cover;
     }
 
     @Column(name = "sort")

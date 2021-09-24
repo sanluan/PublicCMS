@@ -43,7 +43,7 @@ public class CmsSurveyQuestionItemDao extends BaseDao<CmsSurveyQuestionItem> {
             queryHandler.order("bean.votes").append(orderType);
             break;
         default:
-            queryHandler.order("bean.id").append(orderType);
+            queryHandler.order("bean.sort asc");
         }
         return getPage(queryHandler, pageIndex, pageSize);
     }

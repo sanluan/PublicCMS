@@ -26,8 +26,8 @@
                     <label><@t.page 'order.process'/>:</label>
                     <select class="combox" name="processed">
                         <option value=""${(!processed?has_content)?then(' selected="true"','')?no_esc}><@t.page 'order.all'/></option>
-                        <option value="false"${(processed??&&"false"=processed)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
-                        <option value="true"${(processed??&&"true"=processed)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
+                        <option value="false"${(processed?has_content&&"false"=processed)?then(' selected="true"','')?no_esc}><@t.page 'no'/></option>
+                        <option value="true"${(processed?has_content&&"true"=processed)?then(' selected="true"','')?no_esc}><@t.page 'yes'/></option>
                     </select>
                 </li>
             </ul>

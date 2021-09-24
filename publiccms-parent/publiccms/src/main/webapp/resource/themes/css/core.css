@@ -290,7 +290,7 @@ a.button,button.button{border-width:1px;border-style:solid;-moz-box-shadow: 0px 
 .pageFormContent dt{float:left;width:120px;padding:0 5px;}
 .pageFormContent dd{margin-left:130px;}
 .pageFormContent dl.nowrap, .nowrap dl{width:100%;height:auto;clear:both;}
-.pageFormContent dl dd .thumbnail img{max-width:200px;max-height:200px;}
+.pageFormContent .thumbnail img{max-width:200px;max-height:200px;}
 
 #content{width:800px;}
 #content p{float:none;display:block;min-width:initial;padding:0;}

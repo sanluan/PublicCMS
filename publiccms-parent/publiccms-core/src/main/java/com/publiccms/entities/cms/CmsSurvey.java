@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,6 +22,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Entity
 @Table(name = "cms_survey")
+@DynamicUpdate
 public class CmsSurvey implements java.io.Serializable {
 
     /**
@@ -121,7 +124,7 @@ public class CmsSurvey implements java.io.Serializable {
         this.surveyType = surveyType;
     }
 
-    @Column(name = "title", nullable = false)
+    @Column(name = "title", nullable = false, length = 100)
     public String getTitle() {
         return this.title;
     }

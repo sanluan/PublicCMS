@@ -49,13 +49,12 @@ public class SysUserTokenAdminController {
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String authToken,
             HttpServletRequest request, ModelMap model) {
         SysUserToken entity = service.getEntity(authToken);
-        Long userId = admin.getId();
         if (null != entity) {
-            if (ControllerUtils.verifyNotEquals("userId", userId, entity.getUserId(), model)) {
+            if (ControllerUtils.verifyNotEquals("userId", admin.getId(), entity.getUserId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.delete(authToken);
-            logOperateService.save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.usertoken",
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.usertoken",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;

@@ -49,7 +49,7 @@ public class TradeAccountAdminController {
             HttpServletRequest request) {
         if (null != userId && null == service.getEntity(userId)) {
             TradeAccount entity = service.getOrCreate(site.getId(), userId);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),LogLoginService.CHANNEL_WEB_MANAGER,
                     "save.tradeAccount", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;

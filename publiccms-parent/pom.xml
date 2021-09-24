@@ -40,7 +40,7 @@
         <!-- http://hibernate.org/search/releases/ -->
         <version.hibernateSearch>6.0.6.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
-        <version.ehcache>3.9.4</version.ehcache>
+        <version.ehcache>3.9.6</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
         <version.freemarker>2.3.31</version.freemarker>
         <!-- http://mvnrepository.com/artifact/org.mybatis/mybatis -->

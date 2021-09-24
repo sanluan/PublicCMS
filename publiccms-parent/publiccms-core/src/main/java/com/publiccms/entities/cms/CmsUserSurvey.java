@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 import com.publiccms.common.generator.annotation.GeneratorColumn;
 
 /**
@@ -19,6 +21,7 @@ import com.publiccms.common.generator.annotation.GeneratorColumn;
  */
 @Entity
 @Table(name = "cms_user_survey")
+@DynamicUpdate
 public class CmsUserSurvey implements java.io.Serializable {
 
     /**
@@ -69,7 +72,7 @@ public class CmsUserSurvey implements java.io.Serializable {
         this.siteId = siteId;
     }
 
-    @Column(name = "score", nullable = false)
+    @Column(name = "score")
     public Integer getScore() {
         return this.score;
     }

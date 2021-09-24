@@ -1,6 +1,6 @@
 package com.publiccms.logic.service.cms;
 
-// Generated 2020-3-26 11:46:48 by com.publiccms.common.generator.SourceGenerator
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsUserSurveyQuestion;
 import com.publiccms.logic.dao.cms.CmsUserSurveyQuestionDao;
 
@@ -35,6 +36,20 @@ public class CmsUserSurveyQuestionService extends BaseService<CmsUserSurveyQuest
     public PageHandler getPage(Short siteId, Long userId, Long questionId, Long surveyId, String orderField, String orderType,
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(siteId, userId, questionId, surveyId, orderField, orderType, pageIndex, pageSize);
+    }
+
+    /**
+     * @param entityList
+     */
+    public void updateScore(List<CmsUserSurveyQuestion> entityList) {
+        if (CommonUtils.notEmpty(entityList)) {
+            for (CmsUserSurveyQuestion entity : entityList) {
+                CmsUserSurveyQuestion oldEntity = getEntity(entity.getId());
+                if (null != oldEntity) {
+                    oldEntity.setScore(entity.getScore());
+                }
+            }
+        }
     }
 
     @Autowired

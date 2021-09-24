@@ -15,24 +15,24 @@
                 <li>
                     <select class="combox" name="superuserAccess">
                         <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
-                        <option value="false"${(superuserAccess?has_content&&"false"==superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
-                        <option value="true"${(superuserAccess?has_content&&"true"==superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
+                        <option value="false"${(superuserAccess?has_content&&"false"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
+                        <option value="true"${(superuserAccess?has_content&&"true"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
                     </select>
                 </li>
                 <li>
                     <select class="combox" name="emailChecked">
                         <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
-                        <option value="false"${(emailChecked?has_content&&"false"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
-                        <option value="true"${(emailChecked?has_content&&"true"==emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
+                        <option value="false"${(emailChecked?has_content&&"false"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
+                        <option value="true"${(emailChecked?has_content&&"true"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
                     </select>
                 </li>
-                <li class="colspan">
+                <li>
                     <label><@t.page 'user.register_date'/>:</label>
                     <input type="text" name="startRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
                     <span>-</span>
                     <input type="text" name="endRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
                 </li>
-                <li class="colspan">
+                <li>
                     <label><@t.page 'user.last_login_date'/>:</label>
                     <input type="text" name="startLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
                     <span>-</span>

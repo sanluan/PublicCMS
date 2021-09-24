@@ -1,0 +1,81 @@
+<div class="pageFormContent" layoutH>
+<@_survey id=id>
+    <dl class="nowrap">
+        <dt><@t.page 'title'/>:</dt>
+        <dd class="exclude-translate">
+            ${(object.title)!}
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt><@t.page 'description'/>:</dt>
+        <dd class="exclude-translate">
+            ${(object.description)!}
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt><@t.page 'survey.type'/>:</dt>
+        <dd class="exclude-translate">
+            <@t.page 'survey.type.'+object.surveyType/>
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'start_date'/>:</dt>
+        <dd>
+            ${(object.startDate)!}
+        </dd>
+    </dl>
+    <dl>
+        <dt><@t.page 'end_date'/>:</dt>
+        <dd>
+            ${(object.endDate)!}
+        </dd>
+    </dl>
+    <dl class="nowrap">
+        <dt><@t.page 'create_date'/>:</dt>
+        <dd>
+            ${(object.createDate)!}
+        </dd>
+    </dl>
+    <@_surveyQuestionList surveyId=object.id pageSize=500>
+        <#if page.totalCount gt 0>
+    <fieldset>
+        <legend><@t.page 'question'/></legend>
+        <#list page.list as q>
+            <div class="unit">
+                <p class="nowrap"><label><@t.page 'question'/>:</label>[<@t.page 'question.type.'+q.questionType/>] ${q.title}</p>
+                <#if q.cover?has_content>
+                    <p class="thumbnail">
+                        <img src="${(q.cover)!}"/>
+                    </p>
+                </#if>
+            </div>
+            <div class="unit">
+                <#if ['radio','select','checkbox']?seq_contains(q.questionType)>
+                <@_surveyQuestionItemList questionId=q.id pageSize=500>
+                    <ol class="vote">
+                <#list page.list as v>
+                        <li>
+                            <div class="progress-box">
+                                <div class="progress-bar" style="width:${(object.votes gt 0)?then(v.votes*100/object.votes,100)}%;"></div>
+                                <div class="progress-text">
+                                    ${v.sort}.${v.title} (${v.votes}/${object.votes}) <#if q.answer?has_content&&q.answer?split(',')?seq_contains(v.id?string)>[<@t.page 'answer.correct'/>]</#if>
+                                </div>
+                            </div>
+                        </li>
+                </#list>
+                    </ol>
+                </@_surveyQuestionItemList>
+                </#if>
+            </div>
+            <div class="divider"></div>
+        </#list>
+    </fieldset>
+        </#if>
+    </@_surveyQuestionList>
+</@_survey>
+</div>
+<div class="formBar">
+    <ul>
+        <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
+    </ul>
+</div>

@@ -66,7 +66,7 @@ public class SysAppTokenAdminController {
             }
             Date now = CommonUtils.getDate();
             service.save(new SysAppToken(UUID.randomUUID().toString(), entity.getId(), now, expiryDate));
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "issue.apptoken", RequestUtils.getIpAddress(request), CommonUtils.getDate(), entity.getId().toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -85,7 +85,6 @@ public class SysAppTokenAdminController {
     public String delete(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String authToken,
             HttpServletRequest request, ModelMap model) {
         SysAppToken entity = service.getEntity(authToken);
-        Long userId = admin.getId();
         if (null != entity) {
             SysApp app = appService.getEntity(entity.getAppId());
             if (null != app) {
@@ -94,7 +93,7 @@ public class SysAppTokenAdminController {
                 }
                 service.delete(authToken);
                 logOperateService
-                        .save(new LogOperate(site.getId(), userId, LogLoginService.CHANNEL_WEB_MANAGER, "delete.apptoken",
+                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "delete.apptoken",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         }

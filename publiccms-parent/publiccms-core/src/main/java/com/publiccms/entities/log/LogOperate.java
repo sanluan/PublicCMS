@@ -36,6 +36,8 @@ public class LogOperate implements java.io.Serializable {
     private short siteId;
     @GeneratorColumn(title = "用户", condition = true)
     private Long userId;
+    @GeneratorColumn(title = "部门", condition = true)
+    private Integer deptId;
     @GeneratorColumn(title = "渠道", condition = true)
     private String channel;
     @GeneratorColumn(title = "操作", condition = true)
@@ -58,9 +60,11 @@ public class LogOperate implements java.io.Serializable {
         this.content = content;
     }
 
-    public LogOperate(short siteId, Long userId, String channel, String operate, String ip, Date createDate, String content) {
+    public LogOperate(short siteId, Long userId, Integer deptId, String channel, String operate, String ip, Date createDate,
+            String content) {
         this.siteId = siteId;
         this.userId = userId;
+        this.deptId = deptId;
         this.channel = channel;
         this.operate = operate;
         this.ip = ip;
@@ -96,6 +100,15 @@ public class LogOperate implements java.io.Serializable {
 
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    @Column(name = "dept_id")
+    public Integer getDeptId() {
+        return this.deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
     }
 
     @Column(name = "channel", nullable = false, length = 50)

@@ -1,5 +1,7 @@
 package com.publiccms.logic.service.cms;
 
+import java.io.Serializable;
+
 // Generated 2021-09-23 16:55:08 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,20 @@ public class CmsUserSurveyService extends BaseService<CmsUserSurvey> {
     public PageHandler getPage(Short siteId, Long userId, Long surveyId, String orderField, String orderType, Integer pageIndex,
             Integer pageSize) {
         return dao.getPage(siteId, userId, surveyId, orderField, orderType, pageIndex, pageSize);
+    }
+
+    /**
+     * @param siteId
+     * @param id
+     * @param score
+     * @return entity
+     */
+    public CmsUserSurvey updateScore(short siteId, Serializable id, int score) {
+        CmsUserSurvey entity = getEntity(id);
+        if (null != entity && siteId == entity.getSiteId()) {
+            entity.setScore(score);
+        }
+        return entity;
     }
 
     @Autowired

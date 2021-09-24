@@ -78,13 +78,13 @@ public class CmsCategoryTypeAdminController {
             entity = service.update(entity.getId(), entity, ignoreProperties);
             if (null != entity) {
                 logOperateService.save(
-                        new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.categoryType",
+                        new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.categoryType",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "save.categoryType", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         if (CommonUtils.notEmpty(categoryTypeParameters.getCategoryExtends()) || CommonUtils.notEmpty(entity.getExtendId())) {
@@ -121,7 +121,7 @@ public class CmsCategoryTypeAdminController {
             }
             service.delete(id);
             extendService.delete(entity.getExtendId());
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.categoryType", RequestUtils.getIpAddress(request), CommonUtils.getDate(), id.toString()));
         }
         return CommonConstants.TEMPLATE_DONE;

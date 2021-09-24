@@ -71,13 +71,13 @@ public class CmsDictionaryAdminController {
                     dataService.save(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
                 }
                 logOperateService.save(
-                        new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary",
+                        new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsDictionary",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             } else {
                 service.save(entity);
                 dataService.save(site.getId(), entity.getId().getId(), dictionaryParameters.getDataList());
                 logOperateService.save(
-                        new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary",
+                        new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsDictionary",
                                 RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         }
@@ -123,7 +123,7 @@ public class CmsDictionaryAdminController {
             }
             service.delete(entityIds);
             dataService.delete(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.cmsDictionary", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
                     StringUtils.join(ids, CommonConstants.COMMA)));
         }

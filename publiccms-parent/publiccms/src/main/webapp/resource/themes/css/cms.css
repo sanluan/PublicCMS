@@ -18,3 +18,11 @@ a.btnText:hover{text-decoration: none;}
 .unit ul li .card .icon{font-size:38px;width:45px;float:left;padding:10px;margin-right:5px;opacity: 0.6;}
 .unit ul li:nth-child(2n) .card,.unit ul li:nth-child(2n) .card .icon{border-color: #336699;color: #336699;}
 .unit ul li:nth-child(2n+1) .card,.unit ul li:nth-child(2n+1) .card .icon{border-color: #0099CC;color: #0099CC;}
+ol.vote>li {line-height: 30px;height: 30px;width:400px;margin:5px 0 0 0;max-width:95%;position: relative;}
+.progress-box {width: 100%;height: 100%;border: 1px solid #cccccc;display: inline-block;}
+.progress-bar {height:100%;opacity: 0.4;}
+.progress-text {text-align: center;position: absolute;top: 0;width: 100%;}
+.progress-text a {width: 100%;height: 100%;display: inline-block;}
+ol.vote>li:nth-child(3n+1) .progress-bar {background-color:red;}
+ol.vote>li:nth-child(3n+2) .progress-bar {background-color:green;}
+ol.vote>li:nth-child(3n) .progress-bar {background-color:blue;}

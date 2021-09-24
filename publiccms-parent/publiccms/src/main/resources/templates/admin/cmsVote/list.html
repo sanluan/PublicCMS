@@ -1,18 +1,18 @@
 <@_voteList startStartDate=startStartDate endStartDate=endStartDate 
-            startEndDate=startEndDate endEndDate=endEndDate title=title
+            startEndDate=startEndDate endEndDate=endEndDate title=title disabled=disabled 
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
     <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
         <#include "../include_page/parameters.html"/>
         <div class="searchBar">
             <ul class="searchContent">
-                <li class="colspan">
+                <li>
                     <label><@t.page 'start_date'/>:</label>
                     <input type="text" name="startStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startStartDate!}" />
                     <span>-</span>
                     <input type="text" name="endStartDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${endStartDate!}" />
                 </li>
-                <li class="colspan">
+                <li>
                     <label><@t.page 'end_date'/>:</label>
                     <input type="text" name="startEndDate" class="date" size="10" dateFmt="yyyy-MM-dd" value="${startEndDate!}" />
                     <span>-</span>
@@ -22,6 +22,7 @@
                     <label><@t.page 'title'/>:</label>
                     <input type="text" name="title" value="${title!}" />
                 </li>
+                <#include "../include_page/disabled.html"/>
             </ul>
             <div class="subBar">
                 <ul>
@@ -71,11 +72,13 @@
                 <td>${a.endDate!}</td>
                 <td>${a.createDate!}</td>
                 <td>
-                <#if authorizedMap['cmsVote/add']>
-                    <a href="cmsVote/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsVote/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
-                </#if>
-                <#if authorizedMap['cmsVote/delete']>
-                    <a href="cmsVote/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                <#if !a.disabled>
+                    <#if authorizedMap['cmsVote/add']>
+                        <a href="cmsVote/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsVote/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
+                    </#if>
+                    <#if authorizedMap['cmsVote/delete']>
+                        <a href="cmsVote/delete?ids=${a.id}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                    </#if>
                 </#if>
                 </td>
             </tr>
