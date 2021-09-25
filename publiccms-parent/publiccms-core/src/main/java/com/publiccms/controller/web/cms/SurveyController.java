@@ -16,8 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
@@ -30,6 +30,7 @@ import com.publiccms.entities.cms.CmsUserSurveyId;
 import com.publiccms.entities.cms.CmsUserSurveyQuestion;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionItemService;
 import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
 import com.publiccms.logic.service.cms.CmsSurveyService;
@@ -51,15 +52,17 @@ public class SurveyController {
      * @param user
      * @param surveyId
      * @param userQuestionParameters
+     * @param returnUrl
      * @param itemId
      * @param request
      * @return
      */
     @RequestMapping("save")
     @Csrf
-    @ResponseBody
-    public boolean save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long surveyId,
-            @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, HttpServletRequest request) {
+    public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser user, long surveyId,
+            @ModelAttribute CmsUserSurveyQuestionParameters userQuestionParameters, String returnUrl,
+            HttpServletRequest request) {
+        returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
         CmsSurvey entity = service.getEntity(surveyId);
         if (null != entity) {
             Date now = CommonUtils.getDate();
@@ -75,57 +78,58 @@ public class SurveyController {
                         userSurvey = new CmsUserSurvey(site.getId(), now);
                         userSurvey.setId(userSurveyId);
                         userSurveyService.save(userSurvey);
-                        service.updateVotes(site.getId(), userSurveyId, 1);
-                    }
-                    Map<Long, CmsSurveyQuestion> questionMap = CommonUtils.listToMap(questionList, k -> k.getId(), null, null);
-                    Set<Long> answerSet = new TreeSet<>();
-                    List<CmsUserSurveyQuestion> answerList = new ArrayList<>();
-                    for (CmsUserSurveyQuestion answer : userQuestionParameters.getAnswerList()) {
-                        if (null != answer.getId()) {
-                            CmsSurveyQuestion question = questionMap.get(answer.getId().getQuestionId());
-                            if (null != question) {
-                                if (ArrayUtils.contains(CmsSurveyQuestionService.QUESTION_TYPES_DICT,
-                                        question.getQuestionType())) {
-                                    String[] itemIds = StringUtils.split(answer.getAnswer(), CommonConstants.COMMA);
-                                    if (CommonUtils.notEmpty(itemIds)) {
-                                        for (String s : itemIds) {
-                                            try {
-                                                answerSet.add(Long.valueOf(s));
-                                            } catch (NumberFormatException e) {
+                        service.updateVotes(site.getId(), surveyId, 1);
+                        Map<Long, CmsSurveyQuestion> questionMap = CommonUtils.listToMap(questionList, k -> k.getId(), null, null);
+                        Set<Long> answerSet = new TreeSet<>();
+                        List<CmsUserSurveyQuestion> answerList = new ArrayList<>();
+                        for (CmsUserSurveyQuestion answer : userQuestionParameters.getAnswerList()) {
+                            if (null != answer.getId()) {
+                                CmsSurveyQuestion question = questionMap.get(answer.getId().getQuestionId());
+                                if (null != question) {
+                                    answer.getId().setUserId(user.getId());
+                                    answer.setSiteId(site.getId());
+                                    answer.setSurveyId(surveyId);
+                                    answer.setScore(null);
+                                    answer.setCreateDate(null);
+                                    if (ArrayUtils.contains(CmsSurveyQuestionService.QUESTION_TYPES_DICT,
+                                            question.getQuestionType())) {
+                                        String[] itemIds = StringUtils.split(answer.getAnswer(), CommonConstants.COMMA);
+                                        if (CommonUtils.notEmpty(itemIds)) {
+                                            for (String s : itemIds) {
+                                                try {
+                                                    answerSet.add(Long.valueOf(s));
+                                                } catch (NumberFormatException e) {
+                                                }
                                             }
                                         }
-                                    }
-                                    if (CmsSurveyService.SURVEY_TYPE_EXAM.equalsIgnoreCase(entity.getSurveyType())) {
-                                        String[] correct = StringUtils.split(question.getAnswer(), CommonConstants.COMMA);
-                                        boolean flag = true;
-                                        answer.setScore(0);
-                                        if (ArrayUtils.isSameLength(itemIds,
-                                                StringUtils.split(question.getAnswer(), CommonConstants.COMMA))) {
-                                            if (null != itemIds) {
+                                        if (CmsSurveyService.SURVEY_TYPE_EXAM.equalsIgnoreCase(entity.getSurveyType())) {
+                                            String[] corrects = StringUtils.split(question.getAnswer(), CommonConstants.COMMA);
+                                            answer.setScore(0);
+                                            if (null != itemIds && ArrayUtils.isSameLength(itemIds, corrects)) {
+                                                boolean flag = true;
                                                 for (String itemId : itemIds) {
-                                                    if (!ArrayUtils.contains(correct, itemId)) {
+                                                    if (!ArrayUtils.contains(corrects, itemId)) {
                                                         flag = false;
                                                         break;
                                                     }
                                                 }
-                                            }
-                                            if (flag) {
-                                                answer.setScore(question.getScore());
+                                                if (flag) {
+                                                    answer.setScore(question.getScore());
+                                                }
                                             }
                                         }
                                     }
+                                    answerList.add(answer);
                                 }
-                                answer.getId().setUserId(user.getId());
-                                answerList.add(answer);
                             }
                         }
+                        itemService.updateVotes(answerSet.toArray(new Long[answerSet.size()]), 1);
+                        userQuestionquestionService.save(answerList);
                     }
-                    itemService.updateVotes(answerSet.toArray(new Long[answerSet.size()]), 1);
-                    userQuestionquestionService.save(answerList);
                 }
             }
         }
-        return false;
+        return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
 
     @Autowired
@@ -138,5 +142,6 @@ public class SurveyController {
     private CmsUserSurveyQuestionService userQuestionquestionService;
     @Autowired
     private CmsSurveyQuestionItemService itemService;
-
+    @Autowired
+    protected SiteConfigComponent siteConfigComponent;
 }

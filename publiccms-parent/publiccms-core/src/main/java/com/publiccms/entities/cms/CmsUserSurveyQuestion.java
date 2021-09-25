@@ -97,7 +97,7 @@ public class CmsUserSurveyQuestion implements java.io.Serializable {
         this.answer = answer;
     }
 
-    @Column(name = "score", nullable = false)
+    @Column(name = "score")
     public Integer getScore() {
         return this.score;
     }
