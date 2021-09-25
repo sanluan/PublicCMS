@@ -34,6 +34,10 @@
             <dt><@t.page 'content.score'/>:</dt>
             <dd><input class="required digits" type="text" name="score" value="${(q.score)!}" size="5" maxlength="5"/></dd>
         </dl>
+        <dl class="answer">
+            <dt><@t.page 'answer'/>:</dt>
+            <dd><input type="text" name="answer" value="${(q.answer)!}" size="80" maxlength="120" /></dd>
+        </dl>
     </#if>
         <dl class="nowrap">
             <dt><@t.page 'cover'/>:</dt>
@@ -93,8 +97,10 @@
         $('select[name=\'questionType\']',navTab.getCurrentPanel()).on('change',function(){
             if(-1 != $.inArray($(this).val(), ["radio","select","checkbox"])){
                 $('.itemList',navTab.getCurrentPanel()).show();
+                $('.answer',navTab.getCurrentPanel()).hide();
             }else{
                 $('.itemList',navTab.getCurrentPanel()).hide();
+                $('.answer',navTab.getCurrentPanel()).show();
             }
         }).trigger('change');
         </script>

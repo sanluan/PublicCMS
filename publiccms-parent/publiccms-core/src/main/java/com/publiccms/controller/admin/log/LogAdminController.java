@@ -15,6 +15,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
@@ -122,8 +123,10 @@ public class LogAdminController {
      */
     @RequestMapping("logOperate/export")
     @Csrf
-    public ExcelView export(@RequestAttribute SysSite site, String channel, String operate, Date startCreateDate,
-            Date endCreateDate, String workloadType, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+    public ExcelView export(@RequestAttribute SysSite site, String channel, String operate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date startCreateDate,
+            @DateTimeFormat(pattern = "yyyy-MM-dd") Date endCreateDate, String workloadType, HttpServletRequest request,
+            HttpServletResponse response, ModelMap model) {
         LocaleResolver localeResolver = RequestContextUtils.getLocaleResolver(request);
         PageHandler page = logOperateService.getWorkLoadPage(site.getId(), channel, operate, startCreateDate, endCreateDate,
                 workloadType, 1, PageHandler.MAX_PAGE_SIZE);
@@ -131,18 +134,10 @@ public class LogAdminController {
         List<Workload> entityList = (List<Workload>) page.getList();
         Map<String, List<Serializable>> pksMap = new HashMap<>();
         for (Workload entity : entityList) {
-            List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());
-            userIds.add(entity.getUserId());
             List<Serializable> categoryIds = pksMap.computeIfAbsent("deptIds", k -> new ArrayList<>());
             categoryIds.add(entity.getDeptId());
-        }
-        Map<Long, SysUser> userMap = new HashMap<>();
-        if (null != pksMap.get("userIds")) {
-            List<Serializable> userIds = pksMap.get("userIds");
-            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
-            for (SysUser entity : entitys) {
-                userMap.put(entity.getId(), entity);
-            }
+            List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());
+            userIds.add(entity.getUserId());
         }
         Map<Integer, SysDept> deptMap = new HashMap<>();
         if (null != pksMap.get("deptIds")) {
@@ -152,9 +147,17 @@ public class LogAdminController {
                 deptMap.put(entity.getId(), entity);
             }
         }
+        Map<Long, SysUser> userMap = new HashMap<>();
+        if (null != pksMap.get("userIds")) {
+            List<Serializable> userIds = pksMap.get("userIds");
+            List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
+            for (SysUser entity : entitys) {
+                userMap.put(entity.getId(), entity);
+            }
+        }
         ExcelView view = new ExcelView(workbook -> {
             Sheet sheet = workbook.createSheet(
-                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.wordload"));
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.workload"));
             int i = 0, j = 0;
             Row row = sheet.createRow(i++);
 
@@ -167,19 +170,19 @@ public class LogAdminController {
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.count"));
 
-            SysUser user;
             SysDept dept;
+            SysUser user;
             for (Workload entity : entityList) {
                 row = sheet.createRow(i++);
                 j = 0;
-                user = userMap.get(entity.getUserId());
-                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
                 dept = deptMap.get(entity.getDeptId());
                 row.createCell(j++).setCellValue(null == dept ? null : dept.getName());
+                user = userMap.get(entity.getUserId());
+                row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
                 row.createCell(j++).setCellValue(entity.getCount());
             }
         });
-        view.setFilename(LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.wordload"));
+        view.setFilename(LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "page.workload"));
         return view;
     }
 

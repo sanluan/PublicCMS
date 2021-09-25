@@ -59,28 +59,30 @@ public class CmsSurveyQuestionAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsSurveyQuestion entity,
             @ModelAttribute CmsSurveyQuestionParameters questionParameters, HttpServletRequest request, ModelMap model) {
-        entity.setAnswer(null);
         List<CmsSurveyQuestionItem> itemList = new ArrayList<>();
-        if (CommonUtils.notEmpty(questionParameters.getItemList())
-                && ArrayUtils.contains(CmsSurveyQuestionService.QUESTION_TYPES_DICT, entity.getQuestionType())) {
-            StringBuilder answer = new StringBuilder();
-            for (QuestionItem item : questionParameters.getItemList()) {
-                if (item.isAnswer()) {
-                    if (answer.length() > 0) {
-                        if (CmsSurveyQuestionService.QUESTION_TYPE_CHECKBOX.equalsIgnoreCase(entity.getQuestionType())) {
-                            answer.append(CommonConstants.COMMA);
+        if (ArrayUtils.contains(CmsSurveyQuestionService.QUESTION_TYPES_DICT, entity.getQuestionType())) {
+            entity.setAnswer(null);
+            if (CommonUtils.notEmpty(questionParameters.getItemList())) {
+                StringBuilder answer = new StringBuilder();
+                for (QuestionItem item : questionParameters.getItemList()) {
+                    if (item.isAnswer()) {
+                        if (answer.length() > 0) {
+                            if (CmsSurveyQuestionService.QUESTION_TYPE_CHECKBOX.equalsIgnoreCase(entity.getQuestionType())) {
+                                answer.append(CommonConstants.COMMA);
+                                answer.append(item.getId());
+                            }
+                        } else {
                             answer.append(item.getId());
                         }
-                    } else {
-                        answer.append(item.getId());
                     }
+                    CmsSurveyQuestionItem temp = new CmsSurveyQuestionItem(item.getQuestionId(), 0, item.getTitle(),
+                            item.getSort());
+                    temp.setId(item.getId());
+                    itemList.add(temp);
                 }
-                CmsSurveyQuestionItem temp = new CmsSurveyQuestionItem(item.getQuestionId(), 0, item.getTitle(), item.getSort());
-                temp.setId(item.getId());
-                itemList.add(temp);
-            }
-            if (answer.length() > 0) {
-                entity.setAnswer(answer.toString());
+                if (answer.length() > 0) {
+                    entity.setAnswer(answer.toString());
+                }
             }
         }
         if (null != entity.getId()) {

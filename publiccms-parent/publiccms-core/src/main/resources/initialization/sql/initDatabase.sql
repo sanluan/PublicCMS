@@ -912,6 +912,7 @@ INSERT INTO `sys_module` VALUES ('log_visit_day', 'log/visitDay', NULL, 'icon-ca
 INSERT INTO `sys_module` VALUES ('log_visit_item', 'log/visitItem', NULL, 'icon-flag-checkered', 'log_menu', 1, 9);
 INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 'icon-comment-alt', 'log_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('log_visit_url', 'log/visitUrl', NULL, 'icon-link', 'log_menu', 1, 8);
+INSERT INTO `sys_module` VALUES ('log_workload', 'log/workload', NULL, 'icon-truck', 'log_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
 INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);
@@ -1322,6 +1323,9 @@ INSERT INTO `sys_module_lang` VALUES ('log_visit_session', 'zh', '访问日志�
 INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'en', 'Page visit log');
 INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'ja', 'ページアクセスログ');
 INSERT INTO `sys_module_lang` VALUES ('log_visit_url', 'zh', '页面访问日志');
+INSERT INTO `sys_module_lang` VALUES ('log_workload', 'en', 'Workload');
+INSERT INTO `sys_module_lang` VALUES ('log_workload', 'ja', 'ワークロード');
+INSERT INTO `sys_module_lang` VALUES ('log_workload', 'zh', '工作量统计');
 INSERT INTO `sys_module_lang` VALUES ('maintenance', 'en', 'Maintain');
 INSERT INTO `sys_module_lang` VALUES ('maintenance', 'ja', '維持');
 INSERT INTO `sys_module_lang` VALUES ('maintenance', 'zh', '维护');

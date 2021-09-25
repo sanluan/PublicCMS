@@ -63,10 +63,10 @@
                         </@_surveyQuestionItemList>
                     <#elseif 'text'=q.questionType>
                         <#if q.answer?has_content><p><label><@t.page 'answer.correct'/>:</label>${(q.answer)!}</p></#if>
-                        <p><label><@t.page 'answer'/>:</label>${(userQuestionMap[q.id?string].answer)!}</p>
+                        <p><label><@t.page 'answer.user'/>:</label>${(userQuestionMap[q.id?string].answer)!}</p>
                     <#elseif (userQuestionMap[q.id?string].answer)?has_content&&('file'=q.questionType||'picture'=q.questionType)>
                         <#if q.answer?has_content><p><label><@t.page 'answer.correct'/>:</label>${(q.answer)!}</p></#if>
-                        <p><a href="${(userQuestionMap[q.id?string].answer)!}" target="_blank"><@t.page 'answer'/></a></p>
+                        <p><a href="${(userQuestionMap[q.id?string].answer)!}" target="_blank"><@t.page 'answer.user'/></a></p>
                     </#if>
                     <#if 'exam'=survey.surveyType>
                         <input type="hidden" name="answerList[${q?index}].id.userId" value="${object.id.userId!}"/>

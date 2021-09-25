@@ -181,3 +181,8 @@ INSERT INTO `sys_module_lang` VALUES ('survey_view', 'en', 'View');
 INSERT INTO `sys_module_lang` VALUES ('survey_view', 'ja', '見る');
 UPDATE `sys_module` SET `sort` = '8' WHERE `id` = 'word_list';
 UPDATE `sys_module` SET `sort` = '9' WHERE `id` = 'content_recycle_list';
+-- 2021-09-25 --
+INSERT INTO `sys_module` VALUES ('log_workload', 'log/workload', NULL, 'icon-truck', 'log_menu', 1, 0);
+INSERT INTO `sys_module_lang` VALUES ('log_workload', 'en', 'Workload');
+INSERT INTO `sys_module_lang` VALUES ('log_workload', 'ja', 'ワークロード');
+INSERT INTO `sys_module_lang` VALUES ('log_workload', 'zh', '工作量统计');

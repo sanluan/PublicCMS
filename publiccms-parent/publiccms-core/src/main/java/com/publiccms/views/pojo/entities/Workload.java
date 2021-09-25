@@ -7,14 +7,14 @@ public class Workload implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     private Long userId;
     private Integer deptId;
-    private int count;
+    private long count;
 
-    public Workload(Long userId, int count) {
+    public Workload(Long userId, long count) {
         this.userId = userId;
         this.count = count;
     }
     
-    public Workload(Integer deptId, int count) {
+    public Workload(Integer deptId, long count) {
         this.deptId = deptId;
         this.count = count;
     }
@@ -52,7 +52,7 @@ public class Workload implements java.io.Serializable {
     /**
      * @return the count
      */
-    public int getCount() {
+    public long getCount() {
         return count;
     }
 
@@ -60,7 +60,7 @@ public class Workload implements java.io.Serializable {
      * @param count
      *            the count to set
      */
-    public void setCount(int count) {
+    public void setCount(long count) {
         this.count = count;
     }
 }
