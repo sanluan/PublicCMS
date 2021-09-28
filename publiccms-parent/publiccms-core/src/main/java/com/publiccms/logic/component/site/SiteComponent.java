@@ -124,25 +124,12 @@ public class SiteComponent implements Cache {
     }
 
     /**
-     * @param serverName
-     * @param path
-     * @return view name
-     */
-    public String getViewName(String serverName, String path) {
-        SysDomain sysDomain = getDomain(serverName);
-        SysSite site = getSite(serverName, path);
-        path = getPath(site, path);
-        return getViewName(site, sysDomain, path);
-    }
-
-    /**
      * @param site
      * @param sysDomain
      * @param path
      * @return view name
      */
     public String getViewName(SysSite site, SysDomain sysDomain, String path) {
-        path = getPath(site, path);
         if (CommonUtils.notEmpty(sysDomain.getPath())) {
             if (path.startsWith(CommonConstants.SEPARATOR) || sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
                 if (path.startsWith(CommonConstants.SEPARATOR) && sysDomain.getPath().endsWith(CommonConstants.SEPARATOR)) {
@@ -194,9 +181,9 @@ public class SiteComponent implements Cache {
     public String getPath(SysSite site, String path) {
         if (null != site.getParentId() && CommonUtils.notEmpty(site.getDirectory())) {
             int index = 0;
-            if (path.startsWith(CommonConstants.SEPARATOR)) {
+            if (path.startsWith(CommonConstants.SEPARATOR + site.getDirectory())) {
                 index = path.indexOf(CommonConstants.SEPARATOR, 1);
-            } else {
+            } else if (path.startsWith(site.getDirectory())) {
                 index = path.indexOf(CommonConstants.SEPARATOR);
             }
             if (0 < index) {

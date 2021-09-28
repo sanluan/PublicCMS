@@ -12,6 +12,7 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.UrlBasedViewResolver;
 
 import com.publiccms.common.constants.CmsVersion;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.logic.component.site.SiteComponent;
 
 /**
@@ -24,7 +25,6 @@ public class WebDispatcherServlet extends CommonDispatcherServlet {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private SiteComponent siteComponent;
     /**
      * 
      */
@@ -60,18 +60,8 @@ public class WebDispatcherServlet extends CommonDispatcherServlet {
         } else if (viewName.startsWith(GLOBLE_URL_PREFIX)) {
             multiSiteViewName = viewName.substring(GLOBLE_URL_PREFIX_LENGTH);
         } else {
-            multiSiteViewName = getSiteComponent().getViewName(request.getServerName(), viewName);
+            multiSiteViewName = SiteComponent.getFullTemplatePath(ControllerUtils.getSiteFromAttribute(request), viewName);
         }
         return super.resolveViewName(multiSiteViewName, model, locale, request);
-    }
-
-    /**
-     * @return site component
-     */
-    public SiteComponent getSiteComponent() {
-        if (null == siteComponent) {
-            siteComponent = getWebApplicationContext().getBean(SiteComponent.class);
-        }
-        return siteComponent;
     }
 }
