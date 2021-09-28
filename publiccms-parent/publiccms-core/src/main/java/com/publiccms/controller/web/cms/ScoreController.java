@@ -86,7 +86,6 @@ public class ScoreController {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
-                            entity.setScores(1);
                             service.save(entity);
                         } else {
                             service.delete(id);
@@ -102,7 +101,6 @@ public class ScoreController {
                         if (score) {
                             entity = new CmsUserScore();
                             entity.setId(id);
-                            entity.setScores(1);
                             service.save(entity);
                         } else {
                             service.delete(id);

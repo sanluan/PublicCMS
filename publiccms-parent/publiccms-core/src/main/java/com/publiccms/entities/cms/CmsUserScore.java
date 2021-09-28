@@ -29,8 +29,6 @@ public class CmsUserScore implements java.io.Serializable {
     private static final long serialVersionUID = 1L;
     @GeneratorColumn(title = "ID")
     private CmsUserScoreId id;
-    @GeneratorColumn(title = "分数", order = true)
-    private int scores;
     @GeneratorColumn(title = "创建日期")
     private Date createDate;
 
@@ -62,14 +60,5 @@ public class CmsUserScore implements java.io.Serializable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
-    }
-
-    @Column(name = "scores", nullable = false)
-    public int getScores() {
-        return this.scores;
-    }
-
-    public void setScores(int scores) {
-        this.scores = scores;
     }
 }
