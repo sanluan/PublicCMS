@@ -98,7 +98,7 @@
     </#if>
         <#if authorizedMap['cmsContent/changeModelParameters']>
             <li>
-                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(modelMap[a.modelId].parentId?url)!}" target="dialog" mask="true"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
+                <a href="cmsContent/changeModelParameters.html?id={sid}&parentId=${(parent.modelId?url)!}" target="dialog" mask="true"><i class="icon-list-alt icon-large"></i> <@t.page 'content.change_model'/></a>
             </li>
         </#if>
             <li class="line">line</li>
