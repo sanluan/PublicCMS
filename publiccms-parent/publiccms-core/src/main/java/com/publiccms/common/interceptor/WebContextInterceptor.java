@@ -101,7 +101,7 @@ public class WebContextInterceptor implements HandlerInterceptor {
 
     protected SysUser initUser(SysUser user, String channel, String cookiesName, SysSite site, HttpServletRequest request,
             HttpServletResponse response) {
-        response.addHeader(CommonConstants.getXPowered(), CmsVersion.getVersion());
+        response.setHeader(CommonConstants.getXPowered(), CmsVersion.getVersion());
         String contextPath = request.getContextPath();
         Cookie userCookie = RequestUtils.getCookie(request.getCookies(), cookiesName);
         if (null == user && null != userCookie && CommonUtils.notEmpty(userCookie.getValue())) {
