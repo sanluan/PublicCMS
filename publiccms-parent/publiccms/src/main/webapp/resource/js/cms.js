@@ -131,10 +131,10 @@ function apiRequest(base,api,apisArray,authorizedApis){
                 }
             });
             if(++apiCounter==apisArray.length){
-                $(".authorizedApis", navTab.getCurrentPanel()).addClass('tree').jTree();
-                for(authorizedApi in authorizedApis){
-                    $("input[type=checkbox][value=\""+authorizedApis[authorizedApi]+"\"]", navTab.getCurrentPanel()).click();
+                for(i=0; i<authorizedApis.length; i++ ){
+                    $(".authorizedApis li a[tname=apis][tvalue=\""+authorizedApis[i]+"\"]",navTab.getCurrentPanel()).prop('checked',true);
                 }
+                $(".authorizedApis", navTab.getCurrentPanel()).addClass('tree').jTree();
                 apiCounter=0;
             }
         }
