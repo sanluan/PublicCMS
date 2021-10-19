@@ -712,6 +712,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             entity.setScores(0);
             entity.setComments(0);
             entity.setTagIds(null);
+            entity.setCopied(true);
             if (status == STATUS_NORMAL) {
                 entity.setCheckUserId(userId);
                 entity.setCheckDate(now);
