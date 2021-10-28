@@ -99,6 +99,7 @@ public class UserController {
         if (ControllerUtils.isUnSafeUrl(returnUrl, site, safeReturnUrl, request)) {
             returnUrl = site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }
+        user = service.getEntity(user.getId());
         if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("password", password, model)
                 || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)
                 || null != user.getPassword() && ControllerUtils.verifyNotEquals("password", user.getPassword(),
