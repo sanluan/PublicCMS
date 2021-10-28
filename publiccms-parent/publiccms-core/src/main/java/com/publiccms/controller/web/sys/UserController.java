@@ -96,6 +96,7 @@ public class UserController {
             String password, String repassword, String encoding, String returnUrl, HttpServletRequest request,
             HttpSession session, HttpServletResponse response, ModelMap model) {
         returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
+        user = service.getEntity(user.getId());
         if (ControllerUtils.verifyNotEmpty("user", user, model) || ControllerUtils.verifyNotEmpty("password", password, model)
                 || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)
                 || null != user.getPassword() && ControllerUtils.verifyNotEquals("password", user.getPassword(),
