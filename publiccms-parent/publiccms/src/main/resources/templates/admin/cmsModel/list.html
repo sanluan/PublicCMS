@@ -35,6 +35,7 @@
                 <th><@t.page 'url'/></th>
                 <th><@t.page 'model.has_images'/></th>
                 <th><@t.page 'model.has_attachs'/></th>
+                <th><@t.page 'model.has_products'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -46,6 +47,7 @@
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>
+                <td>${a.hasProducts?then(t.pageMessage('yes'),'')}</td>
                 <td class="wrap">
                     <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i> <@t.page 'model.edit'/></a>
                     <#if a.hasChild>
