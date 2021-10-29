@@ -21,29 +21,26 @@ import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
  * 
  */
 @Component
-public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
+public class CmsSurveyQuestionWithoutAnswerListDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
         boolean absoluteURL = handler.getBoolean("absoluteURL", true);
         PageHandler page = service.getPage(handler.getLong("surveyId"), handler.getStringArray("questionTypes"),
                 handler.getString("orderType"), handler.getInteger("pageIndex", 1), handler.getInteger("pageSize", 30));
-        if (absoluteURL) {
-            SysSite site = getSite(handler);
-            @SuppressWarnings("unchecked")
-            List<CmsSurveyQuestion> list = (List<CmsSurveyQuestion>) page.getList();
-            if (null != list) {
-                list.forEach(e -> {
+        SysSite site = getSite(handler);
+        @SuppressWarnings("unchecked")
+        List<CmsSurveyQuestion> list = (List<CmsSurveyQuestion>) page.getList();
+        if (null != list) {
+            list.forEach(e -> {
+                e.setAnswer(null);
+                if (absoluteURL) {
                     e.setCover(templateComponent.getUrl(site, true, e.getCover()));
-                });
-            }
+                }
+            });
         }
-        handler.put("page", page).render();
-    }
 
-    @Override
-    public boolean needAppToken() {
-        return true;
+        handler.put("page", page).render();
     }
 
     @Autowired

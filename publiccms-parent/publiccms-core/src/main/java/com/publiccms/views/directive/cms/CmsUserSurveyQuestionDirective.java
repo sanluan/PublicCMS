@@ -64,6 +64,11 @@ public class CmsUserSurveyQuestionDirective extends AbstractTemplateDirective {
         }
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private CmsUserSurveyQuestionService service;
 

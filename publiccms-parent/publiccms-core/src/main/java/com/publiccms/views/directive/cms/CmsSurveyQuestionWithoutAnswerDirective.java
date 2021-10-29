@@ -24,7 +24,7 @@ import com.publiccms.logic.service.cms.CmsSurveyQuestionService;
  * 
  */
 @Component
-public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
+public class CmsSurveyQuestionWithoutAnswerDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
@@ -34,6 +34,7 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
         if (CommonUtils.notEmpty(id)) {
             CmsSurveyQuestion entity = service.getEntity(id);
             if (null != entity) {
+                entity.setAnswer(null);
                 if (absoluteURL) {
                     entity.setCover(templateComponent.getUrl(site, true, entity.getCover()));
                 }
@@ -43,21 +44,16 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
             Long[] ids = handler.getLongArray("ids");
             if (CommonUtils.notEmpty(ids)) {
                 List<CmsSurveyQuestion> entityList = service.getEntitys(ids);
-                Consumer<CmsSurveyQuestion> consumer = null;
-                if (absoluteURL) {
-                    consumer = e -> {
+                Consumer<CmsSurveyQuestion> consumer = e -> {
+                    e.setAnswer(null);
+                    if (absoluteURL) {
                         e.setCover(templateComponent.getUrl(site, true, e.getCover()));
-                    };
-                }
+                    }
+                };
                 Map<String, CmsSurveyQuestion> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer, null);
                 handler.put("map", map).render();
             }
         }
-    }
-
-    @Override
-    public boolean needAppToken() {
-        return true;
     }
 
     @Autowired

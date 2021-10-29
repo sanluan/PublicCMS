@@ -27,6 +27,11 @@ public class CmsUserSurveyQuestionListDirective extends AbstractTemplateDirectiv
         handler.put("page", page).render();
     }
 
+    @Override
+    public boolean needAppToken() {
+        return true;
+    }
+
     @Autowired
     private CmsUserSurveyQuestionService service;
 
