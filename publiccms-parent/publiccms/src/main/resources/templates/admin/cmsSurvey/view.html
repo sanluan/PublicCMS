@@ -65,6 +65,12 @@
                 </#list>
                     </ol>
                 </@_surveyQuestionItemList>
+                <#elseif 'text'=q.questionType>
+                    <@_userSurveyQuestionList questionId=q.id>
+                        <#list page.list as a>
+                            <p>${a?counter}.${(a.answer)!}</p>
+                        </#list>
+                    </@_userSurveyQuestionList>
                 </#if>
             </div>
             <div class="divider"></div>
