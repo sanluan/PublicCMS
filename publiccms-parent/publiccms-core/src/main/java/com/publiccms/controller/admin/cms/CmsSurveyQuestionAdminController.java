@@ -1,6 +1,5 @@
 package com.publiccms.controller.admin.cms;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
@@ -23,7 +22,6 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsSurveyQuestion;
-import com.publiccms.entities.cms.CmsSurveyQuestionItem;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
@@ -59,7 +57,20 @@ public class CmsSurveyQuestionAdminController {
     @Csrf
     public String save(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, CmsSurveyQuestion entity,
             @ModelAttribute CmsSurveyQuestionParameters questionParameters, HttpServletRequest request, ModelMap model) {
-        List<CmsSurveyQuestionItem> itemList = new ArrayList<>();
+        List<QuestionItem> itemList = questionParameters.getItemList();
+        if (null != entity.getId()) {
+            entity = service.update(entity.getId(), entity, ignoreProperties);
+            itemService.update(entity.getId(), itemList, itemIgnoreProperties);
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsSurveyQuestion", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+        } else {
+            service.save(entity);
+            itemService.save(entity.getId(), itemList);
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsSurveyQuestion", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+        }
         if (ArrayUtils.contains(CmsSurveyQuestionService.QUESTION_TYPES_DICT, entity.getQuestionType())) {
             entity.setAnswer(null);
             if (CommonUtils.notEmpty(questionParameters.getItemList())) {
@@ -75,28 +86,12 @@ public class CmsSurveyQuestionAdminController {
                             answer.append(item.getId());
                         }
                     }
-                    CmsSurveyQuestionItem temp = new CmsSurveyQuestionItem(item.getQuestionId(), 0, item.getTitle(),
-                            item.getSort());
-                    temp.setId(item.getId());
-                    itemList.add(temp);
                 }
                 if (answer.length() > 0) {
                     entity.setAnswer(answer.toString());
                 }
             }
-        }
-        if (null != entity.getId()) {
-            entity = service.update(entity.getId(), entity, ignoreProperties);
-            itemService.update(entity.getId(), itemList, itemIgnoreProperties);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "update.cmsSurveyQuestion", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
-        } else {
-            service.save(entity);
-            itemService.save(entity.getId(), itemList);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
-                    LogLoginService.CHANNEL_WEB_MANAGER, "save.cmsSurveyQuestion", RequestUtils.getIpAddress(request),
-                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+            service.updateAnswer(entity.getId(), entity.getAnswer());
         }
         return CommonConstants.TEMPLATE_DONE;
     }

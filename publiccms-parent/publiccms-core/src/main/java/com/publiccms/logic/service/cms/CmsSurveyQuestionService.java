@@ -1,15 +1,17 @@
 package com.publiccms.logic.service.cms;
 
+import java.io.Serializable;
+
 // Generated 2020-7-1 21:06:19 by com.publiccms.common.generator.SourceGenerator
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.publiccms.entities.cms.CmsSurveyQuestion;
-import com.publiccms.logic.dao.cms.CmsSurveyQuestionDao;
 import com.publiccms.common.base.BaseService;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.entities.cms.CmsSurveyQuestion;
+import com.publiccms.logic.dao.cms.CmsSurveyQuestionDao;
 
 /**
  *
@@ -38,6 +40,19 @@ public class CmsSurveyQuestionService extends BaseService<CmsSurveyQuestion> {
     @Transactional(readOnly = true)
     public PageHandler getPage(Long surveyId, String[] questionTypes, String orderType, Integer pageIndex, Integer pageSize) {
         return dao.getPage(surveyId, questionTypes, orderType, pageIndex, pageSize);
+    }
+
+    /**
+     * @param id
+     * @param answer
+     * @return entity
+     */
+    public CmsSurveyQuestion updateAnswer(Serializable id, String answer) {
+        CmsSurveyQuestion entity = getEntity(id);
+        if (null != entity) {
+            entity.setAnswer(answer);
+        }
+        return entity;
     }
 
     @Autowired

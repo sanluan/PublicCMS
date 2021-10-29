@@ -14,6 +14,7 @@ import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsSurveyQuestionItem;
 import com.publiccms.logic.dao.cms.CmsSurveyQuestionItemDao;
+import com.publiccms.views.pojo.entities.QuestionItem;
 
 /**
  *
@@ -57,31 +58,33 @@ public class CmsSurveyQuestionItemService extends BaseService<CmsSurveyQuestionI
      * @param entitys
      * @param ignoreProperties
      */
-    public void update(long questionId, List<CmsSurveyQuestionItem> entitys, String[] ignoreProperties) {
+    public void update(long questionId, List<QuestionItem> entitys, String[] ignoreProperties) {
         if (CommonUtils.notEmpty(entitys)) {
-            for (CmsSurveyQuestionItem entity : entitys) {
+            for (QuestionItem entity : entitys) {
                 if (null != entity.getId()) {
                     CmsSurveyQuestionItem oldEntity = getEntity(entity.getId());
                     if (questionId == oldEntity.getQuestionId()) {
                         update(entity.getId(), entity, ignoreProperties);
                     }
                 } else {
-                    entity.setQuestionId(questionId);
-                    save(entity);
+                    CmsSurveyQuestionItem temp = new CmsSurveyQuestionItem(questionId, 0, entity.getTitle(), entity.getSort());
+                    save(temp);
+                    entity.setId(temp.getId());
                 }
             }
         }
     }
 
     /**
-     * @param questionId 
+     * @param questionId
      * @param entityList
      */
-    public void save(long questionId, List<CmsSurveyQuestionItem> entityList) {
+    public void save(long questionId, List<QuestionItem> entityList) {
         if (CommonUtils.notEmpty(entityList)) {
-            for (CmsSurveyQuestionItem entity : entityList) {
-                entity.setQuestionId(questionId);
-                save(entity);
+            for (QuestionItem entity : entityList) {
+                CmsSurveyQuestionItem temp = new CmsSurveyQuestionItem(questionId, 0, entity.getTitle(), entity.getSort());
+                save(temp);
+                entity.setId(temp.getId());
             }
         }
     }
