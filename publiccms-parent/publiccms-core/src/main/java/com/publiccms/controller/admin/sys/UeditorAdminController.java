@@ -63,6 +63,7 @@ public class UeditorAdminController {
     protected static final String ACTION_UPLOAD = "upload";
     protected static final String ACTION_UPLOAD_SCRAW = "uploadScraw";
     protected static final String ACTION_CATCHIMAGE = "catchimage";
+    protected static final String ACTION_LISTIMAGE = "listimage";
     protected static final String ACTION_LISTFILE = "listfile";
 
     protected static final String FIELD_NAME = "file";
@@ -75,6 +76,7 @@ public class UeditorAdminController {
     public static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
             new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
                     ".pptx", ".pdf", ".txt", ".md", ".xml", ".ofd", ".psd" });
+    protected static final String[] IMAGE_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };
 
     /**
      * @param site
@@ -92,7 +94,7 @@ public class UeditorAdminController {
         config.setVideoActionName(ACTION_UPLOAD);
         config.setFileActionName(ACTION_UPLOAD);
         config.setCatcherActionName(ACTION_CATCHIMAGE);
-        config.setImageManagerActionName(ACTION_LISTFILE);
+        config.setImageManagerActionName(ACTION_LISTIMAGE);
         config.setFileManagerActionName(ACTION_LISTFILE);
         config.setImageFieldName(FIELD_NAME);
         config.setScrawlFieldName(FIELD_NAME);
@@ -258,21 +260,22 @@ public class UeditorAdminController {
     /**
      * @param site
      * @param admin
+     * @param action
      * @param start
      * @param request
      * @param session
      * @return view name
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping(params = "action=" + ACTION_LISTFILE)
+    @RequestMapping(params = { "action=" + ACTION_LISTIMAGE, "action=" + ACTION_LISTFILE })
     @ResponseBody
-    public Map<String, Object> listfile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer start,
-            HttpServletRequest request, HttpSession session) {
+    public Map<String, Object> listfile(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String action,
+            Integer start, HttpServletRequest request, HttpSession session) {
         if (CommonUtils.empty(start)) {
             start = 0;
         }
-        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null, null, null, null, null, null,
-                start / 20 + 1, 20);
+        PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null,
+                ACTION_LISTIMAGE.equalsIgnoreCase(action) ? IMAGE_FILETYPES : null, null, null, null, null, start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
         List<Map<String, Object>> list = new ArrayList<>();

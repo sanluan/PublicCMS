@@ -3,6 +3,8 @@ package com.publiccms.logic.component.task;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.PreDestroy;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.CronScheduleBuilder;
@@ -221,5 +223,16 @@ public class ScheduledTask {
      */
     public String getTaskName(Integer id) {
         return "task-" + id;
+    }
+
+    @PreDestroy
+    public void destroy() {
+        try {
+            if (scheduler.isStarted()) {
+                scheduler.shutdown(true);
+            }
+        } catch (SchedulerException e) {
+            log.error(e.getMessage(), e);
+        }
     }
 }
