@@ -25,6 +25,7 @@ public class WebDispatcherServlet extends CommonDispatcherServlet {
      * 
      */
     private static final long serialVersionUID = 1L;
+    private SiteComponent siteComponent;
     /**
      * 
      */
@@ -60,8 +61,19 @@ public class WebDispatcherServlet extends CommonDispatcherServlet {
         } else if (viewName.startsWith(GLOBLE_URL_PREFIX)) {
             multiSiteViewName = viewName.substring(GLOBLE_URL_PREFIX_LENGTH);
         } else {
-            multiSiteViewName = SiteComponent.getFullTemplatePath(ControllerUtils.getSiteFromAttribute(request), viewName);
+            multiSiteViewName = getSiteComponent().getViewName(ControllerUtils.getSiteFromAttribute(request),
+                    request.getServerName(), viewName);
         }
         return super.resolveViewName(multiSiteViewName, model, locale, request);
+    }
+
+    /**
+     * @return site component
+     */
+    public SiteComponent getSiteComponent() {
+        if (null == siteComponent) {
+            siteComponent = getWebApplicationContext().getBean(SiteComponent.class);
+        }
+        return siteComponent;
     }
 }

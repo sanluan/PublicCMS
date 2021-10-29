@@ -125,6 +125,16 @@ public class SiteComponent implements Cache {
 
     /**
      * @param site
+     * @param serverName
+     * @param path
+     * @return view name
+     */
+    public String getViewName(SysSite site, String serverName, String path) {
+        return getViewName(site, getDomain(serverName), path);
+    }
+
+    /**
+     * @param site
      * @param sysDomain
      * @param path
      * @return view name
