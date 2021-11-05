@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.api.Config;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.cms.CmsComment;
@@ -44,14 +45,10 @@ public class ScoreController {
      * @return
      */
     @RequestMapping("score")
+    @Csrf
     @ResponseBody
-    public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long userId, String itemType,
-            long itemId) {
-        if (null != userId && userId.equals(user.getId())) {
-            return score(site, user.getId(), itemType, itemId, true);
-        } else {
-            return false;
-        }
+    public boolean score(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId) {
+        return score(site, user.getId(), itemType, itemId, true);
     }
 
     /**
@@ -63,14 +60,10 @@ public class ScoreController {
      * @return
      */
     @RequestMapping("unscore")
+    @Csrf
     @ResponseBody
-    public boolean unscore(@RequestAttribute SysSite site, @SessionAttribute SysUser user, Long userId, String itemType,
-            long itemId) {
-        if (null != userId && userId.equals(user.getId())) {
-            return score(site, user.getId(), itemType, itemId, false);
-        } else {
-            return false;
-        }
+    public boolean unscore(@RequestAttribute SysSite site, @SessionAttribute SysUser user, String itemType, long itemId) {
+        return score(site, user.getId(), itemType, itemId, false);
     }
 
     private boolean score(SysSite site, long userId, String itemType, long itemId, boolean score) {
