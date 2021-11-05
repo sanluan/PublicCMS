@@ -82,14 +82,15 @@ public class ZipUtils {
                         ZipEntry zipEntry = new ZipEntry(fullName + Constants.SEPARATOR);
                         out.putNextEntry(zipEntry);
                         compress(entry, out, fullName);
-                    } else if (!entry.getFileName().endsWith(".zip")) {
+                    } else if (!fullName.equalsIgnoreCase("files.zip")) {
                         compressFile(entry.toFile(), out, fullName);
                     }
                 }
             } catch (IOException e) {
             }
         } else {
-            compressFile(sourceFilePath.toFile(), out, sourceFilePath.toFile().getName());
+            File file = sourceFilePath.toFile();
+            compressFile(file, out, file.getName());
         }
     }
 
