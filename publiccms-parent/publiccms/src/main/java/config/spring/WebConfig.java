@@ -79,7 +79,7 @@ public class WebConfig implements WebMvcConfigurer {
      * @return web viewresolver
      */
     @Bean
-    public WebFreeMarkerViewResolver webViewResolver(TemplateComponent templateComponent) {
+    public ViewResolver webViewResolver(TemplateComponent templateComponent) {
         WebFreeMarkerViewResolver bean = new WebFreeMarkerViewResolver();
         bean.setOrder(0);
         bean.setConfiguration(templateComponent.getWebConfiguration());

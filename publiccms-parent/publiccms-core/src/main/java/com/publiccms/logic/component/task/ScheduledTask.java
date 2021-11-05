@@ -229,7 +229,7 @@ public class ScheduledTask {
     public void destroy() {
         try {
             if (scheduler.isStarted()) {
-                scheduler.shutdown(true);
+                scheduler.shutdown(false);
             }
         } catch (SchedulerException e) {
             log.error(e.getMessage(), e);

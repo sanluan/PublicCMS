@@ -90,6 +90,15 @@ public class DirectiveComponent {
         freemarkerVariables.putAll(methodMap);
         adminConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, adminConfiguration.getObjectWrapper()));
         templateComponent.setAdminConfiguration(adminConfiguration);
+        
+        Configuration customAdminConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        File customAdminFile = new File(siteComponent.getCustomAdminTemplateFilePath());
+        customAdminFile.mkdirs();
+        customAdminConfiguration.setDirectoryForTemplateLoading(customAdminFile);
+        copyConfig(adminConfiguration, customAdminConfiguration);
+        customAdminConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, customAdminConfiguration.getObjectWrapper()));
+        templateComponent.setCustomAdminConfiguration(customAdminConfiguration);
+        
         Configuration webConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         File webFile = new File(siteComponent.getWebTemplateFilePath());
         webFile.mkdirs();
