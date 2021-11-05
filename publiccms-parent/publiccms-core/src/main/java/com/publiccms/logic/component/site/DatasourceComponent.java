@@ -13,6 +13,8 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.PreDestroy;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -292,6 +294,13 @@ public class DatasourceComponent implements SiteCache {
     @Override
     public void clear(short siteId) {
         cache.remove(siteId);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        if (pool.isShutdown()) {
+            pool.shutdown();
+        }
     }
 
     public void cleanDisabledDatasource(int length) {

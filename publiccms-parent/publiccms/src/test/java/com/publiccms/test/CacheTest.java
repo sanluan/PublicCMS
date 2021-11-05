@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.PreDestroy;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,7 +34,13 @@ public class CacheTest {
             e.printStackTrace();
         }
     }
-
+    
+    @PreDestroy
+    public void destroy() {
+        if (pool.isShutdown()) {
+            pool.shutdown();
+        }
+    }
 }
 
 class TestTask implements Runnable {

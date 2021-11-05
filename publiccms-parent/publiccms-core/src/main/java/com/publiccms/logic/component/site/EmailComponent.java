@@ -10,6 +10,7 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.PreDestroy;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
@@ -322,6 +323,13 @@ public class EmailComponent implements SiteCache, Config {
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         cache = cacheEntityFactory.createCacheEntity(CONFIG_CODE, CacheEntityFactory.MEMORY_CACHE_ENTITY);
+    }
+
+    @PreDestroy
+    public void destroy() {
+        if (pool.isShutdown()) {
+            pool.shutdown();
+        }
     }
 }
 
