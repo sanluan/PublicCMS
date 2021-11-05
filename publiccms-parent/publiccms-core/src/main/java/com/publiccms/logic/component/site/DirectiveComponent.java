@@ -94,8 +94,12 @@ public class DirectiveComponent {
         Configuration customAdminConfiguration = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         File customAdminFile = new File(siteComponent.getCustomAdminTemplateFilePath());
         customAdminFile.mkdirs();
+        
         customAdminConfiguration.setDirectoryForTemplateLoading(customAdminFile);
         copyConfig(adminConfiguration, customAdminConfiguration);
+        customAdminConfiguration.setAutoImports(adminConfiguration.getAutoImports());
+        customAdminConfiguration.setLazyAutoImports(adminConfiguration.getLazyAutoImports());
+        customAdminConfiguration.setAutoIncludes(adminConfiguration.getAutoIncludes());
         customAdminConfiguration.setAllSharedVariables(new SimpleHash(freemarkerVariables, customAdminConfiguration.getObjectWrapper()));
         templateComponent.setCustomAdminConfiguration(customAdminConfiguration);
         

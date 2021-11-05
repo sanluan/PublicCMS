@@ -31,7 +31,7 @@ public class SiteComponent implements Cache {
     /**
      * 
      */
-    public static final String CUSTOM_TEMPLATE_PATH = "customadmintemplate";
+    public static final String CUSTOM_TEMPLATE_PATH = "template/custom";
     /**
      * 
      */
