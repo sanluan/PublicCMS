@@ -31,10 +31,6 @@ public class SiteComponent implements Cache {
     /**
      * 
      */
-    public static final String CUSTOM_TEMPLATE_PATH = "template/custom";
-    /**
-     * 
-     */
     public static final String BACKUP_PATH = "backup";
     /**
      * 
@@ -70,7 +66,6 @@ public class SiteComponent implements Cache {
     private String webFilePath;
     private String taskTemplateFilePath;
     private String webTemplateFilePath;
-    private String customAdminTemplateFilePath;
 
     private String webBackupFilePath;
     private String webTemplateBackupFilePath;
@@ -451,7 +446,6 @@ public class SiteComponent implements Cache {
         this.webFilePath = rootPath + STATIC_FILE_PATH_WEB;
         this.taskTemplateFilePath = rootPath + TASK_FILE_PATH;
         this.webTemplateFilePath = rootPath + TEMPLATE_PATH;
-        this.customAdminTemplateFilePath = rootPath + CUSTOM_TEMPLATE_PATH;
         this.webTemplateBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + TEMPLATE_PATH;
         this.taskTemplateBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + TASK_FILE_PATH;
         this.webBackupFilePath = rootPath + BACKUP_PATH + CommonConstants.SEPARATOR + STATIC_FILE_PATH_WEB;
@@ -498,12 +492,5 @@ public class SiteComponent implements Cache {
      */
     public String getWebTemplateFilePath() {
         return webTemplateFilePath;
-    }
-
-    /**
-     * @return the customAdminTemplateFilePath
-     */
-    public String getCustomAdminTemplateFilePath() {
-        return customAdminTemplateFilePath;
     }
 }

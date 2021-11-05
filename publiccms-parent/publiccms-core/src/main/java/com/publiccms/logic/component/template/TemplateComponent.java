@@ -64,7 +64,6 @@ public class TemplateComponent implements Cache {
     public static final String CONTEXT_ADMIN_CONTEXT_PATH = "adminContextPath";
 
     private Configuration adminConfiguration;
-    private Configuration customAdminConfiguration;
     private Configuration webConfiguration;
     private Configuration taskConfiguration;
 
@@ -496,7 +495,6 @@ public class TemplateComponent implements Cache {
     @Override
     public void clear() {
         adminConfiguration.clearTemplateCache();
-        customAdminConfiguration.clearTemplateCache();;
         clearTemplateCache();
         clearTaskTemplateCache();
     }
@@ -544,14 +542,6 @@ public class TemplateComponent implements Cache {
     }
 
     /**
-     * @param customAdminConfiguration
-     *            the customAdminConfiguration to set
-     */
-    public void setCustomAdminConfiguration(Configuration customAdminConfiguration) {
-        this.customAdminConfiguration = customAdminConfiguration;
-    }
-
-    /**
      * 获取FreeMarker管理后台配置
      * 
      * @return FreeMarker admin config
@@ -567,15 +557,6 @@ public class TemplateComponent implements Cache {
      */
     public Configuration getWebConfiguration() {
         return webConfiguration;
-    }
-
-    /**
-     * 获取FreeMarker管理后台配置
-     * 
-     * @return FreeMarker web config
-     */
-    public Configuration getCustomAdminConfiguration() {
-        return customAdminConfiguration;
     }
 
     /**

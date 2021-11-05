@@ -20,7 +20,6 @@ import com.publiccms.common.handler.FullBeanNameGenerator;
 import com.publiccms.common.interceptor.AdminContextInterceptor;
 import com.publiccms.common.interceptor.CsrfInterceptor;
 import com.publiccms.common.view.AdminFreeMarkerView;
-import com.publiccms.common.view.WebFreeMarkerViewResolver;
 import com.publiccms.logic.component.cache.CacheComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 
@@ -71,26 +70,6 @@ public class AdminConfig implements WebMvcConfigurer {
         bean.setSuffix(".html");
         bean.setExposeSpringMacroHelpers(false);
         bean.setContentType("text/html;charset=UTF-8");
-        cacheComponent.registerCachingViewResolverList(bean);
-        return bean;
-    }
-
-    /**
-     * 视图层解析器
-     * 
-     * @param templateComponent
-     * @return web viewresolver
-     */
-    @Bean
-    public ViewResolver customViewResolver(TemplateComponent templateComponent) {
-        WebFreeMarkerViewResolver bean = new WebFreeMarkerViewResolver();
-        bean.setOrder(0);
-        bean.setConfiguration(templateComponent.getCustomAdminConfiguration());
-        bean.setViewClass(AdminFreeMarkerView.class);
-        bean.setPrefix("/admin/");
-        bean.setSuffix(".html");
-        bean.setContentType("text/html;charset=UTF-8");
-        bean.setExposeSpringMacroHelpers(false);
         cacheComponent.registerCachingViewResolverList(bean);
         return bean;
     }

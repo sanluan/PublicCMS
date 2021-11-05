@@ -231,7 +231,7 @@ public class ApplicationConfig {
     @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer() throws IOException {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
-        bean.setTemplateLoaderPath("classpath:/templates/");
+        bean.setTemplateLoaderPaths("classpath:/templates/", getDirPath("/template/custom/"));
         Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
         if (CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))
                 && !"auto".equalsIgnoreCase(env.getProperty("cms.defaultLocale"))) {
