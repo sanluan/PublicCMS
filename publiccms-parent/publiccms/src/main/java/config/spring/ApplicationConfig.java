@@ -51,6 +51,7 @@ import com.publiccms.logic.component.site.MenuMessageComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 
 import config.initializer.InitializationInitializer;
+import freemarker.cache.FileTemplateLoader;
 
 /**
  *
@@ -231,7 +232,8 @@ public class ApplicationConfig {
     @Bean
     public FreeMarkerConfigurer freeMarkerConfigurer() throws IOException {
         FreeMarkerConfigurer bean = new FreeMarkerConfigurer();
-        bean.setTemplateLoaderPaths("classpath:/templates/", getDirPath("/template/custom/"));
+        bean.setPreTemplateLoaders(new FileTemplateLoader(new File(getDirPath("/template/custom/"))));
+        bean.setTemplateLoaderPath("classpath:/templates/");
         Properties properties = PropertiesLoaderUtils.loadAllProperties(env.getProperty("cms.freemarker.configFilePath"));
         if (CommonUtils.notEmpty(env.getProperty("cms.defaultLocale"))
                 && !"auto".equalsIgnoreCase(env.getProperty("cms.defaultLocale"))) {
