@@ -45,8 +45,8 @@ public class ControllerUtils {
             return true;
         } else if (url.contains("\r") || url.contains("\n")) {
             return true;
-        } else if (url.contains("://") || url.startsWith("//")) {
-            if (unSafe(url, site, request)) {
+        } else if (url.replace("\\", "/").contains("://") || url.replace("\\", "/").startsWith("//")) {
+            if (unSafe(url.replace("\\", "/"), site, request)) {
                 if (CommonUtils.notEmpty(safeReturnUrl)) {
                     for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
                         if (url.startsWith(safeUrlPrefix)) {
