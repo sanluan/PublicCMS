@@ -175,7 +175,7 @@
             $("#themeList").theme({themeBase:"${base}/resource/themes",defaultTheme:"toptry"});
     <@_sysAuthorized roleIds=admin.roles url='changePassword'>
         <#if admin.weakPassword>
-            $.pdialog.open("myself/password.html?target=dialog", "_blank", "<@t.page 'user.new_password'/>", {mask: true, width: 430, height: 320});
+            $.pdialog.open("myself/password.html?target=dialog", "login", "<@t.page 'user.new_password'/>", {mask: true, width: 430, height: 320});
         </#if>
     </@_sysAuthorized>
             $('#navMenu li a[parentId=${parentId!0}]').parent().addClass("selected");
