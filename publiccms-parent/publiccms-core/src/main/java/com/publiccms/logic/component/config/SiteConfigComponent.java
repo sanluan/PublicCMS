@@ -102,16 +102,11 @@ public class SiteConfigComponent implements Config {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(isUnSafeUrl("//www.baidu.com",
-                new SysSite("", false, "//www.publiccms.com/", false, "//cms.publiccms.com/", false), "", "/"));
-    }
-
     private static boolean unSafe(String url, SysSite site, String contextPath) {
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
                 || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                || !CommonConstants.SEPARATOR.equals(contextPath) && url.startsWith(contextPath + "/")) {
+                || CommonUtils.notEmpty(contextPath) && url.startsWith(contextPath + "/")) {
             return false;
         } else {
             return true;
