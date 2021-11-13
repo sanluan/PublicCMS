@@ -63,12 +63,12 @@
                                 <img src="${(a.cover)!}"/>
                             </div>
                         </#if>
-                        <h3>[<@t.page 'question.type.'+a.questionType/>] ${(a.title)!}</h3>
+                        <h3 class="exclude-translate" >[<@t.page 'question.type.'+a.questionType/>] ${(a.title)!}</h3>
                     </div>
                 </td>
                 <td class="center">${a.score!}</td>
                 <td class="center">${a.sort!}</td>
-                <td>
+                <td class="wrap">
                 <#if authorizedMap['cmsSurveyQuestion/add']>
                     <a href="cmsSurveyQuestion/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsSurvey/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
                 </#if>

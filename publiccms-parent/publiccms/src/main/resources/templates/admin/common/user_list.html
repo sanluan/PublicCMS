@@ -60,11 +60,9 @@
             <tr>
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'user.username'/></th>
-                <th><@t.page 'user.nickname'/></th>
+                <th width="200"><@t.page 'user.nickname'/></th>
                 <th><@t.page 'dept'/></th>
-                <th><@t.page 'email'/>/<@t.page 'email.verification_status'/></th>
-                <th><@t.page 'disabled'/></th>
-                <th><@t.page 'user.last_login_ip'/></th>
+                <th><@t.page 'email'/></th>
                 <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
                 <th orderField="loginCount" class="<#if orderField??&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.login_count'/></th>
                 <th orderField="registeredDate" class="<#if orderField??&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.register_date'/></th>
@@ -80,13 +78,31 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td class="exclude-translate">${(a.name)!}${(a.ownsAllContent)?then('[<font color="red">'+t.pageMessage('user.own_all_content')+'</font>]','')?no_esc}</td>
-                <td class="exclude-translate">${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
+                <td class="exclude-translate">${(a.name)!}</td>
+                <td>
+                    <div class="box">
+                        <#if a.cover?has_content>
+                            <div class="thumbnail">
+                                <img src="${(site.sitePath+a.cover)!}"/>
+                            </div>
+                        </#if>
+                        <p class="exclude-translate">${(a.nickName)!} ${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>
+                        <p>${(a.ownsAllContent)?then('[<font color="red">'+t.pageMessage('user.own_all_content')+'</font>]','')?no_esc}</p>
+                    </div>
+                </td>
                 <td class="exclude-translate">${(deptMap[a.deptId?string].name)!}</td>
-                <td class="exclude-translate">${(a.email)!}${a.emailChecked?then('[<font color="red">'+t.pageMessage('verified')+'</font>]','['+t.pageMessage('unverified')+']')?no_esc}</td>
-                <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>
-                <td class="exclude-translate">${a.lastLoginIp!}</td>
-                <td>${a.lastLoginDate!}</td>
+                <td>
+                    <div class="box">
+                        <p class="exclude-translate">${(a.email)!}</p>
+                        <p>${a.emailChecked?then('[<font color="red">'+t.pageMessage('verified')+'</font>]','['+t.pageMessage('unverified')+']')?no_esc}</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="box">
+                        <p>${a.lastLoginDate!}</p>
+                        <p><@t.page 'log.login_ip'/>:${a.lastLoginIp!}</p>
+                    </div>
+                </td>
                 <td>${a.loginCount!}</td>
                 <td>${a.registeredDate!}</td>
                 <td class="wrap">
@@ -109,6 +125,7 @@
             </#list>
         </tbody>
     </table>
+    <#assign rel='userBox'/>
     <#include "../include_page/page.html"/>
 </div>
 </@_sysUserList>

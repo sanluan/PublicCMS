@@ -210,4 +210,4 @@ ALTER TABLE `sys_dept` ADD COLUMN `code` varchar(50) NOT NULL COMMENT '编码' A
 UPDATE `sys_dept` SET `code` = id;
 ALTER TABLE `sys_dept` ADD UNIQUE INDEX `sys_dept_code`(`site_id`, `code`);
 ALTER TABLE `cms_content` ADD COLUMN `dept_id` int(11) default NULL COMMENT '所属部门';
-ALTER TABLE `sys_user` ADD COLUMN `cover` varchar(255) default NULL COMMENT '封面' AFTER `nick_name`,
+ALTER TABLE `sys_user` ADD COLUMN `cover` varchar(255) default NULL COMMENT '封面' AFTER `nick_name`;

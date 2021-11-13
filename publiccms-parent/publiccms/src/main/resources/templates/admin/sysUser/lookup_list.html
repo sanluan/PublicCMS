@@ -22,8 +22,8 @@
                 <li>
                     <select class="combox" name="emailChecked">
                         <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
-                        <option value="false"${(emailChecked?has_content&&"false"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
-                        <option value="true"${(emailChecked?has_content&&"true"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
+                        <option value="false"${(emailChecked?has_content&&"false"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'unverified'/></option>
+                        <option value="true"${(emailChecked?has_content&&"true"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'verified'/></option>
                     </select>
                 </li>
                 <li>
@@ -55,29 +55,52 @@
             <tr>
                 <th><@t.page 'user.select'/></th>
                 <th><@t.page 'user.username'/></th>
-                <th><@t.page 'user.nickname'/></th>
+                <th width="200"><@t.page 'user.nickname'/></th>
+                <th><@t.page 'dept'/></th>
                 <th><@t.page 'email'/></th>
-                <th><@t.page 'email.verification_status'/></th>
-                <th><@t.page 'user.last_login_date'/></th>
-                <th><@t.page 'user.last_login_ip'/></th>
-                <th><@t.page 'user.login_count'/></th>
-                <th><@t.page 'user.register_date'/></th>
+                <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
+                <th orderField="loginCount" class="<#if orderField??&&'loginCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.login_count'/></th>
+                <th orderField="registeredDate" class="<#if orderField??&&'registeredDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.register_date'/></th>
             </tr>
         </thead>
         <tbody>
+            <#list page.list as a>
+                <@t.merge 'deptIds' a.deptId!/>
+            </#list>
+            
+            <@_sysDept ids=t.deptIds!><#assign deptMap=map!/></@_sysDept>
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>
                     <a href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nickNameField!'nickName'}':'${(a.nickName?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
                 </td>
                 <td class="exclude-translate">${(a.name)!}</td>
-                <td class="exclude-translate">${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
-                <td class="exclude-translate">${(a.email)!}</td>
-                <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>
-                <td>${a.lastLoginDate!}</td>
-                <td class="exclude-translate">${a.lastLoginIp!}</td>
+                <td>
+                    <div class="box">
+                        <#if a.cover?has_content>
+                            <div class="thumbnail">
+                                <img src="${(site.sitePath+a.cover)!}"/>
+                            </div>
+                        </#if>
+                        <p class="exclude-translate">${(a.nickName)!} ${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>
+                        <p>${(a.ownsAllContent)?then('[<font color="red">'+t.pageMessage('user.own_all_content')+'</font>]','')?no_esc}</p>
+                    </div>
+                </td>
+                <td class="exclude-translate">${(deptMap[a.deptId?string].name)!}</td>
+                <td>
+                    <div class="box">
+                        <p class="exclude-translate">${(a.email)!}</p>
+                        <p>${a.emailChecked?then('[<font color="red">'+t.pageMessage('verified')+'</font>]','['+t.pageMessage('unverified')+']')?no_esc}</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="box">
+                        <p>${a.lastLoginDate!}</p>
+                        <p><@t.page 'log.login_ip'/>:${a.lastLoginIp!}</p>
+                    </div>
+                </td>
                 <td>${a.loginCount!}</td>
-                <td>${a.registeredDate}</td>
+                <td>${a.registeredDate!}</td>
             </tr>
             </#list>
         </tbody>

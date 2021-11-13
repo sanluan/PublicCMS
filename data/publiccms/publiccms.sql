@@ -182,8 +182,8 @@ INSERT INTO `cms_category_type` VALUES (1, 2, '带文章的分类', 0, 1);
 -- ----------------------------
 -- Records of cms_content
 -- ----------------------------
-INSERT INTO `cms_content` VALUES (1, 3, 'PublicCMS官网模板使用说明', 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 1, 0, 79, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
-INSERT INTO `cms_content` VALUES (2, 2, '企业中英文站点模板使用说明', 2, 2, 84, 'article', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 'content/2', '企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html\n\n分为中英文两套模板\n\n所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&pageIndex=12\n\n在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}', '', NULL, NULL, 0, 0, 0, 1, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (1, 3, 'PublicCMS官网模板使用说明', 3, 3, 3, 12, '1', NULL, NULL, 0, 0, NULL, '', 0, 0, 0, 0, 1, 'article/2020/01-01/1.html', 'PublicCMS官网模板是一组静态化模板', '', NULL, NULL, 0, 1, 0, 79, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
+INSERT INTO `cms_content` VALUES (2, 2, '企业中英文站点模板使用说明', 2, 2, 2, 84, 'article', NULL, NULL, 0, 0, NULL, NULL, 0, 0, 0, 0, 0, 'content/2', '企业中英文站点模板中主要有首页模板index.html,文章模板content.html，分类单页模板category.html，分类内容列表页news.html\n\n分为中英文两套模板\n\n所有模板均为动态模板，文章，分类模板接受参数为id,pageIndex等，既支持rest风格url如 news/1_12,又支持传统参数类型如news.html?id=1&pageIndex=12\n\n在分类中对带有文章的分类可以使用category.html，对内容列表可以使用news.html，填写分类访问路径为 模板名/${category.id} 或 模板名.html?id=${category.id}', '', NULL, NULL, 0, 0, 0, 1, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', NULL, '2020-01-01 00:00:00', 0, 1, 0);
 
 -- ----------------------------
 -- Records of cms_content_attribute
@@ -245,8 +245,8 @@ INSERT INTO `sys_config_data` VALUES (3, 'siteAttribute', '{\"logo\":\"\",\"squa
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES (2, 2, '技术部', NULL, '', 2, 1000, 1, 1, 1);
-INSERT INTO `sys_dept` VALUES (3, 3, '技术部', NULL, '', 3, 1000, 1, 1, 1);
+INSERT INTO `sys_dept` VALUES (2, 2, '技术部', '2', NULL, '', 2, 1000, 1, 1, 1);
+INSERT INTO `sys_dept` VALUES (3, 3, '技术部', '3', NULL, '', 3, 1000, 1, 1, 1);
 
 -- ----------------------------
 -- Records of sys_domain
@@ -298,5 +298,5 @@ INSERT INTO `sys_task` VALUES (8, 3, '重新生成昨天文章的上一篇文章
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (2, 2, 'admin', '2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', '0123456789', 1, 'admin', 2, 1, '2', '', 0, 1, 0, '2020-01-01 00:00:00', '127.0.0.1', 0, '2020-01-01 00:00:00');
-INSERT INTO `sys_user` VALUES (3, 3, 'admin', '2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', '0123456789', 1, 'admin', 3, 1, '3', '', 0, 1, 0, '2020-01-01 00:00:00', '127.0.0.1', 0, '2020-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES (2, 2, 'admin', '2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', '0123456789', 1, 'admin',NULL , 2, 1, '2', '', 0, 1, 0, '2020-01-01 00:00:00', '127.0.0.1', 0, '2020-01-01 00:00:00');
+INSERT INTO `sys_user` VALUES (3, 3, 'admin', '2134b56595c73a647716b0a8e33f9d50243fb1c1a088597ba5aa6d9ccadacbd8fc8307bda2adfc8362abe611420bd48263bdcfd91c1c26566ad3a29d79cffd9c', '0123456789', 1, 'admin',NULL , 3, 1, '3', '', 0, 1, 0, '2020-01-01 00:00:00', '127.0.0.1', 0, '2020-01-01 00:00:00');

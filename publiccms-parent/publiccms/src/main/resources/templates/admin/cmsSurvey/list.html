@@ -86,7 +86,7 @@
                 <td>${a.startDate!}</td>
                 <td>${a.endDate!}</td>
                 <td>${a.createDate!}</td>
-                <td>
+                <td class="wrap">
                 <#if !a.disabled>
                     <#if authorizedMap['cmsSurvey/add']>
                         <a href="cmsSurvey/add.html?id=${a.id}" class="edit btnText blue" target="navTab" rel="cmsSurvey/edit"><i class="icon-edit"></i> <@t.page 'button.edit'/></a>
