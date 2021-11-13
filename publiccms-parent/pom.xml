@@ -19,7 +19,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
-        <version.publiccms>V4.0.202107.b</version.publiccms>
+        <version.publiccms>V4.0.202107.c</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
         <version.spring>5.3.8</version.spring>
