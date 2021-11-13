@@ -180,6 +180,12 @@ public class LoginController {
     @RequestMapping(value = "doRegister", method = RequestMethod.POST)
     public String register(@RequestAttribute SysSite site, SysUser entity, String repassword, String returnUrl, String encode,
             Long clientId, String uuid, HttpServletRequest request, HttpServletResponse response, ModelMap model) {
+        Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
+        String registerPath = config.get(SiteConfigComponent.CONFIG_REGISTER_URL);
+        if (CommonUtils.empty(registerPath)) {
+            registerPath = site.getDynamicPath();
+        }
+
         entity.setName(StringUtils.trim(entity.getName()));
         entity.setNickName(StringUtils.trim(entity.getNickName()));
         entity.setPassword(StringUtils.trim(entity.getPassword()));
@@ -194,7 +200,7 @@ public class LoginController {
                 || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
             model.addAttribute("name", entity.getName());
             model.addAttribute("nickname", entity.getNickName());
-            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
+            return UrlBasedViewResolver.REDIRECT_URL_PREFIX + registerPath;
         } else {
             String ip = RequestUtils.getIpAddress(request);
             String salt = UserPasswordUtils.getSalt();
@@ -217,7 +223,6 @@ public class LoginController {
                     appClientService.updateUser(appClient.getId(), entity.getId());
                 }
             }
-            Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
             int expiryMinutes = ConfigComponent.getInt(config.get(SiteConfigComponent.CONFIG_EXPIRY_MINUTES_WEB),
                     SiteConfigComponent.DEFAULT_EXPIRY_MINUTES);
 

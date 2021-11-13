@@ -84,8 +84,8 @@ public class SiteConfigComponent implements Config {
             return true;
         } else if (url.contains("\r") || url.contains("\n")) {
             return true;
-        } else if (url.replace("\\","/").contains("://") || url.replace("\\","/").startsWith("//")) {
-            if (unSafe(url.replace("\\","/"), site, contextPath)) {
+        } else if (url.replace("\\", "/").contains("://") || url.replace("\\", "/").startsWith("//")) {
+            if (unSafe(url.replace("\\", "/"), site, contextPath)) {
                 if (CommonUtils.notEmpty(safeReturnUrl)) {
                     for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
                         if (url.startsWith(safeUrlPrefix)) {
@@ -102,11 +102,16 @@ public class SiteConfigComponent implements Config {
         }
     }
 
+    public static void main(String[] args) {
+        System.out.println(isUnSafeUrl("//www.baidu.com",
+                new SysSite("", false, "//www.publiccms.com/", false, "//cms.publiccms.com/", false), "", "/"));
+    }
+
     private static boolean unSafe(String url, SysSite site, String contextPath) {
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
                 || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                || url.startsWith(contextPath + "/")) {
+                || !CommonConstants.SEPARATOR.equals(contextPath) && url.startsWith(contextPath + "/")) {
             return false;
         } else {
             return true;
