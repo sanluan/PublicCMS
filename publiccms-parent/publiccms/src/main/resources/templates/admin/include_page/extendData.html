@@ -105,7 +105,17 @@
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
                 <input name="${name}[${index}].nickName" readonly="readonly" size="30" value="${(u.nickName)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
-                <a class="btnLook" href="sysUser/lookup.html?field=value" width="920" lookupGroup="${name}[${index}]"><@t.page 'user.select'/></a>
+                <a class="btnLook" href="sysUser/lookup.html?field=value" width="1200" height="580" lookupGroup="${name}[${index}]"><@t.page 'user.select'/></a>
+            </#if>
+            <#break>
+        <#case 'dept'>
+            <@_sysDept id=value><#local d=object/></@_sysDept>
+            <#if 'view'=type>
+                ${(value)!}:${(d.name)!}
+            <#else>
+                <input name="${inputName}" value="${(value)!}" type="hidden"/>
+                <input name="${name}[${index}].deptName" readonly="readonly" size="30" value="${(d.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <a class="btnLook" href="sysDept/lookup.html?field=value" width="920" lookupGroup="${name}[${index}]"><@t.page 'dept.select'/></a>
             </#if>
             <#break>
         <#case 'content'>

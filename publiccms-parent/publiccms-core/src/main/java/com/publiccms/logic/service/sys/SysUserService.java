@@ -64,15 +64,6 @@ public class SysUserService extends BaseService<SysUser> {
 
     /**
      * @param siteId
-     * @param nickname
-     * @return
-     */
-    public SysUser findByNickName(short siteId, String nickname) {
-        return dao.findByNickName(siteId, nickname);
-    }
-
-    /**
-     * @param siteId
      * @param email
      * @return
      */

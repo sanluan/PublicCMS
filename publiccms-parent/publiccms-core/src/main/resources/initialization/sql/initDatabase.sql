@@ -682,6 +682,7 @@ CREATE TABLE `sys_dept` (
   `id` int(11) NOT NULL auto_increment,
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
+  `code` varchar(50) NOT NULL COMMENT '编码',
   `parent_id` int(11) default NULL COMMENT '父部门',
   `description` varchar(300) default NULL COMMENT '描述',
   `user_id` bigint(20) default NULL COMMENT '负责人',
@@ -696,7 +697,7 @@ CREATE TABLE `sys_dept` (
 -- ----------------------------
 -- Records of sys_dept
 -- ----------------------------
-INSERT INTO `sys_dept` VALUES ('1', '1', 'Technical department', null, '', '1', '1000', '1', '1', '1');
+INSERT INTO `sys_dept` VALUES ('1', '1', 'Technical department','1', null, '', '1', '1000', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for sys_dept_category
@@ -819,8 +820,8 @@ CREATE TABLE `sys_module` (
 -- ----------------------------
 -- Records of sys_module
 -- ----------------------------
-INSERT INTO `sys_module` VALUES ('account_add', 'tradeAccount/add', 'tradeAccount/save,sysUser/lookup', '', 'account_list', 0, 1);
-INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', 'sysUser/lookup', 'icon-book', 'trade_menu', 1, 7);
+INSERT INTO `sys_module` VALUES ('account_add', 'tradeAccount/add', 'tradeAccount/save,sysUser/lookup,sysUser/lookup_list', '', 'account_list', 0, 1);
+INSERT INTO `sys_module` VALUES ('account_history_list', 'tradeAccountHistory/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-book', 'trade_menu', 1, 7);
 INSERT INTO `sys_module` VALUES ('account_list', 'tradeAccount/list', NULL, 'icon-credit-card', 'trade_menu', 1, 6);
 INSERT INTO `sys_module` VALUES ('account_recharge', 'tradeAccount/rechargeParameters', 'tradeAccount/recharge', '', 'account_list', 0, 2);
 INSERT INTO `sys_module` VALUES ('app_add', 'sysApp/add', 'sysApp/save', NULL, 'app_list', 0, 0);
@@ -845,7 +846,7 @@ INSERT INTO `sys_module` VALUES ('clearcache', NULL, 'clearCache', '', NULL, 0, 
 INSERT INTO `sys_module` VALUES ('comment_check', NULL, 'cmsComment/check', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_delete', NULL, 'cmsComment/delete', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_edit', 'cmsComment/edit', 'cmsComment/save', NULL, 'comment_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('comment_list', 'cmsComment/list', 'sysUser/lookup', 'icon-comment', 'content_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('comment_list', 'cmsComment/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-comment', 'content_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('comment_reply', 'cmsComment/reply', 'cmsComment/save', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_uncheck', NULL, 'cmsComment/uncheck', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_add', 'sysConfig/add', 'sysConfig/save', NULL, 'config_list', 0, 0);
@@ -862,13 +863,13 @@ INSERT INTO `sys_module` VALUES ('content_check', NULL, 'cmsContent/check,cmsCon
 INSERT INTO `sys_module` VALUES ('content_delete', NULL, 'cmsContent/delete', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_distribute', 'cmsCategory/lookupBySiteId', 'cmsContent/distribute', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_export', NULL, 'cmsContent/export', '', 'content_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_list', 'cmsContent/list', 'sysUser/lookup', 'icon-book', 'content_menu', 1, 0);
+INSERT INTO `sys_module` VALUES ('content_list', 'cmsContent/list', NULL, 'icon-book', 'content_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_menu', NULL, NULL, 'icon-book', 'content', 1, 0);
 INSERT INTO `sys_module` VALUES ('content_move', 'cmsContent/moveParameters', 'cmsContent/move', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_publish', NULL, 'cmsContent/publish', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_push', 'cmsContent/push', 'cmsContent/push_content,cmsContent/push_content_list,cmsContent/push_to_content,cmsContent/push_page,cmsContent/push_page_list,cmsPlace/add,cmsPlace/save,cmsContent/related,cmsContent/unrelated,cmsPlace/delete,cmsPlace/push', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_recycle_delete', NULL, 'cmsContent/realDelete', NULL, 'content_recycle_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', 'sysUser/lookup', 'icon-trash', 'content_menu', 1, 9);
+INSERT INTO `sys_module` VALUES ('content_recycle_list', 'cmsRecycleContent/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-trash', 'content_menu', 1, 9);
 INSERT INTO `sys_module` VALUES ('content_recycle_recycle', NULL, 'cmsContent/recycle', NULL, 'content_recycle_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_refresh', NULL, 'cmsContent/refresh', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_category', 'cmsCategory/lookupByModelId', NULL, NULL, 'content_add', 0, 0);
@@ -877,7 +878,7 @@ INSERT INTO `sys_module` VALUES ('content_select_content', 'cmsContent/lookup', 
 INSERT INTO `sys_module` VALUES ('content_select_tag', 'cmsTag/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_tag_type', 'cmsTagType/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_template', 'cmsTemplate/lookup', NULL, NULL, 'content_add', 0, 0);
-INSERT INTO `sys_module` VALUES ('content_select_user', 'sysUser/lookup', NULL, NULL, 'content_add', 0, 0);
+INSERT INTO `sys_module` VALUES ('content_select_user', 'sysUser/lookup', 'sysUser/lookup_list', NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_select_vote', 'cmsVote/lookup', NULL, NULL, 'content_add', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_sort', 'cmsContent/sortParameters', 'cmsContent/sort', '', 'content_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_uncheck', NULL, 'cmsContent/uncheck', '', 'content_list', 0, 0);
@@ -886,9 +887,9 @@ INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-tic
 INSERT INTO `sys_module` VALUES ('content_vote_add', 'cmsVote/add', 'cmsVote/save', NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote_delete', NULL, 'cmsVote/delete', NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote_view', 'cmsVote/view', NULL, NULL, 'content_vote', 0, 0);
-INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/lookup,sysUser/lookup,sysDept/save', NULL, 'dept_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list,sysDept/save', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'dept_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', 'sysDept/lookup,sysUser/lookup', 'icon-group', 'user_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list', 'icon-group', 'user_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('dept_user_list', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('develop', NULL, NULL, 'icon-puzzle-piece', NULL, 1, 7);
 INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDictionary/save,cmsDictionary/virify', NULL, 'dictionary_list', 0, 0);
@@ -897,16 +898,16 @@ INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, 'icon-qrcode', 'config_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, 'icon-folder-close-alt', 'develop', 1, 1);
-INSERT INTO `sys_module` VALUES ('log_login', 'log/login', 'sysUser/lookup', 'icon-signin', 'log_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('log_login', 'log/login', 'sysUser/lookup,sysUser/lookup_list', 'icon-signin', 'log_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('log_login_delete', NULL, 'logLogin/delete', NULL, 'log_login', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_menu', NULL, NULL, 'icon-list-alt', 'maintenance', 1, 3);
-INSERT INTO `sys_module` VALUES ('log_operate', 'log/operate', 'sysUser/lookup', 'icon-list-alt', 'log_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('log_operate', 'log/operate', 'sysUser/lookup,sysUser/lookup_list', 'icon-list-alt', 'log_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('log_operate_delete', NULL, 'logOperate/delete', NULL, 'log_operate', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_operate_view', 'log/operateView', NULL, NULL, 'log_operate', 0, 0);
-INSERT INTO `sys_module` VALUES ('log_task', 'log/task', 'sysUser/lookup', 'icon-time', 'log_menu', 1, 4);
+INSERT INTO `sys_module` VALUES ('log_task', 'log/task', NULL, 'icon-time', 'log_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('log_task_delete', NULL, 'logTask/delete', NULL, 'log_task', 0, 0);
 INSERT INTO `sys_module` VALUES ('log_task_view', 'log/taskView', NULL, NULL, 'log_task', 0, 0);
-INSERT INTO `sys_module` VALUES ('log_upload', 'log/upload', 'sysUser/lookup', 'icon-list-alt', 'log_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('log_upload', 'log/upload', 'sysUser/lookup,sysUser/lookup_list', 'icon-list-alt', 'log_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('log_visit', 'log/visit', 'log/visitView', 'icon-bolt', 'log_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('log_visit_day', 'log/visitDay', NULL, 'icon-calendar', 'log_menu', 1, 7);
 INSERT INTO `sys_module` VALUES ('log_visit_item', 'log/visitItem', NULL, 'icon-flag-checkered', 'log_menu', 1, 9);
@@ -932,11 +933,11 @@ INSERT INTO `sys_module` VALUES ('myself_password', 'myself/password', 'changePa
 INSERT INTO `sys_module` VALUES ('myself_token', 'myself/userTokenList', 'sysUserToken/delete', 'icon-unlock-alt', 'myself_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('order_confirm', 'tradeOrder/confirmParameters', 'tradeOrder/confirm', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_history_list', 'tradeOrderHistory/list', NULL, 'icon-calendar', 'trade_menu', 1, 2);
-INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/lookup', 'icon-barcode', 'trade_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('order_list', 'tradeOrder/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-barcode', 'trade_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('order_process', 'tradeOrder/processParameters', 'tradeOrder/process', NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('order_view', 'tradeOrder/view', NULL, NULL, 'order_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page', NULL, NULL, 'icon-tablet', NULL, 1, 3);
-INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,sysUser/lookup,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', 'icon-globe', 'page_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('page_list', 'cmsPage/list', 'cmsPage/metadata,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup', 'icon-globe', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('page_menu', NULL, NULL, 'icon-globe', 'page', 1, 0);
 INSERT INTO `sys_module` VALUES ('page_metadata', 'cmsPage/metadata', 'cmsPage/save', NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_publish', NULL, 'cmsTemplate/publish', NULL, 'page_list', 0, 0);
@@ -946,15 +947,15 @@ INSERT INTO `sys_module` VALUES ('page_select_category_type', 'cmsCategoryType/l
 INSERT INTO `sys_module` VALUES ('page_select_content', 'cmsContent/lookup', 'cmsContent/lookup_list', NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_tag_type', 'cmsTagType/lookup', NULL, NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('page_select_template', 'cmsTemplate/lookup', NULL, NULL, 'page_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('page_select_user', 'sysUser/lookup', NULL, NULL, 'page_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('page_select_user', 'sysUser/lookup', 'sysUser/lookup_list', NULL, 'page_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('payment_history_list', 'tradePaymentHistory/list', 'tradePaymentHistory/view', 'icon-exchange', 'trade_menu', 1, 4);
-INSERT INTO `sys_module` VALUES ('payment_list', 'tradePayment/list', 'sysUser/lookup', 'icon-money', 'trade_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('payment_list', 'tradePayment/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-money', 'trade_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('place_add', 'cmsPlace/add', 'cmsContent/lookup,cmsPlace/lookup,cmsPlace/lookup_content_list,file/doUpload,cmsPlace/save', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_check', NULL, 'cmsPlace/check,cmsPlace/uncheck', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_clear', NULL, 'cmsPlace/clear', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_data_list', 'cmsPlace/dataList', 'cmsPlace/export', NULL, 'place_list', 0, 1);
 INSERT INTO `sys_module` VALUES ('place_delete', NULL, 'cmsPlace/delete', NULL, 'place_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', 'sysUser/lookup', 'icon-list-alt', 'page_menu', 1, 1);
+INSERT INTO `sys_module` VALUES ('place_list', 'cmsPlace/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-list-alt', 'page_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('place_publish', 'cmsPlace/publish_place', 'cmsTemplate/publishPlace', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_refresh', NULL, 'cmsPlace/refresh', NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('place_template_content', 'placeTemplate/content', 'cmsTemplate/help,cmsTemplate/savePlace,cmsTemplate/chipLookup,cmsWebFile/lookup,cmsWebFile/contentForm,placeTemplate/form', NULL, 'place_template_list', 0, 0);
@@ -968,7 +969,7 @@ INSERT INTO `sys_module` VALUES ('place_template_webfile', 'cmsWebFile/lookup', 
 INSERT INTO `sys_module` VALUES ('place_view', 'cmsPlace/view', NULL, NULL, 'place_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('product_list', 'cmsContentProduct/list', NULL, 'icon-truck', 'content_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('product_add', 'cmsContentProduct/add', 'cmsContentProduct/save', NULL, 'product_list', 1, 0);
-INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup', 'icon-signout', 'trade_menu', 1, 5);
+INSERT INTO `sys_module` VALUES ('refund_list', 'tradeRefund/list', 'sysUser/lookup,sysUser/lookup_list', 'icon-signout', 'trade_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('refund_refund', 'tradeRefund/refundParameters', 'tradeOrder/refund', '', 'refund_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('refund_refuse', 'tradeRefund/refuseParameters', 'tradeOrder/refuse', '', 'refund_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('report_user', 'report/user', NULL, 'icon-male', 'user_menu', 1, 5);
@@ -1800,6 +1801,7 @@ CREATE TABLE `sys_user` (
   `salt` varchar(20) DEFAULT NULL COMMENT '混淆码,为空时则密码为md5,为10位时sha512(sha512(password)+salt)',
   `weak_password` tinyint(1) NOT NULL DEFAULT '0' COMMENT '弱密码',
   `nick_name` varchar(45) NOT NULL COMMENT '昵称',
+  `cover` varchar(255) default NULL COMMENT '封面',
   `dept_id` int(11) default NULL COMMENT '部门',
   `owns_all_content` tinyint(1) NOT NULL DEFAULT '1' COMMENT '拥有所有内容权限',
   `roles` text COMMENT '角色',
@@ -1813,7 +1815,6 @@ CREATE TABLE `sys_user` (
   `registered_date` datetime default NULL COMMENT '注册日期',
   PRIMARY KEY  (`id`),
   UNIQUE KEY `sys_user_name` (`name`,`site_id`),
-  UNIQUE KEY `sys_user_nick_name` (`nick_name`,`site_id`),
   KEY `sys_user_email` (`email`),
   KEY `sys_user_disabled` (`disabled`),
   KEY `sys_user_lastLoginDate` (`last_login_date`),

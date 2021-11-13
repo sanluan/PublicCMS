@@ -51,6 +51,8 @@ public class CmsContent implements java.io.Serializable {
     private String title;
     @GeneratorColumn(title = "发布用户", condition = true)
     private long userId;
+    @GeneratorColumn(title = "发布部门", condition = true)
+    private Integer deptId;
     @GeneratorColumn(title = "审核用户", condition = true)
     private Long checkUserId;
     @GeneratorColumn(title = "分类", condition = true)
@@ -163,8 +165,8 @@ public class CmsContent implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsContent(short siteId, String title, long userId, Long checkUserId, int categoryId, String modelId, Long parentId,
-            Long quoteContentId, boolean contribute, boolean copied, String author, String editor, boolean onlyUrl,
+    public CmsContent(short siteId, String title, long userId, Integer deptId, Long checkUserId, int categoryId, String modelId,
+            Long parentId, Long quoteContentId, boolean contribute, boolean copied, String author, String editor, boolean onlyUrl,
             boolean hasImages, boolean hasFiles, boolean hasProducts, boolean hasStatic, String url, String description,
             String tagIds, String dictionaryValues, String cover, int childs, int scores, int comments, int clicks,
             Date publishDate, Date expiryDate, Date checkDate, Date updateDate, Date createDate, int sort, int status,
@@ -172,6 +174,7 @@ public class CmsContent implements java.io.Serializable {
         this.siteId = siteId;
         this.title = title;
         this.userId = userId;
+        this.deptId = deptId;
         this.checkUserId = checkUserId;
         this.categoryId = categoryId;
         this.modelId = modelId;
@@ -240,6 +243,15 @@ public class CmsContent implements java.io.Serializable {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    @Column(name = "dept_id")
+    public Integer getDeptId() {
+        return this.deptId;
+    }
+
+    public void setDeptId(Integer deptId) {
+        this.deptId = deptId;
     }
 
     @Column(name = "check_user_id")
@@ -349,12 +361,12 @@ public class CmsContent implements java.io.Serializable {
     public void setHasFiles(boolean hasFiles) {
         this.hasFiles = hasFiles;
     }
-    
+
     @Column(name = "has_products", nullable = false)
     public boolean isHasProducts() {
         return this.hasProducts;
     }
-    
+
     public void setHasProducts(boolean hasProducts) {
         this.hasProducts = hasProducts;
     }

@@ -69,13 +69,13 @@ public class SysSiteService extends BaseService<SysSite> {
         if (CommonUtils.notEmpty(domain)) {
             domainService.save(new SysDomain(domain, entity.getId(), wild, multiple));
         }
-        SysDept dept = new SysDept(entity.getId(), deptName, 0, true, true, true);
+        SysDept dept = new SysDept(entity.getId(), deptName, "code", 0, true, true, true);
         deptService.save(dept);// 初始化部门
         SysRole role = new SysRole(entity.getId(), roleName, true, true);
         roleService.save(role);// 初始化角色
         String salt = UserPasswordUtils.getSalt();
         SysUser user = new SysUser(entity.getId(), userName, UserPasswordUtils.passwordEncode(password, salt, encoding), salt,
-                true, userName, dept.getId(), true, role.getId().toString(), null, false, true, false, null, null, 0,
+                true, userName, null, dept.getId(), true, role.getId().toString(), null, false, true, false, null, null, 0,
                 CommonUtils.getDate());
         userService.save(user);// 初始化用户
         roleUserService.save(new SysRoleUser(new SysRoleUserId(role.getId(), user.getId())));// 初始化角色用户映射

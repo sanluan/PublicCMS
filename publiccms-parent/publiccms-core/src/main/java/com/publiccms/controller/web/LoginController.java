@@ -191,9 +191,7 @@ public class LoginController {
                 || ControllerUtils.verifyNotUserName("username", entity.getName(), model)
                 || ControllerUtils.verifyNotNickName("nickname", entity.getNickName(), model)
                 || ControllerUtils.verifyNotEquals("repassword", entity.getPassword(), repassword, model)
-                || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)
-                || ControllerUtils.verifyHasExist("nickname", service.findByNickName(site.getId(), entity.getNickName()),
-                        model)) {
+                || ControllerUtils.verifyHasExist("username", service.findByName(site.getId(), entity.getName()), model)) {
             model.addAttribute("name", entity.getName());
             model.addAttribute("nickname", entity.getNickName());
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;

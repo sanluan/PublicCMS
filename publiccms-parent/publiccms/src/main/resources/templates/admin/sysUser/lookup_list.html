@@ -1,0 +1,88 @@
+<@_sysUserList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
+            superuserAccess=superuserAccess emailChecked=emailChecked name=name disable=false
+            orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
+<div class="pageHeader">
+    <form class="pagerForm" action="sysUser/lookup.html" autocomplete="off" onsubmit="return divSearch(this, 'user_list');" method="post">
+        <#include "../include_page/parameters.html"/>
+        <input type="hidden" name="field" value="${field!'userId'}"/>
+        <input type="hidden" name="nickNameField" value="${nickNameField!'nickName'}"/>
+        <div class="searchBar">
+            <ul class="searchContent">
+                <li>
+                    <label><@t.page 'name'/>:</label>
+                    <input type="text" name="name" value="${(name)!}" />
+                </li>
+                <li>
+                    <select class="combox" name="superuserAccess">
+                        <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
+                        <option value="false"${(superuserAccess?has_content&&"false"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
+                        <option value="true"${(superuserAccess?has_content&&"true"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
+                    </select>
+                </li>
+                <li>
+                    <select class="combox" name="emailChecked">
+                        <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
+                        <option value="false"${(emailChecked?has_content&&"false"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.unverified'/></option>
+                        <option value="true"${(emailChecked?has_content&&"true"=emailChecked)?then(' selected="true"','')?no_esc}><@t.page 'email.verified'/></option>
+                    </select>
+                </li>
+                <li>
+                    <label><@t.page 'user.register_date'/>:</label>
+                    <input type="text" name="startRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startRegisteredDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endRegisteredDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endRegisteredDate!}" />
+                </li>
+                <li>
+                    <label><@t.page 'user.last_login_date'/>:</label>
+                    <input type="text" name="startLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d}" value="${startLastLoginDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endLastLoginDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endLastLoginDate!}" />
+                </li>
+            </ul>
+            <div class="subBar">
+                <ul>
+                    <li>
+                        <button type="submit" class="buttonActive"><@t.page 'button.search'/></button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="pageContent">
+    <table class="table" width="100%" layoutH>
+        <thead>
+            <tr>
+                <th><@t.page 'user.select'/></th>
+                <th><@t.page 'user.username'/></th>
+                <th><@t.page 'user.nickname'/></th>
+                <th><@t.page 'email'/></th>
+                <th><@t.page 'email.verification_status'/></th>
+                <th><@t.page 'user.last_login_date'/></th>
+                <th><@t.page 'user.last_login_ip'/></th>
+                <th><@t.page 'user.login_count'/></th>
+                <th><@t.page 'user.register_date'/></th>
+            </tr>
+        </thead>
+        <tbody>
+            <#list page.list as a>
+            <tr target="sid" rel="${a.id}">
+                <td>
+                    <a href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nickNameField!'nickName'}':'${(a.nickName?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
+                </td>
+                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate">${(a.nickName)!}${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</td>
+                <td class="exclude-translate">${(a.email)!}</td>
+                <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>
+                <td>${a.lastLoginDate!}</td>
+                <td class="exclude-translate">${a.lastLoginIp!}</td>
+                <td>${a.loginCount!}</td>
+                <td>${a.registeredDate}</td>
+            </tr>
+            </#list>
+        </tbody>
+    </table>
+    <#assign rel='content_list'/>
+    <#include "../include_page/pageDialog.html"/>
+</div>
+</@_sysUserList>

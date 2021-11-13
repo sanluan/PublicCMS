@@ -1,26 +1,29 @@
-<#macro categoryTree parentId=''>
+<#if parentId?has_content>
     <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
-            <li>
+            <li<#if a.childIds?has_content>_src="cmsContent/lookup.html?parentId=${a.id}&field=${field!'relatedContentId'}"</#if>>
                 <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
-            <#if a.childIds?has_content>
-                <ul>
-                    <@categoryTree a.id/>
-                </ul>
-            </#if>
             </li>
         <#else>
             <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_categoryList>
-</#macro>
+<#else>
 <div class="pageContent">
     <div class="unitBox leftPageContent" layoutH>
         <ul class="tree treeFolder">
             <li>
                 <a href="cmsContent/lookup_list.html" target="ajax" rel="content_list"><@t.page 'category'/></a>
                 <ul>
-                    <@categoryTree/>
+                    <@_categoryList advanced=true parentId=parentId pageSize=500>
+                        <#list page.list as a>
+                            <li<#if a.childIds?has_content><#if a.childIds?has_content>_src="cmsContent/lookup.html?parentId=${a.id}&field=${field!'relatedContentId'}"</#if></#if>>
+                                <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
+                            </li>
+                        <#else>
+                            <li><a><@t.page 'empty_directory'/></a></li>
+                        </#list>
+                    </@_categoryList>
                 </ul>
             </li>
          </ul>
@@ -35,3 +38,4 @@
         </ul>
     </div>
 </div>
+</#if>

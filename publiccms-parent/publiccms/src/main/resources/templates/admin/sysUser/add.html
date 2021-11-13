@@ -23,7 +23,7 @@
                 <label class="superuserAccess hide"><input name="ownsAllContent" type="checkbox"<#if !a?has_content||a.ownsAllContent> checked="true"</#if>/><@t.page 'user.own_all_content'/></label>
             </dd>
         </dl>
-        <dl class="nowrap superuserAccess hide">
+        <dl class="nowrap">
             <dt><@t.page 'dept'/>:</dt>
             <dd>
                 <input name="deptId" type="hidden" value="${(dept.id)!}"/>

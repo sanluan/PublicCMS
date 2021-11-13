@@ -76,6 +76,11 @@ public interface Config {
      * 
      */
     String INPUTTYPE_USER = "user";
+    
+    /**
+     * 
+     */
+    String INPUTTYPE_DEPT = "dept";
 
     /**
      * 

@@ -186,3 +186,28 @@ INSERT INTO `sys_module` VALUES ('log_workload', 'log/workload', NULL, 'icon-tru
 INSERT INTO `sys_module_lang` VALUES ('log_workload', 'en', 'Workload');
 INSERT INTO `sys_module_lang` VALUES ('log_workload', 'ja', 'ワークロード');
 INSERT INTO `sys_module_lang` VALUES ('log_workload', 'zh', '工作量统计');
+-- 2021-11-13 --
+ALTER TABLE `sys_user` DROP INDEX `sys_user_nick_name`;
+UPDATE `sys_module` SET `authorized_url` = 'tradeAccount/save,sysUser/lookup,sysUser/lookup_list' WHERE `id` ='account_add';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='account_history_list';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='comment_list';
+UPDATE `sys_module` SET `authorized_url` = NULL WHERE `id` ='content_list';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='content_recycle_list';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup_list' WHERE `id` ='content_select_user';
+UPDATE `sys_module` SET `authorized_url` = 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list,sysDept/save' WHERE `id` ='dept_add';
+UPDATE `sys_module` SET `authorized_url` = 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list' WHERE `id` ='dept_list';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='log_login';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='log_operate';
+UPDATE `sys_module` SET `authorized_url` = NULL WHERE `id` ='log_task';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='log_upload';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='order_list';
+UPDATE `sys_module` SET `authorized_url` = 'cmsPage/metadata,cmsContent/lookup,cmsContent/lookup_list,cmsCategory/lookup' WHERE `id` ='page_list';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup_list' WHERE `id` ='page_select_user';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='payment_list';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='place_list';
+UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' WHERE `id` ='refund_list';
+ALTER TABLE `sys_dept` ADD COLUMN `code` varchar(50) NOT NULL COMMENT '编码' AFTER `name`;
+UPDATE `sys_dept` SET `code` = id;
+ALTER TABLE `sys_dept` ADD UNIQUE INDEX `sys_dept_code`(`site_id`, `code`);
+ALTER TABLE `cms_content` ADD COLUMN `dept_id` int(11) default NULL COMMENT '所属部门';
+ALTER TABLE `sys_user` ADD COLUMN `cover` varchar(255) default NULL COMMENT '封面' AFTER `nick_name`,

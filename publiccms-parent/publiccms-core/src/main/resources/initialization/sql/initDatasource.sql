@@ -32,6 +32,7 @@ CREATE TABLE `cms_content` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `title` varchar(255) NOT NULL COMMENT '标题',
   `user_id` bigint(20) NOT NULL COMMENT '发表用户',
+  `dept_id` int(11) default NULL COMMENT '所属部门',
   `check_user_id` bigint(20) default NULL COMMENT '审核用户',
   `category_id` int(11) NOT NULL COMMENT '分类',
   `model_id` varchar(20) NOT NULL COMMENT '模型',

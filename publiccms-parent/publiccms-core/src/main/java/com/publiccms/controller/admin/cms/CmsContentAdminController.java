@@ -108,7 +108,7 @@ public class CmsContentAdminController {
     @Autowired
     private SysSiteService siteService;
 
-    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "categoryId", "tagIds", "sort",
+    public static final String[] ignoreProperties = new String[] { "siteId", "userId", "deptId", "categoryId", "tagIds", "sort",
             "createDate", "updateDate", "clicks", "comments", "scores", "childs", "checkUserId", "disabled" };
 
     public static final String[] ignorePropertiesWithUrl = ArrayUtils.addAll(ignoreProperties, new String[] { "url" });
@@ -173,6 +173,7 @@ public class CmsContentAdminController {
         } else {
             entity.setSiteId(site.getId());
             entity.setUserId(admin.getId());
+            entity.setDeptId(admin.getDeptId());
             service.save(site.getId(), entity);
             if (CommonUtils.notEmpty(entity.getParentId())) {
                 service.updateChilds(site.getId(), entity.getParentId(), 1);
@@ -181,8 +182,8 @@ public class CmsContentAdminController {
                     .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "save.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));
         }
-        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity.getId(), contentParameters,
-                cmsModel, category.getExtendId(), attribute);
+        entity = service.saveTagAndAttribute(site.getId(), admin.getId(), entity.getId(), contentParameters, cmsModel,
+                category.getExtendId(), attribute);
         if (null != checked && checked) {
             entity = service.check(site.getId(), admin, entity.getId());
         }
@@ -613,6 +614,8 @@ public class CmsContentAdminController {
             List<Serializable> userIds = pksMap.computeIfAbsent("userIds", k -> new ArrayList<>());
             userIds.add(entity.getUserId());
             userIds.add(entity.getCheckUserId());
+            List<Serializable> deptIds = pksMap.computeIfAbsent("deptIds", k -> new ArrayList<>());
+            deptIds.add(entity.getDeptId());
             List<Serializable> categoryIds = pksMap.computeIfAbsent("categoryIds", k -> new ArrayList<>());
             categoryIds.add(entity.getCategoryId());
             List<Serializable> modelIds = pksMap.computeIfAbsent("modelIds", k -> new ArrayList<>());
@@ -626,6 +629,14 @@ public class CmsContentAdminController {
             List<SysUser> entitys = sysUserService.getEntitys(userIds.toArray(new Serializable[userIds.size()]));
             for (SysUser entity : entitys) {
                 userMap.put(entity.getId(), entity);
+            }
+        }
+        Map<Integer, SysDept> deptMap = new HashMap<>();
+        if (null != pksMap.get("deptIds")) {
+            List<Serializable> deptIds = pksMap.get("deptIds");
+            List<SysDept> entitys = sysDeptService.getEntitys(deptIds.toArray(new Serializable[deptIds.size()]));
+            for (SysDept entity : entitys) {
+                deptMap.put(entity.getId(), entity);
             }
         }
         Map<Integer, CmsCategory> categoryMap = new HashMap<>();
@@ -662,6 +673,7 @@ public class CmsContentAdminController {
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.url"));
             row.createCell(j++).setCellValue(
                     LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.promulgator"));
+            row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.dept"));
             row.createCell(j++)
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.category"));
             row.createCell(j++).setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.model"));
@@ -689,6 +701,7 @@ public class CmsContentAdminController {
                     .setCellValue(LanguagesUtils.getMessage(CommonConstants.applicationContext, locale, "page.content.text"));
 
             SysUser user;
+            SysDept dept;
             CmsCategory category;
             CmsModel cmsModel;
             CmsContentAttribute attribute;
@@ -699,7 +712,9 @@ public class CmsContentAdminController {
                 row.createCell(j++).setCellValue(entity.getTitle());
                 row.createCell(j++).setCellValue(entity.getUrl());
                 user = userMap.get(entity.getUserId());
+                dept = deptMap.get(entity.getDeptId());
                 row.createCell(j++).setCellValue(null == user ? null : user.getNickName());
+                row.createCell(j++).setCellValue(null == dept ? null : dept.getName());
                 category = categoryMap.get(entity.getCategoryId());
                 row.createCell(j++).setCellValue(null == category ? null : category.getName());
                 cmsModel = modelMap.get(entity.getModelId());

@@ -24,13 +24,23 @@ public class SysDeptService extends BaseService<SysDept> {
      * @param siteId
      * @param parentId
      * @param userId
+     * @param name
      * @param pageIndex
      * @param pageSize
      * @return
      */
     @Transactional(readOnly = true)
-    public PageHandler getPage(Short siteId, Integer parentId, Long userId, Integer pageIndex, Integer pageSize) {
-        return dao.getPage(siteId, parentId, userId, pageIndex, pageSize);
+    public PageHandler getPage(Short siteId, Integer parentId, Long userId, String name, Integer pageIndex, Integer pageSize) {
+        return dao.getPage(siteId, parentId, userId, name, pageIndex, pageSize);
+    }
+
+    /**
+     * @param siteId
+     * @param code
+     * @return
+     */
+    public SysDept getEntityByCode(short siteId, String code) {
+        return dao.getEntityByCode(siteId, code);
     }
 
     /**
@@ -42,7 +52,7 @@ public class SysDeptService extends BaseService<SysDept> {
         SysDept entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId()) {
             @SuppressWarnings("unchecked")
-            List<SysDept> list = (List<SysDept>) getPage(entity.getSiteId(), entity.getId(), null, null, null).getList();
+            List<SysDept> list = (List<SysDept>) getPage(entity.getSiteId(), entity.getId(), null, null, null, null).getList();
             for (SysDept child : list) {
                 child.setParentId(entity.getParentId());
             }

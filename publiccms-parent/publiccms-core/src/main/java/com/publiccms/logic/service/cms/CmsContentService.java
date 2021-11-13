@@ -57,8 +57,8 @@ import com.publiccms.views.pojo.query.CmsContentQuery;
 @Transactional
 public class CmsContentService extends BaseService<CmsContent> {
     private static String[] DICTIONARY_INPUT_TYPES = { Config.INPUTTYPE_NUMBER, Config.INPUTTYPE_BOOLEAN, Config.INPUTTYPE_USER,
-            Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY, Config.INPUTTYPE_CATEGORYTYPE,
-            Config.INPUTTYPE_TAGTYPE };
+            Config.INPUTTYPE_DEPT, Config.INPUTTYPE_CONTENT, Config.INPUTTYPE_CATEGORY, Config.INPUTTYPE_DICTIONARY,
+            Config.INPUTTYPE_CATEGORYTYPE, Config.INPUTTYPE_TAGTYPE };
 
     public static final String[] FULLTEXT_SEARCHABLE_EDITOR = { "kindeditor", "ckeditor", "editor" };
     public static final String[] ignoreProperties = new String[] { "id", "siteId" };

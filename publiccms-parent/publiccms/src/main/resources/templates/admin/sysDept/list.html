@@ -49,6 +49,7 @@
             <tr>
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
+                <th><@t.page 'code'/></th>
                 <th><@t.page 'dept.parent'/></th>
                 <th><@t.page 'description'/></th>
                 <th><@t.page 'dept.master'/></th>
@@ -61,14 +62,18 @@
         <tbody>
             <#list page.list as a>
                 <@t.merge 'userIds' a.userId!/>
+                <@t.merge 'parentIds' a.parentId!/>
             </#list>
+            
+            <@_sysDept ids=t.parentIds!><#assign parentMap=map!/></@_sysDept>
             <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
 
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
                 <td class="exclude-translate">${(a.name)!}</td>
-                <td>${a.parentId!}</td>
+                <td class="exclude-translate">${(a.code)!}</td>
+                <td>${(parentMap[a.parentId?string].name)!}</td>
                 <td class="exclude-translate">${a.description!}</td>
                 <td class="exclude-translate">${(userMap[a.userId?string].nickName)!}</td>
                 <td>${a.ownsAllCategory?then(t.pageMessage('yes'),'')}</td>
