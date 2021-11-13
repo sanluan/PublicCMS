@@ -67,8 +67,7 @@ public class ControllerUtils {
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
                 || fixedUrl.startsWith(site.getDynamicPath()) || fixedUrl.startsWith(site.getSitePath())
-                || !CommonConstants.SEPARATOR.equals(request.getContextPath())
-                        && url.startsWith(request.getContextPath() + "/")) {
+                || CommonUtils.notEmpty(request.getContextPath()) && url.startsWith(request.getContextPath() + "/")) {
             return false;
         } else {
             return true;
