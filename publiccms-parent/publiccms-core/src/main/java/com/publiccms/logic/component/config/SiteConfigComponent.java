@@ -24,43 +24,43 @@ import com.publiccms.logic.service.cms.CmsContentService;
 @Component
 public class SiteConfigComponent implements Config {
     /**
-     * 
+     *
      */
     public static final String CONFIG_RETURN_URL = "return_url";
     /**
-     * 
+     *
      */
     public static final String CONFIG_LOGIN_PATH = "login_path";
     /**
-     * 
+     *
      */
     public static final String CONFIG_REGISTER_URL = "register_url";
     /**
-     * 
+     *
      */
     public static final String CONFIG_EXPIRY_MINUTES_WEB = "expiry_minutes.web";
     /**
-     * 
+     *
      */
     public static final String CONFIG_EXPIRY_MINUTES_MANAGER = "expiry_minutes.manager";
     /**
-     * 
+     *
      */
     public static final String CONFIG_COMMENT_NEED_CHECK = "comment_need_check";
     /**
-     * 
+     *
      */
     public static final String CONFIG_STATIC_AFTER_COMMENT = "static_after_comment";
     /**
-     * 
+     *
      */
     public static final String CONFIG_STATIC_AFTER_SCORE = "static_after_score";
     /**
-     * 
+     *
      */
     public static final String CONFIG_DEFAULT_CONTENT_STATUS = "default_content_status";
     /**
-     * 
+     *
      */
     public static final String CONFIG_DEFAULT_CONTENT_USER = "default_content_user";
     /**
@@ -84,8 +84,8 @@ public class SiteConfigComponent implements Config {
             return true;
         } else if (url.contains("\r") || url.contains("\n")) {
             return true;
-        } else if (url.contains("://") || url.startsWith("//")) {
-            if (unSafe(url, site, contextPath)) {
+        } else if (url.replace("\\","/").contains("://") || url.replace("\\","/").startsWith("//")) {
+            if (unSafe(url.replace("\\","/"), site, contextPath)) {
                 if (CommonUtils.notEmpty(safeReturnUrl)) {
                     for (String safeUrlPrefix : StringUtils.split(safeReturnUrl, CommonConstants.COMMA_DELIMITED)) {
                         if (url.startsWith(safeUrlPrefix)) {
