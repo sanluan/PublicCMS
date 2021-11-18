@@ -28,6 +28,6 @@ public class CmsContentStatusRoutingBridge implements RoutingBridge<CmsContent> 
     @Override
     public void previousRoutes(DocumentRoutes routes, Object entityIdentifier, CmsContent indexedEntity,
             RoutingBridgeRouteContext context) {
-        route(routes, entityIdentifier, indexedEntity, context);
+        routes.addRoute();
     }
 }
