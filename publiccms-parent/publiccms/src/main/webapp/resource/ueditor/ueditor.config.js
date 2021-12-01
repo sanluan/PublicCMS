@@ -47,12 +47,12 @@
 //            'print', 'preview', 'searchreplace', 'drafts', 'help'
 //        ]]
     	, toolbars: [[
-                  'bold', 'italic', 'underline', 'strikethrough', 'superscript', 'subscript', 'forecolor', 'backcolor','spechars', 'lineheight', '|', 'paragraph', 'fontfamily', 'fontsize', '|',
-                  'insertorderedlist', 'insertunorderedlist','indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', '|',  'link', 'unlink', '|',
-                  'insertvideo', 'simpleupload', 'insertimage', 'wordimage','emotion', 'scrawl', 'attachment', 'map', 'insertcode', '|',
+                  'bold', 'italic', 'underline', 'fontborder', 'strikethrough', 'superscript', 'subscript', 'blockquote', 'forecolor', 'backcolor','spechars', 'rowspacingtop', 'rowspacingbottom','lineheight', '|', 'customstyle', 'paragraph', 'fontfamily', 'fontsize', '|',
+                  'insertorderedlist', 'insertunorderedlist', 'directionalityltr', 'directionalityrtl', 'indent', 'justifyleft', 'justifycenter', 'justifyright', 'justifyjustify', 'touppercase', 'tolowercase', '|',  'link', 'unlink', 'anchor', '|', 'imagenone', 'imageleft', 'imageright', 'imagecenter', '|',
+                  'insertvideo', 'simpleupload', 'insertimage', 'wordimage','emotion', 'scrawl', 'attachment', 'map', 'gmap', 'insertframe', 'insertcode', 'background', 'date', 'time', '|',
                   'inserttable', 'deletetable', 'insertparagraphbeforetable', 'insertrow', 'deleterow', 'insertcol', 'deletecol', 'mergecells', 'mergeright', 'mergedown', 'splittocells', 'splittorows', 'splittocols', 'charts'],
-              ['fullscreen','pagebreak','horizontal', 'searchreplace', 'selectall', 'touppercase', 'tolowercase', '|',
-                  'removeformat', 'formatmatch', 'autotypeset', 'blockquote', 'pasteplain', 'template', 'preview','cleardoc', 'undo', 'redo', 'drafts','source']]
+              ['fullscreen','pagebreak', 'horizontal', 'searchreplace', 'selectall', '|',
+                  'removeformat', 'formatmatch', 'autotypeset', 'pasteplain', 'template', 'preview','cleardoc', 'undo', 'redo', 'drafts','source', 'print', 'help']]
         //当鼠标放在工具栏上时显示的tooltip提示,留空支持自动多语言配置，否则以配置值为准
         //,labelMap:{
         //    'anchor':'', 'undo':''
