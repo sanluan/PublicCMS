@@ -58,7 +58,7 @@ public class J2CacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serializa
     }
 
     @Override
-    public void put(K key, V value, Integer expiryInSeconds) {
+    public void put(K key, V value, Long expiryInSeconds) {
         if (null != expiryInSeconds) {
             channel.set(region, key.toString(), value, expiryInSeconds);
         } else {

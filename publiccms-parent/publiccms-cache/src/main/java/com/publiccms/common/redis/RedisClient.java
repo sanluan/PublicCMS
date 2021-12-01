@@ -77,7 +77,7 @@ public class RedisClient {
      * @param value
      * @param expiry
      */
-    public void set(String region, Object key, Object value, Integer expiry) {
+    public void set(String region, Object key, Object value, Long expiry) {
         log.trace("set cache item. region=" + region + ", key=" + key + ", timeout=" + (CommonUtils.empty(expiry) ? 0 : expiry));
         createOrGetCache(region).put(key.toString(), value, expiry);
     }

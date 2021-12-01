@@ -25,7 +25,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
 import com.publiccms.logic.service.trade.TradePaymentHistoryService;
 import com.publiccms.logic.service.trade.TradePaymentService;
@@ -72,8 +72,6 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
      * 
      */
     public static final String CONFIG_ENCRYPTKEY = "encryptKey";
-    @Autowired
-    private ConfigComponent configComponent;
     @Autowired
     private TradePaymentService service;
     @Autowired
@@ -129,7 +127,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
     @Override
     public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
-            Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE);
+            Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
                 MultipleFactory factory = getFactory(site.getId(), config);
                 try {
@@ -163,7 +161,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
 
     @Override
     public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
-        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
         if (null != payment && CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))
                 && service.refunded(siteId, payment.getId())) {
             MultipleFactory factory = getFactory(siteId, config);
@@ -236,7 +234,7 @@ public class AlipayGatewayComponent extends AbstractPaymentGateway implements co
 
     @Override
     public boolean enable(short siteId) {
-        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_GATEWAY))) {
             return true;
         }

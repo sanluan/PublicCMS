@@ -509,6 +509,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     /**
      * @param entitys
      */
+    @CopyToDatasource
     public void updateStatistics(Collection<ClickStatistics> entitys) {
         Map<Short, List<ClickStatistics>> siteMap = new HashMap<>();
         for (ClickStatistics entityStatistics : entitys) {
@@ -516,7 +517,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             list.add(entityStatistics);
         }
         for (Map.Entry<Short, List<ClickStatistics>> entry : siteMap.entrySet()) {
-            contentService.updateStatistics(entry.getKey(), entry.getValue());
+            updateStatistics(entry.getKey(), entry.getValue());
         }
     }
 
@@ -818,8 +819,6 @@ public class CmsContentService extends BaseService<CmsContent> {
 
     @Autowired
     private CmsContentDao dao;
-    @Autowired
-    private CmsContentService contentService;
     @Autowired
     private CmsCategoryService categoryService;
     @Autowired

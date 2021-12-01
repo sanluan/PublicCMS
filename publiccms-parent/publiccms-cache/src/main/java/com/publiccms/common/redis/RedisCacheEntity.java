@@ -41,7 +41,7 @@ public class RedisCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Serial
     }
 
     @Override
-    public void put(K key, V value, Integer expiryInSeconds) {
+    public void put(K key, V value, Long expiryInSeconds) {
         Jedis jedis = jedisPool.getResource();
         if (null == expiryInSeconds) {
             jedis.set(getKey(key), valueSerializer.serialize(value));

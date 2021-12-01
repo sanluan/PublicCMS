@@ -40,6 +40,9 @@ public class ConfigComponent implements SiteCache {
     private SysConfigDataService service;
     @Autowired(required = false)
     private List<Config> configPluginList;
+
+    @Autowired
+    private SiteComponent siteComponent;
     private CacheEntity<Short, Map<String, Map<String, String>>> cache;
 
     /**
@@ -148,9 +151,6 @@ public class ConfigComponent implements SiteCache {
         }
         return configMap;
     }
-
-    @Autowired
-    private SiteComponent siteComponent;
 
     public static int getInt(String value, int defaultValue) {
         if (CommonUtils.empty(value)) {

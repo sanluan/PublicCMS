@@ -32,7 +32,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.BeanComponent;
 
 /**
  * 
@@ -91,8 +91,6 @@ public class EmailComponent implements SiteCache, Config {
      */
     public static final String CONFIG_CODE_DESCRIPTION = CONFIGPREFIX + CONFIG_CODE;
     private final Log log = LogFactory.getLog(getClass());
-    @Autowired
-    private ConfigComponent configComponent;
 
     private CacheEntity<Short, JavaMailSenderImpl> cache;
 
@@ -228,7 +226,7 @@ public class EmailComponent implements SiteCache, Config {
      */
     private boolean send(short siteId, String[] toAddress, String[] cc, String[] bcc, String title, String content,
             boolean isHtml, String fileName, File file) throws MessagingException {
-        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_FROMADDRESS))) {
             JavaMailSender mailSender = getMailSender(siteId, config);
             MimeMessage message = mailSender.createMimeMessage();

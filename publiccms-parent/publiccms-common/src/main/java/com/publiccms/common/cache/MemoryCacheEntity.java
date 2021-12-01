@@ -42,7 +42,7 @@ public class MemoryCacheEntity<K, V> implements CacheEntity<K, V>, java.io.Seria
     }
 
     @Override
-    public void put(K key, V value, Integer expiryInSeconds) {
+    public void put(K key, V value, Long expiryInSeconds) {
         lock.writeLock().lock();
         try {
             CacheValue<V> cacheValue = new CacheValue<V>(value);

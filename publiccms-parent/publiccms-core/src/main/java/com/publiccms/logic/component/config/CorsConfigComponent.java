@@ -20,6 +20,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.BeanComponent;
 
 /**
  *
@@ -46,9 +47,6 @@ public class CorsConfigComponent implements SiteCache, Config {
 
     private CacheEntity<Short, CorsConfiguration> cache;
 
-    @Autowired
-    private ConfigComponent configComponent;
-
     @Override
     public void clear(short siteId) {
         cache.remove(siteId);
@@ -62,7 +60,7 @@ public class CorsConfigComponent implements SiteCache, Config {
     public CorsConfiguration getConfig(SysSite site) {
         CorsConfiguration config = cache.get(site.getId());
         if (null == config) {
-            Map<String, String> configData = configComponent.getConfigData(site.getId(), CONFIG_CODE);
+            Map<String, String> configData = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
             config = new CorsConfiguration();
             config.applyPermitDefaultValues();
             if (null != configData) {

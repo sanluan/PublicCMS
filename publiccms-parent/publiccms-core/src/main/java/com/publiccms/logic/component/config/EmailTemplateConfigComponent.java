@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
@@ -13,6 +12,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.component.site.EmailComponent;
 
 /**
@@ -47,12 +47,9 @@ public class EmailTemplateConfigComponent implements Config {
      */
     public static final int DEFAULT_EXPIRY_MINUTES = 30;
 
-    @Autowired
-    private ConfigComponent configComponent;
-
     @Override
     public String getCode(SysSite site, boolean showAll) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config) || showAll) {
             return CONFIG_CODE;
         } else {
@@ -67,7 +64,7 @@ public class EmailTemplateConfigComponent implements Config {
 
     @Override
     public List<SysExtendField> getExtendFieldList(SysSite site, Locale locale) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), EmailComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             List<SysExtendField> extendFieldList = new ArrayList<>();
             extendFieldList.add(new SysExtendField(CONFIG_EMAIL_TITLE, INPUTTYPE_TEXT, CONFIG_EMAIL_TITLE,

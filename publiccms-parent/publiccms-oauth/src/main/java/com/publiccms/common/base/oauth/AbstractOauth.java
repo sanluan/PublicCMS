@@ -21,7 +21,6 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.api.oauth.OauthGateway;
@@ -30,7 +29,7 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.view.pojo.oauth.OauthAccess;
 import com.publiccms.view.pojo.oauth.OauthConfig;
 
@@ -67,9 +66,6 @@ public abstract class AbstractOauth implements Config, OauthGateway {
     protected String channel;
     protected String prefix;
 
-    @Autowired
-    private ConfigComponent configComponent;
-
     /**
      * @param channel
      */
@@ -93,7 +89,7 @@ public abstract class AbstractOauth implements Config, OauthGateway {
      * @return
      */
     protected OauthConfig getConfig(short siteId) {
-        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
         OauthConfig oauthConfig = new OauthConfig(config.get(prefix + CONFIG_APP_KEY), config.get(prefix + CONFIG_APP_SECRET),
                 config.get(prefix + CONFIG_RETURN_URL));
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(oauthConfig.getAppKey())

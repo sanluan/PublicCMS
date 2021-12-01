@@ -6,7 +6,6 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
@@ -14,6 +13,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
+import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 
 /**
@@ -68,11 +68,8 @@ public class SiteConfigComponent implements Config {
      */
     public static final int DEFAULT_EXPIRY_MINUTES = 30 * 24 * 60;
 
-    @Autowired
-    protected ConfigComponent configComponent;
-
     public String getSafeUrl(String returnUrl, SysSite site, String contextPath) {
-        Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE_SITE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE_SITE);
         if (isUnSafeUrl(returnUrl, site, config.get(CONFIG_RETURN_URL), contextPath)) {
             return site.isUseStatic() ? site.getSitePath() : site.getDynamicPath();
         }

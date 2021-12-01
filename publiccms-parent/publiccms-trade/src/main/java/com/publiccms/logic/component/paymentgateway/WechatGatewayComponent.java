@@ -37,7 +37,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.trade.TradePayment;
 import com.publiccms.entities.trade.TradePaymentHistory;
 import com.publiccms.entities.trade.TradeRefund;
-import com.publiccms.logic.component.config.ConfigComponent;
+import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.component.trade.PaymentProcessorComponent;
@@ -94,8 +94,6 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
      * 
      */
     public static final String CONFIG_RESULTPAGE = "resultPage";
-    @Autowired
-    private ConfigComponent configComponent;
     @Autowired
     private TemplateComponent templateComponent;
     @Autowired
@@ -162,7 +160,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
     @Override
     public boolean pay(SysSite site, TradePayment payment, String callbackUrl, HttpServletResponse response) {
         if (null != payment) {
-            Map<String, String> config = configComponent.getConfigData(site.getId(), CONFIG_CODE);
+            Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE);
             if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))) {
                 try {
                     byte[] apiV3Key = config.get(CONFIG_KEY).getBytes(CommonConstants.DEFAULT_CHARSET);
@@ -232,7 +230,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
 
     @Override
     public boolean refund(short siteId, TradePayment payment, TradeRefund refund) {
-        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
         if (null != payment && CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_KEY))
                 && service.refunded(siteId, payment.getId())) {
             try {
@@ -354,7 +352,7 @@ public class WechatGatewayComponent extends AbstractPaymentGateway implements Co
 
     @Override
     public boolean enable(short siteId) {
-        Map<String, String> config = configComponent.getConfigData(siteId, CONFIG_CODE);
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
         if (CommonUtils.notEmpty(config) && CommonUtils.notEmpty(config.get(CONFIG_APPID))) {
             return true;
         }

@@ -22,23 +22,23 @@
         <version.publiccms>V4.0.202107.c</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.3.10</version.spring>
+        <version.spring>5.3.13</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.5.4</version.springBoot>
+        <version.springBoot>2.6.1</version.springBoot>
         <!-- https://mvnrepository.com/artifact/org.aspectj/aspectjweaver -->
         <version.aspectj>1.9.7</version.aspectj>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.13</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.12.4</version.jackson>
+        <version.jackson>2.12.5</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
         <version.hibernate>5.4.32.Final</version.hibernate>
         <!-- https://mvnrepository.com/artifact/org.hibernate.search/hibernate-search-mapper-orm/ -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>6.0.6.Final</version.hibernateSearch>
+        <version.hibernateSearch>6.0.7.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.9.6</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -56,15 +56,15 @@
         <!-- https://mvnrepository.com/artifact/org.apache.lucene/lucene-core -->
         <version.lucene>8.7.0</version.lucene>
         <!-- http://mvnrepository.com/artifact/redis.clients/jedis -->
-        <version.jedis>3.5.1</version.jedis>
+        <version.jedis>3.7.0</version.jedis>
         <!-- http://mvnrepository.com/artifact/org.quartz-scheduler/quartz -->
         <version.quartz>2.3.2</version.quartz>
         <!-- https://mvnrepository.com/artifact/com.zaxxer/HikariCP -->
         <version.hikariCP>4.0.3</version.hikariCP>
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <version.mysql>8.0.25</version.mysql>
+        <version.mysql>8.0.27</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>4.1.2</version.poi>
+        <version.poi>5.0.0</version.poi>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <version.fileupload>1.4</version.fileupload>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
@@ -90,7 +90,7 @@
         <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
         <version.servlet>4.0.1</version.servlet>
         <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
-        <version.juint>5.7.2</version.juint>
+        <version.juint>5.8.2</version.juint>
     </properties>
     <dependencyManagement>
         <dependencies>
