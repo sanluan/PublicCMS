@@ -8,6 +8,7 @@ dependencies {
     implementation "commons-fileupload:commons-fileupload:${fileuploadVersion}"
     implementation "org.apache.commons:commons-collections4:${collectionsVersion}"
     implementation "org.apache.commons:commons-lang3:${langVersion}"
+    implementation "org.apache.commons:commons-text:${textVersion}"
     implementation "commons-codec:commons-codec:${codecVersion}"
 
     implementation "org.apache.httpcomponents:httpmime:${httpclientVersion}"

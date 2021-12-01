@@ -64,13 +64,15 @@
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <version.mysql>8.0.27</version.mysql>
         <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
-        <version.poi>5.0.0</version.poi>
+        <version.poi>4.1.2</version.poi>
         <!-- http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload -->
         <version.fileupload>1.4</version.fileupload>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-collections4 -->
         <version.collections>4.4</version.collections>
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <version.lang>3.12.0</version.lang>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-text -->
+        <version.text>1.9</version.text>
         <!-- http://mvnrepository.com/artifact/commons-codec/commons-codec -->
         <version.codec>1.15</version.codec>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
@@ -138,6 +140,11 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-lang3</artifactId>
                 <version>${version.lang}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-text</artifactId>
+                <version>${version.text}</version>
             </dependency>
             <dependency>
                 <groupId>commons-codec</groupId>

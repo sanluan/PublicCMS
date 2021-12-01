@@ -31,7 +31,6 @@ import org.w3c.dom.Element;
 import com.publiccms.common.constants.CommonConstants;
 
 import fr.opensagres.poi.xwpf.converter.core.ImageManager;
-import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLConverter;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 
 public class DocToHtmlUtils {
@@ -65,8 +64,8 @@ public class DocToHtmlUtils {
         try (XWPFDocument document = new XWPFDocument(new FileInputStream(file));) {
             XHTMLOptions options = XHTMLOptions.create().setImageManager(imageManager).setFragment(true);
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            XHTMLConverter.getInstance().convert(document, out, options);
-            return new String(out.toByteArray());
+            CustomXHTMLConverter.getInstance().convert(document, out, options);
+            return HtmlUtils.UNESCAPE_HTML4.translate(new String(out.toByteArray()));
         }
     }
 
@@ -89,7 +88,7 @@ public class DocToHtmlUtils {
         if (-1 < index1 && -1 < index2) {
             html = html.substring(html.indexOf('>', index1) + 1, index2);
         }
-        return html;
+        return HtmlUtils.UNESCAPE_HTML4.translate(html);
     }
 
     /**

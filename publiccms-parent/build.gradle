@@ -72,13 +72,15 @@ subprojects {
         // https://mvnrepository.com/artifact/mysql/mysql-connector-java
         mysqlVersion = "8.0.27"
         // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
-        poiVersion = "5.0.0"
+        poiVersion = "4.1.2"
         // http://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
         fileuploadVersion = "1.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-collections4
         collectionsVersion = "4.4"
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.12.0"
+        // https://mvnrepository.com/artifact/org.apache.commons/commons-text
+        textVersion = "1.9"
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.15"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core

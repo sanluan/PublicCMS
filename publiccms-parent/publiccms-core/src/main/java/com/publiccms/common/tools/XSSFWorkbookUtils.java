@@ -95,7 +95,7 @@ public class XSSFWorkbookUtils {
             }
             sb.append("</table>");
         }
-        return sb.toString();
+        return HtmlUtils.UNESCAPE_HTML4.translate(sb.toString());
     }
 
     /**
