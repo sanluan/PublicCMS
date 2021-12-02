@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 import com.publiccms.common.constants.CommonConstants;
 
 import fr.opensagres.poi.xwpf.converter.core.ImageManager;
+import fr.opensagres.poi.xwpf.converter.xhtml.Base64EmbedImgManager;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 
 public class DocToHtmlUtils {
@@ -66,6 +67,15 @@ public class DocToHtmlUtils {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             CustomXHTMLConverter.getInstance().convert(document, out, options);
             return HtmlUtils.UNESCAPE_HTML4.translate(new String(out.toByteArray()));
+        }
+    }
+
+    public static void main(String[] args) {
+        try {
+           System.out.println(docxToHtml(new File("D:/1.docx"), new Base64EmbedImgManager()));
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 

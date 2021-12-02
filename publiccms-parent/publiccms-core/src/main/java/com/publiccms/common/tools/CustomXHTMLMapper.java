@@ -70,12 +70,9 @@ public class CustomXHTMLMapper extends XHTMLMapper {
     @Override
     protected Object startVisitParagraph(XWPFParagraph paragraph, ListItemContext itemContext, Object parentContainer)
             throws Exception {
-        List<CSSStyle> styleList = createStyleList(paragraph.getStyleID());
+        List<CSSStyle> styleList = createStyleList(paragraph.getStyleID(), true);
         CTPPr pPr = paragraph.getCTP().getPPr();
         CSSStyle cssStyle = getStylesDocument().createCSSStyle(pPr);
-        if (cssStyle != null) {
-            cssStyle.addProperty(CSSStylePropertyConstants.WHITE_SPACE, "pre-wrap");
-        }
         AttributesImpl attributes = createStyleAttribute(cssStyle, styleList);
 
         startElement(P_ELEMENT, attributes);
@@ -104,9 +101,6 @@ public class CustomXHTMLMapper extends XHTMLMapper {
         List<CSSStyle> styleList = createStyleList(paragraph.getStyleID());
         CTRPr rPr = run.getCTR().getRPr();
         CSSStyle cssStyle = getStylesDocument().createCSSStyle(rPr);
-        if (cssStyle != null) {
-            cssStyle.addProperty(CSSStylePropertyConstants.WHITE_SPACE, "pre-wrap");
-        }
         this.currentRunAttributes = createStyleAttribute(cssStyle, styleList);
 
         if (url != null) {
@@ -289,6 +283,10 @@ public class CustomXHTMLMapper extends XHTMLMapper {
     }
 
     private List<CSSStyle> createStyleList(String styleId) {
+        return createStyleList(styleId, false);
+    }
+
+    private List<CSSStyle> createStyleList(String styleId, boolean withDeafult) {
         if (StringUtils.isNotEmpty(styleId)) {
             CustomCSSStylesDocument styleDocument = (CustomCSSStylesDocument) getStylesDocument();
             String[] classNames = StringUtils.split(styleDocument.getClassNames(styleId));
@@ -298,6 +296,15 @@ public class CustomXHTMLMapper extends XHTMLMapper {
                 if (null != style) {
                     styleList.add(style);
                 }
+            }
+            return styleList;
+        }
+        if (withDeafult) {
+            CustomCSSStylesDocument styleDocument = (CustomCSSStylesDocument) getStylesDocument();
+            List<CSSStyle> styleList = new ArrayList<>();
+            CSSStyle style = styleDocument.getCSSStyle("a");
+            if (null != style) {
+                styleList.add(style);
             }
             return styleList;
         }
