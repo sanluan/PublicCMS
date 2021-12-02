@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Mon Sep 13 2021 15:03:18 GMT+0800 (中国标准时间)
+ * build: Thu Dec 02 2021 10:12:55 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -780,8 +780,8 @@ var utils = UE.utils = {
                 '<':'&lt;',
                 '&':'&amp;',
                 '"':'&quot;',
-                "&ldquo;": "“",
-                "&rdquo;": "”",
+                "“": "&ldquo;",
+                "”": "&rdquo;",
                 '>':'&gt;',
                 "'":'&#39;'
             }[a]
@@ -811,6 +811,8 @@ var utils = UE.utils = {
                 '&lt;':'<',
                 '&amp;':'&',
                 '&quot;':'"',
+                "&ldquo;": "“",
+                "&rdquo;": "”",
                 '&gt;':'>',
                 '&#39;':"'",
                 '&nbsp;':' '
