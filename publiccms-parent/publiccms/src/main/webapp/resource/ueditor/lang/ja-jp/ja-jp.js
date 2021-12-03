@@ -2,7 +2,7 @@
  */
 UE.I18N['ja-jp'] = {
     'labelMap':{
-        'anchor':'アンカー', 'undo':'アンドゥー', 'redo':'リドゥー', 'bold':'太字', 'indent':'インデント', 
+        'anchor':'アンカー', 'undo':'アンドゥー', 'redo':'リドゥー', 'bold':'太字', 'indent':'インデント',
         'italic':'斜体', 'underline':'下線', 'strikethrough':'取り消し線', 'subscript':'下付き','fontborder':'囲み線',
         'superscript':'上付き', 'formatmatch':'書式のコピー/貼り付け', 'source':'ソースコード', 'blockquote':'参考資料',
         'pasteplain':'テキストのみ保持', 'selectall':'すべて選択','print':'印刷', 'preview':'プレビュー',
@@ -217,6 +217,11 @@ UE.I18N['ja-jp'] = {
         'imageFloat':"画像フロート",
         'removeFontsize':"フォントサイズをクリア",
         'removeFontFamily':"フォントをクリア",
+        'defaultFontsize':"デフォルトのフォントサイズ",
+        'defaultFontFamily':"デフォルトのフォントファミリー",
+        'rowspacingtop':"段落前の間隔",
+        'rowspacingbottom':"段落後の間隔",
+        'lineHeight':"行間隔",
         'removeHtml':"HTMLコードをクリア",
         'pasteFilter':"貼り付けフィルタ",
         'run':"実行",
@@ -260,7 +265,7 @@ UE.I18N['ja-jp'] = {
             'lang_imgLoading':"　画像読み込み中...",
             'lang_start_upload':"アップロード",
             'lock':{'title':"アスペクト比をロック"}, //属性
-            'searchType':{'title':"イメージタイプ", 'options':["ニュース", "壁紙", "エモーション", "胸像"]}, //select的option 　　　　　　
+            'searchType':{'title':"イメージタイプ", 'options':["ニュース", "壁紙", "エモーション", "胸像"]}, //select的option
             'searchTxt':{'value':"検索キーワードを入力してください"},
             'searchBtn':{'value':"Baidu"},
             'searchReset':{'value':"検索をクリア"},
@@ -498,7 +503,7 @@ UE.I18N['ja-jp'] = {
             'lang_input_about':'UEditorについて',
             'lang_input_shortcuts':'ショートカットキー',
             'lang_input_introduction':'UEditorは、Baidu WebフロントエンドのR＆D部門によって開発された豊富なテキストWebエディタです。軽量で、カスタマイズ可能で、ユーザ優先などの特長が持っています。オープンソースはBSDプロトコルに基づいており、コードの自由な使用と変更が可能です。',
-			
+
             'lang_Txt_shortcuts':'ショートカットキー',
             'lang_Txt_func':'機能',
             'lang_Txt_bold':'選択された文字列を太字にします',
@@ -534,7 +539,7 @@ UE.I18N['ja-jp'] = {
             'lang_input_target':'新しいウィンドウで開きますか：'
         },
         'validLink':'リンクを選択する場合のみ、有効',
-        'httpPrompt':'ご入力いただいたハイパーリンクにはhttpなどのプロトコル名が含まれておらず、デフォルトはhttp://を追加します' 
+        'httpPrompt':'ご入力いただいたハイパーリンクにはhttpなどのプロトコル名が含まれておらず、デフォルトはhttp://を追加します'
     },
     'map':{
         'static':{

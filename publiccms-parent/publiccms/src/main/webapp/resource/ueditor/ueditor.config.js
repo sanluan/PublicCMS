@@ -317,6 +317,11 @@
         //    pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
         //    clearFontSize: false,           //去掉所有的内嵌字号，使用编辑器默认的字号
         //    clearFontFamily: false,         //去掉所有的内嵌字体，使用编辑器默认的字体
+        //    defaultFontsize: "",            //默认字号
+        //    defaultFontFamily: "",          //默认字体
+        //    rowspacingtop: "",              //段前距
+        //    rowspacingbottom: "",           //段后距
+        //    lineheight:"",                  //行高
         //    removeEmptyNode: false,         // 去掉空节点
         //    //可以去掉的标签
         //    removeTagNames: {标签名字:1},
