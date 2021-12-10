@@ -234,9 +234,7 @@ public class CmsContentService extends BaseService<CmsContent> {
             }
 
             attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
-            if (CommonUtils.notEmpty(contentParameters.getContentRelateds())) {
-                cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
-            }
+            cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         }
         return entity;
     }
