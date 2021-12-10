@@ -225,14 +225,20 @@ public class CmsContentDao extends BaseDao<CmsContent> {
                 b.must(t -> t.bool().mustNot(t.range().field("expiryDate").range(Range.canonical(startDate, expiryDate))));
             }
             if (CommonUtils.notEmpty(categoryIds)) {
-                for (Integer categoryId : categoryIds) {
-                    b.must(t -> t.match().field("categoryId").matching(categoryId));
-                }
+                Consumer<? super BooleanPredicateClausesStep<?>> categoryContributor = c -> {
+                    for (Integer categoryId : categoryIds) {
+                        c.should(t -> t.match().field("categoryId").matching(categoryId));
+                    }
+                };
+                b.must(f -> f.bool(categoryContributor));
             }
             if (CommonUtils.notEmpty(modelIds)) {
-                for (String modelId : modelIds) {
-                    b.must(t -> t.match().field("modelId").matching(modelId));
-                }
+                Consumer<? super BooleanPredicateClausesStep<?>> modelContributor = c -> {
+                    for (String modelId : modelIds) {
+                        b.must(t -> t.match().field("modelId").matching(modelId));
+                    }
+                };
+                b.must(f -> f.bool(modelContributor));
             }
         };
         SearchQuerySelectStep<?, EntityReference, CmsContent, SearchLoadingOptionsStep, ?, ?> selectStep = getSearchSession()

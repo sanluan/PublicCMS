@@ -119,8 +119,7 @@ public class TradePaymentController {
     @ResponseBody
     public String notifyAlipay(@RequestAttribute SysSite site, long out_trade_no, String buyer_pay_amount, String trade_no,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
-        log.info(
-                "alipay notify out_trade_no:" + out_trade_no + ",buyer_pay_amount:" + buyer_pay_amount + ",trade_no:" + trade_no);
+        log.info(String.format("alipay notify out_trade_no:%s,buyer_pay_amount:%s,trade_no:%s", out_trade_no, buyer_pay_amount, trade_no));
         Map<String, String> config = configComponent.getConfigData(site.getId(), AlipayGatewayComponent.CONFIG_CODE);
         if (CommonUtils.notEmpty(config)) {
             Map<String, String> params = request.getParameterMap().entrySet().stream()
