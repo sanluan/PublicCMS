@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Fri Dec 03 2021 22:27:23 GMT+0800 (中国标准时间)
+ * build: Tue Dec 14 2021 23:13:54 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -10475,6 +10475,7 @@ UE.plugins['autotypeset'] = function(){
         mergeEmptyline: true,           //合并空行
         removeClass: true,              //去掉冗余的class
         removeEmptyline: false,         //去掉空行
+        removeSpace:false,              //去掉空格
         textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
         imageBlockLine: "center",       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
         pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
@@ -10576,16 +10577,6 @@ UE.plugins['autotypeset'] = function(){
                 removeNotAttributeSpan(ci);
             }
 
-            if(opt.defaultFontsize && !ci.style.fontSize){
-                 ci.style.fontSize = opt.defaultFontsize;
-                 removeNotAttributeSpan(ci);
-            }
-
-            if(opt.defaultFontFamily && !ci.style.fontFamily){
-                 ci.style.fontFamily	 = opt.defaultFontFamily;
-                 removeNotAttributeSpan(ci);
-            }
-
             if(isLine(ci)){
                 //合并空行
                 if(opt.mergeEmptyline ){
@@ -10598,7 +10589,6 @@ UE.plugins['autotypeset'] = function(){
                         }
                         domUtils.remove(tmpNode);
                     }
-
                 }
                  //去掉空行，保留占位的空行
                 if(opt.removeEmptyline && domUtils.inDoc(ci,cont) && !remainTag[ci.parentNode.tagName.toLowerCase()] ){
@@ -10610,7 +10600,13 @@ UE.plugins['autotypeset'] = function(){
                     }
                     domUtils.remove(ci);
                     continue;
+                }
+                if(opt.defaultFontsize && !ci.style.fontSize){
+                     ci.style.fontSize = opt.defaultFontsize;
+                }
 
+                if(opt.defaultFontFamily && !ci.style.fontFamily){
+                     ci.style.fontFamily	 = opt.defaultFontFamily;
                 }
 
             }
@@ -10704,6 +10700,16 @@ UE.plugins['autotypeset'] = function(){
                     domUtils.remove(ci);
                 }
             }
+        }
+        //去掉空格
+        if(opt.removeSpace ){
+            var root = UE.htmlparser(cont.innerHTML);
+            root.traversal(function(node){
+                if(node.type == 'text'){
+                    node.data = node.data.replace(/ /g,'').replace(/&nbsp;/ig,'');
+                }
+            });
+            cont.innerHTML = root.toHtml()
         }
         if(opt.tobdc){
             var root = UE.htmlparser(cont.innerHTML);
@@ -14891,7 +14897,7 @@ UE.plugins['paste'] = function () {
             }
             var clipboardData = e.clipboardData;
             var rtfContent;
-            if(0 < clipboardData.items.length && -1 < clipboardData.types.indexOf('text/rtf') ) {
+            if(-1 < clipboardData.types.indexOf('text/rtf') ) {
                 rtfContent = clipboardData.getData('text/rtf');
             }
             getClipboardData.call(me, function (div) {
@@ -26046,7 +26052,7 @@ UE.ui = baidu.editor.ui = {};
                 '<div class="edui-autotypesetpicker-body">' +
                 '<table >' +
                 '<tr><td nowrap><label><input type="checkbox" name="mergeEmptyline" ' + (opt["mergeEmptyline"] ? "checked" : "" ) + '>' + lang.mergeLine + '</label></td><td colspan="2"><label><input type="checkbox" name="removeEmptyline" ' + (opt["removeEmptyline"] ? "checked" : "" ) + '>' + lang.delLine + '</label></td></tr>' +
-                '<tr><td nowrap><label><input type="checkbox" name="removeClass" ' + (opt["removeClass"] ? "checked" : "" ) + '>' + lang.removeFormat + '</label></td><td colspan="2"><label><input type="checkbox" name="indent" ' + (opt["indent"] ? "checked" : "" ) + '>' + lang.indent + '</label></td></tr>' +
+                '<tr><td nowrap><label><input type="checkbox" name="removeClass" ' + (opt["removeClass"] ? "checked" : "" ) + '>' + lang.removeFormat + '</label></td><td><label><input type="checkbox" name="indent" ' + (opt["indent"] ? "checked" : "" ) + '>' + lang.indent + '</label></td><td><label><input type="checkbox" name="removeSpace" ' + (opt["removeSpace"] ? "checked" : "" ) + '>' + lang.removeSpace + '</label></td></tr>' +
                 '<tr>' +
                 '<td nowrap><label><input type="checkbox" name="textAlign" ' + (opt["textAlign"] ? "checked" : "" ) + '>' + lang.alignment + '</label></td>' +
                 '<td colspan="2" id="' + textAlignInputName + '">' +
@@ -26064,9 +26070,9 @@ UE.ui = baidu.editor.ui = {};
                 '<label><input type="radio" name="'+ imageBlockInputName +'" value="right" ' + ((opt["imageBlockLine"] && opt["imageBlockLine"] == "right") ? "checked" : "") + '>' + me.getLang("justifyright") + '</label>' +
                 '</td>' +
                 '</tr>' +
-                '<tr><td nowrap><label><input type="checkbox" name="clearFontSize" ' + (opt["clearFontSize"] ? "checked" : "" ) + '>' + lang.removeFontsize + '</label></td><td colspan="2"><label><input type="checkbox" name="clearFontFamily" ' + (opt["clearFontFamily"] ? "checked" : "" ) + '>' + lang.removeFontFamily + '</label></td></tr>' +
-                '<tr><td nowrap><label>' + lang.defaultFontsize + '</label><input type="text" size="4" name="defaultFontsize" value="' + (opt["defaultFontsize"] ? opt["defaultFontsize"] : "" ) + '"></td><td colspan="2"><label>' + lang.defaultFontFamily + '</label>'+fontFamilyHtml+'</td></tr>' +
-                '<tr><td nowrap><label>' + lang.rowspacingtop + '</label><input type="text" name="rowspacingtop" size="4" value="' + (opt["rowspacingtop"] ? opt["rowspacingtop"] : "" ) + '"></td><td colspan="2"><label>' + lang.rowspacingbottom + '</label><input type="text" name="rowspacingbottom" size="4" value="' + (opt["rowspacingbottom"] ? opt["rowspacingbottom"] : "" ) + '"><label>' + lang.lineHeight + '</label><input type="text" name="lineHeight" size="4" value="' + (opt["lineHeight"] ? opt["lineHeight"] : "" ) + '"></td></tr>' +
+                '<tr><td nowrap><label><input type="checkbox" name="clearFontFamily" ' + (opt["clearFontFamily"] ? "checked" : "" ) + '>' + lang.removeFontFamily + '</label></td><td colspan="2"><label>' + lang.defaultFontFamily + '</label>'+fontFamilyHtml+'</td></tr>' +
+                '<tr><td nowrap><label><input type="checkbox" name="clearFontSize" ' + (opt["clearFontSize"] ? "checked" : "" ) + '>' + lang.removeFontsize + '</label></td><td colspan="2"><label>' + lang.defaultFontsize + '</label><input type="text" size="4" name="defaultFontsize" value="' + (opt["defaultFontsize"] ? opt["defaultFontsize"] : "" ) + '"></td></tr>' +
+                '<tr><td nowrap><label>' + lang.lineHeight + '</label><input type="text" name="lineHeight" size="4" value="' + (opt["lineHeight"] ? opt["lineHeight"] : "" ) + '"></td><td colspan="2"><label>' + lang.rowspacingtop + '</label><input type="text" name="rowspacingtop" size="4" value="' + (opt["rowspacingtop"] ? opt["rowspacingtop"] : "" ) + '"><label>' + lang.rowspacingbottom + '</label><input type="text" name="rowspacingbottom" size="4" value="' + (opt["rowspacingbottom"] ? opt["rowspacingbottom"] : "" ) + '"></td></tr>' +
                 '<tr><td nowrap colspan="3"><label><input type="checkbox" name="removeEmptyNode" ' + (opt["removeEmptyNode"] ? "checked" : "" ) + '>' + lang.removeHtml + '</label></td></tr>' +
                 '<tr><td nowrap colspan="3"><label><input type="checkbox" name="pasteFilter" ' + (opt["pasteFilter"] ? "checked" : "" ) + '>' + lang.pasteFilter + '</label></td></tr>' +
                 '<tr>' +

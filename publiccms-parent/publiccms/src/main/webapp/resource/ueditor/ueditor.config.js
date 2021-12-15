@@ -312,6 +312,7 @@
         //    mergeEmptyline: true,           //合并空行
         //    removeClass: true,              //去掉冗余的class
         //    removeEmptyline: false,         //去掉空行
+        //    removeSpace: false,             //去掉空格
         //    textAlign:"left",               //段落的排版方式，可以是 left,right,center,justify 去掉这个属性表示不执行排版
         //    imageBlockLine: 'center',       //图片的浮动方式，独占一行剧中,左右浮动，默认: center,left,right,none 去掉这个属性表示不执行排版
         //    pasteFilter: false,             //根据规则过滤没事粘贴进来的内容
@@ -417,7 +418,7 @@
 			p:      ['class', 'style', 'data-background'],
 			pre:    ['class', 'style'],
 			s:      [],
-			section:[],
+			section:['style'],
 			small:  [],
 			span:   ['class', 'style'],
 			sub:    ['class', 'style'],

@@ -217,6 +217,7 @@ UE.I18N['en'] = {
     'autoTypeSet':{
         'mergeLine':"Merge empty line",
         'delLine':"Del empty line",
+        'removeSpace':"Remove spaces",
         'removeFormat':"Remove format",
         'indent':"Indent",
         'alignment':"Alignment",

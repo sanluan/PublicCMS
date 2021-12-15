@@ -235,7 +235,7 @@ public class CmsContentDao extends BaseDao<CmsContent> {
             if (CommonUtils.notEmpty(modelIds)) {
                 Consumer<? super BooleanPredicateClausesStep<?>> modelContributor = c -> {
                     for (String modelId : modelIds) {
-                        b.must(t -> t.match().field("modelId").matching(modelId));
+                        c.should(t -> t.match().field("modelId").matching(modelId));
                     }
                 };
                 b.must(f -> f.bool(modelContributor));

@@ -216,6 +216,7 @@ UE.I18N['zh-cn'] = {
     'autoTypeSet':{
         'mergeLine':"合并空行",
         'delLine':"清除空行",
+        'removeSpace':"清除空格",
         'removeFormat':"清除格式",
         'indent':"首行缩进",
         'alignment':"对齐方式",

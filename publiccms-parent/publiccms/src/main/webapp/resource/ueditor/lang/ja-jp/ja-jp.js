@@ -211,6 +211,7 @@ UE.I18N['ja-jp'] = {
     'autoTypeSet':{
         'mergeLine':"空白行をマージ",
         'delLine':"空白行をクリア",
+        'removeSpace':"スペースを削除する",
         'removeFormat':"書式をクリア",
         'indent':"字下げ",
         'alignment':"配置",
