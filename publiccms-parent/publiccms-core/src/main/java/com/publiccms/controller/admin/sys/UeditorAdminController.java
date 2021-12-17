@@ -127,9 +127,10 @@ public class UeditorAdminController {
      * @return view name
      */
     @RequestMapping(params = "action=" + ACTION_UPLOAD)
-    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
+    @ResponseBody
+    public Map<String, Object> upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
             HttpServletRequest request, ModelMap model) {
-        if (null != file && !file.isEmpty()) {
+        if (null != file) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
             if (ArrayUtils.contains(ALLOW_FILES, suffix)) {
@@ -147,17 +148,13 @@ public class UeditorAdminController {
                     map.put("url", fileName);
                     map.put("type", suffix);
                     map.put("original", originalName);
-                    model.addAttribute("result", map);
+                    return map;
                 } catch (IllegalStateException | IOException e) {
-                    model.addAttribute("result", getResultMap(false));
+                    log.error(e.getMessage(), e);
                 }
-            } else {
-                model.addAttribute("result", getResultMap(false));
             }
-        } else {
-            model.addAttribute("result", getResultMap(false));
         }
-        return "common/mapResult";
+        return getResultMap(false);
     }
 
     /**

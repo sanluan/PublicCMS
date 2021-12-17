@@ -3,7 +3,9 @@ package config.spring;
 import java.beans.PropertyVetoException;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -27,6 +29,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
@@ -281,7 +284,11 @@ public class ApplicationConfig {
      */
     @Bean
     public MappingJackson2HttpMessageConverter mappingJackson2HttpMessageConverter() {
-        return new MappingJackson2HttpMessageConverter();
+        MappingJackson2HttpMessageConverter bean = new MappingJackson2HttpMessageConverter();
+        List<MediaType> list = new ArrayList<>();
+        list.add(MediaType.TEXT_PLAIN);
+        bean.setSupportedMediaTypes(list);
+        return bean;
     }
 
     /**

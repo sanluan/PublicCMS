@@ -1,8 +1,0 @@
-<#ftl auto_esc=false/>
-<#escape x as x?json_string>
-{
-    <#list result as k,v>
-        "${k}":"${v}"<#sep>,
-    </#list>
-}
-</#escape>

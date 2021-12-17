@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Tue Dec 14 2021 23:13:54 GMT+0800 (中国标准时间)
+ * build: Fri Dec 17 2021 09:59:54 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -17812,7 +17812,7 @@ UE.plugins['video'] = function (){
             case 'video':
                 var ext = url.substr(url.lastIndexOf('.') + 1);
                 if(ext == 'ogv') ext = 'ogg';
-                str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + ' video-js" ' + (align ? ' style="float:' + align + '"': '') +
+                str = '<video' + (id ? ' id="' + id + '"' : '') + ' class="' + classname + '" ' + (align ? ' style="float:' + align + '"': '') +
                     ' controls preload="none" width="' + width + '" height="' + height + '" src="' + url + '" data-setup="{}">' +
                     '<source src="' + url + '" type="video/' + ext + '" /></video>';
                 break;
@@ -17913,7 +17913,7 @@ UE.plugins['video'] = function (){
             var html = [],id = 'tmpVedio', cl;
             for(var i=0,vi,len = videoObjs.length;i<len;i++){
                 vi = videoObjs[i];
-                cl = (type == 'upload' ? 'edui-upload-video video-js vjs-default-skin':'edui-faked-video');
+                cl = (type == 'upload' ? 'edui-upload-video':'edui-faked-video');
                 html.push(creatInsertStr( vi.url, vi.width || 420,  vi.height || 280, id + i, null, cl, 'image'));
             }
             me.execCommand("inserthtml",html.join(""),true);
@@ -26052,7 +26052,7 @@ UE.ui = baidu.editor.ui = {};
                 '<div class="edui-autotypesetpicker-body">' +
                 '<table >' +
                 '<tr><td nowrap><label><input type="checkbox" name="mergeEmptyline" ' + (opt["mergeEmptyline"] ? "checked" : "" ) + '>' + lang.mergeLine + '</label></td><td colspan="2"><label><input type="checkbox" name="removeEmptyline" ' + (opt["removeEmptyline"] ? "checked" : "" ) + '>' + lang.delLine + '</label></td></tr>' +
-                '<tr><td nowrap><label><input type="checkbox" name="removeClass" ' + (opt["removeClass"] ? "checked" : "" ) + '>' + lang.removeFormat + '</label></td><td><label><input type="checkbox" name="indent" ' + (opt["indent"] ? "checked" : "" ) + '>' + lang.indent + '</label></td><td><label><input type="checkbox" name="removeSpace" ' + (opt["removeSpace"] ? "checked" : "" ) + '>' + lang.removeSpace + '</label></td></tr>' +
+                '<tr><td nowrap><label><input type="checkbox" name="removeClass" ' + (opt["removeClass"] ? "checked" : "" ) + '>' + lang.removeFormat + '</label></td><td colspan="2"><label><input type="checkbox" name="indent" ' + (opt["indent"] ? "checked" : "" ) + '>' + lang.indent + '</label>&nbsp;<label><input type="checkbox" name="removeSpace" ' + (opt["removeSpace"] ? "checked" : "" ) + '>' + lang.removeSpace + '</label></td></tr>' +
                 '<tr>' +
                 '<td nowrap><label><input type="checkbox" name="textAlign" ' + (opt["textAlign"] ? "checked" : "" ) + '>' + lang.alignment + '</label></td>' +
                 '<td colspan="2" id="' + textAlignInputName + '">' +

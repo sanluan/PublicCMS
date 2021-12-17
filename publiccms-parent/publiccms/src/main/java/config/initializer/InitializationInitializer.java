@@ -45,6 +45,7 @@ public class InitializationInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletcontext) throws ServletException {
         initEncoding();
+        initLogManager();
         try {
             Properties config = PropertiesLoaderUtils.loadAllProperties(CommonConstants.CMS_CONFIG_FILE);
             initProxy(config);
@@ -122,6 +123,13 @@ public class InitializationInitializer implements WebApplicationInitializer {
             }
             log.info(String.format("new file.encoding = %s", Charset.defaultCharset()));
         }
+    }
+
+    /**
+     * 日志配置
+     */
+    public static void initLogManager() {
+        System.setProperty("java.util.logging.manager", "org.apache.logging.log4j.jul.LogManager");
     }
 
     /**
