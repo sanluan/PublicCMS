@@ -80,7 +80,7 @@ subprojects {
         // http://mvnrepository.com/artifact/commons-codec/commons-codec
         codecVersion = "1.15"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        log4jVersion = "2.15.0"
+        log4jVersion = "2.17.0"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
         extractorVersion = "2.16.0"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
