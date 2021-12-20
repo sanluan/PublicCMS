@@ -46,6 +46,10 @@
                     <@t.page 'status.content.'+(a.status)!/>
                 </dd>
             </dl>
+            <dl>
+                <dt><@t.page 'content.score'/>:</dt>
+                <dd>${a.scores!}</dd>
+            </dl>
         <#if 1=a.status>
             <dl>
                 <dt><@t.page 'inspector'/>:</dt>
