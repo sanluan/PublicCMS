@@ -1,7 +1,7 @@
 /*!
  * UEditor
  * version: ueditor
- * build: Fri Dec 17 2021 09:59:54 GMT+0800 (中国标准时间)
+ * build: Tue Dec 21 2021 12:21:21 GMT+0800 (中国标准时间)
  */
 
 (function(){
@@ -10602,7 +10602,7 @@ UE.plugins['autotypeset'] = function(){
                     continue;
                 }
                 if(opt.defaultFontsize && !ci.style.fontSize){
-                     ci.style.fontSize = opt.defaultFontsize;
+                     ci.style.fontSize = opt.defaultFontsize + 'px';
                 }
 
                 if(opt.defaultFontFamily && !ci.style.fontFamily){
@@ -10618,13 +10618,13 @@ UE.plugins['autotypeset'] = function(){
                     ci.style.textAlign = opt.textAlign;
                 }
                 if(opt.lineHeight){
-                     ci.style.lineHeight = opt.lineHeight;
+                     ci.style.lineHeight = (opt.lineHeight == "1" ? "normal" : opt.lineHeight + 'em') ;
                 }
                 if(opt.rowspacingtop){
-                     ci.style.marginTop = opt.rowspacingtop;
+                     ci.style.marginTop = opt.rowspacingtop+ 'px';
                 }
                 if(opt.rowspacingbottom){
-                     ci.style.marginBottom = opt.rowspacingbottom;
+                     ci.style.marginBottom = opt.rowspacingbottom+ 'px';
                 }
             }
 
@@ -13102,9 +13102,7 @@ UE.commands['time'] = UE.commands["date"] = {
 UE.plugins['rowspacing'] = function(){
     var me = this;
     me.setOpt({
-        'rowspacingtop':['5', '10', '15', '20', '25'],
-        'rowspacingbottom':['5', '10', '15', '20', '25']
-
+        'rowspacing':['5', '10', '15', '20', '25']
     });
     me.commands['rowspacing'] =  {
         execCommand : function( cmdName,value,dir ) {
@@ -26030,19 +26028,49 @@ UE.ui = baidu.editor.ui = {};
             var me = this.editor,
                 opt = me.options.autotypeset,
                 lang = me.getLang("autoTypeSet");
-                list = me.options['fontfamily'] || [];
-                title = me.options.labelMap['fontfamily'] || me.getLang("labelMap.fontfamily") || '';
-                fontFamilyHtml = '<select name="defaultFontFamily">';
-            fontFamilyHtml += '<option value="" '+(!opt["defaultFontFamily"] ? "selected=\"selected\"" : "")+'>'+title+'</option>';
-            for (var i = 0, ci, items = []; ci = list[i]; i++) {
-                var langLabel = me.getLang('fontfamily')[ci.name] || "";
 
+            var fontFamilyList = me.options['fontfamily'] || [];
+            var fontFamilyHtml = '<select name="defaultFontFamily">';
+            fontFamilyHtml += '<option value="" '+(!opt["defaultFontFamily"] ? "selected=\"selected\"" : "")+'>'+lang.defaultFontFamily+'</option>';
+            for (var i = 0, ci; ci = fontFamilyList[i]; i++) {
+                var langLabel = me.getLang('fontfamily')[ci.name] || "";
                 (function (key, val) {
                     fontFamilyHtml += '<option value="'+utils.unhtml(val)+'"'+((opt["defaultFontFamily"] && opt["defaultFontFamily"] == val) ? "selected=\"selected\"" : "")+'>'+key+'</option>'
                 })(ci.label || langLabel, ci.val)
             }
-
             fontFamilyHtml += '</select>';
+
+            var fontsizelist = me.options['fontsize'] || [];
+            var fontSizeHtml = '<select name="defaultFontsize">';
+            fontSizeHtml += '<option value="" '+(!opt["defaultFontsize"] ? "selected=\"selected\"" : "")+'>'+lang.defaultFontsize+'</option>';
+            for (var i = 0, ci; ci = fontsizelist[i]; i++) {
+                fontSizeHtml += '<option value="'+ci+'"'+((opt["defaultFontsize"] && opt["defaultFontsize"] == ci) ? "selected=\"selected\"" : "")+'>'+ci+'</option>'
+            }
+            fontSizeHtml += '</select>';
+
+            var lineHeightList = me.options['lineheight'] || [];
+            var lineHeightHtml = '<select name="lineheight">';
+            lineHeightHtml += '<option value="" '+(!opt["lineheight"] ? "selected=\"selected\"" : "")+'>'+lang.lineHeight+'</option>';
+            for (var i = 0, ci; ci = lineHeightList[i]; i++) {
+                lineHeightHtml += '<option value="'+ci+'"'+((opt["lineheight"] && opt["lineheight"] == ci) ? "selected=\"selected\"" : "")+'>'+ci+'</option>'
+            }
+            lineHeightHtml += '</select>';
+
+            var rowSpacingList = me.options['rowspacing'] || [];
+
+            var rowSpacingTopHtml = '<select name="rowspacingtop">';
+            rowSpacingTopHtml += '<option value="" '+(!opt["rowspacingtop"] ? "selected=\"selected\"" : "")+'>'+lang.rowspacingtop+'</option>';
+            for (var i = 0, ci; ci = rowSpacingList[i]; i++) {
+                rowSpacingTopHtml += '<option value="'+ci+'"'+((opt["rowspacingtop"] && opt["rowspacingtop"] == ci) ? "selected=\"selected\"" : "")+'>'+ci+'</option>'
+            }
+            rowSpacingTopHtml += '</select>';
+
+            var rowSpacingBottomHtml = '<select name="rowspacingbottom">';
+            rowSpacingBottomHtml += '<option value="" '+(!opt["rowspacingbottom"] ? "selected=\"selected\"" : "")+'>'+lang.rowspacingbottom+'</option>';
+            for (var i = 0, ci; ci = rowSpacingList[i]; i++) {
+                rowSpacingBottomHtml += '<option value="'+ci+'"'+((opt["rowspacingbottom"] && opt["rowspacingbottom"] == ci) ? "selected=\"selected\"" : "")+'>'+ci+'</option>'
+            }
+            rowSpacingBottomHtml += '</select>';
 
             var textAlignInputName = 'textAlignValue' + me.uid,
                 imageBlockInputName = 'imageBlockLineValue' + me.uid,
@@ -26071,8 +26099,8 @@ UE.ui = baidu.editor.ui = {};
                 '</td>' +
                 '</tr>' +
                 '<tr><td nowrap><label><input type="checkbox" name="clearFontFamily" ' + (opt["clearFontFamily"] ? "checked" : "" ) + '>' + lang.removeFontFamily + '</label></td><td colspan="2"><label>' + lang.defaultFontFamily + '</label>'+fontFamilyHtml+'</td></tr>' +
-                '<tr><td nowrap><label><input type="checkbox" name="clearFontSize" ' + (opt["clearFontSize"] ? "checked" : "" ) + '>' + lang.removeFontsize + '</label></td><td colspan="2"><label>' + lang.defaultFontsize + '</label><input type="text" size="4" name="defaultFontsize" value="' + (opt["defaultFontsize"] ? opt["defaultFontsize"] : "" ) + '"></td></tr>' +
-                '<tr><td nowrap><label>' + lang.lineHeight + '</label><input type="text" name="lineHeight" size="4" value="' + (opt["lineHeight"] ? opt["lineHeight"] : "" ) + '"></td><td colspan="2"><label>' + lang.rowspacingtop + '</label><input type="text" name="rowspacingtop" size="4" value="' + (opt["rowspacingtop"] ? opt["rowspacingtop"] : "" ) + '"><label>' + lang.rowspacingbottom + '</label><input type="text" name="rowspacingbottom" size="4" value="' + (opt["rowspacingbottom"] ? opt["rowspacingbottom"] : "" ) + '"></td></tr>' +
+                '<tr><td nowrap><label><input type="checkbox" name="clearFontSize" ' + (opt["clearFontSize"] ? "checked" : "" ) + '>' + lang.removeFontsize + '</label></td><td colspan="2"><label>' + lang.defaultFontsize + '</label>'+ fontSizeHtml +'</td></tr>' +
+                '<tr><td nowrap><label>' + lang.lineHeight + '</label>'+ lineHeightHtml +'</td><td colspan="2"><label>' + lang.rowspacingtop + '</label>'+ rowSpacingTopHtml +'<label>' + lang.rowspacingbottom + '</label>'+ rowSpacingBottomHtml +'</td></tr>' +
                 '<tr><td nowrap colspan="3"><label><input type="checkbox" name="removeEmptyNode" ' + (opt["removeEmptyNode"] ? "checked" : "" ) + '>' + lang.removeHtml + '</label></td></tr>' +
                 '<tr><td nowrap colspan="3"><label><input type="checkbox" name="pasteFilter" ' + (opt["pasteFilter"] ? "checked" : "" ) + '>' + lang.pasteFilter + '</label></td></tr>' +
                 '<tr>' +
@@ -28310,7 +28338,7 @@ UE.ui = baidu.editor.ui = {};
     for (var r = 0, ri; ri = rowspacings[r++];) {
         (function (cmd) {
             editorui['rowspacing' + cmd] = function (editor) {
-                var val = editor.options['rowspacing' + cmd] || [];
+                var val = editor.options['rowspacing'] || [];
                 if (!val.length) return null;
                 for (var i = 0, ci, items = []; ci = val[i++];) {
                     items.push({
