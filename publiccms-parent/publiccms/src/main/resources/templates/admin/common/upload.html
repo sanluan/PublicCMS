@@ -1,6 +1,3 @@
-<#if fileTypes?has_content&&'video'=fileTypes>
-    <#assign accept=' accept="video/*"'/>
-</#if>
 <form action="file/doUpload" method="post" autocomplete="off" enctype="multipart/form-data" class="pageForm required-validate" onsubmit="return iframeCallback(this, $.bringBack)">
     <input type="hidden" name="_csrf" value="<@_csrfToken admin=true/>"/>
     <input type="hidden" name="field" value="${field!'fileName'}"/>
@@ -15,7 +12,7 @@
                         <input type="file" name="file" accept="image/*" class="valid" style="left: 0px;">
                     </div>
                 <#else>
-                    <input type="file" name="file" class="required" size="30"${accept!}/>
+                    <input type="file" name="file" class="required" size="30"<#if fileTypes?has_content&&'video'=fileTypes> accept="video/*"</#if>/>
                 </#if>
             </dd>
             <div class="clearfix"></div>
