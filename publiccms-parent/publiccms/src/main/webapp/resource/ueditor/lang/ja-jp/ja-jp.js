@@ -216,6 +216,8 @@ UE.I18N['ja-jp'] = {
         'indent':"字下げ",
         'alignment':"配置",
         'imageFloat':"画像フロート",
+        'removeImageSize':"画像サイズを削除",
+        'imageWidth':"画像幅",
         'removeFontsize':"フォントサイズをクリア",
         'removeFontFamily':"フォントをクリア",
         'defaultFontsize':"デフォルトのフォントサイズ",

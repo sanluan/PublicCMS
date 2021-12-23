@@ -221,6 +221,8 @@ UE.I18N['zh-cn'] = {
         'indent':"首行缩进",
         'alignment':"对齐方式",
         'imageFloat':"图片浮动",
+        'removeImageSize':"清除图片尺寸",
+        'imageWidth':"图片宽度",
         'removeFontsize':"清除字号",
         'removeFontFamily':"清除字体",
         'defaultFontsize':"默认字号",
