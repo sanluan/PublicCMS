@@ -136,19 +136,33 @@ public class SysUserService extends BaseService<SysUser> {
             entity.setEmailChecked(true);
         }
     }
+	
+	/**
+	 * @param id
+	 * @param nickname
+	 * @return
+	 */
+	public SysUser updateNickname(Serializable id, String nickname) {
+		SysUser entity = getEntity(id);
+		if (null != entity) {
+			entity.setNickName(nickname);
+		}
+		return entity;
+	}
 
-    /**
-     * @param id
-     * @param status
-     * @return
-     */
-    public SysUser updateStatus(Serializable id, boolean status) {
-        SysUser entity = getEntity(id);
-        if (null != entity && entity.isDisabled() != status) {
-            entity.setDisabled(status);
-        }
-        return entity;
-    }
+
+	/**
+	 * @param id
+	 * @param status
+	 * @return
+	 */
+	public SysUser updateStatus(Serializable id, boolean status) {
+		SysUser entity = getEntity(id);
+		if (null != entity) {
+			entity.setDisabled(status);
+		}
+		return entity;
+	}
 
     @Autowired
     private SysUserDao dao;

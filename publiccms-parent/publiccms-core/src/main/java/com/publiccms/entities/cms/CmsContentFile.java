@@ -35,7 +35,7 @@ public class CmsContentFile implements java.io.Serializable {
     @GeneratorColumn(title = "图片类型", condition = true)
     private String fileType;
     @GeneratorColumn(title = "文件大小", order = true)
-    private long fileSize;
+    private Long fileSize;
     @GeneratorColumn(title = "宽度")
     private Integer width;
     @GeneratorColumn(title = "高度")
@@ -50,17 +50,16 @@ public class CmsContentFile implements java.io.Serializable {
     public CmsContentFile() {
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, String fileType, long fileSize, int clicks, int sort) {
+    public CmsContentFile(long contentId, long userId, String filePath, String fileType, int clicks, int sort) {
         this.contentId = contentId;
         this.userId = userId;
         this.filePath = filePath;
         this.fileType = fileType;
-        this.fileSize = fileSize;
         this.clicks = clicks;
         this.sort = sort;
     }
 
-    public CmsContentFile(long contentId, long userId, String filePath, String fileType, long fileSize, Integer width,
+    public CmsContentFile(long contentId, long userId, String filePath, String fileType, Long fileSize, Integer width,
             Integer height, int clicks, int sort, String description) {
         this.contentId = contentId;
         this.userId = userId;
@@ -122,12 +121,12 @@ public class CmsContentFile implements java.io.Serializable {
         this.fileType = fileType;
     }
 
-    @Column(name = "file_size", nullable = false)
+    @Column(name = "file_size")
     public long getFileSize() {
         return this.fileSize;
     }
 
-    public void setFileSize(long fileSize) {
+    public void setFileSize(Long fileSize) {
         this.fileSize = fileSize;
     }
 

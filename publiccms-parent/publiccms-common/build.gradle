@@ -29,6 +29,12 @@ dependencies {
 
     implementation "org.ehcache:ehcache:${ehcacheVersion}"
 
+    implementation "org.apache.poi:poi-ooxml:${poiVersion}"
+    implementation "org.apache.poi:poi-scratchpad:${poiVersion}"
+    // https://mvnrepository.com/artifact/fr.opensagres.xdocreport/fr.opensagres.poi.xwpf.converter.xhtml
+    implementation "fr.opensagres.xdocreport:fr.opensagres.poi.xwpf.converter.xhtml:2.0.2"
+    implementation "org.sejda.imageio:webp-imageio:${webpVersion}"
+
     implementation "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}"
     implementation "org.apache.lucene:lucene-backward-codecs:${luceneVersion}"
     implementation "org.apache.lucene:lucene-highlighter:${luceneVersion}"

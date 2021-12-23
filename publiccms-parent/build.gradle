@@ -87,6 +87,8 @@ subprojects {
         log4jVersion = "2.17.0"
         // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
         extractorVersion = "2.16.0"
+        // https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio
+        webpVersion = "0.1.6"
         // http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils
         userAgentUtilsVersion = "1.21"
         // https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api

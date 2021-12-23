@@ -28,10 +28,9 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.constants.Constants;
 
 import fr.opensagres.poi.xwpf.converter.core.ImageManager;
-import fr.opensagres.poi.xwpf.converter.xhtml.Base64EmbedImgManager;
 import fr.opensagres.poi.xwpf.converter.xhtml.XHTMLOptions;
 
 public class DocToHtmlUtils {
@@ -70,15 +69,6 @@ public class DocToHtmlUtils {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-           System.out.println(docxToHtml(new File("D:/1.docx"), new Base64EmbedImgManager()));
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
     /**
      * @param htmlDocument
      * @throws TransformerException
@@ -89,7 +79,7 @@ public class DocToHtmlUtils {
         DOMSource domSource = new DOMSource(htmlDocument);
         TransformerFactory tf = TransformerFactory.newInstance();
         Transformer serializer = tf.newTransformer();
-        serializer.setOutputProperty(OutputKeys.ENCODING, CommonConstants.DEFAULT_CHARSET_NAME);
+        serializer.setOutputProperty(OutputKeys.ENCODING, Constants.DEFAULT_CHARSET_NAME);
         serializer.setOutputProperty(OutputKeys.METHOD, "html");
         serializer.transform(domSource, streamResult);
         String html = new String(out.toByteArray());

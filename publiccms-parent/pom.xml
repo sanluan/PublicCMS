@@ -79,6 +79,8 @@
         <version.log4j>2.17.0</version.log4j>
         <!-- https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor -->
         <version.extractor>2.16.0</version.extractor>
+        <!-- https://mvnrepository.com/artifact/org.sejda.imageio/webp-imageio -->
+        <version.webp>0.1.6</version.webp>
         <!-- http://mvnrepository.com/artifact/eu.bitwalker/UserAgentUtils -->
         <version.userAgentUtils>1.21</version.userAgentUtils>
         <!-- https://mvnrepository.com/artifact/jakarta.annotation/jakarta.annotation-api -->
@@ -165,6 +167,11 @@
                 <groupId>com.drewnoakes</groupId>
                 <artifactId>metadata-extractor</artifactId>
                 <version>${version.extractor}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.sejda.imageio</groupId>
+                <artifactId>webp-imageio</artifactId>
+                <version>${version.webp}</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>

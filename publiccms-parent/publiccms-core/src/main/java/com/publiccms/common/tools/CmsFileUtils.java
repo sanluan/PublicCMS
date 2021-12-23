@@ -181,8 +181,19 @@ public class CmsFileUtils {
      * @return fileSize
      */
     public static FileSize getFileSize(String filePath, String suffix) {
+        return getFileSize(new File(filePath), suffix);
+    }
+
+    /**
+     * @param file
+     * @param suffix
+     * @return fileSize
+     */
+    private static FileSize getFileSize(File file, String suffix) {
+        if (null != suffix && !suffix.startsWith(CommonConstants.DOT)) {
+            suffix = CommonConstants.DOT + suffix;
+        }
         if (IMAGE_FILE_SUFFIXS.contains(suffix)) {
-            File file = new File(filePath);
             FileSize fileSize = new FileSize();
             fileSize.setFileSize(file.length());
             try (FileInputStream fis = new FileInputStream(file)) {
@@ -201,11 +212,14 @@ public class CmsFileUtils {
     /**
      * @param source
      * @param destination
+     * @param suffix
+     * @return
      * @throws IOException
      */
-    public static void copyInputStreamToFile(InputStream source, String destination) throws IOException {
+    public static FileSize copyInputStreamToFile(InputStream source, String destination, String suffix) throws IOException {
         File dest = new File(destination);
         FileUtils.copyInputStreamToFile(source, dest);
+        return getFileSize(dest, suffix);
     }
 
     /**

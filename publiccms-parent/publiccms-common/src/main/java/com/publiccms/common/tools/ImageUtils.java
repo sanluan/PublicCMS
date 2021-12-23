@@ -5,11 +5,17 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.FileImageInputStream;
 
+import com.luciad.imageio.webp.WebPReadParam;
 import com.publiccms.common.constants.Constants;
 
 /**
@@ -107,4 +113,28 @@ public class ImageUtils {
         font[3] = new Font("Gill Sans Ultra", Font.PLAIN, size);
         return font[Constants.random.nextInt(4)];
     }
+
+    public static void webp2Image(InputStream webpInputStream, boolean png, File imageFile) throws FileNotFoundException, IOException {
+        ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
+        WebPReadParam readParam = new WebPReadParam();
+        readParam.setBypassFiltering(true);
+        reader.setInput(webpInputStream);
+        BufferedImage image = reader.read(0, readParam);
+        ImageIO.write(image, png ? "png" : "jpg", imageFile);
+    }
+
+    public static void webp2Image(File webpFile, boolean png, File imageFile) throws FileNotFoundException, IOException {
+        ImageReader reader = ImageIO.getImageReadersByMIMEType("image/webp").next();
+        WebPReadParam readParam = new WebPReadParam();
+        readParam.setBypassFiltering(true);
+        reader.setInput(new FileImageInputStream(webpFile));
+        BufferedImage image = reader.read(0, readParam);
+        ImageIO.write(image, png ? "png" : "jpg", imageFile);
+    }
+
+    public static void image2Webp(File imageFile, File webpFile) throws IOException {
+        BufferedImage image = ImageIO.read(imageFile);
+        ImageIO.write(image, "webp", webpFile);
+    }
+
 }
