@@ -66,8 +66,8 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
                     if (null != statistics) {
                         e.setClicks(e.getClicks() + statistics.getClicks());
                     }
-                    templateComponent.initContentUrl(site, e);
-                    templateComponent.initContentCover(site, e);
+                    TemplateComponent.initContentUrl(site, e);
+                    TemplateComponent.initContentCover(site, e);
                 });
             }
         } catch (Exception e) {
@@ -79,8 +79,6 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
 
     @Autowired
     private StatisticsComponent statisticsComponent;
-    @Autowired
-    private TemplateComponent templateComponent;
     @Autowired
     private CmsContentService service;
 

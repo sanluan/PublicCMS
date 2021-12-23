@@ -46,8 +46,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                     entity.setId(entity.getQuoteContentId());
                 }
                 if (absoluteURL) {
-                    templateComponent.initContentUrl(site, entity);
-                    templateComponent.initContentCover(site, entity);
+                    TemplateComponent.initContentUrl(site, entity);
+                    TemplateComponent.initContentCover(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -77,8 +77,8 @@ public class CmsContentDirective extends AbstractTemplateDirective {
                         if (absoluteId && null != e.getQuoteContentId()) {
                             e.setId(e.getQuoteContentId());
                         }
-                        templateComponent.initContentUrl(site, e);
-                        templateComponent.initContentCover(site, e);
+                        TemplateComponent.initContentUrl(site, e);
+                        TemplateComponent.initContentCover(site, e);
                     };
                 } else {
                     consumer = e -> {
@@ -100,8 +100,6 @@ public class CmsContentDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentService service;
-    @Autowired
-    private TemplateComponent templateComponent;
     @Autowired
     private CmsContentAttributeService attributeService;
     @Autowired

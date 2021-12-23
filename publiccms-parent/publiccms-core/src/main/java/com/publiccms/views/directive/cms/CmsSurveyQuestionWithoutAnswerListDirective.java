@@ -35,7 +35,7 @@ public class CmsSurveyQuestionWithoutAnswerListDirective extends AbstractTemplat
             list.forEach(e -> {
                 e.setAnswer(null);
                 if (absoluteURL) {
-                    e.setCover(templateComponent.getUrl(site, true, e.getCover()));
+                    e.setCover(TemplateComponent.getUrl(site, true, e.getCover()));
                 }
             });
         }
@@ -45,7 +45,5 @@ public class CmsSurveyQuestionWithoutAnswerListDirective extends AbstractTemplat
 
     @Autowired
     private CmsSurveyQuestionService service;
-    @Autowired
-    private TemplateComponent templateComponent;
 
 }

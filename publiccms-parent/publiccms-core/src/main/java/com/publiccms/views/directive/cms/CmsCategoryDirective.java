@@ -42,7 +42,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
             }
             if (null != entity && site.getId() == entity.getSiteId()) {
                 if (absoluteURL) {
-                    templateComponent.initCategoryUrl(site, entity);
+                    TemplateComponent.initCategoryUrl(site, entity);
                 }
                 handler.put("object", entity);
                 if (handler.getBoolean("containsAttribute", false)) {
@@ -64,7 +64,7 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
                 Consumer<CmsCategory> consumer = null;
                 if (absoluteURL) {
                     consumer = e -> {
-                        templateComponent.initCategoryUrl(site, e);
+                        TemplateComponent.initCategoryUrl(site, e);
                     };
                 }
                 Map<String, CmsCategory> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer,
@@ -76,8 +76,6 @@ public class CmsCategoryDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsCategoryService service;
-    @Autowired
-    private TemplateComponent templateComponent;
     @Autowired
     private CmsCategoryAttributeService attributeService;
 }

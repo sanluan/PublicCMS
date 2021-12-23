@@ -84,8 +84,8 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
                         e.setId(e.getQuoteContentId());
                     }
                     if (absoluteURL) {
-                        templateComponent.initContentUrl(site, e);
-                        templateComponent.initContentCover(site, e);
+                        TemplateComponent.initContentUrl(site, e);
+                        TemplateComponent.initContentCover(site, e);
                     }
                 });
             }
@@ -97,8 +97,6 @@ public class CmsContentListDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentService service;
-    @Autowired
-    private TemplateComponent templateComponent;
     @Autowired
     private DatasourceComponent datasourceComponent;
     @Autowired

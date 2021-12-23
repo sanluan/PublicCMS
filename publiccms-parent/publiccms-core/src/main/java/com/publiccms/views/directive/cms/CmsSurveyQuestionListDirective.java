@@ -34,7 +34,7 @@ public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
             List<CmsSurveyQuestion> list = (List<CmsSurveyQuestion>) page.getList();
             if (null != list) {
                 list.forEach(e -> {
-                    e.setCover(templateComponent.getUrl(site, true, e.getCover()));
+                    e.setCover(TemplateComponent.getUrl(site, true, e.getCover()));
                 });
             }
         }
@@ -48,7 +48,5 @@ public class CmsSurveyQuestionListDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsSurveyQuestionService service;
-    @Autowired
-    private TemplateComponent templateComponent;
 
 }

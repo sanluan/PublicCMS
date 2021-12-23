@@ -35,7 +35,7 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
             CmsSurveyQuestion entity = service.getEntity(id);
             if (null != entity) {
                 if (absoluteURL) {
-                    entity.setCover(templateComponent.getUrl(site, true, entity.getCover()));
+                    entity.setCover(TemplateComponent.getUrl(site, true, entity.getCover()));
                 }
                 handler.put("object", entity).render();
             }
@@ -46,7 +46,7 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
                 Consumer<CmsSurveyQuestion> consumer = null;
                 if (absoluteURL) {
                     consumer = e -> {
-                        e.setCover(templateComponent.getUrl(site, true, e.getCover()));
+                        e.setCover(TemplateComponent.getUrl(site, true, e.getCover()));
                     };
                 }
                 Map<String, CmsSurveyQuestion> map = CommonUtils.listToMap(entityList, k -> k.getId().toString(), consumer, null);
@@ -62,6 +62,4 @@ public class CmsSurveyQuestionDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsSurveyQuestionService service;
-    @Autowired
-    private TemplateComponent templateComponent;
 }

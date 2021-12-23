@@ -42,7 +42,7 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
             SysSite site = getSite(handler);
             list.forEach(e -> {
                 if (absoluteURL) {
-                    e.setFilePath(templateComponent.getUrl(site, true, e.getFilePath()));
+                    e.setFilePath(TemplateComponent.getUrl(site, true, e.getFilePath()));
                 }
             });
         }
@@ -51,6 +51,4 @@ public class CmsContentFileListDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsContentFileService service;
-    @Autowired
-    private TemplateComponent templateComponent;
 }

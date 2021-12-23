@@ -202,7 +202,7 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param entity
      */
-    public void initContentUrl(SysSite site, CmsContent entity) {
+    public static void initContentUrl(SysSite site, CmsContent entity) {
         entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
     }
 
@@ -210,7 +210,7 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param entity
      */
-    public void initContentCover(SysSite site, CmsContent entity) {
+    public static void initContentCover(SysSite site, CmsContent entity) {
         entity.setCover(getUrl(site, true, entity.getCover()));
     }
 
@@ -220,11 +220,24 @@ public class TemplateComponent implements Cache {
      * @param url
      * @return
      */
-    public String getUrl(SysSite site, boolean hasStatic, String url) {
+    public static String getUrl(SysSite site, boolean hasStatic, String url) {
         if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("//") || url.startsWith("#")) {
             return url;
         } else {
-            return hasStatic ? site.getSitePath() + url : site.getDynamicPath() + url;
+            return hasStatic ? getUrl(site.getSitePath(), url) + url : getUrl(site.getDynamicPath(), url);
+        }
+    }
+
+    /**
+     * @param sitePath
+     * @param url
+     * @return
+     */
+    public static String getUrl(String sitePath, String url) {
+        if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("//") || url.startsWith("#")) {
+            return url;
+        } else {
+            return sitePath + url;
         }
     }
 
@@ -232,7 +245,7 @@ public class TemplateComponent implements Cache {
      * @param site
      * @param entity
      */
-    public void initCategoryUrl(SysSite site, CmsCategory entity) {
+    public static void initCategoryUrl(SysSite site, CmsCategory entity) {
         if (!entity.isOnlyUrl()) {
             entity.setUrl(getUrl(site, entity.isHasStatic(), entity.getUrl()));
         }

@@ -57,8 +57,6 @@ public class IndexController {
     @Autowired
     private MetadataComponent metadataComponent;
     @Autowired
-    private TemplateComponent templateComponent;
-    @Autowired
     private TemplateCacheComponent templateCacheComponent;
     @Autowired
     private ConfigComponent configComponent;
@@ -315,8 +313,8 @@ public class IndexController {
                     if (null != statistics) {
                         e.setClicks(e.getClicks() + statistics.getClicks());
                     }
-                    templateComponent.initContentUrl(site, e);
-                    templateComponent.initContentCover(site, e);
+                    TemplateComponent.initContentUrl(site, e);
+                    TemplateComponent.initContentCover(site, e);
                 });
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
@@ -335,8 +333,8 @@ public class IndexController {
                         if (null != statistics) {
                             entity.setClicks(entity.getClicks() + statistics.getClicks());
                         }
-                        templateComponent.initContentUrl(site, entity);
-                        templateComponent.initContentCover(site, entity);
+                        TemplateComponent.initContentUrl(site, entity);
+                        TemplateComponent.initContentCover(site, entity);
                         model.addAttribute(parameterName, entity);
                     }
                 } catch (NumberFormatException e) {
@@ -360,7 +358,7 @@ public class IndexController {
                 entityList = entityList.stream().filter(entity -> site.getId() == entity.getSiteId())
                         .collect(Collectors.toList());
                 entityList.forEach(e -> {
-                    templateComponent.initCategoryUrl(site, e);
+                    TemplateComponent.initCategoryUrl(site, e);
                 });
                 if (entityList.isEmpty() && parameterType.isRequired()) {
                     return false;
@@ -375,7 +373,7 @@ public class IndexController {
                             return false;
                         }
                     } else {
-                        templateComponent.initCategoryUrl(site, entity);
+                        TemplateComponent.initCategoryUrl(site, entity);
                         model.addAttribute(parameterName, entity);
                     }
                 } catch (NumberFormatException e) {

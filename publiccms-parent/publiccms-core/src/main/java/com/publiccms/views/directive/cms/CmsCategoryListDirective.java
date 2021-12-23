@@ -48,7 +48,7 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
         List<CmsCategory> list = (List<CmsCategory>) page.getList();
         if (null != list && handler.getBoolean("absoluteURL", true)) {
             list.forEach(e -> {
-                templateComponent.initCategoryUrl(site, e);
+                TemplateComponent.initCategoryUrl(site, e);
             });
         }
         handler.put("page", page).render();
@@ -56,7 +56,5 @@ public class CmsCategoryListDirective extends AbstractTemplateDirective {
 
     @Autowired
     private CmsCategoryService service;
-    @Autowired
-    private TemplateComponent templateComponent;
 
 }

@@ -13,7 +13,7 @@ import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.cms.CmsPlace;
 import com.publiccms.entities.cms.CmsWord;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.component.BeanComponent;
+import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.cms.CmsPlaceService;
 import com.publiccms.logic.service.cms.CmsTagService;
@@ -132,7 +132,7 @@ public class StatisticsComponent implements Cache {
             if (null == clickStatistics) {
                 CmsContent entity = contentService.getEntity(id);
                 if (null != entity && !entity.isDisabled() && site.getId().equals(entity.getSiteId())) {
-                    BeanComponent.getTemplateComponent().initContentUrl(site, entity);
+                    TemplateComponent.initContentUrl(site, entity);
                     clickStatistics = new ClickStatistics(id, entity.getSiteId(), 1, entity.getClicks(), entity.getUrl());
                     List<ClickStatistics> list = contentCache.put(id, clickStatistics);
                     if (CommonUtils.notEmpty(list)) {
