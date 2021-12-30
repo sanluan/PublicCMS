@@ -202,7 +202,7 @@ public class CmsFileUtils {
                     fileSize.setWidth(bufferedImg.getWidth());
                     fileSize.setHeight(bufferedImg.getHeight());
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
             }
             return fileSize;
         }

@@ -209,6 +209,6 @@ UPDATE `sys_module` SET `authorized_url` = 'sysUser/lookup,sysUser/lookup_list' 
 ALTER TABLE `sys_dept` ADD COLUMN `code` varchar(50) NOT NULL COMMENT '编码' AFTER `name`;
 UPDATE `sys_dept` SET `code` = id;
 ALTER TABLE `sys_dept` ADD UNIQUE INDEX `sys_dept_code`(`site_id`, `code`);
-ALTER TABLE `cms_content` ADD COLUMN `dept_id` int(11) default NULL COMMENT '所属部门';
+ALTER TABLE `cms_content` ADD COLUMN `dept_id` int(11) default NULL COMMENT '所属部门' AFTER `user_id`;
 ALTER TABLE `cms_content_file` MODIFY COLUMN `file_size` bigint(20) NULL COMMENT '文件大小' AFTER `file_type`;
-ALTER TABLE `log_upload` MODIFY COLUMN `file_size` bigint(20) NULL COMMENT '文件大小', AFTER `file_type`;
+ALTER TABLE `log_upload` MODIFY COLUMN `file_size` bigint(20) NULL COMMENT '文件大小' AFTER `file_type`;

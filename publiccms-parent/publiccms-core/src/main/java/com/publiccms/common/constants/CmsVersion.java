@@ -15,6 +15,7 @@ public class CmsVersion {
     private static final String clusterId = UUID.randomUUID().toString();
     private static boolean master = false;
     private static boolean initialized = false;
+    private static boolean scheduled = true;
     private static Copyright copyright = new CmsCopyright();
 
     /**
@@ -85,5 +86,17 @@ public class CmsVersion {
      */
     public static void setInitialized(boolean initialized) {
         CmsVersion.initialized = initialized;
+    }
+    /**
+     * @return the scheduled
+     */
+    public static boolean isScheduled() {
+        return scheduled && initialized;
+    }
+    /**
+     * @param scheduled the scheduled to set
+     */
+    public static void setScheduled(boolean scheduled) {
+        CmsVersion.scheduled = scheduled;
     }
 }

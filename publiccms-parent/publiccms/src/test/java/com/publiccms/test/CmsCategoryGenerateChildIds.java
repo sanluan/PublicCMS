@@ -30,6 +30,7 @@ public class CmsCategoryGenerateChildIds {
     public static void init() {
         // 不进入安装程序 数据目录有 database.properties才能进行测试
         CmsVersion.setInitialized(true);
+        CmsVersion.setScheduled(false);
     }
 
     /**

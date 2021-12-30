@@ -44,7 +44,7 @@ public class ClusterComponent {
     @SuppressWarnings("unchecked")
     @Scheduled(fixedDelay = THEARTBEAT_INTERVAL)
     public void heartbeat() {
-        if (CmsVersion.isInitialized()) {
+        if (CmsVersion.isScheduled()) {
             SysCluster entity = service.getEntity(CmsVersion.getClusterId());
             Date now = CommonUtils.getDate();
             Date lastHeartbeatDate = null;

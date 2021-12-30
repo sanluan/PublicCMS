@@ -85,7 +85,7 @@ public class ScheduledTaskComponent {
      */
     @Scheduled(fixedDelay = 10 * 1000L)
     public void clearVisitLog() {
-        if (CmsVersion.isInitialized()) {
+        if (CmsVersion.isScheduled()) {
             synchronized (visitComponent) {
                 visitComponent.clear();
             }
@@ -97,7 +97,7 @@ public class ScheduledTaskComponent {
      */
     @Scheduled(cron = "01 0/30 * * * ?")
     public void cleanDisabledDatasource() {
-        if (CmsVersion.isInitialized()) {
+        if (CmsVersion.isScheduled()) {
             synchronized (datasourceComponent) {
                 datasourceComponent.cleanDisabledDatasource(30);
             }
@@ -147,7 +147,7 @@ public class ScheduledTaskComponent {
      */
     @Scheduled(fixedDelay = 5 * 60 * 1000L)
     public void clearStatistics() {
-        if (CmsVersion.isInitialized()) {
+        if (CmsVersion.isScheduled()) {
             synchronized (cacheComponent) {
                 statisticsComponent.clear();
             }
@@ -159,7 +159,7 @@ public class ScheduledTaskComponent {
      */
     @Scheduled(cron = "0 30 0/6 * * ?")
     public void clearCache() {
-        if (CmsVersion.isInitialized()) {
+        if (CmsVersion.isScheduled()) {
             synchronized (cacheComponent) {
                 cacheComponent.clear();
             }

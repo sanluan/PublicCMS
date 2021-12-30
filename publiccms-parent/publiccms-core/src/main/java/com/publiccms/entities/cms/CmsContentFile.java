@@ -122,7 +122,7 @@ public class CmsContentFile implements java.io.Serializable {
     }
 
     @Column(name = "file_size")
-    public long getFileSize() {
+    public Long getFileSize() {
         return this.fileSize;
     }
 
