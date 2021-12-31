@@ -22,7 +22,6 @@ public class AnalyzerDictUtils {
         Map<String, Integer> deliFreqsMap = SmartcnDictUtils.defaultDelimiterFreqsMap;
         SmartcnDictUtils.readFromCoreMem(SmartChineseAnalyzer.class.getResourceAsStream("hhmm/coredict.mem"), cnTFsMap,
                 deliFreqsMap);
-        System.out.println(cnTFsMap);
         SmartcnDictUtils.mergeTFsMap(cnTFsMap, wordMap);
         SmartcnDictUtils.skipWord(cnTFsMap, skipWordList);
         SmartcnDictUtils.create(newCoreDir + DictionaryReloader.DICT_COREDICT, SmartcnDictUtils.TYPE_CORE, cnTFsMap,

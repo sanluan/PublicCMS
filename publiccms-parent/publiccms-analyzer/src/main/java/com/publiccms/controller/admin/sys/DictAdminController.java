@@ -74,14 +74,14 @@ public class DictAdminController {
                 }
             }
             File skipWordFile = new File(dictDir + AnalyzerDictUtils.TXT_SKIPWORD);
-            FileUtils.writeStringToFile(skipWordFile, dict);
+            FileUtils.writeStringToFile(skipWordFile, skipWord);
             List<String> skipWordList = new ArrayList<>();
-            for (String word : FileUtils.readLines(dictFile)) {
+            for (String word : FileUtils.readLines(skipWordFile)) {
                 if (!word.startsWith("#")) {
                     skipWordList.add(word);
                 }
             }
-            AnalyzerDictUtils.generate(dictDir, wordMap, null);
+            AnalyzerDictUtils.generate(dictDir, wordMap, skipWordList);
             DictionaryReloader.reload(dictDir);
         } catch (IOException | ClassNotFoundException e1) {
         }
