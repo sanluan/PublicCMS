@@ -132,26 +132,37 @@ DWZ.regPlugins.push(function($p){
         var $this = $(this);
         var index= window.codemirror.index++;
         var dataId="editor_"+index;
-        if(!window.codemirror.initd){
-            $.each(window.codemirror.resources, function(index, url){
-                $.ajax({url: url, type: "GET", async: false, dataType: "script"});
-            });
-            window.codemirror.initd=true;
-        }
         var mode = 'htmlmixed'
         if($(this).attr('mode')){
             mode = $(this).attr('mode');
         }
-        DWZ.codemirror.instances[dataId]=CodeMirror.fromTextArea($this[0], {
-            mode: mode,
-            lineNumbers: true,
-            tabSize        : 4,
-            indentUnit     : 4,
-            lineWrapping   : true,
-            indentWithTabs : true,
-            extraKeys: { "Ctrl": "autocomplete" }
-        });
-        $this.attr("data-id",dataId);
+        if(!window.codemirror.initd){
+            loadScripts(window.codemirror.resources,function(){
+                window.codemirror.initd=true;
+                DWZ.instances[dataId]=CodeMirror.fromTextArea($this[0], {
+                    mode: mode,
+                    lineNumbers: true,
+                    tabSize        : 4,
+                    indentUnit     : 4,
+                    lineWrapping   : true,
+                    indentWithTabs : true,
+                    extraKeys: { "Ctrl": "autocomplete" }
+                });
+                $this.attr("data-id",dataId);
+            });
+        } else {
+            DWZ.instances[dataId]=CodeMirror.fromTextArea($this[0], {
+                mode: mode,
+                lineNumbers: true,
+                tabSize        : 4,
+                indentUnit     : 4,
+                lineWrapping   : true,
+                indentWithTabs : true,
+                extraKeys: { "Ctrl": "autocomplete" }
+            });
+            $this.attr("data-id",dataId);
+        }
+       
     });
 });
 /**
@@ -203,14 +214,61 @@ DWZ.regPlugins.push(function($p){
         img.file = file;
         $previewElem.empty().append(img);
 
-        // if ($previewElem.find('.edit-icon').size() == 0) {
-        //  $previewElem.append('<span class="edit-icon"></span>');
-        // }
-
         if ($previewElem.find('.del-icon').size() == 0) {
             $('<a class="del-icon"></a>').appendTo($previewElem).click(function(event){
                 $previewElem.remove();
                 $uploadWrap.find('input[type=file]').val('');
+            });
+        }
+        if ($previewElem.find('.edit-icon').size() == 0) {
+            $('<a class="edit-icon"></a>').appendTo($previewElem).click(function(event){
+                if($uploadWrap.parent().find('.image-editor').length == 0) {
+                    $uploadWrap.after('<div class="image-editor" ><div class="unit"><p class="image-box"></p><label><a href="javascript:;" class="button"><i class="icon-ok"></i></a></label></div></div>');
+                }
+                var $this = $uploadWrap.parent().find('.image-editor');
+                if($this.attr("data-id")){
+                    DWZ.instances[$this.attr("data-id")].destroy();
+                }
+                var index = window.photoclip.index++;
+                var dataId = "photoclip_"+index;
+                var width = parseInt($uploadWrap.parents("form:first").find("input[name=width]").val());
+                var height = parseInt($uploadWrap.parents("form:first").find("input[name=height]").val());
+                var options= {
+                    size: [width, height],
+                    ok: $this.find('.button'),
+                    done: function(dataURL) {
+                        if(dataURL){
+                            img.src=dataURL;
+                            $uploadWrap.find('input[name=base64File]').val(dataURL.substring(dataURL.indexOf('base64,')+7));
+                            $uploadWrap.find('input[name=originalFilename]').val(file.name);
+                            $uploadWrap.find('input[type=file]').val('');
+                            DWZ.instances[dataId].destroy();
+                            delete DWZ.instances[dataId];
+                            $this.remove();
+                        }
+                    },
+                    fail: function(msg) {
+                        alertMsg.error(msg);
+                    }
+                };
+                var filenames=file.name.toLowerCase().split('.');
+                if('png'==filenames[filenames.length-1]){
+                    options.outputType='png';
+                }
+                function init(dataId,file){
+                    var photoClip = new PhotoClip($this.find('.image-box')[0], options);
+                    photoClip.load(file);
+                    DWZ.instances[dataId] = photoClip;
+                }
+                if(!window.photoclip.initd){
+                    loadScripts(window.photoclip.resources,function(){
+                        window.photoclip.initd=true;
+                        init(dataId,file);
+                    });
+                } else {
+                    init(dataId,file);
+                }
+                $this.attr("data-id",dataId);
             });
         }
 
@@ -293,7 +351,20 @@ DWZ.regPlugins.push(function($p){
 
 
     DWZ.regPlugins.push(function($p){
-        $("div.upload-wrap", $p).previewUploadImg();
+        $("div.upload-wrap", $p).previewUploadImg({maxW:300,maxH:200});
     });
 
 })(jQuery);
+
+DWZ.regPlugins.push(function($p){
+    $("a.btnLook[target=_blank]", $p).each(function(){
+        $(this).click(function(){
+            var value=$('input[name='+escapeJquery($(this).attr('ref'))+']',$(this).parents(".unitBox:first")).val();
+            if(value){
+                $(this).attr('href',$(this).data('prefix')+value);
+            }else{
+                return false;
+            }
+        });
+    });
+});

@@ -789,6 +789,8 @@ CREATE TABLE `sys_extend_field` (
   `required` tinyint(1) NOT NULL COMMENT '是否必填',
   `searchable` tinyint(1) NOT NULL COMMENT '是否可搜索',
   `maxlength` int(11) default NULL COMMENT '最大长度',
+  `width` int(11) default NULL COMMENT '高度',
+  `height` int(11) default NULL COMMENT '宽度',
   `name` varchar(20) NOT NULL COMMENT '名称',
   `description` varchar(100) default NULL COMMENT '解释',
   `input_type` varchar(20) NOT NULL COMMENT '表单类型',

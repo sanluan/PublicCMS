@@ -4,58 +4,73 @@
     <input type="hidden" name="originalField" value="${originalField!}"/>
     <div class="pageFormContent layoutBox" layoutH>
         <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
-        <dl class="nowrap contentTitle">
-            <dt><@t.page 'file'/>:</dt>
-            <dd>
-                <#if fileTypes?has_content&&'image'=fileTypes>
-                    <div class="upload-wrap">
-                        <input type="file" name="file" accept="image/*" class="valid" style="left: 0px;">
-                    </div>
-                <#else>
-                    <input type="file" name="file" class="required" size="30"<#if fileTypes?has_content&&'video'=fileTypes> accept="video/*"</#if>/>
-                </#if>
-            </dd>
-            <div class="clearfix"></div>
-        </dl>
-        <div class="clearfix"></div>
         <div class="tabs">
             <div class="tabsHeader">
                 <div class="tabsHeaderContent">
                     <ul>
-                        <li><a href="javascript:;" onclick="return false;"><@t.page 'upload.log'/></a></li>
-                        <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="return false;"><@t.page 'webfile'/></a></li>
+                        <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).show();return false;"><@t.page 'file'/></a></li>
+                        <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'upload.log'/></a></li>
+                        <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'webfile'/></a></li>
                     </ul>
                 </div>
             </div>
             <div class="tabsContent unitBox">
                 <div class="pageContent">
-                    <ul class="tree" style="height:340px;">
-            <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=10>
+                    <#if fileTypes?has_content&&'image'=fileTypes>
+                        <#if width?has_content&&height?has_content>
+                        <p class="nowrap">
+                            <label><@t.page 'width'/></label><input name="width" type="number" value="${width}"/><label><@t.page 'height'/></label><input name="height" type="number" value="${height}"/>
+                        </p>
+                        </#if>
+                        <div class="upload-wrap">
+                            <input type="file" name="file" accept="image/*" class="valid" style="left: 0px;">
+                            <input type="hidden" name="base64File"/>
+                            <input type="hidden" name="originalFilename"/>
+                        </div>
+                    <#else>
+                        <input type="file" name="file" class="required" size="30"<#if fileTypes?has_content&&'video'=fileTypes> accept="video/*"</#if>/>
+                    </#if>
+                </div>
+                <div class="pageContent">
+                    <ul class="tree">
+            <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=12>
                 <#list page.list as a>
                     <li><a href="javascript:;" data-src="${a.filePath!}" onclick="$.bringBack({'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${width!}','height':'${height!}','${originalField!'originalName'}':'${a.originalName!}'});return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
                 </#list>
             </@_logUploadList>
-                </ul>
-                <script>
-                    $('ul li a',$.pdialog.getCurrent()).hover(function(){
-                        var filenames=$(this).text().toLowerCase().split('.');
-                        if(-1 != $.inArray(filenames[filenames.length-1], ["png","gif","jpg","jpeg","bmp"])){
-                            if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
-                                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
-                            }else{
-                                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
-                            }
-                        }
-                    },function(){
-                        $('.preview',$.pdialog.getCurrent()).hide();
-                    });
-                </script>
+                    </ul>
                 </div>
-                <div id="fileBox" style="height:340px;">
+                <div id="fileBox">
                 </div>
             </div>
         </div>
     </div>
+<script>
+    $('.tabsContent ul.tree li a',$.pdialog.getCurrent()).hover(function(){
+        var filenames=$(this).text().toLowerCase().split('.');
+        if(-1 != $.inArray(filenames[filenames.length-1], ["png","gif","jpg","jpeg","bmp"])){
+            if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
+                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
+            }else{
+                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
+            }
+        }
+    },function(){
+        $('.preview',$.pdialog.getCurrent()).hide();
+    });
+    $('.tabsContent',$.pdialog.getCurrent()).on('hover','table tr[data-src]',function(){
+        var filenames=$(this).data('src').toLowerCase().split('.');
+        if(-1 != $.inArray(filenames[filenames.length-1], ["png","gif","jpg","jpeg","bmp"])){
+            if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
+                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
+            }else{
+                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
+            }
+        }
+    },function(){
+        $('.preview',$.pdialog.getCurrent()).hide();
+    });
+</script>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive"><@t.page 'upload'/></button></li>

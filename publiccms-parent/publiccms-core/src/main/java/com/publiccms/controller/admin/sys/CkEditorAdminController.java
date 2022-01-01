@@ -24,6 +24,7 @@ import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -41,6 +42,8 @@ public class CkEditorAdminController {
     protected LogUploadService logUploadService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    protected SiteConfigComponent siteConfigComponent;
 
     private static final String RESULT_UPLOADED = "uploaded";
     private static final String RESULT_FILENAME = "fileName";
@@ -65,7 +68,7 @@ public class CkEditorAdminController {
         if (null != upload && !upload.isEmpty() && csrfToken.equals(ckCsrfToken)) {
             String originalName = upload.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
-            if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
+            if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
                 String filePath = siteComponent.getWebFilePath(site, fileName);
                 try {

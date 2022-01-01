@@ -212,3 +212,7 @@ ALTER TABLE `sys_dept` ADD UNIQUE INDEX `sys_dept_code`(`site_id`, `code`);
 ALTER TABLE `cms_content` ADD COLUMN `dept_id` int(11) default NULL COMMENT '所属部门' AFTER `user_id`;
 ALTER TABLE `cms_content_file` MODIFY COLUMN `file_size` bigint(20) NULL COMMENT '文件大小' AFTER `file_type`;
 ALTER TABLE `log_upload` MODIFY COLUMN `file_size` bigint(20) NULL COMMENT '文件大小' AFTER `file_type`;
+-- 2022-01-01 --
+ALTER TABLE `sys_extend_field`
+    ADD COLUMN `width` int(11) default NULL COMMENT '高度' AFTER `maxlength`,
+    ADD COLUMN `height` int(11) default NULL COMMENT '宽度' AFTER `width`;

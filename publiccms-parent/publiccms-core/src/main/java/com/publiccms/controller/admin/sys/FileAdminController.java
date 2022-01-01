@@ -29,11 +29,13 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.DocToHtmlUtils;
+import com.publiccms.common.tools.LanguagesUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -52,6 +54,8 @@ public class FileAdminController {
     protected LogUploadService logUploadService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    protected SiteConfigComponent siteConfigComponent;
 
     /**
      * @param site
@@ -75,23 +79,20 @@ public class FileAdminController {
         if (null != file && !file.isEmpty() || CommonUtils.notEmpty(base64File)) {
             String originalName;
             String suffix;
-            if (null != file) {
+            if (null != file && !file.isEmpty()) {
                 originalName = file.getOriginalFilename();
             } else {
                 originalName = originalFilename;
             }
             suffix = CmsFileUtils.getSuffix(originalName);
-            if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
+            if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
                 String filePath = siteComponent.getWebFilePath(site, fileName);
                 try {
-                    byte[] fileData = VerificationUtils.base64Decode(base64File);
-                    if (null != file) {
-                        CmsFileUtils.upload(file, filePath);
-                        result.put("fileSize", file.getSize());
+                    if (CommonUtils.notEmpty(base64File)) {
+                        CmsFileUtils.upload(VerificationUtils.base64Decode(base64File), filePath);
                     } else {
-                        CmsFileUtils.upload(fileData, filePath);
-                        result.put("fileSize", fileData.length);
+                        CmsFileUtils.upload(file, filePath);
                     }
                     result.put("field", field);
                     result.put(field, fileName);
@@ -100,16 +101,40 @@ public class FileAdminController {
                     FileSize fileSize = CmsFileUtils.getFileSize(filePath, suffix);
                     result.put("width", fileSize.getWidth());
                     result.put("height", fileSize.getHeight());
+                    result.put("fileSize", fileSize.getFileSize());
                     if (CommonUtils.notEmpty(originalField)) {
                         result.put("originalField", originalField);
                         result.put(originalField, originalName);
                     }
                     logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                            originalName, fileType, file.getSize(), fileSize.getWidth(), fileSize.getHeight(),
+                            originalName, fileType, fileSize.getFileSize(), fileSize.getWidth(), fileSize.getHeight(),
                             RequestUtils.getIpAddress(request), CommonUtils.getDate(), fileName));
+                    return result;
                 } catch (IllegalStateException | IOException e) {
                     log.error(e.getMessage(), e);
+                    result.put("statusCode", 300);
+                    result.put("message", e.getMessage());
+                    result.put(field, "");
+                    if (CommonUtils.notEmpty(originalField)) {
+                        result.put(originalField, null);
+                    }
                 }
+            } else {
+                result.put("statusCode", 300);
+                result.put("error", LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(),
+                        "verify.custom.fileType"));
+                result.put(field, "");
+                if (CommonUtils.notEmpty(originalField)) {
+                    result.put(originalField, null);
+                }
+            }
+        } else {
+            result.put("statusCode", 300);
+            result.put("error",
+                    LanguagesUtils.getMessage(CommonConstants.applicationContext, request.getLocale(), "verify.notEmpty.file"));
+            result.put(field, "");
+            if (CommonUtils.notEmpty(originalField)) {
+                result.put(originalField, null);
             }
         }
         return result;
@@ -132,7 +157,7 @@ public class FileAdminController {
         if (null != file && !file.isEmpty()) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
-            if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
+            if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 try {
                     int index = originalName.lastIndexOf(CommonConstants.DOT);
                     if (0 < index) {
@@ -188,7 +213,7 @@ public class FileAdminController {
                                     CmsFileUtils.upload(content, filePath);
                                     String fileType = CmsFileUtils.getFileType(imagesuffix);
                                     FileSize fileSize = CmsFileUtils.getFileSize(filePath, imagesuffix);
-                                    logUploadService.save(new LogUpload(site.getId(), admin.getId(), 
+                                    logUploadService.save(new LogUpload(site.getId(), admin.getId(),
                                             LogLoginService.CHANNEL_WEB_MANAGER, suggestedName, fileType, content.length,
                                             fileSize.getWidth(), fileSize.getHeight(), RequestUtils.getIpAddress(request),
                                             CommonUtils.getDate(), fileName));
@@ -231,7 +256,7 @@ public class FileAdminController {
                 Map<String, Object> result = new HashMap<>();
                 String originalName = file.getOriginalFilename();
                 String suffix = CmsFileUtils.getSuffix(originalName);
-                if (ArrayUtils.contains(UeditorAdminController.ALLOW_FILES, suffix)) {
+                if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                     String fileName = CmsFileUtils.getUploadFileName(suffix);
                     String filePath = siteComponent.getWebFilePath(site, fileName);
                     try {

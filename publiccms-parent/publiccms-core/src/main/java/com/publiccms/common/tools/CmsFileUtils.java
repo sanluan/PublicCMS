@@ -24,6 +24,7 @@ import java.util.List;
 import javax.imageio.ImageIO;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
@@ -58,7 +59,31 @@ public class CmsFileUtils {
     /**
      * 
      */
+    /**
+     * 
+     */
     public static final List<String> AUDIO_FILE_SUFFIXS = Arrays.asList(".mp3", ".wav", ".mid");
+
+    /**
+     * 
+     */
+    public static final String[] IMAGE_ALLOW_FILES = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
+
+    /**
+     * 
+     */
+    public static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
+            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
+    /**
+     * 
+     */
+    public static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
+            new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
+                    ".pptx", ".pdf", ".txt", ".md", ".xml", ".ofd", ".psd" });
+    /**
+     * 
+     */
+    public static final String[] IMAGE_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };
     /**
      * 
      */

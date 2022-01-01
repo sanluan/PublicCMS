@@ -35,6 +35,10 @@ public class SysExtendField implements java.io.Serializable {
     private boolean searchable;
     @GeneratorColumn(title = "最大长度")
     private Integer maxlength;
+    @GeneratorColumn(title = "高度")
+    private Integer width;
+    @GeneratorColumn(title = "宽度")
+    private Integer height;
     @GeneratorColumn(title = "名称")
     private String name;
     @GeneratorColumn(title = "描述")
@@ -76,8 +80,9 @@ public class SysExtendField implements java.io.Serializable {
         this.sort = sort;
     }
 
-    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, Integer maxlength, String name,
-            String description, String inputType, String defaultValue, String dictionaryId, int sort) {
+    public SysExtendField(SysExtendFieldId id, boolean required, boolean searchable, Integer maxlength, Integer width,
+            Integer height, String name, String description, String inputType, String defaultValue, String dictionaryId,
+            int sort) {
         this.id = id;
         this.required = required;
         this.searchable = searchable;
@@ -126,6 +131,24 @@ public class SysExtendField implements java.io.Serializable {
 
     public void setMaxlength(Integer maxlength) {
         this.maxlength = maxlength;
+    }
+
+    @Column(name = "width")
+    public Integer getWidth() {
+        return this.width;
+    }
+
+    public void setWidth(Integer width) {
+        this.width = width;
+    }
+
+    @Column(name = "height")
+    public Integer getHeight() {
+        return this.height;
+    }
+
+    public void setHeight(Integer height) {
+        this.height = height;
     }
 
     @Column(name = "name", nullable = false, length = 20)

@@ -1,4 +1,5 @@
 <#assign maxlengthDisableTypes=['user','dept','content','category','categoryType','tag','tagType','vote','survey','date','datetime','file','image','video','dictionary']/>
+<#assign sizeEnableTypes=['image']/>
 <#assign dictionaryTypes=['number','boolean','user','dept','content','category','dictionary','categoryType','tagType','tag','vote','survey']/>
 <#macro extendsFieldType inputName value='' searchable=false>
 <#local inputTypes={'text':t.pageMessage('input'),'number':t.pageMessage('number'),'file':t.pageMessage('file'),'image':t.pageMessage('image'),'video':t.pageMessage('video'),'password':t.pageMessage('password'),'editor':t.pageMessage('ueditor'),'ckeditor':t.pageMessage('ckeditor'),'kindeditor':t.pageMessage('kindeditor'),'textarea':t.pageMessage('textarea'),'date':t.pageMessage('date'),'datetime':t.pageMessage('datetime'),'template':t.pageMessage('template_path'),'boolean':t.pageMessage('true_or_false'),'user':t.pageMessage('user'),'dept':t.pageMessage('dept'),'content':t.pageMessage('content'),'category':t.pageMessage('category'),'dictionary':t.pageMessage('dictionary'),'categoryType':t.pageMessage('category_type'),'tagType':t.pageMessage('tag_type'),'vote':t.pageMessage('vote'),'survey':t.pageMessage('survey'),'tag':t.pageMessage('tag')}/>
@@ -19,6 +20,11 @@ $('.combox_${flag}').on('change',function(){
         $(this).closest('tr').find('input[name$=maxlength]').hide();
     }else{
         $(this).closest('tr').find('input[name$=maxlength]').show();
+    }
+    if(-1<$.inArray($(this).val(), [<#list sizeEnableTypes as t>'${t}'<#sep>,</#list>])){
+        $(this).closest('tr').find('input[name$=height]').show();
+    }else{
+        $(this).closest('tr').find('input[name$=width]').hide();
     }
 });
 </script>

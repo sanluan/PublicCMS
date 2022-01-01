@@ -22,6 +22,8 @@ public class CmsModel implements java.io.Serializable {
     private String name;
     private String templatePath;
     private String editorType;
+    private Integer coverWidth;
+    private Integer coverHeight;
     private boolean hasChild;
     private boolean onlyUrl;
     private boolean hasImages;
@@ -87,6 +89,34 @@ public class CmsModel implements java.io.Serializable {
      */
     public void setEditorType(String editorType) {
         this.editorType = editorType;
+    }
+
+    /**
+     * @return the coverWidth
+     */
+    public Integer getCoverWidth() {
+        return coverWidth;
+    }
+
+    /**
+     * @param coverWidth the coverWidth to set
+     */
+    public void setCoverWidth(Integer coverWidth) {
+        this.coverWidth = coverWidth;
+    }
+
+    /**
+     * @return the coverHeight
+     */
+    public Integer getCoverHeight() {
+        return coverHeight;
+    }
+
+    /**
+     * @param coverHeight the coverHeight to set
+     */
+    public void setCoverHeight(Integer coverHeight) {
+        this.coverHeight = coverHeight;
     }
 
     /**

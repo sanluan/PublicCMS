@@ -9,6 +9,8 @@
             <th type="checkbox" name="${name}[#index#].required" size="10"><@t.page 'required'/></th>
             <th type="text" name="${name}[#index#].defaultValue" size="10"><@t.page 'default_value'/></th>
             <th type="number" name="${name}[#index#].maxlength" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'maxlength'/></th>
+            <th type="number" name="${name}[#index#].width" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'width'/></th>
+            <th type="number" name="${name}[#index#].height" size="10" fieldAttrs="{'min':1,'style':'display:none'}"><@t.page 'height'/></th>
             <th type="lookup" name="${name}[#index#].dictionaryName" lookupPk="dictionaryId" lookupUrl="cmsDictionary/lookup.html" lookupGroup="${name}[#index#]" fieldAttrs="{'readonly':'readonly','style':'display:none'}" size="10"><a href="cmsDictionary/list.html" target="navTab" rel="cmsDictionary/list" icon="<i class='icon-book icon-large'></i>"><@t.page 'dictionary'/></a></th>
             <th type="textarea" name="${name}[#index#].description" fieldAttrs="{'maxlength':50,'rows':2,'cols':30}"><@t.page 'description'/></th>
             <#if searchable><th type="checkbox" name="${name}[#index#].searchable" size="10"><@t.page 'searchable'/></th></#if>
@@ -39,6 +41,12 @@
                 </td>
                 <td>
                     <input type="number" name="${name}[${extend?index}].maxlength" min="1" value="${(extend.maxlength)!}"<#if maxlengthDisableTypes?seq_contains(extend.inputType)> style="display:none"</#if> size="10"/>
+                </td>
+                <td>
+                    <input type="number" name="${name}[${extend?index}].width" min="1" value="${(extend.width)!}"<#if !sizeEnableTypes?seq_contains(extend.inputType)> style="display:none"</#if> size="10"/>
+                </td>
+                <td>
+                    <input type="number" name="${name}[${extend?index}].height" min="1" value="${(extend.height)!}"<#if !sizeEnableTypes?seq_contains(extend.inputType)> style="display:none"</#if> size="10"/>
                 </td>
                 <td>
                     <@_dictionary id=extend.dictionaryId><#assign dictionary=object/></@_dictionary>

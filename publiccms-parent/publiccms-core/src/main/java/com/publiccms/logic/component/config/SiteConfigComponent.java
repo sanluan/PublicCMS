@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.publiccms.common.api.Config;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
@@ -43,6 +44,10 @@ public class SiteConfigComponent implements Config {
      *
      */
     public static final String CONFIG_EXPIRY_MINUTES_MANAGER = "expiry_minutes.manager";
+    /**
+    *
+    */
+    public static final String CONFIG_ALLOW_FILES = "allow_files";
     /**
      *
      */
@@ -99,6 +104,15 @@ public class SiteConfigComponent implements Config {
         }
     }
 
+    public String[] getSafeSuffix(SysSite site) {
+        Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(site.getId(), CONFIG_CODE_SITE);
+        String value = config.get(CONFIG_ALLOW_FILES);
+        if (CommonUtils.empty(value)) {
+            return CmsFileUtils.ALLOW_FILES;
+        }
+        return StringUtils.split(value, CommonConstants.COMMA);
+    }
+
     private static boolean unSafe(String url, SysSite site, String contextPath) {
         String fixedUrl = url.substring(url.indexOf("://") + 1);
         if (url.startsWith(site.getDynamicPath()) || url.startsWith(site.getSitePath())
@@ -126,6 +140,9 @@ public class SiteConfigComponent implements Config {
                 .add(new SysExtendField(CONFIG_EXPIRY_MINUTES_MANAGER, INPUTTYPE_NUMBER, false, CONFIG_EXPIRY_MINUTES_MANAGER,
                         getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_EXPIRY_MINUTES_MANAGER),
                         String.valueOf(DEFAULT_EXPIRY_MINUTES)));
+        extendFieldList.add(new SysExtendField(CONFIG_ALLOW_FILES, INPUTTYPE_TEXTAREA, false, CONFIG_ALLOW_FILES,
+                getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_ALLOW_FILES),
+                StringUtils.join(CmsFileUtils.ALLOW_FILES, CommonConstants.COMMA)));
         extendFieldList.add(new SysExtendField(CONFIG_COMMENT_NEED_CHECK, INPUTTYPE_BOOLEAN, false, CONFIG_COMMENT_NEED_CHECK,
                 getMessage(locale, CONFIG_CODE_DESCRIPTION + CommonConstants.DOT + CONFIG_COMMENT_NEED_CHECK), "true"));
         extendFieldList

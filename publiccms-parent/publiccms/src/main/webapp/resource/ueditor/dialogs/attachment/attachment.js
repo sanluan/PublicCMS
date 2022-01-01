@@ -439,7 +439,7 @@
             }
 
             uploader.on('fileQueued', function (file) {
-                if (file.ext && acceptExtensions.indexOf(file.ext.toLowerCase()) != -1 && file.size <= imageMaxSize) {
+                if (file.ext && acceptExtensions.indexOf(file.ext.toLowerCase()) != -1 && file.size <= fileMaxSize) {
                     fileCount++;
                     fileSize += file.size;
                 }
@@ -453,7 +453,7 @@
             });
 
             uploader.on('fileDequeued', function (file) {
-                if (file.ext && acceptExtensions.indexOf(file.ext.toLowerCase()) != -1 && file.size <= imageMaxSize) {
+                if (file.ext && acceptExtensions.indexOf(file.ext.toLowerCase()) != -1 && file.size <= fileMaxSize) {
                     fileCount--;
                     fileSize -= file.size;
                 }

@@ -41,6 +41,7 @@ import com.publiccms.common.tools.VerificationUtils;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.config.SiteConfigComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogUploadService;
@@ -60,6 +61,8 @@ public class UeditorAdminController {
     protected LogUploadService logUploadService;
     @Autowired
     protected SiteComponent siteComponent;
+    @Autowired
+    protected SiteConfigComponent siteConfigComponent;
 
     protected static final String ACTION_CONFIG = "config";
     protected static final String ACTION_UPLOAD = "upload";
@@ -70,15 +73,6 @@ public class UeditorAdminController {
 
     protected static final String FIELD_NAME = "file";
     protected static final String SCRAW_TYPE = ".jpg";
-
-    protected static final String[] IMAGE_ALLOW_FILES = new String[] { ".png", ".jpg", ".jpeg", ".gif", ".bmp" };
-
-    protected static final String[] VIDEO_ALLOW_FILES = new String[] { ".flv", ".swf", ".mkv", ".avi", ".rm", ".rmvb", ".mpeg",
-            ".mpg", ".ogg", ".ogv", ".mov", ".wmv", ".mp4", ".webm", ".mp3", ".wav", ".mid" };
-    public static final String[] ALLOW_FILES = ArrayUtils.addAll(ArrayUtils.addAll(VIDEO_ALLOW_FILES, IMAGE_ALLOW_FILES),
-            new String[] { ".rar", ".zip", ".tar", ".gz", ".7z", ".bz2", ".cab", ".iso", ".doc", ".docx", ".xls", ".xlsx", ".ppt",
-                    ".pptx", ".pdf", ".txt", ".md", ".xml", ".ofd", ".psd" });
-    protected static final String[] IMAGE_FILETYPES = new String[] { CmsFileUtils.FILE_TYPE_IMAGE };
 
     /**
      * @param site
@@ -111,12 +105,12 @@ public class UeditorAdminController {
         config.setFileUrlPrefix(urlPrefix);
         config.setImageManagerUrlPrefix(urlPrefix);
         config.setFileManagerUrlPrefix(urlPrefix);
-        config.setImageAllowFiles(IMAGE_ALLOW_FILES);
-        config.setCatcherAllowFiles(IMAGE_ALLOW_FILES);
-        config.setVideoAllowFiles(VIDEO_ALLOW_FILES);
-        config.setFileAllowFiles(ALLOW_FILES);
-        config.setImageManagerAllowFiles(IMAGE_ALLOW_FILES);
-        config.setFileManagerAllowFiles(ALLOW_FILES);
+        config.setImageAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
+        config.setCatcherAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
+        config.setVideoAllowFiles(CmsFileUtils.VIDEO_ALLOW_FILES);
+        config.setFileAllowFiles(siteConfigComponent.getSafeSuffix(site));
+        config.setImageManagerAllowFiles(CmsFileUtils.IMAGE_ALLOW_FILES);
+        config.setFileManagerAllowFiles(siteConfigComponent.getSafeSuffix(site));
         return config;
     }
 
@@ -135,7 +129,7 @@ public class UeditorAdminController {
         if (null != file) {
             String originalName = file.getOriginalFilename();
             String suffix = CmsFileUtils.getSuffix(originalName);
-            if (ArrayUtils.contains(ALLOW_FILES, suffix)) {
+            if (ArrayUtils.contains(siteConfigComponent.getSafeSuffix(site), suffix)) {
                 String fileName = CmsFileUtils.getUploadFileName(suffix);
                 String filePath = siteComponent.getWebFilePath(site, fileName);
                 try {
@@ -282,7 +276,7 @@ public class UeditorAdminController {
             start = 0;
         }
         PageHandler page = logUploadService.getPage(site.getId(), admin.getId(), null,
-                ACTION_LISTIMAGE.equalsIgnoreCase(action) ? IMAGE_FILETYPES : null, null, null, null, null, start / 20 + 1, 20);
+                ACTION_LISTIMAGE.equalsIgnoreCase(action) ? CmsFileUtils.IMAGE_FILETYPES : null, null, null, null, null, start / 20 + 1, 20);
 
         Map<String, Object> map = getResultMap(true);
         List<Map<String, Object>> list = new ArrayList<>();
