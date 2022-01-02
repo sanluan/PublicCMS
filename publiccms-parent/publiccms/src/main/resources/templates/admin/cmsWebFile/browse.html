@@ -66,10 +66,10 @@ function callback(fileUrl){
             </#if>
         </div>
         <div class="col-md-2">
-            ${a.lastModifiedTime?datetime}
+            ${a.lastModifiedTime?date}
         </div>
         <div class="col-md-2">
-            ${a.creationTime?datetime}
+            ${a.creationTime?date}
         </div>
         <div class="col-md-2">
             <@t.fileSize a.size/>

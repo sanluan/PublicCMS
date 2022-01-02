@@ -1,7 +1,7 @@
 <#if path?has_content>
     <@_metadata path=path><#assign metadata=object/></@_metadata>
 </#if>
-<#macro getAction code description=''>onclick="DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('<#if description?has_content>${r'<#--'} ${description} ${r'-->'}\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"</#macro>
+<#macro getAction code description=''>onclick="DWZ.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('<#if description?has_content>${r'<#--'} ${description} ${r'-->'}\n</#if>${code?js_string}${description?has_content?then('\\n','')}');$.pdialog.closeCurrent();return false;"</#macro>
 <div class="tabs">
     <div class="tabsHeader">
         <div class="tabsHeaderContent">

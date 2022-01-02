@@ -1,92 +1,40 @@
-<#function fileType fileName>
-    <#assign fileSuffix = fileName?keep_after_last('.')/>
-    <#switch fileSuffix>
-        <#case 'jpg'>
-        <#case 'png'>
-        <#case 'bmp'>
-        <#case 'gif'>
-        <#case 'jpeg'>
-        <#case 'svg'>
-            <#return 'image'/><#break>
-        <#case 'ogg'>
-        <#case 'webm'>
-        <#case 'mpeg'>
-        <#case 'mpg'>
-        <#case 'mov'>
-        <#case 'rm'>
-        <#case 'ram'>
-        <#case 'avi'>
-        <#case 'wmv'>
-        <#case 'mp4'>
-        <#case 'flv'>
-        <#case 'swf'>
-        <#case 'mkv'>
-            <#return 'video'/><#break>
-        <#case 'wav'>
-        <#case 'acc'>
-        <#case 'mid'>
-        <#case 'midi'>
-        <#case 'wma'>
-        <#case 'mpga'>
-        <#case 'mp3'>
-            <#return 'audio'/><#break>
-        <#default>
-            <#return 'other'/>
-    </#switch>
-</#function >
 <div class="pageContent">
-    <table class="table" width="100%" layoutH>
-        <thead>
-            <tr>
-                <th><@t.page 'use'/></th>
-                <th width="30"></th>
-                <th><@t.page 'name'/></th>
-                <th><@t.page 'modified_date'/></th>
-                <th><@t.page 'create_date'/></th>
-                <th><@t.page 'file.size'/></th>
-            </tr>
-        </thead>
-        <tbody>
     <@_webFileList path=path>
         <#if path?has_content>
-            <tr>
-                <td></td>
-                <td class="tree"><div class="folder_expandable"></div></td>
-                <td>
-                    <a href="common/file_list.html?path=${path?keep_before_last('/')?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${path?keep_before_last('/')}">
-                        <@t.page 'button.return'/>
-                    </a>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            <div class="image-list">
+                <a href="common/file_list.html?path=${path?keep_before_last('/')?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${path?keep_before_last('/')}">
+                    <i class="thumb icon-folder-open-alt icon-large"></i>
+                    <p><@t.page 'button.return'/></p>
+                </a>
+            </div>
         </#if>
         <#list list as a>
         <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
-            <tr data-src="${filePath!}">
-                <td>
-                    <#if !a.directory && (!fileTypes?has_content || fileTypes = fileType(a.fileName))>
-                        <a href="javascript:;" class="btnText green" onclick="$.bringBack({'${field!'fileName'}':'${filePath!}','fileType':'${fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${a.fileName!}'});return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
-                    </#if>
-                </td>
-                <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
-                <td>
-                    <#if a.directory>
-                        <a href="common/file_list.html?path=${filePath?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${filePath}">
-                            ${a.fileName}
-                        </a>
+            <div class="image-list">
+                <#if a.directory>
+                    <a href="common/file_list.html?path=${filePath?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${filePath}">
+                        <i class="thumb icon-folder-close-alt icon-large"></i>
+                        <p>${a.fileName}</p>
+                    </a>
+                <#elseif !fileTypes?has_content || fileTypes = t.fileType(a.fileName)>
+                    <#if fileTypes?has_content && fileTypes = 'image'>
+                        <img src="${site.sitePath+filePath}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
+                        <#if width?has_content && height?has_content>
+                            <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+filePath!}',imgName:'${a.fileName!}'});return false;"></a>
+                        </#if>
                     <#else>
-                        ${a.fileName}
+                        <i class="thumb icon-file-alt icon-large"></i>
                     </#if>
-                </td>
-                <td>${a.lastModifiedTime?datetime}</td>
-                <td>${a.creationTime?datetime}</td>
-                <td><@t.fileSize a.size/></td>
-            </tr>
+                    <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">
+                        <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${filePath!}','fileType':'${t.fileType(a.fileName)}','fileSize':'${a.size!}','${originalField!'originalName'}':'${a.fileName!}'});return false;">
+                            ${a.fileName}(<@t.fileSize a.size/>)
+                        </a>
+                    </p>
+                <#else>
+                    <i class="thumb icon-file-alt icon-large" title="${a.fileName}(<@t.fileSize a.size/>)"></i>
+                    <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">${a.fileName}(<@t.fileSize a.size/>)</p>
+                </#if>
+            </div>
         </#list>
     </@_webFileList>
-        </tbody>
-    </table>
 </div>

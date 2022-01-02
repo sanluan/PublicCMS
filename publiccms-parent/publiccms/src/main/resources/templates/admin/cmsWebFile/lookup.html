@@ -1,103 +1,66 @@
 <#function useFile filePath fileName fullPath=''>
-    <#assign fileSuffix = fileName?keep_after_last('.')/>
     <#if fullPath?has_content>
        <#assign prefix=site.sitePath/>
     <#else>
        <#assign prefix=r'${site.sitePath}'/>
     </#if>
-    <#switch fileSuffix>
-        <#case 'css'>
-            <#return '<link href="'+prefix+filePath+'" rel="stylesheet">'/><#break>
-        <#case 'js'>
-            <#return '<script src="'+prefix+filePath+'"></script>'/><#break>
-        <#case 'jpg'>
-        <#case 'png'>
-        <#case 'bmp'>
-        <#case 'jpeg'>
-        <#case 'gif'>
-            <#return '<img src="'+prefix+filePath+'">'/><#break>
-        <#case 'ico'>
-            <#return '<link rel="shortcut icon" href="'+prefix+filePath+'">'/><#break>
-        <#case 'ogg'>
-        <#case 'webm'>
-        <#case 'mpeg'>
-        <#case 'mpg'>
-        <#case 'mov'>
-        <#case 'rm'>
-        <#case 'ram'>
-        <#case 'avi'>
-        <#case 'wmv'>
-        <#case 'mp4'>
+    <#assign fileType=t.fileType(fileName)/>
+    <#switch fileType>
+        <#case 'image'>
+            <#return '<img src="'+prefix+filePath+'" alt="'+fileName+'">'/><#break>
+        <#case 'video'>
             <#return '<video controls="controls"><source src="'+prefix+filePath+'" type="video/${fileSuffix}"></video>'/><#break>
-        <#case 'wav'>
-        <#case 'acc'>
-        <#case 'mid'>
-        <#case 'midi'>
-        <#case 'wma'>
-        <#case 'mpga'>
-        <#case 'mp3'>
+        <#case 'audio'>
             <#return '<audio controls="controls" src="'+prefix+filePath+'"></audio>'/><#break>
-        <#case 'rar'>
-        <#case 'zip'>
-        <#case 'html'>
-            <#return '<a href="'+prefix+filePath+'">'+fileName+'</a>'/><#break>
         <#default>
-            <#return prefix+filePath/>
+            <#assign fileSuffix = fileName?keep_after_last('.')/>
+            <#switch fileSuffix>
+                <#case 'css'>
+                    <#return '<link href="'+prefix+filePath+'" rel="stylesheet">'/><#break>
+                <#case 'js'>
+                    <#return '<script src="'+prefix+filePath+'"></script>'/><#break>
+                <#case 'ico'>
+                    <#return '<link rel="shortcut icon" href="'+prefix+filePath+'">'/><#break>
+                <#case 'rar'>
+                <#case 'zip'>
+                <#case 'html'>
+                    <#return '<a href="'+prefix+filePath+'">'+fileName+'</a>'/><#break>
+                <#default>
+                    <#return prefix+filePath/>
+            </#switch>
     </#switch>
 </#function >
 <div class="pageContent">
-    <table class="table" width="100%" layoutH>
-        <thead>
-            <tr>
-                <th><@t.page 'use'/></th>
-                <th width="30"></th>
-                <th><@t.page 'name'/></th>
-                <th><@t.page 'modified_date'/></th>
-                <th><@t.page 'create_date'/></th>
-                <th><@t.page 'file.size'/></th>
-            </tr>
-        </thead>
-        <tbody>
     <@_webFileList path=path>
         <#if path?has_content>
-            <tr>
-                <td></td>
-                <td class="tree"><div class="folder_expandable"></div></td>
-                <td>
-                    <a href="cmsWebFile/lookup.html?path=${path?keep_before_last('/')?url}&editor=${editor!'cmsTemplateEditor'}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${path?keep_before_last('/')}">
-                        <@t.page 'button.return'/>
-                    </a>
-                </td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-            </tr>
+            <div class="image-list">
+                <a href="cmsWebFile/lookup.html?path=${path?keep_before_last('/')?url}&editor=${editor!'cmsTemplateEditor'}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${path?keep_before_last('/')}">
+                    <i class="thumb icon-folder-open-alt icon-large"></i>
+                    <p><@t.page 'button.return'/></p>
+                </a>
+            </div>
         </#if>
         <#list list as a>
         <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
-            <tr>
-                <td>
-                    <#if !a.directory>
-                        <a href="javascript:;" class="btnText green" onclick="DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${useFile(filePath?keep_after('/'),a.fileName,fullPath!)}');$.pdialog.closeCurrent();return false;"><i class="icon-ok"></i> <@t.page 'select'/></a>
-                    </#if>
-                </td>
-                <td class="tree"><div class="${a.directory?then('folder_expandable','file')}" style="width:30px;"></div></td>
-                <td>
-                    <#if a.directory>
-                        <a href="cmsWebFile/lookup.html?path=${filePath?url}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${filePath}">
-                            ${a.fileName}
-                        </a>
+            <div class="image-list">
+                <#if a.directory>
+                    <a href="cmsWebFile/lookup.html?path=${filePath?url}&fullPath=${(fullPath?url)!}" target="dialog" mask="true" title="${filePath}">
+                        <i class="thumb icon-folder-close-alt icon-large"></i>
+                        <p>${a.fileName}</p>
+                    </a>
+                <#else>
+                    <#if t.fileType(a.fileName) = 'image'>
+                        <img src="${site.sitePath+filePath}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
                     <#else>
-                        ${a.fileName}
+                        <i class="thumb icon-file-alt icon-large"></i>
                     </#if>
-                </td>
-                <td>${a.lastModifiedTime?datetime}</td>
-                <td>${a.creationTime?datetime}</td>
-                <td><@t.fileSize a.size/></td>
-            </tr>
+                    <p title="<@t.page 'modified_date'/>:${a.lastModifiedTime?date},<@t.page 'create_date'/>:${a.creationTime?date}">
+                        <a href="javascript:;" onclick="DWZ.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${useFile(filePath?keep_after('/'),a.fileName,fullPath!)}');$.pdialog.closeCurrent();return false;">
+                            ${a.fileName}(<@t.fileSize a.size/>)
+                        </a>
+                    </p>
+                </#if>
+            </div>
         </#list>
     </@_webFileList>
-        </tbody>
-    </table>
 </div>

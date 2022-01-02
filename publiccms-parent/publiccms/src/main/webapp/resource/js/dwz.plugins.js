@@ -222,58 +222,66 @@ DWZ.regPlugins.push(function($p){
         }
         if ($previewElem.find('.edit-icon').size() == 0) {
             $('<a class="edit-icon"></a>').appendTo($previewElem).click(function(event){
-                if($uploadWrap.parent().find('.image-editor').length == 0) {
-                    $uploadWrap.after('<div class="image-editor" ><div class="unit"><p class="image-box"></p><label><a href="javascript:;" class="button"><i class="icon-ok"></i></a></label></div></div>');
-                }
-                var $this = $uploadWrap.parent().find('.image-editor');
-                if($this.attr("data-id")){
-                    DWZ.instances[$this.attr("data-id")].destroy();
-                }
-                var index = window.photoclip.index++;
-                var dataId = "photoclip_"+index;
-                var width = parseInt($uploadWrap.parents("form:first").find("input[name=width]").val());
-                var height = parseInt($uploadWrap.parents("form:first").find("input[name=height]").val());
-                var options= {
-                    size: [width, height],
-                    ok: $this.find('.button'),
-                    done: function(dataURL) {
-                        if(dataURL){
-                            img.src=dataURL;
-                            $uploadWrap.find('input[name=base64File]').val(dataURL.substring(dataURL.indexOf('base64,')+7));
-                            $uploadWrap.find('input[name=originalFilename]').val(file.name);
-                            $uploadWrap.find('input[type=file]').val('');
-                            DWZ.instances[dataId].destroy();
-                            delete DWZ.instances[dataId];
-                            $this.remove();
-                        }
-                    },
-                    fail: function(msg) {
-                        alertMsg.error(msg);
+                editImg($uploadWrap,file,file.getName(),function(dataURL){
+                    if(dataURL){
+                        img.src=dataURL;
+                        $uploadWrap.find('input[name=base64File]').val(dataURL.substring(dataURL.indexOf('base64,')+7));
+                        $uploadWrap.find('input[name=originalFilename]').val(file.name);
+                        $uploadWrap.find('input[type=file]').val('');
                     }
-                };
-                var filenames=file.name.toLowerCase().split('.');
-                if('png'==filenames[filenames.length-1]){
-                    options.outputType='png';
-                }
-                function init(dataId,file){
-                    var photoClip = new PhotoClip($this.find('.image-box')[0], options);
-                    photoClip.load(file);
-                    DWZ.instances[dataId] = photoClip;
-                }
-                if(!window.photoclip.initd){
-                    loadScripts(window.photoclip.resources,function(){
-                        window.photoclip.initd=true;
-                        init(dataId,file);
-                    });
-                } else {
-                    init(dataId,file);
-                }
-                $this.attr("data-id",dataId);
+                });
             });
         }
 
         readAsDataURL(img, file, maxW, maxH);
 
+    }
+    
+    function editImg($uploadWrap,img,fileName,callback){
+        if(0 == $uploadWrap.parent().find('.image-editor').length ) {
+            $uploadWrap.after('<div class="image-editor" ><div class="unit"><p class="image-box"></p><label><a href="javascript:;" class="button"><i class="icon-ok"></i></a></label></div></div>');
+        }
+        var $this = $uploadWrap.parent().find('.image-editor');
+        if($this.attr("data-id")){
+            DWZ.instances[$this.attr("data-id")].destroy();
+        }
+        var index = window.photoclip.index++;
+        var dataId = "photoclip_"+index;
+        var width = parseInt($uploadWrap.parents("form:first").find("input[name=width]").val());
+        var height = parseInt($uploadWrap.parents("form:first").find("input[name=height]").val());
+        var options= {
+            size: [width, height],
+            ok: $this.find('.button'),
+            done: function(dataURL){
+                if ($.isFunction(callback) ) {
+                    callback(dataURL);
+                }
+                DWZ.instances[dataId].destroy();
+                delete DWZ.instances[dataId];
+                $this.remove();
+            },
+            fail: function(msg) {
+                alertMsg.error(msg);
+            }
+        };
+        var filenames=fileName.split('.');
+        if('png'==filenames[filenames.length-1]){
+            options.outputType='png';
+        }
+        function init(dataId,img){
+            var photoClip = new PhotoClip($this.find('.image-box')[0], options);
+            photoClip.load(img);
+            DWZ.instances[dataId] = photoClip;
+        }
+        if(!window.photoclip.initd){
+            loadScripts(window.photoclip.resources,function(){
+                window.photoclip.initd=true;
+                init(dataId,img);
+            });
+        } else {
+            init(dataId,img);
+        }
+        $this.attr("data-id",dataId);
     }
 
     // multiple
@@ -295,8 +303,40 @@ DWZ.regPlugins.push(function($p){
 
             readAsDataURL(img, file, maxW, maxH);
         }
-
     }
+    
+    $.fn.extend({
+        /**
+         * 图片编辑
+         * @param options
+         */
+        editImg: function(options){
+            $uploadWrap = $(this);
+            var $previewElem = $uploadWrap.find('.thumbnail');
+            if(0 == $previewElem.length){
+                $previewElem = $('<div class="thumbnail"></div>').appendTo($uploadWrap);
+            }
+            var img = document.createElement("img");
+            img.src = options.imgUrl;
+            $previewElem.empty().append(img);
+
+            editImg($(this),options.imgUrl,options.imgName,function(dataURL){
+                if(dataURL){
+                    img.src=dataURL;
+                    $uploadWrap.find('input[name=base64File]').val(dataURL.substring(dataURL.indexOf('base64,')+7));
+                    $uploadWrap.find('input[name=originalFilename]').val(options.imgName);
+                    $uploadWrap.find('input[type=file]').val('');
+                    if ($previewElem.find('.del-icon').size() == 0) {
+                        $('<a class="del-icon"></a>').appendTo($previewElem).click(function(event){
+                            $previewElem.remove();
+                            $uploadWrap.find('input[name=base64File]').val('');
+                            $uploadWrap.find('input[name=originalFilename]').val('');
+                        });
+                    }
+                }
+            });
+        }
+    });
 
     $.fn.extend({
         /**

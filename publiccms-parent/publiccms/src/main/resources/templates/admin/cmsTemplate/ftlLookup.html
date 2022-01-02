@@ -24,9 +24,9 @@
 <script>
 function use(path,description){
     if('include'==$('input[name=use]:checked',$.pdialog.getCurrent()).val()){
-        DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@include path="'?no_esc}'+path+'${r'"/>'?no_esc}'+description);
+        DWZ.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@include path="'?no_esc}'+path+'${r'"/>'?no_esc}'+description);
     } else {
-        DWZ.codemirror.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@import path="'?no_esc}'+path+'" namespace="'+$('input[name=namespace]',$.pdialog.getCurrent()).val()+'"${r'/>'?no_esc}'+description);
+        DWZ.instances[$('textarea.code',navTab.getCurrentPanel()).data('id')].replaceSelection('${r'<@import path="'?no_esc}'+path+'" namespace="'+$('input[name=namespace]',$.pdialog.getCurrent()).val()+'"${r'/>'?no_esc}'+description);
     }
 }
 </script>

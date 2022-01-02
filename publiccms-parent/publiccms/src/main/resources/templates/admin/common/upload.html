@@ -3,12 +3,16 @@
     <input type="hidden" name="field" value="${field!'fileName'}"/>
     <input type="hidden" name="originalField" value="${originalField!}"/>
     <div class="pageFormContent layoutBox" layoutH>
-        <div class="preview" style="position:relative;"><div style="position:absolute;top:0px;right:0;z-index:1000;"><img style="max-height:200px;max-width:300px;"/></div></div>
+        <#if width?has_content&&height?has_content>
+        <p class="nowrap">
+            <label><@t.page 'width'/></label><input name="width" type="number" value="${width}"/><label><@t.page 'height'/></label><input name="height" type="number" value="${height}"/>
+        </p>
+        </#if>
         <div class="tabs">
             <div class="tabsHeader">
                 <div class="tabsHeaderContent">
                     <ul>
-                        <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).show();return false;"><@t.page 'file'/></a></li>
+                        <li><a href="javascript:;" class="tabImageBtn" onclick="$('button[type=submit]',$.pdialog.getCurrent()).show();return false;"><@t.page 'file'/></a></li>
                         <li><a href="javascript:;" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'upload.log'/></a></li>
                         <li><a href="common/file_list.html?field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" class="j-ajax" onclick="$('button[type=submit]',$.pdialog.getCurrent()).hide();return false;"><@t.page 'webfile'/></a></li>
                     </ul>
@@ -17,11 +21,6 @@
             <div class="tabsContent unitBox">
                 <div class="pageContent">
                     <#if fileTypes?has_content&&'image'=fileTypes>
-                        <#if width?has_content&&height?has_content>
-                        <p class="nowrap">
-                            <label><@t.page 'width'/></label><input name="width" type="number" value="${width}"/><label><@t.page 'height'/></label><input name="height" type="number" value="${height}"/>
-                        </p>
-                        </#if>
                         <div class="upload-wrap">
                             <input type="file" name="file" accept="image/*" class="valid" style="left: 0px;">
                             <input type="hidden" name="base64File"/>
@@ -32,45 +31,31 @@
                     </#if>
                 </div>
                 <div class="pageContent">
-                    <ul class="tree">
-            <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=12>
+            <@_logUploadList userId=admin.id fileTypes=fileTypes pageIndex=1 pageSize=21>
                 <#list page.list as a>
-                    <li><a href="javascript:;" data-src="${a.filePath!}" onclick="$.bringBack({'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${width!}','height':'${height!}','${originalField!'originalName'}':'${a.originalName!}'});return false;">${(a.originalName?has_content)?then(a.originalName,a.filePath!)}</a></li>
+                    <div class="image-list">
+                        <#if 'image'=t.fileType(a.filePath)>
+                            <img src="${site.sitePath+a.filePath}" alt="${a.originalName!}" title="${a.originalName!}">
+                            <#if width?has_content && height?has_content>
+                                <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+a.filePath!}',imgName:'${(a.originalName?has_content)?then(a.originalName,a.filePath!)}'});return false;"></a>
+                            </#if>
+                        <#else>
+                            <i class="thumb icon-file-alt icon-large"></i>
+                        </#if>
+                        <p title="<@t.page 'width'/>:${a.width!},<@t.page 'height'/>:${a.height!}">
+                            <a href="javascript:;" onclick="$.bringBack({'${field!'fileName'}':'${a.filePath!}','fileType':'${a.fileType!}','fileSize':'${a.fileSize!}','width':'${a.width!}','height':'${a.height!}','${originalField!'originalName'}':'${a.originalName!}'});return false;">
+                                ${(a.originalName?has_content)?then(a.originalName,a.filePath!)}<#if a.fileSize?has_content>(${a.fileSize})</#if>
+                            </a>
+                        </p>
+                    </div>
                 </#list>
             </@_logUploadList>
-                    </ul>
                 </div>
                 <div id="fileBox">
                 </div>
             </div>
         </div>
     </div>
-<script>
-    $('.tabsContent ul.tree li a',$.pdialog.getCurrent()).hover(function(){
-        var filenames=$(this).text().toLowerCase().split('.');
-        if(-1 != $.inArray(filenames[filenames.length-1], ["png","gif","jpg","jpeg","bmp"])){
-            if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
-                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
-            }else{
-                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
-            }
-        }
-    },function(){
-        $('.preview',$.pdialog.getCurrent()).hide();
-    });
-    $('.tabsContent',$.pdialog.getCurrent()).on('hover','table tr[data-src]',function(){
-        var filenames=$(this).data('src').toLowerCase().split('.');
-        if(-1 != $.inArray(filenames[filenames.length-1], ["png","gif","jpg","jpeg","bmp"])){
-            if(-1<$(this).text().indexOf("://")||0==$(this).text().indexOf("//")){
-                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src',$(this).data('src'));
-            }else{
-                $('.preview',$.pdialog.getCurrent()).show().find('img').attr('src','${site.sitePath}'+$(this).data('src'));
-            }
-        }
-    },function(){
-        $('.preview',$.pdialog.getCurrent()).hide();
-    });
-</script>
     <div class="formBar">
         <ul>
             <li><button type="submit" class="buttonActive"><@t.page 'upload'/></button></li>
