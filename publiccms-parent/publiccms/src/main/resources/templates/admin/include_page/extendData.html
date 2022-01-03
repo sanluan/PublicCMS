@@ -16,7 +16,7 @@
                 <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}" lookupGroup="" width="1000" height="600"><@t.page 'attach'/></a>
-                    <a class="btnLook" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
             <#break>
@@ -29,7 +29,7 @@
                 <input name="${inputName}" size="50" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="image/*" </#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=image&width=${extend.width!}&height=${extend.height!}" lookupGroup="" width="1000" height="600"><@t.page 'image'/></a>
-                    <a class="btnLook" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                     <#if !preview?has_content>
                         <#include "../include_page/preview.html"/>
                     </#if>
@@ -46,7 +46,7 @@
                 <input name="${inputName}" <#if 'customform'!=type>class="<#if extend.required>required</#if>" type="text" maxlength="300" size="50" <#else>type="file" accept="video/*"</#if>value="${(value)!}"/>
                 <#if 'customform'!=type>
                     <a class="btnAttach" href="common/upload.html?field=${inputName?url}&fileTypes=video" lookupGroup="" width="1000" height="600"><@t.page 'video'/></a>
-                    <a class="btnLook" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
+                    <a class="view icon-eye-open" ref="${inputName}" data-prefix="${site.sitePath}" href="javascript:void(0);" target="_blank"><@t.page 'button.view'/></a>
                 </#if>
             </#if>
             <#break>

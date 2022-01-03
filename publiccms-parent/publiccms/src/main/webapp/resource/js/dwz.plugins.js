@@ -222,7 +222,7 @@ DWZ.regPlugins.push(function($p){
         }
         if ($previewElem.find('.edit-icon').size() == 0) {
             $('<a class="edit-icon"></a>').appendTo($previewElem).click(function(event){
-                editImg($uploadWrap,file,file.getName(),function(dataURL){
+                editImg($uploadWrap,file,file.name,function(dataURL){
                     if(dataURL){
                         img.src=dataURL;
                         $uploadWrap.find('input[name=base64File]').val(dataURL.substring(dataURL.indexOf('base64,')+7));
@@ -397,11 +397,22 @@ DWZ.regPlugins.push(function($p){
 })(jQuery);
 
 DWZ.regPlugins.push(function($p){
-    $("a.btnLook[target=_blank]", $p).each(function(){
-        $(this).click(function(){
-            var value=$('input[name='+escapeJquery($(this).attr('ref'))+']',$(this).parents(".unitBox:first")).val();
+    $("a.view[target=_blank]", $p).each(function(){
+        $btn=$(this);
+        $input=$('input[name='+escapeJquery($(this).attr('ref'))+']',$(this).parents(".unitBox:first"));
+        function control(){
+            if($input.val()){
+                $btn.show();
+            }else{
+                $btn.hide();
+            }
+        }
+        $input.change(control);
+        control();
+        $btn.click(function(){
+            var value=$input.val();
             if(value){
-                $(this).attr('href',$(this).data('prefix')+value);
+                $(this).attr('href',value.isUrl() ? value : $(this).data('prefix')+value);
             }else{
                 return false;
             }

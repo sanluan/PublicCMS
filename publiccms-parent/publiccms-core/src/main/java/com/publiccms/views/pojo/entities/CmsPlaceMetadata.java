@@ -23,10 +23,12 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     private Long[] adminIds;
     private boolean allowContribute;
     private boolean allowAnonymous;
+    private Integer coverWidth;
+    private Integer coverHeight;
     private List<String> acceptItemTypes;
     private List<String> fieldList;
     private List<String> requiredFieldList;
-    private Map<String,String> fieldTextMap;
+    private Map<String, String> fieldTextMap;
     private List<SysExtendField> extendList;
 
     /**
@@ -70,12 +72,42 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     public void setAllowContribute(boolean allowContribute) {
         this.allowContribute = allowContribute;
     }
-    
+
     /**
      * @return
      */
     public boolean isAllowAnonymous() {
         return allowAnonymous;
+    }
+
+    /**
+     * @return the coverWidth
+     */
+    public Integer getCoverWidth() {
+        return coverWidth;
+    }
+
+    /**
+     * @param coverWidth
+     *            the coverWidth to set
+     */
+    public void setCoverWidth(Integer coverWidth) {
+        this.coverWidth = coverWidth;
+    }
+
+    /**
+     * @return the coverHeight
+     */
+    public Integer getCoverHeight() {
+        return coverHeight;
+    }
+
+    /**
+     * @param coverHeight
+     *            the coverHeight to set
+     */
+    public void setCoverHeight(Integer coverHeight) {
+        this.coverHeight = coverHeight;
     }
 
     /**
@@ -86,7 +118,8 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @param acceptItemTypes the acceptItemTypes to set
+     * @param acceptItemTypes
+     *            the acceptItemTypes to set
      */
     public void setAcceptItemTypes(List<String> acceptItemTypes) {
         this.acceptItemTypes = acceptItemTypes;
@@ -135,7 +168,8 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @param fieldList the fieldList to set
+     * @param fieldList
+     *            the fieldList to set
      */
     public void setFieldList(List<String> fieldList) {
         this.fieldList = fieldList;
@@ -149,7 +183,8 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @param requiredFieldList the requiredFieldList to set
+     * @param requiredFieldList
+     *            the requiredFieldList to set
      */
     public void setRequiredFieldList(List<String> requiredFieldList) {
         this.requiredFieldList = requiredFieldList;
@@ -163,7 +198,8 @@ public class CmsPlaceMetadata implements java.io.Serializable {
     }
 
     /**
-     * @param fieldTextMap the fieldTextMap to set
+     * @param fieldTextMap
+     *            the fieldTextMap to set
      */
     public void setFieldTextMap(Map<String, String> fieldTextMap) {
         this.fieldTextMap = fieldTextMap;

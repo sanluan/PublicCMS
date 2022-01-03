@@ -350,10 +350,10 @@ h3.contentTitle{font-size:13px;border-bottom:solid 1px #CCC;clear:both;}
 #suggest li.selected{border:1px solid #0a246a;background-color:#b6bdd2;}
 
 /* button */
-a.btnDel, a.btnLook, a.btnAttach{display:block;width:24px;height:28px;overflow:hidden;float:left;text-indent:-1000px;position:relative;margin-right:3px;}
+a.btnDel, a.btnLook, a.btnAttach, a.view{display:block;width:24px;height:28px;overflow:hidden;float:left;text-indent:-1000px;position:relative;margin-right:3px;}
 .center a.btnDel, .center a.btnLook, .center a.btnAttach,
 .right a.btnDel, .right a.btnLook, .right a.btnAttach{display:inline-block;float:none;}
-a.btnLook:before,a.btnDel:before,a.btnAttach:before{font-size:20px;line-height:28px;position:absolute;top:0;left:3px;text-indent:0;}
+a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px;line-height:28px;position:absolute;top:0;left:3px;text-indent:0;text-decoration:none}
 
 .sortDragPlaceholder{border:1px dashed #ccc;}
 #printBox{display:none;}

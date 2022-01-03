@@ -93,6 +93,8 @@
                     <label><@t.page 'text'/>:</label>
                     <input name="fieldTextMap[cover]" type="text" maxlength="20" size="10" value="${(a.fieldTextMap['cover'])!t.pageMessage('cover')}"/>
                     <label><input name="requiredFieldList" type="checkbox" value="cover"/><@t.page 'required'/></label>
+                    <label><@t.page 'width'/></label><input name="coverWidth" type="number" size="5" value="${(a.coverWidth)!}"/>
+                    <label><@t.page 'height'/></label><input name="coverHeight" type="number" size="5" value="${(a.coverHeight)!}"/>
                 </dd>
             </dl>
         </fieldset>
