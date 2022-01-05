@@ -124,22 +124,22 @@
             </#if>
             <#break>
         <#case 'content'>
-            <@_content id=value><#local content=object/></@_content>
+            <@_content id=value><#local tempContent=object/></@_content>
             <#if 'view'=type>
-                ${(value)!}:${(content.title)!}
+                ${(value)!}:${(tempContent.title)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name="${name}[${index}].title" readonly="readonly" size="30" value="${(content.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${name}[${index}].title" readonly="readonly" size="30" value="${(tempContent.title)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="cmsContent/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'content.select'/></a>
             </#if>
             <#break>
         <#case 'category'>
-            <@_category id=value><#local category=object/></@_category>
+            <@_category id=value><#local tempCategory=object/></@_category>
             <#if 'view'=type>
-                ${(value)!}:${(category.name)!}
+                ${(value)!}:${(tempCategory=object.name)!}
             <#else>
                 <input name="${inputName}" value="${(value)!}" type="hidden"/>
-                <input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(category.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
+                <input name="${name}[${index}].categoryName" readonly="readonly" size="30" value="${(tempCategory=object.name)!}" type="text"<#if 'customform'!=type> class="<#if extend.required> required</#if>"</#if>/>
                 <a class="btnLook" href="cmsCategory/lookup.html?field=value" lookupGroup="${name}[${index}]" width="1000" height="500"><@t.page 'category.select'/></a>
             </#if>
             <#break>

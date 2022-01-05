@@ -154,6 +154,8 @@ public class ContentBatchImport {
             }
             EntityUtils.consume(entity);
         } catch (IOException e) {
+            System.out.println(e.getMessage());
+            return getUrl(url) ;
         }
         return fileName;
 
@@ -209,7 +211,7 @@ public class ContentBatchImport {
                     } else if (!lastProduct.getBaseAddress().contains(getCellValue(row.getCell(17)))) {
                         lastProduct.setBaseAddress(lastProduct.getBaseAddress() + "," + getCellValue(row.getCell(17)));
                     }
-                    String images = getCellValue(row.getCell(2));
+                    String images = getCellValue(row.getCell(9));
                     if (CommonUtils.notEmpty(images)) {
                         for (String temp : images.split(",")) {
                             lastProduct.getImages().add(temp.replace("[", "").replace("]", "").replace("\"", ""));
@@ -239,7 +241,10 @@ public class ContentBatchImport {
                     } else if (!p.getBaseAddress().contains(getCellValue(row.getCell(17)))) {
                         p.setBaseAddress(p.getBaseAddress() + "," + getCellValue(row.getCell(17)));
                     }
-                    String images = getCellValue(row.getCell(2));
+                    String images = getCellValue(row.getCell(9));
+                    if(p.getName().equals("西林红茶")) {
+                        System.out.println(images);
+                    }
                     if (CommonUtils.notEmpty(images)) {
                         for (String temp : images.split(",")) {
                             p.getImages().add(temp.replace("[", "").replace("]", "").replace("\"", ""));
