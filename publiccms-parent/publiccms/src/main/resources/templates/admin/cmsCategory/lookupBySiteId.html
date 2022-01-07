@@ -22,18 +22,22 @@
                 <li _src="cmsCategory/lookupBySiteId?siteId=${site.parentId}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
                     <a href="javascript:;" class="exclude-translate"><@_sysSite id=site.parentId>${object.name!}</@_sysSite></a>
                 </li>
+                <@_sysSiteList parentId=site.parentId pageSize=500>
+                    <#list page.list as a>
+                        <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
+                            <a href="javascript:;" class="exclude-translate">${a.name!}<#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></a>
+                        </li>
+                    </#list>
+                </@_sysSiteList>
             <#else>
-                <li _src="cmsCategory/lookupBySiteId?siteId=${site.id}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
-                    <a href="javascript:;" class="exclude-translate">${site.name!}[<@t.page 'site.current_site'/>]</a>
-                </li>
+                <@_sysSiteList pageSize=500>
+                    <#list page.list as a>
+                        <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
+                            <a href="javascript:;" class="exclude-translate">${a.name!}<#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></a>
+                        </li>
+                    </#list>
+                </@_sysSiteList>
             </#if>
-            <@_sysSiteList parentId=site.parentId!site.id name=name pageIndex=pageNum pageSize=numPerPage>
-                <#list page.list as a>
-                    <li _src="cmsCategory/lookupBySiteId?siteId=${a.id}&currentCategoryId=${currentCategoryId!}&modelId=${modelId!}&field=${field!'categoryId'}">
-                        <a href="javascript:;" class="exclude-translate">${a.name!}<#if site.id=a.id>[<@t.page 'site.current_site'/>]</#if></a>
-                    </li>
-                </#list>
-            </@_sysSiteList>
         </ul>
     </div>
     <div class="formBar">
