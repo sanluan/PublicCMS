@@ -181,6 +181,9 @@ public class LogVisitDao extends BaseDao<LogVisit> {
         if (null == entity.getCreateDate()) {
             entity.setCreateDate(CommonUtils.getDate());
         }
+        if (CommonUtils.notEmpty(entity.getSessionId()) && entity.getSessionId().length() > 50) {
+            entity.setSessionId(entity.getSessionId().substring(0, 50));
+        }
         if (CommonUtils.notEmpty(entity.getTitle()) && entity.getTitle().length() > 255) {
             entity.setTitle(entity.getTitle().substring(0, 255));
         }

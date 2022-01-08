@@ -36,6 +36,9 @@ public class CmsFacetSearchDirective extends AbstractTemplateDirective {
         String[] dictionaryValues = handler.getStringArray("dictionaryValues");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(word)) {
+            if (word.length() > 200) {
+                word = word.substring(0, 200);
+            }
             statisticsComponent.search(site.getId(), word);
         }
         if (CommonUtils.notEmpty(tagIds)) {
