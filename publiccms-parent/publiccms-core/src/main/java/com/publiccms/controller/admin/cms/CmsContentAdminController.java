@@ -808,7 +808,7 @@ public class CmsContentAdminController {
                             CmsContentService.STATUS_PEND);
                     long userId = ConfigComponent.getLong(config.get(SiteConfigComponent.CONFIG_DEFAULT_CONTENT_USER), 0);
                     if (0 != userId) {
-                        templateComponent.initContentUrl(site, entity);
+                        TemplateComponent.initContentUrl(site, entity);
                         CmsContent content = service.copy(site, entity, category, status, userId);
                         if (null != content) {
                             templateComponent.createContentFile(site, service.getEntity(content.getId()), category, null);

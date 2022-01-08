@@ -32,8 +32,8 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
      */
     private final static String VERSION_20170708 = "V2017.0708", VERSION_20180210 = "V4.0.20180210",
             VERSION_180707 = "V4.0.180707", VERSION_180825 = "V4.0.180825", VERSION_181024 = "V4.0.181024",
-            VERSION_190312 = "V4.0.190312", VERSION_202004 = "V4.0.202004", VERSION_202011 = "V4.0.202011",
-            VERSION_202107 = "V4.0.202107";
+            VERSION_190312 = "V4.0.190312", VERSION_2019 = "V2019", VERSION_202004 = "V4.0.202004",
+            VERSION_202011 = "V4.0.202011", VERSION_202107 = "V4.0.202107";
     /**
     *
     */
@@ -42,7 +42,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
      *
      */
     private final static List<String> VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210, VERSION_180707,
-            VERSION_180825, VERSION_181024, VERSION_190312, VERSION_202004, VERSION_202011);
+            VERSION_180825, VERSION_181024, VERSION_190312, VERSION_2019, VERSION_202004, VERSION_202011);
 
     /**
      * @throws SQLException
@@ -62,6 +62,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
             runScript(stringWriter, connection, VERSION_180825, VERSION_180825);
         case VERSION_181024:
             runScript(stringWriter, connection, VERSION_181024, VERSION_190312);
+        case VERSION_2019:
         case VERSION_190312:
             runScript(stringWriter, connection, VERSION_190312, VERSION_202004);
         case VERSION_202004:
