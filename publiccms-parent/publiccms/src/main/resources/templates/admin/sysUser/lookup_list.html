@@ -79,7 +79,7 @@
                     <div class="box">
                         <#if a.cover?has_content>
                             <div class="thumbnail">
-                                <img src="${(site.sitePath+a.cover)!}"/>
+                                <img src="${getAbsoluteUrl(site.sitePath,a.cover)!}"/>
                             </div>
                         </#if>
                         <p class="exclude-translate">${(a.nickName)!} ${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>

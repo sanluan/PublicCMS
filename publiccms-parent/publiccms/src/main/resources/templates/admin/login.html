@@ -7,7 +7,7 @@
 </head>
 <body>
 <div class="login_body">
-    <div class="login_body_left"><img src="<#if siteAttribute.square_logo?has_content>${site.sitePath+siteAttribute.square_logo}<#else>${base}/resource/square_logo.png</#if>"/></div>
+    <div class="login_body_left"><img src="<#if siteAttribute.square_logo?has_content>${getAbsoluteUrl(site.sitePath,siteAttribute.square_logo)}<#else>${base}/resource/square_logo.png</#if>"/></div>
     <div class="login_form clearfix">
         <form action="${base+adminContextPath}/login" method="post" onsubmit="encode()">
             <p class="logo">
