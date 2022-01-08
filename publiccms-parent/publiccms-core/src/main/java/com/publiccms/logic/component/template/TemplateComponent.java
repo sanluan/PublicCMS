@@ -224,7 +224,7 @@ public class TemplateComponent implements Cache {
         if (CommonUtils.empty(url) || url.contains("://") || url.startsWith("//") || url.startsWith("#")) {
             return url;
         } else {
-            return hasStatic ? getUrl(site.getSitePath(), url) + url : getUrl(site.getDynamicPath(), url);
+            return hasStatic ? getUrl(site.getSitePath(), url) : getUrl(site.getDynamicPath(), url);
         }
     }
 
