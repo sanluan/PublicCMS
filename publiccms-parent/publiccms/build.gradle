@@ -5,9 +5,6 @@ group = 'com.publiccms'
 
 dependencies {
     compile project(':publiccms-core')
-    compile project(':publiccms-oauth')
-	compile project(':publiccms-redis')
-	compile project(':publiccms-analyzer')
     testCompile(
         // http://mvnrepository.com/artifact/junit/junit
         "junit:junit:4.12",

@@ -1,7 +1,10 @@
 buildscript {
 	repositories {
-		jcenter()
 		mavenCentral()
+		maven {
+            name = "aliyun"
+            url "https://maven.aliyun.com/repository/public/"
+        }
 	}
 	/**
 	dependencies {
@@ -19,28 +22,28 @@ subprojects{
     apply plugin: "eclipse-wtp"
 	
 	group = 'com.publiccms'
-	version = 'V4.0.190312'
+	version = 'V2019'
 	
 	test.enabled = false
 	
     ext {
         // http://mvnrepository.com/artifact/org.springframework/spring-core
         // http://projects.spring.io/spring-framework/
-        springVersion = "5.0.12.RELEASE"
+        springVersion = "5.0.13.RELEASE"
         // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
         // https://projects.spring.io/spring-boot/
-        springBootVersion = "2.0.8.RELEASE"
+        springBootVersion = "2.0.9.RELEASE"
         // http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient
         // http://hc.apache.org/downloads.cgi
         httpclientVersion = "4.5.7"
         // http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core
-        jacksonVersion = "2.9.9"
+        jacksonVersion = "2.12.6"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-core
         // http://hibernate.org/orm/downloads/
-        hibernateVersion = "5.3.7.Final"
+        hibernateVersion = "5.3.23.Final"
         // http://mvnrepository.com/artifact/org.hibernate/hibernate-search
         // http://hibernate.org/search/downloads/
-        hibernateSearchVersion = "5.10.5.Final"
+        hibernateSearchVersion = "5.10.12.Final"
         // https://mvnrepository.com/artifact/org.ehcache/ehcache
         ehcacheVersion = "3.6.3"
         // http://mvnrepository.com/artifact/org.freemarker/freemarker
@@ -68,7 +71,7 @@ subprojects{
         // http://mvnrepository.com/artifact/org.apache.commons/commons-lang3
         langVersion = "3.8.1"
         // https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core
-        log4jVersion = "2.11.2"
+        log4jVersion = "2.17.1"
     }
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
@@ -78,7 +81,6 @@ subprojects{
 
     repositories {
 		mavenLocal()
-		// jcenter()
         mavenCentral()
     }
     eclipse {

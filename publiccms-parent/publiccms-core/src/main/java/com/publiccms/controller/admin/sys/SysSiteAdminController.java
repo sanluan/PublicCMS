@@ -1,10 +1,10 @@
 package com.publiccms.controller.admin.sys;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,21 +12,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.annotation.Csrf;
-import com.publiccms.common.constants.CmsVersion;
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.JsonUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.common.tools.UserPasswordUtils;
 import com.publiccms.entities.log.LogOperate;
-import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDomain;
 import com.publiccms.entities.sys.SysRole;
@@ -123,9 +118,7 @@ public class SysSiteAdminController {
                         "update.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
-            if (ControllerUtils.verifyCustom("needAuthorizationEdition", !CmsVersion.isAuthorizationEdition(), model)
-                    || ControllerUtils.verifyCustom("unauthorizedDomain", !CmsVersion.verifyDomain(domain), model)
-                    || ControllerUtils.verifyNotEmpty("userName", userName, model)
+            if (ControllerUtils.verifyNotEmpty("userName", userName, model)
                     || ControllerUtils.verifyNotEmpty("password", password, model)
                     || ControllerUtils.verifyHasExist("domain", domainService.getEntity(domain), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
@@ -225,35 +218,6 @@ public class SysSiteAdminController {
                     "execsql.site", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(model)));
         }
         return CommonConstants.TEMPLATE_DONE;
-    }
-
-    /**
-     * @param site
-     * @param admin
-     * @param file
-     * @param request
-     * @param model
-     * @return view name
-     */
-    @RequestMapping(value = "doUploadLicense", method = RequestMethod.POST)
-    @Csrf
-    public String upload(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, MultipartFile file,
-            HttpServletRequest request, ModelMap model) {
-        if (ControllerUtils.verifyCustom("noright", !siteComponent.isMaster(site.getId()), model)) {
-            return CommonConstants.TEMPLATE_ERROR;
-        }
-        if (null != file && !file.isEmpty()) {
-            try {
-                CmsFileUtils.upload(file, siteComponent.getRootPath() + CommonConstants.LICENSE_FILENAME);
-                logUploadService.save(new LogUpload(site.getId(), admin.getId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                        "license.dat", CmsFileUtils.FILE_TYPE_OTHER, file.getSize(), RequestUtils.getIpAddress(request),
-                        CommonUtils.getDate(), CommonConstants.LICENSE_FILENAME));
-                return CommonConstants.TEMPLATE_DONE;
-            } catch (IllegalStateException | IOException e) {
-                log.error(e.getMessage(), e);
-            }
-        }
-        return CommonConstants.TEMPLATE_ERROR;
     }
 
     /**

@@ -30,13 +30,11 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
     /**
      *
      */
-    private final static String VERSION_20170708 = "V2017.0708", VERSION_20180210 = "V4.0.20180210",
-            VERSION_180707 = "V4.0.180707", VERSION_180825 = "V4.0.180825", VERSION_181024 = "V4.0.181024";
+    private final static String VERSION_20170708 = "V2017.0708";
     /**
      *
      */
-    private final static List<String> VERSION_LIST = Arrays
-            .asList(new String[] { VERSION_20170708, VERSION_20180210, VERSION_180707, VERSION_180825, VERSION_181024 });
+    private final static List<String> VERSION_LIST = Arrays.asList(new String[] { VERSION_20170708 });
 
     public CmsUpgrader(Properties config) {
         super(config);
@@ -50,18 +48,8 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
     public void update(StringWriter stringWriter, Connection connection, String fromVersion) throws SQLException, IOException {
         switch (fromVersion) {
         case VERSION_20170708:
-            runScript(stringWriter, connection, VERSION_20170708, VERSION_20180210);
-        case VERSION_20180210:
-            runScript(stringWriter, connection, VERSION_20180210, VERSION_180707);
-        case VERSION_180707:
             updateMetadata(stringWriter, connection);
-            runScript(stringWriter, connection, VERSION_180707, VERSION_180825);
-            break;
-        case VERSION_180825:
-            runScript(stringWriter, connection, VERSION_180825, VERSION_180825);
-            break;
-        case VERSION_181024:
-            runScript(stringWriter, connection, VERSION_181024, CmsVersion.getVersion());
+            runScript(stringWriter, connection, VERSION_20170708, CmsVersion.getVersion());
             break;
         }
     }

@@ -25,7 +25,6 @@ dependencies {
 
         "org.ehcache:ehcache:${ehcacheVersion}",
 
-        "org.apache.lucene:lucene-analyzers-smartcn:${luceneVersion}",
         "org.apache.lucene:lucene-backward-codecs:${luceneVersion}",
 
         "com.fasterxml.jackson.core:jackson-annotations:${jacksonVersion}",

@@ -207,6 +207,13 @@ public class LoginController {
             entity.setSalt(salt);
             entity.setLastLoginIp(ip);
             entity.setSiteId(site.getId());
+            entity.setDisabled(false);
+            entity.setRoles(null);
+            entity.setSuperuserAccess(false);
+            entity.setOwnsAllContent(false);
+            entity.setLoginCount(0);
+            entity.setDeptId(null);
+            service.save(entity);
             service.save(entity);
 
             if (null != clientId && null != uuid) {

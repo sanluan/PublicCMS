@@ -1,40 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.publiccms</groupId>
     <artifactId>publiccms-parent</artifactId>
     <packaging>pom</packaging>
-    <version>V4.0.190312</version>
+    <version>${version.publiccms}</version>
     <modules>
         <module>publiccms</module>
         <module>publiccms-core</module>
         <module>publiccms-common</module>
-        <module>publiccms-oauth</module>
-        <module>publiccms-redis</module>
-        <module>publiccms-j2cache</module>
-        <module>publiccms-analyzer</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+        <version.publiccms>V2019</version.publiccms>
         <!-- http://mvnrepository.com/artifact/org.springframework/spring-core -->
         <!-- http://projects.spring.io/spring-framework/ -->
-        <version.spring>5.0.12.RELEASE</version.spring>
+        <version.spring>5.0.13.RELEASE</version.spring>
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
         <!-- https://projects.spring.io/spring-boot/ -->
-        <version.springBoot>2.0.8.RELEASE</version.springBoot>
+        <version.springBoot>2.0.9.RELEASE</version.springBoot>
         <!-- http://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
         <!-- http://hc.apache.org/downloads.cgi -->
         <version.httpclient>4.5.7</version.httpclient>
         <!-- http://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
-        <version.jackson>2.9.9</version.jackson>
+        <version.jackson>2.12.6</version.jackson>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
         <!-- http://hibernate.org/orm/releases/ -->
-        <version.hibernate>5.3.7.Final</version.hibernate>
+        <version.hibernate>5.3.23.Final</version.hibernate>
         <!-- http://mvnrepository.com/artifact/org.hibernate/hibernate-search-orm -->
         <!-- http://hibernate.org/search/releases/ -->
-        <version.hibernateSearch>5.10.5.Final</version.hibernateSearch>
+        <version.hibernateSearch>5.10.12.Final</version.hibernateSearch>
         <!-- https://mvnrepository.com/artifact/org.ehcache/ehcache -->
         <version.ehcache>3.6.3</version.ehcache>
         <!-- http://mvnrepository.com/artifact/org.freemarker/freemarker -->
@@ -62,10 +60,20 @@
         <!-- http://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
         <version.lang>3.8.1</version.lang>
         <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
-        <version.log4j>2.11.2</version.log4j>
+        <version.log4j>2.17.1</version.log4j>
     </properties>
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-common</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.publiccms</groupId>
+                <artifactId>publiccms-core</artifactId>
+                <version>${version.publiccms}</version>
+            </dependency>
             <dependency>
                 <groupId>commons-fileupload</groupId>
                 <artifactId>commons-fileupload</artifactId>
@@ -245,6 +253,10 @@
                     <exclusion>
                         <groupId>com.mchange</groupId>
                         <artifactId>c3p0</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>com.zaxxer</groupId>
+                        <artifactId>HikariCP-java7</artifactId>
                     </exclusion>
                 </exclusions>
             </dependency>

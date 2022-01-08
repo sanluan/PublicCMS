@@ -2,10 +2,6 @@ package com.publiccms.common.constants;
 
 import java.util.UUID;
 
-import com.publiccms.common.copyright.CmsCopyright;
-import com.publiccms.common.copyright.Copyright;
-import com.publiccms.common.copyright.License;
-
 /**
  *
  * CmsVersion
@@ -15,35 +11,12 @@ public class CmsVersion {
     private static final String clusterId = UUID.randomUUID().toString();
     private static boolean master = false;
     private static boolean initialized = false;
-    private static Copyright copyright = new CmsCopyright();
 
     /**
      * @return version
      */
     public static final String getVersion() {
-        return "V4.0.190312";
-    }
-
-    /**
-     * @return whether the authorization edition
-     */
-    public static boolean isAuthorizationEdition() {
-        return copyright.verify(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME);
-    }
-
-    /**
-     * @param domain
-     * @return whether the domain authorized
-     */
-    public static boolean verifyDomain(String domain) {
-        return copyright.verify(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME, domain);
-    }
-
-    /**
-     * @return license
-     */
-    public static License getLicense() {
-        return copyright.getLicense(CommonConstants.CMS_FILEPATH + CommonConstants.LICENSE_FILENAME);
+        return "V2019";
     }
 
     /**

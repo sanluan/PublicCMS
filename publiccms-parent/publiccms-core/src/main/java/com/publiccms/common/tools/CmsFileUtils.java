@@ -20,8 +20,6 @@ import org.apache.commons.io.FileUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.publiccms.common.constants.CommonConstants;
-import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.common.tools.DateFormatUtils;
 import com.publiccms.logic.component.template.TemplateComponent;
 
 import net.coobird.thumbnailator.Thumbnails;
