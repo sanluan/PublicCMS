@@ -420,7 +420,7 @@ a.btnLook:before,a.btnDel:before,a.btnAttach:before,a.view:before{font-size:20px
 .upload-preview .thumbnail .del-icon, .upload-wrap .del-icon { content:' '; display: block; position:absolute; top: 5px; right:5px; width:20px; height:20px; border-radius: 3px; opacity: 0.4; filter:alpha(opacity=40); background:url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+CiAgICA8cGF0aCBzdHlsZT0idGV4dC1pbmRlbnQ6MDt0ZXh0LWFsaWduOnN0YXJ0O2xpbmUtaGVpZ2h0Om5vcm1hbDt0ZXh0LXRyYW5zZm9ybTpub25lO2Jsb2NrLXByb2dyZXNzaW9uOnRiOy1pbmtzY2FwZS1mb250LXNwZWNpZmljYXRpb246Qml0c3RyZWFtIFZlcmEgU2FucyIgZD0iTSA3LjIxODc1IDUuNzgxMjUgTCA1Ljc4MTI1IDcuMjE4NzUgTCAxNC41NjI1IDE2IEwgNS43ODEyNSAyNC43ODEyNSBMIDcuMjE4NzUgMjYuMjE4NzUgTCAxNiAxNy40Mzc1IEwgMjQuNzgxMjUgMjYuMjE4NzUgTCAyNi4yMTg3NSAyNC43ODEyNSBMIDE3LjQzNzUgMTYgTCAyNi4yMTg3NSA3LjIxODc1IEwgMjQuNzgxMjUgNS43ODEyNSBMIDE2IDE0LjU2MjUgTCA3LjIxODc1IDUuNzgxMjUgeiIgY29sb3I9IiMwMDAiIG92ZXJmbG93PSJ2aXNpYmxlIiBmb250LWZhbWlseT0iQml0c3RyZWFtIFZlcmEgU2FucyI+PC9wYXRoPgo8L3N2Zz4=') center center no-repeat #fff;}
 .upload-preview .thumbnail .del-icon:hover, .upload-wrap .del-icon:hover,.upload-wrap .thumbnail .edit-icon:hover {opacity: 0.7; filter:alpha(opacity=70);}
 
-.image-list img{max-width:100%;height:120px;}
+.image-list img{max-width:100%;height:120px;background-image: url(../images/png-bg.png);}
 .image-list{width:120px;height:150px;position:relative;}
 .image-list .edit-icon{right:5px;}
 .image-list .thumb:before{font-size:100px;}
