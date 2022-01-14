@@ -22,9 +22,13 @@
                 <a class="btnLook" href="sysDept/lookup.html" lookupGroup=""><@t.page 'dept.select'/></a>
             </dd>
         </dl>
-        <dl class="nowrap">
+        <dl>
             <dt><@t.page 'name'/>:</dt>
-            <dd><input class="required" name="name" type="text" size="30" value="${(a.name)!}"/></dd>
+            <dd><input class="required" name="name" type="text" maxlength="50" size="30" value="${(a.name)!}"/></dd>
+        </dl>
+        <dl>
+            <dt><@t.page 'code'/>:</dt>
+            <dd><input class="required" name="code" remote="sysDept/virify<#if id?has_content>?oldCode=${(a.code)!}</#if>" data-msg-remote="<@t.message 'verify.hasExist.code'/>" type="text" maxlength="50" size="20" value="${(a.code)!}"/></dd>
         </dl>
         <dl class="nowrap">
             <dt><@t.page 'description'/>:</dt>

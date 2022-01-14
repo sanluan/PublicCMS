@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
@@ -220,6 +221,25 @@ public class SysDeptAdminController {
                             "save.user", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param request
+     * @param code
+     * @param oldCode
+     * @return view name
+     */
+    @RequestMapping("virify")
+    @ResponseBody
+    public boolean virify(@RequestAttribute SysSite site, HttpServletRequest request, String code, String oldCode) {
+        if (CommonUtils.notEmpty(code)) {
+            if (CommonUtils.notEmpty(oldCode) && !code.equals(oldCode) && null != service.getEntityByCode(site.getId(), code)
+                    || CommonUtils.empty(oldCode) && null != service.getEntityByCode(site.getId(), code)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

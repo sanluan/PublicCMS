@@ -216,3 +216,5 @@ ALTER TABLE `log_upload` MODIFY COLUMN `file_size` bigint(20) NULL COMMENT '文�
 ALTER TABLE `sys_extend_field`
     ADD COLUMN `width` int(11) default NULL COMMENT '高度' AFTER `maxlength`,
     ADD COLUMN `height` int(11) default NULL COMMENT '宽度' AFTER `width`;
+-- 2022-0114 --
+UPDATE `sys_module` SET `authorized_url` = 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list,sysDept/save,sysDept/virify' WHERE `id` ='dept_add';

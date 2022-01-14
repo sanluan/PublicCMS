@@ -889,7 +889,7 @@ INSERT INTO `sys_module` VALUES ('content_vote', 'cmsVote/list', NULL, 'icon-tic
 INSERT INTO `sys_module` VALUES ('content_vote_add', 'cmsVote/add', 'cmsVote/save', NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote_delete', NULL, 'cmsVote/delete', NULL, 'content_vote', 0, 0);
 INSERT INTO `sys_module` VALUES ('content_vote_view', 'cmsVote/view', NULL, NULL, 'content_vote', 0, 0);
-INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list,sysDept/save', NULL, 'dept_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('dept_add', 'sysDept/add', 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list,sysDept/save,sysDept/virify', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_delete', NULL, 'sysDept/delete', NULL, 'dept_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dept_list', 'sysDept/list', 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list', 'icon-group', 'user_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('dept_user_list', 'sysDept/userList', 'sysDept/addUser,sysDept/saveUser,sysDept/enableUser,sysDept/disableUser', NULL, 'dept_list', 0, 0);
