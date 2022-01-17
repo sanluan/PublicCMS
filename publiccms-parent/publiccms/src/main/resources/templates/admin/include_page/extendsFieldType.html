@@ -23,7 +23,9 @@ $('.combox_${flag}').on('change',function(){
     }
     if(-1<$.inArray($(this).val(), [<#list sizeEnableTypes as t>'${t}'<#sep>,</#list>])){
         $(this).closest('tr').find('input[name$=height]').show();
+        $(this).closest('tr').find('input[name$=width]').show();
     }else{
+        $(this).closest('tr').find('input[name$=height]').hide();
         $(this).closest('tr').find('input[name$=width]').hide();
     }
 });

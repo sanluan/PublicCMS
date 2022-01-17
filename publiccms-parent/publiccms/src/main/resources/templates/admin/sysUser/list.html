@@ -5,8 +5,6 @@
             <li _src="sysUser/list.html?parentId=${a.id}">
                 <a href="common/user_list.html?deptId=${a.id}" class="exclude-translate" target="ajax" rel="userBox">${a.name!}</a>
             </li>
-        <#else>
-            <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_sysDeptList>
 </ul>

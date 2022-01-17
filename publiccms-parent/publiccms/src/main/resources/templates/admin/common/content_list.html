@@ -22,8 +22,21 @@
         <input name="parentId" type="hidden" value="${(parent.id)!}"/>
         <div class="searchBar">
             <ul class="searchContent">
+                <li>
+                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
+                </li>
                 <li class="width:auto">
                     <#include "../include_page/status.html"/>
+                </li>
+                <li>
+                    <label><@t.page 'publish_date'/>:</label>
+                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
+                    <span>-</span>
+                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
+                </li>
+                <li>
+                    <label><@t.page 'model'/>:</label>
+                    <#include "../include_page/modelId.html"/>
                 </li>
             <#if admin.ownsAllContent>
                 <li>
@@ -35,19 +48,6 @@
                     <#include "../include_page/deptId.html"/>
                 </li>
             </#if>
-                <li>
-                    <label><@t.page 'publish_date'/>:</label>
-                    <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
-                    <span>-</span>
-                    <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
-                </li>
-                <li>
-                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
-                </li>
-                <li>
-                    <label><@t.page 'model'/>:</label>
-                    <#include "../include_page/modelId.html"/>
-                </li>
             </ul>
             <div class="subBar">
                 <ul>

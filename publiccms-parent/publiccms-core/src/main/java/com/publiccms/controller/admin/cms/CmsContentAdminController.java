@@ -567,16 +567,20 @@ public class CmsContentAdminController {
     @Csrf
     public String publish(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Long[] ids, HttpServletRequest request,
             ModelMap model) {
+        boolean flag = false;
         if (CommonUtils.notEmpty(ids)) {
             for (CmsContent entity : service.getEntitys(ids)) {
                 if (!publish(site, entity, admin)) {
-                    ControllerUtils.verifyCustom("static", true, model);
-                    return CommonConstants.TEMPLATE_ERROR;
+                    flag = true;
                 }
             }
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                     LogLoginService.CHANNEL_WEB_MANAGER, "static.content", RequestUtils.getIpAddress(request),
                     CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+            if (flag) {
+                ControllerUtils.verifyCustom("static", true, model);
+                return CommonConstants.TEMPLATE_ERROR;
+            }
         }
         return CommonConstants.TEMPLATE_DONE;
     }

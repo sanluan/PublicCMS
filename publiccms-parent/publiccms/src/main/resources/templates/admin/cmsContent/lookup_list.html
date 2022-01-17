@@ -11,8 +11,8 @@
         <div class="searchBar">
             <ul class="searchContent">
                 <li>
-                    <label><@t.page 'model'/>:</label>
-                    <#include "../include_page/modelId.html"/>
+                    <label><@t.page 'title'/>:</label>
+                    <input type="text" size="40" name="title" value="${title!}" />
                 </li>
                 <li>
                     <label><@t.page 'publish_date'/>:</label>
@@ -21,8 +21,8 @@
                     <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" maxDate="{%y}-%M-{%d+1}" value="${endPublishDate!}" />
                 </li>
                 <li>
-                    <label><@t.page 'title'/>:</label>
-                    <input type="text" size="40" name="title" value="${title!}" />
+                    <label><@t.page 'model'/>:</label>
+                    <#include "../include_page/modelId.html"/>
                 </li>
             </ul>
             <div class="subBar">
