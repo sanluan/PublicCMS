@@ -29,6 +29,7 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
@@ -54,6 +55,8 @@ public class CmsCategoryAdminController {
     private CmsContentService contentService;
     @Autowired
     private TemplateComponent templateComponent;
+    @Autowired
+    private ModelComponent modelComponent;
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
@@ -100,7 +103,8 @@ public class CmsCategoryAdminController {
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "save.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
-        service.saveTagAndAttribute(site.getId(), entity.getId(), attribute, categoryParameters);
+        service.saveTagAndAttribute(site.getId(), entity.getId(), attribute,
+                modelComponent.getCategoryTypeMap(site).get(entity.getTypeId()),categoryParameters);
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {
@@ -191,7 +195,7 @@ public class CmsCategoryAdminController {
      */
     @RequestMapping("changeType")
     @Csrf
-    public String changeType(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, Integer typeId,
+    public String changeType(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, Integer id, String typeId,
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(id)) {
             service.changeType(id, typeId);

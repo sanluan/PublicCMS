@@ -149,7 +149,7 @@ public class CmsContentAdminController {
             category = null;
         }
 
-        CmsModel cmsModel = modelComponent.getMap(site).get(entity.getModelId());
+        CmsModel cmsModel = modelComponent.getModelMap(site).get(entity.getModelId());
         if (ControllerUtils.verifyNotEmpty("category", category, model)
                 || ControllerUtils.verifyNotEmpty("model", cmsModel, model)) {
             return CommonConstants.TEMPLATE_ERROR;
@@ -651,7 +651,7 @@ public class CmsContentAdminController {
                 categoryMap.put(entity.getId(), entity);
             }
         }
-        Map<String, CmsModel> modelMap = modelComponent.getMap(site);
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         Map<Long, CmsContentAttribute> contentAttributeMap = new HashMap<>();
         if (null != pksMap.get("contentIds")) {
             List<Serializable> contentIds = pksMap.get("contentIds");

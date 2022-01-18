@@ -67,21 +67,21 @@ public class CmsModelAdminController {
             entity.getExtendList().sort((e1, e2) -> e1.getSort() - e2.getSort());
         }
         if (CommonUtils.notEmpty(modelId)) {
-            Map<String, CmsModel> modelMap = modelComponent.getMap(site);
+            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             modelMap.remove(modelId);
             modelMap.put(entity.getId(), entity);
-            List<CmsModel> modelList = modelComponent.getList(site, modelId, null, null, null, null);
+            List<CmsModel> modelList = modelComponent.getModelList(site, modelId, null, null, null, null);
             for (CmsModel m : modelList) {
                 m.setParentId(entity.getId());
                 modelMap.put(m.getId(), m);
             }
-            modelComponent.save(site, modelMap);
+            modelComponent.saveModel(site, modelMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "update.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
-            Map<String, CmsModel> modelMap = modelComponent.getMap(site);
+            Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             modelMap.put(entity.getId(), entity);
-            modelComponent.save(site, modelMap);
+            modelComponent.saveModel(site, modelMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.model",
                     RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
@@ -103,15 +103,15 @@ public class CmsModelAdminController {
         if (ControllerUtils.verifyCustom("noright", null != site.getParentId(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        Map<String, CmsModel> modelMap = modelComponent.getMap(site);
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
         CmsModel entity = modelMap.remove(id);
         if (null != entity) {
-            List<CmsModel> modelList = modelComponent.getList(site, entity.getId(), null, null, null, null);
+            List<CmsModel> modelList = modelComponent.getModelList(site, entity.getId(), null, null, null, null);
             for (CmsModel m : modelList) {
                 m.setParentId(null);
                 modelMap.put(m.getId(), m);
             }
-            modelComponent.save(site, modelMap);
+            modelComponent.saveModel(site, modelMap);
             logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                     "delete.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
         }

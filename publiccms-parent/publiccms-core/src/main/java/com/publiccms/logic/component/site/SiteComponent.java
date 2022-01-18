@@ -56,6 +56,10 @@ public class SiteComponent implements Cache {
     /**
      * 
      */
+    public static final String CATEGORY_TYPE_FILE = "categoryType.data";
+    /**
+     * 
+     */
     public static final String CONFIG_FILE = "config.data";
 
     private static final String FILE_NAME_FORMAT_STRING = "yyyy-MM-dd_HH-mm-ssSSSS";
@@ -402,6 +406,14 @@ public class SiteComponent implements Cache {
      */
     public String getModelFilePath(SysSite site) {
         return getWebTemplateFilePath() + getFullTemplatePath(site, MODEL_FILE);
+    }
+    
+    /**
+     * @param site
+     * @return category type file path
+     */
+    public String getCategoryTypeFilePath(SysSite site) {
+        return getWebTemplateFilePath() + getFullTemplatePath(site, CATEGORY_TYPE_FILE);
     }
 
     /**

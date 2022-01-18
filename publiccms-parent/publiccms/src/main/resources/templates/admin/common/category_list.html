@@ -82,7 +82,7 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td><a href="${a.url!}" class="exclude-translate" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('outer_chain')+']',''))!}</td>
+                <td><a href="${a.url!}" class="exclude-translate" target="_blank">${(a.name)!}</a>${(a.onlyUrl?then('['+t.pageMessage('url')+']',''))!}</td>
                 <td class="exclude-translate">${a.code!}</td>
                 <td class="exclude-translate">${(typeMap[a.typeId?string].name)!}</td>
                 <td class="exclude-translate">${(parentMap[a.parentId?string].name)!}</td>

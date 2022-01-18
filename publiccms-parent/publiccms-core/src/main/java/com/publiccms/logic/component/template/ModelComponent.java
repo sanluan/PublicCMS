@@ -18,6 +18,7 @@ import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.logic.component.site.SiteComponent;
+import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.entities.CmsModel;
 
 /**
@@ -29,6 +30,7 @@ import com.publiccms.views.pojo.entities.CmsModel;
 public class ModelComponent implements SiteCache {
 
     private CacheEntity<Short, Map<String, CmsModel>> modelCache;
+    private CacheEntity<Short, Map<String, CmsCategoryType>> typeCache;
     /**
      *
      */
@@ -45,10 +47,10 @@ public class ModelComponent implements SiteCache {
      * @param hasFiles
      * @return models list
      */
-    public List<CmsModel> getList(SysSite site, String parentId, Boolean hasChild, Boolean onlyUrl, Boolean hasImages,
+    public List<CmsModel> getModelList(SysSite site, String parentId, Boolean hasChild, Boolean onlyUrl, Boolean hasImages,
             Boolean hasFiles) {
         List<CmsModel> modelList = new ArrayList<>();
-        Map<String, CmsModel> map = getMap(site);
+        Map<String, CmsModel> map = getModelMap(site);
         for (CmsModel model : map.values()) {
             if ((CommonUtils.empty(parentId) && CommonUtils.empty(model.getParentId())
                     || CommonUtils.notEmpty(parentId) && parentId.equals(model.getParentId()))
@@ -64,9 +66,18 @@ public class ModelComponent implements SiteCache {
 
     /**
      * @param site
+     * @return category types list
+     */
+    public List<CmsCategoryType> getCategoryTypeList(SysSite site) {
+        Map<String, CmsCategoryType> map = getCategoryTypeMap(site);
+        return new ArrayList<>(map.values());
+    }
+
+    /**
+     * @param site
      * @return model map
      */
-    public Map<String, CmsModel> getMap(SysSite site) {
+    public Map<String, CmsModel> getModelMap(SysSite site) {
         Map<String, CmsModel> modelMap = modelCache.get(site.getId());
         if (null == modelMap) {
             File file = new File(siteComponent.getModelFilePath(site));
@@ -86,13 +97,36 @@ public class ModelComponent implements SiteCache {
     }
 
     /**
+     * @param site
+     * @return model map
+     */
+    public Map<String, CmsCategoryType> getCategoryTypeMap(SysSite site) {
+        Map<String, CmsCategoryType> typeMap = typeCache.get(site.getId());
+        if (null == typeMap) {
+            File file = new File(siteComponent.getCategoryTypeFilePath(site));
+            if (CommonUtils.notEmpty(file)) {
+                try {
+                    typeMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper.getTypeFactory()
+                            .constructMapLikeType(HashMap.class, String.class, CmsCategoryType.class));
+                } catch (IOException | ClassCastException e) {
+                    typeMap = new HashMap<>();
+                }
+            } else {
+                typeMap = new HashMap<>();
+            }
+            typeCache.put(site.getId(), typeMap);
+        }
+        return typeMap;
+    }
+
+    /**
      * 保存模型
      *
      * @param site
      * @param modelMap
      * @return whether the save is successful
      */
-    public boolean save(SysSite site, Map<String, CmsModel> modelMap) {
+    public boolean saveModel(SysSite site, Map<String, CmsModel> modelMap) {
         File file = new File(siteComponent.getModelFilePath(site));
         if (CommonUtils.empty(file)) {
             file.getParentFile().mkdirs();
@@ -102,18 +136,41 @@ public class ModelComponent implements SiteCache {
         } catch (IOException e) {
             return false;
         }
-        clear(site.getId());
+        modelCache.remove(site.getId());
+        return true;
+    }
+
+    /**
+     * 保存模型
+     *
+     * @param site
+     * @param typeMap
+     * @return whether the save is successful
+     */
+    public boolean saveCategoryType(SysSite site, Map<String, CmsCategoryType> typeMap) {
+        File file = new File(siteComponent.getCategoryTypeFilePath(site));
+        if (CommonUtils.empty(file)) {
+            file.getParentFile().mkdirs();
+        }
+        try (FileOutputStream outputStream = new FileOutputStream(file);) {
+            CommonConstants.objectMapper.writeValue(file, typeMap);
+        } catch (IOException e) {
+            return false;
+        }
+        typeCache.remove(site.getId());
         return true;
     }
 
     @Override
     public void clear() {
         modelCache.clear();
+        typeCache.clear();
     }
 
     @Override
     public void clear(short siteId) {
         modelCache.remove(siteId);
+        typeCache.remove(siteId);
     }
 
     /**
@@ -126,5 +183,6 @@ public class ModelComponent implements SiteCache {
     public void initCache(CacheEntityFactory cacheEntityFactory)
             throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         modelCache = cacheEntityFactory.createCacheEntity("cmsModel");
+        typeCache = cacheEntityFactory.createCacheEntity("cmsCategoryType");
     }
 }

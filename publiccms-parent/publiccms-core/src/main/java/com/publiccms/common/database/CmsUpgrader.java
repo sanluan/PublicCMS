@@ -68,7 +68,10 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
         case VERSION_202004:
             runScript(stringWriter, connection, VERSION_202004, VERSION_202011);
         case VERSION_202011:
-            runScript(stringWriter, connection, VERSION_202011, CmsVersion.getVersion());
+            runScript(stringWriter, connection, VERSION_202011, VERSION_202107);
+        case VERSION_202107:
+            updateCategoryType(stringWriter, connection);
+            runScript(stringWriter, connection, VERSION_202107, CmsVersion.getVersion());
         }
     }
 

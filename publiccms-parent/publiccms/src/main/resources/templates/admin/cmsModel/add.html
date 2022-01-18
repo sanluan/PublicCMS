@@ -11,7 +11,9 @@
         <#if site.parentId?has_content>
             <li><button type="button" class="buttonDisabled"><@t.page 'site.parent_maintain'/></button></li>
         <#else>
+        <@_sysAuthorized roleIds=admin.roles url='cmsModel/save'>
             <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+        </@_sysAuthorized>
         </#if>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>
@@ -222,10 +224,10 @@
                 </#if>
             </#if>
         </script>
-<#assign contentExtendList=(a.extendList)![]>
         <fieldset>
             <legend><@t.page 'content.extend_field'/>(<@t.page 'extend_field.invalid'/>:source,sourceUrl,text)(<@t.page 'metadata.default_value_description'/>)</legend>
             <#include "../include_page/extends.html"/>
+            <#assign contentExtendList=(a.extendList)![]>
             <@extends 'extendList' contentExtendList true/>
         </fieldset>
     </div>

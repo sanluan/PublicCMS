@@ -87,6 +87,8 @@ public class SysExtendField implements java.io.Serializable {
         this.required = required;
         this.searchable = searchable;
         this.maxlength = maxlength;
+        this.width = width;
+        this.height = height;
         this.name = name;
         this.description = description;
         this.inputType = inputType;

@@ -19,12 +19,11 @@ import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryAttribute;
-import com.publiccms.entities.cms.CmsCategoryType;
 import com.publiccms.entities.sys.SysExtend;
-import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.logic.dao.cms.CmsCategoryDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
+import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.model.CmsCategoryModelParameters;
 import com.publiccms.views.pojo.model.CmsCategoryParameters;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
@@ -43,8 +42,6 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
     private CmsCategoryAttributeService attributeService;
     @Autowired
     private CmsCategoryModelService categoryModelService;
-    @Autowired
-    private CmsCategoryTypeService categoryTypeService;
     @Autowired
     private SysExtendService extendService;
     @Autowired
@@ -65,9 +62,10 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param siteId
      * @param id
      * @param attribute
+     * @param categoryType
      * @param categoryParameters
      */
-    public void saveTagAndAttribute(Short siteId, Integer id, CmsCategoryAttribute attribute,
+    public void saveTagAndAttribute(Short siteId, Integer id, CmsCategoryAttribute attribute, CmsCategoryType categoryType,
             CmsCategoryParameters categoryParameters) {
         if (CommonUtils.notEmpty(id)) {
             if (CommonUtils.notEmpty(categoryParameters.getCategoryModelList())) {
@@ -94,11 +92,9 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
                 extendFieldService.update(entity.getExtendId(), categoryParameters.getContentExtends());// 修改或增加内容扩展字段
             }
 
-            CmsCategoryType categoryType = categoryTypeService.getEntity(entity.getTypeId());
-            if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendId())) {
-                List<SysExtendField> categoryTypeExtendList = extendFieldService.getList(categoryType.getExtendId(), null, null);
+            if (null != categoryType && CommonUtils.notEmpty(categoryType.getExtendList())) {
                 Map<String, String> map = ExtendUtils.getSysExtentDataMap(categoryParameters.getExtendDataList(),
-                        categoryTypeExtendList);
+                        categoryType.getExtendList());
                 attribute.setData(ExtendUtils.getExtendString(map));
             } else {
                 attribute.setData(null);
@@ -153,7 +149,7 @@ public class CmsCategoryService extends BaseService<CmsCategory> {
      * @param id
      * @param typeId
      */
-    public void changeType(Integer id, Integer typeId) {
+    public void changeType(Integer id, String typeId) {
         CmsCategory entity = getEntity(id);
         if (null != entity) {
             entity.setTypeId(typeId);

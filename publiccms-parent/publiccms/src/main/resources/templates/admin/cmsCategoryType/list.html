@@ -1,6 +1,5 @@
-<@_categoryTypeList name=name pageIndex=pageNum pageSize=numPerPage!30>
+<@_categoryTypeList>
 <form class="pagerForm" autocomplete="off" onsubmit="return navTabSearch(this);" method="post">
-        <#include "../include_page/parameters.html"/>
 </form>
 <div class="pageContent">
     <div class="panelBar">
@@ -31,6 +30,5 @@
             </#list>
         </tbody>
     </table>
-    <#include "../include_page/page.html"/>
 </div>
 </@_categoryTypeList>

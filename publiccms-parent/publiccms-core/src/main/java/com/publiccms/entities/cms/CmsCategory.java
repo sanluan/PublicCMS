@@ -36,7 +36,7 @@ public class CmsCategory implements java.io.Serializable {
     @GeneratorColumn(title = "父分类", condition = true)
     private Integer parentId;
     @GeneratorColumn(title = "分类类型", condition = true)
-    private Integer typeId;
+    private String typeId;
     @GeneratorColumn(title = "子分类")
     private String childIds;
     @GeneratorColumn(title = "标签")
@@ -91,7 +91,7 @@ public class CmsCategory implements java.io.Serializable {
         this.disabled = disabled;
     }
 
-    public CmsCategory(short siteId, String name, Integer parentId, Integer typeId, String childIds, String tagTypeIds,
+    public CmsCategory(short siteId, String name, Integer parentId, String typeId, String childIds, String tagTypeIds,
             String code, String templatePath, String path, boolean onlyUrl, boolean hasStatic, String url, String contentPath,
             boolean containChild, Integer pageSize, boolean allowContribute, int sort, boolean hidden, boolean disabled,
             Integer extendId) {
@@ -157,11 +157,11 @@ public class CmsCategory implements java.io.Serializable {
     }
 
     @Column(name = "type_id")
-    public Integer getTypeId() {
+    public String getTypeId() {
         return this.typeId;
     }
 
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(String typeId) {
         this.typeId = typeId;
     }
 

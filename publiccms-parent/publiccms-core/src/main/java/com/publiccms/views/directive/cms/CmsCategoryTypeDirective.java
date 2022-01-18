@@ -1,7 +1,7 @@
 package com.publiccms.views.directive.cms;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import com.publiccms.common.base.AbstractTemplateDirective;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
-import com.publiccms.entities.cms.CmsCategoryType;
 import com.publiccms.entities.sys.SysSite;
-import com.publiccms.logic.service.cms.CmsCategoryTypeService;
+import com.publiccms.logic.component.template.ModelComponent;
+import com.publiccms.views.pojo.entities.CmsCategoryType;
 
 /**
  *
@@ -24,25 +24,27 @@ public class CmsCategoryTypeDirective extends AbstractTemplateDirective {
 
     @Override
     public void execute(RenderHandler handler) throws IOException, Exception {
-        Integer id = handler.getInteger("id");
+        String id = handler.getString("id");
         SysSite site = getSite(handler);
         if (CommonUtils.notEmpty(id)) {
-            CmsCategoryType entity = service.getEntity(id);
-            if (null != entity && site.getId() == entity.getSiteId()) {
+            CmsCategoryType entity = modelComponent.getCategoryTypeMap(site).get(id);
+            if (null != entity) {
                 handler.put("object", entity).render();
             }
         } else {
-            Integer[] ids = handler.getIntegerArray("ids");
+            String[] ids = handler.getStringArray("ids");
             if (CommonUtils.notEmpty(ids)) {
-                List<CmsCategoryType> entityList = service.getEntitys(ids);
-                Map<String, CmsCategoryType> map  = CommonUtils.listToMap(entityList, k -> k.getId().toString(), null,
-                        entity -> site.getId() == entity.getSiteId());
+                Map<String, CmsCategoryType> typeMap = modelComponent.getCategoryTypeMap(site);
+                Map<String, CmsCategoryType> map = new LinkedHashMap<>();
+                for (String typeId : ids) {
+                    map.put(typeId, typeMap.get(typeId));
+                }
                 handler.put("map", map).render();
             }
         }
     }
 
     @Autowired
-    private CmsCategoryTypeService service;
+    private ModelComponent modelComponent;
 
 }

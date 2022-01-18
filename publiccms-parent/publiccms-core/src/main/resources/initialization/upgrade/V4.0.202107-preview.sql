@@ -216,5 +216,18 @@ ALTER TABLE `log_upload` MODIFY COLUMN `file_size` bigint(20) NULL COMMENT '文�
 ALTER TABLE `sys_extend_field`
     ADD COLUMN `width` int(11) default NULL COMMENT '高度' AFTER `maxlength`,
     ADD COLUMN `height` int(11) default NULL COMMENT '宽度' AFTER `width`;
--- 2022-0114 --
+-- 2022-01-14 --
 UPDATE `sys_module` SET `authorized_url` = 'sysDept/lookup,sysUser/lookup,sysUser/lookup_list,sysDept/save,sysDept/virify' WHERE `id` ='dept_add';
+-- 2022-01-18 --
+DROP TABLE IF EXISTS `cms_category_type`;
+ALTER TABLE `cms_category`
+    CHANGE COLUMN `type_id` `type_id` varchar(20) default NULL COMMENT '分类类型' AFTER `parent_id`;
+UPDATE `sys_module` SET `authorized_url` = 'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save' WHERE `id` ='category_add';
+UPDATE `sys_module` SET `authorized_url` = 'cmsCategoryType/save,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,cmsDictionary/lookup' WHERE `id` ='category_type_add';
+UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cmsDictionary/lookup' WHERE `id` ='model_add';
+UPDATE `sys_module` SET `parent_id` = 'config_menu',`sort` = 2 WHERE `id` ='category_type_list';
+UPDATE `sys_module` SET `sort` = 3 WHERE `id` ='config_list';
+UPDATE `sys_module` SET `sort` = 4 WHERE `id` ='domain_list';
+UPDATE `sys_module_lang` SET `value` =  'Category type management' WHERE `lang` ='en' and module_id = 'category_type_list';
+UPDATE `sys_module_lang` SET `value` =  '分類タイプ管理' WHERE `lang` ='ja' and module_id = 'category_type_list';
+UPDATE `sys_module_lang` SET `value` =  '分类类型管理' WHERE `lang` ='zh' and module_id = 'category_type_list';

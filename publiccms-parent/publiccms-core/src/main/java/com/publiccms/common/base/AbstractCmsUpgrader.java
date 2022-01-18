@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +20,10 @@ import java.util.Properties;
 import org.apache.ibatis.jdbc.ScriptRunner;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
+import com.publiccms.views.pojo.entities.CmsCategoryType;
 import com.publiccms.views.pojo.entities.CmsPageData;
 
 /**
@@ -123,6 +126,69 @@ public abstract class AbstractCmsUpgrader {
             stringWriter.write(e.getMessage());
             stringWriter.write(System.lineSeparator());
             e.printStackTrace();
+        }
+    }
+
+    protected void updateCategoryType(StringWriter stringWriter, Connection connection) {
+        try (Statement statement = connection.createStatement();
+                ResultSet rs = statement.executeQuery("select * from cms_model");) {
+            while (rs.next()) {
+                try {
+                    CmsCategoryType entity = new CmsCategoryType();
+                    String filePath = CommonConstants.CMS_FILEPATH + CommonConstants.SEPARATOR + SiteComponent.TEMPLATE_PATH
+                            + CommonConstants.SEPARATOR + SiteComponent.SITE_PATH_PREFIX + rs.getString("site_id")
+                            + CommonConstants.SEPARATOR + SiteComponent.CATEGORY_TYPE_FILE;
+                    File file = new File(filePath);
+                    file.getParentFile().mkdirs();
+                    Map<String, CmsCategoryType> categoryTypeMap;
+                    try {
+                        categoryTypeMap = CommonConstants.objectMapper.readValue(file, CommonConstants.objectMapper
+                                .getTypeFactory().constructMapLikeType(HashMap.class, String.class, CmsCategoryType.class));
+                    } catch (IOException | ClassCastException e) {
+                        categoryTypeMap = new HashMap<>();
+                    }
+                    entity.setId(rs.getString("id"));
+                    entity.setName(rs.getString("name"));
+                    entity.setSort(rs.getInt("name"));
+                    entity.setOnlyUrl(false);
+                    entity.setTemplatePath((String) rs.getString("template_path"));
+                    if (null != rs.getString("extend_id")) {
+                        List<SysExtendField> extendList = new ArrayList<>();
+                        try (Statement extendFieldStatement = connection.createStatement();
+                                ResultSet extendFieldRs = extendFieldStatement.executeQuery(
+                                        "select * from sys_extend_field where extend_id = " + rs.getString("extend_id"));) {
+                            while (extendFieldRs.next()) {
+                                SysExtendField e = new SysExtendField(extendFieldRs.getString("code"),
+                                        extendFieldRs.getString("input_type"), extendFieldRs.getBoolean("required"),
+                                        extendFieldRs.getString("name"), extendFieldRs.getString("description"),
+                                        extendFieldRs.getString("default_value"));
+                                e.setSort(extendFieldRs.getInt("sort"));
+                                e.setMaxlength(extendFieldRs.getInt("maxlength"));
+                                if (e.getMaxlength() != null && 0 == e.getMaxlength()) {
+                                    e.setMaxlength(null);
+                                }
+                                e.setDictionaryId(extendFieldRs.getString("dictionaryId"));
+                                extendList.add(e);
+                            }
+                        } catch (SQLException e1) {
+                            stringWriter.write(e1.getMessage());
+                            stringWriter.write(System.lineSeparator());
+                            e1.printStackTrace();
+                        }
+                        entity.setExtendList(extendList);
+                    }
+                    categoryTypeMap.put(entity.getId(), entity);
+                    CommonConstants.objectMapper.writeValue(file, categoryTypeMap);
+                } catch (IOException | SQLException e) {
+                    stringWriter.write(e.getMessage());
+                    stringWriter.write(System.lineSeparator());
+                    e.printStackTrace();
+                }
+            }
+        } catch (SQLException e2) {
+            stringWriter.write(e2.getMessage());
+            stringWriter.write(System.lineSeparator());
+            e2.printStackTrace();
         }
     }
 

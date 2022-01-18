@@ -9,7 +9,7 @@ CREATE TABLE `cms_category` (
   `site_id` smallint(6) NOT NULL COMMENT '站点',
   `name` varchar(50) NOT NULL COMMENT '名称',
   `parent_id` int(11) default NULL COMMENT '父分类',
-  `type_id` int(11) default NULL COMMENT '分类类型',
+  `type_id` varchar(20) default NULL COMMENT '分类类型',
   `child_ids` text COMMENT '所有子分类',
   `tag_type_ids` text default NULL COMMENT '标签分类',
   `code` varchar(50) NOT NULL COMMENT '编码',
@@ -56,20 +56,6 @@ CREATE TABLE `cms_category_model` (
   `template_path` varchar(200) default NULL COMMENT '内容模板路径',
   PRIMARY KEY  (`category_id`,`model_id`)
 ) COMMENT='分类模型';
-
--- ----------------------------
--- Table structure for cms_category_type
--- ----------------------------
-DROP TABLE IF EXISTS `cms_category_type`;
-CREATE TABLE `cms_category_type` (
-  `id` int(11) NOT NULL auto_increment,
-  `site_id` smallint(6) NOT NULL COMMENT '站点',
-  `name` varchar(50) NOT NULL COMMENT '名称',
-  `sort` int(11) NOT NULL COMMENT '排序',
-  `extend_id` int(11) default NULL COMMENT '扩展',
-  PRIMARY KEY  (`id`),
-  KEY `cms_category_type_site_id` (`site_id`)
-) COMMENT='分类类型';
 
 -- ----------------------------
 -- Table structure for cms_content_attribute
@@ -833,17 +819,17 @@ INSERT INTO `sys_module` VALUES ('app_client_list', 'sysAppClient/list', NULL, '
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, 'icon-linux', 'system_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsCategory/save', '', 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_delete', NULL, 'cmsCategory/delete', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_extend', NULL, NULL, 'icon-road', 'content', 1, 1);
 INSERT INTO `sys_module` VALUES ('category_list', 'cmsCategory/list', NULL, 'icon-folder-open', 'content_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('category_move', 'cmsCategory/moveParameters', 'cmsCategory/move,cmsCategory/lookup', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_publish', 'cmsCategory/publishParameters', 'cmsCategory/publish', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_push', 'cmsCategory/push_page', 'cmsPlace/push,cmsPlace/add,cmsPlace/save', '', 'category_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('category_type_add', 'cmsCategoryType/add', 'cmsCategoryType/save', NULL, 'category_type_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_type_add', 'cmsCategoryType/add', 'cmsCategoryType/save,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,cmsDictionary/lookup', NULL, 'category_type_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_type_change', 'cmsCategory/changeTypeParameters', 'cmsCategory/changeType', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_type_delete', NULL, 'cmsCategoryType/delete', NULL, 'category_type_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('category_type_list', 'cmsCategoryType/list', NULL, 'icon-road', 'category_extend', 1, 1);
+INSERT INTO `sys_module` VALUES ('category_type_list', 'cmsCategoryType/list', NULL, 'icon-road', 'config_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('clearcache', NULL, 'clearCache', '', NULL, 0, 10);
 INSERT INTO `sys_module` VALUES ('comment_check', NULL, 'cmsComment/check', NULL, 'comment_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('comment_delete', NULL, 'cmsComment/delete', NULL, 'comment_list', 0, 0);
@@ -856,7 +842,7 @@ INSERT INTO `sys_module` VALUES ('config_data_delete', NULL, 'sysConfigData/dele
 INSERT INTO `sys_module` VALUES ('config_data_edit', NULL, 'sysConfigData/save,sysConfigData/edit', NULL, 'config_data_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_data_list', 'sysConfigData/list', NULL, 'icon-cog', 'system_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('config_delete', NULL, 'sysConfig/delete', NULL, 'config_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, 'icon-cogs', 'config_menu', 1, 2);
+INSERT INTO `sys_module` VALUES ('config_list', 'sysConfig/list', NULL, 'icon-cogs', 'config_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('config_list_data_dictionary', 'cmsDictionary/lookup', NULL, NULL, 'config_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('config_menu', NULL, NULL, 'icon-gear', 'develop', 1, 2);
 INSERT INTO `sys_module` VALUES ('content', NULL, NULL, 'icon-file-text-alt', NULL, 1, 2);
@@ -898,7 +884,7 @@ INSERT INTO `sys_module` VALUES ('dictionary_add', 'cmsDictionary/add', 'cmsDict
 INSERT INTO `sys_module` VALUES ('dictionary_delete', NULL, 'cmsDictionary/delete', NULL, 'dictionary_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('dictionary_list', 'cmsDictionary/list', NULL, 'icon-book', 'system_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('domain_config', 'sysDomain/config', 'sysDomain/saveConfig,cmsTemplate/directoryLookup,cmsTemplate/lookup', NULL, 'domain_list', 0, 0);
-INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, 'icon-qrcode', 'config_menu', 1, 3);
+INSERT INTO `sys_module` VALUES ('domain_list', 'sysDomain/domainList', NULL, 'icon-qrcode', 'config_menu', 1, 4);
 INSERT INTO `sys_module` VALUES ('file_menu', NULL, NULL, 'icon-folder-close-alt', 'develop', 1, 1);
 INSERT INTO `sys_module` VALUES ('log_login', 'log/login', 'sysUser/lookup,sysUser/lookup_list', 'icon-signin', 'log_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('log_login_delete', NULL, 'logLogin/delete', NULL, 'log_login', 0, 0);
@@ -917,7 +903,7 @@ INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 
 INSERT INTO `sys_module` VALUES ('log_visit_url', 'log/visitUrl', NULL, 'icon-link', 'log_menu', 1, 8);
 INSERT INTO `sys_module` VALUES ('log_workload', 'log/workload', NULL, 'icon-truck', 'log_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
-INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup', NULL, 'model_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup,cmsDictionary/lookup', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', NULL, 'icon-th-large', 'config_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, 'icon-key', NULL, 1, 1);
@@ -1110,9 +1096,9 @@ INSERT INTO `sys_module_lang` VALUES ('category_type_change', 'zh', '修改类�
 INSERT INTO `sys_module_lang` VALUES ('category_type_delete', 'en', 'Delete');
 INSERT INTO `sys_module_lang` VALUES ('category_type_delete', 'ja', '削除');
 INSERT INTO `sys_module_lang` VALUES ('category_type_delete', 'zh', '删除');
-INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'en', 'Category type');
-INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'ja', '分類タイプ');
-INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'zh', '分类类型');
+INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'en', 'Category type management');
+INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'ja', '分類タイプ管理');
+INSERT INTO `sys_module_lang` VALUES ('category_type_list', 'zh', '分类类型管理');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'en', 'Clear cache');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'ja', 'キャッシュをリフレッシュする');
 INSERT INTO `sys_module_lang` VALUES ('clearcache', 'zh', '刷新缓存');
