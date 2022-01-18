@@ -190,6 +190,7 @@ public class SysSiteAdminController {
                     i += sqlService.updateContentRelated(oldurl, newurl);
                     i += sqlService.updatePlace(oldurl, newurl);
                     i += sqlService.updatePlaceAttribute(oldurl, newurl);
+                    i += sqlService.updateCategoryAttribute(oldurl, newurl);
                     model.addAttribute("result", i);
                 } catch (Exception e) {
                     model.addAttribute("error", e.getMessage());

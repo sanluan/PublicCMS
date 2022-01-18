@@ -64,6 +64,14 @@ public class SqlService {
     public int updatePlace(String oldurl, String newurl) {
         return mapper.updatePlace(oldurl, newurl);
     }
+    /**
+     * @param oldurl
+     * @param newurl
+     * @return
+     */
+    public int updateCategoryAttribute(String oldurl, String newurl) {
+        return mapper.updateCategoryAttribute(oldurl, newurl);
+    }
 
     /**
      * @param sql

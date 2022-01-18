@@ -37,6 +37,12 @@ public interface SqlMapper {
     int update(@Param("sql") String sql);
 
     /**
+     * @param sql
+     * @return number of data deleted
+     */
+    int delete(@Param("sql") String sql);
+
+    /**
      * @param oldurl
      * @param newurl
      * @return number of data updated
@@ -65,9 +71,10 @@ public interface SqlMapper {
     int updatePlace(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
 
     /**
-     * @param sql
-     * @return number of data deleted
+     * @param oldurl
+     * @param newurl
+     * @return number of data updated
      */
-    int delete(@Param("sql") String sql);
+    int updateCategoryAttribute(@Param("oldurl") String oldurl, @Param("newurl") String newurl);
 
 }
