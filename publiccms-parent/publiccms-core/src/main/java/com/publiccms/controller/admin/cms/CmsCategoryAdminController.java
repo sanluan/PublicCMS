@@ -1,6 +1,7 @@
 package com.publiccms.controller.admin.cms;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 
 import com.publiccms.common.annotation.Csrf;
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ControllerUtils;
@@ -93,18 +95,19 @@ public class CmsCategoryAdminController {
                 } else if (null != entity.getParentId() && null == oldEntity.getParentId()) {
                     service.generateChildIds(site.getId(), entity.getParentId());
                 }
-                logOperateService
-                        .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "update.category",
-                                RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+                logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                        LogLoginService.CHANNEL_WEB_MANAGER, "update.category", RequestUtils.getIpAddress(request),
+                        CommonUtils.getDate(), JsonUtils.getString(entity)));
             }
         } else {
             entity.setSiteId(site.getId());
             service.save(entity);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "save.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         }
         service.saveTagAndAttribute(site.getId(), entity.getId(), attribute,
-                modelComponent.getCategoryTypeMap(site).get(entity.getTypeId()),categoryParameters);
+                modelComponent.getCategoryTypeMap(site).get(entity.getTypeId()), categoryParameters);
         try {
             publish(site, entity.getId(), null);
         } catch (IOException | TemplateException e) {
@@ -131,8 +134,9 @@ public class CmsCategoryAdminController {
             for (Integer id : ids) {
                 move(site, id, parentId);
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "move.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "move.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(),
                     new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(" to ").append(parentId).toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -177,9 +181,9 @@ public class CmsCategoryAdminController {
                 log.error(e.getMessage(), e);
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "static.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(",pageSize:")
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "static.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), new StringBuilder(StringUtils.join(ids, CommonConstants.COMMA)).append(",pageSize:")
                             .append((CommonUtils.empty(max) ? 1 : max)).toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
@@ -199,9 +203,9 @@ public class CmsCategoryAdminController {
             HttpServletRequest request) {
         if (CommonUtils.notEmpty(id)) {
             service.changeType(id, typeId);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "changeType.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    new StringBuilder(id).append(" to ").append(typeId).toString()));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "changeType.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), new StringBuilder(id).append(" to ").append(typeId).toString()));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -277,9 +281,28 @@ public class CmsCategoryAdminController {
                 }
             }
             contentService.deleteByCategoryIds(site.getId(), ids);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.category", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
-                    StringUtils.join(ids, CommonConstants.COMMA)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.category", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), StringUtils.join(ids, CommonConstants.COMMA)));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param request
+     * @return view name
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping("rebuildChildIds")
+    @Csrf
+    public String rebuildChildIds(@RequestAttribute SysSite site, @SessionAttribute SysUser admin) {
+        CmsCategoryQuery query = new CmsCategoryQuery();
+        query.setQueryAll(true);
+        PageHandler page = service.getPage(query, null, null);
+        for (CmsCategory category : (List<CmsCategory>) page.getList()) {
+            service.generateChildIds(category.getSiteId(), category.getId());
         }
         return CommonConstants.TEMPLATE_DONE;
     }

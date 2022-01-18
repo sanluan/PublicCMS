@@ -51,6 +51,16 @@ public class CmsContentProductService extends BaseService<CmsContentProduct> {
     /**
      * @param siteId
      * @param contentId
+     * @return results list
+     */
+    @Transactional(readOnly = true)
+    public List<CmsContentProduct> getList(Short siteId, Long contentId) {
+        return dao.getList(siteId, contentId);
+    }
+
+    /**
+     * @param siteId
+     * @param contentId
      * @param userId
      * @param products
      */

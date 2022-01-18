@@ -819,7 +819,7 @@ INSERT INTO `sys_module` VALUES ('app_client_list', 'sysAppClient/list', NULL, '
 INSERT INTO `sys_module` VALUES ('app_delete', NULL, 'sysApp/delete', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_issue', 'sysApp/issueParameters', 'sysAppToken/issue', NULL, 'app_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('app_list', 'sysApp/list', NULL, 'icon-linux', 'system_menu', 1, 5);
-INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save', '', 'category_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('category_add', 'cmsCategory/add', 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_delete', NULL, 'cmsCategory/delete', '', 'category_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('category_extend', NULL, NULL, 'icon-road', 'content', 1, 1);
 INSERT INTO `sys_module` VALUES ('category_list', 'cmsCategory/list', NULL, 'icon-folder-open', 'content_menu', 1, 2);
@@ -903,7 +903,7 @@ INSERT INTO `sys_module` VALUES ('log_visit_session', 'log/visitSession', NULL, 
 INSERT INTO `sys_module` VALUES ('log_visit_url', 'log/visitUrl', NULL, 'icon-link', 'log_menu', 1, 8);
 INSERT INTO `sys_module` VALUES ('log_workload', 'log/workload', NULL, 'icon-truck', 'log_menu', 1, 0);
 INSERT INTO `sys_module` VALUES ('maintenance', NULL, NULL, 'icon-cogs', NULL, 1, 6);
-INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup,cmsDictionary/lookup', NULL, 'model_list', 0, 0);
+INSERT INTO `sys_module` VALUES ('model_add', 'cmsModel/add', 'cmsModel/save,cmsTemplate/lookup,cmsModel/rebuildSearchText,cmsDictionary/lookup', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_delete', NULL, 'cmsModel/delete', NULL, 'model_list', 0, 0);
 INSERT INTO `sys_module` VALUES ('model_list', 'cmsModel/list', NULL, 'icon-th-large', 'config_menu', 1, 1);
 INSERT INTO `sys_module` VALUES ('myself', NULL, NULL, 'icon-key', NULL, 1, 1);

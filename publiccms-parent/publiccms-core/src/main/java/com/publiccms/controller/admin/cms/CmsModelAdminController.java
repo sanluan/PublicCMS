@@ -24,6 +24,7 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -38,6 +39,8 @@ import com.publiccms.views.pojo.entities.CmsModel;
 public class CmsModelAdminController {
     @Autowired
     private ModelComponent modelComponent;
+    @Autowired
+    protected CmsContentService contentService;
     @Autowired
     protected LogOperateService logOperateService;
     @Autowired
@@ -76,14 +79,16 @@ public class CmsModelAdminController {
                 modelMap.put(m.getId(), m);
             }
             modelComponent.saveModel(site, modelMap);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "update.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "update.model", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
         } else {
             Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
             modelMap.put(entity.getId(), entity);
             modelComponent.saveModel(site, modelMap);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "save.model",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "save.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(),
+                    JsonUtils.getString(entity)));
         }
         return CommonConstants.TEMPLATE_DONE;
     }
@@ -112,8 +117,29 @@ public class CmsModelAdminController {
                 modelMap.put(m.getId(), m);
             }
             modelComponent.saveModel(site, modelMap);
-            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
-                    "delete.model", RequestUtils.getIpAddress(request), CommonUtils.getDate(), JsonUtils.getString(entity)));
+            logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
+                    LogLoginService.CHANNEL_WEB_MANAGER, "delete.model", RequestUtils.getIpAddress(request),
+                    CommonUtils.getDate(), JsonUtils.getString(entity)));
+        }
+        return CommonConstants.TEMPLATE_DONE;
+    }
+
+    /**
+     * @param site
+     * @param admin
+     * @param id
+     * @param request
+     * @param model
+     * @return view name
+     */
+    @RequestMapping("rebuildSearchText")
+    @Csrf
+    public String rebuildSearchText(@RequestAttribute SysSite site, @SessionAttribute SysUser admin, String id,
+            HttpServletRequest request, ModelMap model) {
+        Map<String, CmsModel> modelMap = modelComponent.getModelMap(site);
+        CmsModel entity = modelMap.get(id);
+        if (null != entity) {
+            contentService.rebuildSearchText(site.getId(), entity);
         }
         return CommonConstants.TEMPLATE_DONE;
     }

@@ -398,6 +398,21 @@ public class CmsContentDao extends BaseDao<CmsContent> {
     }
 
     /**
+     * @param siteId
+     * @param modelId
+     * @param pageIndex
+     * @param pageSize
+     * @return results page
+     */
+    public PageHandler getPageByModelId(short siteId, String modelId, Integer pageIndex, Integer pageSize) {
+        QueryHandler queryHandler = getQueryHandler("from CmsContent bean");
+        queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        queryHandler.condition("bean.modelId = :modelId").setParameter("modelId", modelId);
+        queryHandler.order("bean.id desc");
+        return getPage(queryHandler, pageIndex, pageSize);
+    }
+
+    /**
      * @param siteIds
      * @param pageIndex
      * @param pageSize

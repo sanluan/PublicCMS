@@ -1,5 +1,7 @@
 package com.publiccms.logic.dao.cms;
 
+import java.util.List;
+
 import org.springframework.stereotype.Repository;
 
 import com.publiccms.common.base.BaseDao;
@@ -16,7 +18,7 @@ import com.publiccms.entities.cms.CmsContentFile;
  */
 @Repository
 public class CmsContentFileDao extends BaseDao<CmsContentFile> {
-    
+
     /**
      * @param contentId
      * @param userId
@@ -56,6 +58,19 @@ public class CmsContentFileDao extends BaseDao<CmsContentFile> {
             queryHandler.order("bean.sort asc,bean.id asc");
         }
         return getPage(queryHandler, pageIndex, pageSize);
+    }
+
+    /**
+     * @param contentId
+     * @param fileTypes
+     * @return results list
+     */
+    @SuppressWarnings("unchecked")
+    public List<CmsContentFile> getList(long contentId, String[] fileTypes) {
+        QueryHandler queryHandler = getQueryHandler("from CmsContentFile bean");
+        queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
+        queryHandler.condition("bean.fileType in :fileTypes").setParameter("fileTypes", fileTypes);
+        return (List<CmsContentFile>) getList(queryHandler);
     }
 
     @Override

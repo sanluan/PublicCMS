@@ -222,9 +222,9 @@ UPDATE `sys_module` SET `authorized_url` = 'sysDept/lookup,sysUser/lookup,sysUse
 DROP TABLE IF EXISTS `cms_category_type`;
 ALTER TABLE `cms_category`
     CHANGE COLUMN `type_id` `type_id` varchar(20) default NULL COMMENT '分类类型' AFTER `parent_id`;
-UPDATE `sys_module` SET `authorized_url` = 'cmsCategory/addMore,cmsCategory/virify,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save' WHERE `id` ='category_add';
+UPDATE `sys_module` SET `authorized_url` = 'cmsCategory/addMore,cmsCategory/virify,cmsCategory/rebuildChildIds,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,file/doUpload,cmsDictionary/lookup,cmsCategory/save' WHERE `id` ='category_add';
 UPDATE `sys_module` SET `authorized_url` = 'cmsCategoryType/save,cmsTemplate/lookup,cmsCategory/categoryPath,cmsCategory/contentPath,cmsDictionary/lookup' WHERE `id` ='category_type_add';
-UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cmsDictionary/lookup' WHERE `id` ='model_add';
+UPDATE `sys_module` SET `authorized_url` = 'cmsModel/save,cmsTemplate/lookup,cmsModel/rebuildSearchText,cmsDictionary/lookup' WHERE `id` ='model_add';
 UPDATE `sys_module` SET `parent_id` = 'config_menu',`sort` = 2 WHERE `id` ='category_type_list';
 UPDATE `sys_module` SET `sort` = 3 WHERE `id` ='config_list';
 UPDATE `sys_module` SET `sort` = 4 WHERE `id` ='domain_list';

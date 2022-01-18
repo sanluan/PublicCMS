@@ -23,7 +23,7 @@
         </div>
     </form>
 </div>
-<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@_sysAuthorized>
+<@_sysAuthorized roleIds=admin.roles urls='cmsCategory/add,cmsCategory/delete,cmsCategory/publish,cmsCategory/rebuildChildIds,cmsCategory/contributeForm,cmsCategory/static,cmsCategory/moveParameters,cmsCategory/changeTypeParameters,cmsCategory/publishParameters,cmsPlace/push'><#assign authorizedMap=map/></@_sysAuthorized>
 <div class="pageContent">
     <div class="panelBar">
         <ul class="toolBar">
@@ -52,6 +52,10 @@
         <#if authorizedMap['cmsCategory/delete']>
             <li class="line">line</li>
             <li><a href="cmsCategory/delete?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.batch_delete'/>" target="selectedTodo" rel="ids"><i class="icon-trash icon-large"></i> <@t.page 'button.batch_delete'/></a></li>
+        </#if>
+        <#if authorizedMap['cmsCategory/rebuildChildIds']>
+            <li class="line">line</li>
+            <li><a href="cmsCategory/rebuildChildIds?_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh icon-large"></i> <@t.page 'button.rebuild_childs'/></a></li>
         </#if>
         </ul>
     </div>

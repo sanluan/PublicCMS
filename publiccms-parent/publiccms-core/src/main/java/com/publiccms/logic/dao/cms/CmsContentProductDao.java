@@ -2,6 +2,7 @@ package com.publiccms.logic.dao.cms;
 
 // Generated 2021-6-26 17:53:08 by com.publiccms.common.generator.SourceGenerator
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
@@ -74,6 +75,23 @@ public class CmsContentProductDao extends BaseDao<CmsContentProduct> {
             queryHandler.order("bean.id").append(orderType);
         }
         return getPage(queryHandler, pageIndex, pageSize);
+    }
+
+    /**
+     * @param siteId
+     * @param contentId
+     * @return results list
+     */
+    @SuppressWarnings("unchecked")
+    public List<CmsContentProduct> getList(Short siteId, Long contentId) {
+        QueryHandler queryHandler = getQueryHandler("from CmsContentProduct bean");
+        if (CommonUtils.notEmpty(siteId)) {
+            queryHandler.condition("bean.siteId = :siteId").setParameter("siteId", siteId);
+        }
+        if (CommonUtils.notEmpty(contentId)) {
+            queryHandler.condition("bean.contentId = :contentId").setParameter("contentId", contentId);
+        }
+        return (List<CmsContentProduct>) getList(queryHandler);
     }
 
     @Override

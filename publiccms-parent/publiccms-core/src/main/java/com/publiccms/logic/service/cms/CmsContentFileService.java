@@ -41,6 +41,16 @@ public class CmsContentFileService extends BaseService<CmsContentFile> {
             Integer pageIndex, Integer pageSize) {
         return dao.getPage(contentId, userId, fileTypes, orderField, orderType, pageIndex, pageSize);
     }
+    
+    /**
+     * @param contentId
+     * @param fileTypes
+     * @return results list
+     */
+    @Transactional(readOnly = true)
+    public List<CmsContentFile> getList(long contentId, String[] fileTypes) {
+        return dao.getList(contentId, fileTypes);
+    }
 
     /**
      * @param contentId

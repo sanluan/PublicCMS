@@ -50,12 +50,15 @@
                 <td>${a.hasProducts?then(t.pageMessage('yes'),'')}</td>
                 <td class="wrap">
                     <a href="cmsModel/add.html?id=${a.id?url}" class="edit btnText blue" target="navTab" rel="cmsModel/edit"><i class="icon-edit"></i> <@t.page 'model.edit'/></a>
+                    <@_sysAuthorized roleIds=admin.roles url='cmsModel/rebuildSearchText'>
+                        <a href="cmsModel/rebuildSearchText?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText" title="<@t.page 'confirm.do'/>" target="ajaxTodo"><i class="icon-refresh"></i> <@t.page 'button.rebuild_search_text'/></a>
+                    </@_sysAuthorized>
                     <#if a.hasChild>
                         <a href="cmsModel/list.html?parentId=${a.id?url}" class="btnText" target="navTab" rel="cmsModel/list"><@t.page 'model.child_management'/></a>
                     </#if>
                     <#if !site.parentId?has_content>
                         <@_sysAuthorized roleIds=admin.roles url='cmsModel/delete'>
-                            <a href="cmsModel/delete?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" ttitle="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
+                            <a href="cmsModel/delete?id=${a.id?url}&_csrf=<@_csrfToken admin=true/>" class="btnText warn" title="<@t.page 'confirm.delete'/>" target="ajaxTodo"><i class="icon-trash"></i> <@t.page 'button.delete'/></a>
                         </@_sysAuthorized>
                     </#if>
                 </td>

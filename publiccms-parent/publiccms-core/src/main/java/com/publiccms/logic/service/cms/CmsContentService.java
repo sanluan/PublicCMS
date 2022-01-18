@@ -29,6 +29,7 @@ import com.publiccms.common.base.HighLighterQuery;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
+import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.HtmlUtils;
@@ -40,6 +41,7 @@ import com.publiccms.entities.cms.CmsContentProduct;
 import com.publiccms.entities.sys.SysExtendField;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.component.BeanComponent;
 import com.publiccms.logic.dao.cms.CmsContentDao;
 import com.publiccms.logic.service.sys.SysExtendFieldService;
 import com.publiccms.logic.service.sys.SysExtendService;
@@ -207,19 +209,6 @@ public class CmsContentService extends BaseService<CmsContent> {
             if (entity.isHasProducts()) {
                 contentProductService.update(siteId, entity.getId(), userId, contentParameters.getProducts());
             }
-            String text = HtmlUtils.removeHtmlTag(attribute.getText());
-            StringBuilder searchTextBuilder = new StringBuilder();
-            if (null != text) {
-                attribute.setWordCount(text.length());
-                if (cmsModel.isSearchable()) {
-                    searchTextBuilder.append(text).append(CommonConstants.BLANK_SPACE);
-                }
-            } else {
-                attribute.setWordCount(0);
-            }
-            if (CommonUtils.empty(entity.getDescription())) {
-                entity.setDescription(StringUtils.substring(text, 0, 150));
-            }
 
             List<SysExtendField> modelExtendList = cmsModel.getExtendList();
             List<SysExtendField> categoryExtendList = null;
@@ -234,36 +223,102 @@ public class CmsContentService extends BaseService<CmsContent> {
                     map = categoryMap;
                 }
             }
-            if (CommonUtils.notEmpty(map)) {
-                List<String> dictionaryValueList = new ArrayList<>();
-                dealExtend(modelExtendList, dictionaryValueList, map, searchTextBuilder);
-                dealExtend(categoryExtendList, dictionaryValueList, map, searchTextBuilder);
-                if (CommonUtils.notEmpty(dictionaryValueList)) {
-                    String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
-                    entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
-                }
-                attribute.setData(ExtendUtils.getExtendString(map));
-            } else {
-                attribute.setData(null);
-                entity.setDictionaryValues(null);
-            }
-            dealFiles(entity.isHasFiles() ? contentParameters.getFiles() : null,
+            dealAttribute(entity, categoryExtendList, categoryExtendList, map, cmsModel,
+                    entity.isHasFiles() ? contentParameters.getFiles() : null,
                     entity.isHasImages() ? contentParameters.getImages() : null,
-                    entity.isHasProducts() ? contentParameters.getProducts() : null, searchTextBuilder);
-
-            if (searchTextBuilder.length() > 0) {
-                attribute.setSearchText(searchTextBuilder.toString());
-            } else {
-                attribute.setSearchText(null);
-            }
-
+                    entity.isHasProducts() ? contentParameters.getProducts() : null, attribute);
             attributeService.updateAttribute(id, attribute);// 更新保存扩展字段，文本字段
             cmsContentRelatedService.update(id, userId, contentParameters.getContentRelateds());// 更新保存推荐内容
         }
         return entity;
     }
 
-    private void dealFiles(List<CmsContentFile> files, List<CmsContentFile> images, List<CmsContentProduct> products,
+    /**
+     * @param siteId
+     * @param cmsModel
+     */
+    @Transactional(readOnly = true)
+    public void rebuildSearchText(short siteId, CmsModel cmsModel) {
+        PageHandler page = dao.getPageByModelId(siteId, cmsModel.getId(), null, PageHandler.MAX_PAGE_SIZE);
+        while (page.isFirstPage() || !page.isLastPage()) {
+            @SuppressWarnings("unchecked")
+            List<CmsContent> list = (List<CmsContent>) page.getList();
+            BeanComponent.getContentService().rebuildSearchText(siteId, cmsModel, list);
+            page = dao.getPageByModelId(siteId, cmsModel.getId(), page.getNextPage(), PageHandler.MAX_PAGE_SIZE);
+        }
+    }
+
+    public void rebuildSearchText(short siteId, CmsModel cmsModel, List<CmsContent> list) {
+        for (CmsContent e : list) {
+            CmsContent entity = getEntity(e.getId());
+            CmsContentAttribute attribute = attributeService.getEntity(entity.getId());
+            Integer extendId = null;
+            CmsCategory category = categoryService.getEntity(entity.getCategoryId());
+            if (null != category) {
+                extendId = category.getExtendId();
+            }
+            List<SysExtendField> modelExtendList = cmsModel.getExtendList();
+            List<SysExtendField> categoryExtendList = null;
+            if (null != extendId && null != extendService.getEntity(extendId)) {
+                categoryExtendList = extendFieldService.getList(extendId, null, null);
+            }
+            List<CmsContentFile> files = null;
+            List<CmsContentFile> images = null;
+            List<CmsContentProduct> products = null;
+            if (entity.isHasFiles()) {
+                files = contentFileService.getList(siteId, CmsFileUtils.OTHER_FILETYPES);
+            }
+            if (entity.isHasImages()) {
+                images = contentFileService.getList(siteId, CmsFileUtils.IMAGE_FILETYPES);
+            }
+            if (entity.isHasProducts()) {
+                products = contentProductService.getList(siteId, entity.getId());
+            }
+            dealAttribute(entity, modelExtendList, categoryExtendList, ExtendUtils.getExtendMap(attribute.getData()), cmsModel,
+                    files, images, products, attribute);
+        }
+    }
+
+    private static void dealAttribute(CmsContent entity, List<SysExtendField> modelExtendList,
+            List<SysExtendField> categoryExtendList, Map<String, String> map, CmsModel cmsModel, List<CmsContentFile> files,
+            List<CmsContentFile> images, List<CmsContentProduct> products, CmsContentAttribute attribute) {
+        StringBuilder searchTextBuilder = new StringBuilder();
+        String text = HtmlUtils.removeHtmlTag(attribute.getText());
+        if (null != text) {
+            attribute.setWordCount(text.length());
+            if (cmsModel.isSearchable()) {
+                searchTextBuilder.append(text).append(CommonConstants.BLANK_SPACE);
+            }
+            if (CommonUtils.empty(entity.getDescription())) {
+                entity.setDescription(StringUtils.substring(text, 0, 150));
+            }
+        } else {
+            attribute.setWordCount(0);
+        }
+
+        if (CommonUtils.notEmpty(map)) {
+            List<String> dictionaryValueList = new ArrayList<>();
+            dealExtend(modelExtendList, dictionaryValueList, map, searchTextBuilder);
+            dealExtend(categoryExtendList, dictionaryValueList, map, searchTextBuilder);
+            if (CommonUtils.notEmpty(dictionaryValueList)) {
+                String[] dictionaryValues = dictionaryValueList.toArray(new String[dictionaryValueList.size()]);
+                entity.setDictionaryValues(arrayToDelimitedString(dictionaryValues, CommonConstants.BLANK_SPACE));
+            }
+            attribute.setData(ExtendUtils.getExtendString(map));
+        } else {
+            attribute.setData(null);
+            entity.setDictionaryValues(null);
+        }
+        dealFiles(files, images, products, searchTextBuilder);
+
+        if (searchTextBuilder.length() > 0) {
+            attribute.setSearchText(searchTextBuilder.toString());
+        } else {
+            attribute.setSearchText(null);
+        }
+    }
+
+    private static void dealFiles(List<CmsContentFile> files, List<CmsContentFile> images, List<CmsContentProduct> products,
             StringBuilder searchTextBuilder) {
         if (CommonUtils.notEmpty(files)) {
             for (CmsContentFile file : files) {
@@ -282,7 +337,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         }
     }
 
-    private void dealExtend(List<SysExtendField> extendList, List<String> dictionaryValueList, Map<String, String> map,
+    private static void dealExtend(List<SysExtendField> extendList, List<String> dictionaryValueList, Map<String, String> map,
             StringBuilder searchTextBuilder) {
         if (CommonUtils.notEmpty(extendList)) {
             for (SysExtendField extendField : extendList) {

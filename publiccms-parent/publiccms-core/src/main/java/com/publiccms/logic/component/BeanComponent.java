@@ -8,6 +8,7 @@ import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.task.ScheduledTask;
 import com.publiccms.logic.component.template.TemplateComponent;
 import com.publiccms.logic.service.cms.CmsContentAttributeService;
+import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogTaskService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysTaskService;
@@ -28,6 +29,7 @@ public class BeanComponent {
     private static ScheduledTask scheduledTask;
 
     private static CmsContentAttributeService contentAttributeService;
+    private static CmsContentService contentService;
     private static TemplateComponent templateComponent;
 
     /**
@@ -86,6 +88,12 @@ public class BeanComponent {
         return contentAttributeService;
     }
 
+    /**
+     * @return the contentService
+     */
+    public static CmsContentService getContentService() {
+        return contentService;
+    }
     /**
      * @param siteComponent
      *            the siteComponent to set
@@ -147,6 +155,15 @@ public class BeanComponent {
     @Autowired
     public void setContentAttributeService(CmsContentAttributeService contentAttributeService) {
         BeanComponent.contentAttributeService = contentAttributeService;
+    }
+    
+    /**
+     * @param contentService
+     *            the contentService to set
+     */
+    @Autowired
+    public void setContentService(CmsContentService contentService) {
+        BeanComponent.contentService = contentService;
     }
 
     /**
