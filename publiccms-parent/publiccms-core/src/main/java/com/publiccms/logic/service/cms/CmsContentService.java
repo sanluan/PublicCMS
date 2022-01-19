@@ -240,11 +240,15 @@ public class CmsContentService extends BaseService<CmsContent> {
     @Transactional(readOnly = true)
     public void rebuildSearchText(short siteId, CmsModel cmsModel) {
         PageHandler page = dao.getPageByModelId(siteId, cmsModel.getId(), null, PageHandler.MAX_PAGE_SIZE);
-        while (page.isFirstPage() || !page.isLastPage()) {
+        boolean first = true;
+        while (first || !page.isLastPage()) {
             @SuppressWarnings("unchecked")
             List<CmsContent> list = (List<CmsContent>) page.getList();
             BeanComponent.getContentService().rebuildSearchText(siteId, cmsModel, list);
             page = dao.getPageByModelId(siteId, cmsModel.getId(), page.getNextPage(), PageHandler.MAX_PAGE_SIZE);
+            if (first) {
+                first = false;
+            }
         }
     }
 

@@ -1,13 +1,13 @@
 <#if parentId?has_content>
+    <ul>
     <@_categoryList advanced=true parentId=parentId pageSize=500>
         <#list page.list as a>
-            <li<#if a.childIds?has_content>_src="cmsContent/lookup.html?parentId=${a.id}&field=${field!'relatedContentId'}"</#if>>
+            <li<#if a.childIds?has_content> _src="cmsContent/lookup.html?parentId=${a.id}&field=${field!'relatedContentId'}"</#if>>
                 <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
             </li>
-        <#else>
-            <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_categoryList>
+    </ul>
 <#else>
 <div class="pageContent">
     <div class="unitBox leftPageContent" layoutH>
@@ -17,7 +17,7 @@
                 <ul>
                     <@_categoryList advanced=true parentId=parentId pageSize=500>
                         <#list page.list as a>
-                            <li<#if a.childIds?has_content><#if a.childIds?has_content>_src="cmsContent/lookup.html?parentId=${a.id}&field=${field!'relatedContentId'}"</#if></#if>>
+                            <li<#if a.childIds?has_content> _src="cmsContent/lookup.html?parentId=${a.id}&field=${field!'relatedContentId'}"</#if>>
                                 <a href="cmsContent/lookup_list.html?categoryId=${a.id}&field=${field!'relatedContentId'}" class="exclude-translate" target="ajax" rel="content_list">${a.name!}</a>
                             </li>
                         <#else>

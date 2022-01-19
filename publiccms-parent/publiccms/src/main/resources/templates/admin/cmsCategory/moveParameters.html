@@ -5,8 +5,6 @@
             <li<#if a.childIds?has_content> _src="cmsCategory/moveParameters.html?parentId=${a.id}"</#if>>
                 <a href="javascript:;" class="exclude-translate" onclick="$('input[name=parentId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();">${a.name!}</a>
             </li>
-        <#else>
-            <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_categoryList>
 </ul>

@@ -11,8 +11,6 @@
                     <a href="javascript:;" class="exclude-translate" onclick="$('input[name=categoryId]',$.pdialog.getCurrent()).val('${a.id}');$('form',$.pdialog.getCurrent()).submit();" target="ajax">${a.name!}</a>
                 </li>
             </#if>
-        <#else>
-            <li><a><@t.page 'empty_directory'/></a></li>
         </#list>
     </@_categoryList>
 </ul>
