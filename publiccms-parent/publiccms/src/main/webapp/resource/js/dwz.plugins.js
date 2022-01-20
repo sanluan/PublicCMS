@@ -410,7 +410,7 @@ DWZ.regPlugins.push(function($p){
         $input.change(control);
         control();
         $btn.click(function(){
-            var value=$input.val();
+            var value=$('input[name='+escapeJquery($(this).attr('ref'))+']',$(this).parents(".unitBox:first")).val();
             if(value){
                 $(this).attr('href',value.isUrl() ? value : $(this).data('prefix')+value);
             }else{

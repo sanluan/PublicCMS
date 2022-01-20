@@ -1,5 +1,5 @@
 <@_sysUserList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
-            superuserAccess=true emailChecked=emailChecked name=name
+            superuser=superuser emailChecked=emailChecked name=name
             advanced=true disabled=disabled
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
@@ -12,6 +12,13 @@
                     <input type="text" name="name" value="${(name)!}" />
                 </li>
                 <#include "../include_page/disabled.html"/>
+                <li>
+                    <select class="combox" name="superuser">
+                        <option value=""${(!superuser?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
+                        <option value="false"${(superuser?has_content&&"false"=superuser)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
+                        <option value="true"${(superuser?has_content&&"true"=superuser)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
+                    </select>
+                </li>
                 <li>
                     <select class="combox" name="emailChecked">
                         <option value=""${(!emailChecked?has_content)?then(' selected="true"','')?no_esc}><@t.page 'email.verification_status'/></option>
@@ -52,8 +59,8 @@
         <thead>
             <tr>
                 <th width="30"><@t.page 'id'/></th>
-                <th><@t.page 'user.username'/></th>
-                <th><@t.page 'user.nickname'/></th>
+                <th><@t.page 'cover'/></th>
+                <th width="200"><@t.page 'user.username'/>/<@t.page 'user.nickname'/></th>
                 <th><@t.page 'email'/></th>
                 <th><@t.page 'email.verification_status'/></th>
                 <th><@t.page 'disabled'/></th>
@@ -68,8 +75,20 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td class="exclude-translate">${(a.name)!}</td>
-                <td class="exclude-translate">${(a.nickName)!}</td>
+                <td>
+                    <#if a.cover?has_content>
+                        <div class="thumbnail">
+                            <img src="${getAbsoluteUrl(site.sitePath,a.cover)!}"/>
+                        </div>
+                    </#if>
+                </td>
+                <td>
+                    <div class="box">
+                        <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
+                        <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickName)!} ${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>
+                        <p><font color="red"><@t.page 'user.content_permissions.'+a.contentPermissions/></font></p>
+                    </div>
+                </td>
                 <td class="exclude-translate">${(a.email)!}</td>
                 <td>${a.emailChecked?then(t.pageMessage('verified'),t.pageMessage('unverified'))}</td>
                 <td>${(a.disabled)?then('<font color="red">'+t.pageMessage('disabled')+'</font>',t.pageMessage('normal'))?no_esc}</td>

@@ -159,8 +159,7 @@ public class CmsContentAdminController {
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
-                    || ControllerUtils.verifyCustom("noright",
-                            !(admin.isOwnsAllContent() || oldEntity.getUserId() == admin.getId()), model)) {
+                    || ControllerUtils.verifyCustom("noright", !ControllerUtils.hasContentPermissions(admin, oldEntity), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             entity.setUpdateDate(now);
@@ -362,8 +361,7 @@ public class CmsContentAdminController {
         if (null != content && null != related) {
             if (ControllerUtils.verifyNotEquals("siteId", site.getId(), content.getSiteId(), model)
                     || ControllerUtils.verifyNotEquals("siteId", site.getId(), related.getSiteId(), model)
-                    || ControllerUtils.verifyCustom("noright",
-                            !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()), model)) {
+                    || ControllerUtils.verifyCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             if (CommonUtils.empty(entity.getTitle())) {
@@ -396,12 +394,11 @@ public class CmsContentAdminController {
             ModelMap model) {
         CmsContentRelated entity = cmsContentRelatedService.getEntity(id);
         if (null != entity) {
-            if (ControllerUtils.verifyCustom("noright", !(admin.isOwnsAllContent() || entity.getUserId() == admin.getId()),
-                    model)) {
-                return CommonConstants.TEMPLATE_ERROR;
-            }
             CmsContent content = service.getEntity(entity.getContentId());
             if (null == content || site.getId() == content.getSiteId()) {
+                if (ControllerUtils.verifyCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
+                    return CommonConstants.TEMPLATE_ERROR;
+                }
                 cmsContentRelatedService.delete(id);
                 publish(site, content, admin);
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
@@ -440,7 +437,7 @@ public class CmsContentAdminController {
             Set<Integer> categoryIdSet = new HashSet<>();
             for (CmsContent entity : service.getEntitys(ids)) {
                 if (null != entity && entity.getCategoryId() != categoryId && site.getId() == entity.getSiteId()
-                        && null == entity.getParentId() && (admin.isOwnsAllContent() || entity.getUserId() == admin.getId())
+                        && null == entity.getParentId() && ControllerUtils.hasContentPermissions(admin, entity)
                         && move(site, entity, categoryId)) {
                     categoryIdSet.add(entity.getCategoryId());
                 } else {
@@ -505,7 +502,8 @@ public class CmsContentAdminController {
                                     .getEntity(new SysDeptCategoryId(admin.getDeptId(), content.getCategoryId()))),
                             model)
                     || ControllerUtils.verifyCustom("noright",
-                            !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()), model)) {
+                            !ControllerUtils.hasContentPermissions(admin, content),
+                            model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             service.changeModel(site.getId(), id, modelId);
@@ -538,8 +536,7 @@ public class CmsContentAdminController {
                             !(dept.isOwnsAllCategory() || null != sysDeptCategoryService
                                     .getEntity(new SysDeptCategoryId(admin.getDeptId(), content.getCategoryId()))),
                             model)
-                    || ControllerUtils.verifyCustom("noright",
-                            !(admin.isOwnsAllContent() || content.getUserId() == admin.getId()), model)) {
+                    || ControllerUtils.verifyCustom("noright", !ControllerUtils.hasContentPermissions(admin, content), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
             CmsContent entity = service.sort(site.getId(), id, sort);
@@ -586,7 +583,7 @@ public class CmsContentAdminController {
     }
 
     private boolean publish(SysSite site, CmsContent entity, SysUser admin) {
-        if ((admin.isOwnsAllContent() || entity.getUserId() == admin.getId())) {
+        if (ControllerUtils.hasContentPermissions(admin, entity)) {
             return templateComponent.createContentFile(site, entity, null, null);
         }
         return false;

@@ -16,6 +16,7 @@ import com.publiccms.common.base.AbstractAppDirective;
 import com.publiccms.common.constants.CommonConstants;
 import com.publiccms.common.handler.RenderHandler;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.RequestUtils;
 import com.publiccms.entities.cms.CmsCategory;
 import com.publiccms.entities.cms.CmsCategoryModel;
@@ -82,7 +83,7 @@ public class ContentCheckDirective extends AbstractAppDirective {
     private boolean publish(SysSite site, CmsContent entity, SysUser user) {
         CmsCategoryModel categoryModel = categoryModelService
                 .getEntity(new CmsCategoryModelId(entity.getCategoryId(), entity.getModelId()));
-        if (null != categoryModel && (user.isOwnsAllContent() || entity.getUserId() == user.getId()) && !entity.isOnlyUrl()) {
+        if (null != categoryModel && ControllerUtils.hasContentPermissions(user, entity) && !entity.isOnlyUrl()) {
             return templateComponent.createContentFile(site, entity, null, categoryModel);
         }
         return false;

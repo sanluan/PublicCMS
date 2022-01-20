@@ -118,7 +118,7 @@ public class SysApp implements java.io.Serializable {
     public void setAuthorizedApis(String authorizedApis) {
         this.authorizedApis = authorizedApis;
     }
-    
+
     @Column(name = "expiry_minutes")
     public Integer getExpiryMinutes() {
         return this.expiryMinutes;

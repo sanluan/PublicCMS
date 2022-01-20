@@ -240,7 +240,7 @@ public class LoginAdminController {
     }
 
     protected boolean verifyNotAdmin(SysUser user, ModelMap model) {
-        if (!user.isDisabled() && !user.isSuperuserAccess()) {
+        if (!user.isDisabled() && !user.isSuperuser()) {
             model.addAttribute(CommonConstants.ERROR, "verify.user.notAdmin");
             return true;
         }

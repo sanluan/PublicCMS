@@ -79,7 +79,7 @@ public class CommentController {
             if (null != entity.getId()) {
                 CmsComment oldEntity = service.getEntity(entity.getId());
                 if (null != oldEntity && !oldEntity.isDisabled()
-                        && (oldEntity.getUserId() == user.getId() || user.isSuperuserAccess())) {
+                        && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
                     entity.setUpdateDate(CommonUtils.getDate());
                     entity = service.update(entity.getId(), entity, ignoreProperties);
                     logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(),

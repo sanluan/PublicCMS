@@ -90,18 +90,16 @@
                     <dt><@t.page 'category.page_size'/>:</dt>
                     <dd>
                         <input class="required digits" name="pageSize" type="number" size="4" value="${(a.pageSize)!(categoryType.pageSize)!20}"/>
-                        <label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/><@t.page 'category.contain_child'/></label>
+                        <label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild||(!a?has_content&&categoryType?has_content && categoryType.containChild))?then(' checked="checked"','')?no_esc}/><@t.page 'category.contain_child'/></label>
                     </dd>
                 </dl>
                 <dl>
                     <dt><@t.page 'sort'/>:</dt>
                     <dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!0}"/></dd>
                 </dl>
-<#if categoryType?has_content&&categoryType.extendId?has_content>
+<#if categoryType?has_content && categoryType.extendList?has_content>
     <#include "../include_page/extendData.html"/>
-    <@_sysExtendFieldList extendId=categoryType.extendId>
-        <@extendData 'extendDataList' list attribute!{}/>
-    </@_sysExtendFieldList>
+    <@extendData 'extendDataList' categoryType.extendList attribute!{}/>
 </#if>
             </div>
             <div class="pageFormContent onlyUrl" layoutH>

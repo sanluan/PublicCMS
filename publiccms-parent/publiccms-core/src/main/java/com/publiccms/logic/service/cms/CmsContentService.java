@@ -31,6 +31,7 @@ import com.publiccms.common.handler.FacetPageHandler;
 import com.publiccms.common.handler.PageHandler;
 import com.publiccms.common.tools.CmsFileUtils;
 import com.publiccms.common.tools.CommonUtils;
+import com.publiccms.common.tools.ControllerUtils;
 import com.publiccms.common.tools.ExtendUtils;
 import com.publiccms.common.tools.HtmlUtils;
 import com.publiccms.entities.cms.CmsCategory;
@@ -387,7 +388,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         Collections.reverse(list);
         for (CmsContent entity : list) {
             if (null != entity && STATUS_NORMAL == entity.getStatus() && siteId == entity.getSiteId()
-                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+                    && ControllerUtils.hasContentPermissions(user, entity)) {
                 Date now = CommonUtils.getDate();
                 if (now.after(entity.getPublishDate())) {
                     entity.setPublishDate(now);
@@ -408,7 +409,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public CmsContent check(short siteId, SysUser user, Serializable id) {
         CmsContent entity = getEntity(id);
         if (null != entity && siteId == entity.getSiteId() && STATUS_DRAFT != entity.getStatus()
-                && STATUS_NORMAL != entity.getStatus() && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+                && STATUS_NORMAL != entity.getStatus() && ControllerUtils.hasContentPermissions(user, entity)) {
             entity.setStatus(STATUS_NORMAL);
             entity.setCheckUserId(user.getId());
             entity.setCheckDate(CommonUtils.getDate());
@@ -427,7 +428,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (null != entity && siteId == entity.getSiteId() && STATUS_DRAFT != entity.getStatus()
-                    && STATUS_NORMAL != entity.getStatus() && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+                    && STATUS_NORMAL != entity.getStatus() && ControllerUtils.hasContentPermissions(user, entity)) {
                 entity.setStatus(STATUS_NORMAL);
                 entity.setCheckUserId(user.getId());
                 entity.setCheckDate(CommonUtils.getDate());
@@ -448,7 +449,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (null != entity && siteId == entity.getSiteId() && STATUS_PEND == entity.getStatus()
-                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+                    && ControllerUtils.hasContentPermissions(user, entity)) {
                 entity.setStatus(STATUS_REJECT);
                 entity.setCheckUserId(user.getId());
                 entity.setCheckDate(CommonUtils.getDate());
@@ -469,7 +470,7 @@ public class CmsContentService extends BaseService<CmsContent> {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
             if (siteId == entity.getSiteId() && STATUS_NORMAL == entity.getStatus()
-                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+                    && ControllerUtils.hasContentPermissions(user, entity)) {
                 entity.setStatus(STATUS_PEND);
                 entityList.add(entity);
             }
@@ -719,8 +720,7 @@ public class CmsContentService extends BaseService<CmsContent> {
     public List<CmsContent> delete(short siteId, SysUser user, Serializable[] ids) {
         List<CmsContent> entityList = new ArrayList<>();
         for (CmsContent entity : getEntitys(ids)) {
-            if (siteId == entity.getSiteId() && !entity.isDisabled()
-                    && (user.isOwnsAllContent() || entity.getUserId() == user.getId())) {
+            if (siteId == entity.getSiteId() && !entity.isDisabled() && ControllerUtils.hasContentPermissions(user, entity)) {
                 if (null == entity.getParentId()) {
                     for (CmsContent quote : getListByQuoteId(siteId, entity.getId())) {
                         quote.setDisabled(true);

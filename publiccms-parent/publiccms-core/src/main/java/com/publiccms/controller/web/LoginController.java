@@ -159,7 +159,7 @@ public class LoginController {
             result.put("weakPassword", user.isWeakPassword());
             result.put("email", user.getEmail());
             result.put("emailChecked", user.isEmailChecked());
-            result.put("superuserAccess", user.isSuperuserAccess());
+            result.put("superuserAccess", user.isSuperuser());
         }
         return result;
     }
@@ -210,8 +210,8 @@ public class LoginController {
             entity.setSiteId(site.getId());
             entity.setDisabled(false);
             entity.setRoles(null);
-            entity.setSuperuserAccess(false);
-            entity.setOwnsAllContent(false);
+            entity.setSuperuser(false);
+            entity.setContentPermissions(SysUserService.CONTENT_PERMISSIONS_SELF);
             entity.setLoginCount(0);
             entity.setDeptId(null);
             service.save(entity);

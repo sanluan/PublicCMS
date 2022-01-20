@@ -52,7 +52,7 @@ public class SysUser implements java.io.Serializable {
     @GeneratorColumn(title = "部门", condition = true)
     private Integer deptId;
     @GeneratorColumn(title = "拥有所有内容权限")
-    private boolean ownsAllContent;
+    private int contentPermissions;
     @GeneratorColumn(title = "角色")
     private String roles;
     @GeneratorColumn(title = "邮箱", condition = true, like = true, or = true, name = "name")
@@ -60,7 +60,7 @@ public class SysUser implements java.io.Serializable {
     @GeneratorColumn(title = "已验证邮箱", condition = true)
     private boolean emailChecked;
     @GeneratorColumn(title = "是否管理员", condition = true)
-    private boolean superuserAccess;
+    private boolean superuser;
     @GeneratorColumn(title = "已禁用", condition = true)
     @JsonIgnore
     private boolean disabled;
@@ -76,22 +76,22 @@ public class SysUser implements java.io.Serializable {
     public SysUser() {
     }
 
-    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickName, boolean ownsAllContent,
-            boolean emailChecked, boolean superuserAccess, boolean disabled, int loginCount) {
+    public SysUser(short siteId, String name, String password, boolean weakPassword, String nickName, int contentPermissions,
+            boolean emailChecked, boolean superuser, boolean disabled, int loginCount) {
         this.siteId = siteId;
         this.name = name;
         this.password = password;
         this.weakPassword = weakPassword;
         this.nickName = nickName;
-        this.ownsAllContent = ownsAllContent;
+        this.contentPermissions = contentPermissions;
         this.emailChecked = emailChecked;
-        this.superuserAccess = superuserAccess;
+        this.superuser = superuser;
         this.disabled = disabled;
         this.loginCount = loginCount;
     }
 
     public SysUser(short siteId, String name, String password, String salt, boolean weakPassword, String nickName, String cover,
-            Integer deptId, boolean ownsAllContent, String roles, String email, boolean emailChecked, boolean superuserAccess,
+            Integer deptId, int contentPermissions, String roles, String email, boolean emailChecked, boolean superuser,
             boolean disabled, Date lastLoginDate, String lastLoginIp, int loginCount, Date registeredDate) {
         this.siteId = siteId;
         this.name = name;
@@ -101,11 +101,11 @@ public class SysUser implements java.io.Serializable {
         this.nickName = nickName;
         this.cover = cover;
         this.deptId = deptId;
-        this.ownsAllContent = ownsAllContent;
+        this.contentPermissions = contentPermissions;
         this.roles = roles;
         this.email = email;
         this.emailChecked = emailChecked;
-        this.superuserAccess = superuserAccess;
+        this.superuser = superuser;
         this.disabled = disabled;
         this.lastLoginDate = lastLoginDate;
         this.lastLoginIp = lastLoginIp;
@@ -197,13 +197,13 @@ public class SysUser implements java.io.Serializable {
         this.deptId = deptId;
     }
 
-    @Column(name = "owns_all_content", nullable = false)
-    public boolean isOwnsAllContent() {
-        return this.ownsAllContent;
+    @Column(name = "content_permissions", nullable = false)
+    public int getContentPermissions() {
+        return this.contentPermissions;
     }
 
-    public void setOwnsAllContent(boolean ownsAllContent) {
-        this.ownsAllContent = ownsAllContent;
+    public void setContentPermissions(int contentPermissions) {
+        this.contentPermissions = contentPermissions;
     }
 
     @Column(name = "roles", length = 65535)
@@ -233,13 +233,13 @@ public class SysUser implements java.io.Serializable {
         this.emailChecked = emailChecked;
     }
 
-    @Column(name = "superuser_access", nullable = false)
-    public boolean isSuperuserAccess() {
-        return this.superuserAccess;
+    @Column(name = "superuser", nullable = false)
+    public boolean isSuperuser() {
+        return this.superuser;
     }
 
-    public void setSuperuserAccess(boolean superuserAccess) {
-        this.superuserAccess = superuserAccess;
+    public void setSuperuser(boolean superuser) {
+        this.superuser = superuser;
     }
 
     @Column(name = "disabled", nullable = false)

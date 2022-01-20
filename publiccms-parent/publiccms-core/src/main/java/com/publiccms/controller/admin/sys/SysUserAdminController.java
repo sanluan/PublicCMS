@@ -75,12 +75,14 @@ public class SysUserAdminController {
                 || ControllerUtils.verifyNotNickName("nickname", entity.getNickName(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        if (entity.isSuperuserAccess()) {
+        if (entity.isSuperuser()) {
             entity.setRoles(arrayToCommaDelimitedString(roleIds));
         } else {
             roleIds = null;
             entity.setRoles(null);
-            entity.setOwnsAllContent(false);
+            if (SysUserService.CONTENT_PERMISSIONS_ALL == entity.getContentPermissions()) {
+                entity.setContentPermissions(SysUserService.CONTENT_PERMISSIONS_DEPT);
+            }
         }
         if (null != entity.getId()) {
             SysUser oldEntity = service.getEntity(entity.getId());

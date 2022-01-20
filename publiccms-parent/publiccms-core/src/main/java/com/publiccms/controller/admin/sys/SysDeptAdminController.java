@@ -163,15 +163,17 @@ public class SysDeptAdminController {
                 || ControllerUtils.verifyNotNickName("nickname", entity.getNickName(), model)) {
             return CommonConstants.TEMPLATE_ERROR;
         }
-        entity.setSuperuserAccess(true);
+        entity.setSuperuser(true);
         entity.setRoles(arrayToCommaDelimitedString(roleIds));
         if (null != entity.getId()) {
             SysUser oldEntity = userService.getEntity(entity.getId());
             if (null == oldEntity || ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            if (!admin.isOwnsAllContent()) {
-                entity.setOwnsAllContent(oldEntity.isOwnsAllContent());
+            if (SysUserService.CONTENT_PERMISSIONS_ALL == entity.getContentPermissions()
+                    && SysUserService.CONTENT_PERMISSIONS_ALL != admin.getContentPermissions()
+                    && entity.getContentPermissions() != oldEntity.getContentPermissions()) {
+                entity.setContentPermissions(SysUserService.CONTENT_PERMISSIONS_DEPT);
             }
             SysUser user = userService.getEntity(entity.getId());
             if ((!user.getName().equals(entity.getName()) && ControllerUtils.verifyHasExist("username",
@@ -203,8 +205,9 @@ public class SysDeptAdminController {
                             .verifyHasExist("username", userService.findByName(site.getId(), entity.getName()), model)) {
                 return CommonConstants.TEMPLATE_ERROR;
             }
-            if (!admin.isOwnsAllContent()) {
-                entity.setOwnsAllContent(false);
+            if (SysUserService.CONTENT_PERMISSIONS_ALL != admin.getContentPermissions()
+                    && SysUserService.CONTENT_PERMISSIONS_ALL == entity.getContentPermissions()) {
+                entity.setContentPermissions(SysUserService.CONTENT_PERMISSIONS_DEPT);
             }
             entity.setDeptId(dept.getId());
             entity.setSiteId(site.getId());

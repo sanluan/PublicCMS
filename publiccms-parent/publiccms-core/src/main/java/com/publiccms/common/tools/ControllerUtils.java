@@ -12,8 +12,10 @@ import javax.servlet.http.HttpSession;
 import org.springframework.ui.ModelMap;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.entities.cms.CmsContent;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
+import com.publiccms.logic.service.sys.SysUserService;
 
 /**
  * Controller工具类
@@ -363,6 +365,18 @@ public class ControllerUtils {
      */
     public static String getAdminToken(HttpServletRequest request) {
         return getToken(request, CommonConstants.getCookiesAdmin());
+    }
+
+    /**
+     * @param user
+     * @param content
+     * @return has content permission
+     */
+    public static boolean hasContentPermissions(SysUser user, CmsContent content) {
+        return SysUserService.CONTENT_PERMISSIONS_ALL == user.getContentPermissions()
+                || SysUserService.CONTENT_PERMISSIONS_SELF == user.getContentPermissions() && content.getUserId() == user.getId()
+                || SysUserService.CONTENT_PERMISSIONS_DEPT == user.getContentPermissions()
+                        && (null != content.getDeptId() && content.getDeptId().equals(user.getDeptId()));
     }
 
     /**

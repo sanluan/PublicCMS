@@ -1,5 +1,5 @@
 <@_sysUserList deptId=deptId startRegisteredDate=startRegisteredDate endRegisteredDate=endRegisteredDate startLastLoginDate=startLastLoginDate endLastLoginDate=endLastLoginDate
-            superuserAccess=superuserAccess emailChecked=emailChecked name=name
+            superuser=superuser emailChecked=emailChecked name=name
             advanced=true disabled=disabled
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <div class="pageHeader">
@@ -13,10 +13,10 @@
                 </li>
                 <#include "../include_page/disabled.html"/>
                 <li>
-                    <select class="combox" name="superuserAccess">
-                        <option value=""${(!superuserAccess?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
-                        <option value="false"${(superuserAccess?has_content&&"false"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
-                        <option value="true"${(superuserAccess?has_content&&"true"=superuserAccess)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
+                    <select class="combox" name="superuser">
+                        <option value=""${(!superuser?has_content)?then(' selected="true"','')?no_esc}><@t.page 'user.type'/></option>
+                        <option value="false"${(superuser?has_content&&"false"=superuser)?then(' selected="true"','')?no_esc}><@t.page 'user.general'/></option>
+                        <option value="true"${(superuser?has_content&&"true"=superuser)?then(' selected="true"','')?no_esc}><@t.page 'admin'/></option>
                     </select>
                 </li>
                 <li>
@@ -59,8 +59,8 @@
         <thead>
             <tr>
                 <th width="30"><@t.page 'id'/></th>
-                <th><@t.page 'user.username'/></th>
-                <th width="200"><@t.page 'user.nickname'/></th>
+                <th><@t.page 'cover'/></th>
+                <th width="200"><@t.page 'user.username'/>/<@t.page 'user.nickname'/></th>
                 <th><@t.page 'dept'/></th>
                 <th><@t.page 'email'/></th>
                 <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
@@ -78,16 +78,18 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td class="exclude-translate">${(a.name)!}</td>
                 <td>
+                    <#if a.cover?has_content>
+                        <div class="thumbnail">
+                            <img src="${getAbsoluteUrl(site.sitePath,a.cover)!}"/>
+                        </div>
+                    </#if>
+                </td>
+                <td class="wrap">
                     <div class="box">
-                        <#if a.cover?has_content>
-                            <div class="thumbnail">
-                                <img src="${getAbsoluteUrl(site.sitePath,a.cover)!}"/>
-                            </div>
-                        </#if>
-                        <p class="exclude-translate">${(a.nickName)!} ${(a.superuserAccess)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>
-                        <p>${(a.ownsAllContent)?then('[<font color="red">'+t.pageMessage('user.own_all_content')+'</font>]','')?no_esc}</p>
+                        <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
+                        <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickName)!}</p>
+                        <p>${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc} <font color="red"><@t.page 'user.content_permissions.'+a.contentPermissions/></font></p>
                     </div>
                 </td>
                 <td class="exclude-translate">${(deptMap[a.deptId?string].name)!}</td>
@@ -115,7 +117,7 @@
                     <a href="log/login.html?userId=${a.id}" class="btnText" target="navTab" rel="log/login">
                         <@t.page 'log.login'/>
                     </a>
-                    <#if a.superuserAccess>
+                    <#if a.superuser>
                         <a href="log/operate.html?userId=${a.id}" class="btnText" target="navTab" rel="log/operate">
                             <@t.page 'log.operate'/>
                         </a>

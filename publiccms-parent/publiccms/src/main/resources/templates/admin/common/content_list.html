@@ -9,9 +9,10 @@
     <#if parentId?has_content>
         <@_content id=parentId><#assign parent=object/></@_content>
     </#if>
-    <#if !admin.ownsAllContent><#assign userId=admin.id/></#if>
+    <#if 0=admin.contentPermissions><#assign userId=admin.id/></#if>
+    <#if 2=admin.contentPermissions><#assign deptId=admin.deptId/></#if>
 <@_contentList advanced=true status=status categoryId=categoryId containChild=containChild
-            modelId=modelId parentId=parentId emptyParent=true title=title userId=userId
+            modelId=modelId parentId=parentId emptyParent=true title=title userId=userId deptId=deptId
             startPublishDate=startPublishDate endPublishDate=endPublishDate absoluteId=false
             orderField=orderField orderType=orderType pageIndex=pageNum pageSize=numPerPage>
 <@_sysAuthorized roleIds=admin.roles urls='cmsContent/add,cmsContent/delete,cmsContent/check,cmsContent/reject,cmsContent/uncheck,cmsContent/push,cmsCategory/lookupBySiteId,cmsContent/refresh,cmsContent/publish,cmsContent/moveParameters,cmsContent/changeModelParameters,cmsContent/export,cmsComment/list,cmsContent/sortParameters,cmsCategory/add'><#assign authorizedMap=map/></@_sysAuthorized>
@@ -38,11 +39,13 @@
                     <label><@t.page 'model'/>:</label>
                     <#include "../include_page/modelId.html"/>
                 </li>
-            <#if admin.ownsAllContent>
+            <#if 1=admin.contentPermissions||2=admin.contentPermissions>
                 <li>
                     <label><@t.page 'content.promulgator'/>:</label>
                     <#include "../include_page/userId.html"/>
                 </li>
+            </#if>
+            <#if 1=admin.contentPermissions>
                 <li>
                     <label><@t.page 'dept'/>:</label>
                     <#include "../include_page/deptId.html"/>
@@ -128,6 +131,7 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
+                <th width="20"><@t.page 'cover'/></th>
                 <th width="200"><@t.page 'content'/></th>
                 <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
@@ -153,12 +157,14 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center" title="${a.id}"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>
+                    <#if a.cover?has_content>
+                        <div class="thumbnail">
+                            <img src="${(a.cover)!}"/>
+                        </div>
+                    </#if>
+                </td>
+                <td class="wrap">
                     <div class="box">
-                        <#if a.cover?has_content>
-                            <div class="thumbnail">
-                                <img src="${(a.cover)!}"/>
-                            </div>
-                        </#if>
                         <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></h3>
                         <p>
                             <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>

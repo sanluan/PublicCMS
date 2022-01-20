@@ -104,7 +104,7 @@ public class ContentController {
         if (null != entity.getId()) {
             CmsContent oldEntity = service.getEntity(entity.getId());
             if (null != oldEntity && ControllerUtils.verifyNotEquals("siteId", site.getId(), oldEntity.getSiteId(), model)
-                    && (oldEntity.getUserId() == user.getId() || user.isSuperuserAccess())) {
+                    && (oldEntity.getUserId() == user.getId() || user.isSuperuser())) {
                 entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? CmsContentAdminController.ignoreProperties
                         : CmsContentAdminController.ignorePropertiesWithUrl);
                 if (null != entity.getId()) {

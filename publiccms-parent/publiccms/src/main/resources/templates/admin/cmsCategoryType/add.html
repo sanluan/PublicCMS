@@ -20,7 +20,6 @@
                 <dt><@t.page 'id'/>:</dt>
                 <dd>
                     <input class="required" name="id" type="text" maxlength="20" size="20" value="${(a.id)!}"/>
-                    <label><input name="onlyUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.onlyUrl',navTab.getCurrentPanel()).hide();$('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.onlyUrl',navTab.getCurrentPanel()).show();}"/><@t.page 'url'/></label>
                 </dd>
             </dl>
             <dl>
@@ -29,43 +28,51 @@
                     <input class="required" name="name" type="text" size="20" maxlength="20" value="${(a.name)!}"/>
                 </dd>
             </dl>
-            <dl class="nowrap onlyUrl">
-                <dt><@t.page 'category.page_size'/>:</dt>
-                <dd>
-                    <input class="required digits" name="pageSize" type="number" size="4" value="${(a.pageSize)!(categoryType.pageSize)!20}"/>
-                    <label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/><@t.page 'category.contain_child'/></label>
-                </dd>
-            </dl>
             <dl class="nowrap">
                 <dt><@t.page 'sort'/>:</dt>
                 <dd><input class="required digits" name="sort" type="number" size="4" value="${(a.sort)!(category.sort)!0}"/></dd>
             </dl>
-        <#if site.useStatic>
-            <dl class="nowrap onlyUrl">
-                <dt><@t.page 'category.template_path'/>:</dt>
-                <dd>
-                    <input name="templatePath" type="text" autocomplete="on" maxlength="255" size="30" value="${(a.templatePath)!}"/>
-                    <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
-                    <span class="info"><@t.page 'category.template_path.description'/></span>
-                </dd>
-            </dl>
-        </#if>
-            <dl class="nowrap onlyUrl">
-                <dt><@t.page 'category.path'/>:</dt>
-                <dd>
-                    <input class="required" name="path" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.path)!}"/>
-                    <a class="btnLook onlyUrl" href="cmsCategory/categoryPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
-                    <span class="info"><@t.page 'model.template_path.description'/></span>
-                </dd>
-            </dl>
-            <dl class="nowrap onlyUrl">
-                <dt><@t.page 'category.content_path'/>:</dt>
-                <dd>
-                    <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!}"/>
-                    <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
-                    <#if id?has_content><span class="info"><@t.page 'category.content_path.description'/></span></#if>
-                </dd>
-            </dl>
+            <fieldset>
+                <legend><@t.page 'category.base_info'/></legend>
+                <dl class="nowrap">
+                    <dt><@t.page 'url'/>:</dt>
+                    <dd>
+                        <label><input name="onlyUrl" type="checkbox" onclick="if($(this).is(':checked')){$('.onlyUrl',navTab.getCurrentPanel()).hide();$('.onlyUrl input[type=text]',navTab.getCurrentPanel()).val('');}else{$('.onlyUrl',navTab.getCurrentPanel()).show();}"/></label>
+                    </dd>
+                </dl>
+                <dl class="nowrap onlyUrl">
+                    <dt><@t.page 'category.page_size'/>:</dt>
+                    <dd>
+                        <input class="required digits" name="pageSize" type="number" size="4" value="${(a.pageSize)!(categoryType.pageSize)!20}"/>
+                        <label><input name="containChild" type="checkbox"${(a?has_content&&a.containChild)?then(' checked="checked"','')?no_esc}/><@t.page 'category.contain_child'/></label>
+                    </dd>
+                </dl>
+            <#if site.useStatic>
+                <dl class="nowrap onlyUrl">
+                    <dt><@t.page 'category.template_path'/>:</dt>
+                    <dd>
+                        <input name="templatePath" type="text" autocomplete="on" maxlength="255" size="30" value="${(a.templatePath)!}"/>
+                        <a class="btnLook" href="cmsTemplate/lookup.html?field=templatePath" lookupGroup=""><@t.page 'template.select'/></a>
+                        <span class="info"><@t.page 'category.template_path.description'/></span>
+                    </dd>
+                </dl>
+            </#if>
+                <dl class="nowrap onlyUrl">
+                    <dt><@t.page 'category.path'/>:</dt>
+                    <dd>
+                        <input name="path" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.path)!}"/>
+                        <a class="btnLook onlyUrl" href="cmsCategory/categoryPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
+                    </dd>
+                </dl>
+                <dl class="nowrap onlyUrl">
+                    <dt><@t.page 'category.content_path'/>:</dt>
+                    <dd>
+                        <input name="contentPath" type="text" autocomplete="on" maxlength="500" size="100" value="${(a.contentPath)!}"/>
+                        <a class="btnLook" href="cmsCategory/contentPath.html" width="920" lookupGroup=""><@t.page 'select_path'/></a>
+                        <#if id?has_content><span class="info"><@t.page 'category.content_path.description'/></span></#if>
+                    </dd>
+                </dl>
+            </fieldset>
             <fieldset>
                 <legend><@t.page 'category.extend_field'/>(<@t.page 'extend_field.invalid'/>:title,keywords,description)(<@t.page 'metadata.default_value_description'/>)</legend>
                 <#include "../include_page/extends.html"/>

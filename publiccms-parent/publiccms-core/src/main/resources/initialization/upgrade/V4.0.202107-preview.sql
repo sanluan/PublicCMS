@@ -19,19 +19,19 @@ CREATE TABLE `sys_datasource` (
   PRIMARY KEY (`name`)
 ) COMMENT='数据源';
 ALTER TABLE `cms_content_file`
-	DROP INDEX `cms_content_file_content_id`,
-	DROP INDEX `cms_content_file_sort`,
-	DROP INDEX `cms_content_file_user_id`,
-	ADD INDEX `cms_content_file_content_id`(`content_id`, `sort`);
+    DROP INDEX `cms_content_file_content_id`,
+    DROP INDEX `cms_content_file_sort`,
+    DROP INDEX `cms_content_file_user_id`,
+    ADD INDEX `cms_content_file_content_id`(`content_id`, `sort`);
 ALTER TABLE `cms_content`
     MODIFY COLUMN `id` bigint(20) NOT NULL FIRST;
 ALTER TABLE `cms_comment`
     MODIFY COLUMN `id` bigint(20) NOT NULL FIRST;
 -- 2021-08-06 --
 ALTER TABLE `sys_site` 
-	ADD COLUMN `directory` varchar(50) NULL COMMENT '目录' AFTER `parent_id`,
-	DROP INDEX `sys_site_parent_id`,
-	ADD UNIQUE INDEX `sys_site_parent_id`(`parent_id`, `directory`);
+    ADD COLUMN `directory` varchar(50) NULL COMMENT '目录' AFTER `parent_id`,
+    DROP INDEX `sys_site_parent_id`,
+    ADD UNIQUE INDEX `sys_site_parent_id`(`parent_id`, `directory`);
 ALTER TABLE `sys_domain` 
     ADD COLUMN `multiple` tinyint(1) NOT NULL COMMENT '站点群' AFTER `wild`;
 
@@ -231,3 +231,12 @@ UPDATE `sys_module` SET `sort` = 4 WHERE `id` ='domain_list';
 UPDATE `sys_module_lang` SET `value` =  'Category type management' WHERE `lang` ='en' and module_id = 'category_type_list';
 UPDATE `sys_module_lang` SET `value` =  '分類タイプ管理' WHERE `lang` ='ja' and module_id = 'category_type_list';
 UPDATE `sys_module_lang` SET `value` =  '分类类型管理' WHERE `lang` ='zh' and module_id = 'category_type_list';
+-- 2022-01-20 --
+DELETE FROM `sys_extend_field` WHERE `extend_id` IN (SELECT `id` FROM `sys_extend` WHERE `item_type` = 'categoryType');
+DELETE FROM `sys_extend` WHERE `item_type` = 'categoryType';
+DELETE FROM `sys_extend` WHERE id NOT IN (SELECT `extend_id` FROM `sys_extend_field`);
+UPDATE `cms_category` SET extend_id = NULL WHERE extend_id NOT IN (SELECT `id` FROM `sys_extend`);
+ALTER TABLE `sys_user`
+    CHANGE COLUMN `superuser_access` `superuser` tinyint(1) NOT NULL COMMENT '是否管理员' after `email_checked`,
+    CHANGE COLUMN `owns_all_content` int(11) NOT NULL COMMENT '内容权限(0尽自己,1所有人,2本部门)' after `dept_id`;
+UPDATE `cms_content` a SET `dept_id` = (SELECT `dept_id` FROM `sys_user` WHERE `id`=a.`user_id`) WHERE `dept_id` is NULL;

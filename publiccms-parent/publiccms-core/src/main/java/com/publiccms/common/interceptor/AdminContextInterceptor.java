@@ -103,7 +103,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 }
             }
             SysUser entity = sysUserService.getEntity(user.getId());
-            if (null == entity || entity.isDisabled() || !entity.isSuperuserAccess() || null == site || site.isDisabled()
+            if (null == entity || entity.isDisabled() || !entity.isSuperuser() || null == site || site.isDisabled()
                     || site.getId() != entity.getSiteId()) {
                 ControllerUtils.clearAdminToSession(request.getContextPath(), session, response);
                 try {

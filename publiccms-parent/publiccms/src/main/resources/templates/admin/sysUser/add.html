@@ -19,8 +19,7 @@
             <dt><@t.page 'user.username'/>:</dt>
             <dd>
                 <input class="required" name="name" type="text" maxlength="20" size="20" value="${(a.name)!}"/>
-                <label><input name="superuserAccess" type="checkbox" onclick="if($(this).is(':checked')){$('.superuserAccess',navTab.getCurrentPanel()).show();}else{$('.superuserAccess',navTab.getCurrentPanel()).hide();}"/><@t.page 'admin'/></label>
-                <label class="superuserAccess hide"><input name="ownsAllContent" type="checkbox"<#if !a?has_content||a.ownsAllContent> checked="true"</#if>/><@t.page 'user.own_all_content'/></label>
+                <label><input name="superuser" type="checkbox" onclick="if($(this).is(':checked')){$('.superuser',navTab.getCurrentPanel()).show();}else{$('.superuser',navTab.getCurrentPanel()).hide();}"/><@t.page 'admin'/></label>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -30,6 +29,16 @@
                 <input readonly="readonly" name="deptName" type="text" size="10" value="${(dept.name)!}"/>
                 <a class="btnLook" href="sysDept/lookup.html" width="920" lookupGroup=""><@t.page 'dept.select'/></a>
                 <span class="info"><@t.page 'user.dept.description'/></span>
+            </dd>
+        </dl>
+        <dl class="nowrap">
+            <dt><@t.page 'user.content_permissions'/>:</dt>
+            <dd>
+                <select class="combox" name="contentPermissions" class="required">
+                    <option value="0"${(!a?has_content||0=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.0'/></option>
+                    <option value="1"${(a?has_content&&1=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.1'/></option>
+                    <option value="2"${(a?has_content&&2=a.contentPermissions)?then(' selected="true"','')?no_esc}><@t.page 'user.content_permissions.2'/></option>
+                </select>
             </dd>
         </dl>
         <dl class="nowrap">
@@ -61,7 +70,7 @@
             <dt><@t.page 'email'/>:</dt>
             <dd><input name="email" type="text" size="30" maxlength="50" value="${(a.email)!}"/></dd>
         </dl>
-        <fieldset class="superuserAccess hide">
+        <fieldset class="superuser hide">
             <legend><i class="icon-user-md icon-large"></i> <@t.page 'role'/></legend>
             <ul class="tree treeFolder treeCheck expand">
         <@_sysRoleList>
@@ -71,9 +80,9 @@
         </@_sysRoleList>
             </ul>
         </fieldset>
-<#if a?has_content&&a.superuserAccess>
+<#if a?has_content&&a.superuser>
 <script>
-    $('input[name=superuserAccess]',navTab.getCurrentPanel()).click();
+    $('input[name=superuser]',navTab.getCurrentPanel()).click();
 <#if a.roles?has_content>
     <#list a.roles?split(',') as role>
         $('.tree li a[tname=roleIds][tvalue=${role?js_string}]',navTab.getCurrentPanel()).prop('checked',true);

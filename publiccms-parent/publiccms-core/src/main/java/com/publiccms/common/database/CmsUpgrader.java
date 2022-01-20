@@ -42,7 +42,7 @@ public class CmsUpgrader extends AbstractCmsUpgrader {
      *
      */
     private final static List<String> VERSION_LIST = Arrays.asList(VERSION_20170708, VERSION_20180210, VERSION_180707,
-            VERSION_180825, VERSION_181024, VERSION_190312, VERSION_2019, VERSION_202004, VERSION_202011);
+            VERSION_180825, VERSION_181024, VERSION_190312, VERSION_2019, VERSION_202004, VERSION_202011, VERSION_202107);
 
     /**
      * @throws SQLException

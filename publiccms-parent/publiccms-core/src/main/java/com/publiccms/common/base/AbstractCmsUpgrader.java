@@ -131,7 +131,7 @@ public abstract class AbstractCmsUpgrader {
 
     protected void updateCategoryType(StringWriter stringWriter, Connection connection) {
         try (Statement statement = connection.createStatement();
-                ResultSet rs = statement.executeQuery("select * from cms_model");) {
+                ResultSet rs = statement.executeQuery("select * from cms_category_type");) {
             while (rs.next()) {
                 try {
                     CmsCategoryType entity = new CmsCategoryType();
@@ -149,7 +149,7 @@ public abstract class AbstractCmsUpgrader {
                     }
                     entity.setId(rs.getString("id"));
                     entity.setName(rs.getString("name"));
-                    entity.setSort(rs.getInt("name"));
+                    entity.setSort(rs.getInt("sort"));
                     entity.setOnlyUrl(false);
                     entity.setTemplatePath((String) rs.getString("template_path"));
                     if (null != rs.getString("extend_id")) {
@@ -167,7 +167,7 @@ public abstract class AbstractCmsUpgrader {
                                 if (e.getMaxlength() != null && 0 == e.getMaxlength()) {
                                     e.setMaxlength(null);
                                 }
-                                e.setDictionaryId(extendFieldRs.getString("dictionaryId"));
+                                e.setDictionaryId(extendFieldRs.getString("dictionary_id"));
                                 extendList.add(e);
                             }
                         } catch (SQLException e1) {

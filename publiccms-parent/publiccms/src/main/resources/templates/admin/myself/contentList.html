@@ -13,6 +13,9 @@
         <input name="parentId" type="hidden" value="${(parent.id)!}"/>
         <div class="searchBar">
             <ul class="searchContent">
+                <li>
+                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
+                </li>
                 <li class="width:auto">
                     <#include "../include_page/status.html"/>
                 </li>
@@ -21,9 +24,6 @@
                     <input type="text" name="startPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${startPublishDate!}" />
                     <span>-</span>
                     <input type="text" name="endPublishDate" class="date" size="10" autocomplete="off" dateFmt="yyyy-MM-dd" value="${endPublishDate!}" />
-                </li>
-                <li>
-                    <label><@t.page 'title'/>:</label><input type="text" size="20" name="title" value="${title!}" />
                 </li>
                 <li style="width:auto">
                     <label><@t.page 'model'/>:</label>
