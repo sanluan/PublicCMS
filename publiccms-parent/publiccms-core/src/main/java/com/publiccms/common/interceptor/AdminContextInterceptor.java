@@ -56,8 +56,8 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             String currentSiteId = request.getParameter("currentSiteId");
             if (null != currentSiteId) {
                 try {
-                    RequestUtils.addCookie(ctxPath, response, CommonConstants.getCookiesSite(), currentSiteId, Integer.MAX_VALUE,
-                            null);
+                    RequestUtils.addCookie(ctxPath, request.getScheme(), response, CommonConstants.getCookiesSite(),
+                            currentSiteId, Integer.MAX_VALUE, null);
                     StringBuilder sb = new StringBuilder(ctxPath);
                     sb.append(adminContextPath).append(CommonConstants.SEPARATOR);
                     response.sendRedirect(sb.toString());
@@ -71,7 +71,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
                 site = siteComponent.getSiteById(cookie.getValue());
                 if (null == site || (null == site.getParentId() || site.getParentId() != domain.getSiteId())
                         && site.getId() != domain.getSiteId()) {
-                    RequestUtils.cancleCookie(ctxPath, response, CommonConstants.getCookiesSite(), null);
+                    RequestUtils.cancleCookie(ctxPath, request.getScheme(), response, CommonConstants.getCookiesSite(), null);
                 }
             }
         }
@@ -94,7 +94,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             SysUser user = initUser(ControllerUtils.getAdminFromSession(session), LogLoginService.CHANNEL_WEB_MANAGER,
                     CommonConstants.getCookiesAdmin(), site, request, response);
             if (null == user) {
-                ControllerUtils.clearAdminToSession(request.getContextPath(), session, response);
+                ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), session, response);
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
                     return false;
@@ -105,7 +105,7 @@ public class AdminContextInterceptor extends WebContextInterceptor {
             SysUser entity = sysUserService.getEntity(user.getId());
             if (null == entity || entity.isDisabled() || !entity.isSuperuser() || null == site || site.isDisabled()
                     || site.getId() != entity.getSiteId()) {
-                ControllerUtils.clearAdminToSession(request.getContextPath(), session, response);
+                ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), session, response);
                 try {
                     redirectLogin(ctxPath, path, request.getQueryString(), request.getHeader("X-Requested-With"), response);
                     return false;

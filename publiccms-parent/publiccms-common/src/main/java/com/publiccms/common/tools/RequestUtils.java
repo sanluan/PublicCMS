@@ -49,7 +49,6 @@ public class RequestUtils {
         }
         return url;
     }
-    
 
     /**
      * @param string
@@ -109,6 +108,7 @@ public class RequestUtils {
 
     /**
      * @param contextPath
+     * @param schema
      * @param response
      * @param name
      * @param value
@@ -116,8 +116,8 @@ public class RequestUtils {
      * @param domain
      * @return cookie
      */
-    public static Cookie addCookie(String contextPath, HttpServletResponse response, String name, String value, Integer expiry,
-            String domain) {
+    public static Cookie addCookie(String contextPath, String schema, HttpServletResponse response, String name, String value,
+            Integer expiry, String domain) {
         if (null != name) {
             name = name.replaceAll("\r|\n", Constants.BLANK);
         }
@@ -131,6 +131,8 @@ public class RequestUtils {
         if (CommonUtils.notEmpty(domain)) {
             cookie.setDomain(domain);
         }
+        cookie.setSecure("https".equalsIgnoreCase(schema));
+        cookie.setHttpOnly(true);
         cookie.setPath(CommonUtils.empty(contextPath) ? Constants.SEPARATOR : contextPath);
         response.addCookie(cookie);
         return cookie;
@@ -138,13 +140,16 @@ public class RequestUtils {
 
     /**
      * @param contextPath
+     * @param schema
      * @param response
      * @param name
      * @param domain
      */
-    public static void cancleCookie(String contextPath, HttpServletResponse response, String name, String domain) {
+    public static void cancleCookie(String contextPath, String schema, HttpServletResponse response, String name, String domain) {
         Cookie cookie = new Cookie(name, null);
         cookie.setMaxAge(0);
+        cookie.setHttpOnly(true);
+        cookie.setSecure("https".equalsIgnoreCase(schema));
         cookie.setPath(CommonUtils.empty(contextPath) ? Constants.SEPARATOR : contextPath);
         if (CommonUtils.notEmpty(domain)) {
             cookie.setDomain(domain);

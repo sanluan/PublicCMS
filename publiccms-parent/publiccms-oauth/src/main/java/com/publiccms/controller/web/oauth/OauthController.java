@@ -89,9 +89,9 @@ public class OauthController {
         OauthGateway oauthGateway = oauthComponent.get(channel);
         if (null != oauthGateway && oauthGateway.enabled(site.getId())) {
             String state = UUID.randomUUID().toString();
-            RequestUtils.addCookie(request.getContextPath(), response, STATE_COOKIE_NAME, state, null, null);
+            RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, STATE_COOKIE_NAME, state, null, null);
             returnUrl = siteConfigComponent.getSafeUrl(returnUrl, site, request.getContextPath());
-            RequestUtils.addCookie(request.getContextPath(), response, RETURN_URL, returnUrl, null, null);
+            RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, returnUrl, null, null);
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + oauthGateway.getAuthorizeUrl(site.getId(), state);
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + site.getDynamicPath();
@@ -113,7 +113,7 @@ public class OauthController {
             HttpServletRequest request, HttpSession session, HttpServletResponse response, ModelMap model) {
         OauthGateway oauthGateway = oauthComponent.get(channel);
         Cookie cookie = RequestUtils.getCookie(request.getCookies(), RETURN_URL);
-        RequestUtils.cancleCookie(request.getContextPath(), response, RETURN_URL, null);
+        RequestUtils.cancleCookie(request.getContextPath(), request.getScheme(), response, RETURN_URL, null);
         String returnUrl;
         Map<String, String> config = configComponent.getConfigData(site.getId(), Config.CONFIG_CODE_SITE);
         String safeReturnUrl = config.get(SiteConfigComponent.CONFIG_RETURN_URL);
@@ -125,7 +125,7 @@ public class OauthController {
         }
 
         Cookie stateCookie = RequestUtils.getCookie(request.getCookies(), STATE_COOKIE_NAME);
-        RequestUtils.cancleCookie(request.getContextPath(), response, STATE_COOKIE_NAME, null);
+        RequestUtils.cancleCookie(request.getContextPath(), request.getScheme(), response, STATE_COOKIE_NAME, null);
         if (null != oauthGateway && oauthGateway.enabled(site.getId()) && null != stateCookie && null != state
                 && state.equals(stateCookie.getValue())) {
             try {

@@ -260,7 +260,7 @@ public class LoginController {
                     }
                 }
             }
-            ControllerUtils.clearUserToSession(request.getContextPath(), request.getSession(), response);
+            ControllerUtils.clearUserToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
     }
@@ -271,8 +271,8 @@ public class LoginController {
         ControllerUtils.setUserToSession(request.getSession(), user);
         StringBuilder sb = new StringBuilder();
         sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
-        RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesUser(), sb.toString(),
-                expiryMinutes * 60, null);
+        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesUser(),
+                sb.toString(), expiryMinutes * 60, null);
     }
 
     /**

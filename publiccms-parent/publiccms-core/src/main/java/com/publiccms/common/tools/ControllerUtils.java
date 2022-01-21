@@ -310,11 +310,12 @@ public class ControllerUtils {
 
     /**
      * @param contextPath
+     * @param scheme
      * @param session
      * @param response
      */
-    public static void clearUserToSession(String contextPath, HttpSession session, HttpServletResponse response) {
-        RequestUtils.cancleCookie(contextPath, response, CommonConstants.getCookiesUser(), null);
+    public static void clearUserToSession(String contextPath, String scheme, HttpSession session, HttpServletResponse response) {
+        RequestUtils.cancleCookie(contextPath, scheme, response, CommonConstants.getCookiesUser(), null);
         session.removeAttribute(CommonConstants.getSessionUser());
     }
 
@@ -343,11 +344,12 @@ public class ControllerUtils {
 
     /**
      * @param contextPath
+     * @param scheme 
      * @param session
      * @param response
      */
-    public static void clearAdminToSession(String contextPath, HttpSession session, HttpServletResponse response) {
-        RequestUtils.cancleCookie(contextPath, response, CommonConstants.getCookiesAdmin(), null);
+    public static void clearAdminToSession(String contextPath, String scheme, HttpSession session, HttpServletResponse response) {
+        RequestUtils.cancleCookie(contextPath, scheme, response, CommonConstants.getCookiesAdmin(), null);
         session.removeAttribute(CommonConstants.getSessionAdmin());
     }
 

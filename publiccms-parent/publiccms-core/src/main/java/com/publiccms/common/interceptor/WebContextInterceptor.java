@@ -88,12 +88,12 @@ public class WebContextInterceptor implements HandlerInterceptor {
                                 }
                             }
                         }
-                        ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
+                        ControllerUtils.clearUserToSession(request.getContextPath(), request.getScheme(), session, response);
                     }
                 }
             }
         } else if (null != session) {
-            ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
+            ControllerUtils.clearUserToSession(request.getContextPath(), request.getScheme(), session, response);
         }
         localeChangeInterceptor.preHandle(request, response, handler);
         return true;
@@ -123,13 +123,13 @@ public class WebContextInterceptor implements HandlerInterceptor {
                         if (null != userToken) {
                             sysUserTokenService.delete(userToken.getAuthToken());
                         }
-                        RequestUtils.cancleCookie(contextPath, response, cookiesName, null);
+                        RequestUtils.cancleCookie(contextPath, request.getScheme(), response, cookiesName, null);
                     }
                 } catch (NumberFormatException e) {
-                    RequestUtils.cancleCookie(contextPath, response, cookiesName, null);
+                    RequestUtils.cancleCookie(contextPath, request.getScheme(), response, cookiesName, null);
                 }
             } else {
-                RequestUtils.cancleCookie(contextPath, response, cookiesName, null);
+                RequestUtils.cancleCookie(contextPath, request.getScheme(), response, cookiesName, null);
             }
         } else if (null != user && (null == userCookie || CommonUtils.empty(userCookie.getValue()))) {
             user = null;

@@ -122,8 +122,8 @@ public class LoginAdminController {
                 DateUtils.addMinutes(now, expiryMinutes), ip));
         StringBuilder sb = new StringBuilder();
         sb.append(user.getId()).append(CommonConstants.getCookiesUserSplit()).append(authToken);
-        RequestUtils.addCookie(request.getContextPath(), response, CommonConstants.getCookiesAdmin(), sb.toString(),
-                expiryMinutes * 60, null);
+        RequestUtils.addCookie(request.getContextPath(), request.getScheme(), response, CommonConstants.getCookiesAdmin(),
+                sb.toString(), expiryMinutes * 60, null);
         logLoginService.save(new LogLogin(site.getId(), username, user.getId(), ip, LogLoginService.CHANNEL_WEB_MANAGER, true,
                 CommonUtils.getDate(), null));
         String safeReturnUrl = config.get(SiteConfigComponent.CONFIG_RETURN_URL);
@@ -179,7 +179,7 @@ public class LoginAdminController {
                 || ControllerUtils.verifyNotEquals("repassword", password, repassword, model)) {
             return CommonConstants.TEMPLATE_ERROR;
         } else {
-            ControllerUtils.clearAdminToSession(request.getContextPath(), request.getSession(), response);
+            ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
             model.addAttribute(CommonConstants.MESSAGE, "message.needReLogin");
         }
         String salt = UserPasswordUtils.getSalt();
@@ -188,8 +188,8 @@ public class LoginAdminController {
             service.updateWeekPassword(user.getId(), false);
         }
         sysUserTokenService.delete(user.getId());
-        logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER, "changepassword",
-                RequestUtils.getIpAddress(request), CommonUtils.getDate(), encodedOldPassword));
+        logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
+                "changepassword", RequestUtils.getIpAddress(request), CommonUtils.getDate(), encodedOldPassword));
         return "common/ajaxTimeout";
     }
 
@@ -225,7 +225,7 @@ public class LoginAdminController {
                     }
                 }
             }
-            ControllerUtils.clearAdminToSession(request.getContextPath(), request.getSession(), response);
+            ControllerUtils.clearAdminToSession(request.getContextPath(), request.getScheme(), request.getSession(), response);
         }
         return UrlBasedViewResolver.REDIRECT_URL_PREFIX + CommonConstants.getDefaultPage();
     }

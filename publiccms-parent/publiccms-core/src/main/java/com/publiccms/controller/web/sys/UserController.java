@@ -113,15 +113,15 @@ public class UserController {
                     }
                 }
             }
-            ControllerUtils.clearUserToSession(request.getContextPath(), session, response);
+            ControllerUtils.clearUserToSession(request.getContextPath(), request.getScheme(), session, response);
             String salt = UserPasswordUtils.getSalt();
             service.updatePassword(user.getId(), UserPasswordUtils.passwordEncode(password, salt, encoding), salt);
             if (user.isWeakPassword() && !UserPasswordUtils.isWeek(user.getName(), password)) {
                 service.updateWeekPassword(user.getId(), false);
             }
             model.addAttribute(CommonConstants.MESSAGE, CommonConstants.SUCCESS);
-            logOperateService.save(new LogOperate(site.getId(), user.getId() , user.getDeptId(), LogLoginService.CHANNEL_WEB, "changepassword",
-                    RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
+            logOperateService.save(new LogOperate(site.getId(), user.getId(), user.getDeptId(), LogLoginService.CHANNEL_WEB,
+                    "changepassword", RequestUtils.getIpAddress(request), CommonUtils.getDate(), user.getPassword()));
             return UrlBasedViewResolver.REDIRECT_URL_PREFIX + returnUrl;
         }
     }
