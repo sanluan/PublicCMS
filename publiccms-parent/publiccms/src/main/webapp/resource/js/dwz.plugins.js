@@ -401,14 +401,18 @@ DWZ.regPlugins.push(function($p){
         $btn=$(this);
         $input=$('input[name='+escapeJquery($(this).attr('ref'))+']',$(this).parents(".unitBox:first"));
         function control(){
-            if($input.val()){
-                $btn.show();
+            if($(this).val()){
+                $('a.view[target=_blank][ref='+escapeJquery($(this).attr('name'))+']').show();
             }else{
-                $btn.hide();
+                $('a.view[target=_blank][ref='+escapeJquery($(this).attr('name'))+']').hide();
             }
         }
         $input.change(control);
-        control();
+        if($input.val()){
+            $btn.show();
+        }else{
+            $btn.hide();
+        }
         $btn.click(function(){
             var value=$('input[name='+escapeJquery($(this).attr('ref'))+']',$(this).parents(".unitBox:first")).val();
             if(value){
