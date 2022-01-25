@@ -87,11 +87,11 @@ header .nav .selected ul{display:block;}
 /* Tree */
 .tree li{clear:both;display:block;line-height:30px;cursor:pointer;}
 .tree div, .tree a, .tree span{display:inherit;height:30px;line-height:30px;white-space:nowrap;}
-.tree div div{float:left;display:block;overflow:hidden;width:25px;height:30px;border:none;}
+.tree div div{float:left;display:block;overflow:hidden;width:22px;height:30px;border:none;}
 .tree.treeFolder li>div>div:first-child{padding-left:10px;}
 .tree a, .tree a:hover{text-decoration:none;}
 .tree .indent{background:none;}
-.tree .collapsable,.tree .end_collapsable,.tree .end_expandable,.tree .expandable,.tree .file,.tree .folder_collapsable,.tree .folder_expandable,.tree .last_collapsable,.tree .last_expandable, .tree .first_collapsable, .tree .first_expandable{font-family:iconfont;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:30px;width:25px;}
+.tree .collapsable,.tree .end_collapsable,.tree .end_expandable,.tree .expandable,.tree .file,.tree .folder_collapsable,.tree .folder_expandable,.tree .last_collapsable,.tree .last_expandable, .tree .first_collapsable, .tree .first_expandable{font-family:iconfont;font-size:16px;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;line-height:30px;width:22px;}
 .tree .folder_collapsable:before{content:"\e67d";}
 .tree .collapsable:before,.tree .end_collapsable:before,.tree .last_collapsable:before, .tree .first_collapsable:before{content:"\e668";}
 .tree .folder_expandable:before{content:"\e60f";}
