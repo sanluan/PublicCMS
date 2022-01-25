@@ -54,13 +54,13 @@
             <tr target="sid" rel="${a.id}">
                 <td class="center"><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id!}</td>
-                <td>
+                <td class="wrap">
+                    <#if a.cover?has_content || (contentMap[a.contentId?string].cover)?has_content>
+                        <div class="thumbnail">
+                            <img src="${(a.cover)!(contentMap[a.contentId?string].cover)!}"/>
+                        </div>
+                    </#if>
                     <div class="box">
-                        <#if a.cover?has_content || (contentMap[a.contentId?string].cover)?has_content>
-                            <div class="thumbnail">
-                                <img src="${(a.cover)!(contentMap[a.contentId?string].cover)!}"/>
-                            </div>
-                        </#if>
                         <h3>${a.title!}</h3>
                         <p class="exclude-translate">
                             <a href="cmsContent/view.html?id=${a.contentId!}" class="exclude-translate" target="dialog" rel="viewContent${a.contentId!}">${(contentMap[a.contentId?string].title)!}</a>

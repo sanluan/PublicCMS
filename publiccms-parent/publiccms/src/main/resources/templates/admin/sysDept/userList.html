@@ -59,7 +59,6 @@
         <thead>
             <tr>
                 <th width="30"><@t.page 'id'/></th>
-                <th><@t.page 'cover'/></th>
                 <th width="200"><@t.page 'user.username'/>/<@t.page 'user.nickname'/></th>
                 <th><@t.page 'email'/></th>
                 <th><@t.page 'email.verification_status'/></th>
@@ -75,14 +74,12 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>
+                <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
                             <img src="${getAbsoluteUrl(site.sitePath,a.cover)!}"/>
                         </div>
                     </#if>
-                </td>
-                <td>
                     <div class="box">
                         <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
                         <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickName)!} ${(a.superuser)?then('[<font color="red">'+t.pageMessage('admin')+'</font>]','')?no_esc}</p>

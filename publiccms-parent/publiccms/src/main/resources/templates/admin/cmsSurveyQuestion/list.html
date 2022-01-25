@@ -57,12 +57,12 @@
                 <td class="center">${a.id!}</td>
                 <td><a href="cmsSurvey/view.html?id=${a.surveyId}" class="exclude-translate" target="dialog" rel="viewSurvey${a.surveyId}">${(surveyMap[a.surveyId?string].title)!}</a></td>
                 <td>
+                    <#if a.cover?has_content>
+                        <div class="thumbnail">
+                            <img src="${(a.cover)!}"/>
+                        </div>
+                    </#if>
                     <div class="box">
-                        <#if a.cover?has_content>
-                            <div class="thumbnail">
-                                <img src="${(a.cover)!}"/>
-                            </div>
-                        </#if>
                         <h3 class="exclude-translate" >[<@t.page 'question.type.'+a.questionType/>] ${(a.title)!}</h3>
                     </div>
                 </td>

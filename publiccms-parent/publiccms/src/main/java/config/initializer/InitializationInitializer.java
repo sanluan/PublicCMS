@@ -25,6 +25,7 @@ import com.publiccms.common.database.CmsDataSource;
 import com.publiccms.common.proxy.UsernamePasswordAuthenticator;
 import com.publiccms.common.servlet.InstallHttpRequestHandler;
 import com.publiccms.common.servlet.InstallServlet;
+import com.publiccms.common.tools.CommonUtils;
 
 /**
  *
@@ -111,17 +112,20 @@ public class InitializationInitializer implements WebApplicationInitializer {
      * @throws IOException
      */
     public static void initEncoding() {
-        Charset old = Charset.defaultCharset();
-        if (!old.equals(CommonConstants.DEFAULT_CHARSET)) {
-            log.info(String.format("old file.encoding = %s", old));
-            try {
-                Field field = Charset.class.getDeclaredField("defaultCharset");
-                field.setAccessible(true);
-                System.setProperty("file.encoding", CommonConstants.DEFAULT_CHARSET_NAME);
-                field.set(null, null);
-            } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+        String initCharset = System.getProperty("cms.initCharset");
+        if (CommonUtils.notEmpty(initCharset) && "false".equalsIgnoreCase(initCharset)) {
+            Charset old = Charset.defaultCharset();
+            if (!old.equals(CommonConstants.DEFAULT_CHARSET)) {
+                log.info(String.format("old file.encoding = %s", old));
+                try {
+                    Field field = Charset.class.getDeclaredField("defaultCharset");
+                    field.setAccessible(true);
+                    System.setProperty("file.encoding", CommonConstants.DEFAULT_CHARSET_NAME);
+                    field.set(null, null);
+                } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+                }
+                log.info(String.format("new file.encoding = %s", Charset.defaultCharset()));
             }
-            log.info(String.format("new file.encoding = %s", Charset.defaultCharset()));
         }
     }
 

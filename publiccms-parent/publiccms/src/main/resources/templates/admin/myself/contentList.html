@@ -94,21 +94,21 @@
             <tr target="sid" rel="${contentId}">
                 <td><input name="ids" value="${contentId}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td>
+                <td class="wrap">
+                    <#if a.cover?has_content>
+                        <div class="thumbnail">
+                            <img src="${(a.cover)!}"/>
+                        </div>
+                    </#if>
                     <div class="box">
-                        <#if a.cover?has_content>
-                            <div class="thumbnail">
-                                <img src="${(a.cover)!}"/>
-                            </div>
-                        </#if>
-                            <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></h3>
-                            <p>
-                                <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
-                                <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
-                                    <label><a href="myself/contentList.html?parentId=${contentId}" class="btnText" target="navTab" rel="myself/contentList"><@t.page 'content.child_management'/></a></label>
-                                </#if>
-                                <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
-                            </p>
+                        <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${contentId}" class="exclude-translate" target="dialog" rel="viewContent${contentId}">${(a.title)!}</a></h3>
+                        <p>
+                            <label><@t.page 'model'/>:</label><span class="exclude-translate">${(modelMap[a.modelId].name)!}</span>
+                            <#if modelMap[a.modelId]?has_content&&modelMap[a.modelId].hasChild>
+                                <label><a href="myself/contentList.html?parentId=${contentId}" class="btnText" target="navTab" rel="myself/contentList"><@t.page 'content.child_management'/></a></label>
+                            </#if>
+                            <#if a.expiryDate?has_content><label><@t.page 'expiry_date'/>:</label><span class="exclude-translate">${a.expiryDate!}</span></#if>
+                        </p>
                     </div>
                 </td>
                 <td class="center">${a.scores!}</td>

@@ -50,11 +50,10 @@
     </form>
 </div>
 <div class="pageContent">
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH targetType="ajax" rel="user_list">
         <thead>
             <tr>
                 <th><@t.page 'user.select'/></th>
-                <th width="60"><@t.page 'cover'/></th>
                 <th width="200"><@t.page 'user.username'/>/<@t.page 'user.nickname'/></th>
                 <th><@t.page 'dept'/></th>
                 <th><@t.page 'email'/></th>
@@ -74,14 +73,12 @@
                 <td>
                     <a href="javascript:;" onclick="$.bringBack({'${field!'userId'}':'${a.id}','${nickNameField!'nickName'}':'${(a.nickName?js_string)!}'});return false;"><i class="icon-ok icon-large"></i> <@t.page 'select'/></a>
                 </td>
-                <td>
+                <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
                             <img src="${getAbsoluteUrl(site.sitePath,a.cover)!}"/>
                         </div>
                     </#if>
-                </td>
-                <td class="wrap">
                     <div class="box">
                         <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
                         <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickName)!}</p>

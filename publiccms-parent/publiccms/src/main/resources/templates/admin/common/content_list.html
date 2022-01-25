@@ -131,7 +131,6 @@
         <thead>
             <tr>
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
-                <th width="20"><@t.page 'cover'/></th>
                 <th width="200"><@t.page 'content'/></th>
                 <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
                 <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
@@ -156,14 +155,12 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td class="center" title="${a.id}"><input name="ids" value="${a.id}" type="checkbox"></td>
-                <td>
+                <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
                             <img src="${(a.cover)!}"/>
                         </div>
                     </#if>
-                </td>
-                <td class="wrap">
                     <div class="box">
                         <h3>[<span class="exclude-translate">${(categoryMap[a.categoryId?string].name)!}</span>] ${(a.copied?then('['+t.pageMessage('copied')+']',''))!}<a href="cmsContent/view.html?id=${a.id}" class="exclude-translate" target="dialog" rel="viewContent${a.id}">${(a.title)!}</a></h3>
                         <p>

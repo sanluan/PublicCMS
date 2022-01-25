@@ -85,14 +85,14 @@
             <tr target="sid" rel="${a.id}">
                 <td><input name="ids" value="${a.id}" type="checkbox"></td>
                 <td>${a.id}</td>
-                <td>
-                    <div class="box">
-                        <h3><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a></h3>
+                <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
                             <img src="${(a.cover)!}"/>
                         </div>
                     </#if>
+                    <div class="box">
+                        <h3><a href="cmsPlace/view.html?id=${a.id}" target="dialog" rel="viewContent${a.id}">${a.title}</a></h3>
                     </div>
                 </td>
                 <td>${a.publishDate}</td>

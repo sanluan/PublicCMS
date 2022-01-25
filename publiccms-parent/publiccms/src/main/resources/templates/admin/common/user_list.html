@@ -55,11 +55,10 @@
             <li><a href="sysUser/add.html" target="navTab" rel="sysUser/add"><i class="icon-plus-sign-alt icon-large"></i> <@t.page 'user.add'/></a></li>
         </ul>
     </div>
-    <table class="table" width="100%" layoutH>
+    <table class="table" width="100%" layoutH targetType="ajax" rel="userBox">
         <thead>
             <tr>
                 <th width="30"><@t.page 'id'/></th>
-                <th><@t.page 'cover'/></th>
                 <th width="200"><@t.page 'user.username'/>/<@t.page 'user.nickname'/></th>
                 <th><@t.page 'dept'/></th>
                 <th><@t.page 'email'/></th>
@@ -78,14 +77,12 @@
             <#list page.list as a>
             <tr target="sid" rel="${a.id}">
                 <td>${a.id!}</td>
-                <td>
+                <td class="wrap">
                     <#if a.cover?has_content>
                         <div class="thumbnail">
                             <img src="${getAbsoluteUrl(site.sitePath,a.cover)!}"/>
                         </div>
                     </#if>
-                </td>
-                <td class="wrap">
                     <div class="box">
                         <p class="exclude-translate"><@t.page 'user.username'/>:${(a.name)!}</p>
                         <p class="exclude-translate"><@t.page 'user.nickname'/>:${(a.nickName)!}</p>

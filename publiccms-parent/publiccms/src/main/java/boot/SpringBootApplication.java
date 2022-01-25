@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 
 import com.publiccms.common.constants.CommonConstants;
+import com.publiccms.common.tools.CommonUtils;
 
 import config.initializer.AdminInitializer;
 import config.initializer.ApiInitializer;
@@ -55,9 +56,12 @@ public class SpringBootApplication {
             factory = new UndertowServletWebServerFactory();
         } else {
             TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-            RemoteIpValve valve = new RemoteIpValve();
-            valve.setProtocolHeader("X-Forwarded-Proto");
-            tomcat.addEngineValves(valve);
+            String initProto = System.getProperty("cms.initProto");
+            if (CommonUtils.notEmpty(initProto) && "false".equalsIgnoreCase(initProto)) {
+                RemoteIpValve valve = new RemoteIpValve();
+                valve.setProtocolHeader("X-Forwarded-Proto");
+                tomcat.addEngineValves(valve);
+            }
             factory = tomcat;
         }
         Set<ErrorPage> errorPageSet = factory.getErrorPages();
