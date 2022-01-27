@@ -238,5 +238,5 @@ DELETE FROM `sys_extend` WHERE id NOT IN (SELECT `extend_id` FROM `sys_extend_fi
 UPDATE `cms_category` SET extend_id = NULL WHERE extend_id NOT IN (SELECT `id` FROM `sys_extend`);
 ALTER TABLE `sys_user`
     CHANGE COLUMN `superuser_access` `superuser` tinyint(1) NOT NULL COMMENT '是否管理员' after `email_checked`,
-    CHANGE COLUMN `owns_all_content` int(11) NOT NULL COMMENT '内容权限(0尽自己,1所有人,2本部门)' after `dept_id`;
+    CHANGE COLUMN `owns_all_content` `content_permissions`  int(11) NOT NULL COMMENT '内容权限(0仅自己,1所有人,2本部门)' after `dept_id`;
 UPDATE `cms_content` a SET `dept_id` = (SELECT `dept_id` FROM `sys_user` WHERE `id`=a.`user_id`) WHERE `dept_id` is NULL;

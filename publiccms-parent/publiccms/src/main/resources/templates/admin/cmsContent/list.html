@@ -11,7 +11,7 @@
                     <a href="javascript:;" onclick="return false;"><@t.page 'category'/></a>
                 </#if>
                 <ul>
-                    <@_categoryList advanced=true parentId=parentId pageSize=500>
+                    <@_categoryList advanced=true pageSize=500>
                         <#list page.list as a>
                             <@t.merge 'categoryIds' a.id!/>
                         </#list>
