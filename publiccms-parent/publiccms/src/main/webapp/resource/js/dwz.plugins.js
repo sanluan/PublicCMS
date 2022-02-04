@@ -247,10 +247,16 @@ DWZ.regPlugins.push(function($p){
         }
         var index = window.photoclip.index++;
         var dataId = "photoclip_"+index;
-        var width = parseInt($uploadWrap.parents("form:first").find("input[name=width]").val());
-        var height = parseInt($uploadWrap.parents("form:first").find("input[name=height]").val());
+        var widthInput=$uploadWrap.parents("form:first").find("input[name=width]");
+        var heightInput=$uploadWrap.parents("form:first").find("input[name=height]");
+        widthInput.change(function(){
+            DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
+        });
+        heightInput.change(function(){
+            DWZ.instances[$uploadWrap.parent().find('.image-editor').data("id")].size(parseInt(widthInput.val()),parseInt(heightInput.val()));
+        });
         var options= {
-            size: [width, height],
+            size: [parseInt(widthInput.val()), parseInt(heightInput.val())],
             ok: $this.find('.button'),
             done: function(dataURL){
                 if ($.isFunction(callback) ) {

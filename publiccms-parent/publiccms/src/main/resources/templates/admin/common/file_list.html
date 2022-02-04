@@ -2,7 +2,7 @@
     <@_webFileList path=path>
         <#if path?has_content>
             <div class="image-list">
-                <a href="common/file_list.html?path=${path?keep_before_last('/')?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&width=${width!}&height=${height!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${path?keep_before_last('/')}">
+                <a href="common/file_list.html?path=${path?keep_before_last('/')?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${path?keep_before_last('/')}">
                     <i class="thumb icon-folder-open-alt icon-large"></i>
                     <p><@t.page 'button.return'/></p>
                 </a>
@@ -12,16 +12,14 @@
         <#assign filePath=path?has_content?then(path+'/','/')+a.fileName/>
             <div class="image-list">
                 <#if a.directory>
-                    <a href="common/file_list.html?path=${filePath?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&width=${width!}&height=${height!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${filePath}">
+                    <a href="common/file_list.html?path=${filePath?url}&field=${(field?url)!}&originalField=${(originalField?url)!}&fileTypes=${fileTypes!}" target="ajax" rel="fileBox" title="${filePath}">
                         <i class="thumb icon-folder-close-alt icon-large"></i>
                         <p>${a.fileName}</p>
                     </a>
                 <#elseif !fileTypes?has_content || fileTypes = t.fileType(a.fileName)>
                     <#if fileTypes?has_content && fileTypes = 'image'>
                         <img src="${site.sitePath+filePath}" alt="${a.fileName}" title="${a.fileName}(<@t.fileSize a.size/>)">
-                        <#if width?has_content && height?has_content>
-                            <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+filePath!}',imgName:'${a.fileName!}'});return false;"></a>
-                        </#if>
+                        <a href="javascript:;" class="edit-icon" onclick="$('.tabImageBtn',$.pdialog.getCurrent()).click();$('div.upload-wrap', $.pdialog.getCurrent()).editImg({imgUrl:'${site.sitePath+filePath!}',imgName:'${a.fileName!}'});return false;"></a>
                     <#else>
                         <i class="thumb icon-file-alt icon-large"></i>
                     </#if>

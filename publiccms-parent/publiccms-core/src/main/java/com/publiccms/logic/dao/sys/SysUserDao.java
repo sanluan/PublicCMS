@@ -138,6 +138,9 @@ public class SysUserDao extends BaseDao<SysUser> {
         if (null == entity.getRegisteredDate()) {
             entity.setRegisteredDate(CommonUtils.getDate());
         }
+        if (CommonUtils.empty(entity.getCover())) {
+            entity.setCover(null);
+        }
         return entity;
     }
 }
