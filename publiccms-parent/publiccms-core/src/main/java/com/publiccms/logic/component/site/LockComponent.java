@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -98,7 +97,7 @@ public class LockComponent implements Config, SiteCache {
             expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_LOGIN_MINUTES), DEFAULT_LOGIN_EXPIRY_MINUTES);
         } else if (SysLockService.ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
             expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_REGISTER_MINUTES), DEFAULT_REGISTER_EXPIRY_MINUTES);
-        } else if (ArrayUtils.contains(SysLockService.COMMON_ITEM_TYPES, itemType)) {
+        } else {
             expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_MINUTES), DEFAULT_EXPIRY_MINUTES);
         }
         return expriy;
@@ -107,17 +106,12 @@ public class LockComponent implements Config, SiteCache {
     public boolean isLocked(short siteId, String itemType, String itemId, Long userId) {
         if (CommonUtils.notEmpty(itemType) && CommonUtils.notEmpty(itemId)) {
             Map<String, String> config = BeanComponent.getConfigComponent().getConfigData(siteId, CONFIG_CODE);
-            int expriy = 0, maxCount = 0;
-            if (ArrayUtils.contains(SysLockService.COMMON_ITEM_TYPES, itemType)) {
-                expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_MINUTES), DEFAULT_EXPIRY_MINUTES);
-            } else if (SysLockService.ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType)) {
-                expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_LOGIN_MINUTES), DEFAULT_LOGIN_EXPIRY_MINUTES);
+            int expriy = getExpriy(siteId, itemType), maxCount = 0;
+            if (SysLockService.ITEM_TYPE_LOGIN.equalsIgnoreCase(itemType)) {
                 maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_LOGIN_MAX_COUNT), DEFAULT_LOGIN_MAX_COUNT);
             } else if (SysLockService.ITEM_TYPE_IP_LOGIN.equalsIgnoreCase(itemType)) {
-                expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_LOGIN_MINUTES), DEFAULT_LOGIN_EXPIRY_MINUTES);
                 maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_IP_LOGIN_MAX_COUNT), DEFAULT_IP_LOGIN_MAX_COUNT);
             } else if (SysLockService.ITEM_TYPE_REGISTER.equalsIgnoreCase(itemType)) {
-                expriy = ConfigComponent.getInt(config.get(CONFIG_LOCK_EXPIRY_REGISTER_MINUTES), DEFAULT_REGISTER_EXPIRY_MINUTES);
                 maxCount = ConfigComponent.getInt(config.get(CONFIG_LOCK_REGISTER_MAX_COUNT), DEFAULT_REGISTER_MAX_COUNT);
             }
             if (expriy > 0) {

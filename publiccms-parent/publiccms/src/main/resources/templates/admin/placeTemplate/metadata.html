@@ -6,13 +6,12 @@
         <#if a?has_content>
             <li><a class="button" href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@t.page 'template.content'/></a></li>
         </#if>
-            <@_createLock itemType='template' itemId=path userId=admin.id>
+            <@_createLock itemType='placeTemplate' itemId=path userId=admin.id>
                 <#if object?has_content>
-            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
-            <li><a target="ajaxTodo" href="common/lock?itemType=template&itemId=${path}&lock=false" callback="(function(){navTab.reload();})" class="button"><@t.page 'button.close'/></a></li>
+            <li><button type="submit" class="buttonActive lock" url="common/lock?itemType=placeTemplate&itemId=${(path?url)!}&lock=false"><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
-                <@_sysLock itemType='template' itemId=path>
+                <@_sysLock itemType='placeTemplate' itemId=path>
                     <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
                 <button type="button" class="buttonDisabled" title="${lock.createDate}"><@t.page 'lock.message' lockUser/></button>
                 </@_sysLock>

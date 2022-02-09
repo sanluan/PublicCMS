@@ -1,13 +1,28 @@
 <#macro placeTree filepath=''>
     <@_templateList path='/include'+filepath orderField='createDate'>
         <#list list as a>
+            <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
+        </#list>
+        <@_sysLock itemType='placeTemplate' itemIds=t.paths><#assign lockMap=map!/></@_sysLock>
+        <#if lockMap?has_content>
+            <#list lockMap as k,lock>
+                <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
+            </#list>
+        </#if>
+        <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
+        <#list list as a>
             <li>
                 <#local path=filepath+'/'+a.fileName>
                 <#if a.directory>
                     <a href="placeTemplate/directory.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace">${a.fileName}</a>
                     <ul><@placeTree path/></ul>
                 <#else>
-                   <a href="placeTemplate/content.html?path=${(path?url)!}" target="ajax" rel="cmsTemplatePlace"><@_placeMetadata path=path><#if 0 lt ((object.size)!0)><@t.page 'place_data.place'/>:</#if>${(object.alias)!a.fileName}</@_placeMetadata></a>
+                    <a href="placeTemplate/content.html?path=${(path?url)!}" <#if lockMap[path]?has_content><#assign lockUser=(userMap[lockMap[path].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[path].createDate}"</#if> target="ajax" rel="cmsTemplatePlace">
+                        <@_placeMetadata path=path>
+                            <#if lockMap[path]?has_content><i class="icon-lock icon-large"></i> </#if><#if 0 lt ((object.size)!0)><@t.page 'place_data.place'/>:</#if>
+                            ${(object.alias)!a.fileName}
+                        </@_placeMetadata>
+                    </a>
                 </#if>
             </li>
         <#else>

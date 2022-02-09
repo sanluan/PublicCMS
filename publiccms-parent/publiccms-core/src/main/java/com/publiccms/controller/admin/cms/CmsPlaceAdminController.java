@@ -48,7 +48,6 @@ import com.publiccms.entities.sys.SysDept;
 import com.publiccms.entities.sys.SysDeptPageId;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.MetadataComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -58,7 +57,6 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptPageService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsPlaceMetadata;
 import com.publiccms.views.pojo.model.ExtendDataParameters;
@@ -88,8 +86,6 @@ public class CmsPlaceAdminController {
     private SysDeptService sysDeptService;
     @Autowired
     protected LogOperateService logOperateService;
-    @Autowired
-    protected LockComponent lockComponent;
     @Autowired
     protected SiteComponent siteComponent;
     @Autowired
@@ -139,8 +135,6 @@ public class CmsPlaceAdminController {
                 }
                 entity = service.update(entity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_PLACE, String.valueOf(entity.getId()),
-                            admin.getId());
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.place", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), JsonUtils.getString(entity)));

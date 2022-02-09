@@ -13,7 +13,18 @@
             <li><a class="button" href="sysConfigData/delete?code=${code}&navTabId=sysConfigData/edit&_csrf=<@_csrfToken admin=true/>" title="<@t.page 'confirm.clear_config'/>" target="ajaxTodo"><@t.page 'button.clear_config'/></a></li>
         </#if>
         <#if authorizedMap['sysConfigData/save']>
-            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
+            <@_createLock itemType='config' itemId=code userId=admin.id>
+                <#if object?has_content>
+            <li><button type="submit" class="buttonActive lock" url="common/lock?itemType=config&itemId=${code!}&lock=false"><@t.page 'button.save'/></button></li>
+                <#else>
+            <li>
+                <@_sysLock itemType='content' itemId=id>
+                    <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
+                <button type="button" class="buttonDisabled" title="${lock.createDate}"><@t.page 'lock.message' lockUser/></button>
+                </@_sysLock>
+            </li>
+                </#if>
+            </@_createLock>
         </#if>
             <li><button type="button" class="button close"><@t.page 'button.close'/></button></li>
         </ul>

@@ -14,9 +14,21 @@
             </#list>
             <@_sysDeptConfig deptId=admin.deptId!'' configs=t.configs!><#assign deptConfigMap=map!/></@_sysDeptConfig>
     <#list list as a>
+        <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]><@t.merge 'codes' a.code/></#if>
+    </#list>
+    <@_sysLock itemType='config' itemIds=t.codes><#assign lockMap=map!/></@_sysLock>
+    <#if lockMap?has_content>
+        <#list lockMap as k,lock>
+            <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
+        </#list>
+    </#if>
+    <@_sysUser ids=t.userIds><#assign userMap=map!/></@_sysUser>
+    <#list list as a>
         <#if (deptConfigMap[a.code])?has_content&&deptConfigMap[a.code]>
             <tr target="sid" rel="${a.code!}">
-                <td>${(a.code)!}</td>
+                <td <#if lockMap[a.code]?has_content><#assign lockUser=(userMap[lockMap[a.code].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.code].createDate!}"</#if>>
+                    <#if lockMap[a.code]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.code)!}
+                </td>
                 <td>${(a.description)!}</td>
                 <td class="wrap">
                     <a href="sysConfigData/edit.html?code=${a.code!}" class="edit btnText blue" target="navTab" rel="sysConfigData/edit"><i class="icon-edit"></i> <@t.page 'config_data.edit'/></a>

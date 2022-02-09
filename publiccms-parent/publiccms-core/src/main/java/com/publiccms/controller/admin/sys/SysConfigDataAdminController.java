@@ -33,14 +33,12 @@ import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.CorsConfigComponent;
 import com.publiccms.logic.component.site.EmailComponent;
-import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysConfigDataService;
 import com.publiccms.logic.service.sys.SysDeptConfigService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.views.pojo.model.SysConfigParameters;
 
 /**
@@ -53,8 +51,6 @@ import com.publiccms.views.pojo.model.SysConfigParameters;
 public class SysConfigDataAdminController {
     @Autowired
     protected LogOperateService logOperateService;
-    @Autowired
-    protected LockComponent lockComponent;
     @Autowired
     protected SiteComponent siteComponent;
 
@@ -98,7 +94,6 @@ public class SysConfigDataAdminController {
             if (null != oldEntity) {
                 entity = service.update(oldEntity.getId(), entity, ignoreProperties);
                 if (null != entity) {
-                    lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_CONFIG, entity.getId().getCode(), admin.getId());
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                             LogLoginService.CHANNEL_WEB_MANAGER, "update.configData", RequestUtils.getIpAddress(request),
                             CommonUtils.getDate(), JsonUtils.getString(entity)));

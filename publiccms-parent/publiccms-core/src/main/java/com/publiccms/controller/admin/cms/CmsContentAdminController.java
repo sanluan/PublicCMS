@@ -53,7 +53,6 @@ import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
 import com.publiccms.logic.component.config.ConfigComponent;
 import com.publiccms.logic.component.config.SiteConfigComponent;
-import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -66,7 +65,6 @@ import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.sys.SysDeptCategoryService;
 import com.publiccms.logic.service.sys.SysDeptService;
-import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.logic.service.sys.SysSiteService;
 import com.publiccms.logic.service.sys.SysUserService;
 import com.publiccms.views.pojo.entities.CmsModel;
@@ -107,8 +105,6 @@ public class CmsContentAdminController {
     protected SiteComponent siteComponent;
     @Autowired
     protected ConfigComponent configComponent;
-    @Autowired
-    protected LockComponent lockComponent;
     @Autowired
     private SysSiteService siteService;
 
@@ -169,7 +165,6 @@ public class CmsContentAdminController {
             entity.setUpdateDate(now);
             entity = service.update(entity.getId(), entity, entity.isOnlyUrl() ? ignoreProperties : ignorePropertiesWithUrl);
             if (null != entity) {
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_CONTENT, String.valueOf(entity.getId()), admin.getId());
                 logOperateService
                         .save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                                 "update.content", RequestUtils.getIpAddress(request), now, JsonUtils.getString(entity)));

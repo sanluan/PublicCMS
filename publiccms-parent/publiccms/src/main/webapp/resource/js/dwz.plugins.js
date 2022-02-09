@@ -23,7 +23,16 @@ DWZ.regPlugins.push(function($p){
             return false;
         });
     });
-    
+});
+DWZ.regPlugins.push(function($p){
+    $p.bind(DWZ.eventType.pageClear, function(event) {
+       var box = event.target;
+        $('.lock',box).each(function (){
+            var $lock = $(this);
+            var url = $lock.attr("url");
+            $.getJSON(url, function(data) {});
+        });
+    });
 });
 DWZ.regPlugins.push(function($p){
     if($('.cmsVersion',$p).length ) {

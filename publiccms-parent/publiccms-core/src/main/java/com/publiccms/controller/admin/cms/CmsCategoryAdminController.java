@@ -30,7 +30,6 @@ import com.publiccms.entities.cms.CmsCategoryAttribute;
 import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.component.template.ModelComponent;
 import com.publiccms.logic.component.template.TemplateComponent;
@@ -38,7 +37,6 @@ import com.publiccms.logic.service.cms.CmsCategoryService;
 import com.publiccms.logic.service.cms.CmsContentService;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
-import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.views.pojo.model.CmsCategoryParameters;
 import com.publiccms.views.pojo.query.CmsCategoryQuery;
 
@@ -63,8 +61,6 @@ public class CmsCategoryAdminController {
     private ModelComponent modelComponent;
     @Autowired
     protected LogOperateService logOperateService;
-    @Autowired
-    protected LockComponent lockComponent;
     @Autowired
     protected SiteComponent siteComponent;
 
@@ -99,7 +95,6 @@ public class CmsCategoryAdminController {
                 } else if (null != entity.getParentId() && null == oldEntity.getParentId()) {
                     service.generateChildIds(site.getId(), entity.getParentId());
                 }
-                lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_CATEGORY, String.valueOf(entity.getId()), admin.getId());
                 logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(),
                         LogLoginService.CHANNEL_WEB_MANAGER, "update.category", RequestUtils.getIpAddress(request),
                         CommonUtils.getDate(), JsonUtils.getString(entity)));

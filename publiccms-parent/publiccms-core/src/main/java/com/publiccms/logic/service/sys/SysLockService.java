@@ -29,10 +29,12 @@ public class SysLockService extends BaseService<SysLock> {
     public static final String ITEM_TYPE_CONTENT = "content";
     public static final String ITEM_TYPE_FILE = "file";
     public static final String ITEM_TYPE_TEMPLATE = "template";
+    public static final String ITEM_TYPE_PLACE_TEMPLATE = "placeTemplate";
+    public static final String ITEM_TYPE_TASK_TEMPLATE = "taskTemplate";
     public static final String ITEM_TYPE_PLACE = "place";
     public static final String ITEM_TYPE_CONFIG = "config";
     public static final String[] COMMON_ITEM_TYPES = { ITEM_TYPE_CATEGORY, ITEM_TYPE_CONTENT, ITEM_TYPE_FILE, ITEM_TYPE_TEMPLATE,
-            ITEM_TYPE_PLACE, ITEM_TYPE_CONFIG };
+            ITEM_TYPE_PLACE_TEMPLATE, ITEM_TYPE_TASK_TEMPLATE, ITEM_TYPE_PLACE, ITEM_TYPE_CONFIG };
 
     /**
      * @param itemTypes

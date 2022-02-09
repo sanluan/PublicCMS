@@ -14,8 +14,7 @@
         </#if>
             <@_createLock itemType='template' itemId=path userId=admin.id>
                 <#if object?has_content>
-            <li><button type="submit" class="buttonActive"><@t.page 'button.save'/></button></li>
-            <li><a target="ajaxTodo" href="common/lock?itemType=template&itemId=${path}&lock=false" callback="(function(){navTab.reload();})" class="button"><@t.page 'button.close'/></a></li>
+            <li><button type="submit" class="buttonActive lock" url="common/lock?itemType=template&itemId=${(path?url)!}&lock=false"><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
                 <@_sysLock itemType='template' itemId=path>

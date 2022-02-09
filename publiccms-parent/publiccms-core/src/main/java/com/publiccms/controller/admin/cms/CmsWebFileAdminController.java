@@ -3,6 +3,7 @@ package com.publiccms.controller.admin.cms;
 import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,12 +29,10 @@ import com.publiccms.entities.log.LogOperate;
 import com.publiccms.entities.log.LogUpload;
 import com.publiccms.entities.sys.SysSite;
 import com.publiccms.entities.sys.SysUser;
-import com.publiccms.logic.component.site.LockComponent;
 import com.publiccms.logic.component.site.SiteComponent;
 import com.publiccms.logic.service.log.LogLoginService;
 import com.publiccms.logic.service.log.LogOperateService;
 import com.publiccms.logic.service.log.LogUploadService;
-import com.publiccms.logic.service.sys.SysLockService;
 import com.publiccms.views.pojo.entities.FileSize;
 
 /**
@@ -49,8 +48,6 @@ public class CmsWebFileAdminController {
     protected LogUploadService logUploadService;
     @Autowired
     protected LogOperateService logOperateService;
-    @Autowired
-    protected LockComponent lockComponent;
     @Autowired
     protected SiteComponent siteComponent;
 
@@ -77,7 +74,6 @@ public class CmsWebFileAdminController {
                 } else {
                     String historyFilePath = siteComponent.getWebHistoryFilePath(site, path);
                     CmsFileUtils.updateFile(filePath, historyFilePath, content);
-                    lockComponent.unLock(site.getId(), SysLockService.ITEM_TYPE_FILE, path, admin.getId());
                     logOperateService.save(new LogOperate(site.getId(), admin.getId(), admin.getDeptId(), LogLoginService.CHANNEL_WEB_MANAGER,
                             "update.web.webfile", RequestUtils.getIpAddress(request), CommonUtils.getDate(), path));
                 }
