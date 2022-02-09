@@ -52,7 +52,7 @@
                 <th><@t.page 'channel'/></th>
                 <th><@t.page 'log.login_ip'/></th>
                 <th><@t.page 'result'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.login_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.login_date'/></th>
                 <th><@t.page 'log.error_password'/></th>
             </tr>
         </thead>

@@ -113,7 +113,7 @@
                 <@_contentList categoryId=category.id startPublishDate=content.publishDate orderField='publishDate' orderType='asc' pageIndex=1 pageSize=1><#list page.list as a><a href="${a.url!}">Next:${a.title}</a></#list></@_contentList>
             </div>
             <div>
-         <#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+         <#macro merge name value><#if !.vars[name]?has_content><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
          <@_commentList contentId=content.id pageSize=10>
             <#list page.list as a>
                 <@merge 'userIds' a.userId!/>

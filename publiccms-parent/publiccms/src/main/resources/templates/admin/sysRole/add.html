@@ -53,7 +53,7 @@
                     <@moduleTree deep=0/>
                 </li>
             </ul>
-<#if a??>
+<#if a?has_content>
 <script>
     <#if a.ownsAllRight>
     $('input[name=ownsAllRight]',navTab.getCurrentPanel()).click();

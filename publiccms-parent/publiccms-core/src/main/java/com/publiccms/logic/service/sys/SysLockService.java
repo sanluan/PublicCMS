@@ -26,6 +26,7 @@ public class SysLockService extends BaseService<SysLock> {
     public static final String ITEM_TYPE_IP_LOGIN = "ipLogin";
     public static final String ITEM_TYPE_REGISTER = "register";
     public static final String ITEM_TYPE_CATEGORY = "category";
+    public static final String ITEM_TYPE_MODEL = "model";
     public static final String ITEM_TYPE_CONTENT = "content";
     public static final String ITEM_TYPE_FILE = "file";
     public static final String ITEM_TYPE_TEMPLATE = "template";
@@ -33,8 +34,8 @@ public class SysLockService extends BaseService<SysLock> {
     public static final String ITEM_TYPE_TASK_TEMPLATE = "taskTemplate";
     public static final String ITEM_TYPE_PLACE = "place";
     public static final String ITEM_TYPE_CONFIG = "config";
-    public static final String[] COMMON_ITEM_TYPES = { ITEM_TYPE_CATEGORY, ITEM_TYPE_CONTENT, ITEM_TYPE_FILE, ITEM_TYPE_TEMPLATE,
-            ITEM_TYPE_PLACE_TEMPLATE, ITEM_TYPE_TASK_TEMPLATE, ITEM_TYPE_PLACE, ITEM_TYPE_CONFIG };
+    public static final String[] COMMON_ITEM_TYPES = { ITEM_TYPE_CATEGORY, ITEM_TYPE_MODEL, ITEM_TYPE_CONTENT, ITEM_TYPE_FILE,
+            ITEM_TYPE_TEMPLATE, ITEM_TYPE_PLACE_TEMPLATE, ITEM_TYPE_TASK_TEMPLATE, ITEM_TYPE_PLACE, ITEM_TYPE_CONFIG };
 
     /**
      * @param itemTypes

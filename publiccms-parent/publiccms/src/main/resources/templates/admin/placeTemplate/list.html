@@ -3,7 +3,7 @@
         <#list list as a>
             <#if !a.directory><@t.merge 'paths' filepath+'/'+a.fileName/></#if>
         </#list>
-        <@_sysLock itemType='placeTemplate' itemIds=t.paths><#assign lockMap=map!/></@_sysLock>
+        <@_sysLock userId=admin.id itemType='placeTemplate' itemIds=t.paths><#assign lockMap=map!/></@_sysLock>
         <#if lockMap?has_content>
             <#list lockMap as k,lock>
                 <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>

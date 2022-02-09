@@ -40,7 +40,7 @@
                 <th width="30"><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
                 <th><@t.page 'tag_type'/></th>
-                <th orderField="searchCount" class="<#if orderField??&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
+                <th orderField="searchCount" class="<#if orderField?has_content&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

@@ -7,8 +7,8 @@
                 <li>
                     <select class="combox" name="multiple">
                         <option value=""${(!multiple?has_content)?then(' selected="true"','')?no_esc}><@t.page 'dictionary.type'/></option>
-                        <option value="false"${(multiple??&&"false"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'single_select'/></option>
-                        <option value="true"${(multiple??&&"true"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'multiple_select'/></option>
+                        <option value="false"${(multiple?has_content&&"false"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'single_select'/></option>
+                        <option value="true"${(multiple?has_content&&"true"=multiple)?then(' selected="true"','')?no_esc}><@t.page 'multiple_select'/></option>
                     </select>
                 </li>
             </ul>

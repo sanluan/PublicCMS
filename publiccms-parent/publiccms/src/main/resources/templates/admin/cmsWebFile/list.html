@@ -27,10 +27,10 @@
             <tr>
                 <th width="20"><input type="checkbox" group="paths" class="checkboxCtrl"></th>
                 <th width="30"></th>
-                <th orderField="fileName" class="<#if !orderField??||'fileName'==orderField>asc<#else>order</#if>"><@t.page 'name'/></th>
-                <th orderField="modifiedDate" class="<#if orderField??&&'modifiedDate'==orderField>desc<#else>order</#if>"><@t.page 'modified_date'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField>desc<#else>order</#if>"><@t.page 'create_date'/></th>
-                <th orderField="fileSize" class="<#if orderField??&&'fileSize'==orderField>desc<#else>order</#if>"><@t.page 'file.size'/></th>
+                <th orderField="fileName" class="<#if !orderField?has_content||'fileName'==orderField>asc<#else>order</#if>"><@t.page 'name'/></th>
+                <th orderField="modifiedDate" class="<#if orderField?has_content&&'modifiedDate'==orderField>desc<#else>order</#if>"><@t.page 'modified_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField>desc<#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="fileSize" class="<#if orderField?has_content&&'fileSize'==orderField>desc<#else>order</#if>"><@t.page 'file.size'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>
@@ -54,7 +54,7 @@
         <#list list as a>
             <#if !a.directory><@t.merge 'paths' path?has_content?then(path+'/','/')+a.fileName/></#if>
         </#list>
-        <@_sysLock itemType='file' itemIds=t.paths><#assign lockMap=map!/></@_sysLock>
+        <@_sysLock userId=admin.id itemType='file' itemIds=t.paths><#assign lockMap=map!/></@_sysLock>
         <#if lockMap?has_content>
             <#list lockMap as k,lock>
                 <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>

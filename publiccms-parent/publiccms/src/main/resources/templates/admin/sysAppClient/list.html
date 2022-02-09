@@ -49,9 +49,9 @@
                 <th><@t.page 'user.id'/></th>
                 <th><@t.page 'user.nickname'/></th>
                 <th><@t.page 'version'/></th>
-                <th orderField="lastLoginDate" class="<#if orderField??&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
+                <th orderField="lastLoginDate" class="<#if orderField?has_content&&'lastLoginDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'user.last_login_date'/></th>
                 <th><@t.page 'user.last_login_ip'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'disabled'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>

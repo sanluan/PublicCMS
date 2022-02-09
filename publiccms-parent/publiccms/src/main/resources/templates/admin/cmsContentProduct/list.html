@@ -36,10 +36,10 @@
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'title'/></th>
                 <th><@t.page 'content.promulgator'/></th>
-                <th orderField="price" class="<#if orderField??&&'price'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.price'/></th>
+                <th orderField="price" class="<#if orderField?has_content&&'price'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.price'/></th>
                 <th><@t.page 'product.quantity_limit'/></th>
-                <th orderField="inventory" class="<#if orderField??&&'inventory'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.inventory'/></th>
-                <th orderField="sales" class="<#if orderField??&&'sales'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.sales'/></th>
+                <th orderField="inventory" class="<#if orderField?has_content&&'inventory'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.inventory'/></th>
+                <th orderField="sales" class="<#if orderField?has_content&&'sales'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'product.sales'/></th>
                 <th width="100"><@t.page 'operate'/></th>
             </tr>
         </thead>

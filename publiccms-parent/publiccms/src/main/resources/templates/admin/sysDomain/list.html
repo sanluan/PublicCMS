@@ -17,8 +17,8 @@
                 <li>
                     <select class="combox" name="wild">
                         <option value=""${(!wild?has_content)?then(' selected="true"','')?no_esc}><@t.page 'domain.type'/></option>
-                        <option value="false"${(wild??&&"false"=wild)?then(' selected="true"','')?no_esc}><@t.page 'domain.normal'/></option>
-                        <option value="true"${(wild??&&"true"=wild)?then(' selected="true"','')?no_esc}><@t.page 'domain.wild'/></option>
+                        <option value="false"${(wild?has_content&&"false"=wild)?then(' selected="true"','')?no_esc}><@t.page 'domain.normal'/></option>
+                        <option value="true"${(wild?has_content&&"true"=wild)?then(' selected="true"','')?no_esc}><@t.page 'domain.wild'/></option>
                     </select>
                 </li>
             </ul>

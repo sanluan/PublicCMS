@@ -58,7 +58,7 @@
         <a href="login.html?returnUrl=${(site.dynamicPath+'comment.html?contentId='+content.id)?url}">Login</a>
         <a href="register.html?returnUrl=${(site.dynamicPath+'comment.html?contentId='+content.id)?url}">Register</a>
 </#if>
-<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+<#macro merge name value><#if !.vars[name]?has_content><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
 <@_commentList contentId=content.id pageIndex=pageIndex>
     <#list page.list as a>
         <@merge 'userIds' a.userId!/>

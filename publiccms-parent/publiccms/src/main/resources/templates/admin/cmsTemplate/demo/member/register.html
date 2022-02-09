@@ -21,7 +21,7 @@
 </@_categoryList>
     </nav>
     <main>
-        <#if user??>
+        <#if user?has_content>
             <p>${user.nickName},You are already logged in!<a href="javascript:logout();">You can logout</a></p>
             <form action="${site.dynamicPath}doLogout" method="post">
                 <input type="hidden" name="userId" value="${(user.id)!}"/>
@@ -29,7 +29,7 @@
             </form>
         <#else>
             <form action="${site.dynamicPath}doRegister" method="post">
-                <#if error??>
+                <#if error?has_content>
                     <p class="red">${springMacroRequestContext.getMessage(error,error)}</p>
                 </#if>
                 <p><input type="text" name="name" placeholder="User name" title="User name" value="${name!}"/></p>

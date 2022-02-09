@@ -44,7 +44,7 @@
                 <th width="100"><@t.page 'visit.referer'/></th>
                 <th width="50"><@t.page 'visit.item'/></th>
                 <th width="70"><@t.page 'visit.ip'/></th>
-                <th width="50" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'visit.visit_date'/></th>
+                <th width="50" orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'visit.visit_date'/></th>
             </tr>
         </thead>
         <tbody>

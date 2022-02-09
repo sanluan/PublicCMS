@@ -41,9 +41,21 @@
         </thead>
         <tbody>
             <#list page.list as a>
+                <@t.merge 'ids' a.id/>
+            </#list>
+            <@_sysLock userId=admin.id itemType='model' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+            <#if lockMap?has_content>
+                <#list lockMap as k,lock>
+                    <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
+                </#list>
+            </#if>
+            <@_sysUser ids=t.userIds!><#assign userMap=map!/></@_sysUser>
+            <#list page.list as a>
             <tr target="sid" rel="${a.id?url}">
                 <td>${a.id!}</td>
-                <td class="exclude-translate">${(a.name)!}</td>
+                <td class="exclude-translate" <#if lockMap[a.id?string]?has_content><#assign lockUser=(userMap[lockMap[a.id?string].userId?string].nickName)!''/>title="<@t.page 'lock.message' lockUser/> ${lockMap[a.id?string].createDate}"</#if>>
+                    <#if lockMap[a.id?string]?has_content><i class="icon-lock icon-large"></i> </#if>${(a.name)!}
+                </td>
                 <td>${a.onlyUrl?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasImages?then(t.pageMessage('yes'),'')}</td>
                 <td>${a.hasFiles?then(t.pageMessage('yes'),'')}</td>

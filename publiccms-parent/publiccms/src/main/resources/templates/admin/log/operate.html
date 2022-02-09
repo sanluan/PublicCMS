@@ -58,7 +58,7 @@
                 <th><@t.page 'channel'/></th>
                 <th><@t.page 'operate'/>/<@t.page 'code'/></th>
                 <th><@t.page 'log.operate_ip'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.create_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'log.create_date'/></th>
                 <th><@t.page 'log.content'/></th>
             </tr>
         </thead>

@@ -1,6 +1,6 @@
 <@_sysModule id=id>
     <#assign a=object/>
-    <#if (object.parentId)??><#assign parentId=(object.parentId)/></#if>
+    <#if (object.parentId)?has_content><#assign parentId=(object.parentId)/></#if>
 </@_sysModule>
 <@_sysModule id=parentId!><#assign module=object/></@_sysModule>
 <#if !deep?has_content><#assign deep=0/><#else><#assign deep=deep?number/></#if>

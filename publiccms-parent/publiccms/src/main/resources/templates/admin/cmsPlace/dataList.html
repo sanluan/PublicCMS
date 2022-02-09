@@ -65,11 +65,11 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th width="150"><@t.page 'title'/></th>
-                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="70" orderField="publishDate" class="<#if orderField?has_content&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
                 <th width="70"><@t.page 'expiry_date'/></th>
-                <th width="70" orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th width="70" orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th width="60"><@t.page 'content.promulgator'/></th>
-                <th width="80" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
+                <th width="80" orderField="clicks" class="<#if orderField?has_content&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
                 <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="150"><@t.page 'operate'/></th>
             </tr>
@@ -80,7 +80,7 @@
         <@t.merge 'userIds' a.checkUserId!/>
         <@t.merge 'ids' a.id/>
     </#list>
-    <@_sysLock itemType='place' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+    <@_sysLock userId=admin.id itemType='place' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
     <#if lockMap?has_content>
         <#list lockMap as k,lock>
             <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>

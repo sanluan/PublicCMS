@@ -41,10 +41,10 @@
                 <input type="hidden" name="encoding"/>
             </p>
             <p class="error_msg">
-                <#if error??>
+                <#if error?has_content>
                     <@t.message error/>
                 </#if>
-                <#if message??>
+                <#if message?has_content>
                     <@t.message "message."+message/>
                 </#if>
             </p>

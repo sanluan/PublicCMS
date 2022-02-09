@@ -22,7 +22,7 @@
 </@_categoryList>
     </nav>
     <main>
-<#macro merge name value><#if !.vars[name]??><@"<#assign ${name}=''>"?interpret /></#if><#if value??><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
+<#macro merge name value><#if !.vars[name]?has_content><@"<#assign ${name}=''>"?interpret /></#if><#if value?has_content><@"<#assign ${name}=${name}+'${value},'>"?interpret /></#if></#macro>
 <@_search word=word tagId=tagId highlight=true pageIndex=pageIndex pageSize=10>
     <#if page.totalCount gt 0>
         <h1>Results</h1>

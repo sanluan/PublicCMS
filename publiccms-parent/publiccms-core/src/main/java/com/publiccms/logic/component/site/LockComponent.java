@@ -169,8 +169,6 @@ public class LockComponent implements Config, SiteCache {
                 } else if (null == entity.getUserId() || entity.getUserId().equals(userId)) {
                     if (counter) {
                         entity = service.updateCount(id);
-                    } else {
-                        entity = service.updateCreateDate(id, 1, userId);
                     }
                 } else {
                     entity = null;

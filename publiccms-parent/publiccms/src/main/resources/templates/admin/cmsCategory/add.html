@@ -22,9 +22,9 @@
             <li><button type="submit" class="buttonActive<#if id?has_content> lock</#if>" url="common/lock?itemType=category&itemId=${id!}&lock=false"><@t.page 'button.save'/></button></li>
                 <#else>
             <li>
-                <@_sysLock itemType='category' itemId=id>
+                <@_sysLock userId=admin.id itemType='category' itemId=id>
                     <@_sysUser id=(object.userId)!''><#assign lockUser=object.nickName/></@_sysUser>
-                <button type="button" class="buttonDisabled" title="${lock.createDate}"><@t.page 'lock.message' lockUser/></button>
+                <button type="button" class="buttonDisabled" title="${object.createDate}"><@t.page 'lock.message' lockUser/></button>
                 </@_sysLock>
             </li>
                 </#if>

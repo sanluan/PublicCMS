@@ -12,8 +12,8 @@
                 <li>
                     <select class="combox" name="hidden">
                         <option value=""><@t.page 'display'/></option>
-                        <option value="false"${(hidden??&&'false'=hidden)?then(' selected="true"','')?no_esc}><@t.page 'show'/></option>
-                        <option value="true"${(hidden??&&'true'=hidden)?then(' selected="true"','')?no_esc}><@t.page 'hidden'/></option>
+                        <option value="false"${(hidden?has_content&&'false'=hidden)?then(' selected="true"','')?no_esc}><@t.page 'show'/></option>
+                        <option value="true"${(hidden?has_content&&'true'=hidden)?then(' selected="true"','')?no_esc}><@t.page 'hidden'/></option>
                     </select>
                 </li>
                 <li>
@@ -44,9 +44,9 @@
             <tr>
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'name'/></th>
-                <th orderField="searchCount" class="<#if orderField??&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
+                <th orderField="searchCount" class="<#if orderField?has_content&&'searchCount'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'tag.search_count'/></th>
                 <th><@t.page 'display'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

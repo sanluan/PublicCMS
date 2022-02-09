@@ -43,6 +43,7 @@ public class SysLockDirective extends AbstractTemplateDirective {
                 handler.put("object", entity).render();
             } else {
                 String[] itemIds = handler.getStringArray("itemIds");
+                Long userId = handler.getLong("userId");
                 if (CommonUtils.notEmpty(itemIds)) {
                     SysLockId[] entityIds = new SysLockId[itemIds.length];
                     for (int i = 0; i < itemIds.length; i++) {
@@ -52,7 +53,8 @@ public class SysLockDirective extends AbstractTemplateDirective {
                     int expriy = lockComponent.getExpriy(siteId, itemType);
                     Map<String, SysLock> map = CommonUtils.listToMap(entityList, k -> String.valueOf(k.getId().getItemId()), null,
                             expriy > 0 ? f -> {
-                                return f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy));
+                                return f.getCreateDate().after(DateUtils.addMinutes(CommonUtils.getDate(), -expriy))
+                                        && (null == f.getUserId() || null == userId || !f.getUserId().equals(userId));
                             } : null);
                     handler.put("map", map).render();
                 }

@@ -51,7 +51,7 @@
     <@_sysRoleModule roleIds=admin.roles moduleIds=t.moduleIds!><#assign roleModuleMap=map!/></@_sysRoleModule>
 
     <#list page.list as a>
-        <#if (roleModuleMap[a.id?string])??&&roleModuleMap[a.id?string]>
+        <#if (roleModuleMap[a.id?string])?has_content&&roleModuleMap[a.id?string]>
             <#if !parentId?has_content><#assign parentId=a.id/></#if>
             <li>
                 <a href="${a.url?has_content?then(a.url,'menus.html?parentId='+a.id)}" parentId="${a.id}"><#if (a.attached)?has_content><i class="${a.attached} icon-large"></i></#if> <@t.menu a.id/></a>

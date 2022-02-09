@@ -55,10 +55,10 @@
                 <th><@t.page 'id'/></th>
                 <th><@t.page 'content.promulgator'/></th>
                 <th width="150"><@t.page 'content'/></th>
-                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
-                <th width="30" orderField="replies" class="<#if orderField??&&'replies'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'replies'/></th>
-                <th orderField="updateDate" class="<#if orderField??&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'modified_date'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th width="30" orderField="scores" class="<#if orderField?has_content&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
+                <th width="30" orderField="replies" class="<#if orderField?has_content&&'replies'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'replies'/></th>
+                <th orderField="updateDate" class="<#if orderField?has_content&&'updateDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'modified_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th><@t.page 'comment'/></th>
                 <th><@t.page 'operate'/></th>

@@ -70,10 +70,10 @@
                 <th width="20"><input type="checkbox" group="ids" class="checkboxCtrl"></th>
                 <th width="30"><@t.page 'id'/></th>
                 <th width="150"><@t.page 'content'/></th>
-                <th width="30" orderField="scores" class="<#if orderField??&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
-                <th width="30" orderField="comments" class="<#if orderField??&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
-                <th width="30" orderField="clicks" class="<#if orderField??&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
-                <th width="70" orderField="publishDate" class="<#if orderField??&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
+                <th width="30" orderField="scores" class="<#if orderField?has_content&&'scores'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.score'/></th>
+                <th width="30" orderField="comments" class="<#if orderField?has_content&&'comments'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'content.comments'/></th>
+                <th width="30" orderField="clicks" class="<#if orderField?has_content&&'clicks'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'clicks'/></th>
+                <th width="70" orderField="publishDate" class="<#if orderField?has_content&&'publishDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'publish_date'/></th>
                 <th width="50"><@t.page 'status'/>/<@t.page 'inspector'/></th>
                 <th width="70"><@t.page 'operate'/></th>
             </tr>

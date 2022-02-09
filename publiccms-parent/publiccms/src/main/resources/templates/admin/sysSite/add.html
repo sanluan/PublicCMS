@@ -26,7 +26,7 @@ function siteDefaultConfig${id!}(type){
         $('input[name=sitePath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/webfile/"+directory);
         $('input[name=dynamicPath]',navTab.getCurrentPanel()).val("//"+location.host+"${base}/"+directory);
     }
-    <#if !a??>
+    <#if !a?has_content>
         $('input[name=domain]',navTab.getCurrentPanel()).val(location.hostname);
     </#if>
     $('.info',navTab.getCurrentPanel()).show();
@@ -86,7 +86,7 @@ function siteDefaultConfig${id!}(type){
                 <span class="info"><@t.page 'site.enable_ssi.description'/></span>
             </dd>
         </dl>
-        <#if !a??>
+        <#if !a?has_content>
             <fieldset>
                 <legend><@t.page 'site.init'/></legend>
                 <dl class="nowrap">

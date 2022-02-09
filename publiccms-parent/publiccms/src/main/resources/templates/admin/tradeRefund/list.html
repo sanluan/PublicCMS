@@ -49,7 +49,7 @@
                 <th><@t.page 'refund.amount'/></th>
                 <th><@t.page 'status'/></th>
                 <th><@t.page 'reply'/></th>
-                <th orderField="createDate" class="<#if orderField??&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
+                <th orderField="createDate" class="<#if orderField?has_content&&'createDate'==orderField><#if 'asc'=orderType>asc<#else>desc</#if><#else>order</#if>"><@t.page 'create_date'/></th>
                 <th><@t.page 'operate'/></th>
             </tr>
         </thead>

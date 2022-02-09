@@ -81,7 +81,7 @@
                 <@t.merge 'typeIds' a.typeId!/>
                 <@t.merge 'ids' a.id/>
             </#list>
-            <@_sysLock itemType='category' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
+            <@_sysLock userId=admin.id itemType='category' itemIds=t.ids><#assign lockMap=map!/></@_sysLock>
             <#if lockMap?has_content>
                 <#list lockMap as k,lock>
                     <#if lock.userId?has_content><@t.merge 'userIds' lock.userId/></#if>
