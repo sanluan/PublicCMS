@@ -260,7 +260,7 @@ DELETE FROM `sys_module` WHERE `id` in ('log_visit','log_visit_day','log_visit_i
 DELETE FROM `sys_module_lang` WHERE `module_id` in ('log_visit','log_visit_day','log_visit_item','log_visit_session','log_visit_url');
 INSERT INTO `sys_module` VALUES ('visit_day', 'visit/day', NULL, 'icon-calendar', 'visit_menu', 1, 3);
 INSERT INTO `sys_module` VALUES ('visit_history', 'visit/history', 'log/view', 'icon-bolt', 'visit_menu', 1, 1);
-INSERT INTO `sys_module` VALUES ('visit_menu', , NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
+INSERT INTO `sys_module` VALUES ('visit_menu', NULL, NULL, 'icon-bolt', 'maintenance', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_item', 'visit/item', NULL, 'icon-flag-checkered', 'visit_menu', 1, 5);
 INSERT INTO `sys_module` VALUES ('visit_session', 'visit/session', NULL, 'icon-comment-alt', 'visit_menu', 1, 2);
 INSERT INTO `sys_module` VALUES ('visit_url', 'visit/url', NULL, 'icon-link', 'visit_menu', 1, 4);
